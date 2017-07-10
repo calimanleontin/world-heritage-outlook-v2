@@ -3,7 +3,7 @@ $aliases['test'] = array(
   'uri' => 'http://iucn-who.edw.ro',
   'root' => '/var/www/html/iucn-who/docroot',
   'remote-host' => '5.9.54.24',
-  'remote-user' => 'TODO',
+  'remote-user' => 'php',
 );
 
 // Add your local aliases.

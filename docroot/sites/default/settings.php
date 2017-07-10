@@ -765,3 +765,11 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 }
 $config_directories['sync'] = '../config/sync';
 $settings['install_profile'] = 'minimal';
+
+if(isset($settings['environment'])){
+	if($settings['environment'] == 'dev'){
+		$config['config_split.config_split.live']['status']= FALSE; 
+	}else if($settings['environment'] == 'live'){
+		$config['config_split.config_split.development']['status']= FALSE; 
+	}
+}
