@@ -767,7 +767,7 @@ $config_directories['sync'] = '../config/sync';
 $settings['install_profile'] = 'minimal';
 
 if(isset($settings['environment'])){
-	if($settings['environment'] == 'dev'){
+	if($settings['environment'] == 'dev' || $settings['environment'] == 'test'){
 		$config['config_split.config_split.live']['status']= FALSE; 
 	}else if($settings['environment'] == 'live'){
 		$config['config_split.config_split.development']['status']= FALSE; 
