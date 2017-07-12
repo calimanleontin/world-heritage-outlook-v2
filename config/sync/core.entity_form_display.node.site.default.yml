@@ -39,6 +39,7 @@ third_party_settings:
         - field_wdpa_id
         - field_unesco_id
         - field_cultural_landscape
+        - field_mixed_site
         - field_inscription_year
       parent_name: group_basic
       weight: 20
@@ -66,8 +67,7 @@ third_party_settings:
         required_fields: false
       label: 'Site description'
     group_geographical_information:
-      children:
-        - field_mixed_site
+      children: {  }
       parent_name: group_basic
       weight: 23
       format_type: tab
@@ -107,13 +107,13 @@ content:
     type: boolean_checkbox
     region: content
   field_inscription_year:
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: year_date_field_widget
     region: content
   field_mixed_site:
-    weight: 12
+    weight: 7
     settings:
       display_label: true
     third_party_settings: {  }
