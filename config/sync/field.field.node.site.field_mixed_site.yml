@@ -1,0 +1,23 @@
+uuid: 7b447a86-02da-4439-b5a8-79928ce1a7e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mixed_site
+    - node.type.site
+id: node.site.field_mixed_site
+field_name: field_mixed_site
+entity_type: node
+bundle: site
+label: 'Mixed Site'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

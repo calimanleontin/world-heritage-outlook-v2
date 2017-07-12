@@ -1,0 +1,97 @@
+uuid: 855e9c97-c535-4e6c-8310-ecbd1736853e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.site.body
+    - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_inscription_year
+    - field.field.node.site.field_mixed_site
+    - field.field.node.site.field_site_name_es
+    - field.field.node.site.field_site_name_fr
+    - field.field.node.site.field_unesco_id
+    - field.field.node.site.field_wdpa_id
+    - node.type.site
+  module:
+    - datetime
+    - text
+    - user
+id: node.site.default
+targetEntityType: node
+bundle: site
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_cultural_landscape:
+    weight: 106
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_inscription_year:
+    weight: 108
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_mixed_site:
+    weight: 107
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_site_name_es:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_site_name_fr:
+    weight: 104
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_unesco_id:
+    weight: 103
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_wdpa_id:
+    weight: 102
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden: {  }

@@ -114,7 +114,7 @@ interface DataDefinitionInterface {
   public function isRequired();
 
   /**
-   * Returns the class used for creating the typed data object.
+   * Returns the class used for creating the typed data object.$this->fieldDefinition->getLabel()
    *
    * If not specified, the default class of the data type will be returned.
    *

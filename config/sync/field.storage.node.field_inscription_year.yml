@@ -1,0 +1,20 @@
+uuid: d5de2760-c720-48b1-b460-44dbeee2cdd3
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_inscription_year
+field_name: field_inscription_year
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
