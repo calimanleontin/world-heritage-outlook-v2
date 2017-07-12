@@ -1,0 +1,5 @@
+name: iucn_site
+type: module
+description: IUCN site related functionality
+core: 8.x
+package: IUCN

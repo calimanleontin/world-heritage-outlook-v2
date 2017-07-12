@@ -1,0 +1,5 @@
+{
+    "require": {
+        "drupal/console": "^0.11.3"
+    }
+}

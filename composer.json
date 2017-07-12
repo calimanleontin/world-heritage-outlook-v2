@@ -22,7 +22,9 @@
         "drupal/chosen": "^2.3",
         "drupal/config_split": "^1.0@beta",
         "drupal/core": "~8.0",
+        "drupal/date_popup": "^1.0",
         "drupal/devel": "^1.0@RC",
+        "drupal/field_group": "^1.0@RC",
         "webflo/drupal-finder": "^0.3.0",
         "webmozart/path-util": "^2.3"
     },

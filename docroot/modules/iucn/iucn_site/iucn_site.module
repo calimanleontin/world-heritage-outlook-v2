@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains iucn_site.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function iucn_site_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the iucn_site module.
+    case 'help.page.iucn_site':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('IUCN site related functionality') . '</p>';
+      return $output;
+
+    default:
+  }
+}
