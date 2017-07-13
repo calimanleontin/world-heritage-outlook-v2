@@ -1,0 +1,21 @@
+uuid: 5d9aadf5-1829-4426-8671-f2c384f9e837
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_date
+    - field_collection.field_collection.field_danger_list
+  module:
+    - datetime
+id: field_collection_item.field_danger_list.field_date
+field_name: field_date
+entity_type: field_collection_item
+bundle: field_danger_list
+label: Date
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

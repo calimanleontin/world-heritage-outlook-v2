@@ -1,0 +1,108 @@
+uuid: 88d16a53-6696-451b-b474-3be6c65653c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.country.field_a2
+    - field.field.taxonomy_term.country.field_a3
+    - field.field.taxonomy_term.country.field_active
+    - field.field.taxonomy_term.country.field_currency
+    - field.field.taxonomy_term.country.field_idd
+    - field.field.taxonomy_term.country.field_iucn_region
+    - field.field.taxonomy_term.country.field_number
+    - field.field.taxonomy_term.country.field_unesco_region
+    - field.field.taxonomy_term.country.field_zip_required
+    - taxonomy.vocabulary.country
+  module:
+    - text
+id: taxonomy_term.country.default
+targetEntityType: taxonomy_term
+bundle: country
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_a2:
+    weight: 3
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_a3:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_active:
+    weight: 9
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_currency:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_idd:
+    weight: 6
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_iucn_region:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_number:
+    weight: 5
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_unesco_region:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_zip_required:
+    weight: 8
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+hidden: {  }

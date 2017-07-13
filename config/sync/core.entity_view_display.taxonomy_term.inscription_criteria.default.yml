@@ -1,0 +1,39 @@
+uuid: b139476c-64d3-4f3d-8359-23f51744866f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.inscription_criteria.field_title
+    - field.field.taxonomy_term.inscription_criteria.field_type
+    - taxonomy.vocabulary.inscription_criteria
+  module:
+    - options
+    - text
+id: taxonomy_term.inscription_criteria.default
+targetEntityType: taxonomy_term
+bundle: inscription_criteria
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_title:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_type:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden: {  }

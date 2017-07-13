@@ -1,0 +1,23 @@
+uuid: f5b9a910-2fcd-4516-86b7-8e8a6eede87c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_transboundary
+    - node.type.site
+id: node.site.field_transboundary
+field_name: field_transboundary
+entity_type: node
+bundle: site
+label: Transboundary
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean
