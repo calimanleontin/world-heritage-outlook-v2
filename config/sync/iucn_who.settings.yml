@@ -9,6 +9,8 @@ favicon:
 schemas:
   bootstrap: 8000
   iucn_who: 8000
+table_responsive: '-1'
+table: ''
 features:
   comment_user_picture: true
   comment_user_verification: true
@@ -18,6 +20,4 @@ logo:
   path: ''
   url: ''
   use_default: true
-navbar_position: fixed-top
-table_responsive: '-1'
-table: ''
+navbar_position: static-top
