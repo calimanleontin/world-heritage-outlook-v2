@@ -28,6 +28,9 @@
         "drupal/field_group": "^1.0@RC",
         "drupal/menu_block": "^1.4",
         "drupal/menu_link_attributes": "^1.0@beta",
+        "drupal/paragraphs": "^1.1",
+        "drupal/search_api": "^1.2",
+        "drupal/search_api_sorts": "^1.0@beta",
         "webflo/drupal-finder": "^0.3.0",
         "webmozart/path-util": "^2.3"
     },

@@ -8,6 +8,7 @@ module:
   config_split: 0
   datetime: 0
   dynamic_page_cache: 0
+  entity_reference_revisions: 0
   field: 0
   field_collection: 0
   field_group: 0
@@ -21,12 +22,18 @@ module:
   node: 0
   options: 0
   page_cache: 0
+  search_api: 0
+  search_api_db: 0
+  search_api_sorts: 0
   system: 0
   taxonomy: 0
   text: 0
   toolbar: 0
   user: 0
+  views: 0
+  views_ui: 0
   menu_link_content: 1
+  paragraphs: 11
   minimal: 1000
 theme:
   stark: 0
