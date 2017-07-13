@@ -30,13 +30,11 @@ dependencies:
     - text
 third_party_settings:
   field_group:
-    group_basic:
+    group_site:
       children:
-        - group_basic_information
-        - group_site_description
-        - group_geographical_information
-        - group_iucn_pa_category
-        - group_site_theme
+        - group_basic
+        - group_official
+        - group_physical
       parent_name: ''
       weight: 0
       format_type: tabs
@@ -44,7 +42,51 @@ third_party_settings:
         id: ''
         classes: ''
         direction: horizontal
+      label: Site
+    group_basic:
+      children:
+        - group_basic_information
+        - group_site_description
+        - group_geographical_information
+        - group_iucn_pa_category
+        - group_site_theme
+      parent_name: group_site
+      weight: 20
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: false
       label: Basic
+    group_official:
+      children:
+        - group_official_information
+        - group_other_designations
+      parent_name: group_site
+      weight: 22
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: false
+      label: Official
+    group_physical:
+      children:
+        - group_physical_information
+      parent_name: group_site
+      weight: 23
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: false
+      label: Physical
     group_basic_information:
       children:
         - title
@@ -57,13 +99,11 @@ third_party_settings:
         - field_inscription_year
       parent_name: group_basic
       weight: 20
-      format_type: tab
+      format_type: fieldset
       format_settings:
-        label: 'Basic information'
-        formatter: open
-        description: ''
         id: ''
         classes: ''
+        description: ''
         required_fields: false
       label: 'Basic information'
     group_site_description:
@@ -71,13 +111,11 @@ third_party_settings:
         - body
       parent_name: group_basic
       weight: 21
-      format_type: tab
+      format_type: fieldset
       format_settings:
-        label: 'Site description'
-        formatter: closed
-        description: ''
         id: ''
         classes: ''
+        description: ''
         required_fields: false
       label: 'Site description'
     group_geographical_information:
@@ -85,13 +123,11 @@ third_party_settings:
         - field_country
       parent_name: group_basic
       weight: 22
-      format_type: tab
+      format_type: fieldset
       format_settings:
-        label: 'Geographical information'
-        formatter: closed
-        description: ''
         id: ''
         classes: ''
+        description: ''
         required_fields: false
       label: 'Geographical information'
     group_iucn_pa_category:
@@ -99,11 +135,10 @@ third_party_settings:
         - field_category
       parent_name: group_basic
       weight: 23
-      format_type: tab
+      format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        formatter: closed
         description: ''
         required_fields: false
       label: 'IUCN PA Category'
@@ -112,37 +147,23 @@ third_party_settings:
         - field_theme
       parent_name: group_basic
       weight: 24
-      format_type: tab
+      format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        formatter: closed
         description: ''
         required_fields: false
       label: 'Site Theme'
-    group_official:
-      children:
-        - group_official_information
-        - group_other_designations
-      parent_name: ''
-      weight: 1
-      format_type: tabs
-      format_settings:
-        id: ''
-        classes: ''
-        direction: horizontal
-      label: Official
     group_official_information:
       children:
         - field_inscription_criteria
         - field_danger_list
       parent_name: group_official
-      weight: 2
-      format_type: tab
+      weight: 20
+      format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        formatter: open
         description: ''
         required_fields: false
       label: 'Official information'
@@ -150,26 +171,14 @@ third_party_settings:
       children:
         - field_designation
       parent_name: group_official
-      weight: 3
-      format_type: tab
+      weight: 21
+      format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        formatter: closed
         description: ''
         required_fields: false
       label: 'Other designations'
-    group_physical:
-      children:
-        - group_physical_information
-      parent_name: ''
-      weight: 2
-      format_type: tabs
-      format_settings:
-        id: ''
-        classes: ''
-        direction: horizontal
-      label: Physical
     group_physical_information:
       children:
         - field_area
@@ -178,12 +187,11 @@ third_party_settings:
         - field_transboundary
         - field_serial
       parent_name: group_physical
-      weight: 7
-      format_type: tab
+      weight: 20
+      format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        formatter: open
         description: ''
         required_fields: false
       label: 'Physical Information'
@@ -194,7 +202,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 21
+    weight: 20
     settings:
       rows: 9
       summary_rows: 3
@@ -208,34 +216,34 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_area:
-    weight: 12
+    weight: 7
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_buffer_zone:
-    weight: 13
+    weight: 8
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_buffer_zone_area:
-    weight: 14
+    weight: 9
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_category:
-    weight: 27
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_country:
-    weight: 26
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -248,19 +256,19 @@ content:
     type: boolean_checkbox
     region: content
   field_danger_list:
-    weight: 4
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: field_collection_embed
     region: content
   field_designation:
-    weight: 29
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_inscription_criteria:
-    weight: 3
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -279,7 +287,7 @@ content:
     type: boolean_checkbox
     region: content
   field_serial:
-    weight: 16
+    weight: 11
     settings:
       display_label: true
     third_party_settings: {  }
@@ -302,13 +310,13 @@ content:
     type: string_textfield
     region: content
   field_theme:
-    weight: 28
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_transboundary:
-    weight: 15
+    weight: 10
     settings:
       display_label: true
     third_party_settings: {  }
@@ -352,7 +360,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 1
     settings:
       match_operator: CONTAINS
       size: 60
