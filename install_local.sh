@@ -22,10 +22,10 @@ drush updatedb -y
 echo
 
 #echo "Rsync files..."
-drush -y rsync @staging%files @self:%files
+drush -y rsync @staging:%files @self:%files
 
 #echo "Updating iucn iser..."
-drush upwf iucn --password="password"
+drush upwd iucn --password="password"
 
 drush cr
 echo "Done!"
