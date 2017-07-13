@@ -12,7 +12,6 @@ module.exports = function (grunt) {
         options: {
           outputSourceFiles: true,
           sourceMap: true,
-          strictMath: true,
           relativeUrls: false
         },
         files: {
