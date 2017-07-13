@@ -14,19 +14,18 @@ echo
 #echo "Getting '$env' environment database..."
 drush sql-sync @staging @self -y
 
-#echo "Importing 'default' configuration..."
-#drush csim -y
-
-#echo "Importing 'dev' configuration..."
-#drush csim development -y
+#echo "Importing configuration..."
+drush csim -y
 
 echo "Running database pending updates..."
 drush updatedb -y
 echo
 
 #echo "Rsync files..."
-#drush -y rsync "@euroarts.$env:%files" @self:%files
-#echo
+drush -y rsync @staging%files @self:%files
+
+#echo "Updating iucn iser..."
+drush upwf iucn --password="password"
 
 drush cr
 echo "Done!"
