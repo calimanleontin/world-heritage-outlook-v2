@@ -25,4 +25,11 @@ content:
   links:
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_cultural_landscape: true
+  field_inscription_year: true
+  field_mixed_site: true
+  field_site_name_es: true
+  field_site_name_fr: true
+  field_unesco_id: true
+  field_wdpa_id: true
