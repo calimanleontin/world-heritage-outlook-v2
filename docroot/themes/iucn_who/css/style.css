@@ -4508,14 +4508,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-toggle {
-  border-color: #ddd;
+  border-color: transparent;
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #ddd;
+  background-color: transparent;
 }
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #888;
+  background-color: #134780;
 }
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
@@ -7376,6 +7376,22 @@ p:last-child,
 .control-group .help-inline:first-child {
   margin-top: 0;
 }
+.holygrail {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.holygrail-body {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+@media (max-width: 767px) {
+  .holygrail > *,
+  .holygrail-body > * {
+    width: 100%;
+  }
+}
 .navbar.navbar-fixed-top {
   position: fixed;
   z-index: 10;
@@ -7400,5 +7416,12 @@ p:last-child,
 .navbar .logo > img {
   height: 100%;
   width: auto;
+}
+.navbar-toggle .icon-bar {
+  width: 30px;
+  height: 4px;
+}
+.navbar-toggle .icon-bar + .icon-bar {
+  margin-top: 5px;
 }
 /*# sourceMappingURL=style.css.map */

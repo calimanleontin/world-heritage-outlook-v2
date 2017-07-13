@@ -1,0 +1,20 @@
+
+  .holygrail {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .holygrail-body {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+  }
+@media (max-width: @grid-float-breakpoint-max) {
+  .holygrail,
+  .holygrail-body {
+    > * {
+      width: 100%;
+    }
+  }
+}
