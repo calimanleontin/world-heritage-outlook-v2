@@ -1,0 +1,27 @@
+.navbar.navbar-fixed-top {
+  position: fixed;
+  z-index: 10;
+  right: 0;
+  left: 0;
+  &.headroom {
+    transition: transform .2s ease-in-out;
+    will-change: transform;
+  }
+  &.headroom--pinned {
+      transform: translateY(0);
+  }
+  &.headroom--unpinned {
+      transform: translateY(-100%);
+  }
+}
+
+.navbar .logo {
+  height: @navbar-height * 70 / 100;
+  margin-top: @navbar-height * 15 / 100;
+  margin-bottom: @navbar-height * 15 / 100;
+  > img {
+    height: 100%;
+    width: auto;
+  }
+}
+

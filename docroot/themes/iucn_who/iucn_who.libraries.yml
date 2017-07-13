@@ -1,8 +1,14 @@
+headroom:
+    js:
+        libraries/headroom.js/dist/headroom.min.js: {}
 global-styling:
   css:
     theme:
       css/style.css: {}
-
+  js:
+    js/navbar-headroom.js: {}
+  dependencies:
+    - iucn_who/headroom
 bootstrap-scripts:
   js:
     bootstrap/js/affix.js: {}
