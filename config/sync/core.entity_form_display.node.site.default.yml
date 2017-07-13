@@ -211,7 +211,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 5
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -336,20 +336,6 @@ content:
     third_party_settings: {  }
     type: number
     region: content
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 4
-    region: content
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 6
-    region: content
-    third_party_settings: {  }
   title:
     type: string_textfield
     weight: 1
@@ -367,4 +353,6 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  promote: true
+  sticky: true
