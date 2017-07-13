@@ -1,0 +1,28 @@
+uuid: 8b2e2fa0-6452-419f-8c68-082a129c4bae
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.field_collection_item.field_danger_list.field_date
+    - field.field.field_collection_item.field_danger_list.field_status
+    - field_collection.field_collection.field_danger_list
+  module:
+    - datetime
+id: field_collection_item.field_danger_list.default
+targetEntityType: field_collection_item
+bundle: field_danger_list
+mode: default
+content:
+  field_date:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_status:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+hidden: {  }

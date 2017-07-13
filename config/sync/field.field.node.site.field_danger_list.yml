@@ -1,0 +1,21 @@
+uuid: f9673f9f-893a-46bd-9fbf-206d2d88e41d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_danger_list
+    - node.type.site
+  module:
+    - field_collection
+id: node.site.field_danger_list
+field_name: field_danger_list
+entity_type: node
+bundle: site
+label: 'Danger list'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: field_collection

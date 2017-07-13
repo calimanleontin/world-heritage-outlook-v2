@@ -4,15 +4,27 @@ status: true
 dependencies:
   config:
     - field.field.node.site.body
+    - field.field.node.site.field_area
+    - field.field.node.site.field_buffer_zone
+    - field.field.node.site.field_buffer_zone_area
+    - field.field.node.site.field_category
+    - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_danger_list
+    - field.field.node.site.field_designation
+    - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
     - field.field.node.site.field_mixed_site
+    - field.field.node.site.field_serial
     - field.field.node.site.field_site_name_es
     - field.field.node.site.field_site_name_fr
+    - field.field.node.site.field_theme
+    - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
     - node.type.site
   module:
+    - field_collection
     - field_group
     - iucn_site
     - text
@@ -23,8 +35,10 @@ third_party_settings:
         - group_basic_information
         - group_site_description
         - group_geographical_information
+        - group_iucn_pa_category
+        - group_site_theme
       parent_name: ''
-      weight: 1
+      weight: 0
       format_type: tabs
       format_settings:
         id: ''
@@ -56,7 +70,7 @@ third_party_settings:
       children:
         - body
       parent_name: group_basic
-      weight: 22
+      weight: 21
       format_type: tab
       format_settings:
         label: 'Site description'
@@ -67,9 +81,10 @@ third_party_settings:
         required_fields: false
       label: 'Site description'
     group_geographical_information:
-      children: {  }
+      children:
+        - field_country
       parent_name: group_basic
-      weight: 23
+      weight: 22
       format_type: tab
       format_settings:
         label: 'Geographical information'
@@ -79,6 +94,99 @@ third_party_settings:
         classes: ''
         required_fields: false
       label: 'Geographical information'
+    group_iucn_pa_category:
+      children:
+        - field_category
+      parent_name: group_basic
+      weight: 23
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: false
+      label: 'IUCN PA Category'
+    group_site_theme:
+      children:
+        - field_theme
+      parent_name: group_basic
+      weight: 24
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: false
+      label: 'Site Theme'
+    group_official:
+      children:
+        - group_official_information
+        - group_other_designations
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: horizontal
+      label: Official
+    group_official_information:
+      children:
+        - field_inscription_criteria
+        - field_danger_list
+      parent_name: group_official
+      weight: 2
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: false
+      label: 'Official information'
+    group_other_designations:
+      children:
+        - field_designation
+      parent_name: group_official
+      weight: 3
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: false
+      label: 'Other designations'
+    group_physical:
+      children:
+        - group_physical_information
+      parent_name: ''
+      weight: 2
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: horizontal
+      label: Physical
+    group_physical_information:
+      children:
+        - field_area
+        - field_buffer_zone
+        - field_buffer_zone_area
+        - field_transboundary
+        - field_serial
+      parent_name: group_physical
+      weight: 7
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: false
+      label: 'Physical Information'
 id: node.site.default
 targetEntityType: node
 bundle: site
@@ -95,16 +203,67 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_area:
+    weight: 12
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_buffer_zone:
+    weight: 13
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_buffer_zone_area:
+    weight: 14
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_category:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_country:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_cultural_landscape:
     weight: 6
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_danger_list:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_embed
+    region: content
+  field_designation:
+    weight: 29
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_inscription_criteria:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_inscription_year:
     weight: 8
@@ -114,6 +273,13 @@ content:
     region: content
   field_mixed_site:
     weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_serial:
+    weight: 16
     settings:
       display_label: true
     third_party_settings: {  }
@@ -135,6 +301,19 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_theme:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_transboundary:
+    weight: 15
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_unesco_id:
     weight: 5
     settings:
@@ -153,14 +332,14 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 3
+    weight: 4
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 6
     region: content
     third_party_settings: {  }
   title:
@@ -173,7 +352,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60

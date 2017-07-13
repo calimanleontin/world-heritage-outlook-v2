@@ -1,0 +1,28 @@
+uuid: 9b71c878-92a1-4104-9cf4-59718bd1ed99
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_iucn_region
+    - taxonomy.vocabulary.country
+    - taxonomy.vocabulary.iucn_region
+id: taxonomy_term.country.field_iucn_region
+field_name: field_iucn_region
+entity_type: taxonomy_term
+bundle: country
+label: 'IUCN Region'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      iucn_region: iucn_region
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

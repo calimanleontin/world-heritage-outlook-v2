@@ -1,0 +1,28 @@
+uuid: 43ecb06f-7045-472b-81c4-26469186367e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_designation
+    - node.type.site
+    - taxonomy.vocabulary.designation
+id: node.site.field_designation
+field_name: field_designation
+entity_type: node
+bundle: site
+label: Designation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      designation: designation
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,35 @@
+uuid: 39a1b1f0-fecf-47e6-a6e8-30ab27f6b105
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.country.field_iucn_region
+    - field.field.taxonomy_term.country.field_unesco_region
+    - taxonomy.vocabulary.country
+id: taxonomy_term.country.default
+targetEntityType: taxonomy_term
+bundle: country
+mode: default
+content:
+  field_iucn_region:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_unesco_region:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
