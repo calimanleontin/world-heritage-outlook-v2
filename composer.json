@@ -27,6 +27,8 @@
         "drupal/field_group": "^1.0@RC",
         "drupal/menu_block": "^1.4",
         "drupal/menu_link_attributes": "^1.0@beta",
+        "drupal/migrate_api": "^1.1",
+        "drupal/migrate_devel": "1.x-dev",
         "drupal/migrate_plus": "^2.0",
         "drupal/migrate_tools": "^2.0",
         "drupal/paragraphs": "^1.1",
