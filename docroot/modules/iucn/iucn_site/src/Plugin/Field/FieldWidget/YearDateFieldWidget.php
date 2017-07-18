@@ -53,6 +53,7 @@ class YearDateFieldWidget extends WidgetBase {
     $element['value'] = $element + array(
         '#type' => 'select',
         '#options' => $years,
+        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
       );
     $element['value']['#title'] = $this->fieldDefinition->getLabel();
     $element['value']['#description'] = $this->fieldDefinition->getDescription();
