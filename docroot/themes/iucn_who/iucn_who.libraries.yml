@@ -4,6 +4,7 @@ headroom:
 global-styling:
   css:
     theme:
+      //fonts.googleapis.com/css?family=Open+Sans:300,400,600,700: { type: external }
       css/style.css: {}
   js:
     js/navbar-headroom.js: {}
