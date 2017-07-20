@@ -1,0 +1,30 @@
+uuid: 167974bf-70af-4108-af97-c0af9a39a32a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_danger_list
+    - node.type.site
+    - paragraphs.paragraphs_type.danger_list
+  module:
+    - entity_reference_revisions
+id: node.site.field_danger_list
+field_name: field_danger_list
+entity_type: node
+bundle: site
+label: 'Danger list'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      danger_list: danger_list
+    target_bundles_drag_drop:
+      danger_list:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions
