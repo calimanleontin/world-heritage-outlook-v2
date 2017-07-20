@@ -7438,6 +7438,22 @@ p:last-child,
     margin-left: 2em;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar-brand {
+    position: relative;
+    margin-right: 1em;
+    padding-right: 1em;
+  }
+  .navbar-brand:after {
+    border-right: 1px solid rgba(3, 175, 223, 0.2);
+    content: '';
+    display: block;
+    height: 80%;
+    position: absolute;
+    right: 0;
+    top: 10%;
+  }
+}
 .navbar-toggle .icon-bar {
   width: 30px;
   height: 4px;
