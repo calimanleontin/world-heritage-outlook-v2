@@ -3550,10 +3550,10 @@ tbody.collapse.in {
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  color: #fff;
+  color: #03afdf;
   text-decoration: none;
   outline: 0;
-  background-color: #134780;
+  background-color: transparent;
 }
 .dropdown-menu > .disabled > a,
 .dropdown-menu > .disabled > a:hover,
@@ -4079,8 +4079,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-  color: #fff;
-  background-color: #134780;
+  color: #03afdf;
+  background-color: transparent;
 }
 .nav-stacked > li {
   float: none;
@@ -4671,22 +4671,22 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #444;
 }
 .breadcrumb {
-  padding: 8px 15px;
+  padding: 8px 0;
   margin-bottom: 20px;
   list-style: none;
-  background-color: #f5f5f5;
+  background-color: transparent;
   border-radius: 4px;
 }
 .breadcrumb > li {
   display: inline-block;
 }
 .breadcrumb > li + li:before {
-  content: "/\00a0";
+  content: ">\00a0";
   padding: 0 5px;
-  color: #ccc;
+  color: #333333;
 }
 .breadcrumb > .active {
-  color: #777777;
+  color: #03afdf;
 }
 .pagination {
   display: inline-block;
@@ -5274,9 +5274,9 @@ button.list-group-item {
 .list-group-item.active:hover,
 .list-group-item.active:focus {
   z-index: 2;
-  color: #fff;
-  background-color: #134780;
-  border-color: #134780;
+  color: #03afdf;
+  background-color: transparent;
+  border-color: transparent;
 }
 .list-group-item.active .list-group-item-heading,
 .list-group-item.active:hover .list-group-item-heading,
@@ -5292,7 +5292,7 @@ button.list-group-item {
 .list-group-item.active .list-group-item-text,
 .list-group-item.active:hover .list-group-item-text,
 .list-group-item.active:focus .list-group-item-text {
-  color: #75adea;
+  color: rgba(102, 102, 102, 0);
 }
 .list-group-item-success {
   color: #3c763d;
@@ -6792,6 +6792,9 @@ html.js .form-item .input-group-addon .input-group-addon {
 html.js .ajax-new-content:empty {
   display: none !important;
 }
+.breadcrumb > li {
+  text-transform: uppercase;
+}
 /**
  * @file
  * Visual styles for fields.
@@ -7335,8 +7338,8 @@ body.toolbar-fixed.toolbar-vertical.toolbar-tray-open.toolbar-fixed .toolbar-tra
 }
 .ui-autocomplete .ui-menu-item.ui-state-active,
 .ui-autocomplete .ui-menu-item.ui-state-focus {
-  background: #134780;
-  color: #fff;
+  background: transparent;
+  color: #03afdf;
 }
 ol,
 ul {

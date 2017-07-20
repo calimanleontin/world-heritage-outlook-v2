@@ -114,9 +114,9 @@
 @border-radius-small:                         3px;
 
 //** Global color for active items (e.g., navs or dropdowns).
-@component-active-color:                      #fff;
+@component-active-color:                      @iucn-blue-light;
 //** Global background color for active items (e.g., navs or dropdowns).
-@component-active-bg:                         @brand-primary;
+@component-active-bg:                         transparent;
 
 //** Width of the `border` for generating carets that indicate dropdowns.
 @caret-width-base:                            4px;
@@ -796,15 +796,15 @@
 //##
 
 @breadcrumb-padding-vertical:                 8px;
-@breadcrumb-padding-horizontal:               15px;
+@breadcrumb-padding-horizontal:               0;
 //** Breadcrumb background color
-@breadcrumb-bg:                               #f5f5f5;
+@breadcrumb-bg:                               transparent;
 //** Breadcrumb text color
-@breadcrumb-color:                            #ccc;
+@breadcrumb-color:                            @text-color;
 //** Text color of current page in the breadcrumb
-@breadcrumb-active-color:                     @gray-light;
+@breadcrumb-active-color:                     @component-active-color;
 //** Textual separator for between breadcrumb elements
-@breadcrumb-separator:                        "/";
+@breadcrumb-separator:                        ">";
 
 
 //== Carousel
