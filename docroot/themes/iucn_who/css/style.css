@@ -7478,22 +7478,35 @@ p:last-child,
 .footer .nav > li > a:focus {
   background-color: transparent;
 }
-.footer #block-mainnavigation .nav > li > a {
-  padding-left: 0;
-  padding-right: 0;
+@media screen and (min-width: 768px) {
+  .footer #block-mainnavigation .nav > li > a {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 @media screen and (min-width: 768px) {
-  .footer #block-mainnavigation .outer.navbar-nav {
+  .footer #block-mainnavigation .navbar-nav {
     display: flex;
     width: 100%;
   }
 }
-.footer #block-mainnavigation .outer.navbar-nav > li {
+.footer #block-mainnavigation .navbar-nav > li {
   flex: 1 1 auto;
 }
-.footer #block-mainnavigation .outer.navbar-nav > li > a {
+.footer #block-mainnavigation .navbar-nav > li > a {
   padding-bottom: 1.4em;
   padding-top: 1.4em;
+}
+@media screen and (max-width: 767px) {
+  .footer #block-mainnavigation .navbar-nav > li > a {
+    padding-bottom: 1em;
+    padding-top: 1em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .footer #block-mainnavigation .inner {
+    margin-left: 1.5rem;
+  }
 }
 .footer #block-mainnavigation .inner > li > a {
   font-weight: 200;
