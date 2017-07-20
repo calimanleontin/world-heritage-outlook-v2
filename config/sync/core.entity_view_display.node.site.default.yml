@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.site.field_category
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
-    - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -26,7 +25,6 @@ dependencies:
     - node.type.site
   module:
     - datetime
-    - field_collection
     - text
     - user
 id: node.site.default
@@ -94,13 +92,6 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
-    region: content
-  field_danger_list:
-    weight: 113
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: field_collection_list
     region: content
   field_designation:
     weight: 114
