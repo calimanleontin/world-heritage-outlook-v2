@@ -11,12 +11,12 @@ dependencies:
     - field.field.node.site.field_category
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
-    - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
     - field.field.node.site.field_mixed_site
     - field.field.node.site.field_serial
+    - field.field.node.site.field_site_id
     - field.field.node.site.field_site_name_es
     - field.field.node.site.field_site_name_fr
     - field.field.node.site.field_theme
@@ -50,12 +50,12 @@ hidden:
   field_category: true
   field_country: true
   field_cultural_landscape: true
-  field_danger_list: true
   field_designation: true
   field_inscription_criteria: true
   field_inscription_year: true
   field_mixed_site: true
   field_serial: true
+  field_site_id: true
   field_site_name_es: true
   field_site_name_fr: true
   field_theme: true
