@@ -6792,6 +6792,10 @@ html.js .form-item .input-group-addon .input-group-addon {
 html.js .ajax-new-content:empty {
   display: none !important;
 }
+.breadcrumb {
+  font-size: .8em;
+  margin-bottom: 1.4em;
+}
 .breadcrumb > li {
   text-transform: uppercase;
 }
