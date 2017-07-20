@@ -59,6 +59,20 @@ function drush_iucn_migrate_iucn_delete_content() {
   $entities = $controller->loadMultiple($tids);
   $controller->delete($entities);
   drush_print(dt("Deleted all " . implode(",", $taxonomy_terms) . " terms."));
+
+  $migration_names = [
+    'iucn_migrate_sites',
+    'iucn_migrate_categories',
+    'iucn_migrate_thematics',
+    'iucn_migrate_designations',
+    'iucn_migrate_criterias',
+    'iucn_migrate_countries',
+  ];
+  foreach($migration_names as $migration_name){
+    db_query("TRUNCATE migrate_map_$migration_name");
+    db_query("DELETE FROM {config} WHERE name LIKE 'migrate_plus.migration.$migration_name%'");
+  }
+  drupal_flush_all_caches();
   drupal_flush_all_caches();
 }
 
