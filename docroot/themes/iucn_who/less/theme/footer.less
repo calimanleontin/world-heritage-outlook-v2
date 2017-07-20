@@ -10,11 +10,17 @@
     }
   }
   #block-mainnavigation {
+    .nav > li > a {
+      padding-left: 0;
+      padding-right: 0;
+    }
     .outer.navbar-nav {
       @media @grid-desktop {
         display: flex;
-        justify-content: space-between;
         width: 100%;
+      }
+      > li {
+        flex: 1 1 auto;
       }
       > li > a {
         padding-bottom: 1.4em;
@@ -28,5 +34,15 @@
         padding-top: .5em;
       }
     }
+  }
+  .iucn-wcpa-logo {
+    height: 60px;
+    width: auto;
+  }
+}
+
+.footer-external-links {
+  + * {
+    margin-top: 2rem;
   }
 }

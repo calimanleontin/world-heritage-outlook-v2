@@ -7358,7 +7358,7 @@ ul {
 }
 .footer {
   margin-top: 45px;
-  padding-top: 35px;
+  padding-top: 15px;
   padding-bottom: 36px;
   border-top: 1px solid #E5E5E5;
 }
@@ -7472,12 +7472,18 @@ p:last-child,
 .footer .nav > li > a:focus {
   background-color: transparent;
 }
+.footer #block-mainnavigation .nav > li > a {
+  padding-left: 0;
+  padding-right: 0;
+}
 @media screen and (min-width: 768px) {
   .footer #block-mainnavigation .outer.navbar-nav {
     display: flex;
-    justify-content: space-between;
     width: 100%;
   }
+}
+.footer #block-mainnavigation .outer.navbar-nav > li {
+  flex: 1 1 auto;
 }
 .footer #block-mainnavigation .outer.navbar-nav > li > a {
   padding-bottom: 1.4em;
@@ -7487,6 +7493,13 @@ p:last-child,
   font-weight: 200;
   padding-bottom: .5em;
   padding-top: .5em;
+}
+.footer .iucn-wcpa-logo {
+  height: 60px;
+  width: auto;
+}
+.footer-external-links + * {
+  margin-top: 2rem;
 }
 #block-mainnavigation > ul > li > a,
 #block-iucn-who-main-menu > ul > li > a {
