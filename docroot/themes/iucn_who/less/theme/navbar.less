@@ -29,6 +29,23 @@
     margin-left: 2em;
   }
 }
+
+.navbar-brand {
+  @media @grid-desktop {
+    position: relative;
+    margin-right: 1em;
+    padding-right: 1em;
+    &:after {
+      border-right: 1px solid fade(@iucn-blue-light, 20%);
+      content: '';
+      display: block;
+      height: 80%;
+      position: absolute;
+      right: 0;
+      top: 10%;
+    }
+  }
+}
 .navbar-toggle .icon-bar {
   width: 30px;
   height: 4px;

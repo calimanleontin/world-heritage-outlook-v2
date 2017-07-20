@@ -9,7 +9,7 @@ _core:
 id: iucn_who_local_tasks
 theme: iucn_who
 region: header
-weight: 10
+weight: -6
 provider: null
 plugin: local_tasks_block
 settings:

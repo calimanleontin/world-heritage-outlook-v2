@@ -4828,7 +4828,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
+  color: inherit;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -4848,6 +4848,7 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
+  color: #fff;
   background-color: #777777;
 }
 .label-default[href]:hover,
@@ -4855,6 +4856,7 @@ a.label:focus {
   background-color: #5e5e5e;
 }
 .label-primary {
+  color: #fff;
   background-color: #134780;
 }
 .label-primary[href]:hover,
@@ -4862,6 +4864,7 @@ a.label:focus {
   background-color: #0c2e54;
 }
 .label-success {
+  color: #fff;
   background-color: #3bb55e;
 }
 .label-success[href]:hover,
@@ -4869,6 +4872,7 @@ a.label:focus {
   background-color: #2e8f4a;
 }
 .label-info {
+  color: #fff;
   background-color: #03afdf;
 }
 .label-info[href]:hover,
@@ -4876,6 +4880,7 @@ a.label:focus {
   background-color: #0288ad;
 }
 .label-warning {
+  color: #fff;
   background-color: #f69232;
 }
 .label-warning[href]:hover,
@@ -4883,6 +4888,7 @@ a.label:focus {
   background-color: #eb780a;
 }
 .label-danger {
+  color: #fff;
   background-color: #ef3133;
 }
 .label-danger[href]:hover,
@@ -6792,6 +6798,10 @@ html.js .form-item .input-group-addon .input-group-addon {
 html.js .ajax-new-content:empty {
   display: none !important;
 }
+.breadcrumb {
+  font-size: .8em;
+  margin-bottom: 1.4em;
+}
 .breadcrumb > li {
   text-transform: uppercase;
 }
@@ -7354,7 +7364,7 @@ ul {
 }
 .footer {
   margin-top: 45px;
-  padding-top: 35px;
+  padding-top: 15px;
   padding-bottom: 36px;
   border-top: 1px solid #E5E5E5;
 }
@@ -7434,6 +7444,22 @@ p:last-child,
     margin-left: 2em;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar-brand {
+    position: relative;
+    margin-right: 1em;
+    padding-right: 1em;
+  }
+  .navbar-brand:after {
+    border-right: 1px solid rgba(3, 175, 223, 0.2);
+    content: '';
+    display: block;
+    height: 80%;
+    position: absolute;
+    right: 0;
+    top: 10%;
+  }
+}
 .navbar-toggle .icon-bar {
   width: 30px;
   height: 4px;
@@ -7443,6 +7469,46 @@ p:last-child,
 }
 .footer {
   background-color: #134780;
+}
+.footer,
+.footer a {
   color: #fff;
+}
+.footer .nav > li > a:hover,
+.footer .nav > li > a:focus {
+  background-color: transparent;
+}
+.footer #block-mainnavigation .nav > li > a {
+  padding-left: 0;
+  padding-right: 0;
+}
+@media screen and (min-width: 768px) {
+  .footer #block-mainnavigation .outer.navbar-nav {
+    display: flex;
+    width: 100%;
+  }
+}
+.footer #block-mainnavigation .outer.navbar-nav > li {
+  flex: 1 1 auto;
+}
+.footer #block-mainnavigation .outer.navbar-nav > li > a {
+  padding-bottom: 1.4em;
+  padding-top: 1.4em;
+}
+.footer #block-mainnavigation .inner > li > a {
+  font-weight: 200;
+  padding-bottom: .5em;
+  padding-top: .5em;
+}
+.footer .iucn-wcpa-logo {
+  height: 60px;
+  width: auto;
+}
+.footer-external-links + * {
+  margin-top: 2rem;
+}
+#block-mainnavigation > ul > li > a,
+#block-iucn-who-main-menu > ul > li > a {
+  text-transform: uppercase;
 }
 /*# sourceMappingURL=style.css.map */
