@@ -7463,6 +7463,33 @@ p:last-child,
 }
 .footer {
   background-color: #134780;
+}
+.footer,
+.footer a {
   color: #fff;
+}
+.footer .nav > li > a:hover,
+.footer .nav > li > a:focus {
+  background-color: transparent;
+}
+@media screen and (min-width: 768px) {
+  .footer #block-mainnavigation .outer.navbar-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+.footer #block-mainnavigation .outer.navbar-nav > li > a {
+  padding-bottom: 1.4em;
+  padding-top: 1.4em;
+}
+.footer #block-mainnavigation .inner > li > a {
+  font-weight: 200;
+  padding-bottom: .5em;
+  padding-top: .5em;
+}
+#block-mainnavigation > ul > li > a,
+#block-iucn-who-main-menu > ul > li > a {
+  text-transform: uppercase;
 }
 /*# sourceMappingURL=style.css.map */

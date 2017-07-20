@@ -1,4 +1,32 @@
 .footer {
   background-color: @brand-primary;
-  color: #fff;
+  &, a {
+    color: #fff;
+  }
+  .nav > li > a {
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+  }
+  #block-mainnavigation {
+    .outer.navbar-nav {
+      @media @grid-desktop {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+      > li > a {
+        padding-bottom: 1.4em;
+        padding-top: 1.4em;
+      }
+    }
+    .inner {
+      > li > a {
+        font-weight: 200;
+        padding-bottom: .5em;
+        padding-top: .5em;
+      }
+    }
+  }
 }
