@@ -19,4 +19,21 @@ function iucn_who_preprocess_block(&$variables) {
       break;
 
   }
+  if (isset($variables['elements']['#id'])) {
+      $block_id = $variables['elements']['#id'];
+      $block = \Drupal\block\Entity\Block::load($block_id);
+
+      if ($block) {
+        $variables['content']['#attributes']['data-block_id'] = $block_id;
+        $variables['content']['#attributes']['data-region'] = $block->getRegion();
+      }
+  }
+}
+
+// add a template suggestion based on region name
+// http://kristiankaa.dk/article/drupal8-region-specific-menu-theme-hook-suggestion
+function iucn_who_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+    if (isset($variables['attributes']['data-region']) && isset($variables['attributes']['data-block_id'])) {
+      $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['attributes']['data-block_id'] . '__' . $variables['attributes']['data-region'];
+    }
 }
