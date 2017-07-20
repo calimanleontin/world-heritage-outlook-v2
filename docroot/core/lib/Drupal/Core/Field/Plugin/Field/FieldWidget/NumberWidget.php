@@ -107,11 +107,4 @@ class NumberWidget extends WidgetBase {
     return ['value' => $element];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function errorElement(array $element, ConstraintViolationInterface $violation, array $form, FormStateInterface $form_state) {
-    return $element['value'];
-  }
-
 }

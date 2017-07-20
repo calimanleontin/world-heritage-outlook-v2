@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-
+use Drupal\Core\Validation\Plugin\Validation\Constraint;
 /**
  * Implements hook_help().
  */
@@ -22,3 +22,21 @@ function iucn_site_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function iucn_site_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type, $bundle) {
+  if ($bundle === 'site') {
+    if (isset($fields['field_wdpa_id'])) {
+      $fields['field_wdpa_id']->addConstraint('UniqueField',[]);
+    }
+    if (isset($fields['field_unesco_id'])) {
+      $fields['field_unesco_id']->addConstraint('UniqueField',[]);
+    }
+    if (isset($fields['field_site_id'])) {
+      $fields['field_site_id']->addConstraint('UniqueField',[]);
+    }
+  }
+}
+
