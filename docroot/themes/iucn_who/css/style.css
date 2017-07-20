@@ -7438,4 +7438,8 @@ p:last-child,
 .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 5px;
 }
+.footer {
+  background-color: #134780;
+  color: #fff;
+}
 /*# sourceMappingURL=style.css.map */
