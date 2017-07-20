@@ -4828,7 +4828,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
+  color: inherit;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -4848,6 +4848,7 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
+  color: #fff;
   background-color: #777777;
 }
 .label-default[href]:hover,
@@ -4855,6 +4856,7 @@ a.label:focus {
   background-color: #5e5e5e;
 }
 .label-primary {
+  color: #fff;
   background-color: #134780;
 }
 .label-primary[href]:hover,
@@ -4862,6 +4864,7 @@ a.label:focus {
   background-color: #0c2e54;
 }
 .label-success {
+  color: #fff;
   background-color: #3bb55e;
 }
 .label-success[href]:hover,
@@ -4869,6 +4872,7 @@ a.label:focus {
   background-color: #2e8f4a;
 }
 .label-info {
+  color: #fff;
   background-color: #03afdf;
 }
 .label-info[href]:hover,
@@ -4876,6 +4880,7 @@ a.label:focus {
   background-color: #0288ad;
 }
 .label-warning {
+  color: #fff;
   background-color: #f69232;
 }
 .label-warning[href]:hover,
@@ -4883,6 +4888,7 @@ a.label:focus {
   background-color: #eb780a;
 }
 .label-danger {
+  color: #fff;
   background-color: #ef3133;
 }
 .label-danger[href]:hover,
