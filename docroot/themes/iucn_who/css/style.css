@@ -7517,6 +7517,12 @@ p:last-child,
   height: 60px;
   width: auto;
 }
+@media screen and (max-width: 767px) {
+  .footer .iucn-wcpa-logo {
+    display: block;
+    margin: 0 auto;
+  }
+}
 .footer-external-links + * {
   margin-top: 2rem;
 }
