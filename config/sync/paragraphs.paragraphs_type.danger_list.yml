@@ -1,0 +1,7 @@
+uuid: dca408f8-2b4e-4203-9a9f-1b7aba63d91e
+langcode: en
+status: true
+dependencies: {  }
+id: danger_list
+label: 'Danger list'
+behavior_plugins: {  }

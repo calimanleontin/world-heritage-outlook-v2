@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.site.field_category
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -26,6 +27,7 @@ dependencies:
   module:
     - field_group
     - iucn_site
+    - paragraphs
     - text
 third_party_settings:
   field_group:
@@ -254,6 +256,18 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_danger_list:
+    type: entity_reference_paragraphs
+    weight: 26
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
     region: content
   field_designation:
     weight: 3

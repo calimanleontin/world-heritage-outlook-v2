@@ -1,0 +1,31 @@
+uuid: 1b7a029e-c73f-4108-b796-523aaf2f41ca
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: TH2MmmSM-xu0kuYqC2QfRescK5I5mljGvHemOkOwPb4
+id: iucn_migrate_thematics
+migration_tags: null
+migration_group: 'iucn migrations'
+label: Thematics
+source:
+  plugin: iucn_migrate_source_url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: /json/iucn_thematics
+  ids:
+    site_theme:
+      type: string
+  fields:
+    -
+      name: site_theme
+      label: 'site category'
+      selector: thematic
+process:
+  vid:
+    plugin: default_value
+    default_value: theme
+  name: site_theme
+destination:
+  plugin: 'entity:taxonomy_term'
+migration_dependencies: null

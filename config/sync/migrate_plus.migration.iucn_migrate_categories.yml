@@ -1,0 +1,31 @@
+uuid: e529be85-d6a6-4240-ab64-a0da36d067ef
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: EkcQpPmaZBLjStUZA2kpbHe2WZ0FeV8EmSf8jr2x-IU
+id: iucn_migrate_categories
+migration_tags: null
+migration_group: 'iucn migrations'
+label: Categories
+source:
+  plugin: iucn_migrate_source_url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: /json/iucn_categories
+  ids:
+    site_category:
+      type: string
+  fields:
+    -
+      name: site_category
+      label: 'site category'
+      selector: category
+process:
+  vid:
+    plugin: default_value
+    default_value: category
+  name: site_category
+destination:
+  plugin: 'entity:taxonomy_term'
+migration_dependencies: null
