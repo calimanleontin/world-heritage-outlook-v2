@@ -7265,6 +7265,9 @@ body.navbar-is-fixed-bottom {
 .tabs-right > .nav-tabs > .active > a:focus {
   border-color: #ddd #ddd #ddd transparent;
 }
+.nav-tabs {
+  margin-bottom: 10px;
+}
 /**
  * Toolbar module styling.
  */
