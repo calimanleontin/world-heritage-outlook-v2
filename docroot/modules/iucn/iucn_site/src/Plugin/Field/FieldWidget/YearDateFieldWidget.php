@@ -48,7 +48,7 @@ class YearDateFieldWidget extends WidgetBase {
     $element = [];
     $years = [];
     for($i = date("Y"); $i > 0; $i-- ) {
-      $years[$i] = $i;
+      $years["$i-01-01"] = $i;
     }
     $element['value'] = $element + array(
         '#type' => 'select',

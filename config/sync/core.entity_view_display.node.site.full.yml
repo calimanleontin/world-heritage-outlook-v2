@@ -1,8 +1,9 @@
-uuid: 855e9c97-c535-4e6c-8310-ecbd1736853e
+uuid: 19a82f03-bac2-44d6-8945-127c46b69407
 langcode: en
-status: true
+status: false
 dependencies:
   config:
+    - core.entity_view_mode.node.full
     - field.field.node.site.body
     - field.field.node.site.field_area
     - field.field.node.site.field_buffer_zone
@@ -31,10 +32,10 @@ dependencies:
     - image
     - text
     - user
-id: node.site.default
+id: node.site.full
 targetEntityType: node
 bundle: site
-mode: default
+mode: full
 content:
   body:
     label: hidden
@@ -136,9 +137,8 @@ content:
     label: above
     settings:
       timezone_override: ''
-      format_type: html_year
     third_party_settings: {  }
-    type: datetime_default
+    type: datetime_plain
     region: content
   field_mixed_site:
     weight: 8

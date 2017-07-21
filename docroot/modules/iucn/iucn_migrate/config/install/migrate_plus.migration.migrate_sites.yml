@@ -102,7 +102,9 @@ process:
   field_unesco_id: site_unesco_id
   field_site_name_fr: site_name_fr
   body/value: site_description
-  field_inscription_year: site_inscription_year
+  field_inscription_year:
+    plugin: iucn_inscription_year
+    source: site_inscription_year
   status: site_active
   field_transboundary: site_transboundary
   field_mixed_site: site_mixed

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\iucn_migrate\Plugin\migrate\process\FormatDate.
+ * Contains \Drupal\iucn_migrate\Plugin\migrate\process\InscriptionYear.
  */
 
 namespace Drupal\iucn_migrate\Plugin\migrate\process;
@@ -14,11 +14,11 @@ use Drupal\migrate\Row;
 
 /**
  * @MigrateProcessPlugin(
- *   id = "iucn_to_lowercase",
+ *   id = "iucn_inscription_year",
  * )
  */
-class ToLowercase extends ProcessPluginBase {
+class InscriptionYear extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    return strtolower($value);
-	}
+    return $value . '-01-01';
+  }
 }

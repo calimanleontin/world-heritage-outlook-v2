@@ -13,7 +13,7 @@ use Drupal\Component\Utility;
  */
 function iucn_migrate_drush_command() {
   $commands['iucn-delete-content'] = [
-    'description' => 'Command for importing content from file.',
+    'description' => 'Command for deleting previously imported content from file.',
     'aliases' => ['iucndc'],
   ];
 
