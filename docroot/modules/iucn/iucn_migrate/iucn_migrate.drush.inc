@@ -163,7 +163,9 @@ function drush_iucn_migrate_images() {
             $image_title = str_replace([" ","/"],["_",""],$node->getTitle());
             $external_image = file_get_contents($site['thumbnailUrl']);
             $image_object = file_save_data($external_image, 'public://site/' . $image_title . '.jpg', FILE_EXISTS_REPLACE);
-            $node->set('field_image', ['target_id' => $image_object->id()]);
+            if($image_object){
+              $node->set('field_image', ['target_id' => $image_object->id()]);
+            }
             $node->save();
             drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
           }
