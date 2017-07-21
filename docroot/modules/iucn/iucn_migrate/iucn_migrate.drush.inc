@@ -165,6 +165,8 @@ function drush_iucn_migrate_images() {
             $image_object = file_save_data($external_image, 'public://site/' . $image_title . '.jpg', FILE_EXISTS_REPLACE);
             if($image_object){
               $node->set('field_image', ['target_id' => $image_object->id()]);
+            }else{
+              drush_print(dt("Image could not be saved (" . $image_title . ") to node: $node_id"));
             }
             $node->save();
             drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
