@@ -6,6 +6,7 @@ module:
   config: 0
   config_filter: 0
   config_split: 0
+  crop: 0
   ctools: 0
   datetime: 0
   dynamic_page_cache: 0
@@ -13,7 +14,10 @@ module:
   field: 0
   field_group: 0
   field_ui: 0
+  file: 0
   filter: 0
+  image: 0
+  image_widget_crop: 0
   iucn_migrate: 0
   iucn_site: 0
   kint: 0

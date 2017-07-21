@@ -24,6 +24,7 @@
         "drupal/core": "~8.0",
         "drupal/devel": "^1.0@RC",
         "drupal/field_group": "^1.0@RC",
+        "drupal/image_widget_crop": "^2.0",
         "drupal/menu_block": "^1.4",
         "drupal/menu_link_attributes": "^1.0@beta",
         "drupal/migrate_api": "^1.1",
