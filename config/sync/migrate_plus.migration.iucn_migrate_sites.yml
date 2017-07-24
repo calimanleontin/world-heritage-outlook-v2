@@ -1,9 +1,9 @@
-uuid: 050dbbb9-618a-4101-b55d-9bc25785f305
+uuid: b54ef816-6832-4483-bfbd-0b9fbb10a087
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: anfSH6IZBpceNKCCa7qyU7wxw6xNis7uyAtZvJBMB-0
+  default_config_hash: QJ-4HK9INTqdSBD1eomV-At6FibUHgOWBXD0pGvq56g
 id: iucn_migrate_sites
 migration_tags: null
 migration_group: 'iucn migrations'
@@ -107,7 +107,9 @@ process:
   field_unesco_id: site_unesco_id
   field_site_name_fr: site_name_fr
   body/value: site_description
-  field_inscription_year: site_inscription_year
+  field_inscription_year:
+    plugin: iucn_inscription_year
+    source: site_inscription_year
   status: site_active
   field_transboundary: site_transboundary
   field_mixed_site: site_mixed

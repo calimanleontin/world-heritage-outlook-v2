@@ -4,8 +4,8 @@ use Drupal\node\Entity\Node;
 use Drupal\file\Entity\File;
 use Symfony\Component\Yaml\Yaml;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Component\Utility;
 
 
 /**
@@ -13,7 +13,7 @@ use Drupal\paragraphs\Entity\Paragraph;
  */
 function iucn_migrate_drush_command() {
   $commands['iucn-delete-content'] = [
-    'description' => 'Command for importing content from file.',
+    'description' => 'Command for deleting previously imported content from file.',
     'aliases' => ['iucndc'],
   ];
 
@@ -21,6 +21,12 @@ function iucn_migrate_drush_command() {
     'description' => 'Command for importing danger lists from file.',
     'aliases' => ['iucnmdl'],
   ];
+
+  $commands['iucn-migrate-images'] = [
+    'description' => 'Command for importing images from file.',
+    'aliases' => ['iucnmi'],
+  ];
+
  return $commands;
 }
 /**
@@ -123,4 +129,51 @@ function drush_iucn_migrate_danger_lists() {
       }
     }
   }
+}
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_images() {
+  drush_print(dt("IUCN migrating images ..."));
+  $path = drupal_get_path('module', 'iucn_migrate');
+  $sites_file_content = file_get_contents($path.'/'.'source/sites.json');
+
+  $sites = Drupal\Component\Serialization\Json::decode($sites_file_content);
+
+  if($sites){
+    foreach($sites as $site){
+      if(isset($site['siteId'])
+        && !empty($site['siteId'])
+        && isset($site['thumbnailUrl'])
+        && !empty($site['thumbnailUrl'])
+      ){
+        $node_ids = \Drupal::entityQuery('node')
+          ->condition('field_site_id', $site['siteId'])
+          ->condition('type', 'site')
+          ->execute();
+        if($node_ids) {
+          reset($node_ids);
+          $node_id = key($node_ids);
+          $node = Node::load($node_id);
+          if($node){
+
+
+            $image_title = str_replace([" ","/"],["_",""],$node->getTitle());
+            $external_image = file_get_contents($site['thumbnailUrl']);
+            $image_object = file_save_data($external_image, 'public://site/' . $image_title . '.jpg', FILE_EXISTS_REPLACE);
+            if($image_object){
+              $node->set('field_image', ['target_id' => $image_object->id()]);
+              $node->save();
+              drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
+            }else{
+              drush_print(dt("Image could not be saved (" . $image_title . ") to node: $node_id"));
+            }
+          }
+        }
+      }
+    }
+  }
+  drush_print(dt("All done."));
 }

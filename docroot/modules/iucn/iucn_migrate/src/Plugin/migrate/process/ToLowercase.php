@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\migrate_source_example\Plugin\migrate\process\FormatDate.
+ * Contains \Drupal\iucn_migrate\Plugin\migrate\process\FormatDate.
  */
 
 namespace Drupal\iucn_migrate\Plugin\migrate\process;

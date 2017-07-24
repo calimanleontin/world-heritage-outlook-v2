@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.site.field_cultural_landscape
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
     - field.field.node.site.field_mixed_site
@@ -27,6 +28,7 @@ dependencies:
   module:
     - datetime
     - entity_reference_revisions
+    - image
     - text
     - user
 id: node.site.default
@@ -37,12 +39,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
   field_area:
-    weight: 120
+    weight: 19
     label: above
     settings:
       thousand_separator: ''
@@ -51,7 +53,7 @@ content:
     type: number_integer
     region: content
   field_buffer_zone:
-    weight: 117
+    weight: 16
     label: above
     settings:
       format: default
@@ -61,7 +63,7 @@ content:
     type: boolean
     region: content
   field_buffer_zone_area:
-    weight: 116
+    weight: 15
     label: above
     settings:
       thousand_separator: ''
@@ -70,7 +72,7 @@ content:
     type: number_integer
     region: content
   field_category:
-    weight: 110
+    weight: 11
     label: above
     settings:
       link: true
@@ -78,7 +80,7 @@ content:
     type: entity_reference_label
     region: content
   field_country:
-    weight: 109
+    weight: 10
     label: above
     settings:
       link: true
@@ -86,7 +88,7 @@ content:
     type: entity_reference_label
     region: content
   field_cultural_landscape:
-    weight: 106
+    weight: 7
     label: above
     settings:
       format: default
@@ -97,7 +99,7 @@ content:
     region: content
   field_danger_list:
     type: entity_reference_revisions_entity_view
-    weight: 122
+    weight: 21
     label: above
     settings:
       view_mode: default
@@ -105,15 +107,24 @@ content:
     third_party_settings: {  }
     region: content
   field_designation:
-    weight: 114
+    weight: 14
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_image:
+    weight: 1
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
   field_inscription_criteria:
-    weight: 112
+    weight: 13
     label: above
     settings:
       link: true
@@ -121,16 +132,16 @@ content:
     type: entity_reference_label
     region: content
   field_inscription_year:
-    weight: 108
+    weight: 9
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: html_year
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_mixed_site:
-    weight: 107
+    weight: 8
     label: above
     settings:
       format: default
@@ -140,7 +151,7 @@ content:
     type: boolean
     region: content
   field_serial:
-    weight: 119
+    weight: 18
     label: above
     settings:
       format: default
@@ -150,7 +161,7 @@ content:
     type: boolean
     region: content
   field_site_id:
-    weight: 121
+    weight: 20
     label: above
     settings:
       thousand_separator: ''
@@ -159,7 +170,7 @@ content:
     type: number_integer
     region: content
   field_site_name_es:
-    weight: 105
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -167,7 +178,7 @@ content:
     type: string
     region: content
   field_site_name_fr:
-    weight: 104
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -175,7 +186,7 @@ content:
     type: string
     region: content
   field_theme:
-    weight: 111
+    weight: 12
     label: above
     settings:
       link: true
@@ -183,7 +194,7 @@ content:
     type: entity_reference_label
     region: content
   field_transboundary:
-    weight: 118
+    weight: 17
     label: above
     settings:
       format: default
@@ -193,7 +204,7 @@ content:
     type: boolean
     region: content
   field_unesco_id:
-    weight: 103
+    weight: 4
     label: above
     settings:
       thousand_separator: ''
@@ -202,7 +213,7 @@ content:
     type: number_integer
     region: content
   field_wdpa_id:
-    weight: 102
+    weight: 3
     label: above
     settings:
       thousand_separator: ''
@@ -211,7 +222,7 @@ content:
     type: number_integer
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
