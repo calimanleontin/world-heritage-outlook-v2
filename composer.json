@@ -23,6 +23,7 @@
         "drupal/config_split": "^1.0@beta",
         "drupal/core": "~8.0",
         "drupal/devel": "^1.0@RC",
+        "drupal/facets": "^1.0@alpha",
         "drupal/field_group": "^1.0@RC",
         "drupal/image_widget_crop": "^2.0",
         "drupal/menu_block": "^1.4",
@@ -33,6 +34,7 @@
         "drupal/paragraphs": "^1.1",
         "drupal/pathauto": "^1.0",
         "drupal/search_api": "^1.2",
+        "drupal/search_api_solr": "^1.0",
         "drupal/search_api_sorts": "^1.0@beta",
         "webflo/drupal-finder": "^0.3.0",
         "webmozart/path-util": "^2.3"
