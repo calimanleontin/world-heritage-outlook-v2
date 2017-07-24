@@ -1,0 +1,14 @@
+uuid: 02bbcf36-9ba0-4fa4-aad6-3b768939ed72
+langcode: en
+status: true
+dependencies: {  }
+name: sites_thumbnail
+label: 'Sites thumbnail'
+effects:
+  602b5543-9a2e-41b9-a5bc-490ee0d58f6a:
+    uuid: 602b5543-9a2e-41b9-a5bc-490ee0d58f6a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 400

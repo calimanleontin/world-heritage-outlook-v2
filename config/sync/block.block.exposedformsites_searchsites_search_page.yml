@@ -1,0 +1,29 @@
+uuid: 70840e40-01b6-4e21-84b7-fa094033e3e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.sites_search
+  module:
+    - system
+    - views
+  theme:
+    - iucn_who
+id: exposedformsites_searchsites_search_page
+theme: iucn_who
+region: sidebar_first
+weight: -7
+provider: null
+plugin: 'views_exposed_filter_block:sites_search-sites_search_page'
+settings:
+  id: 'views_exposed_filter_block:sites_search-sites_search_page'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: /sites-search
+    negate: false
+    context_mapping: {  }
