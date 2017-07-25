@@ -7030,16 +7030,13 @@ body {
 body.navbar-is-static-top {
   margin-top: 0;
 }
-body.navbar-is-fixed-top {
-  margin-top: 95px;
+@media screen and (max-width: 767px) {
+  body.navbar-is-fixed-top {
+    margin-top: 95px;
+  }
 }
 body.navbar-is-fixed-bottom {
   padding-bottom: 95px;
-}
-@media screen and (min-width: 768px) {
-  body {
-    margin-top: 15px;
-  }
 }
 @media screen and (max-width: 767px) {
   body.toolbar-vertical.navbar-is-fixed-top .toolbar-bar,
@@ -7085,21 +7082,40 @@ body.navbar-is-fixed-bottom {
     padding-left: 0;
   }
 }
-.navbar.navbar-fixed-top {
-  position: fixed;
-  z-index: 10;
-  right: 0;
-  left: 0;
+@media screen and (max-width: 767px) {
+  body.navbar-is-static-top {
+    margin-top: 95px;
+  }
+  body.navbar-is-static-top header {
+    top: 39px;
+  }
 }
-.navbar.navbar-fixed-top.headroom {
-  transition: transform 0.2s ease-in-out;
-  will-change: transform;
+.navbar-fixed-top .navbar-collapse,
+.navbar-fixed-bottom .navbar-collapse {
+  max-height: none;
 }
-.navbar.navbar-fixed-top.headroom--pinned {
-  transform: translateY(0);
+@media screen and (min-width: 768px) {
+  .navbar {
+    position: static;
+  }
 }
-.navbar.navbar-fixed-top.headroom--unpinned {
-  transform: translateY(-100%);
+@media screen and (max-width: 767px) {
+  .navbar {
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    left: 0;
+  }
+  .navbar.headroom {
+    transition: transform 0.2s ease-in-out;
+    will-change: transform;
+  }
+  .navbar.headroom--pinned {
+    transform: translateY(0);
+  }
+  .navbar.headroom--unpinned {
+    transform: translateY(-100%);
+  }
 }
 .navbar .logo {
   height: 56px;
@@ -7152,6 +7168,11 @@ body.navbar-is-fixed-bottom {
     top: 10%;
   }
 }
+body.show-focus-outlines .navbar-toggle:hover .icon-bar,
+body.show-focus-outlines .navbar-toggle:focus .icon-bar,
+body.show-focus-outlines .navbar-toggle:active .icon-bar {
+  background-color: #03afdf;
+}
 .navbar-toggle {
   margin-top: 19px;
   margin-bottom: 19px;
@@ -7195,12 +7216,20 @@ body.navbar-is-fixed-bottom {
 }
 .navbar-collapse .icon-plus {
   font-size: 1.6em;
-  margin-right: 1rem;
   vertical-align: middle;
 }
 @media screen and (min-width: 768px) {
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
     display: block;
+  }
+  .navbar-collapse .navbar-nav > li > a {
+    display: inline-block;
+  }
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
+    padding-right: 7.5px;
+  }
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle + a {
+    padding-left: 7.5px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -7214,7 +7243,7 @@ body.navbar-is-fixed-bottom {
     padding-left: 0;
     padding-right: 0;
     pointer-events: none;
-    position: fixed;
+    position: absolute;
     right: 0;
     top: 50px;
     transition: all .2s;
@@ -7222,7 +7251,6 @@ body.navbar-is-fixed-bottom {
     z-index: 1050;
   }
   .toolbar-vertical .navbar-collapse {
-    top: 89px;
     height: calc(100vh - 50px - 39px) !important;
   }
   .navbar-collapse .navbar-nav {
@@ -7230,43 +7258,59 @@ body.navbar-is-fixed-bottom {
   }
   .navbar-collapse .navbar-nav a,
   .navbar-collapse .navbar-nav .open .dropdown-menu > li > a {
-    padding: 3px 20px;
-    padding-left: 50px;
-  }
-  .navbar-collapse .dropdown-toggle {
-    position: relative;
-  }
-  .navbar-collapse .dropdown-toggle .icon-plus {
-    position: absolute;
-    right: calc(100% - 50px);
-    top: 50%;
-    transform: translateY(-50%);
+    padding-left: 5rem;
   }
   .navbar-collapse .navbar-nav > li > a {
-    font-size: 20px;
+    font-size: 2rem;
     line-height: 1;
-    padding-bottom: 25px;
-    padding-top: 25px;
+    padding-bottom: 2.5rem;
+    padding-top: 2.5rem;
     color: #134780;
     transition: all .1s;
   }
-  .navbar-collapse .navbar-nav > li > a:hover,
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
+    display: inline-block;
+    line-height: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    position: absolute;
+    z-index: 1;
+  }
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle .icon-plus {
+    line-height: 20px;
+  }
+  .navbar-collapse .navbar-nav > li.open > a,
+  .navbar-collapse .navbar-nav > li.active > a {
+    color: #fff;
+  }
+  .navbar-collapse .navbar-nav > li.open > a,
+  .navbar-collapse .navbar-nav > li.active > a,
   .navbar-collapse .navbar-nav > li.open > a:hover,
   .navbar-collapse .navbar-nav > li.active > a:hover,
-  .navbar-collapse .navbar-nav > li > a:focus,
   .navbar-collapse .navbar-nav > li.open > a:focus,
   .navbar-collapse .navbar-nav > li.active > a:focus,
-  .navbar-collapse .navbar-nav > li > a:active,
+  .navbar-collapse .navbar-nav > li.open > a:active,
+  .navbar-collapse .navbar-nav > li.active > a:active,
+  .navbar-collapse .navbar-nav > li.open > a.dropdown-toggle:hover + a,
+  .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:hover + a,
+  .navbar-collapse .navbar-nav > li.open > a.dropdown-toggle:focus + a,
+  .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:focus + a,
+  .navbar-collapse .navbar-nav > li.open > a.dropdown-toggle:active + a,
+  .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:active + a {
+    background-color: #134780;
+  }
+  .navbar-collapse .navbar-nav > li.open > a:hover,
+  .navbar-collapse .navbar-nav > li.active > a:hover,
+  .navbar-collapse .navbar-nav > li.open > a:focus,
+  .navbar-collapse .navbar-nav > li.active > a:focus,
   .navbar-collapse .navbar-nav > li.open > a:active,
   .navbar-collapse .navbar-nav > li.active > a:active {
-    background-color: #134780;
-    color: #fff;
+    color: #03afdf;
   }
   .navbar-collapse .dropdown-menu {
     background-color: transparent;
     border: none;
     box-shadow: none;
-    display: block !important;
     float: none;
     position: relative;
   }
@@ -7276,10 +7320,8 @@ body.navbar-is-fixed-bottom {
   .navbar-collapse .dropdown-menu > .active > a:focus {
     background-color: transparent;
     font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    font-style: normal;
+    font-size: 1.6rem;
     font-weight: 200;
-    line-height: 30px;
     white-space: normal;
   }
   .navbar-collapse.in {
