@@ -7068,11 +7068,6 @@ body.navbar-is-fixed-bottom {
     min-height: 50px;
   }
 }
-@media screen and (min-width: 768px) {
-  .navbar a {
-    transition: color .2s;
-  }
-}
 .navbar .logo {
   margin-right: -15px;
   padding-left: 15px;
@@ -7625,6 +7620,9 @@ p:last-child,
   color: #134780;
   line-height: 1.6;
   padding-left: .25em;
+}
+a {
+  transition: color .2s;
 }
 .footer {
   background-color: #134780;
