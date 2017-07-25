@@ -59,6 +59,11 @@ body {
   @media @grid-mobile {
     min-height: @navbar-height--mobile;
   }
+  @media @grid-desktop {
+    a {
+      transition: color .2s;
+    }
+  }
 }
 
 // Branding.
@@ -178,8 +183,13 @@ body {
   }
 }
 
-@media @grid-mobile {
-  .navbar-collapse {
+.navbar-collapse {
+  @media @grid-desktop {
+    .navbar-nav > li:hover > .dropdown-menu {
+      display: block;
+    }
+  }
+  @media @grid-mobile {
     backface-visibility: hidden;
     background-color: #fff;
     display: block;
@@ -202,23 +212,34 @@ body {
     .navbar-nav {
       margin: 0;
     }
+    .navbar-nav a,
+    .navbar-nav .open .dropdown-menu > li > a {
+      padding: 3px 20px;
+      padding-left: 50px;
+    }
+    .dropdown-toggle {
+      position: relative;
+      .icon-plus {
+        position: absolute;
+        right: calc(~'100% - 50px');
+      }
+    }
     .navbar-nav > li {
       > a {
         font-size: (40px / 2);
         line-height: 1;
         padding-bottom: 25px;
-        padding-left: 50px;
         padding-top: 25px;
         color: @brand-primary;
         transition: all .1s;
       }
-      &.active > a.is-active,
-      > a:hover, > a:focus, > a:active {
-        background-color: @brand-primary;
-        color: #fff;
-      }
-      > .dropdown-menu {
-        margin-top: .5em;
+      &,
+      &.open,
+      &.active {
+        > a:hover, > a:focus, > a:active {
+          background-color: @brand-primary;
+          color: #fff;
+        }
       }
     }
     .dropdown-menu {
@@ -235,7 +256,6 @@ body {
         font-size: (28px / 2);
         font-style: normal;
         font-weight: 200;
-        padding: 0;
         line-height: (60px / 2);
         white-space: normal;
       }

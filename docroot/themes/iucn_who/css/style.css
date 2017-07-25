@@ -3516,7 +3516,7 @@ tbody.collapse.in {
   text-align: left;
   background-color: #fff;
   border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -7068,6 +7068,11 @@ body.navbar-is-fixed-bottom {
     min-height: 50px;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar a {
+    transition: color .2s;
+  }
+}
 .navbar .logo {
   margin-right: -15px;
   padding-left: 15px;
@@ -7187,6 +7192,11 @@ body.navbar-is-fixed-bottom {
     margin-bottom: 2px;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
+    display: block;
+  }
+}
 @media screen and (max-width: 767px) {
   .navbar-collapse {
     backface-visibility: hidden;
@@ -7212,24 +7222,37 @@ body.navbar-is-fixed-bottom {
   .navbar-collapse .navbar-nav {
     margin: 0;
   }
+  .navbar-collapse .navbar-nav a,
+  .navbar-collapse .navbar-nav .open .dropdown-menu > li > a {
+    padding: 3px 20px;
+    padding-left: 50px;
+  }
+  .navbar-collapse .dropdown-toggle {
+    position: relative;
+  }
+  .navbar-collapse .dropdown-toggle .icon-plus {
+    position: absolute;
+    right: calc(100% - 50px);
+  }
   .navbar-collapse .navbar-nav > li > a {
     font-size: 20px;
     line-height: 1;
     padding-bottom: 25px;
-    padding-left: 50px;
     padding-top: 25px;
     color: #134780;
     transition: all .1s;
   }
-  .navbar-collapse .navbar-nav > li.active > a.is-active,
   .navbar-collapse .navbar-nav > li > a:hover,
+  .navbar-collapse .navbar-nav > li.open > a:hover,
+  .navbar-collapse .navbar-nav > li.active > a:hover,
   .navbar-collapse .navbar-nav > li > a:focus,
-  .navbar-collapse .navbar-nav > li > a:active {
+  .navbar-collapse .navbar-nav > li.open > a:focus,
+  .navbar-collapse .navbar-nav > li.active > a:focus,
+  .navbar-collapse .navbar-nav > li > a:active,
+  .navbar-collapse .navbar-nav > li.open > a:active,
+  .navbar-collapse .navbar-nav > li.active > a:active {
     background-color: #134780;
     color: #fff;
-  }
-  .navbar-collapse .navbar-nav > li > .dropdown-menu {
-    margin-top: .5em;
   }
   .navbar-collapse .dropdown-menu {
     background-color: transparent;
@@ -7248,7 +7271,6 @@ body.navbar-is-fixed-bottom {
     font-size: 14px;
     font-style: normal;
     font-weight: 200;
-    padding: 0;
     line-height: 30px;
     white-space: normal;
   }
@@ -7504,7 +7526,7 @@ body.toolbar-fixed.toolbar-vertical.toolbar-tray-open.toolbar-fixed .toolbar-tra
   background: #fff;
   background-clip: padding-box;
   border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   color: inherit;
