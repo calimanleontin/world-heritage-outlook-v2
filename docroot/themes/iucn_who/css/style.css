@@ -7690,13 +7690,17 @@ a {
   flex: 1 1 auto;
 }
 .footer #block-mainnavigation .navbar-nav > li > a {
-  padding-bottom: 1.4em;
-  padding-top: 1.4em;
+  margin-bottom: .9em;
+  margin-top: .9em;
+  padding-bottom: .5em;
+  padding-top: .5em;
 }
 @media screen and (max-width: 767px) {
   .footer #block-mainnavigation .navbar-nav > li > a {
-    padding-bottom: 1em;
-    padding-top: 1em;
+    margin-bottom: .5em;
+    margin-top: .5em;
+    padding-bottom: .5em;
+    padding-top: .5em;
   }
 }
 @media screen and (max-width: 767px) {
