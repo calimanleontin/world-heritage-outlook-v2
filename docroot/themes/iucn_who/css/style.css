@@ -7001,6 +7001,9 @@ table .radio.form-no-label {
 .form-actions .btn-group .btn {
   margin-right: 0;
 }
+.dropdown-menu {
+  box-shadow: none;
+}
 /**
  * Icon styles.
  */
