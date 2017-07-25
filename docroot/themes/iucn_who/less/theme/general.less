@@ -1,3 +1,14 @@
+html {
+  font-size: @font-size-base;
+
+  @media @grid-mobile {
+    font-size: @font-size-base--mobile;
+    // line-height: @line-height-base--mobile;
+  }
+}
+body {
+  font-size: inherit;
+}
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
   button,

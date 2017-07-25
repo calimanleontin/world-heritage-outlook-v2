@@ -115,14 +115,14 @@ body.navbar-is-static-top {
   margin-bottom: @navbar-height * 15 / 100;
   @media @grid-mobile {
     height: auto;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 5 * @rem-multiplier--mobile;
+    margin-bottom: 5 * @rem-multiplier--mobile;
   }
   > img {
     height: 100%;
     width: auto;
     @media @grid-mobile {
-      height: 40px;
+      height: 40 * @rem-multiplier--mobile;
     }
   }
 }
@@ -131,19 +131,9 @@ body.navbar-is-static-top {
     margin-left: 2em;
   }
 }
-
-.navbar-brand {
-  @media @grid-mobile {
-    font-size: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    height: auto;
-    line-height: 40px;
-  }
-  @media @grid-desktop {
+@media @grid-desktop {
+  .navbar-header {
     position: relative;
-    margin-right: 1em;
-    padding-right: 1em;
     &:after {
       border-right: 1px solid fade(@iucn-blue-light, 20%);
       content: '';
@@ -153,6 +143,19 @@ body.navbar-is-static-top {
       right: 0;
       top: 10%;
     }
+  }
+}
+.navbar-brand {
+  @media @grid-mobile {
+    font-size: 15 * @rem-multiplier--mobile;
+    padding-top: 5 * @rem-multiplier--mobile;
+    padding-bottom: 5 * @rem-multiplier--mobile;
+    height: auto;
+    line-height: 40 * @rem-multiplier--mobile;
+  }
+  @media @grid-desktop {
+    margin-right: 1em;
+    padding-right: 1em;
   }
 }
 
@@ -200,8 +203,8 @@ body.show-focus-outlines {
     }
   }
   @media @grid-mobile {
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin-top: 2 * @rem-multiplier--mobile;
+    margin-bottom: 2 * @rem-multiplier--mobile;
   }
 }
 
@@ -258,21 +261,21 @@ body.show-focus-outlines {
     }
     .navbar-nav > li {
       > a {
-        font-size: 2rem;
+        font-size: 20 * @rem-multiplier--mobile;
         line-height: 1;
-        padding-bottom: 2.5rem;
-        padding-top: 2.5rem;
+        padding-bottom: 25 * @rem-multiplier--mobile;
+        padding-top: 25 * @rem-multiplier--mobile;
         color: @brand-primary;
         transition: all .1s;
         &.dropdown-toggle {
           display: inline-block;
           line-height: 0;
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
+          padding-left: 15 * @rem-multiplier--mobile;
+          padding-right: 15 * @rem-multiplier--mobile;
           position: absolute;
           z-index: 1;
           .icon-plus {
-            line-height: @line-height-computed;
+            line-height: @line-height-computed--mobile;
           }
           //   margin-right: 1rem;
           //   position: absolute;
@@ -309,7 +312,7 @@ body.show-focus-outlines {
       > .active > a, > .active > a:hover, > .active > a:focus {
         background-color: transparent;
         font-family: @font-family-sans-serif;
-        font-size: 1.6rem;
+        font-size: 16 * @rem-multiplier--mobile;
         font-weight: 200;
         white-space: normal;
       }

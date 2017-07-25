@@ -11,6 +11,7 @@ schemas:
   iucn_who: 8000
 table_responsive: '-1'
 table: ''
+navbar_position: fixed-top
 features:
   comment_user_picture: true
   comment_user_verification: true
@@ -20,4 +21,3 @@ logo:
   path: ''
   url: ''
   use_default: true
-navbar_position: static-top
