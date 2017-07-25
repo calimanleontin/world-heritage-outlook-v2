@@ -6805,6 +6805,9 @@ html.js .ajax-new-content:empty {
 .breadcrumb > li {
   text-transform: uppercase;
 }
+.btn {
+  border: none;
+}
 /**
  * @file
  * Visual styles for fields.
