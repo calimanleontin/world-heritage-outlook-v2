@@ -179,6 +179,11 @@ body {
 }
 
 .navbar-collapse {
+  .icon-plus {
+    font-size: 1.6em;
+    margin-right: 1rem;
+    vertical-align: middle;
+  }
   @media @grid-desktop {
     .navbar-nav > li:hover > .dropdown-menu {
       display: block;
@@ -217,6 +222,8 @@ body {
       .icon-plus {
         position: absolute;
         right: calc(~'100% - 50px');
+        top: 50%;
+        transform+_: translateY(-50%);
       }
     }
     .navbar-nav > li {

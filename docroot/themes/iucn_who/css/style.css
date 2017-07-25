@@ -7190,6 +7190,11 @@ body.navbar-is-fixed-bottom {
     margin-bottom: 2px;
   }
 }
+.navbar-collapse .icon-plus {
+  font-size: 1.6em;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
 @media screen and (min-width: 768px) {
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
     display: block;
@@ -7231,6 +7236,8 @@ body.navbar-is-fixed-bottom {
   .navbar-collapse .dropdown-toggle .icon-plus {
     position: absolute;
     right: calc(100% - 50px);
+    top: 50%;
+    transform: translateY(-50%);
   }
   .navbar-collapse .navbar-nav > li > a {
     font-size: 20px;
