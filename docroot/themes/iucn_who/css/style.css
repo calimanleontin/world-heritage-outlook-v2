@@ -7634,6 +7634,12 @@ a {
 .footer a {
   color: #fff;
 }
+.footer a:hover,
+.footer a:focus,
+.footer a:active {
+  text-decoration: none;
+  color: #03afdf;
+}
 .footer .nav > li > a:hover,
 .footer .nav > li > a:focus {
   background-color: transparent;
