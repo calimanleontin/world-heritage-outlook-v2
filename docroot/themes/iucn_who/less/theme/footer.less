@@ -1,5 +1,8 @@
 .footer {
   background-color: @brand-primary;
+  hr {
+    border-color: fade(#fff, 10%);
+  }
   &, a {
     color: #fff;
   }
@@ -17,6 +20,7 @@
       }
     }
     .navbar-nav {
+      float: none;
       @media @grid-desktop {
         display: flex;
         width: 100%;
@@ -43,6 +47,9 @@
         padding-top: .5em;
       }
     }
+  }
+  .region-footer + .footer-external-links {
+    margin-top: 2em;
   }
   .iucn-wcpa-logo {
     height: 60px;
