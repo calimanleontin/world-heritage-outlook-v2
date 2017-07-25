@@ -1,3 +1,14 @@
+// Show focus outlines only if navigating with keyboard
+body:not(.show-focus-outlines) {
+  button,
+  [tabindex],
+  input, select, textarea {
+    &:focus, &:active, &:active:focus {
+      outline: none !important;
+    }
+  }
+}
+
 .holygrail {
   display: flex;
   min-height: 100vh;

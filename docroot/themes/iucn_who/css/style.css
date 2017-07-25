@@ -7608,6 +7608,23 @@ p:last-child,
 .control-group .help-inline:first-child {
   margin-top: 0;
 }
+body:not(.show-focus-outlines) button:focus,
+body:not(.show-focus-outlines) [tabindex]:focus,
+body:not(.show-focus-outlines) input:focus,
+body:not(.show-focus-outlines) select:focus,
+body:not(.show-focus-outlines) textarea:focus,
+body:not(.show-focus-outlines) button:active,
+body:not(.show-focus-outlines) [tabindex]:active,
+body:not(.show-focus-outlines) input:active,
+body:not(.show-focus-outlines) select:active,
+body:not(.show-focus-outlines) textarea:active,
+body:not(.show-focus-outlines) button:active:focus,
+body:not(.show-focus-outlines) [tabindex]:active:focus,
+body:not(.show-focus-outlines) input:active:focus,
+body:not(.show-focus-outlines) select:active:focus,
+body:not(.show-focus-outlines) textarea:active:focus {
+  outline: none !important;
+}
 .holygrail {
   display: flex;
   min-height: 100vh;
