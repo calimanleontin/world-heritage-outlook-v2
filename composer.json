@@ -24,7 +24,6 @@
         "drupal/core": "~8.0",
         "drupal/devel": "^1.0@RC",
         "drupal/facets": "^1.0@alpha",
-        "drupal/facets_pretty_paths": "1.x-dev",
         "drupal/field_group": "^1.0@RC",
         "drupal/image_widget_crop": "^2.0",
         "drupal/menu_block": "^1.4",
