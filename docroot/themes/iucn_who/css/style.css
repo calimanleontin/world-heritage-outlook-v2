@@ -7105,6 +7105,11 @@ body.navbar-is-fixed-bottom {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
+@media (min-width: 768px) and (max-width: 939px) {
+  .navbar {
+    font-size: 1.5vw;
+  }
+}
 @media screen and (min-width: 768px) {
   .navbar {
     position: static;
@@ -7129,9 +7134,9 @@ body.navbar-is-fixed-bottom {
   }
 }
 .navbar .logo {
-  height: 4rem;
-  margin-top: 0.85714286rem;
-  margin-bottom: 0.85714286rem;
+  height: 4em;
+  margin-top: calc((5.7142857142857135rem - 4em) / 2);
+  margin-bottom: calc((5.7142857142857135rem - 4em) / 2);
 }
 @media screen and (max-width: 767px) {
   .navbar .logo {
