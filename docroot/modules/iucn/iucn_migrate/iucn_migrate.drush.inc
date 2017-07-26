@@ -155,21 +155,18 @@ function drush_iucn_migrate_images() {
           ->execute();
         if($node_ids) {
           $node_id = reset($node_ids);
-          drush_print(dt("Processing node: $node_id"));
           $node = Node::load($node_id);
           if($node){
+
+
             $image_title = str_replace([" ","/"],["_",""],$node->getTitle());
             $external_image = file_get_contents($site['thumbnailUrl']);
             $image_object = file_save_data($external_image, 'public://site/' . $image_title . '.jpg', FILE_EXISTS_REPLACE);
             if($image_object){
-              if($node->field_image->getValue()){
-                drush_print(dt("Image migrated already (" . $site['thumbnailUrl'] . ") to node: $node_id"));
-              }else{
-                $node->set('field_image', ['target_id' => $image_object->id()]);
-                $node->save();
-                drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
-              }
-            } else {
+              $node->set('field_image', ['target_id' => $image_object->id()]);
+              $node->save();
+              drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
+            }else{
               drush_print(dt("Image could not be saved (" . $image_title . ") to node: $node_id"));
             }
           }
