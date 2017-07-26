@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1dd5cc921183520d808b09963d7f67a0",
+    "content-hash": "86def8794be50da7f7a3befd45d40f44",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1468,7 +1468,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/facets-8.x-1.0-alpha10.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha10",
                 "shasum": "3475249f89af0db594a3dd8341ccc6afc6dc532d"
             },
             "require": {
@@ -1512,6 +1512,48 @@
                 "issues": "https://www.drupal.org/project/issues/facets",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
             }
+        },
+        {
+            "name": "drupal/facets_pretty_paths",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/facets_pretty_paths",
+                "reference": "bb078e2134d8d9cb84c160e5665d7400c1af2b5a"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1497300842"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "StryKaizer",
+                    "homepage": "https://www.drupal.org/user/462700"
+                },
+                {
+                    "name": "dasjo",
+                    "homepage": "https://www.drupal.org/user/228295"
+                }
+            ],
+            "description": "Pretty paths for Facets.",
+            "homepage": "https://www.drupal.org/project/facets_pretty_paths",
+            "support": {
+                "source": "http://cgit.drupalcode.org/facets_pretty_paths"
+            },
+            "time": "2017-06-12 21:03:27"
         },
         {
             "name": "drupal/field_group",
@@ -5561,6 +5603,7 @@
         "drupal/config_split": 10,
         "drupal/devel": 5,
         "drupal/facets": 15,
+        "drupal/facets_pretty_paths": 20,
         "drupal/field_group": 5,
         "drupal/menu_link_attributes": 10,
         "drupal/search_api_sorts": 10
