@@ -1590,7 +1590,8 @@ pre code {
     width: 1170px;
   }
 }
-.container-fluid {
+.container-fluid,
+.container-full {
   margin-right: auto;
   margin-left: auto;
   padding-left: 15px;
@@ -4208,7 +4209,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .container > .navbar-header,
 .container-fluid > .navbar-header,
 .container > .navbar-collapse,
-.container-fluid > .navbar-collapse {
+.container-fluid > .navbar-collapse,
+.container-full > .navbar-header,
+.container-full > .navbar-collapse {
   margin-right: -15px;
   margin-left: -15px;
 }
@@ -4216,7 +4219,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .container > .navbar-header,
   .container-fluid > .navbar-header,
   .container > .navbar-collapse,
-  .container-fluid > .navbar-collapse {
+  .container-fluid > .navbar-collapse,
+  .container-full > .navbar-header,
+  .container-full > .navbar-collapse {
     margin-right: 0;
     margin-left: 0;
   }
@@ -4268,7 +4273,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 @media (min-width: 768px) {
   .navbar > .container .navbar-brand,
-  .navbar > .container-fluid .navbar-brand {
+  .navbar > .container-fluid .navbar-brand,
+  .navbar > .container-full .navbar-brand {
     margin-left: -15px;
   }
 }
@@ -4961,7 +4967,8 @@ a.badge:focus {
   border-top-color: #d5d5d5;
 }
 .container .jumbotron,
-.container-fluid .jumbotron {
+.container-fluid .jumbotron,
+.container-full .jumbotron {
   border-radius: 6px;
   padding-left: 15px;
   padding-right: 15px;
@@ -4975,7 +4982,8 @@ a.badge:focus {
     padding-bottom: 48px;
   }
   .container .jumbotron,
-  .container-fluid .jumbotron {
+  .container-fluid .jumbotron,
+  .container-full .jumbotron {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -6465,7 +6473,9 @@ button.close {
 .modal-footer:before,
 .modal-footer:after,
 .filter-wrapper:before,
-.filter-wrapper:after {
+.filter-wrapper:after,
+.container-full:before,
+.container-full:after {
   content: " ";
   display: table;
 }
@@ -6485,7 +6495,8 @@ button.close {
 .panel-body:after,
 .modal-header:after,
 .modal-footer:after,
-.filter-wrapper:after {
+.filter-wrapper:after,
+.container-full:after {
   clear: both;
 }
 .center-block {
@@ -7139,7 +7150,8 @@ body.navbar-is-fixed-bottom {
   }
 }
 @media screen and (min-width: 768px) {
-  .container-fluid > .navbar-header {
+  .container-fluid > .navbar-header,
+  .container-full > .navbar-header {
     margin-left: 2em;
   }
 }
@@ -7656,6 +7668,9 @@ p:last-child,
 .help-block:first-child,
 .control-group .help-inline:first-child {
   margin-top: 0;
+}
+.container-full {
+  width: 100%;
 }
 html {
   font-size: 14px;

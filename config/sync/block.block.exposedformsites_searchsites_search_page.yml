@@ -11,8 +11,8 @@ dependencies:
     - iucn_who
 id: exposedformsites_searchsites_search_page
 theme: iucn_who
-region: header
-weight: -2
+region: search_block
+weight: -7
 provider: null
 plugin: 'views_exposed_filter_block:sites_search-sites_search_page'
 settings:

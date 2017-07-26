@@ -99,82 +99,92 @@
 
 <div class="holygrail-body">
   {# Main #}
+  <div class="container header-container" role="heading">
+    {# Header #}
+    {% if page.header %}
+      {% block header %}
+        {{ page.header }}
+      {% endblock %}
+    {% endif %}
+  </div>
+  <div class="container-full search-block-container">
+    <div class="container">
+      {# Search block #}
+      {% if page.search_block %}
+        {% block search_block %}
+            {{ page.search_block }}
+        {% endblock %}
+      {% endif %}
+    </div>
+  </div>
   {% block main %}
-    <div role="main" class="main-container {{ container }} js-quickedit-main-content">
-      <div class="row">
-
-        {# Header #}
-        {% if page.header %}
-          {% block header %}
-            <div class="col-sm-12" role="heading">
-              {{ page.header }}
-            </div>
-          {% endblock %}
-        {% endif %}
-
-        {# Sidebar First #}
-        {% if page.sidebar_first %}
-          {% block sidebar_first %}
-            <aside class="col-sm-3" role="complementary">
-              {{ page.sidebar_first }}
-            </aside>
-          {% endblock %}
-        {% endif %}
-
-        {# Content #}
-        {%
-          set content_classes = [
-            page.sidebar_first and page.sidebar_second ? 'col-sm-6',
-            page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
-            page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
-            page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
-          ]
-        %}
-        <section{{ content_attributes.addClass(content_classes) }}>
-
-          {# Highlighted #}
-          {% if page.highlighted %}
-            {% block highlighted %}
-              <div class="highlighted">{{ page.highlighted }}</div>
-            {% endblock %}
-          {% endif %}
-
-          {# Breadcrumbs #}
-          {% if breadcrumb %}
-            {% block breadcrumb %}
-              {{ breadcrumb }}
-            {% endblock %}
-          {% endif %}
-
-          {# Action Links #}
-          {% if action_links %}
-            {% block action_links %}
-              <ul class="action-links">{{ action_links }}</ul>
-            {% endblock %}
-          {% endif %}
-
-          {# Help #}
-          {% if page.help %}
-            {% block help %}
-              {{ page.help }}
+    <div role="main" class="main-container js-quickedit-main-content">
+      <div class="container">
+        <div class="row">
+          {# Sidebar First #}
+          {% if page.sidebar_first %}
+            {% block sidebar_first %}
+              <aside class="col-sm-3" role="complementary">
+                {{ page.sidebar_first }}
+              </aside>
             {% endblock %}
           {% endif %}
 
           {# Content #}
-          {% block content %}
-            <a id="main-content"></a>
-            {{ page.content }}
-          {% endblock %}
-        </section>
+          {%
+            set content_classes = [
+              page.sidebar_first and page.sidebar_second ? 'col-sm-6',
+              page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
+              page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
+              page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
+            ]
+          %}
+          <section{{ content_attributes.addClass(content_classes) }}>
 
-        {# Sidebar Second #}
-        {% if page.sidebar_second %}
-          {% block sidebar_second %}
-            <aside class="col-sm-3" role="complementary">
-              {{ page.sidebar_second }}
-            </aside>
-          {% endblock %}
-        {% endif %}
+            {# Highlighted #}
+            {% if page.highlighted %}
+              {% block highlighted %}
+                <div class="highlighted">{{ page.highlighted }}</div>
+              {% endblock %}
+            {% endif %}
+
+            {# Breadcrumbs #}
+            {% if breadcrumb %}
+              {% block breadcrumb %}
+                {{ breadcrumb }}
+              {% endblock %}
+            {% endif %}
+
+            {# Action Links #}
+            {% if action_links %}
+              {% block action_links %}
+                <ul class="action-links">{{ action_links }}</ul>
+              {% endblock %}
+            {% endif %}
+
+            {# Help #}
+            {% if page.help %}
+              {% block help %}
+                {{ page.help }}
+              {% endblock %}
+            {% endif %}
+
+            {# Content #}
+            {% block content %}
+              <a id="main-content"></a>
+              {{ page.content }}
+            {% endblock %}
+          </section>
+
+          {# Sidebar Second #}
+          {% if page.sidebar_second %}
+            {% block sidebar_second %}
+              <aside class="col-sm-3" role="complementary">
+                {{ page.sidebar_second }}
+              </aside>
+            {% endblock %}
+          {% endif %}
+        </div>
       </div>
     </div>
   {% endblock %}
@@ -182,14 +192,14 @@
 {% if page.footer %}
   {% block footer %}
     <footer class="footer" role="contentinfo">
-      <div class="{{ container }}">
+      <div class="container">
         {{ page.footer }}
         <div class="footer-external-links">
           <img src="{{base_path}}themes/iucn_who/images/En_IUCN_WCPA_print_white.svg" height="100" class="iucn-wcpa-logo" />
         </div>
       </div>
       <hr>
-      <div class="{{ container }}">
+      <div class="container">
         <div class="copyright">
           © International Union for Conservation of Nature and Natural Resources | <a href="#">Terms of use</a>
         </div>

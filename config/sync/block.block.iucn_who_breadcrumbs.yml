@@ -11,7 +11,7 @@ _core:
 id: iucn_who_breadcrumbs
 theme: iucn_who
 region: header
-weight: -7
+weight: -8
 provider: null
 plugin: system_breadcrumb_block
 settings:
