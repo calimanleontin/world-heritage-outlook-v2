@@ -6,8 +6,14 @@
 .search-block-container {
   background-color: @iucn-blue-dark;
   color: #fff;
-  margin-bottom: 50px;
-  margin-top: 50px;
-  padding-bottom: 50px;
-  padding-top: 50px;
+  margin-bottom: 50 * @rem-multiplier--desktop;
+  margin-top: 50 * @rem-multiplier--desktop;
+  padding-bottom: 50 * @rem-multiplier--desktop;
+  padding-top: 50 * @rem-multiplier--desktop;
+  @media @grid-mobile {
+    margin-bottom: 50 * @rem-multiplier--mobile;
+    margin-top: 50 * @rem-multiplier--mobile;
+    padding-bottom: 50 * @rem-multiplier--mobile;
+    padding-top: 50 * @rem-multiplier--mobile;
+  }
 }

@@ -1,7 +1,7 @@
-@font-size-base--mobile: 14px;
-@line-height-computed--mobile: floor((@font-size-base--mobile * @line-height-base));
+@font-size-base--mobile:        14px;
+@line-height-computed--mobile:  (unit(@font-size-base--mobile) * @line-height-base * @rem-multiplier--mobile); // ~20px
 
 @rem-multiplier--desktop:       (1rem / unit(@font-size-base));
 @rem-multiplier--mobile:        (1rem / unit(@font-size-base--mobile)); // used to transform fixed units into rem, multiply initial value by this
 
-@navbar-height--mobile:     50 * @rem-multiplier--mobile;
+@navbar-height--mobile:         50 * @rem-multiplier--mobile;

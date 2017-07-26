@@ -17,7 +17,7 @@ body {
   }
   &.navbar-is-fixed-top {
     @media @grid-mobile {
-      margin-top: (@navbar-height + (@grid-gutter-width / 2));
+      margin-top: ~'calc(@{navbar-height--mobile} + (@{grid-gutter-width} / 2))';
     }
   }
   &.navbar-is-fixed-bottom {
@@ -114,16 +114,19 @@ body.navbar-is-static-top {
   margin-top: @navbar-height * 15 / 100;
   margin-bottom: @navbar-height * 15 / 100;
   @media @grid-mobile {
-    height: auto;
-    margin-top: 5 * @rem-multiplier--mobile;
-    margin-bottom: 5 * @rem-multiplier--mobile;
+    // height: auto;
+    // margin-top: 5 * @rem-multiplier--mobile;
+    // margin-bottom: 5 * @rem-multiplier--mobile;
+    height: @navbar-height--mobile * 70 / 100;
+    margin-top: @navbar-height--mobile * 15 / 100;
+    margin-bottom: @navbar-height--mobile * 15 / 100;
   }
   > img {
     height: 100%;
     width: auto;
-    @media @grid-mobile {
-      height: 40 * @rem-multiplier--mobile;
-    }
+    // @media @grid-mobile {
+    //   height: 40 * @rem-multiplier--mobile;
+    // }
   }
 }
 .container-fluid > .navbar-header {
@@ -146,6 +149,7 @@ body.navbar-is-static-top {
   }
 }
 .navbar-brand {
+  font-size: 1.25em;
   @media @grid-mobile {
     font-size: 15 * @rem-multiplier--mobile;
     padding-top: 5 * @rem-multiplier--mobile;
@@ -172,11 +176,11 @@ body.show-focus-outlines {
   padding-left: 0;
   padding-right: 0;
   .icon-bar {
-    width: 40px;
-    height: 5px;
+    width: 40 * @rem-multiplier--mobile;
+    height: 5 * @rem-multiplier--mobile;
     transition: all 0.2s;
     + .icon-bar {
-      margin-top: 7px;
+      margin-top: 7 * @rem-multiplier--mobile;
     }
   }
   .top-bar {
