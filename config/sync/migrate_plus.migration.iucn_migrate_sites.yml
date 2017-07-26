@@ -1,9 +1,9 @@
-uuid: b54ef816-6832-4483-bfbd-0b9fbb10a087
+uuid: 75f48ea8-5585-4350-b85a-b2b370807a63
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: QJ-4HK9INTqdSBD1eomV-At6FibUHgOWBXD0pGvq56g
+  default_config_hash: '-wFUZO1mb2WMTXxFTucId0Mn9rB7amqOBL8qVw35EV0'
 id: iucn_migrate_sites
 migration_tags: null
 migration_group: 'iucn migrations'
@@ -153,6 +153,14 @@ process:
     bundle_key: vid
     bundle: theme
     value_key: name
+  field_coordinate_x:
+    plugin: iucn_coordinate
+    source: site_wdpa_id
+    type: x
+  field_coordinate_y:
+    plugin: iucn_coordinate
+    source: site_wdpa_id
+    type: 'y'
   uid:
     plugin: default_value
     default_value: 1

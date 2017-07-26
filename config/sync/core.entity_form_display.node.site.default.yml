@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
+    - field.field.node.site.field_coordinate_x
+    - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
     - field.field.node.site.field_danger_list
@@ -193,6 +195,8 @@ third_party_settings:
         - field_buffer_zone_area
         - field_transboundary
         - field_serial
+        - field_coordinate_x
+        - field_coordinate_y
       parent_name: group_physical
       weight: 20
       format_type: fieldset
@@ -248,6 +252,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_coordinate_x:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_coordinate_y:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_country:
     weight: 13

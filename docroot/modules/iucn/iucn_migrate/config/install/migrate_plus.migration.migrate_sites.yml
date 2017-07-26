@@ -148,6 +148,14 @@ process:
     bundle_key: vid
     bundle: theme
     value_key: name
+  field_coordinate_x:
+    plugin: iucn_coordinate
+    source: site_wdpa_id
+    type: 'x'
+  field_coordinate_y:
+    plugin: iucn_coordinate
+    source: site_wdpa_id
+    type: 'y'
   uid:
     plugin: default_value
     default_value: 1
