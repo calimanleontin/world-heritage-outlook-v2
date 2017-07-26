@@ -1577,7 +1577,7 @@ pre code {
 }
 @media (min-width: 768px) {
   .container {
-    width: 750px;
+    width: 100%;
   }
 }
 @media (min-width: 992px) {
@@ -7064,7 +7064,7 @@ body.navbar-is-fixed-bottom {
 }
 @media screen and (min-width: 768px) {
   .navbar.container {
-    max-width: 720px;
+    max-width: 70%;
   }
 }
 @media screen and (min-width: 992px) {
