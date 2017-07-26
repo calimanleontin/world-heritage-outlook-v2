@@ -104,8 +104,7 @@ function drush_iucn_migrate_danger_lists() {
           ->condition('type', 'site')
           ->execute();
         if($node_ids){
-          reset($node_ids);
-          $node_id = key($node_ids);
+          $node_id = reset($node_ids);
           $node = Node::load($node_id);
           if($node){
             foreach($site['dangerList'] as $danger_list){
