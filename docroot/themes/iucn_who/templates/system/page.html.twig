@@ -99,24 +99,26 @@
 
 <div class="holygrail-body">
   {# Main #}
-  <div class="container header-container" role="heading">
-    {# Header #}
-    {% if page.header %}
+
+  {# Header #}
+  {% if page.header %}
+    <div class="container header-container" role="heading">
       {% block header %}
         {{ page.header }}
       {% endblock %}
-    {% endif %}
-  </div>
-  <div class="container-full search-block-container">
-    <div class="container">
-      {# Search block #}
-      {% if page.search_block %}
+    </div>
+  {% endif %}
+
+  {# Search block #}
+  {% if page.search_block %}
+    <div class="container-full search-block-container">
+      <div class="container">
         {% block search_block %}
             {{ page.search_block }}
         {% endblock %}
-      {% endif %}
+      </div>
     </div>
-  </div>
+  {% endif %}
   {% block main %}
     <div role="main" class="main-container js-quickedit-main-content">
       <div class="container">
