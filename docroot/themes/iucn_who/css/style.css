@@ -7808,6 +7808,14 @@ a {
 #block-iucn-who-main-menu > ul > li > a {
   text-transform: uppercase;
 }
+.search-block-container {
+  background-color: #134780;
+  color: #fff;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
 .view-sites-search .view-content {
   display: flex;
   flex-wrap: wrap;
