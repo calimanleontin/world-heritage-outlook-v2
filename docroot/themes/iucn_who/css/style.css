@@ -7732,6 +7732,11 @@ body:not(.show-focus-outlines) textarea:active:focus {
 a {
   transition: color .2s;
 }
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+}
 .footer {
   background-color: #134780;
 }
