@@ -38,11 +38,13 @@
   article {
     border: 1px solid @iucn-gray-lighter;
     display: flex;
-    font-size: .8em;
     min-height: 150 * @rem-multiplier--desktop;
     padding: 5px;
     transition: box-shadow .2s;
     height: 100%;
+    @media @grid-desktop {
+      font-size: .8em;
+    }
     &:hover {
       // border-width: 2px;
       box-shadow: 3px 4px 5px fade(#000, 20%);

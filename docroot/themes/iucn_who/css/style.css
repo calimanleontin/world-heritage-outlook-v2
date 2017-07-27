@@ -7900,11 +7900,15 @@ a:active {
 .view-sites-search article {
   border: 1px solid #e1e1e1;
   display: flex;
-  font-size: .8em;
   min-height: 8.33333333rem;
   padding: 5px;
   transition: box-shadow 0.2s;
   height: 100%;
+}
+@media screen and (min-width: 768px) {
+  .view-sites-search article {
+    font-size: .8em;
+  }
 }
 .view-sites-search article:hover {
   box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.2);
