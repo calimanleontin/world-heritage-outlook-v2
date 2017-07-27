@@ -45,6 +45,10 @@ body:not(.show-focus-outlines) {
   color: @iucn-blue-dark;
   line-height: 1.6;
   padding-left: .25em;
+  padding-bottom: (@line-height-computed / 2);
+  .breadcrumb + & {
+    margin-top: 1em;
+  }
 }
 a {
   transition: color .2s;

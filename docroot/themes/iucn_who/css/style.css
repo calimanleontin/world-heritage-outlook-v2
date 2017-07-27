@@ -6812,11 +6812,19 @@ html.js .ajax-new-content:empty {
   display: none !important;
 }
 .breadcrumb {
-  font-size: .8em;
   margin-bottom: 1.4em;
 }
+.breadcrumb-prefix,
 .breadcrumb > li {
   text-transform: uppercase;
+}
+.breadcrumb-prefix,
+.breadcrumb {
+  font-size: .8em;
+  display: inline;
+}
+.breadcrumb-prefix + .breadcrumb {
+  margin-left: 1em;
 }
 .btn {
   border: none;
@@ -7733,6 +7741,10 @@ body:not(.show-focus-outlines) textarea:active:focus {
   color: #134780;
   line-height: 1.6;
   padding-left: .25em;
+  padding-bottom: 0.71428571rem;
+}
+.breadcrumb + .page-header {
+  margin-top: 1em;
 }
 a {
   transition: color .2s;

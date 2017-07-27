@@ -1,7 +1,18 @@
 .breadcrumb {
-  font-size: .8em;
   margin-bottom: 1.4em;
-  > li {
-    text-transform: uppercase;
-  }
+}
+
+.breadcrumb-prefix,
+.breadcrumb > li {
+  text-transform: uppercase;
+}
+
+.breadcrumb-prefix,
+.breadcrumb {
+  font-size: .8em;
+  display: inline;
+}
+
+.breadcrumb-prefix + .breadcrumb {
+  margin-left: 1em;
 }
