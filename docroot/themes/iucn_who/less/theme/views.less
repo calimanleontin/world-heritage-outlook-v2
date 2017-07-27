@@ -6,7 +6,7 @@
   .views-row {
     padding-left: .5em;
     padding-top: 1em;
-    flex: 1;
+    flex: 0 1;
     @media (min-width: @screen-lg-min) {
       flex-basis: (100% / 3);
       &:nth-child(3n + 1) {
@@ -87,11 +87,7 @@
     .field--name-field-country {
       margin-bottom: .3em;
       .field--item {
-        display: inline-block;
         color: #a0a0a0;
-        + .field--item:before {
-          content: ', ';
-        }
       }
       a {
         color: inherit;
