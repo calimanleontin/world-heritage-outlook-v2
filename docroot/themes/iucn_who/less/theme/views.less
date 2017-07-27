@@ -6,8 +6,9 @@
   .views-row {
     padding-left: .5em;
     padding-top: 1em;
+    flex: 1;
     @media (min-width: @screen-lg-min) {
-      width: (100% / 3);
+      flex-basis: (100% / 3);
       &:nth-child(3n + 1) {
         padding-left: 0;
       }
@@ -16,7 +17,7 @@
       }
     }
     @media (min-width: @screen-xs-min) and (max-width: @screen-md-max) {
-      width: (100% / 2);
+      flex-basis: (100% / 2);
       &:nth-child(2n + 1) {
         padding-left: 0;
       }
@@ -25,7 +26,7 @@
       }
     }
     @media (max-width: (@screen-xs-min - 1px)) {
-      width: (100% / 1);
+      flex-basis: (100% / 1);
       &:nth-child(n + 1) {
         padding-left: 0;
       }
@@ -38,31 +39,44 @@
     border: 1px solid @iucn-gray-lighter;
     display: flex;
     font-size: .8em;
-    height: 150 * @rem-multiplier--desktop;
+    min-height: 150 * @rem-multiplier--desktop;
     padding: 5px;
     transition: box-shadow .2s;
+    height: 100%;
     &:hover {
       // border-width: 2px;
       box-shadow: 3px 4px 5px fade(#000, 20%);
     }
 
     .left-content {
-      flex-shrink: 0;
+      // flex: 1 0 auto;
+      // flex: 1 1 0;
+      display: flex;
+      flex: 1 0 0%;
+      // background-image: linear-gradient(to right bottom, #ffffff, #4fb4df, #134780);
+      + .right-content {
+        margin-left: .5em;
+      }
     }
     .right-content {
       display: flex;
       flex-direction: column;
+      flex: 1 1 0%;
+      // flex: 1 0 auto;
       .content {
         flex: 1 0 auto;
       }
     }
     .field--name-field-image {
       height: 100%;
-      margin-right: .5em;
-
+      a {
+        height: 100%;
+        display: block;
+      }
       img {
         height: 100%;
-        width: auto;
+        width: 100%;
+        object-fit: cover;
       }
     }
     h2 {
@@ -72,9 +86,17 @@
     }
     .field--name-field-country {
       margin-bottom: .3em;
-       a {
+      .field--item {
+        display: inline-block;
         color: #a0a0a0;
-        display: block;
+        + .field--item:before {
+          content: ', ';
+        }
+      }
+      a {
+        color: inherit;
+        display: inline-block;
+        font-size: .8em;
         line-height: 1.3em;
         margin-bottom: .2em;
         text-transform: uppercase;
