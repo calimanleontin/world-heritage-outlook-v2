@@ -7105,9 +7105,14 @@ body.navbar-is-fixed-bottom {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
-@media (min-width: 768px) and (max-width: 939px) {
+@media (min-width: 768px) and (max-width: 793px) {
   .navbar {
     font-size: 1.5vw;
+  }
+}
+@media (min-width: 794px) {
+  .navbar {
+    font-size: 0.85em;
   }
 }
 @media screen and (min-width: 768px) {

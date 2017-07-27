@@ -87,10 +87,14 @@ body.navbar-is-static-top {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
-
+@navbar-font-size-em: .85em;
+@max-vw: (floor(unit(@font-size-base) * unit(@navbar-font-size-em) * 100 / 1.5) * 1px); // 1.5 is minimum vw required to fit content of navbar on one line
 .navbar {
-  @media (min-width: @grid-float-breakpoint) and (max-width: 939px) {
+  @media (min-width: @grid-float-breakpoint) and (max-width: @max-vw) {
     font-size: 1.5vw;
+  }
+  @media (min-width: (@max-vw + 1)) {
+    font-size: @navbar-font-size-em;
   }
   @media @grid-desktop {
     position: static;
