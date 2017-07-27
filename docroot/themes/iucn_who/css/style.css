@@ -7245,10 +7245,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     display: inline-block;
   }
   .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
-    padding-right: 7.5px;
-  }
-  .navbar-collapse .navbar-nav > li > a.dropdown-toggle + a {
-    padding-left: 7.5px;
+    display: none;
   }
 }
 @media screen and (max-width: 767px) {
