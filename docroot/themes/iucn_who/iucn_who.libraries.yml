@@ -4,7 +4,7 @@ headroom:
 global-styling:
   css:
     theme:
-      //fonts.googleapis.com/css?family=Open+Sans:300,400,600,700: { type: external }
+      //fonts.googleapis.com/css?family=Lato:400,700,900: { type: external }
       css/style.css: {}
   js:
     js/main.js: {}
