@@ -7747,7 +7747,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
   margin-top: 1em;
 }
 a {
-  transition: color .2s;
+  transition: color 0.2s, background-color 0.2s;
 }
 a:hover,
 a:focus,
