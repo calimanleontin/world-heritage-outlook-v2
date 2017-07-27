@@ -5848,7 +5848,8 @@ button.close {
   border: 0;
   -webkit-appearance: none;
 }
-.modal-open {
+.modal-open,
+.menu-open {
   overflow: hidden;
 }
 .modal {
@@ -5879,7 +5880,8 @@ button.close {
   -o-transform: translate(0, 0);
   transform: translate(0, 0);
 }
-.modal-open .modal {
+.modal-open .modal,
+.menu-open .modal {
   overflow-x: hidden;
   overflow-y: auto;
 }

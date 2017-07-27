@@ -3,10 +3,10 @@
     var $body = $(document.body);
 
     var blockBodyScroll = function () {
-      $body.addClass('modal-open');
+      $body.addClass('menu-open');
     };
     var unblockBodyScroll = function () {
-      $body.removeClass('modal-open');
+      $body.removeClass('menu-open');
     };
 
     $('#navbar-collapse').on('show.bs.collapse', blockBodyScroll);
