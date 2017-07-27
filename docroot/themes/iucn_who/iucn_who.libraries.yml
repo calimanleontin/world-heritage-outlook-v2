@@ -9,6 +9,7 @@ global-styling:
   js:
     js/main.js: {}
     js/navbar-headroom.js: {}
+    js/facets.js: {}
   dependencies:
     - core/jquery
     - iucn_who/headroom
