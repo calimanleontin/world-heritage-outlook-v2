@@ -7119,6 +7119,7 @@ body.navbar-is-fixed-bottom {
 @media screen and (min-width: 768px) {
   .navbar {
     position: static;
+    height: 5.55555556rem;
   }
 }
 @media screen and (max-width: 767px) {
@@ -7127,6 +7128,7 @@ body.navbar-is-fixed-bottom {
     z-index: 10;
     right: 0;
     left: 0;
+    height: 3.57142857rem;
   }
   .navbar.headroom {
     transition: transform 0.2s ease-in-out;
@@ -7258,6 +7260,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse {
     backface-visibility: hidden;
     background-color: #fff;
+    border-top: none;
     display: block;
     height: calc(100vh - 3.571428571428571rem) !important;
     margin: 0 !important;

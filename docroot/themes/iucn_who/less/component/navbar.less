@@ -98,12 +98,14 @@ body.navbar-is-static-top {
   }
   @media @grid-desktop {
     position: static;
+    height: @navbar-height;
   }
   @media @grid-mobile {
     position: fixed;
     z-index: 10;
     right: 0;
     left: 0;
+    height: @navbar-height--mobile;
     &.headroom {
       transition: transform .2s ease-in-out;
       will-change: transform;
@@ -249,6 +251,7 @@ body.show-focus-outlines {
   @media @grid-mobile {
     backface-visibility: hidden;
     background-color: #fff;
+    border-top: none;
     display: block;
     height: calc(~'100vh - @{navbar-height--mobile}') !important;
     margin: 0 !important;
