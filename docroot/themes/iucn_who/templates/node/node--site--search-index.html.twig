@@ -76,9 +76,12 @@
   ]
 %}
 <article{{ attributes.addClass(classes) }}>
-  <div class="left-content">
-    {{ content.field_image }}
-  </div>
+
+  {% if content.field_image|render|trim is not empty %}
+    <div class="left-content">
+      {{ content.field_image }}
+    </div>
+  {% endif %}
   <div class="right-content">
     {{ title_prefix }}
     {% if not page %}
