@@ -11,8 +11,8 @@ dependencies:
     - iucn_who
 id: iucnregion
 theme: iucn_who
-region: sidebar_first
-weight: -6
+region: facets
+weight: -7
 provider: null
 plugin: 'facet_block:iucn_region'
 settings:

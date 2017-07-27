@@ -11,8 +11,8 @@ dependencies:
     - iucn_who
 id: inscriptioncriteria
 theme: iucn_who
-region: sidebar_first
-weight: -5
+region: facets
+weight: -6
 provider: null
 plugin: 'facet_block:inscription_criteria'
 settings:

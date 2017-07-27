@@ -124,21 +124,28 @@
       <div class="container">
         <div class="row">
           {# Sidebar First #}
-          {% if page.sidebar_first %}
-            {% block sidebar_first %}
-              <aside class="col-sm-3" role="complementary">
-                {{ page.sidebar_first }}
-              </aside>
-            {% endblock %}
+          {% if page.sidebar_first or page.facets %}
+            <aside class="col-sm-3" role="complementary">
+              {% if page.facets %}
+                {% block facets %}
+                    {{ page.facets }}
+                {% endblock %}
+              {% endif %}
+              {% if page.sidebar_first %}
+                {% block sidebar_first %}
+                    {{ page.sidebar_first }}
+                {% endblock %}
+              {% endif %}
+            </aside>
           {% endif %}
 
           {# Content #}
           {%
             set content_classes = [
-              page.sidebar_first and page.sidebar_second ? 'col-sm-6',
-              page.sidebar_first and page.sidebar_second is empty ? 'col-sm-9',
-              page.sidebar_second and page.sidebar_first is empty ? 'col-sm-9',
-              page.sidebar_first is empty and page.sidebar_second is empty ? 'col-sm-12'
+              (page.sidebar_first or page.facets) and page.sidebar_second ? 'col-sm-6',
+              (page.sidebar_first or page.facets) and page.sidebar_second is empty ? 'col-sm-9',
+              page.sidebar_second and (page.sidebar_first or page.facets) is empty ? 'col-sm-9',
+              (page.sidebar_first or page.facets) is empty and page.sidebar_second is empty ? 'col-sm-12'
             ]
           %}
           <section{{ content_attributes.addClass(content_classes) }}>
