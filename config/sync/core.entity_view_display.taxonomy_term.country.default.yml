@@ -105,4 +105,5 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
-hidden: {  }
+hidden:
+  langcode: true

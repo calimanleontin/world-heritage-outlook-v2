@@ -7,6 +7,7 @@ dependencies:
     - field.field.taxonomy_term.inscription_criteria.field_type
     - taxonomy.vocabulary.inscription_criteria
   module:
+    - path
     - text
 id: taxonomy_term.inscription_criteria.default
 targetEntityType: taxonomy_term
@@ -35,6 +36,12 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -42,5 +49,11 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden: {  }
