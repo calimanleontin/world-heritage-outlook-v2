@@ -57,3 +57,16 @@ a {
     text-decoration: none;
   }
 }
+
+// Generic collapse icon
+.icon-collapse {
+  &:before {
+    content: '+';
+    display: inline-block;
+    margin-right: 1em;
+    width: 0;
+  }
+  .collapsed &:before {
+    content: '-';
+  }
+}

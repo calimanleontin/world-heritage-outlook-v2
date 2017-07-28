@@ -104,6 +104,6 @@
     <div{{ content_attributes.addClass('content') }}>
       {{ content|without('field_image') }}
     </div>
-    <a href="{{ url }}" rel="bookmark" class="more-link">Read more <span class="arrow">&rarr;</span></a>
+    <a href="{{ url }}" rel="bookmark" class="more-link">Read more <span class="arrow"><img src='/{{ base_path ~ directory }}/images/icon-arrow.svg' /></span></a>
   </div>
 </article>

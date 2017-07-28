@@ -223,11 +223,20 @@ audio:not([controls]) {
 template {
   display: none;
 }
-a {
+a,
+.block-facets.panel .panel-title,
+.block-facets.panel .facet-item > a,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title {
   background-color: transparent;
 }
 a:active,
-a:hover {
+a:hover,
+.block-facets.panel .panel-title:active,
+.block-facets.panel .panel-title:hover,
+.block-facets.panel .facet-item > a:active,
+.block-facets.panel .facet-item > a:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:hover {
   outline: 0;
 }
 abbr[title] {
@@ -373,17 +382,32 @@ th {
     text-shadow: none !important;
   }
   a,
-  a:visited {
+  a:visited,
+  .block-facets.panel .panel-title,
+  .block-facets.panel .panel-title:visited,
+  .block-facets.panel .facet-item > a,
+  .block-facets.panel .facet-item > a:visited,
+  .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .block-facets.panel .facet-item > .block-facets.panel .panel-title:visited {
     text-decoration: underline;
   }
-  a[href]:after {
+  a[href]:after,
+  .block-facets.panel .panel-title[href]:after,
+  .block-facets.panel .facet-item > a[href]:after,
+  .block-facets.panel .facet-item > .block-facets.panel .panel-title[href]:after {
     content: " (" attr(href) ")";
   }
   abbr[title]:after {
     content: " (" attr(title) ")";
   }
   a[href^="#"]:after,
-  a[href^="javascript:"]:after {
+  a[href^="javascript:"]:after,
+  .block-facets.panel .panel-title[href^="#"]:after,
+  .block-facets.panel .panel-title[href^="javascript:"]:after,
+  .block-facets.panel .facet-item > a[href^="#"]:after,
+  .block-facets.panel .facet-item > a[href^="javascript:"]:after,
+  .block-facets.panel .facet-item > .block-facets.panel .panel-title[href^="#"]:after,
+  .block-facets.panel .facet-item > .block-facets.panel .panel-title[href^="javascript:"]:after {
     content: "";
   }
   pre,
@@ -1266,16 +1290,28 @@ textarea {
   font-size: inherit;
   line-height: inherit;
 }
-a {
+a,
+.block-facets.panel .panel-title,
+.block-facets.panel .facet-item > a,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #134780;
   text-decoration: none;
 }
 a:hover,
-a:focus {
+a:focus,
+.block-facets.panel .panel-title:hover,
+.block-facets.panel .panel-title:focus,
+.block-facets.panel .facet-item > a:hover,
+.block-facets.panel .facet-item > a:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #03afdf;
   text-decoration: underline;
 }
-a:focus {
+a:focus,
+.block-facets.panel .panel-title:focus,
+.block-facets.panel .facet-item > a:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
@@ -1289,7 +1325,13 @@ img {
 .thumbnail > img,
 .thumbnail a > img,
 .carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
+.carousel-inner > .item > a > img,
+.thumbnail .block-facets.panel .panel-title > img,
+.carousel-inner > .item > .block-facets.panel .panel-title > img,
+.thumbnail .block-facets.panel .facet-item > a > img,
+.carousel-inner > .item > .block-facets.panel .facet-item > a > img,
+.thumbnail .block-facets.panel .facet-item > .block-facets.panel .panel-title > img,
+.carousel-inner > .item > .block-facets.panel .facet-item > .block-facets.panel .panel-title > img {
   display: block;
   max-width: 100%;
   height: auto;
@@ -1510,35 +1552,65 @@ mark,
   color: #134780;
 }
 a.text-primary:hover,
-a.text-primary:focus {
+a.text-primary:focus,
+.block-facets.panel .panel-title.text-primary:hover,
+.block-facets.panel .panel-title.text-primary:focus,
+.block-facets.panel .facet-item > a.text-primary:hover,
+.block-facets.panel .facet-item > a.text-primary:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-primary:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-primary:focus {
   color: #0c2e54;
 }
 .text-success {
   color: #3c763d;
 }
 a.text-success:hover,
-a.text-success:focus {
+a.text-success:focus,
+.block-facets.panel .panel-title.text-success:hover,
+.block-facets.panel .panel-title.text-success:focus,
+.block-facets.panel .facet-item > a.text-success:hover,
+.block-facets.panel .facet-item > a.text-success:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-success:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-success:focus {
   color: #2b542c;
 }
 .text-info {
   color: #31708f;
 }
 a.text-info:hover,
-a.text-info:focus {
+a.text-info:focus,
+.block-facets.panel .panel-title.text-info:hover,
+.block-facets.panel .panel-title.text-info:focus,
+.block-facets.panel .facet-item > a.text-info:hover,
+.block-facets.panel .facet-item > a.text-info:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-info:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-info:focus {
   color: #245269;
 }
 .text-warning {
   color: #8a6d3b;
 }
 a.text-warning:hover,
-a.text-warning:focus {
+a.text-warning:focus,
+.block-facets.panel .panel-title.text-warning:hover,
+.block-facets.panel .panel-title.text-warning:focus,
+.block-facets.panel .facet-item > a.text-warning:hover,
+.block-facets.panel .facet-item > a.text-warning:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-warning:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-warning:focus {
   color: #66512c;
 }
 .text-danger {
   color: #a94442;
 }
 a.text-danger:hover,
-a.text-danger:focus {
+a.text-danger:focus,
+.block-facets.panel .panel-title.text-danger:hover,
+.block-facets.panel .panel-title.text-danger:focus,
+.block-facets.panel .facet-item > a.text-danger:hover,
+.block-facets.panel .facet-item > a.text-danger:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-danger:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.text-danger:focus {
   color: #843534;
 }
 .bg-primary {
@@ -1546,35 +1618,65 @@ a.text-danger:focus {
   background-color: #134780;
 }
 a.bg-primary:hover,
-a.bg-primary:focus {
+a.bg-primary:focus,
+.block-facets.panel .panel-title.bg-primary:hover,
+.block-facets.panel .panel-title.bg-primary:focus,
+.block-facets.panel .facet-item > a.bg-primary:hover,
+.block-facets.panel .facet-item > a.bg-primary:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-primary:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-primary:focus {
   background-color: #0c2e54;
 }
 .bg-success {
   background-color: #dff0d8;
 }
 a.bg-success:hover,
-a.bg-success:focus {
+a.bg-success:focus,
+.block-facets.panel .panel-title.bg-success:hover,
+.block-facets.panel .panel-title.bg-success:focus,
+.block-facets.panel .facet-item > a.bg-success:hover,
+.block-facets.panel .facet-item > a.bg-success:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-success:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-success:focus {
   background-color: #c1e2b3;
 }
 .bg-info {
   background-color: #d9edf7;
 }
 a.bg-info:hover,
-a.bg-info:focus {
+a.bg-info:focus,
+.block-facets.panel .panel-title.bg-info:hover,
+.block-facets.panel .panel-title.bg-info:focus,
+.block-facets.panel .facet-item > a.bg-info:hover,
+.block-facets.panel .facet-item > a.bg-info:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-info:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-info:focus {
   background-color: #afd9ee;
 }
 .bg-warning {
   background-color: #fcf8e3;
 }
 a.bg-warning:hover,
-a.bg-warning:focus {
+a.bg-warning:focus,
+.block-facets.panel .panel-title.bg-warning:hover,
+.block-facets.panel .panel-title.bg-warning:focus,
+.block-facets.panel .facet-item > a.bg-warning:hover,
+.block-facets.panel .facet-item > a.bg-warning:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-warning:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-warning:focus {
   background-color: #f7ecb5;
 }
 .bg-danger {
   background-color: #f2dede;
 }
 a.bg-danger:hover,
-a.bg-danger:focus {
+a.bg-danger:focus,
+.block-facets.panel .panel-title.bg-danger:hover,
+.block-facets.panel .panel-title.bg-danger:focus,
+.block-facets.panel .facet-item > a.bg-danger:hover,
+.block-facets.panel .facet-item > a.bg-danger:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-danger:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.bg-danger:focus {
   background-color: #e4b9b9;
 }
 .page-header {
@@ -3221,7 +3323,13 @@ fieldset[disabled] .btn {
   box-shadow: none;
 }
 a.btn.disabled,
-fieldset[disabled] a.btn {
+fieldset[disabled] a.btn,
+.block-facets.panel .panel-title.btn.disabled,
+fieldset[disabled] .block-facets.panel .panel-title.btn,
+.block-facets.panel .facet-item > a.btn.disabled,
+fieldset[disabled] .block-facets.panel .facet-item > a.btn,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.btn.disabled,
+fieldset[disabled] .block-facets.panel .facet-item > .block-facets.panel .panel-title.btn {
   pointer-events: none;
 }
 .btn-default {
@@ -3713,7 +3821,10 @@ tbody.collapse.in {
   overflow: hidden;
   background-color: #e5e5e5;
 }
-.dropdown-menu > li > a {
+.dropdown-menu > li > a,
+.dropdown-menu > li > .block-facets.panel .panel-title,
+.dropdown-menu > li > .block-facets.panel .facet-item > a,
+.dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   display: block;
   padding: 3px 20px;
   clear: both;
@@ -3723,14 +3834,29 @@ tbody.collapse.in {
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus {
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > .block-facets.panel .panel-title:hover,
+.dropdown-menu > li > .block-facets.panel .panel-title:focus,
+.dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
+.dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
+.dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   text-decoration: none;
   color: #03afdf;
   background-color: transparent;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
+.dropdown-menu > .active > a:focus,
+.dropdown-menu > .active > .block-facets.panel .panel-title,
+.dropdown-menu > .active > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .active > .block-facets.panel .panel-title:focus,
+.dropdown-menu > .active > .block-facets.panel .facet-item > a,
+.dropdown-menu > .active > .block-facets.panel .facet-item > a:hover,
+.dropdown-menu > .active > .block-facets.panel .facet-item > a:focus,
+.dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #03afdf;
   text-decoration: none;
   outline: 0;
@@ -3738,11 +3864,26 @@ tbody.collapse.in {
 }
 .dropdown-menu > .disabled > a,
 .dropdown-menu > .disabled > a:hover,
-.dropdown-menu > .disabled > a:focus {
+.dropdown-menu > .disabled > a:focus,
+.dropdown-menu > .disabled > .block-facets.panel .panel-title,
+.dropdown-menu > .disabled > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .disabled > .block-facets.panel .panel-title:focus,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > a,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > a:hover,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > a:focus,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
 }
 .dropdown-menu > .disabled > a:hover,
-.dropdown-menu > .disabled > a:focus {
+.dropdown-menu > .disabled > a:focus,
+.dropdown-menu > .disabled > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .disabled > .block-facets.panel .panel-title:focus,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > a:hover,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > a:focus,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   text-decoration: none;
   background-color: transparent;
   background-image: none;
@@ -3752,7 +3893,10 @@ tbody.collapse.in {
 .open > .dropdown-menu {
   display: block;
 }
-.open > a {
+.open > a,
+.open > .block-facets.panel .panel-title,
+.open > .block-facets.panel .facet-item > a,
+.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   outline: 0;
 }
 .dropdown-menu-right {
@@ -4144,21 +4288,39 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   display: block;
 }
-.nav > li > a {
+.nav > li > a,
+.nav > li > .block-facets.panel .panel-title,
+.nav > li > .block-facets.panel .facet-item > a,
+.nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   position: relative;
   display: block;
   padding: 0.7em 1.07em;
 }
 .nav > li > a:hover,
-.nav > li > a:focus {
+.nav > li > a:focus,
+.nav > li > .block-facets.panel .panel-title:hover,
+.nav > li > .block-facets.panel .panel-title:focus,
+.nav > li > .block-facets.panel .facet-item > a:hover,
+.nav > li > .block-facets.panel .facet-item > a:focus,
+.nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0.05);
 }
-.nav > li.disabled > a {
+.nav > li.disabled > a,
+.nav > li.disabled > .block-facets.panel .panel-title,
+.nav > li.disabled > .block-facets.panel .facet-item > a,
+.nav > li.disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #777777;
 }
 .nav > li.disabled > a:hover,
-.nav > li.disabled > a:focus {
+.nav > li.disabled > a:focus,
+.nav > li.disabled > .block-facets.panel .panel-title:hover,
+.nav > li.disabled > .block-facets.panel .panel-title:focus,
+.nav > li.disabled > .block-facets.panel .facet-item > a:hover,
+.nav > li.disabled > .block-facets.panel .facet-item > a:focus,
+.nav > li.disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav > li.disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
   text-decoration: none;
   background-color: transparent;
@@ -4166,7 +4328,16 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .nav .open > a,
 .nav .open > a:hover,
-.nav .open > a:focus {
+.nav .open > a:focus,
+.nav .open > .block-facets.panel .panel-title,
+.nav .open > .block-facets.panel .panel-title:hover,
+.nav .open > .block-facets.panel .panel-title:focus,
+.nav .open > .block-facets.panel .facet-item > a,
+.nav .open > .block-facets.panel .facet-item > a:hover,
+.nav .open > .block-facets.panel .facet-item > a:focus,
+.nav .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.nav .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   background-color: rgba(0, 0, 0, 0.05);
   border-color: #134780;
 }
@@ -4176,7 +4347,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   overflow: hidden;
   background-color: #e5e5e5;
 }
-.nav > li > a > img {
+.nav > li > a > img,
+.nav > li > .block-facets.panel .panel-title > img,
+.nav > li > .block-facets.panel .facet-item > a > img,
+.nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title > img {
   max-width: none;
 }
 .nav-tabs {
@@ -4186,18 +4360,33 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: left;
   margin-bottom: -1px;
 }
-.nav-tabs > li > a {
+.nav-tabs > li > a,
+.nav-tabs > li > .block-facets.panel .panel-title,
+.nav-tabs > li > .block-facets.panel .facet-item > a,
+.nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-right: 2px;
   line-height: 1.42857143;
   border: 1px solid transparent;
   border-radius: 0 0 0 0;
 }
-.nav-tabs > li > a:hover {
+.nav-tabs > li > a:hover,
+.nav-tabs > li > .block-facets.panel .panel-title:hover,
+.nav-tabs > li > .block-facets.panel .facet-item > a:hover,
+.nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover {
   border-color: #eeeeee #eeeeee #ddd;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > .block-facets.panel .panel-title,
+.nav-tabs > li.active > .block-facets.panel .panel-title:hover,
+.nav-tabs > li.active > .block-facets.panel .panel-title:focus,
+.nav-tabs > li.active > .block-facets.panel .facet-item > a,
+.nav-tabs > li.active > .block-facets.panel .facet-item > a:hover,
+.nav-tabs > li.active > .block-facets.panel .facet-item > a:focus,
+.nav-tabs > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.nav-tabs > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav-tabs > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #555555;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -4211,7 +4400,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs.nav-justified > li {
   float: none;
 }
-.nav-tabs.nav-justified > li > a {
+.nav-tabs.nav-justified > li > a,
+.nav-tabs.nav-justified > li > .block-facets.panel .panel-title,
+.nav-tabs.nav-justified > li > .block-facets.panel .facet-item > a,
+.nav-tabs.nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   text-align: center;
   margin-bottom: 5px;
 }
@@ -4224,34 +4416,64 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     display: table-cell;
     width: 1%;
   }
-  .nav-tabs.nav-justified > li > a {
+  .nav-tabs.nav-justified > li > a,
+  .nav-tabs.nav-justified > li > .block-facets.panel .panel-title,
+  .nav-tabs.nav-justified > li > .block-facets.panel .facet-item > a,
+  .nav-tabs.nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     margin-bottom: 0;
   }
 }
-.nav-tabs.nav-justified > li > a {
+.nav-tabs.nav-justified > li > a,
+.nav-tabs.nav-justified > li > .block-facets.panel .panel-title,
+.nav-tabs.nav-justified > li > .block-facets.panel .facet-item > a,
+.nav-tabs.nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-right: 0;
   border-radius: 0;
 }
 .nav-tabs.nav-justified > .active > a,
 .nav-tabs.nav-justified > .active > a:hover,
-.nav-tabs.nav-justified > .active > a:focus {
+.nav-tabs.nav-justified > .active > a:focus,
+.nav-tabs.nav-justified > .active > .block-facets.panel .panel-title,
+.nav-tabs.nav-justified > .active > .block-facets.panel .panel-title:hover,
+.nav-tabs.nav-justified > .active > .block-facets.panel .panel-title:focus,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a:hover,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a:focus,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
-  .nav-tabs.nav-justified > li > a {
+  .nav-tabs.nav-justified > li > a,
+  .nav-tabs.nav-justified > li > .block-facets.panel .panel-title,
+  .nav-tabs.nav-justified > li > .block-facets.panel .facet-item > a,
+  .nav-tabs.nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     border-bottom: 1px solid #ddd;
     border-radius: 0 0 0 0;
   }
   .nav-tabs.nav-justified > .active > a,
   .nav-tabs.nav-justified > .active > a:hover,
-  .nav-tabs.nav-justified > .active > a:focus {
+  .nav-tabs.nav-justified > .active > a:focus,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .panel-title,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .panel-title:hover,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .panel-title:focus,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a:hover,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > a:focus,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .nav-tabs.nav-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     border-bottom-color: #fff;
   }
 }
 .nav-pills > li {
   float: left;
 }
-.nav-pills > li > a {
+.nav-pills > li > a,
+.nav-pills > li > .block-facets.panel .panel-title,
+.nav-pills > li > .block-facets.panel .facet-item > a,
+.nav-pills > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-radius: 0;
 }
 .nav-pills > li + li {
@@ -4259,7 +4481,16 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > .block-facets.panel .panel-title,
+.nav-pills > li.active > .block-facets.panel .panel-title:hover,
+.nav-pills > li.active > .block-facets.panel .panel-title:focus,
+.nav-pills > li.active > .block-facets.panel .facet-item > a,
+.nav-pills > li.active > .block-facets.panel .facet-item > a:hover,
+.nav-pills > li.active > .block-facets.panel .facet-item > a:focus,
+.nav-pills > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.nav-pills > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav-pills > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #03afdf;
   background-color: transparent;
 }
@@ -4276,7 +4507,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-justified > li {
   float: none;
 }
-.nav-justified > li > a {
+.nav-justified > li > a,
+.nav-justified > li > .block-facets.panel .panel-title,
+.nav-justified > li > .block-facets.panel .facet-item > a,
+.nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   text-align: center;
   margin-bottom: 5px;
 }
@@ -4289,30 +4523,57 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     display: table-cell;
     width: 1%;
   }
-  .nav-justified > li > a {
+  .nav-justified > li > a,
+  .nav-justified > li > .block-facets.panel .panel-title,
+  .nav-justified > li > .block-facets.panel .facet-item > a,
+  .nav-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     margin-bottom: 0;
   }
 }
 .nav-tabs-justified {
   border-bottom: 0;
 }
-.nav-tabs-justified > li > a {
+.nav-tabs-justified > li > a,
+.nav-tabs-justified > li > .block-facets.panel .panel-title,
+.nav-tabs-justified > li > .block-facets.panel .facet-item > a,
+.nav-tabs-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-right: 0;
   border-radius: 0;
 }
 .nav-tabs-justified > .active > a,
 .nav-tabs-justified > .active > a:hover,
-.nav-tabs-justified > .active > a:focus {
+.nav-tabs-justified > .active > a:focus,
+.nav-tabs-justified > .active > .block-facets.panel .panel-title,
+.nav-tabs-justified > .active > .block-facets.panel .panel-title:hover,
+.nav-tabs-justified > .active > .block-facets.panel .panel-title:focus,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > a,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > a:hover,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > a:focus,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border: 1px solid #ddd;
 }
 @media (min-width: 768px) {
-  .nav-tabs-justified > li > a {
+  .nav-tabs-justified > li > a,
+  .nav-tabs-justified > li > .block-facets.panel .panel-title,
+  .nav-tabs-justified > li > .block-facets.panel .facet-item > a,
+  .nav-tabs-justified > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     border-bottom: 1px solid #ddd;
     border-radius: 0 0 0 0;
   }
   .nav-tabs-justified > .active > a,
   .nav-tabs-justified > .active > a:hover,
-  .nav-tabs-justified > .active > a:focus {
+  .nav-tabs-justified > .active > a:focus,
+  .nav-tabs-justified > .active > .block-facets.panel .panel-title,
+  .nav-tabs-justified > .active > .block-facets.panel .panel-title:hover,
+  .nav-tabs-justified > .active > .block-facets.panel .panel-title:focus,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > a,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > a:hover,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > a:focus,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .nav-tabs-justified > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     border-bottom-color: #fff;
   }
 }
@@ -4490,7 +4751,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-nav {
   margin: 1.03174603rem -15px;
 }
-.navbar-nav > li > a {
+.navbar-nav > li > a,
+.navbar-nav > li > .block-facets.panel .panel-title,
+.navbar-nav > li > .block-facets.panel .facet-item > a,
+.navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   padding-top: 10px;
   padding-bottom: 10px;
   line-height: 1.42857143rem;
@@ -4506,14 +4770,26 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     box-shadow: none;
   }
   .navbar-nav .open .dropdown-menu > li > a,
-  .navbar-nav .open .dropdown-menu .dropdown-header {
+  .navbar-nav .open .dropdown-menu .dropdown-header,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     padding: 5px 15px 5px 25px;
   }
-  .navbar-nav .open .dropdown-menu > li > a {
+  .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     line-height: 1.42857143rem;
   }
   .navbar-nav .open .dropdown-menu > li > a:hover,
-  .navbar-nav .open .dropdown-menu > li > a:focus {
+  .navbar-nav .open .dropdown-menu > li > a:focus,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:hover,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:focus,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     background-image: none;
   }
 }
@@ -4525,7 +4801,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav > li {
     float: left;
   }
-  .navbar-nav > li > a {
+  .navbar-nav > li > a,
+  .navbar-nav > li > .block-facets.panel .panel-title,
+  .navbar-nav > li > .block-facets.panel .facet-item > a,
+  .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     padding-top: 2.06349206rem;
     padding-bottom: 2.06349206rem;
   }
@@ -4673,23 +4952,50 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-text {
   color: #222222;
 }
-.navbar-default .navbar-nav > li > a {
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-nav > li > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > a,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #222222;
 }
 .navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus {
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > li > .block-facets.panel .panel-title:focus,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > a:hover,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > a:focus,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #00afde;
   background-color: transparent;
 }
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .active > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .active > .block-facets.panel .panel-title:focus,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > a,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > a:hover,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > a:focus,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #00afde;
   background-color: transparent;
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,
-.navbar-default .navbar-nav > .disabled > a:focus {
+.navbar-default .navbar-nav > .disabled > a:focus,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .panel-title:focus,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > a,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > a:hover,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > a:focus,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #ccc;
   background-color: transparent;
 }
@@ -4709,28 +5015,64 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
-.navbar-default .navbar-nav > .open > a:focus {
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .open > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .open > .block-facets.panel .panel-title:focus,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > a,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > a:hover,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > a:focus,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-default .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   background-color: transparent;
   color: #00afde;
 }
 @media (max-width: 767px) {
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     color: #222222;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #00afde;
     background-color: transparent;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
-  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #00afde;
     background-color: transparent;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,
-  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a:focus,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #ccc;
     background-color: transparent;
   }
@@ -4769,23 +5111,50 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 .navbar-inverse .navbar-text {
   color: #9d9d9d;
 }
-.navbar-inverse .navbar-nav > li > a {
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > a,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #9d9d9d;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .panel-title:focus,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > a:hover,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > a:focus,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #fff;
   background-color: transparent;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
-.navbar-inverse .navbar-nav > .active > a:focus {
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .panel-title:focus,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > a,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > a:hover,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > a:focus,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #fff;
   background-color: #080808;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
-.navbar-inverse .navbar-nav > .disabled > a:focus {
+.navbar-inverse .navbar-nav > .disabled > a:focus,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .panel-title:focus,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > a,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > a:hover,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > a:focus,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #444;
   background-color: transparent;
 }
@@ -4805,7 +5174,16 @@ fieldset[disabled] .navbar-default .btn-link:focus {
 }
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:hover,
-.navbar-inverse .navbar-nav > .open > a:focus {
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .panel-title:focus,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > a,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > a:hover,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > a:focus,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.navbar-inverse .navbar-nav > .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   background-color: #080808;
   color: #fff;
 }
@@ -4816,23 +5194,50 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
     background-color: #080808;
   }
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     color: #9d9d9d;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #fff;
     background-color: transparent;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
-  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .panel-title:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #fff;
     background-color: #080808;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
-  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .panel-title:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > a:focus,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     color: #444;
     background-color: transparent;
   }
@@ -4884,7 +5289,10 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   display: inline;
 }
 .pagination > li > a,
-.pagination > li > span {
+.pagination > li > span,
+.pagination > li > .block-facets.panel .panel-title,
+.pagination > li > .block-facets.panel .facet-item > a,
+.pagination > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   position: relative;
   float: left;
   padding: 0.33333333rem 0.66666667rem;
@@ -4896,20 +5304,32 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   margin-left: -1px;
 }
 .pagination > li:first-child > a,
-.pagination > li:first-child > span {
+.pagination > li:first-child > span,
+.pagination > li:first-child > .block-facets.panel .panel-title,
+.pagination > li:first-child > .block-facets.panel .facet-item > a,
+.pagination > li:first-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-left: 0;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
 .pagination > li:last-child > a,
-.pagination > li:last-child > span {
+.pagination > li:last-child > span,
+.pagination > li:last-child > .block-facets.panel .panel-title,
+.pagination > li:last-child > .block-facets.panel .facet-item > a,
+.pagination > li:last-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
-.pagination > li > span:focus {
+.pagination > li > span:focus,
+.pagination > li > .block-facets.panel .panel-title:hover,
+.pagination > li > .block-facets.panel .panel-title:focus,
+.pagination > li > .block-facets.panel .facet-item > a:hover,
+.pagination > li > .block-facets.panel .facet-item > a:focus,
+.pagination > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.pagination > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   z-index: 2;
   color: #03afdf;
   background-color: #eeeeee;
@@ -4920,7 +5340,16 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .active > a:hover,
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
-.pagination > .active > span:focus {
+.pagination > .active > span:focus,
+.pagination > .active > .block-facets.panel .panel-title,
+.pagination > .active > .block-facets.panel .panel-title:hover,
+.pagination > .active > .block-facets.panel .panel-title:focus,
+.pagination > .active > .block-facets.panel .facet-item > a,
+.pagination > .active > .block-facets.panel .facet-item > a:hover,
+.pagination > .active > .block-facets.panel .facet-item > a:focus,
+.pagination > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.pagination > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.pagination > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   z-index: 3;
   color: #fff;
   background-color: #134780;
@@ -4932,41 +5361,68 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .disabled > span:focus,
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
+.pagination > .disabled > a:focus,
+.pagination > .disabled > .block-facets.panel .panel-title,
+.pagination > .disabled > .block-facets.panel .panel-title:hover,
+.pagination > .disabled > .block-facets.panel .panel-title:focus,
+.pagination > .disabled > .block-facets.panel .facet-item > a,
+.pagination > .disabled > .block-facets.panel .facet-item > a:hover,
+.pagination > .disabled > .block-facets.panel .facet-item > a:focus,
+.pagination > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.pagination > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.pagination > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
   background-color: #fff;
   border-color: #ddd;
   cursor: not-allowed;
 }
 .pagination-lg > li > a,
-.pagination-lg > li > span {
+.pagination-lg > li > span,
+.pagination-lg > li > .block-facets.panel .panel-title,
+.pagination-lg > li > .block-facets.panel .facet-item > a,
+.pagination-lg > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   padding: 0.55555556rem 0.88888889rem;
   font-size: 1.25rem;
   line-height: 1.3333333;
 }
 .pagination-lg > li:first-child > a,
-.pagination-lg > li:first-child > span {
+.pagination-lg > li:first-child > span,
+.pagination-lg > li:first-child > .block-facets.panel .panel-title,
+.pagination-lg > li:first-child > .block-facets.panel .facet-item > a,
+.pagination-lg > li:first-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-bottom-left-radius: 6px;
   border-top-left-radius: 6px;
 }
 .pagination-lg > li:last-child > a,
-.pagination-lg > li:last-child > span {
+.pagination-lg > li:last-child > span,
+.pagination-lg > li:last-child > .block-facets.panel .panel-title,
+.pagination-lg > li:last-child > .block-facets.panel .facet-item > a,
+.pagination-lg > li:last-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-bottom-right-radius: 6px;
   border-top-right-radius: 6px;
 }
 .pagination-sm > li > a,
-.pagination-sm > li > span {
+.pagination-sm > li > span,
+.pagination-sm > li > .block-facets.panel .panel-title,
+.pagination-sm > li > .block-facets.panel .facet-item > a,
+.pagination-sm > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   padding: 0.27777778rem 0.55555556rem;
   font-size: 0.85rem;
   line-height: 1.5;
 }
 .pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
+.pagination-sm > li:first-child > span,
+.pagination-sm > li:first-child > .block-facets.panel .panel-title,
+.pagination-sm > li:first-child > .block-facets.panel .facet-item > a,
+.pagination-sm > li:first-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-bottom-left-radius: 3px;
   border-top-left-radius: 3px;
 }
 .pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
+.pagination-sm > li:last-child > span,
+.pagination-sm > li:last-child > .block-facets.panel .panel-title,
+.pagination-sm > li:last-child > .block-facets.panel .facet-item > a,
+.pagination-sm > li:last-child > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
 }
@@ -4980,7 +5436,10 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   display: inline;
 }
 .pager li > a,
-.pager li > span {
+.pager li > span,
+.pager li > .block-facets.panel .panel-title,
+.pager li > .block-facets.panel .facet-item > a,
+.pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   display: inline-block;
   padding: 5px 14px;
   background-color: #fff;
@@ -4988,22 +5447,43 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   border-radius: 15px;
 }
 .pager li > a:hover,
-.pager li > a:focus {
+.pager li > a:focus,
+.pager li > .block-facets.panel .panel-title:hover,
+.pager li > .block-facets.panel .panel-title:focus,
+.pager li > .block-facets.panel .facet-item > a:hover,
+.pager li > .block-facets.panel .facet-item > a:focus,
+.pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   text-decoration: none;
   background-color: #eeeeee;
 }
 .pager .next > a,
-.pager .next > span {
+.pager .next > span,
+.pager .next > .block-facets.panel .panel-title,
+.pager .next > .block-facets.panel .facet-item > a,
+.pager .next > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   float: right;
 }
 .pager .previous > a,
-.pager .previous > span {
+.pager .previous > span,
+.pager .previous > .block-facets.panel .panel-title,
+.pager .previous > .block-facets.panel .facet-item > a,
+.pager .previous > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   float: left;
 }
 .pager .disabled > a,
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
-.pager .disabled > span {
+.pager .disabled > span,
+.pager .disabled > .block-facets.panel .panel-title,
+.pager .disabled > .block-facets.panel .panel-title:hover,
+.pager .disabled > .block-facets.panel .panel-title:focus,
+.pager .disabled > .block-facets.panel .facet-item > a,
+.pager .disabled > .block-facets.panel .facet-item > a:hover,
+.pager .disabled > .block-facets.panel .facet-item > a:focus,
+.pager .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.pager .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.pager .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
   background-color: #fff;
   cursor: not-allowed;
@@ -5021,7 +5501,13 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   border-radius: .25em;
 }
 a.label:hover,
-a.label:focus {
+a.label:focus,
+.block-facets.panel .panel-title.label:hover,
+.block-facets.panel .panel-title.label:focus,
+.block-facets.panel .facet-item > a.label:hover,
+.block-facets.panel .facet-item > a.label:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.label:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.label:focus {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
@@ -5108,13 +5594,22 @@ a.label:focus {
   padding: 1px 5px;
 }
 a.badge:hover,
-a.badge:focus {
+a.badge:focus,
+.block-facets.panel .panel-title.badge:hover,
+.block-facets.panel .panel-title.badge:focus,
+.block-facets.panel .facet-item > a.badge:hover,
+.block-facets.panel .facet-item > a.badge:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.badge:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.badge:focus {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
 }
 .list-group-item.active > .badge,
-.nav-pills > .active > a > .badge {
+.nav-pills > .active > a > .badge,
+.nav-pills > .active > .block-facets.panel .panel-title > .badge,
+.nav-pills > .active > .block-facets.panel .facet-item > a > .badge,
+.nav-pills > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title > .badge {
   color: #134780;
   background-color: #fff;
 }
@@ -5124,7 +5619,10 @@ a.badge:focus {
 .list-group-item > .badge + .badge {
   margin-right: 5px;
 }
-.nav-pills > li > a > .badge {
+.nav-pills > li > a > .badge,
+.nav-pills > li > .block-facets.panel .panel-title > .badge,
+.nav-pills > li > .block-facets.panel .facet-item > a > .badge,
+.nav-pills > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title > .badge {
   margin-left: 3px;
 }
 .jumbotron {
@@ -5185,13 +5683,25 @@ a.badge:focus {
   transition: border 0.2s ease-in-out;
 }
 .thumbnail > img,
-.thumbnail a > img {
+.thumbnail a > img,
+.thumbnail .block-facets.panel .panel-title > img,
+.thumbnail .block-facets.panel .facet-item > a > img,
+.thumbnail .block-facets.panel .facet-item > .block-facets.panel .panel-title > img {
   margin-left: auto;
   margin-right: auto;
 }
 a.thumbnail:hover,
 a.thumbnail:focus,
-a.thumbnail.active {
+a.thumbnail.active,
+.block-facets.panel .panel-title.thumbnail:hover,
+.block-facets.panel .panel-title.thumbnail:focus,
+.block-facets.panel .panel-title.thumbnail.active,
+.block-facets.panel .facet-item > a.thumbnail:hover,
+.block-facets.panel .facet-item > a.thumbnail:focus,
+.block-facets.panel .facet-item > a.thumbnail.active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.thumbnail:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.thumbnail:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.thumbnail.active {
   border-color: #134780;
 }
 .thumbnail .caption {
@@ -5428,17 +5938,29 @@ a.thumbnail.active {
   border-bottom-left-radius: 0;
 }
 a.list-group-item,
-button.list-group-item {
+button.list-group-item,
+.block-facets.panel .panel-title.list-group-item,
+.block-facets.panel .facet-item > a.list-group-item,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item {
   color: #555;
 }
 a.list-group-item .list-group-item-heading,
-button.list-group-item .list-group-item-heading {
+button.list-group-item .list-group-item-heading,
+.block-facets.panel .panel-title.list-group-item .list-group-item-heading,
+.block-facets.panel .facet-item > a.list-group-item .list-group-item-heading,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item .list-group-item-heading {
   color: #333;
 }
 a.list-group-item:hover,
 button.list-group-item:hover,
 a.list-group-item:focus,
-button.list-group-item:focus {
+button.list-group-item:focus,
+.block-facets.panel .panel-title.list-group-item:hover,
+.block-facets.panel .panel-title.list-group-item:focus,
+.block-facets.panel .facet-item > a.list-group-item:hover,
+.block-facets.panel .facet-item > a.list-group-item:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item:focus {
   text-decoration: none;
   color: #555;
   background-color: #f5f5f5;
@@ -5493,17 +6015,29 @@ button.list-group-item {
   background-color: #dff0d8;
 }
 a.list-group-item-success,
-button.list-group-item-success {
+button.list-group-item-success,
+.block-facets.panel .panel-title.list-group-item-success,
+.block-facets.panel .facet-item > a.list-group-item-success,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success {
   color: #3c763d;
 }
 a.list-group-item-success .list-group-item-heading,
-button.list-group-item-success .list-group-item-heading {
+button.list-group-item-success .list-group-item-heading,
+.block-facets.panel .panel-title.list-group-item-success .list-group-item-heading,
+.block-facets.panel .facet-item > a.list-group-item-success .list-group-item-heading,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-success:hover,
 button.list-group-item-success:hover,
 a.list-group-item-success:focus,
-button.list-group-item-success:focus {
+button.list-group-item-success:focus,
+.block-facets.panel .panel-title.list-group-item-success:hover,
+.block-facets.panel .panel-title.list-group-item-success:focus,
+.block-facets.panel .facet-item > a.list-group-item-success:hover,
+.block-facets.panel .facet-item > a.list-group-item-success:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success:focus {
   color: #3c763d;
   background-color: #d0e9c6;
 }
@@ -5512,7 +6046,16 @@ button.list-group-item-success.active,
 a.list-group-item-success.active:hover,
 button.list-group-item-success.active:hover,
 a.list-group-item-success.active:focus,
-button.list-group-item-success.active:focus {
+button.list-group-item-success.active:focus,
+.block-facets.panel .panel-title.list-group-item-success.active,
+.block-facets.panel .panel-title.list-group-item-success.active:hover,
+.block-facets.panel .panel-title.list-group-item-success.active:focus,
+.block-facets.panel .facet-item > a.list-group-item-success.active,
+.block-facets.panel .facet-item > a.list-group-item-success.active:hover,
+.block-facets.panel .facet-item > a.list-group-item-success.active:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success.active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success.active:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-success.active:focus {
   color: #fff;
   background-color: #3c763d;
   border-color: #3c763d;
@@ -5522,17 +6065,29 @@ button.list-group-item-success.active:focus {
   background-color: #d9edf7;
 }
 a.list-group-item-info,
-button.list-group-item-info {
+button.list-group-item-info,
+.block-facets.panel .panel-title.list-group-item-info,
+.block-facets.panel .facet-item > a.list-group-item-info,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info {
   color: #31708f;
 }
 a.list-group-item-info .list-group-item-heading,
-button.list-group-item-info .list-group-item-heading {
+button.list-group-item-info .list-group-item-heading,
+.block-facets.panel .panel-title.list-group-item-info .list-group-item-heading,
+.block-facets.panel .facet-item > a.list-group-item-info .list-group-item-heading,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-info:hover,
 button.list-group-item-info:hover,
 a.list-group-item-info:focus,
-button.list-group-item-info:focus {
+button.list-group-item-info:focus,
+.block-facets.panel .panel-title.list-group-item-info:hover,
+.block-facets.panel .panel-title.list-group-item-info:focus,
+.block-facets.panel .facet-item > a.list-group-item-info:hover,
+.block-facets.panel .facet-item > a.list-group-item-info:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info:focus {
   color: #31708f;
   background-color: #c4e3f3;
 }
@@ -5541,7 +6096,16 @@ button.list-group-item-info.active,
 a.list-group-item-info.active:hover,
 button.list-group-item-info.active:hover,
 a.list-group-item-info.active:focus,
-button.list-group-item-info.active:focus {
+button.list-group-item-info.active:focus,
+.block-facets.panel .panel-title.list-group-item-info.active,
+.block-facets.panel .panel-title.list-group-item-info.active:hover,
+.block-facets.panel .panel-title.list-group-item-info.active:focus,
+.block-facets.panel .facet-item > a.list-group-item-info.active,
+.block-facets.panel .facet-item > a.list-group-item-info.active:hover,
+.block-facets.panel .facet-item > a.list-group-item-info.active:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info.active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info.active:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-info.active:focus {
   color: #fff;
   background-color: #31708f;
   border-color: #31708f;
@@ -5551,17 +6115,29 @@ button.list-group-item-info.active:focus {
   background-color: #fcf8e3;
 }
 a.list-group-item-warning,
-button.list-group-item-warning {
+button.list-group-item-warning,
+.block-facets.panel .panel-title.list-group-item-warning,
+.block-facets.panel .facet-item > a.list-group-item-warning,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning {
   color: #8a6d3b;
 }
 a.list-group-item-warning .list-group-item-heading,
-button.list-group-item-warning .list-group-item-heading {
+button.list-group-item-warning .list-group-item-heading,
+.block-facets.panel .panel-title.list-group-item-warning .list-group-item-heading,
+.block-facets.panel .facet-item > a.list-group-item-warning .list-group-item-heading,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-warning:hover,
 button.list-group-item-warning:hover,
 a.list-group-item-warning:focus,
-button.list-group-item-warning:focus {
+button.list-group-item-warning:focus,
+.block-facets.panel .panel-title.list-group-item-warning:hover,
+.block-facets.panel .panel-title.list-group-item-warning:focus,
+.block-facets.panel .facet-item > a.list-group-item-warning:hover,
+.block-facets.panel .facet-item > a.list-group-item-warning:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning:focus {
   color: #8a6d3b;
   background-color: #faf2cc;
 }
@@ -5570,7 +6146,16 @@ button.list-group-item-warning.active,
 a.list-group-item-warning.active:hover,
 button.list-group-item-warning.active:hover,
 a.list-group-item-warning.active:focus,
-button.list-group-item-warning.active:focus {
+button.list-group-item-warning.active:focus,
+.block-facets.panel .panel-title.list-group-item-warning.active,
+.block-facets.panel .panel-title.list-group-item-warning.active:hover,
+.block-facets.panel .panel-title.list-group-item-warning.active:focus,
+.block-facets.panel .facet-item > a.list-group-item-warning.active,
+.block-facets.panel .facet-item > a.list-group-item-warning.active:hover,
+.block-facets.panel .facet-item > a.list-group-item-warning.active:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning.active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning.active:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-warning.active:focus {
   color: #fff;
   background-color: #8a6d3b;
   border-color: #8a6d3b;
@@ -5580,17 +6165,29 @@ button.list-group-item-warning.active:focus {
   background-color: #f2dede;
 }
 a.list-group-item-danger,
-button.list-group-item-danger {
+button.list-group-item-danger,
+.block-facets.panel .panel-title.list-group-item-danger,
+.block-facets.panel .facet-item > a.list-group-item-danger,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger {
   color: #a94442;
 }
 a.list-group-item-danger .list-group-item-heading,
-button.list-group-item-danger .list-group-item-heading {
+button.list-group-item-danger .list-group-item-heading,
+.block-facets.panel .panel-title.list-group-item-danger .list-group-item-heading,
+.block-facets.panel .facet-item > a.list-group-item-danger .list-group-item-heading,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-danger:hover,
 button.list-group-item-danger:hover,
 a.list-group-item-danger:focus,
-button.list-group-item-danger:focus {
+button.list-group-item-danger:focus,
+.block-facets.panel .panel-title.list-group-item-danger:hover,
+.block-facets.panel .panel-title.list-group-item-danger:focus,
+.block-facets.panel .facet-item > a.list-group-item-danger:hover,
+.block-facets.panel .facet-item > a.list-group-item-danger:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger:focus {
   color: #a94442;
   background-color: #ebcccc;
 }
@@ -5599,7 +6196,16 @@ button.list-group-item-danger.active,
 a.list-group-item-danger.active:hover,
 button.list-group-item-danger.active:hover,
 a.list-group-item-danger.active:focus,
-button.list-group-item-danger.active:focus {
+button.list-group-item-danger.active:focus,
+.block-facets.panel .panel-title.list-group-item-danger.active,
+.block-facets.panel .panel-title.list-group-item-danger.active:hover,
+.block-facets.panel .panel-title.list-group-item-danger.active:focus,
+.block-facets.panel .facet-item > a.list-group-item-danger.active,
+.block-facets.panel .facet-item > a.list-group-item-danger.active:hover,
+.block-facets.panel .facet-item > a.list-group-item-danger.active:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger.active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger.active:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.list-group-item-danger.active:focus {
   color: #fff;
   background-color: #a94442;
   border-color: #a94442;
@@ -5621,10 +6227,10 @@ button.list-group-item-danger.active:focus {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .panel-body {
-  padding: 15px;
+  padding: 1em;
 }
 .panel-heading {
-  padding: 10px 15px;
+  padding: 0.8em 1em;
   border-bottom: 1px solid transparent;
   border-top-right-radius: -1;
   border-top-left-radius: -1;
@@ -5642,11 +6248,20 @@ button.list-group-item-danger.active:focus {
 .panel-title > small,
 .panel-title > .small,
 .panel-title > small > a,
-.panel-title > .small > a {
+.panel-title > .small > a,
+.panel-title > .block-facets.panel .panel-title,
+.panel-title > small > .block-facets.panel .panel-title,
+.panel-title > .small > .block-facets.panel .panel-title,
+.panel-title > .block-facets.panel .facet-item > a,
+.panel-title > small > .block-facets.panel .facet-item > a,
+.panel-title > .small > .block-facets.panel .facet-item > a,
+.panel-title > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.panel-title > small > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.panel-title > .small > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: inherit;
 }
 .panel-footer {
-  padding: 10px 15px;
+  padding: 0.8em 1em;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   border-bottom-right-radius: -1;
@@ -5691,8 +6306,8 @@ button.list-group-item-danger.active:focus {
 .panel > .table caption,
 .panel > .table-responsive > .table caption,
 .panel > .panel-collapse > .table caption {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 .panel > .table:first-child,
 .panel > .table-responsive:first-child > .table:first-child {
@@ -6414,7 +7029,10 @@ button.close {
   transition: 0.6s ease-in-out left;
 }
 .carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
+.carousel-inner > .item > a > img,
+.carousel-inner > .item > .block-facets.panel .panel-title > img,
+.carousel-inner > .item > .block-facets.panel .facet-item > a > img,
+.carousel-inner > .item > .block-facets.panel .facet-item > .block-facets.panel .panel-title > img {
   line-height: 1;
 }
 @media all and (transform-3d), (-webkit-transform-3d) {
@@ -6930,27 +7548,66 @@ button.close {
 .alert-sm {
   padding: 5px 10px;
 }
-.alert a {
+.alert a,
+.alert .block-facets.panel .panel-title,
+.alert .block-facets.panel .facet-item > a,
+.alert .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   font-weight: bold;
 }
 .alert-success a,
 .alert-success a:hover,
-.alert-success a:focus {
+.alert-success a:focus,
+.alert-success .block-facets.panel .panel-title,
+.alert-success .block-facets.panel .panel-title:hover,
+.alert-success .block-facets.panel .panel-title:focus,
+.alert-success .block-facets.panel .facet-item > a,
+.alert-success .block-facets.panel .facet-item > a:hover,
+.alert-success .block-facets.panel .facet-item > a:focus,
+.alert-success .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.alert-success .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.alert-success .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #2b542c;
 }
 .alert-info a,
 .alert-info a:hover,
-.alert-info a:focus {
+.alert-info a:focus,
+.alert-info .block-facets.panel .panel-title,
+.alert-info .block-facets.panel .panel-title:hover,
+.alert-info .block-facets.panel .panel-title:focus,
+.alert-info .block-facets.panel .facet-item > a,
+.alert-info .block-facets.panel .facet-item > a:hover,
+.alert-info .block-facets.panel .facet-item > a:focus,
+.alert-info .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.alert-info .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.alert-info .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #245269;
 }
 .alert-warning a,
 .alert-warning a:hover,
-.alert-warning a:focus {
+.alert-warning a:focus,
+.alert-warning .block-facets.panel .panel-title,
+.alert-warning .block-facets.panel .panel-title:hover,
+.alert-warning .block-facets.panel .panel-title:focus,
+.alert-warning .block-facets.panel .facet-item > a,
+.alert-warning .block-facets.panel .facet-item > a:hover,
+.alert-warning .block-facets.panel .facet-item > a:focus,
+.alert-warning .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.alert-warning .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.alert-warning .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #66512c;
 }
 .alert-danger a,
 .alert-danger a:hover,
-.alert-danger a:focus {
+.alert-danger a:focus,
+.alert-danger .block-facets.panel .panel-title,
+.alert-danger .block-facets.panel .panel-title:hover,
+.alert-danger .block-facets.panel .panel-title:focus,
+.alert-danger .block-facets.panel .facet-item > a,
+.alert-danger .block-facets.panel .facet-item > a:hover,
+.alert-danger .block-facets.panel .facet-item > a:focus,
+.alert-danger .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.alert-danger .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.alert-danger .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #843534;
 }
 /**
@@ -6968,7 +7625,10 @@ button.close {
   display: inline-block;
   animation: glyphicon-spin 1s infinite linear;
 }
-a .glyphicon-spin {
+a .glyphicon-spin,
+.block-facets.panel .panel-title .glyphicon-spin,
+.block-facets.panel .facet-item > a .glyphicon-spin,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon-spin {
   display: inline-block;
   text-decoration: none;
 }
@@ -7086,7 +7746,19 @@ html.js .ajax-new-content:empty {
 .file-link a,
 .file-link a:hover,
 .file-link a:focus,
-.file-link a:active {
+.file-link a:active,
+.file-link .block-facets.panel .panel-title,
+.file-link .block-facets.panel .panel-title:hover,
+.file-link .block-facets.panel .panel-title:focus,
+.file-link .block-facets.panel .panel-title:active,
+.file-link .block-facets.panel .facet-item > a,
+.file-link .block-facets.panel .facet-item > a:hover,
+.file-link .block-facets.panel .facet-item > a:focus,
+.file-link .block-facets.panel .facet-item > a:active,
+.file-link .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.file-link .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.file-link .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.file-link .block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
   color: inherit;
 }
 .file-size {
@@ -7209,10 +7881,16 @@ table .radio.form-no-label {
 /**
  * Icon styles.
  */
-a.icon-before .glyphicon {
+a.icon-before .glyphicon,
+.block-facets.panel .panel-title.icon-before .glyphicon,
+.block-facets.panel .facet-item > a.icon-before .glyphicon,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.icon-before .glyphicon {
   margin-right: .25em;
 }
-a.icon-after .glyphicon {
+a.icon-after .glyphicon,
+.block-facets.panel .panel-title.icon-after .glyphicon,
+.block-facets.panel .facet-item > a.icon-after .glyphicon,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.icon-after .glyphicon {
   margin-left: .25em;
 }
 .btn.icon-before .glyphicon {
@@ -7439,10 +8117,16 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
     display: block;
   }
-  .navbar-collapse .navbar-nav > li > a {
+  .navbar-collapse .navbar-nav > li > a,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     display: inline-block;
   }
-  .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle {
     display: none;
   }
 }
@@ -7472,10 +8156,19 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     margin: 0;
   }
   .navbar-collapse .navbar-nav a,
-  .navbar-collapse .navbar-nav .open .dropdown-menu > li > a {
+  .navbar-collapse .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-collapse .navbar-nav .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav .open .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     padding-left: 5rem;
   }
-  .navbar-collapse .navbar-nav > li > a {
+  .navbar-collapse .navbar-nav > li > a,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     font-size: 1.42857143rem;
     line-height: 1;
     padding-bottom: 1.78571429rem;
@@ -7483,7 +8176,10 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     color: #134780;
     transition: all .1s;
   }
-  .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a.dropdown-toggle,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle {
     display: inline-block;
     line-height: 0;
     padding-left: 1.07142857rem;
@@ -7491,11 +8187,20 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     position: absolute;
     z-index: 1;
   }
-  .navbar-collapse .navbar-nav > li > a.dropdown-toggle .icon-plus {
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle .icon-plus,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title.dropdown-toggle .icon-plus,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a.dropdown-toggle .icon-plus,
+  .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle .icon-plus {
     line-height: 1.42857143rem;
   }
   .navbar-collapse .navbar-nav > li.open > a,
-  .navbar-collapse .navbar-nav > li.active > a {
+  .navbar-collapse .navbar-nav > li.active > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     color: #fff;
   }
   .navbar-collapse .navbar-nav > li.open > a,
@@ -7511,7 +8216,49 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li.open > a.dropdown-toggle:focus + a,
   .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:focus + a,
   .navbar-collapse .navbar-nav > li.open > a.dropdown-toggle:active + a,
-  .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:active + a {
+  .navbar-collapse .navbar-nav > li.active > a.dropdown-toggle:active + a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title.dropdown-toggle:hover + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title.dropdown-toggle:hover + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title.dropdown-toggle:focus + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title.dropdown-toggle:focus + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title.dropdown-toggle:active + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title.dropdown-toggle:active + .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a.dropdown-toggle:hover + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a.dropdown-toggle:hover + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a.dropdown-toggle:focus + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a.dropdown-toggle:focus + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a.dropdown-toggle:active + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a.dropdown-toggle:active + .block-facets.panel .facet-item > a,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:hover + .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:hover + .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:focus + .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:focus + .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:active + .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title.dropdown-toggle:active + .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     background-color: #134780;
   }
   .navbar-collapse .navbar-nav > li.open > a:hover,
@@ -7519,7 +8266,25 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li.open > a:focus,
   .navbar-collapse .navbar-nav > li.active > a:focus,
   .navbar-collapse .navbar-nav > li.open > a:active,
-  .navbar-collapse .navbar-nav > li.active > a:active {
+  .navbar-collapse .navbar-nav > li.active > a:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .navbar-nav > li.open > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li.active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
     color: #03afdf;
   }
   .navbar-collapse .dropdown-menu {
@@ -7532,7 +8297,19 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .dropdown-menu > li > a,
   .navbar-collapse .dropdown-menu > .active > a,
   .navbar-collapse .dropdown-menu > .active > a:hover,
-  .navbar-collapse .dropdown-menu > .active > a:focus {
+  .navbar-collapse .dropdown-menu > .active > a:focus,
+  .navbar-collapse .dropdown-menu > li > .block-facets.panel .panel-title,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .panel-title,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .panel-title:focus,
+  .navbar-collapse .dropdown-menu > li > .block-facets.panel .facet-item > a,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > a,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > a:hover,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > a:focus,
+  .navbar-collapse .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+  .navbar-collapse .dropdown-menu > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
     background-color: transparent;
     font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 1.14285714rem;
@@ -7674,17 +8451,35 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   margin-top: -1px;
   margin-bottom: 0;
 }
-.tabs-below > .nav-tabs > li > a {
+.tabs-below > .nav-tabs > li > a,
+.tabs-below > .nav-tabs > li > .block-facets.panel .panel-title,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > a,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-radius: 0 0 0 0;
 }
 .tabs-below > .nav-tabs > li > a:hover,
-.tabs-below > .nav-tabs > li > a:focus {
+.tabs-below > .nav-tabs > li > a:focus,
+.tabs-below > .nav-tabs > li > .block-facets.panel .panel-title:hover,
+.tabs-below > .nav-tabs > li > .block-facets.panel .panel-title:focus,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > a:hover,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > a:focus,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-below > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-top-color: #ddd;
   border-bottom-color: transparent;
 }
 .tabs-below > .nav-tabs > .active > a,
 .tabs-below > .nav-tabs > .active > a:hover,
-.tabs-below > .nav-tabs > .active > a:focus {
+.tabs-below > .nav-tabs > .active > a:focus,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .panel-title,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .panel-title:hover,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .panel-title:focus,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > a,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > a:hover,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > a:focus,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-below > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-color: transparent #ddd #ddd #ddd;
 }
 .tabs-left > .nav-tabs,
@@ -7701,12 +8496,24 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   outline: 0;
 }
 .tabs-left > .nav-tabs > li > a,
-.tabs-right > .nav-tabs > li > a {
+.tabs-right > .nav-tabs > li > a,
+.tabs-left > .nav-tabs > li > .block-facets.panel .panel-title,
+.tabs-right > .nav-tabs > li > .block-facets.panel .panel-title,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > a,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > a,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-right: 0;
   margin-bottom: 3px;
 }
 .tabs-left > .nav-tabs > li > a:focus,
-.tabs-right > .nav-tabs > li > a:focus {
+.tabs-right > .nav-tabs > li > a:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .panel-title:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .panel-title:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > a:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > a:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   outline: 0;
 }
 .tabs-left > .tab-content,
@@ -7721,16 +8528,34 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   float: left;
   margin-right: -1px;
 }
-.tabs-left > .nav-tabs > li > a {
+.tabs-left > .nav-tabs > li > a,
+.tabs-left > .nav-tabs > li > .block-facets.panel .panel-title,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > a,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-radius: 0 0 0 0;
 }
 .tabs-left > .nav-tabs > li > a:hover,
-.tabs-left > .nav-tabs > li > a:focus {
+.tabs-left > .nav-tabs > li > a:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .panel-title:hover,
+.tabs-left > .nav-tabs > li > .block-facets.panel .panel-title:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > a:hover,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > a:focus,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-left > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-color: #eeeeee #ddd #eeeeee #eeeeee;
 }
 .tabs-left > .nav-tabs > .active > a,
 .tabs-left > .nav-tabs > .active > a:hover,
-.tabs-left > .nav-tabs > .active > a:focus {
+.tabs-left > .nav-tabs > .active > a:focus,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .panel-title,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .panel-title:hover,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .panel-title:focus,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > a,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > a:hover,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > a:focus,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-left > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-color: #ddd transparent #ddd #ddd;
   box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.05);
 }
@@ -7738,17 +8563,35 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   float: right;
   margin-left: -1px;
 }
-.tabs-right > .nav-tabs > li > a {
+.tabs-right > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > .block-facets.panel .panel-title,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > a,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-radius: 0 0 0 0;
 }
 .tabs-right > .nav-tabs > li > a:hover,
-.tabs-right > .nav-tabs > li > a:focus {
+.tabs-right > .nav-tabs > li > a:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .panel-title:hover,
+.tabs-right > .nav-tabs > li > .block-facets.panel .panel-title:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > a:hover,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > a:focus,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-right > .nav-tabs > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-color: #eeeeee #eeeeee #eeeeee #ddd;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
 .tabs-right > .nav-tabs > .active > a,
 .tabs-right > .nav-tabs > .active > a:hover,
-.tabs-right > .nav-tabs > .active > a:focus {
+.tabs-right > .nav-tabs > .active > a:focus,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .panel-title,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .panel-title:hover,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .panel-title:focus,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > a,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > a:hover,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > a:focus,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.tabs-right > .nav-tabs > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   border-color: #ddd #ddd #ddd transparent;
 }
 .nav-tabs {
@@ -7927,13 +8770,34 @@ body:not(.show-focus-outlines) textarea:active:focus {
 .breadcrumb + .page-header {
   margin-top: 1em;
 }
-a {
+a,
+.block-facets.panel .panel-title,
+.block-facets.panel .facet-item > a,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title {
   transition: color 0.2s, background-color 0.2s;
 }
 a:hover,
 a:focus,
-a:active {
+a:active,
+.block-facets.panel .panel-title:hover,
+.block-facets.panel .panel-title:focus,
+.block-facets.panel .panel-title:active,
+.block-facets.panel .facet-item > a:hover,
+.block-facets.panel .facet-item > a:focus,
+.block-facets.panel .facet-item > a:active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
   text-decoration: none;
+}
+.icon-collapse:before {
+  content: '+';
+  display: inline-block;
+  margin-right: 1em;
+  width: 0;
+}
+.collapsed .icon-collapse:before {
+  content: '-';
 }
 .footer {
   background-color: #134780;
@@ -7942,21 +8806,42 @@ a:active {
   border-color: rgba(255, 255, 255, 0.1);
 }
 .footer,
-.footer a {
+.footer a,
+.footer .block-facets.panel .panel-title,
+.footer .block-facets.panel .facet-item > a,
+.footer .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #fff;
 }
 .footer a:hover,
 .footer a:focus,
-.footer a:active {
+.footer a:active,
+.footer .block-facets.panel .panel-title:hover,
+.footer .block-facets.panel .panel-title:focus,
+.footer .block-facets.panel .panel-title:active,
+.footer .block-facets.panel .facet-item > a:hover,
+.footer .block-facets.panel .facet-item > a:focus,
+.footer .block-facets.panel .facet-item > a:active,
+.footer .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.footer .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.footer .block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
   text-decoration: none;
   color: #03afdf;
 }
 .footer .nav > li > a:hover,
-.footer .nav > li > a:focus {
+.footer .nav > li > a:focus,
+.footer .nav > li > .block-facets.panel .panel-title:hover,
+.footer .nav > li > .block-facets.panel .panel-title:focus,
+.footer .nav > li > .block-facets.panel .facet-item > a:hover,
+.footer .nav > li > .block-facets.panel .facet-item > a:focus,
+.footer .nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.footer .nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   background-color: transparent;
 }
 @media screen and (min-width: 768px) {
-  .footer #block-mainnavigation .nav > li > a {
+  .footer #block-mainnavigation .nav > li > a,
+  .footer #block-mainnavigation .nav > li > .block-facets.panel .panel-title,
+  .footer #block-mainnavigation .nav > li > .block-facets.panel .facet-item > a,
+  .footer #block-mainnavigation .nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     padding-left: 0;
     padding-right: 0;
   }
@@ -7973,14 +8858,20 @@ a:active {
 .footer #block-mainnavigation .navbar-nav > li {
   flex: 1 1 auto;
 }
-.footer #block-mainnavigation .navbar-nav > li > a {
+.footer #block-mainnavigation .navbar-nav > li > a,
+.footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .panel-title,
+.footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .facet-item > a,
+.footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   margin-bottom: .9em;
   margin-top: .9em;
   padding-bottom: .5em;
   padding-top: .5em;
 }
 @media screen and (max-width: 767px) {
-  .footer #block-mainnavigation .navbar-nav > li > a {
+  .footer #block-mainnavigation .navbar-nav > li > a,
+  .footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .panel-title,
+  .footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .facet-item > a,
+  .footer #block-mainnavigation .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     margin-bottom: .5em;
     margin-top: .5em;
     padding-bottom: .5em;
@@ -7992,7 +8883,10 @@ a:active {
     margin-left: 1.07142857rem;
   }
 }
-.footer #block-mainnavigation .inner > li > a {
+.footer #block-mainnavigation .inner > li > a,
+.footer #block-mainnavigation .inner > li > .block-facets.panel .panel-title,
+.footer #block-mainnavigation .inner > li > .block-facets.panel .facet-item > a,
+.footer #block-mainnavigation .inner > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   font-weight: 200;
   padding-bottom: .5em;
   padding-top: .5em;
@@ -8014,8 +8908,75 @@ a:active {
   margin-top: 2rem;
 }
 #block-mainnavigation > ul > li > a,
-#block-iucn-who-main-menu > ul > li > a {
+#block-iucn-who-main-menu > ul > li > a,
+#block-mainnavigation > ul > li > .block-facets.panel .panel-title,
+#block-iucn-who-main-menu > ul > li > .block-facets.panel .panel-title,
+#block-mainnavigation > ul > li > .block-facets.panel .facet-item > a,
+#block-iucn-who-main-menu > ul > li > .block-facets.panel .facet-item > a,
+#block-mainnavigation > ul > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title,
+#block-iucn-who-main-menu > ul > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   text-transform: uppercase;
+}
+.facets-title {
+  border-bottom: 1px solid #ddd;
+  font-size: 1em;
+  font-weight: 900;
+  margin-top: 0;
+  padding-bottom: .5em;
+  text-transform: uppercase;
+}
+.facets-subtitle + #facets-group {
+  margin-top: 1.5em;
+}
+.block-facets.panel {
+  border: none;
+  box-shadow: none;
+}
+.block-facets.panel .panel-heading {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+.block-facets.panel .panel-heading + .panel-collapse > .panel-body {
+  border: none;
+}
+.block-facets.panel .panel-title {
+  color: #134780;
+  font-size: 1em;
+}
+.block-facets.panel:first-child .panel-title {
+  margin-top: 0;
+}
+.block-facets.panel .item-list__links {
+  list-style-type: none;
+  padding-left: .5em;
+  position: relative;
+}
+.block-facets.panel .facet-item__status {
+  background-color: #03afdf;
+  background-image: url(../images/checkbox.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 60%;
+  border-radius: 4px 0 0 4px;
+  display: block;
+  height: 1.42857143em;
+  overflow: hidden;
+  position: absolute;
+  right: calc(100% - .5em);
+  text-indent: 999px;
+  width: 1.5em;
+}
+.block-facets.panel .facet-item__status + .facet-item__value {
+  background: #f0f0f0;
+}
+.block-facets.panel .facet-item > a,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #333333;
+}
+.block-facets.panel .facet-item__value {
+  display: block;
+  padding-left: .5em;
 }
 .search-block-container {
   background-color: #134780;
@@ -8112,7 +9073,10 @@ a:active {
 .view-sites-search article .field--name-field-image {
   height: 100%;
 }
-.view-sites-search article .field--name-field-image a {
+.view-sites-search article .field--name-field-image a,
+.view-sites-search article .field--name-field-image .block-facets.panel .panel-title,
+.view-sites-search article .field--name-field-image .block-facets.panel .facet-item > a,
+.view-sites-search article .field--name-field-image .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   height: 100%;
   display: block;
 }
@@ -8132,7 +9096,10 @@ a:active {
 .view-sites-search article .field--name-field-country .field--item {
   color: #a0a0a0;
 }
-.view-sites-search article .field--name-field-country a {
+.view-sites-search article .field--name-field-country a,
+.view-sites-search article .field--name-field-country .block-facets.panel .panel-title,
+.view-sites-search article .field--name-field-country .block-facets.panel .facet-item > a,
+.view-sites-search article .field--name-field-country .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: inherit;
   display: inline-block;
   font-size: .8em;
@@ -8141,7 +9108,10 @@ a:active {
   text-transform: uppercase;
 }
 .view-sites-search article .more-link,
-.view-sites-search article .more-link a {
+.view-sites-search article .more-link a,
+.view-sites-search article .more-link .block-facets.panel .panel-title,
+.view-sites-search article .more-link .block-facets.panel .facet-item > a,
+.view-sites-search article .more-link .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #03afdf;
 }
 .view-sites-search article .more-link .arrow {

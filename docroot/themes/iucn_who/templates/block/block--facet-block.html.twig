@@ -51,11 +51,13 @@
     'block-' ~ configuration.provider|clean_class,
     'block-' ~ plugin_id|clean_class,
     'clearfix',
+    'panel',
+    'panel-default'
   ]
   %}
 {% set collapse_id = base_plugin_id ~ '-' ~ derivative_plugin_id %}
-{# <section{{ attributes.addClass(classes) }}> #}
-  <div class="panel panel-default">
+
+  <section{{ attributes.addClass(classes) }}>
     <div class="panel-heading" role="tab" id="#heading-{{collapse_id}}">
       {{ title_prefix }}
       {% if label %}
@@ -70,6 +72,5 @@
         {% endblock %}
       </div>
     </div>
-  </div>
-{# </section> #}
+</section>
 
