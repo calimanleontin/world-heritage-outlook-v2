@@ -22,6 +22,8 @@
 %}
 {% if content %}
   <div{{ attributes.addClass(classes) }}>
+    <h2 class="facets-title">Filters</h2>
+    <div class="facets-subtitle">Choose one or more filters to refine your search.</div>
     <div id="facets-group" role="tablist" aria-multiselectable="true" class="panel-group">
       {{ content }}
     </div>

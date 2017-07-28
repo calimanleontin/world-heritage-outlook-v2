@@ -5,3 +5,74 @@
   }
 }
 
+// Facets block
+.facets-title {
+  // @todo: make mixin out of this
+  border-bottom: 1px solid #ddd;
+  font-size: 1em;
+  font-weight: 900;
+  margin-top: 0;
+  padding-bottom: .5em;
+  text-transform: uppercase;
+}
+.facets-subtitle + #facets-group {
+  margin-top: 1.5em;
+}
+.block-facets {
+  &.panel {
+    border: none;
+    box-shadow: none;
+    .panel-heading {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+    }
+    .panel-heading + .panel-collapse > .panel-body {
+      border:none;
+    }
+    .panel-title {
+      &:extend(a all);
+      color: @iucn-blue-dark;
+      font-size: 1em;
+    }
+    &:first-child .panel-title {
+      margin-top: 0;
+    }
+    // .panel-title.active-facet,
+    // .panel-title:hover, .panel-title:focus, .panel-title:hover:focus {
+    //   color: @link-hover-color;
+    // }
+    .item-list__links {
+      list-style-type: none;
+      padding-left: .5em;
+      position: relative;
+    }
+    .facet-item__status {
+      background-color: @iucn-blue-light;
+      background-image: url(../images/checkbox.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      border-radius: 4px 0 0 4px;
+      display: block;
+      height: 1em * @line-height-base;
+      overflow: hidden;
+      position: absolute;
+      right: calc(~'100% - .5em');
+      text-indent: 999px;
+      width: 1.5em;
+      + .facet-item__value {
+        background: @iucn-gray-lightest;
+      }
+    }
+    .facet-item > a {
+      &:extend(a all);
+      color: @text-color;
+    }
+    .facet-item__value {
+      display: block;
+      padding-left: .5em;
+    }
+  }
+
+}

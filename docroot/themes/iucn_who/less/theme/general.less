@@ -43,9 +43,10 @@ body:not(.show-focus-outlines) {
   border-bottom: none;
   border-left: .5em solid;
   color: @iucn-blue-dark;
+  font-weight: 800;
   line-height: 1.6;
-  padding-left: .25em;
   padding-bottom: (@line-height-computed / 2);
+  padding-left: .25em;
   .breadcrumb + & {
     margin-top: 1em;
   }
@@ -54,5 +55,18 @@ a {
   transition: color .2s, background-color .2s;
   &:hover, &:focus, &:active {
     text-decoration: none;
+  }
+}
+
+// Generic collapse icon
+.icon-collapse {
+  &:before {
+    content: '+';
+    display: inline-block;
+    margin-right: 1em;
+    width: 0;
+  }
+  .collapsed &:before {
+    content: '-';
   }
 }
