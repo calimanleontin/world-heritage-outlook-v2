@@ -9,6 +9,8 @@ dependencies:
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
+    - field.field.node.site.field_coordinate_x
+    - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
     - field.field.node.site.field_danger_list
@@ -226,4 +228,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_coordinate_x: true
+  field_coordinate_y: true
+  langcode: true

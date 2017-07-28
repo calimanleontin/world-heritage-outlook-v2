@@ -1,0 +1,18 @@
+uuid: 8d508c26-27a7-4767-84a2-d6282c6ff2ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.inscription_criteria
+id: taxonomy_term.inscription_criteria.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: inscription_criteria
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

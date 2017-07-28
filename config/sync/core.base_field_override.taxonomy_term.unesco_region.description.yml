@@ -1,0 +1,20 @@
+uuid: e1c9b657-6c09-41fc-a6a5-d4ca4597d205
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.unesco_region
+  module:
+    - text
+id: taxonomy_term.unesco_region.description
+field_name: description
+entity_type: taxonomy_term
+bundle: unesco_region
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
