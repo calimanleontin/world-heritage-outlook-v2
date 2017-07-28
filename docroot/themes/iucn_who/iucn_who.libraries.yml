@@ -1,10 +1,9 @@
 headroom:
     js:
-        libraries/headroom.js/dist/headroom.min.js: {}
+      libraries/headroom.js/dist/headroom.min.js: {}
 global-styling:
   css:
     theme:
-      //fonts.googleapis.com/css?family=Lato:300,400,700: { type: external }
       css/style.css: {}
   js:
     js/main.js: {}
