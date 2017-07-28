@@ -8,8 +8,8 @@ dependencies:
     - iucn_who
 id: languageswitcher
 theme: iucn_who
-region: facets
-weight: -7
+region: navigation_collapsible
+weight: -6
 provider: null
 plugin: 'language_block:language_interface'
 settings:
