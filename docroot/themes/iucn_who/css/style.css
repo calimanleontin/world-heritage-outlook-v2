@@ -7919,9 +7919,10 @@ body:not(.show-focus-outlines) textarea:active:focus {
   border-bottom: none;
   border-left: .5em solid;
   color: #134780;
+  font-weight: 800;
   line-height: 1.6;
-  padding-left: .25em;
   padding-bottom: 0.71428571rem;
+  padding-left: .25em;
 }
 .breadcrumb + .page-header {
   margin-top: 1em;
