@@ -1,0 +1,16 @@
+uuid: e6ccc132-21a1-4174-9aff-cf0e6b1bc60c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.inscription_criteria
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+id: taxonomy_term.inscription_criteria
+target_entity_type_id: taxonomy_term
+target_bundle: inscription_criteria
+default_langcode: site_default
+language_alterable: false
