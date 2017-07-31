@@ -2,7 +2,7 @@
 # Go to docroot/
 cd docroot/
 
-env="dev"
+env="test"
 if [ ! -z "$1" ]; then
   env=$1
 fi
@@ -12,7 +12,7 @@ drush sql-drop -y
 echo
 
 #echo "Getting '$env' environment database..."
-drush sql-sync @staging @self -y
+drush sql-sync "@$env" @self -y
 
 #echo "Importing configuration..."
 drush csim -y
@@ -22,9 +22,9 @@ drush updatedb -y
 echo
 
 #echo "Rsync files..."
-drush -y rsync @staging:%files @self:%files
+drush -y rsync "@$env":%files @self:%files
 
-#echo "Updating iucn iser..."
+#echo "Updating iucn user..."
 drush upwd iucn --password="password"
 
 drush cr

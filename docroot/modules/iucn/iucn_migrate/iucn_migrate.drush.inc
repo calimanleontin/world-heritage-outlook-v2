@@ -27,7 +27,13 @@ function iucn_migrate_drush_command() {
     'aliases' => ['iucnmi'],
   ];
 
- return $commands;
+  $commands['iucn-migrate-sites-multilingual'] = [
+    'description' => 'Command for importing multilingual sites.',
+    'aliases' => ['iucnmsm'],
+  ];
+
+
+  return $commands;
 }
 /**
  * Drush command logic.
@@ -175,3 +181,72 @@ function drush_iucn_migrate_images() {
   }
   drush_print(dt("All done."));
 }
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_sites_multilingual() {
+  drush_print(dt("IUCN migrating multilingual sites ..."));
+  $path = drupal_get_path('module', 'iucn_migrate');
+  $sites_file_content = file_get_contents($path.'/'.'source/sites.json');
+
+  $sites = Drupal\Component\Serialization\Json::decode($sites_file_content);
+
+  if($sites){
+    foreach($sites as $site){
+      if(isset($site['siteId'])
+        && !empty($site['siteId'])
+      ){
+        $node_ids = \Drupal::entityQuery('node')
+          ->condition('field_site_id', $site['siteId'])
+          ->condition('type', 'site')
+          ->execute();
+        if($node_ids) {
+          $node_id = reset($node_ids);
+          $node = Node::load($node_id);
+          if($node){
+
+            if (isset($site['nameFr']) && !empty($site['nameFr'])){
+              if($node->hasTranslation('fr')){
+                $node->getTranslation('fr')->setTitle($site['nameFr'])->save();
+                drush_print(dt("Updated [fr] translation for node: $node_id"));
+              }else{
+                $translation = $node->addTranslation('fr', array('title' => $site['nameFr']));
+                $translation->save();
+                drush_print(dt("Added [fr] translation to node: $node_id"));
+              }
+            }else{
+              if($node->hasTranslation('fr')){
+                $node->removeTranslation('fr');
+                drush_print(dt("Removed [fr] translation from node: $node_id"));
+              }
+            }
+
+
+            if (isset($site['nameEs']) && !empty($site['nameEs'])){
+              if($node->hasTranslation('es')){
+                $node->getTranslation('es')->setTitle($site['nameEs'])->save();
+                drush_print(dt("Updated [es] translation for node: $node_id"));
+              }else{
+                $translation = $node->addTranslation('es', array('title' => $site['nameFr']));
+                $translation->save();
+                drush_print(dt("Added [es] translation to node: $node_id"));
+              }
+            }else{
+              if($node->hasTranslation('es')){
+                $node->removeTranslation('es');
+                drush_print(dt("Removed [es] translation from node: $node_id"));
+              }
+            }
+
+            $node->save();
+          }
+        }
+      }
+    }
+  }
+  drush_print(dt("All done."));
+}
+
+

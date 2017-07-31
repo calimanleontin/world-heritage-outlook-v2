@@ -1,9 +1,14 @@
 <?php
+
 $aliases['test'] = array(
   'uri' => 'http://iucn-who.edw.ro',
-  'root' => '/var/www/html/iucn-who/docroot',
+  'db-allows-remote' => TRUE,
   'remote-host' => '5.9.54.24',
   'remote-user' => 'php',
+  'root' => '/var/www/html/iucn-who/docroot',
+  'path-aliases' => array(
+    '%files' => 'sites/default/files',
+  ),
 );
 
 // Add your local aliases.
