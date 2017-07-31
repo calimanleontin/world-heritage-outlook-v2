@@ -8997,6 +8997,19 @@ a:active,
   display: block;
   padding-left: .5em;
 }
+[data-block_id="languageswitcher"] {
+  list-style-type: none;
+  padding-left: 0;
+}
+@media screen and (min-width: 768px) {
+  [data-block_id="languageswitcher"] {
+    display: flex;
+    flex-direction: column;
+    float: right;
+    height: 5.55555556rem;
+    justify-content: center;
+  }
+}
 .search-block-container {
   background-color: #134780;
   color: #fff;
