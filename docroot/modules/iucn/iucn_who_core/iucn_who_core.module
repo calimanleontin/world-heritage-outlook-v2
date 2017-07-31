@@ -1,0 +1,12 @@
+<?php
+
+use \Drupal\iucn_who_core\ToolbarHandler;
+
+/**
+ * Implements hook_toolbar().
+ */
+function iucn_who_core_toolbar() {
+  return \Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(ToolbarHandler::class)
+    ->toolbar();
+}

@@ -1,0 +1,11 @@
+who.google_maps_api.config_form:
+  title: 'Google Maps API'
+  route_name: google_maps_api.config_form
+  menu_name: who
+  class: Drupal\Core\Menu\MenuLinkDefault
+
+who.admin_people:
+  title: 'Users'
+  route_name: entity.user.collection
+  menu_name: who
+  class: Drupal\Core\Menu\MenuLinkDefault
