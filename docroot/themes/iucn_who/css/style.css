@@ -8158,6 +8158,9 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .toolbar-vertical .navbar-collapse {
     height: calc(100vh - 3.571428571428571rem - 39px) !important;
   }
+  .navbar-collapse #block-iucn-who-main-menu + * {
+    margin-top: 1em;
+  }
   .navbar-collapse .navbar-nav {
     margin: 0;
   }
