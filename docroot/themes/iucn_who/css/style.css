@@ -8809,8 +8809,10 @@ a:active,
   margin-right: 1em;
   width: 0;
 }
+.collapsed .icon-collapse:before {
+  content: '-';
+}
 .open > a > .icon-collapse:before,
-.collapsed .icon-collapse:before,
 .open > .block-facets.panel .panel-title > .icon-collapse:before,
 .open > .block-facets.panel .facet-item > a > .icon-collapse:before,
 .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title > .icon-collapse:before {

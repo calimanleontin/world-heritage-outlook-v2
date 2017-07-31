@@ -66,8 +66,10 @@ a {
     margin-right: 1em;
     width: 0;
   }
-  .open > a > &:before,
   .collapsed &:before {
+    content: '-';
+  }
+  .open > a > &:before {
     content: '—';
   }
 }
