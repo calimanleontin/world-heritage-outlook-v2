@@ -1,0 +1,5 @@
+name: iucn_who_homepage
+type: module
+description: Website's homepage providing module
+core: 8.x
+package: Other
