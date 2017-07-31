@@ -88,10 +88,11 @@ body.navbar-is-static-top {
   max-height: none;
 }
 @navbar-font-size-em: .85em;
-@max-vw: (floor(unit(@font-size-base) * unit(@navbar-font-size-em) * 100 / 1.5) * 1px); // 1.5 is minimum vw required to fit content of navbar on one line
+@navbar-min-size-to-fit: 1.45;
+@max-vw: (floor(unit(@font-size-base) * unit(@navbar-font-size-em) * 100 / @navbar-min-size-to-fit) * 1px); // @navbar-min-size-to-fit is minimum vw required to fit content of navbar on one line
 .navbar {
   @media (min-width: @grid-float-breakpoint) and (max-width: @max-vw) {
-    font-size: 1.5vw;
+    font-size: @navbar-min-size-to-fit * 1vw;
   }
   @media (min-width: (@max-vw + 1)) {
     font-size: @navbar-font-size-em;

@@ -7975,12 +7975,12 @@ body.navbar-is-fixed-bottom {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
-@media (min-width: 768px) and (max-width: 1020px) {
+@media (min-width: 768px) and (max-width: 1055px) {
   .navbar {
-    font-size: 1.5vw;
+    font-size: 1.45vw;
   }
 }
-@media (min-width: 1021px) {
+@media (min-width: 1056px) {
   .navbar {
     font-size: 0.85em;
   }
