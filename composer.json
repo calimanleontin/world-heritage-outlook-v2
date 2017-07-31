@@ -23,6 +23,7 @@
         "drupal/config_split": "^1.0@beta",
         "drupal/core": "~8.0",
         "drupal/devel": "^1.0@RC",
+        "drupal/dropdown_language": "^1.2",
         "drupal/facets": "^1.0@alpha",
         "drupal/facets_pretty_paths": "1.x-dev",
         "drupal/field_group": "^1.0@RC",

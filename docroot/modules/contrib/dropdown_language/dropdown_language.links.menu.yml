@@ -1,0 +1,5 @@
+dropdown_language.setting:
+  title: Dropdown Language Switcher
+  parent: system.admin_config_regional
+  description: 'Display wrapper settings for block display.'
+  route_name: dropdown_language.setting
