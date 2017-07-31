@@ -1,0 +1,5 @@
+name: google_maps_api
+type: module
+description: Integrate Google Maps in Drupal 8 website. Offers configuration screen for API key.
+core: 8.x
+package: Other
