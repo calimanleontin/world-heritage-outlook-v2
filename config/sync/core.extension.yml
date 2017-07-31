@@ -10,7 +10,6 @@ module:
   crop: 0
   ctools: 0
   datetime: 0
-  dropdown_language: 0
   dynamic_page_cache: 0
   entity_reference_revisions: 0
   facets: 0
