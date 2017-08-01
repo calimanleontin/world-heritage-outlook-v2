@@ -9058,6 +9058,10 @@ a.is-active,
     justify-content: center;
   }
 }
+.path-sites-search .page-header {
+  border-left: none;
+  padding-left: 15px;
+}
 .search-block-container {
   background-color: #134780;
   color: #fff;
