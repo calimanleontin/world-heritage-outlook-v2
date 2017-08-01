@@ -8120,13 +8120,11 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   line-height: 0;
 }
 @media screen and (min-width: 768px) {
-  .navbar-collapse .dropdown-menu {
+  .navbar-collapse .navbar-nav > li > .dropdown-menu {
     display: block;
     opacity: 0;
     pointer-events: none;
     transition: .1s;
-  }
-  .navbar-collapse .navbar-nav > li > .dropdown-menu {
     margin-top: -1px;
   }
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
