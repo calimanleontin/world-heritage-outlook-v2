@@ -5299,8 +5299,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   line-height: 1.5;
   text-decoration: none;
   color: #134780;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: transparent;
+  border: 1px solid transparent;
   margin-left: -1px;
 }
 .pagination > li:first-child > a,
@@ -5332,8 +5332,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   z-index: 2;
   color: #03afdf;
-  background-color: #eeeeee;
-  border-color: #ddd;
+  background-color: transparent;
+  border-color: transparent;
 }
 .pagination > .active > a,
 .pagination > .active > span,
@@ -5351,9 +5351,9 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
 .pagination > .active > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   z-index: 3;
-  color: #fff;
-  background-color: #134780;
-  border-color: #134780;
+  color: #134780;
+  background-color: transparent;
+  border-color: transparent;
   cursor: default;
 }
 .pagination > .disabled > span,
@@ -5372,8 +5372,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
 .pagination > .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
-  background-color: #fff;
-  border-color: #ddd;
+  background-color: transparent;
+  border-color: transparent;
   cursor: not-allowed;
 }
 .pagination-lg > li > a,
@@ -5442,8 +5442,8 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   display: inline-block;
   padding: 5px 14px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: transparent;
+  border: 1px solid transparent;
   border-radius: 15px;
 }
 .pager li > a:hover,
@@ -5455,7 +5455,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
 .pager li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: transparent;
 }
 .pager .next > a,
 .pager .next > span,
@@ -5485,7 +5485,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
 .pager .disabled > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   color: #777777;
-  background-color: #fff;
+  background-color: transparent;
   cursor: not-allowed;
 }
 .label {
@@ -8354,6 +8354,12 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .node-preview-form-select {
   padding: 15px;
+}
+.pagination > li > a,
+.pagination > li > .block-facets.panel .panel-title,
+.pagination > li > .block-facets.panel .facet-item > a,
+.pagination > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #333333;
 }
 /**
  * Panel styling.
