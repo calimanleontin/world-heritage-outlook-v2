@@ -1,10 +1,1 @@
 <?php
-
-/**
- * Implements hook_page_attachments().
- */
-function iucn_who_homepage_page_attachments(array &$attachments) {
-  if (\Drupal::service('path.matcher')->isFrontPage()) {
-    $attachments['#attached']['library'][] = 'google_maps_api/core';
-  }
-}

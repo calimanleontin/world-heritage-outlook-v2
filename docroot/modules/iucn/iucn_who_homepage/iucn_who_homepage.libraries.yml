@@ -1,0 +1,7 @@
+map:
+  weight: -100
+  version: 1.x
+  js:
+    js/map_homepage.js: {}
+  dependencies:
+    - map-base
