@@ -8126,6 +8126,9 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     pointer-events: none;
     transition: .1s;
   }
+  .navbar-collapse .navbar-nav > li > .dropdown-menu {
+    margin-top: -1px;
+  }
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
     opacity: 1;
     pointer-events: all;
