@@ -27,36 +27,14 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
    */
   public function build() {
     $content = parent::build();
-    $content['row'] = [
-      '#prefix' => '<div class="row"><div class="container-fluid">',
-      'col-left' => [
-        '#markup' => '<div class="col col-sm-3">COL LEFT</div>'
-      ],
-      'col-center' => [
-        '#prefix' => '<div class="col col-sm-9">',
-        'map' => [
-          '#type' => 'inline_template',
-          '#template' => parent::getMapMarkup(),
-        ],
-        '#suffix' => '</div>',
-      ],
-      '#suffix' => '</div></div>',
-    ];
-    $content['#cache'] = ['max-age' => 0];
     array_unshift($content['#attached']['library'], 'iucn_who_homepage/map');
+    $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
-    return $content;
-  }
-
-
-  private function buildLeftColumn() {
-    $ret = [
-      // @todo add as configuration variable
-      'title' => ['#markup' => $this->t('2017 Conservation Outlook rating')],
-      'ratings' => [
-      ],
+    $content['output'] = [
+      '#theme' => 'homepage_map_block',
+      '#markup_map' => parent::getMapMarkup(),
     ];
-    return $ret;
+    return $content;
   }
 
   private function getMarkers() {

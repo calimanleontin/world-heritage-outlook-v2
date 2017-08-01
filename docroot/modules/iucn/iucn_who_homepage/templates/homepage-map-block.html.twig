@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="container-fluid">
+    <div class="col col-sm-3">
+      <div id="map-site-search">
+      <form action="">
+        <input type="text" id="search">
+        <button></button>
+        <a href="#">{{ 'Advanced search' | trans }}</a>
+      </form>
+      </div>
+      <div id="map-filters">
+        <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
+        <ul>
+          <li><a href="">Good</a></li>
+          <li><a href="">Good with some concerns</a></li>
+          <li><a href="">Significant concern</a></li>
+          <li><a href="">Critical</a></li>
+          <li><a href="">Data deficient</a></li>
+          <li><a href="">Coming soon</a></li>
+        </ul>
+        <a href="#">{% trans %}See all (!sites_total_count){% endtrans %}</a>
+      </div>
+      <div id="map-site-details">
+        {{ 'Click on a Natural Site for details' | trans }}
+      </div>
+    </div>
+    <div class="col col-sm-9">
+      {{ markup_map | raw }}
+    </div>
+  </div>
+</div>
