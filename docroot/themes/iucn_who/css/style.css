@@ -8869,6 +8869,11 @@ a.is-active,
 .footer .nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus {
   background-color: transparent;
 }
+@media screen and (max-width: 767px) {
+  .footer #block-mainnavigation {
+    display: none;
+  }
+}
 @media screen and (min-width: 768px) {
   .footer #block-mainnavigation .nav > li > a,
   .footer #block-mainnavigation .nav > li > .block-facets.panel .panel-title,
@@ -8911,11 +8916,6 @@ a.is-active,
     margin-top: .5em;
     padding-bottom: .5em;
     padding-top: .5em;
-  }
-}
-@media screen and (max-width: 767px) {
-  .footer #block-mainnavigation .inner {
-    margin-left: 1.07142857rem;
   }
 }
 .footer #block-mainnavigation .inner > li > a,
