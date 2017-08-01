@@ -7669,6 +7669,7 @@ html.js .ajax-new-content:empty {
 .btn {
   border: none;
   transition: background-color 0.2s;
+  font-size: 1rem;
 }
 /**
  * @file
