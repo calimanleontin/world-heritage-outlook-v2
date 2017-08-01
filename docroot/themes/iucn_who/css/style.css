@@ -8119,8 +8119,15 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   line-height: 0;
 }
 @media screen and (min-width: 768px) {
-  .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
+  .navbar-collapse .dropdown-menu {
     display: block;
+    opacity: 0;
+    pointer-events: none;
+    transition: .1s;
+  }
+  .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
+    opacity: 1;
+    pointer-events: all;
   }
   .navbar-collapse .navbar-nav > li > a,
   .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title,

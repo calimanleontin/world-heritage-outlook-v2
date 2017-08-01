@@ -239,8 +239,15 @@ body.show-focus-outlines {
     }
   }
   @media @grid-desktop {
-    .navbar-nav > li:hover > .dropdown-menu {
+    .dropdown-menu {
       display: block;
+      opacity: 0;
+      pointer-events: none;
+      transition: .1s;
+    }
+    .navbar-nav > li:hover > .dropdown-menu {
+      opacity: 1;
+      pointer-events: all;
     }
     .navbar-nav > li > a {
       display: inline-block;
