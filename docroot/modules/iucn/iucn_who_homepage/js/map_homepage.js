@@ -6,17 +6,24 @@
 function postInitMap(instance_id, map, config) {
   (function ($, Drupal, drupalSettings) {
     'use strict';
-    var uluru = {lat: -25.363, lng: 131.044};
-    console.log(config)
     for(var $i = 0; $i < config.markers.length; $i++) {
       var $mc = config.markers[$i];
-      console.log($mc);
       var $marker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
-        position: new google.maps.LatLng($mc.lat, $mc.lng)
+        position: new google.maps.LatLng($mc.lat, $mc.lng),
+        customInfo: $mc
       });
-      // marker.addListener('click', toggleBounce);
+      $marker.addListener('click', function() {
+        $('#map-site-details').html(this.customInfo.render);
+      });
     }
+  })(jQuery, Drupal, drupalSettings);
+}
+
+function homepageMapSiteDetailClose() {
+  (function ($) {
+    'use strict';
+    $('#map-site-details').html('');
   })(jQuery, Drupal, drupalSettings);
 }
