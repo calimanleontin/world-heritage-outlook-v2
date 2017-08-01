@@ -8926,6 +8926,9 @@ a:active,
     margin: 0 auto;
   }
 }
+.footer .copyright {
+  font-weight: 200;
+}
 .footer-external-links + * {
   margin-top: 2rem;
 }
