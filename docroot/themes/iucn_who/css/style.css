@@ -8942,6 +8942,21 @@ a.is-active,
 .footer .copyright {
   font-weight: 200;
 }
+.footer .copyright .separator {
+  margin: 0 .5em;
+}
+@media screen and (max-width: 767px) {
+  .footer .copyright .separator {
+    display: none;
+  }
+  .footer .copyright a,
+  .footer .copyright .block-facets.panel .panel-title,
+  .footer .copyright .block-facets.panel .facet-item > a,
+  .footer .copyright .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+    display: block;
+    margin-top: .5em;
+  }
+}
 .footer-external-links + * {
   margin-top: 2rem;
 }

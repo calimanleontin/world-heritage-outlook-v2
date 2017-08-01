@@ -72,6 +72,18 @@
   }
   .copyright {
     font-weight: 200;
+    .separator {
+      margin: 0 .5em;
+    }
+    @media @grid-mobile {
+      .separator {
+        display: none;
+      }
+      a {
+        display: block;
+        margin-top: .5em;
+      }
+    }
   }
 }
 
