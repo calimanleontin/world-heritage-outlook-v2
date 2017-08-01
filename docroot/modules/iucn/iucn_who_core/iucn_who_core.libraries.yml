@@ -1,0 +1,8 @@
+map-base:
+  weight: -50
+  version: 1.x
+  js:
+    js/googlemaps_baseblock.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
