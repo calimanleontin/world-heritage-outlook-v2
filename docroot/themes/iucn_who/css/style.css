@@ -8825,6 +8825,12 @@ a:active,
 .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title > .icon-collapse:before {
   content: '—';
 }
+a.is-active,
+.block-facets.panel .panel-title.is-active,
+.block-facets.panel .facet-item > a.is-active,
+.block-facets.panel .facet-item > .block-facets.panel .panel-title.is-active {
+  color: #03afdf;
+}
 .footer {
   background-color: #134780;
 }
