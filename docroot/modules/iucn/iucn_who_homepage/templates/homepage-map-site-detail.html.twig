@@ -1,17 +1,31 @@
 <div class="map-site-detail">
-  <a class="close" href="javascript:homepageMapSiteDetailClose()">Close</a>
-  <div class="status">Critical</div>
-  <img src="http://who.local/sites/default/files/site/Tassili_n%27Ajjer_National_Park.jpg">
-  <h5 class="title">Ancient Maya City and Protected Tropical Forests of Calakmul, Campeche</h5>
-  <div class="country">Albania</div>
-  <div class="inscription">Inscribed in 1987</div>
-  <a class="more" href="#">Read more</a>
+  <a class="close" href="javascript:homepageMapSiteDetailClose()">x</a>
+  {% if status.label %}
+  <div class="status">{{ status.label }}</div>
+  {% endif %}
+  {% if thumbnail %}
+  <img src="{{ thumbnail }}">
+  {% endif %}
+  <h5 class="title">{{ title }}</h5>
+  {% if country %}
+  <div class="country">{{ country.label }}</div>
+  {% endif %}
+  {% if inscription %}
+  <div class="inscription">Inscribed in <strong>{{ inscription }}</strong></div>
+  {% endif %}
+  <a class="more" href="{{ link }}">Read more</a>
   <dl>
+    {% if stat_values %}
     <dt class="values">Values</dt>
-    <dd>High concern</dd>
+    <dd>{{ stat_values }}</dd>
+    {% endif %}
+    {% if stat_threat %}
     <dt class="threats">Threats</dt>
-    <dd>High threat</dd>
+    <dd>{{ stat_threat }}</dd>
+    {% endif %}
+    {% if stat_protection %}
     <dt class="protection">Protection &amp; management</dt>
-    <dd>Some concern</dd>
+    <dd>{{ stat_protection }}</dd>
+    {% endif %}
   </dl>
 </div>

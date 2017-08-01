@@ -9,11 +9,20 @@ function iucn_who_homepage_theme($existing, $type, $theme, $path) {
     'homepage_map_block' => [
       'variables' => [
         'markup_map' => null,
+        'sites_total_count' => null,
       ]
     ],
     'homepage_map_site_detail' => [
       'variables' => [
-        'status' => null,
+        'status' => [ 'label' => null, 'id' => null ],
+        'title' => null,
+        'country' => [ 'label' => null ],
+        'thumbnail' => null,
+        'inscription' => null,
+        'link' => null,
+        'stat_values' => null,
+        'stat_threat' => null,
+        'stat_protection' => null,
       ]
     ]
   ];

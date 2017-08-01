@@ -11,14 +11,14 @@
       <div id="map-filters">
         <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
         <ul>
-          <li><a href="">Good</a></li>
-          <li><a href="">Good with some concerns</a></li>
-          <li><a href="">Significant concern</a></li>
-          <li><a href="">Critical</a></li>
-          <li><a href="">Data deficient</a></li>
-          <li><a href="">Coming soon</a></li>
+          <li><a data-filter="1" href="javascript:void(0);">Good</a></li>
+          <li><a data-filter="2" href="javascript:void(0);">Good with some concerns</a></li>
+          <li><a data-filter="3" href="javascript:void(0);">Significant concern</a></li>
+          <li><a data-filter="4" href="javascript:void(0);">Critical</a></li>
+          <li><a data-filter="5" href="javascript:void(0);">Data deficient</a></li>
+          <li><a data-filter="6" href="javascript:void(0);">Coming soon</a></li>
         </ul>
-        <a href="#">{% trans %}See all (!sites_total_count){% endtrans %}</a>
+        <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
       </div>
       <div id="map-site-details">
         {{ 'Click on a Natural Site for details' | trans }}
