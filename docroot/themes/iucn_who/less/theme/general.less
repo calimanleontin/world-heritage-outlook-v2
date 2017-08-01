@@ -50,6 +50,9 @@ body:not(.show-focus-outlines) {
   .breadcrumb + & {
     margin-top: 1em;
   }
+  @media @grid-mobile {
+    .row();
+  }
 }
 a {
   transition: color .2s, background-color .2s;

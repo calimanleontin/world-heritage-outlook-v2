@@ -8794,6 +8794,12 @@ body:not(.show-focus-outlines) textarea:active:focus {
 .breadcrumb + .page-header {
   margin-top: 1em;
 }
+@media screen and (max-width: 767px) {
+  .page-header {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
 a,
 .block-facets.panel .panel-title,
 .block-facets.panel .facet-item > a,
