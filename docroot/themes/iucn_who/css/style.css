@@ -8816,7 +8816,7 @@ a:active,
   margin-right: 1em;
   width: 0;
 }
-.collapsed .icon-collapse:before {
+[aria-expanded="true"] > .icon-collapse:before {
   content: '-';
 }
 .open > a > .icon-collapse:before,
