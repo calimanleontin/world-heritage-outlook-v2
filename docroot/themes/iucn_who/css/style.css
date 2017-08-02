@@ -8066,6 +8066,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   padding-right: 0;
 }
 .navbar-toggle .icon-bar {
+  border-radius: 0.35714286rem;
   width: 2.85714286rem;
   height: 0.35714286rem;
   transition: all 0.2s;
