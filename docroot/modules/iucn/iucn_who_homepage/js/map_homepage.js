@@ -78,11 +78,13 @@ function postInitMap(instance_id, map, config) {
         var $found = false;
         for(var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
-          var $visible = $marker.customInfo.title == $value;
-          $marker.setVisible($visible);
-          if (!$found && $visible) {
+          var $show = $marker.customInfo.title == $value;
+          $marker.setVisible($show);
+          if (!$found && $show) {
             $found = true;
             $('#map-site-details').html($marker.customInfo.render);
+            var $icon = config.icons['icon' + $marker.customInfo.status_id + 'Active'];
+            $marker.setIcon($icon);
             map.setCenter($marker.getPosition());
             map.setZoom(7); // @todo variable
           }
