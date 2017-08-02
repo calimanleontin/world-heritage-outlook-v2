@@ -12,6 +12,7 @@ function iucn_who_homepage_theme($existing, $type, $theme, $path) {
         'sites_total_count' => null,
         'conservation_ratings' => [],
         'search_form' => null,
+        'empty_selection_placeholder_markup' => null,
       ]
     ],
     'homepage_map_site_detail' => [

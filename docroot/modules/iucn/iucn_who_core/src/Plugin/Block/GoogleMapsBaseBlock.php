@@ -120,7 +120,7 @@ abstract class GoogleMapsBaseBlock extends BlockBase {
    * @return string
    *    Configuration value
    */
-  private function getConfigParam($name, $default = '') {
+  protected function getConfigParam($name, $default = '') {
     $config = $this->getConfiguration();
     return isset($config[$name]) ? $config[$name] : $default;
   }

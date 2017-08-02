@@ -13,7 +13,7 @@
       <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
     </div>
     <div id="map-site-details">
-      {{ 'Click on a Natural Site for details' | trans }}
+      {{ empty_selection_placeholder_markup | raw }}
     </div>
   </div>
   <div class="col col-sm-9">

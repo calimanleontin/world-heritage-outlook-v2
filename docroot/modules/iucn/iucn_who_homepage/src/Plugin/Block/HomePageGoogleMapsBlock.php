@@ -20,8 +20,22 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
 
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-
+    $form['iucn'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('IUCN specific settings'),
+      'empty_selection_placeholder' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('No site is selected placeholder'),
+        '#default_value' => $this->getConfigParam( 'empty_selection_placeholder', $this->t('Click on a Natural Site for details')),
+      ],
+    ];
     return $form;
+  }
+
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    parent::blockSubmit($form, $form_state);
+    $values = $form_state->getValues();
+    $this->configuration['empty_selection_placeholder'] = $values['empty_selection_placeholder'];
   }
 
 
@@ -34,6 +48,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
+    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['empty_placeholder'] = $this->getSiteSelectionPlaceholder();
 
     $search_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_homepage\Form\SiteSearchAutocompleteForm');
     $content['output'] = [
@@ -41,9 +56,21 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       '#markup_map' => parent::getMapMarkup(),
       '#sites_total_count' => SitesQueryUtil::getPublishedSitesCount(),
       '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
+      '#empty_selection_placeholder_markup' => $this->getSiteSelectionPlaceholder(),
       '#search_form' => $search_form,
     ];
     return $content;
+  }
+
+  private function getSiteSelectionPlaceholder() {
+    $placeholder_url = sprintf('/%s/images/no-site-placeholder.png',
+      drupal_get_path('module', 'iucn_who_homepage')
+    );
+    return sprintf(
+      '<div class="site-selection-placeholder"><img src="%s"><span>%s</span></div>',
+      $placeholder_url,
+      $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a Natural Site for details'))
+    );
   }
 
   private function getMarkers() {
