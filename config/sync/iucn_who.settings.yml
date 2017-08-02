@@ -4,7 +4,7 @@ _core:
 favicon:
   mimetype: image/vnd.microsoft.icon
   path: ''
-  url: 'http://iucn.local.ro/themes/iucn_who/favicon.ico'
+  url: 'http://who.local/themes/iucn_who/favicon.ico'
   use_default: true
 schemas:
   bootstrap: 8000
@@ -12,6 +12,7 @@ schemas:
 table_responsive: '-1'
 table: ''
 navbar_position: fixed-top
+fluid_container: 1
 features:
   comment_user_picture: true
   comment_user_verification: true
@@ -21,4 +22,16 @@ logo:
   path: ''
   url: ''
   use_default: true
-fluid_container: 1
+breadcrumb_home: 1
+region_wells:
+  navigation: ''
+  navigation_collapsible: ''
+  header: ''
+  search_block: ''
+  highlighted: ''
+  help: ''
+  content: ''
+  facets: ''
+  sidebar_first: ''
+  sidebar_second: well
+  footer: ''

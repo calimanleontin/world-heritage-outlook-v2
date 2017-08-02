@@ -1,0 +1,14 @@
+<?php
+
+use \Drupal\iucn_who_core\ToolbarHandler;
+
+define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
+
+/**
+ * Implements hook_toolbar().
+ */
+function iucn_who_core_toolbar() {
+  return \Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(ToolbarHandler::class)
+    ->toolbar();
+}

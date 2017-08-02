@@ -99,6 +99,14 @@
 
 <div class="holygrail-body">
   {# Main #}
+  {# Above content #}
+  {% if page.above_content %}
+    <div class="container-full above-content-container">
+      {% block above_content %}
+        {{ page.above_content }}
+      {% endblock %}
+    </div>
+  {% endif %}
 
   {# Header #}
   {% if page.header %}
@@ -112,11 +120,9 @@
   {# Search block #}
   {% if page.search_block %}
     <div class="container-full search-block-container">
-      <div class="container">
-        {% block search_block %}
-            {{ page.search_block }}
-        {% endblock %}
-      </div>
+      {% block search_block %}
+          {{ page.search_block }}
+      {% endblock %}
     </div>
   {% endif %}
   {% block main %}

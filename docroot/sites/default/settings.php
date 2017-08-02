@@ -766,10 +766,11 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 $config_directories['sync'] = '../config/sync';
 $settings['install_profile'] = 'minimal';
 
-if(isset($settings['environment'])){
-	if($settings['environment'] == 'dev' || $settings['environment'] == 'test'){
-		$config['config_split.config_split.live']['status']= FALSE; 
-	}else if($settings['environment'] == 'live'){
-		$config['config_split.config_split.development']['status']= FALSE; 
-	}
+// Assume that is always test/development env.
+$config['config_split.config_split.development']['status'] = TRUE;
+$config['config_split.config_split.live']['status'] = FALSE;
+$live_env = ['live', 'production', 'staging'];
+if (!empty($settings['environment']) && in_array($settings['environment'], $live_env)) {
+  $config['config_split.config_split.live']['status'] = TRUE;
+  $config['config_split.config_split.development']['status'] = FALSE;
 }

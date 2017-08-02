@@ -1,0 +1,34 @@
+uuid: b9e29d08-3508-48e2-9596-d6b987f3c3a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_who_homepage
+    - system
+  theme:
+    - iucn_who
+_core:
+  default_config_hash: s-5zJwhdyr-CqY_YWFuaRw_7qpbPBXXanHJMSOOktmY
+id: homepagemap
+theme: iucn_who
+region: above_content
+weight: -8
+provider: null
+plugin: home_page_map
+settings:
+  id: home_page_map
+  label: 'Homepage map'
+  provider: iucn_who_homepage
+  label_display: '0'
+  map_width: 100%
+  map_height: 600px
+  map_init_lat: '0'
+  map_init_lng: '40'
+  map_init_zoom: '2'
+  map_init_type: roadmap
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

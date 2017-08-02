@@ -1,0 +1,7 @@
+iucn.ajax.site-name-search:
+  path: '/ajax/search/site/name'
+  defaults:
+    _controller: '\Drupal\iucn_who_core\Controller\SiteSearchController::searchByName'
+    _format: json
+  requirements:
+    _permission: 'access content'

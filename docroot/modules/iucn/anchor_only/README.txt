@@ -1,0 +1,1 @@
+Inspired from anchor_link module.

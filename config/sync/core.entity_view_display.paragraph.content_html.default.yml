@@ -1,0 +1,31 @@
+uuid: 6e7770c2-90be-474c-a2f8-5ae7b68e1b73
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_html.field_content
+    - field.field.paragraph.content_html.field_paragraph_background
+    - paragraphs.paragraphs_type.content_html
+  module:
+    - options
+    - text
+id: paragraph.content_html.default
+targetEntityType: paragraph
+bundle: content_html
+mode: default
+content:
+  field_content:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_paragraph_background:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden: {  }

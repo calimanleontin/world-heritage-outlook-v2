@@ -1,0 +1,13 @@
+uuid: cdaaa647-6bd6-4b7a-85a7-9dd6b045bf97
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - iucn_who_core
+_core:
+  default_config_hash: 9itYkgiCH-5yOmFzOcYv9dTfHM7Bl-kSExLixCWvzRo
+id: who
+label: 'Wold Heritage Outlook administration'
+description: 'Links related to managing WHO website.'
+locked: true

@@ -9,10 +9,14 @@ module:
   dblog: 0
   devel: 0
   devel_generate: 0
+  reroute_email: 0
+  stage_file_proxy: 0
 theme: {  }
 blacklist:
   - devel.settings
   - devel.toolbar.settings
+  - reroute_email.settings
+  - stage_file_proxy.settings
   - system.menu.devel
 graylist: {  }
 graylist_dependents: true

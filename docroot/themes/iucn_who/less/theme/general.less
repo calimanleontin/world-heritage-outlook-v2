@@ -76,6 +76,32 @@ a {
     content: '—';
   }
 }
+
 a.is-active {
   color: @component-active-color;
+}
+
+// Conservation status related classes
+.conservation-status.good {
+  color: @iucn-green;
+}
+
+.conservation-status.good-concerns {
+  color: @iucn-green-lighter;
+}
+
+.conservation-status.significant-concern {
+  color: @iucn-orange;
+}
+
+.conservation-status.critical {
+  color: @iucn-red;
+}
+
+.conservation-status.data-deficient {
+  color: @iucn-gray-lighter;
+}
+
+.conservation-status.coming-soon {
+  color: @iucn-gray;
 }

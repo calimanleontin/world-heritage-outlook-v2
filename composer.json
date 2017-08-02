@@ -13,6 +13,69 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type"    : "package",
+            "package" : {
+                "name"    : "dinbror/blazy",
+                "version" : "1.8.2",
+                "type"    : "drupal-library",
+                "dist"    : {
+                    "url"  : "https://github.com/dinbror/blazy/archive/1.8.2.zip",
+                    "type" : "zip"
+                }
+            }
+        },
+        {
+            "type"    : "package",
+            "package" : {
+                "name"    : "jackmoore/colorbox",
+                "version" : "1.6.4",
+                "type"    : "drupal-library",
+                "dist"    : {
+                    "url"  : "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
+                    "type" : "zip"
+                }
+            }
+        },
+        {
+            "type"    : "package",
+            "package" : {
+                "name"    : "kenwheeler/slick",
+                "version" : "1.6.0",
+                "type"    : "drupal-library",
+                "dist"    : {
+                    "url"  : "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
+                    "type" : "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "harvesthq/chosen",
+                "version": "1.6.1",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2.0"
+                }
+            }
+        },
+        {
+            "type"    : "package",
+            "package" : {
+                "name"    : "adamwulf/columnizer",
+                "version" : "1.6.2",
+                "type"    : "drupal-library",
+                "dist"    : {
+                    "url"  : "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
+                    "type" : "zip"
+                }
+            }
         }
     ],
     "require": {
@@ -20,23 +83,43 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/chosen": "^2.3",
+        "drupal/colorbox": "^1.4",
         "drupal/config_split": "^1.0@beta",
         "drupal/core": "~8.0",
         "drupal/devel": "^1.0@RC",
+        "drupal/ds": "^3.1",
+        "drupal/editor_advanced_link": "^1.4",
+        "drupal/editor_file": "^1.2",
         "drupal/facets": "^1.0@alpha",
         "drupal/facets_pretty_paths": "1.x-dev",
         "drupal/field_group": "^1.0@RC",
+        "drupal/image_effects": "^1.0",
         "drupal/image_widget_crop": "^2.0",
+        "drupal/inline_responsive_images": "^2.1",
+        "drupal/linkit": "5.0-beta5",
         "drupal/menu_block": "^1.4",
         "drupal/menu_link_attributes": "^1.0@beta",
+        "drupal/metatag": "^1.2",
         "drupal/migrate_api": "^1.1",
         "drupal/migrate_plus": "^2.0",
         "drupal/migrate_tools": "^2.0",
         "drupal/paragraphs": "^1.1",
         "drupal/pathauto": "^1.0",
+        "drupal/redirect": "^1.0@beta",
+        "drupal/reroute_email": "^1.0@beta",
         "drupal/search_api": "^1.2",
         "drupal/search_api_solr": "^1.0",
         "drupal/search_api_sorts": "^1.0@beta",
+        "drupal/slick": "^1.0",
+        "drupal/slick_views": "^1.0@RC",
+        "drupal/smart_trim": "^1.0",
+        "drupal/spamspan": "^1.0@alpha",
+        "drupal/stage_file_proxy": "^1.0@alpha",
+        "drupal/string_field_formatter": "1.x-dev",
+        "drupal/xmlsitemap": "^1.0@alpha",
+        "harvesthq/chosen": "^1.6",
+        "jackmoore/colorbox": "^1.6",
+        "kenwheeler/slick": "^1.6",
         "webflo/drupal-finder": "^0.3.0",
         "webmozart/path-util": "^2.3"
     },
