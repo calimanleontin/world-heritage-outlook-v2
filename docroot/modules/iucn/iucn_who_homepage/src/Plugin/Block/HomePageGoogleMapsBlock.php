@@ -33,10 +33,12 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     array_unshift($content['#attached']['library'], 'iucn_who_homepage/map');
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
+    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
     $content['output'] = [
       '#theme' => 'homepage_map_block',
       '#markup_map' => parent::getMapMarkup(),
       '#sites_total_count' => SitesQueryUtil::getPublishedSitesCount(),
+      '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
     ];
     return $content;
   }
@@ -112,9 +114,24 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   }
 
   private function getSiteStatus($node) {
-    // @TODO
-    $array = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6'];
+    // @todo
+    $array = SitesQueryUtil::getSiteConservationRatings();
     $k = array_rand($array);
-    return $array[$k];
+    return $array[$k]->id();
+  }
+
+  private function getMarkersIcons() {
+    $ret = [];
+    $status = SitesQueryUtil::getSiteConservationRatings();
+    foreach($status as $term) {
+      $url = sprintf('/%s/images/marker-%s.png',
+        drupal_get_path('module', 'iucn_who_homepage'),
+        $term->field_css_identifier->value
+      );
+      $ret['icon' . $term->id()] = [
+        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
+      ];
+    }
+    return $ret;
   }
 }

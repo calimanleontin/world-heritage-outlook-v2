@@ -7,6 +7,8 @@ dependencies:
     - system
   theme:
     - iucn_who
+_core:
+  default_config_hash: s-5zJwhdyr-CqY_YWFuaRw_7qpbPBXXanHJMSOOktmY
 id: homepagemap
 theme: iucn_who
 region: content

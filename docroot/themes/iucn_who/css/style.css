@@ -8818,6 +8818,24 @@ a:active,
 .open > .block-facets.panel .facet-item > .block-facets.panel .panel-title > .icon-collapse:before {
   content: '—';
 }
+.conservation-status.good {
+  color: #3bb55e;
+}
+.conservation-status.good-concerns {
+  color: #9cd07d;
+}
+.conservation-status.significant-concern {
+  color: #f69232;
+}
+.conservation-status.critical {
+  color: #ef3133;
+}
+.conservation-status.data-deficient {
+  color: #e1e1e1;
+}
+.conservation-status.coming-soon {
+  color: #7e7e7e;
+}
 .footer {
   background-color: #134780;
 }
@@ -9152,5 +9170,83 @@ a:active,
 .view-sites-search article .more-link .arrow {
   color: #e0e0e0;
   font-size: 1.5em;
+}
+.path-frontpage #map-filters ul {
+  list-style-type: none;
+}
+.path-frontpage #map-filters li.active {
+  background-color: #7e7e7e;
+}
+.path-frontpage #map-filters li a.good,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.good,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.good,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.good {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-good.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #3bb55e;
+}
+.path-frontpage #map-filters li a.good-concerns,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.good-concerns,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.good-concerns,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.good-concerns {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-good-concerns.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #9cd07d;
+}
+.path-frontpage #map-filters li a.significant-concern,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.significant-concern,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.significant-concern,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.significant-concern {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-significant-concern.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #f69232;
+}
+.path-frontpage #map-filters li a.critical,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.critical,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.critical,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.critical {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-critical.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #ef3133;
+}
+.path-frontpage #map-filters li a.data-deficient,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.data-deficient,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.data-deficient,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.data-deficient {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-data-deficient.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #e1e1e1;
+}
+.path-frontpage #map-filters li a.coming-soon,
+.path-frontpage #map-filters li .block-facets.panel .panel-title.coming-soon,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > a.coming-soon,
+.path-frontpage #map-filters li .block-facets.panel .facet-item > .block-facets.panel .panel-title.coming-soon {
+  background: url('/modules/iucn/iucn_who_homepage/images/marker-coming-soon.png') no-repeat;
+  background-size: 10px 10px;
+  background-position-y: 3px;
+  padding-left: 20px;
+  width: 10px;
+  height: 10px;
+  color: #7e7e7e;
 }
 /*# sourceMappingURL=style.css.map */
