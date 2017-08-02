@@ -9065,10 +9065,10 @@ a.is-active,
 }
 @media screen and (max-width: 767px) {
   .search-block-container {
-    margin-bottom: 3.57142857rem;
-    margin-top: 3.57142857rem;
-    padding-bottom: 3.57142857rem;
-    padding-top: 3.57142857rem;
+    margin-bottom: 1.42857143rem;
+    margin-top: 0;
+    padding-bottom: 0.71428571rem;
+    padding-top: 0.71428571rem;
   }
 }
 .view-sites-search .view-content {
