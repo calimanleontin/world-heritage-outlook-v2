@@ -11,7 +11,7 @@ _core:
   default_config_hash: s-5zJwhdyr-CqY_YWFuaRw_7qpbPBXXanHJMSOOktmY
 id: homepagemap
 theme: iucn_who
-region: content
+region: above_content
 weight: -8
 provider: null
 plugin: home_page_map
