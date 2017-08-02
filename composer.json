@@ -79,8 +79,10 @@
         }
     ],
     "require": {
+        "adamwulf/columnizer": "^1.6",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
+        "dinbror/blazy": "^1.8",
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/chosen": "^2.3",
         "drupal/colorbox": "^1.4",

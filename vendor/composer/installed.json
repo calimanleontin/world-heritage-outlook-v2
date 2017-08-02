@@ -6841,5 +6841,31 @@
         "support": {
             "source": "http://cgit.drupalcode.org/string_field_formatter"
         }
+    },
+    {
+        "name": "adamwulf/columnizer",
+        "version": "1.6.2",
+        "version_normalized": "1.6.2.0",
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
+            "reference": null,
+            "shasum": null
+        },
+        "type": "drupal-library",
+        "installation-source": "dist"
+    },
+    {
+        "name": "dinbror/blazy",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
+            "reference": null,
+            "shasum": null
+        },
+        "type": "drupal-library",
+        "installation-source": "dist"
     }
 ]

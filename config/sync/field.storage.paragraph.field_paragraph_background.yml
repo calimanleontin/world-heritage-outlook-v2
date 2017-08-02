@@ -12,9 +12,6 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: none
-      label: None
-    -
       value: light
       label: 'Light (blue)'
   allowed_values_function: ''

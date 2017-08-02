@@ -1,0 +1,20 @@
+uuid: b276b3a0-35a5-4a85-9112-808d3307b0e2
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - paragraphs
+id: paragraph.field_paragraph_pages
+field_name: field_paragraph_pages
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 4
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

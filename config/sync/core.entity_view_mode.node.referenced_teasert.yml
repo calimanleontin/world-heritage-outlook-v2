@@ -1,0 +1,10 @@
+uuid: edc65f87-def3-45b4-8774-eece3c4370db
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.referenced_teasert
+label: 'Referenced teaser'
+targetEntityType: node
+cache: true
