@@ -120,9 +120,11 @@
   {# Search block #}
   {% if page.search_block %}
     <div class="container-full search-block-container">
-      {% block search_block %}
-          {{ page.search_block }}
-      {% endblock %}
+      <div class="container">
+        {% block search_block %}
+            {{ page.search_block }}
+        {% endblock %}
+      </div>
     </div>
   {% endif %}
   {% block main %}
