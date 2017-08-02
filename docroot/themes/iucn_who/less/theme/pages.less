@@ -2,6 +2,11 @@
 .path-sites-search {
   .page-header {
     border-left: none;
-    padding-left: @grid-gutter-width / 2;
+    padding-left: 0;
+    @media @grid-mobile {
+      margin-bottom: 0;
+      margin-top: 0;
+      padding-left: @grid-gutter-width / 2;
+    }
   }
 }
