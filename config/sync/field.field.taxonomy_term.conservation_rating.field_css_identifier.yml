@@ -1,0 +1,21 @@
+uuid: f04f8b53-c2e3-4c07-89ff-af8730ab5711
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_css_identifier
+    - taxonomy.vocabulary.conservation_rating
+_core:
+  default_config_hash: buQB3yivfPNwbEsOGBEiZ8IYbkp3IYxX5YsOt4UoAyA
+id: taxonomy_term.conservation_rating.field_css_identifier
+field_name: field_css_identifier
+entity_type: taxonomy_term
+bundle: conservation_rating
+label: 'CSS identifier'
+description: 'The CSS class that is applied throughout the site to this status (i.e. markers, lists). This defines the color which is used to render this status. The value set here must match one that exists in the CSS resources. For new statuses, a CSS class must be defined and configured in the theme by the developer. <b>If you don''t know what to set here, contact technical support</b>'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

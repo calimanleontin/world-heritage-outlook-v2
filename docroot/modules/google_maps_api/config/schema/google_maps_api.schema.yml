@@ -1,0 +1,6 @@
+google_maps_api.settings:
+  type: config_object
+  mapping:
+    api_key:
+      type: string
+      label: 'Your Google Maps API key, visit https://developers.google.com/maps/documentation/javascript/get-api-key'

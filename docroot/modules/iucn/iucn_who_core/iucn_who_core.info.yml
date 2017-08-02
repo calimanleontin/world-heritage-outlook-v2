@@ -1,0 +1,7 @@
+name: iucn_who_core
+type: module
+description: IUCN WHO v2 core functionality
+core: 8.x
+package: Other
+dependencies:
+  - google_maps_api
