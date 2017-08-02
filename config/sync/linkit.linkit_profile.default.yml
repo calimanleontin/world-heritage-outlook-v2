@@ -1,0 +1,46 @@
+uuid: 44fdea61-cf82-4b3c-9b13-291ed556fa79
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - node
+    - taxonomy
+id: default
+label: Default
+description: ''
+matchers:
+  8ef007a2-944f-435c-891f-95ac3d96753c:
+    uuid: 8ef007a2-944f-435c-891f-95ac3d96753c
+    id: 'entity:node'
+    weight: 0
+    settings:
+      bundles: {  }
+      group_by_bundle: true
+      include_unpublished: true
+      substitution_type: canonical
+      metadata: 'by [node:author:account-name] | [node:author:created]'
+  c2906728-03d0-4124-be51-7927910e524f:
+    uuid: c2906728-03d0-4124-be51-7927910e524f
+    id: 'entity:taxonomy_term'
+    weight: 0
+    settings:
+      bundles: {  }
+      group_by_bundle: true
+      substitution_type: canonical
+      metadata: '[term:vocabulary:name]'
+  161631cb-a3bf-4150-8c50-090461bd8c16:
+    uuid: 161631cb-a3bf-4150-8c50-090461bd8c16
+    id: 'entity:file'
+    weight: 0
+    settings:
+      bundles: null
+      group_by_bundle: null
+      images:
+        show_dimensions: true
+        show_thumbnail: false
+        thumbnail_image_style: null
+      substitution_type: file
+      metadata: '[file:basename] ([file:size] - [file:path])'
+      file_extensions: ''
+      file_status: 1

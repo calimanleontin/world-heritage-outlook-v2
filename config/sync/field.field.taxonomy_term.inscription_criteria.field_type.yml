@@ -1,0 +1,21 @@
+uuid: 7ca7102e-ba1a-4d7c-9fb8-90ba4880e4b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_type
+    - taxonomy.vocabulary.inscription_criteria
+  module:
+    - options
+id: taxonomy_term.inscription_criteria.field_type
+field_name: field_type
+entity_type: taxonomy_term
+bundle: inscription_criteria
+label: Type
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

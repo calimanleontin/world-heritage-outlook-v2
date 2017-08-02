@@ -1,0 +1,22 @@
+uuid: e65d9f86-23ab-49fd-86f6-97448018d07a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - iucn_who
+_core:
+  default_config_hash: fNNLN48MSGSLiqwIFywCuxH2Dk_IxDbaP0kYhg_IPrg
+id: iucn_who_content
+theme: iucn_who
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

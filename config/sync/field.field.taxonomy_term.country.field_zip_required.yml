@@ -1,0 +1,23 @@
+uuid: 3362ae70-a295-44e7-a393-60d8e41e68cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_zip_required
+    - taxonomy.vocabulary.country
+id: taxonomy_term.country.field_zip_required
+field_name: field_zip_required
+entity_type: taxonomy_term
+bundle: country
+label: 'Zip required'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

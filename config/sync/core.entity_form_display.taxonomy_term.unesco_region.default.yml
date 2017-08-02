@@ -1,0 +1,35 @@
+uuid: 37b25c61-d496-4086-bba9-c518f2523fec
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.unesco_region
+  module:
+    - path
+id: taxonomy_term.unesco_region.default
+targetEntityType: taxonomy_term
+bundle: unesco_region
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true

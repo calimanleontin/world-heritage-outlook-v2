@@ -1,0 +1,31 @@
+uuid: 9aab5b72-ce68-4749-ad0d-ee7aec8fbacc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: gH537Glq2VttkbxQ8i1PZreTulFrUtp5bGpHjNIJoIw
+id: iucn_migrate_designations
+migration_tags: null
+migration_group: 'iucn migrations'
+label: Designations
+source:
+  plugin: iucn_migrate_source_url
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  urls: /json/iucn_designations
+  ids:
+    site_designation:
+      type: string
+  fields:
+    -
+      name: site_designation
+      label: 'site designation'
+      selector: designation
+process:
+  vid:
+    plugin: default_value
+    default_value: designation
+  name: site_designation
+destination:
+  plugin: 'entity:taxonomy_term'
+migration_dependencies: null
