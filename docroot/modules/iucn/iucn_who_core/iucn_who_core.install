@@ -1,0 +1,25 @@
+<?php
+
+use \Drupal\taxonomy\Entity\Term;
+
+function iucn_who_core_install() {
+  module_load_include('module', 'iucn_who_core');
+  $terms = array(
+    -6 => 'Good',
+    -5 => 'Good with some concerns',
+    -4 => 'Significant concern',
+    -3 => 'Critical',
+    -2 => 'Data deficient',
+    -1 => 'Coming soon',
+  );
+
+  foreach ($terms as $weight => $name) {
+    $term = Term::create([
+      'vid' => TAXONOMY_SITE_CONSERVATION_RATING,
+      'name' => $name,
+      'weight' => $weight,
+      'language' => 'en'
+    ]);
+    $term->save();
+  }
+}
