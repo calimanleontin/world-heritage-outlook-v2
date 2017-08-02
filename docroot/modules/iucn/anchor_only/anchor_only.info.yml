@@ -1,0 +1,9 @@
+name: CKEditor Anchor Only
+type: module
+description: This plugin module adds anchor related features to CKEditor in Drupal 8
+core: 8.x
+package: CKEditor
+version: 1.1
+dependencies:
+  - ckeditor
+  - editor

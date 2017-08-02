@@ -2,7 +2,7 @@
 # Go to docroot/
 cd docroot/
 
-env="test"
+env="iucn.test"
 if [ ! -z "$1" ]; then
   env=$1
 fi

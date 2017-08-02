@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Contains anchor_link.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function anchor_only_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the entity_link module.
+    case 'help.page.anchor_only':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This plugin module adds anchor related features to CKEditor in Drupal 8') . '</p>';
+      $output .= '<p><ul>';
+      $output .= '  <li>Dialog to insert links and anchors with some properties.</li>';
+      $output .= '  <li>Context menu option to edit or remove links and anchors.</li>';
+      $output .= '</ul></p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function anchor_only_theme() {
+  $theme = [];
+
+  return $theme;
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function anchor_only_page_attachments(array &$attachments) {
+  $config = \Drupal::config('anchor_only.settings');
+  $attachments['#attached']['library'][] = 'anchor_only/drupal.anchor_only';
+}
