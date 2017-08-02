@@ -2023,7 +2023,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/inline_responsive_images-8.x-2.1.zip",
-                "reference": null,
+                "reference": "8.x-2.1",
                 "shasum": "d96117017a2a4d0cfe9014e734ca861055680f7c"
             },
             "require": {
@@ -3177,8 +3177,7 @@
             "homepage": "https://www.drupal.org/project/string_field_formatter",
             "support": {
                 "source": "http://cgit.drupalcode.org/string_field_formatter"
-            },
-            "time": "2017-01-10 11:38:31"
+            }
         },
         {
             "name": "drupal/token",
