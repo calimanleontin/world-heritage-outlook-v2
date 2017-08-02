@@ -52,4 +52,15 @@ class SitesQueryUtil {
     return Term::loadMultiple($tids);
   }
 
+
+  public static function searchSiteByName($pattern, $limit = 5) {
+    $query = \Drupal::entityQuery('node');
+    $query->condition('type', 'site')
+      ->condition('status', 1)
+      ->condition('title', '%'.db_like($pattern).'%', 'LIKE');
+    $query->range(0, $limit);
+    $nids = $query->execute();
+    return Node::loadMultiple($nids);
+  }
+
 }

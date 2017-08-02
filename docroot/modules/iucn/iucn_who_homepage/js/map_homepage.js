@@ -25,18 +25,48 @@ function postInitMap(instance_id, map, config) {
       $markers.push($marker);
     }
 
-    // Filters
+    // Click on any of the filters
     $('#map-filters a').on('click', function() {
       $('#map-filters li').removeClass('active');
       $(this).parent().addClass('active');
       var $filter_status_id = $(this).data('filter');
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
-        var $visible =  $filter_status_id == 'all'
+        var $visible = $filter_status_id == 'all'
             || parseInt($filter_status_id) == parseInt($marker.customInfo.status_id);
         $marker.setVisible($visible);
       }
+      if ($filter_status_id == 'all') {
+        map.setZoom(parseInt(config.map_init_zoom));
+        map.setCenter(
+            new google.maps.LatLng(
+                parseFloat(config.map_init_lat),
+                parseFloat(config.map_init_lng)
+            )
+        );
+      }
       return false;
+    });
+
+    // Search autocomplete selection
+    $(document).on('autocompleteclose', '.form-autocomplete', function (e) {
+      var $value = e.target.value;
+      if ($value.length > 0) {
+        var $found = false;
+        for(var $i = 0; $i < $markers.length; $i++) {
+          var $marker = $markers[$i];
+          var $visible = $marker.customInfo.title == $value;
+          $marker.setVisible($visible);
+          if (!$found && $visible) {
+            $found = true;
+            $('#map-site-details').html($marker.customInfo.render);
+            map.setCenter($marker.getPosition());
+            map.setZoom(7); // @todo variable
+          }
+        }
+        e.stopPropagation();
+        e.preventDefault();
+      }
     });
   })(jQuery, Drupal, drupalSettings);
 }

@@ -1,29 +1,22 @@
 <div class="row">
-  <div class="container-fluid">
-    <div class="col col-sm-3">
-      <div id="map-site-search">
-      <form action="">
-        <label for="search">{{ 'Explore natural sites' | trans }}</label>
-        <input id="search" name="q">
-        <button></button>
-        <a href="#">{{ 'Advanced search' | trans }}</a>
-      </form>
-      </div>
-      <div id="map-filters">
-        <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
-        <ul>
-          {% for rating in conservation_ratings %}
-          <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
-          {% endfor %}
-        </ul>
-        <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
-      </div>
-      <div id="map-site-details">
-        {{ 'Click on a Natural Site for details' | trans }}
-      </div>
+  <div class="col col-sm-3">
+    <div id="map-site-search">
+    {{ search_form }}
     </div>
-    <div class="col col-sm-9">
-      {{ markup_map | raw }}
+    <div id="map-filters">
+      <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
+      <ul>
+        {% for rating in conservation_ratings %}
+        <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+        {% endfor %}
+      </ul>
+      <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
     </div>
+    <div id="map-site-details">
+      {{ 'Click on a Natural Site for details' | trans }}
+    </div>
+  </div>
+  <div class="col col-sm-9">
+    {{ markup_map | raw }}
   </div>
 </div>

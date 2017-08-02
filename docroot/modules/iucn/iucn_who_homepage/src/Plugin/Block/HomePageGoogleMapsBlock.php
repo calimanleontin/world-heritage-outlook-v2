@@ -34,11 +34,14 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
+
+    $search_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_homepage\Form\SiteSearchAutocompleteForm');
     $content['output'] = [
       '#theme' => 'homepage_map_block',
       '#markup_map' => parent::getMapMarkup(),
       '#sites_total_count' => SitesQueryUtil::getPublishedSitesCount(),
       '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
+      '#search_form' => $search_form,
     ];
     return $content;
   }
