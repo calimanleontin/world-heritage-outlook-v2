@@ -8,7 +8,7 @@ function postInitMap(instance_id, map, config) {
     'use strict';
     // Scale-down the images a bit
     for (var $i in config.icons) {
-      config.icons[$i].scaledSize = new google.maps.Size(12, 12);
+      config.icons[$i].scaledSize = new google.maps.Size(24, 24);
     }
     var $markers = [];
     for(var $i = 0; $i < config.markers.length; $i++) {
@@ -19,11 +19,26 @@ function postInitMap(instance_id, map, config) {
         icon: config.icons['icon' + $mc.status_id],
         customInfo: $mc
       });
+      // Click on marker
       $marker.addListener('click', function() {
+        $.resetAllMarkerIcons();
+        var $icon = config.icons['icon' + this.customInfo.status_id + 'Active'];
+        this.setIcon($icon);
         $('#map-site-details').html(this.customInfo.render);
       });
       $markers.push($marker);
     }
+
+    $.resetAllMarkerIcons = function() {
+      for(var $i = 0; $i < $markers.length; $i++) {
+        var $marker = $markers[$i];
+        var $icon = config.icons['icon' + $marker.customInfo.status_id];
+        // Avoid some suble flickering
+        if ($icon.url != $marker.getIcon().url) {
+          $marker.setIcon($icon);
+        }
+      }
+    };
 
     // Click on any of the filters
     $('#map-filters a').on('click', function() {
@@ -75,5 +90,6 @@ function homepageMapSiteDetailClose() {
   (function ($) {
     'use strict';
     $('#map-site-details').html('');
+    $.resetAllMarkerIcons();
   })(jQuery, Drupal, drupalSettings);
 }

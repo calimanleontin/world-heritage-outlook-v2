@@ -134,6 +134,13 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       $ret['icon' . $term->id()] = [
         'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
       ];
+      $url = sprintf('/%s/images/marker-%s-active.png',
+        drupal_get_path('module', 'iucn_who_homepage'),
+        $term->field_css_identifier->value
+      );
+      $ret['icon' . $term->id() . 'Active'] = [
+        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
+      ];
     }
     return $ret;
   }
