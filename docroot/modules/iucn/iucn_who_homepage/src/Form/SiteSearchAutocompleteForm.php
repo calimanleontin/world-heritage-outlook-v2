@@ -4,6 +4,8 @@ namespace Drupal\iucn_who_homepage\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\iucn_who_core\Sites\SitesQueryUtil;
 use Drupal\views\Views;
 
 class SiteSearchAutocompleteForm extends FormBase {
@@ -40,13 +42,13 @@ class SiteSearchAutocompleteForm extends FormBase {
         '#autocomplete_route_name' => 'iucn.ajax.site-name-search',
       ],
       'send' => [
-        '#type' => 'button',
+        '#type' => 'submit',
         '#title' => '',
       ],
       'advanced_search' => [
         '#markup' => Link::fromTextAndUrl(
           $this->t('Advanced search'),
-          $search_view->getUrl()
+          Url::fromRoute('view.sites_search.sites_search_page')
         )->toString(),
       ],
     ];
@@ -62,10 +64,14 @@ class SiteSearchAutocompleteForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-  }
-
-
-  public function ajaxCallbackSearch() {
-
+    $q = $form_state->getValue('q');
+    $results = SitesQueryUtil::searchSiteByName($q);
+    // One result sends the user to the hit's page
+    if (count($results) == 1) {
+      $node = reset($results);
+      $form_state->setRedirect('entity.node.canonical', ['node' => $node->id()]);
+    } else {
+      $form_state->setRedirect('view.sites_search.sites_search_page', ['keys' => $q ]);
+    }
   }
 }
