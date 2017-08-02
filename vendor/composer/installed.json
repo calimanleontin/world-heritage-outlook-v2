@@ -5845,54 +5845,6 @@
         }
     },
     {
-        "name": "drupal/linkit",
-        "version": "4.3.0",
-        "version_normalized": "4.3.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/linkit",
-            "reference": "8.x-4.3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/linkit-8.x-4.3.zip",
-            "reference": "8.x-4.3",
-            "shasum": "e624ea2f18a6100b76a8337e24f7c08df6e2235e"
-        },
-        "require": {
-            "drupal/core": "~8.0"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-4.x": "4.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-4.3",
-                "datestamp": "1490205830"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Emil Stjerneman",
-                "homepage": "https://stjerneman.com",
-                "email": "emil@stjerneman.com",
-                "role": "Maintainer"
-            }
-        ],
-        "description": "Linkit - Enriched linking experience",
-        "homepage": "http://drupal.org/project/linkit",
-        "support": {
-            "source": "http://cgit.drupalcode.org/linkit",
-            "issues": "http://drupal.org/project/linkit"
-        }
-    },
-    {
         "name": "drupal/redirect",
         "version": "1.0.0-beta1",
         "version_normalized": "1.0.0.0-beta1",
@@ -6599,5 +6551,295 @@
         },
         "type": "drupal-library",
         "installation-source": "dist"
+    },
+    {
+        "name": "drupal/spamspan",
+        "version": "1.0.0-alpha1",
+        "version_normalized": "1.0.0.0-alpha1",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/spamspan",
+            "reference": "8.x-1.0-alpha1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/spamspan-8.x-1.0-alpha1.zip",
+            "reference": "8.x-1.0-alpha1",
+            "shasum": "8db346fffb918b583978d73d10ae82110bce6ee8"
+        },
+        "require": {
+            "drupal/core": "~8.1"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0-alpha1",
+                "datestamp": "1493887084"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "lakka",
+                "homepage": "https://www.drupal.org/user/63367"
+            },
+            {
+                "name": "peterx",
+                "homepage": "https://www.drupal.org/user/23516"
+            },
+            {
+                "name": "vitalie",
+                "homepage": "https://www.drupal.org/user/175134"
+            }
+        ],
+        "description": "The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. It implements the technique at http://www.spamspan.com.",
+        "homepage": "http://drupal.org/project/spamspan",
+        "support": {
+            "source": "http://cgit.drupalcode.org/spamspan"
+        }
+    },
+    {
+        "name": "drupal/editor_advanced_link",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/editor_advanced_link",
+            "reference": "8.x-1.4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/editor_advanced_link-8.x-1.4.zip",
+            "reference": "8.x-1.4",
+            "shasum": "52cf139a313d5fa6a461a25a1ba36ae987bc403d"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.4",
+                "datestamp": "1490108883"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "DuaelFr",
+                "homepage": "https://www.drupal.org/user/931394"
+            }
+        ],
+        "description": "Add title, target etc. attributes to Text Editor's link dialog if the text format allows them.",
+        "homepage": "https://www.drupal.org/project/editor_advanced_link",
+        "support": {
+            "source": "http://cgit.drupalcode.org/editor_advanced_link"
+        }
+    },
+    {
+        "name": "drupal/editor_file",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/editor_file",
+            "reference": "8.x-1.2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/editor_file-8.x-1.2.zip",
+            "reference": "8.x-1.2",
+            "shasum": "e1fdfec93f98c219a6adea133033f1d21b8c53de"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.2",
+                "datestamp": "1478115534"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "DuaelFr",
+                "homepage": "https://www.drupal.org/user/931394"
+            }
+        ],
+        "description": "Allow users to link uploaded files in the text Editor.",
+        "homepage": "https://www.drupal.org/project/editor_file",
+        "support": {
+            "source": "http://cgit.drupalcode.org/editor_file"
+        }
+    },
+    {
+        "name": "drupal/string_field_formatter",
+        "version": "dev-1.x",
+        "version_normalized": "dev-1.x",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/string_field_formatter",
+            "reference": "ab851330dbb952be7039e07adf72e3bc9c0000e5"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.x-dev",
+                "datestamp": "1484048585"
+            }
+        },
+        "installation-source": "source",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Denes.Szabo",
+                "homepage": "https://www.drupal.org/user/582668"
+            }
+        ],
+        "description": "Adds formatters to plain string type field",
+        "homepage": "https://www.drupal.org/project/string_field_formatter",
+        "support": {
+            "source": "http://cgit.drupalcode.org/string_field_formatter"
+        }
+    },
+    {
+        "name": "drupal/linkit",
+        "version": "5.0.0-beta5",
+        "version_normalized": "5.0.0.0-beta5",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/linkit",
+            "reference": "8.x-5.0-beta5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/linkit-8.x-5.0-beta5.zip",
+            "reference": "8.x-5.0-beta5",
+            "shasum": "8dcbd9c8c162e9801a699ef5717ab291b65bae8e"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "require-dev": {
+            "drupal/imce": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-5.x": "5.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-5.0-beta5",
+                "datestamp": "1490224383"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Emil Stjerneman",
+                "homepage": "https://stjerneman.com",
+                "email": "emil@stjerneman.com",
+                "role": "Maintainer"
+            }
+        ],
+        "description": "Linkit - Enriched linking experience",
+        "homepage": "http://drupal.org/project/linkit",
+        "support": {
+            "source": "http://cgit.drupalcode.org/linkit",
+            "issues": "http://drupal.org/project/linkit"
+        }
+    },
+    {
+        "name": "drupal/inline_responsive_images",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/inline_responsive_images",
+            "reference": "8.x-2.1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/inline_responsive_images-8.x-2.1.zip",
+            "reference": null,
+            "shasum": "d96117017a2a4d0cfe9014e734ca861055680f7c"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-2.x": "2.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-2.1",
+                "datestamp": "1493929984"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Betawerk",
+                "homepage": "https://www.drupal.org/user/426816"
+            },
+            {
+                "name": "jeroen_betawerk",
+                "homepage": "https://www.drupal.org/user/2700643"
+            },
+            {
+                "name": "keithm",
+                "homepage": "https://www.drupal.org/user/691250"
+            },
+            {
+                "name": "mitchalbert",
+                "homepage": "https://www.drupal.org/user/2255518"
+            }
+        ],
+        "description": "Allows you to use responsive images in the WYSIWYG editor.",
+        "homepage": "https://www.drupal.org/project/inline_responsive_images",
+        "support": {
+            "source": "http://cgit.drupalcode.org/inline_responsive_images"
+        }
     }
 ]
