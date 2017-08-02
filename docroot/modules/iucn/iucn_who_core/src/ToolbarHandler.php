@@ -3,7 +3,6 @@
 namespace Drupal\iucn_who_core;
 
 use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
@@ -96,6 +95,7 @@ class ToolbarHandler implements ContainerInjectionInterface {
     return $items;
   }
 
+
   /**
    * Lazy builder callback for the menu toolbar.
    *
@@ -112,10 +112,8 @@ class ToolbarHandler implements ContainerInjectionInterface {
     ];
     $tree = $this->menuLinkTree->transform($tree, $manipulators);
     $build = $this->menuLinkTree->build($tree);
-    CacheableMetadata::createFromRenderArray($build)
-      ->addCacheableDependency($this->config)
-      ->applyTo($build);
+    // CacheableMetadata::createFromRenderArray($build)
+    // ->addCacheableDependency($this->config)->applyTo($build);
     return $build;
   }
-
 }
