@@ -9035,6 +9035,12 @@ a:active .caret-triangle .caret-path,
   padding-bottom: .5em;
   text-transform: uppercase;
 }
+@media screen and (max-width: 767px) {
+  .facets-title {
+    border-bottom: none;
+    font-size: 1.78571429rem;
+  }
+}
 @media screen and (min-width: 768px) {
   .facets-title .caret-triangle {
     display: none;

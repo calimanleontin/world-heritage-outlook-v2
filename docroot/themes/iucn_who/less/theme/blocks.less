@@ -20,6 +20,10 @@
   margin-top: 0;
   padding-bottom: .5em;
   text-transform: uppercase;
+  @media @grid-mobile {
+    border-bottom: none;
+    font-size: 25 * @rem-multiplier--mobile;
+  }
   @media @grid-desktop {
     .caret-triangle {
       display: none;
