@@ -6,6 +6,12 @@
 }
 
 // Facets block
+.facets-toggle {
+  color: @text-color;
+  &:hover, &:active, &:focus {
+    color: @link-hover-color;
+  }
+}
 .facets-title {
   // @todo: make mixin out of this
   border-bottom: 1px solid #ddd;
@@ -14,6 +20,11 @@
   margin-top: 0;
   padding-bottom: .5em;
   text-transform: uppercase;
+  @media @grid-desktop {
+    .caret-triangle {
+      display: none;
+    }
+  }
 }
 .facets-subtitle + #facets-group {
   margin-top: 1.5em;
@@ -49,7 +60,7 @@
     }
     .facet-item__status {
       background-color: @iucn-blue-light;
-      background-image: url(../images/checkbox.svg);
+      background-image: url(~'@{images-path}checkbox.svg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 60%;

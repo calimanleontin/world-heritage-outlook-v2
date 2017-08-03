@@ -105,3 +105,21 @@ a.is-active {
 .conservation-status.coming-soon {
   color: @iucn-gray;
 }
+
+// Triangle caret
+.caret-triangle {
+  display: inline-block;
+  &:first-child {
+    margin-right: .2em;
+  }
+  .caret-path {
+    transition: fill .2s;
+  }
+}
+a:hover,
+a:focus,
+a:active {
+  .caret-triangle .caret-path {
+    fill: @link-hover-color;
+  }
+}
