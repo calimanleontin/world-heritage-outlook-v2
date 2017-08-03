@@ -12,6 +12,7 @@
 @import "component/icon";
 @import "component/navbar";
 @import "component/node";
+@import "component/pagination";
 @import "component/panel";
 @import "component/progress-bar";
 @import "component/table-drag";
@@ -41,7 +42,9 @@ ol, ul {
   margin-top: 45px;
   padding-top: 15px;
   padding-bottom: 36px;
-  border-top: 1px solid #E5E5E5;
+  .sidemenu-toggle-wrapper + & {
+    margin-top: 0;
+  }
 }
 
 // Paragraphs.
@@ -75,6 +78,5 @@ p:last-child,
 }
 
 .container-full {
-  &:extend(.container-fluid all);
-  width: 100%;
+  // width: 100%;
 }

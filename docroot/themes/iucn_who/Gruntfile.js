@@ -3,6 +3,8 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-postcss');
 
   grunt.initConfig({
@@ -42,9 +44,43 @@ module.exports = function (grunt) {
         tasks: 'less'
       }
     },
+    concat: {
+      bootstrap: {
+        src: [
+          'bootstrap/js/transition.js',
+          'bootstrap/js/alert.js',
+          'bootstrap/js/button.js',
+          'bootstrap/js/carousel.js',
+          'bootstrap/js/collapse.js',
+          'bootstrap/js/dropdown.js',
+          'bootstrap/js/modal.js',
+          'bootstrap/js/tooltip.js',
+          'bootstrap/js/popover.js',
+          'bootstrap/js/scrollspy.js',
+          'bootstrap/js/tab.js',
+          'bootstrap/js/affix.js'
+        ],
+        dest: 'libraries/bootstrap/bootstrap.js'
+      }
+    },
+    uglify: {
+      options: {
+        compress: {
+          warnings: false
+        },
+        mangle: true,
+        preserveComments: /^!|@preserve|@license|@cc_on/i
+      },
+      core: {
+        src: '<%= concat.bootstrap.dest %>',
+        dest: 'libraries/bootstrap/bootstrap.min.js'
+      },
+    },
   });
 
   grunt.registerTask('css', ['less', 'postcss']);
+
+  grunt.registerTask('js', ['concat', 'uglify']);
 
   grunt.registerTask('prod', ['css']);
 

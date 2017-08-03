@@ -67,9 +67,9 @@
 @font-size-h6:                                0.85rem; // ~12px
 
 //** Unit-less `line-height` for use in components like buttons.
-@line-height-base:                            1.428571429; // 20/14
+@line-height-base:                            (1.5); // 27/18
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
-@line-height-computed:                        (unit(@font-size-base) * @line-height-base * @rem-multiplier--desktop); // ~20px
+@line-height-computed:                        (unit(@font-size-base) * @line-height-base * @rem-multiplier--desktop); // ~27px
 
 //** By default, this inherits from the `<body>`.
 @headings-font-family:                        inherit;
@@ -456,20 +456,20 @@
 //##
 
 @pagination-color:                            @link-color;
-@pagination-bg:                               #fff;
-@pagination-border:                           #ddd;
+@pagination-bg:                               transparent;
+@pagination-border:                           transparent;
 
 @pagination-hover-color:                      @link-hover-color;
-@pagination-hover-bg:                         @gray-lighter;
-@pagination-hover-border:                     #ddd;
+@pagination-hover-bg:                         transparent;
+@pagination-hover-border:                     transparent;
 
-@pagination-active-color:                     #fff;
-@pagination-active-bg:                        @brand-primary;
-@pagination-active-border:                    @brand-primary;
+@pagination-active-color:                     @iucn-blue-dark;
+@pagination-active-bg:                        transparent;
+@pagination-active-border:                    transparent;
 
 @pagination-disabled-color:                   @gray-light;
-@pagination-disabled-bg:                      #fff;
-@pagination-disabled-border:                  #ddd;
+@pagination-disabled-bg:                      transparent;
+@pagination-disabled-border:                  transparent;
 
 
 //== Pager
