@@ -9027,6 +9027,16 @@ a:active .caret-triangle .caret-path,
 .facets-toggle:focus {
   color: #03afdf;
 }
+@media screen and (max-width: 767px) {
+  #sidemenu .facets-toggle + #facets-collapse > .facets-content {
+    padding-left: calc(25px + .2em);
+  }
+}
+@media screen and (min-width: 768px) {
+  #sidemenu .facets-toggle + #facets-collapse {
+    display: block;
+  }
+}
 .facets-title {
   border-bottom: 1px solid #ddd;
   font-size: 1em;
@@ -9036,13 +9046,17 @@ a:active .caret-triangle .caret-path,
   text-transform: uppercase;
 }
 @media screen and (max-width: 767px) {
-  .facets-title {
+  #sidemenu .facets-title {
     border-bottom: none;
     font-size: 1.78571429rem;
   }
+  #sidemenu .facets-title .caret-triangle svg {
+    height: .6em;
+    width: auto;
+  }
 }
 @media screen and (min-width: 768px) {
-  .facets-title .caret-triangle {
+  #sidemenu .facets-title .caret-triangle {
     display: none;
   }
 }

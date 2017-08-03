@@ -11,6 +11,16 @@
   &:hover, &:active, &:focus {
     color: @link-hover-color;
   }
+  #sidemenu & + #facets-collapse {
+    @media @grid-mobile {
+      > .facets-content {
+        padding-left: calc(~'25px + .2em');
+      }
+    }
+    @media @grid-desktop {
+      display: block;
+    }
+  }
 }
 .facets-title {
   // @todo: make mixin out of this
@@ -20,13 +30,21 @@
   margin-top: 0;
   padding-bottom: .5em;
   text-transform: uppercase;
-  @media @grid-mobile {
-    border-bottom: none;
-    font-size: 25 * @rem-multiplier--mobile;
-  }
-  @media @grid-desktop {
-    .caret-triangle {
-      display: none;
+  #sidemenu & {
+    @media @grid-mobile {
+      border-bottom: none;
+      font-size: 25 * @rem-multiplier--mobile;
+      .caret-triangle {
+        svg {
+          height: .6em;
+          width: auto;
+        }
+      }
+    }
+    @media @grid-desktop {
+      .caret-triangle {
+        display: none;
+      }
     }
   }
 }
