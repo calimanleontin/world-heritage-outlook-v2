@@ -9223,7 +9223,7 @@ a.is-active,
 }
 @media screen and (max-width: 767px) {
   .sidemenu-toggle-wrapper {
-    height: 50px;
+    height: 3.57142857rem;
     position: relative;
   }
   #sidemenu-toggle.affix,
@@ -9238,15 +9238,16 @@ a.is-active,
   #sidemenu-toggle.affix-bottom {
     position: absolute;
     width: 100%;
+    bottom: 0;
+    top: auto !important;
   }
   .sidemenu-toggle {
-    font-size: 16px;
+    float: left;
+    font-size: 1.14285714rem;
     font-weight: 500;
+    height: 3.57142857rem;
     text-transform: uppercase;
     width: 50%;
-  }
-  .sidemenu-toggle + .footer {
-    margin-top: 0;
   }
   #sidemenu {
     background-color: #fff;
