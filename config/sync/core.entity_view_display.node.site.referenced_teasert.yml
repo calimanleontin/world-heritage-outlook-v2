@@ -1,9 +1,9 @@
-uuid: 935a8f09-529e-4228-a9a9-351a0a5b3f3b
+uuid: 43fbe99c-eaa3-4c25-aa63-b370f5cec59f
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.referenced_teasert
     - field.field.node.site.body
     - field.field.node.site.field_area
     - field.field.node.site.field_buffer_zone
@@ -29,23 +29,87 @@ dependencies:
     - field.field.node.site.field_wdpa_id
     - node.type.site
   module:
-    - text
+    - blazy
+    - smart_trim
     - user
-id: node.site.teaser
+id: node.site.referenced_teasert
 targetEntityType: node
 bundle: site
-mode: teaser
+mode: referenced_teasert
 content:
   body:
+    type: smart_trim
+    weight: 2
+    region: content
     label: hidden
-    type: text_summary_or_trimmed
-    weight: 101
     settings:
-      trim_length: 600
+      trim_length: '250'
+      trim_type: chars
+      trim_suffix: ''
+      more_link: '0'
+      more_text: More
+      summary_handler: full
+      trim_options:
+        text: text
+      more_class: more-link
     third_party_settings: {  }
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: referenced_teaser_600x340_
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: referenced_teasert
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      box_media_style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    type: blazy
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -60,7 +124,6 @@ hidden:
   field_cultural_landscape: true
   field_danger_list: true
   field_designation: true
-  field_image: true
   field_inscription_criteria: true
   field_inscription_year: true
   field_mixed_site: true

@@ -101,6 +101,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#stat_protection' => 'TODO',
       ];
       $ret[] = [
+        'id' => $node->id(),
         'lat' => $latitude,
         'lng' => $longitude,
         'title' => $node->title->value,
