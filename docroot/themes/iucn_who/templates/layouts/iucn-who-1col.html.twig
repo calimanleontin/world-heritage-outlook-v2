@@ -1,0 +1,17 @@
+{%
+set classes = [
+'iucn-1col-wrapper',
+]
+%}
+
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          {{ content.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

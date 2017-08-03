@@ -1,0 +1,11 @@
+iucn_who_1col:
+  label: 1 col
+  category: IUCN
+#  class: '\Drupal\ds\Plugin\DsLayout'
+  type: partial
+  template: templates/layouts/iucn-who-1col
+#  library: ds/ds_2col_stacked_fluid
+#  icon: images/ds-2col-stacked-fluid.png
+  regions:
+    content:
+      label: Content

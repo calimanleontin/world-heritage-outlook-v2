@@ -1,0 +1,32 @@
+uuid: f30baa1b-38f7-41a1-b2b6-c230d0e73498
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_teasers.field_paragraph_background
+    - field.field.paragraph.content_teasers.field_paragraph_pages
+    - paragraphs.paragraphs_type.content_teasers
+id: paragraph.content_teasers.default
+targetEntityType: paragraph
+bundle: content_teasers
+mode: default
+content:
+  field_paragraph_background:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_paragraph_pages:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

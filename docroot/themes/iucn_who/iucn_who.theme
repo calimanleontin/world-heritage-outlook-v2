@@ -6,6 +6,19 @@
  * Place your custom PHP code in this file.
  */
 
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page__'.$content_type;
+  }
+}
+
+
 /**
  * Implements hook_preprocess_HOOK() for block templates.
  */
@@ -37,3 +50,21 @@ function iucn_who_theme_suggestions_menu_alter(array &$suggestions, array $varia
       $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['attributes']['data-block_id'] . '__' . $variables['attributes']['data-region'];
     }
 }
+
+function iucn_who_preprocess_iucn_who_1col(&$variables) {
+  if (!empty($variables['content']['#paragraph'])) {
+    $variables['attributes']['class'][] = 'paragraph';
+    /* @var $paragraph Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['content']['#paragraph'];
+    _iucn_who_preprocess_set_background($variables, $paragraph);
+  }
+}
+
+function _iucn_who_preprocess_set_background(&$variables, Drupal\paragraphs\Entity\Paragraph $paragraph) {
+  if (!empty($paragraph->field_paragraph_background)) {
+    $bg_value = $paragraph->field_paragraph_background->value;
+    $variables['attributes']['class'][] = 'paragraph-background-' . $bg_value;
+  }
+}
+
+

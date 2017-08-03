@@ -1,0 +1,77 @@
+{% extends "page.html.twig" %}
+{% block main %}
+  <div role="main" class="main-container js-quickedit-main-content">
+      <div class="row">
+        {# Sidebar First #}
+        {% if page.sidebar_first or page.facets %}
+          <aside class="col-sm-3" role="complementary">
+            {% if page.facets %}
+              {% block facets %}
+                {{ page.facets }}
+              {% endblock %}
+            {% endif %}
+            {% if page.sidebar_first %}
+              {% block sidebar_first %}
+                {{ page.sidebar_first }}
+              {% endblock %}
+            {% endif %}
+          </aside>
+        {% endif %}
+
+        {# Content #}
+        {%
+        set content_classes = [
+        (page.sidebar_first or page.facets) and page.sidebar_second ? 'col-sm-6',
+        (page.sidebar_first or page.facets) and page.sidebar_second is empty ? 'col-sm-9',
+        page.sidebar_second and (page.sidebar_first or page.facets) is empty ? 'col-sm-9',
+        (page.sidebar_first or page.facets) is empty and page.sidebar_second is empty ? 'col-sm-12'
+        ]
+        %}
+        <section{{ content_attributes.addClass(content_classes) }}>
+
+          {# Highlighted #}
+          {% if page.highlighted %}
+            {% block highlighted %}
+              <div class="highlighted">{{ page.highlighted }}</div>
+            {% endblock %}
+          {% endif %}
+
+          {# Breadcrumbs #}
+          {% if breadcrumb %}
+            {% block breadcrumb %}
+              {{ breadcrumb }}
+            {% endblock %}
+          {% endif %}
+
+          {# Action Links #}
+          {% if action_links %}
+            {% block action_links %}
+              <ul class="action-links">{{ action_links }}</ul>
+            {% endblock %}
+          {% endif %}
+
+          {# Help #}
+          {% if page.help %}
+            {% block help %}
+              {{ page.help }}
+            {% endblock %}
+          {% endif %}
+
+          {# Content #}
+          {% block content %}
+            <a id="main-content"></a>
+            {{ page.content }}
+          {% endblock %}
+        </section>
+
+        {# Sidebar Second #}
+        {% if page.sidebar_second %}
+          {% block sidebar_second %}
+            <aside class="col-sm-3" role="complementary">
+              {{ page.sidebar_second }}
+            </aside>
+          {% endblock %}
+        {% endif %}
+      </div>
+  </div>
+{% endblock %}

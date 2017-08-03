@@ -7,8 +7,19 @@ dependencies:
     - field.field.paragraph.content_html.field_paragraph_background
     - paragraphs.paragraphs_type.content_html
   module:
-    - options
+    - ds
     - text
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_content
 id: paragraph.content_html.default
 targetEntityType: paragraph
 bundle: content_html
@@ -16,16 +27,10 @@ mode: default
 content:
   field_content:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_paragraph_background:
-    weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-hidden: {  }
+hidden:
+  field_paragraph_background: true
