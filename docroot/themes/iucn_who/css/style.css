@@ -7916,7 +7916,7 @@ body.navbar-is-fixed-bottom {
   }
   body.toolbar-vertical.navbar-is-fixed-top header,
   body.toolbar-vertical.navbar-is-fixed-bottom header {
-    z-index: 1040;
+    z-index: 1041;
   }
   body.toolbar-vertical.navbar-is-fixed-top header {
     top: 39px;
@@ -7984,7 +7984,7 @@ body.navbar-is-fixed-bottom {
 @media screen and (max-width: 767px) {
   .navbar {
     position: fixed;
-    z-index: 1040;
+    z-index: 1041;
     right: 0;
     left: 0;
     height: 3.57142857rem;

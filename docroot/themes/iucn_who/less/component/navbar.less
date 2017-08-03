@@ -35,7 +35,7 @@ body {
           position: fixed;
         }
         header {
-          z-index: @zindex-modal-background;
+          z-index: @zindex-modal-background + 1;
         }
       }
       // Default toolbar fixed height value.
@@ -107,7 +107,7 @@ body.navbar-is-static-top {
   }
   @media @grid-mobile {
     position: fixed;
-    z-index: @zindex-modal-background;
+    z-index: @zindex-modal-background + 1;
     right: 0;
     left: 0;
     height: @navbar-height--mobile;
