@@ -9294,6 +9294,7 @@ a:active .caret-triangle .caret-path,
   #sidemenu {
     background-color: #fff;
     display: block;
+    font-size: 1.07142857rem;
     left: auto;
     min-height: 100%;
     min-width: 200px;
