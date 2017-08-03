@@ -1,16 +1,23 @@
+who.content:
+  title: 'Content'
+  route_name: 'system.admin_content'
+  menu_name: who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 1
+
 who.google_maps_api.config_form:
   title: 'Google Maps API'
   route_name: google_maps_api.config_form
   menu_name: who
   class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 1
+  weight: 2
 
 who.admin_people:
   title: 'Users'
   route_name: entity.user.collection
   menu_name: who
   class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 2
+  weight: 3
 
 who.homepage_map:
   title: 'Homepage Map'
@@ -19,4 +26,4 @@ who.homepage_map:
     block: 'homepagemap'
   menu_name: who
   class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 3
+  weight: 4
