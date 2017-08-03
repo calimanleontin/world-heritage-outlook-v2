@@ -9309,7 +9309,6 @@ a:active .caret-triangle .caret-path,
     transition: all .3s;
     width: 90%;
     z-index: 1042;
-    box-shadow: -3px 0px 21px rgba(0, 0, 0, 0.6);
   }
   #sidemenu.open {
     opacity: 1;
