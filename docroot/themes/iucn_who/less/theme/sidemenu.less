@@ -68,7 +68,7 @@
   }
   .modal-backdrop {
     pointer-events: none;
-    .menu-open & {
+    .sidemenu-open & {
       pointer-events: all;
     }
   }
@@ -85,3 +85,6 @@
   }
 }
 
+.sidemenu-open {
+  &:extend(.menu-open all);
+}

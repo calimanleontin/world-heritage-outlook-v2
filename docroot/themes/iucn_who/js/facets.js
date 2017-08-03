@@ -43,11 +43,11 @@
     });
 
     $sidemenu.on('show.bs.dropdown', function () {
-      $body.addClass('menu-open');
+      $body.addClass('sidemenu-open');
       $modalBackdrop.show().addClass('in');
     })
     $sidemenu.on('hide.bs.dropdown', function () {
-      $body.removeClass('menu-open');
+      $body.removeClass('sidemenu-open');
       $modalBackdrop.hide().removeClass('in');
     })
 

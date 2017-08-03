@@ -6636,7 +6636,8 @@ button.close {
   -webkit-appearance: none;
 }
 .modal-open,
-.menu-open {
+.menu-open,
+.sidemenu-open {
   overflow: hidden;
 }
 .modal {
@@ -6668,7 +6669,8 @@ button.close {
   transform: translate(0, 0);
 }
 .modal-open .modal,
-.menu-open .modal {
+.menu-open .modal,
+.sidemenu-open .modal {
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -9337,7 +9339,7 @@ a:active .caret-triangle .caret-path,
   .modal-backdrop {
     pointer-events: none;
   }
-  .menu-open .modal-backdrop {
+  .sidemenu-open .modal-backdrop {
     pointer-events: all;
   }
 }
