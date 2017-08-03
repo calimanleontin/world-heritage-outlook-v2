@@ -1,6 +1,11 @@
 headroom:
     js:
       libraries/headroom.js/dist/headroom.min.js: {}
+facets:
+    js:
+      js/facets.js: {}
+    dependencies:
+      - core/jquery
 global-styling:
   css:
     theme:
@@ -9,7 +14,6 @@ global-styling:
     libraries/bootstrap/bootstrap.min.js: {}
     js/main.js: {}
     js/navbar-headroom.js: {}
-    js/facets.js: {}
   dependencies:
     - core/jquery
     - iucn_who/headroom
