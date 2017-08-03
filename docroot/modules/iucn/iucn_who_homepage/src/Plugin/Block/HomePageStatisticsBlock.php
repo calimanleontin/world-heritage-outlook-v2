@@ -51,7 +51,6 @@ class HomePageStatisticsBlock extends BlockBase {
   public function build() {
     // @todo remove line below to allow caching in production
     $content = ['#cache' => ['max-age' => 0]];
-    dpm($this->getStatistics());
     $content['output'] = [
       '#theme' => 'homepage_statistics',
       '#statistics' => $this->getStatistics(),
