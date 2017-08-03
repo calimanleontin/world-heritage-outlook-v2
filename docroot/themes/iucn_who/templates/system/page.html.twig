@@ -207,6 +207,7 @@
   {% endblock %}
 </div>
 {% if page.facets or page.sidebar_first %}
+  {{ attach_library('iucn_who/facets') }}
   <div class="sidemenu-toggle-wrapper">
     <div id="sidemenu-toggle">
       <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
