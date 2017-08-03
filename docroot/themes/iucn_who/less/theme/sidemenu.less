@@ -64,6 +64,12 @@
       transform+_: translateX(0);
     }
   }
+  .modal-backdrop {
+    pointer-events: none;
+    .menu-open & {
+      pointer-events: all;
+    }
+  }
 }
 @media @grid-desktop {
   .sidemenu-toggle {
@@ -72,9 +78,8 @@
   #sidemenu {
     display: block;
   }
+  .modal-backdrop {
+    display: none;
+  }
 }
 
-.modal-backdrop {
-  // display: none;
-  pointer-events: none;
-}

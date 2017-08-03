@@ -9273,6 +9273,12 @@ a.is-active,
     pointer-events: all;
     transform: translateX(0);
   }
+  .modal-backdrop {
+    pointer-events: none;
+  }
+  .menu-open .modal-backdrop {
+    pointer-events: all;
+  }
 }
 @media screen and (min-width: 768px) {
   .sidemenu-toggle {
@@ -9281,9 +9287,9 @@ a.is-active,
   #sidemenu {
     display: block;
   }
-}
-.modal-backdrop {
-  pointer-events: none;
+  .modal-backdrop {
+    display: none;
+  }
 }
 .path-frontpage #map-filters ul {
   list-style-type: none;
