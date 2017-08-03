@@ -8859,12 +8859,16 @@ a.is-active,
 }
 .caret-triangle {
   display: inline-block;
+  transform: rotate(-90deg);
 }
 .caret-triangle:first-child {
   margin-right: .2em;
 }
 .caret-triangle .caret-path {
   transition: fill .2s;
+}
+[aria-expanded=true] .caret-triangle {
+  transform: rotate(0deg);
 }
 a:hover .caret-triangle .caret-path,
 a:focus .caret-triangle .caret-path,
