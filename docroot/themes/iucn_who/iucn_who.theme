@@ -68,3 +68,8 @@ function _iucn_who_preprocess_set_background(&$variables, Drupal\paragraphs\Enti
 }
 
 
+function iucn_who_preprocess_page(&$variables) {
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    unset($variables['page']['header']['iucn_who_page_title']);
+  }
+}
