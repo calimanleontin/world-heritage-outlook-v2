@@ -9255,6 +9255,7 @@ a.is-active,
     left: auto;
     min-height: 100%;
     min-width: 200px;
+    max-width: 400px;
     opacity: 0;
     padding-top: 2em;
     padding-bottom: 2em;
