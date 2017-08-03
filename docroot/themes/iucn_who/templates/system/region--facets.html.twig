@@ -22,10 +22,17 @@
 %}
 {% if content %}
   <div{{ attributes.addClass(classes) }}>
-    <h2 class="facets-title">Filters</h2>
-    <div class="facets-subtitle">Choose one or more filters to refine your search.</div>
-    <div id="facets-group" role="tablist" aria-multiselectable="true" class="panel-group">
-      {{ content }}
+    <a class="facets-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
+      {% set svg_path = '/themes/iucn_who/images/caret-triangle.svg' %}
+      <h2 class="facets-title"><span class='caret-triangle'>{{ source(svg_path) }}</span>Filters</h2>
+    </a>
+    <div class="collapse in" id="facets-collapse">
+      <div class="facets-content">
+        <div class="facets-subtitle">Choose one or more filters to refine your search.</div>
+        <div id="facets-group" role="tablist" aria-multiselectable="true" class="panel-group">
+          {{ content }}
+        </div>
+      </div>
     </div>
   </div>
 {% endif %}

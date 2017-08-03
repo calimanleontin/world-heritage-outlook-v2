@@ -1,6 +1,6 @@
 @media @grid-mobile {
   .sidemenu-toggle-wrapper {
-    height: 50px;
+    height: 50 * @rem-multiplier--mobile;
     position: relative;
   }
   #sidemenu-toggle.affix,
@@ -19,30 +19,35 @@
   #sidemenu-toggle.affix-bottom {
     position: absolute;
     width: 100%;
+    bottom: 0;
+    top: auto !important;
     // position: relative;
     // top: auto !important;
     // margin-bottom: -50 * @rem-multiplier--mobile;
     // margin-top: 45px;
   }
   .sidemenu-toggle {
-    font-size: 16px;
+    float: left;
+    font-size: 16 * @rem-multiplier--mobile;
     font-weight: 500;
-    // height: 50px;
+    height: 50 * @rem-multiplier--mobile;
     text-transform: uppercase;
     width: 50%;
     // position: fixed;
     // bottom: 0;
     // -webkit-backface-visibility: hidden;
-    + .footer {
-      margin-top: 0;
-    }
+    // + .footer {
+    //   margin-top: 0;
+    // }
   }
   #sidemenu {
     background-color: #fff;
     display: block;
+    font-size: 15 * @rem-multiplier--mobile;
     left: auto;
     min-height: 100%;
     min-width: 200px;
+    max-width: 400px;
     opacity: 0;
     padding-top: 2em;
     padding-bottom: 2em;
@@ -54,11 +59,17 @@
     transition+_: all .3s;
     width: 90%;
     z-index: @zindex-modal-background + 2;
-    box-shadow: -3px 0px 21px fade(#000, 60%);
+    // box-shadow: -3px 0px 21px fade(#000, 60%);
     &.open {
       opacity: 1;
       pointer-events: all;
       transform+_: translateX(0);
+    }
+  }
+  .modal-backdrop {
+    pointer-events: none;
+    .menu-open & {
+      pointer-events: all;
     }
   }
 }
@@ -69,9 +80,8 @@
   #sidemenu {
     display: block;
   }
+  .modal-backdrop {
+    display: none;
+  }
 }
 
-.modal-backdrop {
-  // display: none;
-  pointer-events: none;
-}

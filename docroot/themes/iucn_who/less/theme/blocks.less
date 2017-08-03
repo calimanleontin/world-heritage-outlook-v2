@@ -6,6 +6,22 @@
 }
 
 // Facets block
+.facets-toggle {
+  color: @text-color;
+  &:hover, &:active, &:focus {
+    color: @link-hover-color;
+  }
+  #sidemenu & + #facets-collapse {
+    @media @grid-mobile {
+      > .facets-content {
+        padding-left: calc(~'25px + .2em');
+      }
+    }
+    @media @grid-desktop {
+      display: block;
+    }
+  }
+}
 .facets-title {
   // @todo: make mixin out of this
   border-bottom: 1px solid #ddd;
@@ -14,6 +30,23 @@
   margin-top: 0;
   padding-bottom: .5em;
   text-transform: uppercase;
+  #sidemenu & {
+    @media @grid-mobile {
+      border-bottom: none;
+      font-size: 25 * @rem-multiplier--mobile;
+      .caret-triangle {
+        svg {
+          height: .6em;
+          width: auto;
+        }
+      }
+    }
+    @media @grid-desktop {
+      .caret-triangle {
+        display: none;
+      }
+    }
+  }
 }
 .facets-subtitle + #facets-group {
   margin-top: 1.5em;
@@ -49,7 +82,7 @@
     }
     .facet-item__status {
       background-color: @iucn-blue-light;
-      background-image: url(../images/checkbox.svg);
+      background-image: url(~'@{images-path}checkbox.svg');
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 60%;
