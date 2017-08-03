@@ -9432,4 +9432,52 @@ a:active .caret-triangle .caret-path,
   height: 10px;
   color: #7e7e7e;
 }
+.path-frontpage #block-globaloutlookstatistics .good {
+  color: #3bb55e;
+}
+.path-frontpage #block-globaloutlookstatistics .good-concerns {
+  color: #9cd07d;
+}
+.path-frontpage #block-globaloutlookstatistics .significant-concern {
+  color: #f69232;
+}
+.path-frontpage #block-globaloutlookstatistics .critical {
+  color: #ef3133;
+}
+.path-frontpage #block-globaloutlookstatistics .data-deficient {
+  color: #e1e1e1;
+}
+.path-frontpage #block-globaloutlookstatistics .coming-soon {
+  color: #7e7e7e;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-good {
+  background-color: #3bb55e;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-good-concerns {
+  background-color: #9cd07d;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-significant-concern {
+  background-color: #f69232;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-critical {
+  background-color: #ef3133;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-data-deficient {
+  background-color: #e1e1e1;
+}
+.path-frontpage #block-globaloutlookstatistics .bg-coming-soon {
+  background-color: #7e7e7e;
+}
+.path-frontpage #block-globaloutlookstatistics dd {
+  color: white;
+  font-weight: bold;
+}
+.path-frontpage #block-globaloutlookstatistics dd > div {
+  text-align: center;
+}
+.path-frontpage #block-globaloutlookstatistics dl {
+  display: block;
+  width: 50%;
+  border: 1px solid black;
+}
 /*# sourceMappingURL=style.css.map */

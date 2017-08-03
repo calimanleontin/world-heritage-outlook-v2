@@ -1,0 +1,6 @@
+<dl>
+  {% for row in statistics %}
+  <dt class="{{ row.id }}">{{ row.label }}</dt>
+  <dd><div style="width: {{ row.value }}%" class="bg-{{ row.id }}">{{ row.value }}%</div></dd>
+  {% endfor %}
+</dl>

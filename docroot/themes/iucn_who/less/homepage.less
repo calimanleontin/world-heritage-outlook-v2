@@ -65,4 +65,26 @@
       color: @iucn-gray;
     }
   }
+
+  #block-globaloutlookstatistics {
+    // Links and disk colours
+    .good { color: @iucn-green; }
+    .good-concerns { color: @iucn-green-lighter; }
+    .significant-concern { color: @iucn-orange; }
+    .critical { color: @iucn-red; }
+    .data-deficient { color: @iucn-gray-lighter; }
+    .coming-soon { color: @iucn-gray; }
+
+    .bg-good { background-color: @iucn-green; }
+    .bg-good-concerns { background-color: @iucn-green-lighter; }
+    .bg-significant-concern { background-color: @iucn-orange; }
+    .bg-critical { background-color: @iucn-red; }
+    .bg-data-deficient { background-color: @iucn-gray-lighter; }
+    .bg-coming-soon { background-color: @iucn-gray; }
+
+    dd { color: white; font-weight: bold; }
+    dd>div { text-align: center; }
+
+    dl { display: block; width: 50%; border: 1px solid black; }
+  }
 }

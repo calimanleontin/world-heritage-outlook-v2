@@ -27,6 +27,11 @@ function iucn_who_homepage_theme($existing, $type, $theme, $path) {
         'stat_threat' => null,
         'stat_protection' => null,
       ]
+    ],
+     'homepage_statistics' => [
+      'variables' => [
+        'statistics' => null,
+      ]
     ]
   ];
 }
