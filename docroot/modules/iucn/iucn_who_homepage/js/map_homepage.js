@@ -14,6 +14,7 @@ function postInitMap(instance_id, map, config) {
     for(var $i = 0; $i < config.markers.length; $i++) {
       var $mc = config.markers[$i];
       var $marker = new google.maps.Marker({
+        title: $mc.title,
         map: map,
         position: new google.maps.LatLng($mc.lat, $mc.lng),
         icon: config.icons['icon' + $mc.status_id],
@@ -39,12 +40,42 @@ function postInitMap(instance_id, map, config) {
         }
       }
     };
+
+    $.showAllMarkers = function(show) {
+      for(var $i = 0; $i < $markers.length; $i++) {
+        var $marker = $markers[$i];
+        $marker.setVisible(show);
+      }
+    };
+
+    /**
+     * Clear currently selected marker and infoWindow content.
+     */
     $.iucnClearSelection = function() {
       $.iucnResetAllMarkerIcons();
+      $('#edit-q').prop('selectedIndex', 0);
+      $('#edit-q').trigger('chosen:updated');
       $('#map-site-details').html(config.empty_placeholder);
-    }
+    };
 
-    // Click on any of the filters
+
+    /**
+     * Zoom and pan the map to its original position.
+     */
+    $.resetMapPosition = function() {
+      map.setZoom(parseInt(config.map_init_zoom));
+      map.setCenter(
+          new google.maps.LatLng(
+              parseFloat(config.map_init_lat),
+              parseFloat(config.map_init_lng)
+          )
+      );
+    };
+
+
+    /**
+     * Click handler for filters on the left column.
+     */
     $('#map-filters a').on('click', function() {
       $('#map-filters li').removeClass('active');
       $(this).parent().addClass('active');
@@ -56,29 +87,25 @@ function postInitMap(instance_id, map, config) {
         $marker.setVisible($visible);
       }
       if ($filter_status_id == 'all') {
-        map.setZoom(parseInt(config.map_init_zoom));
-        map.setCenter(
-            new google.maps.LatLng(
-                parseFloat(config.map_init_lat),
-                parseFloat(config.map_init_lng)
-            )
-        );
+        $.iucnClearSelection();
+        $.resetMapPosition();
       }
       else {
         // Clear selection since this site might not exist in new filtering
-        $.iucnClearSelection();
+        $.iucnResetAllMarkerIcons();
       }
       return false;
     });
 
-    // Search autocomplete selection
-    $(document).on('autocompleteclose', '.form-autocomplete', function (e) {
-      var $value = e.target.value;
-      if ($value.length > 0) {
+    /**
+     * Handle the site selection from the drop-down.
+     */
+    $('#edit-q').on('change', function() {
+      if ($(this).val() !== '') {
         var $found = false;
-        for(var $i = 0; $i < $markers.length; $i++) {
+        for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
-          var $show = $marker.customInfo.title == $value;
+          var $show = $marker.customInfo.id == $(this).val();
           $marker.setVisible($show);
           if (!$found && $show) {
             $found = true;
@@ -89,8 +116,11 @@ function postInitMap(instance_id, map, config) {
             map.setZoom(7); // @todo variable
           }
         }
-        e.stopPropagation();
-        e.preventDefault();
+      }
+      else {
+        $.resetMapPosition();
+        $.iucnResetAllMarkerIcons();
+        $.showAllMarkers(true);
       }
     });
   })(jQuery, Drupal, drupalSettings);

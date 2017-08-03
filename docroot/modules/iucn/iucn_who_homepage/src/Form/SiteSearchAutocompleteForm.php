@@ -35,11 +35,16 @@ class SiteSearchAutocompleteForm extends FormBase {
     $search_view = Views::getView('sites_search');
     $search_view->setDisplay('sites_search_page');
 
+    $sites = SitesQueryUtil::getPublishedSites();
+    $site_options = ['' => $this->t('Search for a site')];
+    foreach($sites as $node) {
+      $site_options[$node->id()] = $node->title->value;
+    }
     return [
       'q' => [
-        '#type' => 'textfield',
+        '#type' => 'select',
         '#title' => $this->t('Explore natural sites'),
-        '#autocomplete_route_name' => 'iucn.ajax.site-name-search',
+        '#options' => $site_options,
       ],
       'send' => [
         '#type' => 'submit',
