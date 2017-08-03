@@ -1,0 +1,33 @@
+uuid: a0419d50-d4b4-4bc7-9d26-0f55a505307f
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_who_homepage
+    - system
+  theme:
+    - iucn_who
+id: globaloutlookstatistics
+theme: iucn_who
+region: content
+weight: 0
+provider: null
+plugin: home_page_statistics
+settings:
+  id: home_page_statistics
+  label: 'Global results from the 2017 IUCN World Heritage Outlook'
+  provider: iucn_who_homepage
+  label_display: visible
+  empty_selection_placeholder: null
+  good: '21'
+  good-concerns: '42'
+  significant-concern: '29'
+  critical: '8'
+  data-deficient: ''
+  coming-soon: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
