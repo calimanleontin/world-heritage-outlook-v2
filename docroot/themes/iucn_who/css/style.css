@@ -7916,7 +7916,7 @@ body.navbar-is-fixed-bottom {
   }
   body.toolbar-vertical.navbar-is-fixed-top header,
   body.toolbar-vertical.navbar-is-fixed-bottom header {
-    z-index: 500;
+    z-index: 1040;
   }
   body.toolbar-vertical.navbar-is-fixed-top header {
     top: 39px;
@@ -7984,7 +7984,7 @@ body.navbar-is-fixed-bottom {
 @media screen and (max-width: 767px) {
   .navbar {
     position: fixed;
-    z-index: 10;
+    z-index: 1040;
     right: 0;
     left: 0;
     height: 3.57142857rem;
@@ -7998,6 +7998,12 @@ body.navbar-is-fixed-bottom {
   }
   .navbar.headroom--unpinned {
     transform: translateY(-100%);
+  }
+  .toolbar-vertical .navbar.headroom--pinned {
+    transform: none;
+  }
+  .toolbar-vertical .navbar.headroom--unpinned {
+    transform: none;
   }
 }
 .navbar .logo {
@@ -8702,7 +8708,9 @@ ul {
   margin-top: 45px;
   padding-top: 15px;
   padding-bottom: 36px;
-  border-top: 1px solid #E5E5E5;
+}
+.sidemenu-toggle-wrapper + .footer {
+  margin-top: 0;
 }
 p:last-child,
 .form-group:last-child,
@@ -9212,6 +9220,69 @@ a.is-active,
 .view-sites-search article .more-link .arrow {
   color: #e0e0e0;
   font-size: 1.5em;
+}
+@media screen and (max-width: 767px) {
+  .sidemenu-toggle-wrapper {
+    height: 50px;
+    position: relative;
+  }
+  #sidemenu-toggle.affix,
+  #sidemenu-toggle.affix-top {
+    z-index: 1039;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-backface-visibility: hidden;
+  }
+  #sidemenu-toggle.affix-bottom {
+    position: absolute;
+    width: 100%;
+  }
+  .sidemenu-toggle {
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    width: 50%;
+  }
+  .sidemenu-toggle + .footer {
+    margin-top: 0;
+  }
+  #sidemenu {
+    background-color: #fff;
+    display: block;
+    left: auto;
+    min-height: 100%;
+    min-width: 200px;
+    opacity: 0;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    pointer-events: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translateX(110%);
+    transition: all .3s;
+    width: 90%;
+    z-index: 1042;
+    box-shadow: -3px 0px 21px rgba(0, 0, 0, 0.6);
+  }
+  #sidemenu.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+}
+@media screen and (min-width: 768px) {
+  .sidemenu-toggle {
+    display: none;
+  }
+  #sidemenu {
+    display: block;
+  }
+}
+.modal-backdrop {
+  pointer-events: none;
 }
 .path-frontpage #map-filters ul {
   list-style-type: none;

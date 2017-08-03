@@ -133,7 +133,7 @@
         <div class="row">
           {# Sidebar First #}
           {% if page.sidebar_first or page.facets %}
-            <aside class="col-sm-3" role="complementary">
+            <aside class="col-sm-3" role="complementary" id="sidemenu">
               {% if page.facets %}
                 {% block facets %}
                     {{ page.facets }}
@@ -206,6 +206,19 @@
     </div>
   {% endblock %}
 </div>
+{% if page.facets or page.sidebar_first %}
+  <div class="sidemenu-toggle-wrapper">
+    <div id="sidemenu-toggle">
+      <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
+        {# {% if page.facets %} #}
+          Filters
+        {# {% else %}
+
+        {% endif %} #}
+      </button>
+    </div>
+  </div>
+{% endif %}
 {% if page.footer %}
   {% block footer %}
     <footer class="footer" role="contentinfo">
@@ -224,3 +237,4 @@
     </footer>
   {% endblock %}
 {% endif %}
+<div class="modal-backdrop fade"></div>

@@ -35,7 +35,7 @@ body {
           position: fixed;
         }
         header {
-          z-index: 500;
+          z-index: @zindex-modal-background;
         }
       }
       // Default toolbar fixed height value.
@@ -46,6 +46,10 @@ body {
     }
   }
 }
+// body.toolbar-fixed .toolbar-oriented, .toolbar-oriented .toolbar-bar, .toolbar-oriented .toolbar-tray {
+//   position: fixed;
+// //   z-index: @zindex-modal-background + 1;
+// }
 .navbar.container {
   @media @tablet {
     max-width: ((@container-sm - @grid-gutter-width));
@@ -103,7 +107,7 @@ body.navbar-is-static-top {
   }
   @media @grid-mobile {
     position: fixed;
-    z-index: 10;
+    z-index: @zindex-modal-background;
     right: 0;
     left: 0;
     height: @navbar-height--mobile;
@@ -116,6 +120,12 @@ body.navbar-is-static-top {
     }
     &.headroom--unpinned {
         transform: translateY(-100%);
+    }
+    .toolbar-vertical &.headroom--pinned {
+        transform: none
+    }
+    .toolbar-vertical &.headroom--unpinned {
+        transform: none;
     }
   }
 }
