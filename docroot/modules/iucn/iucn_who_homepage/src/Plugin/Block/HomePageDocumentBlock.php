@@ -60,7 +60,7 @@ class HomePageDocumentBlock extends BlockBase {
     if (!empty($config['file']) && $file = File::load(reset($config['file']))) {
       $content['document_link'] = file_create_url($file->getFileUri());
       if (!empty($config['download_string'])) {
-        $content['download_string'] = $config['download_string'];
+        $content['download_string'] = $this->t($config['download_string']);
       }
     }
     return $content;
