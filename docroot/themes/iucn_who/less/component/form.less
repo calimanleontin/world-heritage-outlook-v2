@@ -42,38 +42,38 @@
       opacity: 0;
     }
   }
-  &:after {
-    color: @brand-primary;
-    content: '▼';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    margin-top: -.5em;
-    padding-right: .5em;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    z-index: 10;
+  // &:after {
+  //   color: @brand-primary;
+  //   content: '▼';
+  //   font-style: normal;
+  //   font-weight: 400;
+  //   line-height: 1;
+  //   margin-top: -.5em;
+  //   padding-right: .5em;
+  //   pointer-events: none;
+  //   position: absolute;
+  //   right: 0;
+  //   top: 50%;
+  //   z-index: 10;
 
-    // Use a more stylish icon if the theme uses glyphicons.
-    .has-glyphicons & {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      content: '\e114'; // .glyphicon-chevron-down
-      display: inline-block;
-      font-family: 'Glyphicons Halflings';
-    }
-    .has-error & {
-      color: @state-danger-text;
-    }
-    .has-success & {
-      color: @state-success-text;
-    }
-    .has-warning & {
-      color: @state-warning-text;
-    }
-  }
+  //   // Use a more stylish icon if the theme uses glyphicons.
+  //   .has-glyphicons & {
+  //     -webkit-font-smoothing: antialiased;
+  //     -moz-osx-font-smoothing: grayscale;
+  //     content: '\e114'; // .glyphicon-chevron-down
+  //     display: inline-block;
+  //     font-family: 'Glyphicons Halflings';
+  //   }
+  //   .has-error & {
+  //     color: @state-danger-text;
+  //   }
+  //   .has-success & {
+  //     color: @state-success-text;
+  //   }
+  //   .has-warning & {
+  //     color: @state-warning-text;
+  //   }
+  // }
 }
 
 // Use CSS/SVG image for required mark.
