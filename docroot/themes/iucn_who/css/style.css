@@ -9120,12 +9120,12 @@ a:active .caret-triangle .caret-path,
   display: block;
   padding-left: .5em;
 }
-[data-block_id="languageswitcher"] {
+#block-languagedropdownswitcher {
   list-style-type: none;
   padding-left: 0;
 }
 @media screen and (min-width: 768px) {
-  [data-block_id="languageswitcher"] {
+  .navbar-collapse #block-languagedropdownswitcher {
     display: flex;
     flex-direction: column;
     float: right;

@@ -111,14 +111,16 @@
 
 }
 
-[data-block_id="languageswitcher"] {
+#block-languagedropdownswitcher {
   list-style-type: none;
   padding-left: 0;
   @media @grid-desktop {
-    display: flex;
-    flex-direction: column;
-    float: right;
-    height: @navbar-height;
-    justify-content: center;
+    .navbar-collapse & {
+      display: flex;
+      flex-direction: column;
+      float: right;
+      height: @navbar-height;
+      justify-content: center;
+    }
   }
 }
