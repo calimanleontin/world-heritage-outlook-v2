@@ -1,19 +1,24 @@
 headroom:
     js:
-      libraries/headroom.js/dist/headroom.min.js: {}
+      libraries/headroom.js/dist/headroom.min.js: { minified: true }
+
+bootstrap-js:
+    js:
+      libraries/bootstrap/bootstrap.min.js: { minified: true }
+
 facets:
     js:
       js/facets.js: {}
     dependencies:
       - core/jquery
 global-styling:
-  css:
-    theme:
-      css/style.css: {}
-  js:
-    libraries/bootstrap/bootstrap.min.js: {}
-    js/main.js: {}
-    js/navbar-headroom.js: {}
-  dependencies:
-    - core/jquery
-    - iucn_who/headroom
+    css:
+      theme:
+        css/style.css: {}
+    js:
+      js/main.js: {}
+      js/navbar-headroom.js: {}
+    dependencies:
+      - core/jquery
+      - iucn_who/bootstrap-js
+      - iucn_who/headroom
