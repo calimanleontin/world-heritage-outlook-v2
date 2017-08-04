@@ -30,6 +30,20 @@ function postInitMap(instance_id, map, config) {
       $markers.push($marker);
     }
 
+    var $called = false;
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      if ($called == false) {
+        var $bounds = map.getBounds();
+        console.log($markers);
+        for (var $i = 0; $i < $markers.length; $i++) {
+          var $marker = $markers[$i];
+          $bounds.extend($marker.getPosition());
+        }
+        // map.fitBounds($bounds);
+        $called = true;
+      }
+    });
+
     $.iucnResetAllMarkerIcons = function() {
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
