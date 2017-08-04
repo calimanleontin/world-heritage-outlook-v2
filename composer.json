@@ -117,6 +117,7 @@
         "drupal/slick": "^1.0",
         "drupal/slick_views": "^1.0@RC",
         "drupal/smart_trim": "^1.0",
+        "drupal/social_media": "^1.0",
         "drupal/spamspan": "^1.0@alpha",
         "drupal/stage_file_proxy": "^1.0@alpha",
         "drupal/string_field_formatter": "1.x-dev",

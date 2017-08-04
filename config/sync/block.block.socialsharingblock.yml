@@ -1,0 +1,20 @@
+uuid: b1417f65-0634-4065-ac56-89334fb5774c
+langcode: en
+status: true
+dependencies:
+  module:
+    - social_media
+  theme:
+    - iucn_who
+id: socialsharingblock
+theme: iucn_who
+region: footer
+weight: 0
+provider: null
+plugin: social_sharing_block
+settings:
+  id: social_sharing_block
+  label: 'Share on:'
+  provider: social_media
+  label_display: visible
+visibility: {  }
