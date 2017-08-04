@@ -1,90 +1,221 @@
 .path-frontpage {
-
-  #map-filters {
-    ul { list-style-type: none; }
-    li.active { background-color: @iucn-gray; }
-
-    // Links and disk colours
-    li a.good {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-good.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-green;
-    }
-
-    li a.good-concerns {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-good-concerns.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-green-lighter;
-    }
-
-    li a.significant-concern {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-significant-concern.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-orange;
-    }
-
-    li a.critical {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-critical.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-red;
-    }
-
-    li a.data-deficient {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-data-deficient.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-gray-lighter;
-    }
-
-    li a.coming-soon {
-      background: url('/modules/iucn/iucn_who_homepage/images/marker-coming-soon.png') no-repeat;
-      background-size: 10px 10px;
-      background-position-y: 3px;
-      padding-left: 20px;
-      width: 10px;
-      height: 10px;
-      color: @iucn-gray;
+  #block-homepagemap {
+    @media @grid-desktop {
+      > .container-fluid > .row {
+        display: flex;
+      }
+      > .col-sm-3 {
+        box-shadow: 8px 0 10px -9px fade(#000, 30%);
+        z-index: 1;
+      }
     }
   }
 
+  #map-site-search,
+  #map-filters,
+  #map-site-details {
+    font-size: 15 * @rem-multiplier--desktop;
+    clear: both;
+  }
+  #map-site-search {
+    .background-variant(@iucn-blue-dark, #fff);
+    padding: 16 / 15 * 1em;
+  }
+  #map-filters {
+    padding: 2em (16 / 15 * 1em);
+    position: relative;
+    h3 {
+      font-size: 1.13em; // 17px
+      margin-top: 0;
+    }
+    a[data-filter="all"] {
+      color: @iucn-blue-light;
+      float: right;
+    }
+    ul {
+      list-style-type: none;
+      margin-left: -16 / 15 * 1em;
+      margin-right: -16 / 15 * 1em;
+    }
+    li {
+      padding-left: 1em;
+    }
+    li.active {
+      background-color: @iucn-gray-lightest;
+      // @todo: checkbox mixin
+      &:before {
+        content: '';
+        background-color: @iucn-blue-light;
+        background-image: url(~'@{images-path}checkbox.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: auto 60%;
+        display: block;
+        height: 1em * @line-height-base;
+        overflow: hidden;
+        position: absolute;
+        // right: calc(~'100% - .5em');
+        left: 0;
+        text-indent: 999px;
+        width: 1.5em;
+      }
+      .loop-conservation-ratings({
+        &.@{conservation-rating-class}:before {
+          background-color: @conservation-rating-color;
+        }
+      });
+    }
+
+    // Links and disk colours
+    li > a {
+      background-size: 1em * @line-height-base;
+      background-repeat: no-repeat;
+      display: block;
+      padding-left: 1.5em;
+      .loop-conservation-ratings({
+        &.@{conservation-rating-class} {
+          background-image: url('/modules/iucn/iucn_who_homepage/images/marker-@{conservation-rating-class}.png');
+          color: @conservation-rating-color;
+        }
+      });
+    }
+  }
+  #map-site-details {
+    .site-selection-placeholder {
+      padding-left: 1.5em;
+      img {
+        height: @line-height-base * 1em;
+      }
+    }
+    .map-site-detail {
+      position: relative;
+      padding-top: 1px; // prevent margin collapse
+      > div,
+      > dl {
+        padding-left: 1.5em;
+      }
+      > div,
+      > dl,
+      > .more {
+        padding-right: .5em;
+      }
+      .status {
+        background-color: #fff;
+        font-size: 1.06em;
+        font-weight: 300;
+        left: 0;
+        padding: .3em 2em;
+        position: absolute;
+        top: 0;
+        // @todo: remove unnecessary conservation rating classes
+        .loop-conservation-ratings({
+          &.@{conservation-rating-class} {
+            background-color: @conservation-rating-color;
+            color: #fff;
+          }
+        });
+        + .title {
+          margin-top: 3em;
+        }
+      }
+      .title {
+        border-left: .4em solid;
+        padding-bottom: .5em;
+        padding-left: 1em;
+        padding-top: .5em;
+        .loop-conservation-ratings({
+          &.@{conservation-rating-class} {
+            color: @conservation-rating-color;
+          }
+        });
+      }
+      .country {
+        font-weight: 300;
+      }
+
+      dt, dd { float: left; }
+      dt { clear:both; }
+
+      .more {
+        float: right;
+        color: @iucn-blue-light;
+        &:after {
+          background-image: url('@{images-path}icon-arrow.svg');
+          background-repeat: no-repeat;
+          background-size: contain;
+          content: '';
+          display: inline-block;
+          height: 1em;
+          margin-left: .5em;
+          vertical-align: middle;
+          width: 2em;
+        }
+      }
+      .close {
+        background-color: @iucn-blue-dark;
+        color: #fff;
+        display: block;
+        font-size: 1em;
+        font-weight: 300;
+        opacity: 1;
+        padding: .8em 1em;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+      img {
+        &:extend(.img-responsive);
+        width: 100%;
+      }
+    }
+  }
   #block-globaloutlookstatistics {
     // Links and disk colours
-    .good { color: @iucn-green; }
-    .good-concerns { color: @iucn-green-lighter; }
-    .significant-concern { color: @iucn-orange; }
-    .critical { color: @iucn-red; }
-    .data-deficient { color: @iucn-gray-lighter; }
-    .coming-soon { color: @iucn-gray; }
-
-    .bg-good { background-color: @iucn-green; }
-    .bg-good-concerns { background-color: @iucn-green-lighter; }
-    .bg-significant-concern { background-color: @iucn-orange; }
-    .bg-critical { background-color: @iucn-red; }
-    .bg-data-deficient { background-color: @iucn-gray-lighter; }
-    .bg-coming-soon { background-color: @iucn-gray; }
-
+    .loop-conservation-ratings({
+      dt.@{conservation-rating-class} {
+         color: @conservation-rating-color;
+      }
+      .bg-@{conservation-rating-class} {
+        background-color: @conservation-rating-color;
+        &:after {
+          border-top-color: @conservation-rating-color;
+        }
+      }
+    });
+    dt, dd {
+      float: left;
+      width: 50%;
+      margin-bottom: .3em;
+    }
+    dt {
+      clear: both;
+      margin-right: 1em;
+      text-align: right;
+      width: calc(~'50% - 1em');
+    }
     dd { color: white; font-weight: bold; }
-    dd>div { text-align: center; }
+    dd>div {
+      box-sizing: initial;
+      padding: 0 1em;
+      position: relative;
+      text-align: center;
+      &:after {
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-style: solid;
+        border-width: (@line-height-base * 1em) (@line-height-base * 1em) 0 0;
+        content: '';
+        display: inline-block;
+        height: 0;
+        left: 100%;
+        position: absolute;
+        top: 0;
+        width: 0;
+      }
+    }
 
-    dl { display: block; width: 50%; border: 1px solid black; }
+    dl { display: block; width: 50%; margin: 0 auto; }
   }
 }
+;

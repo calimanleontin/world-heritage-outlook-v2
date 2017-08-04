@@ -12,3 +12,28 @@
 .label-variant(@color) {
   color: #fff;
 }
+
+.background-variant(@bg, @color) {
+  background-color: @bg;
+  color: @color;
+  a:not([class*='chosen']) {
+    color: @color;
+    &:hover, &:focus, &:active {
+      color: @link-hover-color;
+    }
+  }
+}
+
+
+// Generate conservation rating styling
+@conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
+@conservation-ratings-color-list: @iucn-green, @iucn-green-lighter, @iucn-orange, @iucn-red, #333333, @iucn-gray;
+
+.loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
+  @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
+  @conservation-rating-color: e(extract(@conservation-ratings-color-list, @index));
+  @rules();
+
+  // next iteration
+  .loop-conservation-ratings(@rules, (@index - 1));
+}
