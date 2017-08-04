@@ -10,7 +10,7 @@ dependencies:
 id: homepagereport
 theme: iucn_who
 region: content
-weight: 0
+weight: -7
 provider: null
 plugin: home_page_report
 settings:

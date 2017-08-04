@@ -9092,6 +9092,9 @@ a:active .caret-triangle .caret-path,
 .block-facets.panel .facet-item > .block-facets.panel .panel-title:active .caret-triangle .caret-path {
   fill: #03afdf;
 }
+.paragraph-background-light {
+  background-color: #def2fb;
+}
 .footer {
   background-color: #134780;
 }
@@ -9338,6 +9341,25 @@ a:active .caret-triangle .caret-path,
     height: 5.55555556rem;
     justify-content: center;
   }
+}
+.block-social-media {
+  float: right;
+  margin-top: 2em;
+}
+.block-social-media h2.block-title {
+  font-size: 18px;
+  font-weight: normal;
+  float: left;
+}
+.block-social-media .social-media-sharing {
+  float: right;
+  margin-top: 0.5em;
+}
+.block-social-media .social-media-sharing li {
+  margin-right: 25px;
+}
+.block-social-media .social-media-sharing .share img {
+  width: 50px;
 }
 .path-sites-search .page-header {
   border-left: none;

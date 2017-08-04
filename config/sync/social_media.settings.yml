@@ -1,0 +1,59 @@
+social_media:
+  facebook_share:
+    enable: 1
+    text: Facebook
+    api_url: 'http://www.facebook.com/share.php?u=[current-page:url]&title=[current-page:title]'
+    api_event: href
+    default_img: 0
+    weight: '1'
+    attributes: "target|_blank\r\nclass|facebook-share"
+    drupalSettings: ''
+    library: ''
+    img: /themes/iucn_who/images/social_media/facebook_share.svg
+  facebook_msg:
+    enable: 0
+    api_url: 'FB.ui({method: ''send'',link: ''[current-page:url]''})'
+    api_event: onclick
+    drupalSettings: 'application_id|Your Application ID'
+    library: social_media/facebook
+    text: 'Facebook messenger'
+    default_img: 1
+    weight: '2'
+    attributes: "target|_blank\r\nclass|facebook-msg"
+    img: ''
+  linkedin:
+    enable: 1
+    api_url: 'http://www.linkedin.com/shareArticle?mini=true&url=[current-page:url]&title=[current-page:title]&source=[current-page:url]'
+    api_event: href
+    text: Linkedin
+    default_img: 0
+    weight: '4'
+    attributes: "target|_blank\r\nclass|linkedin"
+    drupalSettings: ''
+    library: ''
+    img: /themes/iucn_who/images/social_media/linkedin.svg
+  twitter:
+    enable: 1
+    api_url: 'https://twitter.com/intent/tweet?url=[current-page:url]&status=[current-page:title]+[current-page:url]'
+    api_event: href
+    text: Twitter
+    default_img: 0
+    weight: '3'
+    attributes: "target|_blank\r\nclass|twitter"
+    drupalSettings: ''
+    library: ''
+    img: /themes/iucn_who/images/social_media/twitter.svg
+  email:
+    enable: 0
+    api_url: 'mailto:?subject=[current-page:title]&body=Check out this site [current-page:url]'
+    api_event: href
+    text: Email
+    default_img: 1
+    weight: '5'
+    attributes: class|email
+    drupalSettings: ''
+    library: ''
+    img: ''
+langcode: en
+_core:
+  default_config_hash: dAQs_2Peio0et48PY7WKe5snd71Cm32tTFN-44KlQfY
