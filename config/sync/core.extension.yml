@@ -37,6 +37,7 @@ module:
   iucn_who_core: 0
   iucn_who_homepage: 0
   kint: 0
+  lang_dropdown: 0
   language: 0
   layout_discovery: 0
   link: 0
