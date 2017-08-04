@@ -28,6 +28,11 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#title' => $this->t('No site is selected placeholder'),
         '#default_value' => $this->getConfigParam( 'empty_selection_placeholder', $this->t('Click on a Natural Site for details')),
       ],
+      'block_footer_text' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Text appearing on the footer'),
+        '#default_value' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
+      ],
     ];
     return $form;
   }
@@ -59,6 +64,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
       '#empty_selection_placeholder_markup' => $this->getSiteSelectionPlaceholder(),
       '#search_form' => $search_form,
+      '#block_footer_text' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
     ];
     return $content;
   }

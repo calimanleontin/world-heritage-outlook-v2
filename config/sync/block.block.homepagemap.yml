@@ -26,6 +26,7 @@ settings:
   map_init_lng: '40'
   map_init_zoom: '2'
   map_init_type: roadmap
+  empty_selection_placeholder: null
 visibility:
   request_path:
     id: request_path
