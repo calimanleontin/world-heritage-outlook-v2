@@ -63,7 +63,6 @@ class HomePageDocumentBlock extends BlockBase {
         $content['download_string'] = $config['download_string'];
       }
     }
-    dpm($content);
     return $content;
   }
 }
