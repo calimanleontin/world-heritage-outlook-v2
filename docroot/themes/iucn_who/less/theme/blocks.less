@@ -116,8 +116,10 @@
   list-style-type: none;
   padding-left: 0;
   .navbar-collapse & {
-    float: left;
-    margin-left: 4rem;
+    @media @grid-mobile {
+      float: left;
+      margin-left: 4rem;
+    }
     .select-wrapper:after {
       background-image: url(~'@{images-path}dropdown-caret.svg');
       background-position: center;

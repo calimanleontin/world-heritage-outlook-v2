@@ -9339,9 +9339,11 @@ a:active .caret-triangle .caret-path,
   list-style-type: none;
   padding-left: 0;
 }
-.navbar-collapse #block-languagedropdownswitcher {
-  float: left;
-  margin-left: 4rem;
+@media screen and (max-width: 767px) {
+  .navbar-collapse #block-languagedropdownswitcher {
+    float: left;
+    margin-left: 4rem;
+  }
 }
 .navbar-collapse #block-languagedropdownswitcher .select-wrapper:after {
   background-image: url(../images/dropdown-caret.svg);
