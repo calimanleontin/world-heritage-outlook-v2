@@ -60,6 +60,7 @@ module:
   responsive_image: 0
   search: 0
   search_api: 0
+  search_api_autocomplete: 0
   search_api_solr: 0
   search_api_sorts: 0
   slick: 0

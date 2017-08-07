@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @file
+ * Adds autocomplete capabilities for Search API searches.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\search_api\Entity\Index;
+use Drupal\search_api_autocomplete\AutocompleteFormUtility;
+use Drupal\search_api_autocomplete\Controller\AutocompleteController;
+use Drupal\search_api_autocomplete\Entity\Search;
+
+/**
+ * Implements hook_theme().
+ */
+function search_api_autocomplete_theme() {
+  $themes['search_api_autocomplete_suggestion'] = [
+    'variables' => [
+      'keys' => NULL,
+      'prefix' => NULL,
+      'suggestion_prefix' => '',
+      'user_input' => '',
+      'suggestion_suffix' => '',
+      'results' => NULL,
+    ],
+  ];
+
+  return $themes;
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function search_api_autocomplete_entity_operation(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() != 'search_api_index') {
+    return [];
+  }
+
+  $operations = [];
+  $operations['autocomplete'] = [
+    'title' => t('Autocomplete'),
+    'weight' => 30,
+    'url' => Url::fromRoute('search_api_autocomplete.admin_overview', ['search_api_index' => $entity->id()]),
+  ];
+  return $operations;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for "views_exposed_form".
+ *
+ * Adds autocompletion to input fields for fulltext keywords on views with
+ * exposed filters.
+ *
+ * @see \Drupal\views\Form\ViewsExposedForm
+ * @see \Drupal\search_api_autocomplete\Plugin\search_api_autocomplete\type\Views
+ */
+function search_api_autocomplete_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+  if (substr($view->storage->get('base_table'), 0, 17) != 'search_api_index_') {
+    return;
+  }
+  $search = Search::load('search_api_views_' . $view->id());
+  if (!$search) {
+    return;
+  }
+  $controller = new AutocompleteController(\Drupal::service('renderer'));
+  if (!$controller->access($search, \Drupal::currentUser())->isAllowed()) {
+    return;
+  }
+  $index_id = substr($view->storage->get('base_table'), 17);
+
+  $index = Index::load($index_id);
+  if (!$fields = $index->getFulltextFields()) {
+    return;
+  }
+  // Add the "Search: Fulltext search" filter as another text field.
+  $fields[] = 'search_api_fulltext';
+
+  $autocomplete_form_utility = new AutocompleteFormUtility(\Drupal::service('renderer'));
+  \Drupal::moduleHandler()
+    ->alter('search_api_autocomplete_views_fulltext_fields', $fields, $search, $view);
+  foreach ($view->filter as $filter_name => $filter) {
+    if (in_array($filter->realField, $fields)) {
+      if (!empty($filter->options['expose']['identifier'])) {
+        $key = $filter->options['expose']['identifier'];
+        if (isset($form[$key]) && $form[$key]['#type'] == 'textfield') {
+          if ($filter->realField == 'search_api_fulltext') {
+            $autocomplete_fields = $filter->options['fields'];
+          }
+          else {
+            $autocomplete_fields = [$filter->realField];
+          }
+          $autocomplete_form_utility->alterElement($form[$key], $search, $autocomplete_fields);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for "search_api_page_block_form".
+ *
+ * Adds autocompletion to the keywords field on search pages, if enabled by the
+ * user.
+ *
+ * @see \Drupal\search_api_page\Form\SearchApiPageBlockForm
+ * @see \Drupal\search_api_autocomplete\Plugin\search_api_autocomplete\type\Page
+ */
+function search_api_autocomplete_form_search_api_page_block_form_alter(array &$form, FormStateInterface $form_state) {
+  $id = 'search_api_page_' . $form_state->getBuildInfo()['args'][0]['search_api_page'];
+  $search = Search::load($id);
+
+  if ($search && $search->status()) {
+    $autocomplete_form_utility = new AutocompleteFormUtility(\Drupal::service('renderer'));
+    $autocomplete_form_utility->alterElement($form['keys'], $search);
+  }
+}
