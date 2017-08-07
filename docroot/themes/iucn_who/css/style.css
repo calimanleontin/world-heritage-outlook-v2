@@ -7816,7 +7816,6 @@ table .radio.form-no-label {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  line-height: 1;
   padding-right: 2em;
 }
 .select-wrapper select::-ms-expand {
