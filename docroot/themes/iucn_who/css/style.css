@@ -9818,7 +9818,7 @@ a:active .caret-triangle .caret-path,
   left: 0;
   padding: .3em 2em;
   position: absolute;
-  top: 0;
+  top: 1px;
 }
 .path-frontpage #map-site-details .map-site-detail .status.coming-soon {
   background-color: #7e7e7e;
@@ -9906,7 +9906,7 @@ a:active .caret-triangle .caret-path,
   padding: .8em 1em;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 1px;
 }
 .path-frontpage #map-site-details .map-site-detail img {
   width: 100%;
