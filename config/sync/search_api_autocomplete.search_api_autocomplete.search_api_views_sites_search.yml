@@ -8,7 +8,16 @@ id: search_api_views_sites_search
 label: search_api_views_sites_search
 index_id: iucn_index
 suggester: server
-suggester_settings: {  }
+suggester_settings:
+  fields:
+    title: '0'
+    name: '0'
 type: views
-type_settings: {  }
-options: {  }
+type_settings:
+  display: sites_search_page
+options:
+  min_length: 3
+  show_count: false
+  delay: null
+  submit_button_selector: ':submit'
+  autosubmit: true
