@@ -115,13 +115,62 @@
 #block-languagedropdownswitcher {
   list-style-type: none;
   padding-left: 0;
+  .navbar-collapse & {
+    float: left;
+    margin-left: 4rem;
+    .select-wrapper:after {
+      background-image: url(~'@{images-path}dropdown-caret.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      content: '';
+      display: inline-block;
+      height: @line-height-base * 1em;
+      line-height: 1;
+      margin-top: -.5em;
+      // padding-right: .5em;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 1.8em;
+    }
+    select {
+      border: none;
+      box-shadow: none;
+      color: @iucn-blue-light;
+      cursor: pointer;
+      display: inline-block;
+      padding-right: 1.5em;
+      width: auto !important;
+      &.form-control {
+        font-size: inherit;
+        height: auto;
+        @media @grid-mobile {
+          padding-left: 0;
+        }
+      }
+    }
+  }
   @media @grid-desktop {
+    &:after {
+      border-right: 1px solid fade(@iucn-blue-light, 20%);
+      content: '';
+      display: block;
+      height: 80%;
+      position: absolute;
+      left: 0;
+      top: 10%;
+    }
     .navbar-collapse & {
       display: flex;
       flex-direction: column;
       float: right;
+      font-size: 17 / 15 * 1em;
       height: @navbar-height;
       justify-content: center;
+      position: relative;
+      padding-left: 1.5em;
     }
   }
 }

@@ -7948,12 +7948,12 @@ body.navbar-is-fixed-bottom {
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
-@media (min-width: 768px) and (max-width: 1055px) {
+@media (min-width: 768px) and (max-width: 1176px) {
   .navbar {
-    font-size: 1.45vw;
+    font-size: 1.3vw;
   }
 }
-@media (min-width: 1056px) {
+@media (min-width: 1177px) {
   .navbar {
     font-size: 0.85em;
   }
@@ -9339,13 +9339,63 @@ a:active .caret-triangle .caret-path,
   list-style-type: none;
   padding-left: 0;
 }
+.navbar-collapse #block-languagedropdownswitcher {
+  float: left;
+  margin-left: 4rem;
+}
+.navbar-collapse #block-languagedropdownswitcher .select-wrapper:after {
+  background-image: url(../images/dropdown-caret.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  content: '';
+  display: inline-block;
+  height: 1.5em;
+  line-height: 1;
+  margin-top: -0.5em;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 1.8em;
+}
+.navbar-collapse #block-languagedropdownswitcher select {
+  border: none;
+  box-shadow: none;
+  color: #03afdf;
+  cursor: pointer;
+  display: inline-block;
+  padding-right: 1.5em;
+  width: auto !important;
+}
+.navbar-collapse #block-languagedropdownswitcher select.form-control {
+  font-size: inherit;
+  height: auto;
+}
+@media screen and (max-width: 767px) {
+  .navbar-collapse #block-languagedropdownswitcher select.form-control {
+    padding-left: 0;
+  }
+}
 @media screen and (min-width: 768px) {
+  #block-languagedropdownswitcher:after {
+    border-right: 1px solid rgba(3, 175, 223, 0.2);
+    content: '';
+    display: block;
+    height: 80%;
+    position: absolute;
+    left: 0;
+    top: 10%;
+  }
   .navbar-collapse #block-languagedropdownswitcher {
     display: flex;
     flex-direction: column;
     float: right;
+    font-size: 1.13333333em;
     height: 5.55555556rem;
     justify-content: center;
+    position: relative;
+    padding-left: 1.5em;
   }
 }
 .block-social-media {
