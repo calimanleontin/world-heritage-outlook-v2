@@ -1,0 +1,66 @@
+search_api_autocomplete.search_api_autocomplete.*:
+  type: config_entity
+  label: 'Autocomplete search'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: string
+      label: 'Label'
+    index_id:
+      type: string
+      label: 'Index ID'
+    suggester:
+      type: string
+      label: 'Suggester plugin ID'
+    suggester_settings:
+      type: search_api_autocomplete.suggester.[%parent.suggester]
+      label: 'Suggester settings'
+    type:
+      type: string
+      label: 'Type plugin ID'
+    type_settings:
+      type: search_api_autocomplete.type.[%parent.type]
+      label: 'Type settings'
+    options:
+      type: mapping
+      label: 'Options'
+      mapping:
+        min_length:
+          type: integer
+          label: 'The minimum length of user input to trigger autocomplete'
+        show_count:
+          type: boolean
+          label: 'Whether to show a predicted result count for suggestions'
+        delay:
+          type: integer
+          label: 'The delay for triggering autocomplete after the user stopped typing'
+        submit_button_selector:
+          type: string
+          label: 'A jQuery selector for finding the submit button in the search form'
+        autosubmit:
+          type: boolean
+          label: 'Whether to automatically submit the search form when a suggestion is selected'
+
+search_api_autocomplete.suggester.*:
+  type: mapping
+
+search_api_autocomplete.suggester.server:
+  type: mapping
+  mapping:
+    fields:
+      type: sequence
+      label: 'The fields to use for autocompletion'
+      sequence:
+        type: string
+
+search_api_autocomplete.type.*:
+  type: mapping
+
+search_api_autocomplete.type.views:
+  type: mapping
+  mapping:
+    display:
+      type: string
+      label: 'The plugin ID of the Views display to use'
