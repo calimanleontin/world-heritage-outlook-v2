@@ -46,9 +46,18 @@ body {
     }
   }
 }
-.path-frontpage header {
-  margin-bottom: 0;
-  border-bottom: none;
+.path-frontpage {
+  &.navbar-is-fixed-top {
+    @media @grid-mobile {
+      margin-top: @navbar-height--mobile;
+    }
+  }
+  header {
+    @media @grid-desktop {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+  }
 }
 // body.toolbar-fixed .toolbar-oriented, .toolbar-oriented .toolbar-bar, .toolbar-oriented .toolbar-tray {
 //   position: fixed;
