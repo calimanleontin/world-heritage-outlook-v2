@@ -1,12 +1,52 @@
+@map-footer-height: 100 * @rem-multiplier--desktop;
+
 .path-frontpage {
   #block-homepagemap {
     @media @grid-desktop {
-      > .container-fluid > .row {
+      .row.map-block-main {
         display: flex;
       }
-      > .col-sm-3 {
+      .col-left {
         box-shadow: 8px 0 10px -9px fade(#000, 30%);
+        font-size: 15 * @rem-multiplier--desktop;
         z-index: 1;
+        max-width: 300px;
+        height: ~'calc(100vh - @{navbar-height} - @{map-footer-height} + 3.5rem)';
+        overflow: auto;
+      }
+      .col-right {
+        position: relative;
+        overflow: hidden;
+        flex: 1;
+        flex-basis: ~'calc(100vh - @{navbar-height} - @{map-footer-height} - 3rem)';
+        .map-container {
+          position: static !important;
+          height: 100% !important;
+        }
+      }
+      .map-block-footer {
+        .background-variant(@iucn-blue-dark, #fff);
+        align-items: center;
+        display: flex;
+        height: @map-footer-height;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        .scroll-down {
+          background-color: #fff;
+          background-image: url(~'@{images-path}scroll-down-caret.svg');
+          background-position: center 65%;
+          background-repeat: no-repeat;
+          background-size: 66%;
+          border-radius: 50%;
+          display: block;
+          height: 60 * @rem-multiplier--desktop;
+          position: absolute;
+          top: 0;
+          transform: translateY(-50%);
+          width: 60 * @rem-multiplier--desktop;
+          box-shadow: 0 -1px 8px -2px fade(#000, 30%);
+        }
       }
     }
   }
@@ -14,7 +54,6 @@
   #map-site-search,
   #map-filters,
   #map-site-details {
-    font-size: 15 * @rem-multiplier--desktop;
     clear: both;
   }
   #map-site-search {
@@ -84,8 +123,11 @@
     .site-selection-placeholder {
       padding-left: 1.5em;
       padding-right: 1.5em;
+      text-align: center;
       img {
-        height: @line-height-base * 1em;
+        // height: @line-height-base * 1em;
+        display: block;
+        margin: 0 auto;
       }
     }
     .map-site-detail {
@@ -123,6 +165,7 @@
         border-left: .4em solid;
         padding-bottom: .5em;
         padding-left: 1em;
+        padding-right: .5em;
         padding-top: .5em;
         .loop-conservation-ratings({
           &.@{conservation-rating-class} {
@@ -132,10 +175,68 @@
       }
       .country {
         font-weight: 300;
+        color: #787878;
       }
-
-      dt, dd { float: left; }
-      dt { clear:both; }
+      dl {
+        color: #666666;
+        float: left;
+        margin-top: .5em;
+        padding-left: 10 * @rem-multiplier--desktop;
+        padding-right: 10 * @rem-multiplier--desktop;
+        width: 100%;
+      }
+      dt {
+        clear: both;
+        float: left;
+        padding-bottom: .5em;
+        padding-left: 1.5em;
+        padding-top: .5em;
+        width: 50%;
+        &.values,
+        &.threats,
+        &.protection {
+          position: relative;
+          &:before {
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            content: '';
+            display: block;
+            height: 100%;
+            margin-top: -.5em;
+            position: absolute;
+            left: 0;
+            // right: 100%;
+            // top: 0;
+            width: 1.3em;
+            margin-right: .5em;
+          }
+        }
+        &.values:before {
+          background-image: url(~'@{images-path}values.svg');
+        }
+        &.threats:before {
+          background-image: url(~'@{images-path}threats.svg');
+        }
+        &.protection:before {
+          background-image: url(~'@{images-path}protection.svg');
+          width: 1.4em;
+        }
+      }
+      dd {
+        padding-bottom: .5em;
+        padding-top: .5em;
+        position: relative;
+        font-weight: 300;
+        &:before {
+          border-top: 1px solid @iucn-gray-lighter;
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+      }
 
       .more {
         float: right;
@@ -167,6 +268,22 @@
       img {
         &:extend(.img-responsive);
         width: 100%;
+        // @todo: remove this and use custom image style
+        height: 10vh;
+        min-height: 120 * @rem-multiplier--desktop;
+        max-height: 140 * @rem-multiplier--desktop;
+        object-fit: cover;
+        @media (orientation: portrait) {
+          // height: 20vh;
+        }
+        @media @design-desktop {
+          height: 140 * @rem-multiplier--desktop;
+        }
+      }
+      .inscription {
+        strong {
+          font-weight: inherit;
+        }
       }
     }
   }
@@ -216,7 +333,7 @@
       }
     }
 
-    dl { display: block; width: 50%; margin: 0 auto; }
+    dl { display: block; width: 50%; margin: 0 auto; float: left; }
   }
 }
 

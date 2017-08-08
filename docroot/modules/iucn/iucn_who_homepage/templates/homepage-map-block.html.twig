@@ -1,7 +1,7 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="row map-block-main">
 
-    <div class="col col-sm-3 col-md-2">
+    <div class="col col-sm-3 col-left">
       <div class="row">
         <div id="map-site-search">
         {{ search_form }}
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-9 col-md-10">
+    <div class="col col-sm-9 col-right">
       <div class="row">
         {{ markup_map | raw }}
       </div>
@@ -28,7 +28,7 @@
   </div>
   {% if block_footer_text %}
   <div class="row map-block-footer">
-    <a href="" class="scroll-down">V</a>
+    <a href="javascript:void(0);" class="scroll-down" id="frontpage-scroll-down"></a>
     {{ block_footer_text }}
   </div>
   {% endif %}
