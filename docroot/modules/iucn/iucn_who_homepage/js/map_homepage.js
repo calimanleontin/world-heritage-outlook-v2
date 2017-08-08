@@ -116,19 +116,16 @@ function postInitMap(instance_id, map, config) {
      */
     $('#edit-q').on('change', function() {
       if ($(this).val() !== '') {
-        var $found = false;
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
-          var $show = $marker.customInfo.id == $(this).val();
-          $marker.setVisible($show);
-          if (!$found && $show) {
-            $found = true;
+          if ($marker.customInfo.id == $(this).val()) {
             $('#map-site-details').html($marker.customInfo.render);
             var $icon = config.icons['icon' + $marker.customInfo.status_id + 'Active'];
-            $marker.setIcon($icon);
-            map.setCenter($marker.getPosition());
-            map.setZoom(7); // @todo variable
           }
+          else {
+            var $icon = config.icons['icon' + $marker.customInfo.status_id];
+          }
+          $marker.setIcon($icon);
         }
       }
       else {
@@ -143,6 +140,7 @@ function postInitMap(instance_id, map, config) {
 function homepageMapSiteDetailClose() {
   (function ($) {
     'use strict';
+    $.resetMapPosition();
     $.iucnClearSelection();
   })(jQuery, Drupal, drupalSettings);
 }
