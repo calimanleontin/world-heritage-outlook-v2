@@ -321,6 +321,7 @@
     }
   }
   #block-globaloutlookstatistics {
+    text-align: center;
     // Links and disk colours
     .loop-conservation-ratings({
       dt.@{conservation-rating-class} {
@@ -366,7 +367,50 @@
       }
     }
 
-    dl { display: block; width: 50%; margin: 0 auto; float: left; }
+    dl { display: block; width: 50%; margin: 0 auto; }
+  }
+  #block-homepagereport {
+    text-align: center;
+    margin-top: 3em;
+    a {
+      .btn-info();
+      display: inline-block;
+      text-align: left;
+      width: auto;
+      font-size: 22px;
+      padding: .5em 1.5em;
+      position: relative;
+      line-height: 1.2;
+      padding-left: 5em;
+      font-weight: 300;
+      div {
+        font-size: 15px;
+      }
+      .glyphicon {
+        background-image: url(~'@{images-path}download-report.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: (44 / 22 * 1em) auto;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 4em;
+        &:before {
+          display: none;
+        }
+        &:after {
+          border-right: 1px solid;
+          content: '';
+          display: block;
+          height: 80%;
+          position: absolute;
+          right: 0;
+          top: 10%;
+        }
+      }
+
+    }
   }
 }
 

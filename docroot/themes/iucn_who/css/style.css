@@ -10084,6 +10084,9 @@ a:active .caret-triangle .caret-path,
 .path-frontpage #map-site-details .map-site-detail .inscription strong {
   font-weight: inherit;
 }
+.path-frontpage #block-globaloutlookstatistics {
+  text-align: center;
+}
 .path-frontpage #block-globaloutlookstatistics dt.coming-soon {
   color: #7e7e7e;
 }
@@ -10178,7 +10181,201 @@ a:active .caret-triangle .caret-path,
   display: block;
   width: 50%;
   margin: 0 auto;
-  float: left;
+}
+.path-frontpage #block-homepagereport {
+  text-align: center;
+  margin-top: 3em;
+}
+.path-frontpage #block-homepagereport a,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #fff;
+  background-color: #03afdf;
+  border-color: #039bc6;
+  display: inline-block;
+  text-align: left;
+  width: auto;
+  font-size: 22px;
+  padding: .5em 1.5em;
+  position: relative;
+  line-height: 1.2;
+  padding-left: 5em;
+  font-weight: 300;
+}
+.path-frontpage #block-homepagereport a:focus,
+.path-frontpage #block-homepagereport a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #013948;
+}
+.path-frontpage #block-homepagereport a:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #026c89;
+}
+.path-frontpage #block-homepagereport a:active,
+.path-frontpage #block-homepagereport a.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport a,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #026c89;
+}
+.path-frontpage #block-homepagereport a:active:hover,
+.path-frontpage #block-homepagereport a.active:hover,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport a:hover,
+.path-frontpage #block-homepagereport a:active:focus,
+.path-frontpage #block-homepagereport a.active:focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport a:focus,
+.path-frontpage #block-homepagereport a:active.focus,
+.path-frontpage #block-homepagereport a.active.focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active:hover,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active:focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active.focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active:hover,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active:focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active.focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:hover,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active.focus,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+  color: #fff;
+  background-color: #026c89;
+  border-color: #013948;
+}
+.path-frontpage #block-homepagereport a:active,
+.path-frontpage #block-homepagereport a.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport a,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  background-image: none;
+}
+.path-frontpage #block-homepagereport a.disabled:hover,
+.path-frontpage #block-homepagereport a[disabled]:hover,
+fieldset[disabled] .path-frontpage #block-homepagereport a:hover,
+.path-frontpage #block-homepagereport a.disabled:focus,
+.path-frontpage #block-homepagereport a[disabled]:focus,
+fieldset[disabled] .path-frontpage #block-homepagereport a:focus,
+.path-frontpage #block-homepagereport a.disabled.focus,
+.path-frontpage #block-homepagereport a[disabled].focus,
+fieldset[disabled] .path-frontpage #block-homepagereport a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled]:hover,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled]:focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled].focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled]:hover,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled]:focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled].focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:hover,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled.focus,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled].focus,
+fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+  background-color: #03afdf;
+  border-color: #039bc6;
+}
+.path-frontpage #block-homepagereport a .badge,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title .badge,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .badge,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .badge {
+  color: #03afdf;
+  background-color: #fff;
+}
+.path-frontpage #block-homepagereport a div,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title div,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a div,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title div {
+  font-size: 15px;
+}
+.path-frontpage #block-homepagereport a .glyphicon,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
+  background-image: url(../images/download-report.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 2em auto;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 4em;
+}
+.path-frontpage #block-homepagereport a .glyphicon:before,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon:before,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon:before,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:before {
+  display: none;
+}
+.path-frontpage #block-homepagereport a .glyphicon:after,
+.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon:after,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon:after,
+.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:after {
+  border-right: 1px solid;
+  content: '';
+  display: block;
+  height: 80%;
+  position: absolute;
+  right: 0;
+  top: 10%;
 }
 #scroll-down-target {
   height: 10px;
