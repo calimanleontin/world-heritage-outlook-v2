@@ -7788,6 +7788,10 @@ html.js .ajax-new-content:empty {
 /**
  * Form styles.
  */
+.form-control {
+  font-size: 1em;
+  height: auto;
+}
 table .checkbox.form-no-label,
 table .radio.form-no-label {
   margin-bottom: 0;
