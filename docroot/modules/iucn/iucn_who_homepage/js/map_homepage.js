@@ -25,7 +25,7 @@ function postInitMap(instance_id, map, config) {
         $.iucnResetAllMarkerIcons();
         var $icon = config.icons['icon' + this.customInfo.status_id + 'Active'];
         this.setIcon($icon);
-        $('#map-site-details').html(this.customInfo.render);
+        $('#map-site-details').hide().html(this.customInfo.render).fadeIn(200);
       });
       $markers.push($marker);
     }
@@ -69,7 +69,7 @@ function postInitMap(instance_id, map, config) {
       $.iucnResetAllMarkerIcons();
       $('#edit-q').prop('selectedIndex', 0);
       $('#edit-q').trigger('chosen:updated');
-      $('#map-site-details').html(config.empty_placeholder);
+      $('#map-site-details').hide().html(config.empty_placeholder).fadeIn(200);
     };
 
 
