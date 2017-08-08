@@ -270,6 +270,11 @@ body.show-focus-outlines {
       pointer-events: none;
       transition: .1s;
       margin-top: -1px;
+      > li > a:hover,
+      > li > a:focus,
+      > li > a:active {
+        background-color: transparent;
+      }
     }
     .navbar-nav > li:hover > .dropdown-menu {
       opacity: 1;
