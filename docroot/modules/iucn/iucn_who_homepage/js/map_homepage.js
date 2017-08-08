@@ -143,6 +143,24 @@ function postInitMap(instance_id, map, config) {
         $("html, body").animate({ scrollTop: $target.offset().top + $target.outerHeight(true) }, 700);
      });
 
+     $('[data-scroll="prevent"]').on('wheel', function (event) {
+      var wheelEvent = event.originalEvent;
+      var prevent = false;
+
+      if (wheelEvent.deltaY > 0) { // scroll down
+        prevent = 0 === this.scrollHeight- $(this).innerHeight() - $(this).scrollTop();
+      } else { // scroll up
+        prevent = 0 === $(this).scrollTop();
+      }
+
+      if (prevent) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        return false;
+      }
+    });
+
   })(jQuery, Drupal, drupalSettings);
 }
 
