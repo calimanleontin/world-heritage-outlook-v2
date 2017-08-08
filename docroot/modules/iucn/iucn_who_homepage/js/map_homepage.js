@@ -6,6 +6,7 @@
 function postInitMap(instance_id, map, config) {
   (function ($, Drupal, drupalSettings) {
     'use strict';
+
     // Scale-down the images a bit
     for (var $i in config.icons) {
       config.icons[$i].scaledSize = new google.maps.Size(24, 24);
@@ -159,6 +160,33 @@ function postInitMap(instance_id, map, config) {
 
         return false;
       }
+    });
+    var lockMapScrollwheel = function() {
+      // console.log('locked');
+      map.setOptions({
+        scrollwheel: false
+      });
+    };
+    var unlockMapScrollwheel = function () {
+      // console.log('unlocked');
+      map.setOptions({
+        scrollwheel: true
+      });
+    };
+
+    // $('.col-right')
+    //   .on('mouseenter', function () {
+    //     setTimeout(function () {
+    //       unlockMapScrollwheel();
+    //     }, 2000);
+    //   })
+    //   .on('mouseleave', function () {
+    //     lockMapScrollwheel();
+    //   });
+
+    lockMapScrollwheel();
+    map.setOptions({
+      minZoom: 2
     });
 
   })(jQuery, Drupal, drupalSettings);
