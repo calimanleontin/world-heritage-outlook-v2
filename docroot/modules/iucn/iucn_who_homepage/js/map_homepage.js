@@ -134,6 +134,15 @@ function postInitMap(instance_id, map, config) {
         $.showAllMarkers(true);
       }
     });
+
+    /**
+     * Scrolldown button
+     */
+     $('#frontpage-scroll-down').on('click', function() {
+        var $target = $($(this).data('target'));
+        $("html, body").animate({ scrollTop: $target.offset().top + $target.outerHeight(true) }, 700);
+     });
+
   })(jQuery, Drupal, drupalSettings);
 }
 
