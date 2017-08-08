@@ -1,5 +1,14 @@
-@map-footer-height: 100 * @rem-multiplier--desktop;
+@map-footer-height: 115 * @rem-multiplier--desktop;
+@map-scrolldown-height: 60 * @rem-multiplier--desktop;
 
+// if logged in as admin
+// @media @grid-desktop {
+//   .path-frontpage.toolbar-vertical #block-homepagemap {
+//     .col-left {
+//       min-height: ~'calc(100vh - @{navbar-height} - @{map-footer-height} - 39px + (@{map-scrolldown-height} * 5 / 4))';
+//     }
+//   }
+// }
 .path-frontpage {
   #block-homepagemap {
     @media @grid-desktop {
@@ -11,14 +20,13 @@
         font-size: 15 * @rem-multiplier--desktop;
         z-index: 1;
         max-width: 300px;
-        height: ~'calc(100vh - @{navbar-height} - @{map-footer-height} + 3.5rem)';
+        height: ~'calc(100vh - @{navbar-height} - @{map-footer-height} + (@{map-scrolldown-height} * 5 / 4))';
         overflow: auto;
       }
       .col-right {
         position: relative;
         overflow: hidden;
         flex: 1;
-        flex-basis: ~'calc(100vh - @{navbar-height} - @{map-footer-height} - 3rem)';
         .map-container {
           position: static !important;
           height: 100% !important;
@@ -28,7 +36,9 @@
         .background-variant(@iucn-blue-dark, #fff);
         align-items: center;
         display: flex;
-        height: @map-footer-height;
+        flex-direction: column;
+        font-size: 37 * @rem-multiplier--desktop;
+        min-height: @map-footer-height;
         justify-content: center;
         position: relative;
         z-index: 1;
@@ -121,9 +131,31 @@
   }
   #map-site-details {
     .site-selection-placeholder {
+      color: #a6a7a7;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0 auto;
+      margin-bottom: 4em;
+      margin-top: 4em;
+      min-height: 245 * @rem-multiplier--desktop;
       padding-left: 1.5em;
       padding-right: 1.5em;
       text-align: center;
+      width: 80%;
+      &:before, &:after {
+        border: 1px solid @iucn-gray-lighter;
+        content: '';
+        display: block;
+        height: 1.5em;
+        width: 100%;
+      }
+      &:before {
+        border-bottom: none;
+      }
+      &:after {
+        border-top: none;
+      }
       img {
         // height: @line-height-base * 1em;
         display: block;
@@ -337,3 +369,6 @@
   }
 }
 
+#scroll-down-target {
+  height: 10px;
+}

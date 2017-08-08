@@ -9655,14 +9655,13 @@ a:active .caret-triangle .caret-path,
     font-size: 0.83333333rem;
     z-index: 1;
     max-width: 300px;
-    height: calc(100vh - 5.555555555555555rem - 5.555555555555555rem + 3.5rem);
+    height: calc(100vh - 5.555555555555555rem - 6.388888888888888rem + (3.333333333333333rem * 5 / 4));
     overflow: auto;
   }
   .path-frontpage #block-homepagemap .col-right {
     position: relative;
     overflow: hidden;
     flex: 1;
-    flex-basis: calc(100vh - 5.555555555555555rem - 5.555555555555555rem - 3rem);
   }
   .path-frontpage #block-homepagemap .col-right .map-container {
     position: static !important;
@@ -9673,7 +9672,9 @@ a:active .caret-triangle .caret-path,
     color: #fff;
     align-items: center;
     display: flex;
-    height: 5.55555556rem;
+    flex-direction: column;
+    font-size: 2.05555556rem;
+    min-height: 6.38888889rem;
     justify-content: center;
     position: relative;
     z-index: 1;
@@ -9855,9 +9856,32 @@ a:active .caret-triangle .caret-path,
   color: #3bb55e;
 }
 .path-frontpage #map-site-details .site-selection-placeholder {
+  color: #a6a7a7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  margin-top: 4em;
+  min-height: 13.61111111rem;
   padding-left: 1.5em;
   padding-right: 1.5em;
   text-align: center;
+  width: 80%;
+}
+.path-frontpage #map-site-details .site-selection-placeholder:before,
+.path-frontpage #map-site-details .site-selection-placeholder:after {
+  border: 1px solid #e1e1e1;
+  content: '';
+  display: block;
+  height: 1.5em;
+  width: 100%;
+}
+.path-frontpage #map-site-details .site-selection-placeholder:before {
+  border-bottom: none;
+}
+.path-frontpage #map-site-details .site-selection-placeholder:after {
+  border-top: none;
 }
 .path-frontpage #map-site-details .site-selection-placeholder img {
   display: block;
@@ -10140,5 +10164,8 @@ a:active .caret-triangle .caret-path,
   width: 50%;
   margin: 0 auto;
   float: left;
+}
+#scroll-down-target {
+  height: 10px;
 }
 /*# sourceMappingURL=style.css.map */
