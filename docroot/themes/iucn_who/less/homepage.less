@@ -301,17 +301,8 @@
       img {
         &:extend(.img-responsive);
         width: 100%;
-        // @todo: remove this and use custom image style
-        height: 10vh;
-        min-height: 120 * @rem-multiplier--desktop;
-        max-height: 140 * @rem-multiplier--desktop;
-        object-fit: cover;
-        @media (orientation: portrait) {
-          // height: 20vh;
-        }
-        @media @design-desktop {
-          height: 140 * @rem-multiplier--desktop;
-        }
+        // height: 140 * @rem-multiplier--desktop;
+        // object-fit: cover;
       }
       .inscription {
         strong {

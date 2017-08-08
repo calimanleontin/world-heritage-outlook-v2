@@ -10087,17 +10087,6 @@ a:active .caret-triangle .caret-path,
 }
 .path-frontpage #map-site-details .map-site-detail img {
   width: 100%;
-  height: 10vh;
-  min-height: 6.66666667rem;
-  max-height: 7.77777778rem;
-  object-fit: cover;
-}
-@media (orientation: portrait) {
-}
-@media screen and (min-width: 1600px) {
-  .path-frontpage #map-site-details .map-site-detail img {
-    height: 7.77777778rem;
-  }
 }
 .path-frontpage #map-site-details .map-site-detail .inscription strong {
   font-weight: inherit;
