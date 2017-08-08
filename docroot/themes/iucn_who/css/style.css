@@ -10001,6 +10001,7 @@ a:active .caret-triangle .caret-path,
 .path-frontpage #map-site-details .map-site-detail dl {
   color: #666666;
   float: left;
+  font-size: .85em;
   margin-top: .5em;
   padding-left: 0.55555556rem;
   padding-right: 0.55555556rem;
