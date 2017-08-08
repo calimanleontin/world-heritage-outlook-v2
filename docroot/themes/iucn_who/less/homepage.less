@@ -70,6 +70,16 @@
   #map-site-search {
     .background-variant(@iucn-blue-dark, #fff);
     padding: 16 / 15 * 1em;
+    form {
+      .clearfix();
+    }
+    .form-submit {
+      display: none;
+    }
+    a[href="/sites-search"] {
+      float: right;
+      font-weight: 300;
+    }
   }
   #map-filters {
     padding: 2em (16 / 15 * 1em);

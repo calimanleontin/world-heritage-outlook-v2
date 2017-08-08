@@ -9778,6 +9778,32 @@ a:active .caret-triangle .caret-path,
 .path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title:not([class*='chosen']):active {
   color: #03afdf;
 }
+.path-frontpage #map-site-search form:before,
+.path-frontpage #map-site-search form:after {
+  content: " ";
+  display: table;
+}
+.path-frontpage #map-site-search form:after {
+  clear: both;
+}
+.path-frontpage #map-site-search form:before,
+.path-frontpage #map-site-search form:after {
+  content: " ";
+  display: table;
+}
+.path-frontpage #map-site-search form:after {
+  clear: both;
+}
+.path-frontpage #map-site-search .form-submit {
+  display: none;
+}
+.path-frontpage #map-site-search a[href="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .panel-title[href="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > a[href="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href="/sites-search"] {
+  float: right;
+  font-weight: 300;
+}
 .path-frontpage #map-filters {
   padding: 2em 1.06666667em;
   position: relative;
