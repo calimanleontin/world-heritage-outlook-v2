@@ -9688,9 +9688,10 @@ a:active .caret-triangle .caret-path,
     display: flex;
     flex-direction: column;
     font-size: 2.05555556rem;
-    min-height: 6.38888889rem;
     justify-content: center;
+    min-height: 6.38888889rem;
     position: relative;
+    text-align: center;
     z-index: 1;
   }
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']),
