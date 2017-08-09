@@ -9804,6 +9804,18 @@ a:active .caret-triangle .caret-path,
   float: right;
   font-weight: 300;
 }
+.path-frontpage #map-site-search .form-type-select > label:before {
+  content: '';
+  background-image: url(../images/explore.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1.5em;
+  width: 1em;
+  display: inline-block;
+  margin-right: .5em;
+  vertical-align: middle;
+}
 .path-frontpage #map-filters {
   padding: 2em 1.06666667em;
   position: relative;

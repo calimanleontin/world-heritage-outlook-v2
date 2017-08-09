@@ -80,6 +80,20 @@
       float: right;
       font-weight: 300;
     }
+    .form-type-select > label {
+      &:before {
+        content: '';
+        background-image: url(~'@{images-path}explore.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: @line-height-base * 1em;
+        width: 1em;
+        display: inline-block;
+        margin-right: .5em;
+        vertical-align: middle;
+      }
+    }
   }
   #map-filters {
     padding: 2em (16 / 15 * 1em);
