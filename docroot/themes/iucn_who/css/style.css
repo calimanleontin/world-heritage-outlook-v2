@@ -9673,6 +9673,9 @@ a:active .caret-triangle .caret-path,
   margin-top: 0;
   text-align: center;
 }
+.paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site h2 {
+  font-size: 1.33333333rem;
+}
 .paragraph-background-light {
   background-color: #def2fb;
   padding-top: 3.33333333rem;
