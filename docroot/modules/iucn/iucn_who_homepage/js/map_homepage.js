@@ -120,7 +120,7 @@ function postInitMap(instance_id, map, config) {
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
           if ($marker.customInfo.id == $(this).val()) {
-            $('#map-site-details').html($marker.customInfo.render);
+            $('#map-site-details').hide().html($marker.customInfo.render).fadeIn(200);
             var $icon = config.icons['icon' + $marker.customInfo.status_id + 'Active'];
           }
           else {
