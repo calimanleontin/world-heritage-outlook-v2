@@ -29,9 +29,9 @@ dependencies:
     - image.style.thumbnail
     - node.type.site
   module:
-    - datetime
     - field_group
     - image
+    - iucn_site
     - paragraphs
     - path
     - text
@@ -104,8 +104,8 @@ third_party_settings:
         - field_site_name_es
         - field_cultural_landscape
         - field_mixed_site
-        - field_inscription_year
         - field_image
+        - field_inscription_year
       parent_name: group_basic
       weight: 20
       format_type: fieldset
@@ -318,7 +318,7 @@ content:
     weight: 33
     settings: {  }
     third_party_settings: {  }
-    type: datetime_default
+    type: year_date_field_widget
     region: content
   field_mixed_site:
     weight: 16
@@ -407,6 +407,8 @@ content:
   translation:
     weight: 10
     region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 1

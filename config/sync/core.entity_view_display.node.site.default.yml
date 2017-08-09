@@ -26,223 +26,101 @@ dependencies:
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
+    - image.style.sites_thumbnail
     - node.type.site
   module:
     - datetime
-    - entity_reference_revisions
+    - ds
     - image
+    - iucn_site
     - text
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_site
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      left_1:
+        - field_country
+        - field_inscription_year
+        - field_inscription_criteria
+        - body
+      right_1:
+        - field_image
 id: node.site.default
 targetEntityType: node
 bundle: site
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 2
+    weight: 3
+    region: left_1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-    region: content
-  field_area:
-    weight: 19
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_buffer_zone:
-    weight: 16
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_buffer_zone_area:
-    weight: 15
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_category:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_coordinate_x:
-    weight: 22
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_coordinate_y:
-    weight: 23
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_country:
-    weight: 10
-    label: above
+    type: entity_reference_list
+    weight: 0
+    region: left_1
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_cultural_landscape:
-    weight: 7
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_danger_list:
-    type: entity_reference_revisions_entity_view
-    weight: 21
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
-  field_designation:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
+      separator: ','
+      link: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_image:
-    weight: 1
-    label: above
+    type: image
+    weight: 4
+    region: right_1
+    label: hidden
     settings:
-      image_style: ''
+      image_style: sites_thumbnail
       image_link: ''
     third_party_settings: {  }
-    type: image
-    region: content
   field_inscription_criteria:
-    weight: 13
-    label: above
+    type: entity_reference_list
+    weight: 2
+    region: left_1
+    label: inline
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
+      link: 0
+      separator: ','
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_inscription_year:
-    weight: 9
-    label: above
+    type: datetime_default
+    weight: 1
+    region: left_1
+    label: inline
     settings:
       timezone_override: ''
       format_type: html_year
     third_party_settings: {  }
-    type: datetime_default
-    region: content
-  field_mixed_site:
-    weight: 8
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_serial:
-    weight: 18
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_site_id:
-    weight: 20
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_site_name_es:
-    weight: 6
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_site_name_fr:
-    weight: 5
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_theme:
-    weight: 12
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_transboundary:
-    weight: 17
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_unesco_id:
-    weight: 4
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_wdpa_id:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  field_area: true
+  field_buffer_zone: true
+  field_buffer_zone_area: true
+  field_category: true
+  field_coordinate_x: true
+  field_coordinate_y: true
+  field_cultural_landscape: true
+  field_danger_list: true
+  field_designation: true
+  field_mixed_site: true
+  field_serial: true
+  field_site_id: true
+  field_site_name_es: true
+  field_site_name_fr: true
+  field_theme: true
+  field_transboundary: true
+  field_unesco_id: true
+  field_wdpa_id: true
   langcode: true
+  links: true

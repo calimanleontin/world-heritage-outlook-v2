@@ -10,8 +10,8 @@ id: node.site.field_inscription_criteria
 field_name: field_inscription_criteria
 entity_type: node
 bundle: site
-label: 'Inscription criteria'
-description: ''
+label: Criteria
+description: 'Inscription criteria'
 required: false
 translatable: false
 default_value: {  }

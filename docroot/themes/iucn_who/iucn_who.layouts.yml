@@ -9,3 +9,16 @@ iucn_who_1col:
   regions:
     content:
       label: Content
+
+iucn_who_site:
+  label: Site
+  category: IUCN
+  type: partial
+  template: templates/layouts/iucn-who-site
+  regions:
+    left_1:
+       label: General Info
+    right_1:
+      label: Image
+    content:
+      label: Content

@@ -11,8 +11,8 @@ id: node.site.field_inscription_year
 field_name: field_inscription_year
 entity_type: node
 bundle: site
-label: 'Inscription year'
-description: ''
+label: 'Inscribed in'
+description: 'Inscription year'
 required: true
 translatable: false
 default_value: {  }
