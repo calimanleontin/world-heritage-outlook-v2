@@ -7540,6 +7540,9 @@ button.close {
 /**
  * Alert styling.
  */
+.alert {
+  margin-top: .5em;
+}
 .alert-sm {
   padding: 5px 10px;
 }
