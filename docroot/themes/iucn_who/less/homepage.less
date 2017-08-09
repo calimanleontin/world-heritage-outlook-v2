@@ -430,11 +430,14 @@
       }
     });
 
-    dl { display: block; margin: 5em auto 0; padding: 0 1.5em; overflow: hidden; }
+    dl { display: block; margin: 5em auto 0; padding: 0; padding-right: 1.5em; overflow: hidden; }
     dt, dd {
       float: left;
       width: 50%;
       margin-bottom: .3em;
+      @media @grid-mobile {
+        width: 65%;
+      }
     }
     dt {
       clear: both;
@@ -442,6 +445,10 @@
       margin-right: 1em;
       text-align: right;
       width: calc(~'50% - 1em');
+      @media @grid-mobile {
+        width: calc(~'35% - 1em');
+        line-height: 1;
+      }
     }
     dd { color: white; font-weight: bold; }
     dd>div {
@@ -449,6 +456,7 @@
       padding: 0 1em;
       position: relative;
       text-align: center;
+      min-width: 3em;
       &:after {
         border-bottom-color: transparent;
         border-left-color: transparent;
