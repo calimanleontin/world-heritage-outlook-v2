@@ -10245,6 +10245,12 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 .path-frontpage #block-globaloutlookstatistics .bg-good:after {
   border-top-color: #3bb55e;
 }
+.path-frontpage #block-globaloutlookstatistics dl {
+  display: block;
+  margin: 5em auto 0;
+  padding: 0 1.5em;
+  overflow: hidden;
+}
 .path-frontpage #block-globaloutlookstatistics dt,
 .path-frontpage #block-globaloutlookstatistics dd {
   float: left;
@@ -10263,7 +10269,6 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   font-weight: bold;
 }
 .path-frontpage #block-globaloutlookstatistics dd > div {
-  box-sizing: initial;
   padding: 0 1em;
   position: relative;
   text-align: center;
@@ -10281,10 +10286,6 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   position: absolute;
   top: 0;
   width: 0;
-}
-.path-frontpage #block-globaloutlookstatistics dl {
-  display: block;
-  margin: 5em auto 0;
 }
 .path-frontpage #block-homepagereport {
   text-align: center;
