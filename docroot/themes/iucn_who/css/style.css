@@ -10113,8 +10113,9 @@ a:active .caret-triangle .caret-path,
   width: 2em;
 }
 .path-frontpage #map-site-details .map-site-detail .close {
-  background-color: #134780;
   color: #fff;
+  background-color: #134780;
+  border-color: #103b6a;
   display: block;
   font-size: 1em;
   font-weight: 300;
@@ -10123,6 +10124,58 @@ a:active .caret-triangle .caret-path,
   position: absolute;
   right: 0;
   top: 1px;
+}
+.path-frontpage #map-site-details .map-site-detail .close:focus,
+.path-frontpage #map-site-details .map-site-detail .close.focus {
+  color: #fff;
+  background-color: #0c2e54;
+  border-color: #000000;
+}
+.path-frontpage #map-site-details .map-site-detail .close:hover {
+  color: #fff;
+  background-color: #0c2e54;
+  border-color: #081d35;
+}
+.path-frontpage #map-site-details .map-site-detail .close:active,
+.path-frontpage #map-site-details .map-site-detail .close.active,
+.open > .dropdown-toggle.path-frontpage #map-site-details .map-site-detail .close {
+  color: #fff;
+  background-color: #0c2e54;
+  border-color: #081d35;
+}
+.path-frontpage #map-site-details .map-site-detail .close:active:hover,
+.path-frontpage #map-site-details .map-site-detail .close.active:hover,
+.open > .dropdown-toggle.path-frontpage #map-site-details .map-site-detail .close:hover,
+.path-frontpage #map-site-details .map-site-detail .close:active:focus,
+.path-frontpage #map-site-details .map-site-detail .close.active:focus,
+.open > .dropdown-toggle.path-frontpage #map-site-details .map-site-detail .close:focus,
+.path-frontpage #map-site-details .map-site-detail .close:active.focus,
+.path-frontpage #map-site-details .map-site-detail .close.active.focus,
+.open > .dropdown-toggle.path-frontpage #map-site-details .map-site-detail .close.focus {
+  color: #fff;
+  background-color: #081d35;
+  border-color: #000000;
+}
+.path-frontpage #map-site-details .map-site-detail .close:active,
+.path-frontpage #map-site-details .map-site-detail .close.active,
+.open > .dropdown-toggle.path-frontpage #map-site-details .map-site-detail .close {
+  background-image: none;
+}
+.path-frontpage #map-site-details .map-site-detail .close.disabled:hover,
+.path-frontpage #map-site-details .map-site-detail .close[disabled]:hover,
+fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close:hover,
+.path-frontpage #map-site-details .map-site-detail .close.disabled:focus,
+.path-frontpage #map-site-details .map-site-detail .close[disabled]:focus,
+fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close:focus,
+.path-frontpage #map-site-details .map-site-detail .close.disabled.focus,
+.path-frontpage #map-site-details .map-site-detail .close[disabled].focus,
+fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.focus {
+  background-color: #134780;
+  border-color: #103b6a;
+}
+.path-frontpage #map-site-details .map-site-detail .close .badge {
+  color: #134780;
+  background-color: #fff;
 }
 .path-frontpage #map-site-details .map-site-detail img {
   width: 100%;
