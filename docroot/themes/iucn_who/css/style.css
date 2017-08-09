@@ -10487,6 +10487,14 @@ a:active .caret-triangle .caret-path,
     width: 1%;
   }
 }
+@media screen and (max-width: 767px) {
+  .path-frontpage .region-content {
+    flex-flow: column;
+  }
+  .path-frontpage .region-content #block-globaloutlookstatistics {
+    order: -1;
+  }
+}
 .path-frontpage #block-homepagemap .map-container {
   position: static !important;
   height: 100% !important;

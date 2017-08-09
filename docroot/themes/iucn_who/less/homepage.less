@@ -10,6 +10,14 @@
 //   }
 // }
 .path-frontpage {
+  @media @grid-mobile {
+    .region-content {
+      flex-flow: column;
+      #block-globaloutlookstatistics {
+        order: -1;
+      }
+    }
+  }
   #block-homepagemap {
     .map-container {
       position: static !important;
