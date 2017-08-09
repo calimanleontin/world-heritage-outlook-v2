@@ -1,0 +1,15 @@
+iucn_who.mobile:
+  label: iucn-mobile
+  mediaQuery: 'all and (max-width: 767px)'
+  weight: 0
+  group: iucn
+  multipliers:
+    - 1x
+
+iucn_who.desktop:
+  label: iucn-desktop
+  mediaQuery: 'all and (min-width: 768px)'
+  weight: 0
+  group: iucn
+  multipliers:
+    - 1x
