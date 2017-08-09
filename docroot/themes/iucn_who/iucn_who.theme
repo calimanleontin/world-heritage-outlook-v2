@@ -73,3 +73,20 @@ function iucn_who_preprocess_page(&$variables) {
     unset($variables['page']['header']['iucn_who_page_title']);
   }
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function iucn_who_page_attachments_alter(array &$page) {
+
+  $breakpoints = \Drupal::service('breakpoint.manager')->getBreakpointsByGroup('iucn'); // this should match the group name from mytheme.breakpoints.yml
+  if (!empty($breakpoints)) {
+    $media_queries = array();
+    foreach ($breakpoints as $breakpoint) {
+      foreach ($breakpoints as $id => $breakpoint) {
+        $media_queries[$id] = $breakpoint->getMediaQuery();
+      }
+    }
+    $page['#attached']['drupalSettings']['responsive']['breakpoints'] = $media_queries;
+  }
+}
