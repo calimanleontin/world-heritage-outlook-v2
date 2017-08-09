@@ -9673,14 +9673,42 @@ a:active .caret-triangle .caret-path,
 .field--item .paragraph {
   margin-top: 3.33333333rem;
 }
+@media screen and (max-width: 767px) {
+  .field--item .paragraph {
+    margin-top: 2.85714286rem;
+  }
+}
 .paragraph.iucn-1col-wrapper .field--type-text-long h2 {
   font-size: 1.55555556rem;
   margin-bottom: 2em;
   margin-top: 0;
   text-align: center;
 }
+@media screen and (max-width: 767px) {
+  .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages {
+    margin-top: -2em;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 767px) {
+  .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item {
+    margin-top: 2em;
+  }
+}
+@media screen and (max-width: 767px) and (min-width: 530px) {
+  .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item {
+    flex: 0 1 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site h2 {
   font-size: 1.33333333rem;
+}
+.paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site img {
+  margin-left: auto;
+  margin-right: auto;
 }
 .paragraph-background-light {
   background-color: #def2fb;

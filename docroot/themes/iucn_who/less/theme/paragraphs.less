@@ -1,6 +1,9 @@
 .paragraph {
   .field--item & {
     margin-top: 60 * @rem-multiplier--desktop;
+    @media @grid-mobile {
+      margin-top: 40 * @rem-multiplier--mobile;
+    }
   }
   &.iucn-1col-wrapper .field--type-text-long {
     h2 {
@@ -10,9 +13,30 @@
       text-align: center;
     }
   }
+  &.iucn-1col-wrapper .field--name-field-paragraph-pages {
+    @media @grid-mobile {
+      margin-top: -2em;
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
   &.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item {
-    article.site h2 {
-      font-size: 24 * @rem-multiplier--desktop;
+    @media @grid-mobile {
+      margin-top: 2em;
+      @media (min-width: (500px + @grid-gutter-width) ) {
+        flex: 0 1 50%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    article.site {
+      h2 {
+        font-size: 24 * @rem-multiplier--desktop;
+      }
+      img {
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
   }
 }
