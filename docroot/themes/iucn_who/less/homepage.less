@@ -11,6 +11,10 @@
 // }
 .path-frontpage {
   #block-homepagemap {
+    .map-container {
+      position: static !important;
+      height: 100% !important;
+    }
     @media @grid-desktop {
       .row.map-block-main {
         display: flex;
@@ -27,10 +31,6 @@
         position: relative;
         overflow: hidden;
         flex: 1;
-        .map-container {
-          position: static !important;
-          height: 100% !important;
-        }
       }
       .map-block-footer {
         .background-variant(@iucn-blue-dark, #fff);
@@ -61,12 +61,52 @@
         }
       }
     }
+    @media @grid-mobile {
+      .row.map-block-main {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: calc(~'100vh - @{navbar-height--mobile} - 50 * @{rem-multiplier--mobile}');
+        min-height: 320 * @rem-multiplier--mobile;
+      }
+      .col-left,
+      .col-left > .row {
+        position: static;
+      }
+      #map-site-search {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        left: 0;
+        right: 0;
+      }
+      .col-right {
+        flex: 1;
+        margin-top: 105px;
+        order: -1;
+        overflow: hidden;
+      }
+      .scroll-down {
+        background-color: @iucn-blue-dark;
+        background-image: url(~'@{images-path}scroll-down-caret-white.svg');
+        background-position: center 5px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: block;
+        height: 50 * @rem-multiplier--mobile;
+        width: 100%;
+        box-shadow: 0 -1px 8px -2px fade(#000, 30%);
+      }
+      .map-block-footer {
+        font-size: 0;
+      }
+    }
   }
 
   #map-site-search,
   #map-filters,
   #map-site-details {
-    clear: both;
+    .clearfix();
   }
   #map-site-search {
     .background-variant(@iucn-blue-dark, #fff);
@@ -80,6 +120,9 @@
     a[href="/sites-search"] {
       float: right;
       font-weight: 300;
+      @media @grid-mobile {
+        display: none;
+      }
     }
     .form-type-select > label {
       &:before {
@@ -154,8 +197,12 @@
         }
       });
     }
+    @media @grid-mobile {
+      display: none;
+    }
   }
   #map-site-details {
+    margin-top: -1px;
     .site-selection-placeholder {
       color: #a6a7a7;
       display: flex;
@@ -186,11 +233,20 @@
         // height: @line-height-base * 1em;
         display: block;
         margin: 0 auto;
+
+      }
+      @media @grid-mobile {
+        display: none;
       }
     }
     .map-site-detail {
       position: relative;
       padding-top: 1px; // prevent margin collapse
+      .clearfix();
+      @media @grid-mobile {
+        box-shadow: 0 -1px 8px -2px fade(#000, 30%);
+        z-index: 1;
+      }
       > div,
       > dl {
         padding-left: 1.5em;
@@ -215,8 +271,15 @@
             color: #fff;
           }
         });
-        + .title {
-          margin-top: 3em;
+        @media @grid-desktop {
+          + .title {
+            margin-top: 3em;
+          }
+        }
+        @media @grid-mobile {
+          top: auto;
+          bottom: 0;
+          padding: .3em 1.5em;
         }
       }
       .title {
@@ -230,6 +293,9 @@
             color: @conservation-rating-color;
           }
         });
+        @media @grid-mobile {
+          padding-right: 2em;
+        }
       }
       .country {
         font-weight: 300;
@@ -243,6 +309,9 @@
         padding-left: 10 * @rem-multiplier--desktop;
         padding-right: 10 * @rem-multiplier--desktop;
         width: 100%;
+        @media @grid-mobile {
+          display: none;
+        }
       }
       dt {
         clear: both;
@@ -300,6 +369,8 @@
       .more {
         float: right;
         color: @iucn-blue-light;
+        padding-top: .5em;
+        padding-bottom: .5em;
         &:after {
           background-image: url('@{images-path}icon-arrow.svg');
           background-repeat: no-repeat;
@@ -328,6 +399,9 @@
         width: 100%;
         // height: 140 * @rem-multiplier--desktop;
         // object-fit: cover;
+        @media @grid-mobile {
+          display: none;
+        }
       }
       .inscription {
         strong {
@@ -438,5 +512,5 @@
 }
 
 #scroll-down-target {
-  height: 10px;
+  height: @map-scrolldown-height / 2;
 }
