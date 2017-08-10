@@ -10596,6 +10596,7 @@ a:active .caret-triangle .caret-path,
     position: relative;
     text-align: center;
     z-index: 1;
+    box-shadow: 0 -1px 8px -2px rgba(0, 0, 0, 0.3);
   }
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']),
   .path-frontpage #block-homepagemap .map-block-footer .block-facets.panel .panel-title:not([class*='chosen']),
