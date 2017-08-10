@@ -10888,9 +10888,6 @@ a:active .caret-triangle .caret-path,
     display: none;
   }
 }
-.path-frontpage #map-site-details {
-  margin-top: -1px;
-}
 .path-frontpage #map-site-details .site-selection-placeholder {
   color: #a6a7a7;
   display: flex;
@@ -10930,7 +10927,6 @@ a:active .caret-triangle .caret-path,
 }
 .path-frontpage #map-site-details .map-site-detail {
   position: relative;
-  padding-top: 1px;
 }
 .path-frontpage #map-site-details .map-site-detail:before,
 .path-frontpage #map-site-details .map-site-detail:after {
@@ -10970,7 +10966,7 @@ a:active .caret-triangle .caret-path,
   left: 0;
   padding: .3em 2em;
   position: absolute;
-  top: 1px;
+  top: 0;
 }
 .path-frontpage #map-site-details .map-site-detail .status.coming-soon {
   background-color: #7e7e7e;
@@ -11136,7 +11132,7 @@ a:active .caret-triangle .caret-path,
   padding: .8em 1em;
   position: absolute;
   right: 0;
-  top: 1px;
+  top: 0;
 }
 .path-frontpage #map-site-details .map-site-detail .close:focus,
 .path-frontpage #map-site-details .map-site-detail .close.focus {

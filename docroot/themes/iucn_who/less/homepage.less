@@ -211,7 +211,7 @@
     }
   }
   #map-site-details {
-    margin-top: -1px;
+    // margin-top: -1px;
     .site-selection-placeholder {
       color: #a6a7a7;
       display: flex;
@@ -250,7 +250,7 @@
     }
     .map-site-detail {
       position: relative;
-      padding-top: 1px; // prevent margin collapse
+      // padding-top: 1px; // prevent margin collapse
       .clearfix();
       @media @grid-mobile {
         box-shadow: 0 -1px 8px -2px fade(#000, 30%);
@@ -272,7 +272,7 @@
         left: 0;
         padding: .3em 2em;
         position: absolute;
-        top: 1px; // compensate for 1px padding-top
+        top: 0; // compensate for 1px padding-top
         // @todo: remove unnecessary conservation rating classes
         .loop-conservation-ratings({
           &.@{conservation-rating-class} {
@@ -401,7 +401,7 @@
         padding: .8em 1em;
         position: absolute;
         right: 0;
-        top: 1px; // compensate for 1px padding-top
+        top: 0; // compensate for 1px padding-top
       }
       img {
         &:extend(.img-responsive);
