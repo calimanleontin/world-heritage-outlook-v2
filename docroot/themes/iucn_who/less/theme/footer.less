@@ -85,6 +85,40 @@
       }
     }
   }
+  @media @grid-mobile {
+    > .container {
+      display: flex;
+      flex-flow: column;
+      .footer-external-links {
+        order: -1;
+      }
+    }
+    .region-footer + .footer-external-links {
+      margin-top: 0;
+    }
+    hr {
+      display: none;
+    }
+  }
+  .block-social-media {
+    float: right;
+    .block-title {
+      float: left;
+    }
+    .social-media-sharing {
+      float: right;
+    }
+    @media @grid-mobile {
+      text-align: center;
+      &,
+      .block-title,
+      .social-media-sharing {
+        float: none;
+        display: block;
+      }
+    }
+  }
+
 }
 
 .footer-external-links {
