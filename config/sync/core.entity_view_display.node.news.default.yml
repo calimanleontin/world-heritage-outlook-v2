@@ -1,0 +1,100 @@
+uuid: 3ece1367-7578-4292-9d80-38124dea7e0a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.news.body
+    - field.field.node.news.field_date_published
+    - field.field.node.news.field_image
+    - node.type.news
+  module:
+    - blazy
+    - ds
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_news_full
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      right_1:
+        - field_image
+      content:
+        - body
+id: node.news.default
+targetEntityType: node
+bundle: news
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_image:
+    type: blazy
+    weight: 0
+    region: right_1
+    label: hidden
+    settings:
+      style: grid
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: default
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      grid_header: ''
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      box_media_style: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+hidden:
+  field_date_published: true
+  langcode: true
+  links: true
