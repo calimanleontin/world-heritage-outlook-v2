@@ -10551,6 +10551,7 @@ a:active .caret-triangle .caret-path,
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
+    display: flex;
     flex-flow: column;
   }
   .path-frontpage .region-content #block-globaloutlookstatistics {
@@ -11507,6 +11508,11 @@ fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .fa
   position: absolute;
   right: 0;
   top: 10%;
+}
+@media screen and (max-width: 767px) {
+  .path-frontpage #block-homepagereport {
+    order: -1;
+  }
 }
 #scroll-down-target {
   height: 1.66666667rem;

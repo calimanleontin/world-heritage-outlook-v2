@@ -12,6 +12,7 @@
 .path-frontpage {
   @media @grid-mobile {
     .region-content {
+      display: flex;
       flex-flow: column;
       #block-globaloutlookstatistics {
         order: -1;
@@ -522,7 +523,9 @@
           top: 10%;
         }
       }
-
+    }
+    @media @grid-mobile {
+      order: -1;
     }
   }
 }
