@@ -8,31 +8,10 @@ dependencies:
     - field.field.node.page.field_teaser_image
     - node.type.page
   module:
-    - ds
     - entity_reference_revisions
+    - responsive_image
     - text
     - user
-third_party_settings:
-  ds:
-    layout:
-      id: iucn_who_1col
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings:
-        classes: {  }
-        wrappers:
-          content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-    regions:
-      content:
-        - langcode
-        - field_teaser_image
-        - field_summary
-        - field_page_elements
 id: node.page.default
 targetEntityType: node
 bundle: page
@@ -40,7 +19,7 @@ mode: default
 content:
   field_page_elements:
     type: entity_reference_revisions_entity_view
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       view_mode: default
@@ -54,7 +33,15 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_teaser_image:
+    type: responsive_image
+    weight: 1
+    region: content
+    label: above
+    settings:
+      responsive_image_style: ''
+      image_link: ''
+    third_party_settings: {  }
 hidden:
-  field_teaser_image: true
   langcode: true
   links: true
