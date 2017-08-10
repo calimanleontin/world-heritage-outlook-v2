@@ -497,19 +497,30 @@
       line-height: 1.2;
       padding-left: 5em;
       font-weight: 300;
+      @media @grid-mobile {
+        font-size: 21px;
+        line-height: 1.1;
+        padding-left: 3em;
+      }
       div {
         font-size: 15px;
+        @media @grid-mobile {
+          font-size: 13px;
+        }
       }
       .glyphicon {
         background-image: url(~'@{images-path}download-report.svg');
         background-position: center;
         background-repeat: no-repeat;
-        background-size: (44 / 22 * 1em) auto;
+        background-size: 50% auto;
         height: 100%;
         left: 0;
         position: absolute;
         top: 0;
         width: 4em;
+        @media @grid-mobile {
+          width: 2.5em;
+        }
         &:before {
           display: none;
         }

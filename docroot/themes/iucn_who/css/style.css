@@ -11471,11 +11471,29 @@ fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .fa
   color: #03afdf;
   background-color: #fff;
 }
+@media screen and (max-width: 767px) {
+  .path-frontpage #block-homepagereport a,
+  .path-frontpage #block-homepagereport .block-facets.panel .panel-title,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+    font-size: 21px;
+    line-height: 1.1;
+    padding-left: 3em;
+  }
+}
 .path-frontpage #block-homepagereport a div,
 .path-frontpage #block-homepagereport .block-facets.panel .panel-title div,
 .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a div,
 .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title div {
   font-size: 15px;
+}
+@media screen and (max-width: 767px) {
+  .path-frontpage #block-homepagereport a div,
+  .path-frontpage #block-homepagereport .block-facets.panel .panel-title div,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a div,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title div {
+    font-size: 13px;
+  }
 }
 .path-frontpage #block-homepagereport a .glyphicon,
 .path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon,
@@ -11484,12 +11502,20 @@ fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .fa
   background-image: url(../images/download-report.svg);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 2em auto;
+  background-size: 50% auto;
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   width: 4em;
+}
+@media screen and (max-width: 767px) {
+  .path-frontpage #block-homepagereport a .glyphicon,
+  .path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon,
+  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
+    width: 2.5em;
+  }
 }
 .path-frontpage #block-homepagereport a .glyphicon:before,
 .path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon:before,
