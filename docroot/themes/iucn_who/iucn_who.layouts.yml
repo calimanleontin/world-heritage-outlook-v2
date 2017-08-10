@@ -22,3 +22,25 @@ iucn_who_site:
       label: Image
     content:
       label: Content
+
+iucn_who_news_teaser:
+  label: News Teaser
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-news-teaser
+  regions:
+    right_1:
+      label: Image
+    content:
+      label: Content
+
+iucn_who_news_full:
+  label: News Full
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-news-full
+  regions:
+    right_1:
+      label: Images
+    content:
+      label: Content
