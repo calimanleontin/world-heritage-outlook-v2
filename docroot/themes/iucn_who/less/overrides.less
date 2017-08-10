@@ -43,8 +43,10 @@ ol, ul {
   margin-top: 45px;
   padding-top: 15px;
   padding-bottom: 36px;
-  .sidemenu-toggle-wrapper + & {
-    margin-top: 0;
+  @media @grid-mobile {
+    .sidemenu-toggle-wrapper + & {
+      margin-top: 0;
+    }
   }
 }
 

@@ -8951,8 +8951,10 @@ ul {
   padding-top: 15px;
   padding-bottom: 36px;
 }
-.sidemenu-toggle-wrapper + .footer {
-  margin-top: 0;
+@media screen and (max-width: 767px) {
+  .sidemenu-toggle-wrapper + .footer {
+    margin-top: 0;
+  }
 }
 p:last-child,
 .form-group:last-child,
@@ -9637,6 +9639,7 @@ a:active .caret-triangle .caret-path,
   .sidemenu-toggle-wrapper {
     height: 3.57142857rem;
     position: relative;
+    margin-top: 45px;
   }
   #sidemenu-toggle.affix,
   #sidemenu-toggle.affix-top {
