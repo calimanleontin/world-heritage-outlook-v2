@@ -10655,7 +10655,7 @@ a:active .caret-triangle .caret-path,
   }
   .path-frontpage #block-homepagemap .col-right {
     flex: 1;
-    margin-top: 105px;
+    margin-top: 42px;
     order: -1;
     overflow: hidden;
   }
@@ -10772,6 +10772,34 @@ a:active .caret-triangle .caret-path,
   display: inline-block;
   margin-right: .5em;
   vertical-align: middle;
+}
+@media screen and (max-width: 767px) {
+  .path-frontpage #map-site-search {
+    padding: 5px;
+  }
+  .path-frontpage #map-site-search .form-type-select {
+    display: flex;
+  }
+  .path-frontpage #map-site-search .form-type-select.form-group {
+    margin-bottom: 0;
+  }
+  .path-frontpage #map-site-search .form-type-select > label {
+    font-size: 0;
+    margin-bottom: 0;
+  }
+  .path-frontpage #map-site-search .form-type-select > label:before {
+    background-image: url(../images/explore-black.svg);
+    background-size: 50%;
+    width: 2rem;
+    height: 32px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-right: 0;
+  }
+  .path-frontpage #map-site-search .form-type-select > .select-wrapper {
+    flex: 1;
+    max-width: calc(100% - 2em);
+  }
 }
 .path-frontpage #map-filters {
   padding: 2em 1.06666667em;

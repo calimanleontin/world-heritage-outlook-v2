@@ -91,7 +91,7 @@
       }
       .col-right {
         flex: 1;
-        margin-top: 105px;
+        margin-top: 42px; // search block height
         order: -1;
         overflow: hidden;
       }
@@ -145,6 +145,32 @@
         display: inline-block;
         margin-right: .5em;
         vertical-align: middle;
+      }
+    }
+    @media @grid-mobile {
+      padding: 5px;
+      .form-type-select {
+        display: flex;
+        &.form-group {
+          margin-bottom: 0;
+        }
+        > label {
+          font-size: 0;
+          margin-bottom: 0;
+          &:before {
+            background-image: url(../images/explore-black.svg);
+            background-size: 50%;
+            width: 2rem;
+            height: 32px;
+            background-color: @input-bg;
+            border: 1px solid @input-border;
+            border-right: 0;
+          }
+        }
+        > .select-wrapper {
+          flex: 1;
+          max-width: calc(~'100% - 2em');
+        }
       }
     }
   }
