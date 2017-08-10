@@ -10917,6 +10917,13 @@ a:active .caret-triangle .caret-path,
     display: none;
   }
 }
+@media screen and (max-width: 767px) {
+  .path-frontpage #map-site-details {
+    box-shadow: 0 -1px 8px -2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+}
 .path-frontpage #map-site-details .site-selection-placeholder {
   color: #a6a7a7;
   display: flex;
@@ -10972,12 +10979,6 @@ a:active .caret-triangle .caret-path,
 }
 .path-frontpage #map-site-details .map-site-detail:after {
   clear: both;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage #map-site-details .map-site-detail {
-    box-shadow: 0 -1px 8px -2px rgba(0, 0, 0, 0.3);
-    z-index: 1;
-  }
 }
 .path-frontpage #map-site-details .map-site-detail > div,
 .path-frontpage #map-site-details .map-site-detail > dl {

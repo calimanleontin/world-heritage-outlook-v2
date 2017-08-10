@@ -239,6 +239,11 @@
   }
   #map-site-details {
     // margin-top: -1px;
+    @media @grid-mobile {
+      box-shadow: 0 -1px 8px -2px fade(#000, 30%);
+      position: relative;
+      z-index: 1;
+    }
     .site-selection-placeholder {
       color: #a6a7a7;
       display: flex;
@@ -279,10 +284,6 @@
       position: relative;
       // padding-top: 1px; // prevent margin collapse
       .clearfix();
-      @media @grid-mobile {
-        box-shadow: 0 -1px 8px -2px fade(#000, 30%);
-        z-index: 1;
-      }
       > div,
       > dl {
         padding-left: 1.5em;
