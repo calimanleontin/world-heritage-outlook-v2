@@ -11309,7 +11309,7 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 @media screen and (max-width: 767px) {
   .path-frontpage #block-globaloutlookstatistics dt,
   .path-frontpage #block-globaloutlookstatistics dd {
-    width: 65%;
+    width: calc(100% - 8em);
   }
 }
 .path-frontpage #block-globaloutlookstatistics dt {
@@ -11321,7 +11321,12 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #block-globaloutlookstatistics dt {
-    width: calc(35% - 1em);
+    font-size: .8em;
+    line-height: 1.5rem;
+    width: calc(8em - 1em);
+  }
+  .path-frontpage #block-globaloutlookstatistics dt.significant-concern,
+  .path-frontpage #block-globaloutlookstatistics dt.good-concerns {
     line-height: 1;
   }
 }

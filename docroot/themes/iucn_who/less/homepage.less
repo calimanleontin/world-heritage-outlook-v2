@@ -473,7 +473,7 @@
       width: 50%;
       margin-bottom: .3em;
       @media @grid-mobile {
-        width: 65%;
+        width: calc(~'100% - 8em');
       }
     }
     dt {
@@ -483,8 +483,13 @@
       text-align: right;
       width: calc(~'50% - 1em');
       @media @grid-mobile {
-        width: calc(~'35% - 1em');
-        line-height: 1;
+        font-size: .8em;
+        line-height: 1.5rem;
+        width: calc(~'8em - 1em');
+        &.significant-concern,
+        &.good-concerns {
+          line-height: 1;
+        }
       }
     }
     dd { color: white; font-weight: bold; }
