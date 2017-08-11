@@ -9433,7 +9433,8 @@ a:active .caret-triangle .caret-path,
   color: #03afdf;
   cursor: pointer;
   display: inline-block;
-  padding-right: 1.5em;
+  padding-right: 1.7em;
+  text-align: right;
   width: auto !important;
 }
 .navbar-collapse #block-languagedropdownswitcher select.form-control {
