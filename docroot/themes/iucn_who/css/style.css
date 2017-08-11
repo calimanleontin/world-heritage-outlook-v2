@@ -9312,7 +9312,7 @@ ol li.iucn-arrow .iucn-numbering {
   color: #134780;
   font-size: 2em;
   left: 0;
-  line-height: 1.5em;
+  line-height: 1.5;
   padding: 0 .25em;
   position: absolute;
   text-align: center;
