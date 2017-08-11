@@ -1,0 +1,20 @@
+uuid: d8db1f6d-1148-4c36-83c2-e650208f8c16
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.conservation_rating
+  module:
+    - path
+id: taxonomy_term.conservation_rating.path
+field_name: path
+entity_type: taxonomy_term
+bundle: conservation_rating
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path
