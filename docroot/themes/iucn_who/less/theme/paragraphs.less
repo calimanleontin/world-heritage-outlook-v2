@@ -41,6 +41,14 @@
   table {
     &:extend(.table all);
     &:extend(.table-striped all);
+    > thead:first-child {
+      > tr:first-child {
+        > th,
+        > td {
+          border-top: 6px solid @iucn-blue-lightest;
+        }
+      }
+    }
   }
 }
 .paragraph-background-light {
@@ -49,5 +57,13 @@
   padding-bottom: 60 * @rem-multiplier--desktop;
   table > tbody > tr:nth-of-type(odd) {
     background-color: @table-border-color;
+  }
+  table > thead:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top: 6px solid #fff;
+      }
+    }
   }
 }

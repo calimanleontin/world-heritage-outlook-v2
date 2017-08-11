@@ -9965,6 +9965,10 @@ ol li.arrow + .li.arrow {
 .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site h2 {
   font-size: 1.33333333rem;
 }
+.paragraph table > thead:first-child > tr:first-child > th,
+.paragraph table > thead:first-child > tr:first-child > td {
+  border-top: 6px solid #def2fb;
+}
 .paragraph-background-light {
   background-color: #def2fb;
   padding-top: 3.33333333rem;
@@ -9972,6 +9976,10 @@ ol li.arrow + .li.arrow {
 }
 .paragraph-background-light table > tbody > tr:nth-of-type(odd) {
   background-color: #fff;
+}
+.paragraph-background-light table > thead:first-child > tr:first-child > th,
+.paragraph-background-light table > thead:first-child > tr:first-child > td {
+  border-top: 6px solid #fff;
 }
 [data-statistics="100"] {
   width: 100%;
