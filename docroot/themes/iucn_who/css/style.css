@@ -9417,6 +9417,14 @@ h3.iucn-arrow.values:before {
   left: 100%;
   top: 0;
 }
+.field--type-text-long img {
+  max-width: 100%;
+}
+@media screen and (max-width: 767px) {
+  .field--type-text-long img {
+    height: auto !important;
+  }
+}
 .footer {
   background-color: #134780;
 }
