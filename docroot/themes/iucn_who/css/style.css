@@ -10748,18 +10748,18 @@ a:active .caret-triangle .caret-path,
 .path-frontpage #map-site-search .form-submit {
   display: none;
 }
-.path-frontpage #map-site-search a[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .panel-title[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .facet-item > a[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href="/sites-search"] {
+.path-frontpage #map-site-search a[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .panel-title[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > a[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href*="/sites-search"] {
   float: right;
   font-weight: 300;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #map-site-search a[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .panel-title[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .facet-item > a[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href="/sites-search"] {
+  .path-frontpage #map-site-search a[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .panel-title[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .facet-item > a[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href*="/sites-search"] {
     display: none;
   }
 }
