@@ -318,7 +318,19 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-      sorts: {  }
+      sorts:
+        field_weight_value:
+          id: field_weight_value
+          table: node__field_weight
+          field: field_weight_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
       title: 'Frequently Asked Questions'
       header: {  }
       footer: {  }
