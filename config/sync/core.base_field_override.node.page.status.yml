@@ -1,20 +1,20 @@
-uuid: 75e2bf89-0842-4c9b-b147-9813018e5660
+uuid: 591dc94c-0f1e-40e8-a8de-12b56a8a7c24
 langcode: en
 status: true
 dependencies:
   config:
     - node.type.page
-id: node.page.promote
-field_name: promote
+id: node.page.status
+field_name: status
 entity_type: node
 bundle: page
-label: 'Promoted to front page'
-description: ''
+label: 'Publishing status'
+description: 'A boolean indicating the published state.'
 required: false
 translatable: false
 default_value:
   -
-    value: 0
+    value: 1
 default_value_callback: ''
 settings:
   on_label: 'On'
