@@ -100,5 +100,6 @@ filters:
       image_style_large: '0'
       image_style_linkit_result_thumbnail: '0'
       image_style_medium: '0'
+      image_style_referenced_teaser_600x340_: '0'
       image_style_sites_thumbnail: '0'
       image_style_thumbnail: '0'
