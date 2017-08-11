@@ -38,9 +38,16 @@
       // }
     }
   }
+  table {
+    &:extend(.table all);
+    &:extend(.table-striped all);
+  }
 }
 .paragraph-background-light {
   background-color: @iucn-blue-lightest;
   padding-top: 60 * @rem-multiplier--desktop;
   padding-bottom: 60 * @rem-multiplier--desktop;
+  table > tbody > tr:nth-of-type(odd) {
+    background-color: @table-border-color;
+  }
 }
