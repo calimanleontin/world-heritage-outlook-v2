@@ -20,8 +20,6 @@ dependencies:
     - field.field.node.site.field_mixed_site
     - field.field.node.site.field_serial
     - field.field.node.site.field_site_id
-    - field.field.node.site.field_site_name_es
-    - field.field.node.site.field_site_name_fr
     - field.field.node.site.field_theme
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
@@ -340,22 +338,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
-    region: content
-  field_site_name_es:
-    weight: 14
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_site_name_fr:
-    weight: 13
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
     region: content
   field_theme:
     weight: 13

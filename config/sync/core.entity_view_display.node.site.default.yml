@@ -20,8 +20,6 @@ dependencies:
     - field.field.node.site.field_mixed_site
     - field.field.node.site.field_serial
     - field.field.node.site.field_site_id
-    - field.field.node.site.field_site_name_es
-    - field.field.node.site.field_site_name_fr
     - field.field.node.site.field_theme
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
@@ -116,8 +114,6 @@ hidden:
   field_mixed_site: true
   field_serial: true
   field_site_id: true
-  field_site_name_es: true
-  field_site_name_fr: true
   field_theme: true
   field_transboundary: true
   field_unesco_id: true

@@ -21,8 +21,6 @@ dependencies:
     - field.field.node.site.field_mixed_site
     - field.field.node.site.field_serial
     - field.field.node.site.field_site_id
-    - field.field.node.site.field_site_name_es
-    - field.field.node.site.field_site_name_fr
     - field.field.node.site.field_theme
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
@@ -170,22 +168,6 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-    region: content
-  field_site_name_es:
-    weight: 6
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_site_name_fr:
-    weight: 5
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
     region: content
   field_theme:
     weight: 12
