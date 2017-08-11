@@ -26,7 +26,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       'empty_selection_placeholder' => [
         '#type' => 'textfield',
         '#title' => $this->t('No site is selected placeholder'),
-        '#default_value' => $this->getConfigParam( 'empty_selection_placeholder', $this->t('Click on a Natural Site for details')),
+        '#default_value' => $this->getConfigParam( 'empty_selection_placeholder', $this->t('Click on a natural site for details')),
       ],
       'block_footer_text' => [
         '#type' => 'textfield',
@@ -76,7 +76,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     return sprintf(
       '<div class="site-selection-placeholder"><img src="%s"><span>%s</span></div>',
       $placeholder_url,
-      $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a Natural Site for details'))
+      $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a natural site for details'))
     );
   }
 

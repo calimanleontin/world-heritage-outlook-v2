@@ -1,0 +1,22 @@
+uuid: 8bc4f68b-2997-4ff8-b4f5-e7141c1a0bf8
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: publications
+label: Publications
+type: 'canonical_entities:node'
+pattern: 'publications/[node:title]'
+selection_criteria:
+  ba10817c-1813-4ba3-a857-976ac624663e:
+    id: node_type
+    bundles:
+      publication: publication
+    negate: false
+    context_mapping:
+      node: node
+    uuid: ba10817c-1813-4ba3-a857-976ac624663e
+selection_logic: and
+weight: -5
+relationships: {  }

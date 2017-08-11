@@ -9,14 +9,14 @@ label: News
 type: 'canonical_entities:node'
 pattern: 'latest-news/[node:title]'
 selection_criteria:
-  6aa2d857-4f58-4f8b-b384-b9d4f524e437:
+  22a215a4-1c3e-49fc-9489-c17134ef826f:
     id: node_type
     bundles:
       news: news
     negate: false
     context_mapping:
       node: node
-    uuid: 6aa2d857-4f58-4f8b-b384-b9d4f524e437
+    uuid: 22a215a4-1c3e-49fc-9489-c17134ef826f
 selection_logic: and
 weight: -5
 relationships: {  }
