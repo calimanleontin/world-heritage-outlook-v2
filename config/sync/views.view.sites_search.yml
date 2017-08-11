@@ -157,7 +157,7 @@ display:
           exposed: true
           expose:
             operator_id: search_api_fulltext_op
-            label: 'Search Site or Country Name'
+            label: 'Search site or country name'
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
