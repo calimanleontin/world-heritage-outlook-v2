@@ -8122,15 +8122,19 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
-  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.is-active {
     background-color: transparent;
   }
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
