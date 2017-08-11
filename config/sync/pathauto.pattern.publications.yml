@@ -1,22 +1,22 @@
-uuid: 3bb8922d-6307-4828-9921-5612382b21bf
+uuid: 8bc4f68b-2997-4ff8-b4f5-e7141c1a0bf8
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: news
-label: News
+id: publications
+label: Publications
 type: 'canonical_entities:node'
-pattern: 'latest-news/[node:title]'
+pattern: 'publications/[node:title]'
 selection_criteria:
-  22a215a4-1c3e-49fc-9489-c17134ef826f:
+  ba10817c-1813-4ba3-a857-976ac624663e:
     id: node_type
     bundles:
-      news: news
+      publication: publication
     negate: false
     context_mapping:
       node: node
-    uuid: 22a215a4-1c3e-49fc-9489-c17134ef826f
+    uuid: ba10817c-1813-4ba3-a857-976ac624663e
 selection_logic: and
 weight: -5
 relationships: {  }
