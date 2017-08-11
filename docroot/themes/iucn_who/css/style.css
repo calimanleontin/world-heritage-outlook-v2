@@ -8157,7 +8157,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     border-top: none;
     display: block;
     height: calc(100vh - 3.571428571428571rem) !important;
-    font-size: 1.78571429rem;
+    font-size: 1.42857143rem;
     margin: 0 !important;
     opacity: 0;
     padding-left: 0;
@@ -8193,8 +8193,8 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title,
   .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a,
   .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
-    padding-bottom: 1.78571429rem;
-    padding-top: 1.78571429rem;
+    padding-bottom: 1em;
+    padding-top: 1em;
     transition: all .1s;
   }
   .navbar-collapse .navbar-nav > li > a,
