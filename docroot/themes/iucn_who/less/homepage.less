@@ -357,26 +357,27 @@
         padding-left: 1.5em;
         padding-top: .5em;
         width: 50%;
-        &.values,
-        &.threats,
-        &.protection {
-          position: relative;
-          &:before {
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            content: '';
-            display: block;
-            height: 100%;
-            margin-top: -.5em;
-            position: absolute;
-            left: 0;
-            // right: 100%;
-            // top: 0;
-            width: 1.3em;
-            margin-right: .5em;
+        .loop-conservation-categories({
+          &.@{conservation-category-class} {
+            position: relative;
+            &:before {
+              background-image: url(~'@{images-path}@{conservation-category-class}-white.svg');
+              background-repeat: no-repeat;
+              background-size: contain;
+              background-position: center;
+              content: '';
+              display: block;
+              height: 100%;
+              margin-top: -.5em;
+              position: absolute;
+              left: 0;
+              // right: 100%;
+              // top: 0;
+              width: 1.3em;
+              margin-right: .5em;
+            }
           }
-        }
+        });
         &.values:before {
           background-image: url(~'@{images-path}values.svg');
         }

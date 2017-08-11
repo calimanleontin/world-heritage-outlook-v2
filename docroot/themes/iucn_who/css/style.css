@@ -11382,14 +11382,45 @@ h3.iucn-arrow.values:before {
   padding-top: .5em;
   width: 50%;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values,
-.path-frontpage #map-site-details .map-site-detail dt.threats,
 .path-frontpage #map-site-details .map-site-detail dt.protection {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values:before,
-.path-frontpage #map-site-details .map-site-detail dt.threats:before,
 .path-frontpage #map-site-details .map-site-detail dt.protection:before {
+  background-image: url(../images/protection-white.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  margin-top: -0.5em;
+  position: absolute;
+  left: 0;
+  width: 1.3em;
+  margin-right: .5em;
+}
+.path-frontpage #map-site-details .map-site-detail dt.threats {
+  position: relative;
+}
+.path-frontpage #map-site-details .map-site-detail dt.threats:before {
+  background-image: url(../images/threats-white.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  margin-top: -0.5em;
+  position: absolute;
+  left: 0;
+  width: 1.3em;
+  margin-right: .5em;
+}
+.path-frontpage #map-site-details .map-site-detail dt.values {
+  position: relative;
+}
+.path-frontpage #map-site-details .map-site-detail dt.values:before {
+  background-image: url(../images/values-white.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
