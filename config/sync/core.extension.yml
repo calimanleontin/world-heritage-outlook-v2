@@ -75,6 +75,7 @@ module:
   toolbar: 0
   user: 0
   views: 0
+  views_accordion: 0
   views_ui: 0
   xmlsitemap: 0
   menu_link_content: 1

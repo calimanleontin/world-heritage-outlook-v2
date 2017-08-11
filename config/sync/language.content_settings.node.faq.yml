@@ -1,0 +1,16 @@
+uuid: db4ddf23-068c-4e1d-bafc-277ad6e38ce0
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.faq
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.faq
+target_entity_type_id: node
+target_bundle: faq
+default_langcode: site_default
+language_alterable: true

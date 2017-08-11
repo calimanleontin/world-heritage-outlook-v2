@@ -122,6 +122,7 @@
         "drupal/spamspan": "^1.0@alpha",
         "drupal/stage_file_proxy": "^1.0@alpha",
         "drupal/string_field_formatter": "1.x-dev",
+        "drupal/views_accordion": "^1.0",
         "drupal/xmlsitemap": "^1.0@alpha",
         "harvesthq/chosen": "^1.6",
         "jackmoore/colorbox": "^1.6",
