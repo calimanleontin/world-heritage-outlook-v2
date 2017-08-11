@@ -8116,6 +8116,9 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     transition: .1s;
     margin-top: -1px;
   }
+  .path-frontpage .navbar-collapse .navbar-nav > li > .dropdown-menu {
+    margin-top: 0;
+  }
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:active,
