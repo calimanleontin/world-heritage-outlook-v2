@@ -25,3 +25,6 @@ regions:
 libraries:
   - 'iucn_who/global-styling'
   - 'iucn_who/bootstrap-scripts'
+
+ckeditor_stylesheets:
+  - css/style.css
