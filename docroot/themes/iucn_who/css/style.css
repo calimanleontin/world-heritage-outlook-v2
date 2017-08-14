@@ -10932,8 +10932,9 @@ h3.iucn-arrow.values:before {
     display: flex;
     flex-direction: column;
     position: relative;
-    height: calc(100vh - 3.571428571428571rem - 50 * 0.07142857142857142rem);
-    min-height: 22.85714286rem;
+    height: 100vh;
+    margin-bottom: -7.14285714rem;
+    padding-bottom: 7.14285714rem;
   }
   .path-frontpage #block-homepagemap .col-left,
   .path-frontpage #block-homepagemap .col-left > .row {
@@ -10965,6 +10966,7 @@ h3.iucn-arrow.values:before {
   }
   .path-frontpage #block-homepagemap .map-block-footer {
     font-size: 0;
+    position: relative;
   }
 }
 .path-frontpage #map-site-search:before,

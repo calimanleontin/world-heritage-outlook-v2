@@ -76,8 +76,10 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        height: calc(~'100vh - @{navbar-height--mobile} - 50 * @{rem-multiplier--mobile}');
-        min-height: 320 * @rem-multiplier--mobile;
+        height: 100vh;
+        margin-bottom: (-@navbar-height--mobile - 50 * @rem-multiplier--mobile);
+        padding-bottom: (@navbar-height--mobile + 50 * @rem-multiplier--mobile);
+        // min-height: 320 * @rem-multiplier--mobile;
       }
       .col-left,
       .col-left > .row {
@@ -109,6 +111,7 @@
       }
       .map-block-footer {
         font-size: 0;
+        position: relative;
       }
     }
   }

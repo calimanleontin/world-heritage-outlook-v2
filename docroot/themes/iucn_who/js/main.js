@@ -24,6 +24,16 @@
     document.addEventListener('mousedown', function() {
         $body.removeClass('show-focus-outlines');
     });
+
+    if (typeof VHChromeFix !== 'undefined') {
+        var vhFixOptions = [
+            {
+                selector: '.path-frontpage #block-homepagemap .row.map-block-main', // Mandatory, CSS selector
+                vh: 100,  // Mandatory, height in vh units
+            },
+        ];
+        var vhFix = new VHChromeFix(vhFixOptions);
+    }
   });
 
 }(jQuery));
