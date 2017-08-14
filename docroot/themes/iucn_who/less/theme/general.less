@@ -177,7 +177,7 @@ ol {
       color: @iucn-blue-dark;
       font-size: 2em;
       left: 0;
-      line-height: 1.5em;
+      line-height: @line-height-base;
       padding: 0 .25em;
       position: absolute;
       text-align: center;
@@ -281,5 +281,14 @@ ol {
     position: absolute;
     left: 100%;
     top: 0;
+  }
+}
+
+.field--type-text-long {
+  img {
+    max-width: 100%;
+    @media @grid-mobile {
+      height: auto !important;
+    }
   }
 }

@@ -9312,7 +9312,7 @@ ol li.iucn-arrow .iucn-numbering {
   color: #134780;
   font-size: 2em;
   left: 0;
-  line-height: 1.5em;
+  line-height: 1.5;
   padding: 0 .25em;
   position: absolute;
   text-align: center;
@@ -9416,6 +9416,14 @@ h3.iucn-arrow.values:before {
   position: absolute;
   left: 100%;
   top: 0;
+}
+.field--type-text-long img {
+  max-width: 100%;
+}
+@media screen and (max-width: 767px) {
+  .field--type-text-long img {
+    height: auto !important;
+  }
 }
 .footer {
   background-color: #134780;
