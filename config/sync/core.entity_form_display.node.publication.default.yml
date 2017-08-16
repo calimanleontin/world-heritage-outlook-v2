@@ -4,13 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.publication.body
-    - field.field.node.publication.field_date_published
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
     - field.field.node.publication.field_publication_image
-    - field.field.node.publication.field_publication_link
+    - field.field.node.publication.field_publication_year
     - image.style.thumbnail
     - node.type.publication
   module:
-    - datetime
+    - file
     - image
     - link
     - path
@@ -35,11 +37,28 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_date_published:
-    weight: 34
-    settings: {  }
+  field_author:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: datetime_default
+    type: text_textfield
+    region: content
+  field_external_website:
+    weight: 39
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_file:
+    weight: 37
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
     region: content
   field_publication_image:
     weight: 35
@@ -49,13 +68,12 @@ content:
     third_party_settings: {  }
     type: image_image
     region: content
-  field_publication_link:
-    weight: 32
+  field_publication_year:
+    weight: 38
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      placeholder: ''
     third_party_settings: {  }
-    type: link_default
+    type: number
     region: content
   langcode:
     type: language_select

@@ -1,16 +1,17 @@
-uuid: 08a3f8dd-7c29-4736-9e07-ecf81258aaf6
+uuid: d40d3ffb-5484-46c3-9d7a-6eab39300aca
 langcode: en
 status: true
 dependencies:
   module:
-    - link
     - node
-id: node.field_publication_link
-field_name: field_publication_link
+id: node.field_publication_year
+field_name: field_publication_year
 entity_type: node
-type: link
-settings: {  }
-module: link
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
 locked: false
 cardinality: 1
 translatable: true

@@ -7,6 +7,8 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Validation\Plugin\Validation\Constraint;
+use Drupal\Core\Url;
+
 /**
  * Implements hook_help().
  */
@@ -40,3 +42,20 @@ function iucn_site_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\
   }
 }
 
+/**
+ * {@inheritdoc}
+ */
+function iucn_site_preprocess_field(&$variables) {
+  if ($variables['element']['#field_name'] == 'node_title') {
+    if (isset($variables['items'][0]['content'][0]['#context']['entity_url'])) {
+      /** @var \Drupal\Node\NodeInterface $node */
+      $node = $variables['element']['#object'];
+      if ($node->hasField('field_external_website')) {
+        if (!empty($node->get('field_external_website')->getValue())) {
+          $ext_link = $node->get('field_external_website')->getValue()[0]['uri'];
+          $variables['items'][0]['content'][0]['#context']['entity_url'] = Url::fromUri($ext_link, array('attributes' => array('target' => '_blank')));
+        }
+      }
+    }
+  }
+}

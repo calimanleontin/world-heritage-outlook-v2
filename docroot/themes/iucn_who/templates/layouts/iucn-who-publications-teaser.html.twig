@@ -1,0 +1,25 @@
+{%
+set classes = [
+'iucn-publications-teaser-wrapper',
+]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {{ content.title }}
+                {% if content.left_1|render %}
+                    <div class="col-md-2">
+                        {{ content.left_1 }}
+                    </div>
+                {% endif %}
+                <div>
+                    {{ content.content }}
+                    {{ content.content_year }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
