@@ -1,0 +1,41 @@
+
+{%
+set classes = [
+'iucn-publications-full-wrapper',
+]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {{ content.content }}
+            </div>
+            <div class="col-md-4">
+
+                {% trans %}
+                <h4> Resources </h4>
+                {% endtrans %}
+
+                {{ content.right_1 }}
+                {% if content.right_2|render %}
+                    <div class="path-frontpage">
+                        <div id="block-homepagereport">
+                            <a href="{{ file_url(content.right_2.field_file.0['#file'].uri.0.value) }}" download>
+                                <i class="glyphicon glyphicon-download"></i>
+                                Download the report
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
