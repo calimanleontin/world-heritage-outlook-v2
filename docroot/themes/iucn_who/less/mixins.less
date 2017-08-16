@@ -40,3 +40,23 @@
   // next iteration
   .loop-conservation-ratings(@rules, (@index - 1));
 }
+
+.left-bordered-heading() {
+  border-left: .5em solid;
+  color: @iucn-blue-dark;
+  line-height: 1.6;
+  padding-bottom: .3em;
+  padding-left: .25em;
+  text-align: left;
+}
+
+// Generate categories (?)
+@conservation-categories-list: 'values', 'threats', 'protection';
+
+.loop-conservation-categories(@rules, @index: length(@conservation-categories-list)) when (@index > 0) {
+  @conservation-category-class: e(extract(@conservation-categories-list, @index));
+  @rules();
+
+  // next iteration
+  .loop-conservation-categories(@rules, (@index - 1));
+}

@@ -10,7 +10,6 @@
       font-size: 28 * @rem-multiplier--desktop;
       margin-bottom: 2em;
       margin-top: 0;
-      text-align: center;
     }
   }
   &.iucn-1col-wrapper .field--name-field-paragraph-pages {
@@ -33,9 +32,21 @@
       h2 {
         font-size: 24 * @rem-multiplier--desktop;
       }
-      img {
-        margin-left: auto;
-        margin-right: auto;
+      // img {
+      //   margin-left: auto;
+      //   margin-right: auto;
+      // }
+    }
+  }
+  table {
+    &:extend(.table all);
+    &:extend(.table-striped all);
+    > thead:first-child {
+      > tr:first-child {
+        > th,
+        > td {
+          border-top: 6px solid @iucn-blue-lightest;
+        }
       }
     }
   }
@@ -44,4 +55,15 @@
   background-color: @iucn-blue-lightest;
   padding-top: 60 * @rem-multiplier--desktop;
   padding-bottom: 60 * @rem-multiplier--desktop;
+  table > tbody > tr:nth-of-type(odd) {
+    background-color: @table-border-color;
+  }
+  table > thead:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top: 6px solid #fff;
+      }
+    }
+  }
 }

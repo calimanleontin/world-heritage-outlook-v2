@@ -270,9 +270,13 @@ body.show-focus-outlines {
       pointer-events: none;
       transition: .1s;
       margin-top: -1px;
+      .path-frontpage & {
+        margin-top: 0;
+      }
       > li > a:hover,
       > li > a:focus,
-      > li > a:active {
+      > li > a:active,
+      > li > a.is-active {
         background-color: transparent;
       }
     }
@@ -297,7 +301,7 @@ body.show-focus-outlines {
     border-top: none;
     display: block;
     height: calc(~'100vh - @{navbar-height--mobile}') !important;
-    font-size: 25 * @rem-multiplier--mobile;
+    font-size: 20 * @rem-multiplier--mobile;
     margin: 0 !important;
     opacity: 0;
     padding-left: 0;
@@ -328,8 +332,8 @@ body.show-focus-outlines {
     .navbar-nav > li {
       > a {
         // line-height: 1;
-        padding-bottom: 25 * @rem-multiplier--mobile;
-        padding-top: 25 * @rem-multiplier--mobile;
+        padding-bottom: 1em;
+        padding-top: 1em;
         transition: all .1s;
         &, &:hover, &:focus, &:active {
           color: @brand-primary;

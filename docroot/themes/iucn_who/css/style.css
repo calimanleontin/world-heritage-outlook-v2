@@ -445,11 +445,14 @@ th {
   .label {
     border: 1px solid #000;
   }
-  .table {
+  .table,
+  .paragraph table {
     border-collapse: collapse !important;
   }
   .table td,
-  .table th {
+  .table th,
+  .paragraph table td,
+  .paragraph table th {
     background-color: #fff !important;
   }
   .table-bordered th,
@@ -2531,7 +2534,8 @@ caption {
 th {
   text-align: left;
 }
-.table {
+.table,
+.paragraph table {
   width: 100%;
   max-width: 100%;
   margin-bottom: 1.5rem;
@@ -2541,28 +2545,43 @@ th {
 .table > tfoot > tr > th,
 .table > thead > tr > td,
 .table > tbody > tr > td,
-.table > tfoot > tr > td {
+.table > tfoot > tr > td,
+.paragraph table > thead > tr > th,
+.paragraph table > tbody > tr > th,
+.paragraph table > tfoot > tr > th,
+.paragraph table > thead > tr > td,
+.paragraph table > tbody > tr > td,
+.paragraph table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.5;
   vertical-align: top;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #fff;
 }
-.table > thead > tr > th {
+.table > thead > tr > th,
+.paragraph table > thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid #fff;
 }
 .table > caption + thead > tr:first-child > th,
 .table > colgroup + thead > tr:first-child > th,
 .table > thead:first-child > tr:first-child > th,
 .table > caption + thead > tr:first-child > td,
 .table > colgroup + thead > tr:first-child > td,
-.table > thead:first-child > tr:first-child > td {
+.table > thead:first-child > tr:first-child > td,
+.paragraph table > caption + thead > tr:first-child > th,
+.paragraph table > colgroup + thead > tr:first-child > th,
+.paragraph table > thead:first-child > tr:first-child > th,
+.paragraph table > caption + thead > tr:first-child > td,
+.paragraph table > colgroup + thead > tr:first-child > td,
+.paragraph table > thead:first-child > tr:first-child > td {
   border-top: 0;
 }
-.table > tbody + tbody {
-  border-top: 2px solid #ddd;
+.table > tbody + tbody,
+.paragraph table > tbody + tbody {
+  border-top: 2px solid #fff;
 }
-.table .table {
+.table .table,
+.paragraph table .paragraph table {
   background-color: #fff;
 }
 .table-condensed > thead > tr > th,
@@ -2574,7 +2593,7 @@ th {
   padding: 5px;
 }
 .table-bordered {
-  border: 1px solid #ddd;
+  border: 1px solid #fff;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -2582,14 +2601,15 @@ th {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #ddd;
+  border: 1px solid #fff;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
-.table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
+.table-striped > tbody > tr:nth-of-type(odd),
+.paragraph table > tbody > tr:nth-of-type(odd) {
+  background-color: #def2fb;
 }
 .table-hover > tbody > tr:hover {
   background-color: #f5f5f5;
@@ -2616,7 +2636,19 @@ table th[class*="col-"] {
 .table > tfoot > tr.active > td,
 .table > thead > tr.active > th,
 .table > tbody > tr.active > th,
-.table > tfoot > tr.active > th {
+.table > tfoot > tr.active > th,
+.paragraph table > thead > tr > td.active,
+.paragraph table > tbody > tr > td.active,
+.paragraph table > tfoot > tr > td.active,
+.paragraph table > thead > tr > th.active,
+.paragraph table > tbody > tr > th.active,
+.paragraph table > tfoot > tr > th.active,
+.paragraph table > thead > tr.active > td,
+.paragraph table > tbody > tr.active > td,
+.paragraph table > tfoot > tr.active > td,
+.paragraph table > thead > tr.active > th,
+.paragraph table > tbody > tr.active > th,
+.paragraph table > tfoot > tr.active > th {
   background-color: #f5f5f5;
 }
 .table-hover > tbody > tr > td.active:hover,
@@ -2637,7 +2669,19 @@ table th[class*="col-"] {
 .table > tfoot > tr.success > td,
 .table > thead > tr.success > th,
 .table > tbody > tr.success > th,
-.table > tfoot > tr.success > th {
+.table > tfoot > tr.success > th,
+.paragraph table > thead > tr > td.success,
+.paragraph table > tbody > tr > td.success,
+.paragraph table > tfoot > tr > td.success,
+.paragraph table > thead > tr > th.success,
+.paragraph table > tbody > tr > th.success,
+.paragraph table > tfoot > tr > th.success,
+.paragraph table > thead > tr.success > td,
+.paragraph table > tbody > tr.success > td,
+.paragraph table > tfoot > tr.success > td,
+.paragraph table > thead > tr.success > th,
+.paragraph table > tbody > tr.success > th,
+.paragraph table > tfoot > tr.success > th {
   background-color: #dff0d8;
 }
 .table-hover > tbody > tr > td.success:hover,
@@ -2658,7 +2702,19 @@ table th[class*="col-"] {
 .table > tfoot > tr.info > td,
 .table > thead > tr.info > th,
 .table > tbody > tr.info > th,
-.table > tfoot > tr.info > th {
+.table > tfoot > tr.info > th,
+.paragraph table > thead > tr > td.info,
+.paragraph table > tbody > tr > td.info,
+.paragraph table > tfoot > tr > td.info,
+.paragraph table > thead > tr > th.info,
+.paragraph table > tbody > tr > th.info,
+.paragraph table > tfoot > tr > th.info,
+.paragraph table > thead > tr.info > td,
+.paragraph table > tbody > tr.info > td,
+.paragraph table > tfoot > tr.info > td,
+.paragraph table > thead > tr.info > th,
+.paragraph table > tbody > tr.info > th,
+.paragraph table > tfoot > tr.info > th {
   background-color: #d9edf7;
 }
 .table-hover > tbody > tr > td.info:hover,
@@ -2679,7 +2735,19 @@ table th[class*="col-"] {
 .table > tfoot > tr.warning > td,
 .table > thead > tr.warning > th,
 .table > tbody > tr.warning > th,
-.table > tfoot > tr.warning > th {
+.table > tfoot > tr.warning > th,
+.paragraph table > thead > tr > td.warning,
+.paragraph table > tbody > tr > td.warning,
+.paragraph table > tfoot > tr > td.warning,
+.paragraph table > thead > tr > th.warning,
+.paragraph table > tbody > tr > th.warning,
+.paragraph table > tfoot > tr > th.warning,
+.paragraph table > thead > tr.warning > td,
+.paragraph table > tbody > tr.warning > td,
+.paragraph table > tfoot > tr.warning > td,
+.paragraph table > thead > tr.warning > th,
+.paragraph table > tbody > tr.warning > th,
+.paragraph table > tfoot > tr.warning > th {
   background-color: #fcf8e3;
 }
 .table-hover > tbody > tr > td.warning:hover,
@@ -2700,7 +2768,19 @@ table th[class*="col-"] {
 .table > tfoot > tr.danger > td,
 .table > thead > tr.danger > th,
 .table > tbody > tr.danger > th,
-.table > tfoot > tr.danger > th {
+.table > tfoot > tr.danger > th,
+.paragraph table > thead > tr > td.danger,
+.paragraph table > tbody > tr > td.danger,
+.paragraph table > tfoot > tr > td.danger,
+.paragraph table > thead > tr > th.danger,
+.paragraph table > tbody > tr > th.danger,
+.paragraph table > tfoot > tr > th.danger,
+.paragraph table > thead > tr.danger > td,
+.paragraph table > tbody > tr.danger > td,
+.paragraph table > tfoot > tr.danger > td,
+.paragraph table > thead > tr.danger > th,
+.paragraph table > tbody > tr.danger > th,
+.paragraph table > tfoot > tr.danger > th {
   background-color: #f2dede;
 }
 .table-hover > tbody > tr > td.danger:hover,
@@ -2720,9 +2800,10 @@ table th[class*="col-"] {
     margin-bottom: 1.125rem;
     overflow-y: hidden;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
   }
-  .table-responsive > .table {
+  .table-responsive > .table,
+  .table-responsive > .paragraph table {
     margin-bottom: 0;
   }
   .table-responsive > .table > thead > tr > th,
@@ -2730,7 +2811,13 @@ table th[class*="col-"] {
   .table-responsive > .table > tfoot > tr > th,
   .table-responsive > .table > thead > tr > td,
   .table-responsive > .table > tbody > tr > td,
-  .table-responsive > .table > tfoot > tr > td {
+  .table-responsive > .table > tfoot > tr > td,
+  .table-responsive > .paragraph table > thead > tr > th,
+  .table-responsive > .paragraph table > tbody > tr > th,
+  .table-responsive > .paragraph table > tfoot > tr > th,
+  .table-responsive > .paragraph table > thead > tr > td,
+  .table-responsive > .paragraph table > tbody > tr > td,
+  .table-responsive > .paragraph table > tfoot > tr > td {
     white-space: nowrap;
   }
   .table-responsive > .table-bordered {
@@ -6293,24 +6380,36 @@ button.list-group-item-danger.active:focus,
 }
 .panel > .table,
 .panel > .table-responsive > .table,
-.panel > .panel-collapse > .table {
+.panel > .panel-collapse > .table,
+.panel > .paragraph table,
+.panel > .table-responsive > .paragraph table,
+.panel > .panel-collapse > .paragraph table {
   margin-bottom: 0;
 }
 .panel > .table caption,
 .panel > .table-responsive > .table caption,
-.panel > .panel-collapse > .table caption {
+.panel > .panel-collapse > .table caption,
+.panel > .paragraph table caption,
+.panel > .table-responsive > .paragraph table caption,
+.panel > .panel-collapse > .paragraph table caption {
   padding-left: 1em;
   padding-right: 1em;
 }
 .panel > .table:first-child,
-.panel > .table-responsive:first-child > .table:first-child {
+.panel > .table-responsive:first-child > .table:first-child,
+.panel > .paragraph table:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child {
   border-top-right-radius: -1;
   border-top-left-radius: -1;
 }
 .panel > .table:first-child > thead:first-child > tr:first-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
+.panel > .paragraph table:first-child > thead:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > thead:first-child > tr:first-child,
+.panel > .paragraph table:first-child > tbody:first-child > tr:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > tbody:first-child > tr:first-child {
   border-top-left-radius: -1;
   border-top-right-radius: -1;
 }
@@ -6321,7 +6420,15 @@ button.list-group-item-danger.active:focus,
 .panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .paragraph table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .paragraph table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > tbody:first-child > tr:first-child td:first-child,
+.panel > .paragraph table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > thead:first-child > tr:first-child th:first-child,
+.panel > .paragraph table:first-child > tbody:first-child > tr:first-child th:first-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > tbody:first-child > tr:first-child th:first-child {
   border-top-left-radius: -1;
 }
 .panel > .table:first-child > thead:first-child > tr:first-child td:last-child,
@@ -6331,18 +6438,32 @@ button.list-group-item-danger.active:focus,
 .panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
-.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
+.panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .paragraph table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .paragraph table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > tbody:first-child > tr:first-child td:last-child,
+.panel > .paragraph table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > thead:first-child > tr:first-child th:last-child,
+.panel > .paragraph table:first-child > tbody:first-child > tr:first-child th:last-child,
+.panel > .table-responsive:first-child > .paragraph table:first-child > tbody:first-child > tr:first-child th:last-child {
   border-top-right-radius: -1;
 }
 .panel > .table:last-child,
-.panel > .table-responsive:last-child > .table:last-child {
+.panel > .table-responsive:last-child > .table:last-child,
+.panel > .paragraph table:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child {
   border-bottom-right-radius: -1;
   border-bottom-left-radius: -1;
 }
 .panel > .table:last-child > tbody:last-child > tr:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
+.panel > .paragraph table:last-child > tbody:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tbody:last-child > tr:last-child,
+.panel > .paragraph table:last-child > tfoot:last-child > tr:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tfoot:last-child > tr:last-child {
   border-bottom-left-radius: -1;
   border-bottom-right-radius: -1;
 }
@@ -6353,7 +6474,15 @@ button.list-group-item-danger.active:focus,
 .panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .paragraph table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .paragraph table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.panel > .paragraph table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tbody:last-child > tr:last-child th:first-child,
+.panel > .paragraph table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tfoot:last-child > tr:last-child th:first-child {
   border-bottom-left-radius: -1;
 }
 .panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
@@ -6363,17 +6492,29 @@ button.list-group-item-danger.active:focus,
 .panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
-.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
+.panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .paragraph table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .paragraph table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.panel > .paragraph table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tbody:last-child > tr:last-child th:last-child,
+.panel > .paragraph table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.panel > .table-responsive:last-child > .paragraph table:last-child > tfoot:last-child > tr:last-child th:last-child {
   border-bottom-right-radius: -1;
 }
 .panel > .panel-body + .table,
 .panel > .panel-body + .table-responsive,
 .panel > .table + .panel-body,
-.panel > .table-responsive + .panel-body {
-  border-top: 1px solid #ddd;
+.panel > .table-responsive + .panel-body,
+.panel > .panel-body + .paragraph table,
+.panel > .paragraph table + .panel-body {
+  border-top: 1px solid #fff;
 }
 .panel > .table > tbody:first-child > tr:first-child th,
-.panel > .table > tbody:first-child > tr:first-child td {
+.panel > .table > tbody:first-child > tr:first-child td,
+.panel > .paragraph table > tbody:first-child > tr:first-child th,
+.panel > .paragraph table > tbody:first-child > tr:first-child td {
   border-top: 0;
 }
 .panel > .table-bordered,
@@ -8116,18 +8257,25 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     transition: .1s;
     margin-top: -1px;
   }
+  .path-frontpage .navbar-collapse .navbar-nav > li > .dropdown-menu {
+    margin-top: 0;
+  }
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .panel-title.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:focus,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > a.is-active,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
-  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active {
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+  .navbar-collapse .navbar-nav > li > .dropdown-menu > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.is-active {
     background-color: transparent;
   }
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
@@ -8154,7 +8302,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     border-top: none;
     display: block;
     height: calc(100vh - 3.571428571428571rem) !important;
-    font-size: 1.78571429rem;
+    font-size: 1.42857143rem;
     margin: 0 !important;
     opacity: 0;
     padding-left: 0;
@@ -8190,8 +8338,8 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li > .block-facets.panel .panel-title,
   .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > a,
   .navbar-collapse .navbar-nav > li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
-    padding-bottom: 1.78571429rem;
-    padding-top: 1.78571429rem;
+    padding-bottom: 1em;
+    padding-top: 1em;
     transition: all .1s;
   }
   .navbar-collapse .navbar-nav > li > a,
@@ -9025,13 +9173,14 @@ body:not(.show-focus-outlines) textarea:active:focus {
   }
 }
 .page-header {
-  border-bottom: none;
   border-left: .5em solid;
   color: #134780;
-  font-weight: 800;
   line-height: 1.6;
-  padding-bottom: 0.75rem;
+  padding-bottom: .3em;
   padding-left: .25em;
+  text-align: left;
+  border-bottom: none;
+  font-weight: 800;
 }
 .breadcrumb + .page-header {
   margin-top: 1em;
@@ -9131,6 +9280,150 @@ a:active .caret-triangle .caret-path,
 .container-fluid article.page {
   margin-left: -15px;
   margin-right: -15px;
+}
+.left-border {
+  border-left: .5em solid;
+  color: #134780;
+  line-height: 1.6;
+  padding-bottom: .3em;
+  padding-left: .25em;
+  text-align: left;
+}
+h2.left-border {
+  font-weight: 500;
+}
+ol li.iucn-arrow {
+  background-color: #def2fb;
+  height: 70px;
+  margin-right: 65px;
+  margin-top: 30px;
+  margin-left: -1.5em;
+  padding: 1.2em 2em;
+  padding-left: 3em;
+  position: relative;
+  list-style-type: none;
+  box-shadow: 0 7px 11px -9px rgba(0, 0, 0, 0.9);
+  left: 30px;
+  perspective: 345px;
+  perspective-origin: left;
+}
+ol li.iucn-arrow .iucn-numbering {
+  border-right: 1px solid;
+  color: #134780;
+  font-size: 2em;
+  left: 0;
+  line-height: 1.5;
+  padding: 0 .25em;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+ol li.iucn-arrow:before {
+  content: '';
+  background-color: #bdd6e1;
+  background-image: linear-gradient(to right, #bdd6e1, #b6d2de);
+  width: 360px;
+  height: 100%;
+  display: block;
+  position: absolute;
+  right: 100%;
+  top: 0;
+  transform: rotateY(-80deg);
+  transform-origin: right;
+}
+ol li.iucn-arrow:first-child:before {
+  transform: rotateY(-80deg) skewY(-18deg);
+}
+ol li.iucn-arrow:last-child:before {
+  transform: rotateY(-80deg) skewY(18deg);
+}
+ol li.iucn-arrow:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 35px 0 35px 35px;
+  border-color: transparent transparent transparent #def2fb;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+ol li.iucn-arrow + .li.arrow {
+  margin-top: 30px;
+}
+.iucn-arrow {
+  height: 70px;
+  margin-right: 35px;
+  margin-top: 30px;
+  padding: 1.2em 2em;
+  padding-left: 3em;
+  position: relative;
+  box-shadow: 0 7px 11px -9px rgba(0, 0, 0, 0.9);
+}
+h3.iucn-arrow {
+  background-color: #134780;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.5;
+  float: left;
+  padding-right: 3em;
+}
+h3.iucn-arrow + * {
+  clear: left;
+}
+h3.iucn-arrow:before {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2em;
+  margin-right: .5em;
+}
+h3.iucn-arrow.protection:before {
+  background-image: url(../images/protection-white.svg);
+}
+h3.iucn-arrow.threats:before {
+  background-image: url(../images/threats-white.svg);
+}
+h3.iucn-arrow.values:before {
+  background-image: url(../images/values-white.svg);
+}
+.iucn-arrow .iucn-numbering {
+  border-right: 1px solid;
+  color: #fff;
+  font-size: 2em;
+  left: 0;
+  line-height: 1.5em;
+  padding: 0 .25em;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.iucn-arrow:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 35px 0 35px 35px;
+  border-color: transparent transparent transparent #134780;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+.field--type-text-long img {
+  max-width: 100%;
+}
+@media screen and (max-width: 767px) {
+  .field--type-text-long img {
+    height: auto !important;
+  }
 }
 .footer {
   background-color: #134780;
@@ -9433,7 +9726,8 @@ a:active .caret-triangle .caret-path,
   color: #03afdf;
   cursor: pointer;
   display: inline-block;
-  padding-right: 1.5em;
+  padding-right: 1.7em;
+  text-align: right;
   width: auto !important;
 }
 .navbar-collapse #block-languagedropdownswitcher select.form-control {
@@ -9721,7 +10015,6 @@ a:active .caret-triangle .caret-path,
   font-size: 1.55555556rem;
   margin-bottom: 2em;
   margin-top: 0;
-  text-align: center;
 }
 @media screen and (max-width: 767px) {
   .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages {
@@ -9745,14 +10038,21 @@ a:active .caret-triangle .caret-path,
 .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site h2 {
   font-size: 1.33333333rem;
 }
-.paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site img {
-  margin-left: auto;
-  margin-right: auto;
+.paragraph table > thead:first-child > tr:first-child > th,
+.paragraph table > thead:first-child > tr:first-child > td {
+  border-top: 6px solid #def2fb;
 }
 .paragraph-background-light {
   background-color: #def2fb;
   padding-top: 3.33333333rem;
   padding-bottom: 3.33333333rem;
+}
+.paragraph-background-light table > tbody > tr:nth-of-type(odd) {
+  background-color: #fff;
+}
+.paragraph-background-light table > thead:first-child > tr:first-child > th,
+.paragraph-background-light table > thead:first-child > tr:first-child > td {
+  border-top: 6px solid #fff;
 }
 [data-statistics="100"] {
   width: 100%;
@@ -10747,18 +11047,18 @@ a:active .caret-triangle .caret-path,
 .path-frontpage #map-site-search .form-submit {
   display: none;
 }
-.path-frontpage #map-site-search a[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .panel-title[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .facet-item > a[href="/sites-search"],
-.path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href="/sites-search"] {
+.path-frontpage #map-site-search a[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .panel-title[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > a[href*="/sites-search"],
+.path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href*="/sites-search"] {
   float: right;
   font-weight: 300;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #map-site-search a[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .panel-title[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .facet-item > a[href="/sites-search"],
-  .path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href="/sites-search"] {
+  .path-frontpage #map-site-search a[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .panel-title[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .facet-item > a[href*="/sites-search"],
+  .path-frontpage #map-site-search .block-facets.panel .facet-item > .block-facets.panel .panel-title[href*="/sites-search"] {
     display: none;
   }
 }
@@ -11090,14 +11390,45 @@ a:active .caret-triangle .caret-path,
   padding-top: .5em;
   width: 50%;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values,
-.path-frontpage #map-site-details .map-site-detail dt.threats,
 .path-frontpage #map-site-details .map-site-detail dt.protection {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values:before,
-.path-frontpage #map-site-details .map-site-detail dt.threats:before,
 .path-frontpage #map-site-details .map-site-detail dt.protection:before {
+  background-image: url(../images/protection-white.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  margin-top: -0.5em;
+  position: absolute;
+  left: 0;
+  width: 1.3em;
+  margin-right: .5em;
+}
+.path-frontpage #map-site-details .map-site-detail dt.threats {
+  position: relative;
+}
+.path-frontpage #map-site-details .map-site-detail dt.threats:before {
+  background-image: url(../images/threats-white.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  margin-top: -0.5em;
+  position: absolute;
+  left: 0;
+  width: 1.3em;
+  margin-right: .5em;
+}
+.path-frontpage #map-site-details .map-site-detail dt.values {
+  position: relative;
+}
+.path-frontpage #map-site-details .map-site-detail dt.values:before {
+  background-image: url(../images/values-white.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -11305,7 +11636,7 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 @media screen and (max-width: 767px) {
   .path-frontpage #block-globaloutlookstatistics dt,
   .path-frontpage #block-globaloutlookstatistics dd {
-    width: 65%;
+    width: calc(100% - 8em);
   }
 }
 .path-frontpage #block-globaloutlookstatistics dt {
@@ -11317,7 +11648,12 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #block-globaloutlookstatistics dt {
-    width: calc(35% - 1em);
+    font-size: .8em;
+    line-height: 1.5rem;
+    width: calc(8em - 1em);
+  }
+  .path-frontpage #block-globaloutlookstatistics dt.significant-concern,
+  .path-frontpage #block-globaloutlookstatistics dt.good-concerns {
     line-height: 1;
   }
 }
