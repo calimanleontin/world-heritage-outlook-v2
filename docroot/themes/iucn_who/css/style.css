@@ -9295,6 +9295,11 @@ a:active .caret-triangle .caret-path,
   margin-left: -15px;
   margin-right: -15px;
 }
+.field--type-text-long img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 .left-border {
   border-left: .5em solid;
   color: #134780;
