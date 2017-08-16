@@ -206,9 +206,10 @@ function postInitMap(instance_id, map, config) {
     //     lockMapScrollwheel();
     //   });
 
-    lockMapScrollwheel();
+    // lockMapScrollwheel();
     map.setOptions({
-      minZoom: 2
+      minZoom: 2,
+      gestureHandling: 'cooperative'
     });
 
   })(jQuery, Drupal, drupalSettings);
