@@ -12,8 +12,14 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 
 class IucnRoutesController {
 
+  /**
+   * {@inheritdoc}
+   */
   public function nodeRedirect(Request $request, NodeInterface $node) {
-    if ($node->getType() == 'publication') {
+    $referer = $request->headers->get('referer');
+    // Redirect publication page to external website if exists.
+    // Go to publication page after node save.
+    if ($node->getType() == 'publication' && strpos($referer, '/add/publication') === FALSE) {
       if (!empty($node->get('field_external_website')->getValue())) {
         return new TrustedRedirectResponse($node->get('field_external_website')->getValue()[0]['uri']);
       }
