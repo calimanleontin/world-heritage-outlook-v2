@@ -10996,6 +10996,24 @@ h3.iucn-arrow.values:before {
     position: relative;
   }
 }
+@media screen and (max-width: 767px) and (orientation: portrait) {
+  .path-frontpage #block-homepagemap .row.map-block-main {
+    margin-bottom: -19.14285714rem;
+    padding-bottom: 19.14285714rem;
+  }
+}
+@media screen and (max-width: 767px) and (orientation: portrait) and (min-width: 373px) {
+  .path-frontpage #block-homepagemap .row.map-block-main {
+    margin-bottom: -17.14285714rem;
+    padding-bottom: 17.14285714rem;
+  }
+}
+@media screen and (max-width: 767px) and (orientation: portrait) and (min-width: 734px) {
+  .path-frontpage #block-homepagemap .row.map-block-main {
+    margin-bottom: -15.14285714rem;
+    padding-bottom: 15.14285714rem;
+  }
+}
 .path-frontpage #map-site-search:before,
 .path-frontpage #map-filters:before,
 .path-frontpage #map-site-details:before,
