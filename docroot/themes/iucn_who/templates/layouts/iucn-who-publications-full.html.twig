@@ -21,6 +21,7 @@ set classes = [
                 <div class="publication-content">
                     {{ content.body }}
                 </div>
+
             </div>
             <div class="col-md-4">
                 <h2 class="facets-title">
@@ -37,6 +38,16 @@ set classes = [
                             </a>
                         </div>
                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div id="publications-back-button">
+                    {% set rev_url = url('<current>')["#markup"]|reverse %}
+                    {% set rev_url_clean = rev_url|split('/', 2)[1] %}
+                    {% set url = rev_url_clean|reverse %}
+                    <a href={{ url }}><i class="backicon"></i>Back</a>
+                </div>
             </div>
         </div>
     </div>

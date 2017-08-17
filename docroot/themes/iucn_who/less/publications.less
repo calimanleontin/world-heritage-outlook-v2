@@ -69,3 +69,38 @@
   font-weight: 500;
 }
 
+#publications-back-button {
+  padding-bottom: 1em;
+  padding-top: 0.3em;
+  a {
+    border-top: 1px solid;
+    padding-top: 0.5em;
+    display: inline-block;
+    text-align: left;
+    width: auto;
+    font-size: 1.25em;
+    color: @iucn-blue-light;
+    border-top-color: @iucn-gray-lightest;
+    padding-left: 1.6em;
+    position: relative;
+    line-height: 1.2;
+    .backicon {
+      padding-top: 2em;
+      background-image: url(~'@{images-path}backarrow.png');
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-size: auto;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 4em;
+      @media @grid-mobile {
+        width: 2.5em;
+      }
+    }
+  }
+  @media @grid-mobile {
+    order: -1;
+  }
+}
