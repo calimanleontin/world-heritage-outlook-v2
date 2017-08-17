@@ -1,0 +1,128 @@
+uuid: 7e0ceb52-e525-4a2c-ba9a-bc328297f5c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.referenced_teasert
+    - field.field.node.news.body
+    - field.field.node.news.field_date_published
+    - field.field.node.news.field_image
+    - node.type.news
+  module:
+    - blazy
+    - ds
+    - smart_trim
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+    regions:
+      ds_content:
+        - field_image
+        - node_title
+        - body
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
+id: node.news.referenced_teasert
+targetEntityType: node
+bundle: news
+mode: referenced_teasert
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 2
+    settings:
+      trim_length: '250'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      summary_handler: trim
+      trim_options:
+        text: text
+      more_class: more-link
+    third_party_settings: {  }
+    region: ds_content
+  field_image:
+    type: blazy
+    weight: 0
+    region: ds_content
+    label: hidden
+    settings:
+      style: ''
+      image_style: referenced_teaser_600x340_
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: referenced_teasert
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      grid_header: ''
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      box_media_style: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+hidden:
+  field_date_published: true
+  langcode: true
+  links: true
