@@ -26,6 +26,7 @@ third_party_settings:
       settings: {  }
     regions:
       content:
+        - node_title
         - field_author
         - field_publication_year
         - body
@@ -33,6 +34,12 @@ third_party_settings:
         - field_publication_image
       right_2:
         - field_file
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
 id: node.publication.default
 targetEntityType: node
 bundle: publication
@@ -41,54 +48,76 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 2
+    weight: 3
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   field_author:
     type: text_trimmed
-    weight: 0
+    weight: 1
     region: content
-    label: above
+    label: inline
     settings:
       trim_length: 600
     third_party_settings: {  }
   field_file:
     type: file_default
-    weight: 4
+    weight: 5
     region: right_2
     label: above
     settings: {  }
     third_party_settings: {  }
   field_publication_image:
     type: blazy
-    weight: 3
+    weight: 4
     region: right_1
     label: hidden
     settings:
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: default
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
       iframe_lazy: true
       icon: ''
       layout: ''
-      thumbnail_style: ''
       view_mode: ''
       cache: 0
-      current_view_mode: ''
       optionset: default
       skin: ''
       style: ''
-      background: false
-      box_caption: ''
-      box_caption_custom: ''
-      box_style: ''
       box_media_style: ''
-      breakpoints: {  }
-      caption: {  }
-      image_style: ''
-      media_switch: ''
-      ratio: ''
-      responsive_image_style: ''
-      sizes: ''
       grid: 0
       grid_header: ''
       grid_medium: 0
@@ -96,9 +125,9 @@ content:
     third_party_settings: {  }
   field_publication_year:
     type: number_integer
-    weight: 1
+    weight: 2
     region: content
-    label: above
+    label: inline
     settings:
       thousand_separator: ''
       prefix_suffix: true

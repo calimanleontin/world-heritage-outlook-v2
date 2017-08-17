@@ -10,12 +10,14 @@ set classes = [
             <div class="col-md-8">
                 {{ content.title }}
                 {% if content.left_1|render %}
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         {{ content.left_1 }}
                     </div>
                 {% endif %}
-                <div>
+                <div class="publication-content">
                     {{ content.content }}
+                </div>
+                <div class="publication-year">
                     {{ content.content_year }}
                 </div>
             </div>

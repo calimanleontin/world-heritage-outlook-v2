@@ -70,7 +70,7 @@ content:
     region: left_1
     label: hidden
     settings:
-      image_style: medium
+      image_style: large
       thumbnail_style: ''
       responsive_image_style: ''
       media_switch: ''
