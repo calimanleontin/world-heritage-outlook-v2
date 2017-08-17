@@ -6,7 +6,6 @@ dependencies:
     - field.storage.node.field_teaser_image
     - node.type.page
   module:
-    - content_translation
     - image
 third_party_settings:
   content_translation:
@@ -21,7 +20,7 @@ bundle: page
 label: 'Teaser image'
 description: 'This image is used only on teasers, not in full page. You can skip this field if you don''t plan to include in another page a teaser of this page. For images in full page, use Page Elements or HTML editor.'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

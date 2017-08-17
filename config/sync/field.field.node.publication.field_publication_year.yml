@@ -1,10 +1,12 @@
-uuid: 81478959-d333-468f-8e8c-90cfb56840eb
+uuid: d5fdc9b9-7ad3-4435-8df9-dc9d7ccf9972
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_publication_year
     - node.type.publication
+  module:
+    - datetime
 id: node.publication.field_publication_year
 field_name: field_publication_year
 entity_type: node
@@ -15,9 +17,5 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings:
-  min: null
-  max: null
-  prefix: ''
-  suffix: ''
-field_type: integer
+settings: {  }
+field_type: datetime

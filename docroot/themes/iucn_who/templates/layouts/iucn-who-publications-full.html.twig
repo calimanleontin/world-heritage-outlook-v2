@@ -34,7 +34,9 @@ set classes = [
                         <div id="download-publication-button">
                             <a href="{{ file_url(content.right_2.field_file.0['#file'].uri.0.value) }}" download>
                                 <i class="glyphicon glyphicon-download"></i>
+                                {% trans %}
                                 Download the report
+                                {% endtrans %}
                             </a>
                         </div>
                 {% endif %}
@@ -46,7 +48,7 @@ set classes = [
                     {% set rev_url = url('<current>')["#markup"]|reverse %}
                     {% set rev_url_clean = rev_url|split('/', 2)[1] %}
                     {% set url = rev_url_clean|reverse %}
-                    <a href={{ url }}><i class="backicon"></i>Back</a>
+                    <a href={{ url }}><i class="backicon"></i>{% trans %}Back{% endtrans %}</a>
                 </div>
             </div>
         </div>

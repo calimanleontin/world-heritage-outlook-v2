@@ -1,0 +1,15 @@
+uuid: e7ab7d87-0fce-42f8-92c4-3f67fb6501e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+name: referenced_teaser_600x340_
+label: 'Referenced teaser (620x350)'
+effects:
+  350d67dd-c57c-4638-a924-856246c1b000:
+    uuid: 350d67dd-c57c-4638-a924-856246c1b000
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: referenced_teaser

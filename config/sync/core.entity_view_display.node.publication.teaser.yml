@@ -13,6 +13,7 @@ dependencies:
     - node.type.publication
   module:
     - blazy
+    - datetime
     - ds
     - smart_trim
     - user
@@ -27,12 +28,12 @@ third_party_settings:
     regions:
       title:
         - node_title
+      content_year:
+        - field_publication_year
       left_1:
         - field_publication_image
       content:
         - body
-      content_year:
-        - field_publication_year
     fields:
       node_title:
         plugin_id: node_title
@@ -120,13 +121,13 @@ content:
       grid_small: 0
     third_party_settings: {  }
   field_publication_year:
-    type: number_integer
-    weight: 3
+    type: datetime_custom
+    weight: 0
     region: content_year
     label: hidden
     settings:
-      thousand_separator: ''
-      prefix_suffix: true
+      timezone_override: ''
+      date_format: 'Y'
     third_party_settings: {  }
 hidden:
   field_author: true
