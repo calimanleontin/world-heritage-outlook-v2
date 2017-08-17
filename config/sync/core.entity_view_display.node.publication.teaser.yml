@@ -5,36 +5,38 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.publication.body
-    - field.field.node.publication.field_date_published
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
     - field.field.node.publication.field_publication_image
-    - field.field.node.publication.field_publication_link
+    - field.field.node.publication.field_publication_year
     - node.type.publication
   module:
     - blazy
-    - datetime
     - ds
-    - text
+    - smart_trim
     - user
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_news_teaser
+      id: iucn_who_publications_teaser
       library: null
       disable_css: false
       entity_classes: all_classes
       settings: {  }
     regions:
-      right_1:
+      title:
+        - node_title
+      left_1:
         - field_publication_image
       content:
-        - node_title
         - body
-        - links
-        - field_date_published
+      content_year:
+        - field_publication_year
     fields:
       node_title:
         plugin_id: node_title
-        weight: 1
+        weight: 0
         label: hidden
         formatter: default
         settings:
@@ -48,26 +50,25 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: smart_trim
     weight: 2
     settings:
-      trim_length: 100
+      trim_length: '100'
+      trim_type: chars
+      trim_suffix: ...
+      more_link: '1'
+      more_text: ' Read more'
+      summary_handler: full
+      trim_options:
+        text: text
+      more_class: more-link
     third_party_settings: {  }
     region: content
-  field_date_published:
-    type: datetime_custom
-    weight: 4
-    region: content
-    label: hidden
-    settings:
-      timezone_override: ''
-      date_format: d-m-Y
-    third_party_settings: {  }
   field_publication_image:
     type: blazy
-    weight: 0
-    region: right_1
-    label: above
+    weight: 1
+    region: left_1
+    label: hidden
     settings:
       image_style: medium
       thumbnail_style: ''
@@ -118,11 +119,18 @@ content:
       grid_medium: 0
       grid_small: 0
     third_party_settings: {  }
-  links:
+  field_publication_year:
+    type: number_integer
     weight: 3
-    region: content
-    settings: {  }
+    region: content_year
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
     third_party_settings: {  }
 hidden:
-  field_publication_link: true
+  field_author: true
+  field_external_website: true
+  field_file: true
   langcode: true
+  links: true

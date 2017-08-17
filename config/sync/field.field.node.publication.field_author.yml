@@ -1,21 +1,21 @@
-uuid: 9ca22098-cca1-457f-a5a5-437d086c1879
+uuid: af557bd4-b2b5-4dc7-a62f-eeb37d1985d2
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_date_published
+    - field.storage.node.field_author
     - node.type.publication
   module:
-    - datetime
-id: node.publication.field_date_published
-field_name: field_date_published
+    - text
+id: node.publication.field_author
+field_name: field_author
 entity_type: node
 bundle: publication
-label: 'Date published'
+label: Author
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: datetime
+field_type: text

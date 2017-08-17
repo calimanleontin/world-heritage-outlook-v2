@@ -44,3 +44,32 @@ iucn_who_news_full:
       label: Images
     content:
       label: Content
+
+iucn_who_publications_teaser:
+  label: Publications teaser
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-publications-teaser
+  regions:
+    title:
+      label: Title
+    left_1:
+      label: Image
+    content:
+      label: Content
+    content_year:
+      label: Year
+
+iucn_who_publications_full:
+  label: Publications full
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-publications-full
+  regions:
+    content:
+      label: Content
+    right_1:
+      label: Image
+    right_2:
+      label: File
+
