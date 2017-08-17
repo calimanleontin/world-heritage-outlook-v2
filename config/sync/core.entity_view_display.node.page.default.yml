@@ -6,11 +6,10 @@ dependencies:
     - field.field.node.page.field_page_elements
     - field.field.node.page.field_summary
     - field.field.node.page.field_teaser_image
+    - field.field.node.page.field_teaser_title
     - node.type.page
   module:
     - entity_reference_revisions
-    - responsive_image
-    - text
     - user
 id: node.page.default
 targetEntityType: node
@@ -19,29 +18,16 @@ mode: default
 content:
   field_page_elements:
     type: entity_reference_revisions_entity_view
-    weight: 2
+    weight: 0
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
     region: content
-  field_summary:
-    type: text_default
-    weight: 0
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_teaser_image:
-    type: responsive_image
-    weight: 1
-    region: content
-    label: above
-    settings:
-      responsive_image_style: ''
-      image_link: ''
-    third_party_settings: {  }
 hidden:
+  field_summary: true
+  field_teaser_image: true
+  field_teaser_title: true
   langcode: true
   links: true

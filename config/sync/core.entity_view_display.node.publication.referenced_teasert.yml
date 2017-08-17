@@ -1,15 +1,18 @@
-uuid: 4087f3b8-d11c-4df0-b6e1-890901d9ce97
+uuid: dbe214e0-44b6-40d6-96fc-e7be1acf8317
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
-    - field.field.node.page.field_page_elements
-    - field.field.node.page.field_summary
-    - field.field.node.page.field_teaser_image
-    - field.field.node.page.field_teaser_title
+    - field.field.node.publication.body
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
+    - field.field.node.publication.field_publication_image
+    - field.field.node.publication.field_publication_year
+    - field.field.node.publication.field_teaser_title
     - image.style.referenced_teaser
-    - node.type.page
+    - node.type.publication
   module:
     - ds
     - image
@@ -33,15 +36,15 @@ third_party_settings:
           layout_class: {  }
     regions:
       ds_content:
-        - field_teaser_image
+        - field_publication_image
         - field_teaser_title
-        - field_summary
-id: node.page.referenced_teasert
+        - body
+id: node.publication.referenced_teasert
 targetEntityType: node
-bundle: page
+bundle: publication
 mode: referenced_teasert
 content:
-  field_summary:
+  body:
     type: smart_trim
     weight: 2
     region: ds_content
@@ -52,20 +55,20 @@ content:
       trim_suffix: ...
       more_link: '0'
       more_text: More
+      summary_handler: full
       trim_options:
         text: text
       more_class: more-link
-      summary_handler: full
     third_party_settings: {  }
-  field_teaser_image:
+  field_publication_image:
+    type: image
     weight: 0
+    region: ds_content
     label: hidden
     settings:
       image_style: referenced_teaser
       image_link: content
     third_party_settings: {  }
-    type: image
-    region: ds_content
   field_teaser_title:
     type: string
     weight: 1
@@ -75,6 +78,9 @@ content:
       link_to_entity: true
     third_party_settings: {  }
 hidden:
-  field_page_elements: true
+  field_author: true
+  field_external_website: true
+  field_file: true
+  field_publication_year: true
   langcode: true
   links: true

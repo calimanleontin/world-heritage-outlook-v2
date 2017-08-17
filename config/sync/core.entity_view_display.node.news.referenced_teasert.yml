@@ -1,15 +1,17 @@
-uuid: 4087f3b8-d11c-4df0-b6e1-890901d9ce97
+uuid: 6969306f-af24-47ce-aec2-106213f904f3
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
-    - field.field.node.page.field_page_elements
-    - field.field.node.page.field_summary
-    - field.field.node.page.field_teaser_image
-    - field.field.node.page.field_teaser_title
+    - field.field.node.news.body
+    - field.field.node.news.field_date_published
+    - field.field.node.news.field_image
+    - field.field.node.news.field_summary
+    - field.field.node.news.field_teaser_image
+    - field.field.node.news.field_teaser_title
     - image.style.referenced_teaser
-    - node.type.page
+    - node.type.news
   module:
     - ds
     - image
@@ -36,9 +38,9 @@ third_party_settings:
         - field_teaser_image
         - field_teaser_title
         - field_summary
-id: node.page.referenced_teasert
+id: node.news.referenced_teasert
 targetEntityType: node
-bundle: page
+bundle: news
 mode: referenced_teasert
 content:
   field_summary:
@@ -58,14 +60,14 @@ content:
       summary_handler: full
     third_party_settings: {  }
   field_teaser_image:
+    type: image
     weight: 0
+    region: ds_content
     label: hidden
     settings:
       image_style: referenced_teaser
       image_link: content
     third_party_settings: {  }
-    type: image
-    region: ds_content
   field_teaser_title:
     type: string
     weight: 1
@@ -75,6 +77,8 @@ content:
       link_to_entity: true
     third_party_settings: {  }
 hidden:
-  field_page_elements: true
+  body: true
+  field_date_published: true
+  field_image: true
   langcode: true
   links: true

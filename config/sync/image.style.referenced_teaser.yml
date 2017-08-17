@@ -1,0 +1,30 @@
+uuid: e7ab7d87-0fce-42f8-92c4-3f67fb6501e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+name: referenced_teaser
+label: 'Referenced teaser'
+effects:
+  c92bb2c4-bfa0-4e14-beaa-83478e303a1d:
+    uuid: c92bb2c4-bfa0-4e14-beaa-83478e303a1d
+    id: crop_crop
+    weight: -8
+    data:
+      crop_type: referenced_teaser
+  b94bb894-c47d-4c09-a70f-c989ae67a2f0:
+    uuid: b94bb894-c47d-4c09-a70f-c989ae67a2f0
+    id: image_scale
+    weight: -10
+    data:
+      width: 600
+      height: 340
+      upscale: true
+  5eb667a9-9eae-475b-ae21-9c817ad70bd0:
+    uuid: 5eb667a9-9eae-475b-ae21-9c817ad70bd0
+    id: image_resize
+    weight: -9
+    data:
+      width: 600
+      height: 340
