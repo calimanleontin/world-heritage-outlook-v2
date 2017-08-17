@@ -10054,7 +10054,7 @@ h3.iucn-arrow.values:before {
     margin-right: auto;
   }
 }
-.paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item article.site h2 {
+.paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages > .field--item .node--view-mode-referenced-teasert h2 {
   font-size: 1.33333333rem;
 }
 .paragraph table > thead:first-child > tr:first-child > th,
