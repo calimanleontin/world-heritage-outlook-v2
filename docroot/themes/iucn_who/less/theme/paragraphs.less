@@ -49,6 +49,14 @@
         }
       }
     }
+    tbody > tr:last-child {
+      &.odd {
+        border-bottom: 6px solid #fff;
+      }
+      &.even {
+        border-bottom: 6px solid @iucn-blue-lightest;
+      }
+    }
   }
 }
 .paragraph-background-light {
@@ -64,6 +72,14 @@
       > td {
         border-top: 6px solid #fff;
       }
+    }
+  }
+  table > tbody > tr:last-child {
+    &.odd {
+      border-bottom: 6px solid @iucn-blue-lightest;
+    }
+    &.even {
+      border-bottom: 6px solid #fff;
     }
   }
 }

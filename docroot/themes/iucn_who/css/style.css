@@ -10061,6 +10061,12 @@ h3.iucn-arrow.values:before {
 .paragraph table > thead:first-child > tr:first-child > td {
   border-top: 6px solid #def2fb;
 }
+.paragraph table tbody > tr:last-child.odd {
+  border-bottom: 6px solid #fff;
+}
+.paragraph table tbody > tr:last-child.even {
+  border-bottom: 6px solid #def2fb;
+}
 .paragraph-background-light {
   background-color: #def2fb;
   padding-top: 3.33333333rem;
@@ -10072,6 +10078,12 @@ h3.iucn-arrow.values:before {
 .paragraph-background-light table > thead:first-child > tr:first-child > th,
 .paragraph-background-light table > thead:first-child > tr:first-child > td {
   border-top: 6px solid #fff;
+}
+.paragraph-background-light table > tbody > tr:last-child.odd {
+  border-bottom: 6px solid #def2fb;
+}
+.paragraph-background-light table > tbody > tr:last-child.even {
+  border-bottom: 6px solid #fff;
 }
 [data-statistics="100"] {
   width: 100%;
