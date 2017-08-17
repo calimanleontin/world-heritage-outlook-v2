@@ -47,19 +47,17 @@ mode: default
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: text_default
     weight: 3
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
     region: content
   field_author:
-    type: text_trimmed
+    type: text_default
     weight: 1
     region: content
     label: inline
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   field_file:
     type: file_default
