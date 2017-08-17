@@ -1,0 +1,86 @@
+uuid: dbe214e0-44b6-40d6-96fc-e7be1acf8317
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.referenced_teasert
+    - field.field.node.publication.body
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
+    - field.field.node.publication.field_publication_image
+    - field.field.node.publication.field_publication_year
+    - field.field.node.publication.field_teaser_title
+    - image.style.referenced_teaser
+    - node.type.publication
+  module:
+    - ds
+    - image
+    - smart_trim
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+    regions:
+      ds_content:
+        - field_publication_image
+        - field_teaser_title
+        - body
+id: node.publication.referenced_teasert
+targetEntityType: node
+bundle: publication
+mode: referenced_teasert
+content:
+  body:
+    type: smart_trim
+    weight: 2
+    region: ds_content
+    label: hidden
+    settings:
+      trim_length: '250'
+      trim_type: chars
+      trim_suffix: ...
+      more_link: '0'
+      more_text: More
+      summary_handler: full
+      trim_options:
+        text: text
+      more_class: more-link
+    third_party_settings: {  }
+  field_publication_image:
+    type: image
+    weight: 0
+    region: ds_content
+    label: hidden
+    settings:
+      image_style: referenced_teaser
+      image_link: content
+    third_party_settings: {  }
+  field_teaser_title:
+    type: string
+    weight: 1
+    region: ds_content
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings: {  }
+hidden:
+  field_author: true
+  field_external_website: true
+  field_file: true
+  field_publication_year: true
+  langcode: true
+  links: true
