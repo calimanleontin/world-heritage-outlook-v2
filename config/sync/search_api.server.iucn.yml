@@ -9,7 +9,7 @@ name: Iucn
 description: ''
 backend: search_api_solr
 backend_config:
-  connector: basic_auth
+  connector: standard
   connector_config:
     scheme: http
     host: localhost
@@ -20,8 +20,6 @@ backend_config:
     index_timeout: 5
     optimize_timeout: 10
     commit_within: 1000
-    username: iucn
-    password: password
     solr_version: ''
     http_method: AUTO
   retrieve_data: false
