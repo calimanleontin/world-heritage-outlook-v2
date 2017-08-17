@@ -12146,3 +12146,51 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   font-size: 2rem;
   font-weight: 500;
 }
+#publications-back-button {
+  padding-bottom: 1em;
+  padding-top: 0.3em;
+}
+#publications-back-button a,
+#publications-back-button .block-facets.panel .panel-title,
+#publications-back-button .block-facets.panel .facet-item > a,
+#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  border-top: 1px solid;
+  padding-top: 0.5em;
+  display: inline-block;
+  text-align: left;
+  width: auto;
+  font-size: 1.25em;
+  color: #03afdf;
+  border-top-color: #f0f0f0;
+  padding-left: 1.6em;
+  position: relative;
+  line-height: 1.2;
+}
+#publications-back-button a .backicon,
+#publications-back-button .block-facets.panel .panel-title .backicon,
+#publications-back-button .block-facets.panel .facet-item > a .backicon,
+#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+  padding-top: 2em;
+  background-image: url(../images/backarrow.png);
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 4em;
+}
+@media screen and (max-width: 767px) {
+  #publications-back-button a .backicon,
+  #publications-back-button .block-facets.panel .panel-title .backicon,
+  #publications-back-button .block-facets.panel .facet-item > a .backicon,
+  #publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+    width: 2.5em;
+  }
+}
+@media screen and (max-width: 767px) {
+  #publications-back-button {
+    order: -1;
+  }
+}
