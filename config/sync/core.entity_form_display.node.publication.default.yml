@@ -14,6 +14,7 @@ dependencies:
   module:
     - file
     - image
+    - iucn_site
     - link
     - path
     - text
@@ -69,11 +70,10 @@ content:
     type: image_image
     region: content
   field_publication_year:
-    weight: 38
-    settings:
-      placeholder: ''
+    weight: 40
+    settings: {  }
     third_party_settings: {  }
-    type: number
+    type: year_date_field_widget
     region: content
   langcode:
     type: language_select
@@ -112,6 +112,8 @@ content:
   translation:
     weight: 10
     region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 5

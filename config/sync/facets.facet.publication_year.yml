@@ -1,4 +1,4 @@
-uuid: 8b69f8f2-f7b1-4583-a60e-e94be1161c31
+uuid: bf5e6185-4829-453c-bfd9-02e765e7d5ae
 langcode: en
 status: true
 dependencies:
@@ -14,12 +14,14 @@ weight: 0
 min_count: 1
 show_only_one_result: false
 field_identifier: field_publication_year
-facet_source_id: 'search_api:views_page__publications_search__page_1'
+facet_source_id: 'search_api:views_page__publications_search__publications_search_page'
 widget:
-  type: links
+  type: datebasic
   config:
     show_numbers: false
-    soft_limit: 0
+    display_relative: false
+    granularity: '6'
+    date_display: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false

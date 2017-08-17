@@ -94,10 +94,15 @@ field_settings:
     label: 'Publication year'
     datasource_id: 'entity:node'
     property_path: field_publication_year
-    type: integer
+    type: date
     dependencies:
       config:
         - field.storage.node.field_publication_year
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
 datasource_settings:
   'entity:node':
     bundles:
@@ -107,8 +112,6 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
-  aggregated_field: {  }
-  add_url: {  }
   html_filter:
     all_fields: false
     fields:
@@ -127,11 +130,8 @@ processor_settings:
     weights:
       preprocess_index: -15
       preprocess_query: -15
-  rendered_item: {  }
-  entity_status: {  }
-  content_access:
-    weights:
-      preprocess_query: -30
+  add_url: {  }
+  aggregated_field: {  }
   highlight:
     highlight: always
     highlight_partial: false
@@ -142,6 +142,11 @@ processor_settings:
     suffix: '</strong>'
     weights:
       postprocess_query: 0
+  rendered_item: {  }
+  content_access:
+    weights:
+      preprocess_query: -30
+  entity_status: {  }
 tracker_settings:
   default: {  }
 options:

@@ -12,6 +12,7 @@ dependencies:
     - node.type.publication
   module:
     - blazy
+    - datetime
     - ds
     - file
     - text
@@ -28,8 +29,8 @@ third_party_settings:
       content:
         - node_title
         - field_author
-        - field_publication_year
         - body
+        - field_publication_year
       right_1:
         - field_publication_image
       right_2:
@@ -53,11 +54,12 @@ content:
     third_party_settings: {  }
     region: content
   field_author:
-    type: text_default
+    type: text_trimmed
     weight: 1
     region: content
     label: inline
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   field_file:
     type: file_default
@@ -122,14 +124,14 @@ content:
       grid_small: 0
     third_party_settings: {  }
   field_publication_year:
-    type: number_integer
-    weight: 2
-    region: content
+    weight: 6
     label: inline
     settings:
-      thousand_separator: ''
-      prefix_suffix: true
+      timezone_override: ''
+      date_format: 'Y'
     third_party_settings: {  }
+    type: datetime_custom
+    region: content
 hidden:
   field_external_website: true
   langcode: true
