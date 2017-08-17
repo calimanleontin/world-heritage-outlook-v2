@@ -14,7 +14,7 @@ bundle: page
 label: Summary
 description: 'This field show only in teasers. Skip this field if you don''t plan to include a teaser of this page into another page.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

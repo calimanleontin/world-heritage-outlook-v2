@@ -9,31 +9,35 @@ set classes = [
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {{ content.content }}
+                <div class="publication-content">
+                    <div class="publication-title">{{ content.title }}</div>
+                </div>
+                <div class="publication-content">
+                    {{ content.field_author }}
+                </div>
+                <div class="publication-year publication-content">
+                    {{ content.field_publication_year }}
+                </div>
+                <div class="publication-content">
+                    {{ content.body }}
+                </div>
             </div>
             <div class="col-md-4">
-
-                {% trans %}
-                <h4> Resources </h4>
-                {% endtrans %}
-
+                <h2 class="facets-title">
+                    {% trans %}
+                    Resources
+                    {% endtrans %}
+                </h2>
                 {{ content.right_1 }}
                 {% if content.right_2|render %}
-                    <div class="path-frontpage">
-                        <div id="block-homepagereport">
+                        <div id="download-publication-button">
                             <a href="{{ file_url(content.right_2.field_file.0['#file'].uri.0.value) }}" download>
                                 <i class="glyphicon glyphicon-download"></i>
                                 Download the report
                             </a>
                         </div>
-                    </div>
                 {% endif %}
-
-
             </div>
-
-
-
         </div>
     </div>
 </div>
