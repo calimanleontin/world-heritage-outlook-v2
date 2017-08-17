@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.page.field_page_elements
-    - field.field.node.page.field_summary
     - field.field.node.page.field_teaser_image
     - node.type.page
   module:
@@ -18,11 +17,8 @@ content:
   links:
     weight: 100
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_page_elements: true
   field_summary: true
   field_teaser_image: true
-  field_teaser_title: true
   langcode: true

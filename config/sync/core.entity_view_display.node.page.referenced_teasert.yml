@@ -7,12 +7,10 @@ dependencies:
     - field.field.node.page.field_page_elements
     - field.field.node.page.field_summary
     - field.field.node.page.field_teaser_image
-    - field.field.node.page.field_teaser_title
-    - image.style.referenced_teaser
     - node.type.page
   module:
+    - blazy
     - ds
-    - image
     - smart_trim
     - user
 third_party_settings:
@@ -34,22 +32,26 @@ third_party_settings:
     regions:
       ds_content:
         - field_teaser_image
-        - field_teaser_title
+        - node_title
         - field_summary
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
 id: node.page.referenced_teasert
 targetEntityType: node
 bundle: page
 mode: referenced_teasert
 content:
   field_summary:
-    type: smart_trim
     weight: 2
-    region: ds_content
     label: hidden
     settings:
       trim_length: '250'
       trim_type: chars
-      trim_suffix: ...
+      trim_suffix: …
       more_link: '0'
       more_text: More
       trim_options:
@@ -57,23 +59,63 @@ content:
       more_class: more-link
       summary_handler: full
     third_party_settings: {  }
+    type: smart_trim
+    region: ds_content
   field_teaser_image:
     weight: 0
     label: hidden
     settings:
-      image_style: referenced_teaser
-      image_link: content
+      image_style: referenced_teaser_600x340_
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: referenced_teasert
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      box_media_style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
     third_party_settings: {  }
-    type: image
+    type: blazy
     region: ds_content
-  field_teaser_title:
-    type: string
-    weight: 1
-    region: ds_content
-    label: hidden
-    settings:
-      link_to_entity: true
-    third_party_settings: {  }
 hidden:
   field_page_elements: true
   langcode: true
