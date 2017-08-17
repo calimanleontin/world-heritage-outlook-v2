@@ -9105,7 +9105,7 @@ ul {
 .popover ul:last-child {
   margin-bottom: 0;
 }
-.page-header {
+.page-header:first-child {
   margin-top: 0;
 }
 .footer {
@@ -9202,9 +9202,6 @@ body:not(.show-focus-outlines) textarea:active:focus {
     margin-right: -15px;
     line-height: 1.4;
   }
-}
-.breadcrumb + .page-header {
-  margin-top: 1em;
 }
 a,
 .block-facets.panel .panel-title,
