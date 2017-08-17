@@ -9200,6 +9200,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
   .page-header {
     margin-left: -15px;
     margin-right: -15px;
+    line-height: 1.4;
   }
 }
 .breadcrumb + .page-header {
@@ -9312,6 +9313,7 @@ a:active .caret-triangle .caret-path,
   .left-border {
     margin-left: -15px;
     margin-right: -15px;
+    line-height: 1.4;
   }
 }
 h2.left-border {
