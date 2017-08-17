@@ -178,6 +178,69 @@
   font-weight: 900;
   text-rendering: optimizeLegibility;
 }
+ol.iucn-list-6 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(-45deg);
+}
+ol.iucn-list-6 li.iucn-arrow:nth-child(2):before {
+  transform: rotateY(-80deg) skewY(-27deg);
+}
+ol.iucn-list-6 li.iucn-arrow:nth-child(3):before {
+  transform: rotateY(-80deg) skewY(-9deg);
+}
+ol.iucn-list-6 li.iucn-arrow:nth-child(4):before {
+  transform: rotateY(-80deg) skewY(9deg);
+}
+ol.iucn-list-6 li.iucn-arrow:nth-child(5):before {
+  transform: rotateY(-80deg) skewY(27deg);
+}
+ol.iucn-list-6 li.iucn-arrow:nth-child(6):before {
+  transform: rotateY(-80deg) skewY(45deg);
+}
+ol.iucn-list-5 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(-36deg);
+}
+ol.iucn-list-5 li.iucn-arrow:nth-child(2):before {
+  transform: rotateY(-80deg) skewY(-18deg);
+}
+ol.iucn-list-5 li.iucn-arrow:nth-child(3):before {
+  transform: rotateY(-80deg) skewY(0deg);
+}
+ol.iucn-list-5 li.iucn-arrow:nth-child(4):before {
+  transform: rotateY(-80deg) skewY(18deg);
+}
+ol.iucn-list-5 li.iucn-arrow:nth-child(5):before {
+  transform: rotateY(-80deg) skewY(36deg);
+}
+ol.iucn-list-4 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(-27deg);
+}
+ol.iucn-list-4 li.iucn-arrow:nth-child(2):before {
+  transform: rotateY(-80deg) skewY(-9deg);
+}
+ol.iucn-list-4 li.iucn-arrow:nth-child(3):before {
+  transform: rotateY(-80deg) skewY(9deg);
+}
+ol.iucn-list-4 li.iucn-arrow:nth-child(4):before {
+  transform: rotateY(-80deg) skewY(27deg);
+}
+ol.iucn-list-3 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(-18deg);
+}
+ol.iucn-list-3 li.iucn-arrow:nth-child(2):before {
+  transform: rotateY(-80deg) skewY(0deg);
+}
+ol.iucn-list-3 li.iucn-arrow:nth-child(3):before {
+  transform: rotateY(-80deg) skewY(18deg);
+}
+ol.iucn-list-2 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(-9deg);
+}
+ol.iucn-list-2 li.iucn-arrow:nth-child(2):before {
+  transform: rotateY(-80deg) skewY(9deg);
+}
+ol.iucn-list-1 li.iucn-arrow:nth-child(1):before {
+  transform: rotateY(-80deg) skewY(0deg);
+}
 /**
  * Variable Overrides.
  *
@@ -9430,12 +9493,6 @@ ol li.iucn-arrow:before {
   top: 0;
   transform: rotateY(-80deg);
   transform-origin: right;
-}
-ol li.iucn-arrow:first-child:before {
-  transform: rotateY(-80deg) skewY(-18deg);
-}
-ol li.iucn-arrow:last-child:before {
-  transform: rotateY(-80deg) skewY(18deg);
 }
 ol li.iucn-arrow:after {
   border-color: transparent transparent transparent #def2fb;

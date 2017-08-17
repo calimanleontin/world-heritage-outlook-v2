@@ -64,3 +64,27 @@
   // next iteration
   .loop-conservation-categories(@rules, (@index - 1));
 }
+
+// Generate rotation angles for iucn arrow decorations
+@iucn-arrows-max-no: 6;
+
+.loop-iucn-arrows(@index: @iucn-arrows-max-no) when (@index > 0) {
+  ol.iucn-list-@{index} {
+    .loop-iucn-arrow(@index);
+  }
+
+  // next iteration
+  .loop-iucn-arrows((@index - 1));
+}
+
+.loop-iucn-arrow(@index-inner) when (@index-inner > 0) {
+  @newIndex: (@index - @index-inner + 1);
+  li.iucn-arrow:nth-child(@{newIndex}):before {
+    //3
+    transform: rotateY(-80deg) skewY( (@newIndex - 1) * (18deg) - (9 * (@index - 1)) );
+  }
+
+  // next iteration
+  .loop-iucn-arrow((@index-inner - 1));
+}
+.loop-iucn-arrows();
