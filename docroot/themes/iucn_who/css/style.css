@@ -9196,14 +9196,14 @@ body:not(.show-focus-outlines) textarea:active:focus {
   border-bottom: none;
   font-weight: 800;
 }
-.breadcrumb + .page-header {
-  margin-top: 1em;
-}
 @media screen and (max-width: 767px) {
   .page-header {
     margin-left: -15px;
     margin-right: -15px;
   }
+}
+.breadcrumb + .page-header {
+  margin-top: 1em;
 }
 a,
 .block-facets.panel .panel-title,
