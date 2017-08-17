@@ -94,7 +94,7 @@ field_settings:
     label: 'Publication year'
     datasource_id: 'entity:node'
     property_path: field_publication_year
-    type: integer
+    type: date
     dependencies:
       config:
         - field.storage.node.field_publication_year

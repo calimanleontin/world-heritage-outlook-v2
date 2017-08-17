@@ -1,17 +1,17 @@
-uuid: d40d3ffb-5484-46c3-9d7a-6eab39300aca
+uuid: 78262703-0479-4b95-9bd3-56144d31c20b
 langcode: en
 status: true
 dependencies:
   module:
+    - datetime
     - node
 id: node.field_publication_year
 field_name: field_publication_year
 entity_type: node
-type: integer
+type: datetime
 settings:
-  unsigned: false
-  size: normal
-module: core
+  datetime_type: date
+module: datetime
 locked: false
 cardinality: 1
 translatable: true
