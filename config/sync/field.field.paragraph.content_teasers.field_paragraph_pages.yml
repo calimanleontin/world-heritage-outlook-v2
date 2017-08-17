@@ -4,7 +4,9 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_paragraph_pages
+    - node.type.news
     - node.type.page
+    - node.type.publication
     - node.type.site
     - paragraphs.paragraphs_type.content_teasers
 id: paragraph.content_teasers.field_paragraph_pages
@@ -21,7 +23,9 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
+      news: news
       page: page
+      publication: publication
       site: site
     sort:
       field: _none

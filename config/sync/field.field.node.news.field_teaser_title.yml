@@ -1,0 +1,19 @@
+uuid: f8fd5f1f-f778-4f4f-a752-b06d8e3ff965
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_teaser_title
+    - node.type.news
+id: node.news.field_teaser_title
+field_name: field_teaser_title
+entity_type: node
+bundle: news
+label: 'Teaser title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
