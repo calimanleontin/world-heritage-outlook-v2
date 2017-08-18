@@ -7,6 +7,12 @@ dependencies:
     - node.type.page
   module:
     - image
+third_party_settings:
+  content_translation:
+    translation_sync:
+      alt: alt
+      title: title
+      file: '0'
 id: node.page.field_teaser_image
 field_name: field_teaser_image
 entity_type: node
