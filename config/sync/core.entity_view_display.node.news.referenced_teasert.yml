@@ -1,13 +1,13 @@
-uuid: 4087f3b8-d11c-4df0-b6e1-890901d9ce97
+uuid: 7e0ceb52-e525-4a2c-ba9a-bc328297f5c6
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
-    - field.field.node.page.field_page_elements
-    - field.field.node.page.field_summary
-    - field.field.node.page.field_teaser_image
-    - node.type.page
+    - field.field.node.news.body
+    - field.field.node.news.field_date_published
+    - field.field.node.news.field_image
+    - node.type.news
   module:
     - blazy
     - ds
@@ -31,9 +31,9 @@ third_party_settings:
           layout_class: {  }
     regions:
       ds_content:
-        - field_teaser_image
+        - field_image
         - node_title
-        - field_summary
+        - body
     fields:
       node_title:
         plugin_id: node_title
@@ -44,31 +44,34 @@ third_party_settings:
           link: true
           wrapper: h2
           class: ''
-id: node.page.referenced_teasert
+id: node.news.referenced_teasert
 targetEntityType: node
-bundle: page
+bundle: news
 mode: referenced_teasert
 content:
-  field_summary:
-    weight: 2
+  body:
     label: hidden
+    type: smart_trim
+    weight: 2
     settings:
       trim_length: '250'
       trim_type: chars
       trim_suffix: …
       more_link: '0'
       more_text: More
+      summary_handler: trim
       trim_options:
         text: text
       more_class: more-link
-      summary_handler: full
     third_party_settings: {  }
-    type: smart_trim
     region: ds_content
-  field_teaser_image:
+  field_image:
+    type: blazy
     weight: 0
+    region: ds_content
     label: hidden
     settings:
+      style: ''
       image_style: referenced_teaser_600x340_
       thumbnail_style: ''
       responsive_image_style: ''
@@ -77,6 +80,9 @@ content:
       box_caption: ''
       box_caption_custom: ''
       ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
       sizes: ''
       breakpoints:
         xs:
@@ -104,6 +110,7 @@ content:
       caption:
         title: '0'
         alt: '0'
+      grid_header: ''
       iframe_lazy: true
       icon: ''
       layout: ''
@@ -111,16 +118,11 @@ content:
       cache: 0
       optionset: default
       skin: ''
-      style: ''
       box_media_style: ''
-      grid: 0
-      grid_header: ''
-      grid_medium: 0
-      grid_small: 0
-    third_party_settings: {  }
-    type: blazy
-    region: ds_content
+    third_party_settings:
+      ds:
+        ds_limit: ''
 hidden:
-  field_page_elements: true
+  field_date_published: true
   langcode: true
   links: true

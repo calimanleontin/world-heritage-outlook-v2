@@ -28,8 +28,40 @@ dependencies:
     - node.type.site
   module:
     - blazy
+    - ds
     - smart_trim
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+    regions:
+      ds_content:
+        - field_image
+        - node_title
+        - body
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
 id: node.site.referenced_teasert
 targetEntityType: node
 bundle: site
@@ -38,7 +70,7 @@ content:
   body:
     type: smart_trim
     weight: 2
-    region: content
+    region: ds_content
     label: hidden
     settings:
       trim_length: '250'
@@ -52,9 +84,10 @@ content:
       more_class: more-link
     third_party_settings: {  }
   field_image:
-    weight: 1
+    weight: 0
     label: hidden
     settings:
+      style: ''
       image_style: referenced_teaser_600x340_
       thumbnail_style: ''
       responsive_image_style: ''
@@ -63,6 +96,9 @@ content:
       box_caption: ''
       box_caption_custom: ''
       ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
       sizes: ''
       breakpoints:
         xs:
@@ -90,6 +126,7 @@ content:
       caption:
         title: '0'
         alt: '0'
+      grid_header: ''
       iframe_lazy: true
       icon: ''
       layout: ''
@@ -97,20 +134,12 @@ content:
       cache: 0
       optionset: default
       skin: ''
-      style: ''
       box_media_style: ''
-      grid: 0
-      grid_header: ''
-      grid_medium: 0
-      grid_small: 0
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
     type: blazy
-    region: content
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
+    region: ds_content
 hidden:
   field_area: true
   field_buffer_zone: true
@@ -132,3 +161,4 @@ hidden:
   field_unesco_id: true
   field_wdpa_id: true
   langcode: true
+  links: true

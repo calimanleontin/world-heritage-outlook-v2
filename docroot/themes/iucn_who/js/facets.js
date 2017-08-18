@@ -39,7 +39,9 @@
     }, 100 );
 
     $window.resize(function() {
-        $sidemenuToggle.data('bs.affix').options.offset.top = $footer.outerHeight(true);
+        if ($sidemenuToggle.data('bs.affix') !== undefined) {
+          $sidemenuToggle.data('bs.affix').options.offset.top = $footer.outerHeight(true);
+        }
     });
 
     $sidemenu.on('show.bs.dropdown', function () {

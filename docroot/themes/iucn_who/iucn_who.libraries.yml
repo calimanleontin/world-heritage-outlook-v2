@@ -6,6 +6,10 @@ bootstrap-js:
     js:
       libraries/bootstrap/bootstrap.min.js: { minified: true }
 
+mobile-chrome-vh-fix:
+    js:
+      libraries/mobile-chrome-vh-fix/mobile-chrome-vh-fix.js: {}
+
 facets:
     js:
       js/facets.js: {}
@@ -22,3 +26,4 @@ global-styling:
       - core/jquery
       - iucn_who/bootstrap-js
       - iucn_who/headroom
+      - iucn_who/mobile-chrome-vh-fix
