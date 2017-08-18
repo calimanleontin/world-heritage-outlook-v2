@@ -73,3 +73,11 @@ iucn_who_publications_full:
     right_2:
       label: File
 
+iucn_who_homepage_teasers:
+  label: Page Teasers
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-page-teasers
+  regions:
+    content:
+      label: Content

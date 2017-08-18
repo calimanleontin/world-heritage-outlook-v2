@@ -1,0 +1,13 @@
+{%
+set classes = [
+'iucn-page-teaser-wrapper',
+]
+%}
+
+{% if content %}
+<div{{ attributes.addClass(classes) }}>
+    <a href="{{ content.field_page_teaser_link }}">{{ content.field_image }}</a>
+    <h2><a href="{{ content.field_page_teaser_link }}">{{ content.field_title }}</a></h2>
+    {{ content.field_description }}
+</div>
+{% endif %}
