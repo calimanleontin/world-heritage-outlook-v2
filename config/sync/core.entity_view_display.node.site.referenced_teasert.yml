@@ -1,6 +1,6 @@
 uuid: 43fbe99c-eaa3-4c25-aa63-b370f5cec59f
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
@@ -28,8 +28,40 @@ dependencies:
     - node.type.site
   module:
     - blazy
+    - ds
     - smart_trim
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+    regions:
+      ds_content:
+        - field_image
+        - node_title
+        - body
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
 id: node.site.referenced_teasert
 targetEntityType: node
 bundle: site
