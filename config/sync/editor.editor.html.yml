@@ -72,6 +72,7 @@ settings:
             - Maximize
             - Source
             - ShowBlocks
+            - Templates
   plugins:
     drupallink:
       linkit_enabled: true

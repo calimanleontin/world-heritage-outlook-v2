@@ -1,0 +1,23 @@
+uuid: 152aa0ea-a6dd-4e5f-b4af-9267c2896246
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_wrapper
+    - paragraphs.paragraphs_type.numbered_heading
+  module:
+    - options
+id: paragraph.numbered_heading.field_wrapper
+field_name: field_wrapper
+entity_type: paragraph
+bundle: numbered_heading
+label: 'HTML Tag'
+description: 'Select which HTML Heading style you want to use. '
+required: true
+translatable: false
+default_value:
+  -
+    value: p
+default_value_callback: ''
+settings: {  }
+field_type: list_string

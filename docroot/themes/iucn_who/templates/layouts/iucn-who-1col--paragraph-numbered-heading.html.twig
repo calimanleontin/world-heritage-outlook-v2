@@ -1,0 +1,37 @@
+{%
+set classes = [
+'iucn-1col-wrapper',
+]
+%}
+
+{% if content %}
+  {% set paragraph = content['#paragraph'] %}
+  {%
+  set paragraph_classes = [
+  'paragraph',
+  'paragraph--type *' ~ paragraph.bundle|clean_class,
+  paragraph['#view_mode'] ? 'paragraph--view-mode--' ~ paragraph['#view_mode']|clean_class,
+  'iucn-arrow',
+  paragraph.field_heading_icon.value ? paragraph.field_heading_icon.value : ''
+  ]
+  %}
+
+  <div{{ attributes.addClass(classes) }}>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <{{ paragraph.field_wrapper.value }}{{ attributes.addClass(paragraph_classes) }}>
+            {% if paragraph.field_heading_number.value %}
+              <span class="iucn-numbering">
+              {{ paragraph.field_heading_number.value }}
+              </span>
+            {% endif %}
+            {% if paragraph.field_heading.value %}
+              <span>{{ paragraph.field_heading.value }}</span>
+            {% endif %}
+        </{{ paragraph.field_wrapper.value }}>
+      </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
