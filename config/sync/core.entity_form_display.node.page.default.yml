@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.page.field_page_elements
-    - field.field.node.page.field_page_teasers
     - node.type.page
   module:
     - paragraphs
@@ -32,18 +31,6 @@ content:
       default_paragraph_type: _none
     third_party_settings: {  }
     region: content
-  field_page_teasers:
-    type: entity_reference_paragraphs
-    weight: 2
-    region: content
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
-    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 3

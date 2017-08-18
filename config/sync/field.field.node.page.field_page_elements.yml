@@ -43,4 +43,7 @@ settings:
       numbered_heading:
         enabled: true
         weight: 10
+      teaser:
+        weight: 12
+        enabled: false
 field_type: entity_reference_revisions
