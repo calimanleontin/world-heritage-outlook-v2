@@ -23,7 +23,7 @@ third_party_settings:
       entity_classes: all_classes
       settings: {  }
     regions:
-      right_1:
+      left_1:
         - field_image
       content:
         - node_title
@@ -72,11 +72,11 @@ content:
   field_image:
     type: blazy
     weight: 0
-    region: right_1
+    region: left_1
     label: hidden
     settings:
       style: ''
-      image_style: medium
+      image_style: large
       thumbnail_style: ''
       responsive_image_style: ''
       media_switch: ''

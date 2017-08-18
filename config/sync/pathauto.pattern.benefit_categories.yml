@@ -1,0 +1,23 @@
+uuid: 60f086a5-d6da-4e25-b306-730990e3b9f6
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - taxonomy
+id: benefit_categories
+label: 'Benefit categories'
+type: 'canonical_entities:taxonomy_term'
+pattern: '/benefits/[term:name]'
+selection_criteria:
+  769df74f-459b-4f22-9c14-2b5935d300bb:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      benefits_category: benefits_category
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    uuid: 769df74f-459b-4f22-9c14-2b5935d300bb
+selection_logic: and
+weight: -5
+relationships: {  }

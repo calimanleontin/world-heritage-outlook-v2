@@ -12,6 +12,19 @@ dependencies:
     - ds
     - text
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_news_full
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      right_1:
+        - field_benefit_image
+      content:
+        - body
 id: node.benefit.default
 targetEntityType: node
 bundle: benefit
@@ -81,7 +94,7 @@ content:
       ds:
         ds_limit: ''
     type: blazy
-    region: content
+    region: right_1
 hidden:
   field_benefit_category: true
   langcode: true

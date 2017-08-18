@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - node.type.news
   module:
-    - blazy
     - datetime
     - node
     - user
@@ -72,12 +71,11 @@ display:
             offset_label: Offset
           quantity: 9
       style:
-        type: blazy
+        type: default
         options:
-          style: column
-          grid: 1
-          grid_medium: null
-          grid_small: null
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
       row:
         type: 'entity:node'
         options:
