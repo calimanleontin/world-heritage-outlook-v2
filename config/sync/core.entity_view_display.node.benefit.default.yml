@@ -1,0 +1,88 @@
+uuid: ba30b7ca-e256-4650-984a-a5711a0adcc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.benefit.body
+    - field.field.node.benefit.field_benefit_category
+    - field.field.node.benefit.field_benefit_image
+    - node.type.benefit
+  module:
+    - blazy
+    - ds
+    - text
+    - user
+id: node.benefit.default
+targetEntityType: node
+bundle: benefit
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 1
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  field_benefit_image:
+    weight: 0
+    label: hidden
+    settings:
+      style: ''
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: default
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      grid_header: ''
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      box_media_style: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: blazy
+    region: content
+hidden:
+  field_benefit_category: true
+  langcode: true
+  links: true

@@ -1,19 +1,19 @@
-uuid: 35f4f2f6-826b-4e66-97da-f00c3174d83f
+uuid: 4384cd41-af87-49db-957b-cf03600e3ee0
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_image
-    - paragraphs.paragraphs_type.content_teasers
+    - field.storage.node.field_benefit_image
+    - node.type.benefit
   module:
     - image
-id: paragraph.content_teasers.field_image
-field_name: field_image
-entity_type: paragraph
-bundle: content_teasers
-label: Image
+id: node.benefit.field_benefit_image
+field_name: field_benefit_image
+entity_type: node
+bundle: benefit
+label: 'Benefit image'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -23,8 +23,8 @@ settings:
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
-  alt_field: true
-  alt_field_required: false
+  alt_field: false
+  alt_field_required: true
   title_field: false
   title_field_required: false
   default_image:

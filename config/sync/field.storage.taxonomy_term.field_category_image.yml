@@ -1,14 +1,14 @@
-uuid: dc672445-31f8-4970-9528-b819a5440cdc
+uuid: cacebbec-5667-4733-ae10-ad3e42ef310c
 langcode: en
 status: true
 dependencies:
   module:
     - file
     - image
-    - paragraphs
-id: paragraph.field_image
-field_name: field_image
-entity_type: paragraph
+    - taxonomy
+id: taxonomy_term.field_category_image
+field_name: field_category_image
+entity_type: taxonomy_term
 type: image
 settings:
   uri_scheme: public

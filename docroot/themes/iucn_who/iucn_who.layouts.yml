@@ -40,7 +40,7 @@ iucn_who_news_full:
   type: partial
   template: tempalates/layouts/iucn-who-news-full
   regions:
-    right_1:
+    left_1:
       label: Images
     content:
       label: Content

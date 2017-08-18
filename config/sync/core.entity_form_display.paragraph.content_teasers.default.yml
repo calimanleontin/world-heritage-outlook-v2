@@ -6,7 +6,6 @@ dependencies:
     - field.field.paragraph.content_teasers.field_description
     - field.field.paragraph.content_teasers.field_image
     - field.field.paragraph.content_teasers.field_page_teaser_link
-    - field.field.paragraph.content_teasers.field_paragraph_pages
     - field.field.paragraph.content_teasers.field_title
     - image.style.thumbnail
     - paragraphs.paragraphs_type.content_teasers
@@ -20,7 +19,7 @@ bundle: content_teasers
 mode: default
 content:
   field_description:
-    weight: 2
+    weight: 1
     settings:
       rows: 5
       placeholder: ''
@@ -28,7 +27,7 @@ content:
     type: text_textarea
     region: content
   field_image:
-    weight: 1
+    weight: 2
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
@@ -36,7 +35,7 @@ content:
     type: image_image
     region: content
   field_page_teaser_link:
-    weight: 4
+    weight: 3
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -53,6 +52,5 @@ content:
     region: content
 hidden:
   created: true
-  field_paragraph_pages: true
   status: true
   uid: true

@@ -1,19 +1,19 @@
-uuid: b276b3a0-35a5-4a85-9112-808d3307b0e2
+uuid: da6f67c3-3265-41b7-91f7-fef909c3449e
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - paragraphs
-id: paragraph.field_paragraph_pages
-field_name: field_paragraph_pages
-entity_type: paragraph
+    - taxonomy
+id: node.field_benefit_category
+field_name: field_benefit_category
+entity_type: node
 type: entity_reference
 settings:
-  target_type: node
+  target_type: taxonomy_term
 module: core
 locked: false
-cardinality: 4
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

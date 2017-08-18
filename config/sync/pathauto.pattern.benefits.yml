@@ -1,0 +1,22 @@
+uuid: 625195ce-b886-4bc2-9a54-b1fb5f6e0f1c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: benefits
+label: Benefits
+type: 'canonical_entities:node'
+pattern: '/benefits/[node:title]'
+selection_criteria:
+  2f51a200-f7cb-4fe5-981f-728b6b4bbb89:
+    id: node_type
+    bundles:
+      benefit: benefit
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 2f51a200-f7cb-4fe5-981f-728b6b4bbb89
+selection_logic: and
+weight: -5
+relationships: {  }

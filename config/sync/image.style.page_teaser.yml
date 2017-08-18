@@ -1,4 +1,4 @@
-uuid: 71ec14bd-67eb-4a8c-b364-c0ea8fa9d8bf
+uuid: 1e51c447-f858-4789-969f-b0c81a3c07e2
 langcode: en
 status: true
 dependencies:
@@ -7,16 +7,16 @@ dependencies:
 name: page_teaser
 label: 'Page teaser'
 effects:
-  28aefc56-d222-42db-9693-fd67957c33e4:
-    uuid: 28aefc56-d222-42db-9693-fd67957c33e4
+  9d137555-2c00-4a5e-8109-d9a1881c707c:
+    uuid: 9d137555-2c00-4a5e-8109-d9a1881c707c
     id: image_scale
     weight: 1
     data:
       width: 620
       height: 350
       upscale: true
-  bd9c8458-eabb-4ec5-bbe4-7546e4daa9b5:
-    uuid: bd9c8458-eabb-4ec5-bbe4-7546e4daa9b5
+  c11f3b65-a208-4583-99dd-c41aa84aa91e:
+    uuid: c11f3b65-a208-4583-99dd-c41aa84aa91e
     id: crop_crop
     weight: 2
     data:

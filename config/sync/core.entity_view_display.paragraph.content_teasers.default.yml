@@ -6,7 +6,6 @@ dependencies:
     - field.field.paragraph.content_teasers.field_description
     - field.field.paragraph.content_teasers.field_image
     - field.field.paragraph.content_teasers.field_page_teaser_link
-    - field.field.paragraph.content_teasers.field_paragraph_pages
     - field.field.paragraph.content_teasers.field_title
     - image.style.page_teaser
     - paragraphs.paragraphs_type.content_teasers
@@ -25,26 +24,25 @@ third_party_settings:
       settings: {  }
     regions:
       content:
+        - field_page_teaser_link
         - field_image
         - field_title
         - field_description
-        - field_page_teaser_link
 id: paragraph.content_teasers.default
 targetEntityType: paragraph
 bundle: content_teasers
 mode: default
 content:
   field_description:
-    type: text_trimmed
-    weight: 2
+    type: text_default
+    weight: 3
     region: content
     label: hidden
-    settings:
-      trim_length: 250
+    settings: {  }
     third_party_settings: {  }
   field_image:
     type: image
-    weight: 0
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -52,7 +50,9 @@ content:
       image_link: ''
     third_party_settings: {  }
   field_page_teaser_link:
-    weight: 3
+    type: link
+    weight: 0
+    region: content
     label: hidden
     settings:
       trim_length: 80
@@ -61,15 +61,12 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    type: link
-    region: content
   field_title:
-    weight: 1
+    type: string
+    weight: 2
+    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-    region: content
-hidden:
-  field_paragraph_pages: true
+hidden: {  }

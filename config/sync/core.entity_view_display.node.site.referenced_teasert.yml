@@ -70,7 +70,7 @@ content:
   body:
     type: smart_trim
     weight: 2
-    region: ds_content
+    region: content
     label: hidden
     settings:
       trim_length: '250'
@@ -84,10 +84,9 @@ content:
       more_class: more-link
     third_party_settings: {  }
   field_image:
-    weight: 0
+    weight: 1
     label: hidden
     settings:
-      style: ''
       image_style: referenced_teaser_600x340_
       thumbnail_style: ''
       responsive_image_style: ''
@@ -96,9 +95,6 @@ content:
       box_caption: ''
       box_caption_custom: ''
       ratio: ''
-      grid: null
-      grid_medium: null
-      grid_small: null
       sizes: ''
       breakpoints:
         xs:
@@ -126,7 +122,6 @@ content:
       caption:
         title: '0'
         alt: '0'
-      grid_header: ''
       iframe_lazy: true
       icon: ''
       layout: ''
@@ -134,12 +129,20 @@ content:
       cache: 0
       optionset: default
       skin: ''
+      style: ''
       box_media_style: ''
-    third_party_settings:
-      ds:
-        ds_limit: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
     type: blazy
-    region: ds_content
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_area: true
   field_buffer_zone: true
@@ -161,4 +164,3 @@ hidden:
   field_unesco_id: true
   field_wdpa_id: true
   langcode: true
-  links: true

@@ -37,10 +37,6 @@ third_party_settings:
         weight: 1
         label: hidden
         formatter: default
-        settings:
-          link: true
-          wrapper: h2
-          class: ''
 id: node.page.referenced_teasert
 targetEntityType: node
 bundle: page
