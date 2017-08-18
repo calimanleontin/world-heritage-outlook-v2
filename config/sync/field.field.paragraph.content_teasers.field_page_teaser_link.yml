@@ -1,0 +1,23 @@
+uuid: 601dc744-8cd0-4dc4-afdf-a67b2e0b5f45
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_page_teaser_link
+    - paragraphs.paragraphs_type.content_teasers
+  module:
+    - link
+id: paragraph.content_teasers.field_page_teaser_link
+field_name: field_page_teaser_link
+entity_type: paragraph
+bundle: content_teasers
+label: 'Page teaser link'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link
