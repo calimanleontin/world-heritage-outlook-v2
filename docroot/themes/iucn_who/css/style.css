@@ -10098,8 +10098,12 @@ ol li.iucn-arrow + .li.arrow {
 }
 .paragraph.iucn-1col-wrapper .field--type-text-long h2 {
   font-size: 1.55555556rem;
-  margin-bottom: 2em;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph.iucn-1col-wrapper .field--type-text-long h2:first-child {
   margin-top: 0;
+  margin-bottom: 2em;
 }
 @media screen and (max-width: 767px) {
   .paragraph.iucn-1col-wrapper .field--name-field-paragraph-pages {
