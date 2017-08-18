@@ -1,0 +1,20 @@
+uuid: 21c95774-dfc3-49cd-a655-716ecf6f3dee
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.benefit
+  module:
+    - path
+id: node.benefit.path
+field_name: path
+entity_type: node
+bundle: benefit
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

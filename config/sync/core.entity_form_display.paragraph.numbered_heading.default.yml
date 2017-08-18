@@ -1,0 +1,47 @@
+uuid: acdbd8c0-6724-4937-b4d9-b04417b21e6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.numbered_heading.field_heading
+    - field.field.paragraph.numbered_heading.field_heading_icon
+    - field.field.paragraph.numbered_heading.field_heading_number
+    - field.field.paragraph.numbered_heading.field_wrapper
+    - paragraphs.paragraphs_type.numbered_heading
+id: paragraph.numbered_heading.default
+targetEntityType: paragraph
+bundle: numbered_heading
+mode: default
+content:
+  field_heading:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_heading_icon:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_heading_number:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_wrapper:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

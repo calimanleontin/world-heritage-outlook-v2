@@ -1,0 +1,22 @@
+uuid: 0d7d953e-7328-44ad-a05f-4ba4f1d02f78
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.benefit
+  module:
+    - text
+id: node.benefit.body
+field_name: body
+entity_type: node
+bundle: benefit
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

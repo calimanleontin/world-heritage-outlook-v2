@@ -1,78 +1,49 @@
-uuid: 7e0ceb52-e525-4a2c-ba9a-bc328297f5c6
+uuid: ba30b7ca-e256-4650-984a-a5711a0adcc7
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.referenced_teasert
-    - field.field.node.news.body
-    - field.field.node.news.field_date_published
-    - field.field.node.news.field_image
-    - node.type.news
+    - field.field.node.benefit.body
+    - field.field.node.benefit.field_benefit_category
+    - field.field.node.benefit.field_benefit_image
+    - node.type.benefit
   module:
     - blazy
     - ds
-    - smart_trim
+    - text
     - user
 third_party_settings:
   ds:
     layout:
-      id: ds_1col_wrapper
+      id: iucn_who_news_full
       library: null
       disable_css: false
       entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
+      settings: {  }
     regions:
-      ds_content:
-        - field_image
-        - node_title
+      right_1:
+        - field_benefit_image
+      content:
         - body
-    fields:
-      node_title:
-        plugin_id: node_title
-        weight: 1
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: h2
-          class: ''
-id: node.news.referenced_teasert
+id: node.benefit.default
 targetEntityType: node
-bundle: news
-mode: referenced_teasert
+bundle: benefit
+mode: default
 content:
   body:
     label: hidden
-    type: smart_trim
-    weight: 2
+    type: text_summary_or_trimmed
+    weight: 1
     settings:
-      trim_length: '250'
-      trim_type: chars
-      trim_suffix: …
-      more_link: '0'
-      more_text: More
-      summary_handler: trim
-      trim_options:
-        text: text
-      more_class: more-link
+      trim_length: 600
     third_party_settings: {  }
-    region: ds_content
-  field_image:
-    type: blazy
+    region: content
+  field_benefit_image:
     weight: 0
-    region: ds_content
     label: hidden
     settings:
       style: ''
-      image_style: referenced_teaser_600x340_
+      image_style: large
       thumbnail_style: ''
       responsive_image_style: ''
       media_switch: ''
@@ -105,7 +76,7 @@ content:
           image_style: ''
           width: ''
           breakpoint: ''
-      current_view_mode: referenced_teasert
+      current_view_mode: default
       background: false
       caption:
         title: '0'
@@ -122,7 +93,9 @@ content:
     third_party_settings:
       ds:
         ds_limit: ''
+    type: blazy
+    region: right_1
 hidden:
-  field_date_published: true
+  field_benefit_category: true
   langcode: true
   links: true

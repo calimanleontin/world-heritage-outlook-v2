@@ -1,16 +1,15 @@
-uuid: d7421a9b-67a3-4c83-9bd6-6e12af062a60
+uuid: 53a93aeb-b44e-4ffe-ba78-05796ed85707
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.news.body
-    - field.field.node.news.field_date_published
-    - field.field.node.news.field_image
-    - node.type.news
+    - field.field.node.benefit.body
+    - field.field.node.benefit.field_benefit_category
+    - field.field.node.benefit.field_benefit_image
+    - node.type.benefit
   module:
     - blazy
-    - datetime
     - ds
     - smart_trim
     - user
@@ -24,12 +23,11 @@ third_party_settings:
       settings: {  }
     regions:
       left_1:
-        - field_image
+        - field_benefit_image
       content:
         - node_title
-        - field_date_published
         - body
-        - links
+        - node_link
     fields:
       node_title:
         plugin_id: node_title
@@ -40,36 +38,38 @@ third_party_settings:
           link: true
           wrapper: h2
           class: ''
-id: node.news.teaser
+      node_link:
+        plugin_id: node_link
+        weight: 3
+        label: hidden
+        formatter: default
+        settings:
+          'link text': 'Read more'
+          'link class': ''
+          wrapper: ''
+          class: ''
+id: node.benefit.teaser
 targetEntityType: node
-bundle: news
+bundle: benefit
 mode: teaser
 content:
   body:
     label: hidden
     type: smart_trim
-    weight: 3
+    weight: 2
     settings:
-      trim_length: '300'
+      trim_length: '100'
       trim_type: chars
       trim_suffix: ''
       more_link: '0'
       more_text: More
-      summary_handler: full
+      summary_handler: trim
       trim_options:
         text: 0
       more_class: more-link
     third_party_settings: {  }
     region: content
-  field_date_published:
-    type: datetime_plain
-    weight: 2
-    region: content
-    label: hidden
-    settings:
-      timezone_override: ''
-    third_party_settings: {  }
-  field_image:
+  field_benefit_image:
     type: blazy
     weight: 0
     region: left_1
@@ -126,10 +126,7 @@ content:
     third_party_settings:
       ds:
         ds_limit: '1'
-  links:
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  field_benefit_category: true
   langcode: true
+  links: true
