@@ -29,7 +29,7 @@ iucn_who_news_teaser:
   type: partial
   template: tempalates/layouts/iucn-who-news-teaser
   regions:
-    right_1:
+    left_1:
       label: Image
     content:
       label: Content
@@ -40,7 +40,7 @@ iucn_who_news_full:
   type: partial
   template: tempalates/layouts/iucn-who-news-full
   regions:
-    left_1:
+    right_1:
       label: Images
     content:
       label: Content
@@ -79,5 +79,16 @@ iucn_who_homepage_teasers:
   type: partial
   template: tempalates/layouts/iucn-who-page-teasers
   regions:
+    content:
+      label: Content
+
+iucn_who_benefits_category_teaser:
+  label: Benefits category teaser
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-benefits-category-teaser
+  regions:
+    left_1:
+      label: Image
     content:
       label: Content

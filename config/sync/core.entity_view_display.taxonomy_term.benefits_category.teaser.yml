@@ -13,24 +13,18 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_news_teaser
+      id: iucn_who_benefits_category_teaser
       library: null
       disable_css: false
       entity_classes: all_classes
       settings: {  }
     regions:
-      right_1:
+      left_1:
         - field_category_image
       content:
         - taxonomy_term_title
         - description
-        - taxonomy_term_link
     fields:
-      taxonomy_term_link:
-        plugin_id: taxonomy_term_link
-        weight: 3
-        label: hidden
-        formatter: default
       taxonomy_term_title:
         plugin_id: taxonomy_term_title
         weight: 1
@@ -64,7 +58,7 @@ content:
   field_category_image:
     type: blazy
     weight: 0
-    region: right_1
+    region: left_1
     label: hidden
     settings:
       iframe_lazy: true
