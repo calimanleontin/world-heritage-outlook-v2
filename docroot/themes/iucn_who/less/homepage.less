@@ -241,12 +241,26 @@
       background-repeat: no-repeat;
       display: block;
       padding-left: 1.5em;
+      cursor: pointer;
       .loop-conservation-ratings({
         &.@{conservation-rating-class} {
-          background-image: url('/modules/iucn/iucn_who_homepage/images/marker-@{conservation-rating-class}.png');
+          // background-image: url('/modules/iucn/iucn_who_homepage/images/marker-@{conservation-rating-class}.png');
           color: @conservation-rating-color;
+          &:before {
+            background-color: @conservation-rating-color;
+            border: 1px solid @conservation-rating-color;
+            border-radius: 50%;
+            content: '';
+            display: inline-block;
+            height: .8em;
+            margin-right: .5em;
+            width: .8em;
+          }
         }
       });
+      &.data-deficient:before {
+        background-color: #fff;
+      }
     }
     @media @grid-mobile {
       display: none;

@@ -11299,48 +11299,127 @@ ol li.iucn-arrow + .li.arrow {
   background-repeat: no-repeat;
   display: block;
   padding-left: 1.5em;
+  cursor: pointer;
 }
 .path-frontpage #map-filters li > a.coming-soon,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.coming-soon,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.coming-soon,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.coming-soon {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-coming-soon.png');
   color: #7e7e7e;
+}
+.path-frontpage #map-filters li > a.coming-soon:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.coming-soon:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.coming-soon:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.coming-soon:before {
+  background-color: #7e7e7e;
+  border: 1px solid #7e7e7e;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
 }
 .path-frontpage #map-filters li > a.data-deficient,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.data-deficient,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.data-deficient,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.data-deficient {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-data-deficient.png');
   color: #333333;
+}
+.path-frontpage #map-filters li > a.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.data-deficient:before {
+  background-color: #333333;
+  border: 1px solid #333333;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
 }
 .path-frontpage #map-filters li > a.critical,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.critical,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.critical,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.critical {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-critical.png');
   color: #ef3133;
+}
+.path-frontpage #map-filters li > a.critical:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.critical:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.critical:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.critical:before {
+  background-color: #ef3133;
+  border: 1px solid #ef3133;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
 }
 .path-frontpage #map-filters li > a.significant-concern,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.significant-concern,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.significant-concern,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.significant-concern {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-significant-concern.png');
   color: #f69232;
+}
+.path-frontpage #map-filters li > a.significant-concern:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.significant-concern:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.significant-concern:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.significant-concern:before {
+  background-color: #f69232;
+  border: 1px solid #f69232;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
 }
 .path-frontpage #map-filters li > a.good-concerns,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.good-concerns,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.good-concerns,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.good-concerns {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-good-concerns.png');
   color: #9cd07d;
+}
+.path-frontpage #map-filters li > a.good-concerns:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.good-concerns:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.good-concerns:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.good-concerns:before {
+  background-color: #9cd07d;
+  border: 1px solid #9cd07d;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
 }
 .path-frontpage #map-filters li > a.good,
 .path-frontpage #map-filters li > .block-facets.panel .panel-title.good,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > a.good,
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.good {
-  background-image: url('/modules/iucn/iucn_who_homepage/images/marker-good.png');
   color: #3bb55e;
+}
+.path-frontpage #map-filters li > a.good:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.good:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.good:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.good:before {
+  background-color: #3bb55e;
+  border: 1px solid #3bb55e;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: .8em;
+  margin-right: .5em;
+  width: .8em;
+}
+.path-frontpage #map-filters li > a.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .panel-title.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > a.data-deficient:before,
+.path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.data-deficient:before {
+  background-color: #fff;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #map-filters {
