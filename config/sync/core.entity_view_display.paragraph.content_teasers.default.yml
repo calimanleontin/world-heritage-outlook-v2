@@ -6,67 +6,41 @@ dependencies:
     - field.field.paragraph.content_teasers.field_description
     - field.field.paragraph.content_teasers.field_image
     - field.field.paragraph.content_teasers.field_page_teaser_link
+    - field.field.paragraph.content_teasers.field_paragraph_background
+    - field.field.paragraph.content_teasers.field_teasers
     - field.field.paragraph.content_teasers.field_title
-    - image.style.page_teaser
     - paragraphs.paragraphs_type.content_teasers
   module:
     - ds
-    - image
-    - link
-    - text
+    - entity_reference_revisions
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_homepage_teasers
+      id: iucn_who_1col
       library: null
       disable_css: false
       entity_classes: all_classes
       settings: {  }
     regions:
       content:
-        - field_page_teaser_link
-        - field_image
-        - field_title
-        - field_description
+        - field_teasers
 id: paragraph.content_teasers.default
 targetEntityType: paragraph
 bundle: content_teasers
 mode: default
 content:
-  field_description:
-    type: text_default
-    weight: 3
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_image:
-    type: image
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      image_style: page_teaser
-      image_link: ''
-    third_party_settings: {  }
-  field_page_teaser_link:
-    type: link
+  field_teasers:
+    type: entity_reference_revisions_entity_view
     weight: 0
     region: content
     label: hidden
     settings:
-      trim_length: 80
-      url_only: true
-      url_plain: true
-      rel: '0'
-      target: '0'
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-  field_title:
-    type: string
-    weight: 2
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_description: true
+  field_image: true
+  field_page_teaser_link: true
+  field_paragraph_background: true
+  field_title: true

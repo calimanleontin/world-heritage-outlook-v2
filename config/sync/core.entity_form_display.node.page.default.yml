@@ -22,7 +22,7 @@ content:
     third_party_settings: {  }
   field_page_elements:
     type: entity_reference_paragraphs
-    weight: 2
+    weight: 1
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -34,7 +34,8 @@ content:
     region: content
   field_page_teasers:
     type: entity_reference_paragraphs
-    weight: 1
+    weight: 2
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -43,7 +44,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   langcode:
     type: language_select
     weight: 3
