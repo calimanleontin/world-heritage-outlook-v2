@@ -10115,21 +10115,12 @@ ol li.iucn-arrow + .li.arrow {
 .field--name-field-page-teasers .field--name-node-title:first-child > * {
   margin-top: 0;
 }
-.field--item .paragraph {
-  margin-top: 3.33333333rem;
-}
-@media screen and (max-width: 767px) {
-  .field--item .paragraph {
-    margin-top: 2.85714286rem;
-  }
-}
 .paragraph.iucn-1col-wrapper .field--type-text-long h2 {
   font-size: 1.55555556rem;
   margin-top: 1.5em;
   margin-bottom: 1em;
 }
 .paragraph.iucn-1col-wrapper .field--type-text-long h2:first-child {
-  margin-top: 0;
   margin-bottom: 2em;
 }
 .paragraph table th {
@@ -10148,7 +10139,7 @@ ol li.iucn-arrow + .li.arrow {
 }
 .paragraph-background-light {
   background-color: #def2fb;
-  padding-top: 3.33333333rem;
+  margin-top: 1.66666667rem;
   padding-bottom: 3.33333333rem;
 }
 .paragraph-background-light table > tbody > tr:nth-of-type(odd) {

@@ -27,19 +27,19 @@
 }
 
 .paragraph {
-  .field--item & {
-    margin-top: 60 * @rem-multiplier--desktop;
-    @media @grid-mobile {
-      margin-top: 40 * @rem-multiplier--mobile;
-    }
-  }
+  // .field--name-field-page-elements > .field--item &:not(.paragraph--type--numbered-heading) {
+  //   margin-top: 60 * @rem-multiplier--desktop;
+  //   @media @grid-mobile {
+  //     margin-top: 40 * @rem-multiplier--mobile;
+  //   }
+  // }
   &.iucn-1col-wrapper .field--type-text-long {
     h2 {
       font-size: 28 * @rem-multiplier--desktop;
       margin-top: 1.5em;
       margin-bottom: 1em;
       &:first-child {
-        margin-top: 0;
+        // margin-top: 0;
         margin-bottom: 2em;
       }
     }
@@ -74,7 +74,7 @@
 }
 .paragraph-background-light {
   background-color: @iucn-blue-lightest;
-  padding-top: 60 * @rem-multiplier--desktop;
+  margin-top: 30 * @rem-multiplier--desktop;
   padding-bottom: 60 * @rem-multiplier--desktop;
   table > tbody > tr:nth-of-type(odd) {
     background-color: @table-border-color;
