@@ -12171,7 +12171,7 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
 #publications-back-button .block-facets.panel .facet-item > a .backicon,
 #publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
   padding-top: 2em;
-  background-image: url(../images/backarrow.png);
+  background-image: url(../images/icon-backarrow.svg);
   background-position: left center;
   background-repeat: no-repeat;
   background-size: auto;
@@ -12191,6 +12191,11 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
 }
 @media screen and (max-width: 767px) {
   #publications-back-button {
-    order: -1;
+    visibility: hidden;
+    clear: both;
+    float: left;
+    margin: 10px auto 5px 20px;
+    width: 28%;
+    display: none;
   }
 }

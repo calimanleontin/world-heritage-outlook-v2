@@ -86,7 +86,7 @@
     line-height: 1.2;
     .backicon {
       padding-top: 2em;
-      background-image: url(~'@{images-path}backarrow.png');
+      background-image: url(~'@{images-path}icon-backarrow.svg');
       background-position: left center;
       background-repeat: no-repeat;
       background-size: auto;
@@ -101,6 +101,11 @@
     }
   }
   @media @grid-mobile {
-    order: -1;
+    visibility: hidden;
+    clear: both;
+    float: left;
+    margin: 10px auto 5px 20px;
+    width: 28%;
+    display: none;
   }
 }
