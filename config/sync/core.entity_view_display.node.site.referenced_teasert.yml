@@ -1,6 +1,6 @@
 uuid: 43fbe99c-eaa3-4c25-aa63-b370f5cec59f
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
@@ -28,6 +28,7 @@ dependencies:
     - node.type.site
   module:
     - blazy
+    - ds
     - smart_trim
     - user
 third_party_settings:

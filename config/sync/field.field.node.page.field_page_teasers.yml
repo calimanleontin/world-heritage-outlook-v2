@@ -1,18 +1,18 @@
-uuid: 2fd2b7d7-ffb1-46d5-bf48-2b75816e8f7f
+uuid: 645b5416-a138-4583-ab58-feb0c74df70c
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_page_elements
+    - field.storage.node.field_page_teasers
     - node.type.page
-    - paragraphs.paragraphs_type.content_html
+    - paragraphs.paragraphs_type.content_teasers
   module:
     - entity_reference_revisions
-id: node.page.field_page_elements
-field_name: field_page_elements
+id: node.page.field_page_teasers
+field_name: field_page_teasers
 entity_type: node
 bundle: page
-label: 'Page Elements'
+label: 'Page Teasers'
 description: ''
 required: false
 translatable: false
@@ -22,15 +22,15 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      content_html: content_html
+      content_teasers: content_teasers
     target_bundles_drag_drop:
-      danger_list:
-        weight: 2
-        enabled: false
       content_html:
-        enabled: true
-        weight: 3
+        weight: 4
+        enabled: false
       content_teasers:
+        enabled: true
         weight: 5
+      danger_list:
+        weight: 6
         enabled: false
 field_type: entity_reference_revisions
