@@ -1,25 +1,19 @@
-uuid: d81d2fee-793f-4901-8020-915aa429ca40
+uuid: 35f4f2f6-826b-4e66-97da-f00c3174d83f
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
-    - node.type.news
+    - field.storage.paragraph.field_image
+    - paragraphs.paragraphs_type.content_teasers
   module:
     - image
-third_party_settings:
-  content_translation:
-    translation_sync:
-      alt: alt
-      title: title
-      file: '0'
-id: node.news.field_image
+id: paragraph.content_teasers.field_image
 field_name: field_image
-entity_type: node
-bundle: news
-label: Images
+entity_type: paragraph
+bundle: content_teasers
+label: Image
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
