@@ -9,7 +9,7 @@ set classes = [
   {%
   set paragraph_classes = [
   'paragraph',
-  'paragraph--type *' ~ paragraph.bundle|clean_class,
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
   paragraph['#view_mode'] ? 'paragraph--view-mode--' ~ paragraph['#view_mode']|clean_class,
   'iucn-arrow',
   paragraph.field_heading_icon.value ? paragraph.field_heading_icon.value : ''
