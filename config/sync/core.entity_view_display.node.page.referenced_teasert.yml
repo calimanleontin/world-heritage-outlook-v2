@@ -1,14 +1,17 @@
 uuid: 4087f3b8-d11c-4df0-b6e1-890901d9ce97
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
     - field.field.node.page.field_page_elements
-    - field.field.node.page.field_page_teasers
+    - field.field.node.page.field_summary
+    - field.field.node.page.field_teaser_image
     - node.type.page
   module:
+    - blazy
     - ds
+    - smart_trim
     - user
 third_party_settings:
   ds:
@@ -37,17 +40,83 @@ third_party_settings:
         weight: 1
         label: hidden
         formatter: default
-        settings:
-          link: true
-          wrapper: h2
-          class: ''
 id: node.page.referenced_teasert
 targetEntityType: node
 bundle: page
 mode: referenced_teasert
-content: {  }
+content:
+  field_summary:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: '250'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      trim_options:
+        text: text
+      more_class: more-link
+      summary_handler: full
+    third_party_settings: {  }
+    type: smart_trim
+    region: ds_content
+  field_teaser_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: referenced_teaser_600x340_
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: referenced_teasert
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      box_media_style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    type: blazy
+    region: ds_content
 hidden:
   field_page_elements: true
-  field_page_teasers: true
   langcode: true
   links: true

@@ -1,0 +1,11 @@
+uuid: b757b557-36b8-47dc-a33e-ff3450e79ecd
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.benefits_category
+id: taxonomy_term.benefits_category
+target_entity_type_id: taxonomy_term
+target_bundle: benefits_category
+default_langcode: site_default
+language_alterable: false

@@ -3,56 +3,30 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.content_teasers.field_description
-    - field.field.paragraph.content_teasers.field_image
-    - field.field.paragraph.content_teasers.field_page_teaser_link
+    - field.field.paragraph.content_teasers.field_paragraph_background
     - field.field.paragraph.content_teasers.field_paragraph_pages
-    - field.field.paragraph.content_teasers.field_title
-    - image.style.thumbnail
     - paragraphs.paragraphs_type.content_teasers
-  module:
-    - image
-    - link
-    - text
 id: paragraph.content_teasers.default
 targetEntityType: paragraph
 bundle: content_teasers
 mode: default
 content:
-  field_description:
-    weight: 2
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_image:
+  field_paragraph_background:
     weight: 1
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+    settings: {  }
     third_party_settings: {  }
-    type: image_image
+    type: options_select
     region: content
-  field_page_teaser_link:
-    weight: 4
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-    region: content
-  field_title:
+  field_paragraph_pages:
     weight: 0
     settings:
+      match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+    type: entity_reference_autocomplete
     region: content
 hidden:
   created: true
-  field_paragraph_pages: true
   status: true
   uid: true

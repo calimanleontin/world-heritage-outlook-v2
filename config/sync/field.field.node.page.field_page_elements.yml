@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_page_elements
     - node.type.page
     - paragraphs.paragraphs_type.content_html
+    - paragraphs.paragraphs_type.content_teasers
   module:
     - entity_reference_revisions
 id: node.page.field_page_elements
@@ -23,6 +24,7 @@ settings:
   handler_settings:
     target_bundles:
       content_html: content_html
+      content_teasers: content_teasers
     target_bundles_drag_drop:
       danger_list:
         weight: 2
@@ -31,6 +33,6 @@ settings:
         enabled: true
         weight: 3
       content_teasers:
+        enabled: true
         weight: 5
-        enabled: false
 field_type: entity_reference_revisions

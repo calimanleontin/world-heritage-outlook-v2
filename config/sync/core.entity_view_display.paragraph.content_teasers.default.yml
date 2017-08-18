@@ -3,73 +3,37 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.content_teasers.field_description
-    - field.field.paragraph.content_teasers.field_image
-    - field.field.paragraph.content_teasers.field_page_teaser_link
+    - field.field.paragraph.content_teasers.field_paragraph_background
     - field.field.paragraph.content_teasers.field_paragraph_pages
-    - field.field.paragraph.content_teasers.field_title
-    - image.style.page_teaser
     - paragraphs.paragraphs_type.content_teasers
   module:
     - ds
-    - image
-    - link
-    - text
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_homepage_teasers
+      id: iucn_who_1col
       library: null
       disable_css: false
       entity_classes: all_classes
       settings: {  }
     regions:
       content:
-        - field_image
-        - field_title
-        - field_description
-        - field_page_teaser_link
+        - field_paragraph_pages
 id: paragraph.content_teasers.default
 targetEntityType: paragraph
 bundle: content_teasers
 mode: default
 content:
-  field_description:
-    type: text_trimmed
-    weight: 2
-    region: content
-    label: hidden
-    settings:
-      trim_length: 250
-    third_party_settings: {  }
-  field_image:
-    type: image
+  field_paragraph_pages:
     weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: page_teaser
-      image_link: ''
-    third_party_settings: {  }
-  field_page_teaser_link:
-    weight: 3
-    label: hidden
-    settings:
-      trim_length: 80
-      url_only: true
-      url_plain: true
-      rel: '0'
-      target: '0'
-    third_party_settings: {  }
-    type: link
-    region: content
-  field_title:
-    weight: 1
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
+      view_mode: referenced_teasert
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: entity_reference_entity_view
     region: content
 hidden:
-  field_paragraph_pages: true
+  field_paragraph_background: true

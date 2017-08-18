@@ -1,0 +1,28 @@
+uuid: 1c4d1daa-914b-4299-8417-0b855ade480c
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.token
+    - field.field.taxonomy_term.benefits_category.field_category_image
+    - taxonomy.vocabulary.benefits_category
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_news_teaser
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions: {  }
+id: taxonomy_term.benefits_category.token
+targetEntityType: taxonomy_term
+bundle: benefits_category
+mode: token
+content: {  }
+hidden:
+  description: true
+  field_category_image: true
+  langcode: true

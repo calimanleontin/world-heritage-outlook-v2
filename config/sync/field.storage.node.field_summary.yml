@@ -1,13 +1,13 @@
-uuid: fe26c36d-69c3-41ad-bcd9-19cddd5b8563
+uuid: d4c27a28-a44d-4ab4-9182-41974d6c031a
 langcode: en
 status: true
 dependencies:
   module:
-    - paragraphs
+    - node
     - text
-id: paragraph.field_description
-field_name: field_description
-entity_type: paragraph
+id: node.field_summary
+field_name: field_summary
+entity_type: node
 type: text_long
 settings: {  }
 module: text
