@@ -10115,6 +10115,12 @@ ol li.iucn-arrow + .li.arrow {
 .field--name-field-page-teasers .field--name-node-title:first-child > * {
   margin-top: 0;
 }
+.paragraph a,
+.paragraph .block-facets.panel .panel-title,
+.paragraph .block-facets.panel .facet-item > a,
+.paragraph .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #03afdf;
+}
 .paragraph.iucn-1col-wrapper .field--type-text-long h2 {
   font-size: 1.55555556rem;
   margin-top: 1.5em;
