@@ -41,7 +41,7 @@ display:
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
+          expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -263,19 +263,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: search_api_options
-      sorts:
-        title:
-          id: title
-          table: search_api_index_iucn_index
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: search_api
+      sorts: {  }
       title: 'Sites search'
       header: {  }
       footer: {  }

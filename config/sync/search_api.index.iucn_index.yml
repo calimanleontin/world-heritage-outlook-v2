@@ -103,6 +103,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: type
     type: string
+  title_for_sort:
+    label: 'Title for sort'
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
 datasource_settings:
   'entity:node':
     bundles:
@@ -125,8 +130,6 @@ processor_settings:
       h3: 2
       strong: 2
       b: 2
-      em: 1
-      u: 1
     weights:
       preprocess_index: -15
       preprocess_query: -15
