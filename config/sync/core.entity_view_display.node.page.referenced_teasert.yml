@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
     - field.field.node.page.field_page_elements
-    - field.field.node.page.field_page_teasers
     - node.type.page
   module:
     - ds
@@ -44,6 +43,5 @@ mode: referenced_teasert
 content: {  }
 hidden:
   field_page_elements: true
-  field_page_teasers: true
   langcode: true
   links: true

@@ -1,18 +1,18 @@
-uuid: 9fdb15bb-31be-459a-b699-c4e288c927cf
+uuid: 0fcb9906-5b8f-4943-a61e-4b402834fa51
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_title
-    - paragraphs.paragraphs_type.content_teasers
-id: paragraph.content_teasers.field_title
+    - paragraphs.paragraphs_type.teaser
+id: paragraph.teaser.field_title
 field_name: field_title
 entity_type: paragraph
-bundle: content_teasers
+bundle: teaser
 label: Title
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

@@ -90,3 +90,13 @@ function iucn_who_page_attachments_alter(array &$page) {
     $page['#attached']['drupalSettings']['responsive']['breakpoints'] = $media_queries;
   }
 }
+
+function iucn_who_preprocess_iucn_who_benefits_category_teaser(&$variables) {
+  if (!empty($variables['content']['#taxonomy_term'])) {
+    /** @var \Drupal\taxonomy\Entity\Term $term */
+    $term = $variables['content']['#taxonomy_term'];
+    $url = $term->url();
+    $variables['read_more'] = t('Go to') . ' ' . strtolower($term->getName()) . ' >';
+    $variables['read_more_link'] = $url;
+  }
+}

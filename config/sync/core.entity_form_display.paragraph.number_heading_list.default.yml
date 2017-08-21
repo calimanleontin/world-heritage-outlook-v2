@@ -1,25 +1,25 @@
-uuid: f30baa1b-38f7-41a1-b2b6-c230d0e73498
+uuid: 82601819-ee4b-47ef-9dc2-057a1ee17e88
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.content_teasers.field_paragraph_background
-    - field.field.paragraph.content_teasers.field_teasers
-    - paragraphs.paragraphs_type.content_teasers
+    - field.field.paragraph.number_heading_list.field_headline_bg
+    - field.field.paragraph.number_heading_list.field_numbered_headings
+    - paragraphs.paragraphs_type.number_heading_list
   module:
     - paragraphs
-id: paragraph.content_teasers.default
+id: paragraph.number_heading_list.default
 targetEntityType: paragraph
-bundle: content_teasers
+bundle: number_heading_list
 mode: default
 content:
-  field_paragraph_background:
-    type: options_select
+  field_headline_bg:
     weight: 1
-    region: content
     settings: {  }
     third_party_settings: {  }
-  field_teasers:
+    type: options_select
+    region: content
+  field_numbered_headings:
     type: entity_reference_paragraphs
     weight: 0
     settings:

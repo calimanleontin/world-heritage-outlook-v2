@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.taxonomy_term.teaser
     - taxonomy.vocabulary.benefits_category
   module:
-    - blazy
     - ds
     - taxonomy
     - user
@@ -69,12 +68,11 @@ display:
             previous: ‹‹
             next: ››
       style:
-        type: blazy
+        type: default
         options:
-          style: column
-          grid: 1
-          grid_medium: null
-          grid_small: null
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
       row:
         type: 'ds_entity:taxonomy_term'
         options:

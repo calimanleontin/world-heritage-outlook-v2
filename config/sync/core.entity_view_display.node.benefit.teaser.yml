@@ -22,7 +22,7 @@ third_party_settings:
       entity_classes: all_classes
       settings: {  }
     regions:
-      right_1:
+      left_1:
         - field_benefit_image
       content:
         - node_title
@@ -72,7 +72,7 @@ content:
   field_benefit_image:
     type: blazy
     weight: 0
-    region: right_1
+    region: left_1
     label: hidden
     settings:
       style: ''

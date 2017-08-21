@@ -1,14 +1,13 @@
-uuid: 7a926701-c79a-4692-9a1f-45c1a1e13e05
+uuid: ecbacef3-f194-49a9-b875-50d47994a22c
 langcode: en
 status: true
 dependencies:
   module:
     - entity_reference_revisions
-    - node
     - paragraphs
-id: node.field_page_teasers
-field_name: field_page_teasers
-entity_type: node
+id: paragraph.field_teasers
+field_name: field_teasers
+entity_type: paragraph
 type: entity_reference_revisions
 settings:
   target_type: paragraph

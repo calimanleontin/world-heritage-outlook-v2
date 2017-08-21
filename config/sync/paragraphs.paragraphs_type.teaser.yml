@@ -1,0 +1,7 @@
+uuid: 114e7c3a-0507-47bf-adc1-8aa03b6f6c61
+langcode: en
+status: true
+dependencies: {  }
+id: teaser
+label: Teaser
+behavior_plugins: {  }

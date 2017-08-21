@@ -1,0 +1,7 @@
+uuid: 220bd119-fc63-45e9-8bfc-7c54b16a818e
+langcode: en
+status: true
+dependencies: {  }
+id: number_heading_list
+label: 'Numbered heading list (not used)'
+behavior_plugins: {  }

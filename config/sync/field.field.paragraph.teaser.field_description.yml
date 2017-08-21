@@ -1,20 +1,20 @@
-uuid: 3f336441-0b16-4681-9536-4d30dfc7b117
+uuid: ef5628a3-98cd-412e-b154-4df6ff7a6330
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_description
-    - paragraphs.paragraphs_type.content_teasers
+    - paragraphs.paragraphs_type.teaser
   module:
     - text
-id: paragraph.content_teasers.field_description
+id: paragraph.teaser.field_description
 field_name: field_description
 entity_type: paragraph
-bundle: content_teasers
+bundle: teaser
 label: Description
 description: ''
-required: true
-translatable: false
+required: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }
