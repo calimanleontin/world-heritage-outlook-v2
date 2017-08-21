@@ -264,8 +264,31 @@ display:
           reduce_duplicates: false
           plugin_id: search_api_options
       sorts: {  }
-      title: 'Sites search'
-      header: {  }
+      title: 'Search all natural sites'
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: '<span class="sites-search-results">RESULTS: @total SITES</span>'
+          plugin_id: result
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<span class="sites-search-clear"><a href="[site:url]/sites-search" class="pull-right">CLEAR SEARCH</a></span>'
+            format: html
+          plugin_id: text
       footer: {  }
       empty:
         area:
