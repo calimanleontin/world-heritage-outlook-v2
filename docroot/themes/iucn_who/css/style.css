@@ -9874,6 +9874,18 @@ ol li.iucn-arrow + .li.arrow {
     padding-left: 15px;
   }
 }
+.path-sites-search .view-sites-search .view-header {
+  margin-top: -7px;
+  margin-bottom: 17px;
+  padding: 0px;
+}
+.path-sites-search .view-sites-search .view-header .sites-search-results {
+  font-size: 0.8em;
+  margin-top: 0px;
+}
+.path-sites-search .view-sites-search .view-header .sites-search-clear {
+  font-size: 1em;
+}
 .search-block-container {
   background-color: #134780;
   color: #fff;
