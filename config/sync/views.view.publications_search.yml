@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block.block.sortbyviewpublicationssearchdisplaypage
     - search_api.index.iucn_index
   module:
     - search_api
@@ -212,7 +213,30 @@ display:
           plugin_id: search_api_date
       sorts: {  }
       title: Publications
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Showing @start - @end of @total publications'
+          plugin_id: result
+        entity_block:
+          id: entity_block
+          table: views
+          field: entity_block
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          target: sortbyviewpublicationssearchdisplaypage
+          view_mode: default
+          bypass_access: false
+          plugin_id: entity
       footer: {  }
       empty:
         area:

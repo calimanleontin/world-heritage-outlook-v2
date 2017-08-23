@@ -1,0 +1,11 @@
+uuid: 0e421458-29a7-439c-a918-c8e09e83a942
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_field_designation
+display_id: views_page---publications_search__publications_search_page
+field_identifier: field_designation
+default_sort: false
+default_order: asc
+label: Designation
+weight: 0

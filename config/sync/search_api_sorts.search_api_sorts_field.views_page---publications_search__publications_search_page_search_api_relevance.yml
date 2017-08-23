@@ -1,0 +1,11 @@
+uuid: 50f24b3a-fd54-4676-9dea-e9f5931ff613
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_search_api_relevance
+display_id: views_page---publications_search__publications_search_page
+field_identifier: search_api_relevance
+default_sort: false
+default_order: desc
+label: Relevance
+weight: 0

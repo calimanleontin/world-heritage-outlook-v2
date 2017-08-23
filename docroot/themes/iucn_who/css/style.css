@@ -12335,4 +12335,9 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
     display: none;
   }
 }
-/*# sourceMappingURL=style.css.map */
+.view-publications-search .view-header .block-search-api-sorts {
+  float: right;
+}
+.view-publications-search .view-header .block-search-api-sorts ul {
+  list-style-type: none;
+}
