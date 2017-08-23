@@ -1,0 +1,11 @@
+uuid: 3ddeb571-b897-4566-aa8c-beaa1802ef0c
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_title_for_sort
+display_id: views_page---publications_search__publications_search_page
+field_identifier: title_for_sort
+default_sort: false
+default_order: asc
+label: 'Title for sort'
+weight: 0

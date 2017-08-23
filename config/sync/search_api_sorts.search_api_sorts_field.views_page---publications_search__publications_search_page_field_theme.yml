@@ -1,0 +1,11 @@
+uuid: c02b6e25-5e0f-4d4f-9b17-bac58b3fc279
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_field_theme
+display_id: views_page---publications_search__publications_search_page
+field_identifier: field_theme
+default_sort: false
+default_order: asc
+label: Theme
+weight: 0
