@@ -41,6 +41,18 @@ function iucn_who_preprocess_block(&$variables) {
         $variables['content']['#attributes']['data-region'] = $block->getRegion();
       }
   }
+
+  // Change search api sort label based on sort order.
+  if (isset($variables['content']['links']['#items'][0]['#theme'])) {
+    if ($variables['content']['links']['#items'][0]['#theme'] == 'search_api_sorts_sort') {
+      $url = $variables['content']['links']['#items'][0]['#url'];
+      if (strpos($url, '/publications') !== FALSE) {
+        if (strpos($url, 'order=desc') !== FALSE) {
+          $variables['content']['links']['#items'][0]['#label'] = t('Sort from oldest to newest');
+        }
+      }
+    }
+  }
 }
 
 // add a template suggestion based on region name
