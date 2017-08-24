@@ -20,6 +20,7 @@ global-styling:
       theme:
         css/style.css: {}
     js:
+      js/publications.js: {}
       js/main.js: {}
       js/navbar-headroom.js: {}
     dependencies:
