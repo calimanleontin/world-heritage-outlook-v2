@@ -252,7 +252,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'No sites found.'
+            value: 'No publications found.'
             format: html
           plugin_id: text
       relationships: {  }

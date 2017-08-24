@@ -112,11 +112,23 @@
 
 .view-publications-search {
   .view-header {
+    text-transform: uppercase;
+    font-size: @font-size-small;
     .block-search-api-sorts {
       float: right;
       ul {
+        color: @iucn-blue-light;
         list-style-type: none;
+        li > a {
+          color: @iucn-blue-light;
+          .tablesort {
+            background-image: url(~'@{images-path}dropdown-caret-centered.svg');
+            background-position: bottom;
+            background-repeat: no-repeat;
+          }
+        }
       }
     }
   }
 }
+
