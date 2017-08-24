@@ -238,7 +238,7 @@ display:
           tokenize: true
           target: sortbyviewpublicationssearchdisplaypage
           view_mode: default
-          bypass_access: false
+          bypass_access: true
           plugin_id: entity
       footer: {  }
       empty:
