@@ -47,7 +47,7 @@ function iucn_who_preprocess_block(&$variables) {
     if ($variables['content']['links']['#items'][0]['#theme'] == 'search_api_sorts_sort') {
       $url = $variables['content']['links']['#items'][0]['#url'];
       if (strpos($url, '/publications') !== FALSE) {
-        if (strpos($url, 'order=desc') !== FALSE) {
+        if (strpos($url, 'order=asc') !== FALSE) {
           $variables['content']['links']['#items'][0]['#label'] = t('Sort from oldest to newest');
         }
       }
