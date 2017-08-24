@@ -12356,6 +12356,7 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
 .view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title .tablesort,
 .view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a .tablesort,
 .view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title .tablesort {
+  margin-left: 0.5em;
   background-image: url(../images/dropdown-caret-centered.svg);
   background-position: bottom;
   background-repeat: no-repeat;
