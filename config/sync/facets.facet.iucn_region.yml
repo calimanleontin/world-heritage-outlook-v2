@@ -1,9 +1,9 @@
-uuid: 52c63961-8380-4fa3-a77e-b60ac5f81522
+uuid: 8dacc286-a102-4fdd-9960-bf97ee9eb263
 langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.iucn_index
+    - search_api.index.iucn_database_index
     - views.view.sites_search
   module:
     - search_api
@@ -14,7 +14,7 @@ weight: 0
 min_count: 1
 show_only_one_result: false
 field_identifier: field_iucn_region
-facet_source_id: 'search_api:views_page__sites_search__sites_search_page'
+facet_source_id: 'search_api:views_page__sites_search__sites_search_page_database'
 widget:
   type: links
   config:

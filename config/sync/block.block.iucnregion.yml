@@ -1,4 +1,4 @@
-uuid: da0cc0b7-d9ec-4159-a2a0-bcd67db60b98
+uuid: 8d059bad-cefb-43b0-a0f7-a8167aac42af
 langcode: en
 status: true
 dependencies:
@@ -12,7 +12,7 @@ dependencies:
 id: iucnregion
 theme: iucn_who
 region: facets
-weight: -11
+weight: 0
 provider: null
 plugin: 'facet_block:iucn_region'
 settings:
