@@ -9748,7 +9748,7 @@ ol li.iucn-arrow + .li.arrow {
 .block-facets.panel:first-child .panel-title {
   margin-top: 0;
 }
-.block-facets.panel .item-list__links {
+.block-facets.panel ul {
   list-style-type: none;
   padding-left: .5em;
   position: relative;

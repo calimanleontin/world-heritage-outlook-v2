@@ -8,6 +8,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Validation\Plugin\Validation\Constraint;
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_help().
@@ -67,5 +68,36 @@ function iucn_site_preprocess_page_title(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node && $node->type->target_id == 'publication') {
     $variables['title'] = t('Publications');
+  }
+}
+
+
+/**
+ * Implements hook_node_presave().
+ */
+function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+
+  if (($node->bundle() == 'site' || $node->bundle() == 'publication')  && $node->language()->getId() == $default_language && \Drupal::request()->attributes->get('_entity_form') != 'node.delete') {
+    $old_node = Node::load($node->id());
+    $languages = \Drupal::languageManager()->getLanguages();
+    foreach ($languages as $language) {
+      $lang_id = $language->getId();
+      if ($lang_id != $default_language) {
+        if ($node->hasTranslation($lang_id)) {
+          if ($node->getTranslation($lang_id)->getTitle() == $old_node->getTitle()) {
+            $node->getTranslation($lang_id)->setTitle($node->getTitle());
+            $node->getTranslation($lang_id)->set('body', $node->get('body')->getValue());
+          }
+        }
+        else {
+            $node->addTranslation($lang_id, [
+              'title' => $node->getTitle(),
+              'body' => $node->get('body')->getValue(),
+            ]
+            );
+        }
+      }
+    }
   }
 }

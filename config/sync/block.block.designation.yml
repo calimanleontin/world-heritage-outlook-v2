@@ -1,4 +1,4 @@
-uuid: 5aa1c825-28c9-49df-be8b-55aaea5d4816
+uuid: 9f6bfc98-08e9-475d-b94b-87a0c214cb66
 langcode: en
 status: true
 dependencies:
@@ -12,7 +12,7 @@ dependencies:
 id: designation
 theme: iucn_who
 region: facets
-weight: -9
+weight: -8
 provider: null
 plugin: 'facet_block:designation'
 settings:
