@@ -12282,14 +12282,14 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   font-size: 2rem;
   font-weight: 500;
 }
-#publications-back-button {
+.publications-back-button {
   padding-bottom: 1em;
   padding-top: 0.3em;
 }
-#publications-back-button a,
-#publications-back-button .block-facets.panel .panel-title,
-#publications-back-button .block-facets.panel .facet-item > a,
-#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.publications-back-button a,
+.publications-back-button .block-facets.panel .panel-title,
+.publications-back-button .block-facets.panel .facet-item > a,
+.publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-top: 1px solid;
   padding-top: 0.5em;
   display: inline-block;
@@ -12302,10 +12302,10 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   position: relative;
   line-height: 1.2;
 }
-#publications-back-button a .backicon,
-#publications-back-button .block-facets.panel .panel-title .backicon,
-#publications-back-button .block-facets.panel .facet-item > a .backicon,
-#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+.publications-back-button a .backicon,
+.publications-back-button .block-facets.panel .panel-title .backicon,
+.publications-back-button .block-facets.panel .facet-item > a .backicon,
+.publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
   padding-top: 2em;
   background-image: url(../images/icon-backarrow.svg);
   background-position: left center;
@@ -12318,15 +12318,15 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   width: 4em;
 }
 @media screen and (max-width: 767px) {
-  #publications-back-button a .backicon,
-  #publications-back-button .block-facets.panel .panel-title .backicon,
-  #publications-back-button .block-facets.panel .facet-item > a .backicon,
-  #publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+  .publications-back-button a .backicon,
+  .publications-back-button .block-facets.panel .panel-title .backicon,
+  .publications-back-button .block-facets.panel .facet-item > a .backicon,
+  .publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
     width: 2.5em;
   }
 }
 @media screen and (max-width: 767px) {
-  #publications-back-button {
+  .publications-back-button {
     visibility: hidden;
     clear: both;
     float: left;
