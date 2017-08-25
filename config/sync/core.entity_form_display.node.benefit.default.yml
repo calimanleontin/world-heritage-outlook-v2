@@ -34,12 +34,9 @@ content:
     third_party_settings: {  }
   field_benefit_category:
     weight: 33
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   field_benefit_image:
     weight: 32
@@ -82,6 +79,11 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
