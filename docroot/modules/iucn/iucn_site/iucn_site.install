@@ -3,17 +3,21 @@
 use Drupal\node\Entity\Node;
 
 /**
- * Add missing translations to all sites.
+ * Add missing translations to all sites and publications.
  */
 
 function iucn_site_update_8001() {
-
-  $node_ids = \Drupal::entityQuery('node')
-    ->condition('type', 'site')
-    ->execute();
-  if ($node_ids) {
-    foreach ($node_ids as $node_id) {
-      $node = Node::load($node_id);
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' =>
+          [
+            'site',
+            'publication',
+          ],
+    ]);
+  if ($nodes) {
+    foreach ($nodes as $node) {
       $node->save();
     }
   }
