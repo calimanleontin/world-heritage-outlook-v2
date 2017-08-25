@@ -12335,29 +12335,30 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
     display: none;
   }
 }
-.view-publications-search .view-header {
+.view-publications .view-header {
   text-transform: uppercase;
   font-size: 0.85rem;
 }
-.view-publications-search .view-header .block-search-api-sorts {
+.view-publications .view-header .block-search-api-sorts {
   float: right;
 }
-.view-publications-search .view-header .block-search-api-sorts ul {
+.view-publications .view-header .block-search-api-sorts ul {
   color: #03afdf;
   list-style-type: none;
 }
-.view-publications-search .view-header .block-search-api-sorts ul li > a,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.view-publications .view-header .block-search-api-sorts ul li > a,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #03afdf;
 }
-.view-publications-search .view-header .block-search-api-sorts ul li > a .tablesort,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title .tablesort,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a .tablesort,
-.view-publications-search .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title .tablesort {
+.view-publications .view-header .block-search-api-sorts ul li > a .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title .tablesort {
   margin-left: 0.5em;
   background-image: url(../images/dropdown-caret-centered.svg);
   background-position: bottom;
   background-repeat: no-repeat;
 }
+/*# sourceMappingURL=style.css.map */

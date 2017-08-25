@@ -1,4 +1,4 @@
-uuid: e4d5e9ec-db8d-43a8-91d2-fb7247bcdada
+uuid: d82c9c47-e541-49b6-af98-4501772bdd5f
 langcode: en
 status: true
 dependencies:
@@ -7,15 +7,15 @@ dependencies:
     - system
   theme:
     - iucn_who
-id: sortbyviewpublicationssearchdisplaypage
+id: sortbyviewpublicationsdisplaypage
 theme: iucn_who
 region: content
 weight: 0
 provider: null
-plugin: 'search_api_sorts_block:views_page:publications_search__publications_search_page'
+plugin: 'search_api_sorts_block:views_page:publications__publications_page_database'
 settings:
-  id: 'search_api_sorts_block:views_page:publications_search__publications_search_page'
-  label: 'Publications search sort by - hidden'
+  id: 'search_api_sorts_block:views_page:publications__publications_page_database'
+  label: 'Sort by (View Publications, display Page)'
   provider: search_api_sorts
   label_display: '0'
 visibility:

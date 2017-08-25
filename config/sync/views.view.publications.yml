@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block.block.sortbyviewpublicationsdisplaypage
     - search_api.index.iucn_database_index
   module:
     - search_api
@@ -261,8 +262,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
-          content: 'Showing @start - @end of @total publications'
+          empty: true
+          content: '<span class="publications-search-results">RESULTS: @total PUBLICATIONS</span>'
           plugin_id: result
         entity_block:
           id: entity_block
@@ -273,7 +274,7 @@ display:
           admin_label: ''
           empty: false
           tokenize: true
-          target: sortbyviewpublicationssearchdisplaypage
+          target: sortbyviewpublicationsdisplaypage
           view_mode: default
           bypass_access: true
           plugin_id: entity
@@ -301,6 +302,7 @@ display:
         type: none
       defaults:
         cache: false
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
