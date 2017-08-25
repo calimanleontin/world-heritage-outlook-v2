@@ -1,4 +1,4 @@
-uuid: bf77f03a-d383-424d-91e8-91425cad7539
+uuid: 6fecba62-e6bb-4564-8ccb-3ed245fc4ed3
 langcode: en
 status: true
 dependencies:
@@ -9,13 +9,13 @@ dependencies:
     - field.storage.node.field_designation
     - field.storage.node.field_theme
     - field.storage.node.field_publication_year
-    - search_api.server.iucn
+    - search_api.server.iucn_database
   module:
     - taxonomy
     - search_api
     - node
-id: iucn_index
-name: 'Iucn index'
+id: iucn_database_index
+name: 'Iucn database index'
 description: ''
 read_only: false
 field_settings:
@@ -32,7 +32,7 @@ field_settings:
     property_path: title
     type: text
   name:
-    label: Country
+    label: 'Country » Taxonomy term » Name'
     datasource_id: 'entity:node'
     property_path: 'field_country:entity:name'
     type: text
@@ -42,21 +42,21 @@ field_settings:
       module:
         - taxonomy
   status:
-    label: status
+    label: 'Publishing status'
     datasource_id: 'entity:node'
     property_path: status
     type: boolean
     indexed_locked: true
     type_locked: true
   uid:
-    label: uid
+    label: 'Authored by'
     datasource_id: 'entity:node'
     property_path: uid
     type: integer
     indexed_locked: true
     type_locked: true
   field_iucn_region:
-    label: 'IUCN Region'
+    label: 'Country » Taxonomy term » IUCN Region'
     datasource_id: 'entity:node'
     property_path: 'field_country:entity:field_iucn_region'
     type: integer
@@ -67,7 +67,7 @@ field_settings:
       module:
         - taxonomy
   field_inscription_criteria:
-    label: 'Inscription criteria'
+    label: Criteria
     datasource_id: 'entity:node'
     property_path: field_inscription_criteria
     type: integer
@@ -90,6 +90,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_theme
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
   field_publication_year:
     label: 'Publication year'
     datasource_id: 'entity:node'
@@ -98,16 +108,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_publication_year
-  type:
-    label: 'Content type'
-    datasource_id: 'entity:node'
-    property_path: type
-    type: string
-  title_for_sort:
-    label: 'Title for sort'
-    datasource_id: 'entity:node'
-    property_path: title
-    type: string
 datasource_settings:
   'entity:node':
     bundles:
@@ -122,6 +122,7 @@ processor_settings:
     fields:
       - title
       - name
+      - type
     title: true
     alt: true
     tags:
@@ -146,6 +147,17 @@ processor_settings:
     weights:
       postprocess_query: 0
   rendered_item: {  }
+  ignorecase:
+    all_fields: false
+    fields:
+      - node_grants
+      - title
+      - name
+      - type
+      - langcode
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
   content_access:
     weights:
       preprocess_query: -30
@@ -155,4 +167,4 @@ tracker_settings:
 options:
   index_directly: true
   cron_limit: 50
-server: iucn
+server: iucn_database

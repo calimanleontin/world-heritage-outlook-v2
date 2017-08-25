@@ -1,4 +1,4 @@
-uuid: 70840e40-01b6-4e21-84b7-fa094033e3e8
+uuid: b30bca6f-b8d4-4355-b972-62aa50b745bc
 langcode: en
 status: true
 dependencies:
@@ -9,14 +9,14 @@ dependencies:
     - views
   theme:
     - iucn_who
-id: exposedformsites_searchsites_search_page
+id: exposedformsites_searchsites_search_page_database
 theme: iucn_who
 region: search_block
-weight: -9
+weight: 0
 provider: null
-plugin: 'views_exposed_filter_block:sites_search-sites_search_page'
+plugin: 'views_exposed_filter_block:sites_search-sites_search_page_database'
 settings:
-  id: 'views_exposed_filter_block:sites_search-sites_search_page'
+  id: 'views_exposed_filter_block:sites_search-sites_search_page_database'
   label: ''
   provider: views
   label_display: visible

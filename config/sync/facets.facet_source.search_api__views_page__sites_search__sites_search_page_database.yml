@@ -1,0 +1,11 @@
+uuid: 17b23abf-9cb8-41b6-bcd1-d9b5c8b6ab72
+langcode: en
+status: true
+dependencies: {  }
+id: search_api__views_page__sites_search__sites_search_page_database
+name: 'search_api:views_page__sites_search__sites_search_page_database'
+filter_key: ''
+url_processor: iucn_facets_pretty_paths
+breadcrumb:
+  active: false
+  group: false

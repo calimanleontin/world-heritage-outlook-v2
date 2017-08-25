@@ -1,0 +1,11 @@
+uuid: ead2c9ed-b3d8-4e22-9d22-76047d9ea6cd
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications__publications_page_database_field_iucn_region
+display_id: views_page---publications__publications_page_database
+field_identifier: field_iucn_region
+default_sort: false
+default_order: asc
+label: 'Country » Taxonomy term » IUCN Region'
+weight: 0

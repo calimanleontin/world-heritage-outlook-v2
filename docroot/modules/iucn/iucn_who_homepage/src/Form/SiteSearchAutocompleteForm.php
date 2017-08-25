@@ -33,7 +33,7 @@ class SiteSearchAutocompleteForm extends FormBase {
    */
   public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
     $search_view = Views::getView('sites_search');
-    $search_view->setDisplay('sites_search_page');
+    $search_view->setDisplay('sites_search_page_database');
 
     $sites = SitesQueryUtil::getPublishedSites();
     $site_options = ['' => $this->t('Search for a site')];
@@ -53,7 +53,7 @@ class SiteSearchAutocompleteForm extends FormBase {
       'advanced_search' => [
         '#markup' => Link::fromTextAndUrl(
           $this->t('Advanced search'),
-          Url::fromRoute('view.sites_search.sites_search_page')
+          Url::fromRoute('view.sites_search.sites_search_page_database')
         )->toString(),
       ],
     ];
@@ -76,7 +76,7 @@ class SiteSearchAutocompleteForm extends FormBase {
       $node = reset($results);
       $form_state->setRedirect('entity.node.canonical', ['node' => $node->id()]);
     } else {
-      $form_state->setRedirect('view.sites_search.sites_search_page', ['keys' => $q ]);
+      $form_state->setRedirect('view.sites_search.sites_search_page_database', ['keys' => $q ]);
     }
   }
 }
