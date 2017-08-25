@@ -12,7 +12,7 @@ dependencies:
 id: inscriptioncriteria
 theme: iucn_who
 region: facets
-weight: 0
+weight: -9
 provider: null
 plugin: 'facet_block:inscription_criteria'
 settings:

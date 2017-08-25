@@ -8,6 +8,7 @@ dependencies:
     - field.storage.node.field_inscription_criteria
     - field.storage.node.field_designation
     - field.storage.node.field_theme
+    - field.storage.node.field_publication_year
     - search_api.server.iucn_database
   module:
     - taxonomy
@@ -99,6 +100,14 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: langcode
     type: string
+  field_publication_year:
+    label: 'Publication year'
+    datasource_id: 'entity:node'
+    property_path: field_publication_year
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_publication_year
 datasource_settings:
   'entity:node':
     bundles:
@@ -138,10 +147,6 @@ processor_settings:
     weights:
       postprocess_query: 0
   rendered_item: {  }
-  content_access:
-    weights:
-      preprocess_query: -30
-  entity_status: {  }
   ignorecase:
     all_fields: false
     fields:
@@ -153,6 +158,10 @@ processor_settings:
     weights:
       preprocess_index: -20
       preprocess_query: -20
+  content_access:
+    weights:
+      preprocess_query: -30
+  entity_status: {  }
 tracker_settings:
   default: {  }
 options:

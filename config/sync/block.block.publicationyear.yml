@@ -1,28 +1,28 @@
-uuid: 8d059bad-cefb-43b0-a0f7-a8167aac42af
+uuid: 225c047d-66dc-4b5b-9e3a-242e69ba7f78
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.iucn_region
+    - facets.facet.publication_year
   module:
     - facets
     - system
   theme:
     - iucn_who
-id: iucnregion
+id: publicationyear
 theme: iucn_who
 region: facets
-weight: -10
+weight: -6
 provider: null
-plugin: 'facet_block:iucn_region'
+plugin: 'facet_block:publication_year'
 settings:
-  id: 'facet_block:iucn_region'
-  label: 'IUCN Region'
+  id: 'facet_block:publication_year'
+  label: 'Publication year'
   provider: facets
   label_display: visible
 visibility:
   request_path:
     id: request_path
-    pages: /sites-search
+    pages: /publications
     negate: false
     context_mapping: {  }
