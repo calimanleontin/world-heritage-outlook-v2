@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.content_html
     - paragraphs.paragraphs_type.content_teasers
     - paragraphs.paragraphs_type.numbered_heading
+    - paragraphs.paragraphs_type.pdf_download_button
   module:
     - entity_reference_revisions
 id: node.page.field_page_elements
@@ -27,23 +28,27 @@ settings:
       content_html: content_html
       content_teasers: content_teasers
       numbered_heading: numbered_heading
+      pdf_download_button: pdf_download_button
     target_bundles_drag_drop:
       danger_list:
-        weight: 2
+        weight: -15
         enabled: false
       content_html:
         enabled: true
-        weight: 3
+        weight: -14
       content_teasers:
         enabled: true
-        weight: 5
+        weight: -13
       number_heading_list:
-        weight: 6
+        weight: -12
         enabled: false
       numbered_heading:
         enabled: true
-        weight: 10
+        weight: -11
+      pdf_download_button:
+        enabled: true
+        weight: -10
       teaser:
-        weight: 12
+        weight: -9
         enabled: false
 field_type: entity_reference_revisions
