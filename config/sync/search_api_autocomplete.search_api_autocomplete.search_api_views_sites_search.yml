@@ -1,0 +1,23 @@
+uuid: 78881108-f0b6-42b9-906e-d6238c201e37
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.iucn_database_index
+id: search_api_views_sites_search
+label: search_api_views_sites_search
+index_id: iucn_database_index
+suggester: server
+suggester_settings:
+  fields:
+    title: title
+    name: name
+type: views
+type_settings:
+  display: default
+options:
+  min_length: 1
+  show_count: false
+  delay: null
+  submit_button_selector: ':submit'
+  autosubmit: true
