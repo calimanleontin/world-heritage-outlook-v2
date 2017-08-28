@@ -11,7 +11,7 @@ id: node.publication.field_publication_year
 field_name: field_publication_year
 entity_type: node
 bundle: publication
-label: 'Publication year'
+label: 'Publish year'
 description: ''
 required: false
 translatable: false
