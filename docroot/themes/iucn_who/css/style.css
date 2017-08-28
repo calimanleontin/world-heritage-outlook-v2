@@ -9924,7 +9924,7 @@ ol li.iucn-arrow + .li.arrow {
   padding: 0px;
 }
 .path-sites-search .view-sites-search .view-header .sites-search-results {
-  font-size: 0.8em;
+  font-size: 11px;
   margin-top: 0px;
 }
 .path-sites-search .view-sites-search .view-header .sites-search-clear {
@@ -12515,3 +12515,4 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   background-position: bottom;
   background-repeat: no-repeat;
 }
+/*# sourceMappingURL=style.css.map */
