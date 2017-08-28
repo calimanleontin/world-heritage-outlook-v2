@@ -1,7 +1,7 @@
 (function($) {
     $(function() {
         var previousURI = document.referrer;
-        if(!previousURI.startsWith(location.origin) || !previousURI.includes("/publications") || previousURI.includes("/publications/")) {
+        if(!previousURI.startsWith(location.origin) || !previousURI.includes("/publications")) {
             var url = document.URL,
                 previousURI=url.substring(0,url.lastIndexOf("/"));
         }
