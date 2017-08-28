@@ -289,6 +289,7 @@ template {
 a,
 .block-facets.panel .panel-title,
 .block-facets.panel .facet-item > a,
+.field--name-field-teasers h2,
 .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   background-color: transparent;
 }
@@ -450,6 +451,7 @@ th {
   .block-facets.panel .panel-title:visited,
   .block-facets.panel .facet-item > a,
   .block-facets.panel .facet-item > a:visited,
+  .field--name-field-teasers h2,
   .block-facets.panel .facet-item > .block-facets.panel .panel-title,
   .block-facets.panel .facet-item > .block-facets.panel .panel-title:visited {
     text-decoration: underline;
@@ -1359,6 +1361,7 @@ textarea {
 a,
 .block-facets.panel .panel-title,
 .block-facets.panel .facet-item > a,
+.field--name-field-teasers h2,
 .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #134780;
   text-decoration: none;
@@ -9269,6 +9272,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
 a,
 .block-facets.panel .panel-title,
 .block-facets.panel .facet-item > a,
+.field--name-field-teasers h2,
 .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   transition: color 0.2s, background-color 0.2s;
 }
@@ -10101,30 +10105,36 @@ ol li.iucn-arrow + .li.arrow {
   }
 }
 @media screen and (max-width: 767px) {
-  .field--name-field-page-teasers {
+  .field--name-field-teasers {
     display: flex;
     flex-wrap: wrap;
   }
 }
-.field--name-field-page-teasers > .field--item {
+.field--name-field-teasers > .field--item {
   margin-top: 3em;
 }
 @media screen and (max-width: 767px) {
-  .field--name-field-page-teasers > .field--item {
+  .field--name-field-teasers > .field--item {
     margin-top: 2em;
   }
 }
 @media screen and (max-width: 767px) and (min-width: 530px) {
-  .field--name-field-page-teasers > .field--item {
+  .field--name-field-teasers > .field--item {
     flex: 0 1 50%;
     margin-left: auto;
     margin-right: auto;
   }
 }
-.field--name-field-page-teasers h2 {
+.field--name-field-teasers h2 {
   font-size: 1.33333333rem;
+  color: #134780;
 }
-.field--name-field-page-teasers .field--name-node-title:first-child > * {
+.field--name-field-teasers h2:hover,
+.field--name-field-teasers h2:active,
+.field--name-field-teasers h2:focus {
+  color: #03afdf;
+}
+.field--name-field-teasers .field--name-node-title:first-child > * {
   margin-top: 0;
 }
 .paragraph a,

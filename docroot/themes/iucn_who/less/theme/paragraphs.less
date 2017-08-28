@@ -1,4 +1,4 @@
-.field--name-field-page-teasers {
+.field--name-field-teasers {
   @media @grid-mobile {
     display: flex;
     flex-wrap: wrap;
@@ -16,6 +16,11 @@
   }
   h2 {
     font-size: 24 * @rem-multiplier--desktop;
+    &:extend(a);
+    color: @iucn-blue-dark;
+    &:hover, &:active, &:focus {
+      color: @iucn-blue-light;
+    }
   }
   .field--name-node-title {
     &:first-child {
