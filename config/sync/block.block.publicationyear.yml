@@ -17,7 +17,7 @@ provider: null
 plugin: 'facet_block:publication_year'
 settings:
   id: 'facet_block:publication_year'
-  label: 'Publication year'
+  label: 'Publish year'
   provider: facets
   label_display: visible
 visibility:
