@@ -11440,6 +11440,14 @@ ol li.iucn-arrow + .li.arrow {
 .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title.data-deficient:before {
   background-color: #fff;
 }
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .path-frontpage #map-filters li > a,
+  .path-frontpage #map-filters li > .block-facets.panel .panel-title,
+  .path-frontpage #map-filters li > .block-facets.panel .facet-item > a,
+  .path-frontpage #map-filters li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+    padding-left: 0;
+  }
+}
 @media screen and (max-width: 767px) {
   .path-frontpage #map-filters {
     display: none;
