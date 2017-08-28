@@ -7780,8 +7780,36 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 .node-preview-form-select {
   padding: 15px;
 }
+.pagination > li {
+  display: inline-block;
+}
 .pagination > li > a {
   color: #333333;
+}
+.pagination > .active > a {
+  font-weight: 900;
+}
+.pagination > .pager__item--previous > a,
+.pagination > .pager__item--next > a {
+  padding: 0;
+}
+.pagination > .pager__item--previous > a:before,
+.pagination > .pager__item--next > a:before {
+  content: '';
+  background-image: url(../images/icon-arrow.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 2em;
+  height: 1.5em;
+  display: inline-block;
+}
+.pagination > .pager__item--previous span[aria-hidden="true"],
+.pagination > .pager__item--next span[aria-hidden="true"] {
+  font-size: 0;
+}
+.pagination > .pager__item--previous > a:before {
+  transform: rotate(180deg);
 }
 /**
  * Panel styling.
