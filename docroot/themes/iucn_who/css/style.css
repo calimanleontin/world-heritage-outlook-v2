@@ -8903,6 +8903,9 @@ ol li.iucn-arrow + .li.arrow {
 .block-facets .facet-item__status + .facet-item__value {
   background: #f0f0f0;
 }
+.block-facets .facet-item + .facet-item {
+  margin-top: .2em;
+}
 .block-facets .facet-item > a {
   color: #134780;
   transition: color 0.2s, background-color 0.2s;
