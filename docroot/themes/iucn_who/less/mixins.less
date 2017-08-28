@@ -26,7 +26,14 @@
     }
   }
 }
-
+.link() {
+  color: @link-color;
+  transition: color .2s, background-color .2s;
+  &:hover, &:focus, &:active {
+    text-decoration: none;
+    color: @link-hover-color;
+  }
+}
 .light-link() {
   &, a {
     color: @iucn-blue-light;
