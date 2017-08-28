@@ -1,4 +1,4 @@
-uuid: 409f68ff-8b2e-43cb-b9b7-c24ab7a19573
+uuid: 41e9dde2-8c66-4075-a142-f06d45194936
 langcode: en
 status: true
 dependencies:
@@ -12,7 +12,7 @@ dependencies:
 id: inscriptioncriteria
 theme: iucn_who
 region: facets
-weight: -10
+weight: -9
 provider: null
 plugin: 'facet_block:inscription_criteria'
 settings:

@@ -3,5 +3,5 @@ langcode: en
 status: true
 dependencies: {  }
 id: content_teasers
-label: 'Page Teasers'
+label: Teasers
 behavior_plugins: {  }

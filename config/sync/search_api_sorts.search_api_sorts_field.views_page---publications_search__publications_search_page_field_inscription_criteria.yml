@@ -1,0 +1,11 @@
+uuid: 24d7e826-9a21-4799-a7fd-114831a0fd0b
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_field_inscription_criteria
+display_id: views_page---publications_search__publications_search_page
+field_identifier: field_inscription_criteria
+default_sort: false
+default_order: asc
+label: 'Inscription criteria'
+weight: 0

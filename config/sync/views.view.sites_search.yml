@@ -1,9 +1,9 @@
-uuid: 83320ea9-9595-4b36-8348-2abf20311e9a
+uuid: 50575e27-4a99-4b55-a8c8-e2f666f757a9
 langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.iucn_index
+    - search_api.index.iucn_database_index
   module:
     - search_api
     - user
@@ -12,7 +12,7 @@ label: 'Sites search'
 module: views
 description: ''
 tag: ''
-base_table: search_api_index_iucn_index
+base_table: search_api_index_iucn_database_index
 base_field: search_api_id
 core: 8.x
 display:
@@ -72,10 +72,15 @@ display:
         options:
           view_modes:
             'entity:node':
+              benefit: default
+              faq: default
+              news: default
+              page: default
+              publication: default
               site: search_index
       fields:
         title:
-          table: search_api_index_iucn_index
+          table: search_api_index_iucn_database_index
           field: title
           id: title
           entity_type: null
@@ -146,7 +151,7 @@ display:
       filters:
         search_api_fulltext:
           id: search_api_fulltext
-          table: search_api_index_iucn_index
+          table: search_api_index_iucn_database_index
           field: search_api_fulltext
           relationship: none
           group_type: group
@@ -188,7 +193,7 @@ display:
           plugin_id: search_api_fulltext
         search_api_language:
           id: search_api_language
-          table: search_api_index_iucn_index
+          table: search_api_index_iucn_database_index
           field: search_api_language
           relationship: none
           group_type: group
@@ -226,7 +231,7 @@ display:
           plugin_id: search_api_language
         type:
           id: type
-          table: search_api_index_iucn_index
+          table: search_api_index_iucn_database_index
           field: type
           relationship: none
           group_type: group
@@ -266,7 +271,7 @@ display:
       sorts:
         title:
           id: title
-          table: search_api_index_iucn_index
+          table: search_api_index_iucn_database_index
           field: title
           relationship: none
           group_type: group
@@ -277,7 +282,30 @@ display:
             label: ''
           plugin_id: search_api
       title: 'Sites search'
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          content: '<span class="sites-search-results">RESULTS: @total SITES</span>'
+          plugin_id: result
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: '<span class="sites-search-clear"><a href="[site:url]/sites-search" class="pull-right">CLEAR SEARCH</a></span>'
+            format: html
+          plugin_id: text
       footer: {  }
       empty:
         area:
@@ -291,13 +319,13 @@ display:
           tokenize: false
           content:
             value: 'No sites found.'
-            format: plain_text
+            format: html
           plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
       filter_groups:
-        operator: AND
+        operator: OR
         groups:
           1: AND
     cache_metadata:
@@ -309,16 +337,15 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-  sites_search_page:
+  sites_search_page_database:
     display_plugin: page
-    id: sites_search_page
-    display_title: 'Sites search'
+    id: sites_search_page_database
+    display_title: Page
     position: 1
     display_options:
       display_extenders: {  }
       path: sites-search
       exposed_block: true
-      display_description: ''
       cache:
         type: none
       defaults:

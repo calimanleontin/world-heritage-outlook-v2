@@ -1,0 +1,11 @@
+uuid: 4ff040af-5f24-459e-ab53-8f2a82ecda3d
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_node_grants
+display_id: views_page---publications_search__publications_search_page
+field_identifier: node_grants
+default_sort: false
+default_order: asc
+label: 'Node access information'
+weight: 0

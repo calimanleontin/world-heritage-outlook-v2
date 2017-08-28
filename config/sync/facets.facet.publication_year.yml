@@ -1,10 +1,10 @@
-uuid: bf5e6185-4829-453c-bfd9-02e765e7d5ae
+uuid: baf41075-f904-4595-be88-1b10e3751f57
 langcode: en
 status: true
 dependencies:
   config:
-    - search_api.index.iucn_index
-    - views.view.publications_search
+    - search_api.index.iucn_database_index
+    - views.view.publications
   module:
     - search_api
 id: publication_year
@@ -14,7 +14,7 @@ weight: 0
 min_count: 1
 show_only_one_result: false
 field_identifier: field_publication_year
-facet_source_id: 'search_api:views_page__publications_search__publications_search_page'
+facet_source_id: 'search_api:views_page__publications__publications_page_database'
 widget:
   type: datebasic
   config:
@@ -30,18 +30,6 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
-  active_widget_order:
-    processor_id: active_widget_order
-    weights:
-      sort: -10
-    settings:
-      sort: DESC
-  count_widget_order:
-    processor_id: count_widget_order
-    weights:
-      sort: -10
-    settings:
-      sort: DESC
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:

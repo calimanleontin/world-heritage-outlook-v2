@@ -1,0 +1,11 @@
+uuid: 2acf6fbe-a1a9-47d8-b2c1-528d05526cfa
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_status
+display_id: views_page---sites_search__sites_search_page
+field_identifier: status
+default_sort: false
+default_order: asc
+label: status
+weight: 0

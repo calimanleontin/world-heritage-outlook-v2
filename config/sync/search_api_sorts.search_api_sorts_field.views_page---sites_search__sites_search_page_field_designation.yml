@@ -1,0 +1,11 @@
+uuid: e06e8c5d-ba6b-4a12-b89e-13f3edc2e8e8
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_field_designation
+display_id: views_page---sites_search__sites_search_page
+field_identifier: field_designation
+default_sort: false
+default_order: asc
+label: Designation
+weight: 0

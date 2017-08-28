@@ -15,7 +15,7 @@ dependencies:
     - blazy
     - datetime
     - ds
-    - smart_trim
+    - text
     - user
 third_party_settings:
   ds:
@@ -51,18 +51,10 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: smart_trim
+    type: text_summary_or_trimmed
     weight: 2
     settings:
-      trim_length: '100'
-      trim_type: chars
-      trim_suffix: ...
-      more_link: '1'
-      more_text: ' Read more'
-      summary_handler: full
-      trim_options:
-        text: text
-      more_class: more-link
+      trim_length: 100
     third_party_settings: {  }
     region: content
   field_publication_image:

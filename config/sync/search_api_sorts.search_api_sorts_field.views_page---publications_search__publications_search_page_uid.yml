@@ -1,0 +1,11 @@
+uuid: 58138c1b-bba9-42c1-8419-5b141b13ea14
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_uid
+display_id: views_page---publications_search__publications_search_page
+field_identifier: uid
+default_sort: false
+default_order: asc
+label: uid
+weight: 0

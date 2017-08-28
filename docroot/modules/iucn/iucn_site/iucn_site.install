@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\node\Entity\Node;
+
+/**
+ * Add missing translations to all sites and publications.
+ */
+
+function iucn_site_update_8001() {
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' =>
+          [
+            'site',
+            'publication',
+          ],
+    ]);
+  if ($nodes) {
+    foreach ($nodes as $node) {
+      $node->save();
+    }
+  }
+}

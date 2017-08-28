@@ -69,7 +69,7 @@
   font-weight: 500;
 }
 
-#publications-back-button {
+.publications-back-button {
   padding-bottom: 1em;
   padding-top: 0.3em;
   a {
@@ -109,3 +109,27 @@
     display: none;
   }
 }
+
+.view-publications {
+  .view-header {
+    text-transform: uppercase;
+    font-size: @font-size-small;
+    .block-search-api-sorts {
+      float: right;
+      ul {
+        color: @iucn-blue-light;
+        list-style-type: none;
+        li > a {
+          color: @iucn-blue-light;
+          .tablesort {
+            margin-left: 0.5em;
+            background-image: url(~'@{images-path}dropdown-caret-centered.svg');
+            background-position: bottom;
+            background-repeat: no-repeat;
+          }
+        }
+      }
+    }
+  }
+}
+
