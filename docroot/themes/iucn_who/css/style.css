@@ -7816,6 +7816,20 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 .pagination > .pager__item--previous > a:before {
   transform: rotate(180deg);
 }
+@media screen and (max-width: 767px) {
+  .pagination {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pagination > .pager__item--previous {
+    margin-right: auto;
+  }
+  .pagination > .pager__item--next {
+    margin-left: auto;
+  }
+}
 /**
  * Panel styling.
  */
