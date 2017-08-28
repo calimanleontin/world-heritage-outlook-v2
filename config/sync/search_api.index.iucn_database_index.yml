@@ -1,0 +1,170 @@
+uuid: 6fecba62-e6bb-4564-8ccb-3ed245fc4ed3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_country
+    - field.storage.taxonomy_term.field_iucn_region
+    - field.storage.node.field_inscription_criteria
+    - field.storage.node.field_designation
+    - field.storage.node.field_theme
+    - field.storage.node.field_publication_year
+    - search_api.server.iucn_database
+  module:
+    - taxonomy
+    - search_api
+    - node
+id: iucn_database_index
+name: 'Iucn database index'
+description: ''
+read_only: false
+field_settings:
+  node_grants:
+    label: 'Node access information'
+    property_path: search_api_node_grants
+    type: string
+    indexed_locked: true
+    type_locked: true
+    hidden: true
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+  name:
+    label: 'Country » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_country:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_country
+      module:
+        - taxonomy
+  status:
+    label: 'Publishing status'
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+  uid:
+    label: 'Authored by'
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+  field_iucn_region:
+    label: 'Country » Taxonomy term » IUCN Region'
+    datasource_id: 'entity:node'
+    property_path: 'field_country:entity:field_iucn_region'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_country
+        - field.storage.taxonomy_term.field_iucn_region
+      module:
+        - taxonomy
+  field_inscription_criteria:
+    label: Criteria
+    datasource_id: 'entity:node'
+    property_path: field_inscription_criteria
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_inscription_criteria
+  field_designation:
+    label: Designation
+    datasource_id: 'entity:node'
+    property_path: field_designation
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_designation
+  field_theme:
+    label: Theme
+    datasource_id: 'entity:node'
+    property_path: field_theme
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_theme
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+  field_publication_year:
+    label: 'Publication year'
+    datasource_id: 'entity:node'
+    property_path: field_publication_year
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_publication_year
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  html_filter:
+    all_fields: false
+    fields:
+      - title
+      - name
+      - type
+    title: true
+    alt: true
+    tags:
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      b: 2
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
+  add_url: {  }
+  aggregated_field: {  }
+  highlight:
+    highlight: always
+    highlight_partial: false
+    excerpt: true
+    excerpt_length: 256
+    exclude_fields: {  }
+    prefix: '<strong>'
+    suffix: '</strong>'
+    weights:
+      postprocess_query: 0
+  rendered_item: {  }
+  ignorecase:
+    all_fields: false
+    fields:
+      - node_grants
+      - title
+      - name
+      - type
+      - langcode
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  content_access:
+    weights:
+      preprocess_query: -30
+  entity_status: {  }
+tracker_settings:
+  default: {  }
+options:
+  index_directly: true
+  cron_limit: 50
+server: iucn_database

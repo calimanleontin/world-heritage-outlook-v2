@@ -1,0 +1,11 @@
+uuid: e4284b23-bc2b-4a3d-8188-16befb3586f8
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications__publications_page_database_field_inscription_criteria
+display_id: views_page---publications__publications_page_database
+field_identifier: field_inscription_criteria
+default_sort: false
+default_order: asc
+label: Criteria
+weight: 0

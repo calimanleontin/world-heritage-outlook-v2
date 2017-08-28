@@ -1,0 +1,11 @@
+uuid: 20c4409d-b4d8-40c6-add2-c4b35c105806
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications_search__publications_search_page_field_iucn_region
+display_id: views_page---publications_search__publications_search_page
+field_identifier: field_iucn_region
+default_sort: false
+default_order: asc
+label: 'IUCN Region'
+weight: 0

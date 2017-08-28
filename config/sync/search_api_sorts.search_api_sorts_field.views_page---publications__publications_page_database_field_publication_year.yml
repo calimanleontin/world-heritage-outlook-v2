@@ -1,0 +1,11 @@
+uuid: bb44907a-d44a-44b3-bf73-406619e8d1d0
+langcode: en
+status: true
+dependencies: {  }
+id: views_page---publications__publications_page_database_field_publication_year
+display_id: views_page---publications__publications_page_database
+field_identifier: field_publication_year
+default_sort: true
+default_order: asc
+label: 'Sort from newest to oldest'
+weight: 0

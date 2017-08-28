@@ -1,0 +1,11 @@
+uuid: efa35e9d-9d4b-4520-a67e-a924350ea4cf
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_uid
+display_id: views_page---sites_search__sites_search_page
+field_identifier: uid
+default_sort: false
+default_order: asc
+label: uid
+weight: 0

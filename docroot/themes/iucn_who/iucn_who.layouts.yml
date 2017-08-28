@@ -92,3 +92,12 @@ iucn_who_benefits_category_teaser:
       label: Image
     content:
       label: Content
+
+iucn_who_pdf_download_button:
+  label: PDF download button
+  category: IUCN
+  type: partial
+  template: tempalates/layouts/iucn-who-pdf-download-button
+  regions:
+    content:
+      label: Content

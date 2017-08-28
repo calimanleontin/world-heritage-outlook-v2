@@ -1,0 +1,11 @@
+uuid: 8297e986-6663-43a9-9db2-d427885e7e0d
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications__publications_page_database_type
+display_id: views_page---publications__publications_page_database
+field_identifier: type
+default_sort: false
+default_order: asc
+label: 'Content type'
+weight: 0

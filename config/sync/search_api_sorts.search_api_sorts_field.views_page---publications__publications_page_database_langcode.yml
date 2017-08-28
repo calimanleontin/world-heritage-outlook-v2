@@ -1,0 +1,11 @@
+uuid: b1f2f1f7-9f42-4f7c-ba4e-e89d9d8e4413
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications__publications_page_database_langcode
+display_id: views_page---publications__publications_page_database
+field_identifier: langcode
+default_sort: false
+default_order: asc
+label: Language
+weight: 0

@@ -1,0 +1,11 @@
+uuid: b5d5424d-c025-4407-8ec0-1a3fd906fda6
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---publications__publications_page_database_status
+display_id: views_page---publications__publications_page_database
+field_identifier: status
+default_sort: false
+default_order: asc
+label: 'Publishing status'
+weight: 0

@@ -9748,7 +9748,7 @@ ol li.iucn-arrow + .li.arrow {
 .block-facets.panel:first-child .panel-title {
   margin-top: 0;
 }
-.block-facets.panel .item-list__links {
+.block-facets.panel ul {
   list-style-type: none;
   padding-left: .5em;
   position: relative;
@@ -9873,6 +9873,18 @@ ol li.iucn-arrow + .li.arrow {
     margin-top: 0;
     padding-left: 15px;
   }
+}
+.path-sites-search .view-sites-search .view-header {
+  margin-top: -7px;
+  margin-bottom: 17px;
+  padding: 0px;
+}
+.path-sites-search .view-sites-search .view-header .sites-search-results {
+  font-size: 0.8em;
+  margin-top: 0px;
+}
+.path-sites-search .view-sites-search .view-header .sites-search-clear {
+  font-size: 1em;
 }
 .search-block-container {
   background-color: #134780;
@@ -11887,14 +11899,14 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   top: 0;
   width: 0;
 }
-.path-frontpage #block-homepagereport {
+.path-frontpage .pdf-download-button {
   text-align: center;
   margin-top: 3em;
 }
-.path-frontpage #block-homepagereport a,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.path-frontpage .pdf-download-button a,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #fff;
   background-color: #03afdf;
   border-color: #039bc6;
@@ -11908,170 +11920,170 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   padding-left: 5em;
   font-weight: 300;
 }
-.path-frontpage #block-homepagereport a:focus,
-.path-frontpage #block-homepagereport a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+.path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
   color: #fff;
   background-color: #0288ad;
   border-color: #013948;
 }
-.path-frontpage #block-homepagereport a:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover {
+.path-frontpage .pdf-download-button a:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover {
   color: #fff;
   background-color: #0288ad;
   border-color: #026c89;
 }
-.path-frontpage #block-homepagereport a:active,
-.path-frontpage #block-homepagereport a.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport a,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.path-frontpage .pdf-download-button a:active,
+.path-frontpage .pdf-download-button a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:active,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .panel-title,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:active,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   color: #fff;
   background-color: #0288ad;
   border-color: #026c89;
 }
-.path-frontpage #block-homepagereport a:active:hover,
-.path-frontpage #block-homepagereport a.active:hover,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport a:hover,
-.path-frontpage #block-homepagereport a:active:focus,
-.path-frontpage #block-homepagereport a.active:focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport a:focus,
-.path-frontpage #block-homepagereport a:active.focus,
-.path-frontpage #block-homepagereport a.active.focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active:hover,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active:focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active.focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active:hover,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active:focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active.focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:hover,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active.focus,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+.path-frontpage .pdf-download-button a:active:hover,
+.path-frontpage .pdf-download-button a.active:hover,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a:hover,
+.path-frontpage .pdf-download-button a:active:focus,
+.path-frontpage .pdf-download-button a.active:focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a:active.focus,
+.path-frontpage .pdf-download-button a.active.focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:active:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.active:hover,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .panel-title:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:active:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.active:focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:active.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.active.focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .panel-title.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:active:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.active:hover,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:active:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.active:focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:active.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.active.focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:hover,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:active:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.active:focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:active.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.active.focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
   color: #fff;
   background-color: #026c89;
   border-color: #013948;
 }
-.path-frontpage #block-homepagereport a:active,
-.path-frontpage #block-homepagereport a.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport a,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title:active,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .panel-title,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:active,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
-.open > .dropdown-toggle.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.path-frontpage .pdf-download-button a:active,
+.path-frontpage .pdf-download-button a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title:active,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .panel-title,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:active,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:active,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   background-image: none;
 }
-.path-frontpage #block-homepagereport a.disabled:hover,
-.path-frontpage #block-homepagereport a[disabled]:hover,
-fieldset[disabled] .path-frontpage #block-homepagereport a:hover,
-.path-frontpage #block-homepagereport a.disabled:focus,
-.path-frontpage #block-homepagereport a[disabled]:focus,
-fieldset[disabled] .path-frontpage #block-homepagereport a:focus,
-.path-frontpage #block-homepagereport a.disabled.focus,
-.path-frontpage #block-homepagereport a[disabled].focus,
-fieldset[disabled] .path-frontpage #block-homepagereport a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled]:hover,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled]:focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title.disabled.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title[disabled].focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .panel-title.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled]:hover,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled]:focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.disabled.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a[disabled].focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:hover,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled.focus,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled].focus,
-fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
+.path-frontpage .pdf-download-button a.disabled:hover,
+.path-frontpage .pdf-download-button a[disabled]:hover,
+fieldset[disabled] .path-frontpage .pdf-download-button a:hover,
+.path-frontpage .pdf-download-button a.disabled:focus,
+.path-frontpage .pdf-download-button a[disabled]:focus,
+fieldset[disabled] .path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a.disabled.focus,
+.path-frontpage .pdf-download-button a[disabled].focus,
+fieldset[disabled] .path-frontpage .pdf-download-button a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.disabled:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title[disabled]:hover,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .panel-title:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.disabled:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title[disabled]:focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title.disabled.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title[disabled].focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .panel-title.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.disabled:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a[disabled]:hover,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.disabled:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a[disabled]:focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.disabled.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a[disabled].focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:hover,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:hover,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled]:focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title:focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.disabled.focus,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title[disabled].focus,
+fieldset[disabled] .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title.focus {
   background-color: #03afdf;
   border-color: #039bc6;
 }
-.path-frontpage #block-homepagereport a .badge,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title .badge,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .badge,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .badge {
+.path-frontpage .pdf-download-button a .badge,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title .badge,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a .badge,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .badge {
   color: #03afdf;
   background-color: #fff;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #block-homepagereport a,
-  .path-frontpage #block-homepagereport .block-facets.panel .panel-title,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  .path-frontpage .pdf-download-button a,
+  .path-frontpage .pdf-download-button .block-facets.panel .panel-title,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
     font-size: 21px;
     line-height: 1.1;
     padding-left: 3em;
   }
 }
-.path-frontpage #block-homepagereport a div,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title div,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a div,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title div {
+.path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title div.field--name-field-pdf-button-title,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a div.field--name-field-pdf-button-title,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title div.field--name-field-pdf-button-title {
   font-size: 15px;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #block-homepagereport a div,
-  .path-frontpage #block-homepagereport .block-facets.panel .panel-title div,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a div,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title div {
+  .path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title,
+  .path-frontpage .pdf-download-button .block-facets.panel .panel-title div.field--name-field-pdf-button-title,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a div.field--name-field-pdf-button-title,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title div.field--name-field-pdf-button-title {
     font-size: 13px;
   }
 }
-.path-frontpage #block-homepagereport a .glyphicon,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
+.path-frontpage .pdf-download-button a .glyphicon,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title .glyphicon,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a .glyphicon,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
   background-image: url(../images/download-report.svg);
   background-position: center;
   background-repeat: no-repeat;
@@ -12083,23 +12095,23 @@ fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .fa
   width: 4em;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #block-homepagereport a .glyphicon,
-  .path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon,
-  .path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
+  .path-frontpage .pdf-download-button a .glyphicon,
+  .path-frontpage .pdf-download-button .block-facets.panel .panel-title .glyphicon,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > a .glyphicon,
+  .path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon {
     width: 2.5em;
   }
 }
-.path-frontpage #block-homepagereport a .glyphicon:before,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon:before,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon:before,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:before {
+.path-frontpage .pdf-download-button a .glyphicon:before,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title .glyphicon:before,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a .glyphicon:before,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:before {
   display: none;
 }
-.path-frontpage #block-homepagereport a .glyphicon:after,
-.path-frontpage #block-homepagereport .block-facets.panel .panel-title .glyphicon:after,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > a .glyphicon:after,
-.path-frontpage #block-homepagereport .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:after {
+.path-frontpage .pdf-download-button a .glyphicon:after,
+.path-frontpage .pdf-download-button .block-facets.panel .panel-title .glyphicon:after,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > a .glyphicon:after,
+.path-frontpage .pdf-download-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .glyphicon:after {
   border-right: 1px solid;
   content: '';
   display: block;
@@ -12109,7 +12121,7 @@ fieldset[disabled] .path-frontpage #block-homepagereport .block-facets.panel .fa
   top: 10%;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #block-homepagereport {
+  .path-frontpage .pdf-download-button {
     order: -1;
   }
 }
@@ -12352,14 +12364,14 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   font-size: 2rem;
   font-weight: 500;
 }
-#publications-back-button {
+.publications-back-button {
   padding-bottom: 1em;
   padding-top: 0.3em;
 }
-#publications-back-button a,
-#publications-back-button .block-facets.panel .panel-title,
-#publications-back-button .block-facets.panel .facet-item > a,
-#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+.publications-back-button a,
+.publications-back-button .block-facets.panel .panel-title,
+.publications-back-button .block-facets.panel .facet-item > a,
+.publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title {
   border-top: 1px solid;
   padding-top: 0.5em;
   display: inline-block;
@@ -12372,10 +12384,10 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   position: relative;
   line-height: 1.2;
 }
-#publications-back-button a .backicon,
-#publications-back-button .block-facets.panel .panel-title .backicon,
-#publications-back-button .block-facets.panel .facet-item > a .backicon,
-#publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+.publications-back-button a .backicon,
+.publications-back-button .block-facets.panel .panel-title .backicon,
+.publications-back-button .block-facets.panel .facet-item > a .backicon,
+.publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
   padding-top: 2em;
   background-image: url(../images/icon-backarrow.svg);
   background-position: left center;
@@ -12388,15 +12400,15 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
   width: 4em;
 }
 @media screen and (max-width: 767px) {
-  #publications-back-button a .backicon,
-  #publications-back-button .block-facets.panel .panel-title .backicon,
-  #publications-back-button .block-facets.panel .facet-item > a .backicon,
-  #publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
+  .publications-back-button a .backicon,
+  .publications-back-button .block-facets.panel .panel-title .backicon,
+  .publications-back-button .block-facets.panel .facet-item > a .backicon,
+  .publications-back-button .block-facets.panel .facet-item > .block-facets.panel .panel-title .backicon {
     width: 2.5em;
   }
 }
 @media screen and (max-width: 767px) {
-  #publications-back-button {
+  .publications-back-button {
     visibility: hidden;
     clear: both;
     float: left;
@@ -12404,5 +12416,31 @@ fieldset[disabled] #download-publication-button .block-facets.panel .facet-item 
     width: 28%;
     display: none;
   }
+}
+.view-publications .view-header {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.view-publications .view-header .block-search-api-sorts {
+  float: right;
+}
+.view-publications .view-header .block-search-api-sorts ul {
+  color: #03afdf;
+  list-style-type: none;
+}
+.view-publications .view-header .block-search-api-sorts ul li > a,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title {
+  color: #03afdf;
+}
+.view-publications .view-header .block-search-api-sorts ul li > a .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .panel-title .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > a .tablesort,
+.view-publications .view-header .block-search-api-sorts ul li > .block-facets.panel .facet-item > .block-facets.panel .panel-title .tablesort {
+  margin-left: 0.5em;
+  background-image: url(../images/dropdown-caret-centered.svg);
+  background-position: bottom;
+  background-repeat: no-repeat;
 }
 /*# sourceMappingURL=style.css.map */
