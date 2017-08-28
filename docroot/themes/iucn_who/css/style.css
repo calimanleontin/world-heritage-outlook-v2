@@ -9000,7 +9000,6 @@ ol li.iucn-arrow + .li.arrow {
   }
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-actions {
-  align-self: flex-end;
   z-index: 0;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .input-group-addon,
@@ -9024,8 +9023,19 @@ ol li.iucn-arrow + .li.arrow {
   width: 2.38888889em;
 }
 @media screen and (max-width: 767px) {
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline {
+    height: 50px;
+  }
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .input-group,
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text,
   .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-submit {
-    margin-left: -1px;
+    height: 100%;
+  }
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+    font-size: 16px;
+  }
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-submit {
+    width: 50px;
   }
 }
 .path-sites-search .page-header {

@@ -213,7 +213,6 @@
       }
     }
     .form-actions {
-      align-self: flex-end;
       z-index: 0;
     }
     .input-group-addon,
@@ -237,8 +236,21 @@
       text-indent: -9999px;
       border-left: 1px solid @iucn-blue-dark;
       width: 43 / unit(@font-size-base) * 1em;
-      @media @grid-mobile {
-        margin-left: -1px;
+    }
+  }
+  @media @grid-mobile {
+    .form-inline {
+      height: 50px;
+      .input-group,
+      .form-text,
+      .form-submit {
+        height: 100%;
+      }
+      .form-text {
+        font-size: 16px;
+      }
+      .form-submit {
+        width: 50px;
       }
     }
   }
