@@ -7780,6 +7780,11 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 .node-preview-form-select {
   padding: 15px;
 }
+@media screen and (min-width: 768px) {
+  .pagination {
+    float: right;
+  }
+}
 .pagination > li {
   display: inline-block;
 }
