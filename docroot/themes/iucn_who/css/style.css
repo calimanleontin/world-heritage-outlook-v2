@@ -8858,34 +8858,34 @@ ol li.iucn-arrow + .li.arrow {
   border: none;
   box-shadow: none;
 }
-.block-facets.panel .panel-heading {
+.block-facets .panel-heading {
   background-color: transparent;
   border: none;
   padding: 0;
 }
-.block-facets.panel .panel-heading + .panel-collapse > .panel-body {
+.block-facets .panel-heading + .panel-collapse > .panel-body {
   border: none;
 }
-.block-facets.panel .panel-title {
+.block-facets .panel-title {
   transition: color 0.2s, background-color 0.2s;
   color: #134780;
   font-size: 1em;
 }
-.block-facets.panel .panel-title:hover,
-.block-facets.panel .panel-title:focus,
-.block-facets.panel .panel-title:active {
+.block-facets .panel-title:hover,
+.block-facets .panel-title:focus,
+.block-facets .panel-title:active {
   text-decoration: none;
   color: #03afdf;
 }
-.block-facets.panel:first-child .panel-title {
+.block-facets:first-child .panel-title {
   margin-top: 0;
 }
-.block-facets.panel ul {
+.block-facets ul {
   list-style-type: none;
   padding-left: .5em;
   position: relative;
 }
-.block-facets.panel .facet-item__status {
+.block-facets .facet-item__status {
   background-color: #03afdf;
   background-image: url(../images/checkbox.svg);
   background-position: center;
@@ -8900,21 +8900,21 @@ ol li.iucn-arrow + .li.arrow {
   text-indent: 999px;
   width: 1.5em;
 }
-.block-facets.panel .facet-item__status + .facet-item__value {
+.block-facets .facet-item__status + .facet-item__value {
   background: #f0f0f0;
 }
-.block-facets.panel .facet-item > a {
+.block-facets .facet-item > a {
   color: #134780;
   transition: color 0.2s, background-color 0.2s;
   color: #333333;
 }
-.block-facets.panel .facet-item > a:hover,
-.block-facets.panel .facet-item > a:focus,
-.block-facets.panel .facet-item > a:active {
+.block-facets .facet-item > a:hover,
+.block-facets .facet-item > a:focus,
+.block-facets .facet-item > a:active {
   text-decoration: none;
   color: #03afdf;
 }
-.block-facets.panel .facet-item__value {
+.block-facets .facet-item__value {
   display: block;
   padding-left: .5em;
 }

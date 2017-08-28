@@ -56,58 +56,58 @@
   &.panel {
     border: none;
     box-shadow: none;
-    .panel-heading {
-      background-color: transparent;
-      border: none;
-      padding: 0;
+  }
+  .panel-heading {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+  .panel-heading + .panel-collapse > .panel-body {
+    border:none;
+  }
+  .panel-title {
+    .link();
+    color: @iucn-blue-dark;
+    font-size: 1em;
+  }
+  &:first-child .panel-title {
+    margin-top: 0;
+  }
+  // .panel-title.active-facet,
+  // .panel-title:hover, .panel-title:focus, .panel-title:hover:focus {
+  //   color: @link-hover-color;
+  // }
+  ul {
+    list-style-type: none;
+    padding-left: .5em;
+    position: relative;
+  }
+  // @todo: checkbox mixin
+  .facet-item__status {
+    background-color: @iucn-blue-light;
+    background-image: url(~'@{images-path}checkbox.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 60%;
+    border-radius: 4px 0 0 4px;
+    display: block;
+    height: 1em * @line-height-base;
+    overflow: hidden;
+    position: absolute;
+    right: calc(~'100% - .5em');
+    text-indent: 999px;
+    width: 1.5em;
+    + .facet-item__value {
+      background: @iucn-gray-lightest;
     }
-    .panel-heading + .panel-collapse > .panel-body {
-      border:none;
-    }
-    .panel-title {
-      .link();
-      color: @iucn-blue-dark;
-      font-size: 1em;
-    }
-    &:first-child .panel-title {
-      margin-top: 0;
-    }
-    // .panel-title.active-facet,
-    // .panel-title:hover, .panel-title:focus, .panel-title:hover:focus {
-    //   color: @link-hover-color;
-    // }
-    ul {
-      list-style-type: none;
-      padding-left: .5em;
-      position: relative;
-    }
-    // @todo: checkbox mixin
-    .facet-item__status {
-      background-color: @iucn-blue-light;
-      background-image: url(~'@{images-path}checkbox.svg');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: auto 60%;
-      border-radius: 4px 0 0 4px;
-      display: block;
-      height: 1em * @line-height-base;
-      overflow: hidden;
-      position: absolute;
-      right: calc(~'100% - .5em');
-      text-indent: 999px;
-      width: 1.5em;
-      + .facet-item__value {
-        background: @iucn-gray-lightest;
-      }
-    }
-    .facet-item > a {
-      .link();
-      color: @text-color;
-    }
-    .facet-item__value {
-      display: block;
-      padding-left: .5em;
-    }
+  }
+  .facet-item > a {
+    .link();
+    color: @text-color;
+  }
+  .facet-item__value {
+    display: block;
+    padding-left: .5em;
   }
 
 }
