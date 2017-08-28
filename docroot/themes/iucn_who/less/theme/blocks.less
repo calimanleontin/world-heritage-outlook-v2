@@ -200,3 +200,46 @@
     }
   }
 }
+
+.block-views-exposed-filter-blocksites-search-sites-search-page-database {
+  .form-inline {
+    display: flex;
+    .form-type-textfield {
+      margin-bottom: 0;
+      @media @grid-mobile {
+        label {
+          display: none;
+        }
+      }
+    }
+    .form-actions {
+      align-self: flex-end;
+      z-index: 0;
+    }
+    .input-group-addon,
+    .form-text {
+      border-color: @input-bg;
+    }
+    .form-text {
+      &:focus {
+        border-color: @input-bg;
+        box-shadow: none;
+      }
+    }
+    .form-submit {
+      margin-right: 0;
+      background-color: #ddf2fa;
+      background-image: url(~'@{images-path}magnifier.svg');
+      background-repeat: no-repeat;
+      background-size: 75%;
+      background-position: center;
+      border-color: #ddf2fa;
+      text-indent: -9999px;
+      border-left: 1px solid @iucn-blue-dark;
+      width: 43 / unit(@font-size-base) * 1em;
+      @media @grid-mobile {
+        margin-left: -1px;
+      }
+    }
+  }
+}
