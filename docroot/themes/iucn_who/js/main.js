@@ -34,15 +34,17 @@
         ];
         var vhFix = new VHChromeFix(vhFixOptions);
     }
-    $.ui.autocomplete.prototype._resizeMenu = function () {
-      var ul = this.menu.element;
-      var $inputGroup = this.element.closest('.input-group');
-      if($inputGroup.is(this.element.parent())) {
-        ul.outerWidth($inputGroup.outerWidth());
-      }
-      else {
-        ul.outerWidth(this.element.outerWidth());
-      }
+    if($.ui && $.ui.autocomplete) {
+        $.ui.autocomplete.prototype._resizeMenu = function () {
+          var ul = this.menu.element;
+          var $inputGroup = this.element.closest('.input-group');
+          if($inputGroup.is(this.element.parent())) {
+            ul.outerWidth($inputGroup.outerWidth());
+          }
+          else {
+            ul.outerWidth(this.element.outerWidth());
+          }
+        }
     }
   });
 
