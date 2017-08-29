@@ -138,7 +138,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     return implode(', ', $countries);
   }
 
-  private function getSiteThumbnail($node, $style = 'sites_thumbnail') {
+  private function getSiteThumbnail($node, $style = 'site_map_detail') {
     $style = ImageStyle::load($style);
     if (!empty($node->field_image->entity)) {
       return $style->buildUrl($node->field_image->entity->getFileUri());
