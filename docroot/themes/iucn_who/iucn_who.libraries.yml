@@ -8,7 +8,7 @@ bootstrap-js:
 
 mobile-chrome-vh-fix:
     js:
-      libraries/mobile-chrome-vh-fix/mobile-chrome-vh-fix.js: {}
+      js/iucn-mobile-chrome-vh-fix.js: {}
 
 facets:
     js:
