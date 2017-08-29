@@ -1,0 +1,22 @@
+uuid: cfd900c5-6b3d-49c0-8081-7078df45e941
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.pdf_download_button
+id: paragraph.pdf_download_button.status
+field_name: status
+entity_type: paragraph
+bundle: pdf_download_button
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
