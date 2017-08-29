@@ -1,16 +1,16 @@
-uuid: 34ab83b3-5ddc-4aa9-9d3a-913806027cfc
+uuid: 97424407-3639-4ae0-a54f-9419b6be6a8b
 langcode: en
 status: true
 dependencies:
   config:
-    - paragraphs.paragraphs_type.content_teasers
+    - paragraphs.paragraphs_type.numbered_heading
   module:
     - content_translation
 third_party_settings:
   content_translation:
     enabled: true
-id: paragraph.content_teasers
+id: paragraph.numbered_heading
 target_entity_type_id: paragraph
-target_bundle: content_teasers
+target_bundle: numbered_heading
 default_langcode: site_default
 language_alterable: false
