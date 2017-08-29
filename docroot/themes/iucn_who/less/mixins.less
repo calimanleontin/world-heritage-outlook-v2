@@ -67,7 +67,7 @@
 }
 
 // Generate categories (?)
-@conservation-categories-list: 'values', 'threats', 'protection';
+@conservation-categories-list: 'values', 'threats', 'management';
 
 .loop-conservation-categories(@rules, @index: length(@conservation-categories-list)) when (@index > 0) {
   @conservation-category-class: e(extract(@conservation-categories-list, @index));

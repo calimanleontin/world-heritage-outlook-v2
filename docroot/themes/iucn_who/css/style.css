@@ -8602,8 +8602,8 @@ h3.iucn-arrow:before {
   width: 2em;
   margin-right: .5em;
 }
-h3.iucn-arrow.protection:before {
-  background-image: url(../images/protection-white.svg);
+h3.iucn-arrow.management:before {
+  background-image: url(../images/management-white.svg);
 }
 h3.iucn-arrow.threats:before {
   background-image: url(../images/threats-white.svg);
@@ -10732,11 +10732,11 @@ ol li.iucn-arrow + .li.arrow {
   padding-top: .5em;
   width: 50%;
 }
-.path-frontpage #map-site-details .map-site-detail dt.protection {
+.path-frontpage #map-site-details .map-site-detail dt.management {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.protection:before {
-  background-image: url(../images/protection-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.management:before {
+  background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -10789,8 +10789,8 @@ ol li.iucn-arrow + .li.arrow {
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
   background-image: url(../images/threats.svg);
 }
-.path-frontpage #map-site-details .map-site-detail dt.protection:before {
-  background-image: url(../images/protection.svg);
+.path-frontpage #map-site-details .map-site-detail dt.management:before {
+  background-image: url(../images/management.svg);
   width: 1.4em;
 }
 .path-frontpage #map-site-details .map-site-detail dd {
