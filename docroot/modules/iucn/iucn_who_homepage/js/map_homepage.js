@@ -9,7 +9,7 @@ function postInitMap(instance_id, map, config) {
 
     // Scale-down the images a bit
     for (var $i in config.icons) {
-      config.icons[$i].scaledSize = new google.maps.Size(24, 24);
+      config.icons[$i].scaledSize = new google.maps.Size(27, 27);
     }
     var $markers = [];
     for(var $i = 0; $i < config.markers.length; $i++) {
