@@ -32,6 +32,10 @@ function iucn_who_preprocess_block(&$variables) {
   //     break;
 
   // }
+  if ($variables['base_plugin_id'] == 'home_page_map') {
+    $variables['#attached']['library'][] =  'iucn_who/iucn-mobile-chrome-vh-fix';
+  }
+
   if (isset($variables['elements']['#id'])) {
       $block_id = $variables['elements']['#id'];
       $block = \Drupal\block\Entity\Block::load($block_id);
