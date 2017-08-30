@@ -10592,7 +10592,7 @@ ol li.iucn-arrow + .li.arrow {
   margin: 0 auto;
   margin-bottom: 4em;
   margin-top: 4em;
-  min-height: 13.61111111rem;
+  height: 13.61111111rem;
   padding-left: 1.5em;
   padding-right: 1.5em;
   text-align: center;
@@ -10615,6 +10615,7 @@ ol li.iucn-arrow + .li.arrow {
 .path-frontpage #map-site-details .site-selection-placeholder img {
   display: block;
   margin: 0 auto;
+  width: 4.66666667em;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #map-site-details .site-selection-placeholder {
