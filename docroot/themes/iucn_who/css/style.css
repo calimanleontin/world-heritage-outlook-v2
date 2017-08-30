@@ -10183,8 +10183,8 @@ ol li.iucn-arrow + .li.arrow {
   .path-frontpage #block-homepagemap .row.map-block-main {
     display: flex;
     height: 100vh;
-    margin-bottom: -7.77777778rem;
-    padding-bottom: 7.77777778rem;
+    margin-bottom: -8.05555556rem;
+    padding-bottom: 8.05555556rem;
   }
   .path-frontpage #block-homepagemap .col-left {
     box-shadow: 8px 0 10px -9px rgba(0, 0, 0, 0.3);
@@ -10203,10 +10203,7 @@ ol li.iucn-arrow + .li.arrow {
     background-color: #134780;
     color: #fff;
     align-items: center;
-    display: flex;
-    flex-direction: column;
     font-size: 2.05555556rem;
-    justify-content: center;
     min-height: 6.38888889rem;
     position: relative;
     text-align: center;
@@ -10220,6 +10217,9 @@ ol li.iucn-arrow + .li.arrow {
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']):focus,
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']):active {
     color: #03afdf;
+  }
+  .path-frontpage #block-homepagemap .map-block-footer .block-footer-text {
+    margin-top: .2em;
   }
   .path-frontpage #block-homepagemap .map-block-footer .scroll-down {
     background-color: #fff;
@@ -10236,6 +10236,9 @@ ol li.iucn-arrow + .li.arrow {
     transform: translate(-50%, -50%);
     width: 3.33333333rem;
     box-shadow: 0 -1px 8px -2px rgba(0, 0, 0, 0.3);
+  }
+  .path-frontpage #block-homepagemap .map-block-footer #scroll-down-target {
+    height: 2.5rem;
   }
 }
 @media screen and (max-width: 767px) {
@@ -11167,9 +11170,6 @@ fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
   .path-frontpage .pdf-download-button {
     order: -1;
   }
-}
-#scroll-down-target {
-  height: 1.66666667rem;
 }
 #download-publication-button {
   margin-top: 1em;
