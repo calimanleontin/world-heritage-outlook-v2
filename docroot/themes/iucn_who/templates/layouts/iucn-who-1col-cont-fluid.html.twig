@@ -1,0 +1,46 @@
+{%
+set classes = [
+'iucn-who-1col-cont-fluid-wrapper',
+]
+%}
+
+{% if content %}
+<div{{ attributes.addClass(classes) }}>
+  {% if content.container1 %}
+    <div class="container container1-wrapper">
+      <div class="row">
+        <div class="col-md-12">
+          {{ content.container1 }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.fluid1 %}
+    <div class="fluid1-wrapper">
+      <div class="row">
+        <div class="col-md-12">
+          {{ content.fluid1 }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.container2 %}
+    <div class="container container2-wrapper">
+      <div class="row">
+        <div class="col-md-12">
+          {{ content.container2 }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.fludi2 %}
+    <div class="fluid2-wrapper">
+      <div class="row">
+        <div class="col-md-12">
+          {{ content.fluid2 }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endif %}

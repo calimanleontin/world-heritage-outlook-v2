@@ -10975,7 +10975,8 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 .path-frontpage #block-globaloutlookstatistics {
   text-align: center;
 }
-.path-frontpage #block-globaloutlookstatistics .block-title {
+.path-frontpage #block-globaloutlookstatistics .block-title,
+.publication-title {
   color: #134780;
   font-size: 2rem;
   font-weight: 500;
@@ -11095,137 +11096,12 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   top: 0;
   width: 0;
 }
-.path-frontpage .pdf-download-button {
+.path-frontpage .pdf-download-button,
+#download-publication-button {
   text-align: center;
   margin-top: 3em;
 }
-.path-frontpage .pdf-download-button a {
-  color: #fff;
-  background-color: #03afdf;
-  border-color: #03afdf;
-  display: inline-block;
-  text-align: left;
-  width: auto;
-  font-size: 22px;
-  padding: .5em 1.5em;
-  position: relative;
-  line-height: 1.2;
-  padding-left: 5em;
-  font-weight: 300;
-}
-.path-frontpage .pdf-download-button a:focus,
-.path-frontpage .pdf-download-button a.focus {
-  color: #fff;
-  background-color: #0288ad;
-  border-color: #014c61;
-}
-.path-frontpage .pdf-download-button a:hover {
-  color: #fff;
-  background-color: #0288ad;
-  border-color: #0280a3;
-}
-.path-frontpage .pdf-download-button a:active,
-.path-frontpage .pdf-download-button a.active,
-.open > .dropdown-toggle.path-frontpage .pdf-download-button a {
-  color: #fff;
-  background-color: #0288ad;
-  border-color: #0280a3;
-}
-.path-frontpage .pdf-download-button a:active:hover,
-.path-frontpage .pdf-download-button a.active:hover,
-.open > .dropdown-toggle.path-frontpage .pdf-download-button a:hover,
-.path-frontpage .pdf-download-button a:active:focus,
-.path-frontpage .pdf-download-button a.active:focus,
-.open > .dropdown-toggle.path-frontpage .pdf-download-button a:focus,
-.path-frontpage .pdf-download-button a:active.focus,
-.path-frontpage .pdf-download-button a.active.focus,
-.open > .dropdown-toggle.path-frontpage .pdf-download-button a.focus {
-  color: #fff;
-  background-color: #026c89;
-  border-color: #014c61;
-}
-.path-frontpage .pdf-download-button a:active,
-.path-frontpage .pdf-download-button a.active,
-.open > .dropdown-toggle.path-frontpage .pdf-download-button a {
-  background-image: none;
-}
-.path-frontpage .pdf-download-button a.disabled:hover,
-.path-frontpage .pdf-download-button a[disabled]:hover,
-fieldset[disabled] .path-frontpage .pdf-download-button a:hover,
-.path-frontpage .pdf-download-button a.disabled:focus,
-.path-frontpage .pdf-download-button a[disabled]:focus,
-fieldset[disabled] .path-frontpage .pdf-download-button a:focus,
-.path-frontpage .pdf-download-button a.disabled.focus,
-.path-frontpage .pdf-download-button a[disabled].focus,
-fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
-  background-color: #03afdf;
-  border-color: #03afdf;
-}
-.path-frontpage .pdf-download-button a .badge {
-  color: #03afdf;
-  background-color: #fff;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage .pdf-download-button a {
-    font-size: 21px;
-    line-height: 1.1;
-    padding-left: 3em;
-  }
-}
-.path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title {
-  font-size: 15px;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title {
-    font-size: 13px;
-  }
-}
-.path-frontpage .pdf-download-button a .glyphicon {
-  background-image: url(../images/download-report.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 50% auto;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 4em;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage .pdf-download-button a .glyphicon {
-    width: 2.5em;
-  }
-}
-.path-frontpage .pdf-download-button a .glyphicon:before {
-  display: none;
-}
-.path-frontpage .pdf-download-button a .glyphicon:after {
-  border-right: 1px solid;
-  content: '';
-  display: block;
-  height: 80%;
-  position: absolute;
-  right: 0;
-  top: 10%;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage .pdf-download-button {
-    order: -1;
-  }
-}
-.iucn-publications-teaser-wrapper .left-content {
-  padding-left: 0;
-  padding-right: 0;
-}
-@media screen and (max-width: 767px) {
-  .iucn-publications-teaser-wrapper .right-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-#download-publication-button {
-  margin-top: 1em;
-}
+.path-frontpage .pdf-download-button a,
 #download-publication-button a {
   color: #fff;
   background-color: #03afdf;
@@ -11240,17 +11116,23 @@ fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
   padding-left: 5em;
   font-weight: 300;
 }
+.path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a.focus,
 #download-publication-button a:focus,
 #download-publication-button a.focus {
   color: #fff;
   background-color: #0288ad;
   border-color: #014c61;
 }
+.path-frontpage .pdf-download-button a:hover,
 #download-publication-button a:hover {
   color: #fff;
   background-color: #0288ad;
   border-color: #0280a3;
 }
+.path-frontpage .pdf-download-button a:active,
+.path-frontpage .pdf-download-button a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a,
 #download-publication-button a:active,
 #download-publication-button a.active,
 .open > .dropdown-toggle#download-publication-button a {
@@ -11258,6 +11140,15 @@ fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
   background-color: #0288ad;
   border-color: #0280a3;
 }
+.path-frontpage .pdf-download-button a:active:hover,
+.path-frontpage .pdf-download-button a.active:hover,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a:hover,
+.path-frontpage .pdf-download-button a:active:focus,
+.path-frontpage .pdf-download-button a.active:focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a:active.focus,
+.path-frontpage .pdf-download-button a.active.focus,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a.focus,
 #download-publication-button a:active:hover,
 #download-publication-button a.active:hover,
 .open > .dropdown-toggle#download-publication-button a:hover,
@@ -11271,11 +11162,23 @@ fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
   background-color: #026c89;
   border-color: #014c61;
 }
+.path-frontpage .pdf-download-button a:active,
+.path-frontpage .pdf-download-button a.active,
+.open > .dropdown-toggle.path-frontpage .pdf-download-button a,
 #download-publication-button a:active,
 #download-publication-button a.active,
 .open > .dropdown-toggle#download-publication-button a {
   background-image: none;
 }
+.path-frontpage .pdf-download-button a.disabled:hover,
+.path-frontpage .pdf-download-button a[disabled]:hover,
+fieldset[disabled] .path-frontpage .pdf-download-button a:hover,
+.path-frontpage .pdf-download-button a.disabled:focus,
+.path-frontpage .pdf-download-button a[disabled]:focus,
+fieldset[disabled] .path-frontpage .pdf-download-button a:focus,
+.path-frontpage .pdf-download-button a.disabled.focus,
+.path-frontpage .pdf-download-button a[disabled].focus,
+fieldset[disabled] .path-frontpage .pdf-download-button a.focus,
 #download-publication-button a.disabled:hover,
 #download-publication-button a[disabled]:hover,
 fieldset[disabled] #download-publication-button a:hover,
@@ -11288,26 +11191,32 @@ fieldset[disabled] #download-publication-button a.focus {
   background-color: #03afdf;
   border-color: #03afdf;
 }
+.path-frontpage .pdf-download-button a .badge,
 #download-publication-button a .badge {
   color: #03afdf;
   background-color: #fff;
 }
 @media screen and (max-width: 767px) {
+  .path-frontpage .pdf-download-button a,
   #download-publication-button a {
     font-size: 21px;
     line-height: 1.1;
     padding-left: 3em;
   }
 }
-#download-publication-button a div {
+.path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title,
+#download-publication-button a div.field--name-field-pdf-button-title {
   font-size: 15px;
 }
 @media screen and (max-width: 767px) {
-  #download-publication-button a div {
+  .path-frontpage .pdf-download-button a div.field--name-field-pdf-button-title,
+  #download-publication-button a div.field--name-field-pdf-button-title {
     font-size: 13px;
   }
 }
-#download-publication-button a .glyphicon {
+.path-frontpage .pdf-download-button a .glyphicon,
+#download-publication-button a .glyphicon,
+.publications-back-button a .backicon {
   background-image: url(../images/download-report.svg);
   background-position: center;
   background-repeat: no-repeat;
@@ -11319,13 +11228,17 @@ fieldset[disabled] #download-publication-button a.focus {
   width: 4em;
 }
 @media screen and (max-width: 767px) {
-  #download-publication-button a .glyphicon {
+  .path-frontpage .pdf-download-button a .glyphicon,
+  #download-publication-button a .glyphicon,
+  .publications-back-button a .backicon {
     width: 2.5em;
   }
 }
+.path-frontpage .pdf-download-button a .glyphicon:before,
 #download-publication-button a .glyphicon:before {
   display: none;
 }
+.path-frontpage .pdf-download-button a .glyphicon:after,
 #download-publication-button a .glyphicon:after {
   border-right: 1px solid;
   content: '';
@@ -11336,8 +11249,31 @@ fieldset[disabled] #download-publication-button a.focus {
   top: 10%;
 }
 @media screen and (max-width: 767px) {
+  .path-frontpage .pdf-download-button,
   #download-publication-button {
     order: -1;
+  }
+}
+.iucn-publications-teaser-wrapper .left-content {
+  padding-left: 0;
+  padding-right: 0;
+}
+@media screen and (max-width: 767px) {
+  .iucn-publications-teaser-wrapper .right-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+#download-publication-button {
+  text-align: unset;
+  margin-top: 1em;
+}
+#download-publication-button a div {
+  font-size: 15px;
+}
+@media screen and (max-width: 767px) {
+  #download-publication-button a div {
+    font-size: 13px;
   }
 }
 .publication-content {
@@ -11345,11 +11281,6 @@ fieldset[disabled] #download-publication-button a.focus {
 }
 .publication-year {
   color: #a3a3a3;
-}
-.publication-title {
-  color: #134780;
-  font-size: 2rem;
-  font-weight: 500;
 }
 .publications-back-button {
   padding-bottom: 1em;
@@ -11372,18 +11303,7 @@ fieldset[disabled] #download-publication-button a.focus {
   padding-top: 2em;
   background-image: url(../images/icon-backarrow.svg);
   background-position: left center;
-  background-repeat: no-repeat;
   background-size: auto;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 4em;
-}
-@media screen and (max-width: 767px) {
-  .publications-back-button a .backicon {
-    width: 2.5em;
-  }
 }
 @media screen and (max-width: 767px) {
   .publications-back-button {

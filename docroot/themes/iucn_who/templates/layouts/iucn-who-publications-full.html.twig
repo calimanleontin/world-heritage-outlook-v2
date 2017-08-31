@@ -32,7 +32,7 @@ set classes = [
                 {{ content.right_1 }}
                 {% if content.right_2|render %}
                         <div id="download-publication-button">
-                            <a href="{{ file_url(content.right_2.field_file.0['#file'].uri.0.value) }}" download>
+                            <a href="{{ file_url(download_pdf_uri) }}" download>
                                 <i class="glyphicon glyphicon-download"></i>
                                 {% trans %}
                                 Download the report

@@ -117,13 +117,40 @@ function iucn_who_preprocess_iucn_who_benefits_category_teaser(&$variables) {
   }
 }
 
+function iucn_who_preprocess_iucn_who_publications_full(&$variables) {
+  $node = $variables['content']['#node'];
+  if ($file = $node->field_file->entity) {
+    $variables['download_pdf_uri'] = $file->getFileUri();
+  }
+}
+
 function iucn_who_preprocess_field(&$variables) {
-  if ($variables['field_name'] == 'field_images' && $variables['element']['#object']->bundle() == 'image_grid') {
-    /* @var \Drupal\paragraphs\Entity\Paragraph */
-    $paragraph = $variables['element']['#object'];
-    $per_row = $paragraph->field_grid_style->value;
-    $items_no = $paragraph->field_images->count();
-    $variables['rows'] = ceil($items_no / $per_row);
-    $variables['per_row'] = $per_row;
+  switch ($variables['field_name']) {
+    case 'field_images':
+      if ($variables['element']['#object']->bundle() == 'image_grid') {
+        /* @var \Drupal\paragraphs\Entity\Paragraph */
+        $paragraph = $variables['element']['#object'];
+        $per_row = $paragraph->field_grid_style->value;
+        $items_no = $paragraph->field_images->count();
+        $variables['rows'] = ceil($items_no / $per_row);
+        $variables['per_row'] = $per_row;
+      }
+      break;
+
+    case 'field_content':
+      if ($variables['element']['#object']->bundle() == 'content_html') {
+        /* @var \Drupal\paragraphs\Entity\Paragraph */
+        $paragraph = $variables['element']['#object'];
+        $col_no = [12, 12];
+        if (!empty($paragraph->field_grid_ratio->value)) {
+          $ratios = explode('_', $paragraph->field_grid_ratio->value);
+          $col = 12 / array_sum($ratios);
+          foreach ($ratios as $idx => $val) {
+            $col_no[$idx] = $col * $val;
+          }
+        }
+        $variables['column_numbers'] = $col_no;
+      }
+      break;
   }
 }

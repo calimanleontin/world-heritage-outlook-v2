@@ -55,17 +55,48 @@
     'panel-default'
   ]
   %}
+
+{% set page_url = url('<current>') %}
+{%
+  set panel_heading_a_classes = [
+  'block-title',
+  'panel-title'
+  ]
+%}
+{%
+  set collapse_classes = [
+  'panel-collapse',
+  'collapse'
+  ]
+%}
+{%
+  set panel_heading_a_area_expanded = 'false'
+%}
+
+{% if '/publications' in page_url|render|render %}
+  {%
+    set collapse_classes = collapse_classes|merge(['in'])
+  %}
+  {%
+    set panel_heading_a_area_expanded = 'true'
+  %}
+{% else %}
+  {%
+    set panel_heading_a_classes = panel_heading_a_classes|merge(['collapsed'])
+  %}
+{% endif %}
+
 {% set collapse_id = base_plugin_id ~ '-' ~ derivative_plugin_id %}
 
   <section{{ attributes.addClass(classes) }}>
     <div class="panel-heading" role="tab" id="#heading-{{collapse_id}}">
       {{ title_prefix }}
       {% if label %}
-        <a{{ title_attributes.addClass('block-title', 'collapsed', 'panel-title') }} role='button' data-parent="#facets-group" data-toggle='collapse' href='#{{collapse_id}}' aria-expanded='false' aria-controls='{{collapse_id}}'><span class="icon-collapse"></span>{{ label }}</a>
+        <a{{ title_attributes.addClass(panel_heading_a_classes) }} role='button' data-parent="#facets-group" data-toggle='collapse' href='#{{collapse_id}}' aria-expanded={{ panel_heading_a_area_expanded }} aria-controls='{{collapse_id}}'><span class="icon-collapse"></span>{{ label }}</a>
       {% endif %}
       {{ title_suffix }}
     </div>
-    <div id='{{collapse_id}}' class='panel-collapse collapse' role="tabpanel">
+    <div id='{{collapse_id}}' {{ attributes.addClass(collapse_classes) }} role="tabpanel">
       <div class="panel-body">
         {% block content %}
           {{ content }}

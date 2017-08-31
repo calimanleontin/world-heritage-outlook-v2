@@ -10,6 +10,21 @@ iucn_who_1col:
     content:
       label: Content
 
+iucn_who_1col_cont_fluid:
+  label: 1 container + 1 col fluid
+  category: IUCN
+  type: partial
+  template: templates/layouts/iucn-who-1col-cont-fluid
+  regions:
+    container1:
+      label: Container 1
+    fluid1:
+      label: Container fluid 1
+    container2:
+      label: Container 2
+    fluid2:
+      label: Container fluid 2
+
 iucn_who_site:
   label: Site
   category: IUCN

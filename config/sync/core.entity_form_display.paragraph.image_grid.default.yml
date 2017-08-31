@@ -6,7 +6,7 @@ dependencies:
     - field.field.paragraph.image_grid.field_grid_style
     - field.field.paragraph.image_grid.field_images
     - field.field.paragraph.image_grid.field_paragraph_background
-    - image.style.crop_thumbnail
+    - image.style.thumbnail
     - paragraphs.paragraphs_type.image_grid
   module:
     - image_widget_crop
@@ -26,7 +26,7 @@ content:
     settings:
       show_default_crop: true
       warn_multiple_usages: true
-      preview_image_style: crop_thumbnail
+      preview_image_style: thumbnail
       crop_preview_image_style: crop_thumbnail
       crop_list:
         - free_crop
