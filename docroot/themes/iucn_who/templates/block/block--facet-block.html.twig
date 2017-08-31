@@ -57,39 +57,32 @@
   %}
 
 {% set page_url = url('<current>') %}
-{% if '/publications' in page_url|render|render %}
-  {%
-    set panel_heading_a_classes = [
-      'block-title',
-      'panel-title'
-  ]
-  %}
-  {%
-    set panel_heading_a_area_expanded = 'true'
-  %}
-  {%
-    set collapse_classes = [
-      'panel-collapse',
-      'collapse',
-      'in'
-  ]
-  %}
-{% else %}
-  {%
+{%
   set panel_heading_a_classes = [
   'block-title',
-  'collapsed',
   'panel-title'
   ]
-  %}
-  {%
-  set panel_heading_a_area_expanded = 'false'
-  %}
-  {%
+%}
+{%
   set collapse_classes = [
   'panel-collapse',
   'collapse'
   ]
+%}
+{%
+  set panel_heading_a_area_expanded = 'false'
+%}
+
+{% if '/publications' in page_url|render|render %}
+  {%
+    set collapse_classes = collapse_classes|merge(['in'])
+  %}
+  {%
+    set panel_heading_a_area_expanded = 'true'
+  %}
+{% else %}
+  {%
+    set panel_heading_a_classes = panel_heading_a_classes|merge(['collapsed'])
   %}
 {% endif %}
 
