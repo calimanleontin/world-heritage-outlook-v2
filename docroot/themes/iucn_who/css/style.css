@@ -8399,15 +8399,15 @@ p:last-child,
   margin-top: 0;
 }
 html {
-  font-size: 18px;
+  font-size: 112.5%;
 }
 @media screen and (max-width: 767px) {
   html {
-    font-size: 14px;
+    font-size: 87.5%;
   }
 }
 body {
-  font-size: inherit;
+  font-size: 1em;
 }
 body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus,

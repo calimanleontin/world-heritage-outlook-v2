@@ -1,13 +1,13 @@
 html {
-  font-size: @font-size-base;
+  font-size: unit(@font-size-base) / 16 * 100%;
 
   @media @grid-mobile {
-    font-size: @font-size-base--mobile;
+    font-size: unit(@font-size-base--mobile) / 16 * 100%;
     // line-height: @line-height-base--mobile;
   }
 }
 body {
-  font-size: inherit;
+  font-size: 1em;
 }
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
