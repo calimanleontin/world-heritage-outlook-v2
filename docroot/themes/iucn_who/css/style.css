@@ -9424,7 +9424,8 @@ ol li.iucn-arrow + .li.arrow {
 .paragraph-background-light.iucn-1col-wrapper .field--type-text-long h2:first-child,
 .paragraph-background-light.iucn-1col-wrapper .field--type-text-long h3:first-child,
 .paragraph-background-light.iucn-1col-wrapper .field--type-text-long h4:first-child,
-.paragraph-background-light.iucn-1col-wrapper .field--type-text-long h5:first-child {
+.paragraph-background-light.iucn-1col-wrapper .field--type-text-long h5:first-child,
+.paragraph-background-light.iucn-1col-wrapper .field--type-text-long h6:first-child {
   margin-top: 0;
 }
 .paragraph-background-light table > tbody > tr:nth-of-type(odd) {
