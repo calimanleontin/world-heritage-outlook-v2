@@ -79,7 +79,16 @@
 .paragraph-background-light {
   background-color: @iucn-blue-lightest;
   margin-top: 30 * @rem-multiplier--desktop;
-  padding-bottom: 60 * @rem-multiplier--desktop;
+  padding-bottom: 3em;
+  padding-top: 3em;
+  &.iucn-1col-wrapper .field--type-text-long {
+    h1, h2, h3, h4, h5 {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
   table > tbody > tr:nth-of-type(odd) {
     background-color: @table-border-color;
   }
