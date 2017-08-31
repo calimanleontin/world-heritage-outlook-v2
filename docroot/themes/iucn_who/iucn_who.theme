@@ -115,6 +115,7 @@ function iucn_who_preprocess_iucn_who_benefits_category_teaser(&$variables) {
 
 function iucn_who_preprocess_iucn_who_publications_full(&$variables) {
   $node = $variables['content']['#node'];
-  $file = $node->field_file->entity;
-  $variables['download_pdf_uri'] = $file->getFileUri();
+  if ($file = $node->field_file->entity) {
+    $variables['download_pdf_uri'] = $file->getFileUri();
+  }
 }
