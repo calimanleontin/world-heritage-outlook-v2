@@ -1,36 +1,30 @@
-uuid: d81d2fee-793f-4901-8020-915aa429ca40
+uuid: 6ba62914-8e7f-4ae4-ac3c-65ecc4123507
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
-    - node.type.news
+    - field.storage.paragraph.field_images
+    - paragraphs.paragraphs_type.image_grid
   module:
     - image
-third_party_settings:
-  content_translation:
-    translation_sync:
-      alt: alt
-      title: title
-      file: '0'
-id: node.news.field_image
-field_name: field_image
-entity_type: node
-bundle: news
+id: paragraph.image_grid.field_images
+field_name: field_images
+entity_type: paragraph
+bundle: image_grid
 label: Images
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_directory: 'image-grid/[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
   alt_field: true
-  alt_field_required: false
+  alt_field_required: true
   title_field: false
   title_field_required: false
   default_image:
