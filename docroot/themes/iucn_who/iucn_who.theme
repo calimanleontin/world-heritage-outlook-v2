@@ -127,12 +127,12 @@ function iucn_who_preprocess_iucn_who_publications_full(&$variables)
 
 function iucn_who_preprocess_field(&$variables) {
   switch ($variables['field_name']) {
-    case 'field_images':
+    case 'field_ph_images':
       if ($variables['element']['#object']->bundle() == 'image_grid') {
         /* @var \Drupal\paragraphs\Entity\Paragraph */
         $paragraph = $variables['element']['#object'];
         $per_row = $paragraph->field_grid_style->value;
-        $items_no = $paragraph->field_images->count();
+        $items_no = $paragraph->field_ph_images->count();
         $variables['rows'] = ceil($items_no / $per_row);
         $variables['per_row'] = $per_row;
       }

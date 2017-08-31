@@ -1,20 +1,27 @@
-uuid: 6ba62914-8e7f-4ae4-ac3c-65ecc4123507
+uuid: 1a3a1dbf-78fd-4dfa-9836-8ee9c5cdd4fa
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_images
-    - paragraphs.paragraphs_type.image_grid
+    - field.storage.paragraph.field_image
+    - paragraphs.paragraphs_type.image_link
   module:
+    - content_translation
     - image
-id: paragraph.image_grid.field_images
-field_name: field_images
+third_party_settings:
+  content_translation:
+    translation_sync:
+      alt: alt
+      title: title
+      file: '0'
+id: paragraph.image_link.field_image
+field_name: field_image
 entity_type: paragraph
-bundle: image_grid
-label: Images
+bundle: image_link
+label: Image
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
