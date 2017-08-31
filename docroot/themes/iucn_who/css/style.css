@@ -8833,12 +8833,12 @@ ol li.iucn-arrow + .li.arrow {
   }
 }
 @media screen and (max-width: 767px) {
-  #sidemenu .facets-toggle + #facets-collapse > .facets-content {
+  #facets-collapse > .facets-content {
     padding-left: calc(25px + .2em);
   }
 }
 @media screen and (min-width: 768px) {
-  #sidemenu .facets-toggle + #facets-collapse {
+  #facets-collapse {
     display: block;
     height: auto !important;
   }

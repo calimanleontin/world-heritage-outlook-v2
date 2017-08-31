@@ -17,16 +17,16 @@
       color: @text-color;
     }
   }
-  #sidemenu & + #facets-collapse {
-    @media @grid-mobile {
-      > .facets-content {
-        padding-left: calc(~'25px + .2em');
-      }
+}
+#facets-collapse {
+  @media @grid-mobile {
+    > .facets-content {
+      padding-left: calc(~'25px + .2em');
     }
-    @media @grid-desktop {
-      display: block;
-      height: auto !important;
-    }
+  }
+  @media @grid-desktop {
+    display: block;
+    height: auto !important;
   }
 }
 .facets-title {
