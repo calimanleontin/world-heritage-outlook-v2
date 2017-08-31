@@ -109,8 +109,28 @@
   }
 }
 
+// Image grid
+.field--name-field-images {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
 .images-row {
-  // @media (min-width: @screen-sm-min) {
+  & + & {
+    margin-top: 1em;
+  }
+  .field--item {
+    @media @grid-mobile {
+      + .field--item {
+        margin-top: 1em;
+      }
+    }
+  }
+  img {
+    margin: 0 auto;
+    max-height: round(150 * @rem-multiplier--desktop, 2);
+    width: auto;
+  }
+  @media (min-width: @screen-sm-min) {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
@@ -119,10 +139,5 @@
       //   flex-basis: 50%;
       // }
     }
-    img {
-      margin: 0 auto;
-      max-height: 150 * @rem-multiplier--desktop;
-      width: auto;
-    }
-  // }
+  }
 }
