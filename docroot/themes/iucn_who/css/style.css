@@ -11213,6 +11213,16 @@ fieldset[disabled] .path-frontpage .pdf-download-button a.focus {
     order: -1;
   }
 }
+.iucn-publications-teaser-wrapper .left-content {
+  padding-left: 0;
+  padding-right: 0;
+}
+@media screen and (max-width: 767px) {
+  .iucn-publications-teaser-wrapper .right-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 #download-publication-button {
   margin-top: 1em;
 }
