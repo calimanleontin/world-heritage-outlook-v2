@@ -1,0 +1,9 @@
+uuid: 1f375bed-2592-493f-917d-160069eb4911
+langcode: en
+status: true
+dependencies: {  }
+id: node__benefit
+label: 'Content: Benefit'
+tags:
+  description: '[node:field_summary]'
+  title: '[node:title] | [site:name]'
