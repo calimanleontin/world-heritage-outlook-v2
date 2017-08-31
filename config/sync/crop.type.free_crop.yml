@@ -1,0 +1,12 @@
+uuid: 8240b18a-e3a5-4939-b171-15425694ce3a
+langcode: en
+status: true
+dependencies: {  }
+label: 'Free crop'
+id: free_crop
+description: ''
+aspect_ratio: ''
+soft_limit_width: null
+soft_limit_height: null
+hard_limit_width: null
+hard_limit_height: null

@@ -116,3 +116,14 @@ function iucn_who_preprocess_iucn_who_benefits_category_teaser(&$variables) {
     $variables['read_more_link'] = $url;
   }
 }
+
+function iucn_who_preprocess_field(&$variables) {
+  if ($variables['field_name'] == 'field_images' && $variables['element']['#object']->bundle() == 'image_grid') {
+    /* @var \Drupal\paragraphs\Entity\Paragraph */
+    $paragraph = $variables['element']['#object'];
+    $per_row = $paragraph->field_grid_style->value;
+    $items_no = $paragraph->field_images->count();
+    $variables['rows'] = ceil($items_no / $per_row);
+    $variables['per_row'] = $per_row;
+  }
+}
