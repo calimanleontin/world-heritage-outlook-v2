@@ -11,6 +11,12 @@
   &:hover, &:active, &:focus {
     color: @link-hover-color;
   }
+  @media @grid-desktop {
+    cursor: default;
+    &:hover, &:active, &:focus {
+      color: @text-color;
+    }
+  }
   #sidemenu & + #facets-collapse {
     @media @grid-mobile {
       > .facets-content {

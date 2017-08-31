@@ -8821,6 +8821,16 @@ ol li.iucn-arrow + .li.arrow {
 .facets-toggle:focus {
   color: #03afdf;
 }
+@media screen and (min-width: 768px) {
+  .facets-toggle {
+    cursor: default;
+  }
+  .facets-toggle:hover,
+  .facets-toggle:active,
+  .facets-toggle:focus {
+    color: #333333;
+  }
+}
 @media screen and (max-width: 767px) {
   #sidemenu .facets-toggle + #facets-collapse > .facets-content {
     padding-left: calc(25px + .2em);
