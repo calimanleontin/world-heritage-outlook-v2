@@ -1,3 +1,18 @@
+@font-size-h1--paragraph:                                2rem; // 36px
+@font-size-h2--paragraph:                                1.34rem;
+@font-size-h3--paragraph:                                1.25rem; // ~18px
+@font-size-h4--paragraph:                                @font-size-base;
+@font-size-h5--paragraph:                                0.85rem; // ~12px
+@font-size-h6--paragraph:                                0.6rem;
+
+.loop-paragraph-headings(@rules, @index: 6) when (@index > 0) {
+  @paragraph-heading-selector: ~'h@{index}';
+  @rules();
+
+  // next iteration
+  .loop-paragraph-headings(@rules, (@index - 1));
+}
+
 .field--name-field-teasers {
   @media @grid-mobile {
     display: flex;
@@ -37,18 +52,60 @@
   a {
     color: @iucn-blue-light;
   }
-  &.iucn-1col-wrapper .field--type-text-long {
-    h2 {
-      font-size: round(28 * @rem-multiplier--desktop, 2);
-      margin-top: 1.5em;
-      margin-bottom: 1em;
-      &:first-child {
-        margin-bottom: 2em;
+  .field--type-text-long {
+    .loop-paragraph-headings({
+      @{paragraph-heading-selector} {
+        font-size: ~'@{font-size-@{paragraph-heading-selector}--paragraph}';
+        margin-top: 1.5em;
+        margin-bottom: 1em;
+        &:first-child {
+          margin-bottom: 2em;
+        }
+      }
+    });
+  }
+
+  h2.left-border {
+    font-size: round(28 * @rem-multiplier--desktop, 2);
+  }
+  h3.iucn-arrow {
+    font-size: 1rem;
+    line-height: @line-height-base;
+    float: left;
+    padding-right: 3em;
+    + * {
+      clear: left;
+    }
+    // arrow icon
+    &:before {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      content: '';
+      display: block;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 2em;
+      margin-right: .5em;
+    }
+    .loop-conservation-categories({
+      &.@{conservation-category-class} {
+        &:before {
+          background-image: url(~'@{images-path}@{conservation-category-class}-white.svg');
+        }
+      }
+    });
+    @media @grid-mobile {
+      margin-left: -@grid-gutter-width / 2;
+      padding-left: calc(~'3em + (@{grid-gutter-width} / 2)');
+      .iucn-numbering {
+        left: @grid-gutter-width / 2;
+        padding-left: 0;
       }
     }
   }
-  // &.iucn-1col-wrapper .field--name-field-paragraph-pages {
-
   // }
   table {
     &:extend(.table all);

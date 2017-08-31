@@ -199,44 +199,6 @@ a:active {
     left: 100%;
     top: 0;
   }
-  h3& {
-    font-size: 1rem;
-    line-height: @line-height-base;
-    float: left;
-    padding-right: 3em;
-    + * {
-      clear: left;
-    }
-    // arrow icon
-    &:before {
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center;
-      content: '';
-      display: block;
-      height: 100%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 2em;
-      margin-right: .5em;
-    }
-    .loop-conservation-categories({
-      &.@{conservation-category-class} {
-        &:before {
-          background-image: url(~'@{images-path}@{conservation-category-class}-white.svg');
-        }
-      }
-    });
-    @media @grid-mobile {
-      margin-left: -@grid-gutter-width / 2;
-      padding-left: calc(~'3em + (@{grid-gutter-width} / 2)');
-      .iucn-numbering {
-        left: @grid-gutter-width / 2;
-        padding-left: 0;
-      }
-    }
-  }
 }
 
 ol {

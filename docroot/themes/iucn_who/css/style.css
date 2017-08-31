@@ -8585,47 +8585,6 @@ h2.left-border {
   left: 100%;
   top: 0;
 }
-h3.iucn-arrow {
-  font-size: 1rem;
-  line-height: 1.33333333;
-  float: left;
-  padding-right: 3em;
-}
-h3.iucn-arrow + * {
-  clear: left;
-}
-h3.iucn-arrow:before {
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  content: '';
-  display: block;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 2em;
-  margin-right: .5em;
-}
-h3.iucn-arrow.management:before {
-  background-image: url(../images/management-white.svg);
-}
-h3.iucn-arrow.threats:before {
-  background-image: url(../images/threats-white.svg);
-}
-h3.iucn-arrow.values:before {
-  background-image: url(../images/values-white.svg);
-}
-@media screen and (max-width: 767px) {
-  h3.iucn-arrow {
-    margin-left: -15px;
-    padding-left: calc(3em + (30px / 2));
-  }
-  h3.iucn-arrow .iucn-numbering {
-    left: 15px;
-    padding-left: 0;
-  }
-}
 ol li.iucn-arrow {
   background-color: #def2fb;
   color: #333333;
@@ -9349,13 +9308,97 @@ ol li.iucn-arrow + .li.arrow {
 .paragraph a {
   color: #03afdf;
 }
-.paragraph.iucn-1col-wrapper .field--type-text-long h2 {
-  font-size: 1.56rem;
+.paragraph .field--type-text-long h6 {
+  font-size: 0.6rem;
   margin-top: 1.5em;
   margin-bottom: 1em;
 }
-.paragraph.iucn-1col-wrapper .field--type-text-long h2:first-child {
+.paragraph .field--type-text-long h6:first-child {
   margin-bottom: 2em;
+}
+.paragraph .field--type-text-long h5 {
+  font-size: 0.85rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph .field--type-text-long h5:first-child {
+  margin-bottom: 2em;
+}
+.paragraph .field--type-text-long h4 {
+  font-size: 18px;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph .field--type-text-long h4:first-child {
+  margin-bottom: 2em;
+}
+.paragraph .field--type-text-long h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph .field--type-text-long h3:first-child {
+  margin-bottom: 2em;
+}
+.paragraph .field--type-text-long h2 {
+  font-size: 1.34rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph .field--type-text-long h2:first-child {
+  margin-bottom: 2em;
+}
+.paragraph .field--type-text-long h1 {
+  font-size: 2rem;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.paragraph .field--type-text-long h1:first-child {
+  margin-bottom: 2em;
+}
+.paragraph h2.left-border {
+  font-size: 1.56rem;
+}
+.paragraph h3.iucn-arrow {
+  font-size: 1rem;
+  line-height: 1.33333333;
+  float: left;
+  padding-right: 3em;
+}
+.paragraph h3.iucn-arrow + * {
+  clear: left;
+}
+.paragraph h3.iucn-arrow:before {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 2em;
+  margin-right: .5em;
+}
+.paragraph h3.iucn-arrow.management:before {
+  background-image: url(../images/management-white.svg);
+}
+.paragraph h3.iucn-arrow.threats:before {
+  background-image: url(../images/threats-white.svg);
+}
+.paragraph h3.iucn-arrow.values:before {
+  background-image: url(../images/values-white.svg);
+}
+@media screen and (max-width: 767px) {
+  .paragraph h3.iucn-arrow {
+    margin-left: -15px;
+    padding-left: calc(3em + (30px / 2));
+  }
+  .paragraph h3.iucn-arrow .iucn-numbering {
+    left: 15px;
+    padding-left: 0;
+  }
 }
 .paragraph table th {
   font-weight: 900;
