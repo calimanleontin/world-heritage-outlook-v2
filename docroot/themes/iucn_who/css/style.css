@@ -9071,7 +9071,6 @@ ol li.iucn-arrow + .li.arrow {
 .path-sites-search .page-header {
   border-left: none;
   padding-left: 0;
-  margin-bottom: .45em;
 }
 @media screen and (max-width: 767px) {
   .path-sites-search .page-header {
@@ -9099,15 +9098,14 @@ ol li.iucn-arrow + .li.arrow {
 .search-block-container {
   background-color: #134780;
   color: #fff;
-  margin-bottom: 2.77777778rem;
-  margin-top: 2.77777778rem;
-  padding-bottom: 2.77777778rem;
-  padding-top: 2.77777778rem;
+  margin-bottom: 2.5em;
+  margin-top: 0;
+  padding-bottom: 2.5em;
+  padding-top: 2.5em;
 }
 @media screen and (max-width: 767px) {
   .search-block-container {
     margin-bottom: 1.42857143rem;
-    margin-top: 0;
     padding-bottom: 0.71428571rem;
     padding-top: 0.71428571rem;
   }
