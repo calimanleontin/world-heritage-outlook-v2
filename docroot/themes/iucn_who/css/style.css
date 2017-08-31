@@ -9025,10 +9025,8 @@ ol li.iucn-arrow + .li.arrow {
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-type-textfield {
   margin-bottom: 0;
 }
-@media screen and (max-width: 767px) {
-  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-type-textfield label {
-    display: none;
-  }
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-type-textfield label {
+  display: none;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-actions {
   z-index: 0;
