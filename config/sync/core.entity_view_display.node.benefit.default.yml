@@ -3,98 +3,57 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.benefit.body
     - field.field.node.benefit.field_benefit_category
     - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_page_elements
+    - field.field.node.benefit.field_summary
+    - image.style.large_image
     - node.type.benefit
   module:
-    - blazy
     - ds
-    - text
+    - entity_reference_revisions
+    - image
     - user
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_news_full
+      id: iucn_who_1col_cont_fluid
       library: null
       disable_css: false
       entity_classes: all_classes
       settings: {  }
     regions:
-      right_1:
+      container1:
         - field_benefit_image
-      content:
-        - body
+      fluid1:
+        - field_page_elements
 id: node.benefit.default
 targetEntityType: node
 bundle: benefit
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_benefit_image:
     weight: 0
     label: hidden
     settings:
-      style: ''
-      image_style: large
-      thumbnail_style: ''
-      responsive_image_style: ''
-      media_switch: ''
-      box_style: ''
-      box_caption: ''
-      box_caption_custom: ''
-      ratio: ''
-      grid: null
-      grid_medium: null
-      grid_small: null
-      sizes: ''
-      breakpoints:
-        xs:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        sm:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        md:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        lg:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        xl:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-      current_view_mode: default
-      background: false
-      caption:
-        title: '0'
-        alt: '0'
-      grid_header: ''
-      iframe_lazy: true
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      optionset: default
-      skin: ''
-      box_media_style: ''
+      image_style: large_image
+      image_link: ''
     third_party_settings:
       ds:
         ds_limit: ''
-    type: blazy
-    region: right_1
+    type: image
+    region: container1
+  field_page_elements:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: fluid1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
 hidden:
   field_benefit_category: true
+  field_summary: true
   langcode: true
   links: true

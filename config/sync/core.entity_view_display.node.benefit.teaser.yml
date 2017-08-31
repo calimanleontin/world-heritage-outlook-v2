@@ -4,9 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.benefit.body
     - field.field.node.benefit.field_benefit_category
     - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_page_elements
+    - field.field.node.benefit.field_summary
     - node.type.benefit
   module:
     - blazy
@@ -26,18 +27,9 @@ third_party_settings:
         - field_benefit_image
       content:
         - node_title
-        - body
+        - field_summary
         - node_link
     fields:
-      node_title:
-        plugin_id: node_title
-        weight: 1
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: h2
-          class: ''
       node_link:
         plugin_id: node_link
         weight: 3
@@ -48,27 +40,20 @@ third_party_settings:
           'link class': ''
           wrapper: ''
           class: ''
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
 id: node.benefit.teaser
 targetEntityType: node
 bundle: benefit
 mode: teaser
 content:
-  body:
-    label: hidden
-    type: smart_trim
-    weight: 2
-    settings:
-      trim_length: '100'
-      trim_type: chars
-      trim_suffix: ''
-      more_link: '0'
-      more_text: More
-      summary_handler: trim
-      trim_options:
-        text: 0
-      more_class: more-link
-    third_party_settings: {  }
-    region: content
   field_benefit_image:
     type: blazy
     weight: 0
@@ -126,7 +111,24 @@ content:
     third_party_settings:
       ds:
         ds_limit: '1'
+  field_summary:
+    type: smart_trim
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      trim_length: '350'
+      trim_type: chars
+      trim_suffix: …
+      more_link: '0'
+      more_text: More
+      trim_options:
+        text: text
+      more_class: more-link
+      summary_handler: full
+    third_party_settings: {  }
 hidden:
   field_benefit_category: true
+  field_page_elements: true
   langcode: true
   links: true

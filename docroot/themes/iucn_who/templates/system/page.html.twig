@@ -130,6 +130,7 @@
   {% block main %}
     <div role="main" class="main-container js-quickedit-main-content">
       <div class="container">
+        {% block main_container %}
         <div class="row">
           {# Sidebar First #}
           {% if page.sidebar_first or page.facets %}
@@ -202,6 +203,7 @@
             {% endblock %}
           {% endif %}
         </div>
+        {% endblock %}
       </div>
     </div>
   {% endblock %}
