@@ -1,0 +1,5 @@
+services:
+  iucn_who_core.redirect_content:
+    class: Drupal\iucn_who_core\EventSubscriber\IucnWhoRedirectSubscriber
+    tags:
+      - { name: event_subscriber }

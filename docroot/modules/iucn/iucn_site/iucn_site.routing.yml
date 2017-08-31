@@ -1,0 +1,6 @@
+iucn_site.redirect:
+  path: '/search-sites/-/wdpaid/{lang}/{wdpaid}'
+  defaults:
+    _controller: '\Drupal\iucn_site\Controller\IucnSiteRedirectController::redirectSite'
+  requirements:
+    _permission: 'access content'
