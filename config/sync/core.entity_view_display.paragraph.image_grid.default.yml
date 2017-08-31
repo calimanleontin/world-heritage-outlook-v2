@@ -4,12 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.image_grid.field_grid_style
-    - field.field.paragraph.image_grid.field_images
     - field.field.paragraph.image_grid.field_paragraph_background
+    - field.field.paragraph.image_grid.field_ph_images
     - paragraphs.paragraphs_type.image_grid
   module:
-    - blazy
     - ds
+    - entity_reference_revisions
 third_party_settings:
   ds:
     layout:
@@ -20,69 +20,21 @@ third_party_settings:
       settings: {  }
     regions:
       content:
-        - field_images
+        - field_ph_images
 id: paragraph.image_grid.default
 targetEntityType: paragraph
 bundle: image_grid
 mode: default
 content:
-  field_images:
-    type: blazy
+  field_ph_images:
+    type: entity_reference_revisions_entity_view
     weight: 0
-    region: content
     label: hidden
     settings:
-      style: ''
-      image_style: free_crop_thumbnail
-      thumbnail_style: ''
-      responsive_image_style: ''
-      media_switch: ''
-      box_style: ''
-      box_caption: ''
-      box_caption_custom: ''
-      ratio: ''
-      grid: null
-      grid_medium: null
-      grid_small: null
-      sizes: ''
-      breakpoints:
-        xs:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        sm:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        md:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        lg:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        xl:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-      current_view_mode: default
-      background: false
-      caption:
-        title: '0'
-        alt: '0'
-      grid_header: ''
-      iframe_lazy: true
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      optionset: default
-      skin: ''
-      box_media_style: ''
-    third_party_settings:
-      ds:
-        ds_limit: ''
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
 hidden:
   field_grid_style: true
   field_paragraph_background: true

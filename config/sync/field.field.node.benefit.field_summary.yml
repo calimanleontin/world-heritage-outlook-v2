@@ -11,8 +11,8 @@ id: node.benefit.field_summary
 field_name: field_summary
 entity_type: node
 bundle: benefit
-label: Summary
-description: 'Description of the page, to be shown in teasers (not displayed in full page)'
+label: 'Summary (teaser text)'
+description: 'Description of the page, to be shown in teasers and meta tag description. (not shown in full page)'
 required: false
 translatable: true
 default_value: {  }

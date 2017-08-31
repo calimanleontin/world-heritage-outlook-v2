@@ -12,3 +12,20 @@ function iucn_who_core_toolbar() {
     ->getInstanceFromDefinition(ToolbarHandler::class)
     ->toolbar();
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function iucn_who_core_page_attachments_alter(array &$attachments) {
+  // Trim metatag desc.
+  if (!empty($attachments['#attached']['html_head'])) {
+    foreach ($attachments['#attached']['html_head'] as &$tag) {
+      $is_meta = !empty($tag[0]['#tag']) && $tag[0]['#tag'] == 'meta';
+      $is_desc = $is_meta && !empty($tag[0]['#attributes']['name']) && $tag[0]['#attributes']['name'] == 'description';
+      if ($is_desc) {
+        $summary = text_summary($tag[0]['#attributes']['content'], 'plain_text', 300);
+        $tag[0]['#attributes']['content'] = preg_replace('/\n|\r|\t/m', ' ', $summary);
+      }
+    }
+  }
+}
