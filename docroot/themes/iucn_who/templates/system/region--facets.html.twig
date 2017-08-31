@@ -21,11 +21,13 @@
   ]
 %}
 {% if content %}
-  <div{{ attributes.addClass(classes) }}>
-    <a class="facets-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
-      {% set svg_path = '/themes/iucn_who/images/caret-triangle.svg' %}
-      <h2 class="facets-title"><span class='caret-triangle'>{{ source(svg_path) }}</span>Filters</h2>
-    </a>
+  <section{{ attributes.addClass(classes) }}>
+    <h1 class="facets-title">
+      <a class="facets-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
+        {% set svg_path = '/themes/iucn_who/images/caret-triangle.svg' %}
+        <span class='caret-triangle'>{{ source(svg_path) }}</span>Filters
+      </a>
+    </h1>
     <div class="collapse in" id="facets-collapse">
       <div class="facets-content">
         <div class="facets-subtitle">Choose one or more filters to refine your search.</div>
@@ -34,5 +36,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 {% endif %}

@@ -27,6 +27,8 @@ function postInitMap(instance_id, map, config) {
         var $icon = config.icons['icon' + this.customInfo.status_id + 'Active'];
         this.setIcon($icon);
         $.iucnUpdateMapDetail(this.customInfo.render);
+        $('#edit-q').prop('selectedIndex', 0);
+        $('#edit-q').trigger('chosen:updated');
       });
       $markers.push($marker);
     }

@@ -11,16 +11,22 @@
   &:hover, &:active, &:focus {
     color: @link-hover-color;
   }
-  #sidemenu & + #facets-collapse {
-    @media @grid-mobile {
-      > .facets-content {
-        padding-left: calc(~'25px + .2em');
-      }
+  @media @grid-desktop {
+    cursor: default;
+    &:hover, &:active, &:focus {
+      color: @text-color;
     }
-    @media @grid-desktop {
-      display: block;
-      height: auto !important;
+  }
+}
+#facets-collapse {
+  @media @grid-mobile {
+    > .facets-content {
+      padding-left: calc(~'25px + .2em');
     }
+  }
+  @media @grid-desktop {
+    display: block;
+    height: auto !important;
   }
 }
 .facets-title {
@@ -209,10 +215,8 @@
     display: flex;
     .form-type-textfield {
       margin-bottom: 0;
-      @media @grid-mobile {
-        label {
-          display: none;
-        }
+      label {
+        display: none;
       }
     }
     .form-actions {

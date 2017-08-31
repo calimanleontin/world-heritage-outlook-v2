@@ -5,23 +5,24 @@ set classes = [
 %}
 
 <div{{ attributes.addClass(classes) }}>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                {{ content.title }}
-                {% if content.left_1|render %}
-                    <div class="col-md-4">
-                        {{ content.left_1 }}
-                    </div>
-                {% endif %}
-                <div class="publication-content">
-                    {{ content.content }}
+    {{ content.title }}
+    {% if content.left_1|render %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 left-content">
+                    {{ content.left_1 }}
                 </div>
-                <div class="publication-year">
-                    {{ content.content_year }}
-                </div>
+                <div class="col-sm-9 right-content">
+    {% endif %}
+    <div class="publication-content">
+        {{ content.content }}
+    </div>
+    <div class="publication-year">
+        {{ content.content_year }}
+    </div>
+    {% if content.left_1|render %}
             </div>
         </div>
-    </div>
+    {% endif %}
 </div>
 
