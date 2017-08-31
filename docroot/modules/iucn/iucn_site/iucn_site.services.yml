@@ -1,5 +1,0 @@
-services:
-  iucn_site.route_subscriber:
-    class: '\Drupal\iucn_site\Routing\RouteSubscriber'
-    tags:
-      - { name: event_subscriber }
