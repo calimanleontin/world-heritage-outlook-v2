@@ -8451,6 +8451,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
   text-align: left;
   border-bottom: none;
   font-weight: 800;
+  margin-bottom: 1em;
 }
 @media screen and (max-width: 767px) {
   .page-header {
@@ -9070,6 +9071,7 @@ ol li.iucn-arrow + .li.arrow {
 .path-sites-search .page-header {
   border-left: none;
   padding-left: 0;
+  margin-bottom: .45em;
 }
 @media screen and (max-width: 767px) {
   .path-sites-search .page-header {
