@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.content_html.field_content
+    - field.field.paragraph.content_html.field_grid_ratio
     - field.field.paragraph.content_html.field_hide_on_mobile
     - field.field.paragraph.content_html.field_paragraph_background
     - paragraphs.paragraphs_type.content_html
   module:
     - ds
+    - options
     - text
 third_party_settings:
   ds:
@@ -32,6 +34,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_grid_ratio:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_hide_on_mobile:
     weight: 1

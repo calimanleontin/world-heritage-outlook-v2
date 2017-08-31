@@ -53,33 +53,12 @@ label_display == 'visually_hidden' ? 'sr-only',
 ]
 %}
 
-{% set col_class = items|length == 1 ? 'col-sm-12' : 'col-sm-' ~ 12 / items|length %}
 {% set hide_class = element['#object'].field_hide_on_mobile.value == 1 ? 'hidden-xs' : '' %}
+
 <div class="row {{ hide_class }}">
-  {% if label_hidden %}
-    {% if multiple %}
-      <div{{ attributes.addClass(classes, 'field--items') }}>
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field--item ' ~ col_class) }}>{{ item.content }}</div>
-        {% endfor %}
-      </div>
-    {% else %}
-      {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field--item ' ~ col_class) }}>{{ item.content }}</div>
-      {% endfor %}
-    {% endif %}
-  {% else %}
-    <div{{ attributes.addClass(classes) }}>
-      <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-      {% if multiple %}
-      <div class="field__items">
-        {% endif %}
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field--item ' ~ col_class) }}>{{ item.content }}</div>
-        {% endfor %}
-        {% if multiple %}
-      </div>
-      {% endif %}
-    </div>
-  {% endif %}
+  <div{{ attributes.addClass(classes, 'field--items') }}>
+    {% for item in items %}
+      <div{{ item.attributes.addClass('field--item col-sm-' ~ (loop.index0 % 2 == 0 ? column_numbers[0] : column_numbers[1])) }}>{{ item.content }}</div>
+    {% endfor %}
+  </div>
 </div>
