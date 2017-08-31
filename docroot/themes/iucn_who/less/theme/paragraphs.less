@@ -100,3 +100,21 @@
     }
   }
 }
+
+.images-row {
+  // @media (min-width: @screen-sm-min) {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    .field--item {
+      // @media @grid-mobile {
+      //   flex-basis: 50%;
+      // }
+    }
+    img {
+      margin: 0 auto;
+      max-height: 150 * @rem-multiplier--desktop;
+      width: auto;
+    }
+  // }
+}

@@ -9391,6 +9391,16 @@ ol li.iucn-arrow + .li.arrow {
 .paragraph-background-light table > tbody > tr:last-child.even {
   border-bottom: 6px solid #fff;
 }
+.images-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.images-row img {
+  margin: 0 auto;
+  max-height: 8.33333333rem;
+  width: auto;
+}
 [data-statistics="100"] {
   width: 100%;
 }
