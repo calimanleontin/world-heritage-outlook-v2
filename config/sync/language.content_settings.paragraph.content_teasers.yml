@@ -8,7 +8,7 @@ dependencies:
     - content_translation
 third_party_settings:
   content_translation:
-    enabled: false
+    enabled: true
 id: paragraph.content_teasers
 target_entity_type_id: paragraph
 target_bundle: content_teasers

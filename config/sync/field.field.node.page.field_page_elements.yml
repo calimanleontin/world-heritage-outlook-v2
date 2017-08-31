@@ -7,6 +7,7 @@ dependencies:
     - node.type.page
     - paragraphs.paragraphs_type.content_html
     - paragraphs.paragraphs_type.content_teasers
+    - paragraphs.paragraphs_type.image_grid
     - paragraphs.paragraphs_type.numbered_heading
     - paragraphs.paragraphs_type.pdf_download_button
   module:
@@ -29,6 +30,7 @@ settings:
       content_teasers: content_teasers
       numbered_heading: numbered_heading
       pdf_download_button: pdf_download_button
+      image_grid: image_grid
     target_bundles_drag_drop:
       danger_list:
         weight: -15
@@ -51,4 +53,7 @@ settings:
       teaser:
         weight: -9
         enabled: false
+      image_grid:
+        enabled: true
+        weight: 12
 field_type: entity_reference_revisions

@@ -53,10 +53,9 @@ label_display == 'visually_hidden' ? 'sr-only',
 ]
 %}
 
-{%
-set col_class = items|length == 1 ? 'col-sm-12' : 'col-sm-' ~ 12 / items|length
-%}
-<div class="row">
+{% set col_class = items|length == 1 ? 'col-sm-12' : 'col-sm-' ~ 12 / items|length %}
+{% set hide_class = element['#object'].field_hide_on_mobile.value == 1 ? 'hidden-xs' : '' %}
+<div class="row {{ hide_class }}">
   {% if label_hidden %}
     {% if multiple %}
       <div{{ attributes.addClass(classes, 'field--items') }}>

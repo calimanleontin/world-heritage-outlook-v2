@@ -14,7 +14,7 @@ bundle: content_html
 label: Content
 description: 'When having multiple items, they will be placed in up to 4 columns.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

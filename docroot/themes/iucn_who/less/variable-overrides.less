@@ -67,14 +67,14 @@
 @font-size-h6:                                0.85rem; // ~12px
 
 //** Unit-less `line-height` for use in components like buttons.
-@line-height-base:                            (1.5); // 27/18
+@line-height-base:                            (24 / unit(@font-size-base)); // 24/18
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
 @line-height-computed:                        (unit(@font-size-base) * @line-height-base * @rem-multiplier--desktop); // ~27px
 
 //** By default, this inherits from the `<body>`.
 @headings-font-family:                        inherit;
 @headings-font-weight:                        700;
-@headings-line-height:                        1.1;
+@headings-line-height:                        1.2;
 @headings-color:                              inherit;
 
 
@@ -153,27 +153,27 @@
 
 @btn-default-color:                           #333;
 @btn-default-bg:                              #fff;
-@btn-default-border:                          #ccc;
+@btn-default-border:                          @btn-default-bg;
 
 @btn-primary-color:                           #fff;
 @btn-primary-bg:                              @brand-primary;
-@btn-primary-border:                          darken(@btn-primary-bg, 5%);
+@btn-primary-border:                          @btn-primary-bg;
 
 @btn-success-color:                           #fff;
 @btn-success-bg:                              @brand-success;
-@btn-success-border:                          darken(@btn-success-bg, 5%);
+@btn-success-border:                          @btn-success-bg;
 
 @btn-info-color:                              #fff;
 @btn-info-bg:                                 @brand-info;
-@btn-info-border:                             darken(@btn-info-bg, 5%);
+@btn-info-border:                             @btn-info-bg;
 
 @btn-warning-color:                           #fff;
 @btn-warning-bg:                              @brand-warning;
-@btn-warning-border:                          darken(@btn-warning-bg, 5%);
+@btn-warning-border:                          @btn-warning-bg;
 
 @btn-danger-color:                            #fff;
 @btn-danger-bg:                               @brand-danger;
-@btn-danger-border:                           darken(@btn-danger-bg, 5%);
+@btn-danger-border:                           @btn-danger-bg;
 
 @btn-link-disabled-color:                     @gray-light;
 
@@ -226,7 +226,7 @@
 @legend-border-color:                         #e5e5e5;
 
 //** Background color for textual input addons
-@input-group-addon-bg:                        @gray-lighter;
+@input-group-addon-bg:                        @input-bg;
 //** Border color for textual input addons
 @input-group-addon-border-color:              @input-border;
 

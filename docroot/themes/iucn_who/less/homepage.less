@@ -9,6 +9,7 @@
 //     }
 //   }
 // }
+@map-sidebar-height: (@navbar-height + @map-footer-height - (@map-scrolldown-height * 5 / 4));
 .path-frontpage {
   @media @grid-mobile {
     .region-content {
@@ -27,14 +28,18 @@
     @media @grid-desktop {
       .row.map-block-main {
         display: flex;
+        height: 100vh;
+        margin-bottom: -@map-sidebar-height;
+        padding-bottom: @map-sidebar-height;
       }
       .col-left {
         box-shadow: 8px 0 10px -9px fade(#000, 30%);
-        font-size: 15 * @rem-multiplier--desktop;
-        z-index: 1;
+        font-size: 15 / unit(@font-size-base) * 1em;
+        // height: ~'calc(100vh - @{map-sidebar-height})';
+        line-height: 1.2;
         max-width: 300px;
-        height: ~'calc(100vh - @{navbar-height} - @{map-footer-height} + (@{map-scrolldown-height} * 5 / 4))';
         overflow: auto;
+        z-index: 1;
       }
       .col-right {
         position: relative;
@@ -135,21 +140,26 @@
   }
   #map-site-search {
     .background-variant(@iucn-blue-dark, #fff);
-    padding: 16 / 15 * 1em;
+    padding: .7em 1em;
     form {
       .clearfix();
     }
     .form-submit {
       display: none;
     }
+    .form-group {
+      margin-bottom: 12 / 15 * 1em;
+    }
     a[href*="/sites-search"] {
       float: right;
       font-weight: 300;
+      font-size: 14 / 15 * 1em;
       @media @grid-mobile {
         display: none;
       }
     }
     .form-type-select > label {
+      font-size: 18 / 15 * 1em;
       &:before {
         content: '';
         background-image: url(~'@{images-path}explore.svg');
@@ -160,7 +170,10 @@
         width: 1em;
         display: inline-block;
         margin-right: .5em;
-        vertical-align: middle;
+        @media @grid-desktop {
+          position: relative;
+          top: 3px;
+        }
       }
     }
     @media @grid-mobile {
@@ -191,10 +204,11 @@
     }
   }
   #map-filters {
-    padding: 2em (16 / 15 * 1em);
+    padding: 1em;
     position: relative;
     h3 {
-      font-size: 1.13em; // 17px
+      color: @iucn-blue-dark;
+      font-size: 1.1em;
       margin-top: 0;
     }
     a[data-filter="all"] {
@@ -202,9 +216,10 @@
       float: right;
     }
     ul {
+      line-height: 22 / 15;
       list-style-type: none;
-      margin-left: -16 / 15 * 1em;
-      margin-right: -16 / 15 * 1em;
+      margin-left: -1em;
+      margin-right: -1em;
     }
     li {
       padding-left: 1em;
@@ -240,7 +255,7 @@
       background-size: 1em * @line-height-base;
       background-repeat: no-repeat;
       display: block;
-      padding-left: 1.5em;
+      // padding-left: 1.5em;
       cursor: pointer;
       .loop-conservation-ratings({
         &.@{conservation-rating-class} {
@@ -260,6 +275,9 @@
       });
       &.data-deficient:before {
         background-color: #fff;
+      }
+      @media @sm-only {
+        padding-left: 0;
       }
     }
     @media @grid-mobile {
@@ -315,12 +333,12 @@
       .clearfix();
       > div,
       > dl {
-        padding-left: 1.5em;
+        padding-left: 1.5rem;
       }
       > div,
       > dl,
       > .more {
-        padding-right: .5em;
+        padding-right: .5rem;
       }
       .status {
         background-color: #fff;
@@ -329,7 +347,7 @@
         left: 0;
         max-width: calc(~'100% - 2em');
         min-height: 2em;
-        padding: .2em 2em;
+        padding: .2em 1.5rem;
         position: absolute;
         top: 0; // compensate for 1px padding-top
         // @todo: remove unnecessary conservation rating classes
@@ -352,10 +370,13 @@
       }
       .title {
         border-left: .4em solid;
-        padding-bottom: .5em;
-        padding-left: 1em;
+        font-size: 1em;
+        margin-bottom: .7em;
+        margin-top: .7em;
+        padding-bottom: .4em;
+        padding-left: 1.3em;
         padding-right: .5em;
-        padding-top: .5em;
+        padding-top: .4em;
         .loop-conservation-ratings({
           &.@{conservation-rating-class} {
             color: @conservation-rating-color;
@@ -366,16 +387,20 @@
         }
       }
       .country {
-        font-weight: 300;
         color: #787878;
+        // font-weight: 300;
+        font-size: 11 / 15 * 1em;
+        text-transform: uppercase;
+
       }
       dl {
         color: #666666;
         float: left;
         font-size: .85em;
         margin-top: .5em;
-        padding-left: 10 * @rem-multiplier--desktop;
-        padding-right: 10 * @rem-multiplier--desktop;
+        margin-bottom: .5em;
+        padding-left: 10px;
+        padding-right: 10px;
         width: 100%;
         @media @grid-mobile {
           display: none;
@@ -415,8 +440,8 @@
         &.threats:before {
           background-image: url(~'@{images-path}threats.svg');
         }
-        &.protection:before {
-          background-image: url(~'@{images-path}protection.svg');
+        &.management:before {
+          background-image: url(~'@{images-path}management.svg');
           width: 1.4em;
         }
       }
@@ -475,6 +500,7 @@
         }
       }
       .inscription {
+        margin-top: .6em;
         strong {
           font-weight: inherit;
         }

@@ -9,7 +9,7 @@ function postInitMap(instance_id, map, config) {
 
     // Scale-down the images a bit
     for (var $i in config.icons) {
-      config.icons[$i].scaledSize = new google.maps.Size(24, 24);
+      config.icons[$i].scaledSize = new google.maps.Size(27, 27);
     }
     var $markers = [];
     for(var $i = 0; $i < config.markers.length; $i++) {
@@ -26,7 +26,7 @@ function postInitMap(instance_id, map, config) {
         $.iucnResetAllMarkerIcons();
         var $icon = config.icons['icon' + this.customInfo.status_id + 'Active'];
         this.setIcon($icon);
-        $('#map-site-details').hide().html(this.customInfo.render).fadeIn(200);
+        $.iucnUpdateMapDetail(this.customInfo.render);
       });
       $markers.push($marker);
     }
@@ -44,6 +44,22 @@ function postInitMap(instance_id, map, config) {
         $called = true;
       }
     });
+
+    $.iucnUpdateMapDetail = function(mapDetail) {
+      var $mapDetails = $('#map-site-details');
+      // $mapDetails.height($mapDetails.innerHeight());
+      $mapDetails.fadeOut(0).html(mapDetail).fadeIn(300);
+      // setTimeout(function() {
+      //   $('.col-left').animate({ scrollTop: $mapDetails.innerHeight() });
+      // }, 300);
+    };
+
+    $.iucnResetMapDetail = function() {
+      var $mapDetails = $('#map-site-details');
+      // $mapDetails.height('auto');
+      $mapDetails.fadeOut(0).html(config.empty_placeholder).fadeIn(300);
+      $('.col-left').animate({ scrollTop: 0 });
+    }
 
     $.iucnResetAllMarkerIcons = function() {
       for(var $i = 0; $i < $markers.length; $i++) {
@@ -70,7 +86,7 @@ function postInitMap(instance_id, map, config) {
       $.iucnResetAllMarkerIcons();
       $('#edit-q').prop('selectedIndex', 0);
       $('#edit-q').trigger('chosen:updated');
-      $('#map-site-details').hide().html(config.empty_placeholder).fadeIn(200);
+      $.iucnResetMapDetail();
     };
 
 
@@ -120,7 +136,7 @@ function postInitMap(instance_id, map, config) {
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
           if ($marker.customInfo.id == $(this).val()) {
-            $('#map-site-details').hide().html($marker.customInfo.render).fadeIn(200);
+            $.iucnUpdateMapDetail($marker.customInfo.render);
             var $icon = config.icons['icon' + $marker.customInfo.status_id + 'Active'];
           }
           else {

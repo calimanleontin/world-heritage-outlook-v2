@@ -1,10 +1,11 @@
-var VHChromeFix = function(selectors) {
+var IUCNVHChromeFix = function(selectors) {
   var self = this;
   var userAgent = navigator.userAgent.toLowerCase();
   var isAndroidChrome = /chrome/.test(userAgent) && /android/.test(userAgent);
   var isIOSChrome = /crios/.test(userAgent);
+  var is_iPhone_or_iPad = (navigator.userAgent.match(/i(Phone|Pad)/i));
 
-  if (isAndroidChrome || isIOSChrome) {
+  if (isAndroidChrome || isIOSChrome || is_iPhone_or_iPad) {
     // If we detected Chrome on Android or iOS
     // Cache elements and trigger fix on init
     this.getElements(selectors);
@@ -27,7 +28,7 @@ var VHChromeFix = function(selectors) {
   }
 };
 
-VHChromeFix.prototype.getElements = function(selectors) {
+IUCNVHChromeFix.prototype.getElements = function(selectors) {
   this.elements = [];
   // Convert selectors to array if they are not
   selectors = this.isArray(selectors) ? selectors : [selectors];
@@ -47,11 +48,11 @@ VHChromeFix.prototype.getElements = function(selectors) {
   }
 };
 
-VHChromeFix.prototype.isArray = function(array) {
+IUCNVHChromeFix.prototype.isArray = function(array) {
   return Object.prototype.toString.call(array) === '[object Array]';
 };
 
-VHChromeFix.prototype.fixAll = function() {
+IUCNVHChromeFix.prototype.fixAll = function() {
   for (var i = 0; i < this.elements.length; i++) {
     var element = this.elements[i];
     element.domElement.style.height = (window.innerHeight * element.vh / 100) + 'px';

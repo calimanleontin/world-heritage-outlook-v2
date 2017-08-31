@@ -1,0 +1,23 @@
+uuid: fa2fd604-9f78-44c2-b014-b1326fc290d9
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+name: free_crop_thumbnail
+label: 'Free crop thumbnail (400)'
+effects:
+  5a1c709f-1755-41fc-baea-e4596d84b9dd:
+    uuid: 5a1c709f-1755-41fc-baea-e4596d84b9dd
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: free_crop
+  8e6fc4af-baa8-40ee-b7da-1eb8bf28f801:
+    uuid: 8e6fc4af-baa8-40ee-b7da-1eb8bf28f801
+    id: image_scale
+    weight: 2
+    data:
+      width: 400
+      height: null
+      upscale: false

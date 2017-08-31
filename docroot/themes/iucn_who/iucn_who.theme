@@ -32,6 +32,10 @@ function iucn_who_preprocess_block(&$variables) {
   //     break;
 
   // }
+  if ($variables['base_plugin_id'] == 'home_page_map') {
+    $variables['#attached']['library'][] =  'iucn_who/iucn-mobile-chrome-vh-fix';
+  }
+
   if (isset($variables['elements']['#id'])) {
       $block_id = $variables['elements']['#id'];
       $block = \Drupal\block\Entity\Block::load($block_id);
@@ -113,9 +117,21 @@ function iucn_who_preprocess_iucn_who_benefits_category_teaser(&$variables) {
   }
 }
 
-function iucn_who_preprocess_iucn_who_publications_full(&$variables) {
+function iucn_who_preprocess_iucn_who_publications_full(&$variables)
+{
   $node = $variables['content']['#node'];
   if ($file = $node->field_file->entity) {
     $variables['download_pdf_uri'] = $file->getFileUri();
+  }
+}
+
+function iucn_who_preprocess_field(&$variables) {
+  if ($variables['field_name'] == 'field_images' && $variables['element']['#object']->bundle() == 'image_grid') {
+    /* @var \Drupal\paragraphs\Entity\Paragraph */
+    $paragraph = $variables['element']['#object'];
+    $per_row = $paragraph->field_grid_style->value;
+    $items_no = $paragraph->field_images->count();
+    $variables['rows'] = ceil($items_no / $per_row);
+    $variables['per_row'] = $per_row;
   }
 }

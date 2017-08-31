@@ -1,3 +1,49 @@
-.pagination > li > a {
-  color: @text-color;
+ .pagination {
+  @media @grid-desktop {
+    float: right;
+  }
+  > li {
+    display: inline-block;
+  }
+  > li > a {
+    color: @text-color;
+  }
+   > .active > a {
+    font-weight: 900;
+  }
+
+  > .pager__item--previous,
+  > .pager__item--next {
+    > a {
+      padding: 0;
+    }
+    > a:before {
+      content: '';
+      background-image: url(~'@{images-path}icon-arrow.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 2em;
+      height: 1.5em;
+      display: inline-block;
+    }
+    span[aria-hidden="true"] {
+      font-size: 0;
+    }
+  }
+  > .pager__item--previous > a:before {
+    transform+_: rotate(180deg);
+  }
+  @media @grid-mobile {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    > .pager__item--previous {
+      margin-right: auto;
+    }
+    > .pager__item--next {
+      margin-left: auto;
+    }
+  }
 }

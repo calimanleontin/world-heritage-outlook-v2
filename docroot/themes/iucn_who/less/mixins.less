@@ -26,7 +26,19 @@
     }
   }
 }
-
+.link() {
+  color: @link-color;
+  transition: color .2s, background-color .2s;
+  &:hover, &:focus, &:active {
+    text-decoration: none;
+    color: @link-hover-color;
+  }
+}
+.light-link() {
+  &, a {
+    color: @iucn-blue-light;
+  }
+}
 
 // Generate conservation rating styling
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
@@ -55,7 +67,7 @@
 }
 
 // Generate categories (?)
-@conservation-categories-list: 'values', 'threats', 'protection';
+@conservation-categories-list: 'values', 'threats', 'management';
 
 .loop-conservation-categories(@rules, @index: length(@conservation-categories-list)) when (@index > 0) {
   @conservation-category-class: e(extract(@conservation-categories-list, @index));
