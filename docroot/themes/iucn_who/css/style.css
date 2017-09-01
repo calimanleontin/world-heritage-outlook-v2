@@ -9069,6 +9069,9 @@ ol li.iucn-arrow + .li.arrow {
 .path-sites-search .view-sites-search .view-header .sites-search-clear a {
   color: #03afdf;
 }
+.iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
+  margin-bottom: 3.89rem;
+}
 .search-block-container {
   background-color: #134780;
   color: #fff;
