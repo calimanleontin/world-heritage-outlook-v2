@@ -9426,6 +9426,7 @@ ol li.iucn-arrow + .li.arrow {
   line-height: 1.33333333;
   float: left;
   padding-right: 3em;
+  margin-bottom: 2.22222222rem;
 }
 .paragraph h3.iucn-arrow + * {
   clear: left;
