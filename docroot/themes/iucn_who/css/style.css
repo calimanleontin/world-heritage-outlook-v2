@@ -8651,7 +8651,7 @@ ol li.iucn-arrow:before {
 ol li.iucn-arrow:after {
   border-color: transparent transparent transparent #def2fb;
 }
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .field--type-text-with-summary [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12),
   .field--type-text-long [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
     margin-top: 15px;
