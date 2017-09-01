@@ -82,7 +82,7 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
     foreach ($social_medias as $name => $social_media) {
       if ($social_media['enable'] == 1 && !empty($social_media['api_url'])) {
         $elements[$name]['text'] = $social_media['text'];
-        $elements[$name]['api'] = new Attribute(array($social_media['api_event'] => $this->token->replace($social_media['api_url'])));
+        $elements[$name]['api'] = new Attribute(array($social_media['api_event'] => urlencode($this->token->replace($social_media['api_url']))));
 
         if (!empty($social_media['library'])) {
           $library[] = $social_media['library'];
