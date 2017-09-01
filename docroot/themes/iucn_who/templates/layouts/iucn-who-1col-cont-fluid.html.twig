@@ -7,10 +7,12 @@ set classes = [
 {% if content %}
 <div{{ attributes.addClass(classes) }}>
   {% if content.container1 %}
-    <div class="container container1-wrapper">
-      <div class="row">
-        <div class="col-md-12">
-          {{ content.container1 }}
+    <div class="row">
+      <div class="container container1-wrapper">
+        <div class="row">
+          <div class="col-md-12">
+            {{ content.container1 }}
+          </div>
         </div>
       </div>
     </div>
@@ -25,10 +27,12 @@ set classes = [
     </div>
   {% endif %}
   {% if content.container2 %}
-    <div class="container container2-wrapper">
-      <div class="row">
-        <div class="col-md-12">
-          {{ content.container2 }}
+    <div class="row">
+      <div class="container container2-wrapper">
+        <div class="row">
+          <div class="col-md-12">
+            {{ content.container2 }}
+          </div>
         </div>
       </div>
     </div>
