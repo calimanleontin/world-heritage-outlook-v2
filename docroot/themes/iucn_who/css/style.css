@@ -8663,6 +8663,32 @@ ol li.iucn-arrow + .li.arrow {
     height: auto !important;
   }
 }
+.field--type-text-with-summary ul,
+.field--type-text-long ul {
+  list-style-type: none;
+}
+.field--type-text-with-summary ul li,
+.field--type-text-long ul li {
+  position: relative;
+}
+.field--type-text-with-summary ul li + li,
+.field--type-text-long ul li + li {
+  margin-top: 1.5em;
+}
+.field--type-text-with-summary ul li:before,
+.field--type-text-long ul li:before {
+  content: '';
+  display: block;
+  background-image: url(../images/list-icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  width: .75em;
+  position: absolute;
+  top: 0;
+  left: -1.5em;
+}
 .footer {
   background-color: #134780;
 }
