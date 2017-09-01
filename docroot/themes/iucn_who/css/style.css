@@ -9395,6 +9395,7 @@ ol li.iucn-arrow:after {
 }
 .paragraph strong.bottom-border {
   display: block;
+  font-weight: normal;
 }
 .paragraph h3.iucn-arrow {
   font-size: 1rem;
