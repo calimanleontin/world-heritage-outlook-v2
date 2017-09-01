@@ -32,13 +32,51 @@ dependencies:
     - ds
     - image
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_2col
+      library: ds/ds_2col
+      disable_css: true
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          left: div
+          right: div
+        outer_wrapper: article
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          left:
+            left-content: left-content
+          right:
+            right-content: right-content
+    regions:
+      left:
+        - field_image
+      right:
+        - node_title
+        - field_country
+        - field_inscription_year
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
 id: node.site.search_index
 targetEntityType: node
 bundle: site
 mode: search_index
 content:
   field_country:
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       link: false
@@ -46,25 +84,27 @@ content:
       ds:
         ds_limit: ''
     type: entity_reference_label
-    region: content
+    region: right
   field_image:
+    type: image
     weight: 0
+    region: left
     label: hidden
     settings:
       image_style: sites_thumbnail
       image_link: content
-    third_party_settings: {  }
-    type: image
-    region: content
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_inscription_year:
-    weight: 2
+    weight: 3
     label: inline
     settings:
       timezone_override: ''
       format_type: html_year
     third_party_settings: {  }
     type: datetime_default
-    region: content
+    region: right
 hidden:
   body: true
   field_area: true

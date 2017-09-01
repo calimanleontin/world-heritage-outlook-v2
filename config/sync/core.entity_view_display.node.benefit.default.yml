@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.benefit.field_benefit_category
     - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_benefit_year
     - field.field.node.benefit.field_page_elements
     - field.field.node.benefit.field_summary
     - image.style.large_image
@@ -13,6 +14,7 @@ dependencies:
     - ds
     - entity_reference_revisions
     - image
+    - options
     - user
 third_party_settings:
   ds:
@@ -43,6 +45,13 @@ content:
         ds_limit: ''
     type: image
     region: container1
+  field_benefit_year:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_page_elements:
     type: entity_reference_revisions_entity_view
     weight: 1

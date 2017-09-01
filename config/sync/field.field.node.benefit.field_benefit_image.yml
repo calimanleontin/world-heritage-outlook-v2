@@ -11,7 +11,7 @@ id: node.benefit.field_benefit_image
 field_name: field_benefit_image
 entity_type: node
 bundle: benefit
-label: 'Benefit image'
+label: Image
 description: ''
 required: false
 translatable: false

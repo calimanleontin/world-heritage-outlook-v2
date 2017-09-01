@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.benefit.field_benefit_category
     - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_benefit_year
     - field.field.node.benefit.field_page_elements
     - field.field.node.benefit.field_summary
     - node.type.benefit
@@ -17,29 +18,25 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_news_teaser
+      id: ds_1col_wrapper
       library: null
       disable_css: false
       entity_classes: all_classes
-      settings: {  }
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
     regions:
-      left_1:
+      ds_content:
         - field_benefit_image
-      content:
         - node_title
         - field_summary
-        - node_link
     fields:
-      node_link:
-        plugin_id: node_link
-        weight: 3
-        label: hidden
-        formatter: default
-        settings:
-          'link text': 'Read more'
-          'link class': ''
-          wrapper: ''
-          class: ''
       node_title:
         plugin_id: node_title
         weight: 1
@@ -57,7 +54,7 @@ content:
   field_benefit_image:
     type: blazy
     weight: 0
-    region: left_1
+    region: ds_content
     label: hidden
     settings:
       style: ''
@@ -114,14 +111,14 @@ content:
   field_summary:
     type: smart_trim
     weight: 2
-    region: content
+    region: ds_content
     label: hidden
     settings:
-      trim_length: '350'
+      trim_length: '250'
       trim_type: chars
-      trim_suffix: …
-      more_link: '0'
-      more_text: More
+      trim_suffix: ''
+      more_link: '1'
+      more_text: 'Read more'
       trim_options:
         text: text
       more_class: more-link
@@ -129,6 +126,7 @@ content:
     third_party_settings: {  }
 hidden:
   field_benefit_category: true
+  field_benefit_year: true
   field_page_elements: true
   langcode: true
   links: true

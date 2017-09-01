@@ -2,7 +2,7 @@ uuid: 8b2f68dc-c847-4728-b7a5-d7f037317e7c
 langcode: en
 status: true
 dependencies: {  }
-name: 'Benefits category'
+name: 'Benefits case study category'
 vid: benefits_category
 description: ''
 hierarchy: 0

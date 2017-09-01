@@ -10,7 +10,7 @@ id: node.benefit.field_benefit_category
 field_name: field_benefit_category
 entity_type: node
 bundle: benefit
-label: 'Benefit category'
+label: Category
 description: ''
 required: false
 translatable: true

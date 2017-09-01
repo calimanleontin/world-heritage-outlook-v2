@@ -164,7 +164,7 @@ function iucn_who_preprocess_form_element_label(&$variables) {
 }
 
 function iucn_who_preprocess_form_element(&$variables) {
-  if (!empty($variables['name'] && $variables['name'] == 'lang_dropdown_select')) {
+  if (!empty($variables['name']) && $variables['name'] == 'lang_dropdown_select') {
     $id = $variables['element']['#attributes']['id'];
     $variables['label']['#id'] = $id;
   }

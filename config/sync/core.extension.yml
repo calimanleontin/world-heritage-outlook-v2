@@ -2,6 +2,7 @@ module:
   anchor_only: 0
   blazy: 0
   block: 0
+  block_content: 0
   breakpoint: 0
   chosen: 0
   chosen_lib: 0
