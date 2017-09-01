@@ -1,17 +1,17 @@
-@font-size-h1--paragraph:                                2rem; // 36px
-@font-size-h2--paragraph:                                1.34rem;
-@font-size-h3--paragraph:                                1.25rem; // ~18px
-@font-size-h4--paragraph:                                @font-size-base;
-@font-size-h5--paragraph:                                0.85rem; // ~12px
-@font-size-h6--paragraph:                                0.6rem;
+// @font-size-h1--paragraph:                                2rem; // 36px
+// @font-size-h2--paragraph:                                1.34rem;
+// @font-size-h3--paragraph:                                1.25rem; // ~18px
+// @font-size-h4--paragraph:                                @font-size-base;
+// @font-size-h5--paragraph:                                0.85rem; // ~12px
+// @font-size-h6--paragraph:                                0.6rem;
 
-.loop-paragraph-headings(@rules, @index: 6) when (@index > 0) {
-  @paragraph-heading-selector: ~'h@{index}';
-  @rules();
+// .loop-paragraph-headings(@rules, @index: 6) when (@index > 0) {
+//   @paragraph-heading-selector: ~'h@{index}';
+//   @rules();
 
-  // next iteration
-  .loop-paragraph-headings(@rules, (@index - 1));
-}
+//   // next iteration
+//   .loop-paragraph-headings(@rules, (@index - 1));
+// }
 
 .field--name-field-teasers {
   @media @grid-mobile {
@@ -49,24 +49,24 @@
   //     margin-top: 40 * @rem-multiplier--mobile;
   //   }
   // }
+  .field--type-text-long {
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.5em;
+      margin-bottom: .75em;
+      &.text-align-center,
+      &.text-align-left,
+      &.text-align-right {
+        margin-bottom: 1.2em;
+      }
+    }
+  }
+
   a {
     color: @iucn-blue-light;
   }
-  .field--type-text-long {
-    .loop-paragraph-headings({
-      @{paragraph-heading-selector} {
-        font-size: ~'@{font-size-@{paragraph-heading-selector}--paragraph}';
-        margin-top: 2em;
-        margin-bottom: 1em;
-        &:first-child {
-          margin-bottom: 2em;
-        }
-      }
-    });
-  }
 
   h2.left-border {
-    font-size: round(28 * @rem-multiplier--desktop, 2);
+    // font-size: round(28 * @rem-multiplier--desktop, 2);
   }
   strong.bottom-border {
     display: block;

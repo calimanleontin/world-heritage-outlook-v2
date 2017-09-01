@@ -9361,59 +9361,37 @@ ol li.iucn-arrow:after {
 .field--name-field-teasers .field--name-node-title:first-child > * {
   margin-top: 0;
 }
+.paragraph .field--type-text-long h1,
+.paragraph .field--type-text-long h2,
+.paragraph .field--type-text-long h3,
+.paragraph .field--type-text-long h4,
+.paragraph .field--type-text-long h5,
+.paragraph .field--type-text-long h6 {
+  margin-top: 1.5em;
+  margin-bottom: .75em;
+}
+.paragraph .field--type-text-long h1.text-align-center,
+.paragraph .field--type-text-long h2.text-align-center,
+.paragraph .field--type-text-long h3.text-align-center,
+.paragraph .field--type-text-long h4.text-align-center,
+.paragraph .field--type-text-long h5.text-align-center,
+.paragraph .field--type-text-long h6.text-align-center,
+.paragraph .field--type-text-long h1.text-align-left,
+.paragraph .field--type-text-long h2.text-align-left,
+.paragraph .field--type-text-long h3.text-align-left,
+.paragraph .field--type-text-long h4.text-align-left,
+.paragraph .field--type-text-long h5.text-align-left,
+.paragraph .field--type-text-long h6.text-align-left,
+.paragraph .field--type-text-long h1.text-align-right,
+.paragraph .field--type-text-long h2.text-align-right,
+.paragraph .field--type-text-long h3.text-align-right,
+.paragraph .field--type-text-long h4.text-align-right,
+.paragraph .field--type-text-long h5.text-align-right,
+.paragraph .field--type-text-long h6.text-align-right {
+  margin-bottom: 1.2em;
+}
 .paragraph a {
   color: #03afdf;
-}
-.paragraph .field--type-text-long h6 {
-  font-size: 0.6rem;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h6:first-child {
-  margin-bottom: 2em;
-}
-.paragraph .field--type-text-long h5 {
-  font-size: 0.85rem;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h5:first-child {
-  margin-bottom: 2em;
-}
-.paragraph .field--type-text-long h4 {
-  font-size: 18px;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h4:first-child {
-  margin-bottom: 2em;
-}
-.paragraph .field--type-text-long h3 {
-  font-size: 1.25rem;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h3:first-child {
-  margin-bottom: 2em;
-}
-.paragraph .field--type-text-long h2 {
-  font-size: 1.34rem;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h2:first-child {
-  margin-bottom: 2em;
-}
-.paragraph .field--type-text-long h1 {
-  font-size: 2rem;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-.paragraph .field--type-text-long h1:first-child {
-  margin-bottom: 2em;
-}
-.paragraph h2.left-border {
-  font-size: 1.56rem;
 }
 .paragraph strong.bottom-border {
   display: block;
