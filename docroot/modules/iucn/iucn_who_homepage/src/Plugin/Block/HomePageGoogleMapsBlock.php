@@ -74,7 +74,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       drupal_get_path('module', 'iucn_who_homepage')
     );
     return sprintf(
-      '<div class="site-selection-placeholder"><img src="%s"><span>%s</span></div>',
+      '<div class="site-selection-placeholder"><img src="%s" alt="No site"><span>%s</span></div>',
       $placeholder_url,
       $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a natural site for details'))
     );
