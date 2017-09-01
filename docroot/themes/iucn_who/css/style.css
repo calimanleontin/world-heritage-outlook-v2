@@ -1509,11 +1509,11 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 1.34rem;
+  font-size: 1.33333333rem;
 }
 h4,
 .h4 {
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
 }
 h5,
 .h5 {
@@ -1521,7 +1521,7 @@ h5,
 }
 h6,
 .h6 {
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
 }
 p {
   margin: 0 0 0.66666667rem;
