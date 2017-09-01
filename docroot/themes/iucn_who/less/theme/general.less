@@ -164,20 +164,6 @@ a:active {
 //   }
 // }
 
-.field--type-text-long {
-  img {
-    .img-responsive();
-    // @media @grid-mobile {
-    //   height: auto !important;
-    // }
-  }
-  @media (max-width: @screen-sm-max) {
-    // add spacing between columns on mobile unless they're consecutive full width ones
-    [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
-      margin-top: @grid-gutter-width / 2;
-    }
-  }
-}
 // CKeditor custom styles
 .left-border {
   .left-bordered-heading();
@@ -281,7 +267,14 @@ ol {
 
 .field--type-text-with-summary,
 .field--type-text-long {
+  @media (max-width: @screen-sm-max) {
+    // add spacing between columns on mobile unless they're consecutive full width ones
+    [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
+      margin-top: @grid-gutter-width / 2;
+    }
+  }
   img {
+    .img-responsive();
     max-width: 100%;
     @media @grid-mobile {
       height: auto !important;

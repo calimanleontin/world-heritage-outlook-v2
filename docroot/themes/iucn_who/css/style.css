@@ -8546,16 +8546,6 @@ a:active .caret-triangle .caret-path {
   padding-left: 0;
   padding-right: 0;
 }
-.field--type-text-long img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-@media (max-width: 991px) {
-  .field--type-text-long [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
-    margin-top: 15px;
-  }
-}
 .left-border {
   border-left: .4em solid;
   color: #134780;
@@ -8655,8 +8645,16 @@ ol li.iucn-arrow:after {
 ol li.iucn-arrow + .li.arrow {
   margin-top: 30px;
 }
+@media (max-width: 991px) {
+  .field--type-text-with-summary [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12),
+  .field--type-text-long [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
+    margin-top: 15px;
+  }
+}
 .field--type-text-with-summary img,
 .field--type-text-long img {
+  display: block;
+  height: auto;
   max-width: 100%;
 }
 @media screen and (max-width: 767px) {
