@@ -44,6 +44,9 @@ body:not(.show-focus-outlines) {
   border-bottom: none;
   font-weight: 800;
   margin-bottom: 1em;
+  @media @grid-mobile {
+    font-size: round(32 * @rem-multiplier--mobile, 2);
+  }
   // .breadcrumb + & {
   //   margin-top: 1em;
   // }

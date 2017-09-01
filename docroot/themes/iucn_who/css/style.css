@@ -8461,6 +8461,12 @@ body:not(.show-focus-outlines) textarea:active:focus {
   .page-header {
     margin-left: -15px;
     margin-right: -15px;
+    border-left-width: 0.71rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .page-header {
+    font-size: 2.29rem;
   }
 }
 a {
@@ -8563,6 +8569,7 @@ a:active .caret-triangle .caret-path {
   .left-border {
     margin-left: -15px;
     margin-right: -15px;
+    border-left-width: 0.71rem;
   }
 }
 h2.left-border {
