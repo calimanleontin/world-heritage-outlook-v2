@@ -6,7 +6,7 @@ social_media:
     api_event: href
     default_img: 0
     weight: '1'
-    attributes: "target|_blank\r\nclass|facebook-share"
+    attributes: "target|_blank\r\nclass|facebook-share\r\nalt|Share on Facebook"
     drupalSettings: ''
     library: ''
     img: /themes/iucn_who/images/social_media/facebook_share.svg
@@ -19,7 +19,7 @@ social_media:
     text: 'Facebook messenger'
     default_img: 1
     weight: '2'
-    attributes: "target|_blank\r\nclass|facebook-msg"
+    attributes: "target|_blank\r\nclass|facebook-msg\r\nalt|Share on Facebook Messenger"
     img: ''
   linkedin:
     enable: 1
@@ -28,7 +28,7 @@ social_media:
     text: Linkedin
     default_img: 0
     weight: '4'
-    attributes: "target|_blank\r\nclass|linkedin"
+    attributes: "target|_blank\r\nclass|linkedin\r\nalt|Share on LinkedIn"
     drupalSettings: ''
     library: ''
     img: /themes/iucn_who/images/social_media/linkedin.svg
@@ -39,7 +39,7 @@ social_media:
     text: Twitter
     default_img: 0
     weight: '3'
-    attributes: "target|_blank\r\nclass|twitter"
+    attributes: "target|_blank\r\nclass|twitter\r\nalt|Share on Twitter"
     drupalSettings: ''
     library: ''
     img: /themes/iucn_who/images/social_media/twitter.svg
@@ -50,7 +50,7 @@ social_media:
     text: Email
     default_img: 1
     weight: '5'
-    attributes: class|email
+    attributes: "class|email\r\nalt|Share via email"
     drupalSettings: ''
     library: ''
     img: ''

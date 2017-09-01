@@ -1,0 +1,29 @@
+diff --git a/src/Plugin/Block/SocialSharingBlock.php b/src/Plugin/Block/SocialSharingBlock.php
+index 67302de..6ef606b 100644
+--- a/src/Plugin/Block/SocialSharingBlock.php
++++ b/src/Plugin/Block/SocialSharingBlock.php
+@@ -82,7 +82,7 @@ public function build() {
+     foreach ($social_medias as $name => $social_media) {
+       if ($social_media['enable'] == 1 && !empty($social_media['api_url'])) {
+         $elements[$name]['text'] = $social_media['text'];
+-        $elements[$name]['api'] = new Attribute(array($social_media['api_event'] => $this->token->replace($social_media['api_url'])));
++        $elements[$name]['api'] = new Attribute(array($social_media['api_event'] => urlencode($this->token->replace($social_media['api_url']))));
+ 
+         if (!empty($social_media['library'])) {
+           $library[] = $social_media['library'];
+diff --git a/templates/social-media-links.html.twig b/templates/social-media-links.html.twig
+index 3862f7e..9d01ffa 100644
+--- a/templates/social-media-links.html.twig
++++ b/templates/social-media-links.html.twig
+@@ -14,9 +14,9 @@
+     %}
+     {% for element in elements %}
+       <li>              
+-        <a {{ element.attr.target }} {{ element.attr.class.addClass(classes) }}  {{ element.api }}  alt="{{ element.text }}" title ="{{ element.text }}" >       
++        <a {{ element.attr.target }} {{ element.attr.class.addClass(classes) }}  {{ element.api }}  title ="{{ element.text }}" >
+             {% if element.img   %}
+-              <img src ="{{ element.img }}">
++              <img alt="{{ element.text }}"  src ="{{ element.img }}">
+             {% else %}
+               {{ element.text }}
+             {% endif %}
