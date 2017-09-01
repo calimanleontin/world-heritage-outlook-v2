@@ -154,3 +154,18 @@ function iucn_who_preprocess_field(&$variables) {
       break;
   }
 }
+
+function iucn_who_homepage_library_info_alter(&$libraries, $extension) {
+//  dpm($libraries);
+}
+
+function iucn_who_preprocess_form_element_label(&$variables) {
+//  dpm($variables);
+}
+
+function iucn_who_preprocess_form_element(&$variables) {
+  if (!empty($variables['name'] && $variables['name'] == 'lang_dropdown_select')) {
+    $id = $variables['element']['#attributes']['id'];
+    $variables['label']['#id'] = $id;
+  }
+}

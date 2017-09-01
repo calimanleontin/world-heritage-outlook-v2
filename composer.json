@@ -108,6 +108,7 @@
         "drupal/migrate_tools": "^2.0",
         "drupal/paragraphs": "^1.1",
         "drupal/pathauto": "^1.0",
+        "drupal/raven": "^2.3",
         "drupal/redirect": "^1.0@beta",
         "drupal/reroute_email": "^1.0@beta",
         "drupal/responsive_favicons": "^1.4",
