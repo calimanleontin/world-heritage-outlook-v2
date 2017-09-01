@@ -23,6 +23,7 @@ global-styling:
       js/publications.js: {}
       js/main.js: {}
       js/navbar-headroom.js: {}
+      js/social_media.js: {}
     dependencies:
       - core/jquery
       - iucn_who/bootstrap-js
