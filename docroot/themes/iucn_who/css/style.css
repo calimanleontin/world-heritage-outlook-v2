@@ -3026,7 +3026,7 @@ fieldset[disabled] .checkbox label {
 .input-sm {
   height: 3.55555556rem;
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -3041,7 +3041,7 @@ select[multiple].input-sm {
 .form-group-sm .form-control {
   height: 3.55555556rem;
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -3055,15 +3055,15 @@ select[multiple].input-sm {
 }
 .form-group-sm .form-control-static {
   height: 3.55555556rem;
-  min-height: 2.18333333rem;
+  min-height: 2.22222222rem;
   padding: 1.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
 }
 .input-lg {
   height: 5.11111111rem;
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -3078,7 +3078,7 @@ select[multiple].input-lg {
 .form-group-lg .form-control {
   height: 5.11111111rem;
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -3092,9 +3092,9 @@ select[multiple].input-lg {
 }
 .form-group-lg .form-control-static {
   height: 5.11111111rem;
-  min-height: 2.58333333rem;
+  min-height: 2.55555556rem;
   padding: 1.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
 }
 .has-feedback {
@@ -3310,13 +3310,13 @@ select[multiple].input-lg {
 @media (min-width: 768px) {
   .form-horizontal .form-group-lg .control-label {
     padding-top: 1.55555556rem;
-    font-size: 1.25rem;
+    font-size: 1.22222222rem;
   }
 }
 @media (min-width: 768px) {
   .form-horizontal .form-group-sm .control-label {
     padding-top: 1.27777778rem;
-    font-size: 0.85rem;
+    font-size: 0.88888889rem;
   }
 }
 .btn {
@@ -3752,21 +3752,21 @@ fieldset[disabled] .btn-link:focus {
 .btn-lg,
 .btn-group-lg > .btn {
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
 .btn-sm,
 .btn-group-sm > .btn {
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
   border-radius: 3px;
 }
 .btn-xs,
 .btn-group-xs > .btn {
   padding: 0.05555556rem 0.27777778rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -3916,7 +3916,7 @@ tbody.collapse.in {
 .dropdown-header {
   display: block;
   padding: 3px 20px;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.33333333;
   color: #777777;
   white-space: nowrap;
@@ -4152,7 +4152,7 @@ tbody.collapse.in {
 .input-group-lg > .input-group-btn > .btn {
   height: 5.11111111rem;
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
   border-radius: 6px;
 }
@@ -4175,7 +4175,7 @@ select[multiple].input-group-lg > .input-group-btn > .btn {
 .input-group-sm > .input-group-btn > .btn {
   height: 3.55555556rem;
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -4222,12 +4222,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .input-group-addon.input-sm {
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   border-radius: 3px;
 }
 .input-group-addon.input-lg {
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   border-radius: 6px;
 }
 .input-group-addon input[type="radio"],
@@ -4586,7 +4586,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-brand {
   float: left;
   padding: 2.11111111rem 15px;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.33333333rem;
   height: 5.55555556rem;
 }
@@ -5086,7 +5086,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination-lg > li > a,
 .pagination-lg > li > span {
   padding: 0.55555556rem 0.88888889rem;
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   line-height: 1.3333333;
 }
 .pagination-lg > li:first-child > a,
@@ -5102,7 +5102,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination-sm > li > a,
 .pagination-sm > li > span {
   padding: 0.27777778rem 0.55555556rem;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.5;
 }
 .pagination-sm > li:first-child > a,
@@ -5230,7 +5230,7 @@ a.label:focus {
   display: inline-block;
   min-width: 10px;
   padding: 3px 7px;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   font-weight: bold;
   color: #fff;
   line-height: 1;
@@ -5445,7 +5445,7 @@ a.thumbnail.active {
   float: left;
   width: 0%;
   height: 100%;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   line-height: 1.33333333rem;
   color: #fff;
   text-align: center;
@@ -6371,7 +6371,7 @@ button.close {
   word-break: normal;
   word-spacing: normal;
   word-wrap: normal;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
   opacity: 0;
   filter: alpha(opacity=0);
 }
@@ -7870,7 +7870,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .progress-wrapper .percentage,
 .progress-wrapper .progress-label {
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
 }
 .progress-wrapper .progress-bar {
   min-width: 2em;
@@ -7943,7 +7943,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 .tabs-left > .nav-tabs .summary,
 .tabs-right > .nav-tabs .summary {
   color: #777777;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
 }
 .tab-pane > .panel-heading {
   display: none;
@@ -8383,7 +8383,7 @@ p:last-child,
   margin-bottom: 0;
 }
 .region-help > .glyphicon {
-  font-size: 1.25rem;
+  font-size: 1.22222222rem;
   float: left;
   margin: -0.05em 0.5em 0 0;
 }
@@ -8478,6 +8478,10 @@ a:focus,
 a:active {
   text-decoration: none;
   color: #03afdf;
+}
+small,
+.small {
+  font-size: 0.88888889rem;
 }
 .icon-collapse:before {
   content: '+';
@@ -11441,7 +11445,7 @@ fieldset[disabled] #download-publication-button a.focus {
   border-bottom-color: #dddddd;
   padding-bottom: 6px;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.88888889rem;
 }
 .view-publications .view-header .block-search-api-sorts {
   float: right;
