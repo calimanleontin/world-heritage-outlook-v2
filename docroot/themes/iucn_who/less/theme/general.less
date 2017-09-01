@@ -168,6 +168,12 @@ a:active {
     //   height: auto !important;
     // }
   }
+  @media (max-width: @screen-sm-max) {
+    // add spacing between columns on mobile unless they're consecutive full width ones
+    [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
+      margin-top: @grid-gutter-width / 2;
+    }
+  }
 }
 // CKeditor custom styles
 .left-border {

@@ -8545,6 +8545,11 @@ a:active .caret-triangle .caret-path {
   max-width: 100%;
   height: auto;
 }
+@media (max-width: 991px) {
+  .field--type-text-long [class*='col-sm-']:not(.col-sm-12) + [class*='col-sm-']:not(.col-sm-12) {
+    margin-top: 15px;
+  }
+}
 .left-border {
   border-left: .4em solid;
   color: #134780;
