@@ -5,9 +5,11 @@ dependencies: {  }
 id: live
 label: live
 folder: ../config/live
-module: {  }
+module:
+  raven: 0
 theme: {  }
-blacklist: {  }
+blacklist:
+  - raven.settings
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
