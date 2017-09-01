@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "04472006acd34ee9f75a642f041145e0",
+    "content-hash": "8f63c50f1c590b3e26afbac34da32616",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -2638,6 +2638,56 @@
             }
         },
         {
+            "name": "drupal/raven",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/raven",
+                "reference": "8.x-2.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/raven-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "2169b97d45595c7fd850069f14c0e2aa8c2cd117"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "sentry/sentry": "^1.2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.3",
+                    "datestamp": "1492103342",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Burdett (mfb)",
+                    "homepage": "https://www.drupal.org/u/mfb",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Raven is an exception logging client for Sentry (getsentry.com).",
+            "homepage": "https://www.drupal.org/project/raven",
+            "support": {
+                "source": "http://cgit.drupalcode.org/raven",
+                "issues": "https://www.drupal.org/project/issues/raven"
+            }
+        },
+        {
             "name": "drupal/redirect",
             "version": "1.0.0-beta1",
             "source": {
@@ -4242,6 +4292,71 @@
                 "psr-3"
             ],
             "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "sentry/sentry",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/getsentry/sentry-php.git",
+                "reference": "ed62ac351124a136f61b7ece7e0d172f4c56897b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/ed62ac351124a136f61b7ece7e0d172f4c56897b",
+                "reference": "ed62ac351124a136f61b7ece7e0d172f4c56897b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^5.3|^7.0"
+            },
+            "conflict": {
+                "raven/raven": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.8.0",
+                "monolog/monolog": "*",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "suggest": {
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "immobiliare/sentry-php": "Fork that fixes support for PHP 5.2",
+                "monolog/monolog": "Automatically capture Monolog events as breadcrumbs"
+            },
+            "bin": [
+                "bin/sentry"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Raven_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Cramer",
+                    "email": "dcramer@gmail.com"
+                }
+            ],
+            "description": "A PHP client for Sentry (http://getsentry.com)",
+            "homepage": "http://getsentry.com",
+            "keywords": [
+                "log",
+                "logging"
+            ],
+            "time": "2017-08-02T16:38:25+00:00"
         },
         {
             "name": "solarium/solarium",

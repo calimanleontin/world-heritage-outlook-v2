@@ -302,6 +302,13 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
                 0 => __DIR__ . '/..' . '/solarium/solarium/library',
             ),
         ),
+        'R' => 
+        array (
+            'Raven_' => 
+            array (
+                0 => __DIR__ . '/..' . '/sentry/sentry/lib',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 
