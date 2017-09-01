@@ -72,8 +72,9 @@
     display: block;
     font-weight: normal;
   }
-  h3.iucn-arrow {
-    font-size: 1rem;
+  h2.iucn-arrow,
+  h3.iucn-arrow,
+  h4.iucn-arrow {
     line-height: @line-height-base;
     float: left;
     padding-right: 3em;
@@ -111,6 +112,10 @@
       }
     }
   }
+  h2.iucn-arrow { font-size: 22 * @rem-multiplier--desktop; }
+  h3.iucn-arrow { font-size: 18 * @rem-multiplier--desktop; }
+  h4.iucn-arrow { font-size: 16 * @rem-multiplier--desktop; }
+
   // }
   table {
     &:extend(.table all);

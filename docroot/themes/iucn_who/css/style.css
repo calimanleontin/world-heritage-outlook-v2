@@ -9397,17 +9397,22 @@ ol li.iucn-arrow:after {
   display: block;
   font-weight: normal;
 }
-.paragraph h3.iucn-arrow {
-  font-size: 1rem;
+.paragraph h2.iucn-arrow,
+.paragraph h3.iucn-arrow,
+.paragraph h4.iucn-arrow {
   line-height: 1.33333333;
   float: left;
   padding-right: 3em;
   margin-bottom: 2.22222222rem;
 }
-.paragraph h3.iucn-arrow + * {
+.paragraph h2.iucn-arrow + *,
+.paragraph h3.iucn-arrow + *,
+.paragraph h4.iucn-arrow + * {
   clear: left;
 }
-.paragraph h3.iucn-arrow:before {
+.paragraph h2.iucn-arrow:before,
+.paragraph h3.iucn-arrow:before,
+.paragraph h4.iucn-arrow:before {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -9420,24 +9425,43 @@ ol li.iucn-arrow:after {
   width: 2em;
   margin-right: .5em;
 }
-.paragraph h3.iucn-arrow.management:before {
+.paragraph h2.iucn-arrow.management:before,
+.paragraph h3.iucn-arrow.management:before,
+.paragraph h4.iucn-arrow.management:before {
   background-image: url(../images/management-white.svg);
 }
-.paragraph h3.iucn-arrow.threats:before {
+.paragraph h2.iucn-arrow.threats:before,
+.paragraph h3.iucn-arrow.threats:before,
+.paragraph h4.iucn-arrow.threats:before {
   background-image: url(../images/threats-white.svg);
 }
-.paragraph h3.iucn-arrow.values:before {
+.paragraph h2.iucn-arrow.values:before,
+.paragraph h3.iucn-arrow.values:before,
+.paragraph h4.iucn-arrow.values:before {
   background-image: url(../images/values-white.svg);
 }
 @media screen and (max-width: 767px) {
-  .paragraph h3.iucn-arrow {
+  .paragraph h2.iucn-arrow,
+  .paragraph h3.iucn-arrow,
+  .paragraph h4.iucn-arrow {
     margin-left: -15px;
     padding-left: calc(3em + (30px / 2));
   }
-  .paragraph h3.iucn-arrow .iucn-numbering {
+  .paragraph h2.iucn-arrow .iucn-numbering,
+  .paragraph h3.iucn-arrow .iucn-numbering,
+  .paragraph h4.iucn-arrow .iucn-numbering {
     left: 15px;
     padding-left: 0;
   }
+}
+.paragraph h2.iucn-arrow {
+  font-size: 1.22222222rem;
+}
+.paragraph h3.iucn-arrow {
+  font-size: 1rem;
+}
+.paragraph h4.iucn-arrow {
+  font-size: 0.88888889rem;
 }
 .paragraph table th {
   font-weight: 900;
