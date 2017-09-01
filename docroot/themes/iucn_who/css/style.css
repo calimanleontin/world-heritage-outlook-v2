@@ -8565,6 +8565,11 @@ a:active .caret-triangle .caret-path {
 h2.left-border {
   font-weight: 500;
 }
+.bottom-border {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: .5em;
+  text-transform: uppercase;
+}
 .iucn-arrow {
   align-items: center;
   background-color: #134780;
@@ -9412,6 +9417,9 @@ ol li.iucn-arrow + .li.arrow {
 }
 .paragraph h2.left-border {
   font-size: 1.56rem;
+}
+.paragraph strong.bottom-border {
+  display: block;
 }
 .paragraph h3.iucn-arrow {
   font-size: 1rem;
