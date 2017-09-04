@@ -31,12 +31,10 @@
 }
 .facets-title {
   // @todo: make mixin out of this
-  border-bottom: 1px solid #ddd;
+  .bottom-border();
   font-size: 1em;
   font-weight: 900;
   margin-top: 0;
-  padding-bottom: .5em;
-  text-transform: uppercase;
   #sidemenu & {
     @media @grid-mobile {
       border-bottom: none;
