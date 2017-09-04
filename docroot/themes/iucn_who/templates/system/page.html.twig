@@ -187,6 +187,13 @@
               {% endblock %}
             {% endif %}
 
+            {# contained_content #}
+            {% block contained_content %}
+              <div class="container contained-content">
+                {{ page.contained_content }}
+              </div>
+            {% endblock %}
+
             {# Content #}
             {% block content %}
               <a id="main-content"></a>

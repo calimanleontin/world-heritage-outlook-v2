@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.content_teasers.field_paragraph_background
     - field.field.paragraph.content_teasers.field_teasers
+    - field.field.paragraph.content_teasers.field_teasers_layout
     - paragraphs.paragraphs_type.content_teasers
   module:
     - paragraphs
@@ -30,6 +31,15 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
+    region: content
+  field_teasers_layout:
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  translation:
+    weight: 10
     region: content
 hidden:
   created: true
