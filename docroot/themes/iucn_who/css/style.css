@@ -11423,6 +11423,9 @@ fieldset[disabled] #download-publication-button a.focus {
   text-align: unset;
   margin-top: 1em;
 }
+#download-publication-button a .glyphicon {
+  background-size: auto;
+}
 #download-publication-button a div {
   font-size: 15px;
 }
