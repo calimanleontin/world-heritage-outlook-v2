@@ -11426,6 +11426,12 @@ fieldset[disabled] #download-publication-button a.focus {
     order: -1;
   }
 }
+@media screen and (max-width: 767px) {
+  .iucn-publications-teaser-wrapper .left-content,
+  .iucn-publications-teaser-wrapper .right-content {
+    margin-top: 1em;
+  }
+}
 .iucn-publications-teaser-wrapper .left-content {
   padding-left: 0;
   padding-right: 0;
