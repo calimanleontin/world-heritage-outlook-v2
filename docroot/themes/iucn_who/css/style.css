@@ -11442,6 +11442,10 @@ fieldset[disabled] #download-publication-button a.focus {
     padding-right: 0;
   }
 }
+.iucn-publications-teaser-wrapper .field--name-node-title h2 {
+  font-size: 1.55555556rem;
+  font-weight: 500;
+}
 #download-publication-button {
   text-align: unset;
   margin-top: 1em;
