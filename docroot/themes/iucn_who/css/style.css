@@ -11467,12 +11467,12 @@ fieldset[disabled] #download-publication-button a.focus {
   display: inline-block;
   text-align: left;
   width: auto;
-  font-size: 1.25em;
   color: #03afdf;
-  border-top-color: #f0f0f0;
+  border-top-color: #ddd;
   padding-left: 1.6em;
   position: relative;
   line-height: 1.2;
+  text-transform: uppercase;
 }
 .publications-back-button a .backicon {
   padding-top: 2em;
