@@ -7,7 +7,7 @@ set classes = [
 <div{{ attributes.addClass(classes) }}>
     {{ content.title }}
     {% if content.left_1|render %}
-        <div class="container-fluid">
+        {# <div class="container-fluid"> #}
             <div class="row">
                 <div class="col-sm-3 left-content">
                     {{ content.left_1 }}
@@ -22,7 +22,7 @@ set classes = [
     </div>
     {% if content.left_1|render %}
             </div>
-        </div>
+        {# </div> #}
     {% endif %}
 </div>
 
