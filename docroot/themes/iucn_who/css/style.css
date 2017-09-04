@@ -183,6 +183,7 @@
   display: block;
   font-size: 1em;
   font-weight: normal;
+  margin-bottom: 1em;
   padding-bottom: .5em;
   text-transform: uppercase;
 }
@@ -193,6 +194,16 @@ h4.bottom-border,
 h5.bottom-border,
 h6.bottom-border {
   margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.bottom-border,
+  h2.bottom-border,
+  h3.bottom-border,
+  h4.bottom-border,
+  h5.bottom-border,
+  h6.bottom-border {
+    font-size: 1.3em;
+  }
 }
 ol.iucn-list-6 li.iucn-arrow:nth-child(1):before {
   transform: rotateY(-80deg) skewY(-45deg);
@@ -8875,6 +8886,7 @@ ol li.iucn-arrow:after {
   border-bottom: 1px solid #ddd;
   display: block;
   font-weight: normal;
+  margin-bottom: 1em;
   padding-bottom: .5em;
   text-transform: uppercase;
   font-size: 1em;
@@ -8888,6 +8900,16 @@ h4.facets-title,
 h5.facets-title,
 h6.facets-title {
   margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.facets-title,
+  h2.facets-title,
+  h3.facets-title,
+  h4.facets-title,
+  h5.facets-title,
+  h6.facets-title {
+    font-size: 1.3em;
+  }
 }
 @media screen and (max-width: 767px) {
   #sidemenu .facets-title {
