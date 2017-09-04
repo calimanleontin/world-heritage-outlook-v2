@@ -116,6 +116,33 @@
   h3.iucn-arrow { font-size: 18 * @rem-multiplier--desktop; }
   h4.iucn-arrow { font-size: 16 * @rem-multiplier--desktop; }
 
+  ol[class*='iucn-list-'] {
+    @media @grid-mobile {
+      padding-bottom: 10px;
+      padding-left: 0;
+      li.iucn-arrow {
+        box-shadow: none;
+        height: auto;
+        left: 0;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 3.5rem;
+        &:before {
+          display: none;
+        }
+        &:after {
+          border-width: 15px 20px 0 20px;
+          border-color: @iucn-blue-lightest transparent transparent transparent;
+          left: 50%;
+          top: 100%;
+          margin-left: -20px;
+        }
+        .iucn-numbering {
+          left: .5rem;
+        }
+      }
+    }
+  }
   // }
   table {
     &:extend(.table all);
