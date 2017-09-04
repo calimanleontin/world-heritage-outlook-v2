@@ -11526,6 +11526,11 @@ fieldset[disabled] #download-publication-button a.focus {
   text-transform: uppercase;
   font-size: 0.88888889rem;
 }
+@media screen and (max-width: 767px) {
+  .view-publications .view-header {
+    display: none;
+  }
+}
 .view-publications .view-header .block-search-api-sorts {
   float: right;
 }
