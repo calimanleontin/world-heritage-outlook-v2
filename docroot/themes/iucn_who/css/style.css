@@ -8064,6 +8064,13 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .nav-tabs {
   margin-bottom: 0.55555556rem;
+  margin-top: 1em;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus,
+.nav-tabs > li > a:active {
+  border-color: transparent;
+  background-color: transparent;
 }
 /**
  * Toolbar module styling.

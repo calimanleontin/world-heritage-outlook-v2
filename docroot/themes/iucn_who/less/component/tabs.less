@@ -134,4 +134,11 @@
 
 .nav-tabs {
   margin-bottom: @padding-large-vertical;
+  margin-top: 1em;
+  > li > a {
+    &:hover, &:focus, &:active {
+      border-color: transparent;
+      background-color: transparent;
+    }
+  }
 }
