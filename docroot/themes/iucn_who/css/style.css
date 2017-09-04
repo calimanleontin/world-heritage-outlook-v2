@@ -11461,16 +11461,6 @@ fieldset[disabled] #download-publication-button a.focus {
     margin-top: 1em;
   }
 }
-.iucn-publications-teaser-wrapper .left-content {
-  padding-left: 0;
-  padding-right: 0;
-}
-@media screen and (max-width: 767px) {
-  .iucn-publications-teaser-wrapper .right-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
 .iucn-publications-teaser-wrapper .field--name-node-title h2 {
   font-size: 1.55555556rem;
   font-weight: 500;
