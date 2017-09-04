@@ -561,16 +561,18 @@
     dd { color: white; font-weight: bold; }
     dd>div {
       // box-sizing: initial;
+      line-height: 1.5em;
+      min-height: 1.5em;
+      min-width: 3em;
       padding: 0 1em;
       position: relative;
       text-align: center;
-      min-width: 3em;
       &:after {
         border-bottom-color: transparent;
         border-left-color: transparent;
         border-right-color: transparent;
         border-style: solid;
-        border-width: (@line-height-base * 1em) (@line-height-base * 1em) 0 0;
+        border-width: 1.5em 1.5em 0 0;
         content: '';
         display: inline-block;
         height: 0;
