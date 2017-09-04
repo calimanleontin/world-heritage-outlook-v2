@@ -1,8 +1,9 @@
-uuid: ce5c0057-ace3-4f67-a982-e999a2b5f67f
+uuid: 83ca03b1-7c9a-4185-b709-a394abe15896
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.teaser
     - field.field.paragraph.teaser.field_description
     - field.field.paragraph.teaser.field_image
     - field.field.paragraph.teaser.field_page_teaser_link
@@ -13,18 +14,17 @@ dependencies:
     - image
     - string_field_formatter
     - text
-id: paragraph.teaser.default
+id: paragraph.teaser.teaser
 targetEntityType: paragraph
 bundle: teaser
-mode: default
+mode: teaser
 content:
   field_description:
     weight: 2
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
-    type: text_trimmed
+    type: text_default
     region: content
   field_image:
     weight: 0

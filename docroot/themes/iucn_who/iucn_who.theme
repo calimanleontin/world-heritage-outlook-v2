@@ -152,6 +152,21 @@ function iucn_who_preprocess_field(&$variables) {
         $variables['column_numbers'] = $col_no;
       }
       break;
+
+    case 'field_teasers':
+      if ($variables['element']['#object']->bundle() == 'content_teasers') {
+        /* @var \Drupal\paragraphs\Entity\Paragraph */
+        $paragraph = $variables['element']['#object'];
+        $layout = 'list';
+        $class = 'col-sm-12';
+        if (!empty($paragraph->field_teasers_layout->value) && $paragraph->field_teasers_layout->value == 'grid') {
+          $items_no = $paragraph->field_teasers->count();
+          $class = $items_no == 1 ? 'col-sm-6' : 'col-sm-' . 12 / $items_no;
+          $layout = 'grid';
+        }
+        $variables['col_class'] = $class;
+        $variables['layout_type'] = $layout;
+      }
   }
 }
 

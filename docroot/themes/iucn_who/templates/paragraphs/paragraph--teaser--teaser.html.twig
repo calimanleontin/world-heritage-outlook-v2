@@ -49,9 +49,13 @@ view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
+      <div class="col-sm-4">
         {{ link(content.field_image, url) }}
+      </div>
+      <div class="col-sm-8">
         {{ link(content.field_title, url) }}
         {{ content.field_description }}
+      </div>
     {% endblock %}
   </div>
 {% endblock paragraph %}

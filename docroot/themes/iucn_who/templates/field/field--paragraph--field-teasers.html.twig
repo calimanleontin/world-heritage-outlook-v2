@@ -53,34 +53,14 @@ label_display == 'visually_hidden' ? 'sr-only',
 ]
 %}
 
-{%
-set col_class = items|length == 1 ? 'col-sm-6' : 'col-sm-' ~ 12 / items|length
-%}
+{% set item_view_mode = layout_type == 'grid' ? 'default' : 'teaser' %}
 <div class="row">
-  {% if label_hidden %}
-    {% if multiple %}
-      <div{{ attributes.addClass(classes, 'field--items') }}>
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field--item ' ~ col_class) }}>{{ item.content }}</div>
-        {% endfor %}
-      </div>
-    {% else %}
-      {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field--item ' ~ col_class) }}>{{ item.content }}</div>
-      {% endfor %}
-    {% endif %}
-  {% else %}
-    <div{{ attributes.addClass(classes) }}>
-      <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-      {% if multiple %}
-      <div class="field__items">
-        {% endif %}
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field--item ' ~ col_class) }}>{{ item.content }}</div>
-        {% endfor %}
-        {% if multiple %}
-      </div>
-      {% endif %}
-    </div>
-  {% endif %}
+  <div{{ attributes.addClass(classes, 'field--items') }}>
+    {% for item in items %}
+      {% set content = item.content|merge({'#view_mode': item_view_mode}) %}
+      {% set item = item|merge({'content': content}) %}
+      {#{%  set item.content.layout = paragraph.field_teasers_layout.value %}#}
+      <div{{ item.attributes.addClass('field--item ' ~ col_class) }}>{{ item.content }}</div>
+    {% endfor %}
+  </div>
 </div>

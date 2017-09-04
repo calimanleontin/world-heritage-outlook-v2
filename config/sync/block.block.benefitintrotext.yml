@@ -1,0 +1,31 @@
+uuid: 31234076-36de-48e8-a431-bb7a8ef67d5b
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:text:f2ca450e-104a-4095-8dda-2825a957118e'
+  module:
+    - block_content
+    - system
+  theme:
+    - iucn_who
+id: benefitintrotext
+theme: iucn_who
+region: contained_content
+weight: -10
+provider: null
+plugin: 'block_content:f2ca450e-104a-4095-8dda-2825a957118e'
+settings:
+  id: 'block_content:f2ca450e-104a-4095-8dda-2825a957118e'
+  label: 'Benefit intro text'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /benefits
+    negate: false
+    context_mapping: {  }

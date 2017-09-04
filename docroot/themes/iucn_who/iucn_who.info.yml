@@ -14,6 +14,7 @@ regions:
   above_content: 'Area above main content (Full width)'
   highlighted: 'Highlighted'
   help: 'Help'
+  contained_content: 'Contained Content'
   content: 'Content'
   facets: 'Facets (Left sidebar, fixed on mobile)'
   sidebar_first: 'Primary (Left sidebar, fixed on mobile)'

@@ -6,6 +6,9 @@ classes:
   region:
     - left-content
     - right-content
+    - col-sm-4
+    - col-sm-8
+    - col-sm-12
   field: {  }
 use_field_names: true
 _core:
