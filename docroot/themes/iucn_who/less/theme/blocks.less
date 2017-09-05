@@ -45,9 +45,15 @@
       border-bottom: none;
       font-size: 25 * @rem-multiplier--mobile;
       .caret-triangle {
-        svg {
-          width: 23 * @rem-multiplier--mobile;
-          height: auto;
+        &:before {
+          background-image: url(~'@{images-path}caret-triangle.svg');
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          content: '';
+          display: block;
+          height: .8em;
+          width: .8em;
         }
       }
     }

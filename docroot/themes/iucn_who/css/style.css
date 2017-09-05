@@ -8909,9 +8909,15 @@ h6.facets-title {
     border-bottom: none;
     font-size: 1.78571429rem;
   }
-  #sidemenu .facets-title .caret-triangle svg {
-    width: 1.64285714rem;
-    height: auto;
+  #sidemenu .facets-title .caret-triangle:before {
+    background-image: url(../images/caret-triangle.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: '';
+    display: block;
+    height: .8em;
+    width: .8em;
   }
 }
 @media screen and (min-width: 768px) {
