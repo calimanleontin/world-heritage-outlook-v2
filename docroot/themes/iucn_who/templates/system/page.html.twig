@@ -127,6 +127,14 @@
       </div>
     </div>
   {% endif %}
+
+  {# contained_content #}
+  {% block contained_content %}
+    <div class="container contained-content">
+      {{ page.contained_content }}
+    </div>
+  {% endblock %}
+
   {% block main %}
     <div role="main" class="main-container js-quickedit-main-content">
       <div class="container">
@@ -187,12 +195,6 @@
               {% endblock %}
             {% endif %}
 
-            {# contained_content #}
-            {% block contained_content %}
-              <div class="container contained-content">
-                {{ page.contained_content }}
-              </div>
-            {% endblock %}
 
             {# Content #}
             {% block content %}
