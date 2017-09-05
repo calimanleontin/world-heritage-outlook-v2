@@ -9082,10 +9082,17 @@ h6.facets-title {
   display: inline-block;
 }
 .block-social-media .social-media-sharing li {
-  margin-right: 25px;
+  margin-right: 1.38888889rem;
 }
 .block-social-media .social-media-sharing .share img {
-  width: 50px;
+  width: 2.77777778rem;
+  height: 2.77777778rem;
+}
+@media screen and (max-width: 767px) {
+  .block-social-media .social-media-sharing .share img {
+    width: 4.28571429rem;
+    height: 4.28571429rem;
+  }
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline {
   display: flex;

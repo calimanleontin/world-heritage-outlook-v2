@@ -197,12 +197,17 @@
     display: inline-block;
   }
   .social-media-sharing li {
-    margin-right: 25px;
+    margin-right: 25 * @rem-multiplier--desktop;
   }
   .social-media-sharing {
     .share {
       img {
-        width: 50px;
+        width: 50 * @rem-multiplier--desktop;
+        height: 50 * @rem-multiplier--desktop;
+        @media @grid-mobile {
+          width: 60 * @rem-multiplier--mobile;
+          height: 60 * @rem-multiplier--mobile;
+        }
       }
     }
   }
