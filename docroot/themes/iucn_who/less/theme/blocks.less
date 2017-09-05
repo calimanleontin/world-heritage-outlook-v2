@@ -7,21 +7,26 @@
 
 // Facets block
 .facets-toggle {
-  color: @text-color;
-  &:hover, &:active, &:focus {
-    color: @link-hover-color;
+  &, &:hover, &:active, &:focus {
+    color: @text-color;
   }
+  // Hides caret if there is only one block of facets
+  // @media @grid-mobile {
+  //   .region-facets:only-child & {
+  //     padding-left: (.5rem + 23 * @rem-multiplier--mobile);
+  //     .caret-triangle {
+  //       display: none;
+  //     }
+  //   }
+  // }
   @media @grid-desktop {
     cursor: default;
-    &:hover, &:active, &:focus {
-      color: @text-color;
-    }
   }
 }
 #facets-collapse {
   @media @grid-mobile {
     > .facets-content {
-      padding-left: calc(~'25px + .2em');
+      padding-left: (.5rem +  23 * @rem-multiplier--mobile);
     }
   }
   @media @grid-desktop {
@@ -41,8 +46,8 @@
       font-size: 25 * @rem-multiplier--mobile;
       .caret-triangle {
         svg {
-          height: .6em;
-          width: auto;
+          width: 23 * @rem-multiplier--mobile;
+          height: auto;
         }
       }
     }
@@ -70,9 +75,17 @@
     border:none;
   }
   .panel-title {
-    .link();
+    // .link();
     color: @iucn-blue-dark;
     font-size: 1em;
+    display: flex;
+    @media @grid-mobile {
+      color: @text-color;
+      font-size: 19 * @rem-multiplier--mobile;
+      font-weight: 900;
+      // padding-left: 0;
+      margin-left: calc(~'(-@{grid-gutter-width} / 2) - 1.8rem') ;
+    }
   }
   &:first-child .panel-title {
     margin-top: 0;
@@ -116,7 +129,34 @@
     display: block;
     padding-left: .5em;
   }
-
+  @media @grid-mobile {
+    ul,
+    .facet-item__value,
+    .panel-body {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .icon-collapse {
+      display: inline-flex;
+      align-items: center;
+      &:before {
+        background-image: url(~'@{images-path}plus.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 95%;
+        content: '';
+        display: inline-block;
+        height: 1.3rem;
+        margin-right: .5rem;
+        width: 1.3rem;
+      }
+    }
+    [aria-expanded="true"] > .icon-collapse:before,
+    .open > a > .icon-collapse:before {
+      background-image: url(~'@{images-path}minus.svg');
+      background-size: 98%;
+    }
+  }
 }
 
 #block-languagedropdownswitcher {
