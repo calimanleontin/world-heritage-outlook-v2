@@ -8800,6 +8800,7 @@ ol li.iucn-arrow:after {
 @media screen and (max-width: 767px) {
   .footer .iucn-wcpa-logo {
     display: block;
+    height: 5rem;
     margin: 0 auto;
   }
 }
