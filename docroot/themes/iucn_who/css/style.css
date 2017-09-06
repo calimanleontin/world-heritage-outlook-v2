@@ -10959,12 +10959,12 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail > div,
 .path-frontpage #map-site-details .map-site-detail > dl {
-  padding-left: 1.5rem;
+  padding-left: 15px;
 }
 .path-frontpage #map-site-details .map-site-detail > div,
 .path-frontpage #map-site-details .map-site-detail > dl,
 .path-frontpage #map-site-details .map-site-detail > .more {
-  padding-right: .5rem;
+  padding-right: 15px;
 }
 .path-frontpage #map-site-details .map-site-detail .status {
   background-color: #fff;
@@ -10973,7 +10973,7 @@ h6.facets-title {
   left: 0;
   max-width: calc(100% - 2em);
   min-height: 2em;
-  padding: .2em 1.5rem;
+  padding: .2em 15px;
   position: absolute;
   top: 0;
 }
@@ -11019,7 +11019,7 @@ h6.facets-title {
   margin-bottom: .7em;
   margin-top: .7em;
   padding-bottom: .4em;
-  padding-left: 1.3em;
+  padding-left: calc(15px - .4em);
   padding-right: .5em;
   padding-top: .4em;
 }
