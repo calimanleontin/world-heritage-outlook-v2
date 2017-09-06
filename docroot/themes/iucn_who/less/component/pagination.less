@@ -24,7 +24,7 @@
       background-repeat: no-repeat;
       background-size: contain;
       width: 2em;
-      height: 1.5em;
+      height: @line-height-base * 1em;
       display: inline-block;
     }
     span[aria-hidden="true"] {
@@ -37,13 +37,14 @@
   @media @grid-mobile {
     align-items: baseline;
     display: flex;
+    font-size: 18px;
     flex-wrap: wrap;
     justify-content: center;
     > .pager__item--previous {
-      margin-right: auto;
+      // margin-right: auto;
     }
     > .pager__item--next {
-      margin-left: auto;
+      // margin-left: auto;
     }
   }
 }

@@ -88,19 +88,19 @@
         flex-direction: column;
         position: relative;
         height: 100vh;
-        margin-bottom: (-@navbar-height--mobile - 50 * @rem-multiplier--mobile);
-        padding-bottom: (@navbar-height--mobile + 50 * @rem-multiplier--mobile);
-        // min-height: 320 * @rem-multiplier--mobile;
+        margin-bottom: (-@navbar-height--mobile - 50px);
+        padding-bottom: (@navbar-height--mobile + 50px);
+        // min-height: 320px;
         @media (orientation: portrait) {
-          margin-bottom: (-@navbar-height--mobile - 50 * @rem-multiplier--mobile - 12rem);
-          padding-bottom: (@navbar-height--mobile + 50 * @rem-multiplier--mobile + 12rem);
+          margin-bottom: (-@navbar-height--mobile - 50px - 12 * @font-size-base--mobile);
+          padding-bottom: (@navbar-height--mobile + 50px + 12 * @font-size-base--mobile);
           @media (min-width: 373px) {
-            margin-bottom: (-@navbar-height--mobile - 50 * @rem-multiplier--mobile - 10rem);
-            padding-bottom: (@navbar-height--mobile + 50 * @rem-multiplier--mobile + 10rem);
+            margin-bottom: (-@navbar-height--mobile - 50px - 10 * @font-size-base--mobile);
+            padding-bottom: (@navbar-height--mobile + 50px + 10 * @font-size-base--mobile);
           }
           @media (min-width: 734px) {
-            margin-bottom: (-@navbar-height--mobile - 50 * @rem-multiplier--mobile - 8rem);
-            padding-bottom: (@navbar-height--mobile + 50 * @rem-multiplier--mobile + 8rem);
+            margin-bottom: (-@navbar-height--mobile - 50px - 8 * @font-size-base--mobile);
+            padding-bottom: (@navbar-height--mobile + 50px + 8 * @font-size-base--mobile);
           }
         }
       }
@@ -128,7 +128,7 @@
         background-repeat: no-repeat;
         background-size: contain;
         display: block;
-        height: 50 * @rem-multiplier--mobile;
+        height: 50px;
         width: 100%;
         box-shadow: 0 -1px 8px -2px fade(#000, 30%);
       }
@@ -195,7 +195,7 @@
           &:before {
             background-image: url(../images/explore-black.svg);
             background-size: 50%;
-            width: 2rem;
+            width: 28px;
             height: 32px;
             background-color: @input-bg;
             border: 1px solid @input-border;

@@ -1,13 +1,14 @@
 html {
-  font-size: unit(@font-size-base) / 16 * 100%;
-
+  font-size: @rem-system-base / 16 * 100%;
   @media @grid-mobile {
-    font-size: unit(@font-size-base--mobile) / 16 * 100%;
-    // line-height: @line-height-base--mobile;
+    font-size: @rem-system-base--mobile / 16 * 100%;
   }
 }
 body {
-  font-size: 1em;
+  font-size: unit(@font-size-base) / @rem-system-base * 100%;
+  @media @grid-mobile {
+    font-size: unit(@font-size-base--mobile) / @rem-system-base--mobile * 100%;
+  }
 }
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
@@ -45,7 +46,7 @@ body:not(.show-focus-outlines) {
   font-weight: 800;
   margin-bottom: 1em;
   @media @grid-mobile {
-    font-size: round(32 * @rem-multiplier--mobile, 2);
+    font-size: round(32px, 2);
   }
   // .breadcrumb + & {
   //   margin-top: 1em;
@@ -166,7 +167,7 @@ a.is-active {
 }
 
 @iucn-arrow-height: 70 / unit(@font-size-base) * 1em;
-@iucn-arrow-height--mobile: 60 / unit(@font-size-base--mobile) * 1em;
+@iucn-arrow-height--mobile: 60px;
 
 .iucn-arrow {
   align-items: center;
@@ -178,7 +179,7 @@ a.is-active {
   line-height: 1;
   margin-right: (@iucn-arrow-height / 2);
   margin-top: 30px;
-  min-height: @iucn-arrow-height;
+  // min-height: @iucn-arrow-height;
   padding-left: 3em;
   padding-right: 2em;
   position: relative;

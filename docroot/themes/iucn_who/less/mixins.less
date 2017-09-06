@@ -63,7 +63,7 @@
   text-align: left;
   @media @mobile {
     .row();
-    border-left-width: round(10 * @rem-multiplier--mobile, 2);
+    border-left-width: round(10px, 2);
     // line-height: 1.4;
   }
 }
@@ -119,3 +119,15 @@
   .loop-iucn-arrow((@index-inner - 1));
 }
 .loop-iucn-arrows();
+
+.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
+  & when (ispixel(@value)) {
+    @{property}: unit(@value) * @rem-multiplier--desktop;
+  }
+  & when not (ispixel(@value)) {
+    @{property}: @value;
+  }
+  @media @grid-mobile {
+    @{property}: @value-mobile;
+  }
+}

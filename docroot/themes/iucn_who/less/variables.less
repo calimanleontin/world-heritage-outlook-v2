@@ -1,11 +1,20 @@
 @images-path:                              '../images/';
 @font-size-base--mobile:        14px;
-@line-height-computed--mobile:  (unit(@font-size-base--mobile) * @line-height-base * @rem-multiplier--mobile); // ~20px
 
-@rem-multiplier--desktop:       (1rem / unit(@font-size-base));
-@rem-multiplier--mobile:        (1rem / unit(@font-size-base--mobile)); // used to transform fixed units into rem, multiply initial value by this
+// Rem system, rescaled on mobile to get a body font size of @font-size-base--mobile and keep margins proportions
+@rem-system-base: 10;
+@rem-system-base--mobile: (@font-size-base--mobile * @rem-system-base / @font-size-base); // 7.777
 
-@navbar-height--mobile:         50 * @rem-multiplier--mobile;
+@rem-multiplier--desktop:       (1rem / @rem-system-base);
+@rem-multiplier--mobile:        (1rem / @rem-system-base--mobile); // used to transform fixed units into rem, multiply initial value by this
+
+@line-height-computed--mobile:  (unit(@font-size-base--mobile) * @line-height-base); // ~20px
+
+@em-multiplier--desktop:       (1em / unit(@font-size-base));
+@em-multiplier--mobile:       (1em / unit(@font-size-base--mobile));
+
+
+@navbar-height--mobile:         50px;
 
 @design-breakpoint--mobile:             1600px;
 @design-breakpoint-max--mobile:         @design-breakpoint--mobile - 1;
