@@ -59,7 +59,7 @@
     .backicon {
       &:extend(.path-frontpage .pdf-download-button a .glyphicon);
       padding-top: 2em;
-      background-image: url(~'@{images-path}icon-backarrow.svg');
+      .svg-icon(icon-backarrow);
       background-position: left center;
       background-size: auto;
     }
@@ -91,7 +91,7 @@
           .tablesort {
             display: none;
             // margin-left: 0.5em;
-            // background-image: url(~'@{images-path}dropdown-caret-centered.svg');
+            // .svg-icon(dropdown-caret-centered);
             // background-position: bottom;
             // background-repeat: no-repeat;
           }

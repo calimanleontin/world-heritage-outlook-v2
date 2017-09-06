@@ -63,9 +63,8 @@
         }
         .scroll-down {
           background-color: #fff;
-          background-image: url(~'@{images-path}scroll-down-caret.svg');
+          .svg-icon(scroll-down-caret);
           background-position: center 65%;
-          background-repeat: no-repeat;
           background-size: 66%;
           border-radius: 50%;
           display: block;
@@ -123,10 +122,8 @@
       }
       .scroll-down {
         background-color: @iucn-blue-dark;
-        background-image: url(~'@{images-path}scroll-down-caret-white.svg');
+        .svg-icon(scroll-down-caret-white);
         background-position: center 5px;
-        background-repeat: no-repeat;
-        background-size: contain;
         display: block;
         height: 50px;
         width: 100%;
@@ -168,10 +165,7 @@
       font-size: 18 / 15 * 1em;
       &:before {
         content: '';
-        background-image: url(~'@{images-path}explore.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
+        .svg-icon(explore);
         height: @line-height-base * 1em;
         width: 1em;
         display: inline-block;
@@ -193,7 +187,7 @@
           font-size: 0;
           margin-bottom: 0;
           &:before {
-            background-image: url(../images/explore-black.svg);
+            .svg-icon(explore-black);
             background-size: 50%;
             width: 28px;
             height: 32px;
@@ -236,9 +230,7 @@
       &:before {
         content: '';
         background-color: @iucn-blue-light;
-        background-image: url(~'@{images-path}checkbox.svg');
-        background-position: center;
-        background-repeat: no-repeat;
+        .svg-icon(checkbox);
         background-size: auto 60%;
         display: block;
         height: 1em * @line-height-base;
@@ -424,10 +416,7 @@
           &.@{conservation-category-class} {
             position: relative;
             &:before {
-              background-image: url(~'@{images-path}@{conservation-category-class}-white.svg');
-              background-repeat: no-repeat;
-              background-size: contain;
-              background-position: center;
+              .svg-icon(~'@{conservation-category-class}-white');
               content: '';
               display: block;
               height: 100%;
@@ -442,13 +431,13 @@
           }
         });
         &.values:before {
-          background-image: url(~'@{images-path}values.svg');
+          .svg-icon(values);
         }
         &.threats:before {
-          background-image: url(~'@{images-path}threats.svg');
+          .svg-icon(threats);
         }
         &.management:before {
-          background-image: url(~'@{images-path}management.svg');
+          .svg-icon(management);
           width: 1.4em;
         }
       }
@@ -473,9 +462,7 @@
         padding-top: .5em;
         padding-bottom: .5em;
         &:after {
-          background-image: url('@{images-path}icon-arrow.svg');
-          background-repeat: no-repeat;
-          background-size: contain;
+          .svg-icon(icon-arrow);
           content: '';
           display: inline-block;
           height: 1em;
@@ -611,9 +598,7 @@
         }
       }
       .glyphicon {
-        background-image: url(~'@{images-path}download-report.svg');
-        background-position: center;
-        background-repeat: no-repeat;
+        .svg-icon(download-report);
         background-size: 50% auto;
         height: 100%;
         left: 0;

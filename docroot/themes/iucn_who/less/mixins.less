@@ -1,10 +1,14 @@
-// @todo: usage
+/* ==========================================================================
+   Rem system helpers
+   ========================================================================== */
+
 .remify(@property, @value) {
   & when (ispixel(@value)) {
     @{property}: @value;
     @{property}: unit(@value) * @rem-multiplier--desktop;
   }
 }
+
 .responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
   .remify(@property, @value);
   & when not (ispixel(@value)) {
@@ -16,7 +20,10 @@
   }
 }
 
-// Bootstrap mixin overrides
+/* ==========================================================================
+   Bootstrap mixin overrides
+   ========================================================================== */
+
 .label-variant(@color) {
   color: #fff;
 }
@@ -31,6 +38,18 @@
     }
   }
 }
+
+/* ==========================================================================
+   Theme specific mixins
+   ========================================================================== */
+
+.svg-icon(@name) {
+  background-image: url(~'@{images-path}@{name}.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .link() {
   color: @link-color;
   transition: color .2s, background-color .2s;
@@ -39,6 +58,7 @@
     color: @link-hover-color;
   }
 }
+
 .light-link() {
   &, a {
     color: @iucn-blue-light;
@@ -75,6 +95,10 @@
     }
   }
 }
+
+/* ==========================================================================
+   Generators
+   ========================================================================== */
 
 // Generate conservation rating styling
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
