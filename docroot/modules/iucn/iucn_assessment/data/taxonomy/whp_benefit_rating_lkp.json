@@ -1,0 +1,13 @@
+[ {
+  "id" : 1,
+  "name" : "Potential",
+  "description" : "Benefit could arise but are not exploited."
+}, {
+  "id" : 2,
+  "name" : "Minor",
+  "description" : "Overall level of importance of the benefit is minor, i.e. the benefit is of low importance to the stakeholders group or is significant to only a small proportion of that group."
+}, {
+  "id" : 3,
+  "name" : "Major",
+  "description" : "Benefit is of significance for a large proportion of the stakeholder group."
+} ]

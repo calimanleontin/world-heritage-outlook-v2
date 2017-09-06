@@ -1,0 +1,16 @@
+uuid: 9a2dde2f-759b-492c-8684-56aa7e04cd22
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_benefits_rating
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+id: taxonomy_term.assessment_benefits_rating
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_benefits_rating
+default_langcode: site_default
+language_alterable: false

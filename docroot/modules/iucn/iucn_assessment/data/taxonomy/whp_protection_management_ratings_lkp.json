@@ -1,0 +1,21 @@
+[ {
+  "id" : 1,
+  "name" : "Highly Effective",
+  "description" : "The protection and management system under implementation is effective and able to maintain the site’s values and integrity. Aspects of site management can be regarded as being best-practice."
+}, {
+  "id" : 2,
+  "name" : "Effective",
+  "description" : "The protection and management system under implementation is adequate and is likely to essentially maintain the site’s values and integrity over the medium-term. However, it may be insufficient to maintain the site’s values and integrity over the long-term."
+}, {
+  "id" : 3,
+  "name" : "Some Concern",
+  "description" : "The protection and management system is not fully addressing the threats to the site’s values, resulting in a number of conservation issues. However, these issues could be reversed and effectively addressed in the short-term if management capacity and/or protection are improved."
+}, {
+  "id" : 4,
+  "name" : "Serious Concern",
+  "description" : "The protection and management system shows major deficiencies and is unable to maintain the site’s values and integrity over the short or long-term. Major interventions are required to enhance management capacity and/or protection."
+}, {
+  "id" : 5,
+  "name" : "Data Deficient",
+  "description" : "Available evidence is insufficient to draw a conclusion."
+} ]

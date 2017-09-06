@@ -1,0 +1,22 @@
+uuid: b60c8552-2d37-47b3-abec-e262f5d81169
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_project
+id: paragraph.as_site_project.status
+field_name: status
+entity_type: paragraph
+bundle: as_site_project
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

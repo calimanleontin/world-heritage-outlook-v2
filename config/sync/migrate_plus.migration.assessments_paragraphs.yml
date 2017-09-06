@@ -1,0 +1,290 @@
+uuid: c8640685-5203-4e8d-9f09-bd28f337a79d
+langcode: en
+status: true
+dependencies: {  }
+id: assessments_paragraphs
+migration_tags: null
+migration_group: assessments
+label: 'Assesments Paragraphs'
+source:
+  plugin: assessments_paragraphs
+  path_setting: assessment_path
+  ids:
+    setId:
+      type: string
+    assessmentId:
+      type: string
+    sourceKey:
+      type: string
+    type:
+      type: string
+  fields:
+    -
+      name: assessmentId
+      label: assessmentId
+    -
+      name: assessmentVersionId
+      label: assessmentVersionId
+  paragraphs_fields:
+    assessmentWhvalues:
+      name: assessmentWhvalues
+      id: whvaluesId
+      type: as_site_value_wh
+    biodiversityValues:
+      name: biodiversityValues
+      id: id
+      type: as_site_value_bio
+    activeConservationProjects:
+      name: activeConservationProjects
+      id: acpid
+      type: as_site_project
+    potentialProjectNeeds:
+      name: potentialProjectNeeds
+      id: ppnId
+      type: as_site_project
+    benefits:
+      name: benefits
+      id: benefitsId
+      type: as_site_benefit
+    protectionManagement:
+      name: protectionManagement
+      id: pmId
+      type: as_site_protection
+    assessingThreatsCurrent:
+      name: assessingThreatsCurrent
+      id: currentThreatId
+      type: as_site_threat
+    assessingThreatsPotential:
+      name: assessingThreatsCurrent
+      id: potentialThreatId
+      type: as_site_threat
+    keyConservationIssues:
+      name: keyConservationIssues
+      id: keyConservationIssuesId
+      type: as_site_key_conservation
+process:
+  type: type
+  field_as_key_cons_topic: keyConservationIssues
+  field_as_key_cons_scale:
+    plugin: taxonomy_term
+    source: scale
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_key_conservation_scal
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_values_value: values
+  field_as_values_criteria:
+    plugin: taxonomy_term
+    source: criteria
+    value_key: name
+    bundle_key: vid
+    bundle: inscription_criteria
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_values_curr_text: curr_text
+  field_as_values_curr_trend:
+    plugin: taxonomy_term
+    source: curr_trend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_value_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_values_curr_state:
+    plugin: taxonomy_term
+    source: curr_state
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_value_state
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_projects_organisation: organizationIndividual
+  field_as_description: description
+  field_as_projects_contact: contactDetails
+  field_as_projects_from:
+    plugin: format_date
+    from_format: 'Y'
+    to_format: Y-01-01
+    source: projectdurationfrom
+  field_as_projects_to:
+    plugin: format_date
+    from_format: 'Y'
+    to_format: Y-01-01
+    source: projectdurationto
+  field_as_benefits_category:
+    plugin: taxonomy_term
+    source: selectedBenefit
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_category
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_datadeficient:
+    plugin: boolean
+    source: dataDeficient
+  field_as_benefits_commun_in:
+    plugin: taxonomy_term
+    source: communityWithinSite
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_rating
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_commun_out:
+    plugin: taxonomy_term
+    source: communityOutsideSite
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_rating
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_commun_wide:
+    plugin: taxonomy_term
+    source: widerCommunity
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_rating
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_hab_level:
+    plugin: taxonomy_term
+    source: habitatchangelevel
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_hab_trend:
+    plugin: taxonomy_term
+    source: habitatchangetrend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_pollut_level:
+    plugin: taxonomy_term
+    source: pollutionlevel
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_pollut_trend:
+    plugin: taxonomy_term
+    source: pollutiontrend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_oex_level:
+    plugin: taxonomy_term
+    source: overexploitationlevel
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_oex_trend:
+    plugin: taxonomy_term
+    source: overexploitationtrend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_climate_level:
+    plugin: taxonomy_term
+    source: climatechangelevel
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_climate_trend:
+    plugin: taxonomy_term
+    source: climatechangetrend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_invassp_level:
+    plugin: taxonomy_term
+    source: invasivespecieslevel
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_invassp_trend:
+    plugin: taxonomy_term
+    source: invasivespeciestrend
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_impact_trend
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_comment: comment
+  field_as_protection_topic:
+    plugin: taxonomy_term
+    source: topic
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_protection_topic
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_protection_rating:
+    plugin: taxonomy_term
+    source: rating
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_protection_rating
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_threats_threat: currentThreat
+  field_as_threats_extent:
+    plugin: taxonomy_term
+    source: threadextentvalue
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_threat_extent
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_threats_in:
+    plugin: boolean
+    source: insideSite
+  field_as_threats_out:
+    plugin: boolean
+    source: outsideSite
+  field_as_threats_rating:
+    plugin: taxonomy_term
+    source: threatRating
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_threat_level
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_threats_categories:
+    plugin: taxonomy_term
+    source: currentThreatSubcategories
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_threat
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_threats_values_wh:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: affectedWhvaluesIds
+    no_stub: true
+  field_as_threats_values_bio:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: biodiversityValuesIds
+    no_stub: true
+destination:
+  plugin: 'entity_reference_revisions:paragraph'
+migration_dependencies: null

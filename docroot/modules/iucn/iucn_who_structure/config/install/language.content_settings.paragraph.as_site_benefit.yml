@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_benefit
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.as_site_benefit
+target_entity_type_id: paragraph
+target_bundle: as_site_benefit
+default_langcode: site_default
+language_alterable: true

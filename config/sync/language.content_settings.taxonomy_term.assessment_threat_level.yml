@@ -1,0 +1,16 @@
+uuid: aac10d45-2a7c-4ac0-85e0-5b1d7212bd5b
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_threat_level
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_threat_level
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_threat_level
+default_langcode: site_default
+language_alterable: false

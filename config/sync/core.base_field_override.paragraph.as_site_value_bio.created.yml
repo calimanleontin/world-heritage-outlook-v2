@@ -1,0 +1,18 @@
+uuid: 86656d82-14eb-495f-81ea-223c261fb0a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_value_bio
+id: paragraph.as_site_value_bio.created
+field_name: created
+entity_type: paragraph
+bundle: as_site_value_bio
+label: 'Authored on'
+description: 'The time that the Paragraph was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

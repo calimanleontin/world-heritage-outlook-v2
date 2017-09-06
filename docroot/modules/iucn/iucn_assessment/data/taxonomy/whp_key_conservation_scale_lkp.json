@@ -1,0 +1,17 @@
+[ {
+  "scaleId" : 1,
+  "name" : "Local",
+  "description" : "Can be resolved Locally by Management Authority."
+}, {
+  "scaleId" : 2,
+  "name" : "National",
+  "description" : "Requires implications of National Government."
+}, {
+  "scaleId" : 3,
+  "name" : "Regional",
+  "description" : "Requires implications of Regional bodies."
+}, {
+  "scaleId" : 4,
+  "name" : "Global",
+  "description" : "requires implication from International Community."
+} ]

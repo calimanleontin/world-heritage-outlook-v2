@@ -1,0 +1,9 @@
+uuid: ebb50ba1-1790-4fc0-8af1-7c86aae4faad
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment protection topic'
+vid: assessment_protection_topic
+description: 'A list of protection and management topics'
+hierarchy: 0
+weight: 0

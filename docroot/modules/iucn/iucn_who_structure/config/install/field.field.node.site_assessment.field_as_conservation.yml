@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_conservation
+    - node.type.site_assessment
+    - paragraphs.paragraphs_type.as_site_conservation
+  module:
+    - entity_reference_revisions
+id: node.site_assessment.field_as_conservation
+field_name: field_as_conservation
+entity_type: node
+bundle: site_assessment
+label: 'Conservation status'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      as_site_conservation: as_site_conservation
+    target_bundles_drag_drop:
+      as_site_conservation:
+        enabled: true
+        weight: 9
+      as_site_project:
+        weight: 10
+        enabled: false
+      as_site_value_bio:
+        weight: 11
+        enabled: false
+      as_site_value_wh:
+        weight: 12
+        enabled: false
+      content_html:
+        weight: 13
+        enabled: false
+      content_teasers:
+        weight: 14
+        enabled: false
+      danger_list:
+        weight: 15
+        enabled: false
+      site_benefit:
+        weight: 16
+        enabled: false
+field_type: entity_reference_revisions

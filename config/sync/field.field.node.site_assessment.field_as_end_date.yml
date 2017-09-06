@@ -1,0 +1,21 @@
+uuid: 15fe6a2e-7f55-44f7-854e-b0f4a5ab2d6a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_end_date
+    - node.type.site_assessment
+  module:
+    - datetime
+id: node.site_assessment.field_as_end_date
+field_name: field_as_end_date
+entity_type: node
+bundle: site_assessment
+label: 'End date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,87 @@
+uuid: 83c250a5-4bc9-45df-85c9-0b64b2e8f266
+langcode: en
+status: true
+dependencies: {  }
+id: assessments_paragraphs_translations
+migration_tags: null
+migration_group: 'assessments'
+label: Assesments Paragraphs
+source:
+  plugin: assessments_paragraphs_translations
+  path_setting: assessment_path
+  ids:
+    setId:
+      type: string
+    assessmentId:
+      type: string
+    sourceKey:
+      type: string
+    type:
+      type: string
+  fields:
+    -
+      name: assessmentId
+      label: assessmentId
+    -
+      name: assessmentVersionId
+      label: assessmentVersionId
+  paragraphs_fields:
+    assessmentWhvalues:
+      name: assessmentWhvalues
+      id: whvaluesId
+      type: as_site_value_wh
+    biodiversityValues:
+      name: biodiversityValues
+      id: id
+      type: as_site_value_bio
+    activeConservationProjects:
+      name: activeConservationProjects
+      id: acpid
+      type: as_site_project
+    potentialProjectNeeds:
+      name: potentialProjectNeeds
+      id: ppnId
+      type: as_site_project
+    benefits:
+      name: benefits
+      id: benefitsId
+      type: as_site_benefit
+    protectionManagement:
+      name: protectionManagement
+      id: pmId
+      type: as_site_protection
+    assessingThreatsCurrent:
+      name: assessingThreatsCurrent
+      id: currentThreatId
+      type: as_site_threat
+    assessingThreatsPotential:
+      name: assessingThreatsCurrent
+      id: potentialThreatId
+      type: as_site_threat
+    keyConservationIssues:
+      name: keyConservationIssues
+      id: keyConservationIssuesId
+      type: as_site_key_conservation
+process:
+  id:
+    -
+      plugin: migration_lookup_paragraphs
+      migration: assessments_paragraphs
+      no_stub: true
+      source: parentId
+    -
+      plugin: extract
+      default: null
+      index:
+        - 0
+        - target_id
+  langcode: langcode
+  type: type
+  field_as_threat_justification: justification
+  field_as_key_cons_topic: keyConservationIssues
+  field_as_values_value: values
+  field_as_description: description
+destination:
+  plugin: 'entity:paragraph'
+  translations: true
+migration_dependencies: null

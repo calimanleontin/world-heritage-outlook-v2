@@ -1,0 +1,38 @@
+uuid: a80b3593-5b29-4b48-8dec-702dbdd13b3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_protection.field_as_description
+    - field.field.paragraph.as_site_protection.field_as_protection_rating
+    - field.field.paragraph.as_site_protection.field_as_protection_topic
+    - paragraphs.paragraphs_type.as_site_protection
+id: paragraph.as_site_protection.default
+targetEntityType: paragraph
+bundle: as_site_protection
+mode: default
+content:
+  field_as_description:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_protection_rating:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_as_protection_topic:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden: {  }

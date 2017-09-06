@@ -3,3 +3,5 @@ type: module
 description: IUCN migrate content
 core: 8.x
 package: IUCN
+dependencies:
+  - migrate_tools

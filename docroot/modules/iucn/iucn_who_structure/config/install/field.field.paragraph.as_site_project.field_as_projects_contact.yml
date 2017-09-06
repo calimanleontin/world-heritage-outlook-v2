@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_projects_contact
+    - paragraphs.paragraphs_type.as_site_project
+id: paragraph.as_site_project.field_as_projects_contact
+field_name: field_as_projects_contact
+entity_type: paragraph
+bundle: as_site_project
+label: Contact
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

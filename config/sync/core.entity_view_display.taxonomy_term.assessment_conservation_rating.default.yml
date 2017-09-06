@@ -1,0 +1,26 @@
+uuid: 00ff96dd-6814-4184-b987-e206e0c69c55
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.assessment_conservation_rating.field_image
+    - taxonomy.vocabulary.assessment_conservation_rating
+  module:
+    - image
+id: taxonomy_term.assessment_conservation_rating.default
+targetEntityType: taxonomy_term
+bundle: assessment_conservation_rating
+mode: default
+content:
+  field_image:
+    weight: 0
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  description: true
+  langcode: true

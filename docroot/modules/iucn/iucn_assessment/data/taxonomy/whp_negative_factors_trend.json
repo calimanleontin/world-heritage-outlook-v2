@@ -1,0 +1,13 @@
+[ {
+  "trendId" : 1,
+  "name" : "Increasing",
+  "description" : ""
+}, {
+  "trendId" : 2,
+  "name" : "Continuing",
+  "description" : ""
+}, {
+  "trendId" : 3,
+  "name" : "Decreasing",
+  "description" : ""
+} ]

@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: danger_list
+label: 'Danger list'
+behavior_plugins: {  }

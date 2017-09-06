@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_project
+label: 'Assessment project'
+behavior_plugins: {  }

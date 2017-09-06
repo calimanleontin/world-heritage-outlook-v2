@@ -1,0 +1,20 @@
+uuid: 3922453a-8a90-4bd2-9efc-d5657acd0671
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_benefits_rating
+  module:
+    - text
+id: taxonomy_term.assessment_benefits_rating.description
+field_name: description
+entity_type: taxonomy_term
+bundle: assessment_benefits_rating
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

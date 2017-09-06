@@ -1,0 +1,20 @@
+uuid: 097347b1-7b0d-4d01-be77-e4d71d07767d
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_as_threats_extent
+field_name: field_as_threats_extent
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,241 @@
+[ {
+  "id" : 1,
+  "name" : "Housing/ Urban Areas",
+  "parent" : "Residential and Commercial Development",
+  "description" : null
+}, {
+  "id" : 2,
+  "name" : "Commercial/ Industrial Areas",
+  "parent" : "Residential and Commercial Development",
+  "description" : null
+}, {
+  "id" : 3,
+  "name" : "Tourism/ Recreation Areas",
+  "parent" : "Residential and Commercial Development",
+  "description" : null
+}, {
+  "id" : 4,
+  "name" : "Crops",
+  "parent" : "Agriculture and Aquaculture",
+  "description" : null
+}, {
+  "id" : 5,
+  "name" : "Forestry/ Wood production",
+  "parent" : "Agriculture and Aquaculture",
+  "description" : null
+}, {
+  "id" : 6,
+  "name" : "Livestock Farming / Grazing",
+  "parent" : "Agriculture and Aquaculture",
+  "description" : null
+}, {
+  "id" : 7,
+  "name" : "Crop production",
+  "parent" : "Agriculture and Aquaculture",
+  "description" : null
+}, {
+  "id" : 8,
+  "name" : "Marine/ Freshwater Aquaculture",
+  "parent" : "Agriculture and Aquaculture",
+  "description" : null
+}, {
+  "id" : 9,
+  "name" : "Oil/ Gas exploration/development",
+  "parent" : "Energy Production and Mining",
+  "description" : null
+}, {
+  "id" : 10,
+  "name" : "Mining/ Quarrying",
+  "parent" : "Energy Production and Mining",
+  "description" : null
+}, {
+  "id" : 11,
+  "name" : "Renewable Energy",
+  "parent" : "Energy Production and Mining",
+  "description" : null
+}, {
+  "id" : 12,
+  "name" : "Roads/ Railroads",
+  "parent" : "Transportation and Service Corridors",
+  "description" : null
+}, {
+  "id" : 13,
+  "name" : "Utility / Service Lines",
+  "parent" : "Transportation and Service Corridors",
+  "description" : null
+}, {
+  "id" : 14,
+  "name" : "Shipping Lanes",
+  "parent" : "Transportation and Service Corridors",
+  "description" : null
+}, {
+  "id" : 15,
+  "name" : "Flight Paths",
+  "parent" : "Transportation and Service Corridors",
+  "description" : null
+}, {
+  "id" : 16,
+  "name" : "Hunting (commercial/subsistence)",
+  "parent" : "Biological Resource Use",
+  "description" : null
+}, {
+  "id" : 17,
+  "name" : "Poaching",
+  "parent" : "Biological Resource Use",
+  "description" : null
+}, {
+  "id" : 18,
+  "name" : "Logging/ Wood Harvesting",
+  "parent" : "Biological Resource Use",
+  "description" : null
+}, {
+  "id" : 19,
+  "name" : "Fishing / Harvesting Aquatic Resources",
+  "parent" : "Biological Resource Use",
+  "description" : null
+}, {
+  "id" : 20,
+  "name" : "Other Biological Resource Use",
+  "parent" : "Biological Resource Use",
+  "description" : null
+}, {
+  "id" : 21,
+  "name" : "Tourism/ visitors/ recreation",
+  "parent" : "Human Intrusions and Disturbance",
+  "description" : null
+}, {
+  "id" : 22,
+  "name" : "War, Civil Unrest/ Military Exercises",
+  "parent" : "Human Intrusions and Disturbance",
+  "description" : null
+}, {
+  "id" : 23,
+  "name" : "Other Activities",
+  "parent" : "Human Intrusions and Disturbance",
+  "description" : null
+}, {
+  "id" : 24,
+  "name" : "Fire/ Fire Suppression",
+  "parent" : "Natural System Modifications",
+  "description" : null
+}, {
+  "id" : 25,
+  "name" : "Dams/ Water Management or Use",
+  "parent" : "Natural System Modifications",
+  "description" : null
+}, {
+  "id" : 26,
+  "name" : "Other Ecosystem Modifications",
+  "parent" : "Natural System Modifications",
+  "description" : null
+}, {
+  "id" : 27,
+  "name" : "Invasive Non-Native/ Alien Species",
+  "parent" : "Invasive and Other Problematic Species and Genes",
+  "description" : null
+}, {
+  "id" : 28,
+  "name" : "Hyper-Abundant Species",
+  "parent" : "Invasive and Other Problematic Species and Genes",
+  "description" : null
+}, {
+  "id" : 29,
+  "name" : "Modified Genetic Material",
+  "parent" : "Invasive and Other Problematic Species and Genes",
+  "description" : null
+}, {
+  "id" : 30,
+  "name" : "Water Pollution",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 31,
+  "name" : "Household Sewage/ Urban Waste Water",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 32,
+  "name" : "Industrial/ Military Effluents",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 33,
+  "name" : "Agricultural/ Forestry Effluents",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 34,
+  "name" : "Solid Waste",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 35,
+  "name" : "Air Pollution",
+  "parent" : "Pollution",
+  "description" : null
+}, {
+  "id" : 36,
+  "name" : "Volcanoes",
+  "parent" : "Geological Events",
+  "description" : null
+}, {
+  "id" : 37,
+  "name" : "Earthquakes/ Tsunamis",
+  "parent" : "Geological Events",
+  "description" : null
+}, {
+  "id" : 38,
+  "name" : "Avalanches/ Landslides",
+  "parent" : "Geological Events",
+  "description" : null
+}, {
+  "id" : 39,
+  "name" : "Erosion and Siltation/ Deposition",
+  "parent" : "Geological Events",
+  "description" : null
+}, {
+  "id" : 40,
+  "name" : "Habitat Shifting/ Alteration",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 41,
+  "name" : "Droughts",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 42,
+  "name" : "Desertification",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 43,
+  "name" : "Ocean acidification",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 44,
+  "name" : "Temperature extremes",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 45,
+  "name" : "Storms/Flooding",
+  "parent" : "Climate Change and Severe Weather",
+  "description" : null
+}, {
+  "id" : 46,
+  "name" : "Changes in traditional ways of life and knowledge systems",
+  "parent" : "Social/ Cultural Changes",
+  "description" : null
+}, {
+  "id" : 47,
+  "name" : "Identity/ Social Cohesion/ Changes in local population and community",
+  "parent" : "Social/ Cultural Changes",
+  "description" : null
+}, {
+  "id" : 48,
+  "name" : "Other",
+  "parent" : "Other",
+  "description" : null
+} ]

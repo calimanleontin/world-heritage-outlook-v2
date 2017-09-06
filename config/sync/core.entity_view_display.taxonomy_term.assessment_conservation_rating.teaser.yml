@@ -1,0 +1,49 @@
+uuid: 4c25358d-5317-4217-969c-5401ddb3ccc1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_conservation_rating.field_image
+    - image.style.large
+    - taxonomy.vocabulary.assessment_conservation_rating
+  module:
+    - ds
+    - image
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - field_image
+id: taxonomy_term.assessment_conservation_rating.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_conservation_rating
+mode: teaser
+content:
+  field_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: ds_content
+hidden:
+  description: true
+  langcode: true

@@ -1,0 +1,20 @@
+uuid: a0e06f32-b38e-4286-a6fb-23604babd95a
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_threat
+id: paragraph.as_site_threat.uid
+field_name: uid
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Authored by'
+description: 'The user ID of the paragraphs author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\paragraphs\Entity\Paragraph::getCurrentUserId'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

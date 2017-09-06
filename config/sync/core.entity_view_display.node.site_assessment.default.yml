@@ -1,0 +1,325 @@
+uuid: 79f66301-eac0-4f74-b523-b787dd6eb381
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.site_assessment.field_as_archived
+    - field.field.node.site_assessment.field_as_benefits
+    - field.field.node.site_assessment.field_as_benefits_summary
+    - field.field.node.site_assessment.field_as_cycle
+    - field.field.node.site_assessment.field_as_end_date
+    - field.field.node.site_assessment.field_as_global_assessment_level
+    - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_key_cons
+    - field.field.node.site_assessment.field_as_projects
+    - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_protection
+    - field.field.node.site_assessment.field_as_protection_ov_out_rate
+    - field.field.node.site_assessment.field_as_protection_ov_out_text
+    - field.field.node.site_assessment.field_as_protection_ov_practices
+    - field.field.node.site_assessment.field_as_protection_ov_rating
+    - field.field.node.site_assessment.field_as_protection_ov_text
+    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_site
+    - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_threats_current
+    - field.field.node.site_assessment.field_as_threats_current_rating
+    - field.field.node.site_assessment.field_as_threats_current_text
+    - field.field.node.site_assessment.field_as_threats_potent_rating
+    - field.field.node.site_assessment.field_as_threats_potent_text
+    - field.field.node.site_assessment.field_as_threats_potential
+    - field.field.node.site_assessment.field_as_threats_rating
+    - field.field.node.site_assessment.field_as_threats_text
+    - field.field.node.site_assessment.field_as_values_bio
+    - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_vass_bio_state
+    - field.field.node.site_assessment.field_as_vass_bio_text
+    - field.field.node.site_assessment.field_as_vass_bio_trend
+    - field.field.node.site_assessment.field_as_vass_wh_state
+    - field.field.node.site_assessment.field_as_vass_wh_text
+    - field.field.node.site_assessment.field_as_vass_wh_trend
+    - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_date_published
+    - node.type.site_assessment
+  module:
+    - datetime
+    - ds
+    - entity_reference_revisions
+    - field_group
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          summary: div
+          full_assessment_values: div
+          full_assessment_threats: div
+          full_assessment_management: div
+          full_assessment_key_issue: div
+          full_assessment_benefits: div
+          full_assessment_project: div
+          references: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          summary: {  }
+          full_assessment_values: {  }
+          full_assessment_threats: {  }
+          full_assessment_management: {  }
+          full_assessment_key_issue: {  }
+          full_assessment_benefits: {  }
+          full_assessment_project: {  }
+          references: {  }
+    regions:
+      summary:
+        - 'display_field_copy:node-assessment_values'
+        - 'display_field_copy:node-protection_overall_rating'
+        - group_conservation_outlook
+        - 'display_field_copy:node-justification_assessment_values'
+        - group_current_state_trend_values
+        - 'display_field_copy:node-protection_overall_effectiveness'
+        - group_overall_threats
+        - group_overall_prot_man
+        - 'display_field_copy:node-overall_threats_rating'
+        - 'display_field_copy:node-overall_threats_text'
+        - field_as_end_date
+        - field_as_global_assessment_level
+        - field_as_global_assessment_text
+      full_assessment_values:
+        - group_values
+        - field_as_vass_wh_state
+        - field_as_vass_bio_trend
+        - field_as_vass_bio_text
+        - field_as_values_wh
+      references:
+        - field_as_references
+    fields:
+      'display_field_copy:node-assessment_values':
+        plugin_id: 'display_field_copy:node-assessment_values'
+        weight: 0
+        label: hidden
+        formatter: entity_reference_label
+      'display_field_copy:node-justification_assessment_values':
+        plugin_id: 'display_field_copy:node-justification_assessment_values'
+        weight: 1
+        label: hidden
+        formatter: basic_string
+      'display_field_copy:node-overall_threats_rating':
+        plugin_id: 'display_field_copy:node-overall_threats_rating'
+        weight: 13
+        label: hidden
+        formatter: author
+      'display_field_copy:node-overall_threats_text':
+        plugin_id: 'display_field_copy:node-overall_threats_text'
+        weight: 14
+        label: hidden
+        formatter: basic_string
+      'display_field_copy:node-protection_overall_effectiveness':
+        plugin_id: 'display_field_copy:node-protection_overall_effectiveness'
+        weight: 1
+        label: hidden
+        formatter: basic_string
+      'display_field_copy:node-protection_overall_rating':
+        plugin_id: 'display_field_copy:node-protection_overall_rating'
+        weight: 0
+        label: hidden
+        formatter: entity_reference_label
+  field_group:
+    group_conservation_outlook:
+      children:
+        - field_as_end_date
+        - field_as_global_assessment_level
+        - field_as_global_assessment_text
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        label: 'Conservation outlook'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: conservation-outlook-summary-group
+      label: 'Conservation outlook'
+    group_current_state_trend_values:
+      children:
+        - 'display_field_copy:node-assessment_values'
+        - 'display_field_copy:node-justification_assessment_values'
+      parent_name: ''
+      weight: 1
+      format_type: html_element
+      format_settings:
+        label: 'Current state of trend and VALUES'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: values-summary-group
+      label: 'Current state of trend and VALUES'
+    group_overall_threats:
+      children:
+        - 'display_field_copy:node-overall_threats_rating'
+        - 'display_field_copy:node-overall_threats_text'
+      parent_name: ''
+      weight: 2
+      format_type: html_element
+      format_settings:
+        label: 'Overall Threats'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: threats-summary-group
+      label: 'Overall Threats'
+    group_overall_prot_man:
+      children:
+        - 'display_field_copy:node-protection_overall_rating'
+        - 'display_field_copy:node-protection_overall_effectiveness'
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      format_settings:
+        label: 'Overall PROTECTION and MANAGEMENT'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: protection-management-summary-group
+      label: 'Overall PROTECTION and MANAGEMENT'
+    group_values:
+      children:
+        - field_as_vass_wh_state
+        - field_as_vass_bio_trend
+        - field_as_vass_bio_text
+        - field_as_values_wh
+      parent_name: ''
+      weight: 4
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: false
+      label: Values
+id: node.site_assessment.default
+targetEntityType: node
+bundle: site_assessment
+mode: default
+content:
+  field_as_end_date:
+    weight: 42
+    label: hidden
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: summary
+  field_as_global_assessment_level:
+    weight: 43
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: summary
+  field_as_global_assessment_text:
+    weight: 44
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: summary
+  field_as_references:
+    weight: 6
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: references
+  field_as_values_wh:
+    type: entity_reference_revisions_entity_view
+    weight: 8
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_vass_bio_text:
+    type: basic_string
+    weight: 7
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_vass_bio_trend:
+    type: entity_reference_label
+    weight: 6
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_wh_state:
+    type: entity_reference_label
+    weight: 5
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+hidden:
+  field_as_archived: true
+  field_as_benefits: true
+  field_as_benefits_summary: true
+  field_as_cycle: true
+  field_as_key_cons: true
+  field_as_projects: true
+  field_as_projects_needs: true
+  field_as_protection: true
+  field_as_protection_ov_out_rate: true
+  field_as_protection_ov_out_text: true
+  field_as_protection_ov_practices: true
+  field_as_protection_ov_rating: true
+  field_as_protection_ov_text: true
+  field_as_site: true
+  field_as_start_date: true
+  field_as_threats_current: true
+  field_as_threats_current_rating: true
+  field_as_threats_current_text: true
+  field_as_threats_potent_rating: true
+  field_as_threats_potent_text: true
+  field_as_threats_potential: true
+  field_as_threats_rating: true
+  field_as_threats_text: true
+  field_as_values_bio: true
+  field_as_vass_bio_state: true
+  field_as_vass_wh_text: true
+  field_as_vass_wh_trend: true
+  field_as_version: true
+  field_date_published: true
+  langcode: true
+  links: true
+  site_assessments_link: true
+  site_assessments_rating: true

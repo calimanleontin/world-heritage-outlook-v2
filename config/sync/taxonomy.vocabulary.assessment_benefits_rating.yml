@@ -1,0 +1,9 @@
+uuid: 4f663cfc-8ce7-4d83-8746-6cd7f6e60d49
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment benefits rating'
+vid: assessment_benefits_rating
+description: 'Rating of benefit for a site assessment'
+hierarchy: 0
+weight: 0

@@ -1,0 +1,71 @@
+{%
+set classes = [
+'iucn-site-wrapper',
+]
+%}
+{% set node = content['#node'] %}
+
+<div{{ attributes.addClass(classes) }}>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+        <span class="tab-label">{{ 'Summary'|t }}</span>
+        <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
+        <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+        <span class="tab-label">{{ 'Full assessment'|t }}</span>
+        <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
+        <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+        <span class="tab-label">{{ 'References'|t }}</span>
+        <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
+        <span class="tab-read-more">{{ 'See references'|t  }}</span>
+      </a>
+    </li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="summary">
+            {{ content.summary }}
+          </div>
+          <div role="tabpanel" class="tab-pane" id="full_assessment">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ 'Values'|t }}</h3>
+              </div>
+              <div class="panel-body">
+                {{ content.full_assessment_values }}
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ 'Threats'|t }}</h3>
+              </div>
+              <div class="panel-body">
+                {{ content.full_assessment_threats }}
+              </div>
+            </div>
+
+          </div>
+          <div role="tabpanel" class="tab-pane" id="references">
+            {{ content.references }}
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <p>{{ 'HERE GOES THE SIDEBAR' }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

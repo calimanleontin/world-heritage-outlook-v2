@@ -1,0 +1,45 @@
+uuid: 0624e728-32f5-4d57-b174-b5e7ff48003b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_key_conservation.field_as_description
+    - field.field.paragraph.as_site_key_conservation.field_as_key_cons_scale
+    - field.field.paragraph.as_site_key_conservation.field_as_key_cons_topic
+    - paragraphs.paragraphs_type.as_site_key_conservation
+id: paragraph.as_site_key_conservation.default
+targetEntityType: paragraph
+bundle: as_site_key_conservation
+mode: default
+content:
+  field_as_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_key_cons_scale:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_key_cons_topic:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  translation:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

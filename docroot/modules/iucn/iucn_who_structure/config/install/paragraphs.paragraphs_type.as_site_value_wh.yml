@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_value_wh
+label: 'Assessment World Heritage site value'
+behavior_plugins: {  }

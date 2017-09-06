@@ -3,10 +3,13 @@
 namespace Drupal\iucn_who_homepage\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\iucn_who_core\Plugin\Block\GoogleMapsBaseBlock;
 use Drupal\iucn_who_core\Sites\SitesQueryUtil;
+use Drupal\iucn_who_core\SiteStatus;
+use Drupal\website_utilities\DrupalInstance;
 
 
 /**
@@ -83,29 +86,39 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   private function getMarkers() {
     $ret = [];
     $sites = SitesQueryUtil::getPublishedSites();
+    /** @var \Drupal\node\NodeInterface $node */
     foreach($sites as $node) {
       $latitude = $node->field_coordinate_y->value;
       $longitude = $node->field_coordinate_x->value;
-      if (empty($latitude) || empty($longitude)) {
+      $status_id = $this->getSiteStatus($node);
+      // Hide sites without coordinates
+      if (empty($latitude) || empty($longitude) || empty($status_id)) {
+        \Drupal::logger(__CLASS__)->warning(
+          'Hiding site NID: @nid from map due to invalid values (coordinates/status)',
+          ['@nid' => $node->id()]
+        );
         continue;
       }
-      $status_id = $this->getSiteStatus($node);
+      $overall_status_level = SiteStatus::getOverallAssessmentLevel($node);
+      $threat_level = SiteStatus::getOverallThreatLevel($node);
+      $protection_level = SiteStatus::getOverallProtectionLevel($node);
+      $value_level = SiteStatus::getOverallProtectionLevel($node);
       $detail = [
         '#theme' => 'homepage_map_site_detail',
         '#title' => $node->title->value,
         '#status' => [
-          'label' => 'TODO',
+          'label' => $overall_status_level ? $overall_status_level->label() : '-',
           'id' => $status_id,
         ],
         '#country' => [
-          'label' => $this->getSiteCountryLabel($node)
+          'label' => $this->getSiteCountryLabel($node),
         ],
         '#thumbnail' => $this->getSiteThumbnail($node),
         '#inscription' => $this->getSiteInscriptionYear($node),
         '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
-        '#stat_values' => 'TODO',
-        '#stat_threat' => 'TODO',
-        '#stat_protection' => 'TODO',
+        '#stat_values' => $value_level ? $value_level->label() : '-',
+        '#stat_threat' => $threat_level ? $threat_level->label() : '-',
+        '#stat_protection' => $protection_level ? $protection_level->label() : '-',
       ];
       $ret[] = [
         'id' => $node->id(),
@@ -152,10 +165,18 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   }
 
   private function getSiteStatus($node) {
-    // @todo
-    $array = SitesQueryUtil::getSiteConservationRatings();
-    $k = array_rand($array);
-    return $array[$k]->id();
+    $ret = null;
+    if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
+      $ret = $status->id();
+    }
+    else {
+      if (!DrupalInstance::isProductionInstance()) {
+        $array = SitesQueryUtil::getSiteConservationRatings();
+        $k = array_rand($array);
+        $ret = $array[$k]->id();
+      }
+    }
+    return $ret;
   }
 
   private function getMarkersIcons() {

@@ -1,0 +1,9 @@
+uuid: d93ad7e4-168d-4c07-8924-9b08cd6a558e
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment benefits category'
+vid: assessment_benefits_category
+description: 'Categories of benefits for a site assessment'
+hierarchy: 0
+weight: 0

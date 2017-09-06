@@ -1,0 +1,103 @@
+uuid: ff2f0972-6b08-4103-9571-3e33a4fdb108
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_threat.field_as_description
+    - field.field.paragraph.as_site_threat.field_as_threats_categories
+    - field.field.paragraph.as_site_threat.field_as_threats_extent
+    - field.field.paragraph.as_site_threat.field_as_threats_in
+    - field.field.paragraph.as_site_threat.field_as_threats_out
+    - field.field.paragraph.as_site_threat.field_as_threats_rating
+    - field.field.paragraph.as_site_threat.field_as_threats_threat
+    - field.field.paragraph.as_site_threat.field_as_threats_values_bio
+    - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - paragraphs
+id: paragraph.as_site_threat.default
+targetEntityType: paragraph
+bundle: as_site_threat
+mode: default
+content:
+  field_as_description:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_threats_categories:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_threats_extent:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_threats_in:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_as_threats_out:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_as_threats_rating:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_threats_threat:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_threats_values_bio:
+    type: entity_reference_paragraphs
+    weight: 8
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_as_threats_values_wh:
+    type: entity_reference_paragraphs
+    weight: 7
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

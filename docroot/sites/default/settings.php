@@ -749,6 +749,9 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
+// TODO Set this in settings.local.php
+$config['iucn_migration.settings']['assessment_path'] = 'http://who.local/modules/iucn/iucn_migrate/source/assessments.json';
+
 /**
  * Load local development override configuration, if available.
  *

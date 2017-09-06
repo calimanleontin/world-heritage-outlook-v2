@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment WH criteria'
+vid: assessment_wh_criteria
+description: ''
+hierarchy: 0
+weight: 0

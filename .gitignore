@@ -2,6 +2,7 @@
 docroot/robots.txt
 docroot/files
 docroot/sites/*/files
+docroot/sites/simpletest
 docroot/sites/*/files-private
 docroot/sites/*/private
 docroot/modules/contrib/examples
@@ -31,6 +32,7 @@ drush/aliases/aliases.drushrc.php
 conf/config.json
 conf/apache.conf
 docroot/sites/local.services.yml
+docroot/core/phpunit.xml
 
 # Vagrant Files #
 #################

@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_protection
+label: 'Assessment site protection'
+behavior_plugins: {  }

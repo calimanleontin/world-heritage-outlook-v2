@@ -1,0 +1,23 @@
+uuid: b04ef534-8fe9-4231-881e-1879e680b9b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_archived
+    - node.type.site_assessment
+id: node.site_assessment.field_as_archived
+field_name: field_as_archived
+entity_type: node
+bundle: site_assessment
+label: Archived
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

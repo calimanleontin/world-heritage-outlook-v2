@@ -1,0 +1,19 @@
+uuid: f341742a-290e-44ec-b971-7180ac791746
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_vass_bio_text
+    - node.type.site_assessment
+id: node.site_assessment.field_as_vass_bio_text
+field_name: field_as_vass_bio_text
+entity_type: node
+bundle: site_assessment
+label: 'Justification of assessment'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

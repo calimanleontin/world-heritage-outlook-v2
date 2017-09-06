@@ -1,0 +1,28 @@
+uuid: 797303c3-4073-41a9-b4d5-c11b46da585a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_protection_ov_rating
+    - node.type.site_assessment
+    - taxonomy.vocabulary.assessment_protection_rating
+id: node.site_assessment.field_as_protection_ov_rating
+field_name: field_as_protection_ov_rating
+entity_type: node
+bundle: site_assessment
+label: 'Protection overall rating'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_protection_rating: assessment_protection_rating
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

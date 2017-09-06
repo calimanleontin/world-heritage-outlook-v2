@@ -1,0 +1,20 @@
+uuid: 5a95a60e-fa2c-4a67-839e-ec6a24e45307
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_as_benefits_commun_wide
+field_name: field_as_benefits_commun_wide
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

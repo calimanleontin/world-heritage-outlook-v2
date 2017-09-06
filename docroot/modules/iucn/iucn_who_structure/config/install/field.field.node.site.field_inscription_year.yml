@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_inscription_year
+    - node.type.site
+  module:
+    - datetime
+id: node.site.field_inscription_year
+field_name: field_inscription_year
+entity_type: node
+bundle: site
+label: 'Inscribed in'
+description: 'Inscription year'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

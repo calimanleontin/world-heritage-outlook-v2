@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment conservation rating'
+vid: assessment_conservation_rating
+description: 'Overall site conservation rating'
+hierarchy: 0
+weight: 0

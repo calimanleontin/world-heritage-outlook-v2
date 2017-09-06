@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * Implements hook_node_update().
+ */
+function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
+  // Assign to the site the current assessment if it's the latest one.
+  if ($node->bundle() == 'site_assessment'
+    && $node->isPublished()
+    && !empty($node->field_as_site->entity)) {
+    $site = $node->field_as_site->entity;
+    $site->field_current_assessment = [['target_id' => $node->id()]];
+    if (!empty($site->field_current_assessment->entity)) {
+      $curr_date = $node->field_as_cycle->value;
+      $date = $site->field_current_assessment->entity->field_as_cycle->value;
+      if ($curr_date > $date) {
+        $site->field_current_assessment = [['target_id' => $node->id()]];
+      }
+    }
+    $site->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function iucn_assessment_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+//  if ($display->id() == 'node.site.default') {
+//    foreach ($build['field_assessments']['#items'] as $assessment) {
+//      if ($assessment->entity->field_as_cycle->value == 2017) {
+//        $build['field_assessments']['#items'] = [$assessment];
+//        break;
+//      }
+//    }
+//    dpm($build['field_assessments']['#items']);
+//  }
+}
+
+function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
+  if ($site->field_assessments->count() == 0) {
+    return NULL;
+  }
+  $request = Drupal::request();
+  // TODO default year ?!
+  $year = $request->get('year', 2017);
+  $active_date = $site->field_assessments->entity->field_as_cycle->value;
+  foreach ($site->field_assessments as $assessment) {
+    if ($assessment->entity->field_as_cycle->value == $year) {
+      $active_date = $year;
+      break;
+    }
+  }
+  return $active_date;
+}
+
+function iucn_assessment_preprocess_field(&$variables) {
+  if ($variables['field_name'] == 'field_assessments') {
+    $variables['element']['#cache']['contexts'][] = 'url';
+    if (empty($variables['items'])) {
+      // TODO
+    }
+    else {
+      $display_year = iucn_assessment_year_display($variables['element']['#object']);
+      $showing_item = NULL;
+      foreach ($variables['items'] as $item) {
+        /* @var \Drupal\node\Entity\Node $assessment */
+        $assessment = $item['content']['#node'];
+        if ($assessment->field_as_cycle->value == $display_year) {
+          $showing_item = $item;
+          $variables['element']['#cache']['tags'][] = 'node:' . $assessment->id();
+          break;
+        }
+      }
+      $variables['items'] = !empty($showing_item) ? [$showing_item] : [];
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function iucn_assessment_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'node') {
+    $fields = [];
+    // Add a field for links to site assessments.
+    $fields['site_assessments_link'] = \Drupal\Core\Field\BaseFieldDefinition::create('site_assessments_link')
+      ->setName('site_assessments_link')
+      ->setTargetBundle('site')
+      ->setLabel(t('Site assessments links'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\iucn_assessment\Plugin\Field\FieldList\SiteAssessmentsLinksItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'region' => 'hidden',
+        'label' => 'hidden',
+        'weight' => -5,
+      ]);
+
+    $fields['site_assessments_rating'] = \Drupal\Core\Field\BaseFieldDefinition::create('site_assessments_rating')
+      ->setName('site_assessments_rating')
+      ->setTargetBundle('site')
+      ->setLabel(t('Assessment Rating Image'))
+      ->setComputed(TRUE)
+      ->setClass('\Drupal\iucn_assessment\Plugin\Field\FieldList\SiteAssessmentRatingItemList')
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'region' => 'hidden',
+        'label' => 'hidden',
+        'weight' => -6,
+      ]);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function iucn_assessment_field_formatter_info_alter(array &$info) {
+  $info['link']['field_types'][] = 'site_assessments_link';
+  $info['image']['field_types'][] = 'site_assessments_rating';
+}
+
+
+function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
+  if ($node->bundle() == 'site' && !$node->isNew()) {
+    $query = \Drupal::entityQuery('node');
+    $query->condition('status', 1);
+    $query->condition('type', 'site_assessment');
+    $query->condition('field_as_site.target_id', $node->id());
+    $entity_ids = $query->execute();
+    $field_values = [];
+    if (!empty($entity_ids)) {
+      foreach ($entity_ids as $id) {
+        $field_values[] = ['target_id' => $id];
+      }
+    }
+    $node->field_assessments = $field_values;
+  }
+}
+
+function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_object) {
+  if (!empty($element['#group_name']) && $element['#group_name'] == 'group_conservation_outlook') {
+    if (!empty($element['field_as_global_assessment_text']['#object']->field_as_cycle)) {
+      $element['#title'] = $element['field_as_global_assessment_text']['#object']->field_as_cycle->value . ' ' . $element['#title'];
+    }
+  }
+}
+
+
+
+function _iucn_taxonomy_installer() {
+  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
+}
+

@@ -1,0 +1,21 @@
+[ {
+  "id" : 1,
+  "name" : "Very Low Threat",
+  "description" : "Few or no threats are evident and accepted predictions indicate that negative impacts on the site's values and integrity are likely to be minor."
+}, {
+  "id" : 2,
+  "name" : "Low Threat",
+  "description" : "Some minor threats are evident and there is concern that based on accepted predictions there are likely to be some localized but reversible negative impacts on the site's values and integrity."
+}, {
+  "id" : 3,
+  "name" : "High Threat",
+  "description" : "There are clear threats to the site, and current and/or predicted future impacts are likely to result in significant negative effects on the site's values and integrity."
+}, {
+  "id" : 4,
+  "name" : "Very High Threat",
+  "description" : "The threats to the site are very high, and current and/or predicted future impacts are likely to result in the irreversible loss of the majority of the site's values and its integrity."
+}, {
+  "id" : 5,
+  "name" : "Data Deficient",
+  "description" : "Available evidence is insufficient to draw a conclusion."
+} ]

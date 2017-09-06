@@ -1,0 +1,81 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.site_assessment.field_as_archived
+    - field.field.node.site_assessment.field_as_benefits
+    - field.field.node.site_assessment.field_as_benefits_summary
+    - field.field.node.site_assessment.field_as_conservation
+    - field.field.node.site_assessment.field_as_end_date
+    - field.field.node.site_assessment.field_as_global_assessment_level
+    - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_projects
+    - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_site
+    - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_values_bio
+    - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_version
+    - node.type.site_assessment
+  module:
+    - user
+id: node.site_assessment.teaser
+targetEntityType: node
+bundle: site_assessment
+mode: teaser
+content:
+  field_as_site:
+    type: entity_reference_entity_id
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_archived: true
+  field_as_archived: true
+  field_as_benefits: true
+  field_as_benefits_summary: true
+  field_as_conservation: true
+  field_as_end_date: true
+  field_as_global_assessment_level: true
+  field_as_global_assessment_text: true
+  field_as_key_cons: true
+  field_as_projects: true
+  field_as_projects_needs: true
+  field_as_protection: true
+  field_as_protection_ov_out_rate: true
+  field_as_protection_ov_out_text: true
+  field_as_protection_ov_practices: true
+  field_as_protection_ov_rating: true
+  field_as_protection_ov_text: true
+  field_as_references: true
+  field_as_start_date: true
+  field_as_threats_current: true
+  field_as_threats_current_rating: true
+  field_as_threats_current_text: true
+  field_as_threats_potent_rating: true
+  field_as_threats_potent_text: true
+  field_as_threats_potential: true
+  field_as_threats_rating: true
+  field_as_threats_text: true
+  field_as_values_bio: true
+  field_as_values_wh: true
+  field_as_vass_bio_state: true
+  field_as_vass_bio_text: true
+  field_as_vass_bio_trend: true
+  field_as_vass_wh_state: true
+  field_as_vass_wh_text: true
+  field_as_vass_wh_trend: true
+  field_as_version: true
+  field_date_published: true
+  field_field_as_cycle: true
+  field_site: true
+  langcode: true

@@ -1,0 +1,48 @@
+uuid: 35041d7f-5f63-4e4a-9923-8b75718c8a36
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_projects_needs
+    - node.type.site_assessment
+    - paragraphs.paragraphs_type.as_site_project
+  module:
+    - entity_reference_revisions
+id: node.site_assessment.field_as_projects_needs
+field_name: field_as_projects_needs
+entity_type: node
+bundle: site_assessment
+label: 'Projects needs'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      as_site_project: as_site_project
+    target_bundles_drag_drop:
+      as_site_project:
+        enabled: true
+        weight: 8
+      as_site_value_bio:
+        weight: 9
+        enabled: false
+      as_site_value_wh:
+        weight: 10
+        enabled: false
+      content_html:
+        weight: 11
+        enabled: false
+      content_teasers:
+        weight: 12
+        enabled: false
+      danger_list:
+        weight: 13
+        enabled: false
+      site_benefit:
+        weight: 14
+        enabled: false
+field_type: entity_reference_revisions

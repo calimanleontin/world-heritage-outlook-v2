@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_key_cons_scale
+    - paragraphs.paragraphs_type.as_site_key_conservation
+    - taxonomy.vocabulary.assessment_key_conservation_scal
+id: paragraph.as_site_key_conservation.field_as_key_cons_scale
+field_name: field_as_key_cons_scale
+entity_type: paragraph
+bundle: as_site_key_conservation
+label: Scale
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_key_conservation_scal: assessment_key_conservation_scal
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,28 @@
+uuid: eeb57d52-b636-4e69-8680-bcf3465529f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_threats_potent_rating
+    - node.type.site_assessment
+    - taxonomy.vocabulary.assessment_threat_level
+id: node.site_assessment.field_as_threats_potent_rating
+field_name: field_as_threats_potent_rating
+entity_type: node
+bundle: site_assessment
+label: 'Overall potential threats rating'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_threat_level: assessment_threat_level
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

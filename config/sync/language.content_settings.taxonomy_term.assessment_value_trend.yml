@@ -1,0 +1,16 @@
+uuid: 2cb157cd-4d5d-4749-bea7-807385eff37c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_value_trend
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_value_trend
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_value_trend
+default_langcode: site_default
+language_alterable: false

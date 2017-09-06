@@ -1,0 +1,20 @@
+uuid: 0330e79c-7e2e-4295-a0ad-099d0f4eb67e
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - paragraphs
+id: paragraph.field_as_projects_from
+field_name: field_as_projects_from
+entity_type: paragraph
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

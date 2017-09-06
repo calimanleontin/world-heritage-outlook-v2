@@ -1,0 +1,19 @@
+uuid: adc73e4f-03df-40bd-8e51-d751b86aef3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_benefits_summary
+    - node.type.site_assessment
+id: node.site_assessment.field_as_benefits_summary
+field_name: field_as_benefits_summary
+entity_type: node
+bundle: site_assessment
+label: 'Summary of benefits'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

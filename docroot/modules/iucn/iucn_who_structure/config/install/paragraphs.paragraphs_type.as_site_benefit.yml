@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_benefit
+label: 'Assessment site benefit'
+behavior_plugins: {  }

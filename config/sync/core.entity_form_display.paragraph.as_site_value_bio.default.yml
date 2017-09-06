@@ -1,0 +1,61 @@
+uuid: 2ff4e438-8529-4e50-8883-3311783dc97d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_value_bio.field_as_description
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_bio.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_bio
+id: paragraph.as_site_value_bio.default
+targetEntityType: paragraph
+bundle: as_site_value_bio
+mode: default
+content:
+  field_as_description:
+    weight: 11
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_values_curr_state:
+    weight: 13
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_values_curr_text:
+    weight: 12
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_values_curr_trend:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_values_value:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

@@ -1,0 +1,28 @@
+uuid: 2b2f03e2-d4b5-41e8-8bb5-81224384eb86
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_protection_ov_out_rate
+    - node.type.site_assessment
+    - taxonomy.vocabulary.assessment_protection_rating
+id: node.site_assessment.field_as_protection_ov_out_rate
+field_name: field_as_protection_ov_out_rate
+entity_type: node
+bundle: site_assessment
+label: 'Protection overall rating outside factors'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_protection_rating: assessment_protection_rating
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

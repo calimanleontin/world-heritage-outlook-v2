@@ -1,0 +1,16 @@
+uuid: 2851b21c-20cf-48e3-9c72-a36c1bfca2a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_conservation_topic
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_conservation_topic
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_conservation_topic
+default_langcode: site_default
+language_alterable: false

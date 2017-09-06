@@ -1,0 +1,143 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_benefit.field_as_benefits_category
+    - field.field.paragraph.as_site_benefit.field_as_benefits_climate_level
+    - field.field.paragraph.as_site_benefit.field_as_benefits_climate_trend
+    - field.field.paragraph.as_site_benefit.field_as_benefits_commun_in
+    - field.field.paragraph.as_site_benefit.field_as_benefits_commun_out
+    - field.field.paragraph.as_site_benefit.field_as_benefits_commun_wide
+    - field.field.paragraph.as_site_benefit.field_as_benefits_datadeficient
+    - field.field.paragraph.as_site_benefit.field_as_benefits_hab_level
+    - field.field.paragraph.as_site_benefit.field_as_benefits_hab_trend
+    - field.field.paragraph.as_site_benefit.field_as_benefits_invassp_level
+    - field.field.paragraph.as_site_benefit.field_as_benefits_invassp_trend
+    - field.field.paragraph.as_site_benefit.field_as_benefits_oex_level
+    - field.field.paragraph.as_site_benefit.field_as_benefits_oex_trend
+    - field.field.paragraph.as_site_benefit.field_as_benefits_pollut_level
+    - field.field.paragraph.as_site_benefit.field_as_benefits_pollut_trend
+    - field.field.paragraph.as_site_benefit.field_as_comment
+    - field.field.paragraph.as_site_benefit.field_as_description
+    - paragraphs.paragraphs_type.as_site_benefit
+id: paragraph.as_site_benefit.default
+targetEntityType: paragraph
+bundle: as_site_benefit
+mode: default
+content:
+  field_as_benefits_category:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_climate_level:
+    weight: 13
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_climate_trend:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_commun_in:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_commun_out:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_commun_wide:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_datadeficient:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_as_benefits_hab_level:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_hab_trend:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_invassp_level:
+    weight: 15
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_invassp_trend:
+    weight: 16
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_oex_level:
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_oex_trend:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_pollut_level:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_pollut_trend:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_comment:
+    weight: 17
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  translation:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

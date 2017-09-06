@@ -1,0 +1,23 @@
+uuid: 358768ec-7a4f-407b-b443-66a00b80fba3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_threats_out
+    - paragraphs.paragraphs_type.as_site_threat
+id: paragraph.as_site_threat.field_as_threats_out
+field_name: field_as_threats_out
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Outside site'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

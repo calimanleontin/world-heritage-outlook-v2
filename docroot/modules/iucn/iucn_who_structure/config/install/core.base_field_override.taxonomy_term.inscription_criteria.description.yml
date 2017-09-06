@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.inscription_criteria
+  module:
+    - text
+id: taxonomy_term.inscription_criteria.description
+field_name: description
+entity_type: taxonomy_term
+bundle: inscription_criteria
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

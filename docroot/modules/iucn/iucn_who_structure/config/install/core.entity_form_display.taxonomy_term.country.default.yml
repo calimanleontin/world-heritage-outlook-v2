@@ -1,0 +1,107 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.country.field_a2
+    - field.field.taxonomy_term.country.field_a3
+    - field.field.taxonomy_term.country.field_active
+    - field.field.taxonomy_term.country.field_currency
+    - field.field.taxonomy_term.country.field_idd
+    - field.field.taxonomy_term.country.field_iucn_region
+    - field.field.taxonomy_term.country.field_number
+    - field.field.taxonomy_term.country.field_unesco_region
+    - field.field.taxonomy_term.country.field_zip_required
+    - taxonomy.vocabulary.country
+  module:
+    - path
+id: taxonomy_term.country.default
+targetEntityType: taxonomy_term
+bundle: country
+mode: default
+content:
+  field_a2:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_a3:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_active:
+    weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_currency:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_idd:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_iucn_region:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_number:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_unesco_region:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_zip_required:
+    weight: 6
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true

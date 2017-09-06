@@ -1,0 +1,16 @@
+uuid: e9897fd1-bf10-4400-9d67-978dfca5dc58
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_benefits_impact_level
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_benefits_impact_level
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_benefits_impact_level
+default_langcode: site_default
+language_alterable: false

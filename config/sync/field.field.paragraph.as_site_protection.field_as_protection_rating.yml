@@ -1,0 +1,28 @@
+uuid: 8efa8c7f-2c7e-4969-b6c3-d08cf4ec0422
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_protection_rating
+    - paragraphs.paragraphs_type.as_site_protection
+    - taxonomy.vocabulary.assessment_protection_rating
+id: paragraph.as_site_protection.field_as_protection_rating
+field_name: field_as_protection_rating
+entity_type: paragraph
+bundle: as_site_protection
+label: Rating
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_protection_rating: assessment_protection_rating
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

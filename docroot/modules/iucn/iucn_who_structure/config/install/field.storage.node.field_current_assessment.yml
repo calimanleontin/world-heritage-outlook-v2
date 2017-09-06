@@ -1,0 +1,19 @@
+uuid: 8b0ea746-7ec5-488c-9c31-297537dd04d0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_current_assessment
+field_name: field_current_assessment
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

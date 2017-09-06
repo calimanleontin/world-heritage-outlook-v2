@@ -1,0 +1,16 @@
+uuid: 8baf3a4b-ed0a-41ee-83fa-990f3d5f3f10
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.as_site_threat
+target_entity_type_id: paragraph
+target_bundle: as_site_threat
+default_langcode: site_default
+language_alterable: true

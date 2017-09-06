@@ -1,0 +1,9 @@
+uuid: 2846963b-7e94-4054-a86a-daf40f0b8478
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment threat categories'
+vid: assessment_threat
+description: 'List of factors that are threatening the site'
+hierarchy: 0
+weight: 0

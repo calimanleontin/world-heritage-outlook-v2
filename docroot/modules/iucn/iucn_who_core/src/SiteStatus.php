@@ -50,4 +50,125 @@ class SiteStatus {
     }
     return $ret;
   }
+
+
+  /**
+   * Retrieve the current global assessment level for a site.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   *   Term containing the site status or NULL for error.
+   *
+   * @todo Implement a caching strategy to avoid loading all site nodes to
+   * compute. We need to find out the proper cache tags (nodes of type
+   * site and assessment).
+   */
+  public static function getOverallAssessmentLevel($node) {
+    $ret = NULL;
+    /** @var $node object */
+    if (empty($node)) {
+      return $ret;
+    }
+    try {
+      if ($node->field_current_assessment) {
+        if ($assessment = $node->field_current_assessment->entity) {
+          $ret = $assessment->field_as_global_assessment_level->entity;
+        }
+      }
+    } catch (\Exception $e) {
+      \Drupal::logger(__CLASS__)->error(
+        'Exception while computing site global status for site NID: @nid',
+        array('@nid' => $node->id())
+      );
+    }
+    return $ret;
+  }
+
+
+  /**
+   * Retrieve the current global threat status for a site.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   */
+  public static function getOverallThreatLevel($node) {
+    $ret = NULL;
+    /** @var $node object */
+    if (empty($node)) {
+      return $ret;
+    }
+    try {
+      if ($node->field_current_assessment) {
+        if ($term = $node->field_current_assessment->entity) {
+          $ret = $term->field_as_threats_rating->entity;
+        }
+      }
+    } catch (\Exception $e) {
+      \Drupal::logger(__CLASS__)->error(
+        'Exception while computing site threat level for site NID: @nid',
+        array('@nid' => $node->id())
+      );
+    }
+    return $ret;
+  }
+
+
+  /**
+   * Retrieve the current global protection level for a site.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   */
+  public static function getOverallProtectionLevel($node) {
+    $ret = NULL;
+    /** @var $node object */
+    if (empty($node)) {
+      return $ret;
+    }
+    try {
+      if ($node->field_current_assessment) {
+        if ($term = $node->field_current_assessment->entity) {
+          $ret = $term->field_as_protection_ov_rating->entity;
+        }
+      }
+    } catch (\Exception $e) {
+      \Drupal::logger(__CLASS__)->error(
+        'Exception while computing site protection level for site NID: @nid',
+        array('@nid' => $node->id())
+      );
+    }
+    return $ret;
+  }
+
+  /**
+   * Retrieve the current global protection level for a site.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   */
+  public static function getOverallValuesLevel($node) {
+    $ret = NULL;
+    /** @var $node object */
+    if (empty($node)) {
+      return $ret;
+    }
+    try {
+      if ($node->field_current_assessment) {
+        if ($term = $node->field_current_assessment->entity) {
+          $ret = $term->field_as_vass_wh_state->entity;
+        }
+      }
+    } catch (\Exception $e) {
+      \Drupal::logger(__CLASS__)->error(
+        'Exception while computing site values level for site NID: @nid',
+        array('@nid' => $node->id())
+      );
+    }
+    return $ret;
+  }
+
 }

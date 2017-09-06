@@ -1,0 +1,9 @@
+uuid: 7537215d-d64c-4105-8adc-4b6635450eec
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment value state'
+vid: assessment_value_state
+description: 'The list of current states for the site''s current value'
+hierarchy: 0
+weight: 0

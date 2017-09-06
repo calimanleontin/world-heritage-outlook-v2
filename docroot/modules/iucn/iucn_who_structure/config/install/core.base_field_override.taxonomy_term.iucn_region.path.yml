@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.iucn_region
+  module:
+    - path
+id: taxonomy_term.iucn_region.path
+field_name: path
+entity_type: taxonomy_term
+bundle: iucn_region
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

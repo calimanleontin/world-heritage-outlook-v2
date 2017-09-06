@@ -1,0 +1,28 @@
+uuid: bce85e9c-5a98-43ca-94d7-e2c9c99e257e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_global_assessment_level
+    - node.type.site_assessment
+    - taxonomy.vocabulary.assessment_conservation_rating
+id: node.site_assessment.field_as_global_assessment_level
+field_name: field_as_global_assessment_level
+entity_type: node
+bundle: site_assessment
+label: 'Global assessment level'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_conservation_rating: assessment_conservation_rating
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

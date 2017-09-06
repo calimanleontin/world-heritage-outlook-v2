@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unesco_region
+    - taxonomy.vocabulary.country
+    - taxonomy.vocabulary.unesco_region
+id: taxonomy_term.country.field_unesco_region
+field_name: field_unesco_region
+entity_type: taxonomy_term
+bundle: country
+label: 'UNESCO Region'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      unesco_region: unesco_region
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

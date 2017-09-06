@@ -1,0 +1,58 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_project.field_as_description
+    - field.field.paragraph.as_site_project.field_as_projects_contact
+    - field.field.paragraph.as_site_project.field_as_projects_from
+    - field.field.paragraph.as_site_project.field_as_projects_organisation
+    - field.field.paragraph.as_site_project.field_as_projects_to
+    - paragraphs.paragraphs_type.as_site_project
+  module:
+    - datetime
+id: paragraph.as_site_project.default
+targetEntityType: paragraph
+bundle: as_site_project
+mode: default
+content:
+  field_as_description:
+    weight: 1
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_projects_contact:
+    weight: 2
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_projects_from:
+    weight: 3
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_year
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_as_projects_organisation:
+    weight: 0
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_as_projects_to:
+    weight: 4
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_year
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+hidden: {  }

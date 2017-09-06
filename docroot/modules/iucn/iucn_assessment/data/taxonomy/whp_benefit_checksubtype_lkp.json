@@ -1,0 +1,239 @@
+[ {
+  "subbenefitId" : 1,
+  "name" : "Is the protected area valued for its nature conservation?",
+  "position" : null,
+  "active" : false,
+  "parent" : "Nature conservation values",
+  "description" : null
+}, {
+  "subbenefitId" : 2,
+  "name" : "Does management of the site provide jobs (e.g. for managers or rangers)?",
+  "position" : null,
+  "active" : false,
+  "parent" : "Nature conservation values",
+  "description" : null
+}, {
+  "subbenefitId" : 3,
+  "name" : "Legal subsistence hunting of wild game",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Food",
+  "description" : null
+}, {
+  "subbenefitId" : 4,
+  "name" : "Collection of wild plants and mushrooms",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Food",
+  "description" : null
+}, {
+  "subbenefitId" : 5,
+  "name" : "Fishing areas and conservation of fish stocks",
+  "position" : 3,
+  "active" : true,
+  "parent" : "Food",
+  "description" : null
+}, {
+  "subbenefitId" : 6,
+  "name" : "Traditional agriculture",
+  "position" : 4,
+  "active" : true,
+  "parent" : "Food",
+  "description" : null
+}, {
+  "subbenefitId" : 7,
+  "name" : "Livestock grazing areas",
+  "position" : 5,
+  "active" : true,
+  "parent" : "Food",
+  "description" : null
+}, {
+  "subbenefitId" : 8,
+  "name" : "Access to drinking water",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Water",
+  "description" : null
+}, {
+  "subbenefitId" : 9,
+  "name" : "Commercial wells",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Water",
+  "description" : null
+}, {
+  "subbenefitId" : 10,
+  "name" : "History and tradition",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 11,
+  "name" : "Wilderness and iconic features",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 12,
+  "name" : "Sacred natural sites or landscapes",
+  "position" : 3,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 13,
+  "name" : "Collection of medicinal resources for local use",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Health and recreation",
+  "description" : null
+}, {
+  "subbenefitId" : 14,
+  "name" : "Is the pharmaceuticals industry permitted to collect resources from the site?",
+  "position" : null,
+  "active" : true,
+  "parent" : "Health and recreation",
+  "description" : null
+}, {
+  "subbenefitId" : 15,
+  "name" : "Outdoor recreation and tourism",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Health and recreation",
+  "description" : null
+}, {
+  "subbenefitId" : 16,
+  "name" : "Importance for research",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Knowledge",
+  "description" : null
+}, {
+  "subbenefitId" : 17,
+  "name" : "Contribution to education",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Knowledge",
+  "description" : null
+}, {
+  "subbenefitId" : 18,
+  "name" : "Collection of genetic material",
+  "position" : 3,
+  "active" : true,
+  "parent" : "Knowledge",
+  "description" : null
+}, {
+  "subbenefitId" : 19,
+  "name" : "Carbon sequestration",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 20,
+  "name" : "Soil stabilisation",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 21,
+  "name" : "Coastal protection",
+  "position" : 3,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 22,
+  "name" : "Flood prevention",
+  "position" : 4,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 23,
+  "name" : "Water provision (importance for water quantity and quality)",
+  "position" : 5,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 24,
+  "name" : "Pollination",
+  "position" : 6,
+  "active" : true,
+  "parent" : "Environmental Services",
+  "description" : null
+}, {
+  "subbenefitId" : 25,
+  "name" : "Collection of timber, e.g. fuelwood",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Materials",
+  "description" : null
+}, {
+  "subbenefitId" : 26,
+  "name" : "Sustainable extraction of materials (e.g. coral, shells, resin, rubber, grass, rattan, etc)",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Materials",
+  "description" : null
+}, {
+  "subbenefitId" : 27,
+  "name" : "Sacred plants or animals",
+  "position" : 6,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 28,
+  "name" : "Sense of belonging ",
+  "position" : null,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 29,
+  "name" : "Natural beauty and scenery",
+  "position" : 3,
+  "active" : true,
+  "parent" : "Health and recreation",
+  "description" : null
+}, {
+  "subbenefitId" : 30,
+  "name" : "Direct employment",
+  "position" : null,
+  "active" : false,
+  "parent" : "Contribution to local economy",
+  "description" : null
+}, {
+  "subbenefitId" : 31,
+  "name" : "Tourism-related income",
+  "position" : 1,
+  "active" : true,
+  "parent" : "Contribution to local economy",
+  "description" : null
+}, {
+  "subbenefitId" : 32,
+  "name" : "Sacred or symbolic plants or animals",
+  "position" : 4,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 33,
+  "name" : "Cultural identity and sense of belonging",
+  "position" : 5,
+  "active" : true,
+  "parent" : "Cultural and Spiritual Values",
+  "description" : null
+}, {
+  "subbenefitId" : 34,
+  "name" : "Provision of jobs",
+  "position" : 2,
+  "active" : true,
+  "parent" : "Contribution to local economy",
+  "description" : null
+} ]

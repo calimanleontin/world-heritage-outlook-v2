@@ -1,0 +1,19 @@
+uuid: 2e199b75-7db8-4a20-93c9-5128b0032116
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_as_vass_bio_text
+field_name: field_as_vass_bio_text
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

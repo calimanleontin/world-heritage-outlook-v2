@@ -1,0 +1,21 @@
+[ {
+  "coRatingId" : 1,
+  "name" : "Good",
+  "description" : "The site's values are in good condition and are likely to be maintained for the foreseeable future, provided that current conservation measures are maintained."
+}, {
+  "coRatingId" : 2,
+  "name" : "Good with some concerns",
+  "description" : "While some concerns exist, with minor additional conservation measures the site’s values are likely to be essentially maintained over the long-term."
+}, {
+  "coRatingId" : 3,
+  "name" : "Significant Concern",
+  "description" : "The site’s values are threatened and/or may be showing signs of deterioration. Significant additional conservation measures are needed to maintain and/or restore values over the medium to long-term."
+}, {
+  "coRatingId" : 4,
+  "name" : "Critical",
+  "description" : "The site’s values are severely threatened and/or deteriorating. Immediate large-scale additional conservation measures are needed to maintain and/or restore the site’s values over the short to medium-term or the values may be lost."
+}, {
+  "coRatingId" : 5,
+  "name" : "Data Deficient",
+  "description" : "Available evidence is insufficient to draw a conclusion"
+} ]

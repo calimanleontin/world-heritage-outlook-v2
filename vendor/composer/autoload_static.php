@@ -59,10 +59,13 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
             'Symfony\\Component\\EventDispatcher\\' => 34,
+            'Symfony\\Component\\DomCrawler\\' => 29,
             'Symfony\\Component\\DependencyInjection\\' => 38,
             'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\ClassLoader\\' => 30,
+            'Symfony\\Component\\BrowserKit\\' => 29,
             'Symfony\\Cmf\\Component\\Routing\\' => 30,
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
         ),
@@ -80,6 +83,7 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'Goutte\\' => 7,
         ),
         'D' => 
         array (
@@ -95,6 +99,11 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         array (
             'Composer\\Semver\\' => 16,
             'Composer\\Installers\\' => 20,
+        ),
+        'B' => 
+        array (
+            'Behat\\Mink\\Driver\\' => 18,
+            'Behat\\Mink\\' => 11,
         ),
         'A' => 
         array (
@@ -193,6 +202,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
+        'Symfony\\Component\\DomCrawler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dom-crawler',
+        ),
         'Symfony\\Component\\DependencyInjection\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/dependency-injection',
@@ -201,6 +214,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         array (
             0 => __DIR__ . '/..' . '/symfony/debug',
         ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
+        ),
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
@@ -208,6 +225,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         'Symfony\\Component\\ClassLoader\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/class-loader',
+        ),
+        'Symfony\\Component\\BrowserKit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/browser-kit',
         ),
         'Symfony\\Cmf\\Component\\Routing\\' => 
         array (
@@ -240,6 +261,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Goutte\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
         ),
         'Drupal\\Driver\\' => 
         array (
@@ -277,6 +302,17 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
+        'Behat\\Mink\\Driver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/behat/mink-browserkit-driver/src',
+            1 => __DIR__ . '/..' . '/behat/mink-goutte-driver/src',
+            2 => __DIR__ . '/..' . '/behat/mink-selenium2-driver/src',
+            3 => __DIR__ . '/..' . '/behat/mink-zombie-driver/src',
+        ),
+        'Behat\\Mink\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/behat/mink/src',
+        ),
         'Asm89\\Stack\\' => 
         array (
             0 => __DIR__ . '/..' . '/asm89/stack-cors/src/Asm89/Stack',
@@ -284,6 +320,13 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
     );
 
     public static $prefixesPsr0 = array (
+        'W' => 
+        array (
+            'WebDriver' => 
+            array (
+                0 => __DIR__ . '/..' . '/instaclick/php-webdriver/lib',
+            ),
+        ),
         'T' => 
         array (
             'Twig_' => 

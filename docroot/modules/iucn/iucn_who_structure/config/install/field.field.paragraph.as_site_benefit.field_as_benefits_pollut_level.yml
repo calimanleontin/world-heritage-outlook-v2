@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_benefits_pollut_level
+    - paragraphs.paragraphs_type.as_site_benefit
+    - taxonomy.vocabulary.assessment_benefits_impact_level
+id: paragraph.as_site_benefit.field_as_benefits_pollut_level
+field_name: field_as_benefits_pollut_level
+entity_type: paragraph
+bundle: as_site_benefit
+label: 'Pollution level'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_benefits_impact_level: assessment_benefits_impact_level
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

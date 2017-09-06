@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment key conservation scale'
+vid: assessment_key_conservation_scal
+description: ''
+hierarchy: 0
+weight: 0

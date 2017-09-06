@@ -1,0 +1,19 @@
+uuid: 010833b0-1653-41bb-bd0c-9755e77ccdb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_values_curr_text
+    - paragraphs.paragraphs_type.as_site_value_bio
+id: paragraph.as_site_value_bio.field_as_values_curr_text
+field_name: field_as_values_curr_text
+entity_type: paragraph
+bundle: as_site_value_bio
+label: Justification
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

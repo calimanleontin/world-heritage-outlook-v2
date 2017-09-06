@@ -79,7 +79,12 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
   $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
 
   if (($node->bundle() == 'site' || $node->bundle() == 'publication')  && $node->language()->getId() == $default_language && \Drupal::request()->attributes->get('_entity_form') != 'node.delete') {
-    $old_node = Node::load($node->id());
+    if ($node->isNew()) {
+      $old_node = $node;
+    }
+    else {
+      $old_node = Node::load($node->id());
+    }
     $languages = \Drupal::languageManager()->getLanguages();
     foreach ($languages as $language) {
       $lang_id = $language->getId();

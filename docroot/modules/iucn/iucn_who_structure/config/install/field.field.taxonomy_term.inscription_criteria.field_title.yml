@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_title
+    - taxonomy.vocabulary.inscription_criteria
+id: taxonomy_term.inscription_criteria.field_title
+field_name: field_title
+entity_type: taxonomy_term
+bundle: inscription_criteria
+label: Title
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

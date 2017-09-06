@@ -1,0 +1,19 @@
+uuid: 8f793b7b-45a4-458d-b7c2-cee69b58d433
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_key_cons_topic
+    - paragraphs.paragraphs_type.as_site_key_conservation
+id: paragraph.as_site_key_conservation.field_as_key_cons_topic
+field_name: field_as_key_cons_topic
+entity_type: paragraph
+bundle: as_site_key_conservation
+label: Topic
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -32,11 +32,52 @@ iucn_who_site:
   template: templates/layouts/iucn-who-site
   regions:
     left_1:
-       label: General Info
+     label: Rating
+    middle_1:
+      label: General Info
     right_1:
       label: Image
-    content:
-      label: Content
+    assessment:
+      label: Assessment
+
+iucn_who_assessment_value:
+  label: Assessment value paragraph
+  category: IUCN
+  type: partial
+  template: templates/layouts/iucn-who-assessment-value
+  regions:
+    title:
+     label: Title
+    terms:
+      label: Terms
+    description:
+      label: Description
+
+
+iucn_who_assessment:
+  label: Assessment (site)
+  category: IUCN
+  type: partial
+  class: '\Drupal\ds\Plugin\DsLayout'
+  template: templates/layouts/iucn-who-assessment
+  regions:
+    summary:
+      label: Summary
+    full_assessment_values:
+      label: Full assessments Values
+    full_assessment_threats:
+      label: Full assessments Threats
+    full_assessment_management:
+      label: Full assessments Protection and Management
+    full_assessment_key_issue:
+      label: Full assessments Key Conservation Issues
+    full_assessment_benefits:
+      label: Full assessments Benefits
+    full_assessment_project:
+      label: Full assessments Projects
+    references:
+      label: References
+
 
 iucn_who_news_teaser:
   label: News Teaser

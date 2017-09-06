@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_threats_in
+    - paragraphs.paragraphs_type.as_site_threat
+id: paragraph.as_site_threat.field_as_threats_in
+field_name: field_as_threats_in
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Inside site'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

@@ -1,0 +1,21 @@
+uuid: a4471b66-3503-4f36-bb4f-a053e1c68459
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_published
+    - node.type.site_assessment
+  module:
+    - datetime
+id: node.site_assessment.field_date_published
+field_name: field_date_published
+entity_type: node
+bundle: site_assessment
+label: 'Publish date'
+description: 'Date when this revision was published'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

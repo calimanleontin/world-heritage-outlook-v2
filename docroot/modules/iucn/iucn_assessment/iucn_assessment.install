@@ -1,0 +1,9 @@
+<?php
+
+
+/**
+ * Implements hook_install().
+ */
+function iucn_assessment_install() {
+//  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
+}

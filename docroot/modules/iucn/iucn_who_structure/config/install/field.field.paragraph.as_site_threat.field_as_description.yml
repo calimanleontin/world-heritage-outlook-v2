@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_description
+    - paragraphs.paragraphs_type.as_site_threat
+id: paragraph.as_site_threat.field_as_description
+field_name: field_as_description
+entity_type: paragraph
+bundle: as_site_threat
+label: Justification
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

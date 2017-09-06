@@ -1,0 +1,16 @@
+uuid: 141de807-9901-47fa-9113-e1c2c00adb16
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_conservation_rating
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_conservation_rating
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_conservation_rating
+default_langcode: site_default
+language_alterable: false

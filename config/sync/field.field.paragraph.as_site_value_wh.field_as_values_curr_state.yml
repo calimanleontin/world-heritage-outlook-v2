@@ -1,0 +1,28 @@
+uuid: 0bac5cf9-def1-4616-9f51-d72fb699f43b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_values_curr_state
+    - paragraphs.paragraphs_type.as_site_value_wh
+    - taxonomy.vocabulary.assessment_value_state
+id: paragraph.as_site_value_wh.field_as_values_curr_state
+field_name: field_as_values_curr_state
+entity_type: paragraph
+bundle: as_site_value_wh
+label: State
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_value_state: assessment_value_state
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

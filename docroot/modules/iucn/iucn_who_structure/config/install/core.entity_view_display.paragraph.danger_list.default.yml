@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.danger_list.field_date
+    - field.field.paragraph.danger_list.field_status
+    - paragraphs.paragraphs_type.danger_list
+  module:
+    - datetime
+    - options
+id: paragraph.danger_list.default
+targetEntityType: paragraph
+bundle: danger_list
+mode: default
+content:
+  field_date:
+    weight: 0
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_status:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden: {  }

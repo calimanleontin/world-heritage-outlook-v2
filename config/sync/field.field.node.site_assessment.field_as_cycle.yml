@@ -1,0 +1,21 @@
+uuid: 38c46387-2c36-4dfc-b3ab-39e9ece2a5f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_cycle
+    - node.type.site_assessment
+  module:
+    - options
+id: node.site_assessment.field_as_cycle
+field_name: field_as_cycle
+entity_type: node
+bundle: site_assessment
+label: Cycle
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

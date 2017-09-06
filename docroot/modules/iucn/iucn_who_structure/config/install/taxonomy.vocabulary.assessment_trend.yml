@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment trend'
+vid: assessment_trend
+description: Trend
+hierarchy: 0
+weight: 0

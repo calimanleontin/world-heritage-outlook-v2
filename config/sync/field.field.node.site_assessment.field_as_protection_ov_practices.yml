@@ -1,0 +1,19 @@
+uuid: 8dcd3139-a757-40ff-8b67-a92144460acd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_protection_ov_practices
+    - node.type.site_assessment
+id: node.site_assessment.field_as_protection_ov_practices
+field_name: field_as_protection_ov_practices
+entity_type: node
+bundle: site_assessment
+label: 'Protection best practice examples'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

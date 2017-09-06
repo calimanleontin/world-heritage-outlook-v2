@@ -1,0 +1,5 @@
+name: website_utilities
+type: module
+description: 'Generic utilities for Drupal portal'
+core: 8.x
+package: Utilities

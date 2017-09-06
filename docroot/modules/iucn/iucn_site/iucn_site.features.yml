@@ -1,0 +1,18 @@
+excluded:
+  - search_api_autocomplete.search_api_autocomplete.search_api_views_sites_search
+  - block.block.designation
+  - block.block.exposedformsites_searchsites_search_page
+  - block.block.inscriptioncriteria
+  - block.block.iucnregion
+  - block.block.publicationyear
+  - block.block.theme
+  - facets.facet.designation
+  - facets.facet.inscription_criteria
+  - facets.facet.iucn_region
+  - facets.facet.publication_year
+  - facets.facet.theme
+  - search_api.index.iucn_index
+  - search_api.server.iucn
+  - views.view.publications_search
+  - views.view.sites_search
+required: true

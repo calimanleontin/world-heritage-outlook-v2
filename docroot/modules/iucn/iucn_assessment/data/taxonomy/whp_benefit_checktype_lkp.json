@@ -1,0 +1,46 @@
+[ {
+  "benefitId" : 1,
+  "name" : "Nature conservation values",
+  "active" : false,
+  "description" : null
+}, {
+  "benefitId" : 2,
+  "name" : "Food",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 3,
+  "name" : "Water",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 4,
+  "name" : "Cultural and Spiritual Values",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 5,
+  "name" : "Health and recreation",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 6,
+  "name" : "Knowledge",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 7,
+  "name" : "Environmental Services",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 8,
+  "name" : "Materials",
+  "active" : true,
+  "description" : null
+}, {
+  "benefitId" : 9,
+  "name" : "Contribution to local economy",
+  "active" : true,
+  "description" : null
+} ]

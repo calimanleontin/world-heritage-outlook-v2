@@ -1,0 +1,105 @@
+uuid: 756a557c-b8da-4587-91b7-92feca866f01
+langcode: en
+status: true
+dependencies: {  }
+id: assessments_translations
+migration_tags: null
+migration_group: assessments
+label: 'Assesments Revisions'
+source:
+  plugin: assessments_translations
+  path_setting: assessment_path
+  ids:
+    assessmentVersionId:
+      type: string
+  fields:
+    -
+      name: title
+      label: Title
+    -
+      name: assessmentId
+      label: assessmentId
+    -
+      name: assessmentVersionId
+      label: assessmentVersionId
+process:
+  nid:
+    plugin: migration_lookup
+    migration: assessments
+    no_stub: true
+    source: assessmentId
+  type:
+    plugin: default_value
+    default_value: site_assessment
+  langcode: langcode
+  title: title
+  field_as_references:
+    plugin: multiple_extract
+    source: references
+    default: null
+    index:
+      - references
+  field_as_global_assessment_text:
+    plugin: multiple_extract
+    source: conservationOutlooks
+    default: null
+    index:
+      - justification
+  field_as_benefits_summary:
+    plugin: multiple_extract
+    source: benefitsSummary
+    default: null
+    index:
+      - summary
+  field_as_protection_ov_text:
+    plugin: multiple_extract
+    source: protMgmtOverall
+    default: null
+    index:
+      - justification
+  field_as_protection_ov_out_text:
+    plugin: multiple_extract
+    source: effectiveProtMgmtIothreats
+    default: null
+    index:
+      - justification
+  field_as_protection_ov_practices:
+    plugin: multiple_extract
+    source: protMgmtBestPractices
+    default: null
+    index:
+      - description
+  field_as_threats_current_text:
+    plugin: multiple_extract
+    source: threatSummaryCurrent
+    default: null
+    index:
+      - overallCurrent
+  field_as_threats_potent_text:
+    plugin: multiple_extract
+    source: threatSummaryPotential
+    default: null
+    index:
+      - overallPotential
+  field_as_threats_text:
+    plugin: multiple_extract
+    source: threatSummaryOverall
+    default: null
+    index:
+      - overallThreat
+  field_as_vass_wh_text:
+    plugin: multiple_extract
+    source: stateTrendWhvalues
+    default: null
+    index:
+      - justification
+  field_as_vass_bio_text:
+    plugin: multiple_extract
+    source: stateTrendBiodivvalsEntities
+    default: null
+    index:
+      - justification
+destination:
+  plugin: 'entity:node'
+  translations: true
+migration_dependencies: null

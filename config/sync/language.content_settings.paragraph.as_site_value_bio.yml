@@ -1,0 +1,16 @@
+uuid: 253b8db3-7fd7-4344-986b-c3e4bd110c95
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.as_site_value_bio
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.as_site_value_bio
+target_entity_type_id: paragraph
+target_bundle: as_site_value_bio
+default_langcode: site_default
+language_alterable: true

@@ -1,0 +1,19 @@
+uuid: 38419072-04f2-40c5-8826-b6280c39c2e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_protection_ov_out_text
+    - node.type.site_assessment
+id: node.site_assessment.field_as_protection_ov_out_text
+field_name: field_as_protection_ov_out_text
+entity_type: node
+bundle: site_assessment
+label: 'Protection overall effectiveness outside factors'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

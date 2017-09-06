@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Assessment threat level'
+vid: assessment_threat_level
+description: 'Levels of threat that apply to some of the factors affecting the site'
+hierarchy: 0
+weight: 0

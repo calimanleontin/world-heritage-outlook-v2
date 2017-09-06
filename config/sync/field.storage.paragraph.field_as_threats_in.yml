@@ -1,0 +1,18 @@
+uuid: c15a2200-25fd-4163-b896-c1930cf4ae28
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_as_threats_in
+field_name: field_as_threats_in
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.site.body
     - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
@@ -12,6 +13,7 @@ dependencies:
     - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
     - field.field.node.site.field_image
@@ -231,6 +233,15 @@ content:
     third_party_settings: {  }
     type: number
     region: content
+  field_assessments:
+    weight: 35
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_buffer_zone:
     weight: 8
     settings:
@@ -279,6 +290,15 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_current_assessment:
+    weight: 34
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_danger_list:
     type: entity_reference_paragraphs

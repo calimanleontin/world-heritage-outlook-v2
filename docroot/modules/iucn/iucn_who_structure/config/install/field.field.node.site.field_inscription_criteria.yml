@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_inscription_criteria
+    - node.type.site
+    - taxonomy.vocabulary.inscription_criteria
+id: node.site.field_inscription_criteria
+field_name: field_inscription_criteria
+entity_type: node
+bundle: site
+label: Criteria
+description: 'Inscription criteria'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      inscription_criteria: inscription_criteria
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,63 @@
+uuid: cfb63678-9b67-4c64-b10c-5edbfae03d8d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_threats_values_bio
+    - paragraphs.paragraphs_type.as_site_threat
+    - paragraphs.paragraphs_type.as_site_value_bio
+  module:
+    - entity_reference_revisions
+id: paragraph.as_site_threat.field_as_threats_values_bio
+field_name: field_as_threats_values_bio
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Other affected values '
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      as_site_value_bio: as_site_value_bio
+    target_bundles_drag_drop:
+      as_site_threat:
+        weight: 13
+        enabled: false
+      as_site_benefit:
+        weight: 14
+        enabled: false
+      as_site_conservation:
+        weight: 15
+        enabled: false
+      as_site_project:
+        weight: 16
+        enabled: false
+      as_site_value_bio:
+        enabled: true
+        weight: 17
+      as_site_value_wh:
+        weight: 18
+        enabled: false
+      content_html:
+        weight: 19
+        enabled: false
+      content_teasers:
+        weight: 20
+        enabled: false
+      danger_list:
+        weight: 21
+        enabled: false
+      number_heading_list:
+        weight: 22
+        enabled: false
+      numbered_heading:
+        weight: 23
+        enabled: false
+      teaser:
+        weight: 24
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,21 @@
+uuid: 75ece453-378f-4397-ac04-c3729ce9d3cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_projects_from
+    - paragraphs.paragraphs_type.as_site_project
+  module:
+    - datetime
+id: paragraph.as_site_project.field_as_projects_from
+field_name: field_as_projects_from
+entity_type: paragraph
+bundle: as_site_project
+label: From
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,20 @@
+uuid: 0cb5e93d-9063-4553-b759-f005fb17db38
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_as_benefits_category
+field_name: field_as_benefits_category
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

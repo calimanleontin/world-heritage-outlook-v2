@@ -1,0 +1,25 @@
+name: iucn_who_structure
+type: module
+description: 'IUCN website structure'
+core: 8.x
+package: IUCN
+dependencies:
+  - blazy
+  - content_translation
+  - datetime
+  - ds
+  - entity_reference_revisions
+  - field
+  - field_group
+  - image
+  - iucn_site
+  - language
+  - menu_ui
+  - node
+  - options
+  - paragraphs
+  - path
+  - smart_trim
+  - taxonomy
+  - text
+  - user

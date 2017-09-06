@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_conservation.field_as_conservation_rating
+    - field.field.paragraph.as_site_conservation.field_as_conservation_text
+    - paragraphs.paragraphs_type.as_site_conservation
+id: paragraph.as_site_conservation.default
+targetEntityType: paragraph
+bundle: as_site_conservation
+mode: default
+content:
+  field_as_conservation_rating:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_conservation_text:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  translation:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

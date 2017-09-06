@@ -1,0 +1,20 @@
+uuid: 1cbf7eb8-b1d0-4980-acaa-05075e527e17
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_as_global_assessment_level
+field_name: field_as_global_assessment_level
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

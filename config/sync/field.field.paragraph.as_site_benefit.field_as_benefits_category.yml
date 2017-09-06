@@ -1,0 +1,28 @@
+uuid: 33886663-b553-4ba1-a503-51ec4e2baf94
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_benefits_category
+    - paragraphs.paragraphs_type.as_site_benefit
+    - taxonomy.vocabulary.assessment_benefits_category
+id: paragraph.as_site_benefit.field_as_benefits_category
+field_name: field_as_benefits_category
+entity_type: paragraph
+bundle: as_site_benefit
+label: Category
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_benefits_category: assessment_benefits_category
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

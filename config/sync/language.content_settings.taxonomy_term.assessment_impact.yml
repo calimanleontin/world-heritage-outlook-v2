@@ -1,0 +1,16 @@
+uuid: 7277fe9b-0007-47b7-894c-e0f65e6e7106
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_impact
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.assessment_impact
+target_entity_type_id: taxonomy_term
+target_bundle: assessment_impact
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,28 @@
+uuid: b50fcf6e-a85f-429c-a7ea-ac0edbfffdaf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_values_curr_trend
+    - paragraphs.paragraphs_type.as_site_value_wh
+    - taxonomy.vocabulary.assessment_value_trend
+id: paragraph.as_site_value_wh.field_as_values_curr_trend
+field_name: field_as_values_curr_trend
+entity_type: paragraph
+bundle: as_site_value_wh
+label: Trend
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_value_trend: assessment_value_trend
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

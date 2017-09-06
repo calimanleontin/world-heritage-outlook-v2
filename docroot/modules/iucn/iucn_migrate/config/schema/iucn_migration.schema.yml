@@ -1,0 +1,7 @@
+iucn_migration.settings:
+  type: config_object
+  label: 'IUCN migration config'
+  mapping:
+    assessment_path:
+      type: string
+      label: 'Path or URL'

@@ -1,0 +1,21 @@
+[ {
+  "stateId" : 1,
+  "name" : "Good",
+  "description" : null
+}, {
+  "stateId" : 2,
+  "name" : "Low Concern",
+  "description" : null
+}, {
+  "stateId" : 3,
+  "name" : "High Concern",
+  "description" : null
+}, {
+  "stateId" : 4,
+  "name" : "Critical",
+  "description" : null
+}, {
+  "stateId" : 5,
+  "name" : "Data Deficient",
+  "description" : null
+} ]

@@ -1,0 +1,21 @@
+uuid: 2faff9ad-0741-4337-a4f9-f2be40f4c278
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_projects_to
+    - paragraphs.paragraphs_type.as_site_project
+  module:
+    - datetime
+id: paragraph.as_site_project.field_as_projects_to
+field_name: field_as_projects_to
+entity_type: paragraph
+bundle: as_site_project
+label: To
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

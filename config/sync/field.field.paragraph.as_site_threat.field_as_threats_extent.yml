@@ -1,0 +1,28 @@
+uuid: 4db8ad8a-0ea0-44a0-94e7-d75b8bd9262d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_threats_extent
+    - paragraphs.paragraphs_type.as_site_threat
+    - taxonomy.vocabulary.assessment_threat_extent
+id: paragraph.as_site_threat.field_as_threats_extent
+field_name: field_as_threats_extent
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Threat extent'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_threat_extent: assessment_threat_extent
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

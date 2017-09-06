@@ -1,0 +1,19 @@
+uuid: aa3f4efc-28fd-42d7-b8bd-c12a7826cb7a
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_as_projects_contact
+field_name: field_as_projects_contact
+entity_type: paragraph
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

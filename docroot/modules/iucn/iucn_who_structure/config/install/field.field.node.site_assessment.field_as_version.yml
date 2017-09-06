@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_version
+    - node.type.site_assessment
+id: node.site_assessment.field_as_version
+field_name: field_as_version
+entity_type: node
+bundle: site_assessment
+label: Version
+description: 'Assessment revision number (ex. 0.3)'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0.1
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

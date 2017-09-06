@@ -1,0 +1,81 @@
+[ {
+  "topicId" : 1,
+  "name" : "Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)",
+  "weight" : 1,
+  "description" : null
+}, {
+  "topicId" : 2,
+  "name" : "Legal framework",
+  "weight" : 2,
+  "description" : null
+}, {
+  "topicId" : 3,
+  "name" : "Integration into regional and national planning systems (including sea/landscape connectivity)",
+  "weight" : 4,
+  "description" : null
+}, {
+  "topicId" : 4,
+  "name" : "Management system (for transboundary/serial properties, integrated management system should also be described/evaluated)",
+  "weight" : 5,
+  "description" : null
+}, {
+  "topicId" : 5,
+  "name" : "Management effectiveness",
+  "weight" : 6,
+  "description" : null
+}, {
+  "topicId" : 6,
+  "name" : "Implementation of Committee decisions and recommendations",
+  "weight" : 7,
+  "description" : null
+}, {
+  "topicId" : 7,
+  "name" : "Boundaries",
+  "weight" : 8,
+  "description" : null
+}, {
+  "topicId" : 8,
+  "name" : "Sustainable finance",
+  "weight" : 9,
+  "description" : null
+}, {
+  "topicId" : 9,
+  "name" : "Staff training and development",
+  "weight" : 10,
+  "description" : null
+}, {
+  "topicId" : 10,
+  "name" : "Sustainable use",
+  "weight" : 11,
+  "description" : null
+}, {
+  "topicId" : 11,
+  "name" : "Education and interpretation programs",
+  "weight" : 12,
+  "description" : null
+}, {
+  "topicId" : 12,
+  "name" : "Tourism and visitation management",
+  "weight" : 13,
+  "description" : null
+}, {
+  "topicId" : 13,
+  "name" : "Monitoring",
+  "weight" : 14,
+  "description" : null
+}, {
+  "topicId" : 14,
+  "name" : "Research",
+  "weight" : 15,
+  "description" : null
+}, {
+  "topicId" : 15,
+  "name" : "Assessment of the effectiveness of protection and management in addressing threats outside the site",
+  "weight" : 16,
+  "description" : null
+}, {
+  "topicId" : 16,
+  "name" : "Enforcement",
+  "weight" : 3,
+  "description" : null
+} ]

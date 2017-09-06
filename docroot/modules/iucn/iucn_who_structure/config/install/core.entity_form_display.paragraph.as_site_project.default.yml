@@ -1,0 +1,62 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_site_project.field_as_description
+    - field.field.paragraph.as_site_project.field_as_projects_contact
+    - field.field.paragraph.as_site_project.field_as_projects_from
+    - field.field.paragraph.as_site_project.field_as_projects_organisation
+    - field.field.paragraph.as_site_project.field_as_projects_to
+    - paragraphs.paragraphs_type.as_site_project
+  module:
+    - iucn_site
+id: paragraph.as_site_project.default
+targetEntityType: paragraph
+bundle: as_site_project
+mode: default
+content:
+  field_as_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_projects_contact:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_projects_from:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: year_date_field_widget
+    region: content
+  field_as_projects_organisation:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_as_projects_to:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: year_date_field_widget
+    region: content
+  translation:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

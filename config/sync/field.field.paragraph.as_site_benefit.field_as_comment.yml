@@ -1,0 +1,19 @@
+uuid: 2be09c38-d346-410a-803b-e5caccb23af7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_comment
+    - paragraphs.paragraphs_type.as_site_benefit
+id: paragraph.as_site_benefit.field_as_comment
+field_name: field_as_comment
+entity_type: paragraph
+bundle: as_site_benefit
+label: 'Comments on factors'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
