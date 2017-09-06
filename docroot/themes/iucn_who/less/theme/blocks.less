@@ -47,7 +47,7 @@
       margin-bottom: .2em;
       .caret-triangle {
         &:before {
-          background-image: url(~'@{images-path}caret-triangle.svg');
+          .svg-icon(caret-triangle);
           background-position: center;
           background-repeat: no-repeat;
           background-size: contain;
@@ -110,7 +110,7 @@
     .facet-item__status {
       // @todo: checkbox mixin
       background-color: @iucn-blue-light;
-      background-image: url(~'@{images-path}checkbox.svg');
+      .svg-icon(checkbox);
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 60%;
@@ -150,7 +150,7 @@
       align-items: center;
       width: 20px;
       &:before {
-        background-image: url(~'@{images-path}plus.svg');
+        .svg-icon(plus);
         background-position: center;
         background-repeat: no-repeat;
         background-size: 95%;
@@ -163,7 +163,7 @@
     }
     [aria-expanded="true"] > .icon-collapse:before,
     .open > a > .icon-collapse:before {
-      background-image: url(~'@{images-path}minus.svg');
+      .svg-icon(minus);
       background-size: 98%;
     }
     .facet-item__status {
@@ -196,7 +196,7 @@
       margin-left: 4 * @font-size-base--mobile;
     }
     .select-wrapper:after {
-      background-image: url(~'@{images-path}dropdown-caret.svg');
+      .svg-icon(dropdown-caret);
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
@@ -307,7 +307,7 @@
     .form-submit {
       margin-right: 0;
       background-color: #ddf2fa;
-      background-image: url(~'@{images-path}magnifier.svg');
+      .svg-icon(magnifier);
       background-repeat: no-repeat;
       background-size: 75%;
       background-position: center;

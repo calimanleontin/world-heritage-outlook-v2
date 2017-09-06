@@ -178,6 +178,15 @@
   font-weight: 900;
   text-rendering: optimizeLegibility;
 }
+/* ==========================================================================
+   Rem system helpers
+   ========================================================================== */
+/* ==========================================================================
+   Bootstrap mixin overrides
+   ========================================================================== */
+/* ==========================================================================
+   Theme specific mixins
+   ========================================================================== */
 .bottom-border {
   border-bottom: 1px solid #ddd;
   display: block;
@@ -205,6 +214,9 @@ h6.bottom-border {
     font-size: 1.3em;
   }
 }
+/* ==========================================================================
+   Generators
+   ========================================================================== */
 ol.iucn-list-6 li.iucn-arrow:nth-child(1):before {
   transform: rotateY(-80deg) skewY(-45deg);
 }
@@ -7834,11 +7846,11 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .pagination > .pager__item--previous > a:before,
 .pagination > .pager__item--next > a:before {
-  content: '';
   background-image: url(../images/icon-arrow.svg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  content: '';
   width: 2em;
   height: 1.33333333em;
   display: inline-block;
@@ -8395,6 +8407,7 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
   background-image: none;
   text-indent: 0;
   background-image: url(../images/dropdown-caret-black.svg);
+  background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 }
@@ -8985,6 +8998,7 @@ h6.facets-title {
   .block-facets .facet-item__status {
     background-color: #03afdf;
     background-image: url(../images/checkbox.svg);
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-size: auto 60%;
@@ -9033,6 +9047,7 @@ h6.facets-title {
   }
   .block-facets .icon-collapse:before {
     background-image: url(../images/plus.svg);
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 95%;
@@ -9045,6 +9060,9 @@ h6.facets-title {
   .block-facets [aria-expanded="true"] > .icon-collapse:before,
   .block-facets .open > a > .icon-collapse:before {
     background-image: url(../images/minus.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
     background-size: 98%;
   }
   .block-facets .facet-item__status {
@@ -9183,6 +9201,7 @@ h6.facets-title {
   margin-right: 0;
   background-color: #ddf2fa;
   background-image: url(../images/magnifier.svg);
+  background-size: contain;
   background-repeat: no-repeat;
   background-size: 75%;
   background-position: center;
@@ -9556,16 +9575,25 @@ h6.facets-title {
 .paragraph h3.iucn-arrow.management:before,
 .paragraph h4.iucn-arrow.management:before {
   background-image: url(../images/management-white.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .paragraph h2.iucn-arrow.threats:before,
 .paragraph h3.iucn-arrow.threats:before,
 .paragraph h4.iucn-arrow.threats:before {
   background-image: url(../images/threats-white.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .paragraph h2.iucn-arrow.values:before,
 .paragraph h3.iucn-arrow.values:before,
 .paragraph h4.iucn-arrow.values:before {
   background-image: url(../images/values-white.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 @media screen and (max-width: 767px) {
   .paragraph h2.iucn-arrow,
@@ -10560,8 +10588,10 @@ h6.facets-title {
   .path-frontpage #block-homepagemap .map-block-footer .scroll-down {
     background-color: #fff;
     background-image: url(../images/scroll-down-caret.svg);
-    background-position: center 65%;
+    background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center 65%;
     background-size: 66%;
     border-radius: 50%;
     display: block;
@@ -10606,9 +10636,10 @@ h6.facets-title {
   .path-frontpage #block-homepagemap .scroll-down {
     background-color: #134780;
     background-image: url(../images/scroll-down-caret-white.svg);
-    background-position: center 5px;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center 5px;
     display: block;
     height: 50px;
     width: 100%;
@@ -10746,6 +10777,9 @@ h6.facets-title {
   }
   .path-frontpage #map-site-search .form-type-select > label:before {
     background-image: url(../images/explore-black.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
     background-size: 50%;
     width: 28px;
     height: 32px;
@@ -10789,6 +10823,7 @@ h6.facets-title {
   background-image: url(../images/checkbox.svg);
   background-position: center;
   background-repeat: no-repeat;
+  background-size: contain;
   background-size: auto 60%;
   display: block;
   height: 1.33333333em;
@@ -11101,9 +11136,9 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.management:before {
   background-image: url(../images/management-white.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
   content: '';
   display: block;
   height: 100%;
@@ -11118,9 +11153,9 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
   background-image: url(../images/threats-white.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
   content: '';
   display: block;
   height: 100%;
@@ -11135,9 +11170,9 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
   background-image: url(../images/values-white.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
   content: '';
   display: block;
   height: 100%;
@@ -11149,12 +11184,21 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
   background-image: url(../images/values.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
   background-image: url(../images/threats.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .path-frontpage #map-site-details .map-site-detail dt.management:before {
   background-image: url(../images/management.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   width: 1.4em;
 }
 .path-frontpage #map-site-details .map-site-detail dd {
@@ -11178,7 +11222,8 @@ h6.facets-title {
   padding-bottom: .5em;
 }
 .path-frontpage #map-site-details .map-site-detail .more:after {
-  background-image: url('../images/icon-arrow.svg');
+  background-image: url(../images/icon-arrow.svg);
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   content: '';
@@ -11520,6 +11565,7 @@ fieldset[disabled] #download-publication-button a.focus {
   background-image: url(../images/download-report.svg);
   background-position: center;
   background-repeat: no-repeat;
+  background-size: contain;
   background-size: 50% auto;
   height: 100%;
   left: 0;
@@ -11611,6 +11657,9 @@ fieldset[disabled] #download-publication-button a.focus {
 .publications-back-button a .backicon {
   padding-top: 2em;
   background-image: url(../images/icon-backarrow.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   background-position: left center;
   background-size: auto;
 }
