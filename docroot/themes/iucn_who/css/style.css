@@ -8967,23 +8967,29 @@ h6.facets-title {
   padding-left: .5em;
   position: relative;
 }
-.block-facets .facet-item__status {
-  background-color: #03afdf;
-  background-image: url(../images/checkbox.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 60%;
-  border-radius: 4px 0 0 4px;
-  display: block;
-  height: 1.33333333em;
-  overflow: hidden;
-  position: absolute;
-  right: calc(100% - .5em);
-  text-indent: 999px;
-  width: 1.5em;
-}
-.block-facets .facet-item__status + .facet-item__value {
-  background: #f0f0f0;
+@media screen and (min-width: 768px) {
+  .block-facets .facet-item__status {
+    background-color: #03afdf;
+    background-image: url(../images/checkbox.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 60%;
+    border-radius: 4px 0 0 4px;
+    display: block;
+    height: 1.33333333em;
+    overflow: hidden;
+    position: absolute;
+    right: calc(100% - .5em);
+    text-indent: 999px;
+    width: 1.5em;
+  }
+  .block-facets .facet-item__status + .facet-item__value {
+    background: #f0f0f0;
+  }
+  .block-facets .facet-item__value {
+    display: block;
+    padding-left: .5em;
+  }
 }
 .block-facets .facet-item + .facet-item {
   margin-top: .2em;
@@ -8998,10 +9004,6 @@ h6.facets-title {
 .block-facets .facet-item > a:active {
   text-decoration: none;
   color: #03afdf;
-}
-.block-facets .facet-item__value {
-  display: block;
-  padding-left: .5em;
 }
 @media screen and (max-width: 767px) {
   .block-facets ul,
@@ -9029,6 +9031,9 @@ h6.facets-title {
   .block-facets .open > a > .icon-collapse:before {
     background-image: url(../images/minus.svg);
     background-size: 98%;
+  }
+  .block-facets .facet-item__status {
+    display: none;
   }
 }
 #block-languagedropdownswitcher {

@@ -105,23 +105,29 @@
     padding-left: .5em;
     position: relative;
   }
-  // @todo: checkbox mixin
-  .facet-item__status {
-    background-color: @iucn-blue-light;
-    background-image: url(~'@{images-path}checkbox.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: auto 60%;
-    border-radius: 4px 0 0 4px;
-    display: block;
-    height: 1em * @line-height-base;
-    overflow: hidden;
-    position: absolute;
-    right: calc(~'100% - .5em');
-    text-indent: 999px;
-    width: 1.5em;
-    + .facet-item__value {
-      background: @iucn-gray-lightest;
+  @media @grid-desktop {
+    .facet-item__status {
+      // @todo: checkbox mixin
+      background-color: @iucn-blue-light;
+      background-image: url(~'@{images-path}checkbox.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      border-radius: 4px 0 0 4px;
+      display: block;
+      height: 1em * @line-height-base;
+      overflow: hidden;
+      position: absolute;
+      right: calc(~'100% - .5em');
+      text-indent: 999px;
+      width: 1.5em;
+      + .facet-item__value {
+        background: @iucn-gray-lightest;
+      }
+    }
+    .facet-item__value {
+      display: block;
+      padding-left: .5em;
     }
   }
   .facet-item + .facet-item {
@@ -130,10 +136,6 @@
   .facet-item > a {
     .link();
     color: @text-color;
-  }
-  .facet-item__value {
-    display: block;
-    padding-left: .5em;
   }
   @media @grid-mobile {
     ul,
@@ -161,6 +163,9 @@
     .open > a > .icon-collapse:before {
       background-image: url(~'@{images-path}minus.svg');
       background-size: 98%;
+    }
+    .facet-item__status {
+      display: none;
     }
   }
 }
