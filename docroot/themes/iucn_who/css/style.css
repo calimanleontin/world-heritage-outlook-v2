@@ -8847,6 +8847,9 @@ ol li.iucn-arrow:after {
 .footer .block-social-media .social-media-sharing {
   float: right;
 }
+.footer .block-social-media .social-media-sharing ul {
+  padding-left: 0;
+}
 @media screen and (max-width: 767px) {
   .footer .block-social-media {
     text-align: center;
@@ -9137,7 +9140,10 @@ h6.facets-title {
   display: inline-block;
 }
 .block-social-media .social-media-sharing li {
-  margin-right: 2.5rem;
+  margin-right: 0;
+}
+.block-social-media .social-media-sharing li + li {
+  margin-left: 2.5rem;
 }
 .block-social-media .social-media-sharing .share img {
   width: 5rem;

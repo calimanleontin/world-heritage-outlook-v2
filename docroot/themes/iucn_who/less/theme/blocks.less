@@ -265,7 +265,10 @@
     display: inline-block;
   }
   .social-media-sharing li {
-    margin-right: 25 * @rem-multiplier--desktop;
+    margin-right: 0;
+    + li {
+      margin-left: 25 * @rem-multiplier--desktop;
+    }
   }
   .social-media-sharing {
     .share {
