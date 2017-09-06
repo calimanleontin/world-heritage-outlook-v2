@@ -1,11 +1,16 @@
 // @todo: usage
-.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
+.remify(@property, @value) {
   & when (ispixel(@value)) {
+    @{property}: @value;
     @{property}: unit(@value) * @rem-multiplier--desktop;
   }
+}
+.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
+  .remify(@property, @value);
   & when not (ispixel(@value)) {
     @{property}: @value;
   }
+
   @media @grid-mobile {
     @{property}: @value-mobile;
   }

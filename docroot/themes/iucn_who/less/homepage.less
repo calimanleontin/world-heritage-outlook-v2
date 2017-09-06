@@ -51,7 +51,7 @@
         align-items: center;
         // display: flex;
         // flex-direction: column;
-        font-size: 37 * @rem-multiplier--desktop;
+        .remify(font-size, 37px);
         // justify-content: center;
         min-height: @map-footer-height;
         position: relative;
@@ -305,7 +305,7 @@
       margin: 0 auto;
       margin-bottom: 4em;
       margin-top: 4em;
-      height: 245 * @rem-multiplier--desktop;
+      .remify(height, 245px);
       padding-left: 1.5em;
       padding-right: 1.5em;
       text-align: center;
@@ -500,7 +500,7 @@
       img {
         &:extend(.img-responsive);
         width: 100%;
-        // height: 140 * @rem-multiplier--desktop;
+        // .remify(height, 140px);
         // object-fit: cover;
         @media @grid-mobile {
           display: none;
@@ -518,7 +518,7 @@
     text-align: center;
     .block-title {
       color: @iucn-blue-dark;
-      font-size: 36 * @rem-multiplier--desktop;
+      .remify(font-size, 36px);
       font-weight: 500;
     }
     // Links and disk colours

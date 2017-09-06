@@ -38,7 +38,7 @@
   article {
     border: 1px solid @iucn-gray-lighter;
     display: flex;
-    min-height: 150 * @rem-multiplier--desktop;
+    .remify(min-height, 150px);
     padding: 6px;
     transition: box-shadow .2s;
     height: 100%;
@@ -84,7 +84,7 @@
         object-fit: cover;
         @media (min-width: @screen-lg-min) {
           @supports(object-fit: cover) {
-            height: 135 * @rem-multiplier--desktop;
+            .remify(height, 135px);
           }
         }
       }

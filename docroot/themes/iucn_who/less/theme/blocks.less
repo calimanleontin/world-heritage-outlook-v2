@@ -265,14 +265,14 @@
   .social-media-sharing li {
     margin-right: 0;
     + li {
-      margin-left: 25 * @rem-multiplier--desktop;
+      .remify(margin-left, 25px);
     }
   }
   .social-media-sharing {
     .share {
       img {
-        width: 50 * @rem-multiplier--desktop;
-        height: 50 * @rem-multiplier--desktop;
+        .remify(width, 50px);
+        .remify(height, 50px);
         @media @grid-mobile {
           width: 60px;
           height: 60px;

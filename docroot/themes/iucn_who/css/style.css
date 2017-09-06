@@ -9144,10 +9144,13 @@ h6.facets-title {
   margin-right: 0;
 }
 .block-social-media .social-media-sharing li + li {
+  margin-left: 25px;
   margin-left: 2.5rem;
 }
 .block-social-media .social-media-sharing .share img {
+  width: 50px;
   width: 5rem;
+  height: 50px;
   height: 5rem;
 }
 @media screen and (max-width: 767px) {
@@ -9232,6 +9235,7 @@ h6.facets-title {
   color: #03afdf;
 }
 .iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
+  margin-bottom: 70px;
   margin-bottom: 7rem;
 }
 .search-block-container {
@@ -9297,6 +9301,7 @@ h6.facets-title {
 .view-sites-search article {
   border: 1px solid #e1e1e1;
   display: flex;
+  min-height: 150px;
   min-height: 15rem;
   padding: 6px;
   transition: box-shadow 0.2s;
@@ -9345,6 +9350,7 @@ h6.facets-title {
 @media (min-width: 1200px) {
   @supports (object-fit: cover) {
     .view-sites-search article .field--name-field-image img {
+      height: 135px;
       height: 13.5rem;
     }
   }
@@ -9472,6 +9478,7 @@ h6.facets-title {
   }
 }
 .field--name-field-teasers h2 {
+  font-size: 24px;
   font-size: 2.4rem;
   color: #134780;
   transition: color 0.2s, background-color 0.2s;
@@ -9575,6 +9582,7 @@ h6.facets-title {
   }
 }
 .paragraph h2.iucn-arrow {
+  font-size: 22px;
   font-size: 2.2rem;
 }
 @media screen and (max-width: 767px) {
@@ -9583,6 +9591,7 @@ h6.facets-title {
   }
 }
 .paragraph h3.iucn-arrow {
+  font-size: 18px;
   font-size: 1.8rem;
 }
 @media screen and (max-width: 767px) {
@@ -9591,6 +9600,7 @@ h6.facets-title {
   }
 }
 .paragraph h4.iucn-arrow {
+  font-size: 16px;
   font-size: 1.6rem;
 }
 @media screen and (max-width: 767px) {
@@ -9640,6 +9650,7 @@ h6.facets-title {
 }
 .paragraph-background-light {
   background-color: #def2fb;
+  margin-top: 30px;
   margin-top: 3rem;
   padding-bottom: 3em;
   padding-top: 3em;
@@ -9679,6 +9690,7 @@ h6.facets-title {
 }
 .images-row img {
   margin: 0 auto;
+  max-height: 150px;
   max-height: 15rem;
   width: auto;
 }
@@ -10526,6 +10538,7 @@ h6.facets-title {
     background-color: #134780;
     color: #fff;
     align-items: center;
+    font-size: 37px;
     font-size: 3.7rem;
     min-height: 11.5rem;
     position: relative;
@@ -10915,6 +10928,7 @@ h6.facets-title {
   margin: 0 auto;
   margin-bottom: 4em;
   margin-top: 4em;
+  height: 245px;
   height: 24.5rem;
   padding-left: 1.5em;
   padding-right: 1.5em;
@@ -11261,6 +11275,7 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 .path-frontpage #block-globaloutlookstatistics .block-title,
 .publication-title {
   color: #134780;
+  font-size: 36px;
   font-size: 3.6rem;
   font-weight: 500;
 }
@@ -11546,6 +11561,7 @@ fieldset[disabled] #download-publication-button a.focus {
   }
 }
 .iucn-publications-teaser-wrapper .field--name-node-title h2 {
+  font-size: 28px;
   font-size: 2.8rem;
   font-weight: 500;
 }
