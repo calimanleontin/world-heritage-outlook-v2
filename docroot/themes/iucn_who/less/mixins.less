@@ -1,3 +1,16 @@
+// @todo: usage
+.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
+  & when (ispixel(@value)) {
+    @{property}: unit(@value) * @rem-multiplier--desktop;
+  }
+  & when not (ispixel(@value)) {
+    @{property}: @value;
+  }
+  @media @grid-mobile {
+    @{property}: @value-mobile;
+  }
+}
+
 // Bootstrap mixin overrides
 .label-variant(@color) {
   color: #fff;
@@ -27,19 +40,6 @@
   }
 }
 
-// Generate conservation rating styling
-@conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
-@conservation-ratings-color-list: @iucn-green, @iucn-green-lighter, @iucn-orange, @iucn-red, #333333, @iucn-gray;
-
-.loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
-  @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
-  @conservation-rating-color: e(extract(@conservation-ratings-color-list, @index));
-  @rules();
-
-  // next iteration
-  .loop-conservation-ratings(@rules, (@index - 1));
-}
-
 .left-bordered-heading() {
   border-left: .4em solid;
   color: @iucn-blue-dark;
@@ -50,7 +50,7 @@
   text-align: left;
   @media @mobile {
     .row();
-    border-left-width: round(10px, 2);
+    border-left-width: 10px;
     // line-height: 1.4;
   }
 }
@@ -71,6 +71,18 @@
   }
 }
 
+// Generate conservation rating styling
+@conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
+@conservation-ratings-color-list: @iucn-green, @iucn-green-lighter, @iucn-orange, @iucn-red, #333333, @iucn-gray;
+
+.loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
+  @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
+  @conservation-rating-color: e(extract(@conservation-ratings-color-list, @index));
+  @rules();
+
+  // next iteration
+  .loop-conservation-ratings(@rules, (@index - 1));
+}
 
 // Generate categories (?)
 @conservation-categories-list: 'values', 'threats', 'management';
@@ -106,15 +118,3 @@
   .loop-iucn-arrow((@index-inner - 1));
 }
 .loop-iucn-arrows();
-
-.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
-  & when (ispixel(@value)) {
-    @{property}: unit(@value) * @rem-multiplier--desktop;
-  }
-  & when not (ispixel(@value)) {
-    @{property}: @value;
-  }
-  @media @grid-mobile {
-    @{property}: @value-mobile;
-  }
-}
