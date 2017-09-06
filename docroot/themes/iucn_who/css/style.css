@@ -9023,9 +9023,9 @@ h6.facets-title {
     background-size: 95%;
     content: '';
     display: inline-block;
-    height: 18.2px;
+    height: 13px;
     margin-right: 7px;
-    width: 18.2px;
+    width: 13px;
   }
   .block-facets [aria-expanded="true"] > .icon-collapse:before,
   .block-facets .open > a > .icon-collapse:before {
