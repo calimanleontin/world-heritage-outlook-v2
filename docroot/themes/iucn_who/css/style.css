@@ -7841,6 +7841,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   width: 2em;
   height: 1.33333333em;
   display: inline-block;
+  vertical-align: middle;
 }
 .pagination > .pager__item--previous span[aria-hidden="true"],
 .pagination > .pager__item--next span[aria-hidden="true"] {
@@ -7856,6 +7857,18 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     font-size: 18px;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
+  }
+  .pagination > .pager__item--previous,
+  .pagination > .pager__item--next {
+    position: absolute;
+    top: 0;
+  }
+  .pagination > .pager__item--previous {
+    left: 0;
+  }
+  .pagination > .pager__item--next {
+    right: 0;
   }
 }
 /**

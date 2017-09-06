@@ -26,6 +26,7 @@
       width: 2em;
       height: @line-height-base * 1em;
       display: inline-block;
+      vertical-align: middle;
     }
     span[aria-hidden="true"] {
       font-size: 0;
@@ -40,11 +41,20 @@
     font-size: 18px;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
+    > .pager__item--previous,
+    > .pager__item--next {
+      position: absolute;
+      top: 0;
+    }
+
     > .pager__item--previous {
+      left: 0;
       // margin-right: auto;
     }
     > .pager__item--next {
       // margin-left: auto;
+      right: 0;
     }
   }
 }
