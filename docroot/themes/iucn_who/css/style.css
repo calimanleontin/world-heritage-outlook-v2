@@ -11622,9 +11622,6 @@ h6.view-publications .view-header {
   color: #03afdf;
 }
 .view-publications .view-header .block-search-api-sorts ul li > a .tablesort {
-  margin-left: 0.5em;
-  background-image: url(../images/dropdown-caret-centered.svg);
-  background-position: bottom;
-  background-repeat: no-repeat;
+  display: none;
 }
 /*# sourceMappingURL=style.css.map */
