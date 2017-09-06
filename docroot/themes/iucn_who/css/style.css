@@ -11339,8 +11339,8 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 @media screen and (max-width: 767px) {
   .path-frontpage #block-globaloutlookstatistics dt {
     font-size: .8em;
-    line-height: 1.5rem;
-    width: calc(8em - 1em);
+    line-height: 18.66666667px;
+    width: 7em;
   }
   .path-frontpage #block-globaloutlookstatistics dt.significant-concern,
   .path-frontpage #block-globaloutlookstatistics dt.good-concerns {
