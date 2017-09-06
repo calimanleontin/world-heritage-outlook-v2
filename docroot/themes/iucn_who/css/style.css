@@ -8998,9 +8998,9 @@ h6.facets-title {
   .block-facets .facet-item__status {
     background-color: #03afdf;
     background-image: url(../images/checkbox.svg);
-    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
     background-size: auto 60%;
     border-radius: 4px 0 0 4px;
     display: block;
@@ -9047,9 +9047,9 @@ h6.facets-title {
   }
   .block-facets .icon-collapse:before {
     background-image: url(../images/plus.svg);
-    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
     background-size: 95%;
     content: '';
     display: inline-block;
@@ -9201,10 +9201,10 @@ h6.facets-title {
   margin-right: 0;
   background-color: #ddf2fa;
   background-image: url(../images/magnifier.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-size: 75%;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: 75%;
   border-color: #ddf2fa;
   text-indent: -9999px;
   border-left: 1px solid #134780;
