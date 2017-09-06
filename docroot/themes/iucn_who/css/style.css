@@ -7829,7 +7829,8 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .pagination > .pager__item--previous > a,
 .pagination > .pager__item--next > a {
-  padding: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 .pagination > .pager__item--previous > a:before,
 .pagination > .pager__item--next > a:before {
