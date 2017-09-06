@@ -1,23 +1,32 @@
+// Paths
 @images-path:                              '../images/';
+
+// Font size bases
 @font-size-base--mobile:        14px;
 
 // Rem system, rescaled on mobile to get a body font size of @font-size-base--mobile and keep margins proportions
 @rem-system-base: 10;
 @rem-system-base--mobile: (@font-size-base--mobile * @rem-system-base / @font-size-base); // 7.777
 
+// Rem multipliers used to transform fixed units into rem, multiply the unit-less initial value by this
 @rem-multiplier--desktop:       (1rem / @rem-system-base);
-@rem-multiplier--mobile:        (1rem / @rem-system-base--mobile); // used to transform fixed units into rem, multiply initial value by this
+@rem-multiplier--mobile:        (1rem / @rem-system-base--mobile);
 
-@line-height-computed--mobile:  (unit(@font-size-base--mobile) * @line-height-base); // ~20px
-
+// Em multipliers
 @em-multiplier--desktop:       (1em / unit(@font-size-base));
 @em-multiplier--mobile:       (1em / unit(@font-size-base--mobile));
 
 
+@line-height-computed--mobile:  (unit(@font-size-base--mobile) * @line-height-base); // ~20px
 @navbar-height--mobile:         50px;
 
-@design-breakpoint--mobile:             1600px;
-@design-breakpoint-max--mobile:         @design-breakpoint--mobile - 1;
 
-@design-breakpoint--desktop:             1600px;
-@design-breakpoint-max--desktop:         @design-breakpoint--desktop - 1;
+// Media queries
+@grid-mobile: ~'screen and (max-width: @{grid-float-breakpoint-max})';
+@grid-desktop: ~'screen and (min-width: @{grid-float-breakpoint})';
+
+@xs-only:         ~"screen and (max-width: 479px)";
+// @ms-only:         ~"screen and (min-width: @{screen-ms-min}) and (max-width: @{screen-ms-max})";
+@sm-only:         ~"screen and (min-width: @{screen-sm-min}) and (max-width: @{screen-sm-max})";
+@md-only:         ~"screen and (min-width: @{screen-md-min}) and (max-width: @{screen-md-max})";
+@lg-only:         ~"screen and (min-width: @{screen-lg-min})";

@@ -8440,11 +8440,6 @@ html {
 body {
   font-size: 180%;
 }
-@media screen and (max-width: 767px) {
-  body {
-    font-size: 180%;
-  }
-}
 body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus,
 body:not(.show-focus-outlines) input:focus,
