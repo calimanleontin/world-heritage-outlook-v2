@@ -13,7 +13,7 @@
   // Hides caret if there is only one block of facets
   // @media @grid-mobile {
   //   .region-facets:only-child & {
-  //     padding-left: (.5 * @font-size-base--mobile  + 23px);
+  //     padding-left: (.5 * @font-size-base--mobile  + 20px);
   //     .caret-triangle {
   //       display: none;
   //     }
@@ -26,7 +26,7 @@
 #facets-collapse {
   @media @grid-mobile {
     > .facets-content {
-      padding-left: (.5 * @font-size-base--mobile +  23px);
+      padding-left: (.5 * @font-size-base--mobile +  20px);
     }
   }
   @media @grid-desktop {
@@ -44,6 +44,7 @@
     @media @grid-mobile {
       border-bottom: none;
       font-size: 25px;
+      margin-bottom: .2em;
       .caret-triangle {
         &:before {
           background-image: url(~'@{images-path}caret-triangle.svg');
@@ -52,8 +53,8 @@
           background-size: contain;
           content: '';
           display: block;
-          height: .8em;
-          width: .8em;
+          height: 20px;
+          width: 20px;
         }
       }
     }
@@ -90,7 +91,7 @@
       font-size: 19px;
       font-weight: 900;
       // padding-left: 0;
-      margin-left: calc(~'(-@{grid-gutter-width} / 2) - 1.8 * @{font-size-base--mobile}') ;
+      margin-left: calc(~'(-@{grid-gutter-width} / 2) - 20px');
     }
   }
   &:first-child .panel-title {
@@ -147,6 +148,7 @@
     .icon-collapse {
       display: inline-flex;
       align-items: center;
+      width: 20px;
       &:before {
         background-image: url(~'@{images-path}plus.svg');
         background-position: center;
@@ -166,6 +168,21 @@
     }
     .facet-item__status {
       display: none;
+    }
+    .facet-item > a {
+      display: block;
+      font-size: 16px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      &.is-active {
+        @sidemenu-left-offset: (@grid-gutter-width / 2) + (.5 * @font-size-base--mobile +  20px);
+        background-color: @iucn-blue-light;
+        color: @text-color;
+        margin-left: -@sidemenu-left-offset;
+        padding-left: @sidemenu-left-offset;
+        margin-right: -@grid-gutter-width / 2;
+        padding-right: @grid-gutter-width / 2;
+      }
     }
   }
 }

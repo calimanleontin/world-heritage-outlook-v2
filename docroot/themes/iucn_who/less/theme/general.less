@@ -106,7 +106,7 @@ a.is-active {
   display: inline-block;
   transform+_: rotate(-90deg);
   &:first-child {
-    margin-right: .5rem;
+    .responsive(margin-right, .5rem, .5 * @font-size-base--mobile);
   }
   [aria-expanded=true] > & {
     transform+_: rotate(0deg);
