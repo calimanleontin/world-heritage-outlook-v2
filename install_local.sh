@@ -30,6 +30,8 @@ if [ $? -ne 0 ]; then
   exit -1
 fi
 
+drush cr
+
 echo -e "${GREEN}Importing default configuration...${WHITE}"
 drush csim -y
 if [ $? -ne 0 ]; then
