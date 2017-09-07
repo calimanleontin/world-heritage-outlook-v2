@@ -10,55 +10,55 @@ dependencies:
     - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_wh.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_wh
+  module:
+    - ds
+    - string_field_formatter
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_values_value
+      terms:
+        - field_as_values_criteria
+      description:
+        - field_as_description
 id: paragraph.as_site_value_wh.default
 targetEntityType: paragraph
 bundle: as_site_value_wh
 mode: default
 content:
   field_as_description:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
-  field_as_values_criteria:
     weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_values_curr_state:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_values_curr_text:
-    weight: 4
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_as_values_curr_trend:
-    weight: 5
-    label: above
+    region: description
+  field_as_values_criteria:
+    weight: 1
+    label: inline
     settings:
-      link: true
-    third_party_settings: {  }
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
     type: entity_reference_label
-    region: content
+    region: terms
   field_as_values_value:
     weight: 0
-    label: above
+    label: hidden
     settings:
-      link_to_entity: false
+      wrap_tag: h4
     third_party_settings: {  }
-    type: string
-    region: content
-hidden: {  }
+    type: plain_string_formatter
+    region: title
+hidden:
+  field_as_values_curr_state: true
+  field_as_values_curr_text: true
+  field_as_values_curr_trend: true

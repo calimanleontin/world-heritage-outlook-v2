@@ -31,6 +31,9 @@ class TaxonomyTerm extends EntityLookup {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
+    if (is_array($value)) {
+      $value = current($value);
+    }
     $return = parent::transform($value, $migrateExecutable, $row, $destinationProperty);
     return $return;
   }

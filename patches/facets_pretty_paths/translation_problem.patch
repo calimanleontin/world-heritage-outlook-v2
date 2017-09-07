@@ -1,7 +1,7 @@
-diff --git a/docroot/modules/contrib/facets_pretty_paths/facets_pretty_paths.services.yml b/docroot/modules/contrib/facets_pretty_paths/facets_pretty_paths.services.yml
-index 90f2860..77bd0b1 100644
---- a/docroot/modules/contrib/facets_pretty_paths/facets_pretty_paths.services.yml
-+++ b/docroot/modules/contrib/facets_pretty_paths/facets_pretty_paths.services.yml
+diff --git a/facets_pretty_paths/facets_pretty_paths.services.yml b/facets_pretty_paths/facets_pretty_paths.services.yml
+index 90f2860a..77bd0b1f 100644
+--- a/facets_pretty_paths/facets_pretty_paths.services.yml
++++ b/facets_pretty_paths/facets_pretty_paths.services.yml
 @@ -2,7 +2,7 @@ services:
    facets_pretty_paths.path_processor:
      class: Drupal\facets_pretty_paths\PathProcessorPrettyPaths

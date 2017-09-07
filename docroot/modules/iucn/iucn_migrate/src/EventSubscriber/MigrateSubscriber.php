@@ -27,7 +27,7 @@ class MigrateSubscriber implements EventSubscriberInterface {
       // Mark latest revision as current.
       if ($row->getSourceProperty('current_rev')) {
         $vid = current($event->getDestinationIdValues());
-        /** @var \Drupal\node\Entity\Node; $revision */
+        /* @var \Drupal\node\Entity\Node; $revision */
         $revision = node_revision_load($vid);
         $revision->isDefaultRevision(TRUE);
         $revision->save();

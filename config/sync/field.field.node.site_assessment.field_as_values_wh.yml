@@ -12,7 +12,7 @@ id: node.site_assessment.field_as_values_wh
 field_name: field_as_values_wh
 entity_type: node
 bundle: site_assessment
-label: 'Identifying And Describing Values'
+label: 'Identifying and describing values'
 description: ''
 required: false
 translatable: false
@@ -39,13 +39,37 @@ settings:
       danger_list:
         weight: 13
         enabled: false
-      site_benefit:
-        weight: 14
+      as_site_benefit:
+        weight: 17
         enabled: false
-      site_other_value:
-        weight: 15
+      as_site_key_conservation:
+        weight: 18
         enabled: false
-      site_threat:
-        weight: 16
+      as_site_project:
+        weight: 19
+        enabled: false
+      as_site_protection:
+        weight: 20
+        enabled: false
+      as_site_threat:
+        weight: 21
+        enabled: false
+      image_grid:
+        weight: 27
+        enabled: false
+      image_link:
+        weight: 28
+        enabled: false
+      numbered_heading:
+        weight: 29
+        enabled: false
+      number_heading_list:
+        weight: 30
+        enabled: false
+      pdf_download_button:
+        weight: 31
+        enabled: false
+      teaser:
+        weight: 32
         enabled: false
 field_type: entity_reference_revisions

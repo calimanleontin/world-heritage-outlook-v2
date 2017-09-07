@@ -1,0 +1,28 @@
+uuid: 9c2e1834-3fc7-44c8-87c5-52db8421ebf0
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.rating
+  module:
+    - facets
+    - system
+  theme:
+    - iucn_who
+id: rating
+theme: iucn_who
+region: facets
+weight: 0
+provider: null
+plugin: 'facet_block:rating'
+settings:
+  id: 'facet_block:rating'
+  label: Rating
+  provider: facets
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /sites-search
+    negate: false
+    context_mapping: {  }

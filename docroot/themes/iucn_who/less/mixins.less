@@ -1,22 +1,29 @@
-// @todo: usage
+/* ==========================================================================
+   Rem system helpers
+   ========================================================================== */
+
 .remify(@property, @value) {
   & when (ispixel(@value)) {
     @{property}: @value;
     @{property}: unit(@value) * @rem-multiplier--desktop;
   }
-}
-.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
-  .remify(@property, @value);
   & when not (ispixel(@value)) {
     @{property}: @value;
   }
+}
+
+.responsive(@property, @value, @value-mobile: (floor(@value * @rem-system-base--mobile / @rem-system-base) * 1px)) {
+  .remify(@property, @value);
 
   @media @grid-mobile {
     @{property}: @value-mobile;
   }
 }
 
-// Bootstrap mixin overrides
+/* ==========================================================================
+   Bootstrap mixin overrides
+   ========================================================================== */
+
 .label-variant(@color) {
   color: #fff;
 }
@@ -31,6 +38,16 @@
     }
   }
 }
+
+/* ==========================================================================
+   Theme specific mixins
+   ========================================================================== */
+
+.svg-icon(@name) {
+  background-image: url(~'@{images-path}@{name}.svg');
+  background-repeat: no-repeat;
+}
+
 .link() {
   color: @link-color;
   transition: color .2s, background-color .2s;
@@ -39,6 +56,7 @@
     color: @link-hover-color;
   }
 }
+
 .light-link() {
   &, a {
     color: @iucn-blue-light;
@@ -53,6 +71,11 @@
   padding-bottom: .3em;
   padding-left: .25em;
   text-align: left;
+  .loop-conservation-ratings({
+    &.@{conservation-rating-class} {
+      color: @conservation-rating-color;
+    }
+  });
   @media @mobile {
     .row();
     border-left-width: 10px;
@@ -76,13 +99,50 @@
   }
 }
 
+.iucn-base-arrow(@height: 50 * @rem-multiplier--desktop) {
+  align-items: center;
+  background-color: @iucn-blue-dark;
+  color: #fff;
+  box-shadow: 0 7px 11px -9px fade(#000, 90%);
+  display: flex;
+  .remify(height, @height);
+  line-height: 1;
+  .remify(margin-right, (@height / 2));
+  padding-left: 1em;
+  padding-right: 1em;
+  position: relative;
+  &:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: (@height / 2) 0 (@height / 2 ) (@height / 2);
+    border-color: transparent transparent transparent @iucn-blue-dark;
+    position: absolute;
+    left: 100%;
+    top: 0;
+  }
+
+  .loop-conservation-ratings({
+    &.@{conservation-rating-class} {
+      background-color: @conservation-rating-color;
+      &:after {
+        border-color: transparent transparent transparent @conservation-rating-color;
+      }
+    }
+  });
+}
+
+/* ==========================================================================
+   Generators
+   ========================================================================== */
+
 // Generate conservation rating styling
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
-@conservation-ratings-color-list: @iucn-green, @iucn-green-lighter, @iucn-orange, @iucn-red, #333333, @iucn-gray;
 
 .loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
   @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
-  @conservation-rating-color: e(extract(@conservation-ratings-color-list, @index));
+  @conservation-rating-color: ~'@{@{conservation-rating-class}}';
   @rules();
 
   // next iteration

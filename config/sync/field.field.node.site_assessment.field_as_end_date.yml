@@ -11,7 +11,7 @@ id: node.site_assessment.field_as_end_date
 field_name: field_as_end_date
 entity_type: node
 bundle: site_assessment
-label: 'End date'
+label: 'Finalised on'
 description: ''
 required: false
 translatable: false

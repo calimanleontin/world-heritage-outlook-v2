@@ -19,11 +19,10 @@
       padding-right: 0;
     }
     > a:before {
-      content: '';
-      background-image: url(~'@{images-path}icon-arrow.svg');
+      .svg-icon(icon-arrow);
       background-position: center;
-      background-repeat: no-repeat;
       background-size: contain;
+      content: '';
       width: 2em;
       height: @line-height-base * 1em;
       display: inline-block;

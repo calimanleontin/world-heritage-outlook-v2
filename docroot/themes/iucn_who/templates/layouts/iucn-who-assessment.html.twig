@@ -10,21 +10,21 @@ set classes = [
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active">
       <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-        <span class="tab-label">{{ 'Summary'|t }}</span>
+        <strong class="tab-label">{{ 'Summary'|t }}</strong>
         <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
         <span class="tab-read-more">{{ 'Read more'|t  }}</span>
       </a>
     </li>
     <li role="presentation">
       <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
-        <span class="tab-label">{{ 'Full assessment'|t }}</span>
+        <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
         <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
         <span class="tab-read-more">{{ 'Read more'|t  }}</span>
       </a>
     </li>
     <li role="presentation">
       <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-        <span class="tab-label">{{ 'References'|t }}</span>
+        <strong class="tab-label">{{ 'References'|t }}</strong>
         <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
         <span class="tab-read-more">{{ 'See references'|t  }}</span>
       </a>
@@ -39,25 +39,16 @@ set classes = [
             {{ content.summary }}
           </div>
           <div role="tabpanel" class="tab-pane" id="full_assessment">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ 'Values'|t }}</h3>
-              </div>
-              <div class="panel-body">
-                {{ content.full_assessment_values }}
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ 'Threats'|t }}</h3>
-              </div>
-              <div class="panel-body">
-                {{ content.full_assessment_threats }}
-              </div>
-            </div>
+            <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
+            <ul class="assessment-expand-buttons">
+              <li class="expand-button">{{ 'Expand all'|t }}</li>
+              <li class="collapse-button">{{ 'Collapse all'|t }}</li>
+            </ul>
+
+            {{ content.full_assessment_values }}
 
           </div>
-          <div role="tabpanel" class="tab-pane" id="references">
+          <div role="tabpanel" class="tab-pane active" id="references">
             {{ content.references }}
           </div>
         </div>
@@ -67,5 +58,4 @@ set classes = [
       </div>
     </div>
   </div>
-
 </div>

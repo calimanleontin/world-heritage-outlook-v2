@@ -146,10 +146,3 @@ function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_
     }
   }
 }
-
-
-
-function _iucn_taxonomy_installer() {
-  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
-}
-

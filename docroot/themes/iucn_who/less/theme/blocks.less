@@ -47,11 +47,10 @@
       margin-bottom: .2em;
       .caret-triangle {
         &:before {
-          background-image: url(~'@{images-path}caret-triangle.svg');
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: contain;
+          .svg-icon(caret-triangle);
           content: '';
+          background-position: center;
+          background-size: contain;
           display: block;
           height: 20px;
           width: 20px;
@@ -110,9 +109,8 @@
     .facet-item__status {
       // @todo: checkbox mixin
       background-color: @iucn-blue-light;
-      background-image: url(~'@{images-path}checkbox.svg');
+      .svg-icon(checkbox);
       background-position: center;
-      background-repeat: no-repeat;
       background-size: auto 60%;
       border-radius: 4px 0 0 4px;
       display: block;
@@ -150,9 +148,8 @@
       align-items: center;
       width: 20px;
       &:before {
-        background-image: url(~'@{images-path}plus.svg');
+        .svg-icon(plus);
         background-position: center;
-        background-repeat: no-repeat;
         background-size: 95%;
         content: '';
         display: inline-block;
@@ -163,7 +160,7 @@
     }
     [aria-expanded="true"] > .icon-collapse:before,
     .open > a > .icon-collapse:before {
-      background-image: url(~'@{images-path}minus.svg');
+      .svg-icon(minus);
       background-size: 98%;
     }
     .facet-item__status {
@@ -196,9 +193,8 @@
       margin-left: 4 * @font-size-base--mobile;
     }
     .select-wrapper:after {
-      background-image: url(~'@{images-path}dropdown-caret.svg');
+      .svg-icon(dropdown-caret);
       background-position: center;
-      background-repeat: no-repeat;
       background-size: contain;
       content: '';
       display: inline-block;
@@ -307,10 +303,9 @@
     .form-submit {
       margin-right: 0;
       background-color: #ddf2fa;
-      background-image: url(~'@{images-path}magnifier.svg');
-      background-repeat: no-repeat;
-      background-size: 75%;
+      .svg-icon(magnifier);
       background-position: center;
+      background-size: 75%;
       border-color: #ddf2fa;
       text-indent: -9999px;
       border-left: 1px solid @iucn-blue-dark;

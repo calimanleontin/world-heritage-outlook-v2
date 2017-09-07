@@ -9,11 +9,13 @@ dependencies:
     - field.storage.node.field_designation
     - field.storage.node.field_theme
     - field.storage.node.field_publication_year
+    - field.storage.node.field_current_assessment
+    - field.storage.node.field_as_global_assessment_level
     - search_api.server.iucn_database
   module:
     - taxonomy
-    - search_api
     - node
+    - search_api
 id: iucn_database_index
 name: 'Iucn database index'
 description: ''
@@ -108,6 +110,17 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_publication_year
+  field_as_global_assessment_level:
+    label: 'Current assessment » Content » Global assessment level'
+    datasource_id: 'entity:node'
+    property_path: 'field_current_assessment:entity:field_as_global_assessment_level'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_current_assessment
+        - field.storage.node.field_as_global_assessment_level
+      module:
+        - node
 datasource_settings:
   'entity:node':
     bundles:
@@ -117,22 +130,6 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
-  add_url: {  }
-  aggregated_field: {  }
-  content_access:
-    weights:
-      preprocess_query: -30
-  entity_status: {  }
-  highlight:
-    highlight: always
-    highlight_partial: false
-    excerpt: true
-    excerpt_length: 256
-    exclude_fields: {  }
-    prefix: '<strong>'
-    suffix: '</strong>'
-    weights:
-      postprocess_query: 0
   html_filter:
     all_fields: false
     fields:
@@ -150,6 +147,18 @@ processor_settings:
     weights:
       preprocess_index: -15
       preprocess_query: -15
+  add_url: {  }
+  aggregated_field: {  }
+  highlight:
+    highlight: always
+    highlight_partial: false
+    excerpt: true
+    excerpt_length: 256
+    exclude_fields: {  }
+    prefix: '<strong>'
+    suffix: '</strong>'
+    weights:
+      postprocess_query: 0
   rendered_item: {  }
   ignorecase:
     all_fields: false
@@ -162,6 +171,10 @@ processor_settings:
     weights:
       preprocess_index: -20
       preprocess_query: -20
+  content_access:
+    weights:
+      preprocess_query: -30
+  entity_status: {  }
 tracker_settings:
   default: {  }
 options:
