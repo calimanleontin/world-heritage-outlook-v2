@@ -124,6 +124,7 @@
         background-color: @iucn-blue-dark;
         .svg-icon(scroll-down-caret-white);
         background-position: center 5px;
+        background-size: contain;
         display: block;
         height: 50px;
         width: 100%;
@@ -166,6 +167,8 @@
       &:before {
         content: '';
         .svg-icon(explore);
+        background-position: center;
+        background-size: contain;
         height: @line-height-base * 1em;
         width: 1em;
         display: inline-block;
@@ -188,6 +191,7 @@
           margin-bottom: 0;
           &:before {
             .svg-icon(explore-black);
+            background-position: center;
             background-size: 50%;
             width: 28px;
             height: 32px;
@@ -231,6 +235,7 @@
         content: '';
         background-color: @iucn-blue-light;
         .svg-icon(checkbox);
+        background-position: center;
         background-size: auto 60%;
         display: block;
         height: 1em * @line-height-base;
@@ -417,6 +422,8 @@
             position: relative;
             &:before {
               .svg-icon(~'@{conservation-category-class}-white');
+              background-position: center;
+              background-size: contain;
               content: '';
               display: block;
               height: 100%;
@@ -432,12 +439,18 @@
         });
         &.values:before {
           .svg-icon(values);
+          background-position: center;
+          background-size: contain;
         }
         &.threats:before {
           .svg-icon(threats);
+          background-position: center;
+          background-size: contain;
         }
         &.management:before {
           .svg-icon(management);
+          background-position: center;
+          background-size: contain;
           width: 1.4em;
         }
       }
@@ -463,6 +476,8 @@
         padding-bottom: .5em;
         &:after {
           .svg-icon(icon-arrow);
+          background-position: center;
+          background-size: contain;
           content: '';
           display: inline-block;
           height: 1em;
@@ -599,6 +614,7 @@
       }
       .glyphicon {
         .svg-icon(download-report);
+        background-position: center;
         background-size: 50% auto;
         height: 100%;
         left: 0;

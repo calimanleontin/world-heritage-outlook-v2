@@ -49,6 +49,9 @@ body:not(.show-focus-outlines) {
   //   margin-top: 1em;
   // }
 }
+.main-container {
+  overflow-x: hidden;
+}
 a {
   .link();
 }
@@ -280,6 +283,8 @@ ol {
         content: '';
         display: block;
         .svg-icon(list-icon);
+        background-position: center;
+        background-size: contain;
         height: 100%;
         width: .75em;
         position: absolute;
