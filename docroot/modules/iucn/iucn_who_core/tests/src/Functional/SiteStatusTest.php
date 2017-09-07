@@ -24,21 +24,12 @@ class SiteStatusTest extends WebTestBase {
   protected $strictConfigSchema = false;
   protected $profile = 'iucn_test';
 
-  private $site;
-
   public static $modules = ['iucn_who_structure'];
 
 
   public function setUp() {
     parent::setUp();
     \Drupal::entityDefinitionUpdateManager()->applyUpdates();
-
-    $this->site = $this->createSite([
-      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
-      'assessment_protection_rating' => 'protected',
-      'assessment_threat_level' => 'threatened',
-      'assessment_value_state' => 'valued'
-    ]);
   }
 
 
@@ -95,28 +86,52 @@ class SiteStatusTest extends WebTestBase {
 
 
   public function testGetOverallAssessmentLevel() {
-    $status = SiteStatus::getOverallAssessmentLevel($this->site);
+    $site = $this->createSite([
+      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_protection_rating' => 'protected',
+      'assessment_threat_level' => 'threatened',
+      'assessment_value_state' => 'valued'
+    ]);
+    $status = SiteStatus::getOverallAssessmentLevel($site);
     $this->assertTrue(!empty($status), 'global status is valid');
     $this->assertEqual('critical', $status->label());
   }
 
 
   public function testGetOverallProtectionLevel() {
-    $status = SiteStatus::getOverallProtectionLevel($this->site);
+    $site = $this->createSite([
+      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_protection_rating' => 'protected',
+      'assessment_threat_level' => 'threatened',
+      'assessment_value_state' => 'valued'
+    ]);
+    $status = SiteStatus::getOverallProtectionLevel($site);
     $this->assertTrue(!empty($status), 'protection status is valid');
     $this->assertEqual('protected', $status->label());
   }
 
 
   public function testGetOverallThreatLevel() {
-    $status = SiteStatus::getOverallThreatLevel($this->site);
+    $site = $this->createSite([
+      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_protection_rating' => 'protected',
+      'assessment_threat_level' => 'threatened',
+      'assessment_value_state' => 'valued'
+    ]);
+    $status = SiteStatus::getOverallThreatLevel($site);
     $this->assertTrue(!empty($status), 'threat status is valid');
     $this->assertEqual('threatened', $status->label());
   }
 
 
   public function testGetOverallValuesLevel() {
-    $status = SiteStatus::getOverallValuesLevel($this->site);
+    $site = $this->createSite([
+      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_protection_rating' => 'protected',
+      'assessment_threat_level' => 'threatened',
+      'assessment_value_state' => 'valued'
+    ]);
+    $status = SiteStatus::getOverallValuesLevel($site);
     $this->assertTrue(!empty($status), 'value status is valid');
     $this->assertEqual('valued', $status->label());
   }
