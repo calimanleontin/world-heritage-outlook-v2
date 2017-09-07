@@ -9652,16 +9652,16 @@ h6.facets-title {
   background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
 }
-.paragraph h2.iucn-arrow.threats:before,
-.paragraph h3.iucn-arrow.threats:before,
-.paragraph h4.iucn-arrow.threats:before {
-  background-image: url(../images/threats-white.svg);
+.paragraph h2.iucn-arrow.management:before,
+.paragraph h3.iucn-arrow.management:before,
+.paragraph h4.iucn-arrow.management:before {
+  background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
 }
-.paragraph h2.iucn-arrow.values:before,
-.paragraph h3.iucn-arrow.values:before,
-.paragraph h4.iucn-arrow.values:before {
-  background-image: url(../images/values-white.svg);
+.paragraph h2.iucn-arrow.management:before,
+.paragraph h3.iucn-arrow.management:before,
+.paragraph h4.iucn-arrow.management:before {
+  background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
 }
 @media screen and (max-width: 767px) {
@@ -10897,6 +10897,42 @@ h2.conservation-outlook-summary-group h3 {
 .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good:after {
   border-color: transparent transparent transparent #3bb55e;
 }
+.management-summary-group h3:before {
+  background-image: url(../images/management-black.svg);
+  background-repeat: no-repeat;
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background-position: center;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: .5em;
+}
+.threats-summary-group h3:before {
+  background-image: url(../images/threats-black.svg);
+  background-repeat: no-repeat;
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background-position: center;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: .5em;
+}
+.values-summary-group h3:before {
+  background-image: url(../images/values-black.svg);
+  background-repeat: no-repeat;
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background-position: center;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: .5em;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;
@@ -11511,11 +11547,11 @@ h2.conservation-outlook-summary-group h3 {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.threats {
+.path-frontpage #map-site-details .map-site-detail dt.management {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.threats:before {
-  background-image: url(../images/threats-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.management:before {
+  background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -11528,11 +11564,11 @@ h2.conservation-outlook-summary-group h3 {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values {
+.path-frontpage #map-site-details .map-site-detail dt.management {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values:before {
-  background-image: url(../images/values-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.management:before {
+  background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

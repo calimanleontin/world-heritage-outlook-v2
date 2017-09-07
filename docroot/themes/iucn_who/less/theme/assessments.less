@@ -165,3 +165,20 @@
     display: inline-flex;
   }
 }
+.loop-conservation-categories({
+  .@{conservation-category-class}-summary-group {
+    h3 {
+      &:before {
+        .svg-icon(~'@{conservation-category-class}-black');
+        content: '';
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        background-position: center;
+        background-size: contain;
+        vertical-align: middle;
+        margin-right: .5em;
+      }
+    }
+  }
+  });
