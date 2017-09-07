@@ -10524,6 +10524,16 @@ h6.facets-title {
     width: 1%;
   }
 }
+.iucn-site-wrapper .field--name-field-inscription-year .field--label,
+.iucn-site-wrapper .field--name-field-inscription-criteria .field--label {
+  font-weight: normal;
+}
+.iucn-site-wrapper .field--name-field-inscription-criteria .field__items > .field--item {
+  display: inline;
+}
+.iucn-site-wrapper .field--name-body {
+  margin-top: 1em;
+}
 .node--type-site-assessment .nav-tabs {
   margin-right: auto;
   margin-left: auto;
