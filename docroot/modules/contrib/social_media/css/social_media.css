@@ -1,6 +1,9 @@
 .social-media-sharing{
   display:block;
 }
+.social-media-sharing ul {
+  padding-left:0px;
+}
 .social-media-sharing li {
     display: inline-block;
     margin-right: 15px;
