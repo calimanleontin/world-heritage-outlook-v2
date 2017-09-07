@@ -1,9 +1,0 @@
-uuid: 1889de8f-aaba-4a26-bc3a-9a2945f42777
-langcode: en
-status: true
-dependencies: {  }
-id: node__page
-label: 'Content: Page'
-tags:
-  description: '[node:field_page_elements:0] [node:field_page_elements:1] [node:field_page_elements:2]'
-  title: '[node:title] | [site:name]'
