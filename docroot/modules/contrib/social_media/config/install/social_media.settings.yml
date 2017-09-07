@@ -32,13 +32,21 @@ social_media:
     text: "Twitter"
     default_img: 1
     weight: 4 
-    attributes : "target|_blank\nclass|twitter"    
+    attributes : "target|_blank\nclass|twitter"
+  google_plus:
+    enable: 1
+    text: "Google Plus"
+    api_url: "https://plus.google.com/share?url=[current-page:url]"
+    api_event : "href"
+    default_img: 1
+    weight: 5
+    attributes : "target|_blank\nclass|google-plus"
   email:
     enable: 1
     api_url: "mailto:?subject=[current-page:title]&body=Check out this site [current-page:url]"
     api_event : "href"
     text: "Email"
     default_img: 1
-    weight: 5   
+    weight: 6
     attributes : "class|email"    
 langcode: en

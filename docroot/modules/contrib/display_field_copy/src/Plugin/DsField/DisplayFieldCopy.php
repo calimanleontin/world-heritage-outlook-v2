@@ -88,11 +88,17 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
    * {@inheritdoc}
    */
   public function build() {
+
+    /** @var FormatterInterface $formatter */
     $formatter = $this->getFormatter([
       'type' => $this->getFieldConfiguration()['formatter'],
     ]);
 
+    /** @var FieldItemListInterface $items */
     $items = $this->entity()->get($this->getRenderKey());
+
+    $array = $items->getIterator()->getArrayCopy();
+    $formatter->prepareView([$array]);
 
     return $formatter->viewElements($items, $this->entity()->language()->getId());
   }
@@ -117,6 +123,23 @@ class DisplayFieldCopy extends DsFieldBase implements ContainerFactoryPluginInte
     return [
       'formatter' => $formatter->settingsForm($form, $form_state),
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary($settings) {
+    /** @var FormatterInterface $formatter */
+    $formatter = $this->getFormatter([
+      'type' => $this->getFieldConfiguration()['formatter'],
+    ]);
+
+    if ($formatter) {
+      return $formatter->settingsSummary();
+    }
+    else {
+      return [];
+    }
   }
 
   /**

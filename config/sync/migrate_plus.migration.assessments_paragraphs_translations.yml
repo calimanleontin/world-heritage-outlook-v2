@@ -4,8 +4,8 @@ status: true
 dependencies: {  }
 id: assessments_paragraphs_translations
 migration_tags: null
-migration_group: 'assessments'
-label: Assesments Paragraphs
+migration_group: assessments
+label: 'Assesments Paragraphs'
 source:
   plugin: assessments_paragraphs_translations
   path_setting: assessment_path

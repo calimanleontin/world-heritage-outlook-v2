@@ -39,26 +39,14 @@ set classes = [
             {{ content.summary }}
           </div>
           <div role="tabpanel" class="tab-pane" id="full_assessment">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ 'Values'|t }}</h3>
-              </div>
-              <div class="panel-body">
-                {{ content.full_assessment_values }}
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ 'Threats'|t }}</h3>
-              </div>
-              <div class="panel-body">
-                {{ content.full_assessment_threats }}
-              </div>
-            </div>
+            <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
+            <ul class="assessment-expand-buttons">
+              <li class="expand-button">{{ 'Expand all'|t }}</li>
+              <li class="collapse-button">{{ 'Collapse all'|t }}</li>
+            </ul>
 
-          </div>
-          <div role="tabpanel" class="tab-pane" id="references">
-            {{ content.references }}
+            {{ content.full_assessment_values }}
+
           </div>
         </div>
       </div>
@@ -67,5 +55,4 @@ set classes = [
       </div>
     </div>
   </div>
-
 </div>

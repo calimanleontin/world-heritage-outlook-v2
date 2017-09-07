@@ -81,6 +81,36 @@ class SocialMediaAdminForm extends ConfigFormBase {
         '#title' => $this->t('API url'),
         '#default_value' => $config->get('social_media.' . $key . '.api_url'),
       ];
+
+      // Handle some extra configuration for email service.
+      if($key == 'email'){
+
+        $form[$key][$key . '_api_url']['#states'] = [
+          'invisible' => [
+            ':input[name="'.$key . '_enable_forward'.'"]' => array('checked' => TRUE),
+          ],
+        ];
+
+        $form[$key][$key . '_enable_forward'] = [
+          '#type' => 'checkbox',
+          '#title' => $this->t('Enable forward instead for client email service'),
+          '#default_value' => $config->get('social_media.' . $key . '.enable_forward'),
+          '#description' => t('If it is checked then forward email form will open as model dialog.')
+        ];
+        $form[$key][$key . '_show_forward'] = [
+          '#type' => 'radios',
+          '#options' => [1 => $this->t('Model dialog'),2 => $this->t('Separate page')],
+          '#title' => $this->t('Choose how you want to show forward email form'),
+          '#default_value' => $config->get('social_media.' . $key . '.show_forward')?$config->get('social_media.' . $key . '.show_forward'):1,
+          '#states' => [
+            'visible' => [
+              ':input[name="'.$key . '_enable_forward'.'"]' => array('checked' => TRUE),
+             ],
+            ],
+          '#description' => t('default set as dialog popup, you can change it to show in separate page')
+        ];
+      }
+
       $form[$key][$key . '_api_event'] = [
         '#type' => 'select',
         '#title' => $this->t('Event'),
@@ -192,8 +222,15 @@ class SocialMediaAdminForm extends ConfigFormBase {
       if ($form_state->hasValue($social . '_attributes')) {
         $config->set('social_media.' . $social . '.attributes', $form_state->getValue($social . '_attributes'));
       }
+      if ($form_state->hasValue($social . '_enable_forward')) {
+        $config->set('social_media.' . $social . '.enable_forward', $form_state->getValue($social . '_enable_forward'));
+      }
+      if ($form_state->hasValue($social . '_show_forward')) {
+        $config->set('social_media.' . $social . '.show_forward', $form_state->getValue($social . '_show_forward'));
+      }
     }
     $config->save();
+    drupal_set_message($this->t('Your configuration has been saved'));
   }
 
   /**
@@ -206,8 +243,10 @@ class SocialMediaAdminForm extends ConfigFormBase {
       'facebook_msg' => 'Facebook messenger',
       'linkedin' => 'Linkedin',
       'twitter' => 'Twitter',
+      'google_plus' => 'Google Plus',
       'email' => 'Email',
     );
+
     $event = new SocialMediaEvent($element);
     $this->eventDispatcher->dispatch('social_media.add_more_link', $event);
     $element = $event->getElement();
