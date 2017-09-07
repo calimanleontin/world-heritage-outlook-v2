@@ -6897,7 +6897,9 @@ button.close {
 .container-fluid article.page:before,
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:before,
-.container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after {
+.container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
+.node--type-site-assessment .nav-tabs:before,
+.node--type-site-assessment .nav-tabs:after {
   content: " ";
   display: table;
 }
@@ -6919,7 +6921,8 @@ button.close {
 .modal-footer:after,
 .filter-wrapper:after,
 .container-fluid article.page:after,
-.container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after {
+.container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
+.node--type-site-assessment .nav-tabs:after {
   clear: both;
 }
 .center-block {
@@ -8523,6 +8526,9 @@ body:not(.show-focus-outlines) textarea:active:focus {
   .page-header {
     font-size: 32px;
   }
+}
+.main-container {
+  overflow-x: hidden;
 }
 a {
   color: #134780;
@@ -10517,6 +10523,172 @@ h6.facets-title {
   [data-statistics-mobile="1"][data-statistics] {
     width: 1%;
   }
+}
+.node--type-site-assessment .nav-tabs {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: #f7f7f7;
+  display: flex;
+  font-size: 15px;
+  font-size: 1.5rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+@media (min-width: 768px) {
+  .node--type-site-assessment .nav-tabs {
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .node--type-site-assessment .nav-tabs {
+    width: 100%;
+  }
+}
+@media (min-width: 1200px) {
+  .node--type-site-assessment .nav-tabs {
+    width: 1170px;
+  }
+}
+.node--type-site-assessment .nav-tabs > .navbar-header,
+.node--type-site-assessment .nav-tabs > .navbar-collapse {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+@media (min-width: 768px) {
+  .node--type-site-assessment .nav-tabs > .navbar-header,
+  .node--type-site-assessment .nav-tabs > .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+.node--type-site-assessment .nav-tabs,
+.node--type-site-assessment .nav-tabs > li,
+.node--type-site-assessment .nav-tabs > li > a,
+.node--type-site-assessment .nav-tabs > li.active > a,
+.node--type-site-assessment .nav-tabs > li.active > a:hover,
+.node--type-site-assessment .nav-tabs > li.active > a:focus {
+  border: none;
+}
+.node--type-site-assessment .nav-tabs > li {
+  display: flex;
+  flex: 1;
+}
+.node--type-site-assessment .nav-tabs > li:first-child:before,
+.node--type-site-assessment .nav-tabs > li:last-child:before {
+  content: '';
+  background-color: #f7f7f7;
+  display: block;
+  height: 100%;
+  width: 9999px;
+  position: absolute;
+  top: 0;
+}
+.node--type-site-assessment .nav-tabs > li:first-child:before {
+  right: 100%;
+}
+.node--type-site-assessment .nav-tabs > li:last-child:before {
+  left: 100%;
+}
+.node--type-site-assessment .nav-tabs > li > a {
+  color: #333333;
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
+  transition: none;
+  padding: 20px;
+  padding: 2rem;
+  padding-left: 7em;
+  background-position: 1.5em 3em;
+  background-size: auto 4em;
+  position: relative;
+}
+.node--type-site-assessment .nav-tabs > li > a > * {
+  display: block;
+}
+.node--type-site-assessment .nav-tabs > li > a:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 15%;
+  height: 70%;
+  left: 5.5em;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.node--type-site-assessment .nav-tabs > li > a[href="#summary"] {
+  background-image: url(../images/summary.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs > li > a[href="#full_assessment"] {
+  background-image: url(../images/full-assessment.svg);
+  background-repeat: no-repeat;
+  padding-left: 7.5em;
+}
+.node--type-site-assessment .nav-tabs > li > a[href="#full_assessment"]:before {
+  left: 6.5em;
+}
+.node--type-site-assessment .nav-tabs > li > a[href="#references"] {
+  background-image: url(../images/references.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs > li.active {
+  position: relative;
+}
+.node--type-site-assessment .nav-tabs > li.active > a > *,
+.node--type-site-assessment .nav-tabs > li.active > a,
+.node--type-site-assessment .nav-tabs > li.active > a:hover,
+.node--type-site-assessment .nav-tabs > li.active > a:focus {
+  background-color: #134780;
+  color: #fff;
+}
+.node--type-site-assessment .nav-tabs > li.active .tab-read-more:after {
+  background-image: url(../images/icon-arrow-white.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs > li.active:first-child:before,
+.node--type-site-assessment .nav-tabs > li.active:last-child:before {
+  background-color: #134780;
+}
+.node--type-site-assessment .nav-tabs > li.active > a:before {
+  border-right-color: rgba(255, 255, 255, 0.3);
+}
+.node--type-site-assessment .nav-tabs > li.active > a[href="#summary"] {
+  background-image: url(../images/summary-white.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs > li.active > a[href="#full_assessment"] {
+  background-image: url(../images/full-assessment-white.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs > li.active > a[href="#references"] {
+  background-image: url(../images/references-white.svg);
+  background-repeat: no-repeat;
+}
+.node--type-site-assessment .nav-tabs .tab-label {
+  font-size: 1.26666667em;
+  font-weight: 700;
+  margin-bottom: .5em;
+}
+.node--type-site-assessment .nav-tabs .tab-description {
+  color: #818181;
+  margin-bottom: 1em;
+}
+.node--type-site-assessment .nav-tabs .tab-read-more {
+  color: #03afdf;
+  margin-top: auto;
+}
+.node--type-site-assessment .nav-tabs .tab-read-more:after {
+  background-image: url(../images/icon-arrow-blue.svg);
+  background-repeat: no-repeat;
+  content: '';
+  background-size: contain;
+  background-position: center;
+  width: 2em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: .5em;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
