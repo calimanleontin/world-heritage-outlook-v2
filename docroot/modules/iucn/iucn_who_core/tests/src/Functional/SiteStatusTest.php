@@ -24,7 +24,6 @@ class SiteStatusTest extends WebTestBase {
   protected $strictConfigSchema = false;
   protected $profile = 'iucn_test';
 
-  private $assessment;
   private $site;
 
   public static $modules = ['iucn_who_structure'];
@@ -34,35 +33,46 @@ class SiteStatusTest extends WebTestBase {
     parent::setUp();
     \Drupal::entityDefinitionUpdateManager()->applyUpdates();
 
+    $this->site = $this->createSite([
+      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_protection_rating' => 'protected',
+      'assessment_threat_level' => 'threatened',
+      'assessment_value_state' => 'valued'
+    ]);
+  }
+
+
+  private function createSite($values = []) {
+    $site = null;
     $status = Term::create([
       'vid' => 'assessment_conservation_rating',
-      'name' => 'critical'
+      'name' => $values['assessment_conservation_rating'],
     ]);
     $status->save();
-    $this->assertEqual(1, $status->id(), 'conservation status term created');
+    $this->assertTrue($status->id() > 0, 'conservation status term created');
 
     $protection = Term::create([
       'vid' => 'assessment_protection_rating',
-      'name' => 'protected'
+      'name' => $values['assessment_protection_rating']
     ]);
     $protection->save();
-    $this->assertEqual(2, $protection->id(), 'protection level term created');
+    $this->assertTrue($protection->id() > 0, 'protection level term created');
 
     $threat = Term::create([
       'vid' => 'assessment_threat_level',
-      'name' => 'threatened'
+      'name' => $values['assessment_threat_level'],
     ]);
     $threat->save();
-    $this->assertEqual(3, $threat->id(), 'threat level term created');
+    $this->assertTrue($threat->id() > 0, 'threat level term created');
 
     $value = Term::create([
       'vid' => 'assessment_value_state',
-      'name' => 'valued'
+      'name' => $values['assessment_value_state'],
     ]);
     $value->save();
-    $this->assertEqual(4, $value->id(), 'value level term created');
+    $this->assertTrue($value->id() > 0, 'value level term created');
 
-    $this->assessment = Node::create([
+    $assessment = Node::create([
       'type' => 'site_assessment',
       'title' => 'test assessment',
       'field_as_global_assessment_level' => ['target_id' => $status->id()],
@@ -70,16 +80,17 @@ class SiteStatusTest extends WebTestBase {
       'field_as_threats_rating' => ['target_id' => $threat->id()],
       'field_as_vass_wh_state' => ['target_id' => $value->id()],
     ]);
-    $this->assessment->save();
-    $this->assertEqual(1, $this->assessment->id(), 'assessment created');
+    $assessment->save();
+    $this->assertTrue($assessment->id() > 0, 'assessment created');
 
-    $this->site = Node::create([
+    $site = Node::create([
       'type' => 'site',
       'title' => 'test site',
-      'field_current_assessment' => ['target_id' => $this->assessment->id()],
+      'field_current_assessment' => ['target_id' => $assessment->id()],
     ]);
-    $this->site->save();
-    $this->assertEqual(2, $this->site->id(), 'site created');
+    $site->save();
+    $this->assertTrue($site->id() > 0, 'site created');
+    return $site;
   }
 
 
