@@ -8515,6 +8515,24 @@ body:not(.show-focus-outlines) textarea:active:focus {
   font-weight: 800;
   margin-bottom: 1em;
 }
+.page-header.coming-soon {
+  color: #7e7e7e;
+}
+.page-header.data-deficient {
+  color: #333333;
+}
+.page-header.critical {
+  color: #ef3133;
+}
+.page-header.significant-concern {
+  color: #f69232;
+}
+.page-header.good-concerns {
+  color: #9cd07d;
+}
+.page-header.good {
+  color: #3bb55e;
+}
 @media screen and (max-width: 767px) {
   .page-header {
     margin-left: -15px;
@@ -8559,23 +8577,23 @@ small,
 a.is-active {
   color: #03afdf;
 }
-.conservation-status.good {
-  color: #3bb55e;
+.conservation-status.coming-soon {
+  color: #7e7e7e;
 }
-.conservation-status.good-concerns {
-  color: #9cd07d;
-}
-.conservation-status.significant-concern {
-  color: #f69232;
+.conservation-status.data-deficient {
+  color: #333333;
 }
 .conservation-status.critical {
   color: #ef3133;
 }
-.conservation-status.data-deficient {
-  color: #333;
+.conservation-status.significant-concern {
+  color: #f69232;
 }
-.conservation-status.coming-soon {
-  color: #7e7e7e;
+.conservation-status.good-concerns {
+  color: #9cd07d;
+}
+.conservation-status.good {
+  color: #3bb55e;
 }
 .caret-triangle {
   display: inline-block;
@@ -8616,6 +8634,24 @@ a.is-active {
   padding-bottom: .3em;
   padding-left: .25em;
   text-align: left;
+}
+.left-border.coming-soon {
+  color: #7e7e7e;
+}
+.left-border.data-deficient {
+  color: #333333;
+}
+.left-border.critical {
+  color: #ef3133;
+}
+.left-border.significant-concern {
+  color: #f69232;
+}
+.left-border.good-concerns {
+  color: #9cd07d;
+}
+.left-border.good {
+  color: #3bb55e;
 }
 @media screen and (max-width: 767px) {
   .left-border {
@@ -8663,6 +8699,42 @@ h2.left-border {
   position: absolute;
   left: 100%;
   top: 0;
+}
+.iucn-arrow.coming-soon {
+  background-color: #7e7e7e;
+}
+.iucn-arrow.coming-soon:after {
+  border-color: transparent transparent transparent #7e7e7e;
+}
+.iucn-arrow.data-deficient {
+  background-color: #333333;
+}
+.iucn-arrow.data-deficient:after {
+  border-color: transparent transparent transparent #333333;
+}
+.iucn-arrow.critical {
+  background-color: #ef3133;
+}
+.iucn-arrow.critical:after {
+  border-color: transparent transparent transparent #ef3133;
+}
+.iucn-arrow.significant-concern {
+  background-color: #f69232;
+}
+.iucn-arrow.significant-concern:after {
+  border-color: transparent transparent transparent #f69232;
+}
+.iucn-arrow.good-concerns {
+  background-color: #9cd07d;
+}
+.iucn-arrow.good-concerns:after {
+  border-color: transparent transparent transparent #9cd07d;
+}
+.iucn-arrow.good {
+  background-color: #3bb55e;
+}
+.iucn-arrow.good:after {
+  border-color: transparent transparent transparent #3bb55e;
 }
 ol li.iucn-arrow {
   background-color: #def2fb;

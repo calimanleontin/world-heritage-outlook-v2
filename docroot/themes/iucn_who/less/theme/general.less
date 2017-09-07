@@ -80,28 +80,12 @@ a.is-active {
 }
 // @todo: use mixin
 // Conservation status related classes
-.conservation-status.good {
-  color: @iucn-green;
-}
-
-.conservation-status.good-concerns {
-  color: @iucn-green-lighter;
-}
-
-.conservation-status.significant-concern {
-  color: @iucn-orange;
-}
-
-.conservation-status.critical {
-  color: @iucn-red;
-}
-
-.conservation-status.data-deficient {
-  color: #333;
-}
-
-.conservation-status.coming-soon {
-  color: @iucn-gray;
+.conservation-status {
+  .loop-conservation-ratings({
+    &.@{conservation-rating-class} {
+      color: @conservation-rating-color;
+    }
+  });
 }
 
 // Triangle caret
@@ -206,6 +190,15 @@ a.is-active {
     left: 100%;
     top: 0;
   }
+
+  .loop-conservation-ratings({
+    &.@{conservation-rating-class} {
+      background-color: @conservation-rating-color;
+      &:after {
+        border-color: transparent transparent transparent @conservation-rating-color;
+      }
+    }
+  });
 }
 
 ol {

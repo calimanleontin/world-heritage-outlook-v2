@@ -71,6 +71,11 @@
   padding-bottom: .3em;
   padding-left: .25em;
   text-align: left;
+  .loop-conservation-ratings({
+    &.@{conservation-rating-class} {
+      color: @conservation-rating-color;
+    }
+  });
   @media @mobile {
     .row();
     border-left-width: 10px;
@@ -100,11 +105,10 @@
 
 // Generate conservation rating styling
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
-@conservation-ratings-color-list: @iucn-green, @iucn-green-lighter, @iucn-orange, @iucn-red, #333333, @iucn-gray;
 
 .loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
   @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
-  @conservation-rating-color: e(extract(@conservation-ratings-color-list, @index));
+  @conservation-rating-color: ~'@{@{conservation-rating-class}}';
   @rules();
 
   // next iteration
