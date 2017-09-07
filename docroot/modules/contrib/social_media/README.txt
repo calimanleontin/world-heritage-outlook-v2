@@ -1,13 +1,14 @@
 The social media share module allows the user share
 current page to different social media.
 
-Social media share is rendered as block and you 
-can customize as much as you can. Configuration page
+Social media share is rendered as block and as field type
+as well and you can customize as much
+as you can in Configuration page and settings page.
 
 Event subscriber
 
 Module provides an event so that others can develop an event subscriber to modify.
-Event Subscriber name :-
+This are the event Subscriber name :-
 
   social_media.add_more_social_media
   -----------------------------------

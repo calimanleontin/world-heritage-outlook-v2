@@ -1,0 +1,47 @@
+diff --git a/src/Plugin/DsField/DisplayFieldCopy.php b/src/Plugin/DsField/DisplayFieldCopy.php
+index 2c4baa92..b90fabe1 100644
+--- a/src/Plugin/DsField/DisplayFieldCopy.php
++++ b/src/Plugin/DsField/DisplayFieldCopy.php
+@@ -88,12 +88,18 @@ public static function create(ContainerInterface $container, array $configuratio
+    * {@inheritdoc}
+    */
+   public function build() {
++
++    /** @var FormatterInterface $formatter */
+     $formatter = $this->getFormatter([
+       'type' => $this->getFieldConfiguration()['formatter'],
+     ]);
+ 
++    /** @var FieldItemListInterface $items */
+     $items = $this->entity()->get($this->getRenderKey());
+ 
++    $array = $items->getIterator()->getArrayCopy();
++    $formatter->prepareView([$array]);
++
+     return $formatter->viewElements($items, $this->entity()->language()->getId());
+   }
+ 
+@@ -122,6 +128,23 @@ public function settingsForm($form, FormStateInterface $form_state) {
+   /**
+    * {@inheritdoc}
+    */
++  public function settingsSummary($settings) {
++    /** @var FormatterInterface $formatter */
++    $formatter = $this->getFormatter([
++      'type' => $this->getFieldConfiguration()['formatter'],
++    ]);
++
++    if ($formatter) {
++      return $formatter->settingsSummary();
++    }
++    else {
++      return [];
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
+   public function formatters() {
+     return $this->formatterPluginManager->getOptions($this->getFieldDefinition()->getType());
+   }

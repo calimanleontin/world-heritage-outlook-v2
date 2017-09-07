@@ -121,15 +121,15 @@ process:
       - references
   field_as_key_cons:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: keyConservationIssuesIds
   field_as_values_wh:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: assessmentWhvaluesIds
   field_as_values_bio:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: biodiversityValuesIds
   field_as_global_assessment_text:
     plugin: multiple_extract
@@ -153,15 +153,15 @@ process:
       ignore_case: true
   field_as_projects:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: activeConservationProjectsIds
   field_as_projects_needs:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: potentialProjectNeedsIds
   field_as_benefits:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: benefitsIds
   field_as_benefits_summary:
     plugin: multiple_extract
@@ -171,7 +171,7 @@ process:
       - summary
   field_as_protection:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: protectionManagementIds
   field_as_protection_ov_text:
     plugin: multiple_extract
@@ -221,11 +221,11 @@ process:
       - description
   field_as_threats_current:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: assessingThreatsCurrentIds
   field_as_threats_potential:
     plugin: migration_lookup_paragraphs
-    migration: assessments_paragraphs
+    migration: assessments_paragraphs_revisions
     source: assessingThreatsPotentialIds
   field_as_threats_current_text:
     plugin: multiple_extract

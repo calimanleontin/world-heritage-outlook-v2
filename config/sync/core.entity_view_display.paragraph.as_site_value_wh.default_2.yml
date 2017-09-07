@@ -1,8 +1,9 @@
-uuid: adc600ea-2563-4ea7-96f4-eb92e6408931
+uuid: af9c3919-db08-48dd-bfd7-e2e0ac47a0fc
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.default_2
     - field.field.paragraph.as_site_value_wh.field_as_description
     - field.field.paragraph.as_site_value_wh.field_as_values_criteria
     - field.field.paragraph.as_site_value_wh.field_as_values_curr_state
@@ -25,31 +26,38 @@ third_party_settings:
       title:
         - field_as_values_value
       terms:
-        - field_as_values_criteria
+        - field_as_values_curr_state
+        - field_as_values_curr_trend
       description:
-        - field_as_description
-id: paragraph.as_site_value_wh.default
+        - field_as_values_curr_text
+id: paragraph.as_site_value_wh.default_2
 targetEntityType: paragraph
 bundle: as_site_value_wh
-mode: default
+mode: default_2
 content:
-  field_as_description:
-    weight: 2
+  field_as_values_curr_state:
+    type: entity_reference_label
+    weight: 1
+    region: terms
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    type: basic_string
+    weight: 3
+    region: description
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
-    region: description
-  field_as_values_criteria:
-    weight: 1
+  field_as_values_curr_trend:
+    type: entity_reference_label
+    weight: 2
+    region: terms
     label: inline
     settings:
       link: false
-    third_party_settings:
-      ds:
-        ds_limit: ''
-    type: entity_reference_label
-    region: terms
+    third_party_settings: {  }
   field_as_values_value:
     weight: 0
     label: hidden
@@ -59,6 +67,5 @@ content:
     type: plain_string_formatter
     region: title
 hidden:
-  field_as_values_curr_state: true
-  field_as_values_curr_text: true
-  field_as_values_curr_trend: true
+  field_as_description: true
+  field_as_values_criteria: true

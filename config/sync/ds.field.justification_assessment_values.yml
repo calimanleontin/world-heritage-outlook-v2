@@ -1,9 +1,0 @@
-id: justification_assessment_values
-label: 'Justification of assessment (values) copy'
-ui_limit: 'site_assessment|*'
-properties:
-  field_id: node.site_assessment.field_as_vass_wh_text
-type: display_field_copy
-type_label: 'Copy field'
-entities:
-  node: node
