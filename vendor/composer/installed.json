@@ -8072,6 +8072,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch"
             }
         },
         "installation-source": "dist",

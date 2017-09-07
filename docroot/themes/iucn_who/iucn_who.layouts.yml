@@ -64,19 +64,11 @@ iucn_who_assessment:
     summary:
       label: Summary
     full_assessment_values:
-      label: Full assessments Values
-    full_assessment_threats:
-      label: Full assessments Threats
-    full_assessment_management:
-      label: Full assessments Protection and Management
-    full_assessment_key_issue:
-      label: Full assessments Key Conservation Issues
-    full_assessment_benefits:
-      label: Full assessments Benefits
-    full_assessment_project:
-      label: Full assessments Projects
+      label: Full assessment
     references:
       label: References
+    sidebar:
+      label: Sidebar
 
 
 iucn_who_news_teaser:
