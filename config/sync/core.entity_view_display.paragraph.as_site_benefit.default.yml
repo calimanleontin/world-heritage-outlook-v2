@@ -21,6 +21,44 @@ dependencies:
     - field.field.paragraph.as_site_benefit.field_as_comment
     - field.field.paragraph.as_site_benefit.field_as_description
     - paragraphs.paragraphs_type.as_site_benefit
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        classes: {  }
+        wrappers:
+          title: div
+          terms: div
+          description: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+    regions:
+      title:
+        - field_as_benefits_category
+        - field_as_description
+        - field_as_benefits_datadeficient
+        - field_as_benefits_commun_in
+        - field_as_benefits_commun_out
+        - field_as_benefits_commun_wide
+        - field_as_benefits_hab_level
+        - field_as_benefits_hab_trend
+        - field_as_benefits_pollut_level
+        - field_as_benefits_pollut_trend
+        - field_as_benefits_oex_level
+        - field_as_benefits_oex_trend
+        - field_as_benefits_climate_level
+        - field_as_benefits_climate_trend
+        - field_as_benefits_invassp_level
+        - field_as_benefits_invassp_trend
+        - field_as_comment
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit
