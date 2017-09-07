@@ -7847,8 +7847,8 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 .pagination > .pager__item--previous > a:before,
 .pagination > .pager__item--next > a:before {
   background-image: url(../images/icon-arrow.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   width: 2em;
@@ -8733,8 +8733,8 @@ ol li.iucn-arrow:after {
   content: '';
   display: block;
   background-image: url(../images/list-icon.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   height: 100%;
   width: .75em;
@@ -8944,10 +8944,10 @@ h6.facets-title {
   }
   #sidemenu .facets-title .caret-triangle:before {
     background-image: url(../images/caret-triangle.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
     content: '';
+    background-position: center;
+    background-size: contain;
     display: block;
     height: 20px;
     width: 20px;
@@ -8998,9 +8998,8 @@ h6.facets-title {
   .block-facets .facet-item__status {
     background-color: #03afdf;
     background-image: url(../images/checkbox.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-position: center;
     background-size: auto 60%;
     border-radius: 4px 0 0 4px;
     display: block;
@@ -9047,9 +9046,8 @@ h6.facets-title {
   }
   .block-facets .icon-collapse:before {
     background-image: url(../images/plus.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-position: center;
     background-size: 95%;
     content: '';
     display: inline-block;
@@ -9060,9 +9058,7 @@ h6.facets-title {
   .block-facets [aria-expanded="true"] > .icon-collapse:before,
   .block-facets .open > a > .icon-collapse:before {
     background-image: url(../images/minus.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
     background-size: 98%;
   }
   .block-facets .facet-item__status {
@@ -9095,8 +9091,8 @@ h6.facets-title {
 }
 .navbar-collapse #block-languagedropdownswitcher .select-wrapper:after {
   background-image: url(../images/dropdown-caret.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   display: inline-block;
@@ -9201,9 +9197,8 @@ h6.facets-title {
   margin-right: 0;
   background-color: #ddf2fa;
   background-image: url(../images/magnifier.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-position: center;
   background-size: 75%;
   border-color: #ddf2fa;
   text-indent: -9999px;
@@ -9575,25 +9570,19 @@ h6.facets-title {
 .paragraph h3.iucn-arrow.management:before,
 .paragraph h4.iucn-arrow.management:before {
   background-image: url(../images/management-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
 }
 .paragraph h2.iucn-arrow.threats:before,
 .paragraph h3.iucn-arrow.threats:before,
 .paragraph h4.iucn-arrow.threats:before {
   background-image: url(../images/threats-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
 }
 .paragraph h2.iucn-arrow.values:before,
 .paragraph h3.iucn-arrow.values:before,
 .paragraph h4.iucn-arrow.values:before {
   background-image: url(../images/values-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
 }
 @media screen and (max-width: 767px) {
   .paragraph h2.iucn-arrow,
@@ -10588,9 +10577,7 @@ h6.facets-title {
   .path-frontpage #block-homepagemap .map-block-footer .scroll-down {
     background-color: #fff;
     background-image: url(../images/scroll-down-caret.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
     background-position: center 65%;
     background-size: 66%;
     border-radius: 50%;
@@ -10636,10 +10623,9 @@ h6.facets-title {
   .path-frontpage #block-homepagemap .scroll-down {
     background-color: #134780;
     background-image: url(../images/scroll-down-caret-white.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
     background-position: center 5px;
+    background-size: contain;
     display: block;
     height: 50px;
     width: 100%;
@@ -10747,8 +10733,8 @@ h6.facets-title {
 .path-frontpage #map-site-search .form-type-select > label:before {
   content: '';
   background-image: url(../images/explore.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   height: 1.33333333em;
   width: 1em;
@@ -10777,9 +10763,8 @@ h6.facets-title {
   }
   .path-frontpage #map-site-search .form-type-select > label:before {
     background-image: url(../images/explore-black.svg);
-    background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-position: center;
     background-size: 50%;
     width: 28px;
     height: 32px;
@@ -10821,9 +10806,8 @@ h6.facets-title {
   content: '';
   background-color: #03afdf;
   background-image: url(../images/checkbox.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-position: center;
   background-size: auto 60%;
   display: block;
   height: 1.33333333em;
@@ -11136,8 +11120,8 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.management:before {
   background-image: url(../images/management-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   display: block;
@@ -11153,8 +11137,8 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
   background-image: url(../images/threats-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   display: block;
@@ -11170,8 +11154,8 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
   background-image: url(../images/values-white.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   display: block;
@@ -11184,20 +11168,20 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
   background-image: url(../images/values.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
   background-image: url(../images/threats.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
 }
 .path-frontpage #map-site-details .map-site-detail dt.management:before {
   background-image: url(../images/management.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   width: 1.4em;
 }
@@ -11223,8 +11207,8 @@ h6.facets-title {
 }
 .path-frontpage #map-site-details .map-site-detail .more:after {
   background-image: url(../images/icon-arrow.svg);
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   background-size: contain;
   content: '';
   display: inline-block;
@@ -11563,9 +11547,8 @@ fieldset[disabled] #download-publication-button a.focus {
 #download-publication-button a .glyphicon,
 .publications-back-button a .backicon {
   background-image: url(../images/download-report.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-position: center;
   background-size: 50% auto;
   height: 100%;
   left: 0;
@@ -11657,9 +11640,7 @@ fieldset[disabled] #download-publication-button a.focus {
 .publications-back-button a .backicon {
   padding-top: 2em;
   background-image: url(../images/icon-backarrow.svg);
-  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
   background-position: left center;
   background-size: auto;
 }
