@@ -14,86 +14,91 @@ dependencies:
     - field.field.paragraph.as_site_threat.field_as_threats_values_wh
     - paragraphs.paragraphs_type.as_site_threat
   module:
-    - entity_reference_revisions
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_threats_threat
+      terms:
+        - field_as_threats_rating
+      description:
+        - field_as_description
+        - field_as_threats_categories
+        - field_as_threats_extent
+        - field_as_threats_in
+        - field_as_threats_out
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
 bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 1
-    label: above
+    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
+    region: description
   field_as_threats_categories:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_threats_extent:
-    weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_threats_in:
     weight: 3
-    label: above
+    label: inline
     settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_as_threats_out:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: entity_reference_label
+    region: description
+  field_as_threats_extent:
     weight: 4
-    label: above
+    label: inline
     settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_as_threats_rating:
-    weight: 5
-    label: above
-    settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
+    region: description
+  field_as_threats_in:
+    weight: 5
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: description
+  field_as_threats_out:
+    type: boolean
+    weight: 6
+    region: description
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_as_threats_rating:
+    weight: 1
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: terms
   field_as_threats_threat:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_as_threats_values_bio:
-    type: entity_reference_revisions_entity_view
-    weight: 8
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
-  field_as_threats_values_wh:
-    type: entity_reference_revisions_entity_view
-    weight: 7
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
-hidden: {  }
+    region: title
+hidden:
+  field_as_threats_values_bio: true
+  field_as_threats_values_wh: true

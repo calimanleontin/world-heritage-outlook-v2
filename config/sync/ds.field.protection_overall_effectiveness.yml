@@ -1,9 +1,0 @@
-id: protection_overall_effectiveness
-label: 'Protection overall effectiveness (copy)'
-ui_limit: 'site_assessment|*'
-properties:
-  field_id: node.site_assessment.field_as_protection_ov_text
-type: display_field_copy
-type_label: 'Copy field'
-entities:
-  node: node
