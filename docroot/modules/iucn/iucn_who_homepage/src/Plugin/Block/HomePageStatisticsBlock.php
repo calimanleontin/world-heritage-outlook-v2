@@ -10,6 +10,7 @@ namespace Drupal\iucn_who_homepage\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_who_core\SiteStatus;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * @Block(
@@ -61,17 +62,15 @@ class HomePageStatisticsBlock extends BlockBase {
 
   public function getStatistics() {
     $ret = [];
-    $config = $this->getConfiguration();
-    foreach(SiteStatus::labels() as $key => $label) {
-      if (!empty($config[$key])) {
-        $ret[$key] = [
-          'id' => $key,
-          'value' => $config[$key],
-          'label' => $label,
-        ];
-      }
+    $statistics = SiteStatus::getSitesStatusStatistics();
+    foreach($statistics as $tid => $percentage) {
+      $term = Term::load($tid);
+      $ret[$tid] = [
+        'id' => $tid,
+        'value' => $percentage,
+        'label' => $term->label(),
+      ];
     }
     return $ret;
   }
-
 }

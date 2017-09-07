@@ -51,6 +51,27 @@ class SiteStatus {
     return $ret;
   }
 
+  /**
+   * @param $identifier
+   *
+   * @return \Drupal\taxonomy\TermInterface
+   */
+  public static function getTermStatusByIdentifier($identifier) {
+    $ret = null;
+    $terms = SitesQueryUtil::getSiteConservationRatings();
+    // @todo - Optimize
+    foreach ($terms as $term) {
+      $name = $term->field_css_identifier->value;
+      if (!empty($name)) {
+        $ret[$name] = $term;
+      }
+    }
+    if(!empty($ret[$identifier])) {
+      $ret = $ret[$identifier];
+    }
+    return $ret;
+  }
+
 
   /**
    * Retrieve the current global assessment level for a site.
@@ -171,4 +192,33 @@ class SiteStatus {
     return $ret;
   }
 
+
+  /**
+   * Compute the percentages of sites by status.
+   *
+   * @return array
+   *   Array keyed by status and percentage as value
+   */
+  public static function getSitesStatusStatistics() {
+    $good = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD);
+    $good_concerns = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS);
+    $significant = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS);
+    $critical = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_CRITICAL);
+
+    $statuses = [ $good->id() => 0, $good_concerns->id() => 0, $significant->id() => 0, $critical->id() => 0 ];
+    $sites = SitesQueryUtil::getPublishedSites();
+    /** @var \Drupal\node\NodeInterface $node */
+    foreach ($sites as $node) {
+      $status = SiteStatus::getOverallAssessmentLevel($node);
+      if (isset($statuses[$status->id()])) {
+        $statuses[$status->id()] += 1;
+      }
+    }
+    $ret = [];
+    $total = count($sites);
+    foreach($statuses as $status_id => $count) {
+      $ret[$status_id] = floor((100 * $count) / $total);
+    }
+    return $ret;
+  }
 }

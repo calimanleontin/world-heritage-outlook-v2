@@ -79,3 +79,7 @@ Running tests from the CLI scenarios:
 * Run a single test class
 
     ``php core/scripts/run-tests.sh  --non-html --color --verbose --url http://who.local --class "Drupal\Tests\iucn_who_core\Functional\SiteStatusTest"``
+
+* Run a single test class method
+
+    ``php core/scripts/run-tests.sh  --non-html --color --verbose --url http://who.local --class "Drupal\Tests\iucn_who_core\Functional\SiteStatusTest::testMethod"``

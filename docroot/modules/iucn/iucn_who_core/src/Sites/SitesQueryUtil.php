@@ -44,7 +44,7 @@ class SitesQueryUtil {
 
   public static function getSiteConservationRatings($order_by = 'weight') {
     $query = \Drupal::entityQuery('taxonomy_term');
-    $query->condition('vid', TAXONOMY_SITE_CONSERVATION_RATING);
+    $query->condition('vid', 'assessment_conservation_rating');
     if (!empty($order_by)) {
       $query->sort($order_by);
     }

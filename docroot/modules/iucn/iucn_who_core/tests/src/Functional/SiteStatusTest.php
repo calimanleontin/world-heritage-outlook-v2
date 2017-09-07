@@ -27,20 +27,71 @@ class SiteStatusTest extends WebTestBase {
   public static $modules = ['iucn_who_structure'];
 
 
+  /** @var \Drupal\taxonomy\TermInterface */
+  private $status_good = null;
+  /** @var \Drupal\taxonomy\TermInterface */
+  private $status_good_concerns = null;
+  /** @var \Drupal\taxonomy\TermInterface */
+  private $status_significant_concerns = null;
+  /** @var \Drupal\taxonomy\TermInterface */
+  private $status_critical = null;
+
   public function setUp() {
     parent::setUp();
     \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+    $this->createConservationRatings();
+  }
+
+
+  private function createConservationRatings() {
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_GOOD,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_GOOD ]
+    ]);
+    $status->save();
+    $this->status_good = $status;
+    $this->assertEqual(1, $status->id(),
+      SiteStatus::IUCN_OUTLOOK_STATUS_GOOD . ' conservation status term created'
+    );
+
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS ]
+    ]);
+    $status->save();
+    $this->status_good_concerns = $status;
+    $this->assertEqual(2, $status->id(),
+      SiteStatus::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS . ' conservation status term created'
+    );
+
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS ]
+    ]);
+    $status->save();
+    $this->status_significant_concerns = $status;
+    $this->assertEqual(3, $status->id(),
+      SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS . ' conservation status term created'
+    );
+
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL ]
+    ]);
+    $status->save();
+    $this->status_critical = $status;
+    $this->assertEqual(4, $status->id(),
+      SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL . ' conservation status term created'
+    );
   }
 
 
   private function createSite($values = []) {
     $site = null;
-    $status = Term::create([
-      'vid' => 'assessment_conservation_rating',
-      'name' => $values['assessment_conservation_rating'],
-    ]);
-    $status->save();
-    $this->assertTrue($status->id() > 0, 'conservation status term created');
 
     $protection = Term::create([
       'vid' => 'assessment_protection_rating',
@@ -66,7 +117,7 @@ class SiteStatusTest extends WebTestBase {
     $assessment = Node::create([
       'type' => 'site_assessment',
       'title' => 'test assessment',
-      'field_as_global_assessment_level' => ['target_id' => $status->id()],
+      'field_as_global_assessment_level' => ['target_id' => $values['assessment_conservation_rating']],
       'field_as_protection_ov_rating' => ['target_id' => $protection->id()],
       'field_as_threats_rating' => ['target_id' => $threat->id()],
       'field_as_vass_wh_state' => ['target_id' => $value->id()],
@@ -87,7 +138,7 @@ class SiteStatusTest extends WebTestBase {
 
   public function testGetOverallAssessmentLevel() {
     $site = $this->createSite([
-      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_conservation_rating' => $this->status_critical->id(),
       'assessment_protection_rating' => 'protected',
       'assessment_threat_level' => 'threatened',
       'assessment_value_state' => 'valued'
@@ -100,7 +151,7 @@ class SiteStatusTest extends WebTestBase {
 
   public function testGetOverallProtectionLevel() {
     $site = $this->createSite([
-      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_conservation_rating' => $this->status_critical->id(),
       'assessment_protection_rating' => 'protected',
       'assessment_threat_level' => 'threatened',
       'assessment_value_state' => 'valued'
@@ -113,7 +164,7 @@ class SiteStatusTest extends WebTestBase {
 
   public function testGetOverallThreatLevel() {
     $site = $this->createSite([
-      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_conservation_rating' => $this->status_critical->id(),
       'assessment_protection_rating' => 'protected',
       'assessment_threat_level' => 'threatened',
       'assessment_value_state' => 'valued'
@@ -126,7 +177,7 @@ class SiteStatusTest extends WebTestBase {
 
   public function testGetOverallValuesLevel() {
     $site = $this->createSite([
-      'assessment_conservation_rating' => SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL,
+      'assessment_conservation_rating' => $this->status_critical->id(),
       'assessment_protection_rating' => 'protected',
       'assessment_threat_level' => 'threatened',
       'assessment_value_state' => 'valued'
@@ -134,5 +185,35 @@ class SiteStatusTest extends WebTestBase {
     $status = SiteStatus::getOverallValuesLevel($site);
     $this->assertTrue(!empty($status), 'value status is valid');
     $this->assertEqual('valued', $status->label());
+  }
+
+
+  public function testGetSitesStatusStatistics() {
+    $statuses = [
+      $this->status_good->id(),
+      $this->status_good->id(),
+      $this->status_good->id(),
+      $this->status_good->id(),
+      $this->status_good_concerns->id(),
+      $this->status_good_concerns->id(),
+      $this->status_good_concerns->id(),
+      $this->status_significant_concerns->id(),
+      $this->status_significant_concerns->id(),
+      $this->status_critical->id(),
+    ];
+    foreach ($statuses as $status) {
+      $this->createSite([
+        'assessment_conservation_rating' => $status,
+        'assessment_protection_rating' => 'protected',
+        'assessment_threat_level' => 'threatened',
+        'assessment_value_state' => 'valued'
+      ]);
+    }
+
+    $statistics = SiteStatus::getSitesStatusStatistics();
+    $this->assertEqual(40, $statistics[$this->status_good->id()]);
+    $this->assertEqual(30, $statistics[$this->status_good_concerns->id()]);
+    $this->assertEqual(20, $statistics[$this->status_significant_concerns->id()]);
+    $this->assertEqual(10, $statistics[$this->status_critical->id()]);
   }
 }
