@@ -1,8 +1,8 @@
 id: assessment_values
-label: 'Assessment (values)'
+label: 'Assessment (values) copy'
 ui_limit: 'site_assessment|*'
 properties:
-  field_id: node.site_assessment.field_as_vass_bio_state
+  field_id: node.site_assessment.field_as_vass_wh_state
 type: display_field_copy
 type_label: 'Copy field'
 entities:

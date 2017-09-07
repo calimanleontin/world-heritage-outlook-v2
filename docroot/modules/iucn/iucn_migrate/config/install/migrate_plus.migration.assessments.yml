@@ -151,15 +151,13 @@ process:
       - justification
   field_as_global_assessment_level:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: conservationOutlooks
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
-      source: rating
       value_key: name
       bundle_key: vid
       bundle: assessment_conservation_rating
@@ -202,11 +200,10 @@ process:
       - justification
   field_as_protection_ov_rating:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: protMgmtOverall
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
@@ -223,11 +220,10 @@ process:
       - justification
   field_as_protection_ov_out_rate:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: effectiveProtMgmtIothreats
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
@@ -267,7 +263,7 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
@@ -287,7 +283,7 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
@@ -307,7 +303,7 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
@@ -322,11 +318,10 @@ process:
       - justification
   field_as_vass_wh_state:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: stateTrendWhvalues
       default: null
       index:
-        - 0
         - state
     -
       plugin: taxonomy_term
@@ -337,11 +332,10 @@ process:
       ignore_case: true
   field_as_vass_wh_trend:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: stateTrendWhvalues
       default: null
       index:
-        - 0
         - trend
     -
       plugin: taxonomy_term
@@ -364,7 +358,7 @@ process:
       index:
         - state
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_value_state
@@ -378,7 +372,7 @@ process:
       index:
         - trend
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_value_trend

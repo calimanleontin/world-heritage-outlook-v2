@@ -80,12 +80,12 @@ third_party_settings:
           references: {  }
     regions:
       summary:
+        - group_conservation_outlook
         - 'display_field_copy:node-assessment_values'
         - 'display_field_copy:node-protection_overall_rating'
-        - group_conservation_outlook
-        - 'display_field_copy:node-justification_assessment_values'
         - group_current_state_trend_values
         - 'display_field_copy:node-protection_overall_effectiveness'
+        - 'display_field_copy:node-justification_assessment_values'
         - group_overall_threats
         - group_overall_prot_man
         - 'display_field_copy:node-overall_threats_rating'
@@ -116,7 +116,7 @@ third_party_settings:
         plugin_id: 'display_field_copy:node-overall_threats_rating'
         weight: 13
         label: hidden
-        formatter: author
+        formatter: entity_reference_label
       'display_field_copy:node-overall_threats_text':
         plugin_id: 'display_field_copy:node-overall_threats_text'
         weight: 14
@@ -228,18 +228,18 @@ mode: default
 content:
   field_as_end_date:
     weight: 42
-    label: hidden
+    label: inline
     settings:
-      format_type: medium
       timezone_override: ''
+      date_format: 'd M Y'
     third_party_settings: {  }
-    type: datetime_default
+    type: datetime_custom
     region: summary
   field_as_global_assessment_level:
     weight: 43
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: summary

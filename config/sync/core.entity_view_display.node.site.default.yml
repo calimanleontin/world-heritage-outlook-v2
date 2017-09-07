@@ -26,13 +26,12 @@ dependencies:
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
-    - image.style.sites_thumbnail
     - node.type.site
   module:
     - datetime
     - ds
     - image
-    - taxonomy
+    - iucn_site
     - text
     - user
 third_party_settings:
@@ -44,10 +43,13 @@ third_party_settings:
       entity_classes: all_classes
       settings: {  }
     regions:
+      left_1:
+        - site_assessments_rating
       middle_1:
         - field_country
         - field_inscription_year
         - field_inscription_criteria
+        - field_designation
         - body
       right_1:
         - field_image
@@ -59,15 +61,14 @@ bundle: site
 mode: default
 content:
   body:
-    type: text_trimmed
-    weight: 3
+    type: text_default
+    weight: 5
     region: middle_1
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 5
+    weight: 7
     label: hidden
     settings:
       link: true
@@ -76,17 +77,29 @@ content:
     type: entity_reference_entity_view
     region: assessment
   field_country:
-    type: entity_reference_rss_category
-    weight: 0
+    type: entity_reference_label
+    weight: 1
     region: middle_1
     label: hidden
-    settings: {  }
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_designation:
+    type: entity_reference_list
+    weight: 4
+    region: middle_1
+    label: inline
+    settings:
+      separator: ','
+      link: 0
     third_party_settings:
       ds:
         ds_limit: ''
   field_image:
     type: image
-    weight: 4
+    weight: 6
     region: right_1
     label: hidden
     settings:
@@ -94,22 +107,33 @@ content:
       image_link: ''
     third_party_settings: {  }
   field_inscription_criteria:
-    type: entity_reference_rss_category
-    weight: 2
+    type: entity_reference_list
+    weight: 3
     region: middle_1
     label: inline
-    settings: {  }
+    settings:
+      link: 0
+      separator: ','
     third_party_settings:
       ds:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 1
+    weight: 2
     region: middle_1
     label: inline
     settings:
       timezone_override: ''
-      date_format: 'Y-m-d\TH:i:s'
+      date_format: 'Y'
+    third_party_settings: {  }
+  site_assessments_rating:
+    type: image
+    weight: 0
+    region: left_1
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
     third_party_settings: {  }
 hidden:
   field_area: true
@@ -121,7 +145,6 @@ hidden:
   field_cultural_landscape: true
   field_current_assessment: true
   field_danger_list: true
-  field_designation: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true
@@ -132,4 +155,3 @@ hidden:
   langcode: true
   links: true
   site_assessments_link: true
-  site_assessments_rating: true

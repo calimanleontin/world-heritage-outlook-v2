@@ -58,10 +58,6 @@
         "conservationOutlookId" : 31,
         "justification" : "3 fr conservationOutlooks justification 1",
         "rating" : "Good with some concerns"
-      }, {
-        "conservationOutlookId" : 32,
-        "justification" : "3 fr conservationOutlooks justification 2",
-        "rating" : "Good with some concerns"
       }],
       "benefits" : [{
         "benefitsId" : 31,
@@ -317,10 +313,6 @@
       "conservationOutlooks" : [ {
         "conservationOutlookId" : 21,
         "justification" : "2 conservationOutlooks justification 1",
-        "rating" : "Good with some concerns"
-      }, {
-        "conservationOutlookId" : 22,
-        "justification" : "2 conservationOutlooks justification 2",
         "rating" : "Good with some concerns"
       }],
       "benefits" : [{
@@ -595,13 +587,7 @@
         "conservationOutlookId" : 1,
         "justification" : "conservationOutlooks justification 1",
         "rating" : "Good with some concerns"
-      },
-        {
-          "conservationOutlookId" : 2,
-          "justification" : "conservationOutlooks justification 2",
-          "rating" : "Good with some concerns"
-        }
-      ],
+      }],
       "benefits" : [
         {
           "benefitsId" : 1,

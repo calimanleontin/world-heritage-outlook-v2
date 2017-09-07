@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: assessments
 migration_tags: null
-migration_group: assessments
+migration_group: 'assessments'
 label: Assesments
 source:
   plugin: iucn_assessments
@@ -34,7 +34,7 @@ source:
       label: 'End date'
     -
       name: versionCode
-      label: versionCode
+      label: 'versionCode'
 process:
   created:
     -
@@ -106,36 +106,43 @@ process:
   field_as_version: versionCode
   field_as_cycle: assessmentCycle
   field_date_published:
-    -
-      plugin: cast
-      cast_to: string
-      source: publishedDate
-    -
-      plugin: substr
-      start: 0
-      length: -3
-    -
-      plugin: format_date
-      from_format: U
-      to_format: Y-m-d
+      -
+        plugin: cast
+        cast_to: string
+        source: publishedDate
+      -
+        plugin: substr
+        start: 0
+        length: -3
+      -
+        plugin: format_date
+        from_format: U
+        to_format: Y-m-d
+# References
   field_as_references:
     plugin: multiple_extract
     source: references
     default: null
     index:
       - references
+# KEY CONSERVATION ISSUES
   field_as_key_cons:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: keyConservationIssuesIds
+
+# Values
   field_as_values_wh:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: assessmentWhvaluesIds
+
   field_as_values_bio:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: biodiversityValuesIds
+
+# Conv outlook
   field_as_global_assessment_text:
     plugin: multiple_extract
     source: conservationOutlooks
@@ -144,42 +151,47 @@ process:
       - justification
   field_as_global_assessment_level:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: conservationOutlooks
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
-      source: rating
       value_key: name
       bundle_key: vid
       bundle: assessment_conservation_rating
       entity_type: taxonomy_term
       ignore_case: true
+# Projects
   field_as_projects:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: activeConservationProjectsIds
+
   field_as_projects_needs:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: potentialProjectNeedsIds
+
+# Benefits
   field_as_benefits:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: benefitsIds
+
   field_as_benefits_summary:
     plugin: multiple_extract
     source: benefitsSummary
     default: null
     index:
       - summary
+# Prot / MNGMT
   field_as_protection:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: protectionManagementIds
+
   field_as_protection_ov_text:
     plugin: multiple_extract
     source: protMgmtOverall
@@ -188,11 +200,10 @@ process:
       - justification
   field_as_protection_ov_rating:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: protMgmtOverall
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
@@ -209,11 +220,10 @@ process:
       - justification
   field_as_protection_ov_out_rate:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: effectiveProtMgmtIothreats
       default: null
       index:
-        - 0
         - rating
     -
       plugin: taxonomy_term
@@ -228,14 +238,17 @@ process:
     default: null
     index:
       - description
+# Threats
   field_as_threats_current:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: assessingThreatsCurrentIds
+
   field_as_threats_potential:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
     source: assessingThreatsPotentialIds
+
   field_as_threats_current_text:
     plugin: multiple_extract
     source: threatSummaryCurrent
@@ -250,7 +263,7 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
@@ -270,7 +283,7 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
@@ -290,12 +303,13 @@ process:
       index:
         - threatRating
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_threat_level
       entity_type: taxonomy_term
       ignore_case: true
+# Assessing values
   field_as_vass_wh_text:
     plugin: multiple_extract
     source: stateTrendWhvalues
@@ -304,11 +318,10 @@ process:
       - justification
   field_as_vass_wh_state:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: stateTrendWhvalues
       default: null
       index:
-        - 0
         - state
     -
       plugin: taxonomy_term
@@ -319,11 +332,10 @@ process:
       ignore_case: true
   field_as_vass_wh_trend:
     -
-      plugin: extract
+      plugin: multiple_extract
       source: stateTrendWhvalues
       default: null
       index:
-        - 0
         - trend
     -
       plugin: taxonomy_term
@@ -346,7 +358,7 @@ process:
       index:
         - state
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_value_state
@@ -360,12 +372,13 @@ process:
       index:
         - trend
     -
-      plugin: entity_lookup
+      plugin: taxonomy_term
       value_key: name
       bundle_key: vid
       bundle: assessment_value_trend
       entity_type: taxonomy_term
       ignore_case: true
+
 destination:
   plugin: 'entity:node'
 migration_dependencies: null
