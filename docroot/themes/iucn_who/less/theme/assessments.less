@@ -135,3 +135,33 @@
     }
   }
 }
+.conservation-outlook-summary-group {
+  position: relative;
+  h3 {
+    .left-border();
+    .remify(font-size, 28px);
+  }
+  .field--name-field-as-end-date {
+    .remify(font-size, 15px);
+    color: #818181;
+    position: absolute;
+    right: 0;
+    top: .3 * 28px;
+    .field--label {
+      font-weight: normal;
+      &:after {
+        display: none;
+      }
+    }
+    .field--label,
+    .field--item {
+      display: inline-block;
+      float: none;
+      padding-right: 0;
+    }
+  }
+  .field--name-field-as-global-assessment-level {
+    .iucn-base-arrow();
+    display: inline-flex;
+  }
+}
