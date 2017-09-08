@@ -8402,9 +8402,24 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
 .ui-accordion {
   font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 100%;
+  color: #333333;
 }
 .ui-accordion .ui-accordion-header {
+  font-size: 20px;
+  font-size: 2rem;
   background: none;
+  border: none;
+  border-bottom: 1px solid;
+  border-radius: 0;
+  padding-top: 1em;
+}
+.ui-accordion .ui-accordion-header,
+.ui-accordion .ui-accordion-header a {
+  color: #333333;
+}
+.ui-accordion .ui-widget-content {
+  border: none;
+  margin-bottom: 1em;
 }
 .ui-accordion .ui-icon {
   background-image: none;

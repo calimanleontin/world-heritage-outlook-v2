@@ -1,8 +1,21 @@
 .ui-accordion {
   font-family: @font-family-base;
   font-size: 100%;
+  color: @text-color;
   .ui-accordion-header {
+    .remify(font-size, 20px);
     background: none;
+    border: none;
+    border-bottom: 1px solid;
+    border-radius: 0;
+    padding-top: 1em;
+    &, a {
+      color: @text-color;
+    }
+  }
+  .ui-widget-content {
+    border: none;
+    margin-bottom: 1em;
   }
   .ui-icon {
     background-image: none;
