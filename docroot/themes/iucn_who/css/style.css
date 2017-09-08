@@ -10764,6 +10764,8 @@ h6.facets-title {
   text-align: left;
   font-size: 28px;
   font-size: 2.8rem;
+  padding-bottom: .8em;
+  padding-top: .8em;
   position: relative;
 }
 @media screen and (max-width: 767px) {
