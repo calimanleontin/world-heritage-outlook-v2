@@ -10592,12 +10592,13 @@ h6.facets-title {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #f7f7f7;
-  display: flex;
   font-size: 15px;
   font-size: 1.5rem;
+  background-color: #f7f7f7;
+  display: flex;
   padding-left: 0;
   padding-right: 0;
+  margin-bottom: 3em;
 }
 @media (min-width: 768px) {
   .node--type-site-assessment .nav-tabs {
