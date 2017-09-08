@@ -8530,24 +8530,6 @@ body:not(.show-focus-outlines) textarea:active:focus {
   font-weight: 800;
   margin-bottom: 1em;
 }
-.page-header.coming-soon {
-  color: #7e7e7e;
-}
-.page-header.data-deficient {
-  color: #333333;
-}
-.page-header.critical {
-  color: #ef3133;
-}
-.page-header.significant-concern {
-  color: #f69232;
-}
-.page-header.good-concerns {
-  color: #9cd07d;
-}
-.page-header.good {
-  color: #3bb55e;
-}
 @media screen and (max-width: 767px) {
   .page-header {
     margin-left: -15px;
@@ -8649,24 +8631,6 @@ a.is-active {
   padding-bottom: .3em;
   padding-left: .25em;
   text-align: left;
-}
-.left-border.coming-soon {
-  color: #7e7e7e;
-}
-.left-border.data-deficient {
-  color: #333333;
-}
-.left-border.critical {
-  color: #ef3133;
-}
-.left-border.significant-concern {
-  color: #f69232;
-}
-.left-border.good-concerns {
-  color: #9cd07d;
-}
-.left-border.good {
-  color: #3bb55e;
 }
 @media screen and (max-width: 767px) {
   .left-border {
