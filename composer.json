@@ -102,6 +102,8 @@
     "drupal/facets_pretty_paths": "1.x-dev",
     "drupal/features": "^3.5",
     "drupal/field_group": "^1.0@RC",
+    "drupal/geofield": "^1.0@alpha",
+    "drupal/geofield_map": "^1.10",
     "drupal/image_effects": "^1.0",
     "drupal/image_widget_crop": "^2.0",
     "drupal/inline_responsive_images": "^2.1",
