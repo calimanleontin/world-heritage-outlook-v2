@@ -72,61 +72,61 @@ third_party_settings:
           sidebar: {  }
     regions:
       full_assessment_values:
+        - field_as_threats_current_rating
+        - field_as_threats_potent_rating
         - field_as_protection_ov_out_rate
         - field_as_benefits
         - field_as_benefits_summary
-        - field_as_threats_potent_rating
-        - field_as_threats_current_rating
         - field_as_protection_ov_out_text
-        - field_as_threats_potent_text
         - field_as_threats_current_text
+        - field_as_threats_potent_text
         - field_as_threats_current
         - field_as_threats_potential
         - field_as_projects
-        - field_as_key_cons
-        - group_description_of_values
-        - group_values
-        - field_as_projects_needs
         - group_key_conservation_issues
+        - field_as_key_cons
+        - field_as_projects_needs
+        - group_values
+        - group_description_of_values
         - field_as_vass_bio_state
+        - group_benefits
         - field_as_vass_wh_trend
         - group_assessment_information
-        - group_benefits
         - group_ass_protection_manag
-        - group_additional_information
         - field_as_protection
         - group_overall_ass_prot
-        - group_threats
-        - 'display_field_copy:node-assessment_values_copy'
         - group_ass_pm_outside
+        - group_threats
+        - group_additional_information
+        - 'display_field_copy:node-assessment_values_copy'
         - field_as_vass_bio_trend
-        - group_protection_and_management
         - group_best_practice_examples
-        - group_projects
         - field_as_vass_bio_text
+        - group_protection_and_management
         - 'display_field_copy:node-justification_of_assessment_valu'
-        - field_as_protection_ov_practices
+        - group_projects
         - group_state_and_trend_of_values
+        - field_as_protection_ov_practices
         - group_understanding_benefits
         - group_summary_of_benefits
         - group_active_projects
         - group_current_threats
         - group_assessing_current_state
-        - group_ass_state_wh
-        - group_projects_needs
         - field_as_values_wh
+        - group_ass_state_wh
         - 'display_field_copy:node-identifying_and_describing_value'
         - group_potential_threats
+        - group_projects_needs
         - group_summary_values
-        - group_ass_state_bv
         - field_as_values_bio
+        - group_ass_state_bv
       summary:
         - group_conservation_outlook
         - field_as_protection_ov_rating
         - field_as_threats_rating
+        - field_as_global_assessment_text
         - field_as_protection_ov_text
         - field_as_threats_text
-        - field_as_global_assessment_text
         - group_current_state_trend_values
         - group_overall_threats
         - group_overall_prot_man
@@ -139,6 +139,9 @@ third_party_settings:
       sidebar:
         - assessment_site_location
         - assessments_more_site_links
+        - assessments_download_links
+        - 'dynamic_block_field:node-how_are_sites_assessed'
+        - 'dynamic_block_field:node-site_feedback'
     fields:
       'display_field_copy:node-assessment_values_copy':
         plugin_id: 'display_field_copy:node-assessment_values_copy'
@@ -161,6 +164,21 @@ third_party_settings:
         weight: 8
         label: hidden
         formatter: basic_string
+      'dynamic_block_field:node-how_are_sites_assessed':
+        plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
+        weight: 13
+        label: above
+        formatter: default
+      'dynamic_block_field:node-site_feedback':
+        plugin_id: 'dynamic_block_field:node-site_feedback'
+        weight: 14
+        label: above
+        formatter: default
+      assessments_download_links:
+        plugin_id: assessments_download_links
+        weight: 12
+        label: above
+        formatter: default
       assessment_site_location:
         plugin_id: assessment_site_location
         weight: 10
