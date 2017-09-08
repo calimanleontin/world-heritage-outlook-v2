@@ -1,0 +1,18 @@
+id: how_are_sites_assessed
+label: 'How are sites assessed'
+ui_limit: 'site_assessment|*'
+properties:
+  block: 'block_content:8811ccc8-9ec2-4ac0-80d5-22bc541741b3'
+  use_block_title: true
+  config:
+    id: 'block_content:8811ccc8-9ec2-4ac0-80d5-22bc541741b3'
+    label: ''
+    provider: block_content
+    label_display: visible
+    status: true
+    info: ''
+    view_mode: full
+type: block
+type_label: 'Block field'
+entities:
+  node: node
