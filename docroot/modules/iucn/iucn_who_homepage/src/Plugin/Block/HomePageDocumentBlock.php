@@ -27,24 +27,24 @@ class HomePageDocumentBlock extends BlockBase {
 
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-
-    $config = $this->getConfiguration();
+    $title = \Drupal::state()->get(self::CONFIG_KEY_TITLE);
     $form['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
       '#required' => TRUE,
       '#description' => 'Title in <b>english</b> ex. Download the report',
       '#size' => 40,
-      '#default_value' => isset($config['title']) ? $config['title'] : '',
+      '#default_value' => $title,
     ];
 
+    $subtitle = \Drupal::state()->get(self::CONFIG_KEY_SUBTITLE);
     $form['subtitle'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Subtitle'),
       '#required' => TRUE,
       '#description' => 'Subtitle in <b>english</b> ex. IUCN World Heritage Outlook 2017',
       '#size' => 40,
-      '#default_value' => isset($config['subtitle']) ? $config['subtitle'] : '',
+      '#default_value' => $subtitle,
     ];
 
     $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE);
@@ -63,8 +63,12 @@ class HomePageDocumentBlock extends BlockBase {
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
-    $this->configuration['title'] = $values['title'];
-    $this->configuration['subtitle'] = $values['subtitle'];
+    if ($title = $values['title']) {
+      \Drupal::state()->set(self::CONFIG_KEY_TITLE, $title);
+    }
+    if ($subtitle = $values['subtitle']) {
+      \Drupal::state()->set(self::CONFIG_KEY_SUBTITLE, $subtitle);
+    }
     if ($fid = $values['file'][0]) {
       \Drupal::state()->set(self::CONFIG_KEY_FILE, $fid);
     };
@@ -81,8 +85,8 @@ class HomePageDocumentBlock extends BlockBase {
     if (!empty($fid) && $file = File::load($fid)) {
       $content['output'] = [
         '#theme' => 'homepage_report',
-        '#title' => $this->t($this->configuration['title']),
-        '#subtitle' => $this->t($this->configuration['subtitle']),
+        '#title' => \Drupal::state()->get(self::CONFIG_KEY_TITLE),
+        '#subtitle' => \Drupal::state()->get(self::CONFIG_KEY_SUBTITLE),
         '#file_url' => file_create_url($file->getFileUri()),
       ];
     }
