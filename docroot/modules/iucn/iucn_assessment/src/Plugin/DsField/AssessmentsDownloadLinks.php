@@ -2,18 +2,19 @@
 
 namespace Drupal\iucn_assessment\Plugin\DsField;
 
+use Drupal\Core\Url;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
 
 /**
  * Plugin that renders the author of a node.
  *
  * @DsField(
- *   id = "assessments_links",
- *   title = @Translation("Assessments links"),
+ *   id = "assessments_download_links",
+ *   title = @Translation("Download PDF"),
  *   entity_type = "node"
  * )
  */
-class AssessmentsLinks extends DsFieldBase {
+class AssessmentsDownloadLinks extends DsFieldBase {
 
   /**
    * {@inheritdoc}
@@ -22,22 +23,19 @@ class AssessmentsLinks extends DsFieldBase {
     /* @var $node \Drupal\node\NodeInterface */
     $node = $this->entity();
 
-
     $links = [];
-    if ($node->hasField('field_assessments')) {
-      if ($node->field_assessments->count()) {
-        foreach ($node->field_assessments as $idx => $item) {
+    if ($node->hasField('field_as_site')) {
+      $site = $node->field_as_site->entity;
+      if ($site->field_assessments->count()) {
+        foreach ($site->field_assessments as $idx => $item) {
           if (empty($item->entity)) {
             continue;
           }
-          $active = iucn_assessment_year_display($node);
           $value = [
-            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
-            'title' => $item->entity->field_as_cycle->value,
+            'url' => $site->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
+            'title' => $this->t('Site Assessment @year', ['@year' => $item->entity->field_as_cycle->value]),
           ];
-          if ($item->entity->field_as_cycle->value == $active) {
-            $value['attributes']['class'][] = 'active-year';
-          }
+          $value['attributes']['target'][] = '_blank';
           $links[] = $value;
         }
       }
@@ -57,7 +55,7 @@ class AssessmentsLinks extends DsFieldBase {
    * {@inheritdoc}
    */
   public function isAllowed() {
-    if ($this->bundle() != 'site') {
+    if ($this->bundle() != 'site_assessment') {
       return FALSE;
     }
     return parent::isAllowed();

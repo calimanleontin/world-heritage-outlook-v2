@@ -1,0 +1,17 @@
+id: site_feedback
+label: 'Give us feedback'
+ui_limit: 'site_assessment|*'
+properties:
+  block: webform_block
+  use_block_title: false
+  config:
+    id: webform_block
+    label: ''
+    provider: webform
+    label_display: visible
+    webform_id: site_feedback
+    default_data: ''
+type: block
+type_label: 'Block field'
+entities:
+  node: node
