@@ -11034,6 +11034,163 @@ h6.facets-title {
   font-size: 25px;
   font-size: 2.5rem;
 }
+.field--name-assessments-more-site-links > .field--label,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-size: 1em;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+h1.field--name-assessments-more-site-links > .field--label,
+h1.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+h2.field--name-assessments-more-site-links > .field--label,
+h2.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+h3.field--name-assessments-more-site-links > .field--label,
+h3.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+h4.field--name-assessments-more-site-links > .field--label,
+h4.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+h5.field--name-assessments-more-site-links > .field--label,
+h5.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+h6.field--name-assessments-more-site-links > .field--label,
+h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.field--name-assessments-more-site-links > .field--label,
+  h1.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+  h2.field--name-assessments-more-site-links > .field--label,
+  h2.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+  h3.field--name-assessments-more-site-links > .field--label,
+  h3.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+  h4.field--name-assessments-more-site-links > .field--label,
+  h4.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+  h5.field--name-assessments-more-site-links > .field--label,
+  h5.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
+  h6.field--name-assessments-more-site-links > .field--label,
+  h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
+    font-size: 1.3em;
+  }
+}
+.field--name-assessments-more-site-links ul,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.field--name-assessments-more-site-links ul > li:before,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed ul > li:before {
+  display: none;
+}
+.field--name-assessments-more-site-links ul > li + li,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed ul > li + li {
+  margin-top: 0;
+}
+.field--name-assessments-more-site-links li > a,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed li > a,
+.field--name-assessments-more-site-links li > a a,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed li > a a {
+  color: #03afdf;
+}
+.field--name-assessments-more-site-links li > a:before,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed li > a:before {
+  content: '>';
+  display: inline;
+  margin-right: .5em;
+}
+.field--name-assessments-download-links {
+  margin-top: 40px;
+  margin-top: 4rem;
+}
+.field--name-assessments-download-links .field--label {
+  background-color: #134780;
+  color: #fff;
+  display: inline-block;
+  text-align: left;
+  width: 100%;
+  font-size: 22px;
+  padding: .5em 1.5em;
+  position: relative;
+  line-height: 1.2;
+  padding-left: 5em;
+  font-weight: 300;
+}
+@media screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label {
+    font-size: 21px;
+    line-height: 1.1;
+    padding-left: 3em;
+    width: auto;
+  }
+}
+.field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
+  font-size: 15px;
+}
+@media screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
+    font-size: 13px;
+  }
+}
+.field--name-assessments-download-links .field--label:before {
+  background-image: url(../images/download-report.svg);
+  background-repeat: no-repeat;
+  content: '';
+  display: block;
+  background-position: center;
+  background-size: auto;
+  border-right: 1px solid;
+  height: 75%;
+  left: 0;
+  position: absolute;
+  top: 15%;
+  width: 4em;
+}
+@media screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label:before {
+    width: 2.5em;
+  }
+}
+.field--name-assessments-download-links .field--label:before:before {
+  display: none;
+}
+.field--name-assessments-download-links .field--label:before:after {
+  border-right: 1px solid;
+  content: '';
+  display: block;
+  height: 80%;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+.field--name-assessments-download-links:hover > .field--item,
+.field--name-assessments-download-links:focus > .field--item,
+.field--name-assessments-download-links:active > .field--item {
+  opacity: 1;
+}
+.field--name-assessments-download-links ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.field--name-assessments-download-links .field--item {
+  opacity: 0;
+  transition: opacity .2s;
+}
+.field--name-assessments-download-links .field--item a {
+  display: block;
+  padding: .5em 1em;
+  border: 1px solid;
+}
+.field--name-assessments-download-links .field--item a,
+.field--name-assessments-download-links .field--item a a {
+  color: #03afdf;
+}
+.field--name-assessments-download-links .field--item a:hover {
+  background-color: #03afdf;
+  border-color: #03afdf;
+  color: #fff;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;

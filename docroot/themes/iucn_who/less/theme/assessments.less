@@ -295,3 +295,111 @@
     }
   }
 }
+
+.field--name-assessments-more-site-links,
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed {
+  > .field--label {
+    .bottom-border();
+    font-weight: 900;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  ul > li:before {
+    display: none;
+  }
+  ul > li + li {
+    margin-top: 0;
+  }
+  li > a {
+    .light-link();
+    &:before {
+      content: '>';
+      display: inline;
+      margin-right: .5em;
+    }
+  }
+}
+
+.field--name-assessments-download-links {
+  .remify(margin-top, 40px);
+  .field--label {
+    // @todo: mixin
+    background-color: @iucn-blue-dark;
+    color: #fff;
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    font-size: 22px;
+    padding: .5em 1.5em;
+    position: relative;
+    line-height: 1.2;
+    padding-left: 5em;
+    font-weight: 300;
+    @media @grid-mobile {
+      font-size: 21px;
+      line-height: 1.1;
+      padding-left: 3em;
+      width: auto;
+    }
+    div.field--name-field-pdf-button-title {
+      font-size: 15px;
+      @media @grid-mobile {
+        font-size: 13px;
+      }
+    }
+    &:before {
+      .svg-icon(download-report);
+      content: '';
+      display: block;
+      background-position: center;
+      background-size: auto;
+      border-right: 1px solid;
+      height: 75%;
+      left: 0;
+      position: absolute;
+      top: 15%;
+      width: 4em;
+      @media @grid-mobile {
+        width: 2.5em;
+      }
+      &:before {
+        display: none;
+      }
+      &:after {
+        border-right: 1px solid;
+        content: '';
+        display: block;
+        height: 80%;
+        position: absolute;
+        right: 0;
+        top: 10%;
+      }
+    }
+  }
+  &:hover, &:focus, &:active {
+    > .field--item {
+      opacity: 1;
+    }
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  .field--item {
+    opacity: 0;
+    transition: opacity .2s;
+    a {
+      display: block;
+      padding: .5em 1em;
+      .light-link();
+      border: 1px solid;
+      &:hover {
+        background-color: @link-hover-color;
+        border-color: @link-hover-color;
+        color: #fff;
+      }
+    }
+  }
+}
