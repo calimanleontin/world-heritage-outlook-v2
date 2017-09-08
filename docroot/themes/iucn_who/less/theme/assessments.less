@@ -253,3 +253,45 @@
     }
   }
 }
+
+.assessment-toggle {
+  .panel-heading {
+    > a:before {
+      .svg-icon(collapse-minus);
+      content: '';
+      display: inline-block;
+      height: 1em;
+      margin-right: .2em;
+      min-height: 20px;
+      min-width: 20px;
+      position: relative;
+      top: .1em;
+      width: 1em;
+    }
+    > a[aria-expanded='false']:before {
+      .svg-icon(collapse-plus);
+    }
+  }
+}
+.assessment-section > h2 {
+  &:extend(.iucn-publications-teaser-wrapper .field--name-node-title h2);
+  color: @iucn-blue-dark;
+  .assessment-section + & {
+    margin-top: 4em;
+  }
+}
+.assessment-projects.assessment-toggle,
+.assessment-section > .assessment-toggle {
+  border: none;
+  &.panel {
+    margin-bottom: 0;
+  }
+  > .panel-heading {
+    background-color: transparent;
+    border-bottom: 1px solid;
+    font-weight: 900;
+    .panel-title {
+      .remify(font-size, 25px);
+    }
+  }
+}

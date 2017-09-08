@@ -10992,6 +10992,48 @@ h6.facets-title {
   padding-left: .5em;
   margin-left: .5em;
 }
+.assessment-toggle .panel-heading > a:before {
+  background-image: url(../images/collapse-minus.svg);
+  background-repeat: no-repeat;
+  content: '';
+  display: inline-block;
+  height: 1em;
+  margin-right: .2em;
+  min-height: 20px;
+  min-width: 20px;
+  position: relative;
+  top: .1em;
+  width: 1em;
+}
+.assessment-toggle .panel-heading > a[aria-expanded='false']:before {
+  background-image: url(../images/collapse-plus.svg);
+  background-repeat: no-repeat;
+}
+.assessment-section > h2 {
+  color: #134780;
+}
+.assessment-section + .assessment-section > h2 {
+  margin-top: 4em;
+}
+.assessment-projects.assessment-toggle,
+.assessment-section > .assessment-toggle {
+  border: none;
+}
+.assessment-projects.assessment-toggle.panel,
+.assessment-section > .assessment-toggle.panel {
+  margin-bottom: 0;
+}
+.assessment-projects.assessment-toggle > .panel-heading,
+.assessment-section > .assessment-toggle > .panel-heading {
+  background-color: transparent;
+  border-bottom: 1px solid;
+  font-weight: 900;
+}
+.assessment-projects.assessment-toggle > .panel-heading .panel-title,
+.assessment-section > .assessment-toggle > .panel-heading .panel-title {
+  font-size: 25px;
+  font-size: 2.5rem;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;
@@ -12063,13 +12105,15 @@ fieldset[disabled] #download-publication-button a.focus {
     margin-top: 1em;
   }
 }
-.iucn-publications-teaser-wrapper .field--name-node-title h2 {
+.iucn-publications-teaser-wrapper .field--name-node-title h2,
+.assessment-section > h2 {
   font-size: 28px;
   font-size: 2.8rem;
   font-weight: 500;
 }
 @media screen and (max-width: 767px) {
-  .iucn-publications-teaser-wrapper .field--name-node-title h2 {
+  .iucn-publications-teaser-wrapper .field--name-node-title h2,
+  .assessment-section > h2 {
     font-size: 23px;
   }
 }
