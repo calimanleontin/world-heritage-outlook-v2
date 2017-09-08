@@ -9667,16 +9667,16 @@ h6.facets-title {
   background-image: url(../images/management-white.svg);
   background-repeat: no-repeat;
 }
-.paragraph h2.iucn-arrow.management:before,
-.paragraph h3.iucn-arrow.management:before,
-.paragraph h4.iucn-arrow.management:before {
-  background-image: url(../images/management-white.svg);
+.paragraph h2.iucn-arrow.threats:before,
+.paragraph h3.iucn-arrow.threats:before,
+.paragraph h4.iucn-arrow.threats:before {
+  background-image: url(../images/threats-white.svg);
   background-repeat: no-repeat;
 }
-.paragraph h2.iucn-arrow.management:before,
-.paragraph h3.iucn-arrow.management:before,
-.paragraph h4.iucn-arrow.management:before {
-  background-image: url(../images/management-white.svg);
+.paragraph h2.iucn-arrow.values:before,
+.paragraph h3.iucn-arrow.values:before,
+.paragraph h4.iucn-arrow.values:before {
+  background-image: url(../images/values-white.svg);
   background-repeat: no-repeat;
 }
 @media screen and (max-width: 767px) {
@@ -10789,10 +10789,10 @@ h6.facets-title {
   vertical-align: middle;
   margin-left: .5em;
 }
-.conservation-outlook-summary-group {
+.node--type-site-assessment .conservation-outlook-summary-group {
   position: relative;
 }
-.conservation-outlook-summary-group h3 {
+.node--type-site-assessment .conservation-outlook-summary-group h3 {
   border-left: .4em solid;
   color: #134780;
   line-height: 1.2;
@@ -10803,35 +10803,35 @@ h6.facets-title {
   font-size: 28px;
   font-size: 2.8rem;
 }
-.conservation-outlook-summary-group h3.coming-soon {
+.node--type-site-assessment .conservation-outlook-summary-group h3.coming-soon {
   color: #7e7e7e;
 }
-.conservation-outlook-summary-group h3.data-deficient {
+.node--type-site-assessment .conservation-outlook-summary-group h3.data-deficient {
   color: #333333;
 }
-.conservation-outlook-summary-group h3.critical {
+.node--type-site-assessment .conservation-outlook-summary-group h3.critical {
   color: #ef3133;
 }
-.conservation-outlook-summary-group h3.significant-concern {
+.node--type-site-assessment .conservation-outlook-summary-group h3.significant-concern {
   color: #f69232;
 }
-.conservation-outlook-summary-group h3.good-concerns {
+.node--type-site-assessment .conservation-outlook-summary-group h3.good-concerns {
   color: #9cd07d;
 }
-.conservation-outlook-summary-group h3.good {
+.node--type-site-assessment .conservation-outlook-summary-group h3.good {
   color: #3bb55e;
 }
 @media screen and (max-width: 767px) {
-  .conservation-outlook-summary-group h3 {
+  .node--type-site-assessment .conservation-outlook-summary-group h3 {
     margin-left: -15px;
     margin-right: -15px;
     border-left-width: 10px;
   }
 }
-h2.conservation-outlook-summary-group h3 {
+h2.node--type-site-assessment .conservation-outlook-summary-group h3 {
   font-weight: 500;
 }
-.conservation-outlook-summary-group .field--name-field-as-end-date {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date {
   font-size: 15px;
   font-size: 1.5rem;
   color: #818181;
@@ -10839,19 +10839,19 @@ h2.conservation-outlook-summary-group h3 {
   right: 0;
   top: 8.4px;
 }
-.conservation-outlook-summary-group .field--name-field-as-end-date .field--label {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date .field--label {
   font-weight: normal;
 }
-.conservation-outlook-summary-group .field--name-field-as-end-date .field--label:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date .field--label:after {
   display: none;
 }
-.conservation-outlook-summary-group .field--name-field-as-end-date .field--label,
-.conservation-outlook-summary-group .field--name-field-as-end-date .field--item {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date .field--label,
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date .field--item {
   display: inline-block;
   float: none;
   padding-right: 0;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level {
   align-items: center;
   background-color: #134780;
   color: #fff;
@@ -10865,7 +10865,7 @@ h2.conservation-outlook-summary-group h3 {
   position: relative;
   display: inline-flex;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level:after {
   content: "";
   width: 0;
   height: 0;
@@ -10876,43 +10876,52 @@ h2.conservation-outlook-summary-group h3 {
   left: 100%;
   top: 0;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.coming-soon {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.coming-soon {
   background-color: #7e7e7e;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.coming-soon:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.coming-soon:after {
   border-color: transparent transparent transparent #7e7e7e;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.data-deficient {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.data-deficient {
   background-color: #333333;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.data-deficient:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.data-deficient:after {
   border-color: transparent transparent transparent #333333;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.critical {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.critical {
   background-color: #ef3133;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.critical:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.critical:after {
   border-color: transparent transparent transparent #ef3133;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.significant-concern {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.significant-concern {
   background-color: #f69232;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.significant-concern:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.significant-concern:after {
   border-color: transparent transparent transparent #f69232;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good-concerns {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good-concerns {
   background-color: #9cd07d;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good-concerns:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good-concerns:after {
   border-color: transparent transparent transparent #9cd07d;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good {
   background-color: #3bb55e;
 }
-.conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good:after {
+.node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good:after {
   border-color: transparent transparent transparent #3bb55e;
 }
-.management-summary-group h3:before {
+.node--type-site-assessment .management-summary-group {
+  margin-top: 40px;
+  margin-top: 4rem;
+  border-top: 1px solid #eeeeee;
+}
+.node--type-site-assessment .management-summary-group h3 {
+  margin-top: 35px;
+  margin-top: 3.5rem;
+}
+.node--type-site-assessment .management-summary-group h3:before {
   background-image: url(../images/management-black.svg);
   background-repeat: no-repeat;
   content: '';
@@ -10921,10 +10930,20 @@ h2.conservation-outlook-summary-group h3 {
   height: 1.5em;
   background-position: center;
   background-size: contain;
-  vertical-align: middle;
-  margin-right: .5em;
+  vertical-align: baseline;
+  margin-right: .2em;
+  margin-bottom: -0.2em;
 }
-.threats-summary-group h3:before {
+.node--type-site-assessment .threats-summary-group {
+  margin-top: 40px;
+  margin-top: 4rem;
+  border-top: 1px solid #eeeeee;
+}
+.node--type-site-assessment .threats-summary-group h3 {
+  margin-top: 35px;
+  margin-top: 3.5rem;
+}
+.node--type-site-assessment .threats-summary-group h3:before {
   background-image: url(../images/threats-black.svg);
   background-repeat: no-repeat;
   content: '';
@@ -10933,10 +10952,20 @@ h2.conservation-outlook-summary-group h3 {
   height: 1.5em;
   background-position: center;
   background-size: contain;
-  vertical-align: middle;
-  margin-right: .5em;
+  vertical-align: baseline;
+  margin-right: .2em;
+  margin-bottom: -0.2em;
 }
-.values-summary-group h3:before {
+.node--type-site-assessment .values-summary-group {
+  margin-top: 40px;
+  margin-top: 4rem;
+  border-top: 1px solid #eeeeee;
+}
+.node--type-site-assessment .values-summary-group h3 {
+  margin-top: 35px;
+  margin-top: 3.5rem;
+}
+.node--type-site-assessment .values-summary-group h3:before {
   background-image: url(../images/values-black.svg);
   background-repeat: no-repeat;
   content: '';
@@ -10945,8 +10974,36 @@ h2.conservation-outlook-summary-group h3 {
   height: 1.5em;
   background-position: center;
   background-size: contain;
-  vertical-align: middle;
-  margin-right: .5em;
+  vertical-align: baseline;
+  margin-right: .2em;
+  margin-bottom: -0.2em;
+}
+.node--type-site-assessment .field--name-field-as-vass-wh-state,
+.node--type-site-assessment .field--name-field-as-protection-ov-rating,
+.node--type-site-assessment .field--name-field-as-vass-wh-state a,
+.node--type-site-assessment .field--name-field-as-protection-ov-rating a {
+  font-size: 17px;
+  font-size: 1.7rem;
+  color: #f69232;
+  font-weight: 900;
+  margin-bottom: 1.8em;
+}
+.assessment-expand-buttons {
+  list-style-type: none;
+  text-align: right;
+  padding-left: 0;
+}
+.assessment-expand-buttons li {
+  font-size: 14px;
+  font-size: 1.4rem;
+  color: #03afdf;
+  display: inline-block;
+  text-transform: uppercase;
+}
+.assessment-expand-buttons li + li {
+  border-left: 1px solid;
+  padding-left: .5em;
+  margin-left: .5em;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
@@ -11562,11 +11619,11 @@ h2.conservation-outlook-summary-group h3 {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management {
+.path-frontpage #map-site-details .map-site-detail dt.threats {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management:before {
-  background-image: url(../images/management-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.threats:before {
+  background-image: url(../images/threats-white.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -11579,11 +11636,11 @@ h2.conservation-outlook-summary-group h3 {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management {
+.path-frontpage #map-site-details .map-site-detail dt.values {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management:before {
-  background-image: url(../images/management-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.values:before {
+  background-image: url(../images/values-white.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

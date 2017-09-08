@@ -134,51 +134,82 @@
       }
     }
   }
-}
-.conservation-outlook-summary-group {
-  position: relative;
-  h3 {
-    .left-border();
-    .remify(font-size, 28px);
-  }
-  .field--name-field-as-end-date {
-    .remify(font-size, 15px);
-    color: #818181;
-    position: absolute;
-    right: 0;
-    top: .3 * 28px;
-    .field--label {
-      font-weight: normal;
-      &:after {
-        display: none;
-      }
-    }
-    .field--label,
-    .field--item {
-      display: inline-block;
-      float: none;
-      padding-right: 0;
-    }
-  }
-  .field--name-field-as-global-assessment-level {
-    .iucn-base-arrow();
-    display: inline-flex;
-  }
-}
-.loop-conservation-categories({
-  .@{conservation-category-class}-summary-group {
+
+  .conservation-outlook-summary-group {
+    position: relative;
     h3 {
-      &:before {
-        .svg-icon(~'@{conservation-category-class}-black');
-        content: '';
+      .left-border();
+      .remify(font-size, 28px);
+    }
+    .field--name-field-as-end-date {
+      .remify(font-size, 15px);
+      color: #818181;
+      position: absolute;
+      right: 0;
+      top: .3 * 28px;
+      .field--label {
+        font-weight: normal;
+        &:after {
+          display: none;
+        }
+      }
+      .field--label,
+      .field--item {
         display: inline-block;
-        width: 1.5em;
-        height: 1.5em;
-        background-position: center;
-        background-size: contain;
-        vertical-align: middle;
-        margin-right: .5em;
+        float: none;
+        padding-right: 0;
       }
     }
+    .field--name-field-as-global-assessment-level {
+      .iucn-base-arrow();
+      display: inline-flex;
+    }
   }
+  .loop-conservation-categories({
+    .@{conservation-category-class}-summary-group {
+      .remify(margin-top, 40px);
+      border-top: 1px solid @hr-border;
+      h3 {
+        .remify(margin-top, 35px);
+        &:before {
+          .svg-icon(~'@{conservation-category-class}-black');
+          content: '';
+          display: inline-block;
+          width: 1.5em;
+          height: 1.5em;
+          background-position: center;
+          background-size: contain;
+          vertical-align: baseline;
+          margin-right: .2em;
+          margin-bottom: -.2em;
+        }
+      }
+    }
   });
+  .field--name-field-as-vass-wh-state,
+  .field--name-field-as-protection-ov-rating {
+    &, a {
+      .remify(font-size, 17px);
+      color: @iucn-orange;
+      font-weight: 900;
+      margin-bottom: 1.8em;
+    }
+  }
+}
+
+.assessment-expand-buttons {
+  list-style-type: none;
+  text-align: right;
+  padding-left: 0;
+  li {
+    .remify(font-size, 14px);
+    color: @iucn-blue-light;
+    display: inline-block;
+    text-transform: uppercase;
+    + li {
+      border-left: 1px solid;
+      padding-left: .5em;
+      margin-left: .5em;
+    }
+  }
+}
