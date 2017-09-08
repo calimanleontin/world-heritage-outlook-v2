@@ -20,8 +20,13 @@
   .ui-icon {
     background-image: none;
     text-indent: 0;
-    .svg-icon(dropdown-caret-black);
+    .svg-icon(collapse-plus);
+    height: 20px;
+    width: 20px;
     background-size: contain;
     background-position: center;
   }
+}
+.ui-accordion .ui-state-active .ui-icon {
+  .svg-icon(collapse-minus);
 }

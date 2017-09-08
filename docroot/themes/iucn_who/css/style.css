@@ -8424,10 +8424,16 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
 .ui-accordion .ui-icon {
   background-image: none;
   text-indent: 0;
-  background-image: url(../images/dropdown-caret-black.svg);
+  background-image: url(../images/collapse-plus.svg);
   background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
   background-size: contain;
   background-position: center;
+}
+.ui-accordion .ui-state-active .ui-icon {
+  background-image: url(../images/collapse-minus.svg);
+  background-repeat: no-repeat;
 }
 ol,
 ul {
