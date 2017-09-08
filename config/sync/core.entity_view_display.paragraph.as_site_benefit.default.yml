@@ -30,174 +30,45 @@ third_party_settings:
       library: null
       disable_css: false
       entity_classes: all_classes
-      settings:
-        classes: {  }
-        wrappers:
-          title: div
-          terms: div
-          description: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
+      settings: {  }
     regions:
       title:
         - field_as_benefits_category
+      description:
         - field_as_description
-        - field_as_benefits_datadeficient
-        - field_as_benefits_commun_in
-        - field_as_benefits_commun_out
-        - field_as_benefits_commun_wide
-        - field_as_benefits_hab_level
-        - field_as_benefits_hab_trend
-        - field_as_benefits_pollut_level
-        - field_as_benefits_pollut_trend
-        - field_as_benefits_oex_level
-        - field_as_benefits_oex_trend
-        - field_as_benefits_climate_level
-        - field_as_benefits_climate_trend
-        - field_as_benefits_invassp_level
-        - field_as_benefits_invassp_trend
-        - field_as_comment
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit
 mode: default
 content:
   field_as_benefits_category:
+    type: entity_reference_label
     weight: 0
-    label: above
+    region: title
+    label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_climate_level:
-    weight: 12
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_climate_trend:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_commun_in:
-    weight: 3
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_commun_out:
-    weight: 4
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_commun_wide:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_datadeficient:
-    weight: 2
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_as_benefits_hab_level:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_hab_trend:
-    weight: 7
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_invassp_level:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_invassp_trend:
-    weight: 15
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_oex_level:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_oex_trend:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_pollut_level:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_benefits_pollut_trend:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_comment:
-    weight: 16
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_as_description:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-hidden: {  }
+    region: description
+hidden:
+  field_as_benefits_climate_level: true
+  field_as_benefits_climate_trend: true
+  field_as_benefits_commun_in: true
+  field_as_benefits_commun_out: true
+  field_as_benefits_commun_wide: true
+  field_as_benefits_datadeficient: true
+  field_as_benefits_hab_level: true
+  field_as_benefits_hab_trend: true
+  field_as_benefits_invassp_level: true
+  field_as_benefits_invassp_trend: true
+  field_as_benefits_oex_level: true
+  field_as_benefits_oex_trend: true
+  field_as_benefits_pollut_level: true
+  field_as_benefits_pollut_trend: true
+  field_as_comment: true
