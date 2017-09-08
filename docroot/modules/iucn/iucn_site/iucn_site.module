@@ -106,3 +106,14 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
     }
   }
 }
+
+/**
+ * Implements hook_form_alter.
+ */
+function iucn_site_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    if (isset($form['#info']['filter-search_api_fulltext']['label'])) {
+      $form['keys']['#attributes']['placeholder'] = t($form['#info']['filter-search_api_fulltext']['label']);
+    }
+  }
+}

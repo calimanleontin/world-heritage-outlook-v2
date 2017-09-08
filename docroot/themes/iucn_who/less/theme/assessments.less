@@ -12,15 +12,47 @@
   .field--name-body {
     margin-top: 1em;
   }
+  .field--name-assessments-links {
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      text-align: center;
+    }
+    li {
+      display: inline-block;
+      + li {
+        margin-left: 3em;
+      }
+      a {
+        color: @iucn-blue-light;
+        display: block;
+      }
+      a:after {
+        background-color: #cccccc;
+        border: 1px solid #c2c2c2;
+        content: '';
+        display: block;
+        height: .7em;
+        margin-left: -57%;
+        transform: skewX(-55deg);
+        width: 200%;
+      }
+      a.active-year:after {
+        background-color: @iucn-blue-light;
+        border: none;
+      }
+    }
+  }
 }
 .node--type-site-assessment {
   .nav-tabs {
     .container();
+    .remify(font-size, 15px);
     background-color: @assessment-tabs-bg;
     display: flex;
-    .remify(font-size, 15px);
     padding-left: 0;
     padding-right: 0;
+    margin-bottom: 3em;
     &,
     > li,
     > li > a,
@@ -134,51 +166,90 @@
       }
     }
   }
-}
-.conservation-outlook-summary-group {
-  position: relative;
-  h3 {
-    .left-border();
+
+  .conservation-outlook-summary-group {
+    .left-bordered-heading();
     .remify(font-size, 28px);
-  }
-  .field--name-field-as-end-date {
-    .remify(font-size, 15px);
-    color: #818181;
-    position: absolute;
-    right: 0;
-    top: .3 * 28px;
-    .field--label {
-      font-weight: normal;
-      &:after {
-        display: none;
+    padding-bottom: .8em;
+    padding-top: .8em;
+    position: relative;
+    h3 {
+      .remify(font-size, 28px);
+      margin-top: 0;
+    }
+    .field--name-field-as-end-date {
+      .remify(font-size, 15px);
+      color: #818181;
+      position: absolute;
+      right: 0;
+      top: .3 * 28px;
+      .field--label {
+        font-weight: normal;
+        &:after {
+          display: none;
+        }
+      }
+      .field--label,
+      .field--item {
+        display: inline-block;
+        float: none;
+        padding-right: 0;
       }
     }
-    .field--label,
-    .field--item {
-      display: inline-block;
-      float: none;
-      padding-right: 0;
+    .field--name-field-as-global-assessment-level {
+      .iucn-base-arrow();
+      .remify(font-size, 17px);
+      display: inline-flex;
     }
   }
-  .field--name-field-as-global-assessment-level {
-    .iucn-base-arrow();
-    display: inline-flex;
+  .field--name-field-as-global-assessment-text {
+    margin-top: 1em;
+  }
+  .loop-conservation-categories({
+    .@{conservation-category-class}-summary-group {
+      .remify(margin-top, 40px);
+      border-top: 1px solid @hr-border;
+      h3 {
+        .remify(margin-top, 35px);
+        &:before {
+          .svg-icon(~'@{conservation-category-class}-black');
+          content: '';
+          display: inline-block;
+          width: 1.5em;
+          height: 1.5em;
+          background-position: center;
+          background-size: contain;
+          vertical-align: baseline;
+          margin-right: .2em;
+          margin-bottom: -.2em;
+        }
+      }
+    }
+  });
+  .field--name-field-as-vass-wh-state,
+  .field--name-field-as-protection-ov-rating {
+    &, a {
+      .remify(font-size, 17px);
+      color: @iucn-orange;
+      font-weight: 900;
+      margin-bottom: 1.8em;
+    }
   }
 }
-.loop-conservation-categories({
-  .@{conservation-category-class}-summary-group {
-    h3 {
-      &:before {
-        .svg-icon(~'@{conservation-category-class}-black');
-        content: '';
-        display: inline-block;
-        width: 1.5em;
-        height: 1.5em;
-        background-position: center;
-        background-size: contain;
-        vertical-align: middle;
-        margin-right: .5em;
-      }
+
+.assessment-expand-buttons {
+  list-style-type: none;
+  text-align: right;
+  padding-left: 0;
+  li {
+    .remify(font-size, 14px);
+    color: @iucn-blue-light;
+    display: inline-block;
+    text-transform: uppercase;
+    + li {
+      border-left: 1px solid;
+      padding-left: .5em;
+      margin-left: .5em;
     }
   }
-  });
+}
