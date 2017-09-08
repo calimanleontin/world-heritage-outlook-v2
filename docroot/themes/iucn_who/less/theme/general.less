@@ -6,6 +6,7 @@ html {
 }
 body {
   font-size: unit(@font-size-base) / @rem-system-base * 100%;
+  overflow-x: hidden;
 }
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
@@ -48,9 +49,6 @@ body:not(.show-focus-outlines) {
   // .breadcrumb + & {
   //   margin-top: 1em;
   // }
-}
-.main-container {
-  overflow-x: hidden;
 }
 a {
   .link();

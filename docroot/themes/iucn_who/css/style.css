@@ -8484,6 +8484,7 @@ html {
 }
 body {
   font-size: 180%;
+  overflow-x: hidden;
 }
 body:not(.show-focus-outlines) button:focus,
 body:not(.show-focus-outlines) [tabindex]:focus,
@@ -8541,9 +8542,6 @@ body:not(.show-focus-outlines) textarea:active:focus {
   .page-header {
     font-size: 32px;
   }
-}
-.main-container {
-  overflow-x: hidden;
 }
 a {
   color: #134780;
