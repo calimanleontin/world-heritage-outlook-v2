@@ -12,6 +12,37 @@
   .field--name-body {
     margin-top: 1em;
   }
+  .field--name-assessments-links {
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      text-align: center;
+    }
+    li {
+      display: inline-block;
+      + li {
+        margin-left: 3em;
+      }
+      a {
+        color: @iucn-blue-light;
+        display: block;
+      }
+      a:after {
+        background-color: #cccccc;
+        border: 1px solid #c2c2c2;
+        content: '';
+        display: block;
+        height: .7em;
+        margin-left: -57%;
+        transform: skewX(-55deg);
+        width: 200%;
+      }
+      a.active-year:after {
+        background-color: @iucn-blue-light;
+        border: none;
+      }
+    }
+  }
 }
 .node--type-site-assessment {
   .nav-tabs {

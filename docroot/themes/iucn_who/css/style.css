@@ -10591,6 +10591,35 @@ h6.facets-title {
 .iucn-site-wrapper .field--name-body {
   margin-top: 1em;
 }
+.iucn-site-wrapper .field--name-assessments-links ul {
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+}
+.iucn-site-wrapper .field--name-assessments-links li {
+  display: inline-block;
+}
+.iucn-site-wrapper .field--name-assessments-links li + li {
+  margin-left: 3em;
+}
+.iucn-site-wrapper .field--name-assessments-links li a {
+  color: #03afdf;
+  display: block;
+}
+.iucn-site-wrapper .field--name-assessments-links li a:after {
+  background-color: #cccccc;
+  border: 1px solid #c2c2c2;
+  content: '';
+  display: block;
+  height: .7em;
+  margin-left: -57%;
+  transform: skewX(-55deg);
+  width: 200%;
+}
+.iucn-site-wrapper .field--name-assessments-links li a.active-year:after {
+  background-color: #03afdf;
+  border: none;
+}
 .node--type-site-assessment .nav-tabs {
   margin-right: auto;
   margin-left: auto;
