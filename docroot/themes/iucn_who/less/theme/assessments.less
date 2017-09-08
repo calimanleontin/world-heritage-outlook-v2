@@ -403,3 +403,31 @@
     }
   }
 }
+
+.field--name-dynamic-block-fieldnode-site-feedback {
+  .background-variant(@iucn-blue-dark, #fff);
+  padding: 1em;
+  &:before {
+    .svg-icon(feedback);
+    background-position: center;
+    background-size: contain;
+    content: '';
+    display: block;
+    height: 3.5em;
+    width: 3.5em;
+    margin: 0 auto;
+  }
+
+  .form-submit {
+    .btn-info();
+    margin-top: 1em;
+  }
+  .form-required:after {
+    display: none;
+  }
+  .field--label {
+    .bottom-border();
+    font-weight: 900;
+    text-align: center;
+  }
+}
