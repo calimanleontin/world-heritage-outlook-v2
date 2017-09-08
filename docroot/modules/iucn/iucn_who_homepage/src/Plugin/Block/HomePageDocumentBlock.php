@@ -47,15 +47,18 @@ class HomePageDocumentBlock extends BlockBase {
       '#default_value' => $subtitle,
     ];
 
-    $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE);
-    $form['file'] = [
-      '#type' => 'managed_file',
-      '#title' => $this->t('Select report file'),
-      '#required' => TRUE,
-      '#description' => $this->t('Upload report file to server'),
-      '#upload_location' => 'public://uploads/reports',
-      '#default_value' => ['fid' => $fid ],
-    ];
+    $languages = \Drupal::languageManager()->getLanguages();
+    foreach($languages as $language) {
+      $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE . '.' . $language->getId());
+      $form['file_' . $language->getId()] = [
+        '#type' => 'managed_file',
+        '#title' => 'Select report file for ' . $language->getName(),
+        '#required' => $language->getId() == 'en',
+        '#description' => $this->t('Upload report file to server'),
+        '#upload_location' => 'public://uploads/reports',
+        '#default_value' => ['fid' => $fid],
+      ];
+    }
     return $form;
   }
 
@@ -69,9 +72,18 @@ class HomePageDocumentBlock extends BlockBase {
     if ($subtitle = $values['subtitle']) {
       \Drupal::state()->set(self::CONFIG_KEY_SUBTITLE, $subtitle);
     }
-    if ($fid = $values['file'][0]) {
-      \Drupal::state()->set(self::CONFIG_KEY_FILE, $fid);
-    };
+    $languages = \Drupal::languageManager()->getLanguages();
+    foreach($languages as $language) {
+      $fid = $values['file_' . $language->getId()][0];
+      if (!empty($fid)) {
+        \Drupal::state()
+          ->set(self::CONFIG_KEY_FILE . '.' . $language->getId(), $fid);
+      }
+      else {
+        \Drupal::state()
+          ->delete(self::CONFIG_KEY_FILE . '.' . $language->getId());
+      }
+    }
   }
 
 
@@ -81,7 +93,10 @@ class HomePageDocumentBlock extends BlockBase {
   public function build() {
     // @todo remove line below to allow caching in production
     $content = ['#cache' => ['max-age' => 0]];
-    $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE);
+    $language = \Drupal::languageManager()->getCurrentLanguage();
+    if (!$fid = \Drupal::state()->get(self::CONFIG_KEY_FILE . '.' . $language->getId())) {
+      $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE . '.en');
+    }
     if (!empty($fid) && $file = File::load($fid)) {
       $content['output'] = [
         '#theme' => 'homepage_report',
