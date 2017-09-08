@@ -76,52 +76,6 @@ function iucn_assessment_preprocess_field(&$variables) {
   }
 }
 
-/**
- * Implements hook_entity_base_field_info().
- */
-function iucn_assessment_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
-  if ($entity_type->id() === 'node') {
-    $fields = [];
-    // Add a field for links to site assessments.
-    $fields['site_assessments_link'] = \Drupal\Core\Field\BaseFieldDefinition::create('site_assessments_link')
-      ->setName('site_assessments_link')
-      ->setTargetBundle('site')
-      ->setLabel(t('Site assessments links'))
-      ->setComputed(TRUE)
-      ->setClass('\Drupal\iucn_assessment\Plugin\Field\FieldList\SiteAssessmentsLinksItemList')
-      ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayOptions('view', [
-        'region' => 'hidden',
-        'label' => 'hidden',
-        'weight' => -5,
-      ]);
-
-    $fields['site_assessments_rating'] = \Drupal\Core\Field\BaseFieldDefinition::create('site_assessments_rating')
-      ->setName('site_assessments_rating')
-      ->setTargetBundle('site')
-      ->setLabel(t('Assessment Rating Image'))
-      ->setComputed(TRUE)
-      ->setClass('\Drupal\iucn_assessment\Plugin\Field\FieldList\SiteAssessmentRatingItemList')
-      ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayOptions('view', [
-        'region' => 'hidden',
-        'label' => 'hidden',
-        'weight' => -6,
-      ]);
-
-    return $fields;
-  }
-}
-
-/**
- * Implements hook_field_formatter_info_alter().
- */
-function iucn_assessment_field_formatter_info_alter(array &$info) {
-  $info['link']['field_types'][] = 'site_assessments_link';
-  $info['image']['field_types'][] = 'site_assessments_rating';
-}
-
-
 function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
   if ($node->bundle() == 'site' && !$node->isNew()) {
     $query = \Drupal::entityQuery('node');
@@ -141,8 +95,8 @@ function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
 
 function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_object) {
   if (!empty($element['#group_name']) && $element['#group_name'] == 'group_conservation_outlook') {
-    if (!empty($element['field_as_global_assessment_text']['#object']->field_as_cycle)) {
-      $element['#title'] = $element['field_as_global_assessment_text']['#object']->field_as_cycle->value . ' ' . $element['#title'];
+    if (!empty($element['field_as_end_date']['#object']->field_as_cycle)) {
+      $element['#title'] = $element['field_as_end_date']['#object']->field_as_cycle->value . ' ' . $element['#title'];
     }
   }
 }

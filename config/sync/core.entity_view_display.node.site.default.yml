@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -26,6 +27,7 @@ dependencies:
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
+    - image.style.sites_thumbnail
     - node.type.site
   module:
     - datetime
@@ -44,7 +46,8 @@ third_party_settings:
       settings: {  }
     regions:
       left_1:
-        - site_assessments_rating
+        - assessment_rating
+        - assessments_links
       middle_1:
         - field_country
         - field_inscription_year
@@ -55,6 +58,17 @@ third_party_settings:
         - field_image
       assessment:
         - field_assessments
+    fields:
+      assessment_rating:
+        plugin_id: assessment_rating
+        weight: 0
+        label: hidden
+        formatter: image
+      assessments_links:
+        plugin_id: assessments_links
+        weight: 1
+        label: hidden
+        formatter: default
 id: node.site.default
 targetEntityType: node
 bundle: site
@@ -62,13 +76,13 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 5
+    weight: 6
     region: middle_1
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 7
+    weight: 8
     label: hidden
     settings:
       link: true
@@ -78,7 +92,7 @@ content:
     region: assessment
   field_country:
     type: entity_reference_label
-    weight: 1
+    weight: 2
     region: middle_1
     label: hidden
     settings:
@@ -88,7 +102,7 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 4
+    weight: 5
     region: middle_1
     label: inline
     settings:
@@ -99,7 +113,7 @@ content:
         ds_limit: ''
   field_image:
     type: image
-    weight: 6
+    weight: 7
     region: right_1
     label: hidden
     settings:
@@ -108,7 +122,7 @@ content:
     third_party_settings: {  }
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 3
+    weight: 4
     region: middle_1
     label: inline
     settings:
@@ -119,21 +133,12 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 2
+    weight: 3
     region: middle_1
     label: inline
     settings:
       timezone_override: ''
       date_format: 'Y'
-    third_party_settings: {  }
-  site_assessments_rating:
-    type: image
-    weight: 0
-    region: left_1
-    label: hidden
-    settings:
-      image_style: ''
-      image_link: ''
     third_party_settings: {  }
 hidden:
   field_area: true
@@ -145,6 +150,7 @@ hidden:
   field_cultural_landscape: true
   field_current_assessment: true
   field_danger_list: true
+  field_geolocation: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true
@@ -155,3 +161,4 @@ hidden:
   langcode: true
   links: true
   site_assessments_link: true
+  site_assessments_rating: true
