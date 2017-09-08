@@ -10896,6 +10896,9 @@ h6.facets-title {
 .node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level.good:after {
   border-color: transparent transparent transparent #3bb55e;
 }
+.node--type-site-assessment .field--name-field-as-global-assessment-text {
+  margin-top: 1em;
+}
 .node--type-site-assessment .management-summary-group {
   margin-top: 40px;
   margin-top: 4rem;
