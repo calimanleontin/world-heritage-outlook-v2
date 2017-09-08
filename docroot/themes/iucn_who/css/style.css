@@ -10754,9 +10754,6 @@ h6.facets-title {
   margin-left: .5em;
 }
 .node--type-site-assessment .conservation-outlook-summary-group {
-  position: relative;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3 {
   border-left: .4em solid;
   color: #134780;
   line-height: 1.2;
@@ -10766,34 +10763,19 @@ h6.facets-title {
   text-align: left;
   font-size: 28px;
   font-size: 2.8rem;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.coming-soon {
-  color: #7e7e7e;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.data-deficient {
-  color: #333333;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.critical {
-  color: #ef3133;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.significant-concern {
-  color: #f69232;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.good-concerns {
-  color: #9cd07d;
-}
-.node--type-site-assessment .conservation-outlook-summary-group h3.good {
-  color: #3bb55e;
+  position: relative;
 }
 @media screen and (max-width: 767px) {
-  .node--type-site-assessment .conservation-outlook-summary-group h3 {
+  .node--type-site-assessment .conservation-outlook-summary-group {
     margin-left: -15px;
     margin-right: -15px;
     border-left-width: 10px;
   }
 }
-h2.node--type-site-assessment .conservation-outlook-summary-group h3 {
-  font-weight: 500;
+.node--type-site-assessment .conservation-outlook-summary-group h3 {
+  font-size: 28px;
+  font-size: 2.8rem;
+  margin-top: 0;
 }
 .node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-end-date {
   font-size: 15px;
@@ -10827,6 +10809,8 @@ h2.node--type-site-assessment .conservation-outlook-summary-group h3 {
   padding-left: 1em;
   padding-right: 1em;
   position: relative;
+  font-size: 17px;
+  font-size: 1.7rem;
   display: inline-flex;
 }
 .node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level:after {
