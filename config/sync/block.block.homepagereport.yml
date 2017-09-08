@@ -1,0 +1,22 @@
+uuid: b2d9f313-37b8-4fec-83ab-353f0c0dfa98
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_who_homepage
+  theme:
+    - iucn_who
+id: homepagereport
+theme: iucn_who
+region: content
+weight: -9
+provider: null
+plugin: home_page_report
+settings:
+  id: home_page_report
+  label: 'Home page report'
+  provider: iucn_who_homepage
+  label_display: '0'
+  title: 'Download the report'
+  subtitle: 'IUCN World Heritage Outlook 2017'
+visibility: {  }

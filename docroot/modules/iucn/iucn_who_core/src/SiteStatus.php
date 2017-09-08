@@ -200,21 +200,30 @@ class SiteStatus {
    *   Array keyed by status and percentage as value
    */
   public static function getSitesStatusStatistics() {
+    $ret = [];
     $good = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD);
     $good_concerns = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS);
     $significant = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS);
     $critical = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_CRITICAL);
 
-    $statuses = [ $good->id() => 0, $good_concerns->id() => 0, $significant->id() => 0, $critical->id() => 0 ];
+    $statuses = [];
+    if ($good) { $statuses[$good->id()] = 0; }
+    if ($good_concerns) { $statuses[$good_concerns->id()] = 0; }
+    if ($significant) { $statuses[$significant->id()] = 0; }
+    if ($critical) { $statuses[$critical->id()] = 0; }
+
     $sites = SitesQueryUtil::getPublishedSites();
     /** @var \Drupal\node\NodeInterface $node */
     foreach ($sites as $node) {
-      $status = SiteStatus::getOverallAssessmentLevel($node);
-      if (isset($statuses[$status->id()])) {
-        $statuses[$status->id()] += 1;
+      if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
+        if (isset($statuses[$status->id()])) {
+          $statuses[$status->id()] += 1;
+        }
+      }
+      else {
+        // @todo Warning
       }
     }
-    $ret = [];
     $total = count($sites);
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = floor((100 * $count) / $total);

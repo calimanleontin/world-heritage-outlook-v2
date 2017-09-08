@@ -11,6 +11,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_who_core\SiteStatus;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\website_utilities\DrupalInstance;
 
 /**
  * @Block(
@@ -20,41 +21,25 @@ use Drupal\taxonomy\Entity\Term;
  */
 class HomePageStatisticsBlock extends BlockBase {
 
-  public function blockForm($form, FormStateInterface $form_state) {
-    $form = parent::blockForm($form, $form_state);
-    $config = $this->getConfiguration();
-    foreach(SiteStatus::labels() as $key => $label) {
-      $value = isset($config[$key]) ? $config[$key] : '';
-      $form[$key] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('@status value (%)', ['@status' => $label]),
-        '#size' => 15,
-        '#description' => $this->t('Enter value in percent, leave empty to hide in resulting graph.'),
-        '#default_value' => $value,
-      ];
-    }
-    return $form;
-  }
-
-
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    parent::blockSubmit($form, $form_state);
-    $values = $form_state->getValues();
-    foreach(SiteStatus::labels() as $key => $label) {
-      $this->configuration[$key] = $values[$key];
-    }
-  }
-
-
   /**
    * {@inheritdoc}
    */
   public function build() {
-    // @todo remove line below to allow caching in production
+    // @todo Line below to disables caching
     $content = ['#cache' => ['max-age' => 0]];
+    $statistics = $this->getStatistics();
+    if (!DrupalInstance::isProductionInstance()) {
+      if (empty($statistics['good']['value'])) {
+        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_GOOD]['value'] = 40;
+        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS]['value'] = 30;
+        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS]['value'] = 20;
+        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS]['value'] = 20;
+        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL]['value'] = 10;
+      }
+    }
     $content['output'] = [
       '#theme' => 'homepage_statistics',
-      '#statistics' => $this->getStatistics(),
+      '#statistics' => $statistics,
     ];
     return $content;
   }
@@ -64,9 +49,11 @@ class HomePageStatisticsBlock extends BlockBase {
     $ret = [];
     $statistics = SiteStatus::getSitesStatusStatistics();
     foreach($statistics as $tid => $percentage) {
+      /** @var \Drupal\taxonomy\TermInterface $term */
       $term = Term::load($tid);
-      $ret[$tid] = [
-        'id' => $tid,
+      $id = $term->field_css_identifier->value;
+      $ret[$id] = [
+        'id' => $id,
         'value' => $percentage,
         'label' => $term->label(),
       ];
