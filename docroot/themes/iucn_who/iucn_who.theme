@@ -172,6 +172,12 @@ function iucn_who_preprocess_field(&$variables) {
         $variables['col_class'] = $class;
         $variables['layout_type'] = $layout;
       }
+      break;
+
+    case 'field_as_global_assessment_level':
+      if (!empty($variables['element']['#object']->field_as_global_assessment_level->entity)) {
+        $variables['attributes']['class'][] = $variables['element']['#object']->field_as_global_assessment_level->entity->field_css_identifier->value;
+      }
   }
 }
 
