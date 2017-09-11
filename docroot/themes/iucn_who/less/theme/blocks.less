@@ -283,6 +283,7 @@
     display: flex;
     .form-type-textfield {
       margin-bottom: 0;
+      width: 100%;
       label {
         display: none;
       }
@@ -295,6 +296,7 @@
       border-color: @input-bg;
     }
     .form-text {
+      width: 100%;
       &:focus {
         border-color: @input-bg;
         box-shadow: none;
@@ -312,20 +314,95 @@
       width: 43 / unit(@font-size-base) * 1em;
     }
   }
+  @media @grid-desktop {
+    .region-search-block > & {
+      width: 50%;
+    }
+  }
+  .form-inline {
+    .responsive(height, 50px, 50px);
+    .input-group,
+    .form-text,
+    .form-submit {
+      height: 100%;
+    }
+    .form-submit {
+    .responsive(width, 50px, 50px);
+    }
+  }
   @media @grid-mobile {
     .form-inline {
-      height: 50px;
-      .input-group,
-      .form-text,
-      .form-submit {
-        height: 100%;
-      }
       .form-text {
         font-size: 16px;
       }
-      .form-submit {
-        width: 50px;
+    }
+  }
+}
+
+.explore-map-button {
+  text-align: center;
+  // margin-top: 3em;
+  a {
+    .btn-info();
+    .responsive(height, 50px, 50px);
+    display: inline-block;
+    text-align: center;
+    width: auto;
+    .remify(font-size, 22px);
+    padding: 0.5em 1.5em 0.5em 4.5em;
+    position: relative;
+    line-height: 1.2;
+    font-weight: 300;
+    @media @grid-mobile {
+      font-size: 21px;
+      line-height: 1.1;
+      padding-left: 3em;
+      width: 100%;
+    }
+    div.field--name-field-pdf-button-title {
+      .remify(font-size, 15px);
+      @media @grid-mobile {
+        font-size: 13px;
       }
+    }
+    .glyphicon {
+      .svg-icon(explore);
+      background-position: center;
+      background-size: 32% auto;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 3.5em;
+      @media @grid-mobile {
+        background-size: 50% auto;
+        width: 2.5em;
+      }
+      &:before {
+        display: none;
+      }
+      &:after {
+        border-right: 1px solid;
+        content: '';
+        display: block;
+        height: 80%;
+        position: absolute;
+        right: 0;
+        top: 10%;
+      }
+    }
+  }
+  .region-search-block & .explore-map-prefix {
+    font-size: 18px;
+    @media @grid-mobile {
+      display: block;
+      margin-top: .5em;
+      margin-bottom: .5em;
+    }
+    @media @grid-desktop {
+      display: inline-block;
+      margin-left: 2em;
+      margin-right: 2em;
     }
   }
 }
