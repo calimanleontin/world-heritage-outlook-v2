@@ -8,6 +8,9 @@
     },
     "drupal/facets_pretty_paths": {
       "translation_problem": "patches/facets_pretty_paths/translation_problem.patch"
+    },
+    "drupal/inline_responsive_images": {
+      "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     }
   }
 }

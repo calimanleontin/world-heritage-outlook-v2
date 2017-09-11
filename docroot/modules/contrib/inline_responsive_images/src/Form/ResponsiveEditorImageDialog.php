@@ -35,9 +35,7 @@ class ResponsiveEditorImageDialog extends EditorImageDialog{
       // Transform absolute image URLs to relative image URLs: prevent problems
       // on multisite set-ups and prevent mixed content errors.
       $file_url = file_url_transform_relative($file_url);
-      if(!$form_state->getValue(array('attributes', 'src'))) {
-        $form_state->setValue(array('attributes', 'src'), $file_url);
-      }
+      $form_state->setValue(array('attributes', 'src'), $file_url);
       $form_state->setValue(array('attributes', 'data-entity-uuid'), $file->uuid());
       $form_state->setValue(array('attributes', 'data-entity-type'), 'file');
     }
