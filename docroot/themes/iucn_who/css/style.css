@@ -10848,6 +10848,7 @@ h6.facets-title {
   font-size: 17px;
   font-size: 1.7rem;
   display: inline-flex;
+  text-transform: uppercase;
 }
 .node--type-site-assessment .conservation-outlook-summary-group .field--name-field-as-global-assessment-level:after {
   content: "";
