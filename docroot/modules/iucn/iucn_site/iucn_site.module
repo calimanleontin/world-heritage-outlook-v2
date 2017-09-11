@@ -117,3 +117,20 @@ function iucn_site_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function iucn_site_theme($existing, $type, $theme, $path) {
+  return [
+    'explore_map' => [
+      'variables' => [
+        'title' => NULL,
+        'button_title' => NULL,
+        'button_prefix' => NULL,
+        'button_url' => NULL,
+        'button_url_target' => NULL,
+      ],
+    ]
+  ];
+}

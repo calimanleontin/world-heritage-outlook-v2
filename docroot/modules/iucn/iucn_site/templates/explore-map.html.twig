@@ -1,0 +1,8 @@
+{% if button_url %}
+<div class="explore-map-button">{% if button_prefix %} <div class="explore-map-prefix">{{ button_prefix }}</div>{% endif %}
+    <a href="{{ button_url }}" target="{{ button_url_target }}">
+        <i class="glyphicon glyphicon-map-marker"></i>
+        {{ button_title }}
+    </a>
+</div>
+{% endif %}
