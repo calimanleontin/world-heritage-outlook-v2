@@ -30,10 +30,6 @@ third_party_settings:
         - field_as_threats_rating
       description:
         - field_as_description
-        - field_as_threats_categories
-        - field_as_threats_extent
-        - field_as_threats_in
-        - field_as_threats_out
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
 bundle: as_site_threat
@@ -46,44 +42,6 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: description
-  field_as_threats_categories:
-    weight: 3
-    label: inline
-    settings:
-      link: false
-    third_party_settings:
-      ds:
-        ds_limit: ''
-    type: entity_reference_label
-    region: description
-  field_as_threats_extent:
-    weight: 4
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: description
-  field_as_threats_in:
-    weight: 5
-    label: inline
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: description
-  field_as_threats_out:
-    type: boolean
-    weight: 6
-    region: description
-    label: inline
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
   field_as_threats_rating:
     weight: 1
     label: hidden
@@ -100,5 +58,9 @@ content:
     type: basic_string
     region: title
 hidden:
+  field_as_threats_categories: true
+  field_as_threats_extent: true
+  field_as_threats_in: true
+  field_as_threats_out: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true
