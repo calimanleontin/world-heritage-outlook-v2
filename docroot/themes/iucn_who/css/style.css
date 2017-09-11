@@ -10971,6 +10971,84 @@ fieldset[disabled] .explore-map-button a.focus {
 .node--type-site-assessment .col-sm-4 > .field + .field {
   margin-top: 2em;
 }
+.node--type-site-assessment .iucn-assessment-value {
+  margin-top: 1em;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default,
+.node--type-site-assessment .panel-default .panel-default .panel-default {
+  border-color: transparent;
+  box-shadow: none;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-body,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-body {
+  padding-left: 0;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  padding-bottom: 0;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h1,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h1,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h2,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h2,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h3,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h3,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h4,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h4,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h5,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h5,
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h6,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h6 {
+  font-size: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading > .panel-title > *,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading > .panel-title > * {
+  padding-left: 1em;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading > .panel-title,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading > .panel-title {
+  margin-bottom: 0;
+  position: relative;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading > .panel-title:before,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading > .panel-title:before {
+  background-image: url(../images/list-icon.svg);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+  content: '';
+  display: block;
+  height: 1em;
+  vertical-align: middle;
+  width: 1em;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  margin-top: .2em;
+}
+.node--type-site-assessment .iucn-assessment-value .panel-default > .panel-body,
+.node--type-site-assessment .panel-default .panel-default .panel-default > .panel-body {
+  padding-top: 0;
+}
+.node--type-site-assessment .panel-default .panel-heading {
+  display: flex;
+  justify-content: space-between;
+}
+.node--type-site-assessment .panel-title-terms {
+  color: #134780;
+  padding: 0 1em;
+}
+.node--type-site-assessment .panel-title-terms .field__items > .field--label,
+.node--type-site-assessment .panel-title-terms .field__items > .field--item {
+  display: inline-block;
+}
 .node--type-site-assessment .conservation-outlook-summary-group {
   border-left: .4em solid;
   color: #134780;
@@ -11150,12 +11228,12 @@ fieldset[disabled] .explore-map-button a.focus {
   margin-right: .2em;
   margin-bottom: -0.2em;
 }
-.node--type-site-assessment .field--name-field-as-vass-wh-state,
-.node--type-site-assessment .field--name-field-as-protection-ov-rating,
-.node--type-site-assessment .field--name-field-as-threats-rating,
-.node--type-site-assessment .field--name-field-as-vass-wh-state a,
-.node--type-site-assessment .field--name-field-as-protection-ov-rating a,
-.node--type-site-assessment .field--name-field-as-threats-rating a {
+.tab-pane#summary .field--name-field-as-vass-wh-state,
+.tab-pane#summary .field--name-field-as-protection-ov-rating,
+.tab-pane#summary .field--name-field-as-threats-rating,
+.tab-pane#summary .field--name-field-as-vass-wh-state a,
+.tab-pane#summary .field--name-field-as-protection-ov-rating a,
+.tab-pane#summary .field--name-field-as-threats-rating a {
   font-size: 17px;
   font-size: 1.7rem;
   color: #f69232;
@@ -11220,6 +11298,7 @@ fieldset[disabled] .explore-map-button a.focus {
   background-color: transparent;
   border-bottom: 1px solid;
   font-weight: 900;
+  padding-left: 0;
 }
 .assessment-projects.assessment-toggle > .panel-heading .panel-title,
 .assessment-section > .assessment-toggle > .panel-heading .panel-title {

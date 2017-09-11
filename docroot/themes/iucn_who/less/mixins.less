@@ -132,6 +132,14 @@
    Generators
    ========================================================================== */
 
+// .loop-headings(@rules, @index: 6) when (@index > 0) {
+//   @paragraph-heading-selector: ~'h@{index}';
+//   @rules();
+
+//   // next iteration
+//   .loop-headings(@rules, (@index - 1));
+// }
+
 // Generate conservation rating styling
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
 
