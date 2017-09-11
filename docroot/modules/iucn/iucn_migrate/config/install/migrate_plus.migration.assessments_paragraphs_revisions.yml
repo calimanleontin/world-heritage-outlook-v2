@@ -68,6 +68,7 @@ process:
       plugin: migration_lookup_paragraphs
       migration: assessments_paragraphs
       source: parentId
+      no_stub: true
     -
       plugin: extract
       default: null

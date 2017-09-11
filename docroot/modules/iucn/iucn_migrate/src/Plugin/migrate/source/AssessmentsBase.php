@@ -44,7 +44,8 @@ abstract class AssessmentsBase extends SourceJson {
     $items = parent::getSourceData($url);
 
     // Sort by revision id.
-    foreach ($items as &$item) {
+//    $items = array_slice($items, 0, 1);
+    foreach ($items as $item_idx => &$item) {
       $item['langcode'] = $this->getVersionLang($item);
 
       if (empty($item['versions'])) {
@@ -57,7 +58,7 @@ abstract class AssessmentsBase extends SourceJson {
       usort($item['versions'], function ($a, $b) {
         return ($a['assessmentVersionId'] < $b['assessmentVersionId']) ? -1 : 1;
       });
-      if ($item['assessmentStatus'] == 'Completed') {
+      if ($item['assessmentStatus'] == 'Completed' && in_array($item['currentStage'], ['Approved', 'Published'])) {
         $item['status'] = 1;
       }
 
@@ -118,6 +119,7 @@ abstract class AssessmentsBase extends SourceJson {
         }
       }
 
+      unset($version);
       // Bubble up the set_id from previous version.
       foreach ($item['versions'] as $key => &$version) {
         foreach ($paragraphs_fields_property_map as $source_key => $identifier) {
@@ -126,7 +128,10 @@ abstract class AssessmentsBase extends SourceJson {
           }
           foreach ($version[$source_key] as $set_idx => &$version_set_data_2) {
             $version_set_data_2['setId'] = $version_set_data_2[$identifier];
-            if (!empty($item['versions'][$key - 1][$source_key][$set_idx][$identifier])) {
+            if (!empty($item['versions'][$key - 1][$source_key][$set_idx]['setId'])) {
+              $version_set_data_2['setId'] = $item['versions'][$key - 1][$source_key][$set_idx]['setId'];
+            }
+            elseif (!empty($item['versions'][$key - 1][$source_key][$set_idx][$identifier])) {
               $version_set_data_2['setId'] = $item['versions'][$key - 1][$source_key][$set_idx][$identifier];
             }
           }
