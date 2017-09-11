@@ -248,18 +248,21 @@
 
 .assessment-expand-buttons {
   list-style-type: none;
-  text-align: right;
   padding-left: 0;
+  text-align: right;
   li {
-    .remify(font-size, 14px);
     color: @iucn-blue-light;
     display: inline-block;
-    text-transform: uppercase;
     + li {
       border-left: 1px solid;
-      padding-left: .5em;
       margin-left: .5em;
+      padding-left: .5em;
     }
+  }
+  .btn-link {
+    .remify(font-size, 14px);
+    color: @iucn-blue-light;
+    text-transform: uppercase;
   }
 }
 

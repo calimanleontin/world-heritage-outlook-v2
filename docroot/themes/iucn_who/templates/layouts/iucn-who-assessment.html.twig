@@ -41,8 +41,8 @@ set classes = [
           <div role="tabpanel" class="tab-pane" id="full_assessment">
             <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
             <ul class="assessment-expand-buttons">
-              <li class="expand-button">{{ 'Expand all'|t }}</li>
-              <li class="collapse-button">{{ 'Collapse all'|t }}</li>
+              <li><button class="btn-link expand-button">{{ 'Expand all'|t }}</button></li>
+              <li><button class="btn-link collapse-button">{{ 'Collapse all'|t }}</button></li>
             </ul>
 
             {{ content.full_assessment_values }}

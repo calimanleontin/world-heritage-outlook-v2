@@ -20,10 +20,11 @@ global-styling:
       theme:
         css/style.css: {}
     js:
-      js/publications.js: {}
       js/main.js: {}
       js/navbar-headroom.js: {}
+      js/publications.js: {}
       js/social_media.js: {}
+      js/assessments.js: {}
     dependencies:
       - core/jquery
       - iucn_who/bootstrap-js

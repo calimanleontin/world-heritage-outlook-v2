@@ -10985,20 +10985,23 @@ h6.facets-title {
 }
 .assessment-expand-buttons {
   list-style-type: none;
-  text-align: right;
   padding-left: 0;
+  text-align: right;
 }
 .assessment-expand-buttons li {
-  font-size: 14px;
-  font-size: 1.4rem;
   color: #03afdf;
   display: inline-block;
-  text-transform: uppercase;
 }
 .assessment-expand-buttons li + li {
   border-left: 1px solid;
-  padding-left: .5em;
   margin-left: .5em;
+  padding-left: .5em;
+}
+.assessment-expand-buttons .btn-link {
+  font-size: 14px;
+  font-size: 1.4rem;
+  color: #03afdf;
+  text-transform: uppercase;
 }
 .assessment-toggle .panel-heading > a:before {
   background-image: url(../images/collapse-minus.svg);
