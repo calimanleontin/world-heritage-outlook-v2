@@ -9305,10 +9305,8 @@ h6.facets-title {
     height: 50px;
   }
 }
-.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .input-group,
-.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text,
-.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-submit {
-  height: 100%;
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-group {
+  display: flex;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-submit {
   width: 50px;
