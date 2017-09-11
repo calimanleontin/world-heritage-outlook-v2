@@ -168,6 +168,11 @@
       }
     }
   }
+  .col-sm-4 {
+    > .field + .field {
+      margin-top: 2em;
+    }
+  }
 
   .conservation-outlook-summary-group {
     .left-bordered-heading();
@@ -412,10 +417,12 @@
 
 .field--name-dynamic-block-fieldnode-site-feedback {
   .background-variant(@iucn-blue-dark, #fff);
-  padding: 1em;
-  margin-top: 3em;
-  font-weight: normal;
   .remify(font-size, 15px);
+  padding: 1em;
+  font-weight: normal;
+  .node--type-site-assessment .col-sm-4 .field + & {
+    margin-top: 3em;
+  }
   label {
     font-weight: inherit;
   }

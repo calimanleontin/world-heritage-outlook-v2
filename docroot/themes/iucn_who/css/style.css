@@ -10789,6 +10789,9 @@ h6.facets-title {
   vertical-align: middle;
   margin-left: .5em;
 }
+.node--type-site-assessment .col-sm-4 > .field + .field {
+  margin-top: 2em;
+}
 .node--type-site-assessment .conservation-outlook-summary-group {
   border-left: .4em solid;
   color: #134780;
@@ -11201,11 +11204,10 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
 .field--name-dynamic-block-fieldnode-site-feedback {
   background-color: #134780;
   color: #fff;
-  padding: 1em;
-  margin-top: 3em;
-  font-weight: normal;
   font-size: 15px;
   font-size: 1.5rem;
+  padding: 1em;
+  font-weight: normal;
 }
 .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']) {
   color: #fff;
@@ -11214,6 +11216,9 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
 .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):focus,
 .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):active {
   color: #03afdf;
+}
+.node--type-site-assessment .col-sm-4 .field + .field--name-dynamic-block-fieldnode-site-feedback {
+  margin-top: 3em;
 }
 .field--name-dynamic-block-fieldnode-site-feedback label {
   font-weight: inherit;
