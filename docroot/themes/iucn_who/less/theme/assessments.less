@@ -412,6 +412,11 @@
   .background-variant(@iucn-blue-dark, #fff);
   padding: 1em;
   margin-top: 3em;
+  font-weight: normal;
+  .remify(font-size, 15px);
+  label {
+    font-weight: inherit;
+  }
   &:before {
     .svg-icon(feedback);
     background-position: center;
@@ -435,6 +440,7 @@
   }
   .field--label {
     .bottom-border();
+    .remify(font-size, 18px);
     font-weight: 900;
     text-align: center;
   }
