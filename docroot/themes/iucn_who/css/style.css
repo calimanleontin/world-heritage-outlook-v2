@@ -10993,11 +10993,11 @@ h6.facets-title {
   padding-left: 0;
   text-align: right;
 }
-.assessment-expand-buttons li {
+.assessment-expand-buttons > li {
   color: #03afdf;
   display: inline-block;
 }
-.assessment-expand-buttons li + li {
+.assessment-expand-buttons > li + li {
   border-left: 1px solid;
   margin-left: .5em;
   padding-left: .5em;
