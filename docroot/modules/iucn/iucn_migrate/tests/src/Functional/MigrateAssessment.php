@@ -118,6 +118,11 @@ class MigrateAssessment extends BrowserTestBase {
     // Test title.
     $this->assertEquals($node->label(), '2014 New site');
 
+    $this->drupalGet('/node/2');
+    $this->drupalGet('/admin/structure/migrate/manage/assessments/migrations/assessments_revisions/messages');
+    $this->drupalGet('/admin/structure/migrate/manage/assessments/migrations/assessments_translations/messages');
+    $this->drupalGet('/admin/structure/migrate/manage/assessments/migrations');
+
     // Test revisions created.
     $vids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     $this->assertEquals(count($vids), 2);
@@ -215,6 +220,7 @@ class MigrateAssessment extends BrowserTestBase {
       $second_revision->field_as_values_wh->get(3)->entity->field_as_values_value->value,
       '2 assessmentWhvalues values 4');
 
+    // TODO more asserts
 
 
     // Translations.
@@ -231,6 +237,13 @@ class MigrateAssessment extends BrowserTestBase {
     $this->assertEquals(
       $translation->field_as_values_wh->get(1)->entity->getTranslation('fr')->field_as_values_value->value,
       '3 fr assessmentWhvalues values 2');
+
+    // TODO more asserts
+
+
+    // TODO Test migration without --update for a new version. (assessment_update.json)
+
+    // TODO Test migration without --update for a new translation. (assessment_update_es.json)
 
   }
 

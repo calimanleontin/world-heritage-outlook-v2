@@ -1,0 +1,1063 @@
+[{
+  "assessmentId" : 1,
+  "siteId" : 91,
+  "initiationDate" : 1364123981100,
+  "currentUserid" : 0,
+  "assessmentInitiatedBy" : 17007,
+  "archived" : false,
+  "assessmentCycle" : "2014",
+  "versions" : [
+    {
+      "assessmentVersionId" : 3,
+      "startDate" : 1364124119802,
+      "endDate" : 1364125911497,
+      "userid" : 17007,
+      "initiationDate" : 1364123981100,
+      "language" : 2,
+      "versionCode" : 0.3,
+      "activeConservationProjects" : [{
+        "acpid" : 31,
+        "organizationIndividual" : "3 fr activeConservationProjects Org 1",
+        "description" : "3 fr activeConservationProjects description 1",
+        "contactDetails" : "3 fr activeConservationProjects contactDetails 1",
+        "projectdurationfrom" : "2014",
+        "projectdurationto" : "2015"
+      }, {
+        "acpid" : 32,
+        "organizationIndividual" : "3 fr activeConservationProjects Org 2",
+        "description" : "3 fr activeConservationProjects description 2",
+        "contactDetails" : "3 fr activeConservationProjects contactDetails 2",
+        "projectdurationfrom" : "2016",
+        "projectdurationto" : "2017"
+      }],
+      "potentialProjectNeeds" : [{
+        "ppnId" : 31,
+        "organizationIndividual" : "3 fr potentialProjectNeeds Org 1",
+        "description" : "3 fr potentialProjectNeeds description 1",
+        "contactDetails" : "3 fr potentialProjectNeeds contactDetails 1"
+      }, {
+        "ppnId" : 32,
+        "organizationIndividual" : "3 fr potentialProjectNeeds Org 2",
+        "description" : "3 fr potentialProjectNeeds description 2",
+        "contactDetails" : "3 fr potentialProjectNeeds contactDetails 2"
+      }],
+      "keyConservationIssues" : [ {
+        "keyConservationIssuesId" : 31,
+        "cn" : "",
+        "keyConservationIssues" : "3 fr keyConservationIssues 1",
+        "description" : "3 fr keyConservationIssues description 1",
+        "scale" : "Local"
+      }, {
+        "keyConservationIssuesId" : 32,
+        "cn" : "",
+        "keyConservationIssues" : "3 fr keyConservationIssues 2",
+        "description" : "3 fr keyConservationIssues description 2",
+        "scale" : "Regional"
+      }],
+      "conservationOutlooks" : [ {
+        "conservationOutlookId" : 31,
+        "justification" : "3 fr conservationOutlooks justification 1",
+        "rating" : "Good with some concerns"
+      }],
+      "benefits" : [{
+        "benefitsId" : 31,
+        "summary" : "3 fr benefits summary 1",
+        "dataDeficient" : true,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "3 fr benefits comment 1",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }, {
+        "benefitsId" : 32,
+        "summary" : "3 fr benefits summary 2",
+        "dataDeficient" : false,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "3 fr benefits comment 2",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }],
+      "benefitsSummary" : [{
+        "benefitsSummaryId" : 31,
+        "summary" : "3 fr benefitsSummary summary 1"
+      }],
+      "langVersion" : [ {
+        "langVerId" : 3,
+        "published" : true,
+        "publishedDate" : 1401079357665,
+        "baseLang" : "fr"
+      } ],
+      "biodiversityValues" : [{
+        "id" : 30,
+        "vn" : 30,
+        "value" : "3 fr biodiversityValues value 1",
+        "description" : "3 fr biodiversityValues description 1"
+      }, {
+        "id" : 31,
+        "vn" : 31,
+        "value" : "3 fr biodiversityValues value 2",
+        "description" : "3 fr biodiversityValues description 2"
+      }],
+      "protectionManagement" : [ {
+        "pmId" : 31,
+        "justification" : "3 fr protectionManagement justification 1",
+        "rating" : "Effective",
+        "topic" : "Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)"
+      }, {
+        "pmId" : 32,
+        "justification" : "3 fr protectionManagement justification 2",
+        "rating" : "Effective",
+        "topic" : "Legal framework"
+      }],
+      "protMgmtOverall" : [ {
+        "pmoId" : 31,
+        "justification" : "3 fr protMgmtOverall justification 1",
+        "rating" : "Effective"
+      } ],
+      "protMgmtBestPractices" : [ {
+        "bestPracticeId" : 31,
+        "description" : "3 fr protMgmtBestPractices description"
+      } ],
+      "effectiveProtMgmtIothreats" : [ {
+        "id" : 1,
+        "justification" : "3 fr effectiveProtMgmtIothreats justification 1",
+        "rating" : "Data Deficient"
+      } ],
+      "stateTrendWhvalues" : [ {
+        "stateTrendWhvalId" : 3,
+        "justification" : "3 fr stateTrendWhvalues justification 1",
+        "state" : "Low Concern",
+        "trend" : "Data Deficient"
+      } ],
+      "currentStateTrend" : [ {
+        "stateTrendId" : 3,
+        "justification" : "3 fr currentStateTrend justification 1",
+        "state" : "Low Concern",
+        "whValue" : "3 fr assessmentWhvalues values 1",
+        "biodivValue" : null,
+        "trend" : "Deteriorating"
+      },
+      {
+        "stateTrendId" : 30,
+        "justification" : "3 fr currentStateTrend justification 10",
+        "state" : "Low Concern",
+        "whValue": null,
+        "biodivValue" : "3 fr biodiversityValues value 1",
+        "trend" : "Deteriorating"
+      }
+      ],
+      "stateTrendBiodivvalsEntities" : [ {
+        "stateTrendBiodivvalsId" : 31,
+        "justification" : "3 fr N.A.",
+        "state" : "Data Deficient",
+        "trend" : "Data Deficient"
+      } ],
+      "assessmentWhvalues" : [ {
+        "whvaluesId" : 31,
+        "vn" : 31,
+        "values" : "3 fr assessmentWhvalues values 1",
+        "description" : "3 fr assessmentWhvalues description 1",
+        "value" : "3 fr assessmentWhvalues values 1",
+        "id" : 31,
+        "criteria" : [ "(vii)" ]
+      },
+      {
+        "whvaluesId" : 32,
+        "vn" : 32,
+        "values" : "3 fr assessmentWhvalues values 2",
+        "description" : "3 fr assessmentWhvalues description 2",
+        "value" : "3 fr assessmentWhvalues values 2",
+        "id" : 2,
+        "criteria" : [ "(x)" ]
+      },
+      {
+        "whvaluesId" : 33,
+        "vn" : 33,
+        "values" : "3 fr assessmentWhvalues values 3",
+        "description" : "3 fr assessmentWhvalues description 3",
+        "value" : "3 fr assessmentWhvalues values 3",
+        "id" : 33,
+        "criteria" : [ "(vii)" ]
+      }
+      ],
+      "references" : [ {
+        "referenceId" : 31,
+        "rn" : 0,
+        "references" : "3 fr references references 1"
+      }, {
+        "referenceId" : 32,
+        "rn" : 0,
+        "references" : "3 fr references references 2"
+      }, {
+        "referenceId" : 33,
+        "rn" : 0,
+        "references" : "3 fr references references 3"
+      } ],
+      "assessingThreatsPotential" : [ {
+        "potentialThreatId" : 31,
+        "potentialThreat" : "3 fr assessingThreatsPotential potentialThreat 1",
+        "justification" : "3 fr assessingThreatsPotential justification 1",
+        "threadextentvalue" : "",
+        "insideSite" : true,
+        "outsideSite" : true,
+        "affectedWhvalues" : [ "3 fr assessmentWhvalues values 1", "3 fr assessmentWhvalues values 3" ],
+        "affectedOthervalues" : [ "3 fr biodiversityValues value 2", "3 fr biodiversityValues value 1" ],
+        "threatId" : 31,
+        "threatRating" : "Data Deficient",
+        "potentialThreatSubcategories" : [ "Mining/ Quarrying" ]
+      }
+      ],
+      "threatSummaryPotential" : [ {
+        "threatSumPotentialId" : 31,
+        "overallPotential" : "3 fr threatSummaryPotential overallPotential",
+        "threatRating" : "Data Deficient"
+      } ],
+      "threatSummaryCurrent" : [ {
+        "threatSumCurId" : 31,
+        "overallCurrent" : "3 fr threatSummaryCurrent threatSummaryCurrent",
+        "threatRating" : "Low threat"
+      } ],
+      "threatSummaryOverall" : [ {
+        "threatSumOverallId" : 31,
+        "overallThreat" : "3 fr threatSummaryOverall overallThreat",
+        "threatRating" : "Low Threat"
+      } ],
+      "assessingThreatsCurrent" : [
+        {
+          "currentThreatId" : 31,
+          "currentThreat" : "3 fr assessingThreatsCurrent currentThreat 1",
+          "justification" : "3 fr assessingThreatsCurrent justification 1",
+          "threadextentvalue" : "",
+          "insideSite" : true,
+          "outsideSite" : true,
+          "affectedWhvalues" : [ "3 fr assessmentWhvalues values 1", "3 fr assessmentWhvalues values 2" ],
+          "affectedOthervalues" : [ "3 fr biodiversityValues value 2", "3 fr biodiversityValues value 1" ],
+          "threatId" : 1,
+          "currentThreatSubcategories" : [ "Habitat Shifting/ Alteration", "Droughts" ],
+          "threatRating" : "Data Deficient"
+        }
+      ],
+      "assessmentStage" : "Published stage",
+      "translated" : false
+    },
+    {
+      "assessmentVersionId" : 2,
+      "startDate" : 1364124119802,
+      "endDate" : 1364125911497,
+      "userid" : 17007,
+      "initiationDate" : 1364123981100,
+      "language" : 1,
+      "versionCode" : 0.2,
+      "activeConservationProjects" : [{
+        "acpid" : 21,
+        "organizationIndividual" : "2 activeConservationProjects Org 1",
+        "description" : "2 activeConservationProjects description 1",
+        "contactDetails" : "2 activeConservationProjects contactDetails 1",
+        "projectdurationfrom" : "2014",
+        "projectdurationto" : "2015"
+      }, {
+        "acpid" : 22,
+        "organizationIndividual" : "2 activeConservationProjects Org 2",
+        "description" : "2 activeConservationProjects description 2",
+        "contactDetails" : "2 activeConservationProjects contactDetails 2",
+        "projectdurationfrom" : "2016",
+        "projectdurationto" : "2017"
+      }],
+      "potentialProjectNeeds" : [{
+        "ppnId" : 21,
+        "organizationIndividual" : "2 potentialProjectNeeds Org 1",
+        "description" : "2 potentialProjectNeeds description 1",
+        "contactDetails" : "2 potentialProjectNeeds contactDetails 1"
+      }, {
+        "ppnId" : 22,
+        "organizationIndividual" : "2 potentialProjectNeeds Org 2",
+        "description" : "2 potentialProjectNeeds description 2",
+        "contactDetails" : "2 potentialProjectNeeds contactDetails 2"
+      }],
+      "keyConservationIssues" : [ {
+        "keyConservationIssuesId" : 21,
+        "cn" : "",
+        "keyConservationIssues" : "2 keyConservationIssues 1",
+        "description" : "2 keyConservationIssues description 1",
+        "scale" : "Local"
+      }, {
+        "keyConservationIssuesId" : 22,
+        "cn" : "",
+        "keyConservationIssues" : "2 keyConservationIssues 2",
+        "description" : "2 keyConservationIssues description 2",
+        "scale" : "Regional"
+      }],
+      "conservationOutlooks" : [ {
+        "conservationOutlookId" : 21,
+        "justification" : "2 conservationOutlooks justification 1",
+        "rating" : "Good with some concerns"
+      }],
+      "benefits" : [{
+        "benefitsId" : 21,
+        "summary" : "2 benefits summary 1",
+        "dataDeficient" : true,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "2 benefits comment 1",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }, {
+        "benefitsId" : 22,
+        "summary" : "2 benefits summary 2",
+        "dataDeficient" : false,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "2 benefits comment 2",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }],
+      "benefitsSummary" : [{
+        "benefitsSummaryId" : 21,
+        "summary" : "2 benefitsSummary summary 1"
+      }],
+      "langVersion" : [ ],
+      "biodiversityValues" : [{
+        "id" : 20,
+        "vn" : 20,
+        "value" : "2 biodiversityValues value 1",
+        "description" : "2 biodiversityValues description 1"
+      }, {
+        "id" : 21,
+        "vn" : 21,
+        "value" : "2 biodiversityValues value 2",
+        "description" : "2 biodiversityValues description 2"
+      }],
+      "protectionManagement" : [ {
+        "pmId" : 21,
+        "justification" : "2 protectionManagement justification 1",
+        "rating" : "Effective",
+        "topic" : "Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)"
+      }, {
+        "pmId" : 22,
+        "justification" : "2 protectionManagement justification 2",
+        "rating" : "Effective",
+        "topic" : "Legal framework"
+      }],
+      "protMgmtOverall" : [ {
+        "pmoId" : 21,
+        "justification" : "2 protMgmtOverall justification 1",
+        "rating" : "Effective"
+      } ],
+      "protMgmtBestPractices" : [ {
+        "bestPracticeId" : 21,
+        "description" : "2 protMgmtBestPractices description"
+      } ],
+      "effectiveProtMgmtIothreats" : [ {
+        "id" : 1,
+        "justification" : "2 effectiveProtMgmtIothreats justification 1",
+        "rating" : "Data Deficient"
+      } ],
+      "stateTrendWhvalues" : [ {
+        "stateTrendWhvalId" : 21,
+        "justification" : "2 stateTrendWhvalues justification 1",
+        "state" : "Low Concern",
+        "trend" : "Data Deficient"
+      } ],
+      "currentStateTrend" : [ {
+        "stateTrendId" : 21,
+        "justification" : "2 currentStateTrend justification 1",
+        "state" : "Low Concern",
+        "whValue": "2 assessmentWhvalues values 1",
+        "biodivValue" : null,
+        "trend" : "Deteriorating"
+      },
+      {
+        "stateTrendId" : 20,
+        "justification" : "2 currentStateTrend justification 10",
+        "state" : "Low Concern",
+        "whValue": null,
+        "biodivValue" : "2 biodiversityValues value 1",
+        "trend" : "Deteriorating"
+      }
+      ],
+      "stateTrendBiodivvalsEntities" : [ {
+        "stateTrendBiodivvalsId" : 21,
+        "justification" : "N.A.",
+        "state" : "Data Deficient",
+        "trend" : "Data Deficient"
+      } ],
+      "assessmentWhvalues" : [ {
+        "whvaluesId" : 21,
+        "vn" : 21,
+        "values" : "2 assessmentWhvalues values 1",
+        "description" : "2 assessmentWhvalues description 1",
+        "value" : "2 assessmentWhvalues values 1",
+        "id" : 21,
+        "criteria" : [ "(vii)" ]
+      },
+      {
+        "whvaluesId" : 22,
+        "vn" : 22,
+        "values" : "2 assessmentWhvalues values 2",
+        "description" : "2 assessmentWhvalues description 2",
+        "value" : "2 assessmentWhvalues values 2",
+        "id" : 22,
+        "criteria" : [ "(x)" ]
+      },
+      {
+        "whvaluesId" : 23,
+        "vn" : 23,
+        "values" : "2 assessmentWhvalues values 3",
+        "description" : "2 assessmentWhvalues description 3",
+        "value" : "2 assessmentWhvalues values 3",
+        "id" : 23,
+        "criteria" : [ "(vii)" ]
+      },
+      {
+        "whvaluesId" : 24,
+        "vn" : 24,
+        "values" : "2 assessmentWhvalues values 4",
+        "description" : "2 assessmentWhvalues description 4",
+        "value" : "2 assessmentWhvalues values 4",
+        "id" : 24,
+        "criteria" : [ "(vii)" ]
+      }
+      ],
+      "references" : [ {
+        "referenceId" : 21,
+        "rn" : 0,
+        "references" : "references references 1"
+      }, {
+        "referenceId" : 22,
+        "rn" : 0,
+        "references" : "references references 2"
+      }, {
+        "referenceId" : 23,
+        "rn" : 0,
+        "references" : "references references 3"
+      } ],
+      "assessingThreatsPotential" : [ {
+        "potentialThreatId" : 21,
+        "potentialThreat" : "2 assessingThreatsPotential potentialThreat 1",
+        "justification" : "2 assessingThreatsPotential justification 1",
+        "threadextentvalue" : "",
+        "insideSite" : true,
+        "outsideSite" : true,
+        "affectedWhvalues" : [ "2 assessmentWhvalues values 1", "2 assessmentWhvalues values 3" ],
+        "affectedOthervalues" : [ "2 biodiversityValues value 2", "2 biodiversityValues value 1" ],
+        "threatId" : 21,
+        "threatRating" : "Data Deficient",
+        "potentialThreatSubcategories" : [ "Mining/ Quarrying" ]
+      }
+      ],
+      "threatSummaryPotential" : [ {
+        "threatSumPotentialId" : 21,
+        "overallPotential" : "2 threatSummaryPotential overallPotential",
+        "threatRating" : "Data Deficient"
+      } ],
+      "threatSummaryCurrent" : [ {
+        "threatSumCurId" : 21,
+        "overallCurrent" : "2 threatSummaryCurrent threatSummaryCurrent",
+        "threatRating" : "Low threat"
+      } ],
+      "threatSummaryOverall" : [ {
+        "threatSumOverallId" : 21,
+        "overallThreat" : "2 threatSummaryOverall overallThreat",
+        "threatRating" : "Low Threat"
+      } ],
+      "assessingThreatsCurrent" : [
+        {
+          "currentThreatId" : 21,
+          "currentThreat" : "2 assessingThreatsCurrent currentThreat 1",
+          "justification" : "2 assessingThreatsCurrent justification 1",
+          "threadextentvalue" : "",
+          "insideSite" : true,
+          "outsideSite" : true,
+          "affectedWhvalues" : [ "2 assessmentWhvalues values 1", "2 assessmentWhvalues values 2" ],
+          "affectedOthervalues" : [ "2 biodiversityValues value 2", "2 biodiversityValues value 1" ],
+          "threatId" : 21,
+          "currentThreatSubcategories" : [ "Habitat Shifting/ Alteration", "Droughts" ],
+          "threatRating" : "Data Deficient"
+        }
+      ],
+      "assessmentStage" : "Published stage",
+      "translated" : false
+    },
+    {
+      "assessmentVersionId" : 1,
+      "startDate" : 1364124119802,
+      "endDate" : 1364125911497,
+      "userid" : 17007,
+      "initiationDate" : 1364123981100,
+      "language" : 1,
+      "versionCode" : 0.1,
+      "activeConservationProjects" : [
+        {
+          "acpid" : 1,
+          "organizationIndividual" : "activeConservationProjects Org 1",
+          "description" : "activeConservationProjects description 1",
+          "contactDetails" : "activeConservationProjects contactDetails 1",
+          "projectdurationfrom" : "2014",
+          "projectdurationto" : "2015"
+        }, {
+          "acpid" : 2,
+          "organizationIndividual" : "activeConservationProjects Org 2",
+          "description" : "activeConservationProjects description 2",
+          "contactDetails" : "activeConservationProjects contactDetails 2",
+          "projectdurationfrom" : "2016",
+          "projectdurationto" : "2017"
+        },
+        {
+          "acpid" : 3,
+          "organizationIndividual" : "activeConservationProjects Org 3",
+          "description" : "activeConservationProjects description 3",
+          "contactDetails" : "activeConservationProjects contactDetails 3",
+          "projectdurationfrom" : "2016",
+          "projectdurationto" : "2017"
+        }
+      ],
+      "potentialProjectNeeds" : [
+        {
+          "ppnId" : 1,
+          "organizationIndividual" : "potentialProjectNeeds Org 1",
+          "description" : "potentialProjectNeeds description 1",
+          "contactDetails" : "potentialProjectNeeds contactDetails 1"
+        },
+        {
+          "ppnId" : 2,
+          "organizationIndividual" : "potentialProjectNeeds Org 2",
+          "description" : "potentialProjectNeeds description 2",
+          "contactDetails" : "potentialProjectNeeds contactDetails 2"
+        }
+      ],
+      "keyConservationIssues" : [ {
+        "keyConservationIssuesId" : 1,
+        "cn" : "",
+        "keyConservationIssues" : "keyConservationIssues 1",
+        "description" : "keyConservationIssues description 1",
+        "scale" : "Local"
+      }, {
+        "keyConservationIssuesId" : 2,
+        "cn" : "",
+        "keyConservationIssues" : "keyConservationIssues 2",
+        "description" : "keyConservationIssues description 2",
+        "scale" : "Regional"
+      } ],
+      "conservationOutlooks" : [ {
+        "conservationOutlookId" : 1,
+        "justification" : "conservationOutlooks justification 1",
+        "rating" : "Good with some concerns"
+      }],
+      "benefits" : [
+        {
+          "benefitsId" : 1,
+          "summary" : "benefits summary 1",
+          "dataDeficient" : true,
+          "communityWithinSite" : "Major",
+          "communityOutsideSite" : "Major",
+          "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+          "widerCommunity" : "Major",
+          "selectedBenefit" : "Environmental Services",
+          "comment" : "benefits comment 1",
+          "invasivespecieslevel" : "Moderate",
+          "pollutiontrend" : "Continuing",
+          "pollutionlevel" : "Low",
+          "habitatchangetrend" : "Continuing",
+          "overexploitationtrend" : "Continuing",
+          "climatechangetrend" : "Continuing",
+          "overexploitationlevel" : "Low",
+          "invasivespeciestrend" : "Continuing",
+          "habitatchangelevel" : "Low",
+          "climatechangelevel": "Low"
+        },
+        {
+          "benefitsId" : 2,
+          "summary" : "benefits summary 2",
+          "dataDeficient" : false,
+          "communityWithinSite" : "Major",
+          "communityOutsideSite" : "Major",
+          "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+          "widerCommunity" : "Major",
+          "selectedBenefit" : "Environmental Services",
+          "comment" : "benefits comment 2",
+          "invasivespecieslevel" : "Moderate",
+          "pollutiontrend" : "Continuing",
+          "pollutionlevel" : "Low",
+          "habitatchangetrend" : "Continuing",
+          "overexploitationtrend" : "Continuing",
+          "climatechangetrend" : "Continuing",
+          "overexploitationlevel" : "Low",
+          "invasivespeciestrend" : "Continuing",
+          "habitatchangelevel" : "Low",
+          "climatechangelevel": "Low"
+        }
+      ],
+      "benefitsSummary" : [
+        {
+          "benefitsSummaryId" : 1,
+          "summary" : "benefitsSummary summary 1"
+        }
+      ],
+      "langVersion" : [ ],
+      "biodiversityValues" : [
+      {
+        "id" : 10,
+        "vn" : 10,
+        "value" : "biodiversityValues value 1",
+        "description" : "biodiversityValues description 1"
+      },
+      {
+        "id" : 11,
+        "vn" : 11,
+        "value" : "biodiversityValues value 2",
+        "description" : "biodiversityValues description 2"
+      }],
+      "protectionManagement" : [ {
+        "pmId" : 1,
+        "justification" : "protectionManagement justification 1",
+        "rating" : "Effective",
+        "topic" : "Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)"
+      }, {
+        "pmId" : 2,
+        "justification" : "protectionManagement justification 2",
+        "rating" : "Effective",
+        "topic" : "Legal framework"
+      }
+      ],
+      "protMgmtOverall" : [ {
+        "pmoId" : 1,
+        "justification" : "protMgmtOverall justification 1",
+        "rating" : "Effective"
+      } ],
+      "protMgmtBestPractices" : [ {
+        "bestPracticeId" : 1,
+        "description" : "protMgmtBestPractices description"
+      } ],
+      "effectiveProtMgmtIothreats" : [ {
+        "id" : 1,
+        "justification" : "effectiveProtMgmtIothreats justification 1",
+        "rating" : "Data Deficient"
+      } ],
+      "stateTrendWhvalues" : [ {
+        "stateTrendWhvalId" : 1,
+        "justification" : "stateTrendWhvalues justification 1",
+        "state" : "Low Concern",
+        "trend" : "Data Deficient"
+      } ],
+      "currentStateTrend" : [ {
+        "stateTrendId" : 1,
+        "justification" : "currentStateTrend justification 1",
+        "state" : "Low Concern",
+        "whValue": "assessmentWhvalues values 1",
+        "biodivValue" : null,
+        "trend" : "Deteriorating"
+      },
+      {
+        "stateTrendId" : 10,
+        "justification" : "currentStateTrend justification 10",
+        "state" : "Low Concern",
+        "whValue": null,
+        "biodivValue" : "biodiversityValues value 1",
+        "trend" : "Deteriorating"
+      }
+      ],
+      "stateTrendBiodivvalsEntities" : [ {
+        "stateTrendBiodivvalsId" : 1,
+        "justification" : "N.A.",
+        "state" : "Data Deficient",
+        "trend" : "Data Deficient"
+      } ],
+      "assessmentWhvalues" : [ {
+        "whvaluesId" : 1,
+        "vn" : 1,
+        "values" : "assessmentWhvalues values 1",
+        "description" : "assessmentWhvalues description 1",
+        "value" : "assessmentWhvalues values 1",
+        "id" : 1,
+        "criteria" : [ "(vii)" ]
+      },
+      {
+        "whvaluesId" : 2,
+        "vn" : 2,
+        "values" : "assessmentWhvalues values 2",
+        "description" : "assessmentWhvalues description 2",
+        "value" : "assessmentWhvalues values 2",
+        "id" : 2,
+        "criteria" : [ "(x)" ]
+      },
+      {
+        "whvaluesId" : 3,
+        "vn" : 3,
+        "values" : "assessmentWhvalues values 3",
+        "description" : "assessmentWhvalues description 3",
+        "value" : "assessmentWhvalues values 3",
+        "id" : 3,
+        "criteria" : [ "(vii)" ]
+      }
+      ],
+      "references" : [ {
+        "referenceId" : 1,
+        "rn" : 0,
+        "references" : "references references 1"
+      }, {
+        "referenceId" : 2,
+        "rn" : 0,
+        "references" : "references references 2"
+      }, {
+        "referenceId" : 3,
+        "rn" : 0,
+        "references" : "references references 3"
+      } ],
+      "assessingThreatsPotential" : [ {
+        "potentialThreatId" : 1,
+        "potentialThreat" : "assessingThreatsPotential potentialThreat 1",
+        "justification" : "assessingThreatsPotential justification 1",
+        "threadextentvalue" : "",
+        "insideSite" : true,
+        "outsideSite" : true,
+        "affectedWhvalues" : [ "assessmentWhvalues values 1", "assessmentWhvalues values 3" ],
+        "affectedOthervalues" : [ "biodiversityValues value 2", "biodiversityValues value 1" ],
+        "threatId" : 1,
+        "threatRating" : "Data Deficient",
+        "potentialThreatSubcategories" : [ "Mining/ Quarrying" ]
+      }
+      ],
+      "threatSummaryPotential" : [ {
+        "threatSumPotentialId" : 1,
+        "overallPotential" : "threatSummaryPotential overallPotential",
+        "threatRating" : "Data Deficient"
+      } ],
+      "threatSummaryCurrent" : [ {
+        "threatSumCurId" : 1,
+        "overallCurrent" : "threatSummaryCurrent threatSummaryCurrent",
+        "threatRating" : "Low threat"
+      } ],
+      "threatSummaryOverall" : [ {
+        "threatSumOverallId" : 1,
+        "overallThreat" : "threatSummaryOverall overallThreat",
+        "threatRating" : "Low Threat"
+      } ],
+      "assessingThreatsCurrent" : [
+        {
+          "currentThreatId" : 1,
+          "currentThreat" : "assessingThreatsCurrent currentThreat 1",
+          "justification" : "assessingThreatsCurrent justification 1",
+          "threadextentvalue" : "",
+          "insideSite" : true,
+          "outsideSite" : true,
+          "affectedWhvalues" : [ "assessmentWhvalues values 1", "assessmentWhvalues values 2" ],
+          "affectedOthervalues" : [ "biodiversityValues value 2", "biodiversityValues value 1" ],
+          "threatId" : 1,
+          "currentThreatSubcategories" : [ "Habitat Shifting/ Alteration", "Droughts" ],
+          "threatRating" : "Data Deficient"
+        }
+      ],
+      "assessmentStage" : "Assessment Stage",
+      "translated" : false
+    },
+    {
+      "assessmentVersionId" : 4,
+      "startDate" : 1364124119802,
+      "endDate" : 1364125911497,
+      "userid" : 17007,
+      "initiationDate" : 1364123981100,
+      "language" : 1,
+      "versionCode" : 0.4,
+      "activeConservationProjects" : [{
+        "acpid" : 21,
+        "organizationIndividual" : "2 activeConservationProjects Org 1 UPDATED",
+        "description" : "2 activeConservationProjects description 1",
+        "contactDetails" : "2 activeConservationProjects contactDetails 1",
+        "projectdurationfrom" : "2014",
+        "projectdurationto" : "2015"
+      }, {
+        "acpid" : 22,
+        "organizationIndividual" : "2 activeConservationProjects Org 2",
+        "description" : "2 activeConservationProjects description 2",
+        "contactDetails" : "2 activeConservationProjects contactDetails 2",
+        "projectdurationfrom" : "2016",
+        "projectdurationto" : "2017"
+      }],
+      "potentialProjectNeeds" : [{
+        "ppnId" : 21,
+        "organizationIndividual" : "2 potentialProjectNeeds Org 1",
+        "description" : "2 potentialProjectNeeds description 1",
+        "contactDetails" : "2 potentialProjectNeeds contactDetails 1"
+      }, {
+        "ppnId" : 22,
+        "organizationIndividual" : "2 potentialProjectNeeds Org 2",
+        "description" : "2 potentialProjectNeeds description 2",
+        "contactDetails" : "2 potentialProjectNeeds contactDetails 2"
+      }],
+      "keyConservationIssues" : [ {
+        "keyConservationIssuesId" : 21,
+        "cn" : "",
+        "keyConservationIssues" : "2 keyConservationIssues 1",
+        "description" : "2 keyConservationIssues description 1",
+        "scale" : "Local"
+      }, {
+        "keyConservationIssuesId" : 22,
+        "cn" : "",
+        "keyConservationIssues" : "2 keyConservationIssues 2",
+        "description" : "2 keyConservationIssues description 2",
+        "scale" : "Regional"
+      }],
+      "conservationOutlooks" : [ {
+        "conservationOutlookId" : 21,
+        "justification" : "2 conservationOutlooks justification 1",
+        "rating" : "Good with some concerns"
+      }],
+      "benefits" : [{
+        "benefitsId" : 21,
+        "summary" : "2 benefits summary 1",
+        "dataDeficient" : true,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "2 benefits comment 1",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }, {
+        "benefitsId" : 22,
+        "summary" : "2 benefits summary 2",
+        "dataDeficient" : false,
+        "communityWithinSite" : "Major",
+        "communityOutsideSite" : "Major",
+        "benefitCheckSubtype" : [ "Carbon sequestration", "Soil stabilisation" ],
+        "widerCommunity" : "Major",
+        "selectedBenefit" : "Environmental Services",
+        "comment" : "2 benefits comment 2",
+        "invasivespecieslevel" : "Moderate",
+        "pollutiontrend" : "Continuing",
+        "pollutionlevel" : "Low",
+        "habitatchangetrend" : "Continuing",
+        "overexploitationtrend" : "Continuing",
+        "climatechangetrend" : "Continuing",
+        "overexploitationlevel" : "Low",
+        "invasivespeciestrend" : "Continuing",
+        "habitatchangelevel" : "Low",
+        "climatechangelevel": "Low"
+      }],
+      "benefitsSummary" : [{
+        "benefitsSummaryId" : 21,
+        "summary" : "2 benefitsSummary summary 1"
+      }],
+      "langVersion" : [ ],
+      "biodiversityValues" : [{
+        "id" : 20,
+        "vn" : 20,
+        "value" : "2 biodiversityValues value 1",
+        "description" : "2 biodiversityValues description 1"
+      }, {
+        "id" : 21,
+        "vn" : 21,
+        "value" : "2 biodiversityValues value 2",
+        "description" : "2 biodiversityValues description 2"
+      }],
+      "protectionManagement" : [ {
+        "pmId" : 21,
+        "justification" : "2 protectionManagement justification 1",
+        "rating" : "Effective",
+        "topic" : "Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)"
+      }, {
+        "pmId" : 22,
+        "justification" : "2 protectionManagement justification 2",
+        "rating" : "Effective",
+        "topic" : "Legal framework"
+      }],
+      "protMgmtOverall" : [ {
+        "pmoId" : 21,
+        "justification" : "2 protMgmtOverall justification 1",
+        "rating" : "Effective"
+      } ],
+      "protMgmtBestPractices" : [ {
+        "bestPracticeId" : 21,
+        "description" : "2 protMgmtBestPractices description"
+      } ],
+      "effectiveProtMgmtIothreats" : [ {
+        "id" : 1,
+        "justification" : "2 effectiveProtMgmtIothreats justification 1",
+        "rating" : "Data Deficient"
+      } ],
+      "stateTrendWhvalues" : [ {
+        "stateTrendWhvalId" : 21,
+        "justification" : "2 stateTrendWhvalues justification 1",
+        "state" : "Low Concern",
+        "trend" : "Data Deficient"
+      } ],
+      "currentStateTrend" : [ {
+        "stateTrendId" : 21,
+        "justification" : "2 currentStateTrend justification 1",
+        "state" : "Low Concern",
+        "whValue": "2 assessmentWhvalues values 1",
+        "biodivValue" : null,
+        "trend" : "Deteriorating"
+      },
+        {
+          "stateTrendId" : 20,
+          "justification" : "2 currentStateTrend justification 10",
+          "state" : "Low Concern",
+          "whValue": null,
+          "biodivValue" : "2 biodiversityValues value 1",
+          "trend" : "Deteriorating"
+        }
+      ],
+      "stateTrendBiodivvalsEntities" : [ {
+        "stateTrendBiodivvalsId" : 21,
+        "justification" : "N.A.",
+        "state" : "Data Deficient",
+        "trend" : "Data Deficient"
+      } ],
+      "assessmentWhvalues" : [ {
+        "whvaluesId" : 21,
+        "vn" : 21,
+        "values" : "2 assessmentWhvalues values 1",
+        "description" : "2 assessmentWhvalues description 1",
+        "value" : "2 assessmentWhvalues values 1",
+        "id" : 21,
+        "criteria" : [ "(vii)" ]
+      },
+        {
+          "whvaluesId" : 22,
+          "vn" : 22,
+          "values" : "2 assessmentWhvalues values 2",
+          "description" : "2 assessmentWhvalues description 2",
+          "value" : "2 assessmentWhvalues values 2",
+          "id" : 22,
+          "criteria" : [ "(x)" ]
+        },
+        {
+          "whvaluesId" : 23,
+          "vn" : 23,
+          "values" : "2 assessmentWhvalues values 3",
+          "description" : "2 assessmentWhvalues description 3",
+          "value" : "2 assessmentWhvalues values 3",
+          "id" : 23,
+          "criteria" : [ "(vii)" ]
+        },
+        {
+          "whvaluesId" : 24,
+          "vn" : 24,
+          "values" : "2 assessmentWhvalues values 4",
+          "description" : "2 assessmentWhvalues description 4",
+          "value" : "2 assessmentWhvalues values 4",
+          "id" : 24,
+          "criteria" : [ "(vii)" ]
+        }
+      ],
+      "references" : [ {
+        "referenceId" : 21,
+        "rn" : 0,
+        "references" : "references references 1"
+      }, {
+        "referenceId" : 22,
+        "rn" : 0,
+        "references" : "references references 2"
+      }, {
+        "referenceId" : 23,
+        "rn" : 0,
+        "references" : "references references 3"
+      } ],
+      "assessingThreatsPotential" : [ {
+        "potentialThreatId" : 21,
+        "potentialThreat" : "2 assessingThreatsPotential potentialThreat 1",
+        "justification" : "2 assessingThreatsPotential justification 1",
+        "threadextentvalue" : "",
+        "insideSite" : true,
+        "outsideSite" : true,
+        "affectedWhvalues" : [ "2 assessmentWhvalues values 1", "2 assessmentWhvalues values 3" ],
+        "affectedOthervalues" : [ "2 biodiversityValues value 2", "2 biodiversityValues value 1" ],
+        "threatId" : 21,
+        "threatRating" : "Data Deficient",
+        "potentialThreatSubcategories" : [ "Mining/ Quarrying" ]
+      }
+      ],
+      "threatSummaryPotential" : [ {
+        "threatSumPotentialId" : 21,
+        "overallPotential" : "2 threatSummaryPotential overallPotential",
+        "threatRating" : "Data Deficient"
+      } ],
+      "threatSummaryCurrent" : [ {
+        "threatSumCurId" : 21,
+        "overallCurrent" : "2 threatSummaryCurrent threatSummaryCurrent",
+        "threatRating" : "Low threat"
+      } ],
+      "threatSummaryOverall" : [ {
+        "threatSumOverallId" : 21,
+        "overallThreat" : "2 threatSummaryOverall overallThreat",
+        "threatRating" : "Low Threat"
+      } ],
+      "assessingThreatsCurrent" : [
+        {
+          "currentThreatId" : 21,
+          "currentThreat" : "2 assessingThreatsCurrent currentThreat 1",
+          "justification" : "2 assessingThreatsCurrent justification 1",
+          "threadextentvalue" : "",
+          "insideSite" : true,
+          "outsideSite" : true,
+          "affectedWhvalues" : [ "2 assessmentWhvalues values 1", "2 assessmentWhvalues values 2" ],
+          "affectedOthervalues" : [ "2 biodiversityValues value 2", "2 biodiversityValues value 1" ],
+          "threatId" : 21,
+          "currentThreatSubcategories" : [ "Habitat Shifting/ Alteration", "Droughts" ],
+          "threatRating" : "Data Deficient"
+        }
+      ],
+      "assessmentStage" : "Published stage",
+      "translated" : false
+    }],
+  "currentStage" : "Published",
+  "assessmentStatus" : "Completed",
+  "baseLang" : "en",
+  "active" : false
+}
+]
