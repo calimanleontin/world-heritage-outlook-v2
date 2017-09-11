@@ -9629,10 +9629,10 @@ h6.facets-title {
   width: 2em;
   margin-right: .5em;
 }
-.paragraph h2.iucn-arrow.management:before,
-.paragraph h3.iucn-arrow.management:before,
-.paragraph h4.iucn-arrow.management:before {
-  background-image: url(../images/management-white.svg);
+.paragraph h2.iucn-arrow.protection-management:before,
+.paragraph h3.iucn-arrow.protection-management:before,
+.paragraph h4.iucn-arrow.protection-management:before {
+  background-image: url(../images/protection-management-white.svg);
   background-repeat: no-repeat;
 }
 .paragraph h2.iucn-arrow.threats:before,
@@ -10905,17 +10905,17 @@ h6.facets-title {
 .node--type-site-assessment .field--name-field-as-global-assessment-text {
   margin-top: 1em;
 }
-.node--type-site-assessment .management-summary-group {
+.node--type-site-assessment .protection-management-summary-group {
   margin-top: 40px;
   margin-top: 4rem;
   border-top: 1px solid #eeeeee;
 }
-.node--type-site-assessment .management-summary-group h3 {
+.node--type-site-assessment .protection-management-summary-group h3 {
   margin-top: 35px;
   margin-top: 3.5rem;
 }
-.node--type-site-assessment .management-summary-group h3:before {
-  background-image: url(../images/management-black.svg);
+.node--type-site-assessment .protection-management-summary-group h3:before {
+  background-image: url(../images/protection-management-black.svg);
   background-repeat: no-repeat;
   content: '';
   display: inline-block;
@@ -11929,11 +11929,11 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   padding-top: .5em;
   width: 50%;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management {
+.path-frontpage #map-site-details .map-site-detail dt.protection-management {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail dt.management:before {
-  background-image: url(../images/management-white.svg);
+.path-frontpage #map-site-details .map-site-detail dt.protection-management:before {
+  background-image: url(../images/protection-management-white.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
