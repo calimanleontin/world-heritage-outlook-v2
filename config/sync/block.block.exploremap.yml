@@ -1,0 +1,26 @@
+uuid: 5f6da144-ad9c-46ab-8e1c-c3bf17526e2c
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_site
+    - system
+  theme:
+    - iucn_who
+id: exploremap
+theme: iucn_who
+region: search_block
+weight: -11
+provider: null
+plugin: explore_map
+settings:
+  id: explore_map
+  label: 'Explore Map'
+  provider: iucn_site
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /sites-search
+    negate: false
+    context_mapping: {  }

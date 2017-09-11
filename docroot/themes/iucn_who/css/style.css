@@ -12370,6 +12370,123 @@ fieldset[disabled] #download-publication-button a.focus {
     order: -1;
   }
 }
+.explore-map-button {
+  text-align: center;
+  margin-top: 3em;
+}
+.explore-map-button a {
+  color: #fff;
+  background-color: #03afdf;
+  border-color: #03afdf;
+  display: inline-block;
+  text-align: left;
+  width: auto;
+  font-size: 22px;
+  padding: 0.5em 1.5em 0.5em 4.5em;
+  position: relative;
+  line-height: 1.2;
+  font-weight: 300;
+}
+.explore-map-button a:focus,
+.explore-map-button a.focus {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #014c61;
+}
+.explore-map-button a:hover {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #0280a3;
+}
+.explore-map-button a:active,
+.explore-map-button a.active,
+.open > .dropdown-toggle.explore-map-button a {
+  color: #fff;
+  background-color: #0288ad;
+  border-color: #0280a3;
+}
+.explore-map-button a:active:hover,
+.explore-map-button a.active:hover,
+.open > .dropdown-toggle.explore-map-button a:hover,
+.explore-map-button a:active:focus,
+.explore-map-button a.active:focus,
+.open > .dropdown-toggle.explore-map-button a:focus,
+.explore-map-button a:active.focus,
+.explore-map-button a.active.focus,
+.open > .dropdown-toggle.explore-map-button a.focus {
+  color: #fff;
+  background-color: #026c89;
+  border-color: #014c61;
+}
+.explore-map-button a:active,
+.explore-map-button a.active,
+.open > .dropdown-toggle.explore-map-button a {
+  background-image: none;
+}
+.explore-map-button a.disabled:hover,
+.explore-map-button a[disabled]:hover,
+fieldset[disabled] .explore-map-button a:hover,
+.explore-map-button a.disabled:focus,
+.explore-map-button a[disabled]:focus,
+fieldset[disabled] .explore-map-button a:focus,
+.explore-map-button a.disabled.focus,
+.explore-map-button a[disabled].focus,
+fieldset[disabled] .explore-map-button a.focus {
+  background-color: #03afdf;
+  border-color: #03afdf;
+}
+.explore-map-button a .badge {
+  color: #03afdf;
+  background-color: #fff;
+}
+@media screen and (max-width: 767px) {
+  .explore-map-button a {
+    font-size: 21px;
+    line-height: 1.1;
+    padding-left: 3em;
+  }
+}
+.explore-map-button a div.field--name-field-pdf-button-title {
+  font-size: 15px;
+}
+@media screen and (max-width: 767px) {
+  .explore-map-button a div.field--name-field-pdf-button-title {
+    font-size: 13px;
+  }
+}
+.explore-map-button a .glyphicon {
+  background-image: url(../images/explore.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 32% auto;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 3.5em;
+}
+@media screen and (max-width: 767px) {
+  .explore-map-button a .glyphicon {
+    width: 2.5em;
+  }
+}
+.explore-map-button a .glyphicon:before {
+  display: none;
+}
+.explore-map-button a .glyphicon:after {
+  border-right: 1px solid;
+  content: '';
+  display: block;
+  height: 80%;
+  position: absolute;
+  right: 0;
+  top: 10%;
+}
+@media screen and (max-width: 767px) {
+  .explore-map-button {
+    order: -1;
+  }
+}
 @media screen and (max-width: 767px) {
   .iucn-publications-teaser-wrapper .left-content,
   .iucn-publications-teaser-wrapper .right-content {
