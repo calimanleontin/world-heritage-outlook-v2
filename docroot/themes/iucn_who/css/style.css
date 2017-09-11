@@ -11273,6 +11273,11 @@ fieldset[disabled] .field--name-dynamic-block-fieldnode-site-feedback .form-subm
   color: #03afdf;
   background-color: #fff;
 }
+@media screen and (min-width: 768px) {
+  .field--name-dynamic-block-fieldnode-site-feedback .form-submit {
+    width: 100%;
+  }
+}
 .field--name-dynamic-block-fieldnode-site-feedback .form-required:after {
   display: none;
 }
