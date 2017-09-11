@@ -87,9 +87,9 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $ret = [];
     $sites = SitesQueryUtil::getPublishedSites();
     /** @var \Drupal\node\NodeInterface $node */
-    foreach($sites as $node) {
-      $latitude = $node->field_coordinate_y->value;
-      $longitude = $node->field_coordinate_x->value;
+    foreach ($sites as $node) {
+      $latitude = $node->field_geolocation->lat;
+      $longitude = $node->field_geolocation->lon;
       $status_id = $this->getSiteStatus($node);
       // Hide sites without coordinates
       if (empty($latitude) || empty($longitude) || empty($status_id)) {
