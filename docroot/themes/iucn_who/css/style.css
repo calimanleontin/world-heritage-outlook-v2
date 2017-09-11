@@ -9337,7 +9337,7 @@ h6.facets-title {
 .view-sites-search .views-row {
   padding-left: .5em;
   padding-top: 1em;
-  flex: 1;
+  flex: 0 1;
 }
 @media (min-width: 1200px) {
   .view-sites-search .views-row {
