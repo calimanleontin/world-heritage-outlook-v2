@@ -11360,6 +11360,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   }
   .path-frontpage #block-homepagemap .map-block-footer .block-footer-text {
     margin-top: .2em;
+    margin-bottom: .2em;
   }
   .path-frontpage #block-homepagemap .map-block-footer .scroll-down {
     background-color: #fff;
