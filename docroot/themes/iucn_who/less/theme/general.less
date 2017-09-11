@@ -57,6 +57,28 @@ small,
 .small {
   font-size: @font-size-small;
 }
+table.table-striped {
+  th {
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  > thead:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top: 6px solid @iucn-blue-lightest;
+      }
+    }
+  }
+  tbody > tr:last-child {
+    &.odd {
+      border-bottom: 6px solid #fff;
+    }
+    &.even {
+      border-bottom: 6px solid @iucn-blue-lightest;
+    }
+  }
+}
 // Generic collapse icon
 .icon-collapse {
   &:before {
