@@ -10968,8 +10968,10 @@ h6.facets-title {
 }
 .node--type-site-assessment .field--name-field-as-vass-wh-state,
 .node--type-site-assessment .field--name-field-as-protection-ov-rating,
+.node--type-site-assessment .field--name-field-as-threats-rating,
 .node--type-site-assessment .field--name-field-as-vass-wh-state a,
-.node--type-site-assessment .field--name-field-as-protection-ov-rating a {
+.node--type-site-assessment .field--name-field-as-protection-ov-rating a,
+.node--type-site-assessment .field--name-field-as-threats-rating a {
   font-size: 17px;
   font-size: 1.7rem;
   color: #f69232;
