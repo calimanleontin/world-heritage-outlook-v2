@@ -9511,8 +9511,8 @@ fieldset[disabled] .explore-map-button a.focus {
 @media screen and (max-width: 767px) {
   .search-block-container {
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: 12px;
+    padding-top: 12px;
   }
 }
 @media screen and (min-width: 768px) {
