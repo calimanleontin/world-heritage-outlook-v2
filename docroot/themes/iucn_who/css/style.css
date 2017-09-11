@@ -9524,7 +9524,6 @@ fieldset[disabled] .explore-map-button a.focus {
 .view-sites-search .view-content {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 .view-sites-search .views-row {
   padding-top: 1em;
