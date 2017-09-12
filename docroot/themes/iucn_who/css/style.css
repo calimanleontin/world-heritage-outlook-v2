@@ -10998,7 +10998,6 @@ fieldset[disabled] .explore-map-button a.focus {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
-  padding-bottom: 0;
 }
 .node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h1,
 .node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h1,
@@ -11022,6 +11021,7 @@ fieldset[disabled] .explore-map-button a.focus {
 }
 .node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading > .panel-title,
 .node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading > .panel-title {
+  font-weight: 700;
   margin-bottom: 0;
   position: relative;
 }
@@ -11049,10 +11049,16 @@ fieldset[disabled] .explore-map-button a.focus {
   display: flex;
   justify-content: space-between;
 }
+.node--type-site-assessment .panel-body > .field {
+  overflow: auto;
+}
 .node--type-site-assessment .panel-title-terms {
   color: #134780;
   display: flex;
   padding: 0 1em;
+}
+.node--type-site-assessment .panel-title-terms .field--label {
+  font-weight: normal;
 }
 .node--type-site-assessment .panel-title-terms .field__items > .field--label,
 .node--type-site-assessment .panel-title-terms .field__items > .field--item {
@@ -11320,6 +11326,10 @@ fieldset[disabled] .explore-map-button a.focus {
 .assessment-section > .assessment-toggle > .panel-heading .panel-title {
   font-size: 25px;
   font-size: 2.5rem;
+}
+.assessment-projects.assessment-toggle > .panel-collapse > .panel-body,
+.assessment-section > .assessment-toggle > .panel-collapse > .panel-body {
+  padding-right: 0;
 }
 /* ==========================================================================
    Assessment sidebar
