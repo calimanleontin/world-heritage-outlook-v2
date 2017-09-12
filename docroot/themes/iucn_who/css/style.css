@@ -12086,9 +12086,11 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   padding-right: 15px;
 }
 .path-frontpage #map-site-details .map-site-detail .status {
-  background-color: #fff;
+  background-color: #03afdf;
+  color: #fff;
   font-size: 1em;
   font-weight: 300;
+  line-height: 1.6em;
   left: 0;
   max-width: calc(100% - 2em);
   min-height: 2em;
@@ -12129,7 +12131,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .path-frontpage #map-site-details .map-site-detail .status {
     top: auto;
     bottom: 0;
-    padding: .3em 1.5em;
+    padding: .3em 15px;
   }
 }
 .path-frontpage #map-site-details .map-site-detail .title {
