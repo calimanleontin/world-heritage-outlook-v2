@@ -35,6 +35,8 @@ class SiteStatusTest extends WebTestBase {
   private $status_significant_concerns = null;
   /** @var \Drupal\taxonomy\TermInterface */
   private $status_critical = null;
+  /** @var \Drupal\taxonomy\TermInterface */
+  private $status_coming_soon = null;
 
   public function setUp() {
     parent::setUp();
@@ -86,6 +88,17 @@ class SiteStatusTest extends WebTestBase {
     $this->status_critical = $status;
     $this->assertEqual(4, $status->id(),
       SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL . ' conservation status term created'
+    );
+
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON ]
+    ]);
+    $status->save();
+    $this->status_coming_soon = $status;
+    $this->assertEqual(4, $status->id(),
+      SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON . ' conservation status term created'
     );
   }
 
@@ -217,6 +230,7 @@ class SiteStatusTest extends WebTestBase {
       $this->status_significant_concerns->id(),
       $this->status_significant_concerns->id(),
       $this->status_critical->id(),
+      $this->status_coming_soon->id(),
     ];
     foreach ($statuses as $status) {
       $this->createSite([

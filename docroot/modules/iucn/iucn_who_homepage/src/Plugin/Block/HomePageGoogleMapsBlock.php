@@ -108,6 +108,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#title' => $node->title->value,
         '#status' => [
           'label' => $overall_status_level ? $overall_status_level->label() : '-',
+          'entity' => $overall_status_level,
           'id' => $status_id,
         ],
         '#country' => [
@@ -155,6 +156,10 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $style = ImageStyle::load($style);
     if (!empty($node->field_image->entity)) {
       return $style->buildUrl($node->field_image->entity->getFileUri());
+    }
+    else {
+      $path = '/' . drupal_get_path('module', 'iucn_who_homepage') . '/images/no-image-placeholder.png';
+      return Url::fromUserInput($path, ['absolute' => TRUE])->toString();
     }
   }
 

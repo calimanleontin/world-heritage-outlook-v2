@@ -28,15 +28,6 @@ class HomePageStatisticsBlock extends BlockBase {
     // @todo Line below to disables caching
     $content = ['#cache' => ['max-age' => 0]];
     $statistics = $this->getStatistics();
-    if (!DrupalInstance::isProductionInstance()) {
-      if (empty($statistics['good']['value'])) {
-        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_GOOD]['value'] = 40;
-        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS]['value'] = 30;
-        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS]['value'] = 20;
-        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS]['value'] = 20;
-        $statistics[SiteStatus::IUCN_OUTLOOK_STATUS_CRITICAL]['value'] = 10;
-      }
-    }
     $content['output'] = [
       '#theme' => 'homepage_statistics',
       '#statistics' => $statistics,
