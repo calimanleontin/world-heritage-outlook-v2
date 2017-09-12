@@ -9228,31 +9228,34 @@ h6.facets-title {
   }
 }
 .block-social-media .block-title {
+  display: inline-block;
   font-size: 18px;
   font-weight: normal;
-  display: inline-block;
 }
 .block-social-media .social-media-sharing {
-  margin-top: 0.5em;
   display: inline-block;
+  margin-top: 0.5em;
 }
 .block-social-media .social-media-sharing li {
-  margin-right: 0;
-}
-.block-social-media .social-media-sharing li + li {
   margin-left: 25px;
   margin-left: 2.5rem;
+  margin-right: 0;
+}
+@media screen and (max-width: 767px) {
+  .block-social-media .social-media-sharing li li:first-child {
+    margin-left: 0;
+  }
 }
 .block-social-media .social-media-sharing .share img {
-  width: 50px;
-  width: 5rem;
   height: 50px;
   height: 5rem;
+  width: 50px;
+  width: 5rem;
 }
 @media screen and (max-width: 767px) {
   .block-social-media .social-media-sharing .share img {
-    width: 60px;
     height: 60px;
+    width: 60px;
   }
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline {
