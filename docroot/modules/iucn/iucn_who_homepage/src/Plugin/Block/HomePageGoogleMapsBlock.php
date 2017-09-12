@@ -44,6 +44,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
     $this->configuration['empty_selection_placeholder'] = $values['empty_selection_placeholder'];
+    $this->configuration['block_footer_text'] = $values['block_footer_text'];
   }
 
 
