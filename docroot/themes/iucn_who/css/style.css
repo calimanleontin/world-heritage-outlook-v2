@@ -10979,6 +10979,11 @@ fieldset[disabled] .explore-map-button a.focus {
 .node--type-site-assessment .col-sm-4 > .field + .field {
   margin-top: 2em;
 }
+@media (max-width: 991px) {
+  .node--type-site-assessment .col-sm-4 {
+    margin-top: 15px;
+  }
+}
 .node--type-site-assessment .iucn-assessment-value {
   margin-top: 1em;
 }
