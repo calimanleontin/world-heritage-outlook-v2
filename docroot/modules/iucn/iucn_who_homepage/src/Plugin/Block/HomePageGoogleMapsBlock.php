@@ -108,6 +108,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#title' => $node->title->value,
         '#status' => [
           'label' => $overall_status_level ? $overall_status_level->label() : '-',
+          'entity' => $overall_status_level,
           'id' => $status_id,
         ],
         '#country' => [
