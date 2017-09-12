@@ -157,6 +157,10 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     if (!empty($node->field_image->entity)) {
       return $style->buildUrl($node->field_image->entity->getFileUri());
     }
+    else {
+      $path = '/' . drupal_get_path('module', 'iucn_who_homepage') . '/images/no-image-placeholder.png';
+      return Url::fromUserInput($path, ['absolute' => TRUE])->toString();
+    }
   }
 
   private function getSiteInscriptionYear($node) {
