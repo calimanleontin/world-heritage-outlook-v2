@@ -32,6 +32,7 @@ dependencies:
   module:
     - datetime
     - ds
+    - geofield_map
     - image
     - iucn_site
     - text
@@ -62,6 +63,12 @@ third_party_settings:
         - field_image
       assessment:
         - field_assessments
+      sidebar:
+        - field_geolocation
+        - assessments_more_site_links
+        - assessments_download_links
+        - 'dynamic_block_field:node-how_are_sites_assessed'
+        - 'dynamic_block_field:node-site_feedback'
     fields:
       'display_field_copy:node-image_site':
         plugin_id: 'display_field_copy:node-image_site'
@@ -72,6 +79,16 @@ third_party_settings:
           formatter:
             image_style: sites_thumbnail
             image_link: ''
+      'dynamic_block_field:node-how_are_sites_assessed':
+        plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
+        weight: 14
+        label: hidden
+        formatter: default
+      'dynamic_block_field:node-site_feedback':
+        plugin_id: 'dynamic_block_field:node-site_feedback'
+        weight: 15
+        label: above
+        formatter: default
       node_title:
         plugin_id: node_title
         weight: 0
@@ -86,9 +103,19 @@ third_party_settings:
         weight: 2
         label: hidden
         formatter: image
+      assessments_download_links:
+        plugin_id: assessments_download_links
+        weight: 13
+        label: hidden
+        formatter: default
       assessments_links:
         plugin_id: assessments_links
         weight: 3
+        label: hidden
+        formatter: default
+      assessments_more_site_links:
+        plugin_id: assessments_more_site_links
+        weight: 12
         label: hidden
         formatter: default
 id: node.site.default
@@ -133,6 +160,53 @@ content:
     third_party_settings:
       ds:
         ds_limit: ''
+  field_geolocation:
+    type: geofield_google_map
+    weight: 11
+    region: sidebar
+    label: hidden
+    settings:
+      gmap_api_key: ''
+      map_dimensions:
+        width: 100%
+        height: 450px
+      map_empty:
+        empty_behaviour: '0'
+        empty_message: 'No Geofield Value entered for this field'
+      map_center:
+        lat: '42'
+        lon: '12.5'
+        center_force: 0
+      map_zoom_and_pan:
+        zoom:
+          initial: 6
+          force: 0
+          min: 1
+          max: 22
+        scrollwheel: 1
+        draggable: 1
+        map_reset: 0
+      map_controls:
+        disable_default_ui: 0
+        zoom_control: 1
+        map_type_id: roadmap
+        map_type_control: 1
+        map_type_control_options_type_ids:
+          roadmap: roadmap
+          satellite: satellite
+          hybrid: hybrid
+          terrain: terrain
+        scale_control: 1
+        street_view_control: 1
+        fullscreen_control: 1
+      map_marker_and_infowindow:
+        icon_image_path: ''
+        infowindow_field: title
+      map_markercluster:
+        markercluster_control: 0
+        markercluster_additional_options: ''
+      map_additional_options: ''
+    third_party_settings: {  }
   field_image:
     type: image
     weight: 9
@@ -172,7 +246,6 @@ hidden:
   field_cultural_landscape: true
   field_current_assessment: true
   field_danger_list: true
-  field_geolocation: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true

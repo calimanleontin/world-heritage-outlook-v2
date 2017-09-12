@@ -43,6 +43,8 @@ iucn_who_site:
       label: Image
     assessment:
       label: Assessment
+    sidebar:
+      label: Sidebar
 
 iucn_who_assessment_value:
   label: Assessment value paragraph
@@ -71,9 +73,6 @@ iucn_who_assessment:
       label: Full assessment
     references:
       label: References
-    sidebar:
-      label: Sidebar
-
 
 iucn_who_news_teaser:
   label: News Teaser
