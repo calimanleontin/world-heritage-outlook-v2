@@ -12198,7 +12198,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.protection-management:before {
-  background-image: url(../images/protection-management-white.svg);
+  background-image: url(../images/protection-management.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12215,7 +12215,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
-  background-image: url(../images/threats-white.svg);
+  background-image: url(../images/threats.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12232,7 +12232,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
-  background-image: url(../images/values-white.svg);
+  background-image: url(../images/values.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12245,23 +12245,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values:before {
-  background-image: url(../images/values.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-.path-frontpage #map-site-details .map-site-detail dt.threats:before {
-  background-image: url(../images/threats.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-.path-frontpage #map-site-details .map-site-detail dt.management:before {
-  background-image: url(../images/management.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+.path-frontpage #map-site-details .map-site-detail dt.protection-management:before {
   width: 1.4em;
 }
 .path-frontpage #map-site-details .map-site-detail dd {

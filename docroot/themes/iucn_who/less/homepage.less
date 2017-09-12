@@ -422,7 +422,7 @@
           &.@{conservation-category-class} {
             position: relative;
             &:before {
-              .svg-icon(~'@{conservation-category-class}-white');
+              .svg-icon(~'@{conservation-category-class}');
               background-position: center;
               background-size: contain;
               content: '';
@@ -438,20 +438,7 @@
             }
           }
         });
-        &.values:before {
-          .svg-icon(values);
-          background-position: center;
-          background-size: contain;
-        }
-        &.threats:before {
-          .svg-icon(threats);
-          background-position: center;
-          background-size: contain;
-        }
-        &.management:before {
-          .svg-icon(management);
-          background-position: center;
-          background-size: contain;
+        &.protection-management:before {
           width: 1.4em;
         }
       }
