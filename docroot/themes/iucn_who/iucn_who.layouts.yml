@@ -31,6 +31,10 @@ iucn_who_site:
   type: partial
   template: templates/layouts/iucn-who-site
   regions:
+    title:
+      label: Title
+    mobile_image:
+      label: Mobile image
     left_1:
      label: Rating
     middle_1:

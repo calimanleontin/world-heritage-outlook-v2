@@ -7,6 +7,12 @@ set classes = [
 <div{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="row">
+      <div class="col-sm-12">
+        {{ content.title }}
+        <div class="visible-xs">
+        {{ content.mobile_image }}
+        </div>
+      </div>
       <div class="col-md-4">
         {{ content.left_1 }}
       </div>
