@@ -11043,11 +11043,19 @@ fieldset[disabled] .explore-map-button a.focus {
 }
 .node--type-site-assessment .panel-title-terms {
   color: #134780;
+  display: flex;
   padding: 0 1em;
 }
 .node--type-site-assessment .panel-title-terms .field__items > .field--label,
 .node--type-site-assessment .panel-title-terms .field__items > .field--item {
   display: inline-block;
+}
+.node--type-site-assessment .panel-title-terms > .field + .field {
+  margin-left: 1em;
+}
+.node--type-site-assessment .field--name-field-as-values-criteria,
+.node--type-site-assessment .field--name-field-as-values-curr-trend {
+  display: flex;
 }
 .node--type-site-assessment .conservation-outlook-summary-group {
   border-left: .4em solid;
@@ -11305,6 +11313,9 @@ fieldset[disabled] .explore-map-button a.focus {
   font-size: 25px;
   font-size: 2.5rem;
 }
+/* ==========================================================================
+   Assessment sidebar
+   ========================================================================== */
 .field--name-assessments-more-site-links > .field--label,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   border-bottom: 1px solid #ddd;

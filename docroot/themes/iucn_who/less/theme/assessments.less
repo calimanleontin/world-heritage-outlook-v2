@@ -226,40 +226,20 @@
   }
   .panel-title-terms {
     color: @iucn-blue-dark;
+    display: flex;
     padding: 0 1em;
     .field__items > .field--label,
     .field__items > .field--item {
       display: inline-block;
     }
+    > .field + .field {
+      margin-left: 1em;
+    }
   }
-  // .iucn-assessment-value {
-  //   .panel {
-  //     border-color: transparent;
-  //   }
-  //   .panel-heading {
-  //     background-color: transparent;
-  //     border-color: transparent;
-  //     > .panel-title:before {
-  //       .svg-icon(list-icon);
-  //       background-position: left center;
-  //       background-size: contain;
-  //       content: '';
-  //       display: block;
-  //       height: 1em;
-  //       vertical-align: middle;
-  //       width: 1em;
-  //       position: absolute;
-  //       top: 10px;
-  //       left: @grid-gutter-width / 2;
-  //       margin-top: .2em;
-  //     }
-  //   }
-  //   .panel-heading,
-  //   .panel-body {
-  //     padding-top: 0;
-  //     padding-bottom: 0;
-  //   }
-  // }
+  .field--name-field-as-values-criteria,
+  .field--name-field-as-values-curr-trend {
+    display: flex;
+  }
 
   .conservation-outlook-summary-group {
     .left-bordered-heading();
@@ -400,6 +380,10 @@
     }
   }
 }
+
+/* ==========================================================================
+   Assessment sidebar
+   ========================================================================== */
 
 .field--name-assessments-more-site-links,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed {
