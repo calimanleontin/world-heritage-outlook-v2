@@ -455,12 +455,13 @@ third_party_settings:
         - field_as_threats_current
       parent_name: group_threats
       weight: 20
-      format_type: details
+      format_type: details_assessment
       format_settings:
+        label: 'Current Threats'
+        terms: field_as_threats_current_rating
         id: ''
         classes: 'assessment-current-threats assessment-toggle'
-        open: false
-        required_fields: false
+        open: 0
       label: 'Current Threats'
     group_potential_threats:
       children:
@@ -469,12 +470,13 @@ third_party_settings:
         - field_as_threats_potential
       parent_name: group_threats
       weight: 21
-      format_type: details
+      format_type: details_assessment
       format_settings:
         id: ''
         classes: 'assessment-potential-threats assessment-toggle'
         open: false
         required_fields: false
+        terms: ''
       label: 'Potential Threats'
     group_ass_protection_manag:
       children:
@@ -507,11 +509,12 @@ third_party_settings:
         - field_as_protection_ov_out_text
       parent_name: group_overall_ass_prot
       weight: 7
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the effectiveness of protection and management in addressing threats outside the site'
+        terms: field_as_protection_ov_out_rate
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
@@ -615,11 +618,12 @@ third_party_settings:
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the current state and trend of World Heritage values'
+        terms: 'field_as_vass_wh_trend|display_field_copy:node-assessment_values_copy'
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
@@ -634,16 +638,18 @@ third_party_settings:
         - field_as_vass_bio_text
       parent_name: group_summary_values
       weight: 22
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
-        id: ''
-        classes: ''
+        label: 'Assessment of the current state and trend of other important biodiversity values'
+        terms: field_as_vass_bio_state|field_as_vass_bio_trend
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
         speed: fast
+        id: ''
+        classes: ''
       label: 'Assessment of the current state and trend of other important biodiversity values'
 id: node.site_assessment.default
 targetEntityType: node
