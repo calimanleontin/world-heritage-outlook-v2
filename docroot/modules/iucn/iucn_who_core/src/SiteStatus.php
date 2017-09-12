@@ -216,18 +216,19 @@ class SiteStatus {
     if ($critical) { $statuses[$critical->id()] = 0; }
 
     $sites = SitesQueryUtil::getPublishedSites();
+    $total = 0;
     /** @var \Drupal\node\NodeInterface $node */
     foreach ($sites as $node) {
       if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
         if (isset($statuses[$status->id()])) {
           $statuses[$status->id()] += 1;
+          $total++;
         }
       }
       else {
         // @todo Warning
       }
     }
-    $total = count($sites);
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = floor((100 * $count) / $total);
     }
