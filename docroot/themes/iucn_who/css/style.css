@@ -10760,6 +10760,14 @@ fieldset[disabled] .explore-map-button a.focus {
     width: 1%;
   }
 }
+[data-statistics="0"] {
+  width: 0%;
+}
+@media screen and (max-width: 767px) {
+  [data-statistics-mobile="0"][data-statistics] {
+    width: 0%;
+  }
+}
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
 .iucn-site-wrapper .field--name-field-designation .field--label {

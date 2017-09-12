@@ -1,5 +1,5 @@
 // Generate statistics widths
-.generate-statistics-widths(@index: 100) when (@index > 0) {
+.generate-statistics-widths(@index: 100) when (@index >= 0) {
   [data-statistics="@{index}"] {
     width: @index * 1%;
   }
