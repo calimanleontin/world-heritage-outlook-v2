@@ -146,6 +146,23 @@ class SiteStatusTest extends WebTestBase {
     $status = SiteStatus::getOverallAssessmentLevel($site);
     $this->assertTrue(!empty($status), 'global status is valid');
     $this->assertEqual('critical', $status->label());
+
+    $status = Term::create([
+      'vid' => 'assessment_conservation_rating',
+      'name' => SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON,
+      'field_css_identifier' => ['value' => SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON]
+    ]);
+    $status->save();
+    $this->assertTrue(!empty($status), SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON . ' status is valid');
+
+    $site = Node::create([
+      'type' => 'site',
+      'title' => 'test site',
+    ]);
+    $site->setPublished();
+    $site->save();
+    $status = SiteStatus::getOverallAssessmentLevel($site);
+    $this->assertEqual(SiteStatus::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON, $status->label());
   }
 
 

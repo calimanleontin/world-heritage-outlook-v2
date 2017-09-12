@@ -89,13 +89,16 @@ class SiteStatus {
     $ret = NULL;
     /** @var $node object */
     if (empty($node)) {
-      return $ret;
+      return NULL;
     }
     try {
-      if ($node->field_current_assessment) {
+      if (!empty($node->field_current_assessment->entity)) {
         if ($assessment = $node->field_current_assessment->entity) {
           $ret = $assessment->field_as_global_assessment_level->entity;
         }
+      }
+      else if ($node->isPublished()) {
+        $ret = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON);
       }
     } catch (\Exception $e) {
       \Drupal::logger(__CLASS__)->error(
