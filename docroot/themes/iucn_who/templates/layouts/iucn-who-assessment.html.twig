@@ -10,22 +10,24 @@
 
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active fade in" id="summary">
-        <h2>{{ 'Summary'|t }}</h2>
+        <h2 class="tab-title summary visible-mobile">{{ 'Summary'|t }}</h2>
         {{ content.summary }}
       </div>
       <div role="tabpanel" class="tab-pane fade" id="full_assessment">
-        <h2>{{ 'Full assessment'|t }}</h2>
-        <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
-        <ul class="assessment-expand-buttons">
-          <li><button class="btn-link expand-button">{{ 'Expand all'|t }}</button></li>
-          <li><button class="btn-link collapse-button">{{ 'Collapse all'|t }}</button></li>
-        </ul>
+        <h2 class="tab-title full_assessment visible-mobile">{{ 'Full assessment'|t }}</h2>
+        <div class="assessment-expand">
+          <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
+          <ul class="assessment-expand-buttons">
+            <li><button class="btn-link expand-button">{{ 'Expand all'|t }}</button></li>
+            <li><button class="btn-link collapse-button">{{ 'Collapse all'|t }}</button></li>
+          </ul>
+        </div>
 
         {{ content.full_assessment_values }}
 
       </div>
       <div role="tabpanel" class="tab-pane fade" id="references">
-        <h2>{{ 'References'|t }}</h2>
+        <h2 class="tab-title references visible-mobile">{{ 'References'|t }}</h2>
         {{ content.references }}
       </div>
     </div>

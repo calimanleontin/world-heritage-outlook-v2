@@ -9778,6 +9778,11 @@ fieldset[disabled] .explore-map-button a.focus {
     display: none !important;
   }
 }
+@media screen and (min-width: 768px) {
+  .sidemenu-open {
+    overflow: auto;
+  }
+}
 @media screen and (max-width: 767px) {
   .field--name-field-teasers {
     display: flex;
@@ -10859,14 +10864,17 @@ body.page-node-type-site .breadcrumb {
   .region-site-title .field--name-node-title {
     position: relative;
     z-index: 1;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    background-color: rgba(0, 0, 0, 0.3);
   }
   .region-site-title .field--name-node-title h1 {
     color: #fff;
     font-size: 18px;
-    margin-bottom: .8em;
+    margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-top: .8em;
+    margin-top: 0;
   }
   .region-site-title .region-site-mobile-image {
     background-color: #134780;
@@ -10899,6 +10907,11 @@ body.page-node-type-site .breadcrumb {
 }
 .field--name-assessments-links li {
   display: inline-block;
+}
+@media screen and (max-width: 767px) {
+  .field--name-assessments-links li {
+    font-size: 20px;
+  }
 }
 .field--name-assessments-links li + li {
   margin-left: 3em;
@@ -10975,6 +10988,8 @@ body.page-node-type-site .breadcrumb {
 @media screen and (max-width: 767px) {
   .iucn-site-wrapper .nav-tabs {
     flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
   }
 }
 .iucn-site-wrapper .nav-tabs.visible-desktop {
@@ -11029,6 +11044,7 @@ body.page-node-type-site .breadcrumb {
     background-position-y: center;
     background-size: auto 2.5em;
     padding-left: 5em;
+    text-transform: uppercase;
   }
 }
 .iucn-site-wrapper .nav-tabs > li > a > * {
@@ -11048,12 +11064,16 @@ body.page-node-type-site .breadcrumb {
     display: none;
   }
 }
-.iucn-site-wrapper .nav-tabs > li > a[href="#summary"] {
-  background-image: url(../images/summary.svg);
+.iucn-site-wrapper .nav-tabs > li > a[href="#references"] {
+  background-image: url(../images/references.svg);
   background-repeat: no-repeat;
 }
 .iucn-site-wrapper .nav-tabs > li > a[href="#full_assessment"] {
-  background-image: url(../images/full-assessment.svg);
+  background-image: url(../images/full_assessment.svg);
+  background-repeat: no-repeat;
+}
+.iucn-site-wrapper .nav-tabs > li > a[href="#summary"] {
+  background-image: url(../images/summary.svg);
   background-repeat: no-repeat;
 }
 @media screen and (min-width: 768px) {
@@ -11064,16 +11084,15 @@ body.page-node-type-site .breadcrumb {
     left: 6.5em;
   }
 }
-.iucn-site-wrapper .nav-tabs > li > a[href="#references"] {
-  background-image: url(../images/references.svg);
-  background-repeat: no-repeat;
-}
 .iucn-site-wrapper .nav-tabs > li.active {
   position: relative;
 }
 @media screen and (max-width: 767px) {
   .iucn-site-wrapper .nav-tabs > li.active {
+    border-bottom: 1px solid #ddd;
     order: -1;
+    padding-bottom: 1em;
+    text-align: center;
   }
   .iucn-site-wrapper .nav-tabs > li.active > a {
     background-color: transparent;
@@ -11082,6 +11101,12 @@ body.page-node-type-site .breadcrumb {
     background-image: url(../images/icon-backarrow-light-blue.svg);
     background-repeat: no-repeat;
     background-size: auto;
+    display: inline-block;
+  }
+  .iucn-site-wrapper .nav-tabs > li.active > a .tab-label {
+    color: #03afdf;
+    font-weight: normal;
+    text-transform: none;
   }
 }
 @media screen and (min-width: 768px) {
@@ -11103,16 +11128,16 @@ body.page-node-type-site .breadcrumb {
   .iucn-site-wrapper .nav-tabs > li.active > a:before {
     border-right-color: rgba(255, 255, 255, 0.3);
   }
-  .iucn-site-wrapper .nav-tabs > li.active > a[href="#summary"] {
-    background-image: url(../images/summary-white.svg);
+  .iucn-site-wrapper .nav-tabs > li.active > a[href="#references"] {
+    background-image: url(../images/references-white.svg);
     background-repeat: no-repeat;
   }
   .iucn-site-wrapper .nav-tabs > li.active > a[href="#full_assessment"] {
-    background-image: url(../images/full-assessment-white.svg);
+    background-image: url(../images/full_assessment-white.svg);
     background-repeat: no-repeat;
   }
-  .iucn-site-wrapper .nav-tabs > li.active > a[href="#references"] {
-    background-image: url(../images/references-white.svg);
+  .iucn-site-wrapper .nav-tabs > li.active > a[href="#summary"] {
+    background-image: url(../images/summary-white.svg);
     background-repeat: no-repeat;
   }
 }
@@ -11147,6 +11172,35 @@ body.page-node-type-site .breadcrumb {
   vertical-align: middle;
   margin-left: .5em;
 }
+.iucn-site-wrapper .tab-title {
+  background-position: left center;
+  color: #bfbfbf;
+  font-size: 18px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+.iucn-site-wrapper .tab-title:before {
+  background-position: center;
+  background-size: contain;
+  content: '';
+  display: inline-block;
+  height: 30px;
+  margin-right: .5em;
+  vertical-align: middle;
+  width: 20px;
+}
+.iucn-site-wrapper .tab-title.references:before {
+  background-image: url(../images/references-gray.svg);
+  background-repeat: no-repeat;
+}
+.iucn-site-wrapper .tab-title.full_assessment:before {
+  background-image: url(../images/full_assessment-gray.svg);
+  background-repeat: no-repeat;
+}
+.iucn-site-wrapper .tab-title.summary:before {
+  background-image: url(../images/summary-gray.svg);
+  background-repeat: no-repeat;
+}
 .iucn-site-wrapper .col-sm-4 > .field + .field {
   margin-top: 2em;
 }
@@ -11169,6 +11223,7 @@ body.page-node-type-site .breadcrumb {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
+  padding-right: 0;
 }
 .iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h1,
 .iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h1,
@@ -11219,6 +11274,7 @@ body.page-node-type-site .breadcrumb {
 .iucn-site-wrapper .panel-default .panel-heading {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .iucn-site-wrapper .panel-body > .field {
   overflow: auto;
@@ -11258,6 +11314,12 @@ body.page-node-type-site .breadcrumb {
     font-weight: 500;
   }
 }
+@media screen and (max-width: 767px) {
+  .iucn-site-wrapper .conservation-outlook-summary-group {
+    display: inline-flex;
+    flex-direction: column;
+  }
+}
 @media screen and (min-width: 768px) {
   .iucn-site-wrapper .conservation-outlook-summary-group {
     border-left: .4em solid;
@@ -11278,6 +11340,12 @@ body.page-node-type-site .breadcrumb {
     border-left-width: 10px;
   }
 }
+@media screen and (max-width: 767px) {
+  .iucn-site-wrapper .sidemenu-toggle-wrapper {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+}
 .iucn-site-wrapper .field--name-field-as-end-date {
   font-size: 15px;
   font-size: 1.5rem;
@@ -11285,6 +11353,12 @@ body.page-node-type-site .breadcrumb {
 @media screen and (max-width: 767px) {
   .iucn-site-wrapper .field--name-field-as-end-date {
     font-size: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .iucn-site-wrapper .field--name-field-as-end-date {
+    order: -1;
+    margin-bottom: .5em;
   }
 }
 @media screen and (min-width: 768px) {
@@ -11372,6 +11446,11 @@ body.page-node-type-site .breadcrumb {
 .iucn-site-wrapper .field--name-field-as-global-assessment-level.good:after {
   border-color: transparent transparent transparent #3bb55e;
 }
+@media screen and (max-width: 767px) {
+  .iucn-site-wrapper .field--name-field-as-global-assessment-level {
+    width: auto;
+  }
+}
 .iucn-site-wrapper .field--name-field-as-global-assessment-text {
   margin-top: 1em;
 }
@@ -11453,6 +11532,11 @@ body.page-node-type-site .breadcrumb {
   font-weight: 900;
   margin-bottom: 1.8em;
 }
+@media screen and (max-width: 767px) {
+  .assessment-expand {
+    display: none;
+  }
+}
 .assessment-expand-buttons {
   list-style-type: none;
   padding-left: 0;
@@ -11477,13 +11561,11 @@ body.page-node-type-site .breadcrumb {
   background-image: url(../images/collapse-minus.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 20px;
+  background-size: contain;
   content: '';
   display: inline-block;
   height: 1em;
   margin-right: .2em;
-  min-height: 20px;
-  min-width: 20px;
   position: relative;
   top: .1em;
   width: 1em;

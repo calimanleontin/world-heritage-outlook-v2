@@ -33,6 +33,9 @@
 
     if (tabTarget !== '') {
       $('a[href="' + tabTarget + '"]').tab('show');
+      if (tabTarget.substr(0,1) == "#") {
+        $body.addClass(tabTarget.substr(1) + '-is-active-tab');
+      }
     }
     else {
       var hash = $(".nav-tabs > li.active > a[data-toggle='tab']").attr("href");

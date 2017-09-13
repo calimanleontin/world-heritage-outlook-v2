@@ -26,13 +26,16 @@ body.page-node-type-site {
     .field--name-node-title {
       position: relative;
       z-index: 1;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      background-color: fade(#000, 30%);
       h1 {
         color: #fff;
         font-size: 18px;
-        margin-bottom: .8em;
+        margin-bottom: 0;
         margin-left: 0;
         margin-right: 0;
-        margin-top: .8em;
+        margin-top: 0;
       }
     }
     .region-site-mobile-image {
@@ -68,6 +71,9 @@ body.page-node-type-site {
   }
   li {
     display: inline-block;
+    @media @grid-mobile {
+      font-size: 20px;
+    }
     + li {
       margin-left: 3em;
     }
@@ -91,6 +97,7 @@ body.page-node-type-site {
     }
   }
 }
+
 .iucn-site-wrapper {
 
   .field--name-field-inscription-year .field--label,
@@ -117,6 +124,8 @@ body.page-node-type-site {
     margin-bottom: 3em;
     @media @grid-mobile {
       flex-wrap: wrap;
+      margin-left: -@grid-gutter-width / 2;
+      margin-right: -@grid-gutter-width / 2;
     }
     &.visible-desktop {
       background-color: @assessment-tabs-bg;
@@ -160,6 +169,7 @@ body.page-node-type-site {
         background-position-y: center;
         background-size: auto 2.5em;
         padding-left: 5em;
+        text-transform: uppercase;
       }
       > * {
         display: block;
@@ -176,9 +186,13 @@ body.page-node-type-site {
           display: none;
         }
       }
-      &[href="#summary"] { .svg-icon(summary); }
+      .loop-assessment-tabs({
+        @attr-helper: ~'#@{assessment-tab-class}';
+        &[href="@{attr-helper}"] {
+          .svg-icon(~'@{assessment-tab-class}');
+        }
+      });
       &[href="#full_assessment"] {
-        .svg-icon(full-assessment);
         @media @grid-desktop {
           padding-left: 7.5em;
           &:before {
@@ -186,7 +200,6 @@ body.page-node-type-site {
           }
         }
       }
-      &[href="#references"] { .svg-icon(references); }
       position: relative;
     }
 
@@ -194,11 +207,20 @@ body.page-node-type-site {
       position: relative;
 
       @media @grid-mobile {
+        border-bottom: 1px solid #ddd;
         order: -1;
+        padding-bottom: 1em;
+        text-align: center;
         > a {
           .btn-info.btn-border();
           .svg-icon(icon-backarrow-light-blue);
           background-size: auto;
+          display: inline-block;
+          .tab-label {
+            color: @brand-info;
+            font-weight: normal;
+            text-transform: none;
+          }
         }
       }
       @media @grid-desktop {
@@ -215,9 +237,12 @@ body.page-node-type-site {
         > a:before {
           border-right-color: fade(#fff, 30%);
         }
-        > a[href="#summary"] { .svg-icon(summary-white); }
-        > a[href="#full_assessment"] { .svg-icon(full-assessment-white); };
-        > a[href="#references"] { .svg-icon(references-white); }
+        .loop-assessment-tabs({
+          @attr-helper: ~'#@{assessment-tab-class}';
+          > a[href="@{attr-helper}"] {
+            .svg-icon(~'@{assessment-tab-class}-white');
+          }
+        });
       }
     }
   }
@@ -249,6 +274,28 @@ body.page-node-type-site {
       margin-left: .5em;
     }
   }
+  .tab-title {
+    background-position: left center;
+    color: #bfbfbf;
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: uppercase;
+    &:before {
+      background-position: center;
+      background-size: contain;
+      content: '';
+      display: inline-block;
+      height: 30px;
+      margin-right: .5em;
+      vertical-align: middle;
+      width: 20px;
+    }
+    .loop-assessment-tabs({
+      &.@{assessment-tab-class}:before {
+        .svg-icon(~'@{assessment-tab-class}-gray');
+      }
+    });
+  }
   .col-sm-4 {
     > .field + .field {
       margin-top: 2em;
@@ -269,6 +316,7 @@ body.page-node-type-site {
       background-color: transparent;
       border-color: transparent;
       box-shadow: none;
+      padding-right: 0;
       // padding-bottom: 0;
       h1, h2, h3, h4, h5, h6 {
         font-size: 1em;
@@ -305,6 +353,7 @@ body.page-node-type-site {
   .panel-default .panel-heading {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .panel-body > .field {
     overflow: auto;
@@ -340,15 +389,28 @@ body.page-node-type-site {
         font-weight: 500;
       }
     }
-
+    @media @grid-mobile {
+      display: inline-flex;
+      flex-direction: column;
+    }
     @media @grid-desktop {
       .left-bordered-heading();
       padding-bottom: .8em;
       padding-top: .8em;
     }
   }
+  .sidemenu-toggle-wrapper {
+    @media @grid-mobile {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+  }
   .field--name-field-as-end-date {
     .responsive(font-size, 15px, 15px);
+    @media @grid-mobile {
+      order: -1;
+      margin-bottom: .5em;
+    }
     @media @grid-desktop {
       .remify(top, .8 * 28px);
       color: #818181;
@@ -373,6 +435,9 @@ body.page-node-type-site {
     .remify(font-size, 17px);
     display: inline-flex;
     text-transform: uppercase;
+    @media @grid-mobile {
+      width: auto;
+    }
   }
   .field--name-field-as-global-assessment-text {
     margin-top: 1em;
@@ -412,7 +477,11 @@ body.page-node-type-site {
     }
   }
 }
-
+.assessment-expand {
+  @media @grid-mobile {
+    display: none;
+  }
+}
 .assessment-expand-buttons {
   list-style-type: none;
   padding-left: 0;
@@ -438,13 +507,13 @@ body.page-node-type-site {
     > a:before {
       .svg-icon(collapse-minus);
       background-position: center;
-      background-size: 20px;
+      background-size: contain;
       content: '';
       display: inline-block;
       height: 1em;
       margin-right: .2em;
-      min-height: 20px;
-      min-width: 20px;
+      // min-height: 20px;
+      // min-width: 20px;
       position: relative;
       top: .1em;
       width: 1em;

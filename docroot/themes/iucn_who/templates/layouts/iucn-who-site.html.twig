@@ -63,34 +63,36 @@
     </div>
   {% endif %}
   <div class="container">
-    <div class="col-sm-8">
-      {% if content.assessment|render is not empty %}
-        {{ content.assessment }}
-      {% else %}
-        <p>{{ 'Placeholder' }}</p>
-      {% endif %}
-    </div>
-    <div class="col-sm-4" id="sidemenu">
-      {% if content.assessment|render is not empty %}
-        <ul class="nav nav-tabs visible-mobile" role="tablist">
-          <li role="presentation" class="active">
-            <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-              <strong class="tab-label">{{ 'Summary'|t }}</strong>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
-              <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-              <strong class="tab-label">{{ 'References'|t }}</strong>
-            </a>
-          </li>
-        </ul>
-      {% endif %}
-      {{ content.sidebar }}
+    <div class="row">
+      <div class="col-sm-8">
+        {% if content.assessment|render is not empty %}
+          {{ content.assessment }}
+        {% else %}
+          <p>{{ 'Placeholder' }}</p>
+        {% endif %}
+      </div>
+      <div class="col-sm-4" id="sidemenu">
+        {% if content.assessment|render is not empty %}
+          <ul class="nav nav-tabs visible-mobile" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+                <strong class="tab-label">{{ 'Summary'|t }}</strong>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+                <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+                <strong class="tab-label">{{ 'References'|t }}</strong>
+              </a>
+            </li>
+          </ul>
+        {% endif %}
+        {{ content.sidebar }}
+      </div>
     </div>
   </div>
 </div>
