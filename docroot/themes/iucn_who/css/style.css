@@ -11864,7 +11864,8 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     display: flex;
     flex-flow: column;
   }
-  .path-frontpage .region-content #block-globaloutlookstatistics {
+  .path-frontpage .region-content #block-globaloutlookstatistics,
+  .path-frontpage .region-content #block-homepagereport {
     order: -1;
   }
 }
