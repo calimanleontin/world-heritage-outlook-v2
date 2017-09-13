@@ -23,6 +23,7 @@ class AssessmentsDownloadLinks extends DsFieldBase {
     /* @var $node \Drupal\node\NodeInterface */
     $node = $this->entity();
 
+    $element = [];
     $links = [];
     if ($node->hasField('field_assessments')) {
       if ($node->field_assessments->count()) {
@@ -40,13 +41,17 @@ class AssessmentsDownloadLinks extends DsFieldBase {
       }
     }
 
-    return [
-      '#theme' => 'links',
-      '#links' => $links,
-      '#cache' => [
-        'tags' => $node->getCacheTags(),
-      ],
-    ];
+    if (!empty($links)) {
+      $element = [
+        '#theme' => 'links',
+        '#links' => $links,
+        '#cache' => [
+          'tags' => $node->getCacheTags(),
+        ],
+      ];
+    }
+
+    return $element;
 
   }
 
