@@ -11124,6 +11124,7 @@ body.page-node-type-site .breadcrumb {
 @media screen and (max-width: 767px) {
   .iucn-site-wrapper .tab-label {
     color: #134780;
+    margin-bottom: 0;
   }
 }
 .iucn-site-wrapper .tab-description {
