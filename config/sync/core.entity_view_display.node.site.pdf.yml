@@ -45,13 +45,15 @@ third_party_settings:
       disable_css: false
       entity_classes: all_classes
       settings:
-        wrappers: null
-        outer_wrapper: null
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
         attributes: ''
-        link_attribute: null
-        link_custom: null
+        link_attribute: ''
+        link_custom: ''
         classes:
           layout_class: {  }
+          ds_content: {  }
     regions:
       ds_content:
         - node_title
@@ -94,9 +96,11 @@ content:
     weight: 8
     label: hidden
     settings:
-      link: true
-      view_mode: default
-    third_party_settings: {  }
+      view_mode: pdf
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
     type: entity_reference_entity_view
     region: ds_content
   field_country:
