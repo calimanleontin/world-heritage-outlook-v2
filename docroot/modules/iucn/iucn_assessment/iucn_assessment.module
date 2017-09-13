@@ -9,8 +9,10 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
     && $node->isPublished()
     && !empty($node->field_as_site->entity)) {
     $site = $node->field_as_site->entity;
-    $site->field_current_assessment = [['target_id' => $node->id()]];
-    if (!empty($site->field_current_assessment->entity)) {
+    if (empty($site->field_current_assessment->entity)) {
+      $site->field_current_assessment = [['target_id' => $node->id()]];
+    }
+    else {
       $curr_date = $node->field_as_cycle->value;
       $date = $site->field_current_assessment->entity->field_as_cycle->value;
       if ($curr_date > $date) {
@@ -97,6 +99,20 @@ function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_
   if (!empty($element['#group_name']) && $element['#group_name'] == 'group_conservation_outlook') {
     if (!empty($element['field_as_end_date']['#object']->field_as_cycle)) {
       $element['#title'] = $element['field_as_end_date']['#object']->field_as_cycle->value . ' ' . $element['#title'];
+    }
+  }
+}
+
+/**
+ * Implements hook_webform_element_alter().
+ */
+function iucn_assessment_webform_element_alter(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, array $context) {
+  if ($element['#webform_id'] == 'site_feedback--subject' && $element['#webform_key'] == 'subject') {
+    /* @var \Drupal\node\Entity\Node $node */
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if (is_object($node) && $node->bundle() == 'site') {
+      $element['#default_value'] = t('Feedback on @site', ['@site' => $node->getTitle()]);
+      $element['#attributes']['readonly'] = 'readonly';
     }
   }
 }

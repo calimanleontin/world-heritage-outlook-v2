@@ -1,6 +1,6 @@
 id: how_are_sites_assessed
 label: 'How are sites assessed'
-ui_limit: 'site_assessment|*'
+ui_limit: 'site|*'
 properties:
   block: 'block_content:8811ccc8-9ec2-4ac0-80d5-22bc541741b3'
   use_block_title: true

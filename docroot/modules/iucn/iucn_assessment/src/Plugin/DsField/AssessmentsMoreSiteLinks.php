@@ -24,18 +24,18 @@ class AssessmentsMoreSiteLinks extends DsFieldBase {
     $node = $this->entity();
 
     $links = [];
-    if (!empty($node->field_as_site->entity->field_wdpa_id->value)) {
+    if (!empty($node->field_wdpa_id->value)) {
       $value = [
-        'url' => Url::fromUri('http://www.protectedplanet.net/sites/' . $node->field_as_site->entity->field_wdpa_id->value),
+        'url' => Url::fromUri('http://www.protectedplanet.net/sites/' . $node->field_wdpa_id->value),
         'title' => $this->t('Protected Planet Website'),
       ];
       $value['attributes']['target'][] = '_blank';
       $links[] = $value;
     }
 
-    if (!empty($node->field_as_site->entity->field_unesco_id->value)) {
+    if (!empty($node->field_unesco_id->value)) {
       $value = [
-        'url' => Url::fromUri('http://whc.unesco.org/en/list/' . $node->field_as_site->entity->field_unesco_id->value),
+        'url' => Url::fromUri('http://whc.unesco.org/en/list/' . $node->field_unesco_id->value),
         'title' => $this->t('UNESCO World Heritage Centre'),
       ];
       $value['attributes']['target'][] = '_blank';
@@ -56,7 +56,7 @@ class AssessmentsMoreSiteLinks extends DsFieldBase {
    * {@inheritdoc}
    */
   public function isAllowed() {
-    if ($this->bundle() != 'site_assessment') {
+    if ($this->bundle() != 'site') {
       return FALSE;
     }
     return parent::isAllowed();

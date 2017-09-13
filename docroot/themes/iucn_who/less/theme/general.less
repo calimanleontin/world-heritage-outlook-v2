@@ -6,7 +6,6 @@ html {
 }
 body {
   font-size: unit(@font-size-base) / @rem-system-base * 100%;
-  overflow-x: hidden;
 }
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
@@ -29,6 +28,7 @@ body:not(.show-focus-outlines) {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  overflow-x: hidden;
 }
 @media (max-width: @grid-float-breakpoint-max) {
   .holygrail,

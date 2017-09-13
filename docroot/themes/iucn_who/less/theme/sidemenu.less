@@ -84,10 +84,13 @@
     display: block;
   }
   .modal-backdrop {
-    display: none;
+    display: none !important;
   }
 }
 
 .sidemenu-open {
   &:extend(.menu-open all);
+  @media @grid-desktop {
+    overflow: auto;
+  }
 }

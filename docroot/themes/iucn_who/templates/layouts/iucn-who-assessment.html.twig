@@ -1,61 +1,34 @@
 {%
-set classes = [
-'iucn-site-wrapper',
-]
-%}
-{% set node = content['#node'] %}
+  set classes = [
+  'iucn-site-assessment-wrapper',
+  ]
+  %}
+  {% set node = content['#node'] %}
 
-<div{{ attributes.addClass(classes) }}>
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active">
-      <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-        <strong class="tab-label">{{ 'Summary'|t }}</strong>
-        <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
-        <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-      </a>
-    </li>
-    <li role="presentation">
-      <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
-        <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
-        <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
-        <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-      </a>
-    </li>
-    <li role="presentation">
-      <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-        <strong class="tab-label">{{ 'References'|t }}</strong>
-        <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
-        <span class="tab-read-more">{{ 'See references'|t  }}</span>
-      </a>
-    </li>
-  </ul>
-  <!-- Tab panes -->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8">
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="summary">
-            {{ content.summary }}
-          </div>
-          <div role="tabpanel" class="tab-pane" id="full_assessment">
-            <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
-            <ul class="assessment-expand-buttons">
-              <li><button class="btn-link expand-button">{{ 'Expand all'|t }}</button></li>
-              <li><button class="btn-link collapse-button">{{ 'Collapse all'|t }}</button></li>
-            </ul>
+    <div{{ attributes.addClass(classes) }}>
+    <!-- Tab panes -->
 
-            {{ content.full_assessment_values }}
-
-          </div>
-          <div role="tabpanel" class="tab-pane" id="references">
-            {{ content.references }}
-          </div>
-        </div>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active fade in" id="summary">
+        <h2 class="tab-title summary visible-mobile">{{ 'Summary'|t }}</h2>
+        {{ content.summary }}
       </div>
-      <div class="col-sm-4">
-        {{ content.sidebar }}
+      <div role="tabpanel" class="tab-pane fade" id="full_assessment">
+        <h2 class="tab-title full_assessment visible-mobile">{{ 'Full assessment'|t }}</h2>
+        <div class="assessment-expand">
+          <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
+          <ul class="assessment-expand-buttons">
+            <li><button class="btn-link expand-button">{{ 'Expand all'|t }}</button></li>
+            <li><button class="btn-link collapse-button">{{ 'Collapse all'|t }}</button></li>
+          </ul>
+        </div>
+
+        {{ content.full_assessment_values }}
+
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="references">
+        <h2 class="tab-title references visible-mobile">{{ 'References'|t }}</h2>
+        {{ content.references }}
       </div>
     </div>
   </div>
-</div>

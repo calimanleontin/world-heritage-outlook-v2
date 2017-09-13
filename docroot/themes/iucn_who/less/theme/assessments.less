@@ -1,5 +1,105 @@
 @assessment-tabs-bg: #f7f7f7;
+// @todo: cleanup, specificity
+body.page-node-type-site {
+  .breadcrumb-prefix, .breadcrumb {
+    display: none;
+  }
+  @media @grid-mobile {
+    &.navbar-is-fixed-top {
+      margin-top: @navbar-height--mobile;
+    }
+  }
+}
+.field--name-assessment-rating img {
+  @media (max-width: @screen-md-max) {
+    margin: 0 auto;
+  }
+}
+.region-site-title {
+  .field--name-node-title h1 {
+    .left-bordered-heading();
+  }
+  @media @grid-mobile {
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    .field--name-node-title {
+      position: relative;
+      z-index: 1;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      background-color: fade(#000, 30%);
+      h1 {
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+      }
+    }
+    .region-site-mobile-image {
+      background-color: @brand-primary;
+      bottom: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    .field--name-display-field-copynode-image-site {
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+.region-site-rating {
+  @media @grid-mobile {
+    display: none;
+    .summary-is-active-tab & {
+      display: block;
+    }
+  }
+}
+.field--name-assessments-links {
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    text-align: center;
+  }
+  li {
+    display: inline-block;
+    @media @grid-mobile {
+      font-size: 20px;
+    }
+    + li {
+      margin-left: 3em;
+    }
+    a {
+      color: @iucn-blue-light;
+      display: block;
+    }
+    a:after {
+      background-color: #cccccc;
+      border: 1px solid #c2c2c2;
+      content: '';
+      display: block;
+      height: .7em;
+      margin-left: -57%;
+      transform: skewX(-55deg);
+      width: 200%;
+    }
+    a.active-year:after {
+      background-color: @iucn-blue-light;
+      border: none;
+    }
+  }
+}
+
 .iucn-site-wrapper {
+
   .field--name-field-inscription-year .field--label,
   .field--name-field-inscription-criteria .field--label,
   .field--name-field-designation .field--label {
@@ -14,54 +114,29 @@
   .field--name-body {
     margin-top: 1em;
   }
-  .field--name-assessments-links {
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-      text-align: center;
-    }
-    li {
-      display: inline-block;
-      + li {
-        margin-left: 3em;
-      }
-      a {
-        color: @iucn-blue-light;
-        display: block;
-      }
-      a:after {
-        background-color: #cccccc;
-        border: 1px solid #c2c2c2;
-        content: '';
-        display: block;
-        height: .7em;
-        margin-left: -57%;
-        transform: skewX(-55deg);
-        width: 200%;
-      }
-      a.active-year:after {
-        background-color: @iucn-blue-light;
-        border: none;
-      }
-    }
-  }
-}
-.node--type-site-assessment {
+
   .nav-tabs {
     .container();
     .remify(font-size, 15px);
-    background-color: @assessment-tabs-bg;
     display: flex;
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 3em;
-    &,
-    > li,
-    > li > a,
-    > li.active > a, > li.active > a:hover, > li.active > a:focus {
-      border: none;
+    @media @grid-mobile {
+      flex-wrap: wrap;
+      margin-left: -@grid-gutter-width / 2;
+      margin-right: -@grid-gutter-width / 2;
     }
-    > li {
+    &.visible-desktop {
+      background-color: @assessment-tabs-bg;
+      &,
+      > li,
+      > li > a,
+      > li.active > a, > li.active > a:hover, > li.active > a:focus {
+        border: none;
+      }
+    }
+    &.visible-desktop > li {
       display: flex;
       flex: 1;
       &:first-child:before,
@@ -76,48 +151,79 @@
       }
       &:first-child:before { right: 100%; }
       &:last-child:before { left: 100%; }
-
-      > a {
-        color: @text-color;
-        display: flex;
-        flex-direction: column;
-        margin-right: 0;
-        transition: none;
-        .remify(padding, 20px);
-        padding-left: 7em;
-        background-position: 1.5em 3em;
-        background-size: auto 4em;
-        > * {
-          display: block;
+    }
+    > li {
+      width: 100%;
+    }
+    > li > a {
+      .remify(padding, 20px);
+      background-position: 1.5em 3em;
+      background-size: auto 4em;
+      color: @text-color;
+      display: flex;
+      flex-direction: column;
+      margin-right: 0;
+      padding-left: 7em;
+      transition: none;
+      @media @grid-mobile {
+        background-position-y: center;
+        background-size: auto 2.5em;
+        padding-left: 5em;
+        text-transform: uppercase;
+      }
+      > * {
+        display: block;
+      }
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 15%;
+        height: 70%;
+        left: 5.5em;
+        border-right: 1px solid fade(#000, 10%);
+        @media @grid-mobile {
+          display: none;
         }
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 15%;
-          height: 70%;
-          left: 5.5em;
-          border-right: 1px solid fade(#000, 10%);
+      }
+      .loop-assessment-tabs({
+        @attr-helper: ~'#@{assessment-tab-class}';
+        &[href="@{attr-helper}"] {
+          .svg-icon(~'@{assessment-tab-class}');
         }
-        &[href="#summary"] {
-          .svg-icon(summary);
-        }
-        &[href="#full_assessment"] {
-          .svg-icon(full-assessment);
+      });
+      &[href="#full_assessment"] {
+        @media @grid-desktop {
           padding-left: 7.5em;
           &:before {
             left: 6.5em;
           }
         }
-        &[href="#references"] {
-          .svg-icon(references);
-        }
-        position: relative;
       }
+      position: relative;
+    }
 
-      &.active {
-        position: relative;
-        // background-color: @brand-primary;
+    > li.active {
+      position: relative;
+
+      @media @grid-mobile {
+        border-bottom: 1px solid #ddd;
+        order: -1;
+        padding-bottom: 1em;
+        text-align: center;
+        > a {
+          .btn-info.btn-border();
+          .svg-icon(icon-backarrow-light-blue);
+          background-size: auto;
+          display: inline-block;
+          .tab-label {
+            color: @brand-info;
+            font-weight: normal;
+            text-transform: none;
+          }
+        }
+      }
+      @media @grid-desktop {
         > a > *,
         > a, > a:hover, > a:focus {
           background-color: @brand-primary;
@@ -131,49 +237,68 @@
         > a:before {
           border-right-color: fade(#fff, 30%);
         }
-        > a[href="#summary"] {
-          .svg-icon(summary-white);
-        }
-        > a[href="#full_assessment"] {
-          .svg-icon(full-assessment-white);
-        };
-        > a[href="#references"] {
-          .svg-icon(references-white);
-        }
+        .loop-assessment-tabs({
+          @attr-helper: ~'#@{assessment-tab-class}';
+          > a[href="@{attr-helper}"] {
+            .svg-icon(~'@{assessment-tab-class}-white');
+          }
+        });
       }
     }
-
-    .tab-label {
-      font-size: 19 / 15 * 1em;
-      font-weight: 700;
-      margin-bottom: .5em;
+  }
+  .tab-label {
+    font-size: 19 / 15 * 1em;
+    font-weight: 700;
+    margin-bottom: .5em;
+    @media @grid-mobile {
+      color: @brand-primary;
+      margin-bottom: 0;
     }
-    .tab-description {
-      color: #818181;
-      margin-bottom: 1em;
+  }
+  .tab-description {
+    color: #818181;
+    margin-bottom: 1em;
+  }
+  .tab-read-more {
+    color: @link-hover-color;
+    margin-top: auto;
+    &:after {
+      .svg-icon(icon-arrow-blue);
+      content: '';
+      background-size: contain;
+      background-position: center;
+      width: 2em;
+      height: 1em;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: .5em;
     }
-    .tab-read-more {
-      color: @link-hover-color;
-      margin-top: auto;
-      &:after {
-        .svg-icon(icon-arrow-blue);
-        content: '';
-        background-size: contain;
-        background-position: center;
-        width: 2em;
-        height: 1em;
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: .5em;
+  }
+  .tab-title {
+    background-position: left center;
+    color: #bfbfbf;
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: uppercase;
+    &:before {
+      background-position: center;
+      background-size: contain;
+      content: '';
+      display: inline-block;
+      height: 30px;
+      margin-right: .5em;
+      vertical-align: middle;
+      width: 20px;
+    }
+    .loop-assessment-tabs({
+      &.@{assessment-tab-class}:before {
+        .svg-icon(~'@{assessment-tab-class}-gray');
       }
-    }
+    });
   }
   .col-sm-4 {
     > .field + .field {
       margin-top: 2em;
-    }
-    @media (max-width: @screen-sm-max) {
-      margin-top: @grid-gutter-width / 2;
     }
   }
   .iucn-assessment-value {
@@ -191,6 +316,7 @@
       background-color: transparent;
       border-color: transparent;
       box-shadow: none;
+      padding-right: 0;
       // padding-bottom: 0;
       h1, h2, h3, h4, h5, h6 {
         font-size: 1em;
@@ -227,12 +353,13 @@
   .panel-default .panel-heading {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   .panel-body > .field {
     overflow: auto;
   }
   .panel-title-terms {
-    color: @iucn-blue-dark;
+    color: @brand-primary;
     display: flex;
     padding: 0 1em;
     .field--label {
@@ -252,22 +379,44 @@
   }
 
   .conservation-outlook-summary-group {
-    .left-bordered-heading();
     .remify(font-size, 28px);
-    padding-bottom: .8em;
-    padding-top: .8em;
+    color: @brand-primary;
     position: relative;
     h3 {
       .remify(font-size, 28px);
       margin-top: 0;
+      @media @grid-mobile {
+        font-weight: 500;
+      }
+    }
+    @media @grid-mobile {
+      display: inline-flex;
+      flex-direction: column;
+    }
+    @media @grid-desktop {
+      .left-bordered-heading();
+      padding-bottom: .8em;
+      padding-top: .8em;
+    }
+  }
+  .sidemenu-toggle-wrapper {
+    @media @grid-mobile {
+      margin-top: 10px;
+      margin-bottom: 20px;
     }
   }
   .field--name-field-as-end-date {
-    .remify(font-size, 15px);
-    color: #818181;
-    position: absolute;
-    right: 0;
-    top: .3 * 28px;
+    .responsive(font-size, 15px, 15px);
+    @media @grid-mobile {
+      order: -1;
+      margin-bottom: .5em;
+    }
+    @media @grid-desktop {
+      .remify(top, .8 * 28px);
+      color: #818181;
+      position: absolute;
+      right: 0;
+    }
     .field--label {
       font-weight: normal;
       &:after {
@@ -286,6 +435,9 @@
     .remify(font-size, 17px);
     display: inline-flex;
     text-transform: uppercase;
+    @media @grid-mobile {
+      width: auto;
+    }
   }
   .field--name-field-as-global-assessment-text {
     margin-top: 1em;
@@ -325,7 +477,11 @@
     }
   }
 }
-
+.assessment-expand {
+  @media @grid-mobile {
+    display: none;
+  }
+}
 .assessment-expand-buttons {
   list-style-type: none;
   padding-left: 0;
@@ -351,13 +507,13 @@
     > a:before {
       .svg-icon(collapse-minus);
       background-position: center;
-      background-size: 20px;
+      background-size: contain;
       content: '';
       display: inline-block;
       height: 1em;
       margin-right: .2em;
-      min-height: 20px;
-      min-width: 20px;
+      // min-height: 20px;
+      // min-width: 20px;
       position: relative;
       top: .1em;
       width: 1em;
@@ -369,7 +525,7 @@
 }
 .assessment-section > h2 {
   &:extend(.iucn-publications-teaser-wrapper .field--name-node-title h2);
-  color: @iucn-blue-dark;
+  color: @brand-primary;
   .assessment-section + & {
     margin-top: 4em;
   }
@@ -428,7 +584,7 @@
   .remify(margin-top, 40px);
   .field--label {
     // @todo: mixin
-    background-color: @iucn-blue-dark;
+    background-color: @brand-primary;
     color: #fff;
     display: inline-block;
     text-align: left;
@@ -443,7 +599,6 @@
       font-size: 21px;
       line-height: 1.1;
       padding-left: 3em;
-      width: auto;
     }
     div.field--name-field-pdf-button-title {
       font-size: 15px;
@@ -507,7 +662,7 @@
 }
 
 .field--name-dynamic-block-fieldnode-site-feedback {
-  .background-variant(@iucn-blue-dark, #fff);
+  .background-variant(@brand-primary, #fff);
   .remify(font-size, 15px);
   padding: 1em;
   font-weight: normal;
@@ -533,9 +688,7 @@
     .remify(font-size, 20px);
     .remify(height, 60px);
     margin-top: 1em;
-    @media @grid-desktop {
-      width: 100%;
-    }
+    width: 100%;
   }
   .form-required:after {
     display: none;
@@ -545,5 +698,30 @@
     .remify(font-size, 18px);
     font-weight: 900;
     text-align: center;
+  }
+}
+
+/* ==========================================================================
+   Mobile assessment
+   ========================================================================== */
+
+@media @grid-mobile {
+  .iucn-site-wrapper {
+    > .container,
+    > .container-fluid {
+      padding: 0;
+    }
+    .region-site-general-info,
+    .region-site-image,
+    .field--name-field-geolocation,
+    .tab-description,
+    .tab-read-more {
+      display: none;
+    }
+
+    .sidemenu-toggle {
+      width: 100%;
+      .iucn-base-btn-icons(magnifier-white, icon-arrow-white);
+    }
   }
 }
