@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - iucn_who_homepage
+    - system
   theme:
     - iucn_who
 id: homepagereport
@@ -19,4 +20,9 @@ settings:
   label_display: '0'
   title: 'Download the report'
   subtitle: 'IUCN World Heritage Outlook 2017'
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
