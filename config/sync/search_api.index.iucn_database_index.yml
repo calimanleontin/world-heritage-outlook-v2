@@ -28,6 +28,10 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
   title:
     label: Title
     datasource_id: 'entity:node'
