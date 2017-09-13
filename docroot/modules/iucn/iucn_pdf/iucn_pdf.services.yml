@@ -1,0 +1,4 @@
+services:
+  iucn_pdf.print_pdf:
+    class: Drupal\iucn_pdf\PrintPdf
+    arguments: ['@plugin.manager.entity_print.print_engine', '@entity_print.print_builder', '@entity_type.manager', '@queue']

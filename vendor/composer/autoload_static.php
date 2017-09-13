@@ -85,12 +85,17 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
             'GuzzleHttp\\' => 11,
             'Goutte\\' => 7,
         ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
+        ),
         'D' => 
         array (
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Component\\' => 17,
             'DrupalComposer\\DrupalScaffold\\' => 30,
+            'Dompdf\\' => 7,
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\' => 16,
@@ -266,6 +271,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         array (
             0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
         ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
+        ),
         'Drupal\\Driver\\' => 
         array (
             0 => __DIR__ . '/../..' . '/docroot/drivers/lib/Drupal/Driver',
@@ -281,6 +290,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         'DrupalComposer\\DrupalScaffold\\' => 
         array (
             0 => __DIR__ . '/..' . '/drupal-composer/drupal-scaffold/src',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -336,6 +349,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         ),
         'S' => 
         array (
+            'Svg\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src',
+            ),
             'Stack' => 
             array (
                 0 => __DIR__ . '/..' . '/stack/builder/src',
@@ -343,6 +360,10 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
             'Solarium\\' => 
             array (
                 0 => __DIR__ . '/..' . '/solarium/solarium/library',
+            ),
+            'Sabberworm\\CSS' => 
+            array (
+                0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
             ),
         ),
         'R' => 
@@ -393,6 +414,7 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
 
     public static $classMap = array (
         'CallbackFilterIterator' => __DIR__ . '/..' . '/symfony/polyfill-php54/Resources/stubs/CallbackFilterIterator.php',
+        'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'Drupal' => __DIR__ . '/../..' . '/docroot/core/lib/Drupal.php',
         'DrupalFinder\\DrupalFinder' => __DIR__ . '/..' . '/webflo/drupal-finder/src/DrupalFinder.php',
         'DrupalProject\\composer\\ScriptHandler' => __DIR__ . '/../..' . '/scripts/composer/ScriptHandler.php',
@@ -405,6 +427,11 @@ class ComposerStaticInit5e7a0c72cc4bf774d797efa923d35bac
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'HTML5_Data' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Data.php',
+        'HTML5_InputStream' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/InputStream.php',
+        'HTML5_Parser' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Parser.php',
+        'HTML5_Tokenizer' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Tokenizer.php',
+        'HTML5_TreeBuilder' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',

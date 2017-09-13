@@ -32,7 +32,7 @@ class AssessmentsDownloadLinks extends DsFieldBase {
             continue;
           }
           $value = [
-            'url' => $site->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
+            'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $item->entity->id())),
             'title' => $this->t('Site Assessment @year', ['@year' => $item->entity->field_as_cycle->value]),
           ];
           $value['attributes']['target'][] = '_blank';

@@ -98,6 +98,7 @@
     "drupal/ds": "^3.1",
     "drupal/editor_advanced_link": "^1.4",
     "drupal/editor_file": "^1.2",
+    "drupal/entity_print": "^2.0",
     "drupal/facets": "^1.0@alpha",
     "drupal/facets_pretty_paths": "1.x-dev",
     "drupal/features": "^3.5",
