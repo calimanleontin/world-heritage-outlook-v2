@@ -1,4 +1,20 @@
 /* ==========================================================================
+   Responsive classes
+   ========================================================================== */
+
+.visible-mobile,
+.hidden-desktop {
+  @media @grid-desktop {
+    display: none !important;
+  }
+}
+.visible-desktop,
+.hidden-mobile {
+  @media @grid-mobile {
+    display: none !important;
+  }
+}
+/* ==========================================================================
    Rem system helpers
    ========================================================================== */
 
@@ -36,6 +52,14 @@
     &:hover, &:focus, &:active {
       color: @link-hover-color;
     }
+  }
+}
+
+.button-variant(@color; @background; @border) {
+  &.btn-border {
+    background-color: transparent;
+    border-color: @background;
+    color: @background;
   }
 }
 
@@ -126,6 +150,31 @@
       }
     }
   });
+}
+
+.iucn-base-btn-icons(@left-icon, @right-icon) {
+  &:before {
+    .svg-icon(@left-icon);
+    content: '';
+    background-size: contain;
+    background-position: center;
+    width: 2em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: .5em;
+  }
+  &:after {
+    .svg-icon(@right-icon);
+    content: '';
+    background-size: contain;
+    background-position: center;
+    width: 2em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: .5em;
+  }
 }
 
 /* ==========================================================================

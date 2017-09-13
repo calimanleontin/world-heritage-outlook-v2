@@ -1,66 +1,95 @@
 {%
-set classes = [
-'iucn-site-wrapper',
-]
-%}
+  set classes = [
+  'iucn-site-wrapper',
+  ]
+  %}
 
-<div{{ attributes.addClass(classes) }}>
+  <div{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 region-site-title">
         {{ content.title }}
-        <div class="visible-xs">
-        {{ content.mobile_image }}
+        <div class="visible-mobile region-site-mobile-image">
+          {{ content.mobile_image }}
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-sm-12 region-site-sidemenu-toggle">
+        <!-- Sidemenu toggle -->
+        <div class="sidemenu-toggle-wrapper">
+          <div id="sidemenu-toggle">
+            <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
+              {{ 'See all information'|t }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 region-site-rating">
         {{ content.left_1 }}
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 region-site-general-info">
         {{ content.middle_1 }}
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 region-site-image">
         {{ content.right_1 }}
       </div>
     </div>
   </div>
-  {% if content.assessment %}
-  <div class="container-fluid">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active">
-        <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'Summary'|t }}</strong>
-          <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
-          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
-          <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
-          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'References'|t }}</strong>
-          <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
-          <span class="tab-read-more">{{ 'See references'|t  }}</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+  {% if content.assessment|render %}
+    <div class="container-fluid">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs visible-desktop" role="tablist">
+        <li role="presentation" class="active">
+          <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'Summary'|t }}</strong>
+            <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
+            <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'References'|t }}</strong>
+            <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
+            <span class="tab-read-more">{{ 'See references'|t  }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
   {% endif %}
   <div class="container">
     <div class="col-sm-8">
-      {% if content.assessment %}
+      {% if content.assessment|render %}
         {{ content.assessment }}
       {% else %}
         <p>{{ 'Placeholder' }}</p>
       {% endif %}
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" id="sidemenu">
+      {% if content.assessment|render %}
+        <ul class="nav nav-tabs visible-mobile" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+              <strong class="tab-label">{{ 'Summary'|t }}</strong>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+              <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+              <strong class="tab-label">{{ 'References'|t }}</strong>
+            </a>
+          </li>
+        </ul>
+      {% endif %}
       {{ content.sidebar }}
     </div>
   </div>
