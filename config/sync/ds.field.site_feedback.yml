@@ -1,6 +1,6 @@
 id: site_feedback
 label: 'Give us feedback'
-ui_limit: 'site_assessment|*'
+ui_limit: 'site|*'
 properties:
   block: webform_block
   use_block_title: false

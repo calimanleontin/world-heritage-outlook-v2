@@ -31,6 +31,10 @@ iucn_who_site:
   type: partial
   template: templates/layouts/iucn-who-site
   regions:
+    title:
+      label: Title
+    mobile_image:
+      label: Mobile image
     left_1:
      label: Rating
     middle_1:
@@ -39,6 +43,8 @@ iucn_who_site:
       label: Image
     assessment:
       label: Assessment
+    sidebar:
+      label: Sidebar
 
 iucn_who_assessment_value:
   label: Assessment value paragraph
@@ -67,9 +73,6 @@ iucn_who_assessment:
       label: Full assessment
     references:
       label: References
-    sidebar:
-      label: Sidebar
-
 
 iucn_who_news_teaser:
   label: News Teaser

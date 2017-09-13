@@ -130,7 +130,7 @@ process:
 # Benefits
   field_as_benefits_category:
     plugin: taxonomy_term
-    source: selectedBenefit
+    source: benefitCheckSubtype
     value_key: name
     bundle_key: vid
     bundle: assessment_benefits_category

@@ -59,7 +59,6 @@ third_party_settings:
           summary: div
           full_assessment_values: div
           references: div
-          sidebar: div
         outer_wrapper: div
         attributes: ''
         link_attribute: ''
@@ -69,64 +68,63 @@ third_party_settings:
           summary: {  }
           full_assessment_values: {  }
           references: {  }
-          sidebar: {  }
     regions:
       full_assessment_values:
-        - field_as_threats_current_rating
-        - field_as_threats_potent_rating
         - field_as_protection_ov_out_rate
-        - field_as_benefits
         - field_as_benefits_summary
+        - field_as_threats_potent_rating
+        - field_as_threats_current_rating
+        - field_as_benefits
         - field_as_protection_ov_out_text
         - field_as_threats_current_text
         - field_as_threats_potent_text
         - field_as_threats_current
         - field_as_threats_potential
         - field_as_projects
-        - group_key_conservation_issues
-        - field_as_key_cons
         - field_as_projects_needs
         - group_values
+        - group_key_conservation_issues
         - group_description_of_values
-        - field_as_vass_bio_state
+        - field_as_key_cons
         - group_benefits
+        - field_as_vass_bio_state
         - field_as_vass_wh_trend
-        - group_assessment_information
         - group_ass_protection_manag
+        - group_assessment_information
         - field_as_protection
+        - group_threats
         - group_overall_ass_prot
         - group_ass_pm_outside
-        - group_threats
         - group_additional_information
         - 'display_field_copy:node-assessment_values_copy'
         - field_as_vass_bio_trend
-        - group_best_practice_examples
-        - field_as_vass_bio_text
-        - group_protection_and_management
-        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_projects
-        - group_state_and_trend_of_values
+        - group_best_practice_examples
+        - group_protection_and_management
+        - field_as_vass_bio_text
+        - 'display_field_copy:node-justification_of_assessment_valu'
         - field_as_protection_ov_practices
+        - group_state_and_trend_of_values
         - group_understanding_benefits
         - group_summary_of_benefits
+        - group_assessing_current_state
         - group_active_projects
         - group_current_threats
-        - group_assessing_current_state
+        - group_summary_values
+        - group_projects_needs
         - field_as_values_wh
-        - group_ass_state_wh
         - 'display_field_copy:node-identifying_and_describing_value'
         - group_potential_threats
-        - group_projects_needs
-        - group_summary_values
-        - field_as_values_bio
+        - group_ass_state_wh
         - group_ass_state_bv
+        - field_as_values_bio
       summary:
         - group_conservation_outlook
-        - field_as_protection_ov_rating
         - field_as_threats_rating
+        - field_as_protection_ov_rating
         - field_as_global_assessment_text
-        - field_as_protection_ov_text
         - field_as_threats_text
+        - field_as_protection_ov_text
         - group_current_state_trend_values
         - group_overall_threats
         - group_overall_prot_man
@@ -136,12 +134,6 @@ third_party_settings:
         - field_as_global_assessment_level
       references:
         - field_as_references
-      sidebar:
-        - assessment_site_location
-        - assessments_more_site_links
-        - assessments_download_links
-        - 'dynamic_block_field:node-how_are_sites_assessed'
-        - 'dynamic_block_field:node-site_feedback'
     fields:
       'display_field_copy:node-assessment_values_copy':
         plugin_id: 'display_field_copy:node-assessment_values_copy'
@@ -164,74 +156,6 @@ third_party_settings:
         weight: 8
         label: hidden
         formatter: basic_string
-      'dynamic_block_field:node-how_are_sites_assessed':
-        plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
-        weight: 13
-        label: above
-        formatter: default
-      'dynamic_block_field:node-site_feedback':
-        plugin_id: 'dynamic_block_field:node-site_feedback'
-        weight: 14
-        label: above
-        formatter: default
-      assessments_download_links:
-        plugin_id: assessments_download_links
-        weight: 12
-        label: above
-        formatter: default
-      assessment_site_location:
-        plugin_id: assessment_site_location
-        weight: 10
-        label: hidden
-        formatter: geofield_google_map
-        settings:
-          formatter:
-            map_dimensions:
-              width: 100%
-              height: 350px
-            map_empty:
-              empty_behaviour: '0'
-              empty_message: 'No Geofield Value entered for this field'
-            map_center:
-              lat: '42'
-              lon: '12.5'
-              center_force: 0
-              geocode: 'Find my location'
-            map_zoom_and_pan:
-              zoom:
-                initial: '6'
-                min: '1'
-                max: '22'
-                force: 0
-              scrollwheel: '1'
-              draggable: '1'
-              map_reset: 0
-            map_controls:
-              zoom_control: '1'
-              map_type_id: roadmap
-              map_type_control: '1'
-              map_type_control_options_type_ids:
-                roadmap: roadmap
-                satellite: satellite
-                hybrid: hybrid
-                terrain: terrain
-              scale_control: '1'
-              street_view_control: '1'
-              fullscreen_control: '1'
-              disable_default_ui: 0
-            map_marker_and_infowindow:
-              icon_image_path: ''
-              infowindow_field: title
-              view_mode: full
-            map_additional_options: ''
-            map_markercluster:
-              markercluster_additional_options: ''
-              markercluster_control: 0
-      assessments_more_site_links:
-        plugin_id: assessments_more_site_links
-        weight: 11
-        label: above
-        formatter: default
   field_group:
     group_conservation_outlook:
       children:
@@ -455,12 +379,13 @@ third_party_settings:
         - field_as_threats_current
       parent_name: group_threats
       weight: 20
-      format_type: details
+      format_type: details_assessment
       format_settings:
+        label: 'Current Threats'
+        terms: field_as_threats_current_rating
         id: ''
         classes: 'assessment-current-threats assessment-toggle'
-        open: false
-        required_fields: false
+        open: 0
       label: 'Current Threats'
     group_potential_threats:
       children:
@@ -469,12 +394,13 @@ third_party_settings:
         - field_as_threats_potential
       parent_name: group_threats
       weight: 21
-      format_type: details
+      format_type: details_assessment
       format_settings:
         id: ''
         classes: 'assessment-potential-threats assessment-toggle'
         open: false
         required_fields: false
+        terms: ''
       label: 'Potential Threats'
     group_ass_protection_manag:
       children:
@@ -507,11 +433,12 @@ third_party_settings:
         - field_as_protection_ov_out_text
       parent_name: group_overall_ass_prot
       weight: 7
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the effectiveness of protection and management in addressing threats outside the site'
+        terms: field_as_protection_ov_out_rate
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
@@ -615,11 +542,12 @@ third_party_settings:
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the current state and trend of World Heritage values'
+        terms: 'field_as_vass_wh_trend|display_field_copy:node-assessment_values_copy'
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
@@ -634,16 +562,18 @@ third_party_settings:
         - field_as_vass_bio_text
       parent_name: group_summary_values
       weight: 22
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
-        id: ''
-        classes: ''
+        label: 'Assessment of the current state and trend of other important biodiversity values'
+        terms: field_as_vass_bio_state|field_as_vass_bio_trend
         element: div
-        show_label: true
+        show_label: '1'
         label_element: div
         attributes: ''
         effect: none
         speed: fast
+        id: ''
+        classes: ''
       label: 'Assessment of the current state and trend of other important biodiversity values'
 id: node.site_assessment.default
 targetEntityType: node

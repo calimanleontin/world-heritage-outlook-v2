@@ -47,6 +47,7 @@
     errors ? 'panel-danger' : 'panel-' ~ panel_type|clean_class,
   ]
 %}
+
 <div{{ attributes.addClass(classes) }}>
 
   {# Heading #}
@@ -63,6 +64,13 @@
           <a{{ heading_attributes.addClass(heading_classes) }} href="{{ target }}">{{ heading }}</a>
         {% else %}
           <div{{ heading_attributes.addClass(heading_classes) }}>{{ heading }}</div>
+        {% endif %}
+        {% if element['#terms'] %}
+          <div class="panel-title-terms">
+            {% for field_name in element['#terms'] %}
+              {{ element[field_name] }}
+            {% endfor %}
+          </div>
         {% endif %}
       </div>
     {% endblock %}
