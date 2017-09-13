@@ -276,3 +276,4 @@ abstract class AssessmentsBase extends SourceJson {
   }
 
 }
+

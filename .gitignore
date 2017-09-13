@@ -8,6 +8,9 @@ docroot/sites/*/private
 docroot/modules/contrib/examples
 acquia-files
 
+# Configs
+config/*/recaptcha.settings.yml
+
 # Sensitive information #
 #########################
 

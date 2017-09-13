@@ -77,13 +77,18 @@ process:
 # Values
   field_as_values_value: values
   field_as_values_criteria:
-    plugin: taxonomy_term
-    source: criteria
-    value_key: name
-    bundle_key: vid
-    bundle: inscription_criteria
-    entity_type: taxonomy_term
-    ignore_case: true
+    -
+      plugin: iucn_prefix_suffix
+      source: criteria
+      prefix: '('
+      suffix: ')'
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: inscription_criteria
+      entity_type: taxonomy_term
+      ignore_case: true
   field_as_values_curr_text: curr_text
   field_as_values_curr_trend:
     plugin: taxonomy_term

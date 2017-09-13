@@ -678,6 +678,9 @@ if ($settings['hash_salt']) {
  * Load services definition file.
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
+if (file_exists(DRUPAL_ROOT . '/sites/development.services.yml')) {
+  $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+}
 
 /**
  * Override the default service container class.
