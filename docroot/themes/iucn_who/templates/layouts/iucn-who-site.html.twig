@@ -24,7 +24,7 @@ set classes = [
       </div>
     </div>
   </div>
-  {% if content.assessment %}
+  {% if content.assessment|render is not empty %}
   <div class="container-fluid">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
