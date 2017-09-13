@@ -9228,31 +9228,34 @@ h6.facets-title {
   }
 }
 .block-social-media .block-title {
+  display: inline-block;
   font-size: 18px;
   font-weight: normal;
-  display: inline-block;
 }
 .block-social-media .social-media-sharing {
-  margin-top: 0.5em;
   display: inline-block;
+  margin-top: 0.5em;
 }
 .block-social-media .social-media-sharing li {
-  margin-right: 0;
-}
-.block-social-media .social-media-sharing li + li {
   margin-left: 25px;
   margin-left: 2.5rem;
+  margin-right: 0;
+}
+@media screen and (max-width: 767px) {
+  .block-social-media .social-media-sharing li li:first-child {
+    margin-left: 0;
+  }
 }
 .block-social-media .social-media-sharing .share img {
-  width: 50px;
-  width: 5rem;
   height: 50px;
   height: 5rem;
+  width: 50px;
+  width: 5rem;
 }
 @media screen and (max-width: 767px) {
   .block-social-media .social-media-sharing .share img {
-    width: 60px;
     height: 60px;
+    width: 60px;
   }
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline {
@@ -10760,6 +10763,14 @@ fieldset[disabled] .explore-map-button a.focus {
     width: 1%;
   }
 }
+[data-statistics="0"] {
+  width: 0%;
+}
+@media screen and (max-width: 767px) {
+  [data-statistics-mobile="0"][data-statistics] {
+    width: 0%;
+  }
+}
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
 .iucn-site-wrapper .field--name-field-designation .field--label {
@@ -10971,6 +10982,11 @@ fieldset[disabled] .explore-map-button a.focus {
 .node--type-site-assessment .col-sm-4 > .field + .field {
   margin-top: 2em;
 }
+@media (max-width: 991px) {
+  .node--type-site-assessment .col-sm-4 {
+    margin-top: 15px;
+  }
+}
 .node--type-site-assessment .iucn-assessment-value {
   margin-top: 1em;
 }
@@ -10990,7 +11006,6 @@ fieldset[disabled] .explore-map-button a.focus {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
-  padding-bottom: 0;
 }
 .node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading h1,
 .node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading h1,
@@ -11014,6 +11029,7 @@ fieldset[disabled] .explore-map-button a.focus {
 }
 .node--type-site-assessment .iucn-assessment-value .panel-default > .panel-heading > .panel-title,
 .node--type-site-assessment .panel-default .panel-default .panel-default > .panel-heading > .panel-title {
+  font-weight: 700;
   margin-bottom: 0;
   position: relative;
 }
@@ -11041,13 +11057,27 @@ fieldset[disabled] .explore-map-button a.focus {
   display: flex;
   justify-content: space-between;
 }
+.node--type-site-assessment .panel-body > .field {
+  overflow: auto;
+}
 .node--type-site-assessment .panel-title-terms {
   color: #134780;
+  display: flex;
   padding: 0 1em;
+}
+.node--type-site-assessment .panel-title-terms .field--label {
+  font-weight: normal;
 }
 .node--type-site-assessment .panel-title-terms .field__items > .field--label,
 .node--type-site-assessment .panel-title-terms .field__items > .field--item {
   display: inline-block;
+}
+.node--type-site-assessment .panel-title-terms > .field + .field {
+  margin-left: 1em;
+}
+.node--type-site-assessment .field--name-field-as-values-criteria,
+.node--type-site-assessment .field--name-field-as-values-curr-trend {
+  display: flex;
 }
 .node--type-site-assessment .conservation-outlook-summary-group {
   border-left: .4em solid;
@@ -11305,6 +11335,13 @@ fieldset[disabled] .explore-map-button a.focus {
   font-size: 25px;
   font-size: 2.5rem;
 }
+.assessment-projects.assessment-toggle > .panel-collapse > .panel-body,
+.assessment-section > .assessment-toggle > .panel-collapse > .panel-body {
+  padding-right: 0;
+}
+/* ==========================================================================
+   Assessment sidebar
+   ========================================================================== */
 .field--name-assessments-more-site-links > .field--label,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   border-bottom: 1px solid #ddd;
@@ -12086,9 +12123,11 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   padding-right: 15px;
 }
 .path-frontpage #map-site-details .map-site-detail .status {
-  background-color: #fff;
+  background-color: #03afdf;
+  color: #fff;
   font-size: 1em;
   font-weight: 300;
+  line-height: 1.6em;
   left: 0;
   max-width: calc(100% - 2em);
   min-height: 2em;
@@ -12129,7 +12168,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .path-frontpage #map-site-details .map-site-detail .status {
     top: auto;
     bottom: 0;
-    padding: .3em 1.5em;
+    padding: .3em 15px;
   }
 }
 .path-frontpage #map-site-details .map-site-detail .title {
@@ -12198,7 +12237,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.protection-management:before {
-  background-image: url(../images/protection-management-white.svg);
+  background-image: url(../images/protection-management.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12215,7 +12254,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.threats:before {
-  background-image: url(../images/threats-white.svg);
+  background-image: url(../images/threats.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12232,7 +12271,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   position: relative;
 }
 .path-frontpage #map-site-details .map-site-detail dt.values:before {
-  background-image: url(../images/values-white.svg);
+  background-image: url(../images/values.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -12245,23 +12284,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   width: 1.3em;
   margin-right: .5em;
 }
-.path-frontpage #map-site-details .map-site-detail dt.values:before {
-  background-image: url(../images/values.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-.path-frontpage #map-site-details .map-site-detail dt.threats:before {
-  background-image: url(../images/threats.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-.path-frontpage #map-site-details .map-site-detail dt.management:before {
-  background-image: url(../images/management.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+.path-frontpage #map-site-details .map-site-detail dt.protection-management:before {
   width: 1.4em;
 }
 .path-frontpage #map-site-details .map-site-detail dd {

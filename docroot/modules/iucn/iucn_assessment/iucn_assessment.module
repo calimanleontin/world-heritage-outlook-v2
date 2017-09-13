@@ -9,8 +9,10 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
     && $node->isPublished()
     && !empty($node->field_as_site->entity)) {
     $site = $node->field_as_site->entity;
-    $site->field_current_assessment = [['target_id' => $node->id()]];
-    if (!empty($site->field_current_assessment->entity)) {
+    if (empty($site->field_current_assessment->entity)) {
+      $site->field_current_assessment = [['target_id' => $node->id()]];
+    }
+    else {
       $curr_date = $node->field_as_cycle->value;
       $date = $site->field_current_assessment->entity->field_as_cycle->value;
       if ($curr_date > $date) {

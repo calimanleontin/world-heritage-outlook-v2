@@ -345,9 +345,11 @@
         padding-right: 15px;
       }
       .status {
-        background-color: #fff;
+        background-color: @iucn-blue-light;
+        color: #fff;
         font-size: 1em;
         font-weight: 300;
+        line-height: 1.6em;
         left: 0;
         max-width: calc(~'100% - 2em');
         min-height: 2em;
@@ -369,7 +371,7 @@
         @media @grid-mobile {
           top: auto;
           bottom: 0;
-          padding: .3em 1.5em;
+          padding: .3em 15px;
         }
       }
       .title {
@@ -422,7 +424,7 @@
           &.@{conservation-category-class} {
             position: relative;
             &:before {
-              .svg-icon(~'@{conservation-category-class}-white');
+              .svg-icon(~'@{conservation-category-class}');
               background-position: center;
               background-size: contain;
               content: '';
@@ -438,20 +440,7 @@
             }
           }
         });
-        &.values:before {
-          .svg-icon(values);
-          background-position: center;
-          background-size: contain;
-        }
-        &.threats:before {
-          .svg-icon(threats);
-          background-position: center;
-          background-size: contain;
-        }
-        &.management:before {
-          .svg-icon(management);
-          background-position: center;
-          background-size: contain;
+        &.protection-management:before {
           width: 1.4em;
         }
       }

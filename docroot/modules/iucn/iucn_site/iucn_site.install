@@ -5,7 +5,6 @@ use Drupal\node\Entity\Node;
 /**
  * Add missing translations to all sites and publications.
  */
-
 function iucn_site_update_8001() {
   $nodes = \Drupal::entityTypeManager()
     ->getStorage('node')
@@ -19,6 +18,28 @@ function iucn_site_update_8001() {
   if ($nodes) {
     foreach ($nodes as $node) {
       $node->save();
+    }
+  }
+}
+
+/**
+ * Update site with geolocation values.
+ */
+function iucn_site_update_8002() {
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => ['site'],
+    ]);
+  if ($nodes) {
+    foreach ($nodes as $node) {
+      /* @var \Drupal\node\NodeInterface $node */
+      $latitude = $node->field_coordinate_y->value;
+      $longitude = $node->field_coordinate_x->value;
+      if (!empty($latitude) && !empty($longitude)) {
+        $node->set('field_geolocation', strtr('POINT (@x @y)', ['@x' => $longitude, '@y' => $latitude]));
+        $node->save();
+      }
     }
   }
 }

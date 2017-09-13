@@ -1,0 +1,9 @@
+id: image_site
+label: 'Image (copy)'
+ui_limit: 'site|*'
+properties:
+  field_id: node.site.field_image
+type: display_field_copy
+type_label: 'Copy field'
+entities:
+  node: node

@@ -4,8 +4,8 @@ status: true
 dependencies: {  }
 id: assessments_paragraphs
 migration_tags: null
-migration_group: assessments
-label: 'Assesments Paragraphs'
+migration_group: 'assessments'
+label: Assesments Paragraphs
 source:
   plugin: assessments_paragraphs
   path_setting: assessment_path
@@ -64,6 +64,7 @@ source:
       type: as_site_key_conservation
 process:
   type: type
+# KEY CONSERVATION ISSUES
   field_as_key_cons_topic: keyConservationIssues
   field_as_key_cons_scale:
     plugin: taxonomy_term
@@ -73,6 +74,7 @@ process:
     bundle: assessment_key_conservation_scal
     entity_type: taxonomy_term
     ignore_case: true
+# Values
   field_as_values_value: values
   field_as_values_criteria:
     plugin: taxonomy_term
@@ -99,22 +101,24 @@ process:
     bundle: assessment_value_state
     entity_type: taxonomy_term
     ignore_case: true
+# Projects
   field_as_projects_organisation: organizationIndividual
   field_as_description: description
   field_as_projects_contact: contactDetails
   field_as_projects_from:
     plugin: format_date
     from_format: 'Y'
-    to_format: Y-01-01
+    to_format: 'Y-01-01'
     source: projectdurationfrom
   field_as_projects_to:
     plugin: format_date
     from_format: 'Y'
-    to_format: Y-01-01
+    to_format: 'Y-01-01'
     source: projectdurationto
+# Benefits
   field_as_benefits_category:
     plugin: taxonomy_term
-    source: selectedBenefit
+    source: benefitCheckSubtype
     value_key: name
     bundle_key: vid
     bundle: assessment_benefits_category
@@ -134,6 +138,14 @@ process:
   field_as_benefits_commun_out:
     plugin: taxonomy_term
     source: communityOutsideSite
+    value_key: name
+    bundle_key: vid
+    bundle: assessment_benefits_rating
+    entity_type: taxonomy_term
+    ignore_case: true
+  field_as_benefits_commun_wide:
+    plugin: taxonomy_term
+    source: widerCommunity
     value_key: name
     bundle_key: vid
     bundle: assessment_benefits_rating
@@ -228,6 +240,7 @@ process:
     entity_type: taxonomy_term
     ignore_case: true
   field_as_comment: comment
+# Prot / MNGMT
   field_as_protection_topic:
     plugin: taxonomy_term
     source: topic
@@ -244,6 +257,7 @@ process:
     bundle: assessment_protection_rating
     entity_type: taxonomy_term
     ignore_case: true
+# Threats
   field_as_threats_threat: currentThreat
   field_as_threats_extent:
     plugin: taxonomy_term

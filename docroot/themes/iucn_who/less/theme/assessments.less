@@ -172,6 +172,9 @@
     > .field + .field {
       margin-top: 2em;
     }
+    @media (max-width: @screen-sm-max) {
+      margin-top: @grid-gutter-width / 2;
+    }
   }
   .iucn-assessment-value {
     margin-top: 1em;
@@ -188,7 +191,7 @@
       background-color: transparent;
       border-color: transparent;
       box-shadow: none;
-      padding-bottom: 0;
+      // padding-bottom: 0;
       h1, h2, h3, h4, h5, h6 {
         font-size: 1em;
         margin-top: 0;
@@ -198,6 +201,7 @@
         padding-left: 1em;
       }
       > .panel-title {
+        font-weight: 700;
         margin-bottom: 0;
         position: relative;
       }
@@ -224,42 +228,28 @@
     display: flex;
     justify-content: space-between;
   }
+  .panel-body > .field {
+    overflow: auto;
+  }
   .panel-title-terms {
     color: @iucn-blue-dark;
+    display: flex;
     padding: 0 1em;
+    .field--label {
+      font-weight: normal;
+    }
     .field__items > .field--label,
     .field__items > .field--item {
       display: inline-block;
     }
+    > .field + .field {
+      margin-left: 1em;
+    }
   }
-  // .iucn-assessment-value {
-  //   .panel {
-  //     border-color: transparent;
-  //   }
-  //   .panel-heading {
-  //     background-color: transparent;
-  //     border-color: transparent;
-  //     > .panel-title:before {
-  //       .svg-icon(list-icon);
-  //       background-position: left center;
-  //       background-size: contain;
-  //       content: '';
-  //       display: block;
-  //       height: 1em;
-  //       vertical-align: middle;
-  //       width: 1em;
-  //       position: absolute;
-  //       top: 10px;
-  //       left: @grid-gutter-width / 2;
-  //       margin-top: .2em;
-  //     }
-  //   }
-  //   .panel-heading,
-  //   .panel-body {
-  //     padding-top: 0;
-  //     padding-bottom: 0;
-  //   }
-  // }
+  .field--name-field-as-values-criteria,
+  .field--name-field-as-values-curr-trend {
+    display: flex;
+  }
 
   .conservation-outlook-summary-group {
     .left-bordered-heading();
@@ -399,7 +389,14 @@
       .remify(font-size, 25px);
     }
   }
+  > .panel-collapse > .panel-body {
+    padding-right: 0;
+  }
 }
+
+/* ==========================================================================
+   Assessment sidebar
+   ========================================================================== */
 
 .field--name-assessments-more-site-links,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed {

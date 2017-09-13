@@ -7,6 +7,12 @@ set classes = [
 <div{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="row">
+      <div class="col-sm-12">
+        {{ content.title }}
+        <div class="visible-xs">
+        {{ content.mobile_image }}
+        </div>
+      </div>
       <div class="col-md-4">
         {{ content.left_1 }}
       </div>
@@ -18,8 +24,44 @@ set classes = [
       </div>
     </div>
   </div>
+  {% if content.assessment %}
   <div class="container-fluid">
-    {{ content.assessment }}
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+          <strong class="tab-label">{{ 'Summary'|t }}</strong>
+          <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
+          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+          <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
+          <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
+          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+          <strong class="tab-label">{{ 'References'|t }}</strong>
+          <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
+          <span class="tab-read-more">{{ 'See references'|t  }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  {% endif %}
+  <div class="container">
+    <div class="col-sm-8">
+      {% if content.assessment %}
+        {{ content.assessment }}
+      {% else %}
+        <p>{{ 'Placeholder' }}</p>
+      {% endif %}
+    </div>
+    <div class="col-sm-4">
+      {{ content.sidebar }}
+    </div>
   </div>
 </div>
-

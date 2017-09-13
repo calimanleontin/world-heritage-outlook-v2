@@ -250,28 +250,31 @@
 }
 .block-social-media {
   .block-title {
+    display: inline-block;
     font-size: 18px;
     font-weight: normal;
-    display: inline-block;
   }
   .social-media-sharing {
-    margin-top: 0.5em;
     display: inline-block;
+    margin-top: 0.5em;
   }
   .social-media-sharing li {
+    .remify(margin-left, 25px);
     margin-right: 0;
-    + li {
-      .remify(margin-left, 25px);
+    @media @grid-mobile {
+      li:first-child {
+        margin-left: 0;
+      }
     }
   }
   .social-media-sharing {
     .share {
       img {
-        .remify(width, 50px);
         .remify(height, 50px);
+        .remify(width, 50px);
         @media @grid-mobile {
-          width: 60px;
           height: 60px;
+          width: 60px;
         }
       }
     }

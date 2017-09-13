@@ -15,7 +15,7 @@ css: ''
 javascript: ''
 settings:
   ajax: false
-  page: false
+  page: true
   page_submit_path: contact-us/site-feedback
   page_confirm_path: ''
   form_submit_once: false
