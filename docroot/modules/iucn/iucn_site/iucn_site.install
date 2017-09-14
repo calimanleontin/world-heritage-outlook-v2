@@ -46,10 +46,3 @@ function iucn_site_update_8002() {
     }
   }
 }
-
-/**
- * Enable entity_print and iucn_pdf modules
- */
-function iucn_site_update_8003() {
-  \Drupal::service('module_installer')->install(['entity_print', 'iucn_pdf']);
-}
