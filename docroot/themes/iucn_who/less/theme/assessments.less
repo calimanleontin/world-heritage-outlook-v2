@@ -9,6 +9,9 @@ body.page-node-type-site {
       margin-top: @navbar-height--mobile;
     }
   }
+  #sidemenu {
+    padding-top: 1em;
+  }
 }
 .field--name-assessment-rating img {
   @media (max-width: @screen-md-max) {
@@ -122,10 +125,11 @@ body.page-node-type-site {
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 3em;
-    @media @grid-mobile {
+    &.visible-mobile {
       flex-wrap: wrap;
       margin-left: -@grid-gutter-width / 2;
       margin-right: -@grid-gutter-width / 2;
+      padding-bottom: 10px;
     }
     &.visible-desktop {
       background-color: @assessment-tabs-bg;
@@ -207,19 +211,25 @@ body.page-node-type-site {
       position: relative;
 
       @media @grid-mobile {
-        border-bottom: 1px solid #ddd;
-        order: -1;
-        padding-bottom: 1em;
-        text-align: center;
+        padding: 1rem 2rem;
+        // border-bottom: 1px solid #ddd;
+        // order: -1;
+        // padding-bottom: 1em;
+        // text-align: center;
         > a {
           .btn-info.btn-border();
           .svg-icon(icon-backarrow-light-blue);
+          background-position-x: .5em;
           background-size: auto;
-          display: inline-block;
+          padding-left: 3.5em;
+          // display: inline-block;
           .tab-label {
             color: @brand-info;
-            font-weight: normal;
-            text-transform: none;
+            // font-weight: normal;
+            // text-transform: none;
+            .back-to-prefix {
+              display: inline;
+            }
           }
         }
       }
@@ -250,6 +260,9 @@ body.page-node-type-site {
     font-size: 19 / 15 * 1em;
     font-weight: 700;
     margin-bottom: .5em;
+    .back-to-prefix {
+      display: none;
+    }
     @media @grid-mobile {
       color: @brand-primary;
       margin-bottom: 0;
