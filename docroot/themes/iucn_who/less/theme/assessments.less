@@ -353,7 +353,7 @@ body.page-node-type-site {
   .panel-default .panel-heading {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
   }
   .panel-body > .field {
     overflow: auto;
@@ -361,9 +361,12 @@ body.page-node-type-site {
   .panel-title-terms {
     color: @brand-primary;
     display: flex;
-    padding: 0 1em;
+    padding-left: 1em;
+    text-align: right;
+    white-space: nowrap;
     .field--label {
       font-weight: normal;
+      white-space: nowrap;
     }
     .field__items > .field--label,
     .field__items > .field--item {

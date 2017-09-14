@@ -11301,7 +11301,7 @@ body.page-node-type-site .breadcrumb {
 .iucn-site-wrapper .panel-default .panel-heading {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 .iucn-site-wrapper .panel-body > .field {
   overflow: auto;
@@ -11309,10 +11309,13 @@ body.page-node-type-site .breadcrumb {
 .iucn-site-wrapper .panel-title-terms {
   color: #134780;
   display: flex;
-  padding: 0 1em;
+  padding-left: 1em;
+  text-align: right;
+  white-space: nowrap;
 }
 .iucn-site-wrapper .panel-title-terms .field--label {
   font-weight: normal;
+  white-space: nowrap;
 }
 .iucn-site-wrapper .panel-title-terms .field__items > .field--label,
 .iucn-site-wrapper .panel-title-terms .field__items > .field--item {
