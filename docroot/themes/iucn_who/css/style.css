@@ -9779,7 +9779,7 @@ fieldset[disabled] .explore-map-button a.focus {
     bottom: 0;
     transform: translateX(110%);
     transition: all .3s;
-    width: 90%;
+    width: 85%;
     z-index: 1042;
   }
   #sidemenu.open {
