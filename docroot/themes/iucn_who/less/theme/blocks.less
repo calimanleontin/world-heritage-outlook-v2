@@ -295,10 +295,17 @@
       z-index: 0;
     }
     .input-group-addon,
+    .form-autocomplete,
     .form-text {
       border-color: @input-bg;
+      box-shadow: none;
     }
+    .form-autocomplete,
     .form-text {
+      .form-control();
+      border-color: @input-bg;
+      box-shadow: none;
+      color: @iucn-blue-dark;
       width: 100%;
       &:focus {
         border-color: @input-bg;
@@ -346,7 +353,8 @@
   }
   @media @grid-mobile {
     .form-inline {
-      .form-text {
+      .form-text,
+      .form-autocomplete {
         font-size: 16px;
       }
     }
