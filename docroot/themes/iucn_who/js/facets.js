@@ -20,13 +20,9 @@
             }
         });
     }
-    var $document  = $(document);
     var $window = $(window);
-    var $body = $('body');
     var $footer = $('.footer');
-    var $sidemenu = $('#sidemenu');
     var $sidemenuToggle = $('#sidemenu-toggle');
-    var $modalBackdrop = $('.modal-backdrop');
 
     setTimeout( function() {
         $sidemenuToggle.affix({
@@ -42,19 +38,6 @@
         if ($sidemenuToggle.data('bs.affix') !== undefined) {
           $sidemenuToggle.data('bs.affix').options.offset.top = $footer.outerHeight(true);
         }
-    });
-
-    $sidemenu.on('show.bs.dropdown', function () {
-      $body.addClass('sidemenu-open');
-      $modalBackdrop.show().addClass('in');
-    })
-    $sidemenu.on('hide.bs.dropdown', function () {
-      $body.removeClass('sidemenu-open');
-      $modalBackdrop.hide().removeClass('in');
-    })
-
-    $document.on('click', '#sidemenu', function (e) {
-      e.stopPropagation();
     });
   });
 })(jQuery);

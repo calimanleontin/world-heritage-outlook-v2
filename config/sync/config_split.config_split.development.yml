@@ -21,11 +21,13 @@ blacklist:
   - devel.toolbar.settings
   - features.bundle.default
   - features.settings
+  - recaptcha.settings
   - reroute_email.settings
   - simpletest.settings
   - stage_file_proxy.settings
   - system.menu.devel
-graylist: {  }
+graylist:
+  - system.site
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0

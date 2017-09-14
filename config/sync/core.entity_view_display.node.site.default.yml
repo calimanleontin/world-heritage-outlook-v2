@@ -74,7 +74,7 @@ third_party_settings:
         plugin_id: 'display_field_copy:node-image_site'
         weight: 1
         label: hidden
-        formatter: slick_image
+        formatter: image
         settings:
           formatter:
             image_style: sites_thumbnail
@@ -82,7 +82,7 @@ third_party_settings:
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
         weight: 14
-        label: hidden
+        label: above
         formatter: default
       'dynamic_block_field:node-site_feedback':
         plugin_id: 'dynamic_block_field:node-site_feedback'
@@ -106,7 +106,7 @@ third_party_settings:
       assessments_download_links:
         plugin_id: assessments_download_links
         weight: 13
-        label: hidden
+        label: above
         formatter: default
       assessments_links:
         plugin_id: assessments_links
@@ -116,7 +116,7 @@ third_party_settings:
       assessments_more_site_links:
         plugin_id: assessments_more_site_links
         weight: 12
-        label: hidden
+        label: above
         formatter: default
 id: node.site.default
 targetEntityType: node
@@ -166,10 +166,9 @@ content:
     region: sidebar
     label: hidden
     settings:
-      gmap_api_key: ''
       map_dimensions:
         width: 100%
-        height: 450px
+        height: 350px
       map_empty:
         empty_behaviour: '0'
         empty_message: 'No Geofield Value entered for this field'
@@ -177,35 +176,38 @@ content:
         lat: '42'
         lon: '12.5'
         center_force: 0
+        geocode: 'Find my location'
       map_zoom_and_pan:
         zoom:
-          initial: 6
+          initial: '6'
+          min: '1'
+          max: '22'
           force: 0
-          min: 1
-          max: 22
-        scrollwheel: 1
-        draggable: 1
+        scrollwheel: '1'
+        draggable: '1'
         map_reset: 0
       map_controls:
-        disable_default_ui: 0
-        zoom_control: 1
+        zoom_control: '1'
         map_type_id: roadmap
-        map_type_control: 1
+        map_type_control: '1'
         map_type_control_options_type_ids:
           roadmap: roadmap
           satellite: satellite
           hybrid: hybrid
           terrain: terrain
-        scale_control: 1
-        street_view_control: 1
-        fullscreen_control: 1
+        scale_control: '1'
+        street_view_control: '1'
+        fullscreen_control: '1'
+        disable_default_ui: 0
       map_marker_and_infowindow:
         icon_image_path: ''
         infowindow_field: title
-      map_markercluster:
-        markercluster_control: 0
-        markercluster_additional_options: ''
+        view_mode: full
       map_additional_options: ''
+      map_markercluster:
+        markercluster_additional_options: ''
+        markercluster_control: 0
+      gmap_api_key: ''
     third_party_settings: {  }
   field_image:
     type: image

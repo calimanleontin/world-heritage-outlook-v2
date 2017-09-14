@@ -15,7 +15,8 @@
     .region-content {
       display: flex;
       flex-flow: column;
-      #block-globaloutlookstatistics {
+      #block-globaloutlookstatistics,
+      #block-homepagereport {
         order: -1;
       }
     }
@@ -460,10 +461,13 @@
       }
 
       .more {
-        float: right;
         color: @iucn-blue-light;
+        float: right;
         padding-top: .5em;
         padding-bottom: .5em;
+        @media @grid-mobile {
+          margin-top: 5px;
+        }
         &:after {
           .svg-icon(icon-arrow);
           background-position: center;

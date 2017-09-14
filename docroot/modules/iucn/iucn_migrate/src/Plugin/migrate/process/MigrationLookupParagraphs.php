@@ -24,7 +24,12 @@ class MigrationLookupParagraphs extends MigrationLookup  {
     $return = parent::transform($value, $migrate_executable, $row, $destination_property);
     if (!empty($return)) {
       if (count($return) == 2) {
-        return ['target_id' => $return[0], 'target_revision_id' => $return[1]];
+        if (isset($return['id'])) {
+          return ['target_id' => $return['id'], 'target_revision_id' => $return['revision_id']];
+        }
+        else {
+          return ['target_id' => $return[0], 'target_revision_id' => $return[1]];
+        }
       }
       else {
         $paragraph = entity_revision_load('paragraph', $return);

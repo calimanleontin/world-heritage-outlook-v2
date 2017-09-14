@@ -37,7 +37,10 @@ function iucn_site_update_8002() {
       $latitude = $node->field_coordinate_y->value;
       $longitude = $node->field_coordinate_x->value;
       if (!empty($latitude) && !empty($longitude)) {
-        $node->set('field_geolocation', strtr('POINT (@x @y)', ['@x' => $longitude, '@y' => $latitude]));
+        $node->set('field_geolocation', strtr('POINT (@x @y)', [
+          '@x' => $longitude,
+          '@y' => $latitude
+        ]));
         $node->save();
       }
     }
