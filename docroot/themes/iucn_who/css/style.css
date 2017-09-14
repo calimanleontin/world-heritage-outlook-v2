@@ -10825,9 +10825,10 @@ fieldset[disabled] .explore-map-button a.focus {
     width: 0%;
   }
 }
-body.page-node-type-site .breadcrumb-prefix,
-body.page-node-type-site .breadcrumb {
-  display: none;
+body.page-node-type-site {
+  /*.breadcrumb-prefix, .breadcrumb {
+    display: none;
+  }*/
 }
 @media screen and (max-width: 767px) {
   body.page-node-type-site.navbar-is-fixed-top {

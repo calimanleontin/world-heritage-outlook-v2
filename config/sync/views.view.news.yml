@@ -202,7 +202,7 @@ display:
             label: ''
           granularity: second
           plugin_id: datetime
-      title: News
+      title: 'Latest news'
       header: {  }
       footer: {  }
       empty: {  }
