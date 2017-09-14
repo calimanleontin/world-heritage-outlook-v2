@@ -9521,6 +9521,9 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
+/* ==========================================================================
+    Search page
+    ========================================================================== */
 .path-sites-search .page-header {
   border-left: none;
   padding-left: 0;
@@ -9548,6 +9551,30 @@ fieldset[disabled] .explore-map-button a.focus {
 .path-sites-search .view-sites-search .view-header .sites-search-clear a {
   color: #03afdf;
 }
+/* ==========================================================================
+    Benefits case studies page
+    ========================================================================== */
+.benefits-list-category-wrapper > h1,
+.benefits-list-category-wrapper > h2,
+.benefits-list-category-wrapper > h3,
+.benefits-list-category-wrapper > h4,
+.benefits-list-category-wrapper > h5,
+.benefits-list-category-wrapper > h6 {
+  font-size: 30px;
+  font-size: 3rem;
+}
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h1,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h2,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h3,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h4,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h5,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
+  font-size: 24px;
+  font-size: 2.4rem;
+}
+/* ==========================================================================
+    Benefits detail page
+    ========================================================================== */
 .iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
   margin-bottom: 70px;
   margin-bottom: 7rem;
