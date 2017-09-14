@@ -79,6 +79,16 @@ table.table-striped {
     }
   }
 }
+
+.collapse-toggle {
+  &, &:hover, &:active, &:focus {
+    color: @text-color;
+  }
+  @media @grid-desktop {
+    cursor: default;
+  }
+}
+
 // Generic collapse icon
 .icon-collapse {
   &:before {

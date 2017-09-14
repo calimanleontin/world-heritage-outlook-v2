@@ -62,6 +62,18 @@
     color: @background;
   }
 }
+.collapse-visible-desktop() {
+  @media @grid-desktop {
+    > .collapse,
+    > .collapsing {
+      display: block !important;
+      height: auto !important;
+      opacity: 1;
+      overflow: visible;
+      transition: none;
+    }
+  }
+}
 
 /* ==========================================================================
    Theme specific mixins

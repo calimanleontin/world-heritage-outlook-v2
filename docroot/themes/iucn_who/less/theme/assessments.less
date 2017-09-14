@@ -11,6 +11,17 @@ body.page-node-type-site {
   }
   #sidemenu {
     padding-top: 1em;
+    @media @grid-mobile {
+      .field--iucn-collapsible {
+        margin-left: 1em;
+      }
+      .collapse-toggle {
+        border-bottom: none;
+      }
+      .icon-collapse {
+        color: #918f8f;
+      }
+    }
   }
 }
 .field--name-assessment-rating img {
@@ -97,6 +108,15 @@ body.page-node-type-site {
     a.active-year:after {
       background-color: @iucn-blue-light;
       border: none;
+    }
+  }
+}
+
+.field--iucn-collapsible {
+  .collapse-visible-desktop();
+  .icon-collapse {
+    @media @grid-desktop {
+      display: none;
     }
   }
 }
@@ -597,73 +617,93 @@ body.page-node-type-site {
 }
 
 .field--name-assessments-download-links {
-  .remify(margin-top, 40px);
-  .field--label {
-    // @todo: mixin
-    background-color: @brand-primary;
-    color: #fff;
-    display: inline-block;
-    text-align: left;
-    width: 100%;
-    font-size: 22px;
-    padding: .5em 1.5em;
-    position: relative;
-    line-height: 1.2;
-    padding-left: 5em;
-    font-weight: 300;
-    @media @grid-mobile {
-      font-size: 21px;
-      line-height: 1.1;
-      padding-left: 3em;
-    }
-    div.field--name-field-pdf-button-title {
-      font-size: 15px;
-      @media @grid-mobile {
-        font-size: 13px;
-      }
-    }
-    &:before {
-      .svg-icon(download-report);
-      content: '';
-      display: block;
-      background-position: center;
-      background-size: auto;
-      border-right: 1px solid;
-      height: 75%;
-      left: 0;
-      position: absolute;
-      top: 15%;
-      width: 4em;
-      @media @grid-mobile {
-        width: 2.5em;
-      }
-      &:before {
-        display: none;
-      }
-      &:after {
-        border-right: 1px solid;
-        content: '';
-        display: block;
-        height: 80%;
-        position: absolute;
-        right: 0;
-        top: 10%;
-      }
-    }
-  }
-  &:hover, &:focus, &:active {
-    > .field--item {
-      opacity: 1;
-    }
-  }
   ul {
     list-style-type: none;
     padding-left: 0;
   }
-  .field--item {
-    opacity: 0;
-    transition: opacity .2s;
-    a {
+  @media @grid-mobile {
+    .field--label {
+      .bottom-border();
+      font-weight: 900;
+      text-transform: none;
+    }
+    .links a {
+      .light-link();
+    }
+    .links > li {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+    .links > li:after {
+      .svg-icon(icon-arrow-blue);
+      background-position: center;
+      background-size: contain;
+      content: '';
+      display: inline-block;
+      height: 1em;
+      width: 2em;
+    }
+  }
+  @media @grid-desktop {
+    .remify(margin-top, 40px);
+    .field--label {
+      // @todo: mixin
+      background-color: @brand-primary;
+      color: #fff;
+      display: inline-block;
+      text-align: left;
+      width: 100%;
+      font-size: 22px;
+      padding: .5em 1.5em;
+      position: relative;
+      line-height: 1.2;
+      padding-left: 5em;
+      font-weight: 300;
+
+      div.field--name-field-pdf-button-title {
+        font-size: 15px;
+        @media @grid-mobile {
+          font-size: 13px;
+        }
+      }
+      &:before {
+        .svg-icon(download-report);
+        content: '';
+        display: block;
+        background-position: center;
+        background-size: auto;
+        border-right: 1px solid;
+        height: 75%;
+        left: 0;
+        position: absolute;
+        top: 15%;
+        width: 4em;
+        @media @grid-mobile {
+          width: 2.5em;
+        }
+        &:before {
+          display: none;
+        }
+        &:after {
+          border-right: 1px solid;
+          content: '';
+          display: block;
+          height: 80%;
+          position: absolute;
+          right: 0;
+          top: 10%;
+        }
+      }
+    }
+    .collapse {
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    &:hover, &:focus, &:active {
+      .collapse { opacity: 1; }
+    }
+    .field--item a {
       display: block;
       padding: .5em 1em;
       .light-link();

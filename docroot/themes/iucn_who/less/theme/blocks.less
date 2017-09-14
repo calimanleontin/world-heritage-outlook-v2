@@ -6,32 +6,14 @@
 }
 
 // Facets block
-.facets-toggle {
-  &, &:hover, &:active, &:focus {
-    color: @text-color;
-  }
-  // Hides caret if there is only one block of facets
-  // @media @grid-mobile {
-  //   .region-facets:only-child & {
-  //     padding-left: (.5 * @font-size-base--mobile  + 20px);
-  //     .caret-triangle {
-  //       display: none;
-  //     }
-  //   }
-  // }
-  @media @grid-desktop {
-    cursor: default;
-  }
+.region-facets {
+  .collapse-visible-desktop();
 }
 #facets-collapse {
   @media @grid-mobile {
     > .facets-content {
       padding-left: (.5 * @font-size-base--mobile +  20px);
     }
-  }
-  @media @grid-desktop {
-    display: block;
-    height: auto !important;
   }
 }
 .facets-title {

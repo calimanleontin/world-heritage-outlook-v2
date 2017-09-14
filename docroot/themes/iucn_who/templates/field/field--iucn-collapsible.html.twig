@@ -44,13 +44,19 @@
     'field--name-' ~ field_name|clean_class,
     'field--type-' ~ field_type|clean_class,
     'field--label-' ~ label_display,
+    'field--iucn-collapsible',
   ]
 %}
 {%
   set title_classes = [
     'field--label',
     label_display == 'visually_hidden' ? 'sr-only',
+    'collapse-toggle',
   ]
+%}
+
+{%
+  set collapse_id = 'collapse--field--name-' ~ field_name|clean_class
 %}
 
 {% if label_hidden %}
@@ -62,20 +68,23 @@
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass(classes, 'field--item') }}> {{ 'Inscribed in'|t }} {{ item.content }}</div>
+      <div{{ attributes.addClass(classes, 'field--item') }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
   <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if multiple %}
-      <div class="field__items">
-    {% endif %}
-    {% for item in items %}
-      <div{{ item.attributes.addClass('field--item') }}>{{ item.content }}</div>
-    {% endfor %}
-    {% if multiple %}
-      </div>
-    {% endif %}
+    <a{{ title_attributes.addClass(title_classes) }} role='button' data-toggle='collapse' href='#{{collapse_id}}' aria-expanded='false' aria-controls='{{collapse_id}}'><span class="icon-collapse"></span>{{ label }}</a>
+
+    <div id='{{collapse_id}}' class='collapse fade' role="tabpanel">
+      {% if multiple %}
+        <div class="field__items">
+      {% endif %}
+      {% for item in items %}
+        <div{{ item.attributes.addClass('field--item') }}>{{ item.content }}</div>
+      {% endfor %}
+      {% if multiple %}
+        </div>
+      {% endif %}
+    </div>
   </div>
 {% endif %}

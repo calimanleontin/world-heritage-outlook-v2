@@ -8629,6 +8629,17 @@ table.table-striped tbody > tr:last-child.even,
 table.paragraph table tbody > tr:last-child.even {
   border-bottom: 6px solid #def2fb;
 }
+.collapse-toggle,
+.collapse-toggle:hover,
+.collapse-toggle:active,
+.collapse-toggle:focus {
+  color: #333333;
+}
+@media screen and (min-width: 768px) {
+  .collapse-toggle {
+    cursor: default;
+  }
+}
 .icon-collapse:before {
   content: '+';
   display: inline-block;
@@ -9011,26 +9022,19 @@ ol li.iucn-arrow:after {
 #block-iucn-who-main-menu > ul > li > a {
   text-transform: uppercase;
 }
-.facets-toggle,
-.facets-toggle:hover,
-.facets-toggle:active,
-.facets-toggle:focus {
-  color: #333333;
-}
 @media screen and (min-width: 768px) {
-  .facets-toggle {
-    cursor: default;
+  .region-facets > .collapse,
+  .region-facets > .collapsing {
+    display: block !important;
+    height: auto !important;
+    opacity: 1;
+    overflow: visible;
+    transition: none;
   }
 }
 @media screen and (max-width: 767px) {
   #facets-collapse > .facets-content {
     padding-left: 27px;
-  }
-}
-@media screen and (min-width: 768px) {
-  #facets-collapse {
-    display: block;
-    height: auto !important;
   }
 }
 .facets-title {
@@ -10864,6 +10868,17 @@ body.page-node-type-site .breadcrumb {
 body.page-node-type-site #sidemenu {
   padding-top: 1em;
 }
+@media screen and (max-width: 767px) {
+  body.page-node-type-site #sidemenu .field--iucn-collapsible {
+    margin-left: 1em;
+  }
+  body.page-node-type-site #sidemenu .collapse-toggle {
+    border-bottom: none;
+  }
+  body.page-node-type-site #sidemenu .icon-collapse {
+    color: #918f8f;
+  }
+}
 @media (max-width: 1199px) {
   .field--name-assessment-rating img {
     margin: 0 auto;
@@ -10963,6 +10978,21 @@ body.page-node-type-site #sidemenu {
 .field--name-assessments-links li a.active-year:after {
   background-color: #03afdf;
   border: none;
+}
+@media screen and (min-width: 768px) {
+  .field--iucn-collapsible > .collapse,
+  .field--iucn-collapsible > .collapsing {
+    display: block !important;
+    height: auto !important;
+    opacity: 1;
+    overflow: visible;
+    transition: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  .field--iucn-collapsible .icon-collapse {
+    display: none;
+  }
 }
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
@@ -11707,95 +11737,140 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   display: inline;
   margin-right: .5em;
 }
-.field--name-assessments-download-links {
-  margin-top: 40px;
-  margin-top: 4rem;
-}
-.field--name-assessments-download-links .field--label {
-  background-color: #134780;
-  color: #fff;
-  display: inline-block;
-  text-align: left;
-  width: 100%;
-  font-size: 22px;
-  padding: .5em 1.5em;
-  position: relative;
-  line-height: 1.2;
-  padding-left: 5em;
-  font-weight: 300;
-}
-@media screen and (max-width: 767px) {
-  .field--name-assessments-download-links .field--label {
-    font-size: 21px;
-    line-height: 1.1;
-    padding-left: 3em;
-  }
-}
-.field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
-  font-size: 15px;
-}
-@media screen and (max-width: 767px) {
-  .field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
-    font-size: 13px;
-  }
-}
-.field--name-assessments-download-links .field--label:before {
-  background-image: url(../images/download-report.svg);
-  background-repeat: no-repeat;
-  content: '';
-  display: block;
-  background-position: center;
-  background-size: auto;
-  border-right: 1px solid;
-  height: 75%;
-  left: 0;
-  position: absolute;
-  top: 15%;
-  width: 4em;
-}
-@media screen and (max-width: 767px) {
-  .field--name-assessments-download-links .field--label:before {
-    width: 2.5em;
-  }
-}
-.field--name-assessments-download-links .field--label:before:before {
-  display: none;
-}
-.field--name-assessments-download-links .field--label:before:after {
-  border-right: 1px solid;
-  content: '';
-  display: block;
-  height: 80%;
-  position: absolute;
-  right: 0;
-  top: 10%;
-}
-.field--name-assessments-download-links:hover > .field--item,
-.field--name-assessments-download-links:focus > .field--item,
-.field--name-assessments-download-links:active > .field--item {
-  opacity: 1;
-}
 .field--name-assessments-download-links ul {
   list-style-type: none;
   padding-left: 0;
 }
-.field--name-assessments-download-links .field--item {
-  opacity: 0;
-  transition: opacity .2s;
+@media screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+    margin-bottom: 1em;
+    padding-bottom: .5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    text-transform: none;
+  }
+  h1.field--name-assessments-download-links .field--label,
+  h2.field--name-assessments-download-links .field--label,
+  h3.field--name-assessments-download-links .field--label,
+  h4.field--name-assessments-download-links .field--label,
+  h5.field--name-assessments-download-links .field--label,
+  h6.field--name-assessments-download-links .field--label {
+    margin-top: 0;
+  }
+  .field--name-assessments-download-links .links a,
+  .field--name-assessments-download-links .links a a {
+    color: #03afdf;
+  }
+  .field--name-assessments-download-links .links > li {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .field--name-assessments-download-links .links > li:after {
+    background-image: url(../images/icon-arrow-blue.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    content: '';
+    display: inline-block;
+    height: 1em;
+    width: 2em;
+  }
 }
-.field--name-assessments-download-links .field--item a {
-  display: block;
-  padding: .5em 1em;
-  border: 1px solid;
+@media screen and (max-width: 767px) and screen and (max-width: 767px) {
+  h1.field--name-assessments-download-links .field--label,
+  h2.field--name-assessments-download-links .field--label,
+  h3.field--name-assessments-download-links .field--label,
+  h4.field--name-assessments-download-links .field--label,
+  h5.field--name-assessments-download-links .field--label,
+  h6.field--name-assessments-download-links .field--label {
+    font-size: 1.3em;
+  }
 }
-.field--name-assessments-download-links .field--item a,
-.field--name-assessments-download-links .field--item a a {
-  color: #03afdf;
+@media screen and (min-width: 768px) {
+  .field--name-assessments-download-links {
+    margin-top: 40px;
+    margin-top: 4rem;
+  }
+  .field--name-assessments-download-links .field--label {
+    background-color: #134780;
+    color: #fff;
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    font-size: 22px;
+    padding: .5em 1.5em;
+    position: relative;
+    line-height: 1.2;
+    padding-left: 5em;
+    font-weight: 300;
+  }
+  .field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
+    font-size: 15px;
+  }
+  .field--name-assessments-download-links .field--label:before {
+    background-image: url(../images/download-report.svg);
+    background-repeat: no-repeat;
+    content: '';
+    display: block;
+    background-position: center;
+    background-size: auto;
+    border-right: 1px solid;
+    height: 75%;
+    left: 0;
+    position: absolute;
+    top: 15%;
+    width: 4em;
+  }
+  .field--name-assessments-download-links .field--label:before:before {
+    display: none;
+  }
+  .field--name-assessments-download-links .field--label:before:after {
+    border-right: 1px solid;
+    content: '';
+    display: block;
+    height: 80%;
+    position: absolute;
+    right: 0;
+    top: 10%;
+  }
+  .field--name-assessments-download-links .collapse {
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .field--name-assessments-download-links:hover .collapse,
+  .field--name-assessments-download-links:focus .collapse,
+  .field--name-assessments-download-links:active .collapse {
+    opacity: 1;
+  }
+  .field--name-assessments-download-links .field--item a {
+    display: block;
+    padding: .5em 1em;
+    border: 1px solid;
+  }
+  .field--name-assessments-download-links .field--item a,
+  .field--name-assessments-download-links .field--item a a {
+    color: #03afdf;
+  }
+  .field--name-assessments-download-links .field--item a:hover {
+    background-color: #03afdf;
+    border-color: #03afdf;
+    color: #fff;
+  }
 }
-.field--name-assessments-download-links .field--item a:hover {
-  background-color: #03afdf;
-  border-color: #03afdf;
-  color: #fff;
+@media screen and (min-width: 768px) and screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label div.field--name-field-pdf-button-title {
+    font-size: 13px;
+  }
+}
+@media screen and (min-width: 768px) and screen and (max-width: 767px) {
+  .field--name-assessments-download-links .field--label:before {
+    width: 2.5em;
+  }
 }
 .field--name-dynamic-block-fieldnode-site-feedback {
   background-color: #134780;
