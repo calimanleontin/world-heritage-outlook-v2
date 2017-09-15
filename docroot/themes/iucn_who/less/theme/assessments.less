@@ -14,6 +14,9 @@ body.page-node-type-site {
     @media @grid-mobile {
       .field--iucn-collapsible {
         margin-left: 1em;
+        ul {
+          margin-bottom: 2em;
+        }
       }
       .collapse-toggle {
         border-bottom: none;
@@ -331,7 +334,9 @@ body.page-node-type-site {
   }
   .col-sm-4 {
     > .field + .field {
-      margin-top: 2em;
+      @media @grid-desktop {
+        margin-top: 2em;
+      }
     }
   }
   .iucn-assessment-value {
@@ -594,7 +599,10 @@ body.page-node-type-site {
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed {
   > .field--label {
     .bottom-border();
-    font-weight: 900;
+    font-weight: normal;
+    @media @grid-desktop {
+      font-weight: 900;
+    }
   }
   ul {
     list-style-type: none;
@@ -616,6 +624,11 @@ body.page-node-type-site {
   }
 }
 
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
+  // fix animation jerking
+  margin-top: 0;
+}
+
 .field--name-assessments-download-links {
   ul {
     list-style-type: none;
@@ -624,8 +637,7 @@ body.page-node-type-site {
   @media @grid-mobile {
     .field--label {
       .bottom-border();
-      font-weight: 900;
-      text-transform: none;
+      // text-transform: none;
     }
     .links a {
       .light-link();
@@ -634,6 +646,9 @@ body.page-node-type-site {
       align-items: center;
       display: flex;
       justify-content: space-between;
+      + li {
+        margin-top: 1em;
+      }
     }
     .links > li:after {
       .svg-icon(icon-arrow-blue);
