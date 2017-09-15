@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - search_api.index.iucn_database_index
-    - system.menu.main
   module:
     - search_api
     - search_autocomplete
@@ -505,7 +504,7 @@ display:
       defaults:
         cache: false
       menu:
-        type: normal
+        type: none
         title: 'Explore sites'
         description: ''
         expanded: false
