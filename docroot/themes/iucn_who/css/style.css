@@ -12064,6 +12064,10 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     margin-left: .5em;
   }
 }
+.g-recaptcha > div {
+  margin: 0 auto;
+  margin-top: 1em;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;
