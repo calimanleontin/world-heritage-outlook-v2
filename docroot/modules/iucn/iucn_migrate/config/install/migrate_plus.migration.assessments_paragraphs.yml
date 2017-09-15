@@ -64,6 +64,7 @@ source:
       type: as_site_key_conservation
 process:
   type: type
+  langcode: langcode
 # KEY CONSERVATION ISSUES
   field_as_key_cons_topic: keyConservationIssues
   field_as_key_cons_scale:

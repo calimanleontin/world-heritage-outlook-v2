@@ -75,6 +75,7 @@ process:
         - 0
         - target_id
   type: type
+  langcode: langcode
   field_as_key_cons_topic: keyConservationIssues
   field_as_key_cons_scale:
     plugin: taxonomy_term
