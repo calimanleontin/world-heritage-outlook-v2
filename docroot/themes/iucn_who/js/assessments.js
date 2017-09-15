@@ -51,5 +51,11 @@
       hashUpdate(hash);
     });
 
+    var iucnSidemenu = new IUCNSidemenu();
+
+    $('#assessment-tabs-mobile').on('click', 'li.active a', function() {
+      iucnSidemenu.closeMenu();
+    });
+
   });
 }(jQuery));

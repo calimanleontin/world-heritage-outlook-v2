@@ -1,4 +1,6 @@
 (function($) {
+  'use strict';
+
   $(function() {
     var $body = $(document.body);
 
@@ -52,6 +54,7 @@
     var $sidemenu = $('#sidemenu');
     var $sidemenuToggle = $('#sidemenu-toggle');
     var $modalBackdrop = $('.modal-backdrop');
+    var iucnSidemenu = new IUCNSidemenu();
 
     $sidemenu.on('show.bs.dropdown', function () {
       $body.addClass('sidemenu-open');

@@ -787,12 +787,13 @@ body.page-node-type-site {
     background-size: contain;
     content: '';
     display: inline-block;
-    height: 1.5em;
+    height: @line-height-base * 1em;
     margin: 0 auto;
     vertical-align: middle;
-    width: 2.5em;
+    width: 1.5em;
     @media @grid-mobile {
-      margin-bottom: 19px;
+      font-size: 19px;
+      margin-bottom: 1em;
     }
     @media @grid-desktop {
       .svg-icon(feedback);

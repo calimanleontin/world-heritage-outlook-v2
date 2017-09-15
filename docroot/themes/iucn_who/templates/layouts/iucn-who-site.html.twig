@@ -16,11 +16,9 @@
       <div class="col-sm-12 region-site-sidemenu-toggle">
         <!-- Sidemenu toggle -->
         <div class="sidemenu-toggle-wrapper">
-          <div id="sidemenu-toggle">
-            <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
-              {{ 'See all information'|t }}
-            </button>
-          </div>
+          <button type="button" class="btn btn-info sidemenu-toggle" data-toggle="dropdown" data-target="#sidemenu" id="sidemenu-toggle">
+            {{ 'See all information'|t }}
+          </button>
         </div>
       </div>
       <div class="col-md-4 region-site-rating">
@@ -37,7 +35,7 @@
   {% if content.assessment|render is not empty %}
     <div class="container-fluid">
       <!-- Nav tabs -->
-      <ul class="nav nav-tabs visible-desktop" role="tablist">
+      <ul class="nav nav-tabs visible-desktop" role="tablist" id="assessment-tabs-desktop">
         <li role="presentation" class="active">
           <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
             <strong class="tab-label">{{ 'Summary'|t }}</strong>
@@ -73,7 +71,7 @@
       </div>
       <div class="col-sm-4" id="sidemenu">
         {% if content.assessment|render is not empty %}
-          <ul class="nav nav-tabs visible-mobile" role="tablist">
+          <ul class="nav nav-tabs visible-mobile" role="tablist" id="assessment-tabs-mobile">
             <li role="presentation" class="active">
               <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
                 <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'Summary'|t }}</strong>

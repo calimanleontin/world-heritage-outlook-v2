@@ -25,6 +25,7 @@ global-styling:
       js/publications.js: {}
       js/social_media.js: {}
       js/assessments.js: {}
+      js/sidemenu.js: {}
     dependencies:
       - core/jquery
       - iucn_who/bootstrap-js
