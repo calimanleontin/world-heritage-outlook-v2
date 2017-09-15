@@ -2441,7 +2441,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/facets_pretty_paths"
             },
-            "time": "2017-06-12 21:03:27"
+            "time": "2017-06-12T21:03:27+00:00"
         },
         {
             "name": "drupal/features",
@@ -3908,6 +3908,53 @@
             "homepage": "https://www.drupal.org/project/search_api_sorts",
             "support": {
                 "source": "http://cgit.drupalcode.org/search_api_sorts"
+            }
+        },
+        {
+            "name": "drupal/search_autocomplete",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/search_autocomplete",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_autocomplete-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "f80427ffefbe4b159db91442b6e32b11de448926"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1481975884",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Dom.",
+                    "homepage": "https://www.drupal.org/user/801982"
+                }
+            ],
+            "description": "Provides autocompletion feature for fields in your Drupal site. This module ships with pre-existing autocompletion configurations.",
+            "homepage": "https://www.drupal.org/project/search_autocomplete",
+            "support": {
+                "source": "http://cgit.drupalcode.org/search_autocomplete"
             }
         },
         {
