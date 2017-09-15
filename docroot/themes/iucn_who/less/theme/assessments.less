@@ -11,19 +11,9 @@ body.page-node-type-site {
   }
   #sidemenu {
     padding-top: 1em;
-    @media @grid-mobile {
-      .field--iucn-collapsible {
-        margin-left: 1em;
-      }
-      .collapse-toggle {
-        border-bottom: none;
-      }
-      .icon-collapse {
-        color: #918f8f;
-      }
-    }
   }
 }
+
 .field--name-assessment-rating img {
   @media (max-width: @screen-md-max) {
     margin: 0 auto;
@@ -108,15 +98,6 @@ body.page-node-type-site {
     a.active-year:after {
       background-color: @iucn-blue-light;
       border: none;
-    }
-  }
-}
-
-.field--iucn-collapsible {
-  .collapse-visible-desktop();
-  .icon-collapse {
-    @media @grid-desktop {
-      display: none;
     }
   }
 }
@@ -276,6 +257,7 @@ body.page-node-type-site {
       }
     }
   }
+
   .tab-label {
     font-size: 19 / 15 * 1em;
     font-weight: 700;
@@ -329,9 +311,12 @@ body.page-node-type-site {
       }
     });
   }
+
   .col-sm-4 {
     > .field + .field {
-      margin-top: 2em;
+      @media @grid-desktop {
+        margin-top: 2em;
+      }
     }
   }
   .iucn-assessment-value {
@@ -409,6 +394,7 @@ body.page-node-type-site {
       margin-left: 1em;
     }
   }
+
   .field--name-field-as-values-criteria,
   .field--name-field-as-values-curr-trend {
     display: flex;
@@ -590,11 +576,57 @@ body.page-node-type-site {
    Assessment sidebar
    ========================================================================== */
 
+.field--iucn-collapsible {
+  .collapse-visible-desktop();
+  @media @grid-mobile {
+    margin-left: 1em;
+    ul {
+      margin-bottom: 2em;
+    }
+    .collapse-toggle {
+      border-bottom: none;
+    }
+    // @todo: make this into general icon-collapse styling
+    .icon-collapse {
+      display: inline-flex;
+      align-items: center;
+      width: 20px;
+      &:before {
+        .svg-icon(plus);
+        content: '';
+        background-position: center;
+        background-size: 95%;
+        content: '';
+        display: inline-block;
+        height: 13px;
+        margin-right: .5 * @font-size-base--mobile;
+        width: 13px;
+      }
+    }
+    [aria-expanded="true"] > .icon-collapse:before,
+    .open > a > .icon-collapse:before {
+      .svg-icon(minus);
+      background-size: 98%;
+    }
+  }
+  @media @grid-desktop {
+    .icon-collapse {
+      display: none;
+    }
+  }
+}
+
 .field--name-assessments-more-site-links,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed {
   > .field--label {
     .bottom-border();
-    font-weight: 900;
+    font-weight: normal;
+    @media @grid-mobile {
+      border-bottom: none;
+    }
+    @media @grid-desktop {
+      font-weight: 900;
+    }
   }
   ul {
     list-style-type: none;
@@ -616,6 +648,11 @@ body.page-node-type-site {
   }
 }
 
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
+  // fix animation jerking
+  margin-top: 0;
+}
+
 .field--name-assessments-download-links {
   ul {
     list-style-type: none;
@@ -624,18 +661,21 @@ body.page-node-type-site {
   @media @grid-mobile {
     .field--label {
       .bottom-border();
-      font-weight: 900;
-      text-transform: none;
+      border-bottom: none;
+      // text-transform: none;
     }
-    .links a {
+    ul a {
       .light-link();
     }
-    .links > li {
+    ul > li {
       align-items: center;
       display: flex;
       justify-content: space-between;
+      + li {
+        margin-top: 1em;
+      }
     }
-    .links > li:after {
+    ul > li:after {
       .svg-icon(icon-arrow-blue);
       background-position: center;
       background-size: contain;
@@ -647,6 +687,9 @@ body.page-node-type-site {
   }
   @media @grid-desktop {
     .remify(margin-top, 40px);
+    li {
+      margin-top: .1em;
+    }
     .field--label {
       // @todo: mixin
       background-color: @brand-primary;
@@ -718,10 +761,20 @@ body.page-node-type-site {
 }
 
 .field--name-dynamic-block-fieldnode-site-feedback {
-  .background-variant(@brand-primary, #fff);
   .remify(font-size, 15px);
   padding: 1em;
   font-weight: normal;
+  @media @grid-mobile {
+    margin-left: -@grid-gutter-width / 2;
+    margin-right: -@grid-gutter-width / 2;
+    .field + & {
+      border-top: 1px solid #ddd;
+      margin-top: 3em;
+    }
+  }
+  @media @grid-desktop {
+    .background-variant(@brand-primary, #fff);
+  }
   .node--type-site-assessment .col-sm-4 .field + & {
     margin-top: 3em;
   }
@@ -729,16 +782,29 @@ body.page-node-type-site {
     font-weight: inherit;
   }
   &:before {
-    .svg-icon(feedback);
+    .svg-icon(feedback-black);
     background-position: center;
     background-size: contain;
     content: '';
-    display: block;
-    height: 3.5em;
-    width: 3.5em;
+    display: inline-block;
+    height: @line-height-base * 1em;
     margin: 0 auto;
+    vertical-align: middle;
+    width: 1.5em;
+    @media @grid-mobile {
+      font-size: 19px;
+      margin-bottom: 1em;
+    }
+    @media @grid-desktop {
+      .svg-icon(feedback);
+      display: block;
+      height: 3.5em;
+      width: 3.5em;
+    }
   }
-
+  .icon-collapse {
+    display: none;
+  }
   .form-submit {
     .btn-info();
     .remify(font-size, 20px);
@@ -753,7 +819,16 @@ body.page-node-type-site {
     .bottom-border();
     .remify(font-size, 18px);
     font-weight: 900;
-    text-align: center;
+    @media @grid-mobile {
+      border-bottom: none;
+      display: inline-block;
+      font-size: 19px;
+      margin-bottom: 19px;
+      vertical-align: middle;
+    }
+    @media @grid-desktop {
+      text-align: center;
+    }
   }
 }
 
@@ -780,4 +855,9 @@ body.page-node-type-site {
       .iucn-base-btn-icons(magnifier-white, icon-arrow-white);
     }
   }
+}
+
+.g-recaptcha > div {
+  margin: 0 auto;
+  margin-top: 1em;
 }
