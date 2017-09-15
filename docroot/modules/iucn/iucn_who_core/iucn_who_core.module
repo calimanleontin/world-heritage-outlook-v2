@@ -70,3 +70,18 @@ function _remove_header_links(array &$attachments) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function iucn_who_core_theme($existing, $type, $theme, $path) {
+  return [
+    'benefits_map_block' => [
+      'variables' => [
+        'markup_map' => null,
+        'categories' => [],
+        'empty_selection_placeholder_markup' => null,
+      ]
+    ],
+  ];
+}

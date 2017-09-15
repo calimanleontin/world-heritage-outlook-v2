@@ -33,6 +33,29 @@ class SitesQueryUtil {
     return Node::loadMultiple($nids);
   }
 
+
+  /**
+   * Query all published sites having a valid current assessment set.
+   * @return array
+   *   Array of NodeInterface objects keyed by entity id.
+   */
+  public static function getPublishedSitesWithAssessments() {
+    $ret = [];
+    $query = \Drupal::entityQuery('node');
+    $query->condition('type', 'site');
+    $query->condition('status', 1);
+    $nids = $query->execute();
+    foreach($nids as $nid) {
+      /** @var Node $site */
+      $site = Node::load($nid);
+      if (!empty($site->field_current_assessment->entity)) {
+        $ret[$nid] = $site;
+      }
+    }
+    return $ret;
+  }
+
+
   public static function getPublishedSitesCount() {
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'site');
@@ -63,4 +86,31 @@ class SitesQueryUtil {
     return Node::loadMultiple($nids);
   }
 
+  /**
+   *
+   * <pre>
+   * SELECT cat.field_as_benefits_category_target_id
+   * FROM node_field_data n
+   *   INNER JOIN node__field_current_assessment fca ON fca.entity_id = n.nid AND fca.revision_id = n.vid AND fca.bundle = "site"
+   *   INNER JOIN node__field_as_benefits fasb ON fca.field_current_assessment_target_id = fasb.entity_id AND fasb.bundle = "site_assessment"
+   *   INNER JOIN paragraph__field_as_benefits_category cat ON fasb.field_as_benefits_target_id = cat.entity_id AND cat.deleted = 0
+   * WHERE n.status = 1
+   * GROUP BY cat.field_as_benefits_category_target_id
+   *
+   * --  AND cat.revision_id = field_as_benefits_target_revision_id
+   *
+   * @todo see https://trello.com/c/91HQ9M6A - orphaned paragraphs (cannot join on revision)
+   * @todo test
+   * @return array
+   */
+  public static function getBenefitsCategoriesInUse() {
+    $query = \Drupal::database()->select('node_field_data', 'n');
+    $query->fields('cat', ['field_as_benefits_category_target_id']);
+    $query->innerJoin('node__field_current_assessment', 'fca', "fca.entity_id = n.nid AND fca.revision_id = n.vid AND fca.bundle = 'site'");
+    $query->innerJoin('node__field_as_benefits', 'fasb', "fca.field_current_assessment_target_id = fasb.entity_id  AND fasb.bundle = 'site_assessment'");
+    $query->innerJoin('paragraph__field_as_benefits_category', 'cat', 'fasb.field_as_benefits_target_id = cat.entity_id AND cat.deleted = 0');
+    $query->condition('n.status', 1);
+    $query->groupBy('cat.field_as_benefits_category_target_id');
+    return $query->execute()->fetchCol();
+  }
 }

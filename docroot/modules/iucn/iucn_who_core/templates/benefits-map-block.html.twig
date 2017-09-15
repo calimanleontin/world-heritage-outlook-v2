@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row map-block-main">
+
+    <div class="col col-sm-3 col-left" data-scroll="prevent">
+      <div class="row">
+        <div class="title-container">
+          <h3>{{ 'Map legend' | trans }}</h3>
+          <div><a href="javascript:void(0);">{{ 'Expand all' }}</a> | <a href="javascript:void(0);">{{ 'Colapse all' }}</a></div>
+        </div>
+        <div id="map-filters">
+          <a href="javascript:void(0);" class="benefit-all-categories">{{ 'All World Heritage Sites' | trans }}</a>
+          {% for category in categories %}
+          <section class="block-facet--links block block-facets clearfix panel panel-default">
+            <div class="panel-heading" role="tab" id="#heading-topic-{{ category.id }}">
+              <a class="block-title panel-title" role="button" data-parent="#map-filters" data-toggle="collapse" href="#topic-{{ category.id }}" aria-expanded="false" aria-controls="topic-{{ category.id }}">
+                <span class="icon-collapse"></span>{{ category.name.value }}</a>
+            </div>
+            <div id="topic-{{ category.id }}" class="block-facet--links block block-facets clearfix panel panel-default panel-collapse fade collapse" role="tabpanel" aria-expanded="true" style="">
+              <div class="panel-body">
+                <ul class="item-list__links">
+                  {% for child in category.children %}
+                  <li class="facet-item"><a href="javascript:void(0);" class="benefit-category"><span>{{ child.name.value }}</span></a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </section>
+          {% endfor %}
+        </div>
+        <div id="map-site-details">
+          {{ empty_selection_placeholder_markup | raw }}
+        </div>
+      </div>
+    </div>
+    <div class="col col-sm-9 col-right">
+      <div class="row">
+        {{ markup_map | raw }}
+      </div>
+    </div>
+  </div>
+  {% if block_footer_text %}
+  <div class="row map-block-footer">
+    <a href="javascript:void(0);" class="scroll-down" id="frontpage-scroll-down" data-target="#scroll-down-target"></a>
+    <div id="scroll-down-target"></div>
+    <div class="block-footer-text">{{ block_footer_text }}</div>
+  </div>
+  {% endif %}
+</div>

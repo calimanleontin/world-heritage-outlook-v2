@@ -124,4 +124,16 @@ abstract class GoogleMapsBaseBlock extends BlockBase {
     $config = $this->getConfiguration();
     return isset($config[$name]) ? $config[$name] : $default;
   }
+
+
+  public function getSiteSelectionPlaceholder() {
+    $placeholder_url = sprintf('/%s/images/no-site-placeholder.png',
+      drupal_get_path('module', 'iucn_who_homepage')
+    );
+    return sprintf(
+      '<div class="site-selection-placeholder"><img src="%s" alt="No site"><span>%s</span></div>',
+      $placeholder_url,
+      $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a natural site for details'))
+    );
+  }
 }

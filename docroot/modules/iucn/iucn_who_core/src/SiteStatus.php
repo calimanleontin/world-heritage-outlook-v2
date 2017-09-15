@@ -11,6 +11,8 @@ namespace Drupal\iucn_who_core;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\iucn_who_core\Sites\SitesQueryUtil;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermStorage;
 
 class SiteStatus {
 
@@ -231,6 +233,47 @@ class SiteStatus {
     }
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = floor((100 * $count) / $total);
+    }
+    return $ret;
+  }
+
+
+  /**
+   * Retrieve the taxonomy of assessment_benefits_category as tree containing
+   * only the terms in use.
+   *
+   * @todo test
+   * @return array
+   *   Two-level array of terms with roots and each root having 'children' property
+   */
+  public static function getBenefitsCategoriesTreeInUse() {
+    $whitelist = SitesQueryUtil::getBenefitsCategoriesInUse();
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('assessment_benefits_category');
+    // Add roots
+    $parents = $ret = [];
+    foreach($terms as $term) {
+      if ($term->depth == 0) {
+        $parent = Term::load($term->tid);
+        $parent->children = [];
+        $parents[$term->tid] = $parent;
+      }
+    }
+    // Assign children
+    foreach($terms as $term) {
+      if ($term->depth == 1 && in_array($term->tid, $whitelist)) {
+        // We do not have multi-parent terms
+        $parent_id = $term->parents[0];
+        if (!empty($parents[$parent_id])) {
+          $parent = $parents[$parent_id];
+          $parent->children[$term->tid] = Term::load($term->tid);
+        }
+      }
+    }
+    // Remove childless parents
+    foreach($parents as $parent) {
+      if (!empty($parent->children)) {
+        $ret[$parent->id()] = $parent;
+      }
     }
     return $ret;
   }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iucn_who_homepage\Plugin\Block;
+namespace Drupal\iucn_who_core\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
@@ -14,37 +14,20 @@ use Drupal\website_utilities\DrupalInstance;
 
 /**
  * @Block(
- *   id = "home_page_map",
- *   admin_label = @Translation("Homepage map"),
+ *   id = "benefits_page_map",
+ *   admin_label = @Translation("Benefits page map"),
  * )
  */
-class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
+class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
 
 
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-    $form['iucn'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('IUCN specific settings'),
-      'empty_selection_placeholder' => [
-        '#type' => 'textfield',
-        '#title' => $this->t('No site is selected placeholder'),
-        '#default_value' => $this->getConfigParam( 'empty_selection_placeholder', $this->t('Click on a natural site for details')),
-      ],
-      'block_footer_text' => [
-        '#type' => 'textfield',
-        '#title' => $this->t('Text appearing on the footer'),
-        '#default_value' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
-      ],
-    ];
     return $form;
   }
 
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
-    $values = $form_state->getValues();
-    $this->configuration['empty_selection_placeholder'] = $values['empty_selection_placeholder'];
-    $this->configuration['block_footer_text'] = $values['block_footer_text'];
   }
 
 
@@ -53,24 +36,23 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
    */
   public function build() {
     $content = parent::build();
-    array_unshift($content['#attached']['library'], 'iucn_who_homepage/map');
+    array_unshift($content['#attached']['library'], 'iucn_who_core/benefits-map');
+
     // @todo remove line below to allow caching in production
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
-    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
-    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['empty_placeholder'] = $this->getSiteSelectionPlaceholder();
-
-    $search_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_homepage\Form\SiteSearchAutocompleteForm');
     $content['output'] = [
-      '#theme' => 'homepage_map_block',
+      '#theme' => 'benefits_map_block',
       '#markup_map' => parent::getMapMarkup(),
-      '#sites_total_count' => SitesQueryUtil::getPublishedSitesCount(),
-      '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
+      '#categories' => self::getBenefitsTermsTree(),
       '#empty_selection_placeholder_markup' => $this->getSiteSelectionPlaceholder(),
-      '#search_form' => $search_form,
-      '#block_footer_text' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
     ];
     return $content;
+  }
+
+
+  private static function getBenefitsTermsTree() {
+    return SiteStatus::getBenefitsCategoriesTreeInUse();
   }
 
   private function getMarkers() {
@@ -80,7 +62,6 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     foreach ($sites as $node) {
       $latitude = $node->field_geolocation->lat;
       $longitude = $node->field_geolocation->lon;
-      $status_id = $this->getSiteStatus($node);
       // Hide sites without coordinates
       if (empty($latitude) || empty($longitude) || empty($status_id)) {
         \Drupal::logger(__CLASS__)->warning(
@@ -89,33 +70,22 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         );
         continue;
       }
-      $overall_status_level = SiteStatus::getOverallAssessmentLevel($node);
-      $threat_level = SiteStatus::getOverallThreatLevel($node);
-      $protection_level = SiteStatus::getOverallProtectionLevel($node);
-      $value_level = SiteStatus::getOverallProtectionLevel($node);
+
       $detail = [
         '#theme' => 'homepage_map_site_detail',
         '#title' => $node->title->value,
-        '#status' => [
-          'label' => $overall_status_level ? $overall_status_level->label() : '-',
-          'entity' => $overall_status_level,
-          'id' => $status_id,
-        ],
         '#country' => [
           'label' => $this->getSiteCountryLabel($node),
         ],
-        '#thumbnail' => $this->getSiteThumbnail($node),
         '#inscription' => $this->getSiteInscriptionYear($node),
         '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
-        '#stat_values' => $value_level ? $value_level->label() : '-',
-        '#stat_threat' => $threat_level ? $threat_level->label() : '-',
-        '#stat_protection' => $protection_level ? $protection_level->label() : '-',
       ];
       $ret[] = [
         'id' => $node->id(),
         'lat' => $latitude,
         'lng' => $longitude,
         'title' => $node->title->value,
+        'status_label' => 'TODO',
         'status_id' => $status_id,
         'thumbnail' => $this->getSiteThumbnail($node),
         'inscription_year' => $this->getSiteInscriptionYear($node),
@@ -157,20 +127,6 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     }
   }
 
-  private function getSiteStatus($node) {
-    $ret = null;
-    if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
-      $ret = $status->id();
-    }
-    else {
-      if (!DrupalInstance::isProductionInstance()) {
-        $array = SitesQueryUtil::getSiteConservationRatings();
-        $k = array_rand($array);
-        $ret = $array[$k]->id();
-      }
-    }
-    return $ret;
-  }
 
   private function getMarkersIcons() {
     $ret = [];

@@ -1,0 +1,32 @@
+uuid: 4226b694-dbb2-4700-a7de-90ecf897eedd
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_who_core
+    - system
+  theme:
+    - iucn_who
+id: benefitspagemap
+theme: iucn_who
+region: contained_content
+weight: 0
+provider: null
+plugin: benefits_page_map
+settings:
+  id: benefits_page_map
+  label: 'Benefits page map'
+  provider: iucn_who_core
+  label_display: '0'
+  map_width: 100%
+  map_height: 400px
+  map_init_lat: '2.8'
+  map_init_lng: '-187.3'
+  map_init_zoom: '2'
+  map_init_type: roadmap
+visibility:
+  request_path:
+    id: request_path
+    pages: /benefits
+    negate: false
+    context_mapping: {  }
