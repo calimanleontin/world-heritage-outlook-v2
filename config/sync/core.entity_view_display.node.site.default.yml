@@ -52,7 +52,6 @@ third_party_settings:
         - 'display_field_copy:node-image_site'
       left_1:
         - assessment_rating
-        - assessments_links
       middle_1:
         - field_country
         - field_inscription_year
@@ -81,12 +80,12 @@ third_party_settings:
             image_link: ''
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
-        weight: 14
+        weight: 13
         label: above
         formatter: default
       'dynamic_block_field:node-site_feedback':
         plugin_id: 'dynamic_block_field:node-site_feedback'
-        weight: 15
+        weight: 14
         label: above
         formatter: default
       node_title:
@@ -105,17 +104,12 @@ third_party_settings:
         formatter: image
       assessments_download_links:
         plugin_id: assessments_download_links
-        weight: 13
+        weight: 12
         label: above
-        formatter: default
-      assessments_links:
-        plugin_id: assessments_links
-        weight: 3
-        label: hidden
         formatter: default
       assessments_more_site_links:
         plugin_id: assessments_more_site_links
-        weight: 12
+        weight: 11
         label: above
         formatter: default
 id: node.site.default
@@ -125,13 +119,13 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 8
+    weight: 7
     region: middle_1
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 10
+    weight: 9
     label: hidden
     settings:
       link: true
@@ -141,7 +135,7 @@ content:
     region: assessment
   field_country:
     type: entity_reference_label
-    weight: 4
+    weight: 3
     region: middle_1
     label: hidden
     settings:
@@ -151,7 +145,7 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 7
+    weight: 6
     region: middle_1
     label: inline
     settings:
@@ -162,7 +156,7 @@ content:
         ds_limit: ''
   field_geolocation:
     type: geofield_google_map
-    weight: 11
+    weight: 10
     region: sidebar
     label: hidden
     settings:
@@ -211,7 +205,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: image
-    weight: 9
+    weight: 8
     region: right_1
     label: hidden
     settings:
@@ -220,7 +214,7 @@ content:
     third_party_settings: {  }
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 6
+    weight: 5
     region: middle_1
     label: inline
     settings:
@@ -231,7 +225,7 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 5
+    weight: 4
     region: middle_1
     label: inline
     settings:
@@ -239,6 +233,9 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_area: true
   field_buffer_zone: true
   field_buffer_zone_area: true

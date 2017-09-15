@@ -100,34 +100,41 @@ class AssessmentRating extends DsFieldBase {
     if (!$node->hasField('field_current_assessment')) {
       return $return;
     }
-    if (!$node->field_current_assessment->count()) {
+    if (!$node->field_assessments->count()) {
       return $return;
     }
-    if (empty($node->field_current_assessment->entity->field_as_global_assessment_level->entity)) {
+    if (empty($node->field_assessments->entity->field_as_global_assessment_level->entity)) {
       return $return;
     }
 
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
-    $items = $node->field_current_assessment->entity->field_as_global_assessment_level->entity->get('field_image');
+    $items = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image');
+    $years = [$node->field_assessments->entity->field_as_cycle->value];
+    foreach ($node->field_assessments as $idx => $assessment) {
+      if ($idx == 0) {
+        continue;
+      }
+      $img_value = $assessment->entity->field_as_global_assessment_level
+        ->entity->get('field_image')->getValue()[0];
+      $items->appendItem($img_value);
+      $years[] = $assessment->entity->field_as_cycle->value;
+    }
 
     /* @var \Drupal\Core\Field\FormatterInterface $formatter */
     $formatter = $this->getFormatter([
       'type' => $this->getFieldConfiguration()['formatter'],
     ]);
-
-
-    $array = $items->getIterator()->getArrayCopy();
-    $formatter->prepareView([$array]);
-
-    /* @var \Drupal\Core\Field\FormatterInterface $formatter */
-    $formatter = $this->getFormatter([
-      'type' => $this->getFieldConfiguration()['formatter'],
-    ]);
-
-
     $formatter->prepareView([$items]);
+    $view_images = $formatter->viewElements($items, $node->field_current_assessment->entity->field_as_global_assessment_level->entity->language()->getId());
 
-    return $formatter->viewElements($items, $node->field_current_assessment->entity->field_as_global_assessment_level->entity->language()->getId());
+    $element = [
+      '#theme' => 'rating_image_switcher',
+      '#images' => $view_images,
+      '#years' => $years,
+    ];
+
+    return $element;
+
   }
 
   /**
