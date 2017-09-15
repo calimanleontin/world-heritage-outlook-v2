@@ -15,33 +15,7 @@
       You are here:
     {% endtrans %}
   </span>
-
-    {% set url = url('<current>') %}
-    <ol class="breadcrumb">
-        {% for item in breadcrumb %}
-            {% if item.url %}
-                {% if url|render|render ends with item.url %}
-                   {# <li {{ item.attributes }}>
-                        <a href="{{ item.url }}">{{ item.text }} xxx</a>
-                    </li>#}
-                {% else %}
-                    {% if item.url != previous_url  %}
-                    <li {{ item.attributes }}>
-                        <a href="{{ item.url }}">{{ item.text }}</a>
-                    </li>
-                    {% endif %}
-                {% endif %}
-
-                {% set previous_url = item.url %}
-            {% else %}
-                <li {{ item.attributes }}>
-                    {{ item.text }}
-                </li>
-            {% endif %}
-
-        {% endfor %}
-    </ol>
-{#  <ol class="breadcrumb">
+  <ol class="breadcrumb">
     {% for item in breadcrumb %}
       <li {{ item.attributes }}>
         {% if item.url %}
@@ -51,5 +25,5 @@
         {% endif %}
       </li>
     {% endfor %}
-  </ol>#}
+  </ol>
 {% endif %}

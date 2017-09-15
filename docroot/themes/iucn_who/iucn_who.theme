@@ -28,27 +28,32 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
  * Implements hook_preprocess_HOOK() for block templates.
  */
 function iucn_who_preprocess_block(&$variables) {
-  // switch ($variables['base_plugin_id']) {
-  //   case 'system_branding_block':
-  //     $variables['site_logo'] = '';
-  //     if ($variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri']) {
-  //       $variables['site_logo'] = str_replace('.svg', '.png', $variables['content']['site_logo']['#uri']);
-  //     }
-  //     break;
 
-  // }
-  if ($variables['base_plugin_id'] == 'home_page_map') {
-    $variables['#attached']['library'][] =  'iucn_who/iucn-mobile-chrome-vh-fix';
+  switch ($variables['base_plugin_id']) {
+    case 'home_page_map':
+      $variables['#attached']['library'][] = 'iucn_who/iucn-mobile-chrome-vh-fix';
+      break;
+
+    case 'page_title_block':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($node && $node->bundle() == 'site') {
+        $variables['content']['#access'] = FALSE;
+      }
+      break;
+
+    default:
+      break;
+
   }
 
   if (isset($variables['elements']['#id'])) {
-      $block_id = $variables['elements']['#id'];
-      $block = \Drupal\block\Entity\Block::load($block_id);
+    $block_id = $variables['elements']['#id'];
+    $block = \Drupal\block\Entity\Block::load($block_id);
 
-      if ($block) {
-        $variables['content']['#attributes']['data-block_id'] = $block_id;
-        $variables['content']['#attributes']['data-region'] = $block->getRegion();
-      }
+    if ($block) {
+      $variables['content']['#attributes']['data-block_id'] = $block_id;
+      $variables['content']['#attributes']['data-region'] = $block->getRegion();
+    }
   }
 
   // Change search api sort label based on sort order.
