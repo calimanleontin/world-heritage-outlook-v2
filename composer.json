@@ -127,6 +127,7 @@
     "drupal/search_api_autocomplete": "^1.0@alpha",
     "drupal/search_api_solr": "^1.0",
     "drupal/search_api_sorts": "^1.0@beta",
+    "drupal/search_autocomplete": "^1.1",
     "drupal/slick": "^1.0",
     "drupal/slick_views": "^1.0@RC",
     "drupal/smart_trim": "^1.0",

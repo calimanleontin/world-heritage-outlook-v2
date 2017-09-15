@@ -1,0 +1,20 @@
+langcode: en
+id: sites_search_autocomplete
+uuid: 7d87cfb4-6c00-4735-b1ee-9ac71ef0b251
+label: 'Sites search autocomplete'
+selector: '#edit-keys'
+status: true
+minChar: 3
+autoSubmit: true
+autoRedirect: true
+maxSuggestions: 10
+noResultLabel: 'No results found for [search-phrase]. Click to perform full search.'
+noResultValue: '[search-phrase]'
+noResultLink: ''
+moreResultsLabel: 'View all results for [search-phrase].'
+moreResultsValue: '[search-phrase]'
+moreResultsLink: ''
+source: 'sites_search::autocompletion_callback_sites_search'
+theme: minimal.css
+editable: true
+deletable: true

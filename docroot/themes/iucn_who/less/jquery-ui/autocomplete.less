@@ -34,7 +34,7 @@
     outline: 0;
     padding: 3px 20px;
     text-decoration: none;
-    white-space: nowrap;
+    // white-space: nowrap;
 
     &.ui-state-hover {
       background: @dropdown-link-hover-bg;
@@ -46,6 +46,15 @@
       color: @dropdown-link-active-color;
     }
 
+  }
+  .ui-menu-divider {
+    &.no_results {
+      display: none;
+    }
+  }
+
+  ul[data-sa-theme="minimal"]& {
+    min-width: auto;
   }
 
 }
