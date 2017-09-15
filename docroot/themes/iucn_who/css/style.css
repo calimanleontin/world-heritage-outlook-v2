@@ -10879,7 +10879,26 @@ body.page-node-type-site #sidemenu {
     border-bottom: none;
   }
   body.page-node-type-site #sidemenu .icon-collapse {
-    color: #918f8f;
+    display: inline-flex;
+    align-items: center;
+    width: 20px;
+  }
+  body.page-node-type-site #sidemenu .icon-collapse:before {
+    background-image: url(../images/plus.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 95%;
+    content: '';
+    display: inline-block;
+    height: 13px;
+    margin-right: 7px;
+    width: 13px;
+  }
+  body.page-node-type-site #sidemenu [aria-expanded="true"] > .icon-collapse:before,
+  body.page-node-type-site #sidemenu .open > a > .icon-collapse:before {
+    background-image: url(../images/minus.svg);
+    background-repeat: no-repeat;
+    background-size: 98%;
   }
 }
 @media (max-width: 1199px) {

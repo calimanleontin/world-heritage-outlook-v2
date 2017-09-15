@@ -21,8 +21,26 @@ body.page-node-type-site {
       .collapse-toggle {
         border-bottom: none;
       }
+      // @todo: make this into general icon-collapse styling
       .icon-collapse {
-        color: #918f8f;
+        display: inline-flex;
+        align-items: center;
+        width: 20px;
+        &:before {
+          .svg-icon(plus);
+          background-position: center;
+          background-size: 95%;
+          content: '';
+          display: inline-block;
+          height: 13px;
+          margin-right: .5 * @font-size-base--mobile;
+          width: 13px;
+        }
+      }
+      [aria-expanded="true"] > .icon-collapse:before,
+      .open > a > .icon-collapse:before {
+        .svg-icon(minus);
+        background-size: 98%;
       }
     }
   }
