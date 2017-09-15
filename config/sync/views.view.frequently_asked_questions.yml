@@ -357,7 +357,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: faq
+      path: about/faq
       rendering_language: '***LANGUAGE_language_interface***'
     cache_metadata:
       max-age: -1

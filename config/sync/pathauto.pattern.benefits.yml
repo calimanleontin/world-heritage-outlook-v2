@@ -7,16 +7,16 @@ dependencies:
 id: benefits
 label: Benefits
 type: 'canonical_entities:node'
-pattern: '/benefits/[node:title]'
+pattern: '/resources/benefits/benefits-case-studies/[node:field_benefit_year]/[node:title]'
 selection_criteria:
-  2f51a200-f7cb-4fe5-981f-728b6b4bbb89:
+  83fc4496-2934-4e5f-a6e6-e5824038087e:
     id: node_type
     bundles:
       benefit: benefit
     negate: false
     context_mapping:
       node: node
-    uuid: 2f51a200-f7cb-4fe5-981f-728b6b4bbb89
+    uuid: 83fc4496-2934-4e5f-a6e6-e5824038087e
 selection_logic: and
 weight: -5
 relationships: {  }

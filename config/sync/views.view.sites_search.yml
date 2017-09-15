@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - search_api.index.iucn_database_index
+    - system.menu.main
   module:
     - search_api
     - user
@@ -344,12 +345,21 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: sites-search
+      path: explore-sites
       exposed_block: true
       cache:
         type: none
       defaults:
         cache: false
+      menu:
+        type: normal
+        title: 'Explore sites'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: -48
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

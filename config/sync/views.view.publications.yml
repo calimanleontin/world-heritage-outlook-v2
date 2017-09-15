@@ -297,7 +297,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: publications
+      path: resources/publications
       cache:
         type: none
       defaults:
