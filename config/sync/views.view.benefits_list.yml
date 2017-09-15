@@ -249,7 +249,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: benefits-case-studies/%
+      path: resources/benefits/benefits-case-studies/%
     cache_metadata:
       max-age: -1
       contexts:

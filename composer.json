@@ -112,6 +112,7 @@
     "drupal/lang_dropdown": "^2.0@beta",
     "drupal/linkit": "5.0-beta5",
     "drupal/menu_block": "^1.4",
+    "drupal/menu_breadcrumb": "^1.4",
     "drupal/menu_link_attributes": "^1.0@beta",
     "drupal/metatag": "^1.2",
     "drupal/migrate_api": "^1.1",

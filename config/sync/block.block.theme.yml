@@ -12,7 +12,7 @@ dependencies:
 id: theme
 theme: iucn_who
 region: facets
-weight: -7
+weight: -9
 provider: null
 plugin: 'facet_block:theme'
 settings:
@@ -23,6 +23,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /sites-search
+    pages: /explore-sites
     negate: false
     context_mapping: {  }

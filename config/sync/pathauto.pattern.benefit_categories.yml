@@ -8,16 +8,16 @@ dependencies:
 id: benefit_categories
 label: 'Benefit categories'
 type: 'canonical_entities:taxonomy_term'
-pattern: '/benefits/[term:name]'
+pattern: '/resources/benefits/[term:name]'
 selection_criteria:
-  769df74f-459b-4f22-9c14-2b5935d300bb:
+  e202b883-c274-4bae-98c5-94a92f1af6ab:
     id: 'entity_bundle:taxonomy_term'
     bundles:
       benefits_category: benefits_category
     negate: false
     context_mapping:
       taxonomy_term: taxonomy_term
-    uuid: 769df74f-459b-4f22-9c14-2b5935d300bb
+    uuid: e202b883-c274-4bae-98c5-94a92f1af6ab
 selection_logic: and
 weight: -5
 relationships: {  }
