@@ -125,7 +125,7 @@ class AssessmentRating extends DsFieldBase {
       'type' => $this->getFieldConfiguration()['formatter'],
     ]);
     $formatter->prepareView([$items]);
-    $view_images = $formatter->viewElements($items, $node->field_current_assessment->entity->field_as_global_assessment_level->entity->language()->getId());
+    $view_images = $formatter->viewElements($items, $node->language()->getId());
 
     $element = [
       '#theme' => 'rating_image_switcher',

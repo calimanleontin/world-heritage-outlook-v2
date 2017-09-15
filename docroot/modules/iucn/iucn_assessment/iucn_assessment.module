@@ -76,7 +76,6 @@ function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
   }
   return $active_date;
 }
-
 /**
  * Implements hook_preprocess_field().
  */
