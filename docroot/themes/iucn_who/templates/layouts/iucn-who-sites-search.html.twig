@@ -14,18 +14,17 @@
  * - right: content of right region
  */
 #}
-<{{ outer_wrapper }}{{ attributes.addClass('ds-2col', 'clearfix') }}>
+<article {{ attributes.addClass('ds-2col', 'clearfix') }}>
 
-{{ title_suffix.contextual_links }}
-
-{% if left|render|trim is not empty %}
-<{{ left_wrapper }}{{ left_attributes.addClass('group-left') }}>
-{{ left }}
-</{{ left_wrapper }}>
+{% if content.left|render|trim is not empty %}
+    <div {{ attributes.addClass('left-content', 'group-left') }}>
+        <div class="site-rating-label">{{ rating }}</div>
+        {{ content.left }}
+    </div>
 {% endif %}
 
-<{{ right_wrapper }}{{ right_attributes.addClass('group-right') }}>
-{{ right }}
-</{{ right_wrapper }}>
+<div {{ attributes.addClass('right-content', 'group-right') }}>
+{{ content.right }}
+</div>
 
-</{{ outer_wrapper }}>
+</article>

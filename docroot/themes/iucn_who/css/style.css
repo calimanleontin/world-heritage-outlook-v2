@@ -8678,6 +8678,54 @@ a.is-active {
 .conservation-status.good {
   color: #3bb55e;
 }
+.sites-rating.coming-soon .site-rating-label {
+  background-color: #7e7e7e;
+  color: #FFFFFF;
+}
+.sites-rating.coming-soon h2 a {
+  color: #7e7e7e;
+}
+.sites-rating.data-deficient .site-rating-label {
+  background-color: #333333;
+  color: #FFFFFF;
+}
+.sites-rating.data-deficient h2 a {
+  color: #333333;
+}
+.sites-rating.critical .site-rating-label {
+  background-color: #ef3133;
+  color: #FFFFFF;
+}
+.sites-rating.critical h2 a {
+  color: #ef3133;
+}
+.sites-rating.significant-concern .site-rating-label {
+  background-color: #f69232;
+  color: #FFFFFF;
+}
+.sites-rating.significant-concern h2 a {
+  color: #f69232;
+}
+.sites-rating.good-concerns .site-rating-label {
+  background-color: #9cd07d;
+  color: #FFFFFF;
+}
+.sites-rating.good-concerns h2 a {
+  color: #9cd07d;
+}
+.sites-rating.good .site-rating-label {
+  background-color: #3bb55e;
+  color: #FFFFFF;
+}
+.sites-rating.good h2 a {
+  color: #3bb55e;
+}
+.sites-rating .site-rating-label {
+  position: absolute;
+  padding: 0.3em 0.5em;
+  max-width: 100px;
+  font-size: 0.9em;
+}
 .caret-triangle {
   display: inline-block;
   transform: rotate(-90deg);
