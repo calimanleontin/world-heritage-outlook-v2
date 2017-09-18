@@ -1,15 +1,18 @@
 <?php
+/**
+ * @file
+ * This module enables iucn_pdf functionality.
+ */
 
 /**
  * Implements hook_node_update().
  */
 function iucn_pdf_node_update(Drupal\node\Entity\Node $node) {
   /** @var \Drupal\node\Entity\Node $node */
-  if ($node->bundle() == 'site_assessment' && $node->isPublished()) {
+  if (($node->bundle() == 'site')||($node->bundle() == 'site_assessment') && $node->isPublished()) {
     /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
     $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
     $print_pdf->addToQueue($node);
-//    \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue] id @info added to queue', ['@info' => $node->id()]);
   }
 }
 
@@ -18,6 +21,6 @@ function iucn_pdf_node_update(Drupal\node\Entity\Node $node) {
  */
 function iucn_pdf_cron() {
   /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
-  $print_pdf= \Drupal::service('iucn_pdf.print_pdf');
+  $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
   $print_pdf->runCron();
 }

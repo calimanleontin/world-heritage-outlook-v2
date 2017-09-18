@@ -90,6 +90,9 @@ content:
     type: basic_string
     region: title
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_as_threats_categories: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true
