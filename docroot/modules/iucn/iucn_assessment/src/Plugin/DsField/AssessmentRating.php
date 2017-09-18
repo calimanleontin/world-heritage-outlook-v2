@@ -110,12 +110,16 @@ class AssessmentRating extends DsFieldBase {
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
     $items = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image');
     $years = [$node->field_assessments->entity->field_as_cycle->value];
+    $img_value = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image')->getValue()[0];
     foreach ($node->field_assessments as $idx => $assessment) {
       if ($idx == 0) {
         continue;
       }
-      $img_value = $assessment->entity->field_as_global_assessment_level
-        ->entity->get('field_image')->getValue()[0];
+      if ($assessment->entity->field_as_global_assessment_level->count()) {
+        $img_value = $assessment->entity->field_as_global_assessment_level
+          ->entity->get('field_image')->getValue()[0];
+      }
+      // If the current assessment doesn't have a value, use the first one.
       $items->appendItem($img_value);
       $years[] = $assessment->entity->field_as_cycle->value;
     }
