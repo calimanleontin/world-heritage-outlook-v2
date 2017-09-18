@@ -11177,6 +11177,7 @@ body.page-node-type-site #sidemenu {
     background-repeat: no-repeat;
     background-position-x: .5em;
     background-size: auto;
+    cursor: pointer;
     padding-left: 3.5em;
   }
   .iucn-site-wrapper .nav-tabs > li.active > a .tab-label {
