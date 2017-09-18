@@ -11034,6 +11034,9 @@ body.page-node-type-site #sidemenu {
   background-color: #03afdf;
   border: none;
 }
+.field--name-field-as-references {
+  overflow: auto;
+}
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
 .iucn-site-wrapper .field--name-field-designation .field--label {
