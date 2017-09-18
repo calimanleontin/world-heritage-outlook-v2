@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Drupal\system\FileDownloadController;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Drupal\entity_print\PrintBuilderInterface;
 
 /**
  * Print controller.
@@ -21,6 +23,13 @@ class IucnPdfController extends FileDownloadController {
    * @var \Drupal\iucn_pdf\PrintPdfInterface
    */
   protected $printPdf;
+
+  /**
+   * The Print builder.
+   *
+   * @var \Drupal\entity_print\PrintBuilderInterface
+   */
+  protected $printBuilder;
 
   /**
    * The Entity Type manager.
@@ -36,10 +45,12 @@ class IucnPdfController extends FileDownloadController {
    */
   public function __construct(
     PrintPdfInterface $print_pdf,
+    PrintBuilderInterface $print_builder,
     EntityTypeManagerInterface $entity_type_manager
   ) {
 
     $this->printPdf = $print_pdf;
+    $this->printBuilder = $print_builder;
     $this->entityTypeManager = $entity_type_manager;
 
     $this->currentLanguage = \Drupal::languageManager()
@@ -53,6 +64,7 @@ class IucnPdfController extends FileDownloadController {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('iucn_pdf.print_pdf'),
+      $container->get('entity_print.print_builder'),
       $container->get('entity_type.manager')
     );
   }
@@ -77,6 +89,22 @@ class IucnPdfController extends FileDownloadController {
     $param_helper = \Drupal::service('iucn_pdf.param_helper');
     $year = $param_helper->get('year');
     return $year;
+  }
+
+  /**
+   * A debug callback for styling up the Print.
+   *
+   * @param int $entity_id
+   *   The entity id.
+   *
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   The response object.
+   *
+   * @TODO, improve permissions in https://www.drupal.org/node/2759553
+   */
+  public function downloadPdfDebug($entity_id) {
+    $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
+    return new Response($this->printBuilder->printHtml($entity, FALSE, FALSE));
   }
 
   /**

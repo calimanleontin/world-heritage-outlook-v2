@@ -101,7 +101,7 @@ third_party_settings:
         plugin_id: assessment_rating
         weight: 2
         label: hidden
-        formatter: image
+        formatter: default
       assessments_download_links:
         plugin_id: assessments_download_links
         weight: 12
