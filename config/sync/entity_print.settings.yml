@@ -3,4 +3,4 @@ print_engines:
   epub_engine: ''
   word_docx_engine: ''
 default_css: true
-force_download: false
+force_download: true
