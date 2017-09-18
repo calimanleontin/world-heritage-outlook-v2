@@ -30,3 +30,7 @@ global-styling:
       - core/jquery
       - iucn_who/bootstrap-js
       - iucn_who/headroom
+print-styling:
+  css:
+    theme:
+      css/print-style.css: {}
