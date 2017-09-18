@@ -18,7 +18,7 @@ settings:
       value: threats
       label: Threats
     -
-      value: management
+      value: protection-management
       label: Management
   allowed_values_function: ''
 module: options
