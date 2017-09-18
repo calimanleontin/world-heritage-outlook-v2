@@ -12195,12 +12195,21 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .iucn-site-wrapper > .container-fluid {
     padding: 0;
   }
+  .iucn-site-wrapper > .container > .row,
+  .iucn-site-wrapper > .container-fluid > .row {
+    display: flex;
+    flex-direction: column;
+  }
   .iucn-site-wrapper .region-site-general-info,
   .iucn-site-wrapper .region-site-image,
   .iucn-site-wrapper .field--name-field-geolocation,
   .iucn-site-wrapper .tab-description,
   .iucn-site-wrapper .tab-read-more {
     display: none;
+  }
+  .iucn-site-wrapper .region-site-title,
+  .iucn-site-wrapper .region-site-sidemenu-toggle {
+    order: -1;
   }
   .iucn-site-wrapper .sidemenu-toggle {
     align-items: center;

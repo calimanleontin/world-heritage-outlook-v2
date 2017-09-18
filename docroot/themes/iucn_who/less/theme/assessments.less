@@ -22,6 +22,7 @@ body.page-node-type-site {
     margin: 0 auto;
   }
 }
+
 .region-site-title {
   .field--name-node-title h1 {
     .left-bordered-heading();
@@ -869,6 +870,10 @@ body.page-node-type-site {
     > .container,
     > .container-fluid {
       padding: 0;
+      > .row {
+        display: flex;
+        flex-direction: column;
+      }
     }
     .region-site-general-info,
     .region-site-image,
@@ -876,6 +881,10 @@ body.page-node-type-site {
     .tab-description,
     .tab-read-more {
       display: none;
+    }
+    .region-site-title,
+    .region-site-sidemenu-toggle {
+      order: -1;
     }
 
     .sidemenu-toggle {
