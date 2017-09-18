@@ -29,3 +29,7 @@ libraries:
 
 ckeditor_stylesheets:
   - css/style.css
+
+entity_print:
+  node:
+    all: iucn_who/print-styling
