@@ -202,7 +202,7 @@ display:
             label: ''
           granularity: second
           plugin_id: datetime
-      title: News
+      title: 'Latest news'
       header: {  }
       footer: {  }
       empty: {  }
@@ -229,8 +229,17 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: latest-news
+      path: news
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: none
+        title: News
+        description: ''
+        expanded: false
+        parent: ''
+        weight: -47
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

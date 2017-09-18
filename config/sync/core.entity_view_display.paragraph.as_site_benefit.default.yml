@@ -23,6 +23,9 @@ dependencies:
     - paragraphs.paragraphs_type.as_site_benefit
   module:
     - ds
+    - field_group
+    - iucn_site
+    - taxonomy
 third_party_settings:
   ds:
     layout:
@@ -35,19 +38,290 @@ third_party_settings:
       title:
         - field_as_benefits_category
       description:
+        - field_as_benefits_hab_trend
+        - field_as_benefits_commun_out
+        - field_as_benefits_pollut_level
+        - field_as_benefits_oex_trend
+        - field_as_benefits_commun_wide
         - field_as_description
+        - field_as_benefits_hab_level
+        - field_as_benefits_pollut_trend
+        - field_as_benefits_oex_level
+        - group_factors_benefit
+        - field_as_benefits_commun_in
+        - field_as_comment
+        - group_climate_change
+        - field_as_benefits_datadeficient
+        - group_pollution
+        - group_overexploitation
+        - field_as_benefits_invassp_trend
+        - group_invasive_species
+        - field_as_benefits_invassp_level
+        - group_habitat_change
+        - group_community
+        - field_as_benefits_climate_level
+        - field_as_benefits_climate_trend
+  field_group:
+    group_factors_benefit:
+      children:
+        - group_climate_change
+        - group_pollution
+        - group_overexploitation
+        - group_invasive_species
+        - group_habitat_change
+        - group_community
+      parent_name: ''
+      weight: 2
+      format_type: html_element
+      format_settings:
+        label: 'Factors negatively affecting provision of this benefit'
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: html-list
+      label: 'Factors negatively affecting provision of this benefit'
+    group_climate_change:
+      children:
+        - field_as_benefits_climate_level
+        - field_as_benefits_climate_trend
+      parent_name: group_factors_benefit
+      weight: 4
+      format_type: html_element
+      format_settings:
+        label: 'Climate change'
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: inline-element-list
+      label: 'Climate change'
+    group_pollution:
+      children:
+        - field_as_benefits_pollut_level
+        - field_as_benefits_pollut_trend
+      parent_name: group_factors_benefit
+      weight: 5
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: inline-element-list
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Pollution
+    group_overexploitation:
+      children:
+        - field_as_benefits_oex_trend
+        - field_as_benefits_oex_level
+      parent_name: group_factors_benefit
+      weight: 6
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: inline-element-list
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Overexploitation
+    group_invasive_species:
+      children:
+        - field_as_benefits_invassp_trend
+        - field_as_benefits_invassp_level
+      parent_name: group_factors_benefit
+      weight: 7
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: inline-element-list
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Invasive species'
+    group_habitat_change:
+      children:
+        - field_as_benefits_hab_trend
+        - field_as_benefits_hab_level
+      parent_name: group_factors_benefit
+      weight: 8
+      format_type: html_element
+      format_settings:
+        label: 'Habitat change'
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: inline-element-list
+      label: 'Habitat change'
+    group_community:
+      children:
+        - field_as_benefits_commun_out
+        - field_as_benefits_commun_wide
+        - field_as_benefits_commun_in
+      parent_name: group_factors_benefit
+      weight: 9
+      format_type: html_element
+      format_settings:
+        label: Community
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: inline-element-list
+      label: Community
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit
 mode: default
 content:
   field_as_benefits_category:
-    type: entity_reference_label
+    type: entity_reference_list
     weight: 0
     region: title
     label: hidden
     settings:
       link: false
+      separator: ','
+    third_party_settings: {  }
+  field_as_benefits_climate_level:
+    type: entity_reference_label
+    weight: 21
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_climate_trend:
+    type: entity_reference_label
+    weight: 22
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_commun_in:
+    type: entity_reference_label
+    weight: 2
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_commun_out:
+    type: entity_reference_label
+    weight: 0
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_commun_wide:
+    type: entity_reference_label
+    weight: 1
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_datadeficient:
+    type: boolean
+    weight: 4
+    region: description
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Data deficient'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_benefits_hab_level:
+    type: entity_reference_label
+    weight: 1
+    region: description
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_as_benefits_hab_trend:
+    type: entity_reference_label
+    weight: 0
+    region: description
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_as_benefits_invassp_level:
+    type: entity_reference_label
+    weight: 8
+    region: description
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_as_benefits_invassp_trend:
+    type: entity_reference_label
+    weight: 7
+    region: description
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_as_benefits_oex_level:
+    type: entity_reference_rss_category
+    weight: 1
+    region: description
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_benefits_oex_trend:
+    type: entity_reference_rss_category
+    weight: 0
+    region: description
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_benefits_pollut_level:
+    type: entity_reference_label
+    weight: 0
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_benefits_pollut_trend:
+    type: entity_reference_label
+    weight: 1
+    region: description
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_comment:
+    type: basic_string
+    weight: 3
+    region: description
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
   field_as_description:
     weight: 1
@@ -57,18 +331,6 @@ content:
     type: basic_string
     region: description
 hidden:
-  field_as_benefits_climate_level: true
-  field_as_benefits_climate_trend: true
-  field_as_benefits_commun_in: true
-  field_as_benefits_commun_out: true
-  field_as_benefits_commun_wide: true
-  field_as_benefits_datadeficient: true
-  field_as_benefits_hab_level: true
-  field_as_benefits_hab_trend: true
-  field_as_benefits_invassp_level: true
-  field_as_benefits_invassp_trend: true
-  field_as_benefits_oex_level: true
-  field_as_benefits_oex_trend: true
-  field_as_benefits_pollut_level: true
-  field_as_benefits_pollut_trend: true
-  field_as_comment: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true

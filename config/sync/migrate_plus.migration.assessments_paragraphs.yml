@@ -64,6 +64,7 @@ source:
       type: as_site_key_conservation
 process:
   type: type
+  langcode: langcode
   field_as_key_cons_topic: keyConservationIssues
   field_as_key_cons_scale:
     plugin: taxonomy_term

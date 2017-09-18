@@ -8435,7 +8435,6 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
   outline: 0;
   padding: 3px 20px;
   text-decoration: none;
-  white-space: nowrap;
 }
 .ui-autocomplete .ui-menu-item.ui-state-hover {
   background: #e1e1e1;
@@ -8445,6 +8444,12 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
 .ui-autocomplete .ui-menu-item.ui-state-focus {
   background: #e1e1e1;
   color: #03afdf;
+}
+.ui-autocomplete .ui-menu-divider.no_results {
+  display: none;
+}
+ul[data-sa-theme="minimal"].ui-autocomplete {
+  min-width: auto;
 }
 .ui-accordion {
   font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -9320,12 +9325,80 @@ h6.facets-title {
   z-index: 0;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .input-group-addon,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
   border-color: #fff;
+  box-shadow: none;
 }
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+  display: block;
+  height: 3.6rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 18px;
+  line-height: 1.33333333;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  font-size: 1em;
+  height: auto;
+  box-shadow: none;
+  border-color: #fff;
+  color: #134780;
   width: 100%;
 }
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete:focus,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete::-moz-placeholder,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete:-ms-input-placeholder,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text:-ms-input-placeholder {
+  color: #999;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete::-webkit-input-placeholder,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text::-webkit-input-placeholder {
+  color: #999;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete::-ms-expand,
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete[disabled],
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text[disabled],
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete[readonly],
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text[readonly],
+fieldset[disabled] .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
+fieldset[disabled] .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete[disabled],
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text[disabled],
+fieldset[disabled] .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
+fieldset[disabled] .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+  cursor: not-allowed;
+}
+textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
+textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+  height: auto;
+}
+.block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete:focus,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text:focus {
   border-color: #fff;
   box-shadow: none;
@@ -9377,7 +9450,8 @@ h6.facets-title {
   }
 }
 @media screen and (max-width: 767px) {
-  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text,
+  .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete {
     font-size: 16px;
   }
 }
@@ -10856,9 +10930,10 @@ fieldset[disabled] .explore-map-button a.focus {
     width: 0%;
   }
 }
-body.page-node-type-site .breadcrumb-prefix,
-body.page-node-type-site .breadcrumb {
-  display: none;
+body.page-node-type-site {
+  /*.breadcrumb-prefix, .breadcrumb {
+    display: none;
+  }*/
 }
 @media screen and (max-width: 767px) {
   body.page-node-type-site.navbar-is-fixed-top {
@@ -10867,17 +10942,6 @@ body.page-node-type-site .breadcrumb {
 }
 body.page-node-type-site #sidemenu {
   padding-top: 1em;
-}
-@media screen and (max-width: 767px) {
-  body.page-node-type-site #sidemenu .field--iucn-collapsible {
-    margin-left: 1em;
-  }
-  body.page-node-type-site #sidemenu .collapse-toggle {
-    border-bottom: none;
-  }
-  body.page-node-type-site #sidemenu .icon-collapse {
-    color: #918f8f;
-  }
 }
 @media (max-width: 1199px) {
   .field--name-assessment-rating img {
@@ -10978,21 +11042,6 @@ body.page-node-type-site #sidemenu {
 .field--name-assessments-links li a.active-year:after {
   background-color: #03afdf;
   border: none;
-}
-@media screen and (min-width: 768px) {
-  .field--iucn-collapsible > .collapse,
-  .field--iucn-collapsible > .collapsing {
-    display: block !important;
-    height: auto !important;
-    opacity: 1;
-    overflow: visible;
-    transition: none;
-  }
-}
-@media screen and (min-width: 768px) {
-  .field--iucn-collapsible .icon-collapse {
-    display: none;
-  }
 }
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
@@ -11262,8 +11311,10 @@ body.page-node-type-site #sidemenu {
   background-image: url(../images/summary-gray.svg);
   background-repeat: no-repeat;
 }
-.iucn-site-wrapper .col-sm-4 > .field + .field {
-  margin-top: 2em;
+@media screen and (min-width: 768px) {
+  .iucn-site-wrapper .col-sm-4 > .field + .field {
+    margin-top: 2em;
+  }
 }
 .iucn-site-wrapper .iucn-assessment-value {
   margin-top: 1em;
@@ -11671,16 +11722,63 @@ body.page-node-type-site #sidemenu {
 /* ==========================================================================
    Assessment sidebar
    ========================================================================== */
+@media screen and (min-width: 768px) {
+  .field--iucn-collapsible > .collapse,
+  .field--iucn-collapsible > .collapsing {
+    display: block !important;
+    height: auto !important;
+    opacity: 1;
+    overflow: visible;
+    transition: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  .field--iucn-collapsible {
+    margin-left: 1em;
+  }
+  .field--iucn-collapsible ul {
+    margin-bottom: 2em;
+  }
+  .field--iucn-collapsible .collapse-toggle {
+    border-bottom: none;
+  }
+  .field--iucn-collapsible .icon-collapse {
+    display: inline-flex;
+    align-items: center;
+    width: 20px;
+  }
+  .field--iucn-collapsible .icon-collapse:before {
+    background-image: url(../images/plus.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 95%;
+    content: '';
+    display: inline-block;
+    height: 13px;
+    margin-right: 7px;
+    width: 13px;
+  }
+  .field--iucn-collapsible [aria-expanded="true"] > .icon-collapse:before,
+  .field--iucn-collapsible .open > a > .icon-collapse:before {
+    background-image: url(../images/minus.svg);
+    background-repeat: no-repeat;
+    background-size: 98%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .field--iucn-collapsible .icon-collapse {
+    display: none;
+  }
+}
 .field--name-assessments-more-site-links > .field--label,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   border-bottom: 1px solid #ddd;
   display: block;
   font-size: 1em;
-  font-weight: normal;
   margin-bottom: 1em;
   padding-bottom: .5rem;
   text-transform: uppercase;
-  font-weight: 900;
+  font-weight: normal;
 }
 h1.field--name-assessments-more-site-links > .field--label,
 h1.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
@@ -11712,6 +11810,18 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     font-size: 1.3em;
   }
 }
+@media screen and (max-width: 767px) {
+  .field--name-assessments-more-site-links > .field--label,
+  .field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
+    border-bottom: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  .field--name-assessments-more-site-links > .field--label,
+  .field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
+    font-weight: 900;
+  }
+}
 .field--name-assessments-more-site-links ul,
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed ul {
   list-style-type: none;
@@ -11737,6 +11847,9 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   display: inline;
   margin-right: .5em;
 }
+.field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
+  margin-top: 0;
+}
 .field--name-assessments-download-links ul {
   list-style-type: none;
   padding-left: 0;
@@ -11750,8 +11863,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     margin-bottom: 1em;
     padding-bottom: .5rem;
     text-transform: uppercase;
-    font-weight: 900;
-    text-transform: none;
+    border-bottom: none;
   }
   h1.field--name-assessments-download-links .field--label,
   h2.field--name-assessments-download-links .field--label,
@@ -11761,16 +11873,19 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   h6.field--name-assessments-download-links .field--label {
     margin-top: 0;
   }
-  .field--name-assessments-download-links .links a,
-  .field--name-assessments-download-links .links a a {
+  .field--name-assessments-download-links ul a,
+  .field--name-assessments-download-links ul a a {
     color: #03afdf;
   }
-  .field--name-assessments-download-links .links > li {
+  .field--name-assessments-download-links ul > li {
     align-items: center;
     display: flex;
     justify-content: space-between;
   }
-  .field--name-assessments-download-links .links > li:after {
+  .field--name-assessments-download-links ul > li + li {
+    margin-top: 1em;
+  }
+  .field--name-assessments-download-links ul > li:after {
     background-image: url(../images/icon-arrow-blue.svg);
     background-repeat: no-repeat;
     background-position: center;
@@ -11795,6 +11910,9 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-assessments-download-links {
     margin-top: 40px;
     margin-top: 4rem;
+  }
+  .field--name-assessments-download-links li {
+    margin-top: .1em;
   }
   .field--name-assessments-download-links .field--label {
     background-color: #134780;
@@ -11873,20 +11991,34 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   }
 }
 .field--name-dynamic-block-fieldnode-site-feedback {
-  background-color: #134780;
-  color: #fff;
   font-size: 15px;
   font-size: 1.5rem;
   padding: 1em;
   font-weight: normal;
 }
-.field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']) {
-  color: #fff;
+@media screen and (max-width: 767px) {
+  .field--name-dynamic-block-fieldnode-site-feedback {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+  .field + .field--name-dynamic-block-fieldnode-site-feedback {
+    border-top: 1px solid #ddd;
+    margin-top: 3em;
+  }
 }
-.field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):hover,
-.field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):focus,
-.field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):active {
-  color: #03afdf;
+@media screen and (min-width: 768px) {
+  .field--name-dynamic-block-fieldnode-site-feedback {
+    background-color: #134780;
+    color: #fff;
+  }
+  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']) {
+    color: #fff;
+  }
+  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):hover,
+  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):focus,
+  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):active {
+    color: #03afdf;
+  }
 }
 .node--type-site-assessment .col-sm-4 .field + .field--name-dynamic-block-fieldnode-site-feedback {
   margin-top: 3em;
@@ -11895,15 +12027,34 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   font-weight: inherit;
 }
 .field--name-dynamic-block-fieldnode-site-feedback:before {
-  background-image: url(../images/feedback.svg);
+  background-image: url(../images/feedback-black.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   content: '';
-  display: block;
-  height: 3.5em;
-  width: 3.5em;
+  display: inline-block;
+  height: 1.33333333em;
   margin: 0 auto;
+  vertical-align: middle;
+  width: 1.5em;
+}
+@media screen and (max-width: 767px) {
+  .field--name-dynamic-block-fieldnode-site-feedback:before {
+    font-size: 19px;
+    margin-bottom: 1em;
+  }
+}
+@media screen and (min-width: 768px) {
+  .field--name-dynamic-block-fieldnode-site-feedback:before {
+    background-image: url(../images/feedback.svg);
+    background-repeat: no-repeat;
+    display: block;
+    height: 3.5em;
+    width: 3.5em;
+  }
+}
+.field--name-dynamic-block-fieldnode-site-feedback .icon-collapse {
+  display: none;
 }
 .field--name-dynamic-block-fieldnode-site-feedback .form-submit {
   color: #fff;
@@ -11987,7 +12138,6 @@ fieldset[disabled] .field--name-dynamic-block-fieldnode-site-feedback .form-subm
   font-size: 18px;
   font-size: 1.8rem;
   font-weight: 900;
-  text-align: center;
 }
 h1.field--name-dynamic-block-fieldnode-site-feedback .field--label,
 h2.field--name-dynamic-block-fieldnode-site-feedback .field--label,
@@ -12005,6 +12155,20 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   h5.field--name-dynamic-block-fieldnode-site-feedback .field--label,
   h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     font-size: 1.3em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .field--name-dynamic-block-fieldnode-site-feedback .field--label {
+    border-bottom: none;
+    display: inline-block;
+    font-size: 19px;
+    margin-bottom: 19px;
+    vertical-align: middle;
+  }
+}
+@media screen and (min-width: 768px) {
+  .field--name-dynamic-block-fieldnode-site-feedback .field--label {
+    text-align: center;
   }
 }
 /* ==========================================================================
@@ -12049,6 +12213,10 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     vertical-align: middle;
     margin-left: .5em;
   }
+}
+.g-recaptcha > div {
+  margin: 0 auto;
+  margin-top: 1em;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {

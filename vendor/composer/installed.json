@@ -8543,6 +8543,55 @@
         }
     },
     {
+        "name": "drupal/search_autocomplete",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/search_autocomplete",
+            "reference": "8.x-1.1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/search_autocomplete-8.x-1.1.zip",
+            "reference": "8.x-1.1",
+            "shasum": "f80427ffefbe4b159db91442b6e32b11de448926"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.1",
+                "datestamp": "1481975884",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Dom.",
+                "homepage": "https://www.drupal.org/user/801982"
+            }
+        ],
+        "description": "Provides autocompletion feature for fields in your Drupal site. This module ships with pre-existing autocompletion configurations.",
+        "homepage": "https://www.drupal.org/project/search_autocomplete",
+        "support": {
+            "source": "http://cgit.drupalcode.org/search_autocomplete"
+        }
+    },
+    {
         "name": "drupal/captcha",
         "version": "1.0.0-beta1",
         "version_normalized": "1.0.0.0-beta1",
@@ -8676,6 +8725,75 @@
         "support": {
             "source": "http://git.drupal.org/project/recaptcha.git",
             "issues": "https://www.drupal.org/project/issues/recaptcha"
+        }
+    },
+    {
+        "name": "drupal/menu_breadcrumb",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/menu_breadcrumb",
+            "reference": "8.x-1.4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/menu_breadcrumb-8.x-1.4.zip",
+            "reference": "8.x-1.4",
+            "shasum": "ffbd96d8d90235a7c1ffd9496178466339494f46"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.4",
+                "datestamp": "1502101744",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "RyanPrice",
+                "homepage": "https://www.drupal.org/user/873848"
+            },
+            {
+                "name": "aaron",
+                "homepage": "https://www.drupal.org/user/33420"
+            },
+            {
+                "name": "gdevlugt",
+                "homepage": "https://www.drupal.org/user/167273"
+            },
+            {
+                "name": "rphair",
+                "homepage": "https://www.drupal.org/user/3196607"
+            },
+            {
+                "name": "vaibhavjain",
+                "homepage": "https://www.drupal.org/user/1159692"
+            },
+            {
+                "name": "xurizaemon",
+                "homepage": "https://www.drupal.org/user/76026"
+            }
+        ],
+        "description": "Create breadcrumbs from nested menu titles and/or taxonomy membership.",
+        "homepage": "https://www.drupal.org/project/menu_breadcrumb",
+        "support": {
+            "source": "http://cgit.drupalcode.org/menu_breadcrumb"
         }
     }
 ]

@@ -4,6 +4,11 @@ use \Drupal\iucn_who_core\ToolbarHandler;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\views\Views;
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -70,3 +75,74 @@ function _remove_header_links(array &$attachments) {
     }
   }
 }
+
+
+function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb, \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
+  $parameters = $route_match->getParameters()->all();
+
+  // Custom breadcrumb for Webforms.
+  if (isset($parameters['webform']) && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => $val) {
+      if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('About'), '<none>'));
+        $nid = 1234;
+        $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
+        $url_node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+        $new_breadcrumb->addLink(Link::fromTextAndUrl($url_node->getTitle(), $url_object));
+
+      }
+    }
+    $breadcrumb = $new_breadcrumb;
+
+  }
+
+  // Custom breadcrumb for benefits_list view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'benefits_list' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => $val) {
+      $new_breadcrumb->addLink($val);
+      if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+      }
+    }
+    $breadcrumb = $new_breadcrumb;
+  }
+
+  // Custom breadcrumb for publication ctype.
+  if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'publication') {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => $val) {
+      $new_breadcrumb->addLink($val);
+      if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+      }
+    }
+    $breadcrumb = $new_breadcrumb;
+  }
+
+  // Custom breadcrumb for benefit ctype.
+  if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'benefit') {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => $val) {
+      $new_breadcrumb->addLink($val);
+      if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+      }
+
+    }
+    $breadcrumb = $new_breadcrumb;
+  }
+
+  // Remove duplicate labels from breadcrumb.
+  $new_breadcrumb = new Breadcrumb();
+  $text = NULL;
+  foreach ($breadcrumb->getLinks() as $key => $val) {
+    if ($text != $val->getText()) {
+      $new_breadcrumb->addLink($val);
+    }
+    $text = $val->getText();
+  }
+  $breadcrumb = $new_breadcrumb;
+}
+

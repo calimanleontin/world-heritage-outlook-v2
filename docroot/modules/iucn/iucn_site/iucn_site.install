@@ -46,3 +46,19 @@ function iucn_site_update_8002() {
     }
   }
 }
+
+function iucn_site_update_8003() {
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' =>
+        [
+          'site',
+        ],
+    ]);
+  if ($nodes) {
+    foreach ($nodes as $node) {
+      $node->save();
+    }
+  }
+}

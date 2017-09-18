@@ -41,10 +41,16 @@
       %}
       {% if menu_level == 0 and item.is_expanded %}
         <li{{ item.attributes.addClass(item_classes) }}>
-        <a href="javascript:void(0)" class="dropdown-toggle" data-target="#" data-toggle="dropdown"><span class="icon-collapse"></span></a><a href="{{ item.url }}"> {{ item.title }}</a>
+        <a href="javascript:void(0)" class="dropdown-toggle" data-target="#" data-toggle="dropdown"><span class="icon-collapse"></span></a>
+          {% if item.url|render|trim is not empty %}
+            <a href="{{ item.url }}">{{ item.title }}</a>
+          {%  else %}
+            <a href="javascript:void(0)">{{ item.title }}</a>
+          {% endif %}
+
       {% else %}
         <li{{ item.attributes.addClass(item_classes) }}>
-        {{ link(item.title, item.url) }}
+            {{ link(item.title, item.url) }}
       {% endif %}
       {% if item.below %}
         {{ menus.menu_links(item.below, attributes.removeClass('nav', 'navbar-nav'), menu_level + 1) }}

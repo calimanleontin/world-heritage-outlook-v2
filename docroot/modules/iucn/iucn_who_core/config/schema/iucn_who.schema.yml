@@ -1,0 +1,7 @@
+iucn_who.settings:
+  type: config_object
+  label: 'IUCN WHO config'
+  mapping:
+    assessment_year:
+      type: string
+      label: 'Assessment year'
