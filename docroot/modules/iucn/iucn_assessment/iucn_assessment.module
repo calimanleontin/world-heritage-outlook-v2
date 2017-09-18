@@ -43,20 +43,9 @@ function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
     return NULL;
   }
 
-  //  $request = Drupal::request();
-  // TODO default year ?!
-  //  $year = $request->get('year', 2017);
-
-  /** @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
+  /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
   $param_helper = \Drupal::service('iucn_pdf.param_helper');
   $year = $param_helper->get('year', 2017);
-
-//  print_r(['year' => $year]);
-//  dpm($site->field_assessments);
-//  dpm(['year' => $year]);
-//  dpm($site->field_assessments->count());
-
-  //  return $year; // @todo
 
   $active_date = $site->field_assessments->entity->field_as_cycle->value;
   foreach ($site->field_assessments as $assessment) {
@@ -67,14 +56,6 @@ function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
   }
   return $active_date;
 }
-
-/*
-$request = Drupal::request();
-// TODO default year ?!
-$year = $request->get('year', 2017);
-$request->set('year', $year);
-*/
-
 
 function iucn_assessment_preprocess_field(&$variables) {
   if ($variables['field_name'] == 'field_assessments') {
