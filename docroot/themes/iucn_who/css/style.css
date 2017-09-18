@@ -7298,6 +7298,12 @@ html.js .ajax-new-content:empty {
 .breadcrumb-prefix + .breadcrumb {
   margin-left: 1em;
 }
+@media screen and (max-width: 767px) {
+  .breadcrumb-prefix,
+  .breadcrumb {
+    display: none;
+  }
+}
 .btn {
   transition: .2s;
 }
