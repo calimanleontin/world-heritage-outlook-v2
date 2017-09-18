@@ -15,6 +15,9 @@ body.page-node-type-site {
 }
 
 .field--name-assessment-rating img {
+  @media (min-width: @screen-lg-min) {
+    width: 100%;
+  }
   @media (max-width: @screen-md-max) {
     margin: 0 auto;
   }
@@ -82,7 +85,7 @@ body.page-node-type-site {
       margin-left: 3em;
     }
     a {
-      color: @iucn-blue-light;
+      color: #cccccc;
       display: block;
     }
     a:after {
@@ -94,8 +97,14 @@ body.page-node-type-site {
       margin-left: -57%;
       transform: skewX(-55deg);
       width: 200%;
+      transition: background-color .2s;
     }
-    a.active-year:after {
+    a:hover, a:focus, a:active,
+    &.active a {
+      color: @iucn-blue-light;
+    }
+    a:hover:after, a:focus:after, a:active:after,
+    &.active a:after {
       background-color: @iucn-blue-light;
       border: none;
     }

@@ -10913,6 +10913,11 @@ body.page-node-type-site {
 body.page-node-type-site #sidemenu {
   padding-top: 1em;
 }
+@media (min-width: 1200px) {
+  .field--name-assessment-rating img {
+    width: 100%;
+  }
+}
 @media (max-width: 1199px) {
   .field--name-assessment-rating img {
     margin: 0 auto;
@@ -10996,7 +11001,7 @@ body.page-node-type-site #sidemenu {
   margin-left: 3em;
 }
 .field--name-assessments-links li a {
-  color: #03afdf;
+  color: #cccccc;
   display: block;
 }
 .field--name-assessments-links li a:after {
@@ -11008,8 +11013,18 @@ body.page-node-type-site #sidemenu {
   margin-left: -57%;
   transform: skewX(-55deg);
   width: 200%;
+  transition: background-color 0.2s;
 }
-.field--name-assessments-links li a.active-year:after {
+.field--name-assessments-links li a:hover,
+.field--name-assessments-links li a:focus,
+.field--name-assessments-links li a:active,
+.field--name-assessments-links li.active a {
+  color: #03afdf;
+}
+.field--name-assessments-links li a:hover:after,
+.field--name-assessments-links li a:focus:after,
+.field--name-assessments-links li a:active:after,
+.field--name-assessments-links li.active a:after {
   background-color: #03afdf;
   border: none;
 }
