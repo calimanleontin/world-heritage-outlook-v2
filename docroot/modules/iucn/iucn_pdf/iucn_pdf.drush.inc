@@ -19,11 +19,11 @@ function iucn_pdf_drush_command() {
 }
 
 /**
- * Put all site assessments into pdf queue
+ * Put all site assessments into pdf queue.
  */
-function drush_iucn_pdf_queue_pdf($split = NULL) {
-  /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
+function drush_iucn_pdf_queue_pdf() {
+  /* @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
   $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
   $count = $print_pdf->queueAllPdfFiles();
-  drush_print('Added ' . $count . ' site assessments into pdf queue!' );
+  drush_print('Added ' . $count . ' site assessments into pdf queue!');
 }

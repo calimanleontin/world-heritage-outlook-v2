@@ -1,7 +1,14 @@
 iucn_pdf.download:
-  path: 'download/pdf/node/{entity_id}'
+  path: 'node/{entity_id}/pdf'
   defaults:
     _controller: '\Drupal\iucn_pdf\Controller\IucnPdfController::downloadPdf'
     _title: 'Download Pdf'
   requirements:
     _permission: 'access content'
+iucn_pdf.settings:
+  path: 'admin/config/content/iucn_pdf'
+  defaults:
+    _form: '\Drupal\iucn_pdf\Form\IucnPdfForm'
+    _title: 'PDF cron settings'
+  requirements:
+    _permission: 'administer site configuration'
