@@ -11380,6 +11380,10 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .panel-title-terms > .field + .field {
   margin-left: 1em;
 }
+.iucn-site-wrapper .panel-title-terms:empty,
+.iucn-site-wrapper .panel-title-terms-second:empty {
+  display: none;
+}
 .iucn-site-wrapper .field--name-field-as-values-criteria,
 .iucn-site-wrapper .field--name-field-as-values-curr-trend {
   display: flex;
