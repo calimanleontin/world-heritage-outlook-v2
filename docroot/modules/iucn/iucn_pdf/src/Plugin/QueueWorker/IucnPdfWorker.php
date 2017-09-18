@@ -12,11 +12,10 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
  * A report worker.
  *
  * @QueueWorker(
- *   id = "uicn_pdf",
+ *   id = "iucn_pdf",
  *   title = @Translation("iucn pdf queue"),
  *   cron = {"time" = 1}
  * )
- *
  */
 class IucnPdfWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 

@@ -9349,8 +9349,8 @@ h6.facets-title {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   font-size: 1em;
   height: auto;
-  box-shadow: none;
   border-color: #fff;
+  box-shadow: none;
   color: #134780;
   width: 100%;
 }
@@ -9602,60 +9602,16 @@ fieldset[disabled] .explore-map-button a.focus {
 /* ==========================================================================
     Search page
     ========================================================================== */
-.path-sites-search .page-header {
+.path-explore-sites .page-header {
   border-left: none;
   padding-left: 0;
 }
 @media screen and (max-width: 767px) {
-  .path-sites-search .page-header {
+  .path-explore-sites .page-header {
     margin-bottom: 0;
     margin-top: 0;
     padding-left: 15px;
   }
-}
-.path-sites-search .view-sites-search .view-header {
-  margin-top: -7px;
-  margin-bottom: 17px;
-  padding: 0px;
-}
-.path-sites-search .view-sites-search .view-header .sites-search-results {
-  font-size: 11px;
-  margin-top: 0px;
-}
-.path-sites-search .view-sites-search .view-header .sites-search-clear {
-  font-size: 1em;
-}
-.path-sites-search .view-sites-search .view-header .sites-search-clear,
-.path-sites-search .view-sites-search .view-header .sites-search-clear a {
-  color: #03afdf;
-}
-/* ==========================================================================
-    Benefits case studies page
-    ========================================================================== */
-.benefits-list-category-wrapper > h1,
-.benefits-list-category-wrapper > h2,
-.benefits-list-category-wrapper > h3,
-.benefits-list-category-wrapper > h4,
-.benefits-list-category-wrapper > h5,
-.benefits-list-category-wrapper > h6 {
-  font-size: 30px;
-  font-size: 3rem;
-}
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h1,
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h2,
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h3,
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h4,
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h5,
-.node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
-  font-size: 24px;
-  font-size: 2.4rem;
-}
-/* ==========================================================================
-    Benefits detail page
-    ========================================================================== */
-.iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
-  margin-bottom: 70px;
-  margin-bottom: 7rem;
 }
 .search-block-container {
   background-color: #134780;
@@ -9677,6 +9633,20 @@ fieldset[disabled] .explore-map-button a.focus {
     display: inline-block;
     vertical-align: middle;
   }
+}
+.view-sites-search .view-header {
+  padding-bottom: .1em;
+}
+.view-sites-search .view-header .sites-search-results {
+  font-size: 11px;
+  vertical-align: middle;
+}
+.view-sites-search .view-header .sites-search-clear {
+  font-size: 1em;
+}
+.view-sites-search .view-header .sites-search-clear,
+.view-sites-search .view-header .sites-search-clear a {
+  color: #03afdf;
 }
 .view-sites-search .view-content {
   display: flex;
@@ -10943,6 +10913,11 @@ body.page-node-type-site {
 body.page-node-type-site #sidemenu {
   padding-top: 1em;
 }
+@media (min-width: 1200px) {
+  .field--name-assessment-rating img {
+    width: 100%;
+  }
+}
 @media (max-width: 1199px) {
   .field--name-assessment-rating img {
     margin: 0 auto;
@@ -11026,7 +11001,7 @@ body.page-node-type-site #sidemenu {
   margin-left: 3em;
 }
 .field--name-assessments-links li a {
-  color: #03afdf;
+  color: #cccccc;
   display: block;
 }
 .field--name-assessments-links li a:after {
@@ -11038,8 +11013,18 @@ body.page-node-type-site #sidemenu {
   margin-left: -57%;
   transform: skewX(-55deg);
   width: 200%;
+  transition: background-color 0.2s;
 }
-.field--name-assessments-links li a.active-year:after {
+.field--name-assessments-links li a:hover,
+.field--name-assessments-links li a:focus,
+.field--name-assessments-links li a:active,
+.field--name-assessments-links li.active a {
+  color: #03afdf;
+}
+.field--name-assessments-links li a:hover:after,
+.field--name-assessments-links li a:focus:after,
+.field--name-assessments-links li a:active:after,
+.field--name-assessments-links li.active a:after {
   background-color: #03afdf;
   border: none;
 }
@@ -11207,6 +11192,7 @@ body.page-node-type-site #sidemenu {
     background-repeat: no-repeat;
     background-position-x: .5em;
     background-size: auto;
+    cursor: pointer;
     padding-left: 3.5em;
   }
   .iucn-site-wrapper .nav-tabs > li.active > a .tab-label {
@@ -11408,6 +11394,10 @@ body.page-node-type-site #sidemenu {
 }
 .iucn-site-wrapper .panel-title-terms > .field + .field {
   margin-left: 1em;
+}
+.iucn-site-wrapper .panel-title-terms:empty,
+.iucn-site-wrapper .panel-title-terms-second:empty {
+  display: none;
 }
 .iucn-site-wrapper .field--name-field-as-values-criteria,
 .iucn-site-wrapper .field--name-field-as-values-curr-trend {
@@ -11910,8 +11900,12 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-assessments-download-links {
     margin-top: 40px;
     margin-top: 4rem;
+    position: relative;
   }
   .field--name-assessments-download-links li {
+    height: 60px;
+    height: 6rem;
+    display: flex;
     margin-top: .1em;
   }
   .field--name-assessments-download-links .field--label {
@@ -11956,25 +11950,38 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     right: 0;
     top: 10%;
   }
-  .field--name-assessments-download-links .collapse {
+  .field--name-assessments-download-links .collapse,
+  .field--name-assessments-download-links .collapsing {
+    left: 0;
     opacity: 0;
+    position: absolute;
+    right: 0;
     transition: opacity .2s;
+    z-index: 1;
   }
   .field--name-assessments-download-links:hover .collapse,
   .field--name-assessments-download-links:focus .collapse,
-  .field--name-assessments-download-links:active .collapse {
+  .field--name-assessments-download-links:active .collapse,
+  .field--name-assessments-download-links:hover .collapsing,
+  .field--name-assessments-download-links:focus .collapsing,
+  .field--name-assessments-download-links:active .collapsing {
     opacity: 1;
   }
   .field--name-assessments-download-links .field--item a {
-    display: block;
-    padding: .5em 1em;
+    align-items: center;
+    background-color: #fff;
     border: 1px solid;
+    display: flex;
+    padding: .5em 1em;
+    width: 100%;
   }
   .field--name-assessments-download-links .field--item a,
   .field--name-assessments-download-links .field--item a a {
     color: #03afdf;
   }
-  .field--name-assessments-download-links .field--item a:hover {
+  .field--name-assessments-download-links .field--item a:hover,
+  .field--name-assessments-download-links .field--item a:focus,
+  .field--name-assessments-download-links .field--item a:active {
     background-color: #03afdf;
     border-color: #03afdf;
     color: #fff;
@@ -12217,6 +12224,34 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 .g-recaptcha > div {
   margin: 0 auto;
   margin-top: 1em;
+}
+/* ==========================================================================
+    Benefits case studies page
+    ========================================================================== */
+.benefits-list-category-wrapper > h1,
+.benefits-list-category-wrapper > h2,
+.benefits-list-category-wrapper > h3,
+.benefits-list-category-wrapper > h4,
+.benefits-list-category-wrapper > h5,
+.benefits-list-category-wrapper > h6 {
+  font-size: 30px;
+  font-size: 3rem;
+}
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h1,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h2,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h3,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h4,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h5,
+.node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
+  font-size: 24px;
+  font-size: 2.4rem;
+}
+/* ==========================================================================
+    Benefits detail page
+    ========================================================================== */
+.iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
+  margin-bottom: 70px;
+  margin-bottom: 7rem;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {

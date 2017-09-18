@@ -32,18 +32,20 @@ class PrintPdf implements PrintPdfInterface {
    *
    * @var \Drupal\Core\Queue\QueueFactory
    */
-  protected $queue_factory;
+  protected $queueFactory;
 
-  protected $directory_name;
+  protected $directoryName;
 
-  protected $current_language;
+  protected $currentLanguage;
 
   /**
+   * Queue.
    *
-   *
-   * @var \Drupal\iucn_pdf\Plugin\QueueWorker\IucnPdfWorker $queue
+   * @var \Drupal\iucn_pdf\Plugin\QueueWorker\IucnPdfWorker
    */
   protected $queue;
+
+  protected $printEngine;
 
   /**
    * Constructs a new EntityPrintPrintBuilder.
@@ -51,7 +53,7 @@ class PrintPdf implements PrintPdfInterface {
    * @param \Drupal\entity_print\Plugin\EntityPrintPluginManagerInterface $plugin_manager
    *   Plugin manager for our Print engines.
    * @param \Drupal\entity_print\PrintBuilderInterface $print_builder
-   *   Main print controller
+   *   Main print controller.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Helper object for entity load.
    * @param \Drupal\Core\Queue\QueueFactory $queue_factory
@@ -67,45 +69,117 @@ class PrintPdf implements PrintPdfInterface {
     $this->queueFactory = $queue_factory;
 
     $this->printEngine = $plugin_manager->createSelectedInstance('pdf');
-    $this->directory_name = 'download_pdf';
-    $this->current_language = \Drupal::languageManager()
+    $this->directoryName = 'download_pdf';
+    $this->currentLanguage = \Drupal::languageManager()
       ->getCurrentLanguage()
       ->getId();
-    // init queue
-    $this->queue = $this->queueFactory->get('uicn_pdf');
+    $this->queue = $this->queueFactory->get('iucn_pdf');
     $this->queue->createQueue();
   }
 
+  /**
+   * Get entity language.
+   */
   protected function getLanguage($entity) {
-    $language = $this->current_language;
+    $language = $this->currentLanguage;
     $languages = $entity->getTranslationLanguages();
-    if (!isset($languages[$language])) { // set to defualt language if no translations
+    // Set to default language if no translations.
+    if (!isset($languages[$language])) {
       $language = 'en';
     }
     return $language;
   }
 
   /**
-   *  Put all site assessments into queue.
+   * Put all site assessments into queue.
    */
   public function queueAllPdfFiles() {
-
     $query = \Drupal::entityQuery('node');
     $query->condition('status', 1);
     $query->condition('type', 'site_assessment');
     $entity_ids = $query->execute();
     if (!empty($entity_ids)) {
       foreach ($entity_ids as $entity_id) {
-//        \Drupal::service('logger.factory')->get('iucn_cron')->info('[queueAllPdfFiles]: entity_id=@entity_id', [ '@entity_id' => $entity_id]);
-        $this->queue->createItem($entity_id);
+        // todo...
+        $this->queue->createItem(
+          [
+            'site_assessment' => $entity_id,
+          ]
+        );
       }
     }
     return count($entity_ids);
   }
 
+  /**
+   * Add site into queue.
+   */
+  public function addToQueue(EntityInterface $entity) {
+    if ($entity->bundle() == 'site') {
+      if ($entity->hasField('field_assessments')) {
+        if ($entity->field_assessments->count()) {
+          foreach ($entity->field_assessments as $idx => $item) {
+            if (empty($item->entity)) {
+              continue;
+            }
+            \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site] createItem site=@site year=@year site_assessment=@site_assessment',
+              [
+                '@site' => $entity->id(),
+                '@site_assessment' => $item->entity->id(),
+                '@year' => $item->entity->field_as_cycle->value,
+              ]
+            );
+
+            $this->queue->createItem(
+              [
+                'site' => $entity->id(),
+                'site_assessment' => $item->entity->id(),
+                'year' => $item->entity->field_as_cycle->value,
+              ]
+            );
+          }
+        }
+      }
+
+    }
+    if ($entity->bundle() == 'site_assessment') {
+      \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site_assessment] createItem site=@site year=@year site_assessment=@site_assessment',
+        [
+          '@site' => $entity->field_as_site->entity->id(),
+          '@site_assessment' => $entity->id(),
+          '@year' => $entity->field_as_cycle->value,
+        ]
+      );
+      $this->queue->createItem(
+        [
+          'site' => $entity->field_as_site->entity->id(),
+          'site_assessment' => $entity->id(),
+          'year' => $entity->field_as_cycle->value,
+        ]
+      );
+    }
+  }
+
+  /**
+   * Get year from request.
+   */
+  public function getYear($entity, $year = NULL) {
+    /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
+    $param_helper = \Drupal::service('iucn_pdf.param_helper');
+    if ($year) {
+      $param_helper->overrideValue('year', $year);
+      return $year;
+    }
+    return $param_helper->get('year');
+  }
+
+  /**
+   * Generate pdf file from sites.
+   */
   public function runCron() {
+    $cron_config = \Drupal::configFactory()->getEditable('iucn_pdf.settings');
+    $limit = $cron_config->get('sites_per_cron');
     $count = $this->queue->numberOfItems();
-    $limit = 5;//todo move in config
 
     $count = min($count, $limit);
     if (!$count) {
@@ -116,29 +190,36 @@ class PrintPdf implements PrintPdfInterface {
 
     for ($i = 1; $i <= $count; $i++) {
       $item = $this->queue->claimItem(60);
-      $entity_id = $item->data;
+
+      $year = @$item->data['year'];
+      $entity_id = @$item->data['site'];
+      $site_assessment = $item->data['site_assessment'];
+
+      if (!$entity_id) {
+        $entity = $this->entityTypeManager->getStorage('node')->load($site_assessment);
+        $entity_id = $entity->field_as_site->entity->id();
+        $year = $entity->field_as_cycle->value;
+      }
       if (!$entity_id) {
         $this->queue->deleteItem($item);
         return;
       }
+
       $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
       if (!$entity) {
         $this->queue->deleteItem($item);
         return;
       }
+      $this->getYear($entity, $year);
+
       /** @var \Drupal\node\Entity\Node $entity */
       $languages = array_keys($entity->getTranslationLanguages());
-      foreach($languages as $langcode) {
+      foreach ($languages as $langcode) {
 
         $tmp_language = \Drupal::languageManager()->getLanguage($langcode);
         \Drupal::service('language.default')->set($tmp_language);
 
-//  \Drupal::service('logger.factory')->get('iucn_cron')->info('[savePrintable]: entity_id=@entity_id, language=@language',
-//    [ '@entity_id' => $entity_id,
-//      '@langcode' => $langcode
-//    ]);
-
-        $file_path = $this->getFilePath($entity_id, $langcode);
+        $file_path = $this->getFilePath($entity_id, $langcode, $year);
         $this->savePrintable($entity, $file_path);
         $this->queue->deleteItem($item);
       }
@@ -148,25 +229,38 @@ class PrintPdf implements PrintPdfInterface {
     \Drupal::service('language.default')->set($current_language);
   }
 
+  /**
+   * Save entity as pdf.
+   */
   public function savePrintable(EntityInterface $entity, $file_path) {
+    \Drupal::service('logger.factory')->get('iucn_cron')->info('[generate]: entity_id=@entity_id, file_path=@file_path', [
+      '@entity_id' => $entity->id(),
+      '@file_path' => $file_path,
+    ]);
+
     return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
   }
 
-  public function addToQueue(EntityInterface $entity) {
-    $this->queue->createItem($entity->id());
+  /**
+   * Pdf filename.
+   */
+  public function getFilename($entity_id, $language, $year) {
+    return $entity_id . '-' . $year . '-' . $language . '.pdf';
   }
 
-  public function getFilename($entity_id, $language) {
-    return $entity_id . '-' . $language . '.pdf';
+  /**
+   * Pdf relative file path.
+   */
+  public function getFilePath($entity_id, $language, $year) {
+    return $this->directoryName . '/' . $this->getFilename($entity_id, $language, $year);
   }
 
-  public function getFilePath($entity_id, $language) {
-    return $this->directory_name . '/' . $this->getFilename($entity_id, $language);
-  }
-
-  public function getRealPath($entity_id, $language) {
+  /**
+   * Pdf real file path.
+   */
+  public function getRealPath($entity_id, $language, $year) {
     $file_directory = \Drupal::service('file_system')->realpath("public://");
-    return $file_directory . '/' . $this->getFilePath($entity_id, $language);
+    return $file_directory . '/' . $this->getFilePath($entity_id, $language, $year);
   }
 
 }

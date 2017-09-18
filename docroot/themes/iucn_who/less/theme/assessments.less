@@ -15,6 +15,9 @@ body.page-node-type-site {
 }
 
 .field--name-assessment-rating img {
+  @media (min-width: @screen-lg-min) {
+    width: 100%;
+  }
   @media (max-width: @screen-md-max) {
     margin: 0 auto;
   }
@@ -82,7 +85,7 @@ body.page-node-type-site {
       margin-left: 3em;
     }
     a {
-      color: @iucn-blue-light;
+      color: #cccccc;
       display: block;
     }
     a:after {
@@ -94,8 +97,14 @@ body.page-node-type-site {
       margin-left: -57%;
       transform: skewX(-55deg);
       width: 200%;
+      transition: background-color .2s;
     }
-    a.active-year:after {
+    a:hover, a:focus, a:active,
+    &.active a {
+      color: @iucn-blue-light;
+    }
+    a:hover:after, a:focus:after, a:active:after,
+    &.active a:after {
       background-color: @iucn-blue-light;
       border: none;
     }
@@ -222,6 +231,7 @@ body.page-node-type-site {
           .svg-icon(icon-backarrow-light-blue);
           background-position-x: .5em;
           background-size: auto;
+          cursor: pointer;
           padding-left: 3.5em;
           // display: inline-block;
           .tab-label {
@@ -393,6 +403,10 @@ body.page-node-type-site {
     > .field + .field {
       margin-left: 1em;
     }
+  }
+  .panel-title-terms:empty,
+  .panel-title-terms-second:empty {
+    display: none;
   }
 
   .field--name-field-as-values-criteria,
@@ -687,7 +701,10 @@ body.page-node-type-site {
   }
   @media @grid-desktop {
     .remify(margin-top, 40px);
+    position: relative;
     li {
+      .remify(height, 60px);
+      display: flex;
       margin-top: .1em;
     }
     .field--label {
@@ -739,19 +756,27 @@ body.page-node-type-site {
         }
       }
     }
-    .collapse {
+    .collapse,
+    .collapsing {
+      left: 0;
       opacity: 0;
+      position: absolute;
+      right: 0;
       transition: opacity .2s;
+      z-index: 1;
     }
     &:hover, &:focus, &:active {
-      .collapse { opacity: 1; }
+      .collapse, .collapsing { opacity: 1; }
     }
     .field--item a {
-      display: block;
-      padding: .5em 1em;
       .light-link();
+      align-items: center;
+      background-color: #fff;
       border: 1px solid;
-      &:hover {
+      display: flex;
+      padding: .5em 1em;
+      width: 100%;
+      &:hover, &:focus, &:active {
         background-color: @link-hover-color;
         border-color: @link-hover-color;
         color: #fff;
