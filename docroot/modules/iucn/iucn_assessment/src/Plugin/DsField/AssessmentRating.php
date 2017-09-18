@@ -103,37 +103,32 @@ class AssessmentRating extends DsFieldBase {
     if (!$node->field_assessments->count()) {
       return $return;
     }
-    if (empty($node->field_assessments->entity->field_as_global_assessment_level->entity)) {
-      return $return;
-    }
 
+    $years = [];
+    $image_containers = [];
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
-    $items = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image');
-    $years = [$node->field_assessments->entity->field_as_cycle->value];
-    $img_value = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image')->getValue()[0];
     foreach ($node->field_assessments as $idx => $assessment) {
-      if ($idx == 0) {
-        continue;
+      $class = 'coming-soon';
+      $title = t('Coming soon');
+      if (!empty($node->field_assessments->entity->field_as_global_assessment_level->entity)) {
+        /* @var \Drupal\taxonomy\Entity\Term $term */
+        $term = $node->field_assessments->entity->field_as_global_assessment_level->entity;
+        $title = $term->getName();
+        if (!empty($term->field_css_identifier->value)) {
+          $class = $term->field_css_identifier->value;
+        }
       }
-      if ($assessment->entity->field_as_global_assessment_level->count()) {
-        $img_value = $assessment->entity->field_as_global_assessment_level
-          ->entity->get('field_image')->getValue()[0];
-      }
-      // If the current assessment doesn't have a value, use the first one.
-      $items->appendItem($img_value);
+
+      $image_containers[] = [
+        '#markup' => '<div class="image-rating-container ' . $class . '" title="' . $title . '"></div>'
+      ];
+
       $years[] = $assessment->entity->field_as_cycle->value;
     }
 
-    /* @var \Drupal\Core\Field\FormatterInterface $formatter */
-    $formatter = $this->getFormatter([
-      'type' => $this->getFieldConfiguration()['formatter'],
-    ]);
-    $formatter->prepareView([$items]);
-    $view_images = $formatter->viewElements($items, $node->language()->getId());
-
     $element = [
       '#theme' => 'rating_image_switcher',
-      '#images' => $view_images,
+      '#images' => $image_containers,
       '#years' => $years,
     ];
 
@@ -149,81 +144,6 @@ class AssessmentRating extends DsFieldBase {
       return FALSE;
     }
     return parent::isAllowed();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function formatters() {
-    return $this->formatterPluginManager->getOptions('image');
-  }
-
-  /**
-   * Return the field definition.
-   */
-  protected function getFieldDefinition() {
-    if (!$this->fieldDefinition) {
-      $this->fieldDefinition = $this->entityFieldManager->getFieldDefinitions('taxonomy_term', 'assessment_conservation_rating')['field_image'];
-    }
-
-    return $this->fieldDefinition;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm($form, FormStateInterface $form_state) {
-    $formatter_id = $form_state->getUserInput()['fields'][$this->getName()]['plugin']['type'];
-
-    $formatter = $this->getFormatter([
-      'type' => $formatter_id,
-    ]);
-
-    return [
-      'formatter' => $formatter->settingsForm($form, $form_state),
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary($settings) {
-    /* @var \Drupal\Core\Field\FormatterInterface $formatter */
-    $formatter = $this->getFormatter([
-      'type' => $this->getFieldConfiguration()['formatter'],
-    ]);
-
-    if ($formatter) {
-      return $formatter->settingsSummary();
-    }
-    else {
-      return [];
-    }
-  }
-
-  /**
-   * Get the formatter configuration.
-   */
-  protected function getFormatterConfiguration() {
-    $config = $this->getConfiguration();
-
-    return isset($config['formatter']) ? $config['formatter'] : [];
-  }
-
-  /**
-   * Return the field formatter.
-   */
-  protected function getFormatter(array $configuration = []) {
-    if (!isset($configuration['settings'])) {
-      $configuration['settings'] = $this->getFormatterConfiguration();
-    }
-
-    return $this->formatterPluginManager->getInstance([
-      'field_definition' => $this->getFieldDefinition(),
-      'view_mode' => $this->viewMode(),
-      'prepare' => TRUE,
-      'configuration' => $configuration,
-    ]);
   }
 
 }
