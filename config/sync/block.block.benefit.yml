@@ -1,23 +1,23 @@
-uuid: 8d059bad-cefb-43b0-a0f7-a8167aac42af
+uuid: 9740e979-2929-41fc-93b8-1c287dc66793
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.iucn_region
+    - facets.facet.benefit
   module:
     - facets
     - system
   theme:
     - iucn_who
-id: iucnregion
+id: benefit
 theme: iucn_who
 region: facets
-weight: -13
+weight: -9
 provider: null
-plugin: 'facet_block:iucn_region'
+plugin: 'facet_block:benefit'
 settings:
-  id: 'facet_block:iucn_region'
-  label: Region
+  id: 'facet_block:benefit'
+  label: Benefit
   provider: facets
   label_display: visible
 visibility:

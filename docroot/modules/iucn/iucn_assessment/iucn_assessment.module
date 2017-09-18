@@ -58,25 +58,6 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
 }
 
 /**
- * Determine the assessment year to show for a site.
- */
-function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
-  if ($site->field_assessments->count() == 0) {
-    return NULL;
-  }
-  $iucn_config = \Drupal::config('iucn_who.settings');
-  $request = Drupal::request();
-  $year = $request->get('year', $iucn_config->get('assessment_year'));
-  $active_date = $site->field_assessments->entity->field_as_cycle->value;
-  foreach ($site->field_assessments as $assessment) {
-    if ($assessment->entity->field_as_cycle->value == $year) {
-      $active_date = $year;
-      break;
-    }
-  }
-  return $active_date;
-}
-/**
  * Implements hook_preprocess_field().
  */
 function iucn_assessment_preprocess_field(&$variables) {
@@ -87,7 +68,7 @@ function iucn_assessment_preprocess_field(&$variables) {
       // In the end we just use it for print view mode.
       if (!empty($variables['items'])) {
         if (\Drupal::routeMatch() == 'iucn_pdf.download') {
-          $display_year = iucn_assessment_year_display($variables['element']['#object']);
+          $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
         }
         else {
           $iucn_config = \Drupal::config('iucn_who.settings');

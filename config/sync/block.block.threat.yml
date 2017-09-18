@@ -1,23 +1,23 @@
-uuid: 8d059bad-cefb-43b0-a0f7-a8167aac42af
+uuid: 8f15abc5-3141-4b88-9295-add69dd81387
 langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.iucn_region
+    - facets.facet.threat
   module:
     - facets
     - system
   theme:
     - iucn_who
-id: iucnregion
+id: threat
 theme: iucn_who
 region: facets
-weight: -13
+weight: -10
 provider: null
-plugin: 'facet_block:iucn_region'
+plugin: 'facet_block:threat'
 settings:
-  id: 'facet_block:iucn_region'
-  label: Region
+  id: 'facet_block:threat'
+  label: Threat
   provider: facets
   label_display: visible
 visibility:
