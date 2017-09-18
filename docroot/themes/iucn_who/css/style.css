@@ -11900,8 +11900,12 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-assessments-download-links {
     margin-top: 40px;
     margin-top: 4rem;
+    position: relative;
   }
   .field--name-assessments-download-links li {
+    height: 60px;
+    height: 6rem;
+    display: flex;
     margin-top: .1em;
   }
   .field--name-assessments-download-links .field--label {
@@ -11946,25 +11950,38 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     right: 0;
     top: 10%;
   }
-  .field--name-assessments-download-links .collapse {
+  .field--name-assessments-download-links .collapse,
+  .field--name-assessments-download-links .collapsing {
+    left: 0;
     opacity: 0;
+    position: absolute;
+    right: 0;
     transition: opacity .2s;
+    z-index: 1;
   }
   .field--name-assessments-download-links:hover .collapse,
   .field--name-assessments-download-links:focus .collapse,
-  .field--name-assessments-download-links:active .collapse {
+  .field--name-assessments-download-links:active .collapse,
+  .field--name-assessments-download-links:hover .collapsing,
+  .field--name-assessments-download-links:focus .collapsing,
+  .field--name-assessments-download-links:active .collapsing {
     opacity: 1;
   }
   .field--name-assessments-download-links .field--item a {
-    display: block;
-    padding: .5em 1em;
+    align-items: center;
+    background-color: #fff;
     border: 1px solid;
+    display: flex;
+    padding: .5em 1em;
+    width: 100%;
   }
   .field--name-assessments-download-links .field--item a,
   .field--name-assessments-download-links .field--item a a {
     color: #03afdf;
   }
-  .field--name-assessments-download-links .field--item a:hover {
+  .field--name-assessments-download-links .field--item a:hover,
+  .field--name-assessments-download-links .field--item a:focus,
+  .field--name-assessments-download-links .field--item a:active {
     background-color: #03afdf;
     border-color: #03afdf;
     color: #fff;
