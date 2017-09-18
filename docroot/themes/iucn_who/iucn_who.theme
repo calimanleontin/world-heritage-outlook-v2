@@ -7,6 +7,8 @@
  */
 
 use Drupal\Core\Template\Attribute;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -98,6 +100,22 @@ function iucn_who_preprocess_page(&$variables) {
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     unset($variables['page']['header']['iucn_who_page_title']);
   }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node) {
+    $nodes_views = [
+      'site' => 'view.sites_search.sites_search_page_database',
+      'publication' => 'view.publications.publications_page_database',
+    ];
+
+    if (!empty($nodes_views[$node->bundle()])) {
+      $view_url = Url::fromRoute($nodes_views[$node->bundle()])->toString();
+      $variables['#attached']['library'][] = 'iucn_who/back-to-js';
+      $variables['#attached']['drupalSettings']['iucn_who']['go_to_buttons']['view_url'] = $view_url;
+    }
+  }
+
 }
 
 /**
