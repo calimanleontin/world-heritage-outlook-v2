@@ -879,8 +879,14 @@ body.page-node-type-site {
     }
 
     .sidemenu-toggle {
-      width: 100%;
       .iucn-base-btn-icons(magnifier-white, icon-arrow-white);
+      float: none;
+      margin: 0 auto;
+      // max-width: 500px;
+      width: 100%;
+      &:before {
+        height: 50px;
+      }
     }
   }
 }
