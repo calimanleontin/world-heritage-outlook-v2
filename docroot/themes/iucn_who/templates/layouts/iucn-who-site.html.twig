@@ -8,11 +8,11 @@
   <div class="container">
     <div class="row">
       <div class="region-site-title{% if has_assessment %} col-sm-8 col-md-12 {% else %} col-sm-12 {% endif %}">
-        {{ content.title }}
         <div class="sites-back-button">
-          <a href="#" class="back-button"><i class="backicon"></i>{% trans %}Back{% endtrans %}</a>
-          <a href="#" class="go-to-button"><i class="backicon"></i>{% trans %}Go to publications{% endtrans %}</a>
+          <a href="#" class="back-button hidden"><i class="back-icon"></i>{% trans %}Back to search{% endtrans %}</a>
+          <a href="#" class="go-to-button">{% trans %}Go to search{% endtrans %}<i class="go-to-icon"></i></a>
         </div>
+        {{ content.title }}
         <div class="visible-mobile region-site-mobile-image">
           {{ content.mobile_image }}
         </div>

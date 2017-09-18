@@ -1,9 +1,6 @@
 @assessment-tabs-bg: #f7f7f7;
 // @todo: cleanup, specificity
 body.page-node-type-site {
-  /*.breadcrumb-prefix, .breadcrumb {
-    display: none;
-  }*/
   @media @grid-mobile {
     &.navbar-is-fixed-top {
       margin-top: @navbar-height--mobile;
@@ -22,10 +19,53 @@ body.page-node-type-site {
     margin: 0 auto;
   }
 }
-
+// Positioning of back link
+.iucn-site-wrapper > .container,
+.iucn-site-wrapper > .container-fluid {
+  position: relative;
+}
 .region-site-title {
+  display: flex;
+  flex-direction: column;
+  position: static;
   .field--name-node-title h1 {
     .left-bordered-heading();
+  }
+  .sites-back-button {
+    text-transform: uppercase;
+    > a {
+      display: flex;
+      .light-link();
+    }
+    .back-icon,
+    .go-to-icon {
+      background-position: center;
+      background-size: 1.5em;
+      content: '';
+      display: inline-block;
+      height: @line-height-base * 1em;
+      vertical-align: middle;
+      width: 2.5em;
+    }
+    .back-icon {
+      .svg-icon(icon-backarrow-light-blue);
+    }
+    .go-to-icon {
+      .svg-icon(icon-arrow-light-blue);
+    }
+    @media @grid-mobile {
+      .background-variant(fade(#000, 30%), #fff);
+      align-self: flex-end;
+      margin-bottom: 6em;
+      padding: .8em 1.2em;
+      position: relative;
+      z-index: 1;
+    }
+    @media @grid-desktop {
+      bottom: 100%;
+      position: absolute;
+      right: 0;
+    }
   }
   @media @grid-mobile {
     padding: 0;
@@ -292,7 +332,7 @@ body.page-node-type-site {
     color: @link-hover-color;
     margin-top: auto;
     &:after {
-      .svg-icon(icon-arrow-blue);
+      .svg-icon(icon-arrow-light-blue);
       content: '';
       background-size: contain;
       background-position: center;
@@ -694,7 +734,7 @@ body.page-node-type-site {
       }
     }
     ul > li:after {
-      .svg-icon(icon-arrow-blue);
+      .svg-icon(icon-arrow-light-blue);
       background-position: center;
       background-size: contain;
       content: '';
@@ -894,6 +934,7 @@ body.page-node-type-site {
       // max-width: 500px;
       width: 100%;
       &:before {
+        border-right: 1px solid;
         height: 50px;
       }
     }

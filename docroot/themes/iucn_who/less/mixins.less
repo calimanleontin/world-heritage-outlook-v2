@@ -164,7 +164,7 @@
   });
 }
 
-.iucn-base-btn-icons(@left-icon, @right-icon) {
+.iucn-base-btn-icons(@left-icon) {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -177,7 +177,6 @@
     .svg-icon(@left-icon);
     background-position: center;
     background-size: 1.5em;
-    border-right: 1px solid;
     bottom: 0;
     content: '';
     display: block;
@@ -189,18 +188,22 @@
     vertical-align: middle;
     width: 2.5em;
   }
-  &:after {
-    .svg-icon(@right-icon);
-    background-position: center;
-    background-size: contain;
-    content: '';
-    display: inline-block;
-    height: 1em;
-    margin-left: .5em;
-    vertical-align: middle;
-    width: 1.5em;
-  }
 }
+
+.iucn-base-btn-icons(@left-icon, @right-icon) {
+  .iucn-base-btn-icons(@left-icon);
+    &:after {
+      .svg-icon(@right-icon);
+      background-position: center;
+      background-size: contain;
+      content: '';
+      display: inline-block;
+      height: 1em;
+      margin-left: .5em;
+      vertical-align: middle;
+      width: 1.5em;
+    }
+  }
 
 /* ==========================================================================
    Generators
