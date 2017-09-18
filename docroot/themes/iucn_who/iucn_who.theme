@@ -210,3 +210,12 @@ function iucn_who_preprocess_form_element(&$variables) {
     $variables['label']['#id'] = $id;
   }
 }
+
+function iucn_who_preprocess_iucn_who_sites_search(&$variables) {
+  $variables['attributes']['class'][] = 'sites-rating';
+  $node = $variables['content']['#node'];
+  if ($current_assessment = $node->field_current_assessment->entity->field_as_global_assessment_level->entity) {
+    $variables['attributes']['class'][] = $current_assessment->field_css_identifier->value;
+    $variables['rating'] = $current_assessment->name->value;
+  }
+}
