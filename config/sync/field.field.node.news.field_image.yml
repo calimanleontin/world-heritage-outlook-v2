@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_image
     - node.type.news
   module:
+    - content_translation
     - image
 third_party_settings:
   content_translation:
@@ -31,7 +32,7 @@ settings:
   min_resolution: ''
   alt_field: true
   alt_field_required: false
-  title_field: false
+  title_field: true
   title_field_required: false
   default_image:
     uuid: ''
