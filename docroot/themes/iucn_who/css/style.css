@@ -13182,6 +13182,41 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 .path-frontpage #block-globaloutlookstatistics {
   text-align: center;
 }
+@media screen and (min-width: 768px) {
+  .path-frontpage #block-globaloutlookstatistics {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .path-frontpage #block-globaloutlookstatistics > .navbar-header,
+  .path-frontpage #block-globaloutlookstatistics > .navbar-collapse {
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+}
+@media screen and (min-width: 768px) and (min-width: 768px) {
+  .path-frontpage #block-globaloutlookstatistics {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) and (min-width: 992px) {
+  .path-frontpage #block-globaloutlookstatistics {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) and (min-width: 1200px) {
+  .path-frontpage #block-globaloutlookstatistics {
+    width: 1170px;
+  }
+}
+@media screen and (min-width: 768px) and (min-width: 768px) {
+  .path-frontpage #block-globaloutlookstatistics > .navbar-header,
+  .path-frontpage #block-globaloutlookstatistics > .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
 .path-frontpage #block-globaloutlookstatistics .block-title,
 .publication-title {
   color: #134780;
