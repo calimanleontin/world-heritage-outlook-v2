@@ -10,8 +10,8 @@
   <div class="field--name-assessments-links">
     <ul class="links" role="tablist">
       {% for year in years %}
-        <li role="presentation">
-          <a class="{{ (years[loop.index0] == active_year) ? 'active' : ''}}" href="#year_{{ year }}" aria-controls="year_{{ year }}" role="tab" data-toggle="tab">{{ year }}</a>
+        <li role="presentation" class="{{ (years[loop.index0] == active_year) ? 'active' : ''}}">
+          <a href="#year_{{ year }}" aria-controls="year_{{ year }}" role="tab" data-toggle="tab">{{ year }}</a>
         </li>
       {% endfor %}
     </ul>
