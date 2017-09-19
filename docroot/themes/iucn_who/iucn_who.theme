@@ -30,7 +30,6 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
  * Implements hook_preprocess_HOOK() for block templates.
  */
 function iucn_who_preprocess_block(&$variables) {
-
   switch ($variables['base_plugin_id']) {
     case 'home_page_map':
       $variables['#attached']['library'][] = 'iucn_who/iucn-mobile-chrome-vh-fix';
@@ -40,6 +39,25 @@ function iucn_who_preprocess_block(&$variables) {
       $node = \Drupal::routeMatch()->getParameter('node');
       if ($node && $node->bundle() == 'site') {
         $variables['content']['#access'] = FALSE;
+      }
+      break;
+
+    case 'search_api_sorts_block':
+      if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage') {
+        $items = &$variables['content']['links']['#items'][0];
+        $items['#cache']['max-age'] = 0;
+        if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
+          $items['#label'] .= ' A-Z';
+        }
+        else {
+          $items['#label'] .= ' Z-A';
+        }
+      }
+      if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
+        $items = &$variables['content']['links']['#items'][0];
+        if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
+          $items['#label'] = t('Sort from oldest to newest');
+        }
       }
       break;
 
@@ -55,18 +73,6 @@ function iucn_who_preprocess_block(&$variables) {
     if ($block) {
       $variables['content']['#attributes']['data-block_id'] = $block_id;
       $variables['content']['#attributes']['data-region'] = $block->getRegion();
-    }
-  }
-
-  // Change search api sort label based on sort order.
-  if (isset($variables['content']['links']['#items'][0]['#theme'])) {
-    if ($variables['content']['links']['#items'][0]['#theme'] == 'search_api_sorts_sort') {
-      $url = $variables['content']['links']['#items'][0]['#url'];
-      if (strpos($url, '/publications') !== FALSE) {
-        if (strpos($url, 'order=asc') !== FALSE) {
-          $variables['content']['links']['#items'][0]['#label'] = t('Sort from oldest to newest');
-        }
-      }
     }
   }
 }

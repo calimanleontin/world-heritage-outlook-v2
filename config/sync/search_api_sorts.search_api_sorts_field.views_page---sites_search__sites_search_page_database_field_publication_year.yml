@@ -1,0 +1,11 @@
+uuid: a596ee3f-406e-4f79-bb4b-0780a0bec4b0
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_field_publication_year
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: field_publication_year
+default_sort: false
+default_order: asc
+label: 'Publication year'
+weight: 0
