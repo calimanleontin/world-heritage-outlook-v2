@@ -179,12 +179,83 @@ body.page-node-type-site {
     padding-left: 0;
     padding-right: 0;
     margin-bottom: 3em;
+    > li { width: 100%; }
+    > li > a {
+      .remify(padding, 20px);
+      background-position: 1.5em 3em;
+      background-size: auto 4em;
+      color: @text-color;
+      display: flex;
+      flex-direction: column;
+      margin-right: 0;
+      padding-left: 7em;
+      position: relative;
+      transition: none;
+
+      @media @grid-mobile {
+        background-position-y: center;
+        background-size: auto 2.5em;
+        padding-left: 5em;
+        text-transform: uppercase;
+      }
+      > * { display: block; }
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 15%;
+        height: 70%;
+        left: 5.5em;
+        border-right: 1px solid fade(#000, 10%);
+
+        @media @grid-mobile { display: none; }
+      }
+      .loop-assessment-tabs({
+        @attr-helper: ~'#@{assessment-tab-class}';
+        &[href="@{attr-helper}"] {
+          .svg-icon(~'@{assessment-tab-class}');
+        }
+      });
+      &[href="#full_assessment"] {
+        @media @grid-desktop {
+          padding-left: 7.5em;
+          &:before {
+            left: 6.5em;
+          }
+        }
+      }
+    }
+
+    > li.active,
+    > li:hover, > li:focus, > li:active {
+      position: relative;
+    }
+
+    // Mobile tabs
     &.visible-mobile {
       flex-wrap: wrap;
       margin-left: -@grid-gutter-width / 2;
       margin-right: -@grid-gutter-width / 2;
       padding-bottom: 10px;
+      > li.active {
+        padding: 1rem 2rem;
+        > a {
+          .btn-info.btn-border();
+          .svg-icon(icon-backarrow-light-blue);
+          background-position-x: .5em;
+          background-size: auto;
+          cursor: pointer;
+          padding-left: 3.5em;
+          .tab-label {
+            color: @brand-info;
+            .back-to-prefix {
+              display: inline;
+            }
+          }
+        }
+      }
     }
+    // Desktop tabs
     &.visible-desktop {
       background-color: @assessment-tabs-bg;
       &,
@@ -209,87 +280,8 @@ body.page-node-type-site {
         &:first-child:before { right: 100%; }
         &:last-child:before { left: 100%; }
       }
-    }
-    > li {
-      width: 100%;
-    }
-    > li > a {
-      .remify(padding, 20px);
-      background-position: 1.5em 3em;
-      background-size: auto 4em;
-      color: @text-color;
-      display: flex;
-      flex-direction: column;
-      margin-right: 0;
-      padding-left: 7em;
-      transition: none;
-      @media @grid-mobile {
-        background-position-y: center;
-        background-size: auto 2.5em;
-        padding-left: 5em;
-        text-transform: uppercase;
-      }
-      > * {
-        display: block;
-      }
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 15%;
-        height: 70%;
-        left: 5.5em;
-        border-right: 1px solid fade(#000, 10%);
-        @media @grid-mobile {
-          display: none;
-        }
-      }
-      .loop-assessment-tabs({
-        @attr-helper: ~'#@{assessment-tab-class}';
-        &[href="@{attr-helper}"] {
-          .svg-icon(~'@{assessment-tab-class}');
-        }
-      });
-      &[href="#full_assessment"] {
-        @media @grid-desktop {
-          padding-left: 7.5em;
-          &:before {
-            left: 6.5em;
-          }
-        }
-      }
-      position: relative;
-    }
-
-    > li.active,
-    > li:hover, > li:focus, > li:active {
-      position: relative;
-
-      @media @grid-mobile {
-        padding: 1rem 2rem;
-        // border-bottom: 1px solid #ddd;
-        // order: -1;
-        // padding-bottom: 1em;
-        // text-align: center;
-        > a {
-          .btn-info.btn-border();
-          .svg-icon(icon-backarrow-light-blue);
-          background-position-x: .5em;
-          background-size: auto;
-          cursor: pointer;
-          padding-left: 3.5em;
-          // display: inline-block;
-          .tab-label {
-            color: @brand-info;
-            // font-weight: normal;
-            // text-transform: none;
-            .back-to-prefix {
-              display: inline;
-            }
-          }
-        }
-      }
-      @media @grid-desktop {
+      > li.active,
+      > li:hover, > li:focus, > li:active {
         > a > *,
         > a, > a:hover, > a:focus {
           background-color: @brand-primary;
@@ -311,6 +303,7 @@ body.page-node-type-site {
         });
       }
     }
+
   }
 
   .tab-label {
