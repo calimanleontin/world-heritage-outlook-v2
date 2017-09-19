@@ -11539,34 +11539,50 @@ body.page-node-type-site #sidemenu {
   padding-top: 0;
 }
 .iucn-site-wrapper .panel-default .panel-heading {
+  align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
 }
-.iucn-site-wrapper .panel-body > .field {
-  overflow: auto;
-}
-.iucn-site-wrapper .panel-title-terms {
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second {
   color: #134780;
-  display: flex;
+  justify-content: flex-end;
   padding-left: 1em;
   text-align: right;
   white-space: nowrap;
 }
-.iucn-site-wrapper .panel-title-terms .field--label {
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first > .field + .field:not(:empty),
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second > .field + .field:not(:empty) {
+  margin-left: 1em;
+}
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field--label,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field--label {
   font-weight: normal;
   white-space: nowrap;
 }
-.iucn-site-wrapper .panel-title-terms .field__items > .field--label,
-.iucn-site-wrapper .panel-title-terms .field__items > .field--item {
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field__items > .field--label,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field__items > .field--label,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field__items > .field--item,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field__items > .field--item {
   display: inline-block;
 }
-.iucn-site-wrapper .panel-title-terms > .field + .field {
-  margin-left: 1em;
-}
-.iucn-site-wrapper .panel-title-terms:empty,
-.iucn-site-wrapper .panel-title-terms-second:empty {
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first:empty,
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second:empty {
   display: none;
+}
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms {
+  color: #134780;
+}
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first {
+  display: flex;
+}
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second {
+  font-size: .8em;
+  font-weight: 500;
+}
+.iucn-site-wrapper .field--name-field-as-projects,
+.iucn-site-wrapper .field--name-field-as-projects-needs {
+  overflow: auto;
 }
 .iucn-site-wrapper .field--name-field-as-values-criteria,
 .iucn-site-wrapper .field--name-field-as-values-curr-trend {

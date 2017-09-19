@@ -424,34 +424,38 @@ body.page-node-type-site {
     }
   }
   .panel-default .panel-heading {
+    align-items: flex-start;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-  }
-  .panel-body > .field {
-    overflow: auto;
-  }
-  .panel-title-terms {
-    color: @brand-primary;
-    display: flex;
-    padding-left: 1em;
-    text-align: right;
-    white-space: nowrap;
-    .field--label {
-      font-weight: normal;
+
+    .panel-title-terms-first,
+    .panel-title-terms-second {
+      color: @brand-primary;
+      justify-content: flex-end;
+      padding-left: 1em;
+      text-align: right;
       white-space: nowrap;
+      > .field + .field:not(:empty) { margin-left: 1em; }
+      .field--label {
+        font-weight: normal;
+        white-space: nowrap;
+      }
+      .field__items > .field--label,
+      .field__items > .field--item {
+        display: inline-block;
+      }
+      &:empty { display: none; }
     }
-    .field__items > .field--label,
-    .field__items > .field--item {
-      display: inline-block;
-    }
-    > .field + .field {
-      margin-left: 1em;
+    .panel-title-terms { color: @brand-primary; }
+    .panel-title-terms-first { display: flex; }
+    .panel-title-terms-second {
+      font-size: .8em;
+      font-weight: 500;
     }
   }
-  .panel-title-terms:empty,
-  .panel-title-terms-second:empty {
-    display: none;
+  .field--name-field-as-projects,
+  .field--name-field-as-projects-needs {
+    overflow: auto;
   }
 
   .field--name-field-as-values-criteria,
