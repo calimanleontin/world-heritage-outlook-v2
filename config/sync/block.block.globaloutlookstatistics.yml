@@ -17,7 +17,7 @@ settings:
   id: home_page_statistics
   label: 'Global results from the 2017 IUCN World Heritage Outlook'
   provider: iucn_who_homepage
-  label_display: '0'
+  label_display: visible
 visibility:
   request_path:
     id: request_path
