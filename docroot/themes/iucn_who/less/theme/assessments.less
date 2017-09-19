@@ -34,8 +34,8 @@ body.page-node-type-site {
   .sites-back-button {
     text-transform: uppercase;
     > a {
-      display: flex;
       .light-link();
+      display: flex;
     }
     .back-icon,
     .go-to-icon {
@@ -64,7 +64,7 @@ body.page-node-type-site {
     @media @grid-desktop {
       bottom: 100%;
       position: absolute;
-      right: 0;
+      right: @grid-gutter-width / 2;
     }
   }
   @media @grid-mobile {

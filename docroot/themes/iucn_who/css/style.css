@@ -11054,7 +11054,7 @@ body.page-node-type-site #sidemenu {
   .region-site-title .sites-back-button {
     bottom: 100%;
     position: absolute;
-    right: 0;
+    right: 15px;
   }
 }
 @media screen and (max-width: 767px) {
