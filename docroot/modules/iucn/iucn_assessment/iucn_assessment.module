@@ -67,7 +67,11 @@ function iucn_assessment_preprocess_field(&$variables) {
       // We have done this to support switcher between years on display.
       // In the end we just use it for print view mode.
       if (!empty($variables['items'])) {
-        if (\Drupal::routeMatch() == 'iucn_pdf.download') {
+        if (
+          (\Drupal::routeMatch() == 'iucn_pdf.download')
+          ||
+          (\Drupal::routeMatch() == 'iucn_pdf.download.debug')
+        ) {
           $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
         }
         else {
@@ -109,6 +113,22 @@ function iucn_assessment_preprocess_field(&$variables) {
         }
         return ($a_weight < $b_weight) ? -1 : 1;
       }
+      );
+      $variables['items'] = $items;
+      break;
+
+    case 'field_as_references':
+      // Sort this field by string alphabetically.
+      if (empty($variables['items'][0]['content']['#context']['value'])) {
+        break;
+      }
+      $items = $variables['items'];
+      usort($items,
+        function($a, $b) {
+          $a_string = $a['content']['#context']['value'];
+          $b_string = $b['content']['#context']['value'];
+          return (strcmp($a_string, $b_string));
+        }
       );
       $variables['items'] = $items;
       break;

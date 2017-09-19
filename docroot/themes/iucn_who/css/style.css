@@ -7298,6 +7298,12 @@ html.js .ajax-new-content:empty {
 .breadcrumb-prefix + .breadcrumb {
   margin-left: 1em;
 }
+@media screen and (max-width: 767px) {
+  .breadcrumb-prefix,
+  .breadcrumb {
+    display: none;
+  }
+}
 .btn {
   transition: .2s;
 }
@@ -8678,6 +8684,54 @@ a.is-active {
 .conservation-status.good {
   color: #3bb55e;
 }
+.sites-rating.coming-soon .site-rating-label {
+  background-color: #7e7e7e;
+  color: #FFFFFF;
+}
+.sites-rating.coming-soon h2 a {
+  color: #7e7e7e;
+}
+.sites-rating.data-deficient .site-rating-label {
+  background-color: #333333;
+  color: #FFFFFF;
+}
+.sites-rating.data-deficient h2 a {
+  color: #333333;
+}
+.sites-rating.critical .site-rating-label {
+  background-color: #ef3133;
+  color: #FFFFFF;
+}
+.sites-rating.critical h2 a {
+  color: #ef3133;
+}
+.sites-rating.significant-concern .site-rating-label {
+  background-color: #f69232;
+  color: #FFFFFF;
+}
+.sites-rating.significant-concern h2 a {
+  color: #f69232;
+}
+.sites-rating.good-concerns .site-rating-label {
+  background-color: #9cd07d;
+  color: #FFFFFF;
+}
+.sites-rating.good-concerns h2 a {
+  color: #9cd07d;
+}
+.sites-rating.good .site-rating-label {
+  background-color: #3bb55e;
+  color: #FFFFFF;
+}
+.sites-rating.good h2 a {
+  color: #3bb55e;
+}
+.sites-rating .site-rating-label {
+  position: absolute;
+  padding: 0.3em 0.5em;
+  max-width: 100px;
+  font-size: 0.9em;
+}
 .caret-triangle {
   display: inline-block;
   transform: rotate(-90deg);
@@ -9599,6 +9653,43 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
+/*
+.block-search-api-sorts{
+  float:right;
+  display: inline;
+  color:@iucn-blue-light;
+  text-transform: uppercase;
+  font-size:0.888889em;
+  margin:0;
+  padding:0;
+  h2{
+    float:left;
+    display: inline;
+    margin:0;
+    padding:0;
+    font-weight:normal;
+    font-size:0.888889em;
+  }
+  ul,li{
+    float:left;
+    display: inline;
+    margin:0;
+    padding:0;
+    list-style-type: none;
+    line-height:16px;
+    li{
+      padding-left:0.2em;
+      a{
+        line-height:16px;
+        font-size:0.888889em;
+        float:left;
+        display: inline;
+        margin:0;
+        padding:0;
+      }
+    }
+  }
+}*/
 /* ==========================================================================
     Search page
     ========================================================================== */
@@ -9611,6 +9702,12 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-bottom: 0;
     margin-top: 0;
     padding-left: 15px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .page-node-type-site .header-container > .region,
+  .page-node-type-site .contained-content > .region {
+    padding-right: 6em;
   }
 }
 .search-block-container {
@@ -9778,6 +9875,53 @@ fieldset[disabled] .explore-map-button a.focus {
 .view-sites-search article .more-link .arrow {
   color: #e0e0e0;
   font-size: 1.5em;
+}
+.view-sites-search .view-header {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-size: 1em;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+  font-size: 0.88888889em;
+}
+h1.view-sites-search .view-header,
+h2.view-sites-search .view-header,
+h3.view-sites-search .view-header,
+h4.view-sites-search .view-header,
+h5.view-sites-search .view-header,
+h6.view-sites-search .view-header {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.view-sites-search .view-header,
+  h2.view-sites-search .view-header,
+  h3.view-sites-search .view-header,
+  h4.view-sites-search .view-header,
+  h5.view-sites-search .view-header,
+  h6.view-sites-search .view-header {
+    font-size: 1.3em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .view-sites-search .view-header {
+    display: none;
+  }
+}
+.view-sites-search .view-header .block-search-api-sorts {
+  float: right;
+}
+.view-sites-search .view-header .block-search-api-sorts ul {
+  float: left;
+  color: #03afdf;
+  list-style-type: none;
+}
+.view-sites-search .view-header .block-search-api-sorts ul li > a {
+  color: #03afdf;
+}
+.view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
+  display: none;
 }
 @media screen and (max-width: 767px) {
   .sidemenu-toggle-wrapper {
@@ -10900,11 +11044,6 @@ fieldset[disabled] .explore-map-button a.focus {
     width: 0%;
   }
 }
-body.page-node-type-site {
-  /*.breadcrumb-prefix, .breadcrumb {
-    display: none;
-  }*/
-}
 @media screen and (max-width: 767px) {
   body.page-node-type-site.navbar-is-fixed-top {
     margin-top: 50px;
@@ -10923,6 +11062,15 @@ body.page-node-type-site #sidemenu {
     margin: 0 auto;
   }
 }
+.iucn-site-wrapper > .container,
+.iucn-site-wrapper > .container-fluid {
+  position: relative;
+}
+.region-site-title {
+  display: flex;
+  flex-direction: column;
+  position: static;
+}
 .region-site-title .field--name-node-title h1 {
   border-left: .4em solid;
   color: #134780;
@@ -10937,6 +11085,60 @@ body.page-node-type-site #sidemenu {
     margin-left: -15px;
     margin-right: -15px;
     border-left-width: 10px;
+  }
+}
+.region-site-title .sites-back-button {
+  text-transform: uppercase;
+}
+.region-site-title .sites-back-button > a {
+  display: flex;
+}
+.region-site-title .sites-back-button > a,
+.region-site-title .sites-back-button > a a {
+  color: #03afdf;
+}
+.region-site-title .sites-back-button .back-icon,
+.region-site-title .sites-back-button .go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: 1.33333333em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.region-site-title .sites-back-button .back-icon {
+  background-image: url(../images/icon-backarrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
+.region-site-title .sites-back-button .go-to-icon {
+  background-image: url(../images/icon-arrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 767px) {
+  .region-site-title .sites-back-button {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    align-self: flex-end;
+    margin-bottom: 6em;
+    padding: .8em 1.2em;
+    position: relative;
+    z-index: 1;
+  }
+  .region-site-title .sites-back-button a:not([class*='chosen']) {
+    color: #fff;
+  }
+  .region-site-title .sites-back-button a:not([class*='chosen']):hover,
+  .region-site-title .sites-back-button a:not([class*='chosen']):focus,
+  .region-site-title .sites-back-button a:not([class*='chosen']):active {
+    color: #03afdf;
+  }
+}
+@media screen and (min-width: 768px) {
+  .region-site-title .sites-back-button {
+    bottom: 100%;
+    position: absolute;
+    right: 0;
   }
 }
 @media screen and (max-width: 767px) {
@@ -11027,6 +11229,9 @@ body.page-node-type-site #sidemenu {
 .field--name-assessments-links li.active a:after {
   background-color: #03afdf;
   border: none;
+}
+.field--name-field-as-references {
+  overflow: auto;
 }
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
@@ -11257,7 +11462,7 @@ body.page-node-type-site #sidemenu {
   margin-top: auto;
 }
 .iucn-site-wrapper .tab-read-more:after {
-  background-image: url(../images/icon-arrow-blue.svg);
+  background-image: url(../images/icon-arrow-light-blue.svg);
   background-repeat: no-repeat;
   content: '';
   background-size: contain;
@@ -11876,7 +12081,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     margin-top: 1em;
   }
   .field--name-assessments-download-links ul > li:after {
-    background-image: url(../images/icon-arrow-blue.svg);
+    background-image: url(../images/icon-arrow-light-blue.svg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -12186,6 +12391,11 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .iucn-site-wrapper > .container-fluid {
     padding: 0;
   }
+  .iucn-site-wrapper > .container > .row,
+  .iucn-site-wrapper > .container-fluid > .row {
+    display: flex;
+    flex-direction: column;
+  }
   .iucn-site-wrapper .region-site-general-info,
   .iucn-site-wrapper .region-site-image,
   .iucn-site-wrapper .field--name-field-geolocation,
@@ -12193,32 +12403,54 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .iucn-site-wrapper .tab-read-more {
     display: none;
   }
+  .iucn-site-wrapper .region-site-title,
+  .iucn-site-wrapper .region-site-sidemenu-toggle {
+    order: -1;
+  }
   .iucn-site-wrapper .sidemenu-toggle {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-left: 3.5em;
+    position: relative;
+    text-align: center;
+    width: auto;
+    float: none;
+    margin: 0 auto;
     width: 100%;
   }
   .iucn-site-wrapper .sidemenu-toggle:before {
     background-image: url(../images/magnifier-white.svg);
     background-repeat: no-repeat;
-    content: '';
-    background-size: contain;
     background-position: center;
-    width: 2em;
-    height: 1em;
-    display: inline-block;
+    background-size: 1.5em;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    padding-left: .5em;
+    padding-right: .5em;
+    position: absolute;
+    top: 0;
     vertical-align: middle;
-    margin-left: .5em;
+    width: 2.5em;
   }
   .iucn-site-wrapper .sidemenu-toggle:after {
     background-image: url(../images/icon-arrow-white.svg);
     background-repeat: no-repeat;
-    content: '';
-    background-size: contain;
     background-position: center;
-    width: 2em;
-    height: 1em;
+    background-size: contain;
+    content: '';
     display: inline-block;
-    vertical-align: middle;
+    height: 1em;
     margin-left: .5em;
+    vertical-align: middle;
+    width: 1.5em;
+  }
+  .iucn-site-wrapper .sidemenu-toggle:before {
+    border-right: 1px solid;
+    height: 50px;
   }
 }
 .g-recaptcha > div {
@@ -13404,6 +13636,10 @@ fieldset[disabled] #download-publication-button a.focus {
   padding-bottom: .5rem;
   text-transform: uppercase;
   font-size: 0.88888889em;
+}
+.view-publications .view-header .publications-search-results {
+  font-size: 11px;
+  vertical-align: middle;
 }
 h1.view-publications .view-header,
 h2.view-publications .view-header,

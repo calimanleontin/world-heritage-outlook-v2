@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.search_index
     - field.field.node.site.body
     - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
@@ -13,8 +14,10 @@ dependencies:
     - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -35,7 +38,7 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: ds_2col
+      id: iucn_who_sites_search
       library: ds/ds_2col
       disable_css: true
       entity_classes: all_classes
@@ -107,15 +110,21 @@ content:
     region: right
 hidden:
   body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_area: true
+  field_assessments: true
   field_buffer_zone: true
   field_buffer_zone_area: true
   field_category: true
   field_coordinate_x: true
   field_coordinate_y: true
   field_cultural_landscape: true
+  field_current_assessment: true
   field_danger_list: true
   field_designation: true
+  field_geolocation: true
   field_inscription_criteria: true
   field_mixed_site: true
   field_serial: true

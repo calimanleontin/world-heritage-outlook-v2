@@ -9,27 +9,27 @@
     $collapses.collapse('show');
   });
 
-  var tabTarget = window.location.hash;
+  // var tabTarget = window.location.hash;
   // tabTarget = tabTarget.replace('#', '');
 
   // delete hash so the page won't scroll to it
-  window.location.hash = '';
+  // window.location.hash = '';
 
 
   $(document).ready(function () {
 
     var $body = $('body');
-    var hashUpdate = function (hash) {
-      if (hash.substr(0,1) == "#") {
-        // var position = $(window).scrollTop();
-        // location.replace("#" + hash.substr(1));
-        // $(window).scrollTop(position);
-        $body
-          .attr('class', function(i, c) {
-            return c.replace(/\S+-is-active-tab(^|\s)/g, hash.substr(1) + '-is-active-tab ');
-          });
-      }
-    }
+    // var hashUpdate = function (hash) {
+    //   if (hash.substr(0,1) == "#") {
+    //     // var position = $(window).scrollTop();
+    //     // location.replace("#" + hash.substr(1));
+    //     // $(window).scrollTop(position);
+    //     $body
+    //       .attr('class', function(i, c) {
+    //         return c.replace(/\S+-is-active-tab(^|\s)/g, hash.substr(1) + '-is-active-tab ');
+    //       });
+    //   }
+    // }
 
     // if (tabTarget !== '') {
     //   $('a[href="' + tabTarget + '"]').tab('show');
@@ -38,17 +38,21 @@
     //   }
     // }
     // else {
-      var hash = $(".nav-tabs > li.active > a[data-toggle='tab']").attr("href");
-      if(hash) {
-        $body.addClass(hash.substr(1) + '-is-active-tab');
-        $('a[href="' + hash + '"]').tab('show');
-        // hashUpdate(hash);
-      }
     // }
+
+    var hash = $(".nav-tabs > li.active > a[data-toggle='tab']").attr("href");
+    if(hash) {
+      $('a[href="' + hash + '"]').tab('show');
+      $body.addClass(hash.substr(1) + '-is-active-tab');
+      // hashUpdate(hash);
+    }
     $("a[data-toggle='tab']").on("shown.bs.tab", function (e) {
       var hash = $(e.target).attr("href");
       $('a[href="' + hash + '"]').tab('show');
-      hashUpdate(hash);
+      $('body').attr('class', function(i, c) {
+        return c.replace(/\S+-is-active-tab(^|\s)/g, hash.substr(1) + '-is-active-tab ');
+      });
+      // hashUpdate(hash);
     });
 
     var iucnSidemenu = new IUCNSidemenu();

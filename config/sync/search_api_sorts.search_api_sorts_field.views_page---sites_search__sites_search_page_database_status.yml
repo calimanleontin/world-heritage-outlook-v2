@@ -1,0 +1,11 @@
+uuid: 84e9544d-033b-4530-9147-9b08276ff4ed
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_status
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: status
+default_sort: false
+default_order: asc
+label: 'Publishing status'
+weight: 0
