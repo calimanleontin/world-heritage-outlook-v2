@@ -6943,6 +6943,8 @@ button.close {
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:before,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
+.view-benefits-list .view-content:before,
+.view-benefits-list .view-content:after,
 .iucn-site-wrapper .nav-tabs:before,
 .iucn-site-wrapper .nav-tabs:after {
   content: " ";
@@ -6967,6 +6969,7 @@ button.close {
 .filter-wrapper:after,
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
+.view-benefits-list .view-content:after,
 .iucn-site-wrapper .nav-tabs:after {
   clear: both;
 }
@@ -9920,6 +9923,10 @@ h6.view-sites-search .view-header {
 }
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
+}
+.view-benefits-list .view-content {
+  margin-left: -15px;
+  margin-right: -15px;
 }
 @media screen and (max-width: 767px) {
   .sidemenu-toggle-wrapper {
