@@ -193,22 +193,22 @@ body.page-node-type-site {
       > li.active > a, > li.active > a:hover, > li.active > a:focus {
         border: none;
       }
-    }
-    &.visible-desktop > li {
-      display: flex;
-      flex: 1;
-      &:first-child:before,
-      &:last-child:before {
-        content: '';
-        background-color: @assessment-tabs-bg;
-        display: block;
-        height: 100%;
-        width: 9999px;
-        position: absolute;
-        top: 0;
+      & > li {
+        display: flex;
+        flex: 1;
+        &:first-child:before,
+        &:last-child:before {
+          content: '';
+          background-color: @assessment-tabs-bg;
+          display: block;
+          height: 100%;
+          width: 9999px;
+          position: absolute;
+          top: 0;
+        }
+        &:first-child:before { right: 100%; }
+        &:last-child:before { left: 100%; }
       }
-      &:first-child:before { right: 100%; }
-      &:last-child:before { left: 100%; }
     }
     > li {
       width: 100%;
