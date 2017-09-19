@@ -156,6 +156,11 @@ field_settings:
       module:
         - node
         - paragraphs
+  title_sort:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
 datasource_settings:
   'entity:node':
     bundles:

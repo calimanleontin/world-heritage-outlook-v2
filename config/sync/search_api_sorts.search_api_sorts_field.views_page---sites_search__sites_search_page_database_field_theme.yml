@@ -1,0 +1,11 @@
+uuid: dc8a0190-2806-4034-b27e-272bf8411a22
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_field_theme
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: field_theme
+default_sort: false
+default_order: asc
+label: Theme
+weight: 0

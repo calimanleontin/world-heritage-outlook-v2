@@ -1,0 +1,11 @@
+uuid: 598e21d8-9dfe-4f4f-af63-90ad0b3b004c
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_langcode
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: langcode
+default_sort: false
+default_order: asc
+label: Language
+weight: 0
