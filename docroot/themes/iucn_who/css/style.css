@@ -13351,6 +13351,12 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
   color: #fff;
   background-color: #03afdf;
   border-color: #03afdf;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 3.5em;
+  text-align: center;
   display: inline-block;
   text-align: left;
   width: auto;
@@ -13447,6 +13453,41 @@ fieldset[disabled] #download-publication-button a.focus {
   color: #03afdf;
   background-color: #fff;
 }
+.path-frontpage .pdf-download-button a:before,
+#download-publication-button a:before {
+  background-image: url(../images/download-report.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5em;
+  bottom: 0;
+  content: '';
+  display: block;
+  left: 0;
+  padding-left: .5em;
+  padding-right: .5em;
+  position: absolute;
+  top: 0;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.path-frontpage .pdf-download-button a:before,
+#download-publication-button a:before {
+  background-size: 2em;
+  padding-left: 0;
+  padding-right: 0;
+  top: 10px;
+  bottom: 10px;
+  vertical-align: middle;
+  width: 4em;
+  border-right: 1px solid;
+}
+@media screen and (max-width: 767px) {
+  .path-frontpage .pdf-download-button a:before,
+  #download-publication-button a:before {
+    background-size: 1.5em;
+    width: 2.5em;
+  }
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .pdf-download-button a,
   #download-publication-button a {
@@ -13464,40 +13505,6 @@ fieldset[disabled] #download-publication-button a.focus {
   #download-publication-button a div.field--name-field-pdf-button-title {
     font-size: 13px;
   }
-}
-.path-frontpage .pdf-download-button a .glyphicon,
-#download-publication-button a .glyphicon,
-.publications-back-button a .backicon {
-  background-image: url(../images/download-report.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 50% auto;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 4em;
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage .pdf-download-button a .glyphicon,
-  #download-publication-button a .glyphicon,
-  .publications-back-button a .backicon {
-    width: 2.5em;
-  }
-}
-.path-frontpage .pdf-download-button a .glyphicon:before,
-#download-publication-button a .glyphicon:before {
-  display: none;
-}
-.path-frontpage .pdf-download-button a .glyphicon:after,
-#download-publication-button a .glyphicon:after {
-  border-right: 1px solid;
-  content: '';
-  display: block;
-  height: 80%;
-  position: absolute;
-  right: 0;
-  top: 10%;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage .pdf-download-button,
