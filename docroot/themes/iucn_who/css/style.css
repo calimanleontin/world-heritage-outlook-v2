@@ -9653,43 +9653,41 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
-/*
-.block-search-api-sorts{
-  float:right;
-  display: inline;
-  color:@iucn-blue-light;
+.region-sidebar-first section {
+  margin-bottom: 2em;
+}
+.region-sidebar-first section a {
+  color: #03afdf;
+}
+.region-sidebar-first section h2.block-title {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
   text-transform: uppercase;
-  font-size:0.888889em;
-  margin:0;
-  padding:0;
-  h2{
-    float:left;
-    display: inline;
-    margin:0;
-    padding:0;
-    font-weight:normal;
-    font-size:0.888889em;
+  font-size: 1em;
+  font-weight: 900;
+  margin-top: 0;
+}
+h1.region-sidebar-first section h2.block-title,
+h2.region-sidebar-first section h2.block-title,
+h3.region-sidebar-first section h2.block-title,
+h4.region-sidebar-first section h2.block-title,
+h5.region-sidebar-first section h2.block-title,
+h6.region-sidebar-first section h2.block-title {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.region-sidebar-first section h2.block-title,
+  h2.region-sidebar-first section h2.block-title,
+  h3.region-sidebar-first section h2.block-title,
+  h4.region-sidebar-first section h2.block-title,
+  h5.region-sidebar-first section h2.block-title,
+  h6.region-sidebar-first section h2.block-title {
+    font-size: 1.3em;
   }
-  ul,li{
-    float:left;
-    display: inline;
-    margin:0;
-    padding:0;
-    list-style-type: none;
-    line-height:16px;
-    li{
-      padding-left:0.2em;
-      a{
-        line-height:16px;
-        font-size:0.888889em;
-        float:left;
-        display: inline;
-        margin:0;
-        padding:0;
-      }
-    }
-  }
-}*/
+}
 /* ==========================================================================
     Search page
     ========================================================================== */
