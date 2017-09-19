@@ -12602,13 +12602,13 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 .path-frontpage #map-site-search .form-group {
   margin-bottom: 0.8em;
 }
-.path-frontpage #map-site-search a[href*="/sites-search"] {
+.path-frontpage #map-site-search a[href*="/explore-sites"] {
   float: right;
   font-weight: 300;
   font-size: 0.93333333em;
 }
 @media screen and (max-width: 767px) {
-  .path-frontpage #map-site-search a[href*="/sites-search"] {
+  .path-frontpage #map-site-search a[href*="/explore-sites"] {
     display: none;
   }
 }
