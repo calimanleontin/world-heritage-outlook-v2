@@ -1,0 +1,11 @@
+uuid: d77e6f85-73d6-494b-bfd5-d1406515b2ce
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_url
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: url
+default_sort: false
+default_order: asc
+label: URI
+weight: 0

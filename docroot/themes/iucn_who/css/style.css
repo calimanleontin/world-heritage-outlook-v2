@@ -9653,6 +9653,41 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
+.region-sidebar-first section {
+  margin-bottom: 2em;
+}
+.region-sidebar-first section a {
+  color: #03afdf;
+}
+.region-sidebar-first section h2.block-title {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: 900;
+  margin-top: 0;
+}
+h1.region-sidebar-first section h2.block-title,
+h2.region-sidebar-first section h2.block-title,
+h3.region-sidebar-first section h2.block-title,
+h4.region-sidebar-first section h2.block-title,
+h5.region-sidebar-first section h2.block-title,
+h6.region-sidebar-first section h2.block-title {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.region-sidebar-first section h2.block-title,
+  h2.region-sidebar-first section h2.block-title,
+  h3.region-sidebar-first section h2.block-title,
+  h4.region-sidebar-first section h2.block-title,
+  h5.region-sidebar-first section h2.block-title,
+  h6.region-sidebar-first section h2.block-title {
+    font-size: 1.3em;
+  }
+}
 /* ==========================================================================
     Search page
     ========================================================================== */
@@ -9838,6 +9873,53 @@ fieldset[disabled] .explore-map-button a.focus {
 .view-sites-search article .more-link .arrow {
   color: #e0e0e0;
   font-size: 1.5em;
+}
+.view-sites-search .view-header {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-size: 1em;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+  font-size: 0.88888889em;
+}
+h1.view-sites-search .view-header,
+h2.view-sites-search .view-header,
+h3.view-sites-search .view-header,
+h4.view-sites-search .view-header,
+h5.view-sites-search .view-header,
+h6.view-sites-search .view-header {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.view-sites-search .view-header,
+  h2.view-sites-search .view-header,
+  h3.view-sites-search .view-header,
+  h4.view-sites-search .view-header,
+  h5.view-sites-search .view-header,
+  h6.view-sites-search .view-header {
+    font-size: 1.3em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .view-sites-search .view-header {
+    display: none;
+  }
+}
+.view-sites-search .view-header .block-search-api-sorts {
+  float: right;
+}
+.view-sites-search .view-header .block-search-api-sorts ul {
+  float: left;
+  color: #03afdf;
+  list-style-type: none;
+}
+.view-sites-search .view-header .block-search-api-sorts ul li > a {
+  color: #03afdf;
+}
+.view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
+  display: none;
 }
 @media screen and (max-width: 767px) {
   .sidemenu-toggle-wrapper {
@@ -13749,6 +13831,10 @@ fieldset[disabled] #download-publication-button a.focus {
   padding-bottom: .5rem;
   text-transform: uppercase;
   font-size: 0.88888889em;
+}
+.view-publications .view-header .publications-search-results {
+  font-size: 11px;
+  vertical-align: middle;
 }
 h1.view-publications .view-header,
 h2.view-publications .view-header,

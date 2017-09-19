@@ -1,0 +1,11 @@
+uuid: bcc661f2-5cab-4c84-bf58-b29292f5ea98
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_field_as_global_assessment_level
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: field_as_global_assessment_level
+default_sort: false
+default_order: asc
+label: 'Current assessment » Content » Global assessment level'
+weight: 0

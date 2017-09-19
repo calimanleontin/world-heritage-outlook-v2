@@ -137,3 +137,27 @@
     }
   }
 }
+
+.view-sites-search {
+  .view-header {
+    .bottom-border();
+    font-size: @font-size-small;
+    @media @grid-mobile {
+      display: none;
+    }
+    .block-search-api-sorts {
+      float: right;
+      ul {
+        float: left;
+        color: @iucn-blue-light;
+        list-style-type: none;
+        li > a {
+          color: @iucn-blue-light;
+          .tablesort {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

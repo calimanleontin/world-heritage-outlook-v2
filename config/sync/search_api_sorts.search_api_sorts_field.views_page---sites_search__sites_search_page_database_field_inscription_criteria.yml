@@ -1,0 +1,11 @@
+uuid: 0622ed8e-3ff4-4e82-add5-dc436e6315f9
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_field_inscription_criteria
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: field_inscription_criteria
+default_sort: false
+default_order: asc
+label: Criteria
+weight: 0

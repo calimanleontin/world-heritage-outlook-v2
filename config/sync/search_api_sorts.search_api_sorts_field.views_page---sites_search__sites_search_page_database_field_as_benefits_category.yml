@@ -1,0 +1,11 @@
+uuid: d3bbf911-41c7-4f0b-a93e-d65b74a57ea4
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_field_as_benefits_category
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: field_as_benefits_category
+default_sort: false
+default_order: asc
+label: 'Current assessment » Content » Benefits » Paragraph » Category'
+weight: 0
