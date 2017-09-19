@@ -13,6 +13,7 @@ module:
   config_filter: 0
   config_split: 0
   config_translation: 0
+  contextual: 0
   crop: 0
   ctools: 0
   datetime: 0
@@ -63,6 +64,7 @@ module:
   options: 0
   page_cache: 0
   path: 0
+  quickedit: 0
   recaptcha: 0
   redirect: 0
   responsive_favicons: 0
