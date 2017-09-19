@@ -6,10 +6,11 @@ dependencies:
     - field.field.node.news.body
     - field.field.node.news.field_date_published
     - field.field.node.news.field_image
+    - image.style.large
     - node.type.news
   module:
-    - blazy
     - ds
+    - image
     - text
     - user
 third_party_settings:
@@ -38,63 +39,20 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    type: blazy
+    type: image
     weight: 0
     region: right_1
     label: hidden
     settings:
-      style: grid
       image_style: large
-      thumbnail_style: ''
-      responsive_image_style: ''
-      media_switch: ''
-      box_style: ''
-      box_caption: ''
-      box_caption_custom: ''
-      ratio: ''
-      grid: null
-      grid_medium: null
-      grid_small: null
-      sizes: ''
-      breakpoints:
-        xs:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        sm:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        md:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        lg:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        xl:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-      current_view_mode: default
-      background: false
-      caption:
-        title: '0'
-        alt: '0'
-      grid_header: ''
-      iframe_lazy: true
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      optionset: default
-      skin: ''
-      box_media_style: ''
+      image_link: ''
     third_party_settings:
       ds:
         ds_limit: ''
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_date_published: true
   langcode: true
   links: true
