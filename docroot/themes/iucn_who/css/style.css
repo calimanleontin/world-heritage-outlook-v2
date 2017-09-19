@@ -12284,6 +12284,31 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
 .field--name-dynamic-block-fieldnode-site-feedback label {
   font-weight: inherit;
 }
+.field--name-dynamic-block-fieldnode-site-feedback .form-item-subject {
+  align-items: flex-end;
+  display: flex;
+}
+.field--name-dynamic-block-fieldnode-site-feedback .form-item-subject > label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+.field--name-dynamic-block-fieldnode-site-feedback .form-item-subject > label:after {
+  background: none;
+  content: ' : ';
+  display: inline-block;
+  height: auto;
+  width: auto;
+}
+.field--name-dynamic-block-fieldnode-site-feedback .form-item-subject > input[readonly] {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: inherit;
+  font-size: .8em;
+  padding-bottom: 0;
+  padding-top: 0;
+  text-overflow: ellipsis;
+}
 .field--name-dynamic-block-fieldnode-site-feedback:before {
   background-image: url(../images/feedback-black.svg);
   background-repeat: no-repeat;

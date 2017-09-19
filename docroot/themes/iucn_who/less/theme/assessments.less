@@ -848,6 +848,31 @@ body.page-node-type-site {
   label {
     font-weight: inherit;
   }
+  .form-item-subject {
+    align-items: flex-end;
+    display: flex;
+    > label {
+      margin-bottom: 0;
+      white-space: nowrap;
+      &:after {
+        background: none;
+        content: ' : ';
+        display: inline-block;
+        height: auto;
+        width: auto;
+      }
+    }
+    > input[readonly] {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: inherit;
+      font-size: .8em;
+      padding-bottom: 0;
+      padding-top: 0;
+      text-overflow: ellipsis;
+    }
+  }
   &:before {
     .svg-icon(feedback-black);
     background-position: center;
