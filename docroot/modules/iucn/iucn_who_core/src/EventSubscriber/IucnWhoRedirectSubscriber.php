@@ -3,6 +3,7 @@
 namespace Drupal\iucn_who_core\EventSubscriber;
 
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -33,6 +34,7 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
     if ($request->attributes->get('_route') !== 'entity.node.canonical') {
       return;
     }
+    /** @var Node $node */
     $node = $request->attributes->get('node');
 
     // Redirect faq details page to faq list.
@@ -41,6 +43,20 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
       $response = new TrustedRedirectResponse($url, 301);
       $event->setResponse($response);
     }
+
+    // Redirect assessment details page to site.
+    if ($node->getType() === 'site_assessment') {
+      $site = $node->field_as_site->entity;
+      if (!empty($site)) {
+        $url = $site->url();
+      }
+      else {
+        $url = Url::fromRoute('view.sites_search.sites_search_page_database')->toString();
+      }
+      $response = new TrustedRedirectResponse($url, 301);
+      $event->setResponse($response);
+    }
+
     // Redirect publication page to external website if exists.
     if ($node->getType() === 'publication') {
       $referer = $request->headers->get('referer');
