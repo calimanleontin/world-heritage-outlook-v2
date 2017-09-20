@@ -12350,6 +12350,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-dynamic-block-fieldnode-site-feedback:before {
     font-size: 19px;
     margin-bottom: 1em;
+    margin-right: .5em;
   }
 }
 @media screen and (min-width: 768px) {
