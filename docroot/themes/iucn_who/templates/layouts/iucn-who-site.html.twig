@@ -1,67 +1,104 @@
 {%
-set classes = [
-'iucn-site-wrapper',
-]
-%}
-
-<div{{ attributes.addClass(classes) }}>
+  set classes = [
+  'iucn-site-wrapper',
+  ]
+  %}
+{% set has_assessment = content.assessment|render|striptags|trim is not empty %}
+  <div{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="region-site-title{% if has_assessment %} col-sm-8 col-md-12 {% else %} col-sm-12 {% endif %}">
+        <div class="sites-back-button">
+          <a href="#" class="back-button hidden"><i class="back-icon"></i>{% trans %}Back to search{% endtrans %}</a>
+          <a href="#" class="go-to-button">{% trans %}Go to search{% endtrans %}<i class="go-to-icon"></i></a>
+        </div>
         {{ content.title }}
-        <div class="visible-xs">
-        {{ content.mobile_image }}
+        <div class="visible-mobile region-site-mobile-image">
+          {{ content.mobile_image }}
         </div>
       </div>
-      <div class="col-md-4">
-        {{ content.left_1 }}
-      </div>
-      <div class="col-md-4">
-        {{ content.middle_1 }}
-      </div>
-      <div class="col-md-4">
-        {{ content.right_1 }}
-      </div>
-    </div>
-  </div>
-  {% if content.assessment %}
-  <div class="container-fluid">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active">
-        <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'Summary'|t }}</strong>
-          <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
-          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
-          <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
-          <span class="tab-read-more">{{ 'Read more'|t  }}</span>
-        </a>
-      </li>
-      <li role="presentation">
-        <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-          <strong class="tab-label">{{ 'References'|t }}</strong>
-          <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
-          <span class="tab-read-more">{{ 'See references'|t  }}</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-  {% endif %}
-  <div class="container">
-    <div class="col-sm-8">
-      {% if content.assessment %}
-        {{ content.assessment }}
-      {% else %}
-        <p>{{ 'Placeholder' }}</p>
+      {% if has_assessment %}
+        <div class="region-site-rating col-sm-4 col-md-4">
+          {{ content.left_1 }}
+        </div>
+        <div class="region-site-general-info col-sm-8 col-md-4 ">
+          {{ content.middle_1 }}
+        </div>
+        <div class="region-site-image col-sm-4 col-md-4">
+          {{ content.right_1 }}
+        </div>
+        <div class="col-sm-12 region-site-sidemenu-toggle">
+          <!-- Sidemenu toggle -->
+          <div class="sidemenu-toggle-wrapper">
+            <button type="button" class="btn btn-info sidemenu-toggle" data-toggle="dropdown" data-target="#sidemenu" id="sidemenu-toggle">
+              {{ 'See all information'|t }}
+            </button>
+          </div>
+        </div>
       {% endif %}
     </div>
-    <div class="col-sm-4">
-      {{ content.sidebar }}
+  </div>
+  {% if has_assessment %}
+    <div class="container-fluid">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs visible-desktop" role="tablist" id="assessment-tabs-desktop">
+        <li role="presentation" class="active">
+          <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'Summary'|t }}</strong>
+            <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
+            <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+            <strong class="tab-label">{{ 'References'|t }}</strong>
+            <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
+            <span class="tab-read-more">{{ 'See references'|t  }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  {% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        {% if has_assessment %}
+          {{ content.assessment }}
+        {% else %}
+          <div class="no-assessment-placeholder">
+            <span>{{ 'Conservation Outlook Assessment coming soon'|t }}</span>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-sm-4" id="sidemenu">
+        {% if has_assessment is not empty %}
+          <ul class="nav nav-tabs visible-mobile" role="tablist" id="assessment-tabs-mobile">
+            <li role="presentation" class="active">
+              <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'Summary'|t }}</strong>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#full_assessment" aria-controls="full_assessment" role="tab" data-toggle="tab">
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'Full assessment'|t }}</strong>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'References'|t }}</strong>
+              </a>
+            </li>
+          </ul>
+        {% endif %}
+        {{ content.sidebar }}
+      </div>
     </div>
   </div>
 </div>

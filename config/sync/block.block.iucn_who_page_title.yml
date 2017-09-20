@@ -2,8 +2,6 @@ uuid: ce3160e5-760d-44c8-af02-f17c947093d5
 langcode: en
 status: true
 dependencies:
-  module:
-    - ctools
   theme:
     - iucn_who
 _core:
@@ -19,11 +17,4 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      site: site
-    negate: true
-    context_mapping:
-      node: '@node.node_route_context:node'
+visibility: {  }

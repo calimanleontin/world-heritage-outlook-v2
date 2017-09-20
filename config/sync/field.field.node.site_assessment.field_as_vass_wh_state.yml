@@ -6,6 +6,13 @@ dependencies:
     - field.storage.node.field_as_vass_wh_state
     - node.type.site_assessment
     - taxonomy.vocabulary.assessment_value_state
+  module:
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    2014_label: ''
+    2017_label: ''
+    2020_label: ''
 id: node.site_assessment.field_as_vass_wh_state
 field_name: field_as_vass_wh_state
 entity_type: node

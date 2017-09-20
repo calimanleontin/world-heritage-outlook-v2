@@ -56,6 +56,8 @@ iucn_who_assessment_value:
      label: Title
     terms:
       label: Terms
+    terms_second:
+      label: Terms second
     description:
       label: Description
 
@@ -152,3 +154,15 @@ iucn_who_pdf_download_button:
   regions:
     content:
       label: Content
+
+iucn_who_sites_search:
+  label: Sites search
+  category: IUCN
+  type: partial
+  template: templates/layouts/iucn-who-sites-search
+  regions:
+    left:
+      label: Left
+    right:
+      label: Right
+      

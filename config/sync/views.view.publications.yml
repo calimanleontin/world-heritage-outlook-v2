@@ -297,12 +297,21 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: publications
+      path: resources/publications
       cache:
         type: none
       defaults:
         cache: false
       exposed_block: true
+      menu:
+        type: none
+        title: Publications
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:0c7b3d33-811f-40e2-a662-e8edff997648'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

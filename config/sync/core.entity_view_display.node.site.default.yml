@@ -52,7 +52,6 @@ third_party_settings:
         - 'display_field_copy:node-image_site'
       left_1:
         - assessment_rating
-        - assessments_links
       middle_1:
         - field_country
         - field_inscription_year
@@ -74,19 +73,19 @@ third_party_settings:
         plugin_id: 'display_field_copy:node-image_site'
         weight: 1
         label: hidden
-        formatter: slick_image
+        formatter: image
         settings:
           formatter:
             image_style: sites_thumbnail
             image_link: ''
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
-        weight: 14
-        label: hidden
+        weight: 13
+        label: above
         formatter: default
       'dynamic_block_field:node-site_feedback':
         plugin_id: 'dynamic_block_field:node-site_feedback'
-        weight: 15
+        weight: 14
         label: above
         formatter: default
       node_title:
@@ -102,21 +101,16 @@ third_party_settings:
         plugin_id: assessment_rating
         weight: 2
         label: hidden
-        formatter: image
+        formatter: default
       assessments_download_links:
         plugin_id: assessments_download_links
-        weight: 13
-        label: hidden
-        formatter: default
-      assessments_links:
-        plugin_id: assessments_links
-        weight: 3
-        label: hidden
+        weight: 12
+        label: above
         formatter: default
       assessments_more_site_links:
         plugin_id: assessments_more_site_links
-        weight: 12
-        label: hidden
+        weight: 11
+        label: above
         formatter: default
 id: node.site.default
 targetEntityType: node
@@ -125,13 +119,13 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 8
+    weight: 7
     region: middle_1
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 10
+    weight: 9
     label: hidden
     settings:
       link: true
@@ -141,7 +135,7 @@ content:
     region: assessment
   field_country:
     type: entity_reference_label
-    weight: 4
+    weight: 3
     region: middle_1
     label: hidden
     settings:
@@ -151,7 +145,7 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 7
+    weight: 6
     region: middle_1
     label: inline
     settings:
@@ -162,14 +156,13 @@ content:
         ds_limit: ''
   field_geolocation:
     type: geofield_google_map
-    weight: 11
+    weight: 10
     region: sidebar
     label: hidden
     settings:
-      gmap_api_key: ''
       map_dimensions:
         width: 100%
-        height: 450px
+        height: 350px
       map_empty:
         empty_behaviour: '0'
         empty_message: 'No Geofield Value entered for this field'
@@ -177,39 +170,42 @@ content:
         lat: '42'
         lon: '12.5'
         center_force: 0
+        geocode: 'Find my location'
       map_zoom_and_pan:
         zoom:
-          initial: 6
+          initial: '6'
+          min: '1'
+          max: '22'
           force: 0
-          min: 1
-          max: 22
-        scrollwheel: 1
-        draggable: 1
+        scrollwheel: '1'
+        draggable: '1'
         map_reset: 0
       map_controls:
-        disable_default_ui: 0
-        zoom_control: 1
+        zoom_control: '1'
         map_type_id: roadmap
-        map_type_control: 1
+        map_type_control: '1'
         map_type_control_options_type_ids:
           roadmap: roadmap
           satellite: satellite
           hybrid: hybrid
           terrain: terrain
-        scale_control: 1
-        street_view_control: 1
-        fullscreen_control: 1
+        scale_control: '1'
+        street_view_control: '1'
+        fullscreen_control: '1'
+        disable_default_ui: 0
       map_marker_and_infowindow:
         icon_image_path: ''
         infowindow_field: title
-      map_markercluster:
-        markercluster_control: 0
-        markercluster_additional_options: ''
+        view_mode: full
       map_additional_options: ''
+      map_markercluster:
+        markercluster_additional_options: ''
+        markercluster_control: 0
+      gmap_api_key: ''
     third_party_settings: {  }
   field_image:
     type: image
-    weight: 9
+    weight: 8
     region: right_1
     label: hidden
     settings:
@@ -218,7 +214,7 @@ content:
     third_party_settings: {  }
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 6
+    weight: 5
     region: middle_1
     label: inline
     settings:
@@ -229,7 +225,7 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 5
+    weight: 4
     region: middle_1
     label: inline
     settings:
@@ -237,6 +233,9 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_area: true
   field_buffer_zone: true
   field_buffer_zone_area: true

@@ -6,32 +6,14 @@
 }
 
 // Facets block
-.facets-toggle {
-  &, &:hover, &:active, &:focus {
-    color: @text-color;
-  }
-  // Hides caret if there is only one block of facets
-  // @media @grid-mobile {
-  //   .region-facets:only-child & {
-  //     padding-left: (.5 * @font-size-base--mobile  + 20px);
-  //     .caret-triangle {
-  //       display: none;
-  //     }
-  //   }
-  // }
-  @media @grid-desktop {
-    cursor: default;
-  }
+.region-facets {
+  .collapse-visible-desktop();
 }
 #facets-collapse {
   @media @grid-mobile {
     > .facets-content {
       padding-left: (.5 * @font-size-base--mobile +  20px);
     }
-  }
-  @media @grid-desktop {
-    display: block;
-    height: auto !important;
   }
 }
 .facets-title {
@@ -295,10 +277,17 @@
       z-index: 0;
     }
     .input-group-addon,
+    .form-autocomplete,
     .form-text {
       border-color: @input-bg;
+      box-shadow: none;
     }
+    .form-autocomplete,
     .form-text {
+      .form-control();
+      border-color: @input-bg;
+      box-shadow: none;
+      color: @iucn-blue-dark;
       width: 100%;
       &:focus {
         border-color: @input-bg;
@@ -346,7 +335,8 @@
   }
   @media @grid-mobile {
     .form-inline {
-      .form-text {
+      .form-text,
+      .form-autocomplete {
         font-size: 16px;
       }
     }
@@ -417,6 +407,22 @@
       display: inline-block;
       margin-left: 2em;
       margin-right: 2em;
+    }
+  }
+}
+
+.region-sidebar-first{
+  section{
+    margin-bottom: 2em;
+    a{
+      color:@iucn-blue-light;
+    }
+    h2.block-title {
+      // @todo: make mixin out of this
+      .bottom-border();
+      font-size: 1em;
+      font-weight: 900;
+      margin-top: 0;
     }
   }
 }

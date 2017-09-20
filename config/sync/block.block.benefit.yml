@@ -1,0 +1,28 @@
+uuid: 9740e979-2929-41fc-93b8-1c287dc66793
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.benefit
+  module:
+    - facets
+    - system
+  theme:
+    - iucn_who
+id: benefit
+theme: iucn_who
+region: facets
+weight: -11
+provider: null
+plugin: 'facet_block:benefit'
+settings:
+  id: 'facet_block:benefit'
+  label: Benefit
+  provider: facets
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /explore-sites
+    negate: false
+    context_mapping: {  }

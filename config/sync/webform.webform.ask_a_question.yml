@@ -16,7 +16,7 @@ javascript: ''
 settings:
   ajax: false
   page: true
-  page_submit_path: contact-us/ask-a-question
+  page_submit_path: /about/contact-us/ask-a-question
   page_confirm_path: ''
   form_submit_once: false
   form_exception_message: ''

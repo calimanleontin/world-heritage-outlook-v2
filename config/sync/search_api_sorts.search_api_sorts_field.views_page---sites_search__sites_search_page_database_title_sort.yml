@@ -1,0 +1,11 @@
+uuid: 06c02100-c19b-4919-9f2c-16327604b4af
+langcode: en
+status: true
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_title_sort
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: title_sort
+default_sort: true
+default_order: asc
+label: 'Sort Alphabetically'
+weight: 0

@@ -1,0 +1,177 @@
+uuid: d58a6ac0-de0a-471e-940f-46c6fe6bc0f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.pdf
+    - field.field.node.site.body
+    - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
+    - field.field.node.site.field_buffer_zone
+    - field.field.node.site.field_buffer_zone_area
+    - field.field.node.site.field_category
+    - field.field.node.site.field_coordinate_x
+    - field.field.node.site.field_coordinate_y
+    - field.field.node.site.field_country
+    - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
+    - field.field.node.site.field_danger_list
+    - field.field.node.site.field_designation
+    - field.field.node.site.field_geolocation
+    - field.field.node.site.field_image
+    - field.field.node.site.field_inscription_criteria
+    - field.field.node.site.field_inscription_year
+    - field.field.node.site.field_mixed_site
+    - field.field.node.site.field_serial
+    - field.field.node.site.field_site_id
+    - field.field.node.site.field_theme
+    - field.field.node.site.field_transboundary
+    - field.field.node.site.field_unesco_id
+    - field.field.node.site.field_wdpa_id
+    - image.style.sites_thumbnail
+    - node.type.site
+  module:
+    - datetime
+    - ds
+    - image
+    - iucn_site
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - node_title
+        - field_country
+        - field_inscription_year
+        - field_inscription_criteria
+        - field_designation
+        - body
+        - field_image
+        - assessment_rating
+        - field_assessments
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+        settings:
+          wrapper: h1
+          class: ''
+          link: false
+      assessment_rating:
+        plugin_id: assessment_rating
+        weight: 7
+        label: hidden
+        formatter: image
+id: node.site.pdf
+targetEntityType: node
+bundle: site
+mode: pdf
+content:
+  body:
+    type: text_default
+    weight: 5
+    region: ds_content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_assessments:
+    weight: 8
+    label: hidden
+    settings:
+      view_mode: pdf
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: entity_reference_entity_view
+    region: ds_content
+  field_country:
+    type: entity_reference_label
+    weight: 1
+    region: ds_content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_designation:
+    type: entity_reference_list
+    weight: 4
+    region: ds_content
+    label: inline
+    settings:
+      separator: ','
+      link: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_image:
+    type: image
+    weight: 6
+    region: ds_content
+    label: hidden
+    settings:
+      image_style: sites_thumbnail
+      image_link: ''
+    third_party_settings: {  }
+  field_inscription_criteria:
+    type: entity_reference_list
+    weight: 3
+    region: ds_content
+    label: inline
+    settings:
+      separator: ','
+      link: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_inscription_year:
+    type: datetime_custom
+    weight: 2
+    region: ds_content
+    label: inline
+    settings:
+      timezone_override: ''
+      date_format: 'Y'
+    third_party_settings: {  }
+hidden:
+  field_area: true
+  field_buffer_zone: true
+  field_buffer_zone_area: true
+  field_category: true
+  field_coordinate_x: true
+  field_coordinate_y: true
+  field_cultural_landscape: true
+  field_current_assessment: true
+  field_danger_list: true
+  field_geolocation: true
+  field_mixed_site: true
+  field_serial: true
+  field_site_id: true
+  field_theme: true
+  field_transboundary: true
+  field_unesco_id: true
+  field_wdpa_id: true
+  langcode: true
+  links: true
+  site_assessments_link: true
+  site_assessments_rating: true

@@ -23,8 +23,6 @@ dependencies:
   - paragraphs
   - path
   - search_api
-  - search_api_autocomplete
-  - search_api_solr
   - smart_trim
   - system
   - taxonomy

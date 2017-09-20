@@ -62,7 +62,7 @@
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass(classes, 'field--item') }}> Inscribed in {{ item.content }}</div>
+      <div{{ attributes.addClass(classes, 'field--item') }}> {{ 'Inscribed in'|t }} {{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}

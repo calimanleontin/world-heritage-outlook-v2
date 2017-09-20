@@ -10,14 +10,14 @@ dependencies:
 id: globaloutlookstatistics
 theme: iucn_who
 region: content
-weight: -10
+weight: -12
 provider: null
 plugin: home_page_statistics
 settings:
   id: home_page_statistics
-  label: 'Global outlook statistics'
+  label: 'Global results from the 2017 IUCN World Heritage Outlook'
   provider: iucn_who_homepage
-  label_display: '0'
+  label_display: visible
 visibility:
   request_path:
     id: request_path

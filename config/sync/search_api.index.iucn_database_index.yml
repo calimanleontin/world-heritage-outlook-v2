@@ -11,10 +11,15 @@ dependencies:
     - field.storage.node.field_publication_year
     - field.storage.node.field_current_assessment
     - field.storage.node.field_as_global_assessment_level
+    - field.storage.node.field_as_benefits
+    - field.storage.paragraph.field_as_benefits_category
+    - field.storage.node.field_as_threats_current
+    - field.storage.paragraph.field_as_threats_categories
     - search_api.server.iucn_database
   module:
     - taxonomy
     - node
+    - paragraphs
     - search_api
 id: iucn_database_index
 name: 'Iucn database index'
@@ -28,6 +33,10 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  url:
+    label: URI
+    property_path: search_api_url
+    type: string
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -121,6 +130,37 @@ field_settings:
         - field.storage.node.field_as_global_assessment_level
       module:
         - node
+  field_as_benefits_category:
+    label: 'Current assessment » Content » Benefits » Paragraph » Category'
+    datasource_id: 'entity:node'
+    property_path: 'field_current_assessment:entity:field_as_benefits:entity:field_as_benefits_category'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_current_assessment
+        - field.storage.node.field_as_benefits
+        - field.storage.paragraph.field_as_benefits_category
+      module:
+        - node
+        - paragraphs
+  field_as_threats_categories:
+    label: 'Current assessment » Content » Current threats » Paragraph » Categories'
+    datasource_id: 'entity:node'
+    property_path: 'field_current_assessment:entity:field_as_threats_current:entity:field_as_threats_categories'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_current_assessment
+        - field.storage.node.field_as_threats_current
+        - field.storage.paragraph.field_as_threats_categories
+      module:
+        - node
+        - paragraphs
+  title_sort:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
 datasource_settings:
   'entity:node':
     bundles:

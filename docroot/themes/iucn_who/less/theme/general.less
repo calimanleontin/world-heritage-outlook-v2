@@ -6,7 +6,6 @@ html {
 }
 body {
   font-size: unit(@font-size-base) / @rem-system-base * 100%;
-  overflow-x: hidden;
 }
 // Show focus outlines only if navigating with keyboard
 body:not(.show-focus-outlines) {
@@ -29,6 +28,7 @@ body:not(.show-focus-outlines) {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  overflow-x: hidden;
 }
 @media (max-width: @grid-float-breakpoint-max) {
   .holygrail,
@@ -79,6 +79,16 @@ table.table-striped {
     }
   }
 }
+
+.collapse-toggle {
+  &, &:hover, &:active, &:focus {
+    color: @text-color;
+  }
+  @media @grid-desktop {
+    cursor: default;
+  }
+}
+
 // Generic collapse icon
 .icon-collapse {
   &:before {
@@ -93,6 +103,22 @@ table.table-striped {
   .open > a > &:before {
     content: '—';
   }
+}
+.back-icon,
+.go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: @line-height-base * 1em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.back-icon {
+  .svg-icon(icon-backarrow-light-blue);
+}
+.go-to-icon {
+  .svg-icon(icon-arrow-light-blue);
 }
 
 a.is-active {

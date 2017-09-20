@@ -33,7 +33,6 @@ set classes = [
                 {% if content.right_2|render %}
                         <div id="download-publication-button">
                             <a href="{{ file_url(download_pdf_uri) }}" download>
-                                <i class="glyphicon glyphicon-download"></i>
                                 {% trans %}
                                 Download the report
                                 {% endtrans %}
@@ -45,7 +44,8 @@ set classes = [
         <div class="row">
             <div class="col-sm-8">
                 <div class="publications-back-button">
-                    <a href="#" class="publications-back-button-a"><i class="backicon"></i>{% trans %}Back{% endtrans %}</a>
+                    <a href="#" class="back-button"><i class="back-icon"></i>{% trans %}Back{% endtrans %}</a>
+                    <a href="#" class="go-to-button">{% trans %}Go to publications{% endtrans %}<i class="go-to-icon"></i></a>
                 </div>
             </div>
         </div>

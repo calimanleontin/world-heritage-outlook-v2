@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * This module enables iucn_pdf functionality.
+ */
+
+/**
+ * Implements hook_node_update().
+ */
+function iucn_pdf_node_update(Drupal\node\Entity\Node $node) {
+  /** @var \Drupal\node\Entity\Node $node */
+  if (($node->bundle() == 'site')||($node->bundle() == 'site_assessment') && $node->isPublished()) {
+    /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
+    $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
+    $print_pdf->addToQueue($node);
+  }
+}
+
+/**
+ * Determine the assessment year to show for a site.
+ */
+function iucn_pdf_assessment_year_display(\Drupal\node\Entity\Node $site) {
+  if ($site->field_assessments->count() == 0) {
+    return NULL;
+  }
+
+  $iucn_config = \Drupal::config('iucn_who.settings');
+  /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
+  $param_helper = \Drupal::service('iucn_pdf.param_helper');
+  $year = $param_helper->get('year', $iucn_config->get('assessment_year'));
+
+  $active_date = $site->field_assessments->entity->field_as_cycle->value;
+  foreach ($site->field_assessments as $assessment) {
+    if ($assessment->entity->field_as_cycle->value == $year) {
+      $active_date = $year;
+      break;
+    }
+  }
+  return $active_date;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function iucn_pdf_cron() {
+  /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
+  $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
+  $print_pdf->runCron();
+}

@@ -1,0 +1,7 @@
+iucn_pdf.settings:
+  type: config_object
+  label: 'Iucn PDF settings'
+  mapping:
+    sites_per_cron:
+      type: integer
+      label: 'Site per cron'

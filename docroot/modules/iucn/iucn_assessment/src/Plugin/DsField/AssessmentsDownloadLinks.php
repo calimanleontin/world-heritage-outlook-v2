@@ -23,6 +23,7 @@ class AssessmentsDownloadLinks extends DsFieldBase {
     /* @var $node \Drupal\node\NodeInterface */
     $node = $this->entity();
 
+    $element = [];
     $links = [];
     if ($node->hasField('field_assessments')) {
       if ($node->field_assessments->count()) {
@@ -31,7 +32,8 @@ class AssessmentsDownloadLinks extends DsFieldBase {
             continue;
           }
           $value = [
-            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
+            'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
+//            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
             'title' => $this->t('Site Assessment @year', ['@year' => $item->entity->field_as_cycle->value]),
           ];
           $value['attributes']['target'][] = '_blank';
@@ -40,13 +42,17 @@ class AssessmentsDownloadLinks extends DsFieldBase {
       }
     }
 
-    return [
-      '#theme' => 'links',
-      '#links' => $links,
-      '#cache' => [
-        'tags' => $node->getCacheTags(),
-      ],
-    ];
+    if (!empty($links)) {
+      $element = [
+        '#theme' => 'links',
+        '#links' => $links,
+        '#cache' => [
+          'tags' => $node->getCacheTags(),
+        ],
+      ];
+    }
+
+    return $element;
 
   }
 

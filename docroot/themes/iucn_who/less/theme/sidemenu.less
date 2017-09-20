@@ -60,7 +60,7 @@
     bottom: 0;
     transform+_: translateX(110%);
     transition+_: all .3s;
-    width: 90%;
+    width: 85%;
     z-index: @zindex-modal-background + 2;
     // box-shadow: -3px 0px 21px fade(#000, 60%);
     &.open {
@@ -84,10 +84,13 @@
     display: block;
   }
   .modal-backdrop {
-    display: none;
+    display: none !important;
   }
 }
 
 .sidemenu-open {
   &:extend(.menu-open all);
+  @media @grid-desktop {
+    overflow: auto;
+  }
 }

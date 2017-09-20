@@ -1,104 +1,206 @@
 <?php
 
+
+function iucn_assessment_theme() {
+  return [
+    'field_group_html_element_list' => [
+      'render element' => 'element',
+      'template' => 'field-group-html-element-list',
+    ],
+    'rating_image_switcher' => [
+      'render element' => 'element',
+      'template' => 'rating-image-switcher',
+    ],
+  ];
+
+}
+
+function template_preprocess_rating_image_switcher(&$variables) {
+  $element = $variables['element'];
+  $variables['images'] = $element['#images'];
+  $variables['years'] = $element['#years'];
+
+  $iucn_config = \Drupal::config('iucn_who.settings');
+  $year = $iucn_config->get('assessment_year');
+  $variables['active_year'] = $year;
+
+}
+
+function template_preprocess_field_group_html_element_list(&$variables) {
+
+  $element = $variables['element'];
+
+  if (!empty($element['#title']) && !empty($element['#title_element'])) {
+    $variables['title_element'] = $element['#title_element'];
+    $variables['title'] = $element['#title'];
+  }
+
+  $variables['wrapper_element'] = $element['#wrapper_element'];
+  $variables['attributes'] = $element['#attributes'];
+  $variables['list'] = $element['list'];
+
+}
+
+
+
 /**
  * Implements hook_node_update().
  */
 function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
-  // Assign to the site the current assessment if it's the latest one.
-  if ($node->bundle() == 'site_assessment'
-    && $node->isPublished()
-    && !empty($node->field_as_site->entity)) {
+  if ($node->bundle() == 'site_assessment' && !empty($node->field_as_site->entity)) {
     $site = $node->field_as_site->entity;
-    if (empty($site->field_current_assessment->entity)) {
-      $site->field_current_assessment = [['target_id' => $node->id()]];
+    if (!empty($site)) {
+      // Reset site assessments for this site.
+      _iunc_assessment_set_site_assessments($site);
+      $site->save();
     }
-    else {
-      $curr_date = $node->field_as_cycle->value;
-      $date = $site->field_current_assessment->entity->field_as_cycle->value;
-      if ($curr_date > $date) {
-        $site->field_current_assessment = [['target_id' => $node->id()]];
-      }
-    }
-    $site->save();
   }
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view_alter().
+ * Implements hook_preprocess_field().
  */
-function iucn_assessment_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
-//  if ($display->id() == 'node.site.default') {
-//    foreach ($build['field_assessments']['#items'] as $assessment) {
-//      if ($assessment->entity->field_as_cycle->value == 2017) {
-//        $build['field_assessments']['#items'] = [$assessment];
-//        break;
-//      }
-//    }
-//    dpm($build['field_assessments']['#items']);
-//  }
-}
-
-function iucn_assessment_year_display(\Drupal\node\Entity\Node $site) {
-  if ($site->field_assessments->count() == 0) {
-    return NULL;
-  }
-  $request = Drupal::request();
-  // TODO default year ?!
-  $year = $request->get('year', 2017);
-  $active_date = $site->field_assessments->entity->field_as_cycle->value;
-  foreach ($site->field_assessments as $assessment) {
-    if ($assessment->entity->field_as_cycle->value == $year) {
-      $active_date = $year;
-      break;
-    }
-  }
-  return $active_date;
-}
-
 function iucn_assessment_preprocess_field(&$variables) {
-  if ($variables['field_name'] == 'field_assessments') {
-    $variables['element']['#cache']['contexts'][] = 'url';
-    if (empty($variables['items'])) {
-      // TODO
-    }
-    else {
-      $display_year = iucn_assessment_year_display($variables['element']['#object']);
-      $showing_item = NULL;
-      foreach ($variables['items'] as $item) {
-        /* @var \Drupal\node\Entity\Node $assessment */
-        $assessment = $item['content']['#node'];
-        if ($assessment->field_as_cycle->value == $display_year) {
-          $showing_item = $item;
-          $variables['element']['#cache']['tags'][] = 'node:' . $assessment->id();
-          break;
+  switch ($variables['field_name']) {
+    case 'field_assessments':
+      $variables['element']['#cache']['contexts'][] = 'url';
+      // We have done this to support switcher between years on display.
+      // In the end we just use it for print view mode.
+      if (!empty($variables['items'])) {
+        if (
+          (\Drupal::routeMatch() == 'iucn_pdf.download')
+          ||
+          (\Drupal::routeMatch() == 'iucn_pdf.download.debug')
+        ) {
+          $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
         }
+        else {
+          $iucn_config = \Drupal::config('iucn_who.settings');
+          $display_year = $iucn_config->get('assessment_year');
+        }
+        $showing_item = NULL;
+        foreach ($variables['items'] as $item) {
+          /* @var \Drupal\node\Entity\Node $assessment */
+          $assessment = $item['content']['#node'];
+          if ($assessment->field_as_cycle->value == $display_year) {
+            $showing_item = $item;
+            $variables['element']['#cache']['tags'][] = 'node:' . $assessment->id();
+            break;
+          }
+        }
+        $variables['items'] = !empty($showing_item) ? [$showing_item] : [];
       }
-      $variables['items'] = !empty($showing_item) ? [$showing_item] : [];
-    }
+      break;
+
+    case 'field_as_protection':
+      // Sort this field by taxonomy term.
+      if (empty($variables['items'][0]['content']['#paragraph'])) {
+        break;
+      }
+      $items = $variables['items'];
+      usort($items,
+      function($a, $b) {
+        $a_weight = 0;
+        if ($a['content']['#paragraph']->field_as_protection_topic->count()) {
+          $a_weight = $a['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
+        }
+        $b_weight = 0;
+        if ($b['content']['#paragraph']->field_as_protection_topic->count()) {
+          $b_weight = $b['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
+        }
+        if ($a_weight == $b_weight) {
+          return 0;
+        }
+        return ($a_weight < $b_weight) ? -1 : 1;
+      }
+      );
+      $variables['items'] = $items;
+      break;
+
+    case 'field_as_references':
+      // Sort this field by string alphabetically.
+      if (empty($variables['items'][0]['content']['#context']['value'])) {
+        break;
+      }
+      $items = $variables['items'];
+      usort($items,
+        function($a, $b) {
+          $a_string = $a['content']['#context']['value'];
+          $b_string = $b['content']['#context']['value'];
+          return (strcmp($a_string, $b_string));
+        }
+      );
+      $variables['items'] = $items;
+      break;
+
+    default:
+      break;
   }
 }
 
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
 function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
   if ($node->bundle() == 'site' && !$node->isNew()) {
-    $query = \Drupal::entityQuery('node');
-    $query->condition('status', 1);
-    $query->condition('type', 'site_assessment');
-    $query->condition('field_as_site.target_id', $node->id());
-    $entity_ids = $query->execute();
-    $field_values = [];
-    if (!empty($entity_ids)) {
-      foreach ($entity_ids as $id) {
-        $field_values[] = ['target_id' => $id];
-      }
-    }
-    $node->field_assessments = $field_values;
+    _iunc_assessment_set_site_assessments($node);
   }
+}
+
+function _iunc_assessment_set_site_assessments($node) {
+  // Set assessment field.
+  $query = \Drupal::entityQuery('node');
+  $query->condition('status', 1);
+  $query->condition('type', 'site_assessment');
+  $query->condition('field_as_site.target_id', $node->id());
+  $entity_ids = $query->execute();
+  $field_values = [];
+  if (!empty($entity_ids)) {
+    foreach ($entity_ids as $id) {
+      $field_values[] = ['target_id' => $id];
+    }
+  }
+  $node->field_assessments = $field_values;
+
+  $iucn_config = \Drupal::config('iucn_who.settings');
+  $current_year = $iucn_config->get('assessment_year');
+
+  // Set current assessment.
+  $query = \Drupal::entityQuery('node');
+  $query->condition('status', 1);
+  $query->condition('type', 'site_assessment');
+  $query->condition('field_as_site.target_id', $node->id());
+  $query->condition('field_as_cycle.value', $current_year);
+  $field_values = [];
+  $entity_ids = $query->execute();
+  if (!empty($entity_ids)) {
+    foreach ($entity_ids as $id) {
+      $field_values[] = ['target_id' => $id];
+    }
+  }
+  $node->field_current_assessment = $field_values;
+
+
 }
 
 function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_object) {
   if (!empty($element['#group_name']) && $element['#group_name'] == 'group_conservation_outlook') {
     if (!empty($element['field_as_end_date']['#object']->field_as_cycle)) {
       $element['#title'] = $element['field_as_end_date']['#object']->field_as_cycle->value . ' ' . $element['#title'];
+    }
+  }
+}
+
+/**
+ * Implements hook_webform_element_alter().
+ */
+function iucn_assessment_webform_element_alter(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, array $context) {
+  if ($element['#webform_id'] == 'site_feedback--subject' && $element['#webform_key'] == 'subject') {
+    /* @var \Drupal\node\Entity\Node $node */
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if (is_object($node) && $node->bundle() == 'site') {
+      $element['#default_value'] = t('Feedback on @site', ['@site' => $node->getTitle()]);
+      $element['#attributes']['readonly'] = 'readonly';
     }
   }
 }

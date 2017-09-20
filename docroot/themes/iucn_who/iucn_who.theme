@@ -7,6 +7,8 @@
  */
 
 use Drupal\Core\Template\Attribute;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -28,38 +30,49 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
  * Implements hook_preprocess_HOOK() for block templates.
  */
 function iucn_who_preprocess_block(&$variables) {
-  // switch ($variables['base_plugin_id']) {
-  //   case 'system_branding_block':
-  //     $variables['site_logo'] = '';
-  //     if ($variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri']) {
-  //       $variables['site_logo'] = str_replace('.svg', '.png', $variables['content']['site_logo']['#uri']);
-  //     }
-  //     break;
+  switch ($variables['base_plugin_id']) {
+    case 'home_page_map':
+      $variables['#attached']['library'][] = 'iucn_who/iucn-mobile-chrome-vh-fix';
+      break;
 
-  // }
-  if ($variables['base_plugin_id'] == 'home_page_map') {
-    $variables['#attached']['library'][] =  'iucn_who/iucn-mobile-chrome-vh-fix';
+    case 'page_title_block':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($node && $node->bundle() == 'site') {
+        $variables['content']['#access'] = FALSE;
+      }
+      break;
+
+    case 'search_api_sorts_block':
+      if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage') {
+        $items = &$variables['content']['links']['#items'][0];
+        $items['#cache']['max-age'] = 0;
+        if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
+          $items['#label'] .= ' A-Z';
+        }
+        else {
+          $items['#label'] .= ' Z-A';
+        }
+      }
+      if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
+        $items = &$variables['content']['links']['#items'][0];
+        if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
+          $items['#label'] = t('Sort from oldest to newest');
+        }
+      }
+      break;
+
+    default:
+      break;
+
   }
 
   if (isset($variables['elements']['#id'])) {
-      $block_id = $variables['elements']['#id'];
-      $block = \Drupal\block\Entity\Block::load($block_id);
+    $block_id = $variables['elements']['#id'];
+    $block = \Drupal\block\Entity\Block::load($block_id);
 
-      if ($block) {
-        $variables['content']['#attributes']['data-block_id'] = $block_id;
-        $variables['content']['#attributes']['data-region'] = $block->getRegion();
-      }
-  }
-
-  // Change search api sort label based on sort order.
-  if (isset($variables['content']['links']['#items'][0]['#theme'])) {
-    if ($variables['content']['links']['#items'][0]['#theme'] == 'search_api_sorts_sort') {
-      $url = $variables['content']['links']['#items'][0]['#url'];
-      if (strpos($url, '/publications') !== FALSE) {
-        if (strpos($url, 'order=asc') !== FALSE) {
-          $variables['content']['links']['#items'][0]['#label'] = t('Sort from oldest to newest');
-        }
-      }
+    if ($block) {
+      $variables['content']['#attributes']['data-block_id'] = $block_id;
+      $variables['content']['#attributes']['data-region'] = $block->getRegion();
     }
   }
 }
@@ -92,6 +105,35 @@ function _iucn_who_preprocess_set_background(&$variables, Drupal\paragraphs\Enti
 function iucn_who_preprocess_page(&$variables) {
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     unset($variables['page']['header']['iucn_who_page_title']);
+  }
+
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node) {
+    $nodes_views = [
+      'site' => 'view.sites_search.sites_search_page_database',
+      'publication' => 'view.publications.publications_page_database',
+    ];
+
+    if (!empty($nodes_views[$node->bundle()])) {
+      $view_url = Url::fromRoute($nodes_views[$node->bundle()])->toString();
+      $variables['#attached']['library'][] = 'iucn_who/back-to-js';
+      $variables['#attached']['drupalSettings']['iucn_who']['go_to_buttons']['view_url'] = $view_url;
+    }
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_image().
+ */
+function iucn_who_preprocess_image(&$variables) {
+  // Some images should show title as caption.
+  // The use-title-caption attributes is a common flag for this.
+  // see preprocess_field to check where it is set.
+  if (!empty($variables['attributes']['use-title-caption'])) {
+    unset($variables['attributes']['use-title-caption']);
+    $variables['use_title_caption'] = TRUE;
   }
 }
 
@@ -178,12 +220,41 @@ function iucn_who_preprocess_field(&$variables) {
       if (!empty($variables['element']['#object']->field_as_global_assessment_level->entity)) {
         $variables['attributes']['class'][] = $variables['element']['#object']->field_as_global_assessment_level->entity->field_css_identifier->value;
       }
+      break;
   }
+
+  // Set attributes use-title-caption for some fields on full mode.
+  $image_fields = [
+    'field_publication_image',
+    'field_image',
+    'field_benefit_image',
+  ];
+  $is_image_field = in_array($variables['field_name'], $image_fields);
+  $is_full_mode = !empty($variables['element']['#view_mode'])
+    && $variables['element']['#view_mode'] == 'full';
+  if ($is_image_field && $is_full_mode && !empty($variables['items'])) {
+    foreach ($variables['items'] as &$item) {
+      $item['content']['#item_attributes']['use-title-caption'] = 1;
+    }
+  }
+
 }
 
 function iucn_who_preprocess_form_element(&$variables) {
   if (!empty($variables['name']) && $variables['name'] == 'lang_dropdown_select') {
     $id = $variables['element']['#attributes']['id'];
     $variables['label']['#id'] = $id;
+  }
+}
+
+function iucn_who_preprocess_iucn_who_sites_search(&$variables) {
+  $variables['attributes']['class'][] = 'sites-rating';
+  if ($node = $variables['content']['#node']) {
+    if ($node->field_current_assessment->entity && $node->field_current_assessment->entity->field_as_global_assessment_level) {
+      if ($current_assessment = $node->field_current_assessment->entity->field_as_global_assessment_level->entity) {
+        $variables['attributes']['class'][] = $current_assessment->field_css_identifier->value;
+        $variables['rating'] = $current_assessment->name->value;
+      }
+    }
   }
 }

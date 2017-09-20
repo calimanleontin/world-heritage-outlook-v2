@@ -7,16 +7,16 @@ dependencies:
 id: site
 label: Site
 type: 'canonical_entities:node'
-pattern: 'sites/wdpaid/[node:field_wdpa_id]'
+pattern: '/explore-sites/wdpaid/[node:field_wdpa_id]'
 selection_criteria:
-  c126ab0f-a9c2-4e6e-8905-d87db1cd34ce:
+  394648c1-119a-4a2c-a99a-9d50f3118572:
     id: node_type
     bundles:
       site: site
     negate: false
     context_mapping:
       node: node
-    uuid: c126ab0f-a9c2-4e6e-8905-d87db1cd34ce
+    uuid: 394648c1-119a-4a2c-a99a-9d50f3118572
 selection_logic: and
 weight: -5
 relationships: {  }

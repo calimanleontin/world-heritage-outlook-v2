@@ -1,0 +1,28 @@
+uuid: 8f15abc5-3141-4b88-9295-add69dd81387
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.threat
+  module:
+    - facets
+    - system
+  theme:
+    - iucn_who
+id: threat
+theme: iucn_who
+region: facets
+weight: -12
+provider: null
+plugin: 'facet_block:threat'
+settings:
+  id: 'facet_block:threat'
+  label: Threat
+  provider: facets
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /explore-sites
+    negate: false
+    context_mapping: {  }

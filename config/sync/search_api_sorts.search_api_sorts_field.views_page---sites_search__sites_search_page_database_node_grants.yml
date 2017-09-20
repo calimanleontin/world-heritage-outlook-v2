@@ -1,0 +1,11 @@
+uuid: 50bd320c-5b24-48c2-beea-fb6e69775d21
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_node_grants
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: node_grants
+default_sort: false
+default_order: asc
+label: 'Node access information'
+weight: 0

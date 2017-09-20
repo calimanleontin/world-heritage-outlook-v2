@@ -1,0 +1,11 @@
+uuid: e625cd86-355a-45e5-bddc-0f75cbd44303
+langcode: en
+status: false
+dependencies: {  }
+id: views_page---sites_search__sites_search_page_database_uid
+display_id: views_page---sites_search__sites_search_page_database
+field_identifier: uid
+default_sort: false
+default_order: asc
+label: 'Authored by'
+weight: 0

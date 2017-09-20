@@ -46,4 +46,8 @@ content:
     region: ds_content
 hidden:
   description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_css_identifier: true
   langcode: true

@@ -23,11 +23,11 @@
 {% if content %}
   <section{{ attributes.addClass(classes) }}>
     <h2 class="facets-title">
-      <a class="facets-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
+      <a class="collapse-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
         <span class='caret-triangle'></span>Filters
       </a>
     </h2>
-    <div class="collapse in" id="facets-collapse">
+    <div class="collapse fade in" id="facets-collapse">
       <div class="facets-content">
         <div class="facets-subtitle">Choose one or more filters to refine your search.</div>
         <div id="facets-group" role="tablist" aria-multiselectable="true" class="panel-group">

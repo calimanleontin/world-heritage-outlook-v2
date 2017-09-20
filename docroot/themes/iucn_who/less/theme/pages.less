@@ -1,5 +1,7 @@
-// Search page
-.path-sites-search {
+/* ==========================================================================
+    Search page
+    ========================================================================== */
+.path-@{site-search-path} {
   .page-header {
     border-left: none;
     padding-left: 0;
@@ -9,27 +11,12 @@
       padding-left: @grid-gutter-width / 2;
     }
   }
-  .view-sites-search {
-    .view-header {
-      margin-top: -7px;
-      margin-bottom: 17px;
-      padding: 0px;
-      .sites-search-results {
-        font-size: 11px;
-        margin-top: 0px;
-      }
-      .sites-search-clear {
-        font-size: 1em;
-        .light-link();
-      }
-    }
-  }
-
 }
 
-// Benefits detail page
-.field--name-field-benefit-image {
-  .iucn-who-1col-cont-fluid-wrapper & {
-    .remify(margin-bottom, 70px);
+.page-node-type-site {
+  @media @grid-desktop {
+    .header-container, .contained-content {
+      > .region { padding-right: 11em; }
+    }
   }
 }

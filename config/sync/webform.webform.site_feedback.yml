@@ -10,19 +10,19 @@ id: site_feedback
 title: 'Give us feedback'
 description: '<span class="aui-legend">Site Feedback </span>'
 category: ''
-elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your suggestions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\n"
+elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your suggestions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\nsubject:\n  '#type': textfield\n  '#title': Subject\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\ncaptcha:\n  '#type': captcha\n"
 css: ''
 javascript: ''
 settings:
   ajax: false
   page: true
-  page_submit_path: contact-us/site-feedback
+  page_submit_path: /about/contact-us/site-feedback
   page_confirm_path: ''
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
   form_convert_anonymous: false
@@ -58,9 +58,9 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: page
+  confirmation_type: message
   confirmation_title: 'Site Feedback'
-  confirmation_message: "Thank You.<br />\r\nYour message has been successfully sent."
+  confirmation_message: "Thank You.<br />\r\nYour feedback has been successfully sent."
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -112,4 +112,32 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  email:
+    id: email
+    label: Email
+    handler_id: email
+    status: true
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: default
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: default
+      from_options: {  }
+      from_name: default
+      subject: '[webform_submission:values:subject:raw]'
+      body: default
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      html: true
+      attachments: false
+      debug: false
+      reply_to: ''
+      return_path: ''

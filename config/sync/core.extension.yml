@@ -4,6 +4,7 @@ module:
   block: 0
   block_content: 0
   breakpoint: 0
+  captcha: 0
   chosen: 0
   chosen_lib: 0
   ckeditor: 0
@@ -12,6 +13,7 @@ module:
   config_filter: 0
   config_split: 0
   config_translation: 0
+  contextual: 0
   crop: 0
   ctools: 0
   datetime: 0
@@ -21,6 +23,7 @@ module:
   editor: 0
   editor_advanced_link: 0
   editor_file: 0
+  entity_print: 0
   entity_reference_revisions: 0
   facets: 0
   facets_pretty_paths: 0
@@ -38,6 +41,7 @@ module:
   inline_responsive_images: 0
   iucn_assessment: 0
   iucn_migrate: 0
+  iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
   iucn_who_homepage: 0
@@ -49,6 +53,7 @@ module:
   linkit: 0
   locale: 0
   menu_block: 0
+  menu_breadcrumb: 0
   menu_link_attributes: 0
   menu_ui: 0
   migrate: 0
@@ -59,15 +64,17 @@ module:
   options: 0
   page_cache: 0
   path: 0
+  quickedit: 0
+  recaptcha: 0
   redirect: 0
   responsive_favicons: 0
   responsive_image: 0
   search: 0
   search_api: 0
-  search_api_autocomplete: 0
   search_api_db: 0
   search_api_solr: 0
   search_api_sorts: 0
+  search_autocomplete: 0
   slick: 0
   slick_views: 0
   smart_trim: 0

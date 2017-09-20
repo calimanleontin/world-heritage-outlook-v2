@@ -28,6 +28,10 @@ third_party_settings:
         - field_as_threats_threat
       terms:
         - field_as_threats_rating
+      terms_second:
+        - field_as_threats_in
+        - field_as_threats_extent
+        - field_as_threats_out
       description:
         - field_as_description
 id: paragraph.as_site_threat.default
@@ -36,12 +40,40 @@ bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 2
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: description
+  field_as_threats_extent:
+    type: entity_reference_label
+    weight: 3
+    region: terms_second
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_in:
+    type: boolean
+    weight: 2
+    region: terms_second
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Inside site'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_threats_out:
+    type: boolean
+    weight: 4
+    region: terms_second
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Outside site'
+      format_custom_false: ''
+    third_party_settings: {  }
   field_as_threats_rating:
     weight: 1
     label: hidden
@@ -58,9 +90,9 @@ content:
     type: basic_string
     region: title
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_as_threats_categories: true
-  field_as_threats_extent: true
-  field_as_threats_in: true
-  field_as_threats_out: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true
