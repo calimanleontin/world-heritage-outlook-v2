@@ -11567,52 +11567,52 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .iucn-assessment-value {
   margin-top: 1em;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default,
-.iucn-site-wrapper .panel-default .panel-default .panel-default {
+.iucn-site-wrapper .iucn-assessment-value .panel,
+.iucn-site-wrapper .panel .panel .panel {
   border-color: transparent;
   box-shadow: none;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-body,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-body {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-body,
+.iucn-site-wrapper .panel .panel .panel > .panel-body {
   padding-left: 0;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
   padding-right: 0;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h1,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h1,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h2,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h2,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h3,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h3,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h4,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h4,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h5,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h5,
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading h6,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading h6 {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h1,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h1,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h2,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h2,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h3,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h3,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h4,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h4,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h5,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h5,
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading h6,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading h6 {
   font-size: 1em;
   margin-top: 0;
   margin-bottom: 0;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading > .panel-title > *,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading > .panel-title > * {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading > .panel-title > *,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading > .panel-title > * {
   padding-left: 1em;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading > .panel-title,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading > .panel-title {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading > .panel-title,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading > .panel-title {
   font-weight: 700;
   margin-bottom: 0;
   position: relative;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-heading > .panel-title:before,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-heading > .panel-title:before {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-heading > .panel-title:before,
+.iucn-site-wrapper .panel .panel .panel > .panel-heading > .panel-title:before {
   background-image: url(../images/list-icon.svg);
   background-repeat: no-repeat;
   background-position: left center;
@@ -11627,52 +11627,52 @@ body.page-node-type-site #sidemenu {
   left: 15px;
   margin-top: .2em;
 }
-.iucn-site-wrapper .iucn-assessment-value .panel-default > .panel-body,
-.iucn-site-wrapper .panel-default .panel-default .panel-default > .panel-body {
+.iucn-site-wrapper .iucn-assessment-value .panel > .panel-body,
+.iucn-site-wrapper .panel .panel .panel > .panel-body {
   padding-top: 0;
 }
-.iucn-site-wrapper .panel-default .panel-heading {
+.iucn-site-wrapper .panel-heading {
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first,
+.iucn-site-wrapper .panel-heading .panel-title-terms-second {
   color: #134780;
   justify-content: flex-end;
   padding-left: 1em;
   text-align: right;
   white-space: nowrap;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first > .field + .field:not(:empty),
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second > .field + .field:not(:empty) {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first > .field + .field:not(:empty),
+.iucn-site-wrapper .panel-heading .panel-title-terms-second > .field + .field:not(:empty) {
   margin-left: 1em;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field--label,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field--label {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first .field--label,
+.iucn-site-wrapper .panel-heading .panel-title-terms-second .field--label {
   font-weight: normal;
   white-space: nowrap;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field__items > .field--label,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field__items > .field--label,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first .field__items > .field--item,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second .field__items > .field--item {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first .field__items > .field--label,
+.iucn-site-wrapper .panel-heading .panel-title-terms-second .field__items > .field--label,
+.iucn-site-wrapper .panel-heading .panel-title-terms-first .field__items > .field--item,
+.iucn-site-wrapper .panel-heading .panel-title-terms-second .field__items > .field--item {
   display: inline-block;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first:empty,
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second:empty {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first:empty,
+.iucn-site-wrapper .panel-heading .panel-title-terms-second:empty {
   display: none;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms {
+.iucn-site-wrapper .panel-heading .panel-title-terms {
   color: #134780;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first {
   display: flex;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first > .field {
+.iucn-site-wrapper .panel-heading .panel-title-terms-first > .field {
   display: flex;
 }
-.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second {
+.iucn-site-wrapper .panel-heading .panel-title-terms-second {
   font-size: .8em;
   font-weight: 500;
 }
