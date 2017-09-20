@@ -12717,6 +12717,40 @@ html[lang='es'] .image-rating-container.good {
   margin: 0 auto;
   width: 4.66666667em;
 }
+.html-list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.html-list > div:first-child:after {
+  content: ': ';
+}
+.html-list .inline-element-list {
+  align-items: center;
+  display: flex;
+  margin-left: 1em;
+}
+.html-list .inline-element-list:before {
+  border-radius: 50%;
+  border: 2px solid;
+  content: '';
+  display: inline-block;
+  height: 1px;
+  margin-right: .5em;
+  vertical-align: middle;
+  width: 1px;
+}
+.html-list .inline-element-list > div:first-child {
+  margin-right: .5em;
+}
+.html-list .inline-element-list > div:first-child:after {
+  content: ': ';
+}
+.html-list .inline-element-list > .field {
+  display: inline-block;
+}
+.html-list .inline-element-list > .field + .field:before {
+  content: ', ';
+}
 /* ==========================================================================
     Benefits case studies page
     ========================================================================== */

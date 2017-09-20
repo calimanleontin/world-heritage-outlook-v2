@@ -1045,3 +1045,40 @@ body.page-node-type-site {
     width: 70 / 15 * 1em;
   }
 }
+
+.html-list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  > div:first-child {
+    &:after { content: ': '; }
+  }
+  .inline-element-list {
+    align-items: center;
+    display: flex;
+    margin-left: 1em;
+    &:before {
+      border-radius: 50%;
+      border: 2px solid;
+      content: '';
+      display: inline-block;
+      height: 1px;
+      margin-right: .5em;
+      vertical-align: middle;
+      width: 1px;
+    }
+    > div:first-child {
+      margin-right: .5em;
+      &:after {
+        content: ': ';
+      }
+    }
+    > .field {
+      display: inline-block;
+      + .field {
+        &:before {
+          content: ', ';
+        }
+      }
+    }
+  }
+}
