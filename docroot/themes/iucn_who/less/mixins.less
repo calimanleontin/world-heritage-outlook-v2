@@ -199,18 +199,34 @@
 
 .iucn-base-btn-icons(@left-icon, @right-icon) {
   .iucn-base-btn-icons(@left-icon);
-    &:after {
-      .svg-icon(@right-icon);
-      background-position: center;
-      background-size: contain;
-      content: '';
-      display: inline-block;
-      height: 1em;
-      margin-left: .5em;
-      vertical-align: middle;
-      width: 1.5em;
-    }
+  &:after {
+    .svg-icon(@right-icon);
+    background-position: center;
+    background-size: contain;
+    content: '';
+    display: inline-block;
+    height: 1em;
+    margin-left: .5em;
+    vertical-align: middle;
+    width: 1.5em;
   }
+}
+// Filled versions
+.iucn-base-btn-icons(@left-icon, @fill) {
+  .iucn-base-btn-icons(@left-icon);
+  &:before {
+    .svg-icon(@left-icon, @fill);
+  }
+}
+.iucn-base-btn-icons(@left-icon, @right-icon, @fill) {
+  .iucn-base-btn-icons(@left-icon, @right-icon);
+  &:before {
+    .svg-icon(@left-icon, @fill);
+  }
+  &:after {
+    .svg-icon(@right-icon, @fill);
+  }
+}
 
 /* ==========================================================================
    Generators
