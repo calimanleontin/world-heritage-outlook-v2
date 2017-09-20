@@ -9,12 +9,13 @@ dependencies:
     - field.field.node.publication.field_file
     - field.field.node.publication.field_publication_image
     - field.field.node.publication.field_publication_year
+    - image.style.large
     - node.type.publication
   module:
-    - blazy
     - datetime
     - ds
     - file
+    - image
     - text
     - user
 third_party_settings:
@@ -69,59 +70,13 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_publication_image:
-    type: blazy
+    type: image
     weight: 4
     region: right_1
     label: hidden
     settings:
       image_style: large
-      thumbnail_style: ''
-      responsive_image_style: ''
-      media_switch: ''
-      box_style: ''
-      box_caption: ''
-      box_caption_custom: ''
-      ratio: ''
-      sizes: ''
-      breakpoints:
-        xs:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        sm:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        md:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        lg:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-        xl:
-          image_style: ''
-          width: ''
-          breakpoint: ''
-      current_view_mode: default
-      background: false
-      caption:
-        title: '0'
-        alt: '0'
-      iframe_lazy: true
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      optionset: default
-      skin: ''
-      style: ''
-      box_media_style: ''
-      grid: 0
-      grid_header: ''
-      grid_medium: 0
-      grid_small: 0
+      image_link: ''
     third_party_settings: {  }
   field_publication_year:
     weight: 6
@@ -133,6 +88,9 @@ content:
     type: datetime_custom
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_external_website: true
   langcode: true
   links: true

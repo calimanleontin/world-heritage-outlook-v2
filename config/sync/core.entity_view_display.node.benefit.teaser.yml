@@ -31,6 +31,7 @@ third_party_settings:
         link_custom: ''
         classes:
           layout_class: {  }
+          ds_content: {  }
     regions:
       ds_content:
         - field_benefit_image
@@ -116,7 +117,7 @@ content:
     settings:
       trim_length: '250'
       trim_type: chars
-      trim_suffix: ''
+      trim_suffix: …
       more_link: '1'
       more_text: 'Read more'
       trim_options:
@@ -125,6 +126,9 @@ content:
       summary_handler: full
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_benefit_category: true
   field_benefit_year: true
   field_page_elements: true

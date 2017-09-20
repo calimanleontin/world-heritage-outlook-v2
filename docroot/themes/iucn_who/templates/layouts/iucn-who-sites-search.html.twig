@@ -17,13 +17,12 @@
 <article {{ attributes.addClass('ds-2col', 'clearfix') }}>
 
 {% if content.left|render|trim is not empty %}
-    <div {{ attributes.addClass('left-content', 'group-left') }}>
+    <div class="left-content group-left" }}>
         {% if rating %}<div class="site-rating-label">{{ rating }}</div>{% endif %}
-        {{ content.left }}
     </div>
 {% endif %}
 
-<div {{ attributes.addClass('right-content', 'group-right') }}>
+<div class="right-content group-right" }}>
 {{ content.right }}
 </div>
 

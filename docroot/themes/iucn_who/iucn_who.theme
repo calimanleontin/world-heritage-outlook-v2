@@ -125,6 +125,19 @@ function iucn_who_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_image().
+ */
+function iucn_who_preprocess_image(&$variables) {
+  // Some images should show title as caption.
+  // The use-title-caption attributes is a common flag for this.
+  // see preprocess_field to check where it is set.
+  if (!empty($variables['attributes']['use-title-caption'])) {
+    unset($variables['attributes']['use-title-caption']);
+    $variables['use_title_caption'] = TRUE;
+  }
+}
+
+/**
  * Implements hook_page_attachments_alter().
  */
 function iucn_who_page_attachments_alter(array &$page) {
@@ -207,7 +220,24 @@ function iucn_who_preprocess_field(&$variables) {
       if (!empty($variables['element']['#object']->field_as_global_assessment_level->entity)) {
         $variables['attributes']['class'][] = $variables['element']['#object']->field_as_global_assessment_level->entity->field_css_identifier->value;
       }
+      break;
   }
+
+  // Set attributes use-title-caption for some fields on full mode.
+  $image_fields = [
+    'field_publication_image',
+    'field_image',
+    'field_benefit_image',
+  ];
+  $is_image_field = in_array($variables['field_name'], $image_fields);
+  $is_full_mode = !empty($variables['element']['#view_mode'])
+    && $variables['element']['#view_mode'] == 'full';
+  if ($is_image_field && $is_full_mode && !empty($variables['items'])) {
+    foreach ($variables['items'] as &$item) {
+      $item['content']['#item_attributes']['use-title-caption'] = 1;
+    }
+  }
+
 }
 
 function iucn_who_preprocess_form_element(&$variables) {
