@@ -69,10 +69,12 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8">
-        {% if content.assessment|render is not empty %}
+        {% if has_assessment %}
           {{ content.assessment }}
         {% else %}
-          <p>{{ 'Placeholder' }}</p>
+          <div class="no-assessment-placeholder">
+            <span>{{ 'Conservation Outlook Assessment coming soon'|t }}</span>
+          </div>
         {% endif %}
       </div>
       <div class="col-sm-4" id="sidemenu">

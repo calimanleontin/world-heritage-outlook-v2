@@ -986,3 +986,59 @@ body.page-node-type-site {
   });
 
 }
+
+/* ==========================================================================
+   No assessment placeholder
+   ========================================================================== */
+.no-assessment-placeholder {
+  .remify(max-height, 470px);
+  .remify(max-width, 450px);
+  color: #a6a7a7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20em;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  margin-top: 4em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  text-align: center;
+  width: 60%;
+  @media @grid-mobile {
+    max-height: 240px;
+    min-width: 240px;
+  }
+  &:before, &:after {
+    border: 1px solid @iucn-gray-lighter;
+    content: '';
+    display: block;
+    height: 2em;
+    width: 100%;
+  }
+  &:before {
+    border-bottom: none;
+  }
+  &:after {
+    border-top: none;
+  }
+  span {
+    .responsive(font-size, 21px, 14px);
+    .svg-icon(full_assessment-light-gray);
+    background-position: top center;
+    background-size: auto 5em;
+    line-height: 1.1;
+    margin: 0 auto;
+    max-width: 70%;
+    padding-top: 6em;
+    @media @grid-mobile {
+      max-width: 80%;
+    }
+  }
+  img {
+    // height: @line-height-base * 1em;
+    display: block;
+    margin: 0 auto;
+    width: 70 / 15 * 1em;
+  }
+}
