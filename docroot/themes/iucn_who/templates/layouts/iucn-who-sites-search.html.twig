@@ -19,6 +19,7 @@
 {% if content.left|render|trim is not empty %}
     <div class="left-content group-left">
       {% if rating %}<div class="site-rating-label">{{ rating }}</div>{% endif %}
+        {{ content.left }}
     </div>
 {% endif %}
 
