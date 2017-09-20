@@ -9058,7 +9058,7 @@ ol li.iucn-arrow:after {
 @media screen and (min-width: 768px) {
   .region-facets > .collapse,
   .region-facets > .collapsing {
-    display: block !important;
+    display: block;
     height: auto !important;
     opacity: 1;
     overflow: visible;
@@ -11991,7 +11991,7 @@ body.page-node-type-site #sidemenu {
 @media screen and (min-width: 768px) {
   .field--iucn-collapsible > .collapse,
   .field--iucn-collapsible > .collapsing {
-    display: block !important;
+    display: block;
     height: auto !important;
     opacity: 1;
     overflow: visible;
@@ -12234,6 +12234,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     right: 0;
     transition: opacity .2s;
     z-index: 1;
+    display: none;
   }
   .field--name-assessments-download-links:hover .collapse,
   .field--name-assessments-download-links:focus .collapse,
@@ -12242,6 +12243,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-assessments-download-links:focus .collapsing,
   .field--name-assessments-download-links:active .collapsing {
     opacity: 1;
+    display: block;
   }
   .field--name-assessments-download-links .field--item a {
     align-items: center;
