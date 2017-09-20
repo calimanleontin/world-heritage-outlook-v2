@@ -45,24 +45,15 @@
   padding-bottom: 1em;
   padding-top: 0.3em;
   a {
-    border-top: 1px solid;
-    padding-top: 0.5em;
-    display: inline-block;
-    text-align: left;
-    width: auto;
+    border-top: 1px solid #ddd;
     color: @iucn-blue-light;
-    border-top-color: #ddd;
-    padding-left: 1.6em;
-    position: relative;
+    display: inline-block;
     line-height: 1.2;
+    padding-top: 0.5em;
+    position: relative;
+    text-align: left;
     text-transform: uppercase;
-    .backicon {
-      &:extend(.path-frontpage .pdf-download-button a .glyphicon);
-      padding-top: 2em;
-      .svg-icon(icon-backarrow);
-      background-position: left center;
-      background-size: auto;
-    }
+    width: auto;
   }
   @media @grid-mobile {
     visibility: hidden;

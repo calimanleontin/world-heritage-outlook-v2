@@ -8666,6 +8666,24 @@ table.paragraph table tbody > tr:last-child.even {
 .open > a > .icon-collapse:before {
   content: '—';
 }
+.back-icon,
+.go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: 1.33333333em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.back-icon {
+  background-image: url(../images/icon-backarrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
+.go-to-icon {
+  background-image: url(../images/icon-arrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
 a.is-active {
   color: #03afdf;
 }
@@ -11128,24 +11146,6 @@ body.page-node-type-site #sidemenu {
 .region-site-title .sites-back-button > a,
 .region-site-title .sites-back-button > a a {
   color: #03afdf;
-}
-.region-site-title .sites-back-button .back-icon,
-.region-site-title .sites-back-button .go-to-icon {
-  background-position: center;
-  background-size: 1.5em;
-  content: '';
-  display: inline-block;
-  height: 1.33333333em;
-  vertical-align: middle;
-  width: 2.5em;
-}
-.region-site-title .sites-back-button .back-icon {
-  background-image: url(../images/icon-backarrow-light-blue.svg);
-  background-repeat: no-repeat;
-}
-.region-site-title .sites-back-button .go-to-icon {
-  background-image: url(../images/icon-arrow-light-blue.svg);
-  background-repeat: no-repeat;
 }
 @media screen and (max-width: 767px) {
   .region-site-title .sites-back-button {
@@ -13836,24 +13836,15 @@ fieldset[disabled] #download-publication-button a.focus {
   padding-top: 0.3em;
 }
 .publications-back-button a {
-  border-top: 1px solid;
-  padding-top: 0.5em;
-  display: inline-block;
-  text-align: left;
-  width: auto;
+  border-top: 1px solid #ddd;
   color: #03afdf;
-  border-top-color: #ddd;
-  padding-left: 1.6em;
-  position: relative;
+  display: inline-block;
   line-height: 1.2;
+  padding-top: 0.5em;
+  position: relative;
+  text-align: left;
   text-transform: uppercase;
-}
-.publications-back-button a .backicon {
-  padding-top: 2em;
-  background-image: url(../images/icon-backarrow.svg);
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: auto;
+  width: auto;
 }
 @media screen and (max-width: 767px) {
   .publications-back-button {
