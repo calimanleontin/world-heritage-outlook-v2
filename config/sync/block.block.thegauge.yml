@@ -1,0 +1,31 @@
+uuid: 471b52a0-862e-411a-941c-b04312b40e15
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:text:025056c9-f10d-4e64-9a69-3f43d842db00'
+  module:
+    - block_content
+    - system
+  theme:
+    - iucn_who
+id: thegauge
+theme: iucn_who
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'block_content:025056c9-f10d-4e64-9a69-3f43d842db00'
+settings:
+  id: 'block_content:025056c9-f10d-4e64-9a69-3f43d842db00'
+  label: 'The gauge'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /explore-sites
+    negate: false
+    context_mapping: {  }
