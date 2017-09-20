@@ -356,52 +356,7 @@ body.page-node-type-site {
   .iucn-assessment-value {
     margin-top: 1em;
   }
-  .iucn-assessment-value .panel,
-  .panel .panel .panel {
-    border-color: transparent;
-    box-shadow: none;
-    > .panel-heading,
-    > .panel-body {
-      padding-left: 0;
-    }
-    > .panel-heading {
-      background-color: transparent;
-      border-color: transparent;
-      box-shadow: none;
-      padding-right: 0;
-      // padding-bottom: 0;
-      h1, h2, h3, h4, h5, h6 {
-        font-size: 1em;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      > .panel-title > * {
-        padding-left: 1em;
-      }
-      > .panel-title {
-        font-weight: 700;
-        margin-bottom: 0;
-        position: relative;
-      }
-      > .panel-title:before {
-        .svg-icon(list-icon);
-        background-position: left center;
-        background-size: contain;
-        content: '';
-        display: block;
-        height: 1em;
-        vertical-align: middle;
-        width: 1em;
-        position: absolute;
-        top: 10px;
-        left: @grid-gutter-width / 2;
-        margin-top: .2em;
-      }
-    }
-    > .panel-body {
-      padding-top: 0;
-    }
-  }
+
   .panel-heading {
     align-items: flex-start;
     display: flex;
@@ -530,6 +485,54 @@ body.page-node-type-site {
       }
     }
   });
+}
+.iucn-assessment-panel-container .panel {
+  border-color: transparent;
+  box-shadow: none;
+  .panel-heading,
+  .panel-body {
+    padding-left: 0;
+  }
+  .panel-heading {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding-right: 0;
+    // padding-bottom: 0;
+    h1, h2, h3, h4, h5, h6 {
+      font-size: 1em;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  .panel-title > * {
+    padding-left: 1em;
+  }
+  .panel-title {
+    font-weight: 700;
+    margin-bottom: 0;
+    position: relative;
+    .field--items > .field--item {
+      display: inline;
+    }
+  }
+  .panel-title:before {
+    .svg-icon(list-icon);
+    background-position: left center;
+    background-size: contain;
+    content: '';
+    display: block;
+    height: 1em;
+    vertical-align: middle;
+    width: 1em;
+    position: absolute;
+    top: 10px;
+    left: @grid-gutter-width / 2;
+    margin-top: .2em;
+  }
+  .panel-body {
+    padding-top: 0;
+  }
 }
 
 .tab-pane#summary {
