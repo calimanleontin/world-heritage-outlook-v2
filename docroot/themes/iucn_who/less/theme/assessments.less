@@ -360,18 +360,22 @@ body.page-node-type-site {
   }
 
   .panel-heading {
-    align-items: flex-start;
-    display: flex;
-    justify-content: space-between;
+    @media @grid-desktop {
+      align-items: flex-start;
+      display: flex;
+      justify-content: space-between;
+    }
 
     .panel-title-terms-first,
     .panel-title-terms-second {
       color: @brand-primary;
-      justify-content: flex-end;
-      padding-left: 1em;
-      text-align: right;
+      .remify(padding-left, 21px);
       white-space: nowrap;
-      > .field + .field:not(:empty) { margin-left: 1em; }
+      @media @grid-desktop {
+        justify-content: flex-end;
+        text-align: right;
+      }
+
       .field--label {
         font-weight: normal;
         white-space: nowrap;
@@ -386,6 +390,7 @@ body.page-node-type-site {
     .panel-title-terms-first {
       display: flex;
       > .field { display: flex; }
+      > .field + .field:not(:empty) { margin-left: 1em; }
     }
     .panel-title-terms-second {
       font-size: .8em;
@@ -508,7 +513,7 @@ body.page-node-type-site {
     }
   }
   .panel-title > * {
-    padding-left: 1em;
+    .remify(padding-left, 21px);
   }
   .panel-title {
     font-weight: 700;
@@ -575,6 +580,9 @@ body.page-node-type-site {
 }
 
 .assessment-toggle {
+  @media @grid-mobile {
+    border-color: #7d7d7d;
+  }
   .panel-heading {
     > a:before {
       .svg-icon(collapse-minus);
@@ -594,12 +602,33 @@ body.page-node-type-site {
       .svg-icon(collapse-plus);
     }
   }
+  // @todo: add cutout triangle
+  // .assessment-toggle {
+  //   @media @grid-mobile {
+  //     > .panel-heading {
+  //       position: relative;
+  //       &:before {
+  //         background-color: red;
+  //         content: '';
+  //         display: block;
+  //         height: 2em;
+  //         position: absolute;
+  //         right: 0;
+  //         top: 0;
+  //         width: 2em;
+  //       }
+  //     }
+  //   }
+  // }
 }
 .assessment-section > h2 {
   &:extend(.iucn-publications-teaser-wrapper .field--name-node-title h2);
   color: @brand-primary;
   .assessment-section + & {
     margin-top: 4em;
+    @media @grid-mobile {
+      margin-top: 2em;
+    }
   }
 }
 .assessment-projects.assessment-toggle,
@@ -613,12 +642,16 @@ body.page-node-type-site {
     border-bottom: 1px solid;
     font-weight: 900;
     padding-left: 0;
+    @media @grid-mobile { border-bottom: 2px solid; }
     .panel-title {
       .remify(font-size, 25px);
     }
   }
   > .panel-collapse > .panel-body {
     padding-right: 0;
+    @media @grid-mobile {
+      padding-left: 0;
+    }
   }
 }
 
