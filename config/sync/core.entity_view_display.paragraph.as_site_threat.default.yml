@@ -25,7 +25,7 @@ third_party_settings:
       settings: {  }
     regions:
       title:
-        - field_as_threats_threat
+        - field_as_threats_categories
       terms:
         - field_as_threats_rating
       terms_second:
@@ -46,6 +46,16 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: description
+  field_as_threats_categories:
+    type: entity_reference_label
+    weight: 0
+    region: title
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_as_threats_extent:
     type: entity_reference_label
     weight: 3
@@ -82,17 +92,10 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: terms
-  field_as_threats_threat:
-    weight: 0
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: title
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_as_threats_categories: true
+  field_as_threats_threat: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true
