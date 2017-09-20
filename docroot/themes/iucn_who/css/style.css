@@ -8911,6 +8911,10 @@ ol li.iucn-arrow:after {
   top: 0;
   left: -1.5em;
 }
+.field--name-field-image img {
+  max-width: 100%;
+  height: auto;
+}
 .footer {
   background-color: #134780;
 }
