@@ -104,6 +104,22 @@ table.table-striped {
     content: '—';
   }
 }
+.back-icon,
+.go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: @line-height-base * 1em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.back-icon {
+  .svg-icon(icon-backarrow-light-blue);
+}
+.go-to-icon {
+  .svg-icon(icon-arrow-light-blue);
+}
 
 a.is-active {
   color: @component-active-color;

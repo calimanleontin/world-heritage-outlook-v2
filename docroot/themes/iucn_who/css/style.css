@@ -6943,8 +6943,6 @@ button.close {
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:before,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
-.view-benefits-list .view-content:before,
-.view-benefits-list .view-content:after,
 .iucn-site-wrapper .nav-tabs:before,
 .iucn-site-wrapper .nav-tabs:after {
   content: " ";
@@ -6969,7 +6967,6 @@ button.close {
 .filter-wrapper:after,
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
-.view-benefits-list .view-content:after,
 .iucn-site-wrapper .nav-tabs:after {
   clear: both;
 }
@@ -8666,6 +8663,24 @@ table.paragraph table tbody > tr:last-child.even {
 .open > a > .icon-collapse:before {
   content: '—';
 }
+.back-icon,
+.go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: 1.33333333em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.back-icon {
+  background-image: url(../images/icon-backarrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
+.go-to-icon {
+  background-image: url(../images/icon-arrow-light-blue.svg);
+  background-repeat: no-repeat;
+}
 a.is-active {
   color: #03afdf;
 }
@@ -9951,10 +9966,6 @@ h6.view-sites-search .view-header {
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
-.view-benefits-list .view-content {
-  margin-left: -15px;
-  margin-right: -15px;
-}
 @media screen and (max-width: 767px) {
   .sidemenu-toggle-wrapper {
     height: 50px;
@@ -11128,24 +11139,6 @@ body.page-node-type-site #sidemenu {
 .region-site-title .sites-back-button > a,
 .region-site-title .sites-back-button > a a {
   color: #03afdf;
-}
-.region-site-title .sites-back-button .back-icon,
-.region-site-title .sites-back-button .go-to-icon {
-  background-position: center;
-  background-size: 1.5em;
-  content: '';
-  display: inline-block;
-  height: 1.33333333em;
-  vertical-align: middle;
-  width: 2.5em;
-}
-.region-site-title .sites-back-button .back-icon {
-  background-image: url(../images/icon-backarrow-light-blue.svg);
-  background-repeat: no-repeat;
-}
-.region-site-title .sites-back-button .go-to-icon {
-  background-image: url(../images/icon-arrow-light-blue.svg);
-  background-repeat: no-repeat;
 }
 @media screen and (max-width: 767px) {
   .region-site-title .sites-back-button {
@@ -12654,6 +12647,74 @@ html[lang='es'] .image-rating-container.good {
   background-repeat: no-repeat;
 }
 /* ==========================================================================
+   No assessment placeholder
+   ========================================================================== */
+.no-assessment-placeholder {
+  max-height: 470px;
+  max-height: 47rem;
+  max-width: 450px;
+  max-width: 45rem;
+  color: #a6a7a7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 20em;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  margin-top: 4em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  text-align: center;
+  width: 60%;
+}
+@media screen and (max-width: 767px) {
+  .no-assessment-placeholder {
+    max-height: 240px;
+    min-width: 240px;
+  }
+}
+.no-assessment-placeholder:before,
+.no-assessment-placeholder:after {
+  border: 1px solid #e1e1e1;
+  content: '';
+  display: block;
+  height: 2em;
+  width: 100%;
+}
+.no-assessment-placeholder:before {
+  border-bottom: none;
+}
+.no-assessment-placeholder:after {
+  border-top: none;
+}
+.no-assessment-placeholder span {
+  font-size: 21px;
+  font-size: 2.1rem;
+  background-image: url(../images/full_assessment-light-gray.svg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: auto 5em;
+  line-height: 1.1;
+  margin: 0 auto;
+  max-width: 70%;
+  padding-top: 6em;
+}
+@media screen and (max-width: 767px) {
+  .no-assessment-placeholder span {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .no-assessment-placeholder span {
+    max-width: 80%;
+  }
+}
+.no-assessment-placeholder img {
+  display: block;
+  margin: 0 auto;
+  width: 4.66666667em;
+}
+/* ==========================================================================
     Benefits case studies page
     ========================================================================== */
 .benefits-list-category-wrapper > h1,
@@ -13836,24 +13897,15 @@ fieldset[disabled] #download-publication-button a.focus {
   padding-top: 0.3em;
 }
 .publications-back-button a {
-  border-top: 1px solid;
-  padding-top: 0.5em;
-  display: inline-block;
-  text-align: left;
-  width: auto;
+  border-top: 1px solid #ddd;
   color: #03afdf;
-  border-top-color: #ddd;
-  padding-left: 1.6em;
-  position: relative;
+  display: inline-block;
   line-height: 1.2;
+  padding-top: 0.5em;
+  position: relative;
+  text-align: left;
   text-transform: uppercase;
-}
-.publications-back-button a .backicon {
-  padding-top: 2em;
-  background-image: url(../images/icon-backarrow.svg);
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: auto;
+  width: auto;
 }
 @media screen and (max-width: 767px) {
   .publications-back-button {
