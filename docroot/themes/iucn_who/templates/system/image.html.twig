@@ -18,7 +18,7 @@
 ] %}
 {% if use_title_caption %}
   <figure>
-    <img {{ attributes }}>
+    <img {{ attributes.addClass(classes) }}>
     <figcaption>{{ attributes.title }}</figcaption>
   </figure>
 {% else %}
