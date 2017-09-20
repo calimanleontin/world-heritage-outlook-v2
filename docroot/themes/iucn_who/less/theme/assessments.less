@@ -424,7 +424,10 @@ body.page-node-type-site {
       &:empty { display: none; }
     }
     .panel-title-terms { color: @brand-primary; }
-    .panel-title-terms-first { display: flex; }
+    .panel-title-terms-first {
+      display: flex;
+      > .field { display: flex; }
+    }
     .panel-title-terms-second {
       font-size: .8em;
       font-weight: 500;

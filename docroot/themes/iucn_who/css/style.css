@@ -11669,6 +11669,9 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first {
   display: flex;
 }
+.iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-first > .field {
+  display: flex;
+}
 .iucn-site-wrapper .panel-default .panel-heading .panel-title-terms-second {
   font-size: .8em;
   font-weight: 500;
