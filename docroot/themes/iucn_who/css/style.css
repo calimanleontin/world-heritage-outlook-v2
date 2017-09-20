@@ -12350,6 +12350,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   .field--name-dynamic-block-fieldnode-site-feedback:before {
     font-size: 19px;
     margin-bottom: 1em;
+    margin-right: .5em;
   }
 }
 @media screen and (min-width: 768px) {
@@ -12517,7 +12518,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     width: 100%;
   }
   .iucn-site-wrapper .sidemenu-toggle:before {
-    background-image: url('../images/magnifier-white.svg');
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2029.886133%2029.885468%22%20height%3D%2229.885%22%20width%3D%2229.886%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2022.414h22.415V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2029.885)%22%3E%3Cpath%20d%3D%22M8.498%2019.414a5.46%205.46%200%200%201-3.888-1.61A5.458%205.458%200%200%201%203%2013.914a5.46%205.46%200%200%201%201.61-3.89%205.464%205.464%200%200%201%203.89-1.61%205.46%205.46%200%200%201%203.889%201.61A5.46%205.46%200%200%201%2014%2013.915c0%201.47-.571%202.85-1.61%203.89a5.47%205.47%200%200%201-3.89%201.61zm4.854-12.472A8.48%208.48%200%200%200%208.5%205.414a8.444%208.444%200%200%200-6.011%202.49A8.439%208.439%200%200%200%200%2013.915a8.437%208.437%200%200%200%202.489%206.01%208.44%208.44%200%200%200%206.009%202.49%208.448%208.448%200%200%200%206.012-2.49%208.443%208.443%200%200%200%202.49-6.01%208.49%208.49%200%200%200-1.527-4.852l6.942-6.942-2.123-2.12z%22%20fill%3D%22%23134780%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 1.5em;
@@ -12533,7 +12534,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     width: 2.5em;
   }
   .iucn-site-wrapper .sidemenu-toggle:after {
-    background-image: url('../images/icon-arrow-white.svg');
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2225%22%20height%3D%2212%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20fill%3D%22%23E1E1E1%22%20d%3D%22M0%207l20.484.198-4.724%204.799h3.339L25.004%206%2019.099.002H15.76L20.484%204.8%200%204.999V7z%22%2F%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -12543,6 +12544,34 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     margin-left: .5em;
     vertical-align: middle;
     width: 1.5em;
+  }
+  .iucn-site-wrapper .sidemenu-toggle:before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2029.886133%2029.885468%22%20height%3D%2229.885%22%20width%3D%2229.886%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2022.414h22.415V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2029.885)%22%3E%3Cpath%20d%3D%22M8.498%2019.414a5.46%205.46%200%200%201-3.888-1.61A5.458%205.458%200%200%201%203%2013.914a5.46%205.46%200%200%201%201.61-3.89%205.464%205.464%200%200%201%203.89-1.61%205.46%205.46%200%200%201%203.889%201.61A5.46%205.46%200%200%201%2014%2013.915c0%201.47-.571%202.85-1.61%203.89a5.47%205.47%200%200%201-3.89%201.61zm4.854-12.472A8.48%208.48%200%200%200%208.5%205.414a8.444%208.444%200%200%200-6.011%202.49A8.439%208.439%200%200%200%200%2013.915a8.437%208.437%200%200%200%202.489%206.01%208.44%208.44%200%200%200%206.009%202.49%208.448%208.448%200%200%200%206.012-2.49%208.443%208.443%200%200%200%202.49-6.01%208.49%208.49%200%200%200-1.527-4.852l6.942-6.942-2.123-2.12z%22%20fill%3D%22%23134780%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.5em;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    padding-left: .5em;
+    padding-right: .5em;
+    position: absolute;
+    top: 0;
+    vertical-align: middle;
+    width: 2.5em;
+  }
+  .iucn-site-wrapper .sidemenu-toggle:before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2029.886133%2029.885468%22%20height%3D%2229.885%22%20width%3D%2229.886%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2022.414h22.415V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2029.885)%22%3E%3Cpath%20d%3D%22M8.498%2019.414a5.46%205.46%200%200%201-3.888-1.61A5.458%205.458%200%200%201%203%2013.914a5.46%205.46%200%200%201%201.61-3.89%205.464%205.464%200%200%201%203.89-1.61%205.46%205.46%200%200%201%203.889%201.61A5.46%205.46%200%200%201%2014%2013.915c0%201.47-.571%202.85-1.61%203.89a5.47%205.47%200%200%201-3.89%201.61zm4.854-12.472A8.48%208.48%200%200%200%208.5%205.414a8.444%208.444%200%200%200-6.011%202.49A8.439%208.439%200%200%200%200%2013.915a8.437%208.437%200%200%200%202.489%206.01%208.44%208.44%200%200%200%206.009%202.49%208.448%208.448%200%200%200%206.012-2.49%208.443%208.443%200%200%200%202.49-6.01%208.49%208.49%200%200%200-1.527-4.852l6.942-6.942-2.123-2.12z%22%20fill%3D%22icon-arrow%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+  }
+  .iucn-site-wrapper .sidemenu-toggle:before {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2029.886133%2029.885468%22%20height%3D%2229.885%22%20width%3D%2229.886%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2022.414h22.415V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2029.885)%22%3E%3Cpath%20d%3D%22M8.498%2019.414a5.46%205.46%200%200%201-3.888-1.61A5.458%205.458%200%200%201%203%2013.914a5.46%205.46%200%200%201%201.61-3.89%205.464%205.464%200%200%201%203.89-1.61%205.46%205.46%200%200%201%203.889%201.61A5.46%205.46%200%200%201%2014%2013.915c0%201.47-.571%202.85-1.61%203.89a5.47%205.47%200%200%201-3.89%201.61zm4.854-12.472A8.48%208.48%200%200%200%208.5%205.414a8.444%208.444%200%200%200-6.011%202.49A8.439%208.439%200%200%200%200%2013.915a8.437%208.437%200%200%200%202.489%206.01%208.44%208.44%200%200%200%206.009%202.49%208.448%208.448%200%200%200%206.012-2.49%208.443%208.443%200%200%200%202.49-6.01%208.49%208.49%200%200%200-1.527-4.852l6.942-6.942-2.123-2.12z%22%20fill%3D%22%23ffffff%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+  }
+  .iucn-site-wrapper .sidemenu-toggle:after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2225%22%20height%3D%2212%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20fill%3D%22%23ffffff%22%20d%3D%22M0%207l20.484.198-4.724%204.799h3.339L25.004%206%2019.099.002H15.76L20.484%204.8%200%204.999V7z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
   }
   .iucn-site-wrapper .sidemenu-toggle:before {
     border-right: 1px solid;
