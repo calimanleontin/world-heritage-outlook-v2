@@ -124,7 +124,7 @@
       }
       .scroll-down {
         background-color: @iucn-blue-dark;
-        .svg-icon(scroll-down-caret-white);
+        .svg-icon(scroll-down-caret, #ffffff);
         background-position: center 5px;
         background-size: contain;
         display: block;
@@ -192,7 +192,7 @@
           font-size: 0;
           margin-bottom: 0;
           &:before {
-            .svg-icon(explore-black);
+            .svg-icon(explore, @text-color);
             background-position: center;
             background-size: 50%;
             width: 28px;
@@ -425,7 +425,7 @@
           &.@{conservation-category-class} {
             position: relative;
             &:before {
-              .svg-icon(~'@{conservation-category-class}');
+              .svg-icon(@conservation-category-class);
               background-position: center;
               background-size: contain;
               content: '';
