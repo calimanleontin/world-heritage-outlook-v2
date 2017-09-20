@@ -171,6 +171,7 @@ body.page-node-type-site {
       color: @text-color;
       display: flex;
       flex-direction: column;
+      height: 100%;
       margin-right: 0;
       padding-left: 7em;
       position: relative;
@@ -250,7 +251,8 @@ body.page-node-type-site {
       }
       & > li {
         display: flex;
-        flex: 1;
+        flex-direction: column;
+        flex: 1 0 0%;
         &:first-child:before,
         &:last-child:before {
           content: '';
