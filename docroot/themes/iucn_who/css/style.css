@@ -9055,22 +9055,12 @@ ol li.iucn-arrow:after {
 #block-iucn-who-main-menu > ul > li > a {
   text-transform: uppercase;
 }
-@media screen and (min-width: 768px) {
-  .region-facets > .collapse,
-  .region-facets > .collapsing {
-    display: block;
-    height: auto !important;
-    opacity: 1;
-    overflow: visible;
-    transition: none;
-  }
-}
 @media screen and (max-width: 767px) {
   #facets-collapse > .facets-content {
     padding-left: 27px;
   }
 }
-.facets-title {
+.collapsible-title {
   border-bottom: 1px solid #ddd;
   display: block;
   font-weight: normal;
@@ -9081,43 +9071,46 @@ ol li.iucn-arrow:after {
   font-weight: 900;
   margin-top: 0;
 }
-h1.facets-title,
-h2.facets-title,
-h3.facets-title,
-h4.facets-title,
-h5.facets-title,
-h6.facets-title {
+h1.collapsible-title,
+h2.collapsible-title,
+h3.collapsible-title,
+h4.collapsible-title,
+h5.collapsible-title,
+h6.collapsible-title {
   margin-top: 0;
 }
 @media screen and (max-width: 767px) {
-  h1.facets-title,
-  h2.facets-title,
-  h3.facets-title,
-  h4.facets-title,
-  h5.facets-title,
-  h6.facets-title {
+  h1.collapsible-title,
+  h2.collapsible-title,
+  h3.collapsible-title,
+  h4.collapsible-title,
+  h5.collapsible-title,
+  h6.collapsible-title {
     font-size: 1.3em;
   }
 }
 @media screen and (max-width: 767px) {
-  #sidemenu .facets-title {
+  #sidemenu .collapsible-title {
     border-bottom: none;
-    font-size: 25px;
+    font-size: 18px;
     margin-bottom: .2em;
   }
-  #sidemenu .facets-title .caret-triangle:before {
+  #sidemenu .collapsible-title.facets-title {
+    font-size: 25px;
+  }
+  #sidemenu .collapsible-title .caret-triangle:before {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2213%22%20viewBox%3D%220%200%2020%2013%22%3E%3Cpath%20class%3D%22caret-path%22%20fill-rule%3D%22evenodd%22%20fill%3D%22%23222%22%20d%3D%22M0%200h20L10%2013%200%200z%22%2F%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     content: '';
     background-position: center;
     background-size: contain;
     display: block;
-    height: 20px;
+    height: 13px;
     width: 20px;
   }
 }
 @media screen and (min-width: 768px) {
-  #sidemenu .facets-title .caret-triangle {
+  #sidemenu .collapsible-title .caret-triangle {
     display: none;
   }
 }
@@ -9146,7 +9139,8 @@ h6.facets-title {
     color: #333333;
     font-size: 19px;
     font-weight: 900;
-    margin-left: calc((-30px / 2) - 20px);
+    margin: 0;
+    margin-left: calc((-30px / 2) - 25px);
   }
 }
 .block-facets:first-child .panel-title {
@@ -9627,41 +9621,6 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
-.region-sidebar-first section {
-  margin-bottom: 2em;
-}
-.region-sidebar-first section a {
-  color: #03afdf;
-}
-.region-sidebar-first section h2.block-title {
-  border-bottom: 1px solid #ddd;
-  display: block;
-  font-weight: normal;
-  margin-bottom: 1em;
-  padding-bottom: .5rem;
-  text-transform: uppercase;
-  font-size: 1em;
-  font-weight: 900;
-  margin-top: 0;
-}
-h1.region-sidebar-first section h2.block-title,
-h2.region-sidebar-first section h2.block-title,
-h3.region-sidebar-first section h2.block-title,
-h4.region-sidebar-first section h2.block-title,
-h5.region-sidebar-first section h2.block-title,
-h6.region-sidebar-first section h2.block-title {
-  margin-top: 0;
-}
-@media screen and (max-width: 767px) {
-  h1.region-sidebar-first section h2.block-title,
-  h2.region-sidebar-first section h2.block-title,
-  h3.region-sidebar-first section h2.block-title,
-  h4.region-sidebar-first section h2.block-title,
-  h5.region-sidebar-first section h2.block-title,
-  h6.region-sidebar-first section h2.block-title {
-    font-size: 1.3em;
-  }
-}
 .region-fixed-bottom .block-search-api-sorts,
 .region-fixed-bottom .block-search-api-sorts .search-api-sorts,
 .region-fixed-bottom .block-search-api-sorts .search-api-sorts > li {
@@ -9731,6 +9690,9 @@ h6.region-sidebar-first section h2.block-title {
     padding-right: 11em;
   }
 }
+/* ==========================================================================
+    Search block region
+    ========================================================================== */
 .search-block-container {
   background-color: #134780;
   color: #fff;
@@ -9752,10 +9714,89 @@ h6.region-sidebar-first section h2.block-title {
     vertical-align: middle;
   }
 }
+/* ==========================================================================
+   Sidebar first region
+   ========================================================================== */
+.region-sidebar-first section + section {
+  margin-top: 2em;
+}
+.region-sidebar-first section .field--type-text-with-summary a {
+  color: #03afdf;
+}
+.region-sidebar-first section h2.block-title {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-weight: 900;
+  margin-top: 0;
+}
+h1.region-sidebar-first section h2.block-title,
+h2.region-sidebar-first section h2.block-title,
+h3.region-sidebar-first section h2.block-title,
+h4.region-sidebar-first section h2.block-title,
+h5.region-sidebar-first section h2.block-title,
+h6.region-sidebar-first section h2.block-title {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.region-sidebar-first section h2.block-title,
+  h2.region-sidebar-first section h2.block-title,
+  h3.region-sidebar-first section h2.block-title,
+  h4.region-sidebar-first section h2.block-title,
+  h5.region-sidebar-first section h2.block-title,
+  h6.region-sidebar-first section h2.block-title {
+    font-size: 1.3em;
+  }
+}
+/* ==========================================================================
+   Fixed bottom region
+   ========================================================================== */
 .region-fixed-bottom {
   align-items: stretch;
   display: flex;
   justify-content: stretch;
+}
+@media screen and (min-width: 768px) {
+  .region-fixed-bottom-wrapper {
+    display: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  .region-fixed-bottom-wrapper {
+    height: 50px;
+    margin-top: 45px;
+    position: relative;
+  }
+  .region-fixed-bottom-wrapper + .footer {
+    margin-top: 0;
+  }
+  #iucn-fixed-bottom {
+    align-items: stretch;
+    background-color: #fff;
+    display: flex;
+  }
+  #iucn-fixed-bottom > * {
+    flex: 1 0 50%;
+  }
+  #iucn-fixed-bottom.affix,
+  #iucn-fixed-bottom.affix-top {
+    z-index: 1039;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-backface-visibility: hidden;
+  }
+  #iucn-fixed-bottom.affix-bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: auto !important;
+  }
 }
 .view-sites-search .view-header {
   padding-bottom: .1em;
@@ -9913,6 +9954,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article .left-content {
   display: flex;
   flex: 1 0 0%;
+  position: relative;
 }
 @media (max-width: 479px) {
   .view-sites-search article .left-content {
@@ -10024,41 +10066,33 @@ h6.view-sites-search .view-header {
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
+@media screen and (min-width: 768px) {
+  #sidemenu .iucn-collapsible > .collapse,
+  #sidemenu .iucn-collapsible > .collapsing {
+    display: block;
+    height: auto !important;
+    opacity: 1;
+    overflow: visible;
+    transition: none;
+  }
+}
 @media screen and (max-width: 767px) {
-  .sidemenu-toggle-wrapper {
-    height: 50px;
-    margin-top: 45px;
-    position: relative;
+  #sidemenu > .region {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 15px;
+    padding-right: 15px;
   }
-  #sidemenu-toggle {
-    align-items: stretch;
-    background-color: #fff;
-    display: flex;
-  }
-  #sidemenu-toggle > * {
-    flex: 1 0 0%;
-  }
-  #sidemenu-toggle.affix,
-  #sidemenu-toggle.affix-top {
-    z-index: 1039;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    -webkit-backface-visibility: hidden;
-  }
-  #sidemenu-toggle.affix-bottom {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    top: auto !important;
+  #sidemenu > .region:not(:first-child) {
+    border-top: 1px solid #ddd;
   }
   .sidemenu-toggle {
     font-size: 16px;
     font-weight: 500;
     min-height: 50px;
     text-transform: uppercase;
-    width: 50%;
   }
   #sidemenu {
     background-color: #fff;

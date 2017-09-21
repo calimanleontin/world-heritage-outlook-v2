@@ -22,10 +22,10 @@
     }
     var $window = $(window);
     var $footer = $('.footer');
-    var $sidemenuToggle = $('#sidemenu-toggle');
+    var $fixedBottom = $('#iucn-fixed-bottom');
 
     setTimeout( function() {
-        $sidemenuToggle.affix({
+        $fixedBottom.affix({
           offset: {
             bottom: function () {
               return (this.bottom = $footer.outerHeight(true))
@@ -35,8 +35,8 @@
     }, 100 );
 
     $window.resize(function() {
-        if ($sidemenuToggle.data('bs.affix') !== undefined) {
-          $sidemenuToggle.data('bs.affix').options.offset.top = $footer.outerHeight(true);
+        if ($fixedBottom.data('bs.affix') !== undefined) {
+          $fixedBottom.data('bs.affix').options.offset.top = $footer.outerHeight(true);
         }
     });
   });
