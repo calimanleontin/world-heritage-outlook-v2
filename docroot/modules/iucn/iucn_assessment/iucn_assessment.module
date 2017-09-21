@@ -122,9 +122,7 @@ function iucn_assessment_preprocess_field(&$variables) {
           if (!empty($topic->field_name_2014->value)) {
             $topic->name->value = $topic->field_name_2014->value;
           }
-          if (!empty($topic->description->value)) {
-            $topic->name->value .= ' ' . strip_tags($topic->description->value);
-          }
+          $topic->description->value = '';
         }
       }
       $variables['items'] = $items;
