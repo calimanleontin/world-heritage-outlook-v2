@@ -157,6 +157,7 @@ iucn_who_pdf_download_button:
 
 iucn_who_sites_search:
   label: Sites search
+  class: '\Drupal\ds\Plugin\DsLayout'
   category: IUCN
   type: partial
   template: templates/layouts/iucn-who-sites-search
