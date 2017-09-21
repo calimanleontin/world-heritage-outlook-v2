@@ -11976,6 +11976,7 @@ body.page-node-type-site #sidemenu {
 @media screen and (max-width: 767px) {
   .assessment-toggle .assessment-toggle > .panel-heading {
     position: relative;
+    padding-right: 4em;
   }
   .assessment-toggle .assessment-toggle > .panel-heading:before,
   .assessment-toggle .assessment-toggle > .panel-heading:after {
