@@ -11582,9 +11582,9 @@ body.page-node-type-site #sidemenu {
 }
 .iucn-site-wrapper .panel-heading .panel-title-terms-first,
 .iucn-site-wrapper .panel-heading .panel-title-terms-second {
-  color: #134780;
   padding-left: 21px;
   padding-left: 2.1rem;
+  color: #134780;
   white-space: nowrap;
 }
 @media screen and (min-width: 768px) {
@@ -11951,7 +11951,12 @@ body.page-node-type-site #sidemenu {
     border-color: #7d7d7d;
   }
 }
-.assessment-toggle .panel-heading > a:before {
+@media screen and (max-width: 767px) {
+  .assessment-toggle > .panel-heading .panel-title-terms {
+    padding-left: 1.5em;
+  }
+}
+.assessment-toggle > .panel-heading > a:before {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2021%2021%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%2C.cls-2%7Bfill%3Anone%3Bstroke%3A%23222%7D.cls-2%7Bstroke-width%3A4px%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3EArtboard%202%3C%2Ftitle%3E%3Cpath%20id%3D%22Rectangle_13_copy_2%22%20data-name%3D%22Rectangle%2013%20copy%202%22%20class%3D%22cls-1%22%20d%3D%22M.5.5h20v20H.5z%22%2F%3E%3Cpath%20id%3D%22Shape_14_copy_4%22%20data-name%3D%22Shape%2014%20copy%204%22%20class%3D%22cls-2%22%20d%3D%22M4.5%2010.5h12%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: center;
@@ -11964,7 +11969,7 @@ body.page-node-type-site #sidemenu {
   top: .1em;
   width: 1em;
 }
-.assessment-toggle .panel-heading > a[aria-expanded='false']:before {
+.assessment-toggle > .panel-heading > a[aria-expanded='false']:before {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2021%2021%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%2C.cls-2%7Bfill%3Anone%3Bstroke%3A%23222%7D.cls-2%7Bstroke-width%3A4px%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3EArtboard%201%3C%2Ftitle%3E%3Cpath%20id%3D%22Rectangle_13_copy_2%22%20data-name%3D%22Rectangle%2013%20copy%202%22%20class%3D%22cls-1%22%20d%3D%22M.5.5h20v20H.5z%22%2F%3E%3Cpath%20id%3D%22Shape_14_copy_4%22%20data-name%3D%22Shape%2014%20copy%204%22%20class%3D%22cls-2%22%20d%3D%22M4.5%2010.5h12%22%2F%3E%3Cpath%20class%3D%22cls-2%22%20d%3D%22M10.5%204.5v12%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }

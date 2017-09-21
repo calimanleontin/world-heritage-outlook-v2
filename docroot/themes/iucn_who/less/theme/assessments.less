@@ -368,8 +368,8 @@ body.page-node-type-site {
 
     .panel-title-terms-first,
     .panel-title-terms-second {
-      color: @brand-primary;
       .remify(padding-left, 21px);
+      color: @brand-primary;
       white-space: nowrap;
       @media @grid-desktop {
         justify-content: flex-end;
@@ -583,7 +583,12 @@ body.page-node-type-site {
   @media @grid-mobile {
     border-color: #7d7d7d;
   }
-  .panel-heading {
+  > .panel-heading {
+    @media @grid-mobile {
+      .panel-title-terms {
+        padding-left: 1.5em;
+      }
+    }
     > a:before {
       .svg-icon(collapse-minus);
       background-position: center;
