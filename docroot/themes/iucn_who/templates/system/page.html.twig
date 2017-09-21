@@ -217,20 +217,20 @@
     </div>
   {% endblock %}
 </div>
-{% if page.facets or page.sidebar_first %}
-  {{ attach_library('iucn_who/facets') }}
-  <div class="sidemenu-toggle-wrapper">
-    <div id="sidemenu-toggle">
-      <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
-        {# {% if page.facets %} #}
-          {{ 'Filters'|t }}
-        {# {% else %}
-
-        {% endif %} #}
-      </button>
-    </div>
-  </div>
-{% endif %}
+  {# Fixed bottom #}
+  {% if page.facets or page.sidebar_first or page.fixed_bottom %}
+    {{ attach_library('iucn_who/facets') }}
+      <div class="sidemenu-toggle-wrapper">
+        <div id="sidemenu-toggle">
+            <button type="button" class="btn btn-info sidemenu-toggle"  data-toggle="dropdown" data-target="#sidemenu">
+              {{ 'Filters'|t }}
+            </button>
+          {% block fixed_bottom %}
+            {{ page.fixed_bottom }}
+          {% endblock %}
+        </div>
+      </div>
+  {% endif %}
 {% if page.footer %}
   {% block footer %}
     <footer class="footer" role="contentinfo">
