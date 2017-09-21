@@ -7709,59 +7709,6 @@
         }
     },
     {
-        "name": "drupal/display_field_copy",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/display_field_copy",
-            "reference": "8.x-1.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/display_field_copy-8.x-1.0.zip",
-            "reference": "8.x-1.0",
-            "shasum": "427ee4d4cdc5dfc1e9b6a580e7de30c0122c9e0a"
-        },
-        "require": {
-            "drupal/core": "~8.0",
-            "drupal/ds": "*"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.0",
-                "datestamp": "1492559943",
-                "security-coverage": {
-                    "status": "covered",
-                    "message": "Covered by Drupal's security advisory policy"
-                }
-            },
-            "patches_applied": {
-                "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "davidwbarratt",
-                "homepage": "https://www.drupal.org/user/411675"
-            }
-        ],
-        "description": "Copies the display so it can be shown multiple times on a page.",
-        "homepage": "https://www.drupal.org/project/display_field_copy",
-        "support": {
-            "source": "http://cgit.drupalcode.org/display_field_copy"
-        }
-    },
-    {
         "name": "sabberworm/php-css-parser",
         "version": "6.0.1",
         "version_normalized": "6.0.1.0",
@@ -8794,6 +8741,60 @@
         "homepage": "https://www.drupal.org/project/menu_breadcrumb",
         "support": {
             "source": "http://cgit.drupalcode.org/menu_breadcrumb"
+        }
+    },
+    {
+        "name": "drupal/display_field_copy",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/display_field_copy",
+            "reference": "8.x-1.0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/display_field_copy-8.x-1.0.zip",
+            "reference": "8.x-1.0",
+            "shasum": "427ee4d4cdc5dfc1e9b6a580e7de30c0122c9e0a"
+        },
+        "require": {
+            "drupal/core": "~8.0",
+            "drupal/ds": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0",
+                "datestamp": "1492559943",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            },
+            "patches_applied": {
+                "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
+                "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "davidwbarratt",
+                "homepage": "https://www.drupal.org/user/411675"
+            }
+        ],
+        "description": "Copies the display so it can be shown multiple times on a page.",
+        "homepage": "https://www.drupal.org/project/display_field_copy",
+        "support": {
+            "source": "http://cgit.drupalcode.org/display_field_copy"
         }
     }
 ]
