@@ -117,7 +117,6 @@ function iucn_who_preprocess_page(&$variables) {
 
     $node_urls = [];
     $languages = \Drupal::languageManager()->getLanguages();
-    $node = \Drupal\node\Entity\Node::load(993);
     foreach ($languages as $language) {
       $node_urls[] = $node->url('canonical', ['language' => $language]);
     }
