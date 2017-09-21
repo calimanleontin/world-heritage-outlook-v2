@@ -368,8 +368,8 @@ body.page-node-type-site {
 
     .panel-title-terms-first,
     .panel-title-terms-second {
-      color: @brand-primary;
       .remify(padding-left, 21px);
+      color: @brand-primary;
       white-space: nowrap;
       @media @grid-desktop {
         justify-content: flex-end;
@@ -583,7 +583,12 @@ body.page-node-type-site {
   @media @grid-mobile {
     border-color: #7d7d7d;
   }
-  .panel-heading {
+  > .panel-heading {
+    @media @grid-mobile {
+      .panel-title-terms {
+        padding-left: 1.5em;
+      }
+    }
     > a:before {
       .svg-icon(collapse-minus);
       background-position: center;
@@ -602,24 +607,34 @@ body.page-node-type-site {
       .svg-icon(collapse-plus);
     }
   }
-  // @todo: add cutout triangle
-  // .assessment-toggle {
-  //   @media @grid-mobile {
-  //     > .panel-heading {
-  //       position: relative;
-  //       &:before {
-  //         background-color: red;
-  //         content: '';
-  //         display: block;
-  //         height: 2em;
-  //         position: absolute;
-  //         right: 0;
-  //         top: 0;
-  //         width: 2em;
-  //       }
-  //     }
-  //   }
-  // }
+  .assessment-toggle {
+    @media @grid-mobile {
+
+      > .panel-heading {
+        position: relative;
+        &:before,
+        &:after {
+          border-color: @body-bg transparent transparent transparent;
+          border-style: solid;
+          border-width: 18px 20px 0 20px;
+          content: '';
+          display: block;
+          height: 0;
+          pointer-events: none;
+          position: absolute;
+          right: 1em;
+          top: -1px;
+          width: 0;
+          z-index: 2;
+        }
+        &:after {
+          border-color: #7d7d7d transparent transparent transparent;
+          top: 0;
+          z-index: 1;
+        }
+      }
+    }
+  }
 }
 .assessment-section > h2 {
   &:extend(.iucn-publications-teaser-wrapper .field--name-node-title h2);
@@ -634,6 +649,7 @@ body.page-node-type-site {
 .assessment-projects.assessment-toggle,
 .assessment-section > .assessment-toggle {
   border: none;
+  box-shadow: none;
   &.panel {
     margin-bottom: 0;
   }
@@ -1053,6 +1069,12 @@ body.page-node-type-site {
   @media @grid-mobile {
     max-height: 240px;
     min-width: 240px;
+  }
+  @media @grid-desktop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
   }
   &:before, &:after {
     border: 1px solid @iucn-gray-lighter;
