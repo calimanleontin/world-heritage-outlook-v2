@@ -67,11 +67,10 @@ function iucn_assessment_preprocess_field(&$variables) {
       // We have done this to support switcher between years on display.
       // In the end we just use it for print view mode.
       if (!empty($variables['items'])) {
-        if (
-          (\Drupal::routeMatch() == 'iucn_pdf.download')
-          ||
-          (\Drupal::routeMatch() == 'iucn_pdf.download.debug')
-        ) {
+        $route_name = \Drupal::routeMatch()->getRouteName();
+        $is_download = $route_name == 'iucn_pdf.download';
+        $is_download_debug = $route_name == 'iucn_pdf.download.debug';
+        if ($is_download || $is_download_debug) {
           $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
         }
         else {
