@@ -12762,6 +12762,14 @@ html[lang='es'] .image-rating-container.good {
     min-width: 240px;
   }
 }
+@media screen and (min-width: 768px) {
+  .no-assessment-placeholder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+}
 .no-assessment-placeholder:before,
 .no-assessment-placeholder:after {
   border: 1px solid #e1e1e1;
