@@ -1,17 +1,50 @@
 /* ==========================================================================
     Benefits case studies page
     ========================================================================== */
-.benefits-list-category-wrapper {
-  > h1, > h2, > h3, > h4, > h5, > h6 {
-    .remify(font-size, 30px);
-  }
 
-}
+// @todo: use mixin
+// @benefits-min-size-to-fit is minimum vw required to fit content of benefits headings on one line
+@benefits-font-size: 27px;
+@benefits-min-size-to-fit: 2.1; // in vw
+@benefits-max-vw: (ceil((unit(@benefits-font-size) * 100 / @benefits-min-size-to-fit) * 1px));
+
 .node--type-benefit.node--view-mode-teaser {
   .field--name-node-title {
     > h1, > h2, > h3, > h4, > h5, > h6 { .remify(font-size, 24px); }
   }
 }
+
+.benefits-list-category-wrapper {
+
+  @media (min-width: @grid-float-breakpoint) and (max-width: @benefits-max-vw) {
+    font-size: @benefits-min-size-to-fit * 1vw;
+  }
+  @media (min-width: (@benefits-max-vw + 1)) {
+    .remify(font-size, @benefits-font-size);
+  }
+  > h1, > h2, > h3, > h4, > h5, > h6 {
+    font-size: inherit;
+    @media @grid-mobile {
+      font-size: @font-size-h2;
+      margin-bottom: 1em;
+    }
+  }
+  // }
+  @media @grid-desktop {
+    .node--type-benefit.node--view-mode-teaser .field--name-node-title {
+      > h1, > h2, > h3, > h4, > h5, > h6 {
+        font-size: .9em;
+      }
+    }
+  }
+
+  @media @grid-mobile {
+    & + & {
+      margin-top: 2em;
+    }
+  }
+}
+
 
 /* ==========================================================================
     Benefits detail page

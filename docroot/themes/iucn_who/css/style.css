@@ -12850,15 +12850,6 @@ html[lang='es'] .image-rating-container.good {
 /* ==========================================================================
     Benefits case studies page
     ========================================================================== */
-.benefits-list-category-wrapper > h1,
-.benefits-list-category-wrapper > h2,
-.benefits-list-category-wrapper > h3,
-.benefits-list-category-wrapper > h4,
-.benefits-list-category-wrapper > h5,
-.benefits-list-category-wrapper > h6 {
-  font-size: 30px;
-  font-size: 3rem;
-}
 .node--type-benefit.node--view-mode-teaser .field--name-node-title > h1,
 .node--type-benefit.node--view-mode-teaser .field--name-node-title > h2,
 .node--type-benefit.node--view-mode-teaser .field--name-node-title > h3,
@@ -12867,6 +12858,51 @@ html[lang='es'] .image-rating-container.good {
 .node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
   font-size: 24px;
   font-size: 2.4rem;
+}
+@media (min-width: 768px) and (max-width: 1286px) {
+  .benefits-list-category-wrapper {
+    font-size: 2.1vw;
+  }
+}
+@media (min-width: 1287px) {
+  .benefits-list-category-wrapper {
+    font-size: 27px;
+    font-size: 2.7rem;
+  }
+}
+.benefits-list-category-wrapper > h1,
+.benefits-list-category-wrapper > h2,
+.benefits-list-category-wrapper > h3,
+.benefits-list-category-wrapper > h4,
+.benefits-list-category-wrapper > h5,
+.benefits-list-category-wrapper > h6 {
+  font-size: inherit;
+}
+@media screen and (max-width: 767px) {
+  .benefits-list-category-wrapper > h1,
+  .benefits-list-category-wrapper > h2,
+  .benefits-list-category-wrapper > h3,
+  .benefits-list-category-wrapper > h4,
+  .benefits-list-category-wrapper > h5,
+  .benefits-list-category-wrapper > h6 {
+    font-size: 2em;
+    margin-bottom: 1em;
+  }
+}
+@media screen and (min-width: 768px) {
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h1,
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h2,
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h3,
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h4,
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h5,
+  .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
+    font-size: .9em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .benefits-list-category-wrapper + .benefits-list-category-wrapper {
+    margin-top: 2em;
+  }
 }
 /* ==========================================================================
     Benefits detail page
