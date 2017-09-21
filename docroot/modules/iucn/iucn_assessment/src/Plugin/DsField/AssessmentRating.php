@@ -110,9 +110,9 @@ class AssessmentRating extends DsFieldBase {
     foreach ($node->field_assessments as $idx => $assessment) {
       $class = 'coming-soon';
       $title = t('Coming soon');
-      if (!empty($node->field_assessments->entity->field_as_global_assessment_level->entity)) {
+      if (!empty($node->field_assessments[$idx]->entity->field_as_global_assessment_level->entity)) {
         /* @var \Drupal\taxonomy\Entity\Term $term */
-        $term = $node->field_assessments->entity->field_as_global_assessment_level->entity;
+        $term = $node->field_assessments[$idx]->entity->field_as_global_assessment_level->entity;
         $title = $term->getName();
         if (!empty($term->field_css_identifier->value)) {
           $class = $term->field_css_identifier->value;
