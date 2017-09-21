@@ -12012,6 +12012,7 @@ body.page-node-type-site #sidemenu {
 .assessment-projects.assessment-toggle,
 .assessment-section > .assessment-toggle {
   border: none;
+  box-shadow: none;
 }
 .assessment-projects.assessment-toggle.panel,
 .assessment-section > .assessment-toggle.panel {
