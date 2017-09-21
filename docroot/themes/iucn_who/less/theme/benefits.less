@@ -24,9 +24,9 @@
   }
   > h1, > h2, > h3, > h4, > h5, > h6 {
     font-size: inherit;
+    margin-bottom: 1em;
     @media @grid-mobile {
       font-size: @font-size-h2;
-      margin-bottom: 1em;
     }
   }
   // }
@@ -36,6 +36,9 @@
         font-size: .9em;
       }
     }
+  }
+  .views-row + .views-row {
+    margin-top: 1em;
   }
 
   @media @grid-mobile {

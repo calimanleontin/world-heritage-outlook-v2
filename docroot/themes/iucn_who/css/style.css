@@ -12877,6 +12877,7 @@ html[lang='es'] .image-rating-container.good {
 .benefits-list-category-wrapper > h5,
 .benefits-list-category-wrapper > h6 {
   font-size: inherit;
+  margin-bottom: 1em;
 }
 @media screen and (max-width: 767px) {
   .benefits-list-category-wrapper > h1,
@@ -12886,7 +12887,6 @@ html[lang='es'] .image-rating-container.good {
   .benefits-list-category-wrapper > h5,
   .benefits-list-category-wrapper > h6 {
     font-size: 2em;
-    margin-bottom: 1em;
   }
 }
 @media screen and (min-width: 768px) {
@@ -12898,6 +12898,9 @@ html[lang='es'] .image-rating-container.good {
   .benefits-list-category-wrapper .node--type-benefit.node--view-mode-teaser .field--name-node-title > h6 {
     font-size: .9em;
   }
+}
+.benefits-list-category-wrapper .views-row + .views-row {
+  margin-top: 1em;
 }
 @media screen and (max-width: 767px) {
   .benefits-list-category-wrapper + .benefits-list-category-wrapper {
