@@ -67,7 +67,7 @@ function iucn_who_preprocess_block(&$variables) {
           $label .= t(' A-Z');
         }
         $label .= '</span>';
-        $items['#label'] = new FormattableMarkup($label , []) ;
+        $items['#label'] = new FormattableMarkup($label , []);
       }
 
       if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
@@ -75,6 +75,22 @@ function iucn_who_preprocess_block(&$variables) {
         if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
           $items['#label'] = t('Sort from oldest to newest');
         }
+      }
+
+      if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage_2') {
+        $items = &$variables['content']['links']['#items'][0];
+
+        $label = '<span class="sort-prefix">' . t('Sort from') . '</span><span class="sort-body">';
+
+        if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
+          $label .= t(' oldest to newest') ;
+        }
+        else {
+          $label .= t(' newest to oldest') ;
+        }
+
+        $label .= '</span>';
+        $items['#label'] = new FormattableMarkup($label , []);
       }
       break;
     case 'system_breadcrumb_block':
