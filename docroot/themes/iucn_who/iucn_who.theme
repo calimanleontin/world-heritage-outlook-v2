@@ -9,6 +9,7 @@
 use Drupal\Core\Template\Attribute;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Url;
+use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -47,12 +48,28 @@ function iucn_who_preprocess_block(&$variables) {
         $items = &$variables['content']['links']['#items'][0];
         $variables['elements']['#cache']['max-age'] = 0;
         if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
-          $items['#label'] .= ' A-Z';
-        }
-        else {
           $items['#label'] .= ' Z-A';
         }
+        else {
+          $items['#label'] .= ' A-Z';
+        }
       }
+
+      if($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
+        $items = &$variables['content']['links']['#items'][0];
+        $variables['elements']['#cache']['max-age'] = 0;
+
+        $label = '<span class="sort-prefix">' . t('Sort by:') . '</span><span class="sort-body">' . t('Alphabetically');
+        if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
+          $label .= t(' Z-A');
+        }
+        else {
+          $label .= t(' A-Z');
+        }
+        $label .= '</span>';
+        $items['#label'] = new FormattableMarkup($label , []) ;
+      }
+
       if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
         $items = &$variables['content']['links']['#items'][0];
         if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {

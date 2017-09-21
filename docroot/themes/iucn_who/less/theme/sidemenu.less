@@ -1,8 +1,16 @@
 @media @grid-mobile {
   .sidemenu-toggle-wrapper {
     height: 50px;
-    position: relative;
     margin-top: 45px;
+    position: relative;
+  }
+  #sidemenu-toggle {
+    align-items: stretch;
+    background-color: #fff;
+    display: flex;
+    > * {
+      flex: 1 0 0%;
+    }
   }
   #sidemenu-toggle.affix,
   #sidemenu-toggle.affix-top {
@@ -12,7 +20,6 @@
     left: 0;
     right: 0;
     -webkit-backface-visibility: hidden;
-
     // + .footer {
     //   margin-top: 2 * 50px;
     // }
@@ -28,10 +35,9 @@
     // margin-top: 45px;
   }
   .sidemenu-toggle {
-    float: left;
     font-size: 16px;
     font-weight: 500;
-    height: 50px;
+    min-height: 50px;
     text-transform: uppercase;
     width: 50%;
     // position: fixed;
