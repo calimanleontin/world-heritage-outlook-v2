@@ -11,15 +11,16 @@ function initMap() {
         parseFloat(elem.markers[0].lng));
 
     var map = new google.maps.Map(document.getElementById(elem.mapid), {
-      zoom: 6,
+      zoom: 7,
       center: center,
       mapTypeId: elem.map_type
     });
-    // var bounds = new google.maps.LatLngBounds();
-    // for (i = 0; i < elem.markers.length; i++) {
-    //   bounds.extend(new google.maps.LatLng(elem.markers[i].lat, elem.markers[i].lng));
-    // }
-    // map.fitBounds(bounds);
+
+    var bounds = new google.maps.LatLngBounds();
+    map.data.addListener('addfeature', function(e) {
+      siteProcessPoints(e.feature.getGeometry(), bounds.extend, bounds);
+      map.fitBounds(bounds);
+    });
 
     jQuery.each(elem.markers, function(idx, marker) {
       if (marker.hasOwnProperty('lat')) {
@@ -38,4 +39,16 @@ function initMap() {
       }
     });
   });
+}
+
+function siteProcessPoints(geometry, callback, thisArg) {
+  if (geometry instanceof google.maps.LatLng) {
+    callback.call(thisArg, geometry);
+  } else if (geometry instanceof google.maps.Data.Point) {
+    callback.call(thisArg, geometry.get());
+  } else {
+    geometry.getArray().forEach(function(g) {
+      siteProcessPoints(g, callback, thisArg);
+    });
+  }
 }
