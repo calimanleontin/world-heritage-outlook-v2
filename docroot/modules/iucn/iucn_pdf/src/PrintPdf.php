@@ -142,7 +142,7 @@ class PrintPdf implements PrintPdfInterface {
       }
 
     }
-    if ($entity->bundle() == 'site_assessment') {
+    if ($entity->bundle() == 'site_assessment' && !empty($entity->field_as_site->entity)) {
       \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site_assessment] createItem site=@site year=@year site_assessment=@site_assessment',
         [
           '@site' => $entity->field_as_site->entity->id(),

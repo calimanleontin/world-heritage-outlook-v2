@@ -104,6 +104,22 @@ table.table-striped {
     content: '—';
   }
 }
+.back-icon,
+.go-to-icon {
+  background-position: center;
+  background-size: 1.5em;
+  content: '';
+  display: inline-block;
+  height: @line-height-base * 1em;
+  vertical-align: middle;
+  width: 2.5em;
+}
+.back-icon {
+  .svg-icon(icon-backarrow, @iucn-blue-light);
+}
+.go-to-icon {
+  .svg-icon(icon-arrow, @iucn-blue-light);
+}
 
 a.is-active {
   color: @component-active-color;
@@ -116,32 +132,6 @@ a.is-active {
       color: @conservation-rating-color;
     }
   });
-}
-
-// @todo: use mixin
-// Conservation status related classes
-.sites-rating {
-  .loop-conservation-ratings({
-    &.@{conservation-rating-class} {
-      .site-rating-label{
-        background-color: @conservation-rating-color;
-        color: #FFFFFF;
-      }
-      h2{
-        a{
-          color: @conservation-rating-color;
-        }
-      }
-    }
-  });
-}
-.sites-rating {
-  .site-rating-label{
-    position: absolute;
-    padding:0.3em 0.5em;
-    max-width:100px;
-    font-size:0.9em;
-  }
 }
 
 // Triangle caret
@@ -314,5 +304,12 @@ ol {
         left: -1.5em;
       }
     }
+  }
+}
+
+.field--name-field-image {
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }

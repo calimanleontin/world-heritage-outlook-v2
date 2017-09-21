@@ -1,6 +1,7 @@
 {%
 set classes = [
 'iucn-assessment-value',
+'iucn-assessment-panel-container',
 ]
 %}
 
@@ -8,8 +9,10 @@ set classes = [
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="panel-title">{{ content.title }}</div>
-      <div class="panel-title-terms">{{ content.terms }}</div>
-      <div class="panel-title-terms-second">{{ content.terms_second }}</div>
+      <div class="panel-title-terms">
+        <div class="panel-title-terms-first">{{ content.terms }}</div>
+        <div class="panel-title-terms-second">{{ content.terms_second }}</div>
+      </div>
     </div>
     <div class="panel-body">
       {{ content.description }}

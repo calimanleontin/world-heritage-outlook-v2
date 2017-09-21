@@ -231,6 +231,7 @@ display:
           break_phrase: false
           plugin_id: string_list_field
       display_extenders: {  }
+      css_class: row
     cache_metadata:
       max-age: -1
       contexts:

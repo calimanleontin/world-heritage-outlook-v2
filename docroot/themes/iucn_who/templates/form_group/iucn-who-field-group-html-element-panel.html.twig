@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a fieldgroup html element.
+ *
+ * Available variables:
+ * - title: Title of the group.
+ * - title_element: Element to wrap the title.
+ * - children: The children of the group.
+ * - wrapper_element: The html element to use
+ * - attributes: A list of HTML attributes for the group wrapper.
+ *
+ * @see template_preprocess_field_group_html_element()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="iucn-assessment-panel-container">
+  <{{ wrapper_element }} {{ attributes.addClass('panel', 'panel-default') }}>
+    {% if title %}
+    <{{ title_element }} class="panel-heading{% if collapsible %} field-group-toggler{% endif %}">
+      <div class="panel-title">
+        <span>{{ title }}</span>
+      </div>
+      <div class="panel-title-terms">
+        {% if element['#terms'] %}
+          <div class="panel-title-terms-first">
+            {% for field_name in element['#terms'] %}
+              {{ element[field_name] }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+    </{{ title_element }}>
+    {% endif %}
+    {% if collapsible %}
+    <div class="field-group-wrapper panel-body">
+    {% endif %}
+    {{children}}
+    {% if collapsible %}
+    </div>
+    {% endif %}
+  </{{ wrapper_element }}>
+</div>

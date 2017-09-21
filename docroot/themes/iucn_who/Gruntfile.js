@@ -40,9 +40,9 @@ module.exports = function (grunt) {
         files: ['Gruntfile.js', 'package.json']
       },
       less: {
-        files: 'less/**/*.less',
+        files: ['less/**/*.less', 'images/*.svg'],
         tasks: 'less'
-      }
+      },
     },
     concat: {
       bootstrap: {

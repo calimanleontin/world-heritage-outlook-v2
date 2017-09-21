@@ -1,0 +1,31 @@
+uuid: fcc9fb88-0a32-4133-bdee-b907c82d2614
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:text:f38ba63d-d2c8-4a06-a070-72d0d0a1a7ae'
+  module:
+    - block_content
+    - system
+  theme:
+    - iucn_who
+id: conservationoutlookassessments
+theme: iucn_who
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'block_content:f38ba63d-d2c8-4a06-a070-72d0d0a1a7ae'
+settings:
+  id: 'block_content:f38ba63d-d2c8-4a06-a070-72d0d0a1a7ae'
+  label: 'Conservation outlook assessments'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /explore-sites
+    negate: false
+    context_mapping: {  }

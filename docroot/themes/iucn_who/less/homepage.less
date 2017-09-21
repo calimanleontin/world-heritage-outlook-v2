@@ -124,7 +124,7 @@
       }
       .scroll-down {
         background-color: @iucn-blue-dark;
-        .svg-icon(scroll-down-caret-white);
+        .svg-icon(scroll-down-caret, #ffffff);
         background-position: center 5px;
         background-size: contain;
         display: block;
@@ -156,7 +156,7 @@
     .form-group {
       margin-bottom: 12 / 15 * 1em;
     }
-    a[href*="/sites-search"] {
+    a[href*="/@{site-search-path}"] {
       float: right;
       font-weight: 300;
       font-size: 14 / 15 * 1em;
@@ -192,7 +192,7 @@
           font-size: 0;
           margin-bottom: 0;
           &:before {
-            .svg-icon(explore-black);
+            .svg-icon(explore, @text-color);
             background-position: center;
             background-size: 50%;
             width: 28px;
@@ -425,7 +425,7 @@
           &.@{conservation-category-class} {
             position: relative;
             &:before {
-              .svg-icon(~'@{conservation-category-class}');
+              .svg-icon(@conservation-category-class);
               background-position: center;
               background-size: contain;
               content: '';
@@ -512,6 +512,9 @@
   }
   #block-globaloutlookstatistics {
     text-align: center;
+    @media @grid-desktop {
+      .container();
+    }
     .block-title {
       color: @iucn-blue-dark;
       .remify(font-size, 36px);
@@ -586,6 +589,7 @@
     margin-top: 3em;
     a {
       .btn-info();
+      .iucn-base-btn-icons(download-report);
       display: inline-block;
       text-align: left;
       width: auto;
@@ -595,6 +599,20 @@
       line-height: 1.2;
       padding-left: 5em;
       font-weight: 300;
+      &:before {
+        background-size: 2em;
+        padding-left: 0;
+        padding-right: 0;
+        top: 10px;
+        bottom: 10px;
+        vertical-align: middle;
+        width: 4em;
+        border-right: 1px solid;
+        @media @grid-mobile {
+          background-size: 1.5em;
+          width: 2.5em;
+        }
+      }
       @media @grid-mobile {
         font-size: 21px;
         line-height: 1.1;
@@ -604,31 +622,6 @@
         font-size: 15px;
         @media @grid-mobile {
           font-size: 13px;
-        }
-      }
-      .glyphicon {
-        .svg-icon(download-report);
-        background-position: center;
-        background-size: 50% auto;
-        height: 100%;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 4em;
-        @media @grid-mobile {
-          width: 2.5em;
-        }
-        &:before {
-          display: none;
-        }
-        &:after {
-          border-right: 1px solid;
-          content: '';
-          display: block;
-          height: 80%;
-          position: absolute;
-          right: 0;
-          top: 10%;
         }
       }
     }

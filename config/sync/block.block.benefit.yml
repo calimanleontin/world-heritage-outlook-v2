@@ -12,7 +12,7 @@ dependencies:
 id: benefit
 theme: iucn_who
 region: facets
-weight: -9
+weight: -11
 provider: null
 plugin: 'facet_block:benefit'
 settings:
