@@ -9680,6 +9680,7 @@ h6.region-sidebar-first section h2.block-title {
 .region-fixed-bottom .block-search-api-sorts .sort-prefix {
   color: #333333;
   display: block;
+  width: 100%;
 }
 .region-fixed-bottom .block-search-api-sorts .sort-item {
   border: 1px solid #03afdf;
