@@ -8575,7 +8575,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 @media (max-width: 767px) {
   .holygrail > *,
