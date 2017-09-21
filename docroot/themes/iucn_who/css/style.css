@@ -9951,6 +9951,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article .left-content {
   display: flex;
   flex: 1 0 0%;
+  position: relative;
 }
 @media (max-width: 479px) {
   .view-sites-search article .left-content {
