@@ -9055,22 +9055,12 @@ ol li.iucn-arrow:after {
 #block-iucn-who-main-menu > ul > li > a {
   text-transform: uppercase;
 }
-@media screen and (min-width: 768px) {
-  .region-facets > .collapse,
-  .region-facets > .collapsing {
-    display: block;
-    height: auto !important;
-    opacity: 1;
-    overflow: visible;
-    transition: none;
-  }
-}
 @media screen and (max-width: 767px) {
   #facets-collapse > .facets-content {
     padding-left: 27px;
   }
 }
-.facets-title {
+.collapsible-title {
   border-bottom: 1px solid #ddd;
   display: block;
   font-weight: normal;
@@ -9081,31 +9071,31 @@ ol li.iucn-arrow:after {
   font-weight: 900;
   margin-top: 0;
 }
-h1.facets-title,
-h2.facets-title,
-h3.facets-title,
-h4.facets-title,
-h5.facets-title,
-h6.facets-title {
+h1.collapsible-title,
+h2.collapsible-title,
+h3.collapsible-title,
+h4.collapsible-title,
+h5.collapsible-title,
+h6.collapsible-title {
   margin-top: 0;
 }
 @media screen and (max-width: 767px) {
-  h1.facets-title,
-  h2.facets-title,
-  h3.facets-title,
-  h4.facets-title,
-  h5.facets-title,
-  h6.facets-title {
+  h1.collapsible-title,
+  h2.collapsible-title,
+  h3.collapsible-title,
+  h4.collapsible-title,
+  h5.collapsible-title,
+  h6.collapsible-title {
     font-size: 1.3em;
   }
 }
 @media screen and (max-width: 767px) {
-  #sidemenu .facets-title {
+  #sidemenu .collapsible-title {
     border-bottom: none;
     font-size: 25px;
     margin-bottom: .2em;
   }
-  #sidemenu .facets-title .caret-triangle:before {
+  #sidemenu .collapsible-title .caret-triangle:before {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2213%22%20viewBox%3D%220%200%2020%2013%22%3E%3Cpath%20class%3D%22caret-path%22%20fill-rule%3D%22evenodd%22%20fill%3D%22%23222%22%20d%3D%22M0%200h20L10%2013%200%200z%22%2F%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     content: '';
@@ -9117,7 +9107,7 @@ h6.facets-title {
   }
 }
 @media screen and (min-width: 768px) {
-  #sidemenu .facets-title .caret-triangle {
+  #sidemenu .collapsible-title .caret-triangle {
     display: none;
   }
 }
@@ -9627,10 +9617,10 @@ fieldset[disabled] .explore-map-button a.focus {
     margin-right: 2em;
   }
 }
-.region-sidebar-first section {
-  margin-bottom: 2em;
+.region-sidebar-first section + section {
+  margin-top: 2em;
 }
-.region-sidebar-first section a {
+.region-sidebar-first section .field--type-text-with-summary a {
   color: #03afdf;
 }
 .region-sidebar-first section h2.block-title {
@@ -10062,6 +10052,16 @@ h6.view-sites-search .view-header {
 }
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
+}
+@media screen and (min-width: 768px) {
+  #sidemenu .iucn-collapsible > .collapse,
+  #sidemenu .iucn-collapsible > .collapsing {
+    display: block;
+    height: auto !important;
+    opacity: 1;
+    overflow: visible;
+    transition: none;
+  }
 }
 @media screen and (max-width: 767px) {
   .sidemenu-toggle {

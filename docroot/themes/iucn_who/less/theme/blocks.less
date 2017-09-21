@@ -6,9 +6,6 @@
 }
 
 // Facets block
-.region-facets {
-  .collapse-visible-desktop();
-}
 #facets-collapse {
   @media @grid-mobile {
     > .facets-content {
@@ -16,7 +13,7 @@
     }
   }
 }
-.facets-title {
+.collapsible-title {
   // @todo: make mixin out of this
   .bottom-border();
   font-size: 1em;
@@ -413,8 +410,10 @@
 
 .region-sidebar-first {
   section {
-    margin-bottom: 2em;
-    a {
+    + section {
+      margin-top: 2em;
+    }
+    .field--type-text-with-summary a {
       color: @iucn-blue-light;
     }
     h2.block-title {
