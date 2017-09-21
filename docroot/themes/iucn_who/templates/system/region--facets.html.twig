@@ -22,7 +22,7 @@
   ]
 %}
 {% if content %}
-  <section{{ attributes.addClass(classes) }}>
+  <div{{ attributes.addClass(classes) }}>
     <h2 class="facets-title collapsible-title">
       <a class="collapse-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
         <span class='caret-triangle'></span> {{ 'Filters'|t }}
@@ -36,5 +36,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 {% endif %}
