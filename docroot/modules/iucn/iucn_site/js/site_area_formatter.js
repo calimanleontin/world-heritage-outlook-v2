@@ -48,7 +48,7 @@ function siteProcessPoints(geometry, callback, thisArg) {
     callback.call(thisArg, geometry.get());
   } else {
     geometry.getArray().forEach(function(g) {
-      processPoints(g, callback, thisArg);
+      siteProcessPoints(g, callback, thisArg);
     });
   }
 }
