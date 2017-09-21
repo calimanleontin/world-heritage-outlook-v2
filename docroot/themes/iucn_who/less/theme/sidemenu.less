@@ -1,45 +1,9 @@
 @media @grid-mobile {
-  .sidemenu-toggle-wrapper {
-    height: 50px;
-    margin-top: 45px;
-    position: relative;
-  }
-  #sidemenu-toggle {
-    align-items: stretch;
-    background-color: #fff;
-    display: flex;
-    > * {
-      flex: 1 0 0%;
-    }
-  }
-  #sidemenu-toggle.affix,
-  #sidemenu-toggle.affix-top {
-    z-index: @zindex-modal-background - 1;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    -webkit-backface-visibility: hidden;
-    // + .footer {
-    //   margin-top: 2 * 50px;
-    // }
-  }
-  #sidemenu-toggle.affix-bottom {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    top: auto !important;
-    // position: relative;
-    // top: auto !important;
-    // margin-bottom: -50px;
-    // margin-top: 45px;
-  }
   .sidemenu-toggle {
     font-size: 16px;
     font-weight: 500;
     min-height: 50px;
     text-transform: uppercase;
-    width: 50%;
     // position: fixed;
     // bottom: 0;
     // -webkit-backface-visibility: hidden;

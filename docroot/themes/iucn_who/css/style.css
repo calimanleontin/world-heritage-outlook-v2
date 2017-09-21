@@ -9757,6 +9757,39 @@ h6.region-sidebar-first section h2.block-title {
   display: flex;
   justify-content: stretch;
 }
+@media screen and (max-width: 767px) {
+  .region-fixed-bottom-wrapper {
+    height: 50px;
+    margin-top: 45px;
+    position: relative;
+  }
+  .region-fixed-bottom-wrapper + .footer {
+    margin-top: 0;
+  }
+  #iucn-fixed-bottom {
+    align-items: stretch;
+    background-color: #fff;
+    display: flex;
+  }
+  #iucn-fixed-bottom > * {
+    flex: 1 0 50%;
+  }
+  #iucn-fixed-bottom.affix,
+  #iucn-fixed-bottom.affix-top {
+    z-index: 1039;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-backface-visibility: hidden;
+  }
+  #iucn-fixed-bottom.affix-bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: auto !important;
+  }
+}
 .view-sites-search .view-header {
   padding-bottom: .1em;
 }
@@ -10025,40 +10058,11 @@ h6.view-sites-search .view-header {
   display: none;
 }
 @media screen and (max-width: 767px) {
-  .sidemenu-toggle-wrapper {
-    height: 50px;
-    margin-top: 45px;
-    position: relative;
-  }
-  #sidemenu-toggle {
-    align-items: stretch;
-    background-color: #fff;
-    display: flex;
-  }
-  #sidemenu-toggle > * {
-    flex: 1 0 0%;
-  }
-  #sidemenu-toggle.affix,
-  #sidemenu-toggle.affix-top {
-    z-index: 1039;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    -webkit-backface-visibility: hidden;
-  }
-  #sidemenu-toggle.affix-bottom {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    top: auto !important;
-  }
   .sidemenu-toggle {
     font-size: 16px;
     font-weight: 500;
     min-height: 50px;
     text-transform: uppercase;
-    width: 50%;
   }
   #sidemenu {
     background-color: #fff;
