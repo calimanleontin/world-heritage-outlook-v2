@@ -14162,7 +14162,7 @@ fieldset[disabled] #download-publication-button a.focus {
   }
 }
 .map-site-details-container .simplebar-track {
-  z-index: 2;
+  z-index: 3;
 }
 @media screen and (max-width: 767px) {
   .iucn-publications-teaser-wrapper .left-content,
