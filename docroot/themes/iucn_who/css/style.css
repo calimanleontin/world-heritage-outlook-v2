@@ -9822,9 +9822,15 @@ h6.region-sidebar-first section h2.block-title {
   padding: 0.3em 0.5em;
   position: absolute;
 }
+.view-sites-search article:hover,
+.view-sites-search article:focus,
+.view-sites-search article:active {
+  box-shadow: 0 0 0 3px #e1e1e1, 3px 4px 5px rgba(0, 0, 0, 0.2);
+}
 .view-sites-search article.coming-soon:hover,
 .view-sites-search article.coming-soon:focus,
 .view-sites-search article.coming-soon:active {
+  border-color: #7e7e7e;
   box-shadow: 0 0 0 3px #7e7e7e, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.coming-soon .site-rating-label {
@@ -9837,6 +9843,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article.data-deficient:hover,
 .view-sites-search article.data-deficient:focus,
 .view-sites-search article.data-deficient:active {
+  border-color: #333333;
   box-shadow: 0 0 0 3px #333333, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.data-deficient .site-rating-label {
@@ -9849,6 +9856,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article.critical:hover,
 .view-sites-search article.critical:focus,
 .view-sites-search article.critical:active {
+  border-color: #ef3133;
   box-shadow: 0 0 0 3px #ef3133, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.critical .site-rating-label {
@@ -9861,6 +9869,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article.significant-concern:hover,
 .view-sites-search article.significant-concern:focus,
 .view-sites-search article.significant-concern:active {
+  border-color: #f69232;
   box-shadow: 0 0 0 3px #f69232, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.significant-concern .site-rating-label {
@@ -9873,6 +9882,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article.good-concerns:hover,
 .view-sites-search article.good-concerns:focus,
 .view-sites-search article.good-concerns:active {
+  border-color: #9cd07d;
   box-shadow: 0 0 0 3px #9cd07d, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.good-concerns .site-rating-label {
@@ -9885,6 +9895,7 @@ h6.region-sidebar-first section h2.block-title {
 .view-sites-search article.good:hover,
 .view-sites-search article.good:focus,
 .view-sites-search article.good:active {
+  border-color: #3bb55e;
   box-shadow: 0 0 0 3px #3bb55e, 3px 4px 5px rgba(0, 0, 0, 0.2);
 }
 .view-sites-search .sites-rating.good .site-rating-label {
