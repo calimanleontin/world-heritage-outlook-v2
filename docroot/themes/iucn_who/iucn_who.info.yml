@@ -19,6 +19,7 @@ regions:
   facets: 'Facets (Left sidebar, fixed on mobile)'
   sidebar_first: 'Primary (Left sidebar, fixed on mobile)'
   sidebar_second: 'Secondary'
+  fixed_bottom: 'Sidemenu buttons region'
   footer: 'Footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
