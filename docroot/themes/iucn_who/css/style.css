@@ -9133,13 +9133,13 @@ h6.collapsible-title {
   color: #134780;
   font-size: 1em;
   display: flex;
+  margin: 0;
 }
 @media screen and (max-width: 767px) {
   .block-facets .panel-title {
     color: #333333;
     font-size: 19px;
     font-weight: 900;
-    margin: 0;
     margin-left: calc((-30px / 2) - 25px);
   }
 }
