@@ -80,7 +80,7 @@ iucn_who_news_teaser:
   label: News Teaser
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-news-teaser
+  template: templates/layouts/iucn-who-news-teaser
   regions:
     left_1:
       label: Image
@@ -91,7 +91,7 @@ iucn_who_news_full:
   label: News Full
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-news-full
+  template: templates/layouts/iucn-who-news-full
   regions:
     right_1:
       label: Images
@@ -102,7 +102,7 @@ iucn_who_publications_teaser:
   label: Publications teaser
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-publications-teaser
+  template: templates/layouts/iucn-who-publications-teaser
   regions:
     title:
       label: Title
@@ -117,7 +117,7 @@ iucn_who_publications_full:
   label: Publications full
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-publications-full
+  template: templates/layouts/iucn-who-publications-full
   regions:
     content:
       label: Content
@@ -130,7 +130,7 @@ iucn_who_homepage_teasers:
   label: Page Teasers
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-page-teasers
+  template: templates/layouts/iucn-who-page-teasers
   regions:
     content:
       label: Content
@@ -139,7 +139,7 @@ iucn_who_benefits_category_teaser:
   label: Benefits category teaser
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-benefits-category-teaser
+  template: templates/layouts/iucn-who-benefits-category-teaser
   regions:
     left_1:
       label: Image
@@ -150,7 +150,7 @@ iucn_who_pdf_download_button:
   label: PDF download button
   category: IUCN
   type: partial
-  template: tempalates/layouts/iucn-who-pdf-download-button
+  template: templates/layouts/iucn-who-pdf-download-button
   regions:
     content:
       label: Content
