@@ -194,6 +194,10 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
           'id' => $category->id(),
           'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
         ];
+        $categories[$category->id() . '_active'] = [
+          'id' => $category->id() . '_active',
+          'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
+        ];
       }
       else {
         $url = sprintf('/%s/images/marker-%s.png',
@@ -201,7 +205,7 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
           'all'
         );
         $categories[$category->id()] = [
-          'id' => 'all',
+          'id' => $category->id(),
           'url' => Url::fromUserInput($url, ['absolute' => TRUE])->toString(),
         ];
       }

@@ -10,6 +10,7 @@ function postInitMap(instance_id, map, config) {
     for (var $i in config.icons) {
       config.icons[$i].scaledSize = new google.maps.Size(33, 33);
     }
+    var $filter_category = 'all';
 
     var $markers = [];
     for(var $i = 0; $i < config.markers.length; $i++) {
@@ -24,7 +25,7 @@ function postInitMap(instance_id, map, config) {
       // Click on marker
       $marker.addListener('click', function() {
         $.iucnResetAllMarkerIcons();
-        var $icon = config.icons[this.icon.id + '_active'];
+        var $icon = config.icons[$filter_category + '_active'];
         this.setIcon($icon);
         $.iucnUpdateMapDetail(this.customInfo.render);
       });
@@ -36,7 +37,7 @@ function postInitMap(instance_id, map, config) {
     $('a.benefit-category').on('click', function() {
       $('#map-filters li').removeClass('active');
       $(this).parent().addClass('active');
-      var $filter_category = $(this).data('category');
+      $filter_category = $(this).data('category');
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
         var $visible = $filter_category == 'all'
@@ -57,12 +58,10 @@ function postInitMap(instance_id, map, config) {
     $.iucnResetAllMarkerIcons = function() {
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
-        if(typeof $marker.icon != 'undefined'){
-          var $icon = $marker.icon;
+        var $icon = config.icons[$filter_category];
           if ($icon.url != $marker.getIcon().url) {
             $marker.setIcon($icon);
           }
-        }
       }
     };
 
@@ -91,7 +90,6 @@ function postInitMap(instance_id, map, config) {
 function homepageMapSiteDetailClose() {
   (function ($) {
     'use strict';
-    $.resetMapPosition();
-    $.iucnClearSelection();
+    $.iucnResetAllMarkerIcons();
   })(jQuery, Drupal, drupalSettings);
 }
