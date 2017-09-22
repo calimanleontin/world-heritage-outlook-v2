@@ -7,6 +7,7 @@ use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
@@ -27,6 +28,13 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
    */
   public function redirectContent(GetResponseEvent $event) {
     $request = $event->getRequest();
+
+    // Taxonomy term pages are forbidden for anonymous users.
+    if ($request->attributes->get('_route') === 'entity.taxonomy_term.canonical') {
+      if (\Drupal::currentUser()->isAnonymous()) {
+        throw new AccessDeniedHttpException();
+      }
+    }
 
     // This is necessary because this also gets called on
     // node sub-tabs such as "edit", "revisions", etc.  This
