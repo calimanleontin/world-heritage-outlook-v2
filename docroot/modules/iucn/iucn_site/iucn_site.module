@@ -9,6 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Validation\Plugin\Validation\Constraint;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_help().
@@ -105,6 +106,23 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
       }
     }
   }
+
+  // Create a new json file containing site geoJson and append it if another one doesn't exist already.
+  if ($node->bundle() == 'site' && empty($node->field_geojson->entity)) {
+    $filename = 'geojson' . $node->field_wdpa_id->value . '.json';
+    $file = File::create([
+      'filename' => $filename,
+      'status' => 1,
+      'uri' => 'public://geojson/' . $filename,
+    ]);
+    $file->save();
+    $dir = dirname($file->getFileUri());
+    if (!file_exists($dir)) {
+      mkdir($dir, 0644, TRUE);
+    }
+    file_put_contents($file->getFileUri(), "{}");
+    $node->field_geojson->entity = $file->id();
+  }
 }
 
 /**
@@ -136,9 +154,10 @@ function iucn_site_theme($existing, $type, $theme, $path) {
 }
 
 function iucn_site_node_update(Drupal\node\Entity\Node $node) {
-  /** @var QueueFactory $queue_factory */
-  $queue_factory = \Drupal::service('queue');
-  /** @var QueueInterface $queue */
-  $queue = $queue_factory->get('cron_site_update_geojson');
-  $queue->createItem($node->id());
+  // Add the site to the update_geojson queue on node update.
+  if ($node->bundle() == 'site') {
+    $queue_factory = \Drupal::service('queue');
+    $queue = $queue_factory->get('cron_site_update_geojson');
+    $queue->createItem($node->id());
+  }
 }
