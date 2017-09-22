@@ -17,16 +17,21 @@
           {{ content.mobile_image }}
         </div>
       </div>
-      <div class="region-site-rating col-sm-4 col-md-4">
-        {% if has_assessment %}
-        {{ content.left_1 }}
-        {% endif %}
-      </div>
-      <div class="region-site-general-info col-sm-8 col-md-4 ">
-        {% if has_assessment %}
-        {{ content.middle_1 }}
-        {% endif %}
-      </div>
+      {% if has_assessment %}
+        <div class="region-site-rating col-sm-4 col-md-4">
+          {{ content.left_1 }}
+        </div>
+        <div class="region-site-general-info col-sm-8 col-md-4 ">
+          {{ content.middle_1 }}
+        </div>
+
+      {% else %}
+        <div class="col-sm-8 col-md-8">
+          <div class="no-assessment-placeholder">
+            <span>{{ 'Conservation Outlook Assessment coming soon'|t }}</span>
+          </div>
+        </div>
+      {% endif %}
       <div class="region-site-image col-sm-4 col-md-4">
         {{ content.right_1 }}
       </div>
@@ -73,10 +78,6 @@
       <div class="col-sm-8">
         {% if has_assessment %}
           {{ content.assessment }}
-        {% else %}
-          <div class="no-assessment-placeholder">
-            <span>{{ 'Conservation Outlook Assessment coming soon'|t }}</span>
-          </div>
         {% endif %}
       </div>
       <div class="col-sm-4" id="sidemenu">

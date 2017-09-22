@@ -260,7 +260,7 @@ content:
     region: description
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_as_benefits_hab_trend:
     type: entity_reference_label
@@ -268,7 +268,7 @@ content:
     region: description
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_as_benefits_invassp_level:
     type: entity_reference_label
@@ -276,7 +276,7 @@ content:
     region: description
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
     type: entity_reference_label
@@ -284,7 +284,7 @@ content:
     region: description
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_as_benefits_oex_level:
     type: entity_reference_rss_category
