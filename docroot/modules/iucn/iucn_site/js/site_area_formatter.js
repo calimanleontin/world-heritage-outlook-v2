@@ -34,7 +34,9 @@ function initMap() {
       if (marker.hasOwnProperty('area')) {
         map.data.loadGeoJson(marker.area);
         map.data.setStyle({
-          fillColor: marker.area_color
+          // fillColor: marker.area_color,
+          fillColor: 'grey',
+          strokeWeight: 1
         });
       }
     });
