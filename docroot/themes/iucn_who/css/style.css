@@ -13057,8 +13057,6 @@ html[lang='es'] .image-rating-container.good {
     background-color: #134780;
     color: #fff;
     align-items: center;
-    font-size: 37px;
-    font-size: 3.7rem;
     min-height: 11.5rem;
     position: relative;
     text-align: center;
@@ -13072,6 +13070,12 @@ html[lang='es'] .image-rating-container.good {
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']):focus,
   .path-frontpage #block-homepagemap .map-block-footer a:not([class*='chosen']):active {
     color: #03afdf;
+  }
+  .path-frontpage #block-homepagemap .map-block-footer h1 {
+    font-size: 37px;
+    font-size: 3.7rem;
+    font-weight: normal;
+    margin: 0;
   }
   .path-frontpage #block-homepagemap .map-block-footer .block-footer-text {
     margin-top: .2em;

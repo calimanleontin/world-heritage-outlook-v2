@@ -82,13 +82,17 @@
         align-items: center;
         // display: flex;
         // flex-direction: column;
-        .remify(font-size, 37px);
         // justify-content: center;
         min-height: @map-footer-height;
         position: relative;
         text-align: center;
         z-index: 1;
         box-shadow: 0 -1px 8px -2px fade(#000, 30%);
+        h1 {
+          .remify(font-size, 37px);
+          font-weight: normal;
+          margin: 0;
+        }
         .block-footer-text {
           margin-top: .2em;
           margin-bottom: .2em;
