@@ -5,6 +5,4 @@ map:
     js/map_homepage.js: {}
   dependencies:
     - core/drupalSettings
-    - core/matchmedia
-    - core/underscore
     - iucn_who_homepage/map-base

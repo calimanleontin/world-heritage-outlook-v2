@@ -1,6 +1,6 @@
 headroom:
     js:
-      libraries/headroom.js/dist/headroom.min.js: { minified: true }
+      libraries/node_modules/headroom.js/dist/headroom.min.js: { minified: true }
 
 bootstrap-js:
     js:
