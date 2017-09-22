@@ -134,3 +134,11 @@ function iucn_site_theme($existing, $type, $theme, $path) {
     ]
   ];
 }
+
+function iucn_site_node_update(Drupal\node\Entity\Node $node) {
+  /** @var QueueFactory $queue_factory */
+  $queue_factory = \Drupal::service('queue');
+  /** @var QueueInterface $queue */
+  $queue = $queue_factory->get('cron_site_update_geojson');
+  $queue->createItem($node->id());
+}
