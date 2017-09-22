@@ -33,6 +33,10 @@ process:
     default_value: site_assessment
   langcode: langcode
   title: title
+  status:
+    source: status
+    plugin: default_value
+    default_value: 0
   field_as_references:
     plugin: multiple_extract
     source: references
