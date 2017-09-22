@@ -31,7 +31,7 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
 
     // Taxonomy term pages are forbidden for anonymous users.
     if ($request->attributes->get('_route') === 'entity.taxonomy_term.canonical') {
-      if (empty(\Drupal::currentUser())) {
+      if (\Drupal::currentUser()->isAnonymous()) {
         throw new AccessDeniedHttpException();
       }
     }
