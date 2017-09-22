@@ -18,13 +18,14 @@
   set classes = [
     'region',
     'region-' ~ region|clean_class,
+    'iucn-collapsible'
   ]
 %}
 {% if content %}
-  <section{{ attributes.addClass(classes) }}>
-    <h2 class="facets-title">
+  <div{{ attributes.addClass(classes) }}>
+    <h2 class="facets-title collapsible-title">
       <a class="collapse-toggle" role="button" data-toggle="collapse" href="#facets-collapse" aria-expanded="true" aria-controls="facets-collapse">
-        <span class='caret-triangle'></span>Filters
+        <span class='caret-triangle'></span> {{ 'Filters'|t }}
       </a>
     </h2>
     <div class="collapse fade in" id="facets-collapse">
@@ -35,5 +36,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 {% endif %}

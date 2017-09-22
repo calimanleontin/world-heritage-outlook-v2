@@ -12,7 +12,7 @@ dependencies:
 id: thegauge
 theme: iucn_who
 region: sidebar_first
-weight: 0
+weight: -15
 provider: null
 plugin: 'block_content:025056c9-f10d-4e64-9a69-3f43d842db00'
 settings:

@@ -39,8 +39,8 @@ third_party_settings:
   ds:
     layout:
       id: iucn_who_sites_search
-      library: ds/ds_2col
-      disable_css: true
+      library: null
+      disable_css: false
       entity_classes: all_classes
       settings:
         wrappers:

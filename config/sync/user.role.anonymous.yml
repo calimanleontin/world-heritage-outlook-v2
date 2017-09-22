@@ -10,4 +10,5 @@ weight: 0
 is_admin: false
 permissions:
   - 'access content'
+  - 'use search autocomplete'
   - 'use search_api_autocomplete for search_api_views_sites_search'
