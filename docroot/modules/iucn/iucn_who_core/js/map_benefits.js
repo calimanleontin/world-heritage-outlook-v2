@@ -47,6 +47,7 @@ function postInitMap(instance_id, map, config) {
         }
         $marker.setVisible($visible);
       }
+      $.iucnResetMapDetail();
       $.iucnResetAllMarkerIcons();
       return false;
     });
@@ -84,6 +85,11 @@ function postInitMap(instance_id, map, config) {
       );
     };
 
+    $.iucnResetMapDetail = function() {
+      var $mapDetails = $('#map-site-details');
+      $mapDetails.fadeOut(0).html().fadeIn(300);
+    };
+
   })(jQuery, Drupal, drupalSettings);
 }
 
@@ -91,5 +97,6 @@ function homepageMapSiteDetailClose() {
   (function ($) {
     'use strict';
     $.iucnResetAllMarkerIcons();
+    $.iucnResetMapDetail();
   })(jQuery, Drupal, drupalSettings);
 }
