@@ -13,7 +13,8 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById(elem.mapid), {
       zoom: 7,
       center: center,
-      mapTypeId: elem.map_type
+      // mapTypeId: elem.map_type,
+      styles: siteFormatterMapStyle
     });
 
     var bounds = new google.maps.LatLngBounds();
@@ -34,7 +35,9 @@ function initMap() {
       if (marker.hasOwnProperty('area')) {
         map.data.loadGeoJson(marker.area);
         map.data.setStyle({
-          fillColor: marker.area_color
+          fillColor: marker.area_color,
+          strokeColor: marker.area_color,
+          strokeWeight: 1
         });
       }
     });

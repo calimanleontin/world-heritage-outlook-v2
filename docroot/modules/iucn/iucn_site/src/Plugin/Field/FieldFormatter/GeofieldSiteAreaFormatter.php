@@ -175,11 +175,13 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
 
     $status_colors = [
       'good' => '#3bb55e',
-      'coming-soon' => '#7e7e7e',
+//      'coming-soon' => '#7e7e7e',
+      'coming-soon' => '#03afdf',
       'good-concerns' => '#9cd07d',
       'significant-concern' => '#f69232',
       'critical' => '#ef3133',
-      'date-deficient' => '#333333',
+//      'date-deficient' => '#333333',
+      'date-deficient' => '#03afdf',
     ];
 
     $status_id = 0;
@@ -198,7 +200,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       'id' => $node->id(),
       'title' => $node->getTitle(),
       'icon' => $icon_dir_path . '/marker-' . $status_identifier . '.png',
-      'area_color' => isset($status_colors[$status_identifier]) ? $status_colors[$status_identifier] : 'red',
+      'area_color' => isset($status_colors[$status_identifier]) ? $status_colors[$status_identifier] : '#03afdf',
     ];
 
     if (!empty($node->field_wdpa_id->value)) {
@@ -218,7 +220,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       'map_type' => 'roadmap',
     ];
 
-    $element = [
+    $elements[0] = [
       '#theme' => 'geofield_google_map',
       '#mapid' => $map_id,
       '#height' => '350px',
@@ -236,7 +238,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       ],
     ];
 
-    return $element;
+    return $elements;
   }
 
 }
