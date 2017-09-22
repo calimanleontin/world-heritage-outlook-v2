@@ -218,7 +218,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       'map_type' => 'roadmap',
     ];
 
-    $element = [
+    $elements[0] = [
       '#theme' => 'geofield_google_map',
       '#mapid' => $map_id,
       '#height' => '350px',
@@ -236,7 +236,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       ],
     ];
 
-    return $element;
+    return $elements;
   }
 
 }
