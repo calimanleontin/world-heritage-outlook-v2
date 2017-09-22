@@ -6,15 +6,29 @@ bootstrap-js:
     js:
       libraries/bootstrap/bootstrap.min.js: { minified: true }
 
-iucn-mobile-chrome-vh-fix:
+simplebar:
     js:
-      js/iucn-mobile-chrome-vh-fix/iucn-mobile-chrome-vh-fix.js: {}
+      libraries/node_modules/simplebar/dist/simplebar.js: {}
+    css:
+      theme:
+        libraries/node_modules/simplebar/dist/simplebar.css: {}
 
 facets:
     js:
       js/facets.js: {}
     dependencies:
       - core/jquery
+
+homepage-map:
+    js:
+      js/iucn-mobile-chrome-vh-fix/iucn-mobile-chrome-vh-fix.js: {}
+      js/homepage-map.js: {}
+    dependencies:
+      - core/drupalSettings
+      - core/underscore
+      - core/matchmedia
+      - iucn_who/simplebar
+
 global-styling:
     css:
       theme:

@@ -14,6 +14,7 @@
     "postcss-flexibility": "^1.1.1"
   },
   "dependencies": {
-    "headroom.js": "^0.9.4"
+    "headroom.js": "^0.9.4",
+    "simplebar": "^2.4.3"
   }
 }

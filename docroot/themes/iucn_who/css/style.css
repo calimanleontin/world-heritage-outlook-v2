@@ -13023,6 +13023,11 @@ html[lang='es'] .image-rating-container.good {
   position: static !important;
   height: 100% !important;
 }
+.path-frontpage #block-homepagemap .col-left,
+.path-frontpage #block-homepagemap .col-right {
+  padding-left: 0;
+  padding-right: 0;
+}
 @media screen and (min-width: 768px) {
   .path-frontpage #block-homepagemap .row.map-block-main {
     display: flex;
@@ -13035,8 +13040,13 @@ html[lang='es'] .image-rating-container.good {
     font-size: 0.83333333em;
     line-height: 1.2;
     max-width: 300px;
-    overflow: auto;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .path-frontpage #block-homepagemap .col-left .map-site-details-container {
+    height: 100%;
+    position: relative;
   }
   .path-frontpage #block-homepagemap .col-right {
     position: relative;
@@ -13471,32 +13481,54 @@ html[lang='es'] .image-rating-container.good {
     display: none;
   }
 }
-.path-frontpage #map-site-details .map-site-detail {
+.path-frontpage #map-site-details .map-site-detail:before,
+.path-frontpage #map-site-details .map-site-detail:after {
+  content: " ";
+  display: table;
+}
+.path-frontpage #map-site-details .map-site-detail:after {
+  clear: both;
+}
+.path-frontpage #map-site-details .map-site-detail:before,
+.path-frontpage #map-site-details .map-site-detail:after {
+  content: " ";
+  display: table;
+}
+.path-frontpage #map-site-details .map-site-detail:after {
+  clear: both;
+}
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content {
   position: relative;
 }
-.path-frontpage #map-site-details .map-site-detail:before,
-.path-frontpage #map-site-details .map-site-detail:after {
+@media screen and (min-width: 768px) {
+  .path-frontpage #map-site-details .map-site-detail .map-site-detail-content {
+    background: #fff;
+    z-index: 1;
+  }
+}
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:before,
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:after {
   content: " ";
   display: table;
 }
-.path-frontpage #map-site-details .map-site-detail:after {
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:after {
   clear: both;
 }
-.path-frontpage #map-site-details .map-site-detail:before,
-.path-frontpage #map-site-details .map-site-detail:after {
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:before,
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:after {
   content: " ";
   display: table;
 }
-.path-frontpage #map-site-details .map-site-detail:after {
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content:after {
   clear: both;
 }
-.path-frontpage #map-site-details .map-site-detail > div,
-.path-frontpage #map-site-details .map-site-detail > dl {
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content > div,
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content > dl {
   padding-left: 15px;
 }
-.path-frontpage #map-site-details .map-site-detail > div,
-.path-frontpage #map-site-details .map-site-detail > dl,
-.path-frontpage #map-site-details .map-site-detail > .more {
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content > div,
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content > dl,
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content > .more {
   padding-right: 15px;
 }
 .path-frontpage #map-site-details .map-site-detail .status {
@@ -13504,8 +13536,8 @@ html[lang='es'] .image-rating-container.good {
   color: #fff;
   font-size: 1em;
   font-weight: 300;
-  line-height: 1.6em;
   left: 0;
+  line-height: 1.6em;
   max-width: calc(100% - 2em);
   min-height: 2em;
   padding: .2em 15px;
@@ -13589,13 +13621,13 @@ html[lang='es'] .image-rating-container.good {
 }
 .path-frontpage #map-site-details .map-site-detail dl {
   color: #666666;
-  float: left;
   font-size: .85em;
   margin-top: .5em;
   margin-bottom: .5em;
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
+  overflow: hidden;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #map-site-details .map-site-detail dl {
@@ -13772,6 +13804,11 @@ fieldset[disabled] .path-frontpage #map-site-details .map-site-detail .close.foc
 .path-frontpage #map-site-details .map-site-detail .close .badge {
   color: #134780;
   background-color: #fff;
+}
+@media screen and (min-width: 768px) {
+  .path-frontpage #map-site-details .map-site-detail .close {
+    z-index: 2;
+  }
 }
 .path-frontpage #map-site-details .map-site-detail img {
   width: 100%;
@@ -14119,6 +14156,9 @@ fieldset[disabled] #download-publication-button a.focus {
   #download-publication-button {
     order: -1;
   }
+}
+.map-site-details-container .simplebar-track {
+  z-index: 2;
 }
 @media screen and (max-width: 767px) {
   .iucn-publications-teaser-wrapper .left-content,
