@@ -61,6 +61,18 @@ abstract class GoogleMapsBaseBlock extends BlockBase {
       '#description' => $this->t('Initial map background'),
       '#default_value' => $this->getConfigParam( 'map_init_type', 'google.maps.MapTypeId.ROADMAP'),
     ];
+
+    $form['map_style'] = [
+      "#type" => 'select',
+      '#title' => $this->t('Map style'),
+      '#options' => array(
+        'default' => 'Default',
+        'grayscale' => 'Grayscale',
+      ),
+      '#description' => $this->t('Map style'),
+      '#default_value' => $this->getConfigParam( 'map_style', 'default'),
+    ];
+
     return $form;
   }
 
@@ -77,6 +89,7 @@ abstract class GoogleMapsBaseBlock extends BlockBase {
     $this->configuration['map_init_lng'] = $values['map_init_lng'];
     $this->configuration['map_init_zoom'] = $values['map_init_zoom'];
     $this->configuration['map_init_type'] = $values['map_init_type'];
+    $this->configuration['map_style'] = $values['map_style'];
   }
 
 
@@ -93,6 +106,7 @@ abstract class GoogleMapsBaseBlock extends BlockBase {
       'map_init_lng' => $this->getConfigParam( 'map_init_lng', '-187.3'),
       'map_init_zoom' => $this->getConfigParam( 'map_init_zoom', '2'),
       'map_init_type' => $this->getConfigParam( 'map_init_type', 'google.maps.MapTypeId.ROADMAP'),
+      'map_style' => $this->getConfigParam( 'map_style', 'default'),
     ];
     return $content;
   }

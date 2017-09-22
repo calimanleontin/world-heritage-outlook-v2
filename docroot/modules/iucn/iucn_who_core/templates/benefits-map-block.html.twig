@@ -8,7 +8,7 @@
           <div><a href="javascript:void(0);">{{ 'Expand all' }}</a> | <a href="javascript:void(0);">{{ 'Colapse all' }}</a></div>
         </div>
         <div id="map-filters">
-          <a href="javascript:void(0);" class="benefit-all-categories">{{ 'All World Heritage Sites' | trans }}</a>
+          <a href="#all" data-category="all" class="benefit-category">{{ 'All World Heritage Sites' | trans }}</a>
           {% for category in categories %}
           <section class="block-facet--links block block-facets clearfix panel panel-default">
             <div class="panel-heading" role="tab" id="#heading-topic-{{ category.id }}">
@@ -19,7 +19,10 @@
               <div class="panel-body">
                 <ul class="item-list__links">
                   {% for child in category.children %}
-                  <li class="facet-item"><a href="javascript:void(0);" class="benefit-category"><span>{{ child.name.value }}</span></a></li>
+                    <li class="facet-item"><a href="#{{ child.id }}" data-category="{{ child.id }}" class="benefit-category">
+                            {% if child.field_category_image.entity.uri.value %}
+                      <img src="{{ file_url(child.field_category_image.entity.uri.value) }}"/>
+                            {% endif %}<span>{{ child.name.value }}</span></a></li>
                   {% endfor %}
                 </ul>
               </div>

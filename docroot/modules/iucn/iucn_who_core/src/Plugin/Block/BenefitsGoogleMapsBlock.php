@@ -10,6 +10,8 @@ use Drupal\iucn_who_core\Plugin\Block\GoogleMapsBaseBlock;
 use Drupal\iucn_who_core\Sites\SitesQueryUtil;
 use Drupal\iucn_who_core\SiteStatus;
 use Drupal\website_utilities\DrupalInstance;
+use Drupal\file\Entity\File;
+
 
 
 /**
@@ -30,7 +32,6 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     parent::blockSubmit($form, $form_state);
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -41,6 +42,8 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     // @todo remove line below to allow caching in production
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
+    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
+
     $content['output'] = [
       '#theme' => 'benefits_map_block',
       '#markup_map' => parent::getMapMarkup(),
@@ -62,7 +65,10 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     foreach ($sites as $node) {
       $latitude = $node->field_geolocation->lat;
       $longitude = $node->field_geolocation->lon;
-      // Hide sites without coordinates
+      $status_id = $this->getSiteStatus($node);
+      $benefits = $this->getSiteBenefits($node);
+
+      // Hide sites without coordinates.
       if (empty($latitude) || empty($longitude) || empty($status_id)) {
         \Drupal::logger(__CLASS__)->warning(
           'Hiding site NID: @nid from map due to invalid values (coordinates/status)',
@@ -71,26 +77,57 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
         continue;
       }
 
+      $overall_status_level = SiteStatus::getOverallAssessmentLevel($node);
+      $threat_level = SiteStatus::getOverallThreatLevel($node);
+      $protection_level = SiteStatus::getOverallProtectionLevel($node);
+      $value_level = SiteStatus::getOverallProtectionLevel($node);
+
+
       $detail = [
         '#theme' => 'homepage_map_site_detail',
         '#title' => $node->title->value,
+        '#status' => [
+          'label' => $overall_status_level ? $overall_status_level->label() : '-',
+          'entity' => $overall_status_level,
+          'id' => $status_id,
+        ],
         '#country' => [
           'label' => $this->getSiteCountryLabel($node),
         ],
+        '#thumbnail' => $this->getSiteThumbnail($node),
         '#inscription' => $this->getSiteInscriptionYear($node),
         '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
+        '#stat_values' => $value_level ? $value_level->label() : '-',
+        '#stat_threat' => $threat_level ? $threat_level->label() : '-',
+        '#stat_protection' => $protection_level ? $protection_level->label() : '-',
       ];
+
       $ret[] = [
         'id' => $node->id(),
         'lat' => $latitude,
         'lng' => $longitude,
         'title' => $node->title->value,
-        'status_label' => 'TODO',
         'status_id' => $status_id,
+        'benefits' => $benefits,
         'thumbnail' => $this->getSiteThumbnail($node),
         'inscription_year' => $this->getSiteInscriptionYear($node),
         'render' => \Drupal::service('renderer')->render($detail),
       ];
+    }
+    return $ret;
+  }
+
+  private function getSiteStatus($node) {
+    $ret = NULL;
+    if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
+      $ret = $status->id();
+    }
+    else {
+      if (!DrupalInstance::isProductionInstance()) {
+        $array = SitesQueryUtil::getSiteConservationRatings();
+        $k = array_rand($array);
+        $ret = $array[$k]->id();
+      }
     }
     return $ret;
   }
@@ -104,7 +141,8 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
           $countries[] = $ob->entity->name->value;
         }
       }
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       // @todo log
     }
     return implode(', ', $countries);
@@ -127,26 +165,82 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     }
   }
 
+  private function getSiteBenefits($node){
+    $categories = [];
+    if (!empty($node->field_current_assessment)) {
+      $current_assesment = $node->field_current_assessment->entity;
+      if (!empty($current_assesment->field_as_benefits)) {
+        foreach ($current_assesment->field_as_benefits as $as_benefit) {
+          $benefit = $as_benefit->entity;
+          if (!empty($benefit->field_as_benefits_category)) {
+            foreach ($benefit->field_as_benefits_category as $as_benefits_category) {
+              /** @var \Drupal\taxonomy\TermInterface $benefit_category */
+              $benefit_category = $as_benefits_category->entity;
+              $categories[$benefit_category->id()] = $benefit_category->id();
+            }
+          }
+        }
+      }
+    }
+    return $categories;
+  }
+
+
+  private function setMarkersIcons($category, &$categories) {
+    if ($name = $category->getName()) {
+      /** @var \Drupal\taxonomy\TermInterface $category */
+      if (!empty($category->field_image) && $category->field_image->entity && $category->field_image->entity->getFileUri()) {
+        $categories[$category->id()] = [
+          'id' => $category->id(),
+          'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
+        ];
+      }
+      else {
+        $url = sprintf('/%s/images/marker-%s.png',
+          drupal_get_path('module', 'iucn_who_core'),
+          'all'
+        );
+        $categories[$category->id()] = [
+          'id' => 'all',
+          'url' => Url::fromUserInput($url, ['absolute' => TRUE])->toString(),
+        ];
+      }
+      if (is_array($category->children)) {
+        foreach ($category->children as $child) {
+          self::setMarkersIcons($child, $categories);
+        }
+      }
+    }
+  }
 
   private function getMarkersIcons() {
     $ret = [];
-    $status = SitesQueryUtil::getSiteConservationRatings();
-    foreach($status as $term) {
-      $url = sprintf('/%s/images/marker-%s.png',
-        drupal_get_path('module', 'iucn_who_homepage'),
-        $term->field_css_identifier->value
-      );
-      $ret['icon' . $term->id()] = [
-        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
-      ];
-      $url = sprintf('/%s/images/marker-%s-active.png',
-        drupal_get_path('module', 'iucn_who_homepage'),
-        $term->field_css_identifier->value
-      );
-      $ret['icon' . $term->id() . 'Active'] = [
-        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
-      ];
+
+    $url = sprintf('/%s/images/marker-%s.png',
+      drupal_get_path('module', 'iucn_who_core'),
+      'all'
+    );
+    $ret['all'] = [
+      'id' => 'all',
+      'url' => Url::fromUserInput($url, ['absolute' => TRUE])->toString(),
+    ];
+
+    $url = sprintf('/%s/images/marker-%s.png',
+      drupal_get_path('module', 'iucn_who_core'),
+      'all-active'
+    );
+    $ret['all_active'] = [
+      'id' => 'all_active',
+      'url' => Url::fromUserInput($url, ['absolute' => TRUE])->toString(),
+    ];
+
+    $categories = self::getBenefitsTermsTree();
+    foreach ($categories as $category) {
+      /** @var \Drupal\taxonomy\TermInterface $category */
+      self::setMarkersIcons($category, $ret);
     }
+
     return $ret;
   }
+
 }

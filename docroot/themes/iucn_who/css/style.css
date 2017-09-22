@@ -12742,6 +12742,9 @@ html[lang='es'] .image-rating-container.good {
   margin-bottom: 70px;
   margin-bottom: 7rem;
 }
+.benefit-category img {
+  width: 24px;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;

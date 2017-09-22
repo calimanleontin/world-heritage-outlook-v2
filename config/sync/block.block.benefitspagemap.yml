@@ -24,9 +24,10 @@ settings:
   map_init_lng: '-187.3'
   map_init_zoom: '2'
   map_init_type: roadmap
+  map_style: grayscale
 visibility:
   request_path:
     id: request_path
-    pages: /benefits
+    pages: /resources/benefits
     negate: false
     context_mapping: {  }

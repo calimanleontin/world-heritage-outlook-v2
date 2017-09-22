@@ -215,6 +215,11 @@ processor_settings:
     weights:
       preprocess_query: -30
   entity_status: {  }
+  hierarchy:
+    fields:
+      field_as_benefits_category: taxonomy_term-parent
+    weights:
+      preprocess_index: -45
 tracker_settings:
   default: {  }
 options:

@@ -275,6 +275,18 @@ class SiteStatus {
         $ret[$parent->id()] = $parent;
       }
     }
+   /* foreach($ret as $k){
+      if($k->children){
+        foreach($k->children as $child){
+          if($child->field_category_image){
+            if(!empty($child->field_category_image) && $child->field_category_image->entity){
+              var_dump($child->field_category_image->entity->getFileUri());
+            }
+          }
+        }
+      }
+    }
+    die('EXIT');*/
     return $ret;
   }
 }
