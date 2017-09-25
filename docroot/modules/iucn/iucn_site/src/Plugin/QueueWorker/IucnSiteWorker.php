@@ -11,7 +11,7 @@ use Drupal\file\Entity\File;
 *
 * @QueueWorker(
 *   id = "cron_site_update_geojson",
-*   title = @Translation("Cron Node Publisher"),
+*   title = @Translation("Cron Site Update geoJson"),
 *   cron = {"time" = 5}
 * )
 */
