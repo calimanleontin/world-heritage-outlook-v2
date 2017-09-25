@@ -72,37 +72,37 @@ third_party_settings:
       full_assessment_values:
         - field_as_protection_ov_out_rate
         - field_as_benefits_summary
-        - field_as_threats_potent_rating
         - field_as_threats_current_rating
         - field_as_benefits
+        - field_as_threats_potent_rating
         - field_as_protection_ov_out_text
         - field_as_threats_current_text
         - field_as_threats_potent_text
         - field_as_threats_current
         - field_as_threats_potential
         - field_as_projects
-        - field_as_projects_needs
+        - field_as_key_cons
         - group_values
         - group_key_conservation_issues
+        - field_as_projects_needs
         - group_description_of_values
-        - field_as_key_cons
         - group_benefits
-        - field_as_vass_bio_state
-        - field_as_vass_wh_trend
         - group_ass_protection_manag
+        - field_as_vass_bio_state
         - group_assessment_information
-        - field_as_protection
-        - group_threats
+        - field_as_vass_wh_trend
         - group_overall_ass_prot
-        - group_ass_pm_outside
-        - group_additional_information
         - 'display_field_copy:node-assessment_values_copy'
+        - group_additional_information
+        - group_ass_pm_outside
         - field_as_vass_bio_trend
-        - group_projects
-        - group_best_practice_examples
+        - group_threats
+        - field_as_protection
         - group_protection_and_management
+        - group_best_practice_examples
         - field_as_vass_bio_text
         - 'display_field_copy:node-justification_of_assessment_valu'
+        - group_projects
         - field_as_protection_ov_practices
         - group_state_and_trend_of_values
         - group_understanding_benefits
@@ -110,18 +110,19 @@ third_party_settings:
         - group_assessing_current_state
         - group_active_projects
         - group_current_threats
-        - group_summary_values
-        - group_projects_needs
-        - field_as_values_wh
-        - 'display_field_copy:node-identifying_and_describing_value'
-        - group_potential_threats
         - group_ass_state_wh
+        - group_potential_threats
+        - field_as_values_wh
+        - group_projects_needs
+        - 'display_field_copy:node-identifying_and_describing_value'
+        - group_summary_values
         - group_ass_state_bv
         - field_as_values_bio
+        - 'display_field_copy:node-other_biodiv_values'
       summary:
         - group_conservation_outlook
-        - field_as_threats_rating
         - field_as_protection_ov_rating
+        - field_as_threats_rating
         - field_as_global_assessment_text
         - field_as_threats_text
         - field_as_protection_ov_text
@@ -146,7 +147,7 @@ third_party_settings:
       'display_field_copy:node-identifying_and_describing_value':
         plugin_id: 'display_field_copy:node-identifying_and_describing_value'
         weight: 21
-        label: hidden
+        label: above
         formatter: entity_reference_revisions_entity_view
         settings:
           formatter:
@@ -156,6 +157,14 @@ third_party_settings:
         weight: 8
         label: hidden
         formatter: basic_string
+      'display_field_copy:node-other_biodiv_values':
+        plugin_id: 'display_field_copy:node-other_biodiv_values'
+        weight: 22
+        label: above
+        formatter: entity_reference_revisions_entity_view
+        settings:
+          formatter:
+            view_mode: default_2
   field_group:
     group_conservation_outlook:
       children:
@@ -513,6 +522,7 @@ third_party_settings:
     group_assessing_current_state:
       children:
         - 'display_field_copy:node-identifying_and_describing_value'
+        - 'display_field_copy:node-other_biodiv_values'
       parent_name: group_state_and_trend_of_values
       weight: 20
       format_type: details
@@ -828,6 +838,9 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_as_archived: true
   field_as_cycle: true
   field_as_site: true
