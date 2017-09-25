@@ -21,9 +21,15 @@
     position: absolute;
   }
   // Conservation status related classes
+  article {
+    &:hover, &:focus, &:active {
+      box-shadow+: 0 0 0 3px @iucn-gray-lighter, 3px 4px 5px fade(#000, 20%);
+    }
+  }
   .loop-conservation-ratings({
     article.@{conservation-rating-class} {
       &:hover, &:focus, &:active {
+        border-color: @conservation-rating-color;
         box-shadow+: 0 0 0 3px @conservation-rating-color, 3px 4px 5px fade(#000, 20%);
       }
     }

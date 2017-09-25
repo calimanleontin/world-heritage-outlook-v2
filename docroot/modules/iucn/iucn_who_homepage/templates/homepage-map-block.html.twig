@@ -1,29 +1,27 @@
 <div class="container-fluid">
   <div class="row map-block-main">
 
-    <div class="col col-sm-3 col-left" data-scroll="prevent">
-      <div class="row">
-        <div id="map-site-search">
-        {{ search_form }}
-        </div>
-        <div id="map-filters">
-          <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
-          <ul>
-            {% for rating in conservation_ratings %}
-            <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
-            {% endfor %}
-          </ul>
-          <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
-        </div>
+    <div class="col col-sm-3 col-left">
+      <div id="map-site-search">
+      {{ search_form }}
+      </div>
+      <div id="map-filters">
+        <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
+        <ul>
+          {% for rating in conservation_ratings %}
+          <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+          {% endfor %}
+        </ul>
+        <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
+      </div>
+      <div class="map-site-details-container" id="map-site-details-container">
         <div id="map-site-details">
           {{ empty_selection_placeholder_markup | raw }}
         </div>
       </div>
     </div>
     <div class="col col-sm-9 col-right">
-      <div class="row">
-        {{ markup_map | raw }}
-      </div>
+      {{ markup_map | raw }}
     </div>
   </div>
   {% if block_footer_text %}
