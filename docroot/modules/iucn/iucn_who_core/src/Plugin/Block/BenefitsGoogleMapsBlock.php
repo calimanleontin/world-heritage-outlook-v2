@@ -43,6 +43,7 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
+    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['empty_placeholder'] = $this->getSiteSelectionPlaceholder();
 
     $content['output'] = [
       '#theme' => 'benefits_map_block',
@@ -78,13 +79,10 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
       }
 
       $overall_status_level = SiteStatus::getOverallAssessmentLevel($node);
-      $threat_level = SiteStatus::getOverallThreatLevel($node);
-      $protection_level = SiteStatus::getOverallProtectionLevel($node);
-      $value_level = SiteStatus::getOverallProtectionLevel($node);
 
 
       $detail = [
-        '#theme' => 'homepage_map_site_detail',
+        '#theme' => 'benefits_map_site_detail',
         '#title' => $node->title->value,
         '#status' => [
           'label' => $overall_status_level ? $overall_status_level->label() : '-',
@@ -94,12 +92,8 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#country' => [
           'label' => $this->getSiteCountryLabel($node),
         ],
-        '#thumbnail' => $this->getSiteThumbnail($node),
         '#inscription' => $this->getSiteInscriptionYear($node),
         '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
-        '#stat_values' => $value_level ? $value_level->label() : '-',
-        '#stat_threat' => $threat_level ? $threat_level->label() : '-',
-        '#stat_protection' => $protection_level ? $protection_level->label() : '-',
       ];
 
       $ret[] = [
@@ -109,7 +103,6 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
         'title' => $node->title->value,
         'status_id' => $status_id,
         'benefits' => $benefits,
-        'thumbnail' => $this->getSiteThumbnail($node),
         'inscription_year' => $this->getSiteInscriptionYear($node),
         'render' => \Drupal::service('renderer')->render($detail),
       ];
@@ -192,11 +185,8 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
       if (!empty($category->field_image) && $category->field_image->entity && $category->field_image->entity->getFileUri()) {
         $categories[$category->id()] = [
           'id' => $category->id(),
-          'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
-        ];
-        $categories[$category->id() . '_active'] = [
-          'id' => $category->id() . '_active',
-          'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
+          //'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
+          'url' => ImageStyle::load('benefits_map_marker')->buildUrl($category->field_image->entity->getFileUri()),
         ];
       }
       else {
@@ -243,8 +233,18 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
       /** @var \Drupal\taxonomy\TermInterface $category */
       self::setMarkersIcons($category, $ret);
     }
-
     return $ret;
+  }
+
+  public function getSiteSelectionPlaceholder() {
+    $placeholder_url = sprintf('/%s/images/no-benefit-placeholder.png',
+      drupal_get_path('module', 'iucn_who_core')
+    );
+    return sprintf(
+      '<div class="benefit-selection-placeholder"><img src="%s" alt="No benefit"><span>%s</span></div>',
+      $placeholder_url,
+      $this->getConfigParam('empty_selection_placeholder', $this->t('Click on a benefit for details'))
+    );
   }
 
 }

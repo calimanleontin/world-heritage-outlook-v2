@@ -1,0 +1,15 @@
+<div class="map-site-detail">
+    <a class="close" href="javascript:benefitsMapSiteDetailClose()">x</a>
+    {% if status.label %}
+        <div class="status {{ status.entity.field_css_identifier.value }}">{{ status.label }}</div>
+    {% endif %}
+    <h5 class="title">{{ title }}</h5>
+    {% if country %}
+        <div class="country">{{ country.label }}</div>
+    {% endif %}
+    {% if inscription %}
+        <div class="inscription">Inscribed in <strong>{{ inscription }}</strong></div>
+    {% endif %}
+    <a class="more" href="{{ link }}">Read more about this benefit</a>
+
+</div>

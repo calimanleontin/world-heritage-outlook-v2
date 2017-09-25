@@ -8,7 +8,7 @@ function postInitMap(instance_id, map, config) {
     'use strict';
     // Scale-down the images a bit
     for (var $i in config.icons) {
-      config.icons[$i].scaledSize = new google.maps.Size(33, 33);
+      config.icons[$i].scaledSize = new google.maps.Size(42, 50);
     }
     var $filter_category = 'all';
 
@@ -25,8 +25,11 @@ function postInitMap(instance_id, map, config) {
       // Click on marker
       $marker.addListener('click', function() {
         $.iucnResetAllMarkerIcons();
-        var $icon = config.icons[$filter_category + '_active'];
-        this.setIcon($icon);
+        if($filter_category == 'all'){
+          var $icon = config.icons[$filter_category + '_active'];
+          this.setIcon($icon);
+        }
+
         $.iucnUpdateMapDetail(this.customInfo.render);
       });
       $markers.push($marker);
@@ -87,16 +90,31 @@ function postInitMap(instance_id, map, config) {
 
     $.iucnResetMapDetail = function() {
       var $mapDetails = $('#map-site-details');
-      $mapDetails.fadeOut(0).html().fadeIn(300);
+      $mapDetails.fadeOut(0).html(config.empty_placeholder).fadeIn(300);
     };
 
   })(jQuery, Drupal, drupalSettings);
 }
 
-function homepageMapSiteDetailClose() {
+function benefitsMapSiteDetailClose() {
   (function ($) {
     'use strict';
     $.iucnResetAllMarkerIcons();
     $.iucnResetMapDetail();
+  })(jQuery, Drupal, drupalSettings);
+}
+
+function benefitsCategoriesExpandAll() {
+  (function ($) {
+    'use strict';
+    $('#map-filters .collapse').collapse('show');
+
+  })(jQuery, Drupal, drupalSettings);
+}
+
+function benefitsCategoriesCollapseAll() {
+  (function ($) {
+    'use strict';
+    $('#map-filters .collapse').collapse('hide');
   })(jQuery, Drupal, drupalSettings);
 }
