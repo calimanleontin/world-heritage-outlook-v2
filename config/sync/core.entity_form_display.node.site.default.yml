@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
     - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
@@ -31,6 +32,7 @@ dependencies:
     - node.type.site
   module:
     - field_group
+    - file
     - geofield
     - image
     - iucn_site
@@ -318,6 +320,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_geojson:
+    weight: 36
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
     region: content
   field_geolocation:
     weight: 14
