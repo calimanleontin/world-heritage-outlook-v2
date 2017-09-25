@@ -11732,6 +11732,9 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .iucn-assessment-value {
   margin-top: 1em;
 }
+.iucn-site-wrapper .panel {
+  box-shadow: none;
+}
 @media screen and (min-width: 768px) {
   .iucn-site-wrapper .panel-heading {
     align-items: flex-start;
