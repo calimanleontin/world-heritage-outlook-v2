@@ -7,15 +7,40 @@ use Drupal\file\Entity\File;
  * Implements hook_drush_command().
  */
 function iucn_site_drush_command() {
-  $items = [];
-  $items['iucn-site-update-geojson'] = array(
+  $commands = [];
+  $commands['iucn-site-update-geojson'] = array(
     'description' => dt('Update geoJson file for every site.'),
     'arguments' => [],
     'options' => [],
     'aliases' => array('iucn-upgeo'),
   );
-  return $items;
+  $commands['iucn-resave-sites'] = [
+    'description' => 'Command for resaving all sites.',
+  ];
+
+  return $commands;
 }
+
+/**
+ * Resave all sites nodes.
+ */
+function drush_iucn_site_iucn_resave_sites() {
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' =>
+        [
+          'site',
+        ],
+    ]);
+  if ($nodes) {
+    foreach ($nodes as $node) {
+      $node->save();
+    }
+  }
+  drupal_flush_all_caches();
+}
+
 
 /**
  * Update geoJson file for every site.
