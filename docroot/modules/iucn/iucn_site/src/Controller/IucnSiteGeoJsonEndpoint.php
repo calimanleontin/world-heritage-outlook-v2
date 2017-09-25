@@ -20,7 +20,7 @@ class IucnSiteGeoJsonEndpoint extends ControllerBase {
     $site = Node::load($nid);
     /** @var File $file */
     $file = $site->field_geojson->entity;
-    if (empty($file)) {
+    if (empty($site) || $site->bundle() != 'site' || empty($file)) {
       return new Response(NULL);
     }
     $file_uri = $file->getFileUri();
