@@ -405,11 +405,11 @@ third_party_settings:
       weight: 21
       format_type: details_assessment
       format_settings:
+        label: 'Potential Threats'
+        terms: field_as_threats_potent_rating
         id: ''
         classes: 'assessment-potential-threats assessment-toggle'
-        open: false
-        required_fields: false
-        terms: ''
+        open: 0
       label: 'Potential Threats'
     group_ass_protection_manag:
       children:
