@@ -28,6 +28,5 @@ function drush_iucn_site_update_geojson() {
     $node = Node::load($nid);
     \Drupal::service('iucn_site.utils')->createGeoJson($node);
     \Drupal::service('iucn_site.utils')->updateGeoJson($node);
-    return;
   }
 }
