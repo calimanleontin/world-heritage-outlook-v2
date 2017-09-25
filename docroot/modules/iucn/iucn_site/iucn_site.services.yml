@@ -1,0 +1,3 @@
+services:
+  iucn_site.utils:
+    class: 'Drupal\iucn_site\Plugin\IucnSiteUtils'

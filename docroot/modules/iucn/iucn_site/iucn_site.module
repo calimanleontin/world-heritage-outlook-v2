@@ -108,20 +108,8 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
   }
 
   // Create a new json file containing site geoJson and append it if another one doesn't exist already.
-  if ($node->bundle() == 'site' && empty($node->field_geojson->entity)) {
-    $filename = 'geojson' . $node->field_wdpa_id->value . '.json';
-    $file = File::create([
-      'filename' => $filename,
-      'status' => 1,
-      'uri' => 'public://geojson/' . $filename,
-    ]);
-    $file->save();
-    $dir = dirname($file->getFileUri());
-    if (!file_exists($dir)) {
-      mkdir($dir, 0644, TRUE);
-    }
-    file_put_contents($file->getFileUri(), "{}");
-    $node->field_geojson->entity = $file->id();
+  if ($node->bundle() == 'site') {
+    \Drupal::service('iucn_site.utils')->createGeoJson($node);
   }
 }
 
