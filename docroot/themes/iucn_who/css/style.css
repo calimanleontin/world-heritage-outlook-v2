@@ -11430,7 +11430,8 @@ body.page-node-type-site #sidemenu {
   color: #333333;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   margin-right: 0;
   padding-left: 7em;
   position: relative;
@@ -11524,11 +11525,6 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .nav-tabs.visible-desktop > li.active > a:focus {
   border: none;
 }
-.iucn-site-wrapper .nav-tabs.visible-desktop > li {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 0%;
-}
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:first-child:before,
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:last-child:before {
   content: '';
@@ -11544,6 +11540,13 @@ body.page-node-type-site #sidemenu {
 }
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:last-child:before {
   left: 100%;
+}
+.iucn-site-wrapper .nav-tabs.visible-desktop > li.active,
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:hover,
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:focus,
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:active {
+  background-color: #134780;
+  color: #fff;
 }
 .iucn-site-wrapper .nav-tabs.visible-desktop > li.active > a > *,
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:hover > a > *,
@@ -11561,8 +11564,8 @@ body.page-node-type-site #sidemenu {
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:hover > a:focus,
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:focus > a:focus,
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:active > a:focus {
-  background-color: #134780;
-  color: #fff;
+  background-color: inherit;
+  color: inherit;
 }
 .iucn-site-wrapper .nav-tabs.visible-desktop > li.active .tab-read-more:after,
 .iucn-site-wrapper .nav-tabs.visible-desktop > li:hover .tab-read-more:after,
