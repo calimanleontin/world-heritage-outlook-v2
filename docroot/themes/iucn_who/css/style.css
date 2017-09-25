@@ -8915,6 +8915,51 @@ ol li.iucn-arrow:after {
   max-width: 100%;
   height: auto;
 }
+/* ==========================================================================
+   IUCN expandable text
+   ========================================================================== */
+.iucn-expandable-text .btn-link {
+  color: #03afdf;
+  display: block;
+  font-size: 1.1em;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .iucn-expandable-text .btn-link {
+    display: none;
+  }
+}
+.iucn-expandable-text [data-toggle="collapse"] {
+  box-shadow: 0 -0.5em 1.7em 0.7em #ffffff;
+}
+.iucn-expandable-text [data-toggle="collapse"] .read-more {
+  display: none;
+}
+.iucn-expandable-text [data-toggle="collapse"].collapsed .read-less {
+  display: none;
+}
+.iucn-expandable-text [data-toggle="collapse"].collapsed .read-more {
+  display: block;
+}
+.iucn-expandable-text .collapsing + [data-toggle="collapse"],
+.iucn-expandable-text .in + [data-toggle="collapse"] {
+  box-shadow: none;
+}
+.iucn-expandable-text-content.collapse,
+.iucn-expandable-text-content.collapsing {
+  display: block;
+  height: auto !important;
+  max-height: 6.66666667em;
+  overflow: hidden;
+}
+.iucn-expandable-text-content.collapsing,
+.iucn-expandable-text-content.in {
+  max-height: 100%;
+  transition: none;
+}
 .footer {
   background-color: #134780;
 }

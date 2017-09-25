@@ -313,3 +313,46 @@ ol {
     height: auto;
   }
 }
+
+/* ==========================================================================
+   IUCN expandable text
+   ========================================================================== */
+
+.iucn-expandable-text {
+  .btn-link {
+    color: @iucn-blue-light;
+    display: block;
+    font-size: 1.1em;
+    padding: 0;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    @media @grid-desktop {
+      display: none;
+    }
+  }
+  [data-toggle="collapse"] {
+    box-shadow: 0 -0.5em 1.7em 0.7em #ffffff;
+    .read-more { display: none; }
+    &.collapsed .read-less { display: none; }
+    &.collapsed .read-more { display: block; }
+  }
+  .collapsing + [data-toggle="collapse"],
+  .in + [data-toggle="collapse"] {
+    box-shadow: none;
+  }
+}
+.iucn-expandable-text-content {
+  &.collapse,
+  &.collapsing {
+    display: block;
+    height: auto !important;
+    max-height: @line-height-base * 1em * 5;
+    overflow: hidden;
+  }
+  &.collapsing,
+  &.in {
+    max-height: 100%;
+    transition: none;
+  }
+}
