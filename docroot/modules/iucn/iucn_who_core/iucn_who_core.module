@@ -76,6 +76,46 @@ function _remove_header_links(array &$attachments) {
   }
 }
 
+/**
+ * Implements hook_path_insert().
+ */
+function iucn_who_core_path_insert($path) {
+  _iucn_who_multilingual_path($path);
+}
+
+/**
+ * Implements hook_path_update().
+ */
+function iucn_who_core_path_update($path) {
+  _iucn_who_multilingual_path($path);
+}
+
+function _iucn_who_multilingual_path($path) {
+  if (preg_match('/^\/node\/[0-9]*$/', $path['source'])) {
+    if ($path['langcode'] == 'en') {
+      foreach (\Drupal::languageManager()->getLanguages() as $language) {
+        if ($language->getId() == 'en') {
+          continue;
+        }
+        $conditions = [
+          'source' => $path['source'],
+          'langcode' => $language->getId(),
+        ];
+        $existing_alias = \Drupal::service('path.alias_storage')->load($conditions);
+        if (empty($existing_alias)) {
+          // Not translated.
+          $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId());
+        }
+        else if (!empty($path['original']['alias']) && $path['original']['alias'] == $existing_alias['alias']) {
+          // Update alias.
+          $existing_alias['alias'] = $path['alias'];
+          $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId(), $existing_alias['pid']);
+        }
+      }
+    }
+  }
+}
+
 
 function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb, \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
   $parameters = $route_match->getParameters()->all();
