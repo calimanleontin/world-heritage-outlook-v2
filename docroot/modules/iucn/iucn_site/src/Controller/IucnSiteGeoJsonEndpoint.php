@@ -16,11 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IucnSiteGeoJsonEndpoint extends ControllerBase {
 
-  public function getGeoJson($nid) {
-    $site = Node::load($nid);
+  public function getGeoJson(Node $node) {
     /** @var File $file */
-    $file = $site->field_geojson->entity;
-    if (empty($site) || $site->bundle() != 'site' || empty($file)) {
+    $file = $node->field_geojson->entity;
+    if ($node->bundle() != 'site' || empty($file)) {
       return new Response(NULL);
     }
     $file_uri = $file->getFileUri();
@@ -29,7 +28,7 @@ class IucnSiteGeoJsonEndpoint extends ControllerBase {
     // Set cache max-age to 1 month and cache tags of the site.
     $cache_metadata = new CacheableMetadata();
     $cache_metadata->setCacheMaxAge(60 * 60 * 24 * 30);
-    $cache_metadata->setCacheTags($site->getCacheTags());
+    $cache_metadata->setCacheTags($node->getCacheTags());
     $response = new CacheableResponse($json);
     $response->addCacheableDependency($cache_metadata);
     return $response;

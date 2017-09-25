@@ -24,14 +24,12 @@ class IucnSiteUtils {
         'uri' => 'public://geojson/' . $filename,
       ]);
       $file->save();
+      $file->setPermanent();
       $node->field_geojson->entity = $file->id();
     }
 
     // Create the directory if one doesn't exist already.
-    $dir = dirname($file->getFileUri());
-    if (!file_exists($dir)) {
-      mkdir($dir, 0755, TRUE);
-    }
+    file_prepare_directory(dirname($file->getFileUri()), FILE_CREATE_DIRECTORY);
 
     // Create the file if one doesn't exist already.
     if (!file_exists($file->getFileUri())) {
@@ -48,6 +46,9 @@ class IucnSiteUtils {
     $geojson = file_get_contents($gis_url);
     /** @var File $file */
     $file = $node->field_geojson->entity;
+    if (empty($file) || $geojson == FALSE) {
+      return;
+    }
     file_put_contents($file->getFileUri(), $geojson);
     \Drupal::logger('iucn_site')->notice('geoJson' . $node->field_wdpa_id->value . 'was successfully updated');
   }

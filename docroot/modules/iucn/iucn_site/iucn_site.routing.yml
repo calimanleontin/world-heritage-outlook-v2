@@ -5,8 +5,9 @@ iucn_site.redirect:
   requirements:
     _permission: 'access content'
 iucn_site.get_geojson:
-  path: '/node/{nid}/geoJson'
+  path: '/node/{node}/geoJson'
   defaults:
     _controller: '\Drupal\iucn_site\Controller\IucnSiteGeoJsonEndpoint::getGeoJson'
   requirements:
     _permission: 'access content'
+    node: \d+

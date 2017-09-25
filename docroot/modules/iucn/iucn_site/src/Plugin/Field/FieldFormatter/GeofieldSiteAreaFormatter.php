@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_site\Plugin\Field\FieldFormatter;
 
+use Drupal\file\Entity\File;
 use Drupal\geofield_map\GeofieldMapFieldTrait;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
@@ -204,7 +205,16 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
     ];
 
     if (!empty($node->field_wdpa_id->value)) {
-      $gis_url = "/node/{$node->id()}/geoJson";
+      $gis_url = "http://services5.arcgis.com/Mj0hjvkNtV7NRhA7/arcgis/rest/services/Latest_WH/FeatureServer/0/query?where=wdpaid%3D^SITE_ID&objectIds=&time=&geometry=&geometryType=esriGeometryPoint&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=true&outFields=&returnGeometry=true&returnCentroid=true&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&quantizationParameters=&sqlFormat=none&f=pgeojson&token=";
+      $gis_url = strtr($gis_url, ['^SITE_ID' => $node->field_wdpa_id->value]);
+
+      $file = $node->field_geojson->entity;
+      if (!empty($file)) {
+        // If the local json file exists and is not "empty", use it instead.
+        if (!in_array(file_get_contents($file->getFileUri()), [FALSE, "{}"])) {
+          $gis_url = Url::fromRoute('iucn_site.get_geojson', ['node' => $node->id()])->toString();
+        }
+      }
       $marker['area'] = $gis_url;
     }
 
