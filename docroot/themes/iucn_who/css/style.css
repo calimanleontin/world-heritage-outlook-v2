@@ -13051,9 +13051,11 @@ html[lang='es'] .image-rating-container.good {
     z-index: 1;
     display: flex;
     flex-direction: column;
+    height: auto;
+    min-height: 100%;
   }
   .path-frontpage #block-homepagemap .col-left .map-site-details-container {
-    height: 100%;
+    flex: 1 0 0%;
     position: relative;
   }
   .path-frontpage #block-homepagemap .col-right {
@@ -13169,31 +13171,43 @@ html[lang='es'] .image-rating-container.good {
     padding-bottom: 212px;
   }
 }
+.path-frontpage #map-site-search,
+.path-frontpage #map-filters,
+.path-frontpage .map-site-details-container,
+.path-frontpage #map-site-details {
+  flex: 0 1 auto;
+}
 .path-frontpage #map-site-search:before,
 .path-frontpage #map-filters:before,
+.path-frontpage .map-site-details-container:before,
 .path-frontpage #map-site-details:before,
 .path-frontpage #map-site-search:after,
 .path-frontpage #map-filters:after,
+.path-frontpage .map-site-details-container:after,
 .path-frontpage #map-site-details:after {
   content: " ";
   display: table;
 }
 .path-frontpage #map-site-search:after,
 .path-frontpage #map-filters:after,
+.path-frontpage .map-site-details-container:after,
 .path-frontpage #map-site-details:after {
   clear: both;
 }
 .path-frontpage #map-site-search:before,
 .path-frontpage #map-filters:before,
+.path-frontpage .map-site-details-container:before,
 .path-frontpage #map-site-details:before,
 .path-frontpage #map-site-search:after,
 .path-frontpage #map-filters:after,
+.path-frontpage .map-site-details-container:after,
 .path-frontpage #map-site-details:after {
   content: " ";
   display: table;
 }
 .path-frontpage #map-site-search:after,
 .path-frontpage #map-filters:after,
+.path-frontpage .map-site-details-container:after,
 .path-frontpage #map-site-details:after {
   clear: both;
 }
@@ -13233,9 +13247,10 @@ html[lang='es'] .image-rating-container.good {
   margin-bottom: 0.8em;
 }
 .path-frontpage #map-site-search a[href*="/explore-sites"] {
-  float: right;
-  font-weight: 300;
+  display: inline-block;
   font-size: 0.93333333em;
+  font-weight: 300;
+  float: right;
 }
 @media screen and (max-width: 767px) {
   .path-frontpage #map-site-search a[href*="/explore-sites"] {
@@ -13306,7 +13321,7 @@ html[lang='es'] .image-rating-container.good {
   float: right;
 }
 .path-frontpage #map-filters ul {
-  line-height: 1.46666667;
+  line-height: 1.5;
   list-style-type: none;
   margin-left: -1em;
   margin-right: -1em;
@@ -13325,7 +13340,7 @@ html[lang='es'] .image-rating-container.good {
   background-position: center;
   background-size: auto 60%;
   display: block;
-  height: 1.33333333em;
+  height: 1.5em;
   overflow: hidden;
   position: absolute;
   left: 0;
