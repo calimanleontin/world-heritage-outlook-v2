@@ -347,8 +347,10 @@ ol {
   &.collapsing {
     display: block;
     height: auto !important;
-    max-height: @line-height-base * 1em * 5;
-    overflow: hidden;
+    @media @grid-mobile {
+      max-height: @line-height-base * 1em * 5;
+      overflow: hidden;
+    }
   }
   &.collapsing,
   &.in {
