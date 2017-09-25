@@ -12788,6 +12788,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   .iucn-site-wrapper .sidemenu-toggle:before {
     border-right: 1px solid;
     height: 50px;
+    top: -1px;
   }
 }
 .g-recaptcha > div {
