@@ -8965,6 +8965,10 @@ ol li.iucn-arrow:after {
   max-height: 100%;
   transition: none;
 }
+.disable-hover,
+.disable-hover * {
+  pointer-events: none !important;
+}
 .footer {
   background-color: #134780;
 }
