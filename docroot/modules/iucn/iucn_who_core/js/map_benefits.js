@@ -10,6 +10,9 @@ function postInitMap(instance_id, map, config) {
     for (var $i in config.icons) {
       config.icons[$i].scaledSize = new google.maps.Size(42, 50);
     }
+    config.icons['all'].scaledSize = new google.maps.Size(33, 33);
+    config.icons['all_active'].scaledSize = new google.maps.Size(33, 33);
+
     var $filter_category = 'all';
 
     var $markers = [];
@@ -34,7 +37,12 @@ function postInitMap(instance_id, map, config) {
       });
       $markers.push($marker);
     }
-    /**
+
+
+
+
+
+      /**
      * Click handler for filters on the left column.
      */
     $('a.benefit-category').on('click', function() {
@@ -61,10 +69,12 @@ function postInitMap(instance_id, map, config) {
 
     $.iucnResetAllMarkerIcons = function() {
       for(var $i = 0; $i < $markers.length; $i++) {
+        var $active_markers = [];
         var $marker = $markers[$i];
         var $icon = config.icons[$filter_category];
           if ($icon.url != $marker.getIcon().url) {
             $marker.setIcon($icon);
+            $active_markers[$i] = $marker;
           }
       }
     };
