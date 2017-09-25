@@ -23,7 +23,6 @@ class IucnSiteUtils {
         'status' => 1,
         'uri' => 'public://geojson/' . $filename,
       ]);
-      $file->save();
       $file->setPermanent();
       $node->field_geojson->entity = $file->id();
     }
@@ -35,6 +34,8 @@ class IucnSiteUtils {
     if (!file_exists($file->getFileUri())) {
       file_put_contents($file->getFileUri(), "{}");
     }
+    $file->setSize(filesize($file->getFileUri()));
+    $file->save();
   }
 
   /**
@@ -50,6 +51,8 @@ class IucnSiteUtils {
       return;
     }
     file_put_contents($file->getFileUri(), $geojson);
+    $file->setSize(filesize($file->getFileUri()));
+    $file->save();
     \Drupal::logger('iucn_site')->notice('geoJson' . $node->field_wdpa_id->value . 'was successfully updated');
   }
 
