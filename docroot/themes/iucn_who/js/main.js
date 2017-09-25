@@ -71,25 +71,8 @@
         }
     }
 
-    var $document  = $(document);
-    var $body = $('body');
-    var $sidemenu = $('#sidemenu');
-    var $sidemenuToggle = $('#sidemenu-toggle');
-    var $modalBackdrop = $('.modal-backdrop');
     var iucnSidemenu = new IUCNSidemenu();
 
-    $sidemenu.on('show.bs.dropdown', function () {
-      $body.addClass('sidemenu-open');
-      $modalBackdrop.show().addClass('in');
-    })
-    $sidemenu.on('hide.bs.dropdown', function () {
-      $body.removeClass('sidemenu-open');
-      $modalBackdrop.hide().removeClass('in');
-    })
-
-    $document.on('click', '#sidemenu', function (e) {
-      e.stopPropagation();
-    });
   });
 
 }(jQuery));
