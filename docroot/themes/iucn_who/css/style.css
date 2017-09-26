@@ -13833,6 +13833,7 @@ html[lang='es'] .image-rating-container.good {
   position: absolute;
   right: 0;
   top: 0;
+  z-index: 1;
 }
 .path-frontpage #map-site-details .map-site-detail .close.btn-border {
   background-color: transparent;
