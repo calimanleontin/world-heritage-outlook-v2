@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block.block.clearsearch
     - block.block.sortbyviewsitessearchdisplaypage
     - search_api.index.iucn_database_index
   module:
@@ -539,19 +540,19 @@ display:
           view_mode: default
           bypass_access: true
           plugin_id: entity
-        area:
-          id: area
+        entity_block_1:
+          id: entity_block_1
           table: views
-          field: area
+          field: entity_block
           relationship: none
           group_type: group
           admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: '<span class="sites-search-clear"><a href="[site:url]/explore-sites" class="pull-right">CLEAR SEARCH</a></span>'
-            format: html
-          plugin_id: text
+          empty: false
+          tokenize: true
+          target: clearsearch
+          view_mode: default
+          bypass_access: true
+          plugin_id: entity
       sorts: {  }
     cache_metadata:
       max-age: -1

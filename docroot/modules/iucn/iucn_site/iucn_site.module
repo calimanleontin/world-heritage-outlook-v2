@@ -131,6 +131,13 @@ function iucn_site_theme($existing, $type, $theme, $path) {
         'button_url' => NULL,
         'button_url_target' => NULL,
       ],
+    ],
+    'clear_search' => [
+      'variables' => [
+        'title' => NULL,
+        'button_title' => NULL,
+        'button_url' => NULL,
+      ],
     ]
   ];
 }
