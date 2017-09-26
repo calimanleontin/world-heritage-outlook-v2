@@ -7989,6 +7989,7 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
     box-shadow: none;
     float: none;
     position: relative;
+    padding-bottom: 1.5em;
   }
   .navbar-collapse .dropdown-menu > li > a {
     color: #134780;
