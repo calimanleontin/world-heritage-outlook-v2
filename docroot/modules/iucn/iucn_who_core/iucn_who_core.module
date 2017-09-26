@@ -125,6 +125,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $new_breadcrumb = new Breadcrumb();
     foreach ($breadcrumb->getLinks() as $key => $val) {
       if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
         $new_breadcrumb->addLink(Link::createFromRoute(t('About'), '<none>'));
         $nid = 1234;
         $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
@@ -176,6 +177,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
 
 
   $menu_items = iucn_who_get_all_menu('main');
+
   // Remove duplicate labels from breadcrumb.
   $new_breadcrumb = new Breadcrumb();
   $text = NULL;
@@ -183,7 +185,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $url = $val->getUrl()->toString();
     if (array_key_exists($url, $menu_items)) {
        /** @val \Drupal\Core\Link $val */
-      $val->setText($menu_items[$url]);
+       $val->setText($menu_items[$url]);
     }
     if ($text != $val->getText()) {
       $new_breadcrumb->addLink($val);
@@ -200,11 +202,15 @@ function iucn_who_get_all_menu($menu_name){
   $menu = iucn_who_get_menu($menu_name);
   $menu_items = [];
   foreach ($menu['#items'] as $item) {
-    $menu_items[$item['url']->toString()] = $item['title'];
+    if ($item['url']->toString()) {
+      $menu_items[$item['url']->toString()] = $item['title'];
+    }
   }
   $menu = iucn_who_get_menu($menu_name, 2);
   foreach ($menu['#items'] as $item) {
-    $menu_items[$item['url']->toString()] = $item['title'];
+    if ($item['url']->toString()) {
+      $menu_items[$item['url']->toString()] = $item['title'];
+    }
   }
   return $menu_items;
 }
