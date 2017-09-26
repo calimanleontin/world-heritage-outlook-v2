@@ -8965,6 +8965,9 @@ ol li.iucn-arrow:after {
   max-height: 100%;
   transition: none;
 }
+.ui-widget-content a {
+  color: #134780;
+}
 .footer {
   background-color: #134780;
 }
