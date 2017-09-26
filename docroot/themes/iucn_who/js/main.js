@@ -71,25 +71,32 @@
         }
     }
 
-    var $document  = $(document);
-    var $body = $('body');
-    var $sidemenu = $('#sidemenu');
-    var $sidemenuToggle = $('#sidemenu-toggle');
-    var $modalBackdrop = $('.modal-backdrop');
+    // Initialize sidemenu
     var iucnSidemenu = new IUCNSidemenu();
 
-    $sidemenu.on('show.bs.dropdown', function () {
-      $body.addClass('sidemenu-open');
-      $modalBackdrop.show().addClass('in');
-    })
-    $sidemenu.on('hide.bs.dropdown', function () {
-      $body.removeClass('sidemenu-open');
-      $modalBackdrop.hide().removeClass('in');
-    })
 
-    $document.on('click', '#sidemenu', function (e) {
-      e.stopPropagation();
-    });
+    // Prevent navbar dropdowns closing when clicking inside them
+    $('.navbar-collapse .dropdown-menu').on('click', function(event) {
+      var events = $._data(document, 'events') || {};
+      events = events.click || [];
+      for(var i = 0; i < events.length; i++) {
+          if(events[i].selector) {
+
+              //Check if the clicked element matches the event selector
+              if($(event.target).is(events[i].selector)) {
+                  events[i].handler.call(event.target, event);
+              }
+
+              // Check if any of the clicked element parents matches the
+              // delegated event selector (Emulating propagation)
+              $(event.target).parents(events[i].selector).each(function() {
+                  events[i].handler.call(this, event);
+              });
+          }
+      }
+      event.stopPropagation(); //Always stop propagation
+  });
+
   });
 
 }(jQuery));

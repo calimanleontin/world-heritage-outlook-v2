@@ -81,6 +81,8 @@ table.table-striped {
 }
 
 .collapse-toggle {
+  align-items: baseline;
+  display: inline-flex;
   &, &:hover, &:active, &:focus {
     color: @text-color;
   }
@@ -137,6 +139,8 @@ a.is-active {
 // Triangle caret
 .caret-triangle {
   display: inline-block;
+  position: relative;
+  top: -0.1em;
   transform+_: rotate(-90deg);
   &:first-child {
     .responsive(margin-right, .5rem, .5 * @font-size-base--mobile);
@@ -312,4 +316,54 @@ ol {
     max-width: 100%;
     height: auto;
   }
+}
+
+/* ==========================================================================
+   IUCN expandable text
+   ========================================================================== */
+
+.iucn-expandable-text {
+  .btn-link {
+    color: @iucn-blue-light;
+    display: block;
+    font-size: 1.1em;
+    padding: 0;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    @media @grid-desktop {
+      display: none;
+    }
+  }
+  [data-toggle="collapse"] {
+    box-shadow: 0 -0.5em 1.7em 0.7em #ffffff;
+    .read-more { display: none; }
+    &.collapsed .read-less { display: none; }
+    &.collapsed .read-more { display: block; }
+  }
+  .collapsing + [data-toggle="collapse"],
+  .in + [data-toggle="collapse"] {
+    box-shadow: none;
+  }
+}
+@expandable-text-visible-lines: 11;
+.iucn-expandable-text-content {
+  &.collapse,
+  &.collapsing {
+    display: block;
+    height: auto !important;
+    @media @grid-mobile {
+      max-height: @line-height-base * 1em * @expandable-text-visible-lines;
+      overflow: hidden;
+    }
+  }
+  &.collapsing,
+  &.in {
+    max-height: 100%;
+    transition: none;
+  }
+}
+
+.ui-widget-content a {
+  color: @iucn-blue-light;
 }

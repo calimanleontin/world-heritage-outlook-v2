@@ -6,7 +6,7 @@ body.page-node-type-site {
       margin-top: @navbar-height--mobile;
     }
   }
-  #sidemenu {
+  .sidemenu {
     padding-top: 1em;
   }
 }
@@ -223,20 +223,22 @@ body.page-node-type-site {
       margin-left: -@grid-gutter-width / 2;
       margin-right: -@grid-gutter-width / 2;
       padding-bottom: 10px;
+      margin-bottom: 3rem;
+      > li > a {
+        color: @brand-primary;
+      }
       > li.active {
         padding: 1rem 2rem;
         > a {
-          .btn-info.btn-border();
           .svg-icon(icon-backarrow, @iucn-blue-light);
           background-position-x: .5em;
           background-size: auto;
+          border: 1px solid @iucn-blue-light;
+          color: @iucn-blue-light;
           cursor: pointer;
           padding-left: 3.5em;
-          .tab-label {
-            color: @brand-info;
-            .back-to-prefix {
-              display: inline;
-            }
+          .back-to-prefix {
+            display: inline;
           }
         }
       }
@@ -305,7 +307,6 @@ body.page-node-type-site {
       display: none;
     }
     @media @grid-mobile {
-      color: @brand-primary;
       margin-bottom: 0;
     }
   }
@@ -361,7 +362,9 @@ body.page-node-type-site {
   .iucn-assessment-value {
     margin-top: 1em;
   }
-
+  .panel {
+    box-shadow: none;
+  }
   .panel-heading {
     @media @grid-desktop {
       align-items: flex-start;
@@ -417,6 +420,9 @@ body.page-node-type-site {
     h3 {
       .remify(font-size, 28px);
       margin-top: 0;
+      @media @grid-desktop {
+        margin-right: 6em;
+      }
       @media @grid-mobile {
         font-weight: 500;
       }
@@ -723,6 +729,7 @@ body.page-node-type-site {
   > .field--label {
     .bottom-border();
     font-weight: normal;
+    margin-bottom: 3rem;
     @media @grid-mobile {
       border-bottom: none;
     }
@@ -764,6 +771,7 @@ body.page-node-type-site {
     .field--label {
       .bottom-border();
       border-bottom: none;
+      margin-bottom: 3rem;
       // text-transform: none;
     }
     ul a {
@@ -883,7 +891,7 @@ body.page-node-type-site {
     margin-right: -@grid-gutter-width / 2;
     .field + & {
       border-top: 1px solid #ddd;
-      margin-top: 3em;
+      // margin-top: 3em;
     }
   }
   @media @grid-desktop {
@@ -1007,6 +1015,7 @@ body.page-node-type-site {
       &:before {
         border-right: 1px solid;
         height: 50px;
+        top: -1px;
       }
     }
   }
