@@ -9260,9 +9260,6 @@ ol li.iucn-arrow:after {
   text-transform: uppercase;
 }
 @media screen and (max-width: 767px) {
-  .facets-subtitle {
-    margin-left: 7px;
-  }
   #facets-collapse > .facets-content {
     padding-left: 27px;
   }
