@@ -183,10 +183,17 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     if ($name = $category->getName()) {
       /** @var \Drupal\taxonomy\TermInterface $category */
       if (!empty($category->field_image) && $category->field_image->entity && $category->field_image->entity->getFileUri()) {
+
+        if ($benefits_map_marker_style = ImageStyle::load('benefits_map_marker')) {
+          $image_url = $benefits_map_marker_style->buildUrl($category->field_image->entity->getFileUri());
+        }
+        else {
+          $image_url = Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString();
+        }
+
         $categories[$category->id()] = [
           'id' => $category->id(),
-          //'url' => Url::fromUri(file_create_url($category->field_image->entity->getFileUri()), ['absolute' => TRUE])->toString(),
-          'url' => ImageStyle::load('benefits_map_marker')->buildUrl($category->field_image->entity->getFileUri()),
+          'url' => $image_url,
         ];
       }
       else {
