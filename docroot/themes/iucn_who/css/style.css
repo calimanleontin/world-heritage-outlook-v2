@@ -8853,9 +8853,9 @@ a.is-active {
 }
 .caret-triangle {
   display: inline-block;
-  transform: rotate(-90deg);
   position: relative;
   top: -0.1em;
+  transform: rotate(-90deg);
 }
 .caret-triangle:first-child {
   margin-right: 0.5rem;
@@ -9117,7 +9117,7 @@ ol li.iucn-arrow:after {
   transition: none;
 }
 .ui-widget-content a {
-  color: #134780;
+  color: #03afdf;
 }
 .footer {
   background-color: #134780;
