@@ -11543,6 +11543,7 @@ body.page-node-type-site #sidemenu {
   margin-left: -15px;
   margin-right: -15px;
   padding-bottom: 10px;
+  margin-bottom: 3rem;
 }
 .iucn-site-wrapper .nav-tabs.visible-mobile > li.active {
   padding: 1rem 2rem;
@@ -12268,6 +12269,7 @@ body.page-node-type-site #sidemenu {
   padding-bottom: .5rem;
   text-transform: uppercase;
   font-weight: normal;
+  margin-bottom: 3rem;
 }
 h1.field--name-assessments-more-site-links > .field--label,
 h1.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label,
@@ -12353,6 +12355,7 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     padding-bottom: .5rem;
     text-transform: uppercase;
     border-bottom: none;
+    margin-bottom: 3rem;
   }
   h1.field--name-assessments-download-links .field--label,
   h2.field--name-assessments-download-links .field--label,
@@ -12511,7 +12514,6 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   }
   .field + .field--name-dynamic-block-fieldnode-site-feedback {
     border-top: 1px solid #ddd;
-    margin-top: 3em;
   }
 }
 @media screen and (min-width: 768px) {
