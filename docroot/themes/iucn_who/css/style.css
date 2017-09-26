@@ -8956,7 +8956,7 @@ ol li.iucn-arrow:after {
 @media screen and (max-width: 767px) {
   .iucn-expandable-text-content.collapse,
   .iucn-expandable-text-content.collapsing {
-    max-height: 6.66666667em;
+    max-height: 14.66666667em;
     overflow: hidden;
   }
 }

@@ -342,13 +342,14 @@ ol {
     box-shadow: none;
   }
 }
+@expandable-text-visible-lines: 11;
 .iucn-expandable-text-content {
   &.collapse,
   &.collapsing {
     display: block;
     height: auto !important;
     @media @grid-mobile {
-      max-height: @line-height-base * 1em * 5;
+      max-height: @line-height-base * 1em * @expandable-text-visible-lines;
       overflow: hidden;
     }
   }
