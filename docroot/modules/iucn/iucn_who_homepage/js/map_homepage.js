@@ -162,57 +162,18 @@ function postInitMap(instance_id, map, config) {
       $("html, body").animate({ scrollTop: $target.offset().top + $target.outerHeight(true) }, 700);
     });
 
-    /**
-     *  Prevent scroll on sidebar on desktop
-     */
-    var breakpoints = drupalSettings.responsive.breakpoints;
-    var desktopBreakpoint = breakpoints['iucn_who.desktop'];
-
-    var preventSidebarScroll = function () {
-       // Requires dependency on core/matchmedia in .libraries.yml
-       if (window.matchMedia(desktopBreakpoint).matches) {
-        // console.log('desktop');
-         $('[data-scroll="prevent"]').on('wheel', function (event) {
-          var wheelEvent = event.originalEvent;
-          var prevent = false;
-
-          if (wheelEvent.deltaY > 0) { // scroll down
-            prevent = 0 === this.scrollHeight- $(this).innerHeight() - $(this).scrollTop();
-          } else { // scroll up
-            prevent = 0 === $(this).scrollTop();
-          }
-
-          if (prevent) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            return false;
-          }
-        });
-      }
-      else {
-        // console.log('mobile');
-        $('[data-scroll="prevent"]').off('wheel');
-      }
-    };
-
-    preventSidebarScroll();
-
-    // handle resize events - throttled with underscore.js (optional - requires core/underscore be added as a dependency in .libraries.yml)
-    $(window).on('resize', _.throttle(preventSidebarScroll, 200));
-
-    var lockMapScrollwheel = function() {
-      // console.log('locked');
-      map.setOptions({
-        scrollwheel: false
-      });
-    };
-    var unlockMapScrollwheel = function () {
-      // console.log('unlocked');
-      map.setOptions({
-        scrollwheel: true
-      });
-    };
+    // var lockMapScrollwheel = function() {
+    //   // console.log('locked');
+    //   map.setOptions({
+    //     scrollwheel: false
+    //   });
+    // };
+    // var unlockMapScrollwheel = function () {
+    //   // console.log('unlocked');
+    //   map.setOptions({
+    //     scrollwheel: true
+    //   });
+    // };
 
     // $('.col-right')
     //   .on('mouseenter', function () {

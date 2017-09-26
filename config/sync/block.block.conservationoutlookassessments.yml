@@ -12,7 +12,7 @@ dependencies:
 id: conservationoutlookassessments
 theme: iucn_who
 region: sidebar_first
-weight: 0
+weight: -16
 provider: null
 plugin: 'block_content:f38ba63d-d2c8-4a06-a070-72d0d0a1a7ae'
 settings:

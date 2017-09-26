@@ -1,39 +1,26 @@
-@media @grid-mobile {
-  .sidemenu-toggle-wrapper {
-    height: 50px;
-    position: relative;
-    margin-top: 45px;
+.sidemenu {
+  .iucn-collapsible {
+    .collapse-visible-desktop();
   }
-  #sidemenu-toggle.affix,
-  #sidemenu-toggle.affix-top {
-    z-index: @zindex-modal-background - 1;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    -webkit-backface-visibility: hidden;
+}
 
-    // + .footer {
-    //   margin-top: 2 * 50px;
-    // }
-  }
-  #sidemenu-toggle.affix-bottom {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    top: auto !important;
-    // position: relative;
-    // top: auto !important;
-    // margin-bottom: -50px;
-    // margin-top: 45px;
+@media @grid-mobile {
+  // Sidemenu regions
+  .sidemenu > .region {
+    .row();
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: @grid-gutter-width / 2;
+    padding-right: @grid-gutter-width / 2;
+    &:not(:first-child) {
+      border-top: 1px solid #ddd;
+    }
   }
   .sidemenu-toggle {
-    float: left;
     font-size: 16px;
     font-weight: 500;
-    height: 50px;
+    min-height: 50px;
     text-transform: uppercase;
-    width: 50%;
     // position: fixed;
     // bottom: 0;
     // -webkit-backface-visibility: hidden;
@@ -41,7 +28,7 @@
     //   margin-top: 0;
     // }
   }
-  #sidemenu {
+  .sidemenu {
     background-color: #fff;
     display: block;
     font-size: 15px;
@@ -80,7 +67,7 @@
   .sidemenu-toggle {
     display: none;
   }
-  #sidemenu {
+  .sidemenu {
     display: block;
   }
   .modal-backdrop {

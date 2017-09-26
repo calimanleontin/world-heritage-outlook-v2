@@ -678,9 +678,6 @@ if ($settings['hash_salt']) {
  * Load services definition file.
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
-if (file_exists(DRUPAL_ROOT . '/sites/development.services.yml')) {
-  $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
-}
 
 /**
  * Override the default service container class.
@@ -775,6 +772,8 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 $config_directories['sync'] = '../config/sync';
 $settings['install_profile'] = 'minimal';
 
+// TODO Check how can we use kernel.environment property
+// that you can overwrite in services.yml
 // Assume that is always test/development env.
 $config['config_split.config_split.development']['status'] = TRUE;
 $config['config_split.config_split.live']['status'] = FALSE;

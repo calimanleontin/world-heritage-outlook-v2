@@ -13,7 +13,6 @@ dependencies:
   module:
     - blazy
     - ds
-    - smart_trim
     - user
 third_party_settings:
   ds:
@@ -36,7 +35,6 @@ third_party_settings:
       ds_content:
         - field_benefit_image
         - node_title
-        - field_summary
     fields:
       node_title:
         plugin_id: node_title
@@ -109,22 +107,6 @@ content:
     third_party_settings:
       ds:
         ds_limit: '1'
-  field_summary:
-    type: smart_trim
-    weight: 2
-    region: ds_content
-    label: hidden
-    settings:
-      trim_length: '250'
-      trim_type: chars
-      trim_suffix: …
-      more_link: '1'
-      more_text: 'Read more'
-      trim_options:
-        text: text
-      more_class: more-link
-      summary_handler: full
-    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -132,5 +114,6 @@ hidden:
   field_benefit_category: true
   field_benefit_year: true
   field_page_elements: true
+  field_summary: true
   langcode: true
   links: true

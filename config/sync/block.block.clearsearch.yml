@@ -1,0 +1,26 @@
+uuid: 9bf0b20c-e3f4-4b27-b03b-fa576565247d
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_site
+    - system
+  theme:
+    - iucn_who
+id: clearsearch
+theme: iucn_who
+region: sidebar_top
+weight: 0
+provider: null
+plugin: clear_search
+settings:
+  id: clear_search
+  label: 'Clear search'
+  provider: iucn_site
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: /explore-sites
+    negate: false
+    context_mapping: {  }

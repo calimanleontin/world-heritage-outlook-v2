@@ -104,6 +104,46 @@ function iucn_who_core_theme($existing, $type, $theme, $path) {
   ];
 }
 
+/**
+ * Implements hook_path_insert().
+ */
+function iucn_who_core_path_insert($path) {
+  _iucn_who_multilingual_path($path);
+}
+
+/**
+ * Implements hook_path_update().
+ */
+function iucn_who_core_path_update($path) {
+  _iucn_who_multilingual_path($path);
+}
+
+function _iucn_who_multilingual_path($path) {
+  if (preg_match('/^\/node\/[0-9]*$/', $path['source'])) {
+    if ($path['langcode'] == 'en') {
+      foreach (\Drupal::languageManager()->getLanguages() as $language) {
+        if ($language->getId() == 'en') {
+          continue;
+        }
+        $conditions = [
+          'source' => $path['source'],
+          'langcode' => $language->getId(),
+        ];
+        $existing_alias = \Drupal::service('path.alias_storage')->load($conditions);
+        if (empty($existing_alias)) {
+          // Not translated.
+          $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId());
+        }
+        else if (!empty($path['original']['alias']) && $path['original']['alias'] == $existing_alias['alias']) {
+          // Update alias.
+          $existing_alias['alias'] = $path['alias'];
+          $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId(), $existing_alias['pid']);
+        }
+      }
+    }
+  }
+}
+
 function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb, \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
   $parameters = $route_match->getParameters()->all();
 
@@ -112,6 +152,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $new_breadcrumb = new Breadcrumb();
     foreach ($breadcrumb->getLinks() as $key => $val) {
       if ($key == 0) {
+        $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
         $new_breadcrumb->addLink(Link::createFromRoute(t('About'), '<none>'));
         $nid = 1234;
         $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
@@ -161,14 +202,80 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $breadcrumb = $new_breadcrumb;
   }
 
+
+  $menu_items = iucn_who_get_all_menu('main');
+
   // Remove duplicate labels from breadcrumb.
   $new_breadcrumb = new Breadcrumb();
   $text = NULL;
   foreach ($breadcrumb->getLinks() as $key => $val) {
+    $url = $val->getUrl()->toString();
+    if (array_key_exists($url, $menu_items)) {
+       /** @val \Drupal\Core\Link $val */
+       $val->setText($menu_items[$url]);
+    }
     if ($text != $val->getText()) {
       $new_breadcrumb->addLink($val);
     }
     $text = $val->getText();
+    /** @val \Drupal\Core\Link $val */
   }
   $breadcrumb = $new_breadcrumb;
+
+
+}
+
+function iucn_who_get_all_menu($menu_name){
+  $menu = iucn_who_get_menu($menu_name);
+  $menu_items = [];
+  foreach ($menu['#items'] as $item) {
+    if ($item['url']->toString()) {
+      $menu_items[$item['url']->toString()] = $item['title'];
+    }
+  }
+  $menu = iucn_who_get_menu($menu_name, 2);
+  foreach ($menu['#items'] as $item) {
+    if ($item['url']->toString()) {
+      $menu_items[$item['url']->toString()] = $item['title'];
+    }
+  }
+  return $menu_items;
+}
+
+function iucn_who_get_menu($menu_name,$depth = 1) {
+
+  $menu_tree = \Drupal::menuTree();
+  // Build the typical default set of menu tree parameters.
+  $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
+  // Load the tree based on this set of parameters.
+  $parameters->setMinDepth($depth);
+  $tree = $menu_tree->load($menu_name, $parameters);
+  // Transform the tree using the manipulators you want.
+  $manipulators = array(
+    // Only show links that are accessible for the current user.
+    array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+    // Use the default sorting of menu links.
+    array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+  );
+  $tree = $menu_tree->transform($tree, $manipulators);
+  // Finally, build a renderable array from the transformed tree.
+  $menu = $menu_tree->build($tree);
+
+  return $menu;
+}
+
+function mymodule_get_menu_items($menu_name) {
+
+  $menu_data = mymodule_get_menu($menu_name);
+
+  foreach ($menu_data['#items'] as $item) {
+    if ($item['url']->getRouteName() == '') {
+      $menu[] = [$item['title'] => $item['url']->getRouteName()];
+    }
+    else {
+      $menu[] = [$item['title'] => $item['url']->getInternalPath()];
+    }
+  }
+
+  return $menu;
 }

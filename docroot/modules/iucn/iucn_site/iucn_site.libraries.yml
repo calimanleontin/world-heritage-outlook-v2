@@ -1,0 +1,9 @@
+site-area-formatter:
+  version: 1.x
+  js:
+    js/mapStyle.js: {}
+    js/site_area_formatter.js: {}
+  dependencies:
+    - google_maps_api/core
+    - core/jquery
+    - core/drupalSettings

@@ -32,7 +32,6 @@ dependencies:
   module:
     - datetime
     - ds
-    - geofield_map
     - image
     - iucn_site
     - text
@@ -155,53 +154,11 @@ content:
       ds:
         ds_limit: ''
   field_geolocation:
-    type: geofield_google_map
+    type: geofield_site_area_map
     weight: 10
     region: sidebar
     label: hidden
-    settings:
-      map_dimensions:
-        width: 100%
-        height: 350px
-      map_empty:
-        empty_behaviour: '0'
-        empty_message: 'No Geofield Value entered for this field'
-      map_center:
-        lat: '42'
-        lon: '12.5'
-        center_force: 0
-        geocode: 'Find my location'
-      map_zoom_and_pan:
-        zoom:
-          initial: '6'
-          min: '1'
-          max: '22'
-          force: 0
-        scrollwheel: '1'
-        draggable: '1'
-        map_reset: 0
-      map_controls:
-        zoom_control: '1'
-        map_type_id: roadmap
-        map_type_control: '1'
-        map_type_control_options_type_ids:
-          roadmap: roadmap
-          satellite: satellite
-          hybrid: hybrid
-          terrain: terrain
-        scale_control: '1'
-        street_view_control: '1'
-        fullscreen_control: '1'
-        disable_default_ui: 0
-      map_marker_and_infowindow:
-        icon_image_path: ''
-        infowindow_field: title
-        view_mode: full
-      map_additional_options: ''
-      map_markercluster:
-        markercluster_additional_options: ''
-        markercluster_control: 0
-      gmap_api_key: ''
+    settings: {  }
     third_party_settings: {  }
   field_image:
     type: image

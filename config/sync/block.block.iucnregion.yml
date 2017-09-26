@@ -12,7 +12,7 @@ dependencies:
 id: iucnregion
 theme: iucn_who
 region: facets
-weight: -15
+weight: -16
 provider: null
 plugin: 'facet_block:iucn_region'
 settings:

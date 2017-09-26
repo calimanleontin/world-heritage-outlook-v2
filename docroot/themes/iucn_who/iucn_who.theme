@@ -9,6 +9,7 @@
 use Drupal\Core\Template\Attribute;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Url;
+use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -32,7 +33,7 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
 function iucn_who_preprocess_block(&$variables) {
   switch ($variables['base_plugin_id']) {
     case 'home_page_map':
-      $variables['#attached']['library'][] = 'iucn_who/iucn-mobile-chrome-vh-fix';
+      $variables['#attached']['library'][] = 'iucn_who/homepage-map';
       break;
 
     case 'page_title_block':
@@ -45,20 +46,55 @@ function iucn_who_preprocess_block(&$variables) {
     case 'search_api_sorts_block':
       if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage') {
         $items = &$variables['content']['links']['#items'][0];
-        $items['#cache']['max-age'] = 0;
+        $variables['elements']['#cache']['max-age'] = 0;
         if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
-          $items['#label'] .= ' A-Z';
-        }
-        else {
           $items['#label'] .= ' Z-A';
         }
+        else {
+          $items['#label'] .= ' A-Z';
+        }
       }
+
+      if($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
+        $items = &$variables['content']['links']['#items'][0];
+        $variables['elements']['#cache']['max-age'] = 0;
+
+        $label = '<span class="sort-prefix">' . t('Sort by:') . '</span><span class="sort-body">' . t('Alphabetically');
+        if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
+          $label .= t(' Z-A');
+        }
+        else {
+          $label .= t(' A-Z');
+        }
+        $label .= '</span>';
+        $items['#label'] = new FormattableMarkup($label , []);
+      }
+
       if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
         $items = &$variables['content']['links']['#items'][0];
         if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
           $items['#label'] = t('Sort from oldest to newest');
         }
       }
+
+      if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage_2') {
+        $items = &$variables['content']['links']['#items'][0];
+
+        $label = '<span class="sort-prefix">' . t('Sort from') . '</span><span class="sort-body">';
+
+        if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
+          $label .= t(' oldest to newest') ;
+        }
+        else {
+          $label .= t(' newest to oldest') ;
+        }
+
+        $label .= '</span>';
+        $items['#label'] = new FormattableMarkup($label , []);
+      }
+      break;
+    case 'system_breadcrumb_block':
+      $variables['elements']['#cache']['max-age'] = 0;
       break;
 
     default:
@@ -116,9 +152,18 @@ function iucn_who_preprocess_page(&$variables) {
     ];
 
     if (!empty($nodes_views[$node->bundle()])) {
+      $node_urls = [];
+      $languages = \Drupal::languageManager()->getLanguages();
+      foreach ($languages as $langcode => $language) {
+        if ($node->hasTranslation($langcode)) {
+          $node_urls[] = $node->url('canonical', ['language' => $language]);
+        }
+      }
+
       $view_url = Url::fromRoute($nodes_views[$node->bundle()])->toString();
       $variables['#attached']['library'][] = 'iucn_who/back-to-js';
       $variables['#attached']['drupalSettings']['iucn_who']['go_to_buttons']['view_url'] = $view_url;
+      $variables['#attached']['drupalSettings']['iucn_who']['go_to_buttons']['node_urls'] = $node_urls;
     }
   }
 

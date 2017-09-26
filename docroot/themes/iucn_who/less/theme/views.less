@@ -5,7 +5,8 @@
       font-size: 11px;
       vertical-align: middle;
     }
-    .sites-search-clear {
+    .block-clear-search { float: right; }
+    .clear-search-button a {
       .light-link();
       font-size: 1em;
     }
@@ -21,9 +22,15 @@
     position: absolute;
   }
   // Conservation status related classes
+  article {
+    &:hover, &:focus, &:active {
+      box-shadow+: 0 0 0 3px @iucn-gray-lighter, 3px 4px 5px fade(#000, 20%);
+    }
+  }
   .loop-conservation-ratings({
     article.@{conservation-rating-class} {
       &:hover, &:focus, &:active {
+        border-color: @conservation-rating-color;
         box-shadow+: 0 0 0 3px @conservation-rating-color, 3px 4px 5px fade(#000, 20%);
       }
     }
@@ -83,6 +90,7 @@
       // flex: 1 1 0;
       display: flex;
       flex: 1 0 0%;
+      position: relative;
       @media (max-width: (@screen-xs-min - 1px)) {
         flex: 0 0 50%;
       }
