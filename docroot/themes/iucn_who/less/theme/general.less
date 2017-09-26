@@ -81,6 +81,8 @@ table.table-striped {
 }
 
 .collapse-toggle {
+  align-items: baseline;
+  display: inline-flex;
   &, &:hover, &:active, &:focus {
     color: @text-color;
   }
@@ -137,6 +139,8 @@ a.is-active {
 // Triangle caret
 .caret-triangle {
   display: inline-block;
+  position: relative;
+  top: -0.1em;
   transform+_: rotate(-90deg);
   &:first-child {
     .responsive(margin-right, .5rem, .5 * @font-size-base--mobile);
