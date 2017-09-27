@@ -1,5 +1,6 @@
 site-area-formatter:
   version: 1.x
+  header: true
   js:
     js/mapStyle.js: {}
     js/site_area_formatter.js: {}
