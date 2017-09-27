@@ -36,10 +36,12 @@ class SiteSearchAutocompleteForm extends FormBase {
     $search_view->setDisplay('sites_search_page_database');
 
     $sites = SitesQueryUtil::getPublishedSites();
-    $site_options = ['' => $this->t('Search for a site')];
-    foreach($sites as $node) {
+    $site_options = [];
+    foreach ($sites as $node) {
       $site_options[$node->id()] = $node->title->value;
     }
+    sort($site_options);
+    $site_options[0] = $this->t('Search for a site');
     return [
       'q' => [
         '#type' => 'select',
@@ -71,12 +73,13 @@ class SiteSearchAutocompleteForm extends FormBase {
   public function submitForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
     $q = $form_state->getValue('q');
     $results = SitesQueryUtil::searchSiteByName($q);
-    // One result sends the user to the hit's page
+    // One result sends the user to the hit's page.
     if (count($results) == 1) {
       $node = reset($results);
       $form_state->setRedirect('entity.node.canonical', ['node' => $node->id()]);
-    } else {
-      $form_state->setRedirect('view.sites_search.sites_search_page_database', ['keys' => $q ]);
+    }
+    else {
+      $form_state->setRedirect('view.sites_search.sites_search_page_database', ['keys' => $q]);
     }
   }
 }
