@@ -30,9 +30,9 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'link' => TRUE,
-        'separator' => ',',
-      ] + parent::defaultSettings();
+      'link' => TRUE,
+      'separator' => ',',
+    ] + parent::defaultSettings();
   }
 
   /**

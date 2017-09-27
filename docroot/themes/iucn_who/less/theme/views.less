@@ -189,4 +189,40 @@
       }
     }
   }
+
+  .field--label-inline .field--label{
+    padding-right: 0.2em;
+  }
+  .field--label-inline .field--label::after {
+    content: none;
+  }
+  .field--name-field-inscription-criteria{
+    .field--label,
+    .field__items,
+    .field--item{
+      float:left;
+      display: inline;
+    }
+  }
+  .field--name-node-link{
+    display: flex;
+    margin-bottom: auto;
+    flex-grow: 1;
+    a{
+      align-self: flex-end;
+      color: @iucn-blue-light !important;
+      &:after{
+        .svg-icon(icon-arrow);
+        color: #a0a0a0;
+        background-position: center;
+        background-size: contain;
+        content: '';
+        width: 2em;
+        height: @line-height-base * 1em;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 0.5em;
+      }
+    }
+  }
 }

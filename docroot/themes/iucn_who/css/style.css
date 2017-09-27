@@ -10312,6 +10312,40 @@ h6.view-sites-search .view-header {
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
+.view-sites-search .field--label-inline .field--label {
+  padding-right: 0.2em;
+}
+.view-sites-search .field--label-inline .field--label::after {
+  content: none;
+}
+.view-sites-search .field--name-field-inscription-criteria .field--label,
+.view-sites-search .field--name-field-inscription-criteria .field__items,
+.view-sites-search .field--name-field-inscription-criteria .field--item {
+  float: left;
+  display: inline;
+}
+.view-sites-search .field--name-node-link {
+  display: flex;
+  margin-bottom: auto;
+  flex-grow: 1;
+}
+.view-sites-search .field--name-node-link a {
+  align-self: flex-end;
+  color: #03afdf !important;
+}
+.view-sites-search .field--name-node-link a:after {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2225%22%20height%3D%2212%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20fill%3D%22%23E1E1E1%22%20d%3D%22M0%207l20.484.198-4.724%204.799h3.339L25.004%206%2019.099.002H15.76L20.484%204.8%200%204.999V7z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  color: #a0a0a0;
+  background-position: center;
+  background-size: contain;
+  content: '';
+  width: 2em;
+  height: 1.33333333em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5em;
+}
 @media screen and (min-width: 768px) {
   .sidemenu .iucn-collapsible > .collapse,
   .sidemenu .iucn-collapsible > .collapsing {
