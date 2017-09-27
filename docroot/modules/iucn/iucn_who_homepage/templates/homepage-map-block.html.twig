@@ -9,10 +9,19 @@
         <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
         <ul>
           {% for rating in conservation_ratings %}
-          <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+            {% if rating.field_css_identifier.value != 'coming-soon' %}
+              <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+            {% endif %}
           {% endfor %}
         </ul>
-        <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
+        <a data-filter="all" href="javascript:void(0);" class="conservation-rating">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
+        <ul>
+            {% for rating in conservation_ratings %}
+                {% if rating.field_css_identifier.value == 'coming-soon' %}
+                  <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
       </div>
       <div class="map-site-details-container" id="map-site-details-container">
         <div id="map-site-details">

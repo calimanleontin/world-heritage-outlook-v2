@@ -13576,6 +13576,7 @@ html[lang='es'] .image-rating-container.good {
   list-style-type: none;
   margin-left: -1em;
   margin-right: -1em;
+  clear: both;
 }
 .path-frontpage #map-filters li {
   padding-left: 1em;

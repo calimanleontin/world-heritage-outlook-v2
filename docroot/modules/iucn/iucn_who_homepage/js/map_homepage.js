@@ -109,7 +109,7 @@ function postInitMap(instance_id, map, config) {
     /**
      * Click handler for filters on the left column.
      */
-    $('#map-filters a').on('click', function() {
+    $('a.conservation-rating').on('click', function() {
       $('#map-filters li').removeClass('active');
       $(this).parent().addClass('active');
       var $filter_status_id = $(this).data('filter');
