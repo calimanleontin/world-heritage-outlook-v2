@@ -13913,6 +13913,9 @@ html[lang='es'] .image-rating-container.good {
     display: none;
   }
 }
+.path-frontpage #map-site-details .map-site-detail .map-site-detail-content-coming-soon dl {
+  display: none;
+}
 .path-frontpage #map-site-details .map-site-detail dt {
   clear: both;
   float: left;
