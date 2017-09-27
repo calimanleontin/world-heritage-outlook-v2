@@ -40,13 +40,14 @@ class SiteSearchAutocompleteForm extends FormBase {
     foreach ($sites as $node) {
       $site_options[$node->id()] = $node->title->value;
     }
-    sort($site_options);
-    $site_options[0] = $this->t('Search for a site');
+    asort($site_options);
+
     return [
       'q' => [
         '#type' => 'select',
         '#title' => $this->t('Explore natural sites'),
-        '#options' => $site_options,
+        '#attributes' => ['data-placeholder' => $this->t('Search for a site')],
+        '#options' => [0 => ''] + $site_options,
       ],
       'send' => [
         '#type' => 'submit',
