@@ -484,3 +484,120 @@
     }
   }
 }
+
+.block-home-page-statistics {
+  text-align: center;
+  @media @grid-desktop {
+    .container();
+  }
+  .block-title {
+    color: @iucn-blue-dark;
+    .remify(font-size, 36px);
+    font-weight: 500;
+  }
+  // Links and disk colours
+  .loop-conservation-ratings({
+    dt.@{conservation-rating-class} {
+       color: @conservation-rating-color;
+    }
+    .bg-@{conservation-rating-class} {
+      background-color: @conservation-rating-color;
+      &:after {
+        border-top-color: @conservation-rating-color;
+      }
+    }
+  });
+
+  dl { display: block; margin: 5em auto 0; padding: 0; padding-right: 1.5em; overflow: hidden; }
+  dt, dd {
+    float: left;
+    width: 50%;
+    margin-bottom: .3em;
+    @media @grid-mobile {
+      width: calc(~'100% - 8em');
+    }
+  }
+  dt {
+    clear: both;
+    font-weight: 400;
+    margin-right: 1em;
+    text-align: right;
+    width: calc(~'50% - 1em');
+    @media @grid-mobile {
+      font-size: .8em;
+      line-height: @line-height-base * @font-size-base--mobile;
+      width: 8em - 1em;
+      &.significant-concern,
+      &.good-concerns {
+        line-height: 1;
+      }
+    }
+  }
+  dd { color: white; font-weight: bold; }
+  dd>div {
+    // box-sizing: initial;
+    line-height: 1.5em;
+    min-height: 1.5em;
+    min-width: 3em;
+    padding: 0 1em;
+    position: relative;
+    text-align: center;
+    &:after {
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-style: solid;
+      border-width: 1.5em 1.5em 0 0;
+      content: '';
+      display: inline-block;
+      height: 0;
+      left: 100%;
+      position: absolute;
+      top: 0;
+      width: 0;
+    }
+  }
+}
+
+.block-home-page-report .pdf-download-button {
+  text-align: center;
+  margin-top: 3em;
+  a {
+    .btn-info();
+    .iucn-base-btn-icons(download-report);
+    display: inline-block;
+    text-align: left;
+    width: auto;
+    font-size: 22px;
+    padding: .5em 1.5em;
+    position: relative;
+    line-height: 1.2;
+    padding-left: 5em;
+    font-weight: 300;
+    &:before {
+      background-size: 2em;
+      padding-left: 0;
+      padding-right: 0;
+      top: 10px;
+      bottom: 10px;
+      vertical-align: middle;
+      width: 4em;
+      border-right: 1px solid;
+      @media @grid-mobile {
+        background-size: 1.5em;
+        width: 2.5em;
+      }
+    }
+    @media @grid-mobile {
+      font-size: 21px;
+      line-height: 1.1;
+      padding-left: 3em;
+    }
+    div.field--name-field-pdf-button-title {
+      font-size: 15px;
+      @media @grid-mobile {
+        font-size: 13px;
+      }
+    }
+  }
+}

@@ -1,14 +1,16 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row map-block-main">
 
-    <div class="col col-sm-3 col-left" data-scroll="prevent">
-      <div class="row">
-        <div class="title-container">
-          <h3>{{ 'Map legend' | trans }}</h3>
-          <div><a href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a href="javascript:benefitsCategoriesCollapseAll();">{{ 'Colapse all' }}</a></div>
-        </div>
-        <div id="map-filters">
-          <a href="#all" data-category="all" class="benefit-category">{{ 'All World Heritage Sites' | trans }}</a>
+    <div class="col col-sm-3 map-col-left">
+      <div class="title-container">
+        <h3>{{ 'Map legend' | trans }}</h3>
+        <div><a href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
+      </div>
+      <div class="map-filters-container" id="map-filters-container" data-iucn-simplebar="visible" data-prevent-scroll>
+        <div id="map-filters" class="panel-group map-filters">
+          <div class="map-filter-item benefit-category-container">
+            <a href="#all" data-category="all" class="benefit-category">{{ 'All World Heritage Sites' | trans }}</a>
+          </div>
           {% for category in categories %}
           <section class="block-facet--links block block-facets clearfix panel panel-default">
             <div class="panel-heading" role="tab" id="#heading-topic-{{ category.id }}">
@@ -17,9 +19,9 @@
             </div>
             <div id="topic-{{ category.id }}" class="block-facet--links block block-facets clearfix panel panel-default panel-collapse fade collapse" role="tabpanel" aria-expanded="true" style="">
               <div class="panel-body">
-                <ul class="item-list__links">
+                <ul class="item-list__links map-filter-items">
                   {% for child in category.children %}
-                    <li class="facet-item"><a href="#{{ child.id }}" data-category="{{ child.id }}" class="benefit-category">
+                    <li class="map-filter-item facet-item benefit-category-container"><a href="#{{ child.id }}" data-category="{{ child.id }}" class="benefit-category">
                             {% if child.field_category_image.entity.uri.value %}
                       <img src="{{ file_url(child.field_category_image.entity.uri.value) }}"/>
                             {% endif %}<span>{{ child.name.value }}</span></a></li>
@@ -30,21 +32,18 @@
           </section>
           {% endfor %}
         </div>
-        <div id="map-site-details">
-          {{ empty_selection_placeholder_markup | raw }}
-        </div>
+      </div>
+      <div id="map-site-details" class="map-site-details">
+        {{ empty_selection_placeholder_markup | raw }}
       </div>
     </div>
-    <div class="col col-sm-9 col-right">
-      <div class="row">
-        {{ markup_map | raw }}
-      </div>
+    <div class="col col-sm-9 map-col-right">
+      {{ markup_map | raw }}
     </div>
   </div>
+
   {% if block_footer_text %}
   <div class="row map-block-footer">
-    <a href="javascript:void(0);" class="scroll-down" id="frontpage-scroll-down" data-target="#scroll-down-target"></a>
-    <div id="scroll-down-target"></div>
     <div class="block-footer-text">{{ block_footer_text }}</div>
   </div>
   {% endif %}

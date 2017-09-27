@@ -301,3 +301,34 @@
   .loop-iucn-arrow((@index-inner - 1));
 }
 .loop-iucn-arrows();
+
+/* ==========================================================================
+   Benefits topics loop
+   ========================================================================== */
+@benefits-topic-cultural-spiritual-values: 1300 #984afa;
+@benefits-topic-materials: 1304 #ff2c0b;
+@benefits-topic-nature-conservation-values: 1297 ~'@{text-color}';
+@benefits-topic-knowledge: 1302 #0b3a8e;
+@benefits-topic-health-and-recreation: 1301 #b17311;
+@benefits-topic-environmental-services: 1303 #752c0a;
+@benefits-topic-food: 1298 #005952;
+@benefits-topic-water: 1299 #117ccc;
+
+@benefits-topics-list:
+  @benefits-topic-cultural-spiritual-values,
+  @benefits-topic-materials,
+  @benefits-topic-nature-conservation-values,
+  @benefits-topic-knowledge,
+  @benefits-topic-health-and-recreation,
+  @benefits-topic-environmental-services,
+  @benefits-topic-food,
+  @benefits-topic-water;
+
+.loop-benefits-topics(@rules, @index: length(@benefits-topics-list)) when (@index > 0) {
+  @benefit-topic-id: e(extract(extract(@benefits-topics-list, @index), 1));
+  @benefit-topic-color: e(extract(extract(@benefits-topics-list, @index), 2));
+  @rules();
+
+  // next iteration
+  .loop-benefits-topics(@rules, (@index - 1));
+}

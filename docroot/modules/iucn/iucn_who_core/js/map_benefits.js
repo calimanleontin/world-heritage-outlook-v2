@@ -46,8 +46,8 @@ function postInitMap(instance_id, map, config) {
      * Click handler for filters on the left column.
      */
     $('a.benefit-category').on('click', function() {
-      $('#map-filters li').removeClass('active');
-      $(this).parent().addClass('active');
+      $('.benefit-category-container').removeClass('active');
+      $(this).closest('.benefit-category-container').addClass('active');
       $filter_category = $(this).data('category');
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
@@ -111,7 +111,7 @@ function benefitsMapSiteDetailClose() {
     'use strict';
     $.iucnResetAllMarkerIcons();
     $.iucnResetMapDetail();
-  })(jQuery, Drupal, drupalSettings);
+  })(jQuery);
 }
 
 function benefitsCategoriesExpandAll() {
@@ -119,12 +119,12 @@ function benefitsCategoriesExpandAll() {
     'use strict';
     $('#map-filters .collapse').collapse('show');
 
-  })(jQuery, Drupal, drupalSettings);
+  })(jQuery);
 }
 
 function benefitsCategoriesCollapseAll() {
   (function ($) {
     'use strict';
     $('#map-filters .collapse').collapse('hide');
-  })(jQuery, Drupal, drupalSettings);
+  })(jQuery);
 }

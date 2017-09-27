@@ -33,7 +33,11 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
 function iucn_who_preprocess_block(&$variables) {
   switch ($variables['base_plugin_id']) {
     case 'home_page_map':
-      $variables['#attached']['library'][] = 'iucn_who/homepage-map';
+      $variables['#attached']['library'][] = 'iucn_who/maps';
+      break;
+
+    case 'benefits_page_map':
+      $variables['#attached']['library'][] = 'iucn_who/maps';
       break;
 
     case 'page_title_block':

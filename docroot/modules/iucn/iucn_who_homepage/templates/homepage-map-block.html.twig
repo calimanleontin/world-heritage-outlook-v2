@@ -1,26 +1,28 @@
 <div class="container-fluid">
   <div class="row map-block-main">
 
-    <div class="col col-sm-3 col-left">
-      <div id="map-site-search">
+    <div class="col col-sm-3 map-col-left">
+      <div id="map-site-search" class="map-site-search">
       {{ search_form }}
       </div>
-      <div id="map-filters">
+      <div id="map-filters" class="map-filters">
         <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
-        <ul>
+        <ul class="map-filter-items">
           {% for rating in conservation_ratings %}
-          <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+            <li class="map-filter-item {{ rating.field_css_identifier.value }}">
+              <a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a>
+            </li>
           {% endfor %}
         </ul>
         <a data-filter="all" href="javascript:void(0);">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
       </div>
-      <div class="map-site-details-container" id="map-site-details-container">
-        <div id="map-site-details">
+      <div class="map-site-details-container" id="map-site-details-container" data-iucn-simplebar data-prevent-scroll>
+        <div id="map-site-details" class="map-site-details">
           {{ empty_selection_placeholder_markup | raw }}
         </div>
       </div>
     </div>
-    <div class="col col-sm-9 col-right">
+    <div class="col col-sm-9 map-col-right">
       {{ markup_map | raw }}
     </div>
   </div>

@@ -19,10 +19,10 @@ facets:
     dependencies:
       - core/jquery
 
-homepage-map:
+maps:
     js:
       js/iucn-mobile-chrome-vh-fix/iucn-mobile-chrome-vh-fix.js: {}
-      js/homepage-map.js: {}
+      js/maps.js: {}
     dependencies:
       - core/drupalSettings
       - core/underscore

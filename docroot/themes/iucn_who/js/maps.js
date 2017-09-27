@@ -102,16 +102,18 @@
 
   };
 
-  // $(function () {
-    var simpleBar = new SimpleBar(document.getElementById('map-site-details-container'));
-    // $('.col-left').preventBodyScroll();
-    $('.simplebar-scroll-content').preventBodyScroll();
+  var $simplebarElements = $('[data-iucn-simplebar]');
 
-    // handle resize events - throttled with underscore.js (optional - requires core/underscore be added as a dependency in .libraries.yml)
-    $(window).on('resize', _.debounce(
-      function() {
-        $('.simplebar-scroll-content').preventBodyScroll();
-      }, 200));
-  // });
+  var simpleBar = new SimpleBar($simplebarElements[0], {
+    autoHide: ($simplebarElements.data('iucn-simplebar') === 'visible' ? false : true)
+  });
+
+  $('[data-prevent-scroll] .simplebar-scroll-content').preventBodyScroll();
+
+  // handle resize events - throttled with underscore.js (optional - requires core/underscore be added as a dependency in .libraries.yml)
+  $(window).on('resize', _.debounce(
+    function() {
+      $('[data-prevent-scroll] .simplebar-scroll-content').preventBodyScroll();
+    }, 200));
 
 })(jQuery, Drupal, drupalSettings, SimpleBar);
