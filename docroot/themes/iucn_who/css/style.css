@@ -14509,6 +14509,12 @@ html[lang='es'] .image-rating-container.good {
 .block-benefits-page-map .map-filters-container {
   flex: 1 1 auto;
 }
+@media screen and (max-width: 767px) {
+  .block-benefits-page-map .sidemenu .map-filters-container {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
 @media screen and (min-width: 768px) {
   .block-benefits-page-map .sidemenu {
     display: flex;
@@ -14536,6 +14542,11 @@ html[lang='es'] .image-rating-container.good {
   font-weight: 700;
   padding-left: 2em;
 }
+@media screen and (max-width: 767px) {
+  .block-benefits-page-map .map-filters .panel-title {
+    padding-left: 3em;
+  }
+}
 .block-benefits-page-map .map-filter-items {
   margin-left: 0;
   margin-right: 0;
@@ -14552,6 +14563,11 @@ html[lang='es'] .image-rating-container.good {
   content: '';
   background-size: auto .9em;
   height: 100%;
+}
+@media screen and (max-width: 767px) {
+  .block-benefits-page-map .map-filter-item:before {
+    width: 2.5em;
+  }
 }
 .block-benefits-page-map .map-filter-item.active:before {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%2F%3E%3Cpath%20stroke-width%3D%2270%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%20d%3D%22M86.128%20341.92l109.196%20102.487M183%20407l264-278%22%2F%3E%3C%2Fsvg%3E");
@@ -14615,6 +14631,11 @@ html[lang='es'] .image-rating-container.good {
     text-align: center;
   }
 }
+@media screen and (min-width: 768px) {
+  .block-benefits-page-map .title-container .sidemenu-toggle {
+    display: block;
+  }
+}
 .block-benefits-page-map .panel-body {
   padding-left: 0;
   padding-right: 0;
@@ -14627,6 +14648,10 @@ html[lang='es'] .image-rating-container.good {
 }
 .sidemenu .benefits-expand-buttons {
   text-align: right;
+}
+.sidemenu .benefits-expand-buttons .expand-button,
+.sidemenu .benefits-expand-buttons .collapse-button {
+  font-size: .8em;
 }
 .benefit-selection-placeholder {
   height: 127px;
@@ -14648,13 +14673,28 @@ html[lang='es'] .image-rating-container.good {
   padding-left: 2em;
   padding-right: 15px;
 }
+@media screen and (max-width: 767px) {
+  .benefit-category {
+    padding-left: 3em;
+  }
+}
 .benefit-category[data-category='all'] {
   display: block;
   padding: 10px 15px;
   padding-left: 3.5em;
 }
+@media screen and (max-width: 767px) {
+  .benefit-category[data-category='all'] {
+    padding-left: 4.5em;
+  }
+}
 .benefit-category img {
   width: 1.4em;
+}
+@media screen and (max-width: 767px) {
+  .benefit-category img {
+    width: 1em;
+  }
 }
 @media screen and (max-width: 767px) {
   .iucn-publications-teaser-wrapper .left-content,
