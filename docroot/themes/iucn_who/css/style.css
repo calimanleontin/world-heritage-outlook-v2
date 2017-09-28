@@ -11079,7 +11079,7 @@ h6.view-sites-search .view-header {
   background-color: #fff;
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
-  .map-filter-item > a {
+  .block-home-page-map .map-filter-item > a {
     padding-left: 0;
   }
 }
