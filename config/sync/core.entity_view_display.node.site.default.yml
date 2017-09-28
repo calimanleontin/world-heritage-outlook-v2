@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
     - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
@@ -32,6 +33,7 @@ dependencies:
   module:
     - datetime
     - ds
+    - file
     - image
     - iucn_site
     - text
@@ -77,6 +79,15 @@ third_party_settings:
           formatter:
             image_style: sites_thumbnail
             image_link: ''
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+        settings:
+          wrapper: h1
+          class: ''
+          link: false
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
         weight: 13
@@ -87,15 +98,11 @@ third_party_settings:
         weight: 14
         label: above
         formatter: default
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
+      assessments_more_site_links:
+        plugin_id: assessments_more_site_links
+        weight: 11
+        label: above
         formatter: default
-        settings:
-          wrapper: h1
-          class: ''
-          link: false
       assessment_rating:
         plugin_id: assessment_rating
         weight: 2
@@ -104,11 +111,6 @@ third_party_settings:
       assessments_download_links:
         plugin_id: assessments_download_links
         weight: 12
-        label: above
-        formatter: default
-      assessments_more_site_links:
-        plugin_id: assessments_more_site_links
-        weight: 11
         label: above
         formatter: default
 id: node.site.default
@@ -150,9 +152,19 @@ content:
     settings:
       separator: ','
       link: 0
+      override_label: 0
+      singular: ''
+      plural: ''
     third_party_settings:
       ds:
         ds_limit: ''
+  field_geojson:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_geolocation:
     type: geofield_site_area_map
     weight: 10
@@ -173,10 +185,13 @@ content:
     type: entity_reference_list
     weight: 5
     region: middle_1
-    label: inline
+    label: hidden
     settings:
-      link: 0
       separator: ','
+      override_label: '1'
+      singular: Criterion
+      plural: Criteria
+      link: 0
     third_party_settings:
       ds:
         ds_limit: ''

@@ -9,6 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Validation\Plugin\Validation\Constraint;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_help().
@@ -105,6 +106,11 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
       }
     }
   }
+
+  // Create a new json file containing site geoJson and append it if another one doesn't exist already.
+  if ($node->bundle() == 'site') {
+    \Drupal::service('iucn_site.utils')->createGeoJson($node);
+  }
 }
 
 /**
@@ -140,4 +146,13 @@ function iucn_site_theme($existing, $type, $theme, $path) {
       ],
     ]
   ];
+}
+
+function iucn_site_node_update(Drupal\node\Entity\Node $node) {
+  // Add the site to the update_geojson queue on node update.
+  if ($node->bundle() == 'site') {
+    $queue_factory = \Drupal::service('queue');
+    $queue = $queue_factory->get('cron_site_update_geojson');
+    $queue->createItem($node->id());
+  }
 }

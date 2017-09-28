@@ -10,7 +10,7 @@ id: site_feedback
 title: 'Give us feedback'
 description: '<span class="aui-legend">Site Feedback </span>'
 category: ''
-elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your suggestions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\nsubject:\n  '#type': textfield\n  '#title': Subject\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\ncaptcha:\n  '#type': captcha\n"
+elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your suggestions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': 'Email address'\n  '#required': true\nsubject:\n  '#type': textfield\n  '#title': Subject\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\ncaptcha:\n  '#type': captcha\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': 'Send feedback'\n"
 css: ''
 javascript: ''
 settings:

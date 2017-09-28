@@ -34,6 +34,7 @@ dependencies:
     - datetime
     - ds
     - image
+    - iucn_site
     - user
 third_party_settings:
   ds:
@@ -63,6 +64,8 @@ third_party_settings:
         - node_title
         - field_country
         - field_inscription_year
+        - field_inscription_criteria
+        - node_link
     fields:
       node_title:
         plugin_id: node_title
@@ -72,6 +75,16 @@ third_party_settings:
         settings:
           link: true
           wrapper: h2
+          class: ''
+      node_link:
+        plugin_id: node_link
+        weight: 5
+        label: hidden
+        formatter: default
+        settings:
+          'link text': 'Read more'
+          'link class': ''
+          wrapper: ''
           class: ''
 id: node.site.search_index
 targetEntityType: node
@@ -96,6 +109,20 @@ content:
     settings:
       image_style: sites_thumbnail
       image_link: content
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_inscription_criteria:
+    type: entity_reference_list
+    weight: 4
+    region: right
+    label: hidden
+    settings:
+      separator: ','
+      override_label: '1'
+      singular: Criterion
+      plural: Criteria
+      link: 0
     third_party_settings:
       ds:
         ds_limit: ''
@@ -125,7 +152,6 @@ hidden:
   field_danger_list: true
   field_designation: true
   field_geolocation: true
-  field_inscription_criteria: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true

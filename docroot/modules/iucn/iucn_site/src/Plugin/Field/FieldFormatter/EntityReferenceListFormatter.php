@@ -30,9 +30,12 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'link' => TRUE,
-        'separator' => ',',
-      ] + parent::defaultSettings();
+      'link' => TRUE,
+      'separator' => ',',
+      'override_label' => 0,
+      'singular' => '',
+      'plural' => '',
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -49,8 +52,31 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
       '#title' => t('Entities separator'),
       '#type' => 'textfield',
       '#size' => 10,
-      '#default_value' =>$this->getSetting('separator'),
+      '#default_value' => $this->getSetting('separator'),
       '#description' => t("Enter separator symbol, this will be displayed between entities."),
+    ];
+
+    $elements['override_label'] = [
+      '#title' => t('Override label'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('override_label'),
+      '#description' => t("If this is checked make sure to set the LABEL display to - Hidden - ."),
+    ];
+
+    $elements['singular'] = [
+      '#title' => t('Label for singular'),
+      '#type' => 'textfield',
+      '#size' => 10,
+      '#default_value' => $this->getSetting('singular'),
+      '#description' => t("Enter the label title, in english, that will be displayed when there are only one term. e.g. Criterion"),
+    ];
+
+    $elements['plural'] = [
+      '#title' => t('Label for multiple'),
+      '#type' => 'textfield',
+      '#size' => 10,
+      '#default_value' => $this->getSetting('plural'),
+      '#description' => t("Enter the label title, in english, that will be displayed when there are only more then one term. e.g. Criterion"),
     ];
 
     return $elements;
@@ -62,7 +88,13 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
   public function settingsSummary() {
     $summary = [];
     $summary[] = $this->getSetting('link') ? t('Link to the referenced entity') : t('No link');
-    $summary[] = t('Separator: ') . ( $this->getSetting('separator') ? Html::escape($this->getSetting('separator')) : ',');
+    $summary[] = t('Separator:') . ($this->getSetting('separator') ? Html::escape($this->getSetting('separator')) : ',');
+    $summary[] = t('Override label:') . ($this->getSetting('override_label') ? 'Yes' : 'No');
+    if ($this->getSetting('override_label')) {
+      $summary[] = t('Label for singular:') . ($this->getSetting('singular') ? Html::escape($this->getSetting('singular')) : '-');
+      $summary[] = t('Label for multiple:') . ($this->getSetting('plural') ? Html::escape($this->getSetting('plural')) : '-');
+    }
+
     return $summary;
   }
 
@@ -113,12 +145,34 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
         }
       }
       else {
-        $elements[$delta] = ['#plain_text' => $label ,'#suffix' => ($count != $entities_count ? $separator : '')];
+        $elements[$delta] = ['#plain_text' => $label, '#suffix' => ($count != $entities_count ? $separator : '')];
       }
       $elements[$delta]['#cache']['tags'] = $entity->getCacheTags();
     }
 
-    return $elements;
+    if ($this->getSetting('override_label')) {
+      $label_title = '';
+      if ($count == 1) {
+        $label_title = $this->getSetting('singular') ? $this->getSetting('singular') : '';
+      }
+      elseif ($count > 1) {
+        $label_title = $this->getSetting('plural') ? $this->getSetting('plural') : '';
+      }
+      $output = [
+        0 => [
+          '#plain_text' => t($label_title),
+          '#prefix' => '<div class="field--label-inline"><div class="field--label field--label-list">',
+          '#suffix' => '</div></div>',
+        ],
+      ];
+      foreach ($elements as $element) {
+        $output[] = $element;
+      }
+    }
+    else {
+      $output = $elements;
+    }
+    return $output;
   }
 
   /**

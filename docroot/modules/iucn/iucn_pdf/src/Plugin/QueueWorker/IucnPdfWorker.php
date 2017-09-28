@@ -71,9 +71,9 @@ class IucnPdfWorker extends QueueWorkerBase implements ContainerFactoryPluginInt
    *   The $item which was stored in the cron queue.
    */
   protected function reportWork($item) {
-    $this->logger->get('iucn_cron')->info('Queue @info worker processed item', [
-      '@info' => $item,
-    ]);
+      $this->logger->get('iucn_cron')->info('Queue @info worker processed item', [
+        '@info' => $item,
+      ]);
   }
 
 }
