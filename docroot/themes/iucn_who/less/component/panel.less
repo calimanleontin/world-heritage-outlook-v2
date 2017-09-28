@@ -2,13 +2,10 @@
  * Panel styling.
  */
 .panel-title {
-  display: block;
   .remify(font-size, ceil((@font-size-base * 1.125)));
+  display: block;
   margin: -10px (-@grid-gutter-width / 2);
   padding: 10px (@grid-gutter-width / 2);
-  &, &:hover, &:focus, &:hover:focus {
-    color: inherit;
-  }
   &:focus, &:hover {
     text-decoration: none;
   }

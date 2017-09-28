@@ -112,6 +112,7 @@
   @media @grid-mobile {
     font-size: 0;
     position: relative;
+    h1 { margin: 0; }
   }
   @media @grid-desktop {
     .background-variant(@iucn-blue-dark, #fff);
@@ -165,7 +166,9 @@
 }
 
 #scroll-down-target {
-  height: (@map-scrolldown-height * 3 / 4);
+  @media @grid-desktop {
+    height: (@map-scrolldown-height * 3 / 4);
+  }
 }
 
 .map-site-search,
@@ -252,6 +255,14 @@
    Map filters
    ========================================================================== */
 
+.map-filters-container {
+  @media @grid-mobile {
+    .sidemenu &:not(:first-child) {
+      margin-top: 1em;
+    }
+  }
+}
+
 .map-filters {
   padding: 1em;
   position: relative;
@@ -264,8 +275,10 @@
     color: @iucn-blue-light;
     float: right;
   }
-  @media @grid-mobile {
-    display: none;
+  .block-home-page-map & {
+    @media @grid-mobile {
+      display: none;
+    }
   }
 }
 .map-filter-items {
@@ -283,6 +296,7 @@
     height: @filters-line-height * 1em;
     left: 0;
     overflow: hidden;
+    pointer-events: none;
     position: absolute;
     text-indent: 999px;
     width: 1.5em;

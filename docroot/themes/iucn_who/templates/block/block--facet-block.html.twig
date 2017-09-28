@@ -97,7 +97,7 @@
       {% endif %}
       {{ title_suffix }}
     </div>
-    <div id='{{collapse_id}}' {{ attributes.addClass(collapse_classes) }} role="tabpanel">
+    <div id='{{collapse_id}}' class="{{ collapse_classes | join(' ') }}" role="tabpanel">
       <div class="panel-body">
         {% block content %}
           {{ content }}

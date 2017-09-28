@@ -3,34 +3,39 @@
 
     <div class="col col-sm-3 map-col-left">
       <div class="title-container">
-        <h3>{{ 'Map legend' | trans }}</h3>
-        <div><a href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
+        <a role="button" data-toggle="dropdown" data-target="#sidemenu" aria-expanded="false" id="sidemenu-toggle" class="sidemenu-toggle">
+          <h3>{{ 'Map legend' | trans }}</h3>
+        </a>
+        <div class="benefits-expand-buttons visible-desktop"><a class="expand-button" href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a class="collapse-button"href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
       </div>
-      <div class="map-filters-container" id="map-filters-container" data-iucn-simplebar="visible" data-prevent-scroll>
-        <div id="map-filters" class="panel-group map-filters">
-          <div class="map-filter-item benefit-category-container">
-            <a href="#all" data-category="all" class="benefit-category">{{ 'All World Heritage Sites' | trans }}</a>
-          </div>
-          {% for category in categories %}
-          <section class="block-facet--links block block-facets clearfix panel panel-default">
-            <div class="panel-heading" role="tab" id="#heading-topic-{{ category.id }}">
-              <a class="block-title panel-title" role="button" data-parent="#map-filters" data-toggle="collapse" href="#topic-{{ category.id }}" aria-expanded="false" aria-controls="topic-{{ category.id }}">
-                <span class="icon-collapse"></span>{{ category.name.value }}</a>
+      <div class="sidemenu" id="sidemenu">
+        <div class="benefits-expand-buttons visible-mobile"><a class="expand-button" href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a class="collapse-button"href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
+        <div class="map-filters-container " id="map-filters-container" data-iucn-simplebar="visible" data-prevent-scroll>
+          <div id="map-filters" class="panel-group map-filters">
+            <div class="map-filter-item benefit-category-container">
+              <a href="#all" data-category="all" class="benefit-category">{{ 'All World Heritage Sites' | trans }}</a>
             </div>
-            <div id="topic-{{ category.id }}" class="block-facet--links block block-facets clearfix panel panel-default panel-collapse fade collapse" role="tabpanel" aria-expanded="true" style="">
-              <div class="panel-body">
-                <ul class="item-list__links map-filter-items">
-                  {% for child in category.children %}
-                    <li class="map-filter-item facet-item benefit-category-container"><a href="#{{ child.id }}" data-category="{{ child.id }}" class="benefit-category">
-                            {% if child.field_category_image.entity.uri.value %}
-                      <img src="{{ file_url(child.field_category_image.entity.uri.value) }}"/>
-                            {% endif %}<span>{{ child.name.value }}</span></a></li>
-                  {% endfor %}
-                </ul>
+            {% for category in categories %}
+            <section class="clearfix panel panel-default filter-panel">
+              <div class="panel-heading" role="tab" id="#heading-topic-{{ category.id }}">
+                <a class="panel-title" role="button" data-toggle="collapse" href="#topic-{{ category.id }}" aria-expanded="false" aria-controls="topic-{{ category.id }}">
+                  <span class="icon-collapse"></span>{{ category.name.value }}</a>
               </div>
-            </div>
-          </section>
-          {% endfor %}
+              <div id="topic-{{ category.id }}" class="clearfix panel-collapse fade collapse" role="tabpanel" aria-expanded="true" style="">
+                <div class="panel-body">
+                  <ul class="map-filter-items">
+                    {% for child in category.children %}
+                      <li class="map-filter-item filter-item benefit-category-container"><a href="#{{ child.id }}" data-category="{{ child.id }}" class="benefit-category">
+                              {% if child.field_category_image.entity.uri.value %}
+                        <img src="{{ file_url(child.field_category_image.entity.uri.value) }}"/>
+                              {% endif %}<span>{{ child.name.value }}</span></a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </section>
+            {% endfor %}
+          </div>
         </div>
       </div>
       <div id="map-site-details" class="map-site-details">

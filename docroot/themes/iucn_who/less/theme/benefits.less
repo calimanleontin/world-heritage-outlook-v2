@@ -69,8 +69,21 @@
     padding-bottom: 7px;
     padding-top: 7px;
   }
-  .map-block-main { height: 42em; }
-  .map-filters-container { flex: 1 1 auto; }
+  .map-block-main {
+    height: 42em;
+    @media @grid-mobile {
+      height: 25em;
+    }
+  }
+  .map-filters-container {
+    flex: 1 1 auto;
+  }
+  .sidemenu {
+    @media @grid-desktop {
+      display: flex;
+      flex: 1 1 auto;
+    }
+  }
   .map-filters {
     padding: 0;
     .icon-collapse:before {
@@ -126,7 +139,9 @@
     flex-flow: row wrap;
     flex: 0 0 auto;
     justify-content: space-between;
-    padding: .8em (@grid-gutter-width / 2);
+    @media @grid-desktop {
+      padding: .8em (@grid-gutter-width / 2);
+    }
     h3 {
       font-size: 17 / unit(@map-sidebar-font-size) * 1em;
       margin: 0;
@@ -134,18 +149,17 @@
         font-weight: 300;
       }
     }
-    a {
-      font-size: 10 / unit(@map-sidebar-font-size) * 1em;
-      font-weight: normal;
-      text-transform: uppercase;
+    .sidemenu-toggle {
+      @media @grid-mobile {
+        display: block;
+        flex: 1;
+        font-size: 1em;
+        font-weight: inherit;
+        min-height: auto;
+        padding: .8em (@grid-gutter-width / 2);
+        text-align: center;
+      }
     }
-  }
-  .benefit-selection-placeholder {
-    .remify(height, 127px);
-    margin-bottom: 1em;
-    margin-top: 1em;
-    width: 90%;
-    img { width: 40 / unit(@map-sidebar-font-size) * 1em; }
   }
   // .loop-benefits-topics({
   //   #topic-@{benefit-topic-id} .benefit-category {
@@ -158,9 +172,29 @@
   }
 }
 
+.benefits-expand-buttons {
+  .expand-button,
+  .collapse-button {
+    font-size: 10 / unit(@map-sidebar-font-size) * 1em;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+  .sidemenu & {
+    text-align: right;
+  }
+}
+
+.benefit-selection-placeholder {
+  .remify(height, 127px);
+  margin-bottom: 1em;
+  margin-top: 1em;
+  width: 90%;
+  img { width: 40 / unit(@map-sidebar-font-size) * 1em; }
+}
+
 .benefit-category-container {
   position: relative;
-  + .block-facets {
+  + .panel {
     border-top: 1px solid #ddd;
   }
 }
