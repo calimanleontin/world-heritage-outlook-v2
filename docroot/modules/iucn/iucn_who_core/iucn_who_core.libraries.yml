@@ -1,6 +1,7 @@
 map-base:
   weight: -50
   version: 1.x
+  header: true
   js:
     js/googlemaps_baseblock.js: {}
   dependencies:

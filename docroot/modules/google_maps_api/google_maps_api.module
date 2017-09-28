@@ -6,7 +6,7 @@ use \Drupal\google_maps_api\Form\GMConfigurationForm;
 function google_maps_api_library_info_build() {
   $libraries = [];
   $api_key = \Drupal::state()->get(GMConfigurationForm::CONFIG_NAME);
-  if (!empty($api_key)) {
+  if (empty($api_key)) {
     drupal_set_message('Google Maps API is not correctly configured, maps will not work. Please contact technical support', 'error');
   }
   $url = sprintf('https://maps.googleapis.com/maps/api/js?key=%s&callback=initMap', $api_key);

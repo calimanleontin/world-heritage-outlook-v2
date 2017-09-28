@@ -10,7 +10,7 @@ use Drupal\migrate_plus\Entity\Migration;
 
 trait MigrateTrait {
 
-  public function migrate($migrations) {
+  public function migrate($migrations, $update = TRUE) {
     /* @var \Drupal\migrate\Plugin\MigrationPluginManager $service */
     $service = \Drupal::service('plugin.manager.migration');
 
@@ -21,7 +21,9 @@ trait MigrateTrait {
         throw new \Exception($id . ' migration was not found');
       }
 
-      $migration->getIdMap()->prepareUpdate();
+      if ($update) {
+        $migration->getIdMap()->prepareUpdate();
+      }
       $executable = new MigrateExecutable($migration, new MigrateMessage());
       $result = $executable->import();
       if ($result == MigrationInterface::RESULT_FAILED) {

@@ -27,7 +27,7 @@ class AssessmentsMoreSiteLinks extends DsFieldBase {
     if (!empty($node->field_wdpa_id->value)) {
       $value = [
         'url' => Url::fromUri('http://www.protectedplanet.net/sites/' . $node->field_wdpa_id->value),
-        'title' => $this->t('Protected Planet Website'),
+        'title' => $this->t('Protected Planet website'),
       ];
       $value['attributes']['target'][] = '_blank';
       $links[] = $value;

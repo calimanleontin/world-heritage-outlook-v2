@@ -237,6 +237,7 @@ class GeofieldSiteAreaFormatter extends FormatterBase implements ContainerFactor
       '#width' => '100%',
       '#attached' => [
         'library' => [
+          'google_maps_api/core',
           'iucn_site/site-area-formatter',
         ],
         'drupalSettings' => [

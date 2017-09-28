@@ -6,8 +6,8 @@
   {% if thumbnail %}
   <img src="{{ thumbnail }}" height="160" width="300">
   {% endif %}
-  <div class="map-site-detail-content">
-    <h5 class="title">{{ title }}</h5>
+  <div class="map-site-detail-content map-site-detail-content-{{ status.entity.field_css_identifier.value }}">
+    <h5 class="title {{ status.entity.field_css_identifier.value }}">{{ title }}</h5>
     {% if country %}
     <div class="country">{{ country.label }}</div>
     {% endif %}

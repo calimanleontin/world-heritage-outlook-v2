@@ -142,7 +142,12 @@
         <div class="row">
           {# Sidebar First #}
           {% if page.sidebar_first or page.facets %}
-            <aside class="col-sm-3" role="complementary" id="sidemenu">
+            <aside class="col-sm-3 sidemenu" role="complementary" id="sidemenu">
+              {% if page.sidebar_top %}
+                  {% block sidebar_top %}
+                      {{ page.sidebar_top }}
+                  {% endblock %}
+              {% endif %}
               {% if page.facets %}
                 {% block facets %}
                     {{ page.facets }}
@@ -159,10 +164,10 @@
           {# Content #}
           {%
             set content_classes = [
-              (page.sidebar_first or page.facets) and page.sidebar_second ? 'col-sm-6',
-              (page.sidebar_first or page.facets) and page.sidebar_second is empty ? 'col-sm-9',
-              page.sidebar_second and (page.sidebar_first or page.facets) is empty ? 'col-sm-9',
-              (page.sidebar_first or page.facets) is empty and page.sidebar_second is empty ? 'col-sm-12'
+              (page.sidebar_first or page.facets or page.sidebar_top) and page.sidebar_second ? 'col-sm-6',
+              (page.sidebar_first or page.facets  or page.sidebar_top) and page.sidebar_second is empty ? 'col-sm-9',
+              page.sidebar_second and (page.sidebar_first or page.facets  or page.sidebar_top) is empty ? 'col-sm-9',
+              (page.sidebar_first or page.facets  or page.sidebar_top) is empty and page.sidebar_second is empty ? 'col-sm-12'
             ]
           %}
           <section{{ content_attributes.addClass(content_classes) }}>
@@ -249,4 +254,3 @@
     </footer>
   {% endblock %}
 {% endif %}
-<div class="modal-backdrop fade"></div>

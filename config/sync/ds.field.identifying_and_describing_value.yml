@@ -1,5 +1,5 @@
 id: identifying_and_describing_value
-label: 'Identifying And Describing Values (copy)'
+label: 'Identifying And Describing Values'
 ui_limit: 'site_assessment|*'
 properties:
   field_id: node.site_assessment.field_as_values_wh

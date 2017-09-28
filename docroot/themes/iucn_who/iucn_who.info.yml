@@ -16,6 +16,7 @@ regions:
   help: 'Help'
   contained_content: 'Contained Content'
   content: 'Content'
+  sidebar_top: 'Primary Top (Left sidebar, fixed on mobile)'
   facets: 'Facets (Left sidebar, fixed on mobile)'
   sidebar_first: 'Primary (Left sidebar, fixed on mobile)'
   sidebar_second: 'Secondary'
