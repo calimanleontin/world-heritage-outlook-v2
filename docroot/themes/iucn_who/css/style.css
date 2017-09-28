@@ -10312,10 +10312,17 @@ h6.view-sites-search .view-header {
 .view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
-.view-sites-search .field--label-inline .field--label {
+.view-sites-search .field--label-inline .field--label,
+.view-sites-search .field--label-list {
   padding-right: 0.2em;
+  font-weight: normal;
 }
 .view-sites-search .field--label-inline .field--label::after {
+  content: none;
+}
+.view-sites-search .field--name-field-inscription-criteria .field--label {
+  padding-right: 0.2em;
+  font-weight: normal;
   content: none;
 }
 .view-sites-search .field--name-field-inscription-criteria .field--label,
@@ -11645,6 +11652,12 @@ body.page-node-type-site .sidemenu {
 .iucn-site-wrapper .field--name-field-inscription-criteria .field__items > .field--item,
 .iucn-site-wrapper .field--name-field-designation .field__items > .field--item {
   display: inline;
+}
+.iucn-site-wrapper .field--name-field-inscription-criteria .field--item {
+  float: left;
+}
+.iucn-site-wrapper .field--name-field-inscription-criteria .field--item:last-child {
+  float: none;
 }
 .iucn-site-wrapper .field--name-body {
   margin-top: 1em;

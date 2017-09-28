@@ -191,7 +191,8 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     }
 
     $url = $currentLanguage . $val->getUrl()->toString();
-    if (array_key_exists($currentLanguage . $url)) {
+
+    if (array_key_exists($url, $menu_items)) {
       /** @val \Drupal\Core\Link $val */
       $val->setText($menu_items[$url]);
     }
