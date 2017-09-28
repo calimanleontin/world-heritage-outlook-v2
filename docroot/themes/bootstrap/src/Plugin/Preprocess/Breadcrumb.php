@@ -47,6 +47,8 @@ class Breadcrumb extends PreprocessBase implements PreprocessInterface {
 
     if ($this->theme->getSetting('breadcrumb_title') && !empty($breadcrumb)) {
 
+
+
       $menu_items = iucn_who_get_all_menu('main');
 
       $request = \Drupal::request();
@@ -65,7 +67,15 @@ class Breadcrumb extends PreprocessBase implements PreprocessInterface {
         }
       }
       else {
-        $current_path = $route_match->getRouteObject()->getPath();
+
+        $currentLanguage = '';
+        $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+        $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+        if ($default_language != $current_language) {
+          $currentLanguage = "/$current_language";
+        }
+
+        $current_path = $currentLanguage . $route_match->getRouteObject()->getPath();
         if (array_key_exists($current_path, $menu_items)) {
           $page_title = $menu_items[$current_path];
         }
