@@ -10,15 +10,15 @@
         <ul class="map-filter-items">
           {% for rating in conservation_ratings %}
             {% if rating.field_css_identifier.value != 'coming-soon' %}
-              <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+              <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
             {% endif %}
           {% endfor %}
         </ul>
         <a data-filter="all" href="javascript:void(0);" class="conservation-rating">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
-        <ul>
+        <ul class="map-filter-items">
             {% for rating in conservation_ratings %}
                 {% if rating.field_css_identifier.value == 'coming-soon' %}
-                  <li class="{{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+                  <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
                 {% endif %}
             {% endfor %}
         </ul>
