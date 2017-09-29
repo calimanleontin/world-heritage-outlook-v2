@@ -62,34 +62,24 @@
     <div{{ attributes.addClass(classes, 'field--items') }}>
       {% for item in items %}
         <div{{ item.attributes.addClass('field--item') }}>
-         {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
-          {% if collapseNeeded %}
-            <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
-          {% endif %}
+          <div class="iucn-expandable-text">
+            <div class="iucn-expandable-text-content" id="{{collapse_id}}">
               {{ item.content }}
-          {% if collapseNeeded %}
-              </div>
-              <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
             </div>
-          {% endif %}
+            <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
+          </div>
         </div>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
       <div{{ attributes.addClass(classes, 'field--item') }}>
-        {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
-        {% if collapseNeeded %}
-          <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
-        {% endif %}
-            {{ item.content }}
-        {% if collapseNeeded %}
-            </div>
-            <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
+        <div class="iucn-expandable-text">
+            <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+          {{ item.content }}
           </div>
-        {% endif %}
+          <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
+        </div>
       </div>
     {% endfor %}
   {% endif %}
@@ -100,17 +90,12 @@
       <div class="field__items">
     {% endif %}
     {% for item in items %}
-        {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
-        {% if collapseNeeded %}
-          <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
-        {% endif %}
+        <div class="iucn-expandable-text">
+          <div class="iucn-expandable-text-content" id="{{collapse_id}}">
             {{ item.content }}
-        {% if collapseNeeded %}
-            </div>
-            <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
           </div>
-        {% endif %}
+          <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
+        </div>
       </div>
     {% endfor %}
     {% if multiple %}

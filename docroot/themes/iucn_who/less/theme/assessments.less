@@ -21,6 +21,10 @@ body.page-node-type-site {
 .iucn-site-wrapper > .container-fluid {
   position: relative;
 }
+.iucn-site-wrapper > .container > .row {
+  display: flex;
+  flex-flow: row wrap;
+}
 .region-site-title {
   display: flex;
   flex-direction: column;
@@ -81,6 +85,32 @@ body.page-node-type-site {
         height: 100%;
         object-fit: cover;
       }
+    }
+  }
+}
+.region-site-general-info {
+  @media @grid-desktop {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    .iucn-expandable-text-content {
+      position: absolute;
+      &.open { position: static; }
+    }
+    .field--name-body {
+      flex: 1 1 auto;
+      position: relative;
+      .btn-link {
+        font-size: .8em;
+      }
+    }
+    [data-toggle="dropdown"][aria-expanded="false"] {
+      background-color: @body-bg;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
     }
   }
 }
@@ -513,6 +543,13 @@ body.page-node-type-site {
       }
     }
   });
+}
+.iucn-site-assessment-wrapper {
+  .iucn-expandable-text .btn-link {
+    @media @grid-desktop {
+      display: none;
+    }
+  }
 }
 .iucn-assessment-panel-container .panel {
   border-color: transparent;
