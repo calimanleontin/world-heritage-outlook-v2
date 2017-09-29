@@ -10748,8 +10748,10 @@ h6.view-sites-search .view-header {
     min-height: 100%;
   }
   .map-col-left .map-site-details-container {
-    flex: 1 0 0%;
     position: relative;
+  }
+  .block-home-page-map .map-col-left .map-site-details-container {
+    flex: 1 0 0%;
   }
 }
 @media screen and (max-width: 767px) {
@@ -11164,9 +11166,6 @@ h6.view-sites-search .view-header {
     position: relative;
     z-index: 1;
   }
-}
-.map-site-detail {
-  position: relative;
 }
 .map-site-detail:before,
 .map-site-detail:after {
