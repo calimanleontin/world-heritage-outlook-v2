@@ -8748,6 +8748,7 @@ body:not(.show-focus-outlines) textarea:active:focus {
 @media screen and (max-width: 767px) {
   .page-header {
     font-size: 32px;
+    margin-top: 0;
   }
 }
 a {
