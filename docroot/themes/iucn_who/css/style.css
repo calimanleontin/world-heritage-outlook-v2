@@ -11654,11 +11654,6 @@ fieldset[disabled] .map-site-detail .close.focus {
 .field--name-field-teasers > .field--item {
   margin-top: 3em;
 }
-@media screen and (max-width: 767px) {
-  .field--name-field-teasers > .field--item {
-    margin-top: 2em;
-  }
-}
 @media screen and (max-width: 767px) and (min-width: 530px) {
   .field--name-field-teasers > .field--item {
     flex: 0 1 50%;
