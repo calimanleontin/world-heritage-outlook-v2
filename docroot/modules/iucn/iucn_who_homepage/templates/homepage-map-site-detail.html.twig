@@ -1,7 +1,7 @@
 <div class="map-site-detail">
   <a class="close" href="javascript:homepageMapSiteDetailClose()">x</a>
   {% if status.label %}
-  <div class="status {{ status.entity.field_css_identifier.value }}">{{ status.label }}</div>
+  <div class="status {{ status.entity.field_css_identifier.value }}"><span>{{ status.label }}</span></div>
   {% endif %}
   {% if thumbnail %}
   <img src="{{ thumbnail }}" height="160" width="300">
