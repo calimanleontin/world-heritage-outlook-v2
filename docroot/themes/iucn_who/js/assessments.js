@@ -40,13 +40,13 @@
     // else {
     // }
 
-    var hash = $(".nav-tabs > li.active > a[data-toggle='tab']").attr("href");
+    var hash = $('.nav-tabs > li.active > [data-toggle="tab"]').attr('href');
     if(hash) {
       $('a[href="' + hash + '"]').tab('show');
       $body.addClass(hash.substr(1) + '-is-active-tab');
       // hashUpdate(hash);
     }
-    $("a[data-toggle='tab']").on("shown.bs.tab", function (e) {
+    $('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
       var hash = $(e.target).attr("href");
       $('a[href="' + hash + '"]').tab('show');
       $('body').attr('class', function(i, c) {
@@ -57,7 +57,7 @@
 
     var iucnSidemenu = new IUCNSidemenu();
 
-    $('#assessment-tabs-mobile').on('click', 'li.active a', function() {
+    $('#assessment-tabs-mobile').on('click', '[data-toggle="tab"]', function() {
       iucnSidemenu.closeMenu();
     });
 
