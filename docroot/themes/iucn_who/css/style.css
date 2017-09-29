@@ -9905,7 +9905,7 @@ fieldset[disabled] .explore-map-button a.focus {
 .region-fixed-bottom .block-search-api-sorts .tablesort--asc {
   transform: rotate(180deg) translateY(0.2em);
 }
-.sidemenu .block-clear-search {
+.sidemenu .region:first-child > .block-clear-search {
   margin-top: -2em;
 }
 .sidemenu .block-clear-search a {
@@ -11393,9 +11393,8 @@ h6.view-sites-search .view-header {
   border-color: #134780;
   display: block;
   font-size: 1em;
-  font-weight: 300;
+  font-weight: 100;
   height: 2em;
-  width: 2em;
   opacity: 1;
   padding: .4em .8em;
   position: absolute;
@@ -11585,7 +11584,7 @@ fieldset[disabled] .map-site-detail .close.focus {
     padding-left: 15px;
     padding-right: 15px;
   }
-  .sidemenu > .region:not(:first-child) {
+  .sidemenu > .region + .region {
     border-top: 1px solid #ddd;
   }
   .sidemenu-toggle {
@@ -11604,7 +11603,7 @@ fieldset[disabled] .map-site-detail .close.focus {
     max-width: 400px;
     opacity: 0;
     overflow: auto;
-    padding: 2em 15px;
+    padding: 3em 15px;
     pointer-events: none;
     position: fixed;
     right: 0;
@@ -11641,6 +11640,26 @@ fieldset[disabled] .map-site-detail .close.focus {
 @media screen and (min-width: 768px) {
   .sidemenu-open {
     overflow: auto;
+  }
+}
+.sidemenu-close {
+  color: #134780;
+  float: none;
+  font-size: 3em;
+  opacity: .5;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1em;
+}
+.sidemenu-close:hover,
+.sidemenu-close:focus {
+  color: #134780;
+  opacity: 1;
+}
+@media screen and (min-width: 768px) {
+  .sidemenu-close {
+    display: none;
   }
 }
 @media screen and (max-width: 767px) {
@@ -12690,9 +12709,6 @@ fieldset[disabled] .map-site-detail .close.focus {
     margin-top: 50px;
   }
 }
-body.page-node-type-site .sidemenu {
-  padding-top: 1em;
-}
 @media (min-width: 1200px) {
   .field--name-assessment-rating img {
     width: 100%;
@@ -12984,10 +13000,11 @@ body.page-node-type-site .sidemenu {
 }
 .iucn-site-wrapper .nav-tabs.visible-mobile {
   flex-wrap: wrap;
+  margin-bottom: 3rem;
   margin-left: -15px;
   margin-right: -15px;
+  margin-top: 0;
   padding-bottom: 10px;
-  margin-bottom: 3rem;
 }
 .iucn-site-wrapper .nav-tabs.visible-mobile > li > a {
   color: #134780;

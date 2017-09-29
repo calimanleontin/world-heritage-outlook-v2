@@ -1,15 +1,23 @@
-!function(exports, $, undefined) {
+!function(exports, $, Drupal, undefined) {
   'use strict';
 
   var IUCNSidemenu = function() {
     var self = this;
-    var $ = jQuery;
     var $document  = $(document);
     var $body  = $('body');
 
     this.modalBackdrop = $('.modal-backdrop').addClass('fade');
     this.sidemenu = $('#sidemenu');
     this.sidemenuToggle = $('#sidemenu-toggle');
+    this.closeButton = this.sidemenu.find('.close');
+
+    if(!this.closeButton.length) {
+      this.closeButton = $('<button type="button" class="close sidemenu-close" aria-label="' + Drupal.t('Close') + '"><span aria-hidden="true">&times;</span></button>');
+      this.closeButton.on('click', function () {
+        self.closeMenu();
+      });
+      this.sidemenu.prepend(this.closeButton);
+    }
 
     if(!this.modalBackdrop.length) {
       $body.append($('<div class="modal-backdrop fade"></div>'));
@@ -44,4 +52,4 @@
 
   exports.IUCNSidemenu = IUCNSidemenu;
 
-}(this, jQuery);
+}(this, window.jQuery, window.Drupal);

@@ -12,7 +12,7 @@
     padding-bottom: 1em;
     padding-left: @grid-gutter-width / 2;
     padding-right: @grid-gutter-width / 2;
-    &:not(:first-child) {
+    + .region {
       border-top: 1px solid #ddd;
     }
   }
@@ -38,7 +38,7 @@
     max-width: 400px;
     opacity: 0;
     overflow: auto;
-    padding: 2em (@grid-gutter-width / 2);
+    padding: 3em (@grid-gutter-width / 2);
     pointer-events: none;
     position: fixed;
     right: 0;
@@ -78,5 +78,23 @@
   &:extend(.menu-open all);
   @media @grid-desktop {
     overflow: auto;
+  }
+}
+
+.sidemenu-close {
+  color: @iucn-blue-dark;
+  float: none;
+  font-size: 3em;
+  opacity: .5;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1em;
+  &:hover, &:focus {
+    color: @iucn-blue-dark;
+    opacity: 1;
+  }
+  @media @grid-desktop {
+    display: none;
   }
 }
