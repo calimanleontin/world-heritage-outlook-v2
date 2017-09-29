@@ -11511,13 +11511,10 @@ fieldset[disabled] .map-site-detail .close.focus {
   }
 }
 .map-site-detail-content > div,
-.map-site-detail-content > dl {
-  padding-left: 15px;
-}
-.map-site-detail-content > div,
 .map-site-detail-content > dl,
 .map-site-detail-content > .more {
   padding-right: 15px;
+  padding-left: 15px;
 }
 /* ==========================================================================
    Map selection placeholder
