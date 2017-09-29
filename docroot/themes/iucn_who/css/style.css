@@ -10789,12 +10789,12 @@ h6.view-sites-search .view-header {
     z-index: 1;
     box-shadow: 0 -1px 8px -2px rgba(0, 0, 0, 0.3);
   }
-  .map-block-footer a:not([class*='chosen']) {
+  .map-block-footer a {
     color: #fff;
   }
-  .map-block-footer a:not([class*='chosen']):hover,
-  .map-block-footer a:not([class*='chosen']):focus,
-  .map-block-footer a:not([class*='chosen']):active {
+  .map-block-footer a:hover,
+  .map-block-footer a:focus,
+  .map-block-footer a:active {
     color: #03afdf;
   }
   .map-block-footer h1 {
@@ -10889,12 +10889,12 @@ h6.view-sites-search .view-header {
   color: #fff;
   padding: .7em 1em;
 }
-.map-site-search a:not([class*='chosen']) {
+.map-site-search a {
   color: #fff;
 }
-.map-site-search a:not([class*='chosen']):hover,
-.map-site-search a:not([class*='chosen']):focus,
-.map-site-search a:not([class*='chosen']):active {
+.map-site-search a:hover,
+.map-site-search a:focus,
+.map-site-search a:active {
   color: #03afdf;
 }
 .map-site-search form:before,
@@ -11016,6 +11016,7 @@ h6.view-sites-search .view-header {
   list-style-type: none;
   margin-left: -1em;
   margin-right: -1em;
+  clear: both;
 }
 .map-filter-item {
   padding-left: 1em;
@@ -12749,12 +12750,12 @@ body.page-node-type-site .sidemenu {
     position: relative;
     z-index: 1;
   }
-  .region-site-title .sites-back-button a:not([class*='chosen']) {
+  .region-site-title .sites-back-button a {
     color: #fff;
   }
-  .region-site-title .sites-back-button a:not([class*='chosen']):hover,
-  .region-site-title .sites-back-button a:not([class*='chosen']):focus,
-  .region-site-title .sites-back-button a:not([class*='chosen']):active {
+  .region-site-title .sites-back-button a:hover,
+  .region-site-title .sites-back-button a:focus,
+  .region-site-title .sites-back-button a:active {
     color: #03afdf;
   }
 }
@@ -13970,12 +13971,12 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     background-color: #134780;
     color: #fff;
   }
-  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']) {
+  .field--name-dynamic-block-fieldnode-site-feedback a {
     color: #fff;
   }
-  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):hover,
-  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):focus,
-  .field--name-dynamic-block-fieldnode-site-feedback a:not([class*='chosen']):active {
+  .field--name-dynamic-block-fieldnode-site-feedback a:hover,
+  .field--name-dynamic-block-fieldnode-site-feedback a:focus,
+  .field--name-dynamic-block-fieldnode-site-feedback a:active {
     color: #03afdf;
   }
 }
@@ -14566,6 +14567,7 @@ html[lang='es'] .image-rating-container.good {
   .block-benefits-page-map .sidemenu {
     display: flex;
     flex: 1 1 auto;
+    overflow: hidden;
   }
 }
 .block-benefits-page-map .map-filters {
@@ -14607,9 +14609,10 @@ html[lang='es'] .image-rating-container.good {
 .block-benefits-page-map .map-filter-item:before {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ddd%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E%0A");
   background-repeat: no-repeat;
-  content: '';
   background-size: auto .9em;
+  content: '';
   height: 100%;
+  top: 0;
 }
 @media screen and (max-width: 767px) {
   .block-benefits-page-map .map-filter-item:before {
@@ -14647,12 +14650,12 @@ html[lang='es'] .image-rating-container.good {
   flex: 0 0 auto;
   justify-content: space-between;
 }
-.block-benefits-page-map .title-container a:not([class*='chosen']) {
+.block-benefits-page-map .title-container a {
   color: #fff;
 }
-.block-benefits-page-map .title-container a:not([class*='chosen']):hover,
-.block-benefits-page-map .title-container a:not([class*='chosen']):focus,
-.block-benefits-page-map .title-container a:not([class*='chosen']):active {
+.block-benefits-page-map .title-container a:hover,
+.block-benefits-page-map .title-container a:focus,
+.block-benefits-page-map .title-container a:active {
   color: #03afdf;
 }
 @media screen and (min-width: 768px) {
@@ -14681,6 +14684,13 @@ html[lang='es'] .image-rating-container.good {
 @media screen and (min-width: 768px) {
   .block-benefits-page-map .title-container .sidemenu-toggle {
     display: block;
+  }
+  .block-benefits-page-map .title-container .sidemenu-toggle,
+  .block-benefits-page-map .title-container .sidemenu-toggle:hover,
+  .block-benefits-page-map .title-container .sidemenu-toggle:focus,
+  .block-benefits-page-map .title-container .sidemenu-toggle:active {
+    color: inherit;
+    cursor: default;
   }
 }
 .block-benefits-page-map .panel-body {
