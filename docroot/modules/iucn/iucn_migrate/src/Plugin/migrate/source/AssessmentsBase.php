@@ -101,6 +101,10 @@ abstract class AssessmentsBase extends SourceJson {
             if (isset($version_set_data['potentialThreat'])) {
               $version_set_data['currentThreat'] = $version_set_data['potentialThreat'];
             }
+            if (isset($version_set_data['potentialThreatSubcategories'])) {
+              $version_set_data['currentThreatSubcategories'] = $version_set_data['potentialThreatSubcategories'];
+            }
+
           }
           // Sort set items.
           usort($version[$source_key], function ($a, $b) {

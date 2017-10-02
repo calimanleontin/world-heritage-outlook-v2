@@ -54,9 +54,15 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   public function build() {
     $content = parent::build();
     array_unshift($content['#attached']['library'], 'iucn_who_homepage/map');
-    // @todo remove line below to allow caching in production
-    $content['#cache'] = ['max-age' => 0];
-    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
+    $content['#cache'] = [
+      'max-age' => 360000,
+    ];
+    $markers = $this->getMarkers();
+    foreach ($markers as $marker) {
+      $content['#cache']['tags'][] = 'node:' . $marker['id'];
+    }
+
+    $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $markers;
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['empty_placeholder'] = $this->getSiteSelectionPlaceholder();
 
@@ -107,9 +113,9 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
         '#thumbnail' => $this->getSiteThumbnail($node),
         '#inscription' => $this->getSiteInscriptionYear($node),
         '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
-        '#stat_values' => $value_level ? $value_level->label() : '-',
-        '#stat_threat' => $threat_level ? $threat_level->label() : '-',
-        '#stat_protection' => $protection_level ? $protection_level->label() : '-',
+        '#stat_values' => $value_level ? $value_level->label() : '',
+        '#stat_threat' => $threat_level ? $threat_level->label() : '',
+        '#stat_protection' => $protection_level ? $protection_level->label() : '',
       ];
       $ret[] = [
         'id' => $node->id(),

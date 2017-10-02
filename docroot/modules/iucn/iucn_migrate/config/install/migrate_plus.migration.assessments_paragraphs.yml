@@ -157,14 +157,6 @@ process:
     bundle: assessment_benefits_rating
     entity_type: taxonomy_term
     ignore_case: true
-  field_as_benefits_commun_wide:
-    plugin: taxonomy_term
-    source: widerCommunity
-    value_key: name
-    bundle_key: vid
-    bundle: assessment_benefits_rating
-    entity_type: taxonomy_term
-    ignore_case: true
   field_as_benefits_hab_level:
     plugin: taxonomy_term
     source: habitatchangelevel
