@@ -131,6 +131,7 @@ function iucn_who_preprocess_iucn_who_1col(&$variables) {
     /* @var $paragraph Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $variables['content']['#paragraph'];
     _iucn_who_preprocess_set_background($variables, $paragraph);
+    _iucn_who_preprocess_set_mobile_visibility($variables, $paragraph);
   }
 }
 
@@ -138,6 +139,12 @@ function _iucn_who_preprocess_set_background(&$variables, Drupal\paragraphs\Enti
   if (!empty($paragraph->field_paragraph_background)) {
     $bg_value = $paragraph->field_paragraph_background->value;
     $variables['attributes']['class'][] = 'paragraph-background-' . $bg_value;
+  }
+}
+
+function _iucn_who_preprocess_set_mobile_visibility(&$variables, Drupal\paragraphs\Entity\Paragraph $paragraph) {
+  if (!empty($paragraph->field_hide_on_mobile->value)) {
+    $variables['attributes']['class'][] = 'hidden-xs';
   }
 }
 
