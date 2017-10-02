@@ -11006,9 +11006,11 @@ h6.view-sites-search .view-header {
   color: #03afdf;
   float: right;
 }
-.block-home-page-map .sidemenu .map-filters {
-  margin-left: -15px;
-  margin-right: -15px;
+@media screen and (max-width: 767px) {
+  .block-home-page-map .sidemenu .map-filters {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
 }
 .map-filter-items {
   line-height: 1.5;
