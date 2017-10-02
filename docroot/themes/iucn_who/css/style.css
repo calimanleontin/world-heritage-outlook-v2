@@ -8681,6 +8681,9 @@ p:last-child,
 .control-group .help-inline:first-child {
   margin-top: 0;
 }
+.close {
+  text-shadow: none;
+}
 html {
   font-size: 62.5%;
 }
