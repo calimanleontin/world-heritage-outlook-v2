@@ -58,6 +58,19 @@ function postInitMap(instance_id, map, config) {
         }
         $marker.setVisible($visible);
       }
+
+      var bounds = new google.maps.LatLngBounds();
+      $.each($markers, function(idx, elem){
+        if (elem.getVisible()) {
+          bounds.extend(elem.position);
+        }
+      });
+
+      map.fitBounds(bounds);
+      if (map.zoom == 1) {
+        $.resetMapPosition();
+      }
+
       $.iucnResetMapDetail();
       $.iucnResetAllMarkerIcons();
       return false;
@@ -89,13 +102,12 @@ function postInitMap(instance_id, map, config) {
      * Zoom and pan the map to its original position.
      */
     $.resetMapPosition = function() {
-      map.setZoom(parseInt(config.map_init_zoom));
-      map.setCenter(
-          new google.maps.LatLng(
-              parseFloat(config.map_init_lat),
-              parseFloat(config.map_init_lng)
-          )
-      );
+      var $config = drupalSettings['GoogleMapsBaseBlock'][1];
+      var $center = new google.maps.LatLng(parseFloat($config.map_init_lat), parseFloat($config.map_init_lng));
+      var $zoom = parseInt($config.map_init_zoom);
+
+      map.setZoom($zoom);
+      map.setCenter($center);
     };
 
     $.iucnResetMapDetail = function() {
