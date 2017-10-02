@@ -48,10 +48,9 @@ content:
     weight: 0
     label: hidden
     settings:
-      view_mode: default
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: title
 hidden:
   entity_print_view_epub: true
