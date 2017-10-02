@@ -29,7 +29,7 @@
     {% if menu_level == 0 %}
       <ul{{ attributes.addClass('menu', 'nav', 'navbar-nav') }}>
     {% else %}
-      <ul{{ attributes.addClass('dropdown-menu') }}>
+      <ul{{ attributes.addClass('dropdown-menu', 'dropdown-menu-prevent-closing') }}>
     {% endif %}
     {% for item in items %}
       {%

@@ -65,7 +65,7 @@
          {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
           {% if collapseNeeded %}
             <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
           {% endif %}
               {{ item.content }}
           {% if collapseNeeded %}
@@ -82,7 +82,7 @@
         {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
         {% if collapseNeeded %}
           <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
         {% endif %}
             {{ item.content }}
         {% if collapseNeeded %}
@@ -103,7 +103,7 @@
         {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
         {% if collapseNeeded %}
           <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
         {% endif %}
             {{ item.content }}
         {% if collapseNeeded %}

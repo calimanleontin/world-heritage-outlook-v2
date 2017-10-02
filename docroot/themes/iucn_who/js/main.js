@@ -75,8 +75,8 @@
     var iucnSidemenu = new IUCNSidemenu();
 
 
-    // Prevent navbar dropdowns closing when clicking inside them
-    $('.navbar-collapse .dropdown-menu').on('click', function(event) {
+    // Prevent dropdowns closing when clicking inside them
+    $('.dropdown-menu-prevent-closing').on('click', function(event) {
       var events = $._data(document, 'events') || {};
       events = events.click || [];
       for(var i = 0; i < events.length; i++) {

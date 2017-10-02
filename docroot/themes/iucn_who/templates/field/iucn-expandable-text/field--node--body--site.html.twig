@@ -63,7 +63,7 @@
       {% for item in items %}
         <div{{ item.attributes.addClass('field--item') }}>
           <div class="iucn-expandable-text">
-            <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+            <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
               {{ item.content }}
             </div>
             <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
@@ -75,7 +75,7 @@
     {% for item in items %}
       <div{{ attributes.addClass(classes, 'field--item') }}>
         <div class="iucn-expandable-text">
-            <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+            <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
           {{ item.content }}
           </div>
           <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
@@ -91,7 +91,7 @@
     {% endif %}
     {% for item in items %}
         <div class="iucn-expandable-text">
-          <div class="iucn-expandable-text-content" id="{{collapse_id}}">
+          <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
             {{ item.content }}
           </div>
           <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
