@@ -147,6 +147,10 @@ function _iucn_who_multilingual_path($path) {
 function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb, \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
   $parameters = $route_match->getParameters()->all();
 
+  $cache_tags = $breadcrumb->getCacheTags();
+  $cache_context = $breadcrumb->getCacheContexts();
+  $cache_max = $breadcrumb->getCacheMaxAge();
+
   // Custom breadcrumb for Webforms.
   if (isset($parameters['webform']) && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
     $new_breadcrumb = new Breadcrumb();
@@ -231,6 +235,10 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   }
   $breadcrumb = $new_breadcrumb;
 
+  $breadcrumb->addCacheTags($cache_tags);
+  $breadcrumb->addCacheContexts($cache_context);
+  $breadcrumb->addCacheContexts(['url']);
+  $breadcrumb->mergeCacheMaxAge($cache_max);
 
 }
 

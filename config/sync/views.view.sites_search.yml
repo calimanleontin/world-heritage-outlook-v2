@@ -176,6 +176,7 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              administrator: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -189,7 +190,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           parse_mode: terms
-          min_length: 3
+          min_length: null
           fields:
             title: title
             name: name

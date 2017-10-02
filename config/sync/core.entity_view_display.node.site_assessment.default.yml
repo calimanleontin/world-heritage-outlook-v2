@@ -450,14 +450,9 @@ third_party_settings:
       format_settings:
         label: 'Overall assessment of protection and management'
         terms: 'display_field_copy:node-protection_overall_rating'
-        element: div
-        show_label: '1'
-        label_element: div
-        attributes: ''
-        effect: none
-        speed: slow
         id: ''
         classes: 'assessment-overall-ass-prot assessment-toggle'
+        open: 0
       label: 'Overall assessment of protection and management'
     group_ass_pm_outside:
       children:
@@ -486,7 +481,6 @@ third_party_settings:
       format_type: html_element_assessment
       format_settings:
         label: 'Best practice examples'
-        terms: ''
         element: div
         show_label: '1'
         label_element: div
@@ -495,6 +489,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: ''
+        terms: ''
       label: 'Best practice examples'
     group_understanding_benefits:
       children:
