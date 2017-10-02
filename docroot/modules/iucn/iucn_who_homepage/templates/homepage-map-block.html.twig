@@ -3,25 +3,28 @@
 
     <div class="col col-sm-3 map-col-left">
       <div id="map-site-search" class="map-site-search">
-      {{ search_form }}
+        {{ search_form }}
+        <button id="sidemenu-toggle" type="button" class="btn-link visible-mobile" data-target="#sidemenu" data-toggle="dropdown">{{ 'Rating filter'|t }} </button>
       </div>
-      <div id="map-filters" class="map-filters">
-        <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
-        <ul class="map-filter-items">
-          {% for rating in conservation_ratings %}
-            {% if rating.field_css_identifier.value != 'coming-soon' %}
-              <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-        <a data-filter="all" href="javascript:void(0);" class="conservation-rating">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
-        <ul class="map-filter-items">
+      <div id="sidemenu" class="sidemenu">
+        <div id="map-filters" class="map-filters">
+          <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
+          <ul class="map-filter-items">
             {% for rating in conservation_ratings %}
-                {% if rating.field_css_identifier.value == 'coming-soon' %}
-                  <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
-                {% endif %}
+              {% if rating.field_css_identifier.value != 'coming-soon' %}
+                <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+              {% endif %}
             {% endfor %}
-        </ul>
+          </ul>
+          <a data-filter="all" href="javascript:void(0);" class="conservation-rating">{% trans %}See all ({{ sites_total_count }}){% endtrans %}</a>
+          <ul class="map-filter-items">
+              {% for rating in conservation_ratings %}
+                  {% if rating.field_css_identifier.value == 'coming-soon' %}
+                    <li class="map-filter-item {{ rating.field_css_identifier.value }}"><a class="conservation-rating {{ rating.field_css_identifier.value }}" data-filter="{{ rating.id }}" href="javascript:void(0);">{{ rating.name.value }}</a></li>
+                  {% endif %}
+              {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="map-site-details-container" id="map-site-details-container" data-iucn-simplebar data-prevent-scroll>
         <div id="map-site-details" class="map-site-details">

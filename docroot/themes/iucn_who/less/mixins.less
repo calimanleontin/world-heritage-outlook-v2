@@ -47,10 +47,12 @@
 .background-variant(@bg, @color) {
   background-color: @bg;
   color: @color;
-  a {
+  a,
+  .btn-link {
     color: @color;
     &:hover, &:focus, &:active {
       color: @link-hover-color;
+      border-color: @link-hover-color;
     }
   }
 }
