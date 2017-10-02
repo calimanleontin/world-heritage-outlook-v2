@@ -11621,6 +11621,9 @@ fieldset[disabled] .map-site-detail .close.focus {
   top: 0;
   width: 1em;
 }
+.sidemenu-close + .region {
+  border-top: none;
+}
 .sidemenu-close:hover,
 .sidemenu-close:focus {
   color: #134780;
