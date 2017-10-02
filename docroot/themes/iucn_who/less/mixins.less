@@ -45,14 +45,26 @@
 }
 
 .background-variant(@bg, @color) {
-  background-color: @bg;
-  color: @color;
-  a,
-  .btn-link {
+  & when (@bg = @link-hover-color) {
+    background-color: @bg;
     color: @color;
-    &:hover, &:focus, &:active {
-      color: @link-hover-color;
-      border-color: @link-hover-color;
+    a,
+    .btn-link {
+      &, &:hover, &:focus, &:active {
+        color: @color;
+      }
+    }
+  }
+  & when not (@bg = @link-hover-color) {
+    background-color: @bg;
+    color: @color;
+    a,
+    .btn-link {
+      color: @color;
+      &:hover, &:focus, &:active {
+        color: @link-hover-color;
+        border-color: @link-hover-color;
+      }
     }
   }
 }
@@ -85,6 +97,10 @@
 /* ==========================================================================
    Theme specific mixins
    ========================================================================== */
+.btn-border {
+  border: 1px solid;
+}
+
 .svg-icon(@name) {
   background-image: data-uri('image/svg+xml;charset=UTF-8', '@{images-path}@{name}.svg');
   background-repeat: no-repeat;
@@ -177,61 +193,57 @@
     }
   });
 }
-
-.iucn-base-btn-icons(@left-icon) {
+.iucn-base-btn-icons() {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   justify-content: center;
-  padding-left: 3.5em;
   position: relative;
   text-align: center;
   width: auto;
-  &:before {
-    .svg-icon(@left-icon);
+}
+.iucn-btn-icon(@icon, @pseudo: before, @position: inline, @fill: -) {
+  .iucn-base-btn-icons();
+  & when (@position = absolute) {
+    & when (@pseudo = before) { padding-left: 3.5em; }
+    & when (@pseudo = after) { padding-right: 3.5em; }
+  }
+
+  &:@{pseudo} {
+    & when (@fill = -) { .svg-icon(@icon); }
+    & when not (@fill = -) { .svg-icon(@icon, @fill); }
+
     background-position: center;
-    background-size: 1.5em;
-    bottom: 0;
     content: '';
-    display: block;
-    left: 0;
     padding-left: .5em;
     padding-right: .5em;
-    position: absolute;
-    top: 0;
     vertical-align: middle;
-    width: 2.5em;
-  }
-}
 
-.iucn-base-btn-icons(@left-icon, @right-icon) {
-  .iucn-base-btn-icons(@left-icon);
-  &:after {
-    .svg-icon(@right-icon);
-    background-position: center;
-    background-size: contain;
-    content: '';
-    display: inline-block;
-    height: 1em;
-    margin-left: .5em;
-    vertical-align: middle;
-    width: 1.5em;
-  }
-}
-// Filled versions
-.iucn-base-btn-icons(@left-icon, @fill) {
-  .iucn-base-btn-icons(@left-icon);
-  &:before {
-    .svg-icon(@left-icon, @fill);
-  }
-}
-.iucn-base-btn-icons(@left-icon, @right-icon, @fill) {
-  .iucn-base-btn-icons(@left-icon, @right-icon);
-  &:before {
-    .svg-icon(@left-icon, @fill);
-  }
-  &:after {
-    .svg-icon(@right-icon, @fill);
+    & when (@position = inline) {
+      background-size: contain;
+      display: inline-block;
+      height: 1em;
+      margin-left: .5em;
+      width: 1.5em;
+    }
+
+    & when (@position = absolute) {
+      background-size: 1.5em;
+      bottom: 0;
+      display: block;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      width: 2.5em;
+      & when (@pseudo = before) {
+        left: 0;
+        right: auto;
+      }
+      & when (@pseudo = after) {
+        left: auto;
+        right: 0;
+      }
+    }
   }
 }
 

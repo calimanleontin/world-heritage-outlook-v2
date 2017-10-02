@@ -67,6 +67,10 @@
     flex-direction: column;
     height: auto;
     min-height: 100%;
+    > div {
+      .clearfix();
+      flex: 0 1 auto;
+    }
     .map-site-details-container {
       position: relative;
       .block-home-page-map & { flex: 1 0 0%; }
@@ -171,14 +175,6 @@
   }
 }
 
-.map-site-search,
-.map-filters,
-.map-site-details-container,
-.map-site-details {
-  .clearfix();
-  flex: 0 1 auto;
-}
-
 .map-site-search {
   .background-variant(@iucn-blue-dark, #fff);
   padding: .7em 1em;
@@ -257,13 +253,17 @@
       flex: 2;
     }
     .btn-link {
+      .iucn-btn-icon(icon-arrow, @pseudo: after, @fill: #ffffff);
       border-radius: 0;
       border: 1px solid;
       flex: .5 0 0%;
       margin-left: .5em;
       text-decoration: none;
-      transition: .2s;
       white-space: nowrap;
+      &:hover, &:focus, &:active {
+        border-color: inherit;
+        color: inherit;
+      }
     }
   }
 }
@@ -341,11 +341,11 @@
 }
 // Links and disk colours
 .map-filter-item > a {
-  background-size: 1em * @line-height-base;
   background-repeat: no-repeat;
-  display: block;
-  // padding-left: 1.5em;
+  background-size: 1em * @line-height-base;
   cursor: pointer;
+  display: block;
+  min-height: 1.5em;
   .loop-conservation-ratings({
     &.@{conservation-rating-class} {
       // background-image: url('/modules/iucn/iucn_who_homepage/images/marker-@{conservation-rating-class}.png');

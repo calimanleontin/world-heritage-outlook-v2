@@ -853,17 +853,18 @@ body.page-node-type-site {
       margin-top: .1em;
     }
     .field--label {
-      // @todo: mixin
+      .iucn-btn-icon(download-report, @pseudo: before,  @position: absolute,  @fill: #ffffff);
       background-color: @brand-primary;
       color: #fff;
       display: inline-block;
       text-align: left;
       width: 100%;
       font-size: 22px;
-      padding: .5em 1.5em;
+      padding-top: .5em;
+      padding-bottom: .5em;
+      padding-right: 1.5em;
       position: relative;
       line-height: 1.2;
-      padding-left: 5em;
       font-weight: 300;
 
       div.field--name-field-pdf-button-title {
@@ -873,31 +874,15 @@ body.page-node-type-site {
         }
       }
       &:before {
-        .svg-icon(download-report);
-        content: '';
-        display: block;
-        background-position: center;
         background-size: auto;
         border-right: 1px solid;
-        height: 75%;
+        height: 70%;
         left: 0;
         position: absolute;
         top: 15%;
-        width: 4em;
+        width: 3em;
         @media @grid-mobile {
           width: 2.5em;
-        }
-        &:before {
-          display: none;
-        }
-        &:after {
-          border-right: 1px solid;
-          content: '';
-          display: block;
-          height: 80%;
-          position: absolute;
-          right: 0;
-          top: 10%;
         }
       }
     }
@@ -1056,7 +1041,8 @@ body.page-node-type-site {
     }
 
     .sidemenu-toggle {
-      .iucn-base-btn-icons(magnifier, icon-arrow, #ffffff);
+      .iucn-btn-icon(magnifier, @pseudo: before, @position: absolute, @fill: #ffffff);
+      .iucn-btn-icon(icon-arrow, @pseudo: after, @fill: #ffffff);
       float: none;
       margin: 0 auto;
       // max-width: 500px;

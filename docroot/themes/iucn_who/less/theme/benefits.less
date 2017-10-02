@@ -147,13 +147,13 @@
   }
 
   .title-container {
-    .background-variant(@iucn-blue-dark, #fff);
     align-items: center;
     display: flex;
     flex-flow: row wrap;
     flex: 0 0 auto;
     justify-content: space-between;
     @media @grid-desktop {
+      .background-variant(@iucn-blue-dark, #fff);
       padding: .8em (@grid-gutter-width / 2);
     }
     h3 {
@@ -163,22 +163,23 @@
         font-weight: 300;
       }
     }
-    .sidemenu-toggle {
-      @media @grid-mobile {
-        display: block;
-        flex: 1;
-        font-size: 1em;
-        font-weight: inherit;
-        min-height: auto;
-        padding: .8em (@grid-gutter-width / 2);
-        text-align: center;
-      }
-      @media @grid-desktop {
-        display: block;
-        &, &:hover, &:focus, &:active {
-          color: inherit;
-          cursor: default;
-        }
+  }
+  .sidemenu-toggle {
+    @media @grid-mobile {
+      .iucn-btn-icon(icon-arrow, @pseudo: after, @fill: #ffffff);
+      display: block;
+      flex: 1;
+      font-size: 1em;
+      font-weight: inherit;
+      min-height: auto;
+      padding: .8em (@grid-gutter-width / 2);
+      text-align: center;
+    }
+    @media @grid-desktop {
+      display: block;
+      &, &:hover, &:focus, &:active {
+        color: inherit;
+        cursor: default;
       }
     }
   }

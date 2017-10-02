@@ -2,12 +2,11 @@
   <div class="row map-block-main">
 
     <div class="col col-sm-3 map-col-left">
-      <div class="title-container">
-        <a role="button" data-toggle="dropdown" data-target="#sidemenu" aria-expanded="false" id="sidemenu-toggle" class="sidemenu-toggle">
-          <h3>{{ 'Map legend' | trans }}</h3>
-        </a>
-        <div class="benefits-expand-buttons visible-desktop"><a class="expand-button" href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a class="collapse-button"href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
+      <div class="title-container visible-desktop">
+        <h3>{{ 'Map legend' | trans }}</h3>
+        <div class="benefits-expand-buttons"><a class="expand-button" href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a class="collapse-button"href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
       </div>
+      <a id="sidemenu-toggle" class="sidemenu-toggle visible-mobile btn btn-info" role="button" data-toggle="dropdown" href="#sidemenu" aria-expanded="false"><span>{{ 'Map legend' | trans }}</span></a>
       <div class="sidemenu" id="sidemenu">
         <div class="benefits-expand-buttons visible-mobile"><a class="expand-button" href="javascript:benefitsCategoriesExpandAll();">{{ 'Expand all' }}</a> | <a class="collapse-button"href="javascript:benefitsCategoriesCollapseAll();">{{ 'Collapse all' }}</a></div>
         <div class="map-filters-container " id="map-filters-container" data-iucn-simplebar="visible">
