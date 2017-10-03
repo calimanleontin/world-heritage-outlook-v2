@@ -10,6 +10,23 @@ iucn_who_1col:
     content:
       label: Content
 
+iucn_who_benefit_case_study:
+  label: Benefit Case Study
+  category: IUCN
+#  class: '\Drupal\ds\Plugin\DsLayout'
+  type: partial
+  template: templates/layouts/iucn-who-benefit-case-study
+  regions:
+    image:
+      label: Image
+    left:
+      label: Left
+    right:
+      label: Right
+    content:
+      label: Content
+
+
 iucn_who_1col_cont_fluid:
   label: 1 container + 1 col fluid
   category: IUCN
