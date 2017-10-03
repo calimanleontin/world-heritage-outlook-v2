@@ -11700,6 +11700,7 @@ fieldset[disabled] .map-site-detail .close.focus {
   right: 0;
   top: 0;
   width: 1em;
+  transition: .2s;
 }
 .sidemenu-close + .region {
   border-top: none;
