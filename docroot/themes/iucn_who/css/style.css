@@ -10766,7 +10766,7 @@ h6.view-sites-search .view-header {
     min-height: 100%;
   }
   .map-col-left > div {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
   }
   .map-col-left > div:before,
   .map-col-left > div:after {
@@ -10788,7 +10788,8 @@ h6.view-sites-search .view-header {
     position: relative;
   }
   .block-home-page-map .map-col-left .map-site-details-container {
-    flex: 1 0 0%;
+    flex: 0 1 auto;
+    margin-top: auto;
   }
 }
 @media screen and (max-width: 767px) {
@@ -10905,6 +10906,11 @@ h6.view-sites-search .view-header {
 .map-site-search .btn-link:active {
   color: #03afdf;
   border-color: #03afdf;
+}
+@media screen and (min-width: 768px) {
+  .map-col-left .map-site-search {
+    flex: 0 0 auto;
+  }
 }
 .map-site-search form:before,
 .map-site-search form:after {
@@ -11043,6 +11049,9 @@ h6.view-sites-search .view-header {
     margin-top: 1em;
   }
 }
+.map-filters-container .simplebar-track.horizontal {
+  display: none;
+}
 .map-filters {
   padding: 1em;
   position: relative;
@@ -11071,6 +11080,7 @@ h6.view-sites-search .view-header {
 }
 .map-filter-item {
   padding-left: 1em;
+  padding-right: 1em;
 }
 .map-filter-item:before {
   background-position: center;
@@ -11233,20 +11243,27 @@ h6.view-sites-search .view-header {
 .map-site-detail:after {
   clear: both;
 }
+.map-site-detail .ie-flex-fix {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 .map-site-detail .status {
   align-items: center;
   background-color: #03afdf;
   color: #fff;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-size: 1em;
   font-weight: 300;
-  left: 0;
-  line-height: 1;
-  margin-right: 2em;
+  margin-right: 3.5em;
   min-height: 2em;
   padding: .2em 15px;
-  position: absolute;
-  top: 0;
+}
+.map-site-detail .status > span {
+  display: block;
+  vertical-align: middle;
 }
 .map-site-detail .status.coming-soon {
   background-color: #7e7e7e;
@@ -11441,9 +11458,11 @@ h6.view-sites-search .view-header {
   color: #fff;
   background-color: #134780;
   border-color: #134780;
-  display: block;
+  display: flex;
+  flex-direction: column;
   font-size: 1em;
   height: 2em;
+  justify-content: center;
   opacity: 1;
   padding: .4em .8em;
   position: absolute;
@@ -11515,11 +11534,6 @@ fieldset[disabled] .map-site-detail .close.focus {
   color: #134780;
   background-color: #fff;
 }
-@media screen and (min-width: 768px) {
-  .map-site-detail .close {
-    z-index: 2;
-  }
-}
 .map-site-detail img {
   width: 100%;
 }
@@ -11555,7 +11569,8 @@ fieldset[disabled] .map-site-detail .close.focus {
 }
 @media screen and (min-width: 768px) {
   .block-home-page-map .map-site-detail-content {
-    background: #fff;
+    background-color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
 }
@@ -11613,6 +11628,10 @@ fieldset[disabled] .map-site-detail .close.focus {
   .site-selection-placeholder {
     display: none;
   }
+}
+.ie-flex-fix {
+  display: flex;
+  flex-direction: column;
 }
 @media screen and (min-width: 768px) {
   .sidemenu .iucn-collapsible > .collapse,
@@ -14820,6 +14839,10 @@ h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
 }
 .block-benefits-page-map .map-site-detail .title {
   margin-right: 2em;
+}
+.block-benefits-page-map .map-site-detail .ie-flex-fix {
+  display: flex;
+  flex-direction: column;
 }
 .block-benefits-page-map .title-container {
   align-items: center;

@@ -69,11 +69,14 @@
     min-height: 100%;
     > div {
       .clearfix();
-      flex: 0 1 auto;
+      flex: 0 0 auto;
     }
     .map-site-details-container {
       position: relative;
-      .block-home-page-map & { flex: 1 0 0%; }
+      .block-home-page-map & {
+        flex: 0 1 auto;
+        margin-top: auto;
+      }
       // Scroll indicator
       // &:after {
       //   content: '';
@@ -178,6 +181,11 @@
 .map-site-search {
   .background-variant(@iucn-blue-dark, #fff);
   padding: .7em 1em;
+  .map-col-left & {
+    @media @grid-desktop {
+      flex: 0 0 auto;
+    }
+  }
   form {
     .clearfix();
   }
@@ -277,6 +285,9 @@
       margin-top: 1em;
     }
   }
+  .simplebar-track.horizontal {
+    display: none;
+  }
 }
 
 .map-filters {
@@ -312,6 +323,7 @@
 }
 .map-filter-item {
   padding-left: 1em;
+  padding-right: 1em;
   &:before {
     background-position: center;
     background-size: auto 60%;
@@ -404,20 +416,27 @@
   // .status {
   //   @media @grid-desktop { z-index: 2; }
   // }
+  .ie-flex-fix {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
   .status {
     align-items: center;
     background-color: @iucn-blue-light;
     color: #fff;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: 1em;
     font-weight: 300;
-    left: 0;
-    line-height: 1;
-    margin-right: 2em;
+    margin-right: 3.5em;
     min-height: 2em;
     padding: .2em 15px;
-    position: absolute;
-    top: 0;
+    > span {
+      display: block;
+      vertical-align: middle;
+    }
     .loop-conservation-ratings({
       &.@{conservation-rating-class} {
         background-color: @conservation-rating-color;
@@ -540,18 +559,20 @@
   }
   .close {
     .btn-primary();
-    display: block;
+    display: flex;
+    flex-direction: column;
     font-size: 1em;
     height: 2em;
+    justify-content: center;
     opacity: 1;
     padding: .4em .8em;
     position: absolute;
     right: 0;
-    top: 0; // compensate for 1px padding-top
+    top: 0;
     z-index: 1;
-    @media @grid-desktop {
-      z-index: 2;
-    }
+    // @media @grid-desktop {
+    //   z-index: 2;
+    // }
   }
   img {
     &:extend(.img-responsive);
@@ -579,7 +600,8 @@
   position: relative;
   .block-home-page-map & {
     @media @grid-desktop {
-      background: #fff;
+      background-color: #fff;
+      box-shadow: 0 -2px 5px fade(#000, 20%);
       z-index: 1;
     }
   }
@@ -631,4 +653,9 @@
   @media @grid-mobile {
     display: none;
   }
+}
+
+.ie-flex-fix {
+  display: flex;
+  flex-direction: column;
 }
