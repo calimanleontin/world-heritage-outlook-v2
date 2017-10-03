@@ -52,11 +52,46 @@
 /* ==========================================================================
     Benefits detail page
     ========================================================================== */
-.field--name-field-benefit-image {
-  .iucn-who-1col-cont-fluid-wrapper & {
-    .remify(margin-bottom, 70px);
+.iucn-who-benefit-case-study {
+  .container-fluid & > .container {
+    @media (max-width: @screen-md-max) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  .field--name-body {
+    font-style: italic;
+  }
+  .field--name-field-author-name {
+    text-align: right;
+  }
+  .row + .row,
+  .field + .field {
+    margin-top: .5em;
+  }
+  .field--name-field-links {
+    .field--label {
+      .bottom-border();
+    }
+    .field--item > a {
+      .light-link();
+    }
+    @media @grid-mobile {
+      margin-top: 1.5em;
+    }
+
+  }
+  @media @grid-mobile {
+    .col-sm-8,
+    .col-sm-4 {
+      margin-top: .5em;
+    }
   }
 }
+.field--name-field-benefit-image {
+  .remify(margin-bottom, 70px);
+}
+
 
 /* ==========================================================================
    Benefits map specifics

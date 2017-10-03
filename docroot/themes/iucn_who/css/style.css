@@ -14653,7 +14653,65 @@ html[lang='es'] .image-rating-container.good {
 /* ==========================================================================
     Benefits detail page
     ========================================================================== */
-.iucn-who-1col-cont-fluid-wrapper .field--name-field-benefit-image {
+@media (max-width: 1199px) {
+  .container-fluid .iucn-who-benefit-case-study > .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+.iucn-who-benefit-case-study .field--name-body {
+  font-style: italic;
+}
+.iucn-who-benefit-case-study .field--name-field-author-name {
+  text-align: right;
+}
+.iucn-who-benefit-case-study .row + .row,
+.iucn-who-benefit-case-study .field + .field {
+  margin-top: .5em;
+}
+.iucn-who-benefit-case-study .field--name-field-links .field--label {
+  border-bottom: 1px solid #ddd;
+  display: block;
+  font-size: 1em;
+  font-weight: normal;
+  margin-bottom: 1em;
+  padding-bottom: .5rem;
+  text-transform: uppercase;
+}
+h1.iucn-who-benefit-case-study .field--name-field-links .field--label,
+h2.iucn-who-benefit-case-study .field--name-field-links .field--label,
+h3.iucn-who-benefit-case-study .field--name-field-links .field--label,
+h4.iucn-who-benefit-case-study .field--name-field-links .field--label,
+h5.iucn-who-benefit-case-study .field--name-field-links .field--label,
+h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
+  margin-top: 0;
+}
+@media screen and (max-width: 767px) {
+  h1.iucn-who-benefit-case-study .field--name-field-links .field--label,
+  h2.iucn-who-benefit-case-study .field--name-field-links .field--label,
+  h3.iucn-who-benefit-case-study .field--name-field-links .field--label,
+  h4.iucn-who-benefit-case-study .field--name-field-links .field--label,
+  h5.iucn-who-benefit-case-study .field--name-field-links .field--label,
+  h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
+    font-size: 1.3em;
+  }
+}
+.iucn-who-benefit-case-study .field--name-field-links .field--item > a,
+.iucn-who-benefit-case-study .field--name-field-links .field--item > a a {
+  color: #03afdf;
+}
+@media screen and (max-width: 767px) {
+  .iucn-who-benefit-case-study .field--name-field-links {
+    margin-top: 1.5em;
+  }
+}
+@media screen and (max-width: 767px) {
+  .iucn-who-benefit-case-study .col-sm-8,
+  .iucn-who-benefit-case-study .col-sm-4 {
+    margin-top: .5em;
+  }
+}
+.field--name-field-benefit-image {
   margin-bottom: 70px;
   margin-bottom: 7rem;
 }
