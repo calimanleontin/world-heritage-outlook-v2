@@ -11,14 +11,23 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     less: {
-      theme: {
-        options: {
-          outputSourceFiles: true,
-          sourceMap: true,
-          relativeUrls: false
-        },
+      options: {
+        outputSourceFiles: true,
+        sourceMap: true,
+        relativeUrls: false
+      },
+      screen: {
         files: {
           'css/style.css': 'less/style.less'
+        }
+      },
+      print: {
+        options: {
+          outputSourceFiles: false,
+          sourceMap: false
+        },
+        files: {
+          'css/print-style.css': 'less/print-style.less'
         }
       }
     },
@@ -40,10 +49,14 @@ module.exports = function (grunt) {
         },
         files: ['Gruntfile.js', 'package.json']
       },
-      less: {
-        files: ['less/**/*.less', 'images/*.svg'],
-        tasks: 'less'
+      screen: {
+        files: ['less/**/*.less', '!less/print-style.less', 'images/*.svg'],
+        tasks: 'less:screen'
       },
+      print: {
+        files: ['less/print-style.less'],
+        tasks: 'less:print'
+      }
     },
     copy: {
       node_modules: {
