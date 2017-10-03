@@ -62,7 +62,7 @@
     <div{{ attributes.addClass(classes, 'field--items') }}>
       {% for item in items %}
         <div{{ item.attributes.addClass('field--item') }}>
-         {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
+         {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
           {% if collapseNeeded %}
             <div class="iucn-expandable-text">
               <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
@@ -79,7 +79,7 @@
   {% else %}
     {% for item in items %}
       <div{{ attributes.addClass(classes, 'field--item') }}>
-        {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
+        {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
         {% if collapseNeeded %}
           <div class="iucn-expandable-text">
               <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
@@ -100,7 +100,7 @@
       <div class="field__items">
     {% endif %}
     {% for item in items %}
-        {% set collapseNeeded = item.content['#context']['value']|length > 500 %}
+        {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
         {% if collapseNeeded %}
           <div class="iucn-expandable-text">
               <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
