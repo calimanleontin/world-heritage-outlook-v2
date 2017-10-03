@@ -14771,6 +14771,7 @@ html[lang='es'] .image-rating-container.good {
 .block-benefits-page-map .title-container h3 {
   font-size: 1.13333333em;
   margin: 0;
+  margin-right: auto;
 }
 .block-benefits-page-map .title-container h3 + div {
   font-weight: 300;
