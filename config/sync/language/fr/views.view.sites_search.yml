@@ -1,0 +1,14 @@
+display:
+  default:
+    display_options:
+      title: 'Explorer tous les sites naturels'
+      header:
+        area:
+          content:
+            value: "<p><span class=\"sites-search-clear\"><a class=\"pull-right\" href=\"[site:url]/sites-search\">CLEAR SEARCH</a></span></p>\r\n"
+            format: html
+      empty:
+        area:
+          content:
+            value: "<p>No sites found.</p>\r\n"
+            format: html

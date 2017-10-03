@@ -7,12 +7,6 @@ dependencies:
     - taxonomy.vocabulary.assessment_benefits_category
   module:
     - image
-third_party_settings:
-  content_translation:
-    translation_sync:
-      file: '0'
-      alt: '0'
-      title: '0'
 id: taxonomy_term.assessment_benefits_category.field_image
 field_name: field_image
 entity_type: taxonomy_term
