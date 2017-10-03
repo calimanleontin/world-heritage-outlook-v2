@@ -12988,8 +12988,15 @@ fieldset[disabled] .map-site-detail .close.focus {
 .iucn-site-wrapper .field--name-field-designation .field__items > .field--item {
   display: inline;
 }
+.iucn-site-wrapper .field--name-field-inscription-criteria .field--label {
+  float: none;
+}
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--item {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
+}
+.iucn-site-wrapper .field--name-field-inscription-criteria .field--item + .field--item {
+  margin-left: .1em;
 }
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--item:last-child {
   float: none;

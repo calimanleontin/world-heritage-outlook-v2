@@ -182,9 +182,16 @@ body.page-node-type-site {
       display: inline;
     }
   }
-  .field--name-field-inscription-criteria{
+  .field--name-field-inscription-criteria {
+    .field--label {
+      float: none;
+    }
     .field--item {
-      float:left;
+      display: inline-block;
+      vertical-align: top;
+      + .field--item {
+        margin-left: .1em;
+      }
     }
     .field--item:last-child {
       float: none;
