@@ -41,6 +41,7 @@ global-styling:
       js/sidemenu.js: {}
     dependencies:
       - core/jquery
+      - core/underscore
       - iucn_who/bootstrap-js
       - iucn_who/headroom
 

@@ -61,5 +61,21 @@
       iucnSidemenu.closeMenu();
     });
 
+    var $siteDescription = $('#iucn-expandable-text-body'),
+        $siteDescriptionField = $siteDescription.closest('.field'),
+        $siteDescriptionMoreLink = $('[data-target="#iucn-expandable-text-body"]');
+
+    var setMoreLinksVisibility = function () {
+      if($siteDescription.outerHeight() > $siteDescriptionField.outerHeight()) {
+        $siteDescriptionMoreLink.fadeIn(200);
+      }
+      else {
+        $siteDescriptionMoreLink.fadeOut(200);
+      }
+    }
+    setMoreLinksVisibility();
+
+    // handle resize events - throttled with underscore.js (optional - requires core/underscore be added as a dependency in .libraries.yml)
+    $(window).on('resize', _.debounce(setMoreLinksVisibility, 200));
   });
 }(jQuery));

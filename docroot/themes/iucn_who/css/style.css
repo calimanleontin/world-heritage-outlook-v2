@@ -12894,6 +12894,9 @@ fieldset[disabled] .map-site-detail .close.focus {
   .region-site-general-info .field--name-body .btn-link {
     font-size: .8em;
   }
+  .region-site-general-info [data-toggle="dropdown"] {
+    display: none;
+  }
   .region-site-general-info [data-toggle="dropdown"][aria-expanded="false"] {
     background-color: #fff;
     bottom: 0;
