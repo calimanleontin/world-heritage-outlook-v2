@@ -13570,6 +13570,27 @@ fieldset[disabled] .map-site-detail .close.focus {
   margin-right: .2em;
   margin-bottom: -0.2em;
 }
+.iucn-site-wrapper .field--name-display-field-copynode-finalised-on .field--label {
+  font-weight: normal;
+}
+.iucn-site-wrapper .field--name-display-field-copynode-finalised-on .field--label:after {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  .iucn-site-wrapper .field--name-display-field-copynode-finalised-on {
+    font-size: 1.1em;
+  }
+}
+@media screen and (min-width: 768px) {
+  .iucn-site-wrapper .field--name-display-field-copynode-finalised-on {
+    display: flex;
+    float: right;
+    font-size: .8em;
+  }
+  .iucn-site-wrapper .field--name-display-field-copynode-finalised-on .field--label {
+    float: none;
+  }
+}
 @media screen and (min-width: 768px) {
   .iucn-site-assessment-wrapper .iucn-expandable-text .btn-link {
     display: none;

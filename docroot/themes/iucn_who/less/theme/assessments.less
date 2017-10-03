@@ -546,6 +546,22 @@ body.page-node-type-site {
       }
     }
   });
+  .field--name-display-field-copynode-finalised-on {
+    .field--label { font-weight: normal; }
+    .field--label:after { display: none; }
+
+    @media @grid-mobile {
+      font-size: 1.1em;
+    }
+    @media @grid-desktop {
+      display: flex;
+      float: right;
+      font-size: .8em;
+      .field--label {
+        float: none;
+      }
+    }
+  }
 }
 .iucn-site-assessment-wrapper {
   .iucn-expandable-text .btn-link {
