@@ -312,8 +312,8 @@ content:
   field_image:
     weight: 18
     settings:
-      progress_indicator: throbber
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
     type: image_image
     region: content

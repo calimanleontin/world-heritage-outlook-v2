@@ -15,7 +15,7 @@ id: node.benefit.field_page_elements
 field_name: field_page_elements
 entity_type: node
 bundle: benefit
-label: 'Page Elements'
+label: 'Page Content'
 description: ''
 required: false
 translatable: false
@@ -53,5 +53,29 @@ settings:
         enabled: false
       teaser:
         weight: 16
+        enabled: false
+      as_site_benefit:
+        weight: 17
+        enabled: false
+      as_site_key_conservation:
+        weight: 18
+        enabled: false
+      as_site_project:
+        weight: 19
+        enabled: false
+      as_site_protection:
+        weight: 20
+        enabled: false
+      as_site_threat:
+        weight: 21
+        enabled: false
+      as_site_value_bio:
+        weight: 22
+        enabled: false
+      as_site_value_wh:
+        weight: 23
+        enabled: false
+      image_link:
+        weight: 28
         enabled: false
 field_type: entity_reference_revisions

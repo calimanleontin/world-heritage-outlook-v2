@@ -1,0 +1,19 @@
+uuid: 474a83e6-5e6b-48c6-84ce-5c2caaf25210
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_author_name
+    - node.type.benefit
+id: node.benefit.field_author_name
+field_name: field_author_name
+entity_type: node
+bundle: benefit
+label: Author
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
