@@ -11249,6 +11249,12 @@ h6.view-sites-search .view-header {
   left: 0;
   top: 0;
 }
+@media screen and (max-width: 767px) {
+  .map-site-detail .ie-flex-fix {
+    top: auto;
+    bottom: 0;
+  }
+}
 .map-site-detail .status {
   align-items: center;
   background-color: #03afdf;
@@ -11290,16 +11296,14 @@ h6.view-sites-search .view-header {
   background-color: #3bb55e;
   color: #fff;
 }
+@media screen and (max-width: 767px) {
+  .map-site-detail .status {
+    padding: .3em 15px;
+  }
+}
 @media screen and (min-width: 768px) {
   .map-site-detail .status + .title {
     margin-top: 3em;
-  }
-}
-@media screen and (max-width: 767px) {
-  .map-site-detail .status {
-    top: auto;
-    bottom: 0;
-    padding: .3em 15px;
   }
 }
 .map-site-detail .title {
