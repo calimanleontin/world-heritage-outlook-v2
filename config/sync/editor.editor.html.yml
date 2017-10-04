@@ -11,7 +11,7 @@ third_party_settings:
   editor_file:
     status: true
     scheme: public
-    directory: inline-files
+    directory: files/inline-files
     extensions: 'txt doc docx pdf ppt pptx jpg png'
 format: html
 editor: ckeditor
@@ -61,6 +61,7 @@ settings:
             - DrupalFile
             - Blockquote
             - DrupalImage
+            - ImceImage
         -
           name: Tools
           items:
@@ -72,7 +73,6 @@ settings:
             - Maximize
             - Source
             - ShowBlocks
-            - Templates
   plugins:
     drupallink:
       linkit_enabled: true
@@ -84,7 +84,7 @@ settings:
 image_upload:
   status: true
   scheme: public
-  directory: inline-images
+  directory: images/inline-images
   max_size: ''
   max_dimensions:
     width: null

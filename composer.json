@@ -29,6 +29,42 @@
     {
       "type"    : "package",
       "package" : {
+        "name"    : "desandro/imagesloaded",
+        "version" : "4.1.1",
+        "type"    : "drupal-library",
+        "dist"    : {
+          "url"  : "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
+          "type" : "zip"
+        }
+      }
+    },
+    {
+      "type"    : "package",
+      "package" : {
+        "name"    : "enyoo/dropzone",
+        "version" : "4.3.0",
+        "type"    : "drupal-library",
+        "dist"    : {
+          "url"  : "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+          "type" : "zip"
+        }
+      }
+    },
+    {
+      "type"    : "package",
+      "package" : {
+        "name"    : "desandro/masonry",
+        "version" : "4.2.0",
+        "type"    : "drupal-library",
+        "dist"    : {
+          "url"  : "https://github.com/desandro/masonry/archive/v4.2.0.zip",
+          "type" : "zip"
+        }
+      }
+    },
+    {
+      "type"    : "package",
+      "package" : {
         "name"    : "jackmoore/colorbox",
         "version" : "1.6.4",
         "type"    : "drupal-library",
@@ -87,6 +123,8 @@
     "behat/mink-zombie-driver": "^1.4",
     "composer/installers": "^1.2",
     "cweagans/composer-patches": "^1.6",
+    "desandro/imagesloaded": "^4.1",
+    "desandro/masonry": "^4.2",
     "dinbror/blazy": "^1.8",
     "drupal-composer/drupal-scaffold": "^2.2",
     "drupal/captcha": "^1.0@beta",
@@ -104,10 +142,12 @@
     "drupal/facets_pretty_paths": "1.x-dev",
     "drupal/features": "^3.5",
     "drupal/field_group": "^1.0@RC",
+    "drupal/file_browser": "^1.1",
     "drupal/geofield": "^1.0@alpha",
     "drupal/geofield_map": "^1.10",
     "drupal/image_effects": "^1.0",
     "drupal/image_widget_crop": "^2.0",
+    "drupal/imce": "^1.6",
     "drupal/inline_responsive_images": "^2.1",
     "drupal/lang_dropdown": "^2.0@beta",
     "drupal/linkit": "5.0-beta5",
@@ -139,6 +179,7 @@
     "drupal/views_accordion": "^1.0",
     "drupal/webform": "^5.0@beta",
     "drupal/xmlsitemap": "^1.0@alpha",
+    "enyoo/dropzone": "^4.3",
     "harvesthq/chosen": "^1.6",
     "jackmoore/colorbox": "^1.6",
     "kenwheeler/slick": "^1.6",
