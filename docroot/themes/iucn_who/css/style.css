@@ -14696,6 +14696,10 @@ html[lang='es'] .image-rating-container.good {
 .iucn-who-benefit-case-study .field--name-field-author-name {
   text-align: right;
 }
+.iucn-who-benefit-case-study .field--name-field-benefit-image {
+  margin-bottom: 70px;
+  margin-bottom: 7rem;
+}
 .iucn-who-benefit-case-study .row + .row,
 .iucn-who-benefit-case-study .field + .field {
   margin-top: .5em;
@@ -14741,10 +14745,6 @@ h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
   .iucn-who-benefit-case-study .col-sm-4 {
     margin-top: .5em;
   }
-}
-.field--name-field-benefit-image {
-  margin-bottom: 70px;
-  margin-bottom: 7rem;
 }
 /* ==========================================================================
    Benefits map specifics
