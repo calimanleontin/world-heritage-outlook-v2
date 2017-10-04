@@ -13796,14 +13796,14 @@ fieldset[disabled] .map-site-detail .close.focus {
     z-index: 1;
   }
 }
-.assessment-section > h2 {
+.assessment-section > h3 {
   color: #134780;
 }
-.assessment-section + .assessment-section > h2 {
+.assessment-section + .assessment-section > h3 {
   margin-top: 4em;
 }
 @media screen and (max-width: 767px) {
-  .assessment-section + .assessment-section > h2 {
+  .assessment-section + .assessment-section > h3 {
     margin-top: 2em;
   }
 }
@@ -15034,14 +15034,14 @@ h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
   }
 }
 .iucn-publications-teaser-wrapper .field--name-node-title h2,
-.assessment-section > h2 {
+.assessment-section > h3 {
   font-size: 28px;
   font-size: 2.8rem;
   font-weight: 500;
 }
 @media screen and (max-width: 767px) {
   .iucn-publications-teaser-wrapper .field--name-node-title h2,
-  .assessment-section > h2 {
+  .assessment-section > h3 {
     font-size: 23px;
   }
 }

@@ -273,7 +273,7 @@ third_party_settings:
         label: 'Description of values'
         element: div
         show_label: true
-        label_element: h2
+        label_element: h3
         attributes: ''
         effect: none
         speed: fast
@@ -292,7 +292,7 @@ third_party_settings:
         label: 'Assessment information'
         element: div
         show_label: true
-        label_element: h2
+        label_element: h3
         attributes: ''
         effect: none
         speed: fast
@@ -307,14 +307,15 @@ third_party_settings:
       weight: 8
       format_type: html_element
       format_settings:
-        id: ''
-        classes: 'assessment-additional-section assessment-section'
+        label: 'Additional information'
         element: div
         show_label: true
-        label_element: h2
+        label_element: h3
         attributes: ''
         effect: none
         speed: fast
+        id: ''
+        classes: 'assessment-additional-section assessment-section'
       label: 'Additional information'
     group_values:
       children:
