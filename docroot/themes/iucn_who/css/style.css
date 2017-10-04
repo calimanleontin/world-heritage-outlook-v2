@@ -14729,6 +14729,11 @@ html[lang='es'] .image-rating-container.good {
   margin-bottom: 70px;
   margin-bottom: 7rem;
 }
+@media screen and (max-width: 767px) {
+  .iucn-who-benefit-case-study .field--name-field-benefit-image {
+    margin-bottom: 10px;
+  }
+}
 .iucn-who-benefit-case-study .row + .row,
 .iucn-who-benefit-case-study .field + .field {
   margin-top: .5em;
