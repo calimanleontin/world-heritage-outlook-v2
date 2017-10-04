@@ -62,8 +62,15 @@
   .field--name-body {
     font-style: italic;
   }
-  .field--name-field-author-name {
+  .field--name-field-author-name,
+  .field--name-field-benefit-year {
     text-align: right;
+    &:first-child {
+      margin-top: -1.8em;
+    }
+    .field--label {
+      font-weight: normal;
+    }
   }
   .field--name-field-benefit-image {
     .remify(margin-bottom, 70px);
