@@ -7463,18 +7463,19 @@ html.js .ajax-new-content:empty {
 }
 .field--label-inline .field--label,
 .field--label-inline .field--items {
-  float: left;
-  /*LTR*/
+  display: inline-block;
+}
+.field--label-inline .field--label {
+  margin-right: 0.5em;
 }
 .field--label-inline .field--label,
 .field--label-inline > .field--item,
 .field--label-inline .field--items {
-  padding-right: 0.5em;
+  display: inline-block;
 }
-[dir="rtl"] .field--label-inline .field--label,
-[dir="rtl"] .field--label-inline .field--items {
-  padding-left: 0.5em;
-  padding-right: 0;
+.field--label-inline > .field--item + .field--item,
+.field--label-inline .field--items {
+  margin-left: 0.5em;
 }
 .field--label-inline .field--label::after {
   content: ':';
