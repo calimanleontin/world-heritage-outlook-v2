@@ -8771,6 +8771,25 @@ small,
 .small {
   font-size: 0.88888889em;
 }
+figure {
+  display: inline-block;
+  position: relative;
+}
+figure img {
+  display: inline-block;
+}
+figcaption {
+  bottom: 0;
+  color: #fff;
+  display: inline-block;
+  font-weight: 300;
+  left: 0;
+  padding: .4em .6em;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  word-break: break-word;
+}
 table.table-striped th,
 table.paragraph table th {
   font-weight: 900;
