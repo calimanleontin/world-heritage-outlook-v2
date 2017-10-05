@@ -14367,10 +14367,6 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
    Mobile assessment
    ========================================================================== */
 @media screen and (max-width: 767px) {
-  .iucn-site-wrapper > .container,
-  .iucn-site-wrapper > .container-fluid {
-    padding: 0;
-  }
   .iucn-site-wrapper > .container > .row,
   .iucn-site-wrapper > .container-fluid > .row {
     display: flex;
