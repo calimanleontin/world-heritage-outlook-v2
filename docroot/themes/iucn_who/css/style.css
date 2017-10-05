@@ -13116,7 +13116,7 @@ fieldset[disabled] .map-site-detail .close.focus {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2057.018269%2075.024803%22%20height%3D%2275.025%22%20width%3D%2257.018%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2056.269h42.764V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2075.025)%22%3E%3Cpath%20d%3D%22M40.513%202.25H7.683l-4.5%204.502h32.829v46.334l4.5-4.502zM2.25%2054.019h20.256v-19.1c-.002-.337-.004-.68.244-.938.143-.144.346-.22.589-.22h.236l.129.2c1.265%201.991%201.22%204.993%202.179%204.993.956%200%20.914-3.002%202.179-4.994l.129-.199h.235c.244%200%20.44.076.587.22.25.257.246.6.246.938v19.099h4.5V9.002H2.25zm33.76%202.25H0V6.752L6.753.002h36.01v49.516z%22%20fill%3D%22%23134780%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }
-.iucn-site-wrapper .nav-tabs > li > a[href="#full_assessment"] {
+.iucn-site-wrapper .nav-tabs > li > a[href="#full-assessment"] {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2070%2080.468803%22%20height%3D%2280.469%22%20width%3D%2270%22%3E%3Cpath%20d%3D%22M13%206.5v2.833h36.667v63.834h8.666V6.5z%22%20fill%3D%22%23134780%22%2F%3E%3Cpath%20d%3D%22M24.667%200v2.834h36.667v63.832h8.665V0z%22%20fill%3D%22%23134780%22%2F%3E%3Cpath%20d%3D%22M0%2080.469h45.333V13.802H0zm2.667-64h40.001V77.8H2.667zm8%2016h24V29.8h-24zm0%2016h24v-2.667h-24zm0%2016h24V61.8h-24z%22%20fill%3D%22%23134780%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }
@@ -13125,10 +13125,10 @@ fieldset[disabled] .map-site-detail .close.focus {
   background-repeat: no-repeat;
 }
 @media screen and (min-width: 768px) {
-  .iucn-site-wrapper .nav-tabs > li > a[href="#full_assessment"] {
+  .iucn-site-wrapper .nav-tabs > li > a[href="#full-assessment"] {
     padding-left: 7.5em;
   }
-  .iucn-site-wrapper .nav-tabs > li > a[href="#full_assessment"]:before {
+  .iucn-site-wrapper .nav-tabs > li > a[href="#full-assessment"]:before {
     left: 6.5em;
   }
 }
@@ -13248,10 +13248,10 @@ fieldset[disabled] .map-site-detail .close.focus {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2057.018269%2075.024803%22%20height%3D%2275.025%22%20width%3D%2257.018%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2056.269h42.764V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2075.025)%22%3E%3Cpath%20d%3D%22M40.513%202.25H7.683l-4.5%204.502h32.829v46.334l4.5-4.502zM2.25%2054.019h20.256v-19.1c-.002-.337-.004-.68.244-.938.143-.144.346-.22.589-.22h.236l.129.2c1.265%201.991%201.22%204.993%202.179%204.993.956%200%20.914-3.002%202.179-4.994l.129-.199h.235c.244%200%20.44.076.587.22.25.257.246.6.246.938v19.099h4.5V9.002H2.25zm33.76%202.25H0V6.752L6.753.002h36.01v49.516z%22%20fill%3D%22%23ffffff%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }
-.iucn-site-wrapper .nav-tabs.visible-desktop > li.active > a[href="#full_assessment"],
-.iucn-site-wrapper .nav-tabs.visible-desktop > li:hover > a[href="#full_assessment"],
-.iucn-site-wrapper .nav-tabs.visible-desktop > li:focus > a[href="#full_assessment"],
-.iucn-site-wrapper .nav-tabs.visible-desktop > li:active > a[href="#full_assessment"] {
+.iucn-site-wrapper .nav-tabs.visible-desktop > li.active > a[href="#full-assessment"],
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:hover > a[href="#full-assessment"],
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:focus > a[href="#full-assessment"],
+.iucn-site-wrapper .nav-tabs.visible-desktop > li:active > a[href="#full-assessment"] {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2070%2080.468803%22%20height%3D%2280.469%22%20width%3D%2270%22%3E%3Cpath%20d%3D%22M13%206.5v2.833h36.667v63.834h8.666V6.5z%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M24.667%200v2.834h36.667v63.832h8.665V0z%22%20fill%3D%22%23ffffff%22%2F%3E%3Cpath%20d%3D%22M0%2080.469h45.333V13.802H0zm2.667-64h40.001V77.8H2.667zm8%2016h24V29.8h-24zm0%2016h24v-2.667h-24zm0%2016h24V61.8h-24z%22%20fill%3D%22%23ffffff%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }
@@ -13316,7 +13316,7 @@ fieldset[disabled] .map-site-detail .close.focus {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2057.018269%2075.024803%22%20height%3D%2275.025%22%20width%3D%2257.018%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20d%3D%22M0%2056.269h42.764V0H0z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20clip-path%3D%22url(%23a)%22%20transform%3D%22matrix(1.33333%200%200%20-1.33333%200%2075.025)%22%3E%3Cpath%20d%3D%22M40.513%202.25H7.683l-4.5%204.502h32.829v46.334l4.5-4.502zM2.25%2054.019h20.256v-19.1c-.002-.337-.004-.68.244-.938.143-.144.346-.22.589-.22h.236l.129.2c1.265%201.991%201.22%204.993%202.179%204.993.956%200%20.914-3.002%202.179-4.994l.129-.199h.235c.244%200%20.44.076.587.22.25.257.246.6.246.938v19.099h4.5V9.002H2.25zm33.76%202.25H0V6.752L6.753.002h36.01v49.516z%22%20fill%3D%22%23bfbfbf%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }
-.iucn-site-wrapper .tab-title.full_assessment:before {
+.iucn-site-wrapper .tab-title.full-assessment:before {
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2070%2080.468803%22%20height%3D%2280.469%22%20width%3D%2270%22%3E%3Cpath%20d%3D%22M13%206.5v2.833h36.667v63.834h8.666V6.5z%22%20fill%3D%22%23bfbfbf%22%2F%3E%3Cpath%20d%3D%22M24.667%200v2.834h36.667v63.832h8.665V0z%22%20fill%3D%22%23bfbfbf%22%2F%3E%3Cpath%20d%3D%22M0%2080.469h45.333V13.802H0zm2.667-64h40.001V77.8H2.667zm8%2016h24V29.8h-24zm0%2016h24v-2.667h-24zm0%2016h24V61.8h-24z%22%20fill%3D%22%23bfbfbf%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
 }

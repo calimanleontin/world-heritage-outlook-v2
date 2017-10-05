@@ -282,7 +282,7 @@
   .loop-conservation-categories(@rules, (@index - 1));
 }
 
-@assessment-tab-list: 'summary', 'full_assessment', 'references';
+@assessment-tab-list: 'summary', 'full-assessment', 'references';
 
 .loop-assessment-tabs(@rules, @index: length(@assessment-tab-list)) when (@index > 0) {
   @assessment-tab-class: e(extract(@assessment-tab-list, @index));

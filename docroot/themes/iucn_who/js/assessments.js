@@ -46,8 +46,9 @@
       $body.addClass(hash.substr(1) + '-is-active-tab');
       // hashUpdate(hash);
     }
-    $('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      var hash = $(e.target).attr("href");
+    $('[data-toggle="tab"]').on('click touchstart', function (e) {
+      e.preventDefault();
+      var hash = $(this).attr("href");
       $('a[href="' + hash + '"]').tab('show');
       $('body').attr('class', function(i, c) {
         return c.replace(/\S+-is-active-tab(^|\s)/g, hash.substr(1) + '-is-active-tab ');
@@ -57,7 +58,7 @@
 
     var iucnSidemenu = new IUCNSidemenu();
 
-    $('#assessment-tabs-mobile').on('click', '[data-toggle="tab"]', function() {
+    $('#assessment-tabs-mobile').on('click touchstart', '[data-toggle="tab"]', function() {
       iucnSidemenu.closeMenu();
     });
 
