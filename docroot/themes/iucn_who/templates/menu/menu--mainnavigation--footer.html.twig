@@ -40,7 +40,11 @@
       %}
       {% if menu_level == 0 and item.is_expanded %}
         <li{{ item.attributes.addClass(item_classes) }}>
-        <a href="{{ item.url }}">{{ item.title }}</a>
+          {% if item.url|render|trim is not empty %}
+            <a href="{{ item.url }}">{{ item.title }}</a>
+          {%  else %}
+            <a href="javascript:void(0)">{{ item.title }}</a>
+          {% endif %}
       {% else %}
         <li{{ item.attributes.addClass(item_classes) }}>
         {{ link(item.title, item.url) }}
