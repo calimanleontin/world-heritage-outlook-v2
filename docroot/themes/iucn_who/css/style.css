@@ -7465,6 +7465,9 @@ html.js .ajax-new-content:empty {
 .field--label-inline .field--items {
   display: inline-block;
 }
+.field--label-inline .field__items {
+  display: inline;
+}
 .field--label-inline .field--label {
   margin-right: 0.5em;
 }
