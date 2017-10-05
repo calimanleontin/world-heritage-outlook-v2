@@ -112,6 +112,7 @@ function postInitMap(instance_id, map, config) {
     $('a.conservation-rating').on('click', function() {
       $('#map-filters li').removeClass('active');
       $(this).parent().addClass('active');
+
       var $filter_status_id = $(this).data('filter');
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
@@ -127,6 +128,7 @@ function postInitMap(instance_id, map, config) {
         // Clear selection since this site might not exist in new filtering
         $.iucnResetAllMarkerIcons();
       }
+      $.iucnClearSelection();
       return false;
     });
 
@@ -135,6 +137,8 @@ function postInitMap(instance_id, map, config) {
      */
     $('#edit-q').on('change', function() {
       if ($(this).val() !== '') {
+        $.showAllMarkers(true);
+        $('#map-filters li').removeClass('active');
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
           if ($marker.customInfo.id == $(this).val()) {
