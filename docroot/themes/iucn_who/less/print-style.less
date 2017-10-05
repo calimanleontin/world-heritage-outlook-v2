@@ -121,9 +121,14 @@ td {
     padding-right: 0;
   }
 }
-
 .field--name-field-as-global-assessment-text {
   margin-top: 1em;
+}
+.field--name-display-field-copynode-protection-overall-rating {
+  &:extend(.panel-title-terms);
+}
+.field--name-display-field-copynode-protection-overall-effectiveness {
+  &:extend(.field--type-string-long);
 }
 
 .conservation-outlook-summary-group {
@@ -143,9 +148,10 @@ td {
     &:after { content: ': '; }
   }
   .inline-element-list {
-    align-items: center;
-    display: flex;
     margin-left: 1em;
+    > div {
+      display: inline-block;
+    }
     &:before {
       content: '-';
       display: inline-block;
@@ -160,11 +166,12 @@ td {
     }
     > .field {
       display: inline-block;
-      + .field {
-        &:before {
-          content: ', ';
-        }
+      &:before {
+        content: ', ';
       }
+    }
+    > .field--name-field-as-benefits-commun-out:before {
+      content: '';
     }
   }
 }

@@ -55,7 +55,8 @@ td {
 .panel-title h4 {
   margin-bottom: 0;
 }
-.panel-title-terms {
+.panel-title-terms,
+.field--name-display-field-copynode-protection-overall-rating {
   font-size: .8em;
   font-weight: bold;
   page-break-after: avoid;
@@ -107,7 +108,8 @@ td {
   margin-left: .1em;
 }
 .field--name-body,
-.field--type-string-long {
+.field--type-string-long,
+.field--name-display-field-copynode-protection-overall-effectiveness {
   margin-top: 1em;
 }
 .field--name-field-as-end-date {
@@ -147,9 +149,10 @@ td {
   content: ': ';
 }
 .html-list .inline-element-list {
-  align-items: center;
-  display: flex;
   margin-left: 1em;
+}
+.html-list .inline-element-list > div {
+  display: inline-block;
 }
 .html-list .inline-element-list:before {
   content: '-';
@@ -166,6 +169,9 @@ td {
 .html-list .inline-element-list > .field {
   display: inline-block;
 }
-.html-list .inline-element-list > .field + .field:before {
+.html-list .inline-element-list > .field:before {
   content: ', ';
+}
+.html-list .inline-element-list > .field--name-field-as-benefits-commun-out:before {
+  content: '';
 }
