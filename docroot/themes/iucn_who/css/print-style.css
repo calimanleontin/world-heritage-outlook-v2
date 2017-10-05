@@ -8,7 +8,164 @@ body {
   max-width: 100%;
   height: auto;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  page-break-after: avoid;
+  margin-top: 1.6em;
+  margin-bottom: .8em;
+}
 button,
-.field--name-assessment-rating {
+.field--name-assessment-rating,
+.field--name-display-field-copynode-finalised-on,
+.assessment-expand {
   display: none;
+}
+a {
+  color: #000000;
+  cursor: default;
+  text-decoration: none;
+}
+th,
+td {
+  padding: 0 .5em;
+  text-align: left;
+  vertical-align: top;
+}
+td {
+  word-break: break-word;
+}
+.tab-title {
+  page-break-before: always;
+}
+.panel-heading {
+  margin-bottom: 1em;
+  margin-top: 1.5em;
+}
+.panel-title {
+  display: block;
+  font-weight: bold;
+  margin-bottom: .5em;
+  page-break-after: avoid;
+}
+.panel-title h3,
+.panel-title h4 {
+  margin-bottom: 0;
+}
+.panel-title-terms {
+  font-size: .8em;
+  font-weight: bold;
+  page-break-after: avoid;
+}
+.panel-title-terms-first .field--item {
+  display: inline-block;
+}
+.panel-body {
+  clear: both;
+}
+.field--label {
+  font-weight: bold;
+}
+.field--name-field-as-end-date .field--label,
+.field--name-field-inscription-year .field--label,
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-designation .field--label {
+  font-weight: normal;
+}
+.field--label-inline .field--label:after,
+.field--name-field-as-end-date .field--label:after,
+.field--name-field-inscription-year .field--label:after,
+.field--name-field-inscription-criteria .field--label:after,
+.field--name-field-designation .field--label:after {
+  content: ':';
+}
+.field--label-inline .field--label,
+.field--name-field-as-end-date .field--label,
+.field--name-field-inscription-year .field--label,
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-designation .field--label,
+.field--label-inline .field--item,
+.field--name-field-as-end-date .field--item,
+.field--name-field-inscription-year .field--item,
+.field--name-field-inscription-criteria .field--item,
+.field--name-field-designation .field--item,
+.field--label-inline .field__items,
+.field--name-field-as-end-date .field__items,
+.field--name-field-inscription-year .field__items,
+.field--name-field-inscription-criteria .field__items,
+.field--name-field-designation .field__items {
+  display: inline-block;
+}
+.field--label-inline .field--item + .field--item,
+.field--name-field-as-end-date .field--item + .field--item,
+.field--name-field-inscription-year .field--item + .field--item,
+.field--name-field-inscription-criteria .field--item + .field--item,
+.field--name-field-designation .field--item + .field--item {
+  margin-left: .1em;
+}
+.field--name-body,
+.field--type-string-long {
+  margin-top: 1em;
+}
+.field--name-field-as-end-date {
+  float: right;
+  line-height: 21px;
+}
+.field--name-field-as-end-date + div {
+  clear: both;
+}
+.field--name-field-as-end-date .field--label {
+  font-weight: normal;
+}
+.field--name-field-as-end-date .field--label:after {
+  display: none;
+}
+.field--name-field-as-end-date .field--label,
+.field--name-field-as-end-date .field--item {
+  display: inline-block;
+  float: none;
+  padding-right: 0;
+}
+.field--name-field-as-global-assessment-text {
+  margin-top: 1em;
+}
+.conservation-outlook-summary-group h3 {
+  float: left;
+  margin-top: 0;
+}
+.assessment-section {
+  margin-top: 3em;
+}
+.html-list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.html-list > div:first-child:after {
+  content: ': ';
+}
+.html-list .inline-element-list {
+  align-items: center;
+  display: flex;
+  margin-left: 1em;
+}
+.html-list .inline-element-list:before {
+  content: '-';
+  display: inline-block;
+  margin-right: .5em;
+  vertical-align: middle;
+}
+.html-list .inline-element-list > div:first-child {
+  margin-right: .5em;
+}
+.html-list .inline-element-list > div:first-child:after {
+  content: ': ';
+}
+.html-list .inline-element-list > .field {
+  display: inline-block;
+}
+.html-list .inline-element-list > .field + .field:before {
+  content: ', ';
 }

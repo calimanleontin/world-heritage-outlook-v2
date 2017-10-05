@@ -10,8 +10,167 @@ body {
   max-width: 100%;
   height: auto;
 }
+h1, h2, h3, h4, h5, h6 {
+  page-break-after: avoid;
+  margin-top: 1.6em;
+  margin-bottom: .8em;
+}
+
 
 button,
-.field--name-assessment-rating {
+.field--name-assessment-rating,
+.field--name-display-field-copynode-finalised-on,
+.assessment-expand {
   display: none;
+}
+
+a {
+  color: #000000;
+  cursor: default;
+  text-decoration: none;
+}
+th, td {
+  padding: 0 .5em;
+  text-align: left;
+  vertical-align: top;
+}
+td {
+  word-break: break-word;
+}
+.tab-title {
+  page-break-before: always;
+}
+.panel-heading {
+  margin-bottom: 1em;
+  margin-top: 1.5em;
+}
+.panel-title {
+  display: block;
+  font-weight: bold;
+  margin-bottom: .5em;
+  page-break-after: avoid;
+  h3, h4 {
+    margin-bottom: 0;
+  }
+}
+.panel-title-terms {
+  font-size: .8em;
+  font-weight: bold;
+  page-break-after: avoid;
+}
+.panel-title-terms-first {
+  .field--item {
+    display: inline-block;
+  }
+}
+
+.panel-body {
+  clear: both;
+}
+
+.field--label {
+  font-weight: bold;
+}
+.field--name-field-as-end-date,
+.field--name-field-inscription-year,
+.field--name-field-inscription-criteria,
+.field--name-field-designation {
+  .field--label {
+    font-weight: normal;
+  }
+}
+.field--label-inline,
+.field--name-field-as-end-date,
+.field--name-field-inscription-year,
+.field--name-field-inscription-criteria,
+.field--name-field-designation {
+  .field--label:after {
+    content: ':';
+  }
+  .field--label,
+  .field--item,
+  .field__items {
+    display: inline-block;
+  }
+  .field--item + .field--item {
+    margin-left: .1em;
+  }
+}
+
+.field--name-body,
+.field--type-string-long {
+  margin-top: 1em;
+}
+
+.field--name-field-as-end-date {
+  float: right;
+  line-height: 21px;
+  + div {
+    clear: both;
+  }
+  .field--label {
+    font-weight: normal;
+    &:after {
+      display: none;
+    }
+  }
+  .field--label,
+  .field--item {
+    display: inline-block;
+    float: none;
+    padding-right: 0;
+  }
+}
+
+.field--name-field-as-global-assessment-text {
+  margin-top: 1em;
+}
+
+.conservation-outlook-summary-group {
+  h3 {
+    float: left;
+    margin-top: 0;
+  }
+}
+.assessment-section {
+  margin-top: 3em;
+}
+
+.html-list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  > div:first-child {
+    &:after { content: ': '; }
+  }
+  .inline-element-list {
+    align-items: center;
+    display: flex;
+    margin-left: 1em;
+    &:before {
+      content: '-';
+      display: inline-block;
+      margin-right: .5em;
+      vertical-align: middle;
+    }
+    > div:first-child {
+      margin-right: .5em;
+      &:after {
+        content: ': ';
+      }
+    }
+    > .field {
+      display: inline-block;
+      + .field {
+        &:before {
+          content: ', ';
+        }
+      }
+    }
+  }
+}
+
+.assessment-toggle {
+  .panel-heading {
+
+  }
 }
