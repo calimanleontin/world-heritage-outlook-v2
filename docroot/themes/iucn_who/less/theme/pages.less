@@ -2,7 +2,17 @@
    Frontpage
    ========================================================================== */
 .path-frontpage {
+  header {
+    @media @grid-desktop {
+      margin-bottom: 0;
+      border-bottom: none;
+      box-shadow: 0 3px 5px -3px fade(#000, 30%);
+    }
+  }
   @media @grid-mobile {
+    &.navbar-is-fixed-top {
+      margin-top: @navbar-height--mobile;
+    }
     .region-content {
       display: flex;
       flex-flow: column;
@@ -30,6 +40,11 @@
 }
 
 .page-node-type-site {
+  @media @grid-mobile {
+    &.navbar-is-fixed-top {
+      margin-top: @navbar-height--mobile;
+    }
+  }
   @media @grid-desktop {
     .header-container, .contained-content {
       > .region { padding-right: 11em; }

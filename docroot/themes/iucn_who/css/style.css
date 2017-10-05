@@ -7663,11 +7663,6 @@ body {
 body.navbar-is-static-top {
   margin-top: 0;
 }
-@media screen and (max-width: 767px) {
-  body.navbar-is-fixed-top {
-    margin-top: 65px;
-  }
-}
 body.navbar-is-fixed-bottom {
   padding-bottom: 25rem;
 }
@@ -7682,18 +7677,6 @@ body.navbar-is-fixed-bottom {
   }
   body.toolbar-vertical.navbar-is-fixed-top header {
     top: 39px;
-  }
-}
-@media screen and (max-width: 767px) {
-  .path-frontpage.navbar-is-fixed-top {
-    margin-top: 50px;
-  }
-}
-@media screen and (min-width: 768px) {
-  .path-frontpage header {
-    margin-bottom: 0;
-    border-bottom: none;
-    box-shadow: 0 3px 5px -3px rgba(0, 0, 0, 0.3);
   }
 }
 @media screen and (min-width: 768px) {
@@ -7711,34 +7694,13 @@ body.navbar-is-fixed-bottom {
     max-width: 1140px;
   }
 }
-@media screen and (max-width: 767px) {
-  .navbar {
-    min-height: 50px;
-  }
-}
-.navbar .logo {
-  margin-right: -15px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-@media screen and (min-width: 768px) {
-  .navbar .logo {
-    margin-right: 0;
-    padding-left: 0;
-  }
-}
-@media screen and (max-width: 767px) {
-  body.navbar-is-static-top {
-    margin-top: 25rem;
-  }
-  body.navbar-is-static-top header {
-    top: 39px;
-  }
-}
 .navbar-fixed-top .navbar-collapse,
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
+/* ==========================================================================
+   Responsive navbar font size
+   ========================================================================== */
 @media (min-width: 768px) and (max-width: 1250px) {
   .navbar {
     font-size: 1.2vw;
@@ -7749,41 +7711,63 @@ body.navbar-is-fixed-bottom {
     font-size: 0.83333333em;
   }
 }
-@media screen and (min-width: 768px) {
-  .navbar {
-    position: static;
-    height: 10rem;
-  }
-}
+/* ==========================================================================
+   Navbar height
+   ========================================================================== */
 @media screen and (max-width: 767px) {
   .navbar {
-    position: fixed;
-    z-index: 1040;
-    right: 0;
-    left: 0;
     height: 50px;
-  }
-  .navbar.headroom {
-    transition: transform 0.2s ease-in-out;
-    will-change: transform;
-  }
-  .navbar.headroom--pinned {
-    transform: translateY(0);
-  }
-  .navbar.headroom--unpinned {
-    transform: translateY(-100%);
-  }
-  .toolbar-vertical .navbar.headroom--pinned {
-    transform: none;
-  }
-  .toolbar-vertical .navbar.headroom--unpinned {
-    transform: none;
+    min-height: 50px;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar {
+    height: 10rem;
+    min-height: 10rem;
+  }
+}
+/* ==========================================================================
+   Fixed navbar, with headroom styling
+   ========================================================================== */
+@media screen and (max-width: 767px) {
+  .navbar-is-fixed-top {
+    margin-top: 65px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .navbar-is-fixed-top {
+    margin-top: 11.5rem;
+  }
+}
+.navbar-fixed-top {
+  backface-visibility: hidden;
+}
+.navbar-fixed-top.headroom {
+  transition: transform 0.2s ease-in-out;
+  will-change: transform;
+}
+.navbar-fixed-top.headroom--pinned {
+  transform: translateY(0);
+}
+.navbar-fixed-top.headroom--unpinned {
+  transform: translateY(-100%);
+}
+.toolbar-vertical .navbar-fixed-top.headroom--pinned {
+  transform: none;
+}
+.toolbar-vertical .navbar-fixed-top.headroom--unpinned {
+  transform: none;
+}
+/* ==========================================================================
+   Navbar header
+   ========================================================================== */
 .navbar .logo {
   height: 4em;
-  margin-top: calc((10rem - 4em) / 2);
   margin-bottom: calc((10rem - 4em) / 2);
+  margin-right: -15px;
+  margin-top: calc((10rem - 4em) / 2);
+  padding-left: 15px;
+  padding-right: 15px;
 }
 @media screen and (max-width: 767px) {
   .navbar .logo {
@@ -7792,14 +7776,15 @@ body.navbar-is-fixed-bottom {
     margin-bottom: 7.5px;
   }
 }
+@media screen and (min-width: 768px) {
+  .navbar .logo {
+    margin-right: 0;
+    padding-left: 0;
+  }
+}
 .navbar .logo > img {
   height: 100%;
   width: auto;
-}
-@media screen and (min-width: 768px) {
-  .container-fluid > .navbar-header {
-    margin-left: 2em;
-  }
 }
 @media screen and (min-width: 768px) {
   .navbar-header {
@@ -7813,6 +7798,9 @@ body.navbar-is-fixed-bottom {
     position: absolute;
     right: 0;
     top: 10%;
+  }
+  .container-fluid > .navbar-header {
+    margin-left: 2em;
   }
 }
 .navbar-brand {
@@ -7832,11 +7820,6 @@ body.navbar-is-fixed-bottom {
     margin-right: 1em;
     padding-right: 1em;
   }
-}
-body.show-focus-outlines .navbar-toggle:hover .icon-bar,
-body.show-focus-outlines .navbar-toggle:focus .icon-bar,
-body.show-focus-outlines .navbar-toggle:active .icon-bar {
-  background-color: #03afdf;
 }
 .navbar-toggle {
   margin-top: -16rem;
@@ -7873,6 +7856,11 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
 }
 .navbar-toggle.collapsed .bottom-bar {
   transform: rotate(0);
+}
+body.show-focus-outlines .navbar-toggle:hover .icon-bar,
+body.show-focus-outlines .navbar-toggle:focus .icon-bar,
+body.show-focus-outlines .navbar-toggle:active .icon-bar {
+  background-color: #03afdf;
 }
 @media screen and (max-width: 767px) {
   .navbar-toggle {
@@ -8726,8 +8714,8 @@ body:not(.show-focus-outlines) textarea:active:focus {
 }
 .holygrail-body {
   display: flex;
-  flex: 1 0 auto;
   flex-direction: column;
+  flex: 1 0 auto;
   overflow: hidden;
 }
 @media (max-width: 767px) {
@@ -10279,7 +10267,17 @@ fieldset[disabled] #download-publication-button a.focus {
 /* ==========================================================================
    Frontpage
    ========================================================================== */
+@media screen and (min-width: 768px) {
+  .path-frontpage header {
+    margin-bottom: 0;
+    border-bottom: none;
+    box-shadow: 0 3px 5px -3px rgba(0, 0, 0, 0.3);
+  }
+}
 @media screen and (max-width: 767px) {
+  .path-frontpage.navbar-is-fixed-top {
+    margin-top: 50px;
+  }
   .path-frontpage .region-content {
     display: flex;
     flex-flow: column;
@@ -10301,6 +10299,11 @@ fieldset[disabled] #download-publication-button a.focus {
     margin-bottom: 0;
     margin-top: 0;
     padding-left: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .page-node-type-site.navbar-is-fixed-top {
+    margin-top: 50px;
   }
 }
 @media screen and (min-width: 768px) {
@@ -12797,11 +12800,6 @@ fieldset[disabled] .map-site-detail .close.focus {
 @media screen and (max-width: 767px) {
   [data-statistics-mobile="0"][data-statistics] {
     width: 0%;
-  }
-}
-@media screen and (max-width: 767px) {
-  body.page-node-type-site.navbar-is-fixed-top {
-    margin-top: 50px;
   }
 }
 @media (min-width: 1200px) {

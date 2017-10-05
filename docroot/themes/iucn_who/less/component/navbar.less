@@ -15,11 +15,7 @@ body {
   &.navbar-is-static-top {
     margin-top: 0;
   }
-  &.navbar-is-fixed-top {
-    @media @grid-mobile {
-      margin-top: (@navbar-height--mobile + @grid-gutter-width / 2);
-    }
-  }
+
   &.navbar-is-fixed-bottom {
     padding-bottom: (@navbar-height + (@grid-gutter-width / 2));
   }
@@ -46,24 +42,7 @@ body {
     }
   }
 }
-.path-frontpage {
-  &.navbar-is-fixed-top {
-    @media @grid-mobile {
-      margin-top: @navbar-height--mobile;
-    }
-  }
-  header {
-    @media @grid-desktop {
-      margin-bottom: 0;
-      border-bottom: none;
-      box-shadow: 0 3px 5px -3px fade(#000, 30%);
-    }
-  }
-}
-// body.toolbar-fixed .toolbar-oriented, .toolbar-oriented .toolbar-bar, .toolbar-oriented .toolbar-tray {
-//   position: fixed;
-// //   z-index: @zindex-modal-background + 1;
-// }
+
 .navbar.container {
   @media @tablet {
     max-width: ((@container-sm - @grid-gutter-width));
@@ -75,37 +54,16 @@ body {
     max-width: ((@container-lg - @grid-gutter-width));
   }
 }
-.navbar {
-  @media @grid-mobile {
-    min-height: @navbar-height--mobile;
-  }
-}
 
-// Branding.
-.navbar .logo {
-  margin-right: -(@grid-gutter-width / 2);
-  padding-left: (@grid-gutter-width / 2);
-  padding-right: (@grid-gutter-width / 2);
-  @media @grid-breakpoint {
-    margin-right: 0;
-    padding-left: 0;
-  }
-}
-
-//Custom navbar
-body.navbar-is-static-top {
-  @media @grid-mobile {
-    margin-top: (@navbar-height + (@grid-gutter-width / 2));
-    header {
-      top: 39px;
-    }
-  }
-}
 .navbar-fixed-top .navbar-collapse,
 .navbar-fixed-bottom .navbar-collapse {
   max-height: none;
 }
-// @todo: make a mixin out of this
+
+/* ==========================================================================
+   Responsive navbar font size
+   ========================================================================== */
+
 @navbar-font-size-em: 15 / unit(@font-size-base) * 1em;
 @navbar-min-size-to-fit: 1.2;
 @max-vw: (floor(unit(@font-size-base) * unit(@navbar-font-size-em) * 100 / @navbar-min-size-to-fit) * 1px); // @navbar-min-size-to-fit is minimum vw required to fit content of navbar on one line
@@ -116,48 +74,87 @@ body.navbar-is-static-top {
   @media (min-width: (@max-vw + 1)) {
     font-size: @navbar-font-size-em;
   }
-  @media @grid-desktop {
-    position: static;
-    height: @navbar-height;
-  }
+}
+
+/* ==========================================================================
+   Navbar height
+   ========================================================================== */
+
+.navbar {
   @media @grid-mobile {
-    position: fixed;
-    z-index: @zindex-modal-background;
-    right: 0;
-    left: 0;
     height: @navbar-height--mobile;
-    &.headroom {
-      transition: transform .2s ease-in-out;
-      will-change: transform;
+    min-height: @navbar-height--mobile;
+  }
+  @media @grid-desktop {
+    height: @navbar-height;
+    min-height: @navbar-height;
+  }
+}
+
+/* ==========================================================================
+   Fixed navbar, with headroom styling
+   ========================================================================== */
+
+.navbar-is-fixed-top {
+  @media @grid-mobile {
+    & when (isunit(@navbar-height--mobile, rem)) {
+      margin-top: @navbar-height--mobile + 1.5rem;
     }
-    &.headroom--pinned {
-        transform: translateY(0);
+    & when (isunit(@navbar-height--mobile, px)) {
+      margin-top: @navbar-height--mobile + 15px;
     }
-    &.headroom--unpinned {
-        transform: translateY(-100%);
+  }
+  @media @grid-desktop {
+    & when (isunit(@navbar-height, rem)) {
+      margin-top: @navbar-height + 1.5rem;
     }
-    .toolbar-vertical &.headroom--pinned {
-        transform: none
-    }
-    .toolbar-vertical &.headroom--unpinned {
-        transform: none;
+    & when (isunit(@navbar-height, px)) {
+      margin-top: @navbar-height + 15px;
     }
   }
 }
 
+.navbar-fixed-top {
+  backface-visibility: hidden;
+  &.headroom {
+    transition: transform .2s ease-in-out;
+    will-change: transform;
+  }
+  &.headroom--pinned {
+    transform: translateY(0);
+  }
+  &.headroom--unpinned {
+    transform: translateY(-100%);
+  }
+  .toolbar-vertical &.headroom--pinned {
+    transform: none;
+  }
+  .toolbar-vertical &.headroom--unpinned {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Navbar header
+   ========================================================================== */
+
 .navbar .logo {
-  // height: @navbar-height * 70 / 100;
   height: 4em;
-  margin-top: calc(~'(@{navbar-height} - 4em) / 2');
   margin-bottom: calc(~'(@{navbar-height} - 4em) / 2');
+  margin-right: -(@grid-gutter-width / 2);
+  margin-top: calc(~'(@{navbar-height} - 4em) / 2');
+  padding-left: (@grid-gutter-width / 2);
+  padding-right: (@grid-gutter-width / 2);
   @media @grid-mobile {
-    // height: auto;
-    // margin-top: 5px;
-    // margin-bottom: 5px;
     height: @navbar-height--mobile * 70 / 100;
     margin-top: @navbar-height--mobile * 15 / 100;
     margin-bottom: @navbar-height--mobile * 15 / 100;
   }
+  @media @grid-desktop {
+    margin-right: 0;
+    padding-left: 0;
+  }
+
   > img {
     height: 100%;
     width: auto;
@@ -166,13 +163,9 @@ body.navbar-is-static-top {
     // }
   }
 }
-.container-fluid > .navbar-header {
+
+.navbar-header {
   @media @grid-desktop {
-    margin-left: 2em;
-  }
-}
-@media @grid-desktop {
-  .navbar-header {
     position: relative;
     &:after {
       border-right: 1px solid fade(@iucn-blue-light, 20%);
@@ -183,8 +176,13 @@ body.navbar-is-static-top {
       right: 0;
       top: 10%;
     }
+
+    .container-fluid > & {
+      margin-left: 2em;
+    }
   }
 }
+
 .navbar-brand {
   font-size: 1.25em;
   @media @grid-mobile {
@@ -200,13 +198,6 @@ body.navbar-is-static-top {
   }
 }
 
-body.show-focus-outlines {
-  .navbar-toggle:hover, .navbar-toggle:focus, .navbar-toggle:active {
-    .icon-bar {
-      background-color: @iucn-blue-light;
-    }
-  }
-}
 .navbar-toggle {
   .navbar-vertical-align(42px);
   border: none;
@@ -242,6 +233,13 @@ body.show-focus-outlines {
     }
     .bottom-bar {
       transform: rotate(0);
+    }
+  }
+  body.show-focus-outlines & {
+    &:hover, &:focus, &:active {
+      .icon-bar {
+        background-color: @iucn-blue-light;
+      }
     }
   }
   @media @grid-mobile {
