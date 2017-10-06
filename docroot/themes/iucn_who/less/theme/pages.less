@@ -9,11 +9,15 @@
       box-shadow: 0 3px 5px -3px fade(#000, 30%);
     }
   }
-  @media @grid-mobile {
-    &.navbar-is-fixed-top {
+  &.navbar-is-fixed-top {
+    margin-top: @navbar-height;
+    @media @grid-mobile {
       margin-top: @navbar-height--mobile;
+
     }
-    .region-content {
+  }
+  .region-content {
+    @media @grid-mobile {
       display: flex;
       flex-flow: column;
       .block-home-page-statistics,

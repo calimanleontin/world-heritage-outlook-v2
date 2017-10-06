@@ -10274,10 +10274,15 @@ fieldset[disabled] #download-publication-button a.focus {
     box-shadow: 0 3px 5px -3px rgba(0, 0, 0, 0.3);
   }
 }
+.path-frontpage.navbar-is-fixed-top {
+  margin-top: 10rem;
+}
 @media screen and (max-width: 767px) {
   .path-frontpage.navbar-is-fixed-top {
     margin-top: 50px;
   }
+}
+@media screen and (max-width: 767px) {
   .path-frontpage .region-content {
     display: flex;
     flex-flow: column;
