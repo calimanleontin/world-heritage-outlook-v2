@@ -263,56 +263,65 @@
 @conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
 
 .loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
-  @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
-  @conservation-rating-color: ~'@{@{conservation-rating-class}}';
-  @rules();
+  & {
+    @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
+    @conservation-rating-color: ~'@{@{conservation-rating-class}}';
+    @rules();
 
-  // next iteration
-  .loop-conservation-ratings(@rules, (@index - 1));
+    // next iteration
+   .loop-conservation-ratings(@rules, (@index - 1));
+  }
 }
 
 // Generate categories (?)
 @conservation-categories-list: 'values', 'threats', 'protection-management';
 
 .loop-conservation-categories(@rules, @index: length(@conservation-categories-list)) when (@index > 0) {
-  @conservation-category-class: e(extract(@conservation-categories-list, @index));
-  @rules();
+  & {
+    @conservation-category-class: e(extract(@conservation-categories-list, @index));
+    @rules();
 
-  // next iteration
-  .loop-conservation-categories(@rules, (@index - 1));
+    // next iteration
+    .loop-conservation-categories(@rules, (@index - 1));
+  }
 }
 
 @assessment-tab-list: 'summary', 'full-assessment', 'references';
 
 .loop-assessment-tabs(@rules, @index: length(@assessment-tab-list)) when (@index > 0) {
-  @assessment-tab-class: e(extract(@assessment-tab-list, @index));
-  @rules();
+  & {
+    @assessment-tab-class: e(extract(@assessment-tab-list, @index));
+    @rules();
 
-  // next iteration
-  .loop-assessment-tabs(@rules, (@index - 1));
+    // next iteration
+    .loop-assessment-tabs(@rules, (@index - 1));
+  }
 }
 
 // Generate rotation angles for iucn arrow decorations
 @iucn-arrows-max-no: 6;
 
 .loop-iucn-arrows(@index: @iucn-arrows-max-no) when (@index > 0) {
-  ol.iucn-list-@{index} {
-    .loop-iucn-arrow(@index);
-  }
+  & {
+    ol.iucn-list-@{index} {
+      .loop-iucn-arrow(@index);
+    }
 
-  // next iteration
-  .loop-iucn-arrows((@index - 1));
+    // next iteration
+    .loop-iucn-arrows((@index - 1));
+  }
 }
 
 .loop-iucn-arrow(@index-inner) when (@index-inner > 0) {
-  @newIndex: (@index - @index-inner + 1);
-  li.iucn-arrow:nth-child(@{newIndex}):before {
-    //3
-    transform: rotateY(-80deg) skewY( (@newIndex - 1) * (18deg) - (9 * (@index - 1)) );
+  & {
+    @newIndex: (@index - @index-inner + 1);
+    li.iucn-arrow:nth-child(@{newIndex}):before {
+      //3
+      transform: rotateY(-80deg) skewY( (@newIndex - 1) * (18deg) - (9 * (@index - 1)) );
+    }
+    // next iteration
+    .loop-iucn-arrow((@index-inner - 1));
   }
-
-  // next iteration
-  .loop-iucn-arrow((@index-inner - 1));
 }
 .loop-iucn-arrows();
 
@@ -339,10 +348,12 @@
   @benefits-topic-water;
 
 .loop-benefits-topics(@rules, @index: length(@benefits-topics-list)) when (@index > 0) {
-  @benefit-topic-id: e(extract(extract(@benefits-topics-list, @index), 1));
-  @benefit-topic-color: e(extract(extract(@benefits-topics-list, @index), 2));
-  @rules();
+  & {
+    @benefit-topic-id: e(extract(extract(@benefits-topics-list, @index), 1));
+    @benefit-topic-color: e(extract(extract(@benefits-topics-list, @index), 2));
+    @rules();
 
-  // next iteration
-  .loop-benefits-topics(@rules, (@index - 1));
+    // next iteration
+    .loop-benefits-topics(@rules, (@index - 1));
+  }
 }
