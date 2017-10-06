@@ -11,10 +11,8 @@
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-postcss": "^0.8.0",
-    "postcss-flexibility": "^1.1.1"
-  },
-  "dependencies": {
     "headroom.js": "^0.9.4",
-    "simplebar": "^2.4.3"
+    "postcss-flexibility": "^1.1.1",
+    "simplebar": "^2.4.4"
   }
 }
