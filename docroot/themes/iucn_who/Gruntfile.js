@@ -6,6 +6,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-postcss');
 
   grunt.initConfig({
@@ -42,6 +43,17 @@ module.exports = function (grunt) {
         src: 'css/**/*.css'
       }
     },
+    cssmin: {
+      print: {
+        files: [{
+          expand: true,
+          cwd: 'css',
+          src: ['print-style.css', '!print-style.min.css'],
+          dest: 'css',
+          ext: '.css'
+        }]
+      }
+    },
     watch: {
       configFiles: {
         options: {
@@ -55,7 +67,7 @@ module.exports = function (grunt) {
       },
       print: {
         files: ['less/print-style.less'],
-        tasks: 'less:print'
+        tasks: ['less:print', 'cssmin:print']
       }
     },
     copy: {
@@ -111,6 +123,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('prod', ['css']);
 
-  grunt.registerTask('default', ['less', 'watch']);
+  grunt.registerTask('default', ['less', 'cssmin', 'watch']);
 
 };
