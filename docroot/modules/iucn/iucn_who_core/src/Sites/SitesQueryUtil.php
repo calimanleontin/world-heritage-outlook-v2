@@ -81,7 +81,6 @@ class SitesQueryUtil {
       $term = Term::load($tid);
       $term = \Drupal::service('entity.repository')
         ->getTranslationFromContext($term, $langcode);
-      dpm($term->getName());
       $terms[] = $term;
     }
     return $terms;
