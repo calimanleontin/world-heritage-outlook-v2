@@ -2,10 +2,10 @@
   'use strict';
 
   var $collapses = $('.node--type-site-assessment .collapse');
-  $('.node--type-site-assessment').on('click', '.collapse-button',  function () {
+  $('.node--type-site-assessment').on('click touchstart', '.collapse-button',  function () {
     $collapses.collapse('hide');
   });
-  $('.node--type-site-assessment').on('click', '.expand-button', function () {
+  $('.node--type-site-assessment').on('click touchstart', '.expand-button', function () {
     $collapses.collapse('show');
   });
 
