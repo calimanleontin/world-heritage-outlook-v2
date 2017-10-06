@@ -7469,7 +7469,7 @@ html.js .ajax-new-content:empty {
   display: inline;
 }
 .field--label-inline .field--label {
-  margin-right: 0.5em;
+  margin-right: 0.1em;
 }
 .field--label-inline .field--label,
 .field--label-inline > .field--item,
@@ -12962,6 +12962,10 @@ fieldset[disabled] .map-site-detail .close.focus {
   .summary-is-active-tab .region-site-rating {
     display: block;
   }
+}
+.field--name-field-country .field--item {
+  display: inline-block;
+  vertical-align: top;
 }
 .field--name-assessments-links ul {
   list-style-type: none;

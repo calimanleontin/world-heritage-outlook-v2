@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
     - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
@@ -79,7 +80,7 @@ third_party_settings:
         plugin_id: assessment_rating
         weight: 7
         label: hidden
-        formatter: image
+        formatter: default
 id: node.site.pdf
 targetEntityType: node
 bundle: site
@@ -104,12 +105,16 @@ content:
     type: entity_reference_entity_view
     region: ds_content
   field_country:
-    type: entity_reference_label
+    type: entity_reference_list
     weight: 1
     region: ds_content
     label: hidden
     settings:
       link: false
+      separator: ','
+      override_label: 0
+      singular: ''
+      plural: ''
     third_party_settings:
       ds:
         ds_limit: ''
@@ -121,6 +126,9 @@ content:
     settings:
       separator: ','
       link: 0
+      override_label: 0
+      singular: ''
+      plural: ''
     third_party_settings:
       ds:
         ds_limit: ''
@@ -141,6 +149,9 @@ content:
     settings:
       separator: ','
       link: 0
+      override_label: 0
+      singular: ''
+      plural: ''
     third_party_settings:
       ds:
         ds_limit: ''
@@ -154,6 +165,9 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_area: true
   field_buffer_zone: true
   field_buffer_zone_area: true
@@ -163,6 +177,7 @@ hidden:
   field_cultural_landscape: true
   field_current_assessment: true
   field_danger_list: true
+  field_geojson: true
   field_geolocation: true
   field_mixed_site: true
   field_serial: true
