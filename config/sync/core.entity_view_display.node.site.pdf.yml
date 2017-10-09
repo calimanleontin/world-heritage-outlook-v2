@@ -147,11 +147,11 @@ content:
     region: ds_content
     label: inline
     settings:
-      separator: ','
+      separator: ''
+      singular: Criterion
+      plural: Criteria
       link: 0
       override_label: 0
-      singular: ''
-      plural: ''
     third_party_settings:
       ds:
         ds_limit: ''

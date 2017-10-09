@@ -180,45 +180,40 @@
         float: left;
         color: @iucn-blue-light;
         list-style-type: none;
-        li > a {
-          color: @iucn-blue-light;
-          .tablesort {
-            display: none;
-          }
+      }
+      li > a {
+        color: @iucn-blue-light;
+        .tablesort {
+          display: none;
         }
       }
     }
   }
 
   .field--label-inline .field--label,
-  .field--label-list{
-    padding-right: 0.2em;
+  .field--label-list {
     font-weight: normal;
   }
-  .field--label-inline .field--label::after {
-    content: none;
-  }
-  .field--name-field-inscription-criteria{
-    .field--label{
+  .field--name-field-inscription-criteria {
+    .field--label {
       padding-right: 0.2em;
       font-weight: normal;
-      content: none;
     }
     .field--label,
     .field__items,
-    .field--item{
-      float:left;
+    .field--item {
+      float: left;
       display: inline;
     }
   }
-  .field--name-node-link{
+  .field--name-node-link {
     display: flex;
     margin-bottom: auto;
     flex-grow: 1;
-    a{
+    a {
       align-self: flex-end;
       color: @iucn-blue-light !important;
-      &:after{
+      &:after {
         .svg-icon(icon-arrow);
         color: #a0a0a0;
         background-position: center;

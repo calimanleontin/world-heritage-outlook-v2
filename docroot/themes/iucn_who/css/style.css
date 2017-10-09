@@ -7462,25 +7462,44 @@ html.js .ajax-new-content:empty {
   font-weight: bold;
 }
 .field--label-inline .field--label,
-.field--label-inline .field--items {
-  display: inline-block;
-}
-.field--label-inline .field__items {
+.field--label-inline .field--items,
+.field--label-inline .field__items,
+.field--label-inline .field--item,
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-inscription-criteria .field--items,
+.field--name-field-inscription-criteria .field__items,
+.field--name-field-inscription-criteria .field--item,
+.field--name-field-as-values-criteria .field--label,
+.field--name-field-as-values-criteria .field--items,
+.field--name-field-as-values-criteria .field__items,
+.field--name-field-as-values-criteria .field--item,
+.field--name-field-as-values-curr-trend .field--label,
+.field--name-field-as-values-curr-trend .field--items,
+.field--name-field-as-values-curr-trend .field__items,
+.field--name-field-as-values-curr-trend .field--item {
   display: inline;
-}
-.field--label-inline .field--label {
-  margin-right: 0.1em;
+  float: left;
 }
 .field--label-inline .field--label,
-.field--label-inline > .field--item,
-.field--label-inline .field--items {
-  display: inline-block;
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-as-values-criteria .field--label,
+.field--name-field-as-values-curr-trend .field--label {
+  margin-right: 0.2em;
 }
-.field--label-inline > .field--item + .field--item,
-.field--label-inline .field--items {
-  margin-left: 0.5em;
+.field--label-inline .field--item + .field--item,
+.field--label-inline .field--items,
+.field--name-field-inscription-criteria .field--item + .field--item,
+.field--name-field-inscription-criteria .field--items,
+.field--name-field-as-values-criteria .field--item + .field--item,
+.field--name-field-as-values-criteria .field--items,
+.field--name-field-as-values-curr-trend .field--item + .field--item,
+.field--name-field-as-values-curr-trend .field--items {
+  margin-left: 0.1em;
 }
-.field--label-inline .field--label::after {
+.field--label-inline .field--label::after,
+.field--name-field-inscription-criteria .field--label::after,
+.field--name-field-as-values-criteria .field--label::after,
+.field--name-field-as-values-curr-trend .field--label::after {
   content: ':';
 }
 /**
@@ -10701,24 +10720,22 @@ h6.view-sites-search .view-header {
   color: #03afdf;
   list-style-type: none;
 }
-.view-sites-search .view-header .block-search-api-sorts ul li > a {
+.view-sites-search .view-header .block-search-api-sorts li > a {
   color: #03afdf;
 }
-.view-sites-search .view-header .block-search-api-sorts ul li > a .tablesort {
+.view-sites-search .view-header .block-search-api-sorts li > a .tablesort {
   display: none;
 }
 .view-sites-search .field--label-inline .field--label,
-.view-sites-search .field--label-list {
-  padding-right: 0.2em;
+.view-sites-search .field--label-list,
+.view-sites-search .field--name-field-inscription-criteria .field--label,
+.view-sites-search .field--name-field-as-values-criteria .field--label,
+.view-sites-search .field--name-field-as-values-curr-trend .field--label {
   font-weight: normal;
-}
-.view-sites-search .field--label-inline .field--label::after {
-  content: none;
 }
 .view-sites-search .field--name-field-inscription-criteria .field--label {
   padding-right: 0.2em;
   font-weight: normal;
-  content: none;
 }
 .view-sites-search .field--name-field-inscription-criteria .field--label,
 .view-sites-search .field--name-field-inscription-criteria .field__items,
@@ -13018,23 +13035,6 @@ fieldset[disabled] .map-site-detail .close.focus {
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
 .iucn-site-wrapper .field--name-field-designation .field--label {
   font-weight: normal;
-}
-.iucn-site-wrapper .field--name-field-inscription-criteria .field__items > .field--item,
-.iucn-site-wrapper .field--name-field-designation .field__items > .field--item {
-  display: inline;
-}
-.iucn-site-wrapper .field--name-field-inscription-criteria .field--label {
-  float: none;
-}
-.iucn-site-wrapper .field--name-field-inscription-criteria .field--item {
-  display: inline-block;
-  vertical-align: top;
-}
-.iucn-site-wrapper .field--name-field-inscription-criteria .field--item + .field--item {
-  margin-left: .1em;
-}
-.iucn-site-wrapper .field--name-field-inscription-criteria .field--item:last-child {
-  float: none;
 }
 .iucn-site-wrapper .field--name-body {
   margin-top: 1em;

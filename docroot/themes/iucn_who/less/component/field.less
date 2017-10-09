@@ -8,26 +8,27 @@
 }
 
 .field--label-inline .field--label,
-.field--label-inline .field--items {
-  display: inline-block;
-}
-.field--label-inline .field__items {
+.field--label-inline .field--items,
+.field--label-inline .field__items,
+.field--label-inline .field--item {
   display: inline;
+  float: left;
 }
 .field--label-inline .field--label {
-  margin-right: 0.1em;
-}
-.field--label-inline .field--label,
-.field--label-inline > .field--item,
-.field--label-inline .field--items {
-  display: inline-block;
+  margin-right: 0.2em;
 }
 
-.field--label-inline > .field--item + .field--item,
+.field--label-inline .field--item + .field--item,
 .field--label-inline .field--items {
-  margin-left: 0.5em;
+  margin-left: 0.1em;
 }
 
 .field--label-inline .field--label::after {
   content: ':';
+}
+
+.field--name-field-inscription-criteria,
+.field--name-field-as-values-criteria,
+.field--name-field-as-values-curr-trend {
+  &:extend(.field--label-inline all);
 }
