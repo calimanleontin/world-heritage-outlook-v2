@@ -9942,7 +9942,7 @@ fieldset[disabled] .explore-map-button a.focus {
   text-align: center;
   text-transform: uppercase;
 }
-.region-fixed-bottom .block-search-api-sorts .search-api-sorts > li + li {
+.region-fixed-bottom .block-search-api-sorts .search-api-sorts > li {
   margin-left: -1px;
 }
 .region-fixed-bottom .block-search-api-sorts .tablesort {
