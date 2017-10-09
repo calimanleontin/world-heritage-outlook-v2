@@ -8,12 +8,12 @@ dependencies:
   module:
     - search_api
 id: iucn_region
-name: 'IUCN Region'
+name: 'UNESCO Region'
 url_alias: iucn_region
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: field_iucn_region
+field_identifier: field_unesco_region
 facet_source_id: 'search_api:views_page__sites_search__sites_search_page_database'
 widget:
   type: links
