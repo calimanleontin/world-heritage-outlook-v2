@@ -8,7 +8,7 @@
   "description" : "While some concerns exist, with minor additional conservation measures the site’s values are likely to be essentially maintained over the long-term."
 }, {
   "coRatingId" : 3,
-  "name" : "Significant Concern",
+  "name" : "Significant concern",
   "description" : "The site’s values are threatened and/or may be showing signs of deterioration. Significant additional conservation measures are needed to maintain and/or restore values over the medium to long-term."
 }, {
   "coRatingId" : 4,
@@ -16,6 +16,6 @@
   "description" : "The site’s values are severely threatened and/or deteriorating. Immediate large-scale additional conservation measures are needed to maintain and/or restore the site’s values over the short to medium-term or the values may be lost."
 }, {
   "coRatingId" : 5,
-  "name" : "Data Deficient",
+  "name" : "Data deficient",
   "description" : "Available evidence is insufficient to draw a conclusion"
 } ]
