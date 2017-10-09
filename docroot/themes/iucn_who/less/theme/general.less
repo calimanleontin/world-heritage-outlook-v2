@@ -148,13 +148,16 @@ a.is-active {
 }
 // @todo: use mixin
 // Conservation status related classes
-.conservation-status {
-  .loop-conservation-ratings({
-    &.@{conservation-rating-class} {
-      color: @conservation-rating-color;
-    }
-  });
-}
+.loop-conservation-ratings({
+  .conservation-status.@{conservation-rating-class},
+  .iucn-color-@{conservation-rating-class} {
+    color: @conservation-rating-color;
+  }
+
+  .iucn-bg-@{conservation-rating-class} {
+    background-color: @conservation-rating-color;
+  }
+});
 
 // Triangle caret
 .caret-triangle {
