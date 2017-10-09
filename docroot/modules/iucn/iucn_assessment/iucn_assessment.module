@@ -70,12 +70,13 @@ function iucn_assessment_preprocess_field(&$variables) {
         $route_name = \Drupal::routeMatch()->getRouteName();
         $is_download = $route_name == 'iucn_pdf.download';
         $is_download_debug = $route_name == 'iucn_pdf.download.debug';
+        $iucn_config = \Drupal::config('iucn_who.settings');
+        $config_year = $iucn_config->get('assessment_year');
         if ($is_download || $is_download_debug) {
           $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
         }
         else {
-          $iucn_config = \Drupal::config('iucn_who.settings');
-          $display_year = $iucn_config->get('assessment_year');
+          $display_year = $config_year;
         }
         $showing_item = NULL;
         foreach ($variables['items'] as $item) {
@@ -87,6 +88,7 @@ function iucn_assessment_preprocess_field(&$variables) {
             break;
           }
         }
+        $variables['attributes']['class'][] = $config_year == $display_year ? 'showing-latest-assessment' : 'showing-old-assessment';
         $variables['items'] = !empty($showing_item) ? [$showing_item] : [];
       }
       break;
