@@ -7480,6 +7480,12 @@ html.js .ajax-new-content:empty {
   display: inline;
   float: left;
 }
+.field--label-inline .field--item:last-child,
+.field--name-field-inscription-criteria .field--item:last-child,
+.field--name-field-as-values-criteria .field--item:last-child,
+.field--name-field-as-values-curr-trend .field--item:last-child {
+  float: none;
+}
 .field--label-inline .field--label,
 .field--name-field-inscription-criteria .field--label,
 .field--name-field-as-values-criteria .field--label,
