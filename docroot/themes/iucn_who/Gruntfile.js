@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         ]
       },
       dist: {
-        src: 'css/**/*.css'
+        src: 'css/style.css'
       }
     },
     cssmin: {
@@ -117,7 +117,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('nodemodules', ['copy:node_modules']);
 
-  grunt.registerTask('css', ['less', 'postcss']);
+  grunt.registerTask('css', ['less', 'cssmin', 'postcss']);
 
   grunt.registerTask('js', ['concat', 'uglify']);
 
