@@ -47,8 +47,8 @@ content:
     settings:
       separator: ','
       override_label: '1'
-      singular: Criteria
-      plural: Criterion
+      singular: Criterion
+      plural: Criteria
       link: 0
     third_party_settings:
       ds:
