@@ -28,8 +28,15 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
-  display_value_widget_order:
-    processor_id: display_value_widget_order
+  exclude_specified_items:
+    processor_id: exclude_specified_items
+    weights:
+      build: -10
+    settings:
+      exclude: '1221,1222,1223,1224,1226,1227'
+      regex: false
+  term_weight_widget_order:
+    processor_id: term_weight_widget_order
     weights:
       sort: -10
     settings:

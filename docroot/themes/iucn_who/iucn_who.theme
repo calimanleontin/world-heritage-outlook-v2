@@ -10,6 +10,7 @@ use Drupal\Core\Template\Attribute;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Url;
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -32,6 +33,32 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
  */
 function iucn_who_preprocess_block(&$variables) {
   switch ($variables['base_plugin_id']) {
+    case 'facet_block':
+      foreach ($variables['content'][0]['#items'] as $key => $item) {
+        if ($variables['elements']['#id'] == 'inscriptioncriteria') {
+          $criteria_id = $variables['content'][0]['#items'][$key]['#attributes']['data-drupal-facet-item-value'];
+          $term = Term::load($criteria_id);
+          if ($term) {
+            if ($term->get('field_title')) {
+              $criteria_name = $term->get('field_title')->getValue();
+              $variables['content'][0]['#items'][$key]['#title']['#value'] = $criteria_name[0]['value'];
+            }
+            if ($term->get('field_description')) {
+              $criteria_description = $term->get('field_description')->getValue();
+              $variables['content'][0]['#items'][$key]['#attributes']['title'] = $criteria_description[0]['value'];
+            }
+
+          }
+        }
+        else {
+          $variables['content'][0]['#items'][$key]['#attributes']['title'] = $variables['content'][0]['#items'][$key]['#title']['#value'];
+        }
+        $variables['content'][0]['#items'][$key]['#attributes']['data-toggle'] = 'tooltip';
+        $variables['content'][0]['#items'][$key]['#attributes']['data-placement'] = 'top';
+
+      }
+      break;
+
     case 'home_page_map':
       $variables['#attached']['library'][] = 'iucn_who/maps';
       break;
@@ -59,7 +86,7 @@ function iucn_who_preprocess_block(&$variables) {
         }
       }
 
-      if($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
+      if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
         $items = &$variables['content']['links']['#items'][0];
         $variables['elements']['#cache']['max-age'] = 0;
 
@@ -71,7 +98,7 @@ function iucn_who_preprocess_block(&$variables) {
           $label .= t(' A-Z');
         }
         $label .= '</span>';
-        $items['#label'] = new FormattableMarkup($label , []);
+        $items['#label'] = new FormattableMarkup($label, []);
       }
 
       if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
@@ -87,14 +114,14 @@ function iucn_who_preprocess_block(&$variables) {
         $label = '<span class="sort-prefix">' . t('Sort from') . '</span><span class="sort-body">';
 
         if ($items['#sort_field'] == 'field_publication_year' && $items['#order'] == 'asc') {
-          $label .= t(' oldest to newest') ;
+          $label .= t(' oldest to newest');
         }
         else {
-          $label .= t(' newest to oldest') ;
+          $label .= t(' newest to oldest');
         }
 
         $label .= '</span>';
-        $items['#label'] = new FormattableMarkup($label , []);
+        $items['#label'] = new FormattableMarkup($label, []);
       }
       break;
     case 'system_breadcrumb_block':
@@ -120,9 +147,9 @@ function iucn_who_preprocess_block(&$variables) {
 // add a template suggestion based on region name
 // http://kristiankaa.dk/article/drupal8-region-specific-menu-theme-hook-suggestion
 function iucn_who_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
-    if (isset($variables['attributes']['data-region']) && isset($variables['attributes']['data-block_id'])) {
-      $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['attributes']['data-block_id'] . '__' . $variables['attributes']['data-region'];
-    }
+  if (isset($variables['attributes']['data-region']) && isset($variables['attributes']['data-block_id'])) {
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['attributes']['data-block_id'] . '__' . $variables['attributes']['data-region'];
+  }
 }
 
 function iucn_who_preprocess_iucn_who_1col(&$variables) {

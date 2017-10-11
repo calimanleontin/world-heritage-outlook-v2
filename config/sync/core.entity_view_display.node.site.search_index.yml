@@ -68,6 +68,15 @@ third_party_settings:
         - field_inscription_criteria
         - node_link
     fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
       node_link:
         plugin_id: node_link
         weight: 5
@@ -77,15 +86,6 @@ third_party_settings:
           'link text': 'Read more'
           'link class': ''
           wrapper: ''
-          class: ''
-      node_title:
-        plugin_id: node_title
-        weight: 1
-        label: hidden
-        formatter: default
-        settings:
-          link: true
-          wrapper: h2
           class: ''
 id: node.site.search_index
 targetEntityType: node
@@ -119,7 +119,7 @@ content:
     region: right
     label: hidden
     settings:
-      separator: ''
+      separator: ','
       override_label: '1'
       singular: Criterion
       plural: Criteria
