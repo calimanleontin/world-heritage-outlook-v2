@@ -8,6 +8,7 @@ function iucn_assessment_install() {
 //  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
 }
 
+// Update the field_css_identifier for some terms.
 function iucn_assessment_update_8001() {
   $css_identifiers = [
     'data-deficient' => ['Data Deficient'],
