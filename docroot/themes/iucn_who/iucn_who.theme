@@ -304,6 +304,13 @@ function iucn_who_preprocess_field(&$variables) {
         $variables['attributes']['class'][] = $variables['element']['#object']->field_as_global_assessment_level->entity->field_css_identifier->value;
       }
       break;
+
+    // Add UNESCO copyright to site description.
+    case 'body':
+      if ($variables['element']['#object']->bundle() == 'site') {
+        $variables['items'][0]['content']['#text'] .= "\nⓒ UNESCO";
+      }
+      break;
   }
 
   // Set attributes use-title-caption for some fields on full mode.

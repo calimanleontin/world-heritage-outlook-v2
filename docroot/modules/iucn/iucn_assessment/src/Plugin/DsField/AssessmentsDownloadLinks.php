@@ -34,7 +34,7 @@ class AssessmentsDownloadLinks extends DsFieldBase {
           $value = [
             'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
 //            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
-            'title' => $this->t('Site Assessment @year', ['@year' => $item->entity->field_as_cycle->value]),
+            'title' => $this->t('@year Conservation Outlook Assessment', ['@year' => $item->entity->field_as_cycle->value]),
           ];
           $value['attributes']['target'][] = '_blank';
           $links[] = $value;
