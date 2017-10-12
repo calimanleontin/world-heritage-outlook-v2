@@ -88,7 +88,9 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
   public function settingsSummary() {
     $summary = [];
     $summary[] = $this->getSetting('link') ? t('Link to the referenced entity') : t('No link');
-    $summary[] = t('Separator:') . ($this->getSetting('separator') ? Html::escape($this->getSetting('separator')) : ',');
+    if ($separator = $this->getSetting('separator')) {
+      $summary[] = t('Separator:') . Html::escape($separator);
+    }
     $summary[] = t('Override label:') . ($this->getSetting('override_label') ? 'Yes' : 'No');
     if ($this->getSetting('override_label')) {
       $summary[] = t('Label for singular:') . ($this->getSetting('singular') ? Html::escape($this->getSetting('singular')) : '-');
