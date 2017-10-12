@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Component\Utility;
-
+use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
  * Implements hook_drush_command().
@@ -31,10 +31,131 @@ function iucn_migrate_drush_command() {
     'description' => 'Command for importing multilingual sites.',
     'aliases' => ['iucnmsm'],
   ];
+  $commands['iucn-update-threat-weight'] = [
+    'description' => 'Command for updating assessment_threat taxonomy weights.',
+    'aliases' => ['iucnutw'],
+  ];
 
 
   return $commands;
 }
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_iucn_update_threat_weight(){
+
+  $weights = [
+    'Housing/ Urban Areas',
+    'Commercial/ Industrial Areas',
+    'Tourism/ Recreation Areas',
+    'Crops',
+    'Forestry/ Wood production',
+    'Livestock Farming / Grazing',
+    'Crop production',
+    'Marine/ Freshwater Aquaculture',
+    'Oil/ Gas exploration/development',
+    'Mining/ Quarrying',
+    'Renewable Energy',
+    'Roads/ Railroads',
+    'Utility / Service Lines',
+    'Shipping Lanes',
+    'Flight Paths',
+    'Hunting (commercial/subsistence)',
+    'Poaching',
+    'Logging/ Wood Harvesting',
+    'Fishing / Harvesting Aquatic Resources',
+    'Other Biological Resource Use',
+    'Tourism/ visitors/ recreation',
+    'War, Civil Unrest/ Military Exercises',
+    'Other Activities',
+    'Fire/ Fire Suppression',
+    'Dams/ Water Management or Use',
+    'Other Ecosystem Modifications',
+    'Invasive Non-Native/ Alien Species',
+    'Hyper-Abundant Species',
+    'Modified Genetic Material',
+    'Water Pollution',
+    'Household Sewage/ Urban Waste Water',
+    'Industrial/ Military Effluents',
+    'Agricultural/ Forestry Effluents',
+    'Solid Waste',
+    'Air Pollution',
+    'Volcanoes',
+    'Earthquakes/ Tsunamis',
+    'Avalanches/ Landslides',
+    'Erosion and Siltation/ Deposition',
+    'Habitat Shifting/ Alteration',
+    'Droughts',
+    'Desertification',
+    'Ocean acidification',
+    'Temperature extremes',
+    'Storms/Flooding',
+    'Changes in traditional ways of life and knowledge systems',
+    'Identity/ Social Cohesion/ Changes in local population and community',
+    'Other',
+  ];
+
+  $count_weights = count($weights);
+  $not_found_items = [];
+
+  $vids = Vocabulary::loadMultiple();
+  foreach ($vids as $vid) {
+    if ($vid->label() == 'Assessment threat categories') {
+      $container = \Drupal::getContainer();
+      $terms = $container->get('entity.manager')->getStorage('taxonomy_term')->loadTree($vid->id());
+      if (!empty($terms)) {
+        $found = 0;
+        foreach ($terms as $term) {
+          if (in_array($term->name, $weights)) {
+            $found++;
+            $key = array_search($term->name, $weights);
+            drush_print(dt("----------------------------"));
+            drush_print(dt('Found ' . $term->name . 'updating the weight from ' . $term->weight . ' to ---> ' . $key ));
+             /** @var \Drupal\taxonomy\Entity\Term $term */
+            drush_print(dt('Done.'));
+
+            $update_term = \Drupal\taxonomy\Entity\Term::load($term->tid);
+            if ($update_term) {
+              $update_term->weight = $key;
+              $update_term->save();
+            }
+            unset($weights[$key]);
+          }else{
+            $not_found_items[] = $term->name;
+          }
+        }
+      }
+      drush_print(dt("----------------------------"));
+      drush_print(dt('New weights items:' . $count_weights));
+      drush_print(dt('Found and updates items:' . $found));
+
+      if ($not_found_items) {
+        drush_print(dt("----------------------------"));
+        drush_print(dt('Not Found items:'));
+        drush_print(dt("----------------------------"));
+        foreach ($not_found_items as $item) {
+          drush_print(dt($item));
+        }
+      }
+
+      if ($weights) {
+        drush_print(dt("----------------------------"));
+        drush_print(dt('Not Found items but must update:'));
+        drush_print(dt("----------------------------"));
+        foreach ($weights as $item) {
+          drush_print(dt($item));
+        }
+      }
+      break;
+    }
+  }
+  drush_print(dt("----------------------------"));
+  drush_print(dt("Finished."));
+  drush_print(dt("----------------------------"));
+}
+
 /**
  * Drush command logic.
  * drush_[MODULE_NAME]_[COMMAND_NAME]().
