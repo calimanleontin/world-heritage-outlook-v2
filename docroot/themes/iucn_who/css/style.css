@@ -9464,6 +9464,9 @@ h6.collapsible-title {
   text-decoration: none;
   color: #03afdf;
 }
+.block-facets .facet-item ul {
+  display: none;
+}
 @media screen and (max-width: 767px) {
   .sidemenu .block-facets .panel-title {
     color: #333333;
