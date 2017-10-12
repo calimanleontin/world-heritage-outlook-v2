@@ -314,13 +314,22 @@ function iucn_who_preprocess_field(&$variables) {
   ];
   $is_image_field = in_array($variables['field_name'], $image_fields);
   $is_full_mode = !empty($variables['element']['#view_mode'])
-    && $variables['element']['#view_mode'] == 'full';
+    && in_array($variables['element']['#view_mode'], ['full', 'default']);
   if ($is_image_field && $is_full_mode && !empty($variables['items'])) {
     foreach ($variables['items'] as &$item) {
       $item['content']['#item_attributes']['use-title-caption'] = 1;
+
+      // BlazyManager takes the attributes from ['content']['#build']['item']->_attributes
+      // and replaces ['content']['#item_attributes'] with them.
+      if ($item['content']['#theme'] == 'blazy') {
+        /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $build_item */
+        $build_item = $item['content']['#build']['item'];
+        $value = $build_item->getValue();
+        $value['_attributes']['use-title-caption'] = 1;
+        $build_item->setValue($value);
+      }
     }
   }
-
 }
 
 function iucn_who_preprocess_form_element(&$variables) {
