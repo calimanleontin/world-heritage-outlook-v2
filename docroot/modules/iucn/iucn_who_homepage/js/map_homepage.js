@@ -127,6 +127,7 @@ function postInitMap(instance_id, map, config) {
         // Clear selection since this site might not exist in new filtering
         $.iucnResetAllMarkerIcons();
       }
+      $.iucnClearSelection();
       return false;
     });
 
@@ -135,6 +136,8 @@ function postInitMap(instance_id, map, config) {
      */
     $('#edit-q').on('change', function() {
       if ($(this).val() !== '') {
+        $.showAllMarkers(true);
+        $('#map-filters li').removeClass('active');
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
           if ($marker.customInfo.id == $(this).val()) {
