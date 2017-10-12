@@ -13759,14 +13759,19 @@ fieldset[disabled] .map-site-detail .close.focus {
 .tab-pane#summary .field--name-field-as-vass-wh-state,
 .tab-pane#summary .field--name-field-as-protection-ov-rating,
 .tab-pane#summary .field--name-field-as-threats-rating,
+.tab-pane#summary .field--name-display-field-copynode-assessment-trend-copy,
 .tab-pane#summary .field--name-field-as-vass-wh-state a,
 .tab-pane#summary .field--name-field-as-protection-ov-rating a,
-.tab-pane#summary .field--name-field-as-threats-rating a {
+.tab-pane#summary .field--name-field-as-threats-rating a,
+.tab-pane#summary .field--name-display-field-copynode-assessment-trend-copy a {
   font-size: 17px;
   font-size: 1.7rem;
   color: #f69232;
   font-weight: 900;
   margin-bottom: 1.8em;
+}
+.tab-pane#summary .field--name-field-as-vass-wh-state {
+  margin-bottom: 0;
 }
 @media screen and (min-width: 768px) {
   .tab-pane#summary .iucn-expandable-text-content {

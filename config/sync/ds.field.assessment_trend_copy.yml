@@ -1,0 +1,9 @@
+id: assessment_trend_copy
+label: Trend
+ui_limit: 'site_assessment|*'
+properties:
+  field_id: node.site_assessment.field_as_vass_wh_trend
+type: display_field_copy
+type_label: 'Copy field'
+entities:
+  node: node

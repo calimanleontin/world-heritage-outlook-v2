@@ -71,74 +71,83 @@ third_party_settings:
     regions:
       summary:
         - group_conservation_outlook
-        - field_as_protection_ov_rating
         - field_as_threats_rating
-        - field_as_protection_ov_text
+        - field_as_protection_ov_rating
+        - field_as_vass_wh_state
         - field_as_global_assessment_text
         - field_as_threats_text
+        - field_as_protection_ov_text
         - group_current_state_trend_values
+        - 'display_field_copy:node-assessment_trend_copy'
+        - field_as_vass_wh_text
         - group_overall_threats
         - group_overall_prot_man
-        - field_as_vass_wh_state
-        - field_as_vass_wh_text
         - field_as_end_date
         - field_as_global_assessment_level
       full_assessment_values:
-        - field_as_threats_potent_rating
-        - 'display_field_copy:node-protection_overall_rating'
+        - field_as_protection_ov_out_rate
         - field_as_benefits
         - field_as_benefits_summary
+        - field_as_threats_potent_rating
+        - 'display_field_copy:node-protection_overall_rating'
         - field_as_threats_current_rating
-        - field_as_protection_ov_out_rate
-        - field_as_protection_ov_out_text
         - field_as_threats_current_text
-        - 'display_field_copy:node-protection_overall_effectiveness'
         - field_as_threats_potent_text
+        - field_as_protection_ov_out_text
+        - 'display_field_copy:node-protection_overall_effectiveness'
+        - group_ass_pm_outside
         - field_as_threats_current
         - field_as_threats_potential
-        - group_ass_pm_outside
         - group_best_practice_examples
         - field_as_projects
-        - group_key_conservation_issues
-        - field_as_projects_needs
-        - group_values
-        - field_as_key_cons
         - 'display_field_copy:node-finalised_on'
-        - group_benefits
+        - group_values
+        - field_as_projects_needs
+        - group_key_conservation_issues
+        - field_as_key_cons
         - group_description_of_values
-        - group_ass_protection_manag
-        - field_as_vass_bio_state
+        - group_benefits
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
+        - field_as_vass_bio_state
+        - group_ass_protection_manag
+        - field_as_vass_bio_trend
         - field_as_protection
         - group_overall_ass_prot
         - group_assessment_information
-        - field_as_vass_bio_trend
         - group_threats
+        - 'display_field_copy:node-assessment_values_copy'
+        - group_protection_and_management
         - group_additional_information
         - 'display_field_copy:node-justification_of_assessment_valu'
         - field_as_vass_bio_text
-        - group_protection_and_management
-        - field_as_protection_ov_practices
         - group_projects
         - group_state_and_trend_of_values
+        - field_as_protection_ov_practices
         - group_understanding_benefits
         - group_summary_of_benefits
-        - group_assessing_current_state
-        - group_current_threats
         - group_active_projects
+        - group_current_threats
+        - group_assessing_current_state
         - group_potential_threats
         - field_as_values_wh
-        - group_summary_values
-        - group_ass_state_wh
         - group_projects_needs
+        - group_ass_state_wh
+        - group_summary_values
         - 'display_field_copy:node-identifying_and_describing_value'
-        - 'display_field_copy:node-other_biodiv_values'
-        - group_ass_state_bv
         - field_as_values_bio
+        - group_ass_state_bv
+        - 'display_field_copy:node-other_biodiv_values'
       references:
         - field_as_references
     fields:
+      'display_field_copy:node-assessment_trend_copy':
+        plugin_id: 'display_field_copy:node-assessment_trend_copy'
+        weight: 2
+        label: inline
+        formatter: entity_reference_label
+        settings:
+          formatter:
+            link: 0
       'display_field_copy:node-assessment_values_copy':
         plugin_id: 'display_field_copy:node-assessment_values_copy'
         weight: 7
@@ -199,7 +208,7 @@ third_party_settings:
       weight: 0
       format_type: html_element
       format_settings:
-        label: 'Conservation outlook'
+        label: 'Conservation Outlook'
         element: div
         show_label: true
         label_element: h3
@@ -208,10 +217,11 @@ third_party_settings:
         speed: fast
         id: ''
         classes: conservation-outlook-summary-group
-      label: 'Conservation outlook'
+      label: 'Conservation Outlook'
     group_current_state_trend_values:
       children:
         - field_as_vass_wh_state
+        - 'display_field_copy:node-assessment_trend_copy'
         - field_as_vass_wh_text
       parent_name: ''
       weight: 2
@@ -235,7 +245,7 @@ third_party_settings:
       weight: 3
       format_type: html_element
       format_settings:
-        label: 'Overall Threats'
+        label: 'Overall THREATS'
         element: div
         show_label: true
         label_element: h3
@@ -244,7 +254,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: threats-summary-group
-      label: 'Overall Threats'
+      label: 'Overall THREATS'
     group_overall_prot_man:
       children:
         - field_as_protection_ov_rating
@@ -406,6 +416,7 @@ third_party_settings:
         classes: 'assessment-threats assessment-toggle'
         open: false
         required_fields: false
+        terms: ''
       label: Threats
     group_current_threats:
       children:
@@ -414,13 +425,14 @@ third_party_settings:
         - field_as_threats_current
       parent_name: group_threats
       weight: 20
-      format_type: details_assessment
+      format_type: details
       format_settings:
         label: 'Current Threats'
         terms: field_as_threats_current_rating
         id: ''
         classes: 'assessment-current-threats assessment-toggle'
-        open: 0
+        open: false
+        required_fields: false
       label: 'Current Threats'
     group_potential_threats:
       children:
@@ -509,11 +521,11 @@ third_party_settings:
       weight: 10
       format_type: details
       format_settings:
+        label: 'Understanding benefits'
         id: ''
         classes: 'assessment-understanding-benefits assessment-toggle'
         open: false
-        required_fields: false
-      label: 'Understanding Benefits'
+      label: 'Understanding benefits'
     group_summary_of_benefits:
       children:
         - field_as_benefits_summary
@@ -571,11 +583,11 @@ third_party_settings:
       weight: 21
       format_type: details
       format_settings:
+        label: 'Summary of values'
         id: ''
         classes: 'assessment-summary-values assessment-toggle'
         open: false
-        required_fields: false
-      label: 'Summary of the Values'
+      label: 'Summary of values'
     group_ass_state_wh:
       children:
         - field_as_vass_wh_trend
@@ -721,7 +733,7 @@ content:
     third_party_settings: {  }
   field_as_protection_ov_rating:
     type: entity_reference_label
-    weight: 0
+    weight: 1
     region: summary
     label: hidden
     settings:
@@ -729,7 +741,7 @@ content:
     third_party_settings: {  }
   field_as_protection_ov_text:
     type: basic_string
-    weight: 1
+    weight: 2
     region: summary
     label: hidden
     settings: {  }
@@ -817,7 +829,7 @@ content:
     type: entity_reference_revisions_entity_view
     weight: 21
     region: full_assessment_values
-    label: above
+    label: hidden
     settings:
       view_mode: default
       link: ''
@@ -847,7 +859,7 @@ content:
     third_party_settings: {  }
   field_as_vass_wh_state:
     type: entity_reference_label
-    weight: 10
+    weight: 1
     region: summary
     label: hidden
     settings:
@@ -855,7 +867,7 @@ content:
     third_party_settings: {  }
   field_as_vass_wh_text:
     type: basic_string
-    weight: 11
+    weight: 3
     region: summary
     label: hidden
     settings: {  }
@@ -866,7 +878,7 @@ content:
     region: full_assessment_values
     label: inline
     settings:
-      link: false
+      link: true
     third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
