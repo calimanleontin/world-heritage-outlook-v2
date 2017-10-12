@@ -65,14 +65,25 @@ class SitesQueryUtil {
   }
 
 
-  public static function getSiteConservationRatings($order_by = 'weight') {
+  public static function getSiteConservationRatings($order_by = 'weight', $get_translation = 'false') {
     $query = \Drupal::entityQuery('taxonomy_term');
     $query->condition('vid', 'assessment_conservation_rating');
     if (!empty($order_by)) {
       $query->sort($order_by);
     }
     $tids = $query->execute();
-    return Term::loadMultiple($tids);
+    if (!$get_translation) {
+      return Node::load($tids);
+    }
+    $terms = [];
+    $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    foreach ($tids as $tid) {
+      $term = Term::load($tid);
+      $term = \Drupal::service('entity.repository')
+        ->getTranslationFromContext($term, $langcode);
+      $terms[] = $term;
+    }
+    return $terms;
   }
 
 
