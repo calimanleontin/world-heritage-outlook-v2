@@ -13,7 +13,7 @@ entity_type: node
 bundle: benefit
 label: Links
 description: 'Appears in the right section under image'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
