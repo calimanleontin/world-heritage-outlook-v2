@@ -40,8 +40,34 @@ function iucn_migrate_drush_command() {
     'aliases' => ['iucnubw'],
   ];
 
+  $commands['iucn-update-sites-copyright'] = [
+    'description' => 'Command for updating sites description by adding Unesco copyright at the end.',
+    'aliases' => ['iucnusc'],
+  ];
+
 
   return $commands;
+}
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_iucn_update_sites_copyright(){
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties(array('type' => ['site']));
+  foreach ($nodes as $node) {
+    if ($node &&  $description = $node->get('body')->getValue()) {
+      $node->body->value = $description[0]['value'] . '
+      © UNESCO';
+      $node->save();
+      drush_print(dt("Update site description: " . $node->id()));
+    }
+  }
+
+  drush_print(dt("----------------------------"));
+  drush_print(dt("All ok."));
 }
 
 /**
@@ -138,7 +164,7 @@ function iucn_update_taxonomy_weights($taxonomy_label, $weights){
             $found++;
             $key = array_search($term->name, $weights);
             drush_print(dt("----------------------------"));
-            drush_print(dt('Found ' . $term->name . 'updating the weight from ' . $term->weight . ' to ---> ' . $key ));
+            drush_print(dt('Found ' . $term->name . 'updating the weight from ' . $term->weight . ' to ---> ' . $key));
             /** @var \Drupal\taxonomy\Entity\Term $term */
             drush_print(dt('Done.'));
 
@@ -148,7 +174,8 @@ function iucn_update_taxonomy_weights($taxonomy_label, $weights){
               $update_term->save();
             }
             unset($weights[$key]);
-          }else{
+          }
+          else {
             $not_found_items[] = $term->name;
           }
         }
@@ -187,7 +214,7 @@ function iucn_update_taxonomy_weights($taxonomy_label, $weights){
  * drush_[MODULE_NAME]_[COMMAND_NAME]().
  */
 function drush_iucn_migrate_iucn_delete_content() {
-  //Remove all sites
+  // Remove all sites.
   $nodes = \Drupal::entityTypeManager()
     ->getStorage('node')
     ->loadByProperties(array('type' => ['site']));
@@ -211,7 +238,7 @@ function drush_iucn_migrate_iucn_delete_content() {
   ];
 
   $tids = \Drupal::entityQuery('taxonomy_term')
-    ->condition('vid', $taxonomy_terms,'IN')
+    ->condition('vid', $taxonomy_terms, 'IN')
     ->execute();
 
   $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
