@@ -8874,44 +8874,56 @@ table.paragraph table tbody > tr:last-child.even {
 a.is-active {
   color: #03afdf;
 }
-.conservation-status.coming-soon,
-.iucn-color-coming-soon {
+.conservation-status.coming-soon {
   color: #7e7e7e;
+}
+.iucn-color-coming-soon {
+  color: #7e7e7e !important;
 }
 .iucn-bg-coming-soon {
   background-color: #7e7e7e;
 }
-.conservation-status.data-deficient,
-.iucn-color-data-deficient {
+.conservation-status.data-deficient {
   color: #333333;
+}
+.iucn-color-data-deficient {
+  color: #333333 !important;
 }
 .iucn-bg-data-deficient {
   background-color: #333333;
 }
-.conservation-status.critical,
-.iucn-color-critical {
+.conservation-status.critical {
   color: #ef3133;
+}
+.iucn-color-critical {
+  color: #ef3133 !important;
 }
 .iucn-bg-critical {
   background-color: #ef3133;
 }
-.conservation-status.significant-concern,
-.iucn-color-significant-concern {
+.conservation-status.significant-concern {
   color: #f69232;
+}
+.iucn-color-significant-concern {
+  color: #f69232 !important;
 }
 .iucn-bg-significant-concern {
   background-color: #f69232;
 }
-.conservation-status.good-concerns,
-.iucn-color-good-concerns {
+.conservation-status.good-concerns {
   color: #9cd07d;
+}
+.iucn-color-good-concerns {
+  color: #9cd07d !important;
 }
 .iucn-bg-good-concerns {
   background-color: #9cd07d;
 }
-.conservation-status.good,
-.iucn-color-good {
+.conservation-status.good {
   color: #3bb55e;
+}
+.iucn-color-good {
+  color: #3bb55e !important;
 }
 .iucn-bg-good {
   background-color: #3bb55e;
