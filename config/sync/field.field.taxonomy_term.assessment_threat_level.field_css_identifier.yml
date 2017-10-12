@@ -1,0 +1,19 @@
+uuid: 1b78cf11-c035-4a41-ae5d-6775e0e06030
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_css_identifier
+    - taxonomy.vocabulary.assessment_threat_level
+id: taxonomy_term.assessment_threat_level.field_css_identifier
+field_name: field_css_identifier
+entity_type: taxonomy_term
+bundle: assessment_threat_level
+label: 'CSS identifier'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
