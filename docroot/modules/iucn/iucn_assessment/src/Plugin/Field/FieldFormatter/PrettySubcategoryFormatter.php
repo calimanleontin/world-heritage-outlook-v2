@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Render\Element\Item;
 
 
 /**
@@ -26,18 +27,24 @@ class PrettySubcategoryFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
+      if (empty($item->entity)) {
+        continue;
+      }
       $category = $item->entity;
       $storage = \Drupal::service('entity_type.manager')
         ->getStorage('taxonomy_term');
       $parent = $storage->loadParents($category->id());
       $parent = reset($parent);
+      if (empty($category->getName())) {
+        continue;
+      }
       $markup = $category->getName();
       if (!empty($parent)) {
         $markup = $parent->getName() . ' > ' . $markup;
       }
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $markup,
+        '#markup' => "$markup<br>",
       ];
     }
     return $element;

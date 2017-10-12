@@ -227,7 +227,7 @@ third_party_settings:
       weight: 2
       format_type: html_element
       format_settings:
-        label: 'Current state of trend and VALUES'
+        label: 'Current state and trend of VALUES'
         element: div
         show_label: true
         label_element: h3
@@ -236,7 +236,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: values-summary-group
-      label: 'Current state of trend and VALUES'
+      label: 'Current state and trend of VALUES'
     group_overall_threats:
       children:
         - field_as_threats_rating
