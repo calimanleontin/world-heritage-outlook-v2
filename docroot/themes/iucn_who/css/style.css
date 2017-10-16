@@ -8877,56 +8877,20 @@ a.is-active {
 .conservation-status.coming-soon {
   color: #7e7e7e;
 }
-.iucn-color-coming-soon {
-  color: #7e7e7e !important;
-}
-.iucn-bg-coming-soon {
-  background-color: #7e7e7e;
-}
 .conservation-status.data-deficient {
   color: #333333;
-}
-.iucn-color-data-deficient {
-  color: #333333 !important;
-}
-.iucn-bg-data-deficient {
-  background-color: #333333;
 }
 .conservation-status.critical {
   color: #ef3133;
 }
-.iucn-color-critical {
-  color: #ef3133 !important;
-}
-.iucn-bg-critical {
-  background-color: #ef3133;
-}
 .conservation-status.significant-concern {
   color: #f69232;
-}
-.iucn-color-significant-concern {
-  color: #f69232 !important;
-}
-.iucn-bg-significant-concern {
-  background-color: #f69232;
 }
 .conservation-status.good-concerns {
   color: #9cd07d;
 }
-.iucn-color-good-concerns {
-  color: #9cd07d !important;
-}
-.iucn-bg-good-concerns {
-  background-color: #9cd07d;
-}
 .conservation-status.good {
   color: #3bb55e;
-}
-.iucn-color-good {
-  color: #3bb55e !important;
-}
-.iucn-bg-good {
-  background-color: #3bb55e;
 }
 .caret-triangle {
   display: inline-block;
@@ -13756,27 +13720,86 @@ fieldset[disabled] .map-site-detail .close.focus {
 .iucn-assessment-panel-container .panel .panel-body {
   padding-top: 0;
 }
-.tab-pane#summary .field--name-field-as-vass-wh-state,
-.tab-pane#summary .field--name-field-as-protection-ov-rating,
-.tab-pane#summary .field--name-field-as-threats-rating,
-.tab-pane#summary .field--name-display-field-copynode-assessment-trend-copy,
-.tab-pane#summary .field--name-field-as-vass-wh-state a,
-.tab-pane#summary .field--name-field-as-protection-ov-rating a,
-.tab-pane#summary .field--name-field-as-threats-rating a,
-.tab-pane#summary .field--name-display-field-copynode-assessment-trend-copy a {
+.tab--summary .field--name-field-as-vass-wh-state,
+.tab--summary .field--name-field-as-protection-ov-rating,
+.tab--summary .field--name-field-as-threats-rating,
+.tab--summary .field--name-display-field-copynode-assessment-trend-copy,
+.tab--summary .field--name-field-as-vass-wh-state > a,
+.tab--summary .field--name-field-as-protection-ov-rating > a,
+.tab--summary .field--name-field-as-threats-rating > a,
+.tab--summary .field--name-display-field-copynode-assessment-trend-copy > a {
   font-size: 17px;
   font-size: 1.7rem;
-  color: #f69232;
   font-weight: 900;
   margin-bottom: 1.8em;
 }
-.tab-pane#summary .field--name-field-as-vass-wh-state {
+.tab--summary .field--name-field-as-vass-wh-state {
   margin-bottom: 0;
 }
 @media screen and (min-width: 768px) {
-  .tab-pane#summary .iucn-expandable-text-content {
+  .tab--summary .iucn-expandable-text-content {
     max-height: none;
   }
+}
+.tab--summary .iucn-threat--data-deficient,
+.tab--summary .iucn-threat--data-deficient > a {
+  color: #333333;
+}
+.tab--summary .iucn-threat--very-high-threat,
+.tab--summary .iucn-threat--very-high-threat > a {
+  color: #ef3133;
+}
+.tab--summary .iucn-threat--high-threat,
+.tab--summary .iucn-threat--high-threat > a {
+  color: #f69232;
+}
+.tab--summary .iucn-threat--low-threat,
+.tab--summary .iucn-threat--low-threat > a {
+  color: #9cd07d;
+}
+.tab--summary .iucn-threat--very-low-threat,
+.tab--summary .iucn-threat--very-low-threat > a {
+  color: #3bb55e;
+}
+.tab--summary .iucn-state--data-deficient,
+.tab--summary .iucn-state--data-deficient > a {
+  color: #333333;
+}
+.tab--summary .iucn-state--critical,
+.tab--summary .iucn-state--critical > a {
+  color: #ef3133;
+}
+.tab--summary .iucn-state--high-concern,
+.tab--summary .iucn-state--high-concern > a {
+  color: #f69232;
+}
+.tab--summary .iucn-state--low-concern,
+.tab--summary .iucn-state--low-concern > a {
+  color: #9cd07d;
+}
+.tab--summary .iucn-state--good,
+.tab--summary .iucn-state--good > a {
+  color: #3bb55e;
+}
+.tab--summary .iucn-rating--data-deficient,
+.tab--summary .iucn-rating--data-deficient > a {
+  color: #333333;
+}
+.tab--summary .iucn-rating--serious-concern,
+.tab--summary .iucn-rating--serious-concern > a {
+  color: #ef3133;
+}
+.tab--summary .iucn-rating--some-concern,
+.tab--summary .iucn-rating--some-concern > a {
+  color: #f69232;
+}
+.tab--summary .iucn-rating--effective,
+.tab--summary .iucn-rating--effective > a {
+  color: #9cd07d;
+}
+.tab--summary .iucn-rating--highly-effective,
+.tab--summary .iucn-rating--highly-effective > a {
+  color: #3bb55e;
 }
 @media screen and (max-width: 767px) {
   .assessment-expand {

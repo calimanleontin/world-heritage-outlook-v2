@@ -146,19 +146,11 @@ table.table-striped {
 a.is-active {
   color: @component-active-color;
 }
-// @todo: use mixin
+
 // Conservation status related classes
 .loop-conservation-ratings({
   .conservation-status.@{conservation-rating-class} {
     color: @conservation-rating-color;
-  }
-
-  .iucn-color-@{conservation-rating-class} {
-    color: @conservation-rating-color !important;
-  }
-
-  .iucn-bg-@{conservation-rating-class} {
-    background-color: @conservation-rating-color;
   }
 });
 
