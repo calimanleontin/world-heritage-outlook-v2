@@ -863,7 +863,7 @@ content:
     region: summary
     label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_as_vass_wh_text:
     type: basic_string
