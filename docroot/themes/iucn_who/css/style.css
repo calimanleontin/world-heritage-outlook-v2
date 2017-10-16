@@ -13495,12 +13495,6 @@ fieldset[disabled] .map-site-detail .close.focus {
 .iucn-site-wrapper .field--name-field-as-end-date .field--label:after {
   display: none;
 }
-.iucn-site-wrapper .field--name-field-as-end-date .field--label,
-.iucn-site-wrapper .field--name-field-as-end-date .field--item {
-  display: inline-block;
-  float: none;
-  padding-right: 0;
-}
 .iucn-site-wrapper .field--name-field-as-global-assessment-level {
   align-items: center;
   background-color: #134780;
