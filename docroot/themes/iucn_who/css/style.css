@@ -13780,24 +13780,24 @@ fieldset[disabled] .map-site-detail .close.focus {
 .tab--summary .iucn-state--good > a {
   color: #3bb55e;
 }
-.tab--summary .iucn-rating--data-deficient,
-.tab--summary .iucn-rating--data-deficient > a {
+.tab--summary .iucn-pr-rating--data-deficient,
+.tab--summary .iucn-pr-rating--data-deficient > a {
   color: #333333;
 }
-.tab--summary .iucn-rating--serious-concern,
-.tab--summary .iucn-rating--serious-concern > a {
+.tab--summary .iucn-pr-rating--serious-concern,
+.tab--summary .iucn-pr-rating--serious-concern > a {
   color: #ef3133;
 }
-.tab--summary .iucn-rating--some-concern,
-.tab--summary .iucn-rating--some-concern > a {
+.tab--summary .iucn-pr-rating--some-concern,
+.tab--summary .iucn-pr-rating--some-concern > a {
   color: #f69232;
 }
-.tab--summary .iucn-rating--effective,
-.tab--summary .iucn-rating--effective > a {
+.tab--summary .iucn-pr-rating--effective,
+.tab--summary .iucn-pr-rating--effective > a {
   color: #9cd07d;
 }
-.tab--summary .iucn-rating--highly-effective,
-.tab--summary .iucn-rating--highly-effective > a {
+.tab--summary .iucn-pr-rating--highly-effective,
+.tab--summary .iucn-pr-rating--highly-effective > a {
   color: #3bb55e;
 }
 @media screen and (max-width: 767px) {
