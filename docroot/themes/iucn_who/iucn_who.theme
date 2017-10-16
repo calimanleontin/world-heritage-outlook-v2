@@ -299,11 +299,17 @@ function iucn_who_preprocess_field(&$variables) {
       }
       break;
 
+    // Add custom classes to fields.
     case 'field_as_global_assessment_level':
-      if (!empty($variables['element']['#object']->field_as_global_assessment_level->entity)) {
-        $variables['attributes']['class'][] = $variables['element']['#object']->field_as_global_assessment_level->entity->field_css_identifier->value;
+    case 'field_as_vass_wh_state':
+    case 'field_as_threats_rating':
+    case 'field_as_protection_ov_rating':
+      $field_name = $variables['field_name'];
+      if (!empty($variables['element']['#object']->$field_name->entity)) {
+        $variables['attributes']['class'][] = $variables['element']['#object']->$field_name->entity->field_css_identifier->value;
       }
       break;
+
   }
 
   // Set attributes use-title-caption for some fields on full mode.

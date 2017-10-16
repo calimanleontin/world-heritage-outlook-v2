@@ -7,3 +7,34 @@
 function iucn_assessment_install() {
 //  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
 }
+
+// Update the field_css_identifier for some terms.
+function iucn_assessment_update_8001() {
+  $css_identifiers = [
+    'data-deficient' => ['Data Deficient'],
+    'good' => ['Highly Effective', 'Very Low Threat', 'Good'],
+    'good-concerns' => ['Effective', 'Low Threat', 'Low Concern'],
+    'significant-concern' => ['Some Concern', 'High Threat', 'High Concern'],
+    'critical' => ['Serious Concern', 'Very High Threat', 'Critical'],
+  ];
+
+  $taxonomies = ['assessment_protection_rating', 'assessment_threat_level', 'assessment_value_state'];
+
+  foreach ($taxonomies as $vid) {
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+    foreach ($terms as $term) {
+      $term = \Drupal\taxonomy\Entity\Term::load($term->tid);
+      $class = NULL;
+      foreach ($css_identifiers as $css_id => $values) {
+        if (in_array($term->getName(), $values)) {
+          $class = $css_id;
+          break;
+        }
+      }
+      if (!empty($class)) {
+        $term->field_css_identifier->value = $class;
+        $term->save();
+      }
+    }
+  }
+}

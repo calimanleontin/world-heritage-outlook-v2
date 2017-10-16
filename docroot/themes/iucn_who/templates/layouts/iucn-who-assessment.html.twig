@@ -9,11 +9,11 @@
     <!-- Tab panes -->
 
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active fade in" id="summary">
+      <div role="tabpanel" class="tab--summary tab-pane active fade in" id="summary">
         <h2 class="tab-title summary visible-mobile">{{ 'Summary'|t }}</h2>
         {{ content.summary }}
       </div>
-      <div role="tabpanel" class="tab-pane fade" id="full-assessment">
+      <div role="tabpanel" class="tab--full-assessment tab-pane fade" id="full-assessment">
         <h2 class="tab-title full-assessment visible-mobile">{{ 'Full assessment'|t }}</h2>
         <div class="assessment-expand">
           <p>{{ 'Click the + and - signs to expand or collapse full accounts of information under each topic. You can also view the entire list of information by clicking Expand all on the top left.'|t }}</p>
@@ -26,7 +26,7 @@
         {{ content.full_assessment_values }}
 
       </div>
-      <div role="tabpanel" class="tab-pane fade" id="references">
+      <div role="tabpanel" class="tab--references tab-pane fade" id="references">
         <h2 class="tab-title references visible-mobile">{{ 'References'|t }}</h2>
         {{ content.references }}
       </div>

@@ -260,16 +260,79 @@
 // }
 
 // Generate conservation rating styling
-@conservation-ratings-list: 'good', 'good-concerns', 'significant-concern', 'critical', 'data-deficient', 'coming-soon';
+@conservation-ratings-list:
+  'good' @iucn-green,
+  'good-concerns' @iucn-green-lighter,
+  'significant-concern' @iucn-orange,
+  'critical' @iucn-red,
+  'data-deficient' @iucn-gray-darkest,
+  'coming-soon' @iucn-gray,;
 
 .loop-conservation-ratings(@rules, @index: length(@conservation-ratings-list)) when (@index > 0) {
   & {
-    @conservation-rating-class: e(extract(@conservation-ratings-list, @index));
-    @conservation-rating-color: ~'@{@{conservation-rating-class}}';
+    @conservation-rating-class: e(extract(extract(@conservation-ratings-list, @index), 1));
+    @conservation-rating-color: e(extract(extract(@conservation-ratings-list, @index), 2));
     @rules();
 
     // next iteration
    .loop-conservation-ratings(@rules, (@index - 1));
+  }
+}
+
+// Generate threat level styling
+@threat-levels-list:
+  'very-low-threat' @iucn-green,
+  'low-threat' @iucn-green-lighter,
+  'high-threat' @iucn-orange,
+  'very-high-threat' @iucn-red,
+  'data-deficient' @iucn-gray-darkest,;
+
+.loop-threat-levels(@rules, @index: length(@threat-levels-list)) when (@index > 0) {
+  & {
+    @threat-level-class: e(extract(extract(@threat-levels-list, @index), 1));
+    @threat-level-color: e(extract(extract(@threat-levels-list, @index), 2));
+    @rules();
+
+    // next iteration
+   .loop-threat-levels(@rules, (@index - 1));
+  }
+}
+
+// Generate value state styling
+@value-states-list:
+  'good' @iucn-green,
+  'low-concern' @iucn-green-lighter,
+  'high-concern' @iucn-orange,
+  'critical' @iucn-red,
+  'data-deficient' @iucn-gray-darkest,;
+
+.loop-value-states(@rules, @index: length(@value-states-list)) when (@index > 0) {
+  & {
+    @value-state-class: e(extract(extract(@value-states-list, @index), 1));
+    @value-state-color: e(extract(extract(@value-states-list, @index), 2));
+    @rules();
+
+    // next iteration
+   .loop-value-states(@rules, (@index - 1));
+  }
+}
+
+// Generate protection rating styling
+@protection-ratings-list:
+  'highly-effective' @iucn-green,
+  'effective' @iucn-green-lighter,
+  'some-concern' @iucn-orange,
+  'serious-concern' @iucn-red,
+  'data-deficient' @iucn-gray-darkest,;
+
+.loop-protection-ratings(@rules, @index: length(@protection-ratings-list)) when (@index > 0) {
+  & {
+    @protection-rating-class: e(extract(extract(@protection-ratings-list, @index), 1));
+    @protection-rating-color: e(extract(extract(@protection-ratings-list, @index), 2));
+    @rules();
+
+    // next iteration
+   .loop-protection-ratings(@rules, (@index - 1));
   }
 }
 
