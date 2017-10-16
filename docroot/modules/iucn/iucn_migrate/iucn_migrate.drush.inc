@@ -35,9 +35,57 @@ function iucn_migrate_drush_command() {
     'description' => 'Command for updating assessment_threat taxonomy weights.',
     'aliases' => ['iucnutw'],
   ];
+  $commands['iucn-update-benefits-weight'] = [
+    'description' => 'Command for updating assessment_benefits_category taxonomy weights.',
+    'aliases' => ['iucnubw'],
+  ];
+
+  $commands['iucn-update-sites-copyright'] = [
+    'description' => 'Command for updating sites description by adding Unesco copyright at the end.',
+    'aliases' => ['iucnusc'],
+  ];
 
 
   return $commands;
+}
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_iucn_update_sites_copyright(){
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties(array('type' => ['site']));
+  foreach ($nodes as $node) {
+    if ($node &&  $description = $node->get('body')->getValue()) {
+      $node->body->value = $description[0]['value'] . '
+      © UNESCO';
+      $node->save();
+      drush_print(dt("Update site description: " . $node->id()));
+    }
+  }
+
+  drush_print(dt("----------------------------"));
+  drush_print(dt("All ok."));
+}
+
+/**
+ * Drush command logic.
+ * drush_[MODULE_NAME]_[COMMAND_NAME]().
+ */
+function drush_iucn_migrate_iucn_update_benefits_weight(){
+  $weights = [
+    'Food',
+    'Water',
+    'Cultural and spiritual values',
+    'Health and recreation',
+    'Knowledge',
+    'Environmental services',
+    'Materials',
+    'Contribution to local economy',
+  ];
+  iucn_update_taxonomy_weights('Assessment benefits category', $weights);
 }
 
 /**
@@ -97,12 +145,16 @@ function drush_iucn_migrate_iucn_update_threat_weight(){
     'Other',
   ];
 
+  iucn_update_taxonomy_weights('Assessment threat categories', $weights);
+}
+
+function iucn_update_taxonomy_weights($taxonomy_label, $weights){
   $count_weights = count($weights);
   $not_found_items = [];
 
   $vids = Vocabulary::loadMultiple();
   foreach ($vids as $vid) {
-    if ($vid->label() == 'Assessment threat categories') {
+    if ($vid->label() == $taxonomy_label) {
       $container = \Drupal::getContainer();
       $terms = $container->get('entity.manager')->getStorage('taxonomy_term')->loadTree($vid->id());
       if (!empty($terms)) {
@@ -112,8 +164,8 @@ function drush_iucn_migrate_iucn_update_threat_weight(){
             $found++;
             $key = array_search($term->name, $weights);
             drush_print(dt("----------------------------"));
-            drush_print(dt('Found ' . $term->name . 'updating the weight from ' . $term->weight . ' to ---> ' . $key ));
-             /** @var \Drupal\taxonomy\Entity\Term $term */
+            drush_print(dt('Found ' . $term->name . 'updating the weight from ' . $term->weight . ' to ---> ' . $key));
+            /** @var \Drupal\taxonomy\Entity\Term $term */
             drush_print(dt('Done.'));
 
             $update_term = \Drupal\taxonomy\Entity\Term::load($term->tid);
@@ -122,7 +174,8 @@ function drush_iucn_migrate_iucn_update_threat_weight(){
               $update_term->save();
             }
             unset($weights[$key]);
-          }else{
+          }
+          else {
             $not_found_items[] = $term->name;
           }
         }
@@ -161,7 +214,7 @@ function drush_iucn_migrate_iucn_update_threat_weight(){
  * drush_[MODULE_NAME]_[COMMAND_NAME]().
  */
 function drush_iucn_migrate_iucn_delete_content() {
-  //Remove all sites
+  // Remove all sites.
   $nodes = \Drupal::entityTypeManager()
     ->getStorage('node')
     ->loadByProperties(array('type' => ['site']));
@@ -185,7 +238,7 @@ function drush_iucn_migrate_iucn_delete_content() {
   ];
 
   $tids = \Drupal::entityQuery('taxonomy_term')
-    ->condition('vid', $taxonomy_terms,'IN')
+    ->condition('vid', $taxonomy_terms, 'IN')
     ->execute();
 
   $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');

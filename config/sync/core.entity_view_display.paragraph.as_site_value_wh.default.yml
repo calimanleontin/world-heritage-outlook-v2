@@ -45,7 +45,7 @@ content:
     weight: 1
     label: hidden
     settings:
-      separator: ','
+      separator: ''
       override_label: '1'
       singular: Criterion
       plural: Criteria

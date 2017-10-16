@@ -15,6 +15,7 @@ dependencies:
     - field.storage.paragraph.field_as_benefits_category
     - field.storage.node.field_as_threats_current
     - field.storage.paragraph.field_as_threats_categories
+    - field.storage.taxonomy_term.field_unesco_region
     - search_api.server.iucn_database
   module:
     - taxonomy
@@ -161,6 +162,17 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: title
     type: string
+  field_unesco_region:
+    label: 'Country » Taxonomy term » UNESCO Region'
+    datasource_id: 'entity:node'
+    property_path: 'field_country:entity:field_unesco_region'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_country
+        - field.storage.taxonomy_term.field_unesco_region
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:
@@ -170,6 +182,8 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
+  aggregated_field: {  }
+  add_url: {  }
   html_filter:
     all_fields: false
     fields:
@@ -187,8 +201,16 @@ processor_settings:
     weights:
       preprocess_index: -15
       preprocess_query: -15
-  add_url: {  }
-  aggregated_field: {  }
+  rendered_item: {  }
+  entity_status: {  }
+  hierarchy:
+    fields:
+      field_as_benefits_category: taxonomy_term-parent
+    weights:
+      preprocess_index: -45
+  content_access:
+    weights:
+      preprocess_query: -30
   highlight:
     highlight: always
     highlight_partial: false
@@ -199,7 +221,6 @@ processor_settings:
     suffix: '</strong>'
     weights:
       postprocess_query: 0
-  rendered_item: {  }
   ignorecase:
     all_fields: false
     fields:
@@ -211,15 +232,6 @@ processor_settings:
     weights:
       preprocess_index: -20
       preprocess_query: -20
-  content_access:
-    weights:
-      preprocess_query: -30
-  entity_status: {  }
-  hierarchy:
-    fields:
-      field_as_benefits_category: taxonomy_term-parent
-    weights:
-      preprocess_index: -45
 tracker_settings:
   default: {  }
 options:

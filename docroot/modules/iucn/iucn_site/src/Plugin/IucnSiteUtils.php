@@ -28,7 +28,8 @@ class IucnSiteUtils {
     }
 
     // Create the directory if one doesn't exist already.
-    file_prepare_directory(dirname($file->getFileUri()), FILE_CREATE_DIRECTORY);
+    $dirname = dirname($file->getFileUri());
+    file_prepare_directory($dirname, FILE_CREATE_DIRECTORY);
 
     // Create the file if one doesn't exist already.
     if (!file_exists($file->getFileUri())) {

@@ -149,9 +149,12 @@ a.is-active {
 // @todo: use mixin
 // Conservation status related classes
 .loop-conservation-ratings({
-  .conservation-status.@{conservation-rating-class},
-  .iucn-color-@{conservation-rating-class} {
+  .conservation-status.@{conservation-rating-class} {
     color: @conservation-rating-color;
+  }
+
+  .iucn-color-@{conservation-rating-class} {
+    color: @conservation-rating-color !important;
   }
 
   .iucn-bg-@{conservation-rating-class} {

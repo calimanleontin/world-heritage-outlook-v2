@@ -71,7 +71,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       '#theme' => 'homepage_map_block',
       '#markup_map' => parent::getMapMarkup(),
       '#sites_total_count' => SitesQueryUtil::getPublishedSitesCount(),
-      '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings(),
+      '#conservation_ratings' => SitesQueryUtil::getSiteConservationRatings('weight', TRUE),
       '#empty_selection_placeholder_markup' => $this->getSiteSelectionPlaceholder(),
       '#search_form' => $search_form,
       '#block_footer_text' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
