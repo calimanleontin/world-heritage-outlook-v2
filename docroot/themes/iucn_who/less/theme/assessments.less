@@ -608,7 +608,7 @@
   .field--name-field-as-protection-ov-rating,
   .field--name-field-as-threats-rating,
   .field--name-display-field-copynode-assessment-trend-copy {
-    &, a {
+    &, > a {
       .remify(font-size, 17px);
       font-weight: 900;
       margin-bottom: 1.8em;
@@ -622,6 +622,21 @@
       max-height: none;
     }
   }
+  .loop-threat-levels({
+    .iucn-threat--@{threat-level-class} {
+      &, & > a { color: @threat-level-color; }
+    }
+  });
+  .loop-value-states({
+    .iucn-state--@{value-state-class} {
+      &, & > a { color: @value-state-color; }
+    }
+  });
+  .loop-protection-ratings({
+    .iucn-rating--@{protection-rating-class} {
+      &, & > a { color: @protection-rating-color; }
+    }
+  });
 }
 .assessment-expand {
   @media @grid-mobile {
