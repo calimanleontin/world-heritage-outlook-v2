@@ -11404,26 +11404,32 @@ h6.view-sites-search .view-header {
 }
 .map-site-detail dl {
   color: #666666;
+  display: flex;
+  flex-flow: row wrap;
   font-size: .85em;
-  margin-top: .5em;
   margin-bottom: .5em;
+  margin-top: .5em;
+  overflow: hidden;
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
-  overflow: hidden;
 }
 @media screen and (max-width: 767px) {
   .map-site-detail dl {
     display: none;
   }
 }
+.map-site-detail dt,
+.map-site-detail dd {
+  border-top: 1px solid #e1e1e1;
+  width: 50%;
+}
 .map-site-detail dt {
   clear: both;
-  float: left;
+  flex: 0 1 50%;
   padding-bottom: .5em;
   padding-left: 1.5em;
   padding-top: .5em;
-  width: 50%;
 }
 .map-site-detail dt.protection-management {
   position: relative;
@@ -11480,18 +11486,12 @@ h6.view-sites-search .view-header {
   width: 1.4em;
 }
 .map-site-detail dd {
+  flex: 1 1 50%;
+  font-weight: 300;
   padding-bottom: .5em;
   padding-top: .5em;
+  padding-left: .5em;
   position: relative;
-  font-weight: 300;
-}
-.map-site-detail dd:before {
-  border-top: 1px solid #e1e1e1;
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  width: 100%;
 }
 .map-site-detail .more {
   color: #03afdf;
