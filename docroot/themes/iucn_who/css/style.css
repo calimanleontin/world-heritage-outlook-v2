@@ -8791,6 +8791,7 @@ small,
 figure {
   display: inline-block;
   position: relative;
+  max-width: 100%;
 }
 figure img {
   display: inline-block;
