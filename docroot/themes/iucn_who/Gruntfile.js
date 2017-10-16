@@ -63,7 +63,7 @@ module.exports = function (grunt) {
       },
       screen: {
         files: ['less/**/*.less', '!less/print-style.less', 'images/*.svg'],
-        tasks: 'less:screen'
+        tasks: ['less:screen', 'less:print', 'cssmin:print']
       },
       print: {
         files: ['less/print-style.less'],
