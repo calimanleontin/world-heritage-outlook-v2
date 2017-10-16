@@ -252,12 +252,22 @@ th, td {
       color: @conservation-rating-color;
     }
 
-  // .iucn-color-@{conservation-rating-class} {
-  //   color: @conservation-rating-color;
-  // }
-
-  // .iucn-bg-@{conservation-rating-class} {
-  //   background-color: @conservation-rating-color;
-  // }
+  .tab--summary {
+    .loop-threat-levels({
+      .iucn-threat--@{threat-level-class} {
+        > .field--item { color: @threat-level-color; }
+      }
+    });
+    .loop-value-states({
+      .iucn-state--@{value-state-class} {
+        > .field--item { color: @value-state-color; }
+      }
+    });
+    .loop-protection-ratings({
+      .iucn-pr-rating--@{protection-rating-class} {
+        > .field--item { color: @protection-rating-color; }
+      }
+    });
+  }
   });
 }
