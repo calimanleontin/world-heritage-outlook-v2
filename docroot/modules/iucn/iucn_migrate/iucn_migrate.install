@@ -17,8 +17,9 @@
  * drush iucnmdl
  * drush iucnmi
  * drush iucnmsm
+ * drush iucnusc
  *
  */
-function iucn_migrate_update_8001() {
+/*function iucn_migrate_update_8001() {
   \Drupal::service('config.installer')->installDefaultConfig('module', 'iucn_migrate');
-}
+}*/
