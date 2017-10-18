@@ -4,22 +4,21 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Render\Element\Item;
 
 
 /**
- * Plugin implementation of the 'File description language'.
+ * Plugin implementation of the 'Parent category' field formatter..
  *
  * @FieldFormatter(
- *   id = "pretty_subcategory",
- *   label = @Translation("Pretty subcategory"),
+ *   id = "parent_category",
+ *   label = @Translation("Parent category"),
  *   field_types = {
  *     "entity_reference_revisions",
  *     "entity_reference"
  *   }
  * )
  */
-class PrettySubcategoryFormatter extends FormatterBase {
+class ParentCategoryFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -31,20 +30,17 @@ class PrettySubcategoryFormatter extends FormatterBase {
         continue;
       }
       $category = $item->entity;
+      if (empty($category->getName())) {
+        continue;
+      }
       $storage = \Drupal::service('entity_type.manager')
         ->getStorage('taxonomy_term');
       $parent = $storage->loadParents($category->id());
       $parent = reset($parent);
-      if (empty($category->getName())) {
-        continue;
-      }
-      $markup = $category->getName();
-      if (!empty($parent)) {
-        $markup = $parent->getName() . ' > ' . $markup;
-      }
+      $markup = !empty($parent) ? $parent->getName() : $category->getName();
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => "$markup<br>",
+        '#markup' => $markup,
       ];
     }
     return $element;
