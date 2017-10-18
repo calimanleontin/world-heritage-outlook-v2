@@ -5,3 +5,11 @@ iucn.ajax.site-name-search:
     _format: json
   requirements:
     _permission: 'access content'
+
+iucn.settings:
+  path: '/admin/structure/iucn/settings'
+  defaults:
+    _form: '\Drupal\iucn_who_core\Form\IucnSettingsForm'
+    _title: 'IUCN Settings'
+  requirements:
+    _permission: 'administer site configuration'

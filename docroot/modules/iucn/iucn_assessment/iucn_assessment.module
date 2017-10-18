@@ -42,6 +42,14 @@ function template_preprocess_field_group_html_element_list(&$variables) {
 }
 
 
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
+  if ($node->bundle() == 'site' && !$node->isNew()) {
+    _iucn_assessment_set_site_assessments($node);
+  }
+}
 
 /**
  * Implements hook_node_update().
@@ -163,15 +171,6 @@ function iucn_assessment_preprocess_field(&$variables) {
 
     default:
       break;
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
-  if ($node->bundle() == 'site' && !$node->isNew()) {
-    _iucn_assessment_set_site_assessments($node);
   }
 }
 
