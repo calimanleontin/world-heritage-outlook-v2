@@ -1,0 +1,10 @@
+block.settings.home_page_map:
+  type: block_settings
+  label: 'Homepage map block configuration'
+  mapping:
+    empty_selection_placeholder:
+      label: 'Empty selection placeholder'
+      type: label
+    block_footer_text:
+      label: 'Footer text'
+      type: label
