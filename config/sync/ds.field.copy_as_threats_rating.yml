@@ -1,0 +1,9 @@
+id: copy_as_threats_rating
+label: 'Assessment threats rating copy'
+ui_limit: 'site_assessment|*'
+properties:
+  field_id: node.site_assessment.field_as_threats_rating
+type: display_field_copy
+type_label: 'Copy field'
+entities:
+  node: node

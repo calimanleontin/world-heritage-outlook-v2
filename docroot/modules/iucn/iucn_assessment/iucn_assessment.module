@@ -58,6 +58,13 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
 }
 
 /**
+ * Implements hook_node_insert().
+ */
+function iucn_assessment_node_insert(Drupal\node\Entity\Node $node) {
+  iucn_assessment_node_update($node);
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function iucn_assessment_preprocess_field(&$variables) {
