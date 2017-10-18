@@ -14242,17 +14242,9 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
     color: #fff;
   }
   .field--name-dynamic-block-fieldnode-site-feedback a,
-  .field--name-dynamic-block-fieldnode-site-feedback .btn-link {
-    color: #fff;
-  }
   .field--name-dynamic-block-fieldnode-site-feedback a:hover,
-  .field--name-dynamic-block-fieldnode-site-feedback .btn-link:hover,
-  .field--name-dynamic-block-fieldnode-site-feedback a:focus,
-  .field--name-dynamic-block-fieldnode-site-feedback .btn-link:focus,
-  .field--name-dynamic-block-fieldnode-site-feedback a:active,
-  .field--name-dynamic-block-fieldnode-site-feedback .btn-link:active {
-    color: #03afdf;
-    border-color: #03afdf;
+  .field--name-dynamic-block-fieldnode-site-feedback a:focus {
+    color: #fff;
   }
 }
 .node--type-site-assessment .col-sm-4 .field + .field--name-dynamic-block-fieldnode-site-feedback {

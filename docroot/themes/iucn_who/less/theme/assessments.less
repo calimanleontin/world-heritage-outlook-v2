@@ -949,7 +949,11 @@
     }
   }
   @media @grid-desktop {
-    .background-variant(@brand-primary, #fff);
+    background-color: @brand-primary;
+    color: #fff;
+    a, a:hover, a:focus, a:active {
+      color: #fff;
+    }
   }
   .node--type-site-assessment .col-sm-4 .field + & {
     margin-top: 3em;
