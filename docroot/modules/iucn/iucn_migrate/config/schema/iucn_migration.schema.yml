@@ -5,3 +5,6 @@ iucn_migration.settings:
     assessment_path:
       type: string
       label: 'Path or URL'
+    sites_path:
+      type: string
+      label: 'Path or URL'

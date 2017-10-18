@@ -750,7 +750,8 @@ $settings['file_scan_ignore_directories'] = [
 ];
 
 // TODO Set this in settings.local.php
-$config['iucn_migration.settings']['assessment_path'] = 'http://who.local/modules/iucn/iucn_migrate/source/assessments.json';
+$config['iucn_migration.settings']['assessment_path'] = 'http://iucn.local/modules/iucn/iucn_migrate/source/assessments.json';
+$config['iucn_migration.settings']['sites_path'] = 'http://iucn.local/modules/iucn/iucn_migrate/source/sites.json';
 
 // TODO - implement an interface to configure this.
 $config['iucn_who.settings']['assessment_year'] = 2017;
