@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
+use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -108,6 +109,9 @@ class AssessmentRating extends DsFieldBase {
     $image_containers = [];
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
     foreach ($node->field_assessments as $idx => $assessment) {
+      if (!$node->field_assessments[$idx]->entity->access('view')) {
+        continue;
+      }
       $class = 'coming-soon';
       $title = t('Coming soon');
       if (!empty($node->field_assessments[$idx]->entity->field_as_global_assessment_level->entity)) {
