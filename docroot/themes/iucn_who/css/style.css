@@ -14050,6 +14050,13 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   display: inline;
   margin-right: .5em;
 }
+.field--name-field-as-values-bio {
+  margin-top: 1em;
+}
+.field--name-field-as-values-bio .field--label {
+  font-size: 23px;
+  font-size: 2.3rem;
+}
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
   margin-top: 0;
 }
@@ -14243,7 +14250,8 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   }
   .field--name-dynamic-block-fieldnode-site-feedback a,
   .field--name-dynamic-block-fieldnode-site-feedback a:hover,
-  .field--name-dynamic-block-fieldnode-site-feedback a:focus {
+  .field--name-dynamic-block-fieldnode-site-feedback a:focus,
+  .field--name-dynamic-block-fieldnode-site-feedback a:active {
     color: #fff;
   }
 }
