@@ -12,6 +12,7 @@ permissions:
   - 'access content overview'
   - 'access files overview'
   - 'access toolbar'
+  - 'administer blocks'
   - 'create benefit content'
   - 'create content translations'
   - 'create faq content'
