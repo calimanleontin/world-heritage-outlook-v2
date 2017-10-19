@@ -1,0 +1,14 @@
+uuid: ed8ca00c-1d07-45cd-af48-257db0b55b51
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.publish_content_pages
+  module:
+    - user
+id: user_remove_role_action.publish_content_pages
+label: 'Remove the Publish content pages role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: publish_content_pages
