@@ -1,0 +1,14 @@
+uuid: 91e78e98-a140-4003-94e9-57b19910a37f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.edit_content_pages
+  module:
+    - user
+id: user_remove_role_action.edit_content_pages
+label: 'Remove the Edit content pages role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: edit_content_pages
