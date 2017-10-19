@@ -39,6 +39,7 @@ permissions:
   - 'revert publication revisions'
   - 'translate benefit node'
   - 'translate block_content'
+  - 'translate configuration'
   - 'translate faq node'
   - 'translate interface'
   - 'translate news node'
