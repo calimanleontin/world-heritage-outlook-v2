@@ -1,0 +1,16 @@
+uuid: 9efc1919-b007-4335-bfb8-b3d7b13e20b9
+langcode: en
+status: true
+dependencies: {  }
+id: edit_world_heritage_site_assessments
+label: 'Edit World Heritage site assessments'
+weight: -3
+is_admin: null
+permissions:
+  - 'create content translations'
+  - 'delete own site_assessment content'
+  - 'edit any site_assessment content'
+  - 'edit own site_assessment content'
+  - 'translate site_assessment node'
+  - 'update content translations'
+  - 'view site_assessment revisions'
