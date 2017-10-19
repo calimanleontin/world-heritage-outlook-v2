@@ -21,16 +21,3 @@ function iucn_who_core_install() {
     $term->save();
   }
 }
-
-/**
- * Remove all pdf_download_button paragraphs.
- */
-function iucn_who_core_update_8001() {
-  $paragraphs = \Drupal::entityTypeManager()
-    ->getStorage('paragraph')
-    ->loadByProperties(['type' => 'pdf_download_button']);
-
-  foreach ($paragraphs as $paragraph) {
-    $paragraph->delete();
-  }
-}
