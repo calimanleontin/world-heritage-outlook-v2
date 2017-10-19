@@ -1,0 +1,14 @@
+uuid: 9abf06d4-65d4-44f5-97cf-4466ccec7732
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.edit_world_heritage_site_information
+  module:
+    - user
+id: user_remove_role_action.edit_world_heritage_site_information
+label: 'Remove the Edit World Heritage site information role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: edit_world_heritage_site_information

@@ -4,6 +4,7 @@ iucn_site.redirect:
     _controller: '\Drupal\iucn_site\Controller\IucnSiteRedirectController::redirectSite'
   requirements:
     _permission: 'access content'
+
 iucn_site.get_geojson:
   path: '/node/{node}/geoJson'
   defaults:
@@ -11,3 +12,15 @@ iucn_site.get_geojson:
   requirements:
     _permission: 'access content'
     node: \d+
+
+iucn_site.node.assessments:
+  path: '/node/{node}/assessments'
+  defaults:
+    _title: 'Assessments'
+    _controller: '\Drupal\iucn_site\Controller\IucnSiteAssessmentsController::siteAssessments'
+  requirements:
+    node: \d+
+    _custom_access:  '\Drupal\iucn_site\Controller\IucnSiteAssessmentsController::access'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE

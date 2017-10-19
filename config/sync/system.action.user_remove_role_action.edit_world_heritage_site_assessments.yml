@@ -1,0 +1,14 @@
+uuid: 0ca104b2-3ace-4fc4-b83f-f8f1c15d34b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.edit_world_heritage_site_assessments
+  module:
+    - user
+id: user_remove_role_action.edit_world_heritage_site_assessments
+label: 'Remove the Edit World Heritage site assessments role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: edit_world_heritage_site_assessments

@@ -21,4 +21,3 @@ who.general_settings:
     _title: 'WHO settings'
   requirements:
     _permission: 'administer site configuration'
-

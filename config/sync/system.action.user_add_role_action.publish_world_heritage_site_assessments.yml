@@ -1,0 +1,14 @@
+uuid: a2581d17-4ccb-45f6-871b-c0dbac4b3164
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.publish_world_heritage_site_assessments
+  module:
+    - user
+id: user_add_role_action.publish_world_heritage_site_assessments
+label: 'Add the Publish World Heritage site assessments role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: publish_world_heritage_site_assessments

@@ -1,0 +1,14 @@
+uuid: ce79687b-ba57-43ee-8be1-bdfb17ba1a10
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.edit_world_heritage_site_assessments
+  module:
+    - user
+id: user_add_role_action.edit_world_heritage_site_assessments
+label: 'Add the Edit World Heritage site assessments role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: edit_world_heritage_site_assessments

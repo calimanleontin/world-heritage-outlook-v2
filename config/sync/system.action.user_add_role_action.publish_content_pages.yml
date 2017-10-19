@@ -1,0 +1,14 @@
+uuid: 9af33a65-842a-4ce2-833f-473d8ec31657
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.publish_content_pages
+  module:
+    - user
+id: user_add_role_action.publish_content_pages
+label: 'Add the Publish content pages role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: publish_content_pages

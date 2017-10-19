@@ -1,0 +1,22 @@
+uuid: a4cb3afb-df9a-4dd4-a14d-6c6ed5b0f5d3
+langcode: en
+status: true
+dependencies: {  }
+id: publish_content_pages
+label: 'Publish content pages'
+weight: -7
+is_admin: null
+permissions:
+  - 'administer nodes'
+  - 'delete any benefit content'
+  - 'delete any faq content'
+  - 'delete any news content'
+  - 'delete any page content'
+  - 'delete any publication content'
+  - 'delete benefit revisions'
+  - 'delete content translations'
+  - 'delete faq revisions'
+  - 'delete news revisions'
+  - 'delete page revisions'
+  - 'delete publication revisions'
+  - 'revert benefit revisions'

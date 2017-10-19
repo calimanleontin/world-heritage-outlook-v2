@@ -64,13 +64,50 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
     }
   }
 }
-
-/**
- * Implements hook_node_insert().
- */
-function iucn_assessment_node_insert(Drupal\node\Entity\Node $node) {
-  iucn_assessment_node_update($node);
-}
+//
+///**
+// * Implements hook_node_insert().
+// */
+//function iucn_assessment_node_insert(Drupal\node\Entity\Node $node) {
+//  iucn_assessment_node_update($node);
+//}
+//
+///**
+// * Implements hook_ENTITY_TYPE_load().
+// */
+//function iucn_assessment_node_load($entities) {
+//  $request = Drupal::request();
+//  // Taxonomy term pages are forbidden for anonymous users.
+//  if ($request->attributes->get('_route') === 'entity.node.canonical') {
+//    /** @var \Drupal\node\Entity\Node $node */
+//    $node = current($entities);
+//    if ($node->bundle() == 'site_assessment') {
+//      dpm('xx');
+//      /** @var \Drupal\node\Entity\Node $entity */
+//      $entity = $request->attributes->get('node');
+//      // Support revisions of assessments.
+//      if ($entity->bundle() == 'site') {
+//        $revision = $request->get('revision');
+//        if (!empty($revision) && $entity->access('edit')
+//          && $node->getLoadedRevisionId() != $revision) {
+//          /** @var \Drupal\node\Entity\Node $assessment_revision */
+//          $assessment_revision = \Drupal::entityTypeManager()
+//            ->getStorage('node')
+//            ->loadRevision($revision);
+//          foreach ($entity->field_assessments as $idx => $assessment) {
+//            if ($assessment_revision->id == $node->id()
+//              && $entity->field_assessments[$idx]->entity->id() != $assessment_revision->id()) {
+//              $node = $assessment_revision;
+//              dpm('xx');
+//              break;
+//            }
+//          }
+//        }
+//      }
+//    }
+//
+//  }
+//}
 
 /**
  * Implements hook_preprocess_field().
@@ -94,6 +131,15 @@ function iucn_assessment_preprocess_field(&$variables) {
             break;
           }
         }
+
+        // Handle custom revision display
+        $node_revision = _iucn_assessment_display_negociate_assessment_revision();
+        if ($node_revision && $node_revision->id() == $showing_item['content']['#node']->id()) {
+          $showing_item['content']['#node'] = $node_revision;
+          drupal_set_message(t('Showing assessment revision from @revision',
+            ['@revision' => date('Y-m-d H:i', $node_revision->getRevisionCreationTime())]));
+        }
+
         $variables['attributes']['class'][] = $config_year == $display_year ? 'showing-latest-assessment' : 'showing-old-assessment';
         $variables['items'] = !empty($showing_item) ? [$showing_item] : [];
 
@@ -172,6 +218,39 @@ function iucn_assessment_preprocess_field(&$variables) {
     default:
       break;
   }
+}
+
+function _iucn_assessment_display_negociate_assessment_revision(\Drupal\node\Entity\Node $node = NULL) {
+  if (empty($node)) {
+    // Load site from url.
+    $request = \Drupal::request();
+    if ($request->attributes->get('_route') !== 'entity.node.canonical') {
+      return NULL;
+    }
+    $node = $request->attributes->get('node');
+  }
+  if ($node->bundle() != 'site') {
+    return NULL;
+  }
+  $request = \Drupal::request();
+  $revision = $request->get('revision');
+  if (empty($revision)) {
+    return NULL;
+  }
+  /** @var Drupal\node\Entity\Node $node_revision */
+  $node_revision = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadRevision($revision);
+  if (empty($node_revision)) {
+    return NULL;
+  }
+  foreach ($node->field_assessments as $idx => $assessment) {
+    if ($node_revision && $node_revision->id() == $assessment->entity->id()) {
+      drupal_set_message(t('Showing assessment revision @revision', ['@revision' => $revision]));
+      return $node_revision;
+    }
+  }
+  return NULL;
 }
 
 function _iucn_assessment_set_site_assessments($node) {
