@@ -1,0 +1,14 @@
+uuid: ff380285-e82c-4a7f-876f-72af53beebbf
+langcode: en
+status: true
+dependencies: {  }
+id: publish_world_heritage_site_information
+label: 'Publish World Heritage site information'
+weight: -3
+is_admin: null
+permissions:
+  - 'administer nodes'
+  - 'create site content'
+  - 'delete any site content'
+  - 'delete site revisions'
+  - 'revert site revisions'

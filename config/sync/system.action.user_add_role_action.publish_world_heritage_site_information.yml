@@ -1,0 +1,14 @@
+uuid: 73f014d3-d40f-4517-adcc-506e06100e10
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.publish_world_heritage_site_information
+  module:
+    - user
+id: user_add_role_action.publish_world_heritage_site_information
+label: 'Add the Publish World Heritage site information role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: publish_world_heritage_site_information
