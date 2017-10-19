@@ -1,0 +1,54 @@
+uuid: c83ee51c-f02c-4b4e-a265-6dcfccd071f3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.pdf_download_button.field_pdf_button_title
+    - field.field.paragraph.pdf_download_button.field_pdf_file
+    - field.field.paragraph.pdf_download_button.field_pdf_title
+    - paragraphs.paragraphs_type.pdf_download_button
+  module:
+    - ds
+    - file
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_pdf_download_button
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_pdf_title
+        - field_pdf_button_title
+        - field_pdf_file
+id: paragraph.pdf_download_button.default
+targetEntityType: paragraph
+bundle: pdf_download_button
+mode: default
+content:
+  field_pdf_button_title:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_pdf_file:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: file_url_plain
+    region: content
+  field_pdf_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

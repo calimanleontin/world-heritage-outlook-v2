@@ -3,17 +3,25 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.page.field_page_elements
     - node.type.page
   module:
+    - entity_reference_revisions
     - user
 id: node.page.default
 targetEntityType: node
 bundle: page
 mode: default
-content: {  }
+content:
+  field_page_elements:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
 hidden:
-  entity_print_view_epub: true
-  entity_print_view_pdf: true
-  entity_print_view_word_docx: true
   langcode: true
   links: true

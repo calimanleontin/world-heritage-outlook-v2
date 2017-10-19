@@ -1,0 +1,16 @@
+uuid: 068c6a7c-802e-4754-8b22-d75b1a3a5654
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.pdf_download_button
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: paragraph.pdf_download_button
+target_entity_type_id: paragraph
+target_bundle: pdf_download_button
+default_langcode: site_default
+language_alterable: false

@@ -3,8 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.page.field_page_elements
     - node.type.page
   module:
+    - paragraphs
     - path
 id: node.page.default
 targetEntityType: node
@@ -17,6 +19,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_page_elements:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
   langcode:
     type: language_select
     weight: 3
@@ -37,9 +51,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  translation:
-    weight: 10
-    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 4
