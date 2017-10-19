@@ -1,0 +1,18 @@
+uuid: 06e9d3e6-7168-4b59-b33e-73552e86ec48
+langcode: en
+status: true
+dependencies: {  }
+id: access_administrative_area
+label: 'Access administrative area'
+weight: 6
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access contextual links'
+  - 'access files overview'
+  - 'access toolbar'
+  - 'search content'
+  - 'use search autocomplete'
+  - 'use text format html'
+  - 'view the administration theme'
