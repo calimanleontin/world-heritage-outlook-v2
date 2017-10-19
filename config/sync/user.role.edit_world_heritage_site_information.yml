@@ -1,0 +1,13 @@
+uuid: 29c9c399-4475-4cc8-b130-0317c3f4c87e
+langcode: en
+status: true
+dependencies: {  }
+id: edit_world_heritage_site_information
+label: 'Edit World Heritage site information'
+weight: -4
+is_admin: null
+permissions:
+  - 'delete own site content'
+  - 'edit any site content'
+  - 'translate site node'
+  - 'view site revisions'
