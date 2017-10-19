@@ -1,0 +1,14 @@
+uuid: e99fb10a-4570-4c2a-983f-9c1b6a330607
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.menu_editor
+  module:
+    - user
+id: user_remove_role_action.menu_editor
+label: 'Remove the Menu editor role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: menu_editor
