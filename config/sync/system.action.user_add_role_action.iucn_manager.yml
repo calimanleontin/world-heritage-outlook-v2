@@ -1,0 +1,14 @@
+uuid: ee9d5076-3d0b-4d14-85cb-a13b0ec8e5a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.iucn_manager
+  module:
+    - user
+id: user_add_role_action.iucn_manager
+label: 'Add the IUCN manager role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: iucn_manager
