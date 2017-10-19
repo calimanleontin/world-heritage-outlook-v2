@@ -6,10 +6,19 @@ iucn.ajax.site-name-search:
   requirements:
     _permission: 'access content'
 
-iucn.settings:
-  path: '/admin/structure/iucn/settings'
+who.admin_config_who:
+  path: '/admin/config/who'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'WHO configuration'
+  requirements:
+    _permission: 'access administration pages'
+
+who.general_settings:
+  path: '/admin/config/who/settings'
   defaults:
     _form: '\Drupal\iucn_who_core\Form\IucnSettingsForm'
-    _title: 'IUCN Settings'
+    _title: 'WHO settings'
   requirements:
     _permission: 'administer site configuration'
+

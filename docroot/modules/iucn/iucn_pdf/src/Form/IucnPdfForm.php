@@ -59,15 +59,10 @@ class IucnPdfForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('iucn_pdf.settings');
-    $form['iucn_pdf'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Print PDF Config'),
-    ];
-
     $form['iucn_pdf']['sites_per_cron'] = [
       '#type' => 'select',
-      '#title' => $this->t('Sites per cron'),
-      '#description' => $this->t('Number of sites generated in pdf during cron call.'),
+      '#title' => $this->t('Number of PDF profiles generated during each CRON call'),
+      '#title_display' => 'before',
       '#default_value' => $config->get('sites_per_cron'),
       '#options' => [
         1 => 1,
