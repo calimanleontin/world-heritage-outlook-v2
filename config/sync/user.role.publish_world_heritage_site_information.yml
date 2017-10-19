@@ -4,11 +4,12 @@ status: true
 dependencies: {  }
 id: publish_world_heritage_site_information
 label: 'Publish World Heritage site information'
-weight: -3
+weight: -4
 is_admin: null
 permissions:
   - 'administer nodes'
   - 'create site content'
   - 'delete any site content'
+  - 'delete content translations'
   - 'delete site revisions'
   - 'revert site revisions'
