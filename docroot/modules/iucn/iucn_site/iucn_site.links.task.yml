@@ -1,0 +1,5 @@
+iucn_site.node.assessments_list:
+  route_name: iucn_site.node.assessments
+  base_route: entity.node.canonical
+  title: Assessments
+  weight: 11
