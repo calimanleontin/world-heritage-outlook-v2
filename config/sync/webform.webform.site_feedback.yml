@@ -10,7 +10,7 @@ id: site_feedback
 title: 'Give us feedback'
 description: '<span class="aui-legend">Site Feedback </span>'
 category: ''
-elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your suggestions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': 'Email address'\n  '#required': true\nsubject:\n  '#type': textfield\n  '#title': Subject\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\ncaptcha:\n  '#type': captcha\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': 'Send feedback'\n"
+elements: "site_feedback_description:\n  '#type': processed_text\n  '#text': '<p>Would you like to share feedback to support the accuracy of information for this site? If so, send your comments below.</p>'\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': 'Email address'\n  '#required': true\nsubject:\n  '#type': textfield\n  '#title': Subject\n  '#required': true\ncomments:\n  '#type': textarea\n  '#title': Message\n  '#required': true\ncaptcha:\n  '#type': captcha\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': 'Send feedback'\n"
 css: ''
 javascript: ''
 settings:
@@ -132,7 +132,7 @@ handlers:
       from_options: {  }
       from_name: default
       subject: '[webform_submission:values:subject:raw]'
-      body: default
+      body: "[webform_submission:values:subject:value]&lt;br/&gt;&lt;br/&gt;<br />\n&lt;strong&gt;Name&lt;/strong&gt;: [webform_submission:values:name:value]&lt;br/&gt;<br />\n&lt;strong&gt;Email&lt;/strong&gt;: [webform_submission:values:email:value]&lt;br/&gt;<br />\n&lt;strong&gt;Comments&lt;/strong&gt;: [webform_submission:values:comments:value]&lt;br/&gt;&lt;br/&gt;<br />\n<br />\nSubmitted on: [webform_submission:completed]<br />\n&nbsp;"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
