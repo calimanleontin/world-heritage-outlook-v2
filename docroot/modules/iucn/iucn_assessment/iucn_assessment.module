@@ -64,50 +64,31 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
     }
   }
 }
-//
-///**
-// * Implements hook_node_insert().
-// */
-//function iucn_assessment_node_insert(Drupal\node\Entity\Node $node) {
-//  iucn_assessment_node_update($node);
-//}
-//
-///**
-// * Implements hook_ENTITY_TYPE_load().
-// */
-//function iucn_assessment_node_load($entities) {
-//  $request = Drupal::request();
-//  // Taxonomy term pages are forbidden for anonymous users.
-//  if ($request->attributes->get('_route') === 'entity.node.canonical') {
-//    /** @var \Drupal\node\Entity\Node $node */
-//    $node = current($entities);
-//    if ($node->bundle() == 'site_assessment') {
-//      dpm('xx');
-//      /** @var \Drupal\node\Entity\Node $entity */
-//      $entity = $request->attributes->get('node');
-//      // Support revisions of assessments.
-//      if ($entity->bundle() == 'site') {
-//        $revision = $request->get('revision');
-//        if (!empty($revision) && $entity->access('edit')
-//          && $node->getLoadedRevisionId() != $revision) {
-//          /** @var \Drupal\node\Entity\Node $assessment_revision */
-//          $assessment_revision = \Drupal::entityTypeManager()
-//            ->getStorage('node')
-//            ->loadRevision($revision);
-//          foreach ($entity->field_assessments as $idx => $assessment) {
-//            if ($assessment_revision->id == $node->id()
-//              && $entity->field_assessments[$idx]->entity->id() != $assessment_revision->id()) {
-//              $node = $assessment_revision;
-//              dpm('xx');
-//              break;
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//  }
-//}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  global $_iucn_assessment_is_latest_assessment;
+  // Show a notice on PDF print that when is not latest.
+  if ($entity->bundle() == 'site' && $view_mode == 'pdf') {
+    if (empty($_iucn_assessment_is_latest_assessment)) {
+      $latest_url = \Drupal\Core\Url::fromRoute('iucn_pdf.download', ['entity_id' => $entity->id()]);
+      $latest_url->setAbsolute(TRUE);
+      $element = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['latest-assessment-notice']],
+        '#value' => t('This is not the latest assessment. To view the 
+        latest assessment, please go to this %link', [
+          '%link' => \Drupal\Core\Link::fromTextAndUrl(t('Link'), $latest_url)->toString(),
+        ]),
+        '#weight' => -99,
+      ];
+      $build['#prefix'] = \Drupal::service('renderer')->render($element);
+    }
+  }
+}
 
 /**
  * Implements hook_preprocess_field().
@@ -290,11 +271,28 @@ function _iucn_assessment_set_site_assessments($node) {
 }
 
 function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_object) {
+  global $_iucn_assessment_display_year;
   if (!empty($element['#group_name']) && $element['#group_name'] == 'group_conservation_outlook') {
     if (!empty($element['field_as_end_date']['#object']->field_as_cycle)) {
       $element['#title'] = $element['field_as_end_date']['#object']->field_as_cycle->value . ' ' . $element['#title'];
     }
   }
+
+  // Specific request to hide show only for 2017 assessments.
+  if (!empty($element['#group_name'])
+    && $element['#group_name'] == 'group_key_conservation_issues') {
+    if (!empty($_iucn_assessment_display_year) && $_iucn_assessment_display_year != 2014) {
+      $element['#access'] = FALSE;
+    }
+  }
+
+  if (!empty($element['#group_name'])
+    && $element['#group_name'] == 'group_community') {
+    if (!empty($_iucn_assessment_display_year) && $_iucn_assessment_display_year != 2014) {
+      $element['#access'] = FALSE;
+    }
+  }
+
 }
 
 /**
