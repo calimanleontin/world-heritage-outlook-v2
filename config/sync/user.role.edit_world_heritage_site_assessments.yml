@@ -8,9 +8,12 @@ weight: -3
 is_admin: null
 permissions:
   - 'create content translations'
+  - 'create site_assessment content'
+  - 'delete any site_assessment content'
   - 'delete own site_assessment content'
   - 'edit any site_assessment content'
   - 'edit own site_assessment content'
+  - 'revert site_assessment revisions'
   - 'translate site_assessment node'
   - 'update content translations'
   - 'view site_assessment revisions'
