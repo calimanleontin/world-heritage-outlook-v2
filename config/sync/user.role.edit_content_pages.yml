@@ -11,6 +11,7 @@ permissions:
   - 'administer blocks'
   - 'create benefit content'
   - 'create content translations'
+  - 'create content unpublished'
   - 'create faq content'
   - 'create news content'
   - 'create page content'

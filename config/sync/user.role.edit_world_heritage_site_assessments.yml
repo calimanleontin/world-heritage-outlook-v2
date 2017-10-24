@@ -8,6 +8,7 @@ weight: -3
 is_admin: null
 permissions:
   - 'create content translations'
+  - 'create content unpublished'
   - 'create site_assessment content'
   - 'delete any site_assessment content'
   - 'delete own site_assessment content'

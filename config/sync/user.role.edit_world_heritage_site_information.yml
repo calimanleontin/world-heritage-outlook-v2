@@ -8,6 +8,7 @@ weight: -5
 is_admin: null
 permissions:
   - 'create content translations'
+  - 'create content unpublished'
   - 'create site content'
   - 'delete any site content'
   - 'delete own site content'
