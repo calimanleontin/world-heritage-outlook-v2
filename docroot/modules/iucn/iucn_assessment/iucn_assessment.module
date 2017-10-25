@@ -81,7 +81,7 @@ function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInte
         '#attributes' => ['class' => ['latest-assessment-notice']],
         '#value' => t('This is not the latest assessment. To view the 
         latest assessment, please go to this %link', [
-          '%link' => \Drupal\Core\Link::fromTextAndUrl(t('Link'), $latest_url)->toString(),
+          '%link' => \Drupal\Core\Link::fromTextAndUrl(t('link'), $latest_url)->toString(),
         ]),
         '#weight' => -99,
       ];
