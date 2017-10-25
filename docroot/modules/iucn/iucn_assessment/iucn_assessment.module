@@ -86,6 +86,10 @@ function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInte
         '#weight' => -99,
       ];
       $build['#prefix'] = \Drupal::service('renderer')->render($element);
+      $build['#attributes']['class'][] = 'showing-old-assessment';
+    }
+    else {
+      $build['#attributes']['class'][] = 'showing-latest-assessment';
     }
   }
 }
@@ -185,7 +189,22 @@ function iucn_assessment_preprocess_field(&$variables) {
       if (empty($variables['items'][0]['content']['#context']['value'])) {
         break;
       }
+
+      // Transform links to url and trim.
+      /** @var \Drupal\filter\FilterPluginManager $filter_manager */
+      $filter_manager = \Drupal::service('plugin.manager.filter');
+      /** @var \Drupal\filter\Plugin\FilterBase $filter */
+      $filter = $filter_manager->createInstance('filter_url');
+      $filter->settings['filter_url_length'] = 60;
+
       $items = $variables['items'];
+      foreach ($items as &$item) {
+        $value = _filter_html_escape($item['content']['#context']['value']);
+        $item['content']['#template'] = '{{ value|raw|nl2br }}';
+        $value = $filter->process($value, 'en');
+        $item['content']['#context']['value'] = $value->__toString();
+      }
+
       usort($items,
         function($a, $b) {
           $a_string = $a['content']['#context']['value'];
