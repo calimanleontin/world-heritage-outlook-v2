@@ -1,0 +1,5 @@
+services:
+  iucn_assessment.redirect_revision:
+    class: Drupal\iucn_assessment\EventSubscriber\IucnAssessmentRedirectSubscriber
+    tags:
+      - { name: event_subscriber }

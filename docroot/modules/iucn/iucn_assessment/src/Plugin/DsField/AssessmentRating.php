@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
+use Drupal\node\Entity\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -106,13 +107,24 @@ class AssessmentRating extends DsFieldBase {
 
     $years = [];
     $image_containers = [];
+
+    // Handle custom revision display.
+    $node_revision = _iucn_assessment_display_negociate_assessment_revision($node);
+
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
     foreach ($node->field_assessments as $idx => $assessment) {
+      if (!$node->field_assessments[$idx]->entity->access('view')) {
+        continue;
+      }
+      $showing_item = $assessment->entity;
       $class = 'coming-soon';
       $title = t('Coming soon');
-      if (!empty($node->field_assessments[$idx]->entity->field_as_global_assessment_level->entity)) {
+      if ($node_revision && $node_revision->id() == $showing_item->id()) {
+        $showing_item = $node_revision;
+      }
+      if (!empty($showing_item->field_as_global_assessment_level->entity)) {
         /* @var \Drupal\taxonomy\Entity\Term $term */
-        $term = $node->field_assessments[$idx]->entity->field_as_global_assessment_level->entity;
+        $term = $showing_item->field_as_global_assessment_level->entity;
         $title = $term->getName();
         if (!empty($term->field_css_identifier->value)) {
           $class = $term->field_css_identifier->value;
@@ -123,7 +135,7 @@ class AssessmentRating extends DsFieldBase {
         '#markup' => '<div class="image-rating-container ' . $class . '" title="' . $title . '"></div>'
       ];
 
-      $years[] = $assessment->entity->field_as_cycle->value;
+      $years[] = $showing_item->field_as_cycle->value;
     }
 
     $element = [

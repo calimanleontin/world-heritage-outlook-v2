@@ -22,7 +22,7 @@ settings:
   form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
   form_convert_anonymous: false
@@ -58,7 +58,7 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: page
+  confirmation_type: message
   confirmation_title: 'Ask a Question'
   confirmation_message: "Thank You.<br />\r\nYour question has been successfully sent."
   confirmation_url: ''
@@ -112,4 +112,32 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  email:
+    id: email
+    label: Email
+    handler_id: email
+    status: true
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: default
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: default
+      from_options: {  }
+      from_name: default
+      subject: 'Ask a Question submitted'
+      body: "Ask a Question submitted&lt;br/&gt;&lt;br/&gt;<br />\n&lt;strong&gt;Name&lt;/strong&gt;: [webform_submission:values:name:value]&lt;br/&gt;<br />\n&lt;strong&gt;Email&lt;/strong&gt;: [webform_submission:values:email:value]&lt;br/&gt;<br />\n&lt;strong&gt;Question&lt;/strong&gt;: [webform_submission:values:question:value]&lt;br/&gt;&lt;br/&gt;<br />\n<br />\nSubmitted on: [webform_submission:completed]<br />\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      html: true
+      attachments: false
+      debug: false
+      reply_to: ''
+      return_path: ''

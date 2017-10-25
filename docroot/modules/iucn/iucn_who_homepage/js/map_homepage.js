@@ -135,7 +135,7 @@ function postInitMap(instance_id, map, config) {
      * Handle the site selection from the drop-down.
      */
     $('#edit-q').on('change', function() {
-      if ($(this).val() !== '') {
+      if ($(this).val() !== '0') {
         $.showAllMarkers(true);
         $('#map-filters li').removeClass('active');
         for (var $i = 0; $i < $markers.length; $i++) {
@@ -154,6 +154,7 @@ function postInitMap(instance_id, map, config) {
         $.resetMapPosition();
         $.iucnResetAllMarkerIcons();
         $.showAllMarkers(true);
+        $.iucnClearSelection();
       }
     });
 

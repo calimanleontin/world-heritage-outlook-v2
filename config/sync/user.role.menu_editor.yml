@@ -1,0 +1,11 @@
+uuid: ad528c50-8e9b-4198-848a-2a2867cbce09
+langcode: en
+status: true
+dependencies: {  }
+id: menu_editor
+label: 'Menu editor'
+weight: -6
+is_admin: null
+permissions:
+  - 'administer menu'
+  - 'translate menu_link_content'

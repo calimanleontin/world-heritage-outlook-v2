@@ -1,29 +1,38 @@
-who.content:
-  title: 'Content'
-  route_name: 'system.admin_content'
-  menu_name: who
-  class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 1
-
-who.google_maps_api.config_form:
-  title: 'Google Maps API'
-  route_name: google_maps_api.config_form
-  menu_name: who
-  class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 2
-
 who.admin_people:
-  title: 'Users'
+  title: 'Accounts'
   route_name: entity.user.collection
   menu_name: who
   class: Drupal\Core\Menu\MenuLinkDefault
   weight: 3
 
+# Root menu
+who.admin_config_who:
+  route_name: who.admin_config_who
+  parent: system.admin_config
+  title: 'WHO configuration'
+  weight: -50
+
+
 who.homepage_map:
-  title: 'Homepage Map'
+  title: 'Homepage map configuration'
+  description: 'Configuration parameters for the home page map'
   route_name: 'entity.block.edit_form'
   route_parameters:
     block: 'homepagemap'
-  menu_name: who
+  parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 4
+
+
+who.google_maps_api.config_form:
+  title: 'Google Maps API'
+  description: 'Configure Google Maps API integration'
+  route_name: google_maps_api.config_form
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+
+who.general_settings:
+  title: 'General configuration'
+  description: 'Global configuration for the WHO website'
+  route_name: who.general_settings
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault

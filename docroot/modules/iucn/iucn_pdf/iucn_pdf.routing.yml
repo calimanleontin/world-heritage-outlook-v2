@@ -5,6 +5,7 @@ iucn_pdf.download:
     _title: 'Download Pdf'
   requirements:
     _permission: 'access content'
+
 iucn_pdf.download.debug:
   path: 'node/{entity_id}/pdf/debug'
   defaults:
@@ -12,10 +13,11 @@ iucn_pdf.download.debug:
     _title: 'Download Pdf'
   requirements:
     _permission: 'administer site configuration'
+
 iucn_pdf.settings:
-  path: 'admin/config/content/iucn_pdf'
+  path: 'admin/config/who/pdf'
   defaults:
     _form: '\Drupal\iucn_pdf\Form\IucnPdfForm'
-    _title: 'PDF cron settings'
+    _title: 'Site profile PDF generator'
   requirements:
     _permission: 'administer site configuration'

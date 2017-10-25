@@ -1,0 +1,14 @@
+uuid: d6e1f699-8699-44c8-be53-756734dfee29
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.iucn_manager
+  module:
+    - user
+id: user_remove_role_action.iucn_manager
+label: 'Remove the IUCN manager role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: iucn_manager

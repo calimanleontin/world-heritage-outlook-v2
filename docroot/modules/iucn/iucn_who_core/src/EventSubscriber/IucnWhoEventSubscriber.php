@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
+class IucnWhoEventSubscriber implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}
@@ -18,15 +18,18 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return([
       KernelEvents::REQUEST => [
-        ['redirectContent'],
+        ['customizeRequest'],
       ],
     ]);
   }
 
   /**
-   * Redirect requests for nodes.
+   * Redirect requests for nodes, for taxonomy terms, sets globals for assess.
    */
-  public function redirectContent(GetResponseEvent $event) {
+  public function customizeRequest(GetResponseEvent $event) {
+    global $_iucn_assessment_display_year;
+    global $_iucn_assessment_is_latest_assessment;
+
     $request = $event->getRequest();
 
     // Taxonomy term pages are forbidden for anonymous users.
@@ -36,14 +39,27 @@ class IucnWhoRedirectSubscriber implements EventSubscriberInterface {
       }
     }
 
+    // Set globals for assessment.
+    /** @var Node $node */
+    $node = $request->attributes->get('node');
+
+    if (in_array($request->attributes->get('_route'), ['iucn_pdf.download.debug', 'iucn_pdf.download'])) {
+      $node = Node::load($request->attributes->get('entity_id'));
+    }
+
+    if (!empty($node) && $node->bundle() === 'site' && !empty($node->field_assessments)) {
+      $iucn_config = \Drupal::config('iucn_who.settings');
+      $config_year = $iucn_config->get('assessment_year');
+      $_iucn_assessment_display_year = iucn_pdf_assessment_year_display($node);
+      $_iucn_assessment_is_latest_assessment = $_iucn_assessment_display_year == $config_year;
+    }
+
     // This is necessary because this also gets called on
     // node sub-tabs such as "edit", "revisions", etc.  This
     // prevents those pages from redirected.
     if ($request->attributes->get('_route') !== 'entity.node.canonical') {
       return;
     }
-    /** @var Node $node */
-    $node = $request->attributes->get('node');
 
     // Redirect faq details page to faq list.
     if ($node->getType() === 'faq') {

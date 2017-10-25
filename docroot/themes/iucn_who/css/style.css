@@ -10346,6 +10346,9 @@ fieldset[disabled] #download-publication-button a.focus {
     padding-right: 11em;
   }
 }
+a[rel="bookmark"] {
+  display: none;
+}
 /* ==========================================================================
     Search block region
     ========================================================================== */

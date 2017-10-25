@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - node
+    - options
     - user
 _core:
   default_config_hash: tS8PbpJX90aRFC3-UTgXzdqkq7_2frk2pz4TMijEebM
@@ -40,11 +41,23 @@ display:
         type: full
         options:
           items_per_page: 50
+          offset: 0
+          id: 0
+          total_pages: null
           tags:
             previous: '‹ Previous'
             next: 'Next ›'
             first: '« First'
             last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50, 100, 500'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       style:
         type: table
         options:
@@ -145,46 +158,10 @@ display:
           id: node_bulk_form
           table: node
           field: node_bulk_form
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-          element_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          plugin_id: node_bulk_form
-          entity_type: node
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          label: Title
-          exclude: false
-          alter:
-            alter_text: false
-          element_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: node
-          entity_field: title
-          type: string
-          settings:
-            link_to_entity: true
-          plugin_id: field
-        langcode:
-          id: langcode
-          table: node_field_data
-          field: langcode
           relationship: none
           group_type: group
           admin_label: ''
-          label: Language
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -217,7 +194,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -225,23 +202,34 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: language
-          settings:
-            link_to_entity: false
-            native_language: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          action_title: Action
+          include_exclude: include
+          selected_actions:
+            - node_publish_action
+            - node_save_action
+            - node_unpublish_action
+            - pathauto_update_alias_node
+          plugin_id: node_bulk_form
           entity_type: node
-          entity_field: langcode
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          label: Title
+          exclude: false
+          alter:
+            alter_text: false
+          element_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: node
+          entity_field: title
+          type: string
+          settings:
+            link_to_entity: true
           plugin_id: field
         type:
           id: type
@@ -503,6 +491,46 @@ display:
           plugin_id: bundle
           entity_type: node
           entity_field: type
+        field_as_cycle_value:
+          id: field_as_cycle_value
+          table: node__field_as_cycle
+          field: field_as_cycle_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_as_cycle_value_op
+            label: 'Assessment Cycle'
+            description: ''
+            use_operator: false
+            operator: field_as_cycle_value_op
+            identifier: field_as_cycle_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
         status:
           id: status
           table: node_field_data
@@ -557,7 +585,8 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
           group: 1
           exposed: true
           expose:
@@ -573,6 +602,14 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              iucn_manager: '0'
               administrator: '0'
             reduce: false
           is_grouped: false

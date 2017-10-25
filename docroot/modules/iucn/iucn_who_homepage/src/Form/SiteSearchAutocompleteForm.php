@@ -47,7 +47,7 @@ class SiteSearchAutocompleteForm extends FormBase {
         '#type' => 'select',
         '#title' => $this->t('Explore natural sites'),
         '#attributes' => ['data-placeholder' => $this->t('Explore natural sites')],
-        '#options' => [0 => ''] + $site_options,
+        '#options' => [0 => $this->t('Explore natural sites')] + $site_options,
       ],
       'send' => [
         '#type' => 'submit',

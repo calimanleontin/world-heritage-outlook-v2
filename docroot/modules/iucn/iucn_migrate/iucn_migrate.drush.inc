@@ -287,22 +287,22 @@ function drush_iucn_migrate_danger_lists() {
           $node_id = reset($node_ids);
           $node = Node::load($node_id);
           if($node){
+            $current = [];
             foreach($site['dangerList'] as $danger_list){
               $paragraph = Paragraph::create(['type' => 'danger_list',]);
               $paragraph->set('field_date', $danger_list['year']);
               $paragraph->set('field_status', strtolower($danger_list['dangerListStatus']));
               $paragraph->isNew();
               $paragraph->save();
-              $current = $node->get('field_danger_list')->getValue();
+              //$current = $node->get('field_danger_list')->getValue();
               $current[] = array(
                 'target_id' => $paragraph->id(),
                 'target_revision_id' => $paragraph->getRevisionId(),
               );
-              $node->set('field_danger_list', $current);
-              $node->save();
-
               drush_print(dt("Added danger list item (" . $danger_list['year'] . ", " . $danger_list['dangerListStatus'] . ") to node: $node_id"));
             }
+            $node->set('field_danger_list', $current);
+            $node->save();
           }
         }
       }
@@ -321,31 +321,30 @@ function drush_iucn_migrate_images() {
 
   $sites = Drupal\Component\Serialization\Json::decode($sites_file_content);
 
-  if($sites){
-    foreach($sites as $site){
-      if(isset($site['siteId'])
+  if ($sites) {
+    foreach ($sites as $site) {
+      if (isset($site['siteId'])
         && !empty($site['siteId'])
         && isset($site['thumbnailUrl'])
         && !empty($site['thumbnailUrl'])
-      ){
+      ) {
         $node_ids = \Drupal::entityQuery('node')
           ->condition('field_site_id', $site['siteId'])
           ->condition('type', 'site')
           ->execute();
-        if($node_ids) {
+        if ($node_ids) {
           $node_id = reset($node_ids);
           $node = Node::load($node_id);
-          if($node){
-
-
-            $image_title = str_replace([" ","/"],["_",""],$node->getTitle());
+          if ($node) {
+            $image_title = str_replace([" ","/"], ["_",""], $node->getTitle());
             $external_image = file_get_contents($site['thumbnailUrl']);
             $image_object = file_save_data($external_image, 'public://site/' . $image_title . '.jpg', FILE_EXISTS_REPLACE);
-            if($image_object){
+            if ($image_object) {
               $node->set('field_image', ['target_id' => $image_object->id()]);
               $node->save();
               drush_print(dt("Added image(" . $site['thumbnailUrl'] . ") to node: $node_id"));
-            }else{
+            }
+            else {
               drush_print(dt("Image could not be saved (" . $image_title . ") to node: $node_id"));
             }
           }
@@ -398,7 +397,7 @@ function drush_iucn_migrate_sites_multilingual() {
             }
 
 
-            if (isset($site['nameEs']) && !empty($site['nameEs'])){
+          /*if (isset($site['nameEs']) && !empty($site['nameEs'])){
               if($node->hasTranslation('es')){
                 $node->getTranslation('es')->setTitle($site['nameEs'])->save();
                 drush_print(dt("Updated [es] translation for node: $node_id"));
@@ -412,7 +411,7 @@ function drush_iucn_migrate_sites_multilingual() {
                 $node->removeTranslation('es');
                 drush_print(dt("Removed [es] translation from node: $node_id"));
               }
-            }
+            }*/
 
             $node->save();
           }

@@ -24,7 +24,7 @@ dependencies:
   module:
     - ds
     - field_group
-    - iucn_site
+    - iucn_assessment
     - taxonomy
 third_party_settings:
   ds:
@@ -38,24 +38,24 @@ third_party_settings:
       title:
         - field_as_benefits_category
       description:
-        - field_as_benefits_hab_trend
-        - field_as_benefits_commun_out
-        - field_as_benefits_pollut_level
         - field_as_benefits_oex_trend
-        - field_as_benefits_commun_wide
-        - field_as_description
-        - field_as_benefits_hab_level
+        - field_as_benefits_commun_out
+        - field_as_benefits_hab_trend
+        - field_as_benefits_pollut_level
         - field_as_benefits_pollut_trend
         - field_as_benefits_oex_level
+        - field_as_description
+        - field_as_benefits_hab_level
+        - field_as_benefits_commun_wide
         - group_factors_benefit
         - field_as_benefits_commun_in
         - field_as_comment
-        - group_climate_change
         - field_as_benefits_datadeficient
+        - group_climate_change
         - group_pollution
         - group_overexploitation
-        - field_as_benefits_invassp_trend
         - group_invasive_species
+        - field_as_benefits_invassp_trend
         - field_as_benefits_invassp_level
         - group_habitat_change
         - group_community
@@ -196,13 +196,11 @@ bundle: as_site_benefit
 mode: default
 content:
   field_as_benefits_category:
-    type: entity_reference_list
+    type: parent_category
     weight: 0
     region: title
     label: hidden
-    settings:
-      link: false
-      separator: ','
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_climate_level:
     type: entity_reference_label

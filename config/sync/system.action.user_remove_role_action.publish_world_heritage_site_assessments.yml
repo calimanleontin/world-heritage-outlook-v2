@@ -1,0 +1,14 @@
+uuid: 9a56d140-16a2-451c-8768-cb4168c75099
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.publish_world_heritage_site_assessments
+  module:
+    - user
+id: user_remove_role_action.publish_world_heritage_site_assessments
+label: 'Remove the Publish World Heritage site assessments role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: publish_world_heritage_site_assessments

@@ -1,19 +1,25 @@
 <?php
+
 /**
- * Implements hook_uninstall().
+ * Enable sites migration.
+ * Steps:
+ * Remove fields:
+ * Coordinate X
+ * Coordinate Y
+
+ * Remove site:
+ * Test site
+
+ * drush mi iucn_migrate_sites
+
+ * Re-index search api items.
+
+ * drush iucnmdl
+ * drush iucnmi
+ * drush iucnmsm
+ * drush iucnusc
+ *
  */
-function iucn_migrate_uninstall() {
-  $migration_names = [
-      'iucn_migrate_sites',
-      'iucn_migrate_categories',
-      'iucn_migrate_thematics',
-      'iucn_migrate_designations',
-      'iucn_migrate_criterias',
-      'iucn_migrate_countries',
-    ];
-  foreach ($migration_names as $migration_name) {
-    db_query("TRUNCATE migrate_map_$migration_name");
-    db_query("DELETE FROM {config} WHERE name LIKE 'migrate_plus.migration.$migration_name%'");
-  }
-  drupal_flush_all_caches();
-}
+/*function iucn_migrate_update_8001() {
+  \Drupal::service('config.installer')->installDefaultConfig('module', 'iucn_migrate');
+}*/
