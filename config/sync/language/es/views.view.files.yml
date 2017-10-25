@@ -36,7 +36,7 @@ display:
           label: 'Fecha del último cambio'
         count:
           label: 'Usado en'
-          format_plural_string: "1 lugar\x03@count lugares"
+          format_plural_string: !!binary MSBsdWdhcgNAY291bnQgbHVnYXJlcw==
       filters:
         filename:
           expose:
