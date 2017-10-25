@@ -86,6 +86,10 @@ function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInte
         '#weight' => -99,
       ];
       $build['#prefix'] = \Drupal::service('renderer')->render($element);
+      $build['#attributes']['class'][] = 'showing-old-assessment';
+    }
+    else {
+      $build['#attributes']['class'][] = 'showing-latest-assessment';
     }
   }
 }
