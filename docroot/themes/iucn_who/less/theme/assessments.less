@@ -1104,27 +1104,27 @@
 //   right: 0;
 //   bottom: 0;
 // }
-.image-rating-container {
-  .svg-icon(~'conservation-rating-gauge/iucn-gauge');
-  html[lang='fr'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-fr'); }
-  html[lang='es'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-es'); }
-  width: 100%;
-  height: 200px;
-  background-size: contain;
-  background-position: center;
-  .loop-conservation-ratings({
-    &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/iucn-gauge-@{conservation-rating-class}');
-    }
-    html[lang='fr'] &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/fr/iucn-gauge-@{conservation-rating-class}-fr');
-    }
-    html[lang='es'] &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/es/iucn-gauge-@{conservation-rating-class}-es');
-    }
-  });
+// .image-rating-container {
+//   .svg-icon(~'conservation-rating-gauge/iucn-gauge');
+//   html[lang='fr'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-fr'); }
+//   html[lang='es'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-es'); }
+//   width: 100%;
+//   height: 200px;
+//   background-size: contain;
+//   background-position: center;
+//   .loop-conservation-ratings({
+//     &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/iucn-gauge-@{conservation-rating-class}');
+//     }
+//     html[lang='fr'] &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/fr/iucn-gauge-@{conservation-rating-class}-fr');
+//     }
+//     html[lang='es'] &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/es/iucn-gauge-@{conservation-rating-class}-es');
+//     }
+//   });
 
-}
+// }
 
 /* ==========================================================================
    No assessment placeholder
