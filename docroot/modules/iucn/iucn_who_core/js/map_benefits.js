@@ -10,8 +10,8 @@ function postInitMap(instance_id, map, config) {
     for (var $i in config.icons) {
       config.icons[$i].scaledSize = new google.maps.Size(42, 50);
     }
-    config.icons['all'].scaledSize = new google.maps.Size(33, 33);
-    config.icons['all_active'].scaledSize = new google.maps.Size(33, 33);
+    config.icons['all'].scaledSize = new google.maps.Size(27, 27);
+    config.icons['all_active'].scaledSize = new google.maps.Size(27, 27);
 
     var $filter_category = 'all';
 
