@@ -26,7 +26,6 @@ class IucnSiteUtils {
       $file->setPermanent();
       $file->save();
       $node->field_geojson->entity = $file->id();
-      $node->save();
       $file_usage = \Drupal::service('file.usage');
       $file_usage->add($file, 'iucn_site', 'node', $node->id());
     }
