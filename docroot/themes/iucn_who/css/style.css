@@ -10293,6 +10293,9 @@ fieldset[disabled] #download-publication-button a.focus {
     font-size: 13px;
   }
 }
+#block-benefitintrotext {
+  margin-bottom: 2em;
+}
 /* ==========================================================================
    Frontpage
    ========================================================================== */
