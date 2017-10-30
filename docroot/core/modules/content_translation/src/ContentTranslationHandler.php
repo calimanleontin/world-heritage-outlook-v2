@@ -17,6 +17,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\EntityOwnerInterface;
+use Drupal\Component\Render\FormattableMarkup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -116,6 +117,7 @@ class ContentTranslationHandler implements ContentTranslationHandlerInterface, E
       ->setLabel(t('Translation source'))
       ->setDescription(t('The source language from which this translation was created.'))
       ->setDefaultValue(LanguageInterface::LANGCODE_NOT_SPECIFIED)
+      ->setInitialValue(LanguageInterface::LANGCODE_NOT_SPECIFIED)
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE);
 
@@ -123,6 +125,7 @@ class ContentTranslationHandler implements ContentTranslationHandlerInterface, E
       ->setLabel(t('Translation outdated'))
       ->setDescription(t('A boolean indicating whether this translation needs to be updated.'))
       ->setDefaultValue(FALSE)
+      ->setInitialValue(FALSE)
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE);
 
@@ -142,6 +145,7 @@ class ContentTranslationHandler implements ContentTranslationHandlerInterface, E
         ->setLabel(t('Translation status'))
         ->setDescription(t('A boolean indicating whether the translation is visible to non-translators.'))
         ->setDefaultValue(TRUE)
+        ->setInitialValue(TRUE)
         ->setRevisionable(TRUE)
         ->setTranslatable(TRUE);
     }
@@ -559,7 +563,7 @@ class ContentTranslationHandler implements ContentTranslationHandlerInterface, E
     // check is because some elements have a #title attribute even though it is
     // not rendered; for instance, field containers.
     if (isset($element['#type']) && isset($fapi_title_elements[$element['#type']]) && isset($element['#title'])) {
-      $element['#title'] .= $suffix;
+      $element['#title'] = new FormattableMarkup($element['#title'] . $suffix, []);
     }
     // If the current element does not have a (valid) title, try child elements.
     elseif ($children = Element::children($element)) {
@@ -570,7 +574,7 @@ class ContentTranslationHandler implements ContentTranslationHandlerInterface, E
     // If there are no children, fall back to the current #title attribute if it
     // exists.
     elseif (isset($element['#title'])) {
-      $element['#title'] .= $suffix;
+      $element['#title'] = new FormattableMarkup($element['#title'] . $suffix, []);
     }
   }
 

@@ -1,7 +1,8 @@
 {
   "patches": {
     "drupal/core": {
-      "Number widget validation can break AJAX actions": "patches/core/2614250-40.patch"
+      "Number widget validation can break AJAX actions": "patches/core/2614250-40.patch",
+      "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch"
     },
     "drupal/display_field_copy": {
       "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",

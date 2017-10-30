@@ -37,7 +37,7 @@ display:
           label: 'Date de modification'
         count:
           label: 'Utilisé dans'
-          format_plural_string: "@count emplacement\x03@count emplacements"
+          format_plural_string: !!binary QGNvdW50IGVtcGxhY2VtZW50A0Bjb3VudCBlbXBsYWNlbWVudHM=
       filters:
         filename:
           expose:

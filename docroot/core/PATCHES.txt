@@ -5,3 +5,7 @@ Number widget validation can break AJAX actions
 Source: patches/core/2614250-40.patch
 
 
+Translate labels admin
+Source: https://www.drupal.org/files/issues/2768711-1.patch
+
+
