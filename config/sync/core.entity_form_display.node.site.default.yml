@@ -194,8 +194,6 @@ third_party_settings:
         - field_buffer_zone_area
         - field_transboundary
         - field_serial
-        - field_coordinate_x
-        - field_coordinate_y
         - field_geolocation
       parent_name: group_physical
       weight: 20

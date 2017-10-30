@@ -19,7 +19,9 @@ class IucnSiteWorker extends QueueWorkerBase {
 
   public function processItem($site_nid) {
     $node = Node::load($site_nid);
-    \Drupal::service('iucn_site.utils')->updateGeoJson($node);
+    if (!empty($node)) {
+      \Drupal::service('iucn_site.utils')->updateGeoJson($node);
+    }
   }
 
 }
