@@ -541,6 +541,7 @@
     }
   }
 }
+
 .iucn-site-assessment-wrapper {
   .iucn-expandable-text .btn-link {
     @media @grid-desktop {
@@ -826,6 +827,13 @@
   }
 }
 
+.field--name-field-as-values-bio {
+  margin-top: 1em;
+  .field--label {
+    .remify(font-size, 23px);
+  }
+}
+
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
   // fix animation jerking
   margin-top: 0;
@@ -949,7 +957,11 @@
     }
   }
   @media @grid-desktop {
-    .background-variant(@brand-primary, #fff);
+    background-color: @brand-primary;
+    color: #fff;
+    a, a:hover, a:focus, a:active {
+      color: #fff;
+    }
   }
   .node--type-site-assessment .col-sm-4 .field + & {
     margin-top: 3em;
@@ -1092,27 +1104,27 @@
 //   right: 0;
 //   bottom: 0;
 // }
-.image-rating-container {
-  .svg-icon(~'conservation-rating-gauge/iucn-gauge');
-  html[lang='fr'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-fr'); }
-  html[lang='es'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-es'); }
-  width: 100%;
-  height: 200px;
-  background-size: contain;
-  background-position: center;
-  .loop-conservation-ratings({
-    &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/iucn-gauge-@{conservation-rating-class}');
-    }
-    html[lang='fr'] &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/fr/iucn-gauge-@{conservation-rating-class}-fr');
-    }
-    html[lang='es'] &.@{conservation-rating-class} {
-      .svg-icon(~'conservation-rating-gauge/es/iucn-gauge-@{conservation-rating-class}-es');
-    }
-  });
+// .image-rating-container {
+//   .svg-icon(~'conservation-rating-gauge/iucn-gauge');
+//   html[lang='fr'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-fr'); }
+//   html[lang='es'] & { .svg-icon(~'conservation-rating-gauge/iucn-gauge-es'); }
+//   width: 100%;
+//   height: 200px;
+//   background-size: contain;
+//   background-position: center;
+//   .loop-conservation-ratings({
+//     &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/iucn-gauge-@{conservation-rating-class}');
+//     }
+//     html[lang='fr'] &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/fr/iucn-gauge-@{conservation-rating-class}-fr');
+//     }
+//     html[lang='es'] &.@{conservation-rating-class} {
+//       .svg-icon(~'conservation-rating-gauge/es/iucn-gauge-@{conservation-rating-class}-es');
+//     }
+//   });
 
-}
+// }
 
 /* ==========================================================================
    No assessment placeholder

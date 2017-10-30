@@ -13,6 +13,13 @@ simplebar:
       theme:
         libraries/node_modules/simplebar/dist/simplebar.css: { minified: true }
 
+disable-hover:
+    js:
+      libraries/disable-hover/disable-hover.js: {}
+    css:
+      theme:
+        libraries/disable-hover/disable-hover.css: {}
+
 facets:
     js:
       js/facets.js: {}
@@ -44,6 +51,7 @@ global-styling:
       - core/underscore
       - iucn_who/bootstrap-js
       - iucn_who/headroom
+      - iucn_who/disable-hover
 
 back-to-js:
   js:
