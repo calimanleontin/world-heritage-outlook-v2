@@ -229,7 +229,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: news
+      path: more/news
       rendering_language: '***LANGUAGE_language_interface***'
       menu:
         type: none
