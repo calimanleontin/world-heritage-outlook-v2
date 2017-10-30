@@ -47,7 +47,7 @@ class IucnWhoEventSubscriber implements EventSubscriberInterface {
       $node = Node::load($request->attributes->get('entity_id'));
     }
 
-    if (!empty($node) && $node->bundle() === 'site' && !empty($node->field_assessments)) {
+    if (!empty($node) && $node instanceof \Drupal\node\Entity\Node && $node->bundle() === 'site' && !empty($node->field_assessments)) {
       $iucn_config = \Drupal::config('iucn_who.settings');
       $config_year = $iucn_config->get('assessment_year');
       $_iucn_assessment_display_year = iucn_pdf_assessment_year_display($node);
