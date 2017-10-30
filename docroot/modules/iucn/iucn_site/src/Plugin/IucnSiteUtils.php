@@ -24,7 +24,10 @@ class IucnSiteUtils {
         'uri' => 'public://geojson/' . $filename,
       ]);
       $file->setPermanent();
+      $file->save();
       $node->field_geojson->entity = $file->id();
+      $file_usage = \Drupal::service('file.usage');
+      $file_usage->add($file, 'iucn_site', 'node', $node->id());
     }
 
     // Create the directory if one doesn't exist already.

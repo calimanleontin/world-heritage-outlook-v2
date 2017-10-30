@@ -31,7 +31,6 @@ dependencies:
   module:
     - datetime
     - ds
-    - file
     - image
     - iucn_site
     - text
@@ -47,7 +46,6 @@ third_party_settings:
     regions:
       title:
         - node_title
-        - field_geojson
       mobile_image:
         - 'display_field_copy:node-image_site'
       left_1:
@@ -78,6 +76,15 @@ third_party_settings:
           formatter:
             image_style: sites_thumbnail
             image_link: ''
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+        settings:
+          wrapper: h1
+          class: ''
+          link: false
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
         weight: 13
@@ -88,15 +95,6 @@ third_party_settings:
         weight: 14
         label: above
         formatter: default
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
-        settings:
-          wrapper: h1
-          class: ''
-          link: false
       assessment_rating:
         plugin_id: assessment_rating
         weight: 2
@@ -106,14 +104,14 @@ third_party_settings:
           formatter:
             image_style: ''
             image_link: ''
-      assessments_download_links:
-        plugin_id: assessments_download_links
-        weight: 12
-        label: above
-        formatter: default
       assessments_more_site_links:
         plugin_id: assessments_more_site_links
         weight: 11
+        label: above
+        formatter: default
+      assessments_download_links:
+        plugin_id: assessments_download_links
+        weight: 12
         label: above
         formatter: default
 id: node.site.default
@@ -165,13 +163,6 @@ content:
     third_party_settings:
       ds:
         ds_limit: ''
-  field_geojson:
-    weight: 11
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-    region: title
   field_geolocation:
     type: geofield_site_area_map
     weight: 10
@@ -222,6 +213,7 @@ hidden:
   field_cultural_landscape: true
   field_current_assessment: true
   field_danger_list: true
+  field_geojson: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true
