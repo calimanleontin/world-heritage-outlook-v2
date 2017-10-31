@@ -76,7 +76,7 @@
 
 
     // Prevent dropdowns closing when clicking inside them
-    $('.dropdown-menu-prevent-closing').on('click touchstart', function(event) {
+    $('[data-dropdown-prevent-closing]').on('click touchstart', function(event) {
       var events = $._data(document, 'events') || {};
       events = events.click || [];
       for(var i = 0; i < events.length; i++) {
@@ -95,7 +95,7 @@
           }
       }
       event.stopPropagation(); //Always stop propagation
-  });
+    });
 
   });
 

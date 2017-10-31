@@ -7657,6 +7657,10 @@ table .radio.form-no-label {
   box-shadow: none;
   font-size: inherit;
 }
+.dropdown-menu > .active > a:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
 /**
  * Icon styles.
  */
@@ -7902,10 +7906,12 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   line-height: 0;
 }
 @media screen and (min-width: 768px) {
+  .navbar-collapse .icon-collapse {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
   .navbar-collapse .navbar-nav > li > .dropdown-menu {
-    display: block;
-    opacity: 0;
-    pointer-events: none;
     transition: .1s;
     margin-top: -1px;
   }
@@ -7918,15 +7924,22 @@ body.show-focus-outlines .navbar-toggle:active .icon-bar {
   .navbar-collapse .navbar-nav > li > .dropdown-menu > li > a.is-active {
     background-color: transparent;
   }
+  .navbar-collapse .navbar-nav > li.open > .dropdown-menu,
   .navbar-collapse .navbar-nav > li:hover > .dropdown-menu {
-    opacity: 1;
-    pointer-events: all;
+    display: block;
   }
   .navbar-collapse .navbar-nav > li > a {
     display: inline-block;
   }
   .navbar-collapse .navbar-nav > li > a.dropdown-toggle {
-    display: none;
+    padding: 0;
+    vertical-align: middle;
+    width: 0;
+    opacity: 0;
+  }
+  .navbar-collapse .navbar-nav > li > a.dropdown-toggle:focus + a {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -8724,6 +8737,10 @@ p:last-child,
 }
 .close {
   text-shadow: none;
+}
+.dropdown-toggle:focus {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
 }
 html {
   font-size: 62.5%;
