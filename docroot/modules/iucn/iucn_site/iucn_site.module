@@ -67,8 +67,10 @@ function iucn_site_preprocess_field(&$variables) {
  */
 function iucn_site_preprocess_page_title(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node && $node->type->target_id == 'publication') {
-    $variables['title'] = t('Publications');
+  if ($node && $node instanceof \Drupal\node\Entity\Node &&  $node->type->target_id == 'publication') {
+    $view = \Drupal\views\Views::getView('publications');
+    $view->setDisplay('publications_page_database');
+    $variables['title'] = $view->getTitle();
   }
 }
 
