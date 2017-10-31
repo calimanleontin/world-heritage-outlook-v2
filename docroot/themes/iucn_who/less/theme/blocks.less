@@ -297,18 +297,16 @@
     .input-group-addon,
     .form-autocomplete,
     .form-text {
-      border-color: @input-bg;
       box-shadow: none;
     }
     .form-autocomplete,
     .form-text {
       .form-control();
-      border-color: @input-bg;
       box-shadow: none;
       color: @iucn-blue-dark;
       width: 100%;
       &:focus {
-        border-color: @input-bg;
+        border-color: @input-border;
         box-shadow: none;
       }
     }
@@ -317,8 +315,9 @@
       background-color: @iucn-blue-lightest;
       background-position: center;
       background-size: 75%;
-      border-color: @iucn-blue-lightest;
-      border-left: 1px solid @iucn-blue-dark;
+      border-color: @input-border;
+      // border-left: 1px solid @iucn-blue-dark;
+      margin-left: -1px;
       margin-right: 0;
       margin-right: 0;
       text-indent: -9999px;

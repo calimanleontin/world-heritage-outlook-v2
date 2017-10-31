@@ -2937,7 +2937,7 @@ output {
   color: #555555;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ccc;
+  border: 1px solid #134780;
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4425,7 +4425,7 @@ select[multiple].input-group-sm > .input-group-btn > .sidemenu .block-clear-sear
   color: #555555;
   text-align: center;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #134780;
   border-radius: 0;
 }
 .input-group-addon.input-sm {
@@ -7521,14 +7521,14 @@ html.js .ajax-new-content:empty {
 .file > span {
   background: #fff;
   color: #134780;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #134780;
+  border-top: 1px solid #134780;
 }
 .file > span:first-child {
-  border-left: 1px solid #ccc;
+  border-left: 1px solid #134780;
 }
 .file > span:last-child {
-  border-right: 1px solid #ccc;
+  border-right: 1px solid #134780;
 }
 .file > .tabledrag-changed {
   background: #fcf8e3;
@@ -8360,7 +8360,7 @@ select.form-control + .chosen-container.chosen-container-single .chosen-single {
   display: block;
   width: 100%;
   height: 34px;
-  padding: 6px 12px;
+  padding: 6px 20px;
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -8380,9 +8380,8 @@ select.form-control + .chosen-container.chosen-container-single .chosen-single d
 }
 select.form-control + .chosen-container .chosen-drop {
   background-color: #FFF;
-  border: 1px solid #ccc;
+  border: 1px solid #134780;
   border-radius: 0 0 0 0;
-  -webkit-box-shadow: 0 6px 6px -5px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 6px -5px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
   margin: 0 0 20px -1px;
@@ -8412,9 +8411,7 @@ select.form-control + .chosen-container .chosen-search input[type=text] {
   background-color: #FFF;
   border: 1px solid #CCC;
   border-radius: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   background-image: none;
 }
@@ -8425,10 +8422,12 @@ select.form-control + .chosen-container .chosen-search input[type=text]:focus {
 select.form-control + .chosen-container .chosen-results {
   margin: 2px 0 0;
   padding: 5px 0;
+  margin: 0;
+  padding: 0;
   font-size: 14px;
   list-style: none;
   background-color: #fff;
-  margin-bottom: 5px;
+  border-top: 1px solid #ccc;
 }
 select.form-control + .chosen-container .chosen-results li,
 select.form-control + .chosen-container .chosen-results li.active-result {
@@ -8498,7 +8497,7 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice .
 }
 select.form-control + .chosen-container-multi.chosen-container-active .chosen-choices,
 select.form-control + .chosen-container.chosen-container-single.chosen-container-active .chosen-single {
-  border-color: #ccc;
+  border-color: #134780;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
@@ -8578,8 +8577,7 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
 .ui-autocomplete {
   background: #fff;
   background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #134780;
   border-radius: 0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   color: inherit;
@@ -8587,9 +8585,19 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
   font-size: 18px;
   list-style: none;
   min-width: 160px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 240px;
   padding: 5px 0;
   text-align: left;
   z-index: 1000;
+}
+ul[data-sa-theme="minimal"].ui-autocomplete {
+  min-width: auto;
+}
+.ui-autocomplete.ui-widget.ui-widget-content {
+  border-color: #134780;
+  border-top: none;
 }
 .ui-autocomplete .ui-menu-item {
   border: 0;
@@ -8602,23 +8610,36 @@ select.form-control + .chosen-container-multi .chosen-choices li.search-choice {
   line-height: 1.33333333;
   margin: 0;
   outline: 0;
-  padding: 3px 20px;
   text-decoration: none;
 }
-.ui-autocomplete .ui-menu-item.ui-state-hover {
-  background: #e1e1e1;
-  color: #03afdf;
+.ui-autocomplete .ui-menu-item-wrapper {
+  padding: 0.6rem 1.2rem;
 }
-.ui-autocomplete .ui-menu-item.ui-state-active,
-.ui-autocomplete .ui-menu-item.ui-state-focus {
-  background: #e1e1e1;
-  color: #03afdf;
+.ui-autocomplete .ui-state-hover,
+.ui-autocomplete .ui-state-active,
+.ui-autocomplete .ui-state-focus {
+  border: none;
+  color: #333333;
+  margin: 0;
 }
-.ui-autocomplete .ui-menu-divider.no_results {
+.ui-autocomplete .ui-state-hover {
+  background: #e1e1e1;
+}
+.ui-autocomplete .ui-state-active,
+.ui-autocomplete .ui-state-focus {
+  background: #e1e1e1;
+}
+.ui-autocomplete .ui-menu-divider.no_results,
+.ui-autocomplete .ui-menu-divider:first-child {
   display: none;
 }
-ul[data-sa-theme="minimal"].ui-autocomplete {
-  min-width: auto;
+.ui-autocomplete.ui-widget-content a {
+  display: block;
+}
+.ui-autocomplete.ui-widget-content a:hover,
+.ui-autocomplete.ui-widget-content a:focus,
+.ui-autocomplete.ui-widget-content a:active {
+  color: #333333;
 }
 .ui-accordion {
   font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -9144,9 +9165,6 @@ ol li.iucn-arrow:after {
 .iucn-expandable-text-content.open {
   max-height: 9999px;
 }
-.ui-widget-content a {
-  color: #03afdf;
-}
 .footer {
   background-color: #134780;
 }
@@ -9610,7 +9628,6 @@ h6.collapsible-title {
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .input-group-addon,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text {
-  border-color: #fff;
   box-shadow: none;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete,
@@ -9623,7 +9640,7 @@ h6.collapsible-title {
   color: #555555;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ccc;
+  border: 1px solid #134780;
   border-radius: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -9632,7 +9649,6 @@ h6.collapsible-title {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   font-size: 1em;
   height: auto;
-  border-color: #fff;
   box-shadow: none;
   color: #134780;
   width: 100%;
@@ -9683,7 +9699,7 @@ textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-autocomplete:focus,
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-text:focus {
-  border-color: #fff;
+  border-color: #134780;
   box-shadow: none;
 }
 .block-views-exposed-filter-blocksites-search-sites-search-page-database .form-inline .form-submit {
@@ -9692,8 +9708,8 @@ textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database
   background-color: #def2fb;
   background-position: center;
   background-size: 75%;
-  border-color: #def2fb;
-  border-left: 1px solid #134780;
+  border-color: #134780;
+  margin-left: -1px;
   margin-right: 0;
   text-indent: -9999px;
   width: 2.38888889em;
@@ -11020,7 +11036,7 @@ h6.view-sites-search .view-header {
   height: 1.33333333em;
   width: 1em;
   display: inline-block;
-  margin-right: .5em;
+  margin-right: .2em;
 }
 @media screen and (min-width: 768px) {
   .map-site-search .form-type-select > label:before {
@@ -11056,7 +11072,7 @@ h6.view-sites-search .view-header {
     width: 28px;
     height: 32px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid #134780;
     border-right: 0;
   }
   .map-site-search .form-type-select > .select-wrapper {
