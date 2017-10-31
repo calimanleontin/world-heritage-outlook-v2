@@ -293,7 +293,6 @@
 
 .map-filters {
   padding: 1em;
-  position: relative;
   h3 {
     color: @iucn-blue-dark;
     font-size: 1.1em;
@@ -317,25 +316,29 @@
   }
 }
 .map-filter-items {
+  clear: both;
   line-height: @filters-line-height;
   list-style-type: none;
   margin-left: -1em;
   margin-right: -1em;
-  clear: both;
+  padding-left: @filters-line-height * 1em;
 }
 .map-filter-item {
   padding-left: 1em;
   padding-right: 1em;
+  position: relative;
   &:before {
     background-position: center;
-    background-size: auto 60%;
+    background-size: auto .9em;
+    bottom: 0;
     display: block;
-    height: @filters-line-height * 1em;
-    left: 0;
+    min-height: @filters-line-height * 1em;
     overflow: hidden;
     pointer-events: none;
     position: absolute;
+    right: 100%;
     text-indent: 999px;
+    top: 0;
     width: @filters-line-height * 1em;
   }
 }

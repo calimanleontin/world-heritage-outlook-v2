@@ -11134,7 +11134,6 @@ h6.view-sites-search .view-header {
 }
 .map-filters {
   padding: 1em;
-  position: relative;
 }
 .map-filters h3 {
   color: #134780;
@@ -11153,26 +11152,30 @@ h6.view-sites-search .view-header {
   }
 }
 .map-filter-items {
+  clear: both;
   line-height: 1.5;
   list-style-type: none;
   margin-left: -1em;
   margin-right: -1em;
-  clear: both;
+  padding-left: 1.5em;
 }
 .map-filter-item {
   padding-left: 1em;
   padding-right: 1em;
+  position: relative;
 }
 .map-filter-item:before {
   background-position: center;
-  background-size: auto 60%;
+  background-size: auto .9em;
+  bottom: 0;
   display: block;
-  height: 1.5em;
-  left: 0;
+  min-height: 1.5em;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
+  right: 100%;
   text-indent: 999px;
+  top: 0;
   width: 1.5em;
 }
 .map-filter-item.active {
