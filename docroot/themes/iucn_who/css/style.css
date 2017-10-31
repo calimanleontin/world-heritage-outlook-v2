@@ -11835,7 +11835,8 @@ fieldset[disabled] .map-site-detail .close.focus {
     margin-right: auto;
   }
 }
-.field--name-field-teasers h2 {
+.field--name-field-teasers h2,
+.iucn-news-teaser-wrapper h2 {
   font-size: 24px;
   font-size: 2.4rem;
   color: #134780;
@@ -15156,5 +15157,15 @@ h6.view-publications .view-header {
 }
 .view-publications .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
+}
+.iucn-news-teaser-wrapper .field--name-body {
+  margin-top: 1em;
+}
+.iucn-news-teaser-wrapper .field--name-field-date-published {
+  color: #a0a0a0;
+}
+.node-readmore a,
+.node-readmore a a {
+  color: #03afdf;
 }
 /*# sourceMappingURL=style.css.map */
