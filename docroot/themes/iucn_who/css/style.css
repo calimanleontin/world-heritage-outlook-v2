@@ -11144,6 +11144,7 @@ h6.view-sites-search .view-header {
 .map-filters a[data-filter="all"] {
   color: #03afdf;
   float: right;
+  line-height: 1.5;
 }
 @media screen and (max-width: 767px) {
   .block-home-page-map .sidemenu .map-filters {

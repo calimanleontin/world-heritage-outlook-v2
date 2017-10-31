@@ -302,6 +302,7 @@
   a[data-filter="all"] {
     color: @iucn-blue-light;
     float: right;
+    line-height: @filters-line-height;
   }
   // .block-home-page-map & {
   //   @media @grid-mobile {
@@ -335,7 +336,7 @@
     pointer-events: none;
     position: absolute;
     text-indent: 999px;
-    width: 1.5em;
+    width: @filters-line-height * 1em;
   }
 }
 .map-filter-item.active {
@@ -358,7 +359,7 @@
   background-size: 1em * @line-height-base;
   cursor: pointer;
   display: block;
-  min-height: 1.5em;
+  min-height: @filters-line-height * 1em;
   .loop-conservation-ratings({
     &.@{conservation-rating-class} {
       // background-image: url('/modules/iucn/iucn_who_homepage/images/marker-@{conservation-rating-class}.png');
