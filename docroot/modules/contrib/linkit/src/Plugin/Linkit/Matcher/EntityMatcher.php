@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -293,6 +294,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
     $url_results = $this->findEntityIdByUrl($string);
     $result = array_merge($query_result, $url_results);
 
+    // If no results, return an empty suggestion collection.
     if (empty($result)) {
       return $suggestions;
     }
@@ -308,16 +310,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
       }
 
       $entity = $this->entityRepository->getTranslationFromContext($entity);
-
-      $suggestion = new EntitySuggestion();
-      $suggestion->setLabel($this->buildLabel($entity))
-        ->setGroup($this->buildGroup($entity))
-        ->setDescription($this->buildDescription($entity))
-        ->setEntityUuid($entity->uuid())
-        ->setEntityTypeId($entity->getEntityTypeId())
-        ->setSubstitutionId($this->configuration['substitution_type'])
-        ->setPath($this->buildPath($entity));
-
+      $suggestion = $this->createSuggestion($entity);
       $suggestions->addSuggestion($suggestion);
     }
 
@@ -359,6 +352,18 @@ class EntityMatcher extends ConfigurableMatcherBase {
       $query->condition($bundle_key, $this->configuration['bundles'], 'IN');
     }
 
+    $this->addQueryTags($query);
+
+    return $query;
+  }
+
+  /**
+   * Adds query tags to the query.
+   *
+   * @param \Drupal\Core\Entity\Query\QueryInterface $query
+   *   A query to add tags to.
+   */
+  protected function addQueryTags(QueryInterface $query) {
     // Add tags to let other modules alter the query.
     $query->addTag('linkit_entity_autocomplete');
     $query->addTag('linkit_entity_' . $this->targetType . '_autocomplete');
@@ -366,12 +371,32 @@ class EntityMatcher extends ConfigurableMatcherBase {
     // Add access tag for the query.
     $query->addTag('entity_access');
     $query->addTag($this->targetType . '_access');
-
-    return $query;
   }
 
   /**
-   * Builds the label string used in the match array.
+   * Creates a suggestion.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The matched entity.
+   *
+   * @return \Drupal\linkit\Suggestion\EntitySuggestion
+   *   A suggestion object with populated entity data.
+   */
+  protected function createSuggestion(EntityInterface $entity) {
+    $suggestion = new EntitySuggestion();
+    $suggestion->setLabel($this->buildLabel($entity))
+      ->setGroup($this->buildGroup($entity))
+      ->setDescription($this->buildDescription($entity))
+      ->setEntityUuid($entity->uuid())
+      ->setEntityTypeId($entity->getEntityTypeId())
+      ->setSubstitutionId($this->configuration['substitution_type'])
+      ->setPath($this->buildPath($entity));
+
+    return $suggestion;
+  }
+
+  /**
+   * Builds the label string used in the suggestion.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The matched entity.
@@ -384,7 +409,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
   }
 
   /**
-   * Builds the metadata string used in the match array.
+   * Builds the metadata string used in the suggestion.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The matched entity.
@@ -398,7 +423,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
   }
 
   /**
-   * Builds the group string used in the match array.
+   * Builds the group string used in the suggestion.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The matched entity.
@@ -421,7 +446,7 @@ class EntityMatcher extends ConfigurableMatcherBase {
   }
 
   /**
-   * Builds the path used in the match array.
+   * Builds the path string used in the suggestion.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The matched entity.

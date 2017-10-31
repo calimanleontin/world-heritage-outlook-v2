@@ -2,11 +2,11 @@
 
 namespace Drupal\linkit\Plugin\Linkit\Substitution;
 
+use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\GeneratedUrl;
 use Drupal\linkit\SubstitutionInterface;
-use Drupal\views\Plugin\views\PluginBase;
 
 /**
  * A substitution plugin for the URL to a file.

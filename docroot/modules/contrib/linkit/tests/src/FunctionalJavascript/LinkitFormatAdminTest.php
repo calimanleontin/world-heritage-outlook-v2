@@ -45,15 +45,15 @@ class LinkitFormatAdminTest extends JavascriptTestBase {
     $page->findField('filters[filter_html][status]')->check();
 
     $javascript = "(function (){ return jQuery('p.editor-update-message > strong').text(); })()";
-    $this->assertNotContains('<a href hreflang data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
+    $this->assertNotContains('<a href hreflang data-entity-substitution data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
 
     // Enable the 'Linkit filter' filter.
     $page->findField('filters[linkit][status]')->check();
-    $this->assertContains('<a href hreflang data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
+    $this->assertContains('<a href hreflang data-entity-substitution data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
 
     // Disable the 'Linkit filter' filter.
     $page->findField('filters[linkit][status]')->uncheck();
-    $this->assertNotContains('<a href hreflang data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
+    $this->assertNotContains('<a href hreflang data-entity-substitution data-entity-type data-entity-uuid title>', $session->evaluateScript($javascript));
   }
 
 }

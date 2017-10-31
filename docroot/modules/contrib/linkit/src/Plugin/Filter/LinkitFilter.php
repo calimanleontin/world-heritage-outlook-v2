@@ -14,19 +14,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a Linkit filter.
  *
- * Note this must run before any Xss::filter() calls, because that strips
- * disallowed protocols. That effectively means this must run before the
- * \Drupal\filter\Plugin\Filter\FilterHtml filter. Hence the very low weight.
- *
  * @Filter(
  *   id = "linkit",
- *   title = @Translation("Linkit filter"),
- *   description = @Translation("Updates content links inserted by Linkit to point to the current URL alias, and have the current title."),
+ *   title = @Translation("Linkit URL converter"),
+ *   description = @Translation("Updates links inserted by Linkit to point to entity URL aliases."),
  *   settings = {
  *     "title" = TRUE,
  *   },
- *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
- *   weight = -15,
+ *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE
  * )
  */
 class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface {
