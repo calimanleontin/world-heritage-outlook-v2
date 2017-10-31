@@ -15161,8 +15161,9 @@ h6.view-publications .view-header {
 .view-publications .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
-.iucn-news-teaser-wrapper .field--name-body {
-  margin-top: 1em;
+.iucn-news-teaser-wrapper .field--name-body,
+.iucn-news-teaser-wrapper .links {
+  margin-top: .5em;
 }
 .iucn-news-teaser-wrapper .field--name-field-date-published {
   color: #a0a0a0;
