@@ -12030,6 +12030,10 @@ fieldset[disabled] .map-site-detail .close.focus {
     display: flex;
     flex-wrap: wrap;
   }
+  .images-row:before,
+  .images-row:after {
+    display: none;
+  }
 }
 [data-statistics="100"] {
   width: 100%;
@@ -12856,6 +12860,10 @@ fieldset[disabled] .map-site-detail .close.focus {
 .iucn-site-wrapper > .container > .row {
   display: flex;
   flex-flow: row wrap;
+}
+.iucn-site-wrapper > .container > .row:before,
+.iucn-site-wrapper > .container > .row:after {
+  display: none;
 }
 .region-site-title {
   display: flex;
