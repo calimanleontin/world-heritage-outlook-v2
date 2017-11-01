@@ -21,6 +21,7 @@ permissions:
   - 'administer taxonomy'
   - 'administer url aliases'
   - 'administer users'
+  - 'bypass node access'
   - 'create url aliases'
   - 'delete all revisions'
   - 'delete terms in assessment_benefits_category'
