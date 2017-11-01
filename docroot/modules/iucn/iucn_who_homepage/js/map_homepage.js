@@ -125,7 +125,6 @@ function postInitMap(instance_id, map, config) {
         $marker.setVisible($visible);
       }
       if ($filter_status_id == 'all') {
-        $.iucnClearSelection();
         $.resetMapPosition();
       }
       else {
