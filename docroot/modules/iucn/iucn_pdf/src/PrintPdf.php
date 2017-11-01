@@ -177,6 +177,8 @@ class PrintPdf implements PrintPdfInterface {
    * Generate pdf file from sites.
    */
   public function runCron() {
+    global $base_url;
+
     $cron_config = \Drupal::configFactory()->getEditable('iucn_pdf.settings');
     $limit = $cron_config->get('sites_per_cron');
     $count = $this->queue->numberOfItems();
@@ -215,29 +217,24 @@ class PrintPdf implements PrintPdfInterface {
       /** @var \Drupal\node\Entity\Node $entity */
       $languages = array_keys($entity->getTranslationLanguages());
       foreach ($languages as $langcode) {
+        $url = $base_url . '/';
+        if ($langcode != 'en') {
+          $url .= $langcode . '/';
+        }
+        $url .= 'node/' . $entity_id . '/pdf?year=' . $year;
 
-        $tmp_language = \Drupal::languageManager()->getLanguage($langcode);
-        \Drupal::service('language.default')->set($tmp_language);
+        \Drupal::service('logger.factory')->get('pdf_debug')->info('file_get_contents @url', ['@url' => $url]);
 
-        $file_path = $this->getFilePath($entity_id, $langcode, $year);
-        $this->savePrintable($entity, $file_path);
+        file_get_contents($url);
         $this->queue->deleteItem($item);
       }
     }
-
-    $current_language = \Drupal::languageManager()->getLanguage($current_langcode);
-    \Drupal::service('language.default')->set($current_language);
   }
 
   /**
    * Save entity as pdf.
    */
   public function savePrintable(EntityInterface $entity, $file_path) {
-    \Drupal::service('logger.factory')->get('iucn_cron')->info('[generate]: entity_id=@entity_id, file_path=@file_path', [
-      '@entity_id' => $entity->id(),
-      '@file_path' => $file_path,
-    ]);
-
     return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
   }
 
