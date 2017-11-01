@@ -9,7 +9,12 @@ function postInitMap(instance_id, map, config) {
 
     // Scale-down the images a bit
     for (var $i in config.icons) {
-      config.icons[$i].scaledSize = new google.maps.Size(27, 27);
+      config.icons[$i].origin = new google.maps.Point(config.icons[$i].origin_x, config.icons[$i].origin_y);
+      config.icons[$i].size = new google.maps.Size(config.icons[$i].width, config.icons[$i].height);
+      delete config.icons[$i].origin_x;
+      delete config.icons[$i].origin_y;
+      delete config.icons[$i].width;
+      delete config.icons[$i].height;
     }
     var $markers = [];
     for(var $i = 0; $i < config.markers.length; $i++) {
@@ -68,9 +73,9 @@ function postInitMap(instance_id, map, config) {
         var $marker = $markers[$i];
         var $icon = config.icons['icon' + $marker.customInfo.status_id];
         // Avoid some suble flickering
-        if ($icon.url != $marker.getIcon().url) {
-          $marker.setIcon($icon);
-        }
+        $marker.setIcon($icon);
+        // if ($icon.url != $marker.getIcon().url) {
+        // }
       }
     };
 
