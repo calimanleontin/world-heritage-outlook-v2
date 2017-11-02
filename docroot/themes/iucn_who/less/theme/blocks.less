@@ -95,7 +95,8 @@
 .block-facets {
   &:extend(.filter-panel all);
   @media @grid-desktop {
-    .facet-item__status:extend(.iucn-checkbox--active) {
+    .facet-item__status {
+      .svg-icon(checkbox);
       background-color: @iucn-blue-light;
       background-position: center;
       background-size: auto 60%;
@@ -122,7 +123,7 @@
     .link();
     color: @text-color;
   }
-  .facet-item ul{
+  .facet-item ul {
     display: none;
   }
   .sidemenu & {
