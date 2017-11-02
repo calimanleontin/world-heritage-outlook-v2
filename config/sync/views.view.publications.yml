@@ -253,7 +253,7 @@ display:
             group_items: {  }
           plugin_id: search_api_date
       sorts: {  }
-      title: Publications
+      title: Resources
       header:
         result:
           id: result
@@ -297,7 +297,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: resources/publications
+      path: more/resources
       cache:
         type: none
       defaults:

@@ -21,6 +21,7 @@ permissions:
   - 'administer taxonomy'
   - 'administer url aliases'
   - 'administer users'
+  - 'administer views'
   - 'bypass node access'
   - 'create url aliases'
   - 'delete all revisions'
