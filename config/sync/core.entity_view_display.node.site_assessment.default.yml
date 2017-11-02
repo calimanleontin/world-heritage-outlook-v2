@@ -107,7 +107,6 @@ third_party_settings:
         - group_values
         - field_as_projects_needs
         - field_as_key_cons
-        - field_as_vass_wh_trend
         - field_as_vass_bio_state
         - group_description_of_values
         - group_benefits
@@ -117,18 +116,19 @@ third_party_settings:
         - field_as_protection
         - group_assessment_information
         - group_threats
-        - 'display_field_copy:node-assessment_values_copy'
+        - 'display_field_copy:node-copy_assessment_values'
         - group_protection_and_management
         - field_as_vass_bio_text
-        - 'display_field_copy:node-justification_of_assessment_valu'
+        - field_as_vass_wh_trend
         - group_additional_information
+        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_projects
         - field_as_protection_ov_practices
         - group_state_and_trend_of_values
         - group_understanding_benefits
         - group_summary_of_benefits
-        - group_active_projects
         - group_assessing_current_state
+        - group_active_projects
         - group_current_threats
         - group_potential_threats
         - 'display_field_copy:node-identifying_and_describing_value'
@@ -151,14 +151,11 @@ third_party_settings:
         settings:
           formatter:
             link: 0
-      'display_field_copy:node-assessment_values_copy':
-        plugin_id: 'display_field_copy:node-assessment_values_copy'
+      'display_field_copy:node-copy_assessment_values':
+        plugin_id: 'display_field_copy:node-copy_assessment_values'
         weight: 7
         label: hidden
         formatter: entity_reference_label
-        settings:
-          formatter:
-            link: 0
       'display_field_copy:node-copy_as_threats_rating':
         plugin_id: 'display_field_copy:node-copy_as_threats_rating'
         weight: 0
@@ -191,7 +188,7 @@ third_party_settings:
             view_mode: default_2
       'display_field_copy:node-justification_of_assessment_valu':
         plugin_id: 'display_field_copy:node-justification_of_assessment_valu'
-        weight: 8
+        weight: 9
         label: hidden
         formatter: basic_string
       'display_field_copy:node-other_biodiv_values':
@@ -607,15 +604,15 @@ third_party_settings:
       label: 'Summary of values'
     group_ass_state_wh:
       children:
+        - 'display_field_copy:node-copy_assessment_values'
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
       format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the current state and trend of World Heritage values'
-        terms: 'field_as_vass_wh_trend|display_field_copy:node-assessment_values_copy'
+        terms: 'display_field_copy:node-copy_assessment_values|field_as_vass_wh_trend'
         element: div
         show_label: '1'
         label_element: div
@@ -905,7 +902,7 @@ content:
     third_party_settings: {  }
   field_as_vass_wh_trend:
     type: entity_reference_label
-    weight: 6
+    weight: 8
     region: full_assessment_values
     label: inline
     settings:
