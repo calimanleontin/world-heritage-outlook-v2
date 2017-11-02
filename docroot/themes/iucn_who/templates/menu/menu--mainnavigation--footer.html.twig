@@ -43,11 +43,15 @@
           {% if item.url|render|trim is not empty %}
             <a href="{{ item.url }}">{{ item.title }}</a>
           {%  else %}
-            <a href="javascript:void(0)">{{ item.title }}</a>
+            <a>{{ item.title }}</a>
           {% endif %}
       {% else %}
         <li{{ item.attributes.addClass(item_classes) }}>
-        {{ link(item.title, item.url) }}
+        {% if item.url|render|trim is not empty %}
+          {{ link(item.title, item.url) }}
+        {%  else %}
+          <a>{{ item.title }}</a>
+        {% endif %}
       {% endif %}
       {% if item.below %}
         {{ menus.menu_links(item.below, attributes.removeClass('nav', 'navbar-nav'), menu_level + 1) }}
