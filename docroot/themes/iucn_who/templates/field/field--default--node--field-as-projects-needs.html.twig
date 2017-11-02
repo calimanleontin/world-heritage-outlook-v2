@@ -58,9 +58,9 @@ label_display == 'visually_hidden' ? 'sr-only',
     <thead>
     <tr>
       <th>&#x2116;</th>
-      <th>{{ 'Organization/ individuals'|t }}</th>
-      <th>{{ 'Brief description of Active Projects'|t }}</th>
-      <th>{{ 'Contact Details'|t }}</th>
+      <th>{{ 'Site need title'|t }}</th>
+      <th>{{ 'Brief description of potential site needs'|t }}</th>
+      <th>{{ 'Support needed for following years'|t }}</th>
     </tr>
     </thead>
     <tbody>
@@ -80,8 +80,8 @@ label_display == 'visually_hidden' ? 'sr-only',
           {% endif %}
         </td>
         <td>
-          {% if item.content['#paragraph'].field_as_projects_contact.value is not empty %}
-          {{ item.content['#paragraph'].field_as_projects_contact.value|striptags }}
+          {% if project_years is not empty %}
+          {{ project_years }}
           {% endif %}
         </td>
       </tr>
