@@ -95,10 +95,8 @@
 .block-facets {
   &:extend(.filter-panel all);
   @media @grid-desktop {
-    .facet-item__status {
-      // @todo: checkbox mixin
+    .facet-item__status:extend(.iucn-checkbox--active) {
       background-color: @iucn-blue-light;
-      .svg-icon(checkbox);
       background-position: center;
       background-size: auto 60%;
       display: block;

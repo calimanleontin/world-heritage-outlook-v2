@@ -301,6 +301,19 @@ ol.iucn-list-1 li.iucn-arrow:nth-child(1):before {
 /* ==========================================================================
    Benefits topics loop
    ========================================================================== */
+/* ==========================================================================
+   Generate theme icons (used with :extend())
+   ========================================================================== */
+#iucn-icons .iucn-checkbox--empty,
+.map-filter-item:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ddd%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E%0A");
+  background-repeat: no-repeat;
+}
+#iucn-icons .iucn-checkbox--active,
+.map-filter-item.active:before {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%2F%3E%3Cpath%20stroke-width%3D%2270%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%20d%3D%22M86.128%20341.92l109.196%20102.487M183%20407l264-278%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+}
 /**
  * Variable Overrides.
  *
@@ -9442,8 +9455,6 @@ h6.collapsible-title {
 @media screen and (min-width: 768px) {
   .block-facets .facet-item__status {
     background-color: #03afdf;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23fff%22%20fill%3D%22none%22%2F%3E%3Cpath%20stroke-width%3D%2270%22%20stroke%3D%22%23fff%22%20fill%3D%22none%22%20d%3D%22M86.128%20341.92l109.196%20102.487M183%20407l264-278%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
     background-position: center;
     background-size: auto 60%;
     display: block;
@@ -11190,17 +11201,19 @@ h6.view-sites-search .view-header {
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  right: 100%;
   text-indent: 999px;
   top: 0;
+  left: 0;
   width: 1.5em;
+}
+.block-home-page-map .map-filter-item:before {
+  left: auto;
+  right: 100%;
 }
 .map-filter-item.active {
   background-color: #f0f0f0;
 }
 .map-filter-item.active:before {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23fff%22%20fill%3D%22none%22%2F%3E%3Cpath%20stroke-width%3D%2270%22%20stroke%3D%22%23fff%22%20fill%3D%22none%22%20d%3D%22M86.128%20341.92l109.196%20102.487M183%20407l264-278%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
   content: '';
   background-color: #03afdf;
 }
@@ -14889,21 +14902,12 @@ h6.iucn-who-benefit-case-study .field--name-field-links .field--label {
   padding-left: 0;
 }
 .block-benefits-page-map .map-filter-item:before {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ddd%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E%0A");
-  background-repeat: no-repeat;
-  background-size: auto .9em;
   content: '';
-  height: 100%;
-  top: 0;
 }
 @media screen and (max-width: 767px) {
   .block-benefits-page-map .map-filter-item:before {
     width: 2.5em;
   }
-}
-.block-benefits-page-map .map-filter-item.active:before {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20class%3D%22icon-checkbox%22%20width%3D%22535%22%20height%3D%22540%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3ETick%20Check%20Box%3C%2Ftitle%3E%3Ctitle%3ELayer%201%3C%2Ftitle%3E%3Cpath%20d%3D%22M141.591%2033.026h252.133c61.026%200%20110.154%2044.742%20110.154%20100.318v271.804c0%2055.577-49.128%20100.319-110.154%20100.319H141.591c-61.025%200-110.154-44.742-110.154-100.319V133.344c0-55.576%2049.129-100.318%20110.154-100.318z%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%2255%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%2F%3E%3Cpath%20stroke-width%3D%2270%22%20stroke%3D%22%23ffffff%22%20fill%3D%22none%22%20d%3D%22M86.128%20341.92l109.196%20102.487M183%20407l264-278%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
 }
 .block-benefits-page-map .map-filter-item a,
 .block-benefits-page-map .map-filter-item a:hover,
