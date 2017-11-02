@@ -96,9 +96,8 @@
   &:extend(.filter-panel all);
   @media @grid-desktop {
     .facet-item__status {
-      // @todo: checkbox mixin
-      background-color: @iucn-blue-light;
       .svg-icon(checkbox);
+      background-color: @iucn-blue-light;
       background-position: center;
       background-size: auto 60%;
       display: block;
@@ -124,7 +123,7 @@
     .link();
     color: @text-color;
   }
-  .facet-item ul{
+  .facet-item ul {
     display: none;
   }
   .sidemenu & {
