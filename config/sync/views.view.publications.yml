@@ -252,7 +252,19 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_date
-      sorts: {  }
+      sorts:
+        field_publication_year:
+          id: field_publication_year
+          table: search_api_index_iucn_database_index
+          field: field_publication_year
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: search_api
       title: Publications
       header:
         result:

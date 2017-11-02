@@ -51,10 +51,9 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: text_default
     weight: 2
-    settings:
-      trim_length: 100
+    settings: {  }
     third_party_settings: {  }
     region: content
   field_publication_image:
@@ -122,6 +121,9 @@ content:
       date_format: 'Y'
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_author: true
   field_external_website: true
   field_file: true
