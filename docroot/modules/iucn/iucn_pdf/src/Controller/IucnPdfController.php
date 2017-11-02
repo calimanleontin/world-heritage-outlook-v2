@@ -104,6 +104,8 @@ class IucnPdfController extends FileDownloadController {
    */
   public function downloadPdfDebug($entity_id) {
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
+    $entity->addCacheContexts(['url']);
+
     return new Response($this->printBuilder->printHtml($entity, FALSE, FALSE));
   }
 
@@ -121,6 +123,8 @@ class IucnPdfController extends FileDownloadController {
     /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
 
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
+    $entity->addCacheContexts(['url']);
+
     $language = $this->getLanguage($entity);
     $year = $this->getYear();
 
