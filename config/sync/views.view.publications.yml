@@ -265,7 +265,7 @@ display:
           expose:
             label: ''
           plugin_id: search_api
-      title: Publications
+      title: Resources
       header:
         result:
           id: result
@@ -309,7 +309,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: resources/publications
+      path: more/resources
       cache:
         type: none
       defaults:
