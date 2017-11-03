@@ -25,7 +25,6 @@ dependencies:
     - ds
     - field_group
     - iucn_assessment
-    - taxonomy
 third_party_settings:
   ds:
     layout:
@@ -38,27 +37,27 @@ third_party_settings:
       title:
         - field_as_benefits_category
       description:
-        - field_as_benefits_oex_trend
-        - field_as_benefits_commun_out
-        - field_as_benefits_hab_trend
         - field_as_benefits_pollut_level
-        - field_as_benefits_pollut_trend
+        - field_as_benefits_commun_out
+        - field_as_benefits_commun_wide
         - field_as_benefits_oex_level
         - field_as_description
         - field_as_benefits_hab_level
-        - field_as_benefits_commun_wide
+        - field_as_benefits_pollut_trend
+        - field_as_benefits_hab_trend
         - group_factors_benefit
+        - field_as_benefits_oex_trend
         - field_as_benefits_commun_in
         - field_as_comment
-        - field_as_benefits_datadeficient
         - group_climate_change
+        - field_as_benefits_datadeficient
         - group_pollution
         - group_overexploitation
         - group_invasive_species
-        - field_as_benefits_invassp_trend
-        - field_as_benefits_invassp_level
         - group_habitat_change
+        - field_as_benefits_invassp_level
         - group_community
+        - field_as_benefits_invassp_trend
         - field_as_benefits_climate_level
         - field_as_benefits_climate_trend
   field_group:
@@ -121,8 +120,8 @@ third_party_settings:
       label: Pollution
     group_overexploitation:
       children:
-        - field_as_benefits_oex_trend
         - field_as_benefits_oex_level
+        - field_as_benefits_oex_trend
       parent_name: group_factors_benefit
       weight: 6
       format_type: html_element
@@ -138,8 +137,8 @@ third_party_settings:
       label: Overexploitation
     group_invasive_species:
       children:
-        - field_as_benefits_invassp_trend
         - field_as_benefits_invassp_level
+        - field_as_benefits_invassp_trend
       parent_name: group_factors_benefit
       weight: 7
       format_type: html_element
@@ -155,8 +154,8 @@ third_party_settings:
       label: 'Invasive species'
     group_habitat_change:
       children:
-        - field_as_benefits_hab_trend
         - field_as_benefits_hab_level
+        - field_as_benefits_hab_trend
       parent_name: group_factors_benefit
       weight: 8
       format_type: html_element
@@ -203,20 +202,18 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_climate_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 21
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_climate_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 22
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_commun_in:
     type: entity_reference_label
@@ -253,66 +250,60 @@ content:
       format_custom_false: ''
     third_party_settings: {  }
   field_as_benefits_hab_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_hab_trend:
-    type: entity_reference_label
-    weight: 0
+    type: assessment_factor
+    weight: 2
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_invassp_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 8
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
-    type: entity_reference_label
-    weight: 7
+    type: assessment_factor
+    weight: 9
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_oex_level:
-    type: entity_reference_rss_category
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_oex_trend:
-    type: entity_reference_rss_category
-    weight: 0
+    type: assessment_factor
+    weight: 2
     region: description
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_pollut_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 0
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_pollut_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_comment:
     type: basic_string

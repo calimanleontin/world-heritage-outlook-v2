@@ -14102,12 +14102,17 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   display: inline;
   margin-right: .5em;
 }
-.field--name-field-as-values-bio {
+.field--name-field-as-values-bio,
+.field--name-display-field-copynode-world-heritage-values {
   margin-top: 1em;
 }
-.field--name-field-as-values-bio .field--label {
+.field--name-field-as-values-bio .field--label,
+.field--name-display-field-copynode-world-heritage-values .field--label {
   font-size: 23px;
   font-size: 2.3rem;
+}
+.field--name-display-field-copynode-world-heritage-values .field--label {
+  color: #134780;
 }
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
   margin-top: 0;

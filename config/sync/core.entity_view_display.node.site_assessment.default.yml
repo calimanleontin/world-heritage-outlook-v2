@@ -72,74 +72,74 @@ third_party_settings:
       summary:
         - group_conservation_outlook
         - field_as_threats_rating
+        - field_as_global_assessment_text
+        - field_as_vass_wh_state
         - field_as_protection_ov_rating
         - field_as_threats_text
-        - field_as_vass_wh_state
-        - field_as_global_assessment_text
         - field_as_protection_ov_text
         - group_current_state_trend_values
         - 'display_field_copy:node-assessment_trend_copy'
-        - group_overall_threats
         - field_as_vass_wh_text
+        - group_overall_threats
         - group_overall_prot_man
         - field_as_end_date
         - field_as_global_assessment_level
       full_assessment_values:
+        - 'display_field_copy:node-world_heritage_values'
         - field_as_protection_ov_out_rate
-        - field_as_benefits
-        - field_as_benefits_summary
-        - 'display_field_copy:node-copy_as_threats_rating'
         - 'display_field_copy:node-protection_overall_rating'
+        - 'display_field_copy:node-copy_as_threats_rating'
         - field_as_threats_potent_rating
         - field_as_threats_current_rating
-        - 'display_field_copy:node-protection_overall_effectiveness'
-        - field_as_protection_ov_out_text
+        - field_as_benefits_summary
+        - field_as_benefits
         - field_as_threats_current_text
         - field_as_threats_potent_text
         - 'display_field_copy:node-copy_as_threats_text'
-        - field_as_threats_potential
+        - 'display_field_copy:node-protection_overall_effectiveness'
+        - field_as_protection_ov_out_text
         - group_ass_pm_outside
+        - field_as_values_bio
+        - field_as_threats_potential
         - field_as_threats_current
         - group_best_practice_examples
         - field_as_projects
-        - group_key_conservation_issues
-        - 'display_field_copy:node-finalised_on'
-        - group_values
-        - field_as_projects_needs
         - field_as_key_cons
-        - field_as_vass_wh_trend
+        - group_key_conservation_issues
+        - group_values
+        - 'display_field_copy:node-finalised_on'
+        - field_as_projects_needs
+        - group_ass_protection_manag
         - field_as_vass_bio_state
         - group_description_of_values
         - group_benefits
-        - group_ass_protection_manag
+        - 'display_field_copy:node-copy_assessment_values'
         - field_as_vass_bio_trend
         - group_overall_ass_prot
         - field_as_protection
         - group_assessment_information
         - group_threats
-        - 'display_field_copy:node-assessment_values_copy'
         - group_protection_and_management
-        - field_as_vass_bio_text
-        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_additional_information
+        - field_as_vass_bio_text
+        - field_as_vass_wh_trend
         - group_projects
-        - field_as_protection_ov_practices
         - group_state_and_trend_of_values
+        - 'display_field_copy:node-justification_of_assessment_valu'
+        - field_as_protection_ov_practices
         - group_understanding_benefits
         - group_summary_of_benefits
         - group_active_projects
         - group_assessing_current_state
         - group_current_threats
-        - group_potential_threats
         - 'display_field_copy:node-identifying_and_describing_value'
-        - group_summary_values
-        - group_ass_state_wh
-        - field_as_values_wh
         - group_projects_needs
-        - 'display_field_copy:node-other_biodiv_values'
+        - group_potential_threats
+        - group_ass_state_wh
+        - group_summary_values
         - group_ass_state_bv
         - group_overall_as_threats
-        - field_as_values_bio
+        - 'display_field_copy:node-other_biodiv_values'
       references:
         - field_as_references
     fields:
@@ -151,14 +151,11 @@ third_party_settings:
         settings:
           formatter:
             link: 0
-      'display_field_copy:node-assessment_values_copy':
-        plugin_id: 'display_field_copy:node-assessment_values_copy'
+      'display_field_copy:node-copy_assessment_values':
+        plugin_id: 'display_field_copy:node-copy_assessment_values'
         weight: 7
         label: hidden
         formatter: entity_reference_label
-        settings:
-          formatter:
-            link: 0
       'display_field_copy:node-copy_as_threats_rating':
         plugin_id: 'display_field_copy:node-copy_as_threats_rating'
         weight: 0
@@ -191,7 +188,7 @@ third_party_settings:
             view_mode: default_2
       'display_field_copy:node-justification_of_assessment_valu':
         plugin_id: 'display_field_copy:node-justification_of_assessment_valu'
-        weight: 8
+        weight: 9
         label: hidden
         formatter: basic_string
       'display_field_copy:node-other_biodiv_values':
@@ -215,6 +212,11 @@ third_party_settings:
         settings:
           formatter:
             link: 0
+      'display_field_copy:node-world_heritage_values':
+        plugin_id: 'display_field_copy:node-world_heritage_values'
+        weight: 0
+        label: above
+        formatter: entity_reference_revisions_entity_view
   field_group:
     group_conservation_outlook:
       children:
@@ -345,7 +347,7 @@ third_party_settings:
       label: 'Additional information'
     group_values:
       children:
-        - field_as_values_wh
+        - 'display_field_copy:node-world_heritage_values'
         - field_as_values_bio
       parent_name: group_description_of_values
       weight: 5
@@ -607,15 +609,15 @@ third_party_settings:
       label: 'Summary of values'
     group_ass_state_wh:
       children:
+        - 'display_field_copy:node-copy_assessment_values'
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
       format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the current state and trend of World Heritage values'
-        terms: 'field_as_vass_wh_trend|display_field_copy:node-assessment_values_copy'
+        terms: 'display_field_copy:node-copy_assessment_values|field_as_vass_wh_trend'
         element: div
         show_label: '1'
         label_element: div
@@ -849,18 +851,9 @@ content:
     third_party_settings: {  }
   field_as_values_bio:
     type: entity_reference_revisions_entity_view
-    weight: 22
+    weight: 2
     region: full_assessment_values
     label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-  field_as_values_wh:
-    type: entity_reference_revisions_entity_view
-    weight: 21
-    region: full_assessment_values
-    label: hidden
     settings:
       view_mode: default
       link: ''
@@ -905,7 +898,7 @@ content:
     third_party_settings: {  }
   field_as_vass_wh_trend:
     type: entity_reference_label
-    weight: 6
+    weight: 8
     region: full_assessment_values
     label: inline
     settings:
@@ -919,6 +912,7 @@ hidden:
   field_as_cycle: true
   field_as_site: true
   field_as_start_date: true
+  field_as_values_wh: true
   field_as_version: true
   field_date_published: true
   langcode: true
