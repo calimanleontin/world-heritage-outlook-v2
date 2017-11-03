@@ -1234,3 +1234,16 @@
     }
   }
 }
+
+.html-element-threats {
+  display: flex;
+  margin-left: 1em;
+  > .field {
+    display: inline-block;
+    + .field {
+      &:before {
+        content: ', ';
+      }
+    }
+  }
+}

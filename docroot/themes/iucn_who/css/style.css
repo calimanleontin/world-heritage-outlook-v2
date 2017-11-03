@@ -14683,6 +14683,16 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 .html-list .inline-element-list > .field + .field:before {
   content: ', ';
 }
+.html-element-threats {
+  display: flex;
+  margin-left: 1em;
+}
+.html-element-threats > .field {
+  display: inline-block;
+}
+.html-element-threats > .field + .field:before {
+  content: ', ';
+}
 /* ==========================================================================
     Benefits case studies page
     ========================================================================== */
