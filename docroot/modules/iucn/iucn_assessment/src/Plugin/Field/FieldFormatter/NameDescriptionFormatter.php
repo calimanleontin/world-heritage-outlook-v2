@@ -40,8 +40,10 @@ class NameDescriptionFormatter extends FormatterBase {
         continue;
       }
       $markup = $this->t($item->entity->name->value);
-      $markup .= $this->getSetting('separator');
-      $markup .= strip_tags($this->t($item->entity->description->value));
+      if (!empty($item->entity->description->value)) {
+        $markup .= $this->getSetting('separator');
+        $markup .= strip_tags($this->t($item->entity->description->value));
+      }
       $element[$delta] = [
         '#type' => 'markup',
         '#markup' => $markup,
