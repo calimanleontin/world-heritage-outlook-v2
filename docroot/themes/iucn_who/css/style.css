@@ -14776,6 +14776,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 .iucn-who-benefit-case-study .field--name-field-author-name .field--label,
 .iucn-who-benefit-case-study .field--name-field-benefit-year .field--label {
   font-weight: normal;
+  float: none;
 }
 .iucn-who-benefit-case-study .field--name-field-benefit-image {
   margin-bottom: 70px;
