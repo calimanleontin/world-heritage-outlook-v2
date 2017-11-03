@@ -25,7 +25,6 @@ dependencies:
     - ds
     - field_group
     - iucn_assessment
-    - taxonomy
 third_party_settings:
   ds:
     layout:
@@ -203,20 +202,18 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_climate_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 21
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_climate_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 22
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_commun_in:
     type: entity_reference_label
@@ -253,66 +250,60 @@ content:
       format_custom_false: ''
     third_party_settings: {  }
   field_as_benefits_hab_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_hab_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 0
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_invassp_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 8
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 7
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_oex_level:
-    type: entity_reference_rss_category
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_oex_trend:
-    type: entity_reference_rss_category
+    type: assessment_factor
     weight: 0
     region: description
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_as_benefits_pollut_level:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 0
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_benefits_pollut_trend:
-    type: entity_reference_label
+    type: assessment_factor
     weight: 1
     region: description
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
   field_as_comment:
     type: basic_string
