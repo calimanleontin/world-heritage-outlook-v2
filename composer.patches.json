@@ -13,6 +13,9 @@
     },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
+    },
+    "harvesthq/chosen": {
+      "transliteration fix": "patches/libraries/chosen_transliteration.patch"
     }
   }
 }
