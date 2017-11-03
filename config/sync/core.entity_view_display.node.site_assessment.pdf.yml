@@ -72,8 +72,8 @@ third_party_settings:
     regions:
       summary:
         - group_conservation_outlook
-        - field_as_protection_ov_rating
         - field_as_threats_rating
+        - field_as_protection_ov_rating
         - field_as_protection_ov_text
         - field_as_global_assessment_text
         - field_as_threats_text
@@ -85,69 +85,60 @@ third_party_settings:
         - field_as_end_date
         - field_as_global_assessment_level
       full_assessment_values:
+        - field_as_threats_current_rating
         - field_as_threats_potent_rating
         - 'display_field_copy:node-protection_overall_rating'
+        - field_as_protection_ov_out_rate
         - field_as_benefits
         - field_as_benefits_summary
-        - field_as_threats_current_rating
-        - field_as_protection_ov_out_rate
         - field_as_protection_ov_out_text
-        - field_as_threats_current_text
         - 'display_field_copy:node-protection_overall_effectiveness'
         - field_as_threats_potent_text
+        - field_as_threats_current_text
+        - group_ass_pm_outside
         - field_as_threats_current
         - field_as_threats_potential
-        - group_ass_pm_outside
         - group_best_practice_examples
         - field_as_projects
+        - field_as_key_cons
         - group_key_conservation_issues
         - field_as_projects_needs
         - group_values
-        - field_as_key_cons
         - 'display_field_copy:node-finalised_on'
-        - group_benefits
         - group_description_of_values
-        - group_ass_protection_manag
         - field_as_vass_bio_state
+        - group_ass_protection_manag
+        - group_benefits
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
-        - field_as_protection
         - group_overall_ass_prot
-        - group_assessment_information
-        - field_as_vass_bio_trend
+        - field_as_protection
         - group_threats
-        - group_additional_information
-        - 'display_field_copy:node-justification_of_assessment_valu'
+        - field_as_vass_bio_trend
+        - group_assessment_information
         - field_as_vass_bio_text
         - group_protection_and_management
+        - 'display_field_copy:node-justification_of_assessment_valu'
+        - group_additional_information
         - field_as_protection_ov_practices
-        - group_projects
         - group_state_and_trend_of_values
+        - group_projects
         - group_understanding_benefits
         - group_summary_of_benefits
-        - group_assessing_current_state
-        - group_current_threats
         - group_active_projects
+        - group_current_threats
+        - group_assessing_current_state
+        - group_ass_state_wh
         - group_potential_threats
         - field_as_values_wh
-        - group_summary_values
-        - group_ass_state_wh
         - group_projects_needs
         - 'display_field_copy:node-identifying_and_describing_value'
-        - 'display_field_copy:node-other_biodiv_values'
+        - group_summary_values
         - group_ass_state_bv
         - field_as_values_bio
+        - 'display_field_copy:node-other_biodiv_values'
       references:
         - field_as_references
     fields:
-      'display_field_copy:node-assessment_values_copy':
-        plugin_id: 'display_field_copy:node-assessment_values_copy'
-        weight: 7
-        label: hidden
-        formatter: entity_reference_label
-        settings:
-          formatter:
-            link: 0
       'display_field_copy:node-finalised_on':
         plugin_id: 'display_field_copy:node-finalised_on'
         weight: 5
@@ -571,7 +562,6 @@ third_party_settings:
     group_ass_state_wh:
       children:
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
@@ -640,7 +630,7 @@ content:
     region: summary
   field_as_global_assessment_level:
     weight: 43
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -715,7 +705,7 @@ content:
     type: entity_reference_label
     weight: 0
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -785,7 +775,7 @@ content:
     type: entity_reference_label
     weight: 0
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -841,7 +831,7 @@ content:
     type: entity_reference_label
     weight: 10
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }

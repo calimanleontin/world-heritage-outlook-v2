@@ -78,7 +78,7 @@ third_party_settings:
         plugin_id: assessment_rating
         weight: 7
         label: hidden
-        formatter: default
+        formatter: slick_image
 id: node.site.pdf
 targetEntityType: node
 bundle: site
@@ -106,7 +106,7 @@ content:
     type: entity_reference_list
     weight: 1
     region: ds_content
-    label: hidden
+    label: inline
     settings:
       link: false
       separator: ','
