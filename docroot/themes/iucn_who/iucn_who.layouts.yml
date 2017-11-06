@@ -183,4 +183,30 @@ iucn_who_sites_search:
       label: Left
     right:
       label: Right
-      
+
+iucn_who_site_pdf:
+  label: Site (PDF)
+  category: IUCN
+  type: partial
+  template: templates/layouts/iucn-who-site-pdf
+  regions:
+    top:
+      label: Top
+    site_information:
+      label: Site Information
+    content:
+      label: Content
+
+iucn_who_assessment_pdf:
+  label: Assessment (PDF)
+  category: IUCN
+  type: partial
+  class: '\Drupal\ds\Plugin\DsLayout'
+  template: templates/layouts/iucn-who-assessment-pdf
+  regions:
+    summary:
+      label: Summary
+    full_assessment_values:
+      label: Full assessment
+    references:
+      label: References

@@ -51,7 +51,7 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_assessment
+      id: iucn_who_assessment_pdf
       library: null
       disable_css: false
       entity_classes: all_classes

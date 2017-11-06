@@ -14,3 +14,10 @@
 .field--name-field-designation {
     display: none !important;
 }
+.showing-old-assessment  .field--name-field-designation{
+  display: block !important;
+}
+.showing-latest-assessment .field--name-field-designation{
+    display:none !important;
+}
+
