@@ -1,0 +1,16 @@
+/*Temporarily hide certain blocks and fields*/
+#block-languagedropdownswitcher {
+    display: none !important;
+}
+
+#block-designation {
+    display: none !important;
+}
+
+#block-theme {
+    display: none !important;
+}
+
+.field--name-field-designation {
+    display: none !important;
+}

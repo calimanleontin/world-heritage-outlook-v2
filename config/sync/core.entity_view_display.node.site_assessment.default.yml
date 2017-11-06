@@ -129,8 +129,8 @@ third_party_settings:
         - field_as_protection_ov_practices
         - group_understanding_benefits
         - group_summary_of_benefits
-        - group_active_projects
         - group_assessing_current_state
+        - group_active_projects
         - group_current_threats
         - 'display_field_copy:node-identifying_and_describing_value'
         - group_projects_needs

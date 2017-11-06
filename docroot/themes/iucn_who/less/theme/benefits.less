@@ -165,18 +165,14 @@
     display: flex;
     padding-left: 0;
     &:before {
-      .svg-icon(checkbox-empty, #ddd);
-      background-size: auto .9em;
       content: '';
-      height: 100%;
-      top: 0;
       @media @grid-mobile {
         width: 1.5em + 1em;
       }
     }
-    &.active:before {
-      .svg-icon(checkbox, #ffffff);
-    }
+    // &.active:before {
+    //   .svg-icon(checkbox, #ffffff);
+    // }
     a, a:hover, a:focus, a:active {
       color: @text-color;
     }

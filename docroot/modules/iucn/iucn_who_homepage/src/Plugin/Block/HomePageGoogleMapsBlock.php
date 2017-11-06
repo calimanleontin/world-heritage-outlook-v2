@@ -2,6 +2,8 @@
 
 namespace Drupal\iucn_who_homepage\Plugin\Block;
 
+use Drupal\file\Entity\File;
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
@@ -181,20 +183,31 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   private function getMarkersIcons() {
     $ret = [];
     $status = SitesQueryUtil::getSiteConservationRatings();
+    $path = drupal_get_path('module', 'iucn_who_homepage');
+    $url = sprintf('/%s/dist/spritesheet.png', $path);
+    $absolute_url = Url::fromUserInput($url, ['absolute' => true])->toString();
+    $json_path = $path . '/dist/sprites.json';
+
+    $sprite_json = file_get_contents($json_path, TRUE);
+    $decoded_json = JSON::decode($sprite_json);
+
     foreach($status as $term) {
-      $url = sprintf('/%s/images/marker-%s.png',
-        drupal_get_path('module', 'iucn_who_homepage'),
-        $term->field_css_identifier->value
-      );
+      $term_identifier = $term->field_css_identifier->value;
+      $term_data = $decoded_json['marker-' . $term_identifier];
+      $term_data_active = $decoded_json['marker-' . $term_identifier . '-active'];
       $ret['icon' . $term->id()] = [
-        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
+        'url' => $absolute_url,
+        'origin_x' => $term_data['x'],
+        'origin_y' => $term_data['y'],
+        'width' => $term_data['width'],
+        'height' => $term_data['height'],
       ];
-      $url = sprintf('/%s/images/marker-%s-active.png',
-        drupal_get_path('module', 'iucn_who_homepage'),
-        $term->field_css_identifier->value
-      );
       $ret['icon' . $term->id() . 'Active'] = [
-        'url' => Url::fromUserInput($url, ['absolute' => true])->toString(),
+        'url' => $absolute_url,
+        'origin_x' => $term_data_active['x'],
+        'origin_y' => $term_data_active['y'],
+        'width' => $term_data_active['width'],
+        'height' => $term_data_active['height'],
       ];
     }
     return $ret;

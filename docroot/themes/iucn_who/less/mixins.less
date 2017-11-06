@@ -420,3 +420,15 @@
     .loop-benefits-topics(@rules, (@index - 1));
   }
 }
+
+/* ==========================================================================
+   Generate theme icons (used with :extend())
+   ========================================================================== */
+#iucn-icons {
+  .iucn-checkbox--empty {
+    .svg-icon(checkbox-empty, #ddd);
+  }
+  .iucn-checkbox--active {
+    .svg-icon(checkbox, #ffffff);
+  }
+}

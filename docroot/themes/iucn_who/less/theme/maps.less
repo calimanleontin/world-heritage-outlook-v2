@@ -327,7 +327,7 @@
   padding-left: 1em;
   padding-right: 1em;
   position: relative;
-  &:before {
+  &:before:extend(#iucn-icons .iucn-checkbox--empty) {
     background-position: center;
     background-size: auto .9em;
     bottom: 0;
@@ -336,17 +336,20 @@
     overflow: hidden;
     pointer-events: none;
     position: absolute;
-    right: 100%;
     text-indent: 999px;
     top: 0;
+    left: 0;
     width: @filters-line-height * 1em;
+    .block-home-page-map & {
+      left: auto;
+      right: 100%;
+    }
   }
 }
+
 .map-filter-item.active {
   background-color: @iucn-gray-lightest;
-  // @todo: checkbox mixin
-  &:before {
-    .svg-icon(checkbox);
+  &:before:extend(#iucn-icons .iucn-checkbox--active) {
     content: '';
     background-color: @iucn-blue-light;
   }

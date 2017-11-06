@@ -318,6 +318,22 @@ function iucn_who_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_as_projects_needs':
+      $from = $variables['element']['#object']->field_as_projects_needs->entity->field_as_projects_from->value;
+      $to = $variables['element']['#object']->field_as_projects_needs->entity->field_as_projects_to->value;
+      $project_years = '';
+      if (!empty($from) && !empty($to)) {
+        $from = explode('-', $from)[0];
+        $to = explode('-', $to)[0];
+        if ($from == $to) {
+          $project_years = $from;
+        }
+        else {
+          $project_years = $from . ' - ' . $to;
+        }
+      }
+      $variables['project_years'] = $project_years;
+      break;
   }
 
   // Set attributes use-title-caption for some fields on full mode.
