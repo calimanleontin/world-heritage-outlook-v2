@@ -258,7 +258,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_hab_trend:
     type: assessment_factor
-    weight: 2
+    weight: 0
     region: description
     label: hidden
     settings: {  }
@@ -272,7 +272,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
     type: assessment_factor
-    weight: 9
+    weight: 7
     region: description
     label: hidden
     settings: {  }
@@ -286,7 +286,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_oex_trend:
     type: assessment_factor
-    weight: 2
+    weight: 0
     region: description
     label: hidden
     settings: {  }
