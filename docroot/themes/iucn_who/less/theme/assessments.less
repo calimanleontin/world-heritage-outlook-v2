@@ -830,10 +830,17 @@
   }
 }
 
-.field--name-field-as-values-bio {
+.field--name-field-as-values-bio,
+.field--name-display-field-copynode-world-heritage-values {
   margin-top: 1em;
   .field--label {
     .remify(font-size, 23px);
+  }
+}
+
+.field--name-display-field-copynode-world-heritage-values {
+  .field--label {
+    color: @iucn-blue-dark;
   }
 }
 
@@ -1223,6 +1230,19 @@
         &:before {
           content: ', ';
         }
+      }
+    }
+  }
+}
+
+.html-element-threats {
+  display: flex;
+  margin-left: 1em;
+  > .field {
+    display: inline-block;
+    + .field {
+      &:before {
+        content: ', ';
       }
     }
   }
