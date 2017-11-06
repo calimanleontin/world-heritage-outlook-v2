@@ -15,6 +15,8 @@ dependencies:
     - paragraphs.paragraphs_type.as_site_threat
   module:
     - ds
+    - field_group
+    - iucn_assessment
 third_party_settings:
   ds:
     layout:
@@ -29,18 +31,38 @@ third_party_settings:
       terms:
         - field_as_threats_rating
       terms_second:
+        - group_inside
+        - field_as_threats_out
         - field_as_threats_in
         - field_as_threats_extent
-        - field_as_threats_out
       description:
         - field_as_description
+  field_group:
+    group_inside:
+      children:
+        - field_as_threats_in
+        - field_as_threats_extent
+      parent_name: ''
+      weight: 2
+      format_type: html_element
+      format_settings:
+        label: Inside
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: html-element-threats
+      label: Inside
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
 bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 5
+    weight: 6
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -57,16 +79,16 @@ content:
       ds:
         ds_limit: ''
   field_as_threats_extent:
-    type: entity_reference_label
-    weight: 3
+    type: name_description
+    weight: 5
     region: terms_second
     label: hidden
     settings:
-      link: false
+      separator: ' '
     third_party_settings: {  }
   field_as_threats_in:
     type: boolean
-    weight: 2
+    weight: 4
     region: terms_second
     label: hidden
     settings:
@@ -76,7 +98,7 @@ content:
     third_party_settings: {  }
   field_as_threats_out:
     type: boolean
-    weight: 4
+    weight: 3
     region: terms_second
     label: hidden
     settings:
