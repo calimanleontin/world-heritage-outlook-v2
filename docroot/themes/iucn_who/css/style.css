@@ -232,6 +232,16 @@ h6.bottom-border {
     font-size: 1.3em;
   }
 }
+.iucn-inline-element-list > .field,
+.html-list .inline-element-list > .field,
+.html-element-threats > .field {
+  display: inline-block;
+}
+.iucn-inline-element-list > .field + .field:before,
+.html-list .inline-element-list > .field + .field:before,
+.html-element-threats > .field + .field:before {
+  content: ', ';
+}
 /* ==========================================================================
    Generators
    ========================================================================== */
@@ -14118,15 +14128,17 @@ h6.field--name-dynamic-block-fieldnode-how-are-sites-assessed > .field--label {
   margin-right: .5em;
 }
 .field--name-field-as-values-bio,
-.field--name-display-field-copynode-world-heritage-values {
+.field--name-display-field-copynode-world-heritage-values,
+.field--name-display-field-copynode-identifying-and-describing-value,
+.field--name-display-field-copynode-other-biodiv-values {
   margin-top: 1em;
 }
-.field--name-field-as-values-bio .field--label,
-.field--name-display-field-copynode-world-heritage-values .field--label {
+.field--name-field-as-values-bio > .field--label,
+.field--name-display-field-copynode-world-heritage-values > .field--label,
+.field--name-display-field-copynode-identifying-and-describing-value > .field--label,
+.field--name-display-field-copynode-other-biodiv-values > .field--label {
   font-size: 23px;
   font-size: 2.3rem;
-}
-.field--name-display-field-copynode-world-heritage-values .field--label {
   color: #134780;
 }
 .field--name-dynamic-block-fieldnode-how-are-sites-assessed .field--name-body {
@@ -14692,21 +14704,14 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 .html-list .inline-element-list > div:first-child:after {
   content: ': ';
 }
-.html-list .inline-element-list > .field {
-  display: inline-block;
-}
-.html-list .inline-element-list > .field + .field:before {
-  content: ', ';
-}
 .html-element-threats {
   display: flex;
-  margin-left: 1em;
 }
-.html-element-threats > .field {
-  display: inline-block;
-}
-.html-element-threats > .field + .field:before {
-  content: ', ';
+@media screen and (min-width: 768px) {
+  .html-element-threats {
+    justify-content: flex-end;
+    margin-left: 1em;
+  }
 }
 /* ==========================================================================
     Benefits case studies page

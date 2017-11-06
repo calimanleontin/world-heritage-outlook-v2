@@ -831,15 +831,12 @@
 }
 
 .field--name-field-as-values-bio,
-.field--name-display-field-copynode-world-heritage-values {
+.field--name-display-field-copynode-world-heritage-values,
+.field--name-display-field-copynode-identifying-and-describing-value,
+.field--name-display-field-copynode-other-biodiv-values {
   margin-top: 1em;
-  .field--label {
+  > .field--label {
     .remify(font-size, 23px);
-  }
-}
-
-.field--name-display-field-copynode-world-heritage-values {
-  .field--label {
     color: @iucn-blue-dark;
   }
 }
@@ -1204,7 +1201,7 @@
   > div:first-child {
     &:after { content: ': '; }
   }
-  .inline-element-list {
+  .inline-element-list:extend(.iucn-inline-element-list all) {
     align-items: center;
     display: flex;
     margin-left: 1em;
@@ -1224,26 +1221,13 @@
         content: ': ';
       }
     }
-    > .field {
-      display: inline-block;
-      + .field {
-        &:before {
-          content: ', ';
-        }
-      }
-    }
   }
 }
 
-.html-element-threats {
+.html-element-threats:extend(.iucn-inline-element-list all) {
   display: flex;
-  margin-left: 1em;
-  > .field {
-    display: inline-block;
-    + .field {
-      &:before {
-        content: ', ';
-      }
-    }
+  @media @grid-desktop {
+    justify-content: flex-end;
+    margin-left: 1em;
   }
 }
