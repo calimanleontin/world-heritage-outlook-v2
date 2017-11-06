@@ -55,6 +55,7 @@ third_party_settings:
           ds_content: {  }
     regions:
       ds_content:
+        - assessments_notice
         - node_title
         - field_country
         - field_inscription_year
@@ -67,7 +68,7 @@ third_party_settings:
     fields:
       node_title:
         plugin_id: node_title
-        weight: 0
+        weight: 1
         label: hidden
         formatter: default
         settings:
@@ -76,9 +77,14 @@ third_party_settings:
           link: false
       assessment_rating:
         plugin_id: assessment_rating
-        weight: 7
+        weight: 8
         label: hidden
         formatter: slick_image
+      assessments_notice:
+        plugin_id: assessments_notice
+        weight: 0
+        label: hidden
+        formatter: default
 id: node.site.pdf
 targetEntityType: node
 bundle: site
@@ -86,13 +92,13 @@ mode: pdf
 content:
   body:
     type: text_default
-    weight: 5
+    weight: 6
     region: ds_content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 8
+    weight: 9
     label: hidden
     settings:
       view_mode: pdf
@@ -104,7 +110,7 @@ content:
     region: ds_content
   field_country:
     type: entity_reference_list
-    weight: 1
+    weight: 2
     region: ds_content
     label: inline
     settings:
@@ -118,7 +124,7 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 4
+    weight: 5
     region: ds_content
     label: inline
     settings:
@@ -132,7 +138,7 @@ content:
         ds_limit: ''
   field_image:
     type: image
-    weight: 6
+    weight: 7
     region: ds_content
     label: hidden
     settings:
@@ -141,7 +147,7 @@ content:
     third_party_settings: {  }
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 3
+    weight: 4
     region: ds_content
     label: inline
     settings:
@@ -155,7 +161,7 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 2
+    weight: 3
     region: ds_content
     label: inline
     settings:
