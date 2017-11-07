@@ -302,7 +302,7 @@ th, td {
     .loop-value-states({
       .iucn-state--@{value-state-class} {
         > .field--item,
-        &.field--label-hidden {
+        &.field--label-hidden {panel-heading
           color: @value-state-color;
         }
       }
@@ -334,4 +334,10 @@ th, td {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 1.2em;
+}
+.assessment-potential-threats,
+.assessment-current-threats{
+  .panel-heading > a{
+    border-bottom:2px solid #000000;
+  }
 }
