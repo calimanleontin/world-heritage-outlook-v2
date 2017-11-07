@@ -24,7 +24,7 @@ settings:
   map_height: 850px
   map_init_lat: '0'
   map_init_lng: '40'
-  map_init_zoom: '3'
+  map_init_zoom: '2'
   map_init_type: roadmap
   empty_selection_placeholder: 'Click on a natural site for details '
   map_style: default
