@@ -4655,22 +4655,6 @@
         }
     },
     {
-        "name": "harvesthq/chosen",
-        "version": "1.6.1",
-        "version_normalized": "1.6.1.0",
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-            "reference": null,
-            "shasum": null
-        },
-        "require": {
-            "composer/installers": "^1.2.0"
-        },
-        "type": "drupal-library",
-        "installation-source": "dist"
-    },
-    {
         "name": "jackmoore/colorbox",
         "version": "1.6.4",
         "version_normalized": "1.6.4.0",
@@ -9211,5 +9195,26 @@
             "source": "http://cgit.drupalcode.org/linkit",
             "issues": "http://drupal.org/project/linkit"
         }
+    },
+    {
+        "name": "harvesthq/chosen",
+        "version": "1.6.1",
+        "version_normalized": "1.6.1.0",
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
+            "reference": null,
+            "shasum": null
+        },
+        "require": {
+            "composer/installers": "^1.2.0"
+        },
+        "type": "drupal-library",
+        "extra": {
+            "patches_applied": {
+                "transliteration fix": "patches/libraries/chosen_transliteration.patch"
+            }
+        },
+        "installation-source": "dist"
     }
 ]
