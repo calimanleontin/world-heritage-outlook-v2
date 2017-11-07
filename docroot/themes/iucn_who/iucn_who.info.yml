@@ -34,4 +34,5 @@ ckeditor_stylesheets:
 
 entity_print:
   node:
-    all: iucn_who/print-styling
+    all:
+      - iucn_who/print-styling

@@ -11,7 +11,7 @@ id: node.site.body
 field_name: body
 entity_type: node
 bundle: site
-label: Description
+label: 'Site description'
 description: ''
 required: false
 translatable: true

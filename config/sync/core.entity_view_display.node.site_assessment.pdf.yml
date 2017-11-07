@@ -51,7 +51,7 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: iucn_who_assessment
+      id: iucn_who_assessment_pdf
       library: null
       disable_css: false
       entity_classes: all_classes
@@ -70,79 +70,88 @@ third_party_settings:
           full_assessment_values: {  }
           references: {  }
     regions:
-      summary:
-        - group_conservation_outlook
-        - field_as_protection_ov_rating
-        - field_as_threats_rating
-        - field_as_protection_ov_text
-        - field_as_global_assessment_text
-        - field_as_threats_text
-        - group_current_state_trend_values
-        - group_overall_threats
-        - group_overall_prot_man
-        - field_as_vass_wh_state
-        - field_as_vass_wh_text
-        - field_as_end_date
-        - field_as_global_assessment_level
       full_assessment_values:
         - field_as_threats_potent_rating
-        - 'display_field_copy:node-protection_overall_rating'
-        - field_as_benefits
-        - field_as_benefits_summary
         - field_as_threats_current_rating
+        - field_as_benefits_summary
+        - field_as_benefits
         - field_as_protection_ov_out_rate
+        - 'display_field_copy:node-protection_overall_rating'
         - field_as_protection_ov_out_text
-        - field_as_threats_current_text
         - 'display_field_copy:node-protection_overall_effectiveness'
+        - field_as_threats_current_text
         - field_as_threats_potent_text
         - field_as_threats_current
         - field_as_threats_potential
         - group_ass_pm_outside
         - group_best_practice_examples
         - field_as_projects
-        - group_key_conservation_issues
         - field_as_projects_needs
         - group_values
-        - field_as_key_cons
         - 'display_field_copy:node-finalised_on'
-        - group_benefits
+        - field_as_key_cons
+        - group_key_conservation_issues
         - group_description_of_values
         - group_ass_protection_manag
         - field_as_vass_bio_state
-        - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
+        - group_threats
+        - group_assessment_information
         - field_as_protection
         - group_overall_ass_prot
-        - group_assessment_information
+        - group_benefits
         - field_as_vass_bio_trend
-        - group_threats
-        - group_additional_information
-        - 'display_field_copy:node-justification_of_assessment_valu'
-        - field_as_vass_bio_text
         - group_protection_and_management
+        - group_additional_information
+        - field_as_vass_bio_text
         - field_as_protection_ov_practices
         - group_projects
         - group_state_and_trend_of_values
         - group_understanding_benefits
         - group_summary_of_benefits
-        - group_assessing_current_state
+        - 'display_field_copy:node-copy_assessment_values'
+        - field_as_vass_wh_trend
+        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_current_threats
+        - group_assessing_current_state
         - group_active_projects
-        - group_potential_threats
-        - field_as_values_wh
         - group_summary_values
-        - group_ass_state_wh
+        - field_as_values_wh
         - group_projects_needs
         - 'display_field_copy:node-identifying_and_describing_value'
-        - 'display_field_copy:node-other_biodiv_values'
+        - group_ass_state_wh
         - group_ass_state_bv
+        - 'display_field_copy:node-other_biodiv_values'
         - field_as_values_bio
+        - group_potential_threats
+      summary:
+        - group_conservation_outlook
+        - field_as_threats_rating
+        - field_as_protection_ov_rating
+        - field_as_global_assessment_text
+        - field_as_threats_text
+        - field_as_protection_ov_text
+        - group_current_state_trend_values
+        - group_overall_threats
+        - group_overall_prot_man
+        - field_as_vass_wh_state
+        - 'display_field_copy:node-assessment_trend_copy'
+        - field_as_vass_wh_text
+        - field_as_end_date
+        - field_as_global_assessment_level
       references:
         - field_as_references
     fields:
-      'display_field_copy:node-assessment_values_copy':
-        plugin_id: 'display_field_copy:node-assessment_values_copy'
-        weight: 7
+      'display_field_copy:node-assessment_trend_copy':
+        plugin_id: 'display_field_copy:node-assessment_trend_copy'
+        weight: 11
+        label: inline
+        formatter: entity_reference_label
+        settings:
+          formatter:
+            link: 0
+      'display_field_copy:node-copy_assessment_values':
+        plugin_id: 'display_field_copy:node-copy_assessment_values'
+        weight: 13
         label: hidden
         formatter: entity_reference_label
         settings:
@@ -167,7 +176,7 @@ third_party_settings:
             view_mode: default_2
       'display_field_copy:node-justification_of_assessment_valu':
         plugin_id: 'display_field_copy:node-justification_of_assessment_valu'
-        weight: 8
+        weight: 15
         label: hidden
         formatter: basic_string
       'display_field_copy:node-other_biodiv_values':
@@ -207,6 +216,7 @@ third_party_settings:
     group_current_state_trend_values:
       children:
         - field_as_vass_wh_state
+        - 'display_field_copy:node-assessment_trend_copy'
         - field_as_vass_wh_text
       parent_name: ''
       weight: 2
@@ -330,7 +340,7 @@ third_party_settings:
         - group_assessing_current_state
         - group_summary_values
       parent_name: group_assessment_information
-      weight: 9
+      weight: 10
       format_type: details
       format_settings:
         id: ''
@@ -356,7 +366,7 @@ third_party_settings:
         - group_understanding_benefits
         - group_summary_of_benefits
       parent_name: group_additional_information
-      weight: 6
+      weight: 7
       format_type: details
       format_settings:
         id: ''
@@ -423,7 +433,7 @@ third_party_settings:
         - field_as_threats_potent_text
         - field_as_threats_potential
       parent_name: group_threats
-      weight: 21
+      weight: 22
       format_type: details_assessment
       format_settings:
         id: ''
@@ -570,15 +580,15 @@ third_party_settings:
       label: 'Summary of the Values'
     group_ass_state_wh:
       children:
+        - 'display_field_copy:node-copy_assessment_values'
         - field_as_vass_wh_trend
-        - 'display_field_copy:node-assessment_values_copy'
         - 'display_field_copy:node-justification_of_assessment_valu'
       parent_name: group_summary_values
       weight: 21
       format_type: html_element_assessment
       format_settings:
         label: 'Assessment of the current state and trend of World Heritage values'
-        terms: 'field_as_vass_wh_trend|display_field_copy:node-assessment_values_copy'
+        terms: 'display_field_copy:node-copy_assessment_values|field_as_vass_wh_trend'
         element: div
         show_label: '1'
         label_element: div
@@ -640,7 +650,7 @@ content:
     region: summary
   field_as_global_assessment_level:
     weight: 43
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -715,7 +725,7 @@ content:
     type: entity_reference_label
     weight: 0
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -785,7 +795,7 @@ content:
     type: entity_reference_label
     weight: 0
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
@@ -841,20 +851,20 @@ content:
     type: entity_reference_label
     weight: 10
     region: summary
-    label: inline
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
   field_as_vass_wh_text:
     type: basic_string
-    weight: 11
+    weight: 12
     region: summary
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_as_vass_wh_trend:
     type: entity_reference_label
-    weight: 6
+    weight: 14
     region: full_assessment_values
     label: inline
     settings:
