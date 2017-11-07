@@ -21,10 +21,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 button,
-.field--name-assessment-rating,
+.field--name-assessments-links,
 .field--name-display-field-copynode-finalised-on,
 .assessment-expand {
   display: none;
+}
+.showing-old-assessment{
+  .field--name-assessment-rating{
+    display:none !important;
+  }
+}
+.showing-latest-assessment{
+  .field--name-assessment-rating{
+    display: block;
+    .tab-pane{
+      display: none;
+    }
+    .tab-pane.active{
+      display: block;
+    }
+  }
+  .field--name-field-image{
+    display:none;
+  }
 }
 
 a {
@@ -157,7 +176,8 @@ th, td {
 .field--name-field-as-vass-wh-state,
 .field--name-field-as-threats-rating,
 .field--name-field-as-protection-ov-rating,
-.field--name-display-field-copynode-protection-overall-rating {
+.field--name-display-field-copynode-protection-overall-rating,
+.field--name-field-as-threats-potent-rating {
   &:extend(.panel-title-terms .field);
 }
 .field--name-display-field-copynode-protection-overall-effectiveness {
@@ -299,8 +319,25 @@ th, td {
 }
 
 .latest-assessment-notice {
-  border: 1px dashed @iucn-red;
   font-size: .9em;
-  padding: .5em;
   &, a { color: @iucn-red; }
+}
+
+
+.showing-old-assessment{
+  .field--name-field-as-end-date{
+    display: none;
+  }
+}
+
+.pdf-tab-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.assessment-potential-threats,
+.assessment-current-threats {
+  .panel-heading > a{
+    border-bottom:2px solid #000000;
+  }
 }

@@ -27,7 +27,7 @@ dependencies:
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
-    - image.style.sites_thumbnail
+    - image.style.medium
     - node.type.site
   module:
     - datetime
@@ -39,23 +39,17 @@ dependencies:
 third_party_settings:
   ds:
     layout:
-      id: ds_1col_wrapper
+      id: iucn_who_site_pdf
       library: null
       disable_css: false
       entity_classes: all_classes
-      settings:
-        wrappers:
-          ds_content: div
-        outer_wrapper: div
-        attributes: ''
-        link_attribute: ''
-        link_custom: ''
-        classes:
-          layout_class: {  }
-          ds_content: {  }
+      settings: {  }
     regions:
-      ds_content:
+      top:
+        - assessments_notice
         - node_title
+        - assessments_conservation_outlook
+      site_information:
         - field_country
         - field_inscription_year
         - field_inscription_criteria
@@ -63,11 +57,12 @@ third_party_settings:
         - body
         - field_image
         - assessment_rating
+      content:
         - field_assessments
     fields:
       node_title:
         plugin_id: node_title
-        weight: 0
+        weight: 1
         label: hidden
         formatter: default
         settings:
@@ -76,7 +71,21 @@ third_party_settings:
           link: false
       assessment_rating:
         plugin_id: assessment_rating
-        weight: 7
+        weight: 9
+        label: hidden
+        formatter: image
+        settings:
+          formatter:
+            image_style: medium
+            image_link: ''
+      assessments_notice:
+        plugin_id: assessments_notice
+        weight: 0
+        label: hidden
+        formatter: default
+      assessments_conservation_outlook:
+        plugin_id: assessments_conservation_outlook
+        weight: 2
         label: hidden
         formatter: default
 id: node.site.pdf
@@ -86,13 +95,13 @@ mode: pdf
 content:
   body:
     type: text_default
-    weight: 5
-    region: ds_content
-    label: hidden
+    weight: 7
+    region: site_information
+    label: inline
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 8
+    weight: 10
     label: hidden
     settings:
       view_mode: pdf
@@ -101,12 +110,12 @@ content:
       ds:
         ds_limit: ''
     type: entity_reference_entity_view
-    region: ds_content
+    region: content
   field_country:
     type: entity_reference_list
-    weight: 1
-    region: ds_content
-    label: hidden
+    weight: 3
+    region: site_information
+    label: inline
     settings:
       link: false
       separator: ','
@@ -118,8 +127,8 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 4
-    region: ds_content
+    weight: 6
+    region: site_information
     label: inline
     settings:
       separator: ','
@@ -132,17 +141,19 @@ content:
         ds_limit: ''
   field_image:
     type: image
-    weight: 6
-    region: ds_content
+    weight: 8
+    region: site_information
     label: hidden
     settings:
-      image_style: sites_thumbnail
+      image_style: medium
       image_link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 3
-    region: ds_content
+    weight: 5
+    region: site_information
     label: inline
     settings:
       separator: ''
@@ -155,8 +166,8 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 2
-    region: ds_content
+    weight: 4
+    region: site_information
     label: inline
     settings:
       timezone_override: ''

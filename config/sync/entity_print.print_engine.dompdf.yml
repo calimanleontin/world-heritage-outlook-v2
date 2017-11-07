@@ -6,10 +6,10 @@ id: dompdf
 settings:
   orientation: portrait
   default_paper_size: a4
-  username: ''
-  password: ''
+  username: test
+  password: test1234
   enable_html5_parser: true
   enable_remote: true
   cafile: ''
-  verify_peer: true
-  verify_peer_name: true
+  verify_peer: false
+  verify_peer_name: false
