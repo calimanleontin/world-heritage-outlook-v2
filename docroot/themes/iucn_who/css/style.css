@@ -13058,6 +13058,11 @@ fieldset[disabled] .map-site-detail .close.focus {
     right: 0;
   }
 }
+@media screen and (min-width: 768px) {
+  .region-site-image {
+    min-height: 10em;
+  }
+}
 @media screen and (max-width: 767px) {
   .region-site-rating {
     display: none;
