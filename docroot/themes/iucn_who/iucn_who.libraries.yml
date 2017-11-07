@@ -47,6 +47,7 @@ global-styling:
       js/social_media.js: {}
       js/assessments.js: {}
       js/sidemenu.js: {}
+      js/expandable-text.js: {}
     dependencies:
       - core/jquery
       - core/underscore

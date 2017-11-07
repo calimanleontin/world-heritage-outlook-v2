@@ -1,0 +1,46 @@
+/* ==========================================================================
+   IUCN expandable text
+   ========================================================================== */
+@expandable-text-visible-lines: 10;
+
+.iucn-expandable-text {
+  overflow: hidden;
+  position: relative;
+  height: @line-height-base * 1em * @expandable-text-visible-lines;
+  &.open {
+    height: auto;
+    max-height: none !important;
+
+    .read-less { display: block; }
+    .read-more { display: none; }
+
+  }
+}
+.iucn-expandable-text__content {
+  position: absolute;
+  .open & {
+    position: static;
+  }
+}
+.iucn-expandable-text__trigger {
+  background-color: @body-bg;
+  border: none;
+  bottom: 0;
+  box-shadow: 0 -0.5em 3em 0.7em @body-bg;
+  color: @iucn-blue-light;
+  display: block;
+  font-size: .8em;
+  left: 0;
+  min-height: 44px;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  text-align: left;
+  width: 100%;
+  .read-less { display: none; }
+
+  .open & {
+    box-shadow: none;
+    position: static;
+  }
+}

@@ -89,26 +89,10 @@
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-    .iucn-expandable-text-content {
-      position: absolute;
-      &.open { position: static; }
-    }
     .field--name-body {
       flex: 1 1 auto;
+      height: auto;
       position: relative;
-      .btn-link {
-        font-size: .8em;
-      }
-    }
-    [data-toggle="dropdown"] {
-      display: none;
-    }
-    [data-toggle="dropdown"][aria-expanded="false"] {
-      background-color: @body-bg;
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
     }
   }
 }
@@ -621,8 +605,15 @@
     margin-bottom: 0;
   }
   @media @grid-desktop {
-    .iucn-expandable-text-content {
-      max-height: none;
+    // override expandable text on desktop
+    .iucn-expandable-text {
+      height: auto !important;
+    }
+    .iucn-expandable-text__content {
+      position: static;
+    }
+    .iucn-expandable-text__trigger {
+      display: none !important;
     }
   }
   .loop-threat-levels({

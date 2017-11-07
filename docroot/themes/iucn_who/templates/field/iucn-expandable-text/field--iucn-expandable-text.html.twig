@@ -44,8 +44,17 @@
     'field--name-' ~ field_name|clean_class,
     'field--type-' ~ field_type|clean_class,
     'field--label-' ~ label_display,
+    'iucn-expandable-text',
+    'js-expandable-text'
   ]
 %}
+
+{% set expandable_id = 'iucn-expandable-text-' ~ field_name|clean_class %}
+
+{%
+  set attributes = attributes.addClass(classes).setAttribute('data-expandable', '')
+%}
+
 {%
   set title_classes = [
     'field--label',
@@ -53,68 +62,39 @@
   ]
 %}
 
-{%
-  set collapse_id = 'iucn-expandable-text-' ~ field_name|clean_class
+{% set expandable_content_attributes = create_attribute({
+  'class': ['iucn-expandable-text__content', 'js-expandable-text__content'],
+  })
 %}
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes.addClass(classes, 'field--items') }}>
+  <div{{ attributes }}>
+    <div{{ expandable_content_attributes.addClass('field--items') }}>
       {% for item in items %}
-        <div{{ item.attributes.addClass('field--item') }}>
-         {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
-          {% if collapseNeeded %}
-            <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
-          {% endif %}
-              {{ item.content }}
-          {% if collapseNeeded %}
-              </div>
-              <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
-            </div>
-          {% endif %}
-        </div>
+        <div{{ item.attributes.addClass('field--item') }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
-    {% for item in items %}
-      <div{{ attributes.addClass(classes, 'field--item') }}>
-        {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
-        {% if collapseNeeded %}
-          <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
-        {% endif %}
-            {{ item.content }}
-        {% if collapseNeeded %}
-            </div>
-            <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
-          </div>
-        {% endif %}
+  {% for item in items %}
+    <div{{ attributes.addClass('field--item') }}>
+      <div{{ expandable_content_attributes }}>
+        {{ item.content }}
       </div>
-    {% endfor %}
+  {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes.addClass(classes) }}>
+  <div{{ attributes }}>
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
-      <div class="field__items">
+      <div{{ expandable_content_attributes.addClass('field__items') }}>
+    {% else %}
+      <div{{ expandable_content_attributes }}>
     {% endif %}
     {% for item in items %}
-        {% set collapseNeeded = item.content['#context']['value']|length > 650 %}
-        {% if collapseNeeded %}
-          <div class="iucn-expandable-text">
-              <div class="iucn-expandable-text-content dropdown-menu-prevent-closing" id="{{collapse_id}}">
-        {% endif %}
-            {{ item.content }}
-        {% if collapseNeeded %}
-            </div>
-            <button class="btn-link" type="button" data-toggle="dropdown" data-target="#{{collapse_id}}" aria-expanded="false"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
-          </div>
-        {% endif %}
-      </div>
+      <div{{ item.attributes.addClass('field--item') }}>{{ item.content }}</div>
     {% endfor %}
-    {% if multiple %}
-      </div>
-    {% endif %}
-  </div>
+    </div>
 {% endif %}
+  <button class="iucn-expandable-text__trigger js-expandable-text__trigger" type="button"><span class="read-more">{{ 'Read more'|t }}</span><span class="read-less">{{ 'Read less'|t }}</span></button>
+</div>
