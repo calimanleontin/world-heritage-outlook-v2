@@ -34,32 +34,32 @@ third_party_settings:
       entity_classes: all_classes
       settings: {  }
     regions:
-      title:
-        - field_as_benefits_category
       description:
         - field_as_benefits_pollut_level
         - field_as_benefits_commun_out
         - field_as_benefits_commun_wide
+        - field_as_benefits_hab_level
         - field_as_benefits_oex_level
         - field_as_description
-        - field_as_benefits_hab_level
         - field_as_benefits_pollut_trend
-        - field_as_benefits_hab_trend
+        - field_as_benefits_commun_in
         - group_factors_benefit
         - field_as_benefits_oex_trend
-        - field_as_benefits_commun_in
+        - field_as_benefits_hab_trend
         - field_as_comment
-        - group_climate_change
         - field_as_benefits_datadeficient
+        - group_climate_change
         - group_pollution
         - group_overexploitation
         - group_invasive_species
-        - group_habitat_change
         - field_as_benefits_invassp_level
+        - group_habitat_change
         - group_community
         - field_as_benefits_invassp_trend
         - field_as_benefits_climate_level
         - field_as_benefits_climate_trend
+      title:
+        - field_as_benefits_category
   field_group:
     group_factors_benefit:
       children:
@@ -258,7 +258,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_hab_trend:
     type: assessment_factor
-    weight: 0
+    weight: 2
     region: description
     label: hidden
     settings: {  }
@@ -272,7 +272,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
     type: assessment_factor
-    weight: 7
+    weight: 9
     region: description
     label: hidden
     settings: {  }
@@ -286,7 +286,7 @@ content:
     third_party_settings: {  }
   field_as_benefits_oex_trend:
     type: assessment_factor
-    weight: 0
+    weight: 2
     region: description
     label: hidden
     settings: {  }
