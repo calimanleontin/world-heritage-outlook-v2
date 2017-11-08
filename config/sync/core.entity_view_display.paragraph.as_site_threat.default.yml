@@ -85,6 +85,7 @@ content:
     label: hidden
     settings:
       separator: ' '
+      lowercase: '1'
     third_party_settings: {  }
   field_as_threats_in:
     type: boolean

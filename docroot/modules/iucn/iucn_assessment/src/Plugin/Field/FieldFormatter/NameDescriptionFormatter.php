@@ -27,6 +27,7 @@ class NameDescriptionFormatter extends FormatterBase {
   public static function defaultSettings() {
     return [
         'separator' => ' - ',
+        'lowercase' => FALSE,
       ];
   }
 
@@ -44,6 +45,11 @@ class NameDescriptionFormatter extends FormatterBase {
         $markup .= $this->getSetting('separator');
         $markup .= strip_tags($this->t($item->entity->description->value));
       }
+
+      if ($this->getSetting('lowercase') == TRUE) {
+        $markup = strtolower($markup);
+      }
+
       $element[$delta] = [
         '#type' => 'markup',
         '#markup' => $markup,
@@ -60,9 +66,17 @@ class NameDescriptionFormatter extends FormatterBase {
     $form['separator'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Separator'),
-      '#description' => $this->t('The string to separate the term name and description'),
+      '#description' => $this->t('The string to separate the term name and description.'),
       '#default_value' => $this->getSetting('separator')
     ];
+
+    $form['lowercase'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use lowercase'),
+      '#description' => $this->t('Check this to force lowercase on the resulting string.'),
+      '#default_value' => $this->getSetting('lowercase')
+    ];
+
     return $form;
   }
 
@@ -74,6 +88,9 @@ class NameDescriptionFormatter extends FormatterBase {
     if ($separator = $this->getSetting('separator')) {
       $summary[] = $this->t('Separator: "%separator"', ['%separator' => $separator]);
     }
+
+    $lowercase = $this->getSetting('lowercase') == TRUE ? $this->t('on') : $this->t('off');
+    $summary[] = $this->t('Use lowercase: %lowercase', ['%lowercase' => $lowercase]);
 
     return $summary;
   }
