@@ -12,6 +12,13 @@ who.admin_config_who:
   title: 'WHO configuration'
   weight: -50
 
+who.general_settings:
+  title: 'General configuration'
+  description: 'Global configuration for the WHO website'
+  route_name: who.general_settings
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 0
 
 who.homepage_map:
   title: 'Homepage map configuration'
@@ -21,7 +28,7 @@ who.homepage_map:
     block: 'homepagemap'
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
-
+  weight: 10
 
 who.google_maps_api.config_form:
   title: 'Google Maps API'
@@ -29,10 +36,38 @@ who.google_maps_api.config_form:
   route_name: google_maps_api.config_form
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 20
 
-who.general_settings:
-  title: 'General configuration'
-  description: 'Global configuration for the WHO website'
-  route_name: who.general_settings
+who.translations:
+  title: 'Translations'
+  description: 'Configure the import of translation files, and add or customize interface translations.'
+  route_name: locale.translate_page
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 30
+
+who.blocks:
+  title: 'Blocks management'
+  description: 'Configure what block content appears in your sites sidebars and other regions.'
+  route_name: block.admin_display
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 40
+
+who.menus:
+  title: 'Menus'
+  description: 'Manage menus and menu links.'
+  route_name: 'entity.menu.collection'
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 50
+
+who.main_menu:
+  title: 'Main menu'
+  description: 'Edit menu Main navigation'
+  route_name: 'entity.menu.edit_form'
+  route_parameters:
+    menu: 'main'
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 60
