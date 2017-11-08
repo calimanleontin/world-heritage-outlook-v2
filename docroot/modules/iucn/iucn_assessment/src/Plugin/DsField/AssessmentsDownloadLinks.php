@@ -40,12 +40,20 @@ class AssessmentsDownloadLinks extends DsFieldBase {
             'title' => $this->t('@year Conservation Outlook Assessment', ['@year' => $item->entity->field_as_cycle->value]),
           ];
           $value['attributes']['target'][] = '_blank';
+          $value['year'] = $item->entity->field_as_cycle->value;
           $links[] = $value;
         }
       }
     }
 
     if (!empty($links)) {
+      usort($links,
+        function($a, $b) {
+          $a_year = $a['year'];
+          $b_year = $b['year'];
+          return ($a_year < $b_year);
+        }
+      );
       $element = [
         '#theme' => 'links',
         '#links' => $links,
