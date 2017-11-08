@@ -222,12 +222,12 @@ th, td {
     > .field {
       display: inline;
       vertical-align: middle;
-      &:before {
+      &:after {
         content: ', ';
       }
     }
-    > .field:nth-child(2) {
-      &:before {
+    > .field:last-child {
+      &:after{
         content: '';
       }
     }
