@@ -217,7 +217,6 @@ function iucn_assessment_preprocess_field(&$variables) {
         $parent = reset($parent);
 
         if ($parent->getName() == t('Nature conservation values')) {
-          dpm($idx);
           unset($variables['items'][$idx]);
         }
       }
