@@ -1199,7 +1199,7 @@
   }
   .inline-element-list:extend(.iucn-inline-element-list all) {
     align-items: center;
-    display: flex;
+    display: inline-block;
     margin-left: 1em;
     &:before {
       border-radius: 50%;
@@ -1212,10 +1212,14 @@
       width: 1px;
     }
     > div:first-child {
+      display:inline;
       margin-right: .5em;
       &:after {
         content: ': ';
       }
+    }
+    > .field{
+      display:inline;
     }
   }
 }

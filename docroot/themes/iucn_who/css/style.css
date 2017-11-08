@@ -14681,7 +14681,7 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 }
 .html-list .inline-element-list {
   align-items: center;
-  display: flex;
+  display: inline-block;
   margin-left: 1em;
 }
 .html-list .inline-element-list:before {
@@ -14695,10 +14695,14 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   width: 1px;
 }
 .html-list .inline-element-list > div:first-child {
+  display: inline;
   margin-right: .5em;
 }
 .html-list .inline-element-list > div:first-child:after {
   content: ': ';
+}
+.html-list .inline-element-list > .field {
+  display: inline;
 }
 .html-element-threats {
   display: flex;
