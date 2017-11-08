@@ -221,7 +221,6 @@ function iucn_assessment_preprocess_field(&$variables) {
         }
       }
       break;
-
     default:
       break;
   }
@@ -332,5 +331,18 @@ function iucn_assessment_webform_element_alter(array &$element, \Drupal\Core\For
       $element['#default_value'] = t('Feedback on @site', ['@site' => $node->getTitle()]);
       $element['#attributes']['readonly'] = 'readonly';
     }
+  }
+}
+
+/**
+ * Implements hook_ds_pre_render_alter().
+ */
+function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array $context, array &$vars) {
+  /** @var \Drupal\node\Entity\Node $entity */
+  $entity = $context['entity'];
+  $year = $entity->field_as_cycle->value;
+  // 2017 assessments shouldn't have "Other important biodiversity values".
+  if ($year == 2017) {
+    $entity->get('field_as_values_bio')->setValue(NULL);
   }
 }
