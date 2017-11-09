@@ -93,7 +93,6 @@ module:
   token: 0
   toolbar: 0
   user: 0
-  varnish_image_purge: 0
   varnish_purge_tags: 0
   varnish_purger: 0
   views: 0
