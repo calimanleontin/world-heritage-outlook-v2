@@ -7477,6 +7477,10 @@ html.js .ajax-new-content:empty {
 .sidemenu .block-clear-search a {
   transition: .2s;
 }
+.glyphicon .btn,
+.glyphicon .sidemenu .block-clear-search a {
+  line-height: 0;
+}
 /**
  * @file
  * Visual styles for fields.
@@ -7675,6 +7679,9 @@ table .radio.form-no-label {
 .form-actions .btn-group .btn,
 .form-actions .btn-group .sidemenu .block-clear-search a {
   margin-right: 0;
+}
+.user-login-form .form-actions {
+  display: inline-block;
 }
 .dropdown-menu {
   box-shadow: none;
