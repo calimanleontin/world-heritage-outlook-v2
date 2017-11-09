@@ -105,8 +105,13 @@ class AssessmentRating extends DsFieldBase {
       return $return;
     }
 
+
     // Handle custom revision display.
     $node_revision = _iucn_assessment_display_negociate_assessment_revision($node);
+
+    if (!$node->field_assessments->entity->field_as_global_assessment_level->entity) {
+      return $return;
+    }
 
     /* @var \Drupal\Core\Field\FieldItemListInterface $items */
     $items = $node->field_assessments->entity->field_as_global_assessment_level->entity->get('field_image');
