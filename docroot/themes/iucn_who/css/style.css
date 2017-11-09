@@ -8856,6 +8856,10 @@ body:not(.show-focus-outlines) textarea:active:focus {
   .holygrail-body > * {
     width: 100%;
   }
+  .holygrail > .tooltip,
+  .holygrail-body > .tooltip {
+    width: auto;
+  }
 }
 .page-header {
   border-left: .4em solid;
