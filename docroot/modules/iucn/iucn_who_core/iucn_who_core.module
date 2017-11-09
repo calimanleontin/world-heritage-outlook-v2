@@ -134,7 +134,7 @@ function _iucn_who_multilingual_path($path) {
           // Not translated.
           $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId());
         }
-        else if (!empty($path['original']['alias']) && $path['original']['alias'] == $existing_alias['alias']) {
+        elseif (!empty($path['original']['alias']) && $path['original']['alias'] == $existing_alias['alias']) {
           // Update alias.
           $existing_alias['alias'] = $path['alias'];
           $path = \Drupal::service('path.alias_storage')->save($path['source'], $path['alias'], $language->getId(), $existing_alias['pid']);
@@ -157,7 +157,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     foreach ($breadcrumb->getLinks() as $key => $val) {
       if ($key == 0) {
         $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
-        $new_breadcrumb->addLink(Link::createFromRoute(t('About'), '<none>'));
+        $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
         $nid = 1234;
         $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
         $url_node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
@@ -170,16 +170,16 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   }
 
   // Custom breadcrumb for benefits_list view.
-  if (isset($parameters['view_id']) && $parameters['view_id'] == 'benefits_list' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
-    $new_breadcrumb = new Breadcrumb();
-    foreach ($breadcrumb->getLinks() as $key => $val) {
-      $new_breadcrumb->addLink($val);
-      if ($key == 0) {
-        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
-      }
-    }
-    $breadcrumb = $new_breadcrumb;
+  /*if (isset($parameters['view_id']) && $parameters['view_id'] == 'benefits_list' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+  $new_breadcrumb = new Breadcrumb();
+  foreach ($breadcrumb->getLinks() as $key => $val) {
+  $new_breadcrumb->addLink($val);
+  if ($key == 0) {
+  $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
   }
+  }
+  $breadcrumb = $new_breadcrumb;
+  }*/
 
   // Custom breadcrumb for publication ctype.
   if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'publication') {
@@ -187,25 +187,24 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     foreach ($breadcrumb->getLinks() as $key => $val) {
       $new_breadcrumb->addLink($val);
       if ($key == 0) {
-        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+        $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
       }
     }
     $breadcrumb = $new_breadcrumb;
   }
 
-  // Custom breadcrumb for benefit ctype.
-  if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'benefit') {
+  // Custom breadcrumb for news ctype.
+  if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'news') {
     $new_breadcrumb = new Breadcrumb();
     foreach ($breadcrumb->getLinks() as $key => $val) {
       $new_breadcrumb->addLink($val);
       if ($key == 0) {
-        $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+        $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
       }
 
     }
     $breadcrumb = $new_breadcrumb;
   }
-
 
   $menu_items = iucn_who_get_all_menu('main');
 

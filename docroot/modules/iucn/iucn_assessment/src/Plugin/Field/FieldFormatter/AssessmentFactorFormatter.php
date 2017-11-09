@@ -53,8 +53,8 @@ class AssessmentFactorFormatter extends FormatterBase {
         }
       }
       $element[$delta] = [
-          '#type' => 'markup',
-          '#markup' => ($term_type ? $term_type . ' - ' : '' ) . $item->entity->name->value,
+        '#type' => 'markup',
+        '#markup' => ($term_type ? $term_type . ' - ' : '') . $item->entity->name->value,
       ];
     }
 
