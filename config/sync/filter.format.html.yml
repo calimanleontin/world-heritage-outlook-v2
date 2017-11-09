@@ -98,6 +98,7 @@ filters:
     settings:
       image_style_crop_thumbnail: '0'
       image_style_free_crop_thumbnail: '0'
+      image_style_free_crop_thumbnail_100: '0'
       image_style_large: '1'
       image_style_large_image: '0'
       image_style_linkit_result_thumbnail: '0'

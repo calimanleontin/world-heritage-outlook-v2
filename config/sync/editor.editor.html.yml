@@ -80,7 +80,7 @@ settings:
     language:
       language_list: un
     stylescombo:
-      styles: "h2.left-border|Bordered subheading\r\nli.iucn-arrow|Arrow list item\r\nh3.iucn-arrow|Arrow h3\r\nstrong.bottom-border|Underlined emphasis"
+      styles: "h2.left-border|Bordered subheading\r\nli.iucn-arrow|Arrow list item\r\nh3.iucn-arrow|Arrow h3\r\nstrong.bottom-border|Underlined emphasis\r\np.embed-responsive.embed-responsive-16by9|Embed 16:9\r\np.embed-responsive.embed-responsive-4by3|Embed 4:3"
 image_upload:
   status: true
   scheme: public
