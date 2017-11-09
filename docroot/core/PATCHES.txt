@@ -9,3 +9,7 @@ Translate labels admin
 Source: https://www.drupal.org/files/issues/2768711-1.patch
 
 
+Fix cache issues
+Source: patches/core/8d5dd3334e611a77f11e7fc7e2e04990ad6116e7.patch
+
+
