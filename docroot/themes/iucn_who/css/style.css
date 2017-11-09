@@ -7477,8 +7477,8 @@ html.js .ajax-new-content:empty {
 .sidemenu .block-clear-search a {
   transition: .2s;
 }
-.glyphicon .btn,
-.glyphicon .sidemenu .block-clear-search a {
+.btn .glyphicon,
+.sidemenu .block-clear-search a .glyphicon {
   line-height: 0;
 }
 /**
