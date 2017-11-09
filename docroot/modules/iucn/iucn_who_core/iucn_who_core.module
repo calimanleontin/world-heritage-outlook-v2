@@ -315,3 +315,15 @@ function mymodule_get_menu_items($menu_name) {
 
   return $menu;
 }
+
+function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'user_login_form') {
+    $form['reset_password'] = [
+      '#type' => 'link',
+      '#title' => t('Reset your password'),
+      '#url' => Url::fromRoute('user.pass'),
+      '#attributes' => ['class' => ['btn', 'btn-primary']],
+      '#weight' => '200',
+    ];
+  }
+}
