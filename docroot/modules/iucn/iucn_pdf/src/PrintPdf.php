@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\entity_print\PrintBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Queue\QueueFactory;
+use Drupal\node\Entity\Node;
 
 /**
  * The print builder service.
@@ -242,7 +243,8 @@ class PrintPdf implements PrintPdfInterface {
    * Pdf filename.
    */
   public function getFilename($entity_id, $language, $year) {
-    return $entity_id . '-' . $year . '-' . $language . '.pdf';
+    $entity = Node::load($entity_id);
+    return $entity->getTitle() . ' - ' . $year . ' COA - ' . $language . '.pdf';
   }
 
   /**
