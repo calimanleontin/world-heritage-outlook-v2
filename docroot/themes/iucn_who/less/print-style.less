@@ -73,14 +73,14 @@ th, td {
   text-transform: uppercase;
 }
 .panel-heading {
-  margin-bottom: 1em;
+  // margin-bottom: 1em;
   margin-top: 1.5em;
   page-break-after: avoid;
 }
 .panel-title {
   display: block;
   font-weight: bold;
-  margin-bottom: .5em;
+  margin-bottom: .2em;
   page-break-after: avoid;
   h3, h4 {
     margin-bottom: 0;
@@ -177,10 +177,12 @@ th, td {
 .field--name-field-as-threats-rating,
 .field--name-field-as-protection-ov-rating,
 .field--name-display-field-copynode-protection-overall-rating,
-.field--name-field-as-threats-potent-rating {
+.field--name-field-as-threats-potent-rating,
+.field--name-display-field-copynode-assessment-trend-copy {
   &:extend(.panel-title-terms .field);
 }
-.field--name-display-field-copynode-protection-overall-effectiveness {
+.field--name-display-field-copynode-protection-overall-effectiveness,
+.field--name-display-field-copynode-justification-of-assessment-valu {
   &:extend(.field--type-string-long);
 }
 
@@ -240,11 +242,14 @@ th, td {
 .assessment-projects.assessment-toggle > .panel-heading,
 .assessment-section > .assessment-toggle > .panel-heading {
   border-bottom: 2px solid #000000;
+  > .panel-title {
+    margin-bottom: .5em;
+  }
 }
 
 .assessment-projects.assessment-toggle > .panel-collapse,
 .assessment-section > .assessment-toggle > .panel-collapse {
-  margin-left: 1em;
+  // margin-left: 1em;
 }
 
 .iucn-assessment-panel-container .panel {
@@ -325,6 +330,7 @@ th, td {
 
 .latest-assessment-notice {
   font-size: .9em;
+  margin-top: .5em;
   &, a { color: @iucn-red; }
 }
 
@@ -336,13 +342,67 @@ th, td {
 }
 
 .pdf-tab-title {
-  text-transform: uppercase;
-  font-weight: bold;
   font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  text-transform: uppercase;
 }
-.assessment-potential-threats,
-.assessment-current-threats {
-  .panel-heading > a{
-    border-bottom:2px solid #000000;
+// .field--name-field-as-values-wh,
+// .field--name-field-as-values-bio,
+// .field--name-display-field-copynode-world-heritage-values,
+// .field--name-display-field-copynode-identifying-and-describing-value,
+// .field--name-display-field-copynode-other-biodiv-values {
+//   margin-top: 1em;
+//   > .field--label {
+//     font-size: 1.2em;
+
+//   }
+//     .showing-latest-assessment & {
+//       color: @iucn-blue-dark;
+//     }
+// }
+
+.panel-body > .field > .field--label,
+.panel-body > .panel > .panel-heading > .panel-title {
+  margin-top: 1em;
+  // &:before {
+  //   content: counters(numbering,".") ". ";
+  //   counter-increment: numbering;
+  //   display: inline;
+  // }
+}
+
+.assessment-toggle > .panel-collapse {
+  // counter-reset: numbering;
+}
+.panel-body .panel-body,
+.field__items {
+  // padding-left: 1em;
+}
+.iucn-assessment-panel-container .panel-body {
+  padding-left: 0;
+}
+
+.assessment-section .assessment-toggle .assessment-toggle .field--label-above > .field--label {
+  .showing-latest-assessment & {
+    color: @iucn-blue-dark;
+  }
+}
+
+.assessment-section .assessment-toggle .assessment-toggle > .panel-collapse {
+  padding-left: 1em;
+}
+
+.panel-collapse > .panel-body > .field--items,
+.panel-collapse > .panel-body > .field__items {
+  // padding-left: 1em;
+}
+
+.values-summary-group,
+.threats-summary-group,
+.protection-management-summary-group {
+  > h3 {
+    margin-bottom: .3em;
   }
 }
