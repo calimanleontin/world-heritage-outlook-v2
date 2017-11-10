@@ -10,7 +10,7 @@ dependencies:
 id: sortbyviewpublicationsdisplaypage
 theme: iucn_who
 region: content
-weight: -10
+weight: -12
 provider: null
 plugin: 'search_api_sorts_block:views_page:publications__publications_page_database'
 settings:

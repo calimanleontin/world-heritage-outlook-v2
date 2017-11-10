@@ -38,3 +38,7 @@ function iucn_who_homepage_theme($existing, $type, $theme, $path) {
     ]
   ];
 }
+
+function iucn_who_homepage_preprocess_block(&$variables) {
+  $variables['attributes']['class'][] = 'block-home-page-report';
+}
