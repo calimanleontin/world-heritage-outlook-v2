@@ -18,8 +18,8 @@ settings:
       value: threats
       label: Threats
     -
-      value: management
-      label: Management
+      value: protection-management
+      label: 'Protection and Management'
   allowed_values_function: ''
 module: options
 locked: false
