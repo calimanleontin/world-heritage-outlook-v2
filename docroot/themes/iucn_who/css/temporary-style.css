@@ -1,23 +1,27 @@
 /*Temporarily hide certain blocks and fields*/
 #block-languagedropdownswitcher {
-    display: none !important;
+  display: none !important;
 }
 
 #block-designation {
-    display: none !important;
+  display: none !important;
 }
 
 #block-theme {
-    display: none !important;
+  display: none !important;
 }
 
 .field--name-field-designation {
-    display: none !important;
+  display: none !important;
 }
-.showing-old-assessment  .field--name-field-designation{
+.showing-old-assessment .field--name-field-designation {
   display: block !important;
 }
-.showing-latest-assessment .field--name-field-designation{
-    display:none !important;
+.showing-latest-assessment .field--name-field-designation {
+  display: none !important;
 }
-
+#heading-topic-1297,
+#topic-1297,
+[data-drupal-facet-item-id="benefit-1297"] {
+  display: none !important;
+}
