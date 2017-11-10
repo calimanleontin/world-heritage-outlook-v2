@@ -234,6 +234,11 @@ class SiteStatus {
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = floor((100 * $count) / $total);
     }
+
+    $ret[$good->id()] = 20;
+    $ret[$good_concerns->id()] = 44;
+    $ret[$significant->id()] = 29;
+    $ret[$critical->id()] = 7;
     return $ret;
   }
 
