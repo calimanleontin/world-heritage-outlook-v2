@@ -16,7 +16,6 @@ class PrintPdf implements PrintPdfInterface {
 
   /**
    * The Print builder.
-
    * @var \Drupal\entity_print\PrintBuilderInterface
    */
   protected $printBuilder;
