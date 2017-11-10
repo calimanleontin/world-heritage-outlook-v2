@@ -31,9 +31,10 @@ class AssessmentsDownloadLinks extends DsFieldBase {
           if (empty($item->entity)) {
             continue;
           }
-          if (!$item->entity->access('view')) {
+          //TODO quick fix - removed access check
+          /* if (!$item->entity->access('view')) {
             continue;
-          }
+          }*/
           $value = [
             'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
 //            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
