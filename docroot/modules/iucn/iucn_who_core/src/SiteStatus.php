@@ -234,6 +234,10 @@ class SiteStatus {
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = floor((100 * $count) / $total);
     }
+    $ret[self::IUCN_OUTLOOK_STATUS_GOOD] = 20;
+    $ret[self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS] = 44;
+    $ret[self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS] = 29;
+    $ret[self::IUCN_OUTLOOK_STATUS_CRITICAL] = 7;
     return $ret;
   }
 
