@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "11a086e7703028ab1221d7c0bffc1c1c",
+    "content-hash": "73c02518c1d59f0adb6f336c30b46ad2",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -1798,7 +1798,8 @@
             "extra": {
                 "patches_applied": {
                     "Number widget validation can break AJAX actions": "patches/core/2614250-40.patch",
-                    "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch"
+                    "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
+                    "Fix cache issues": "patches/core/8d5dd3334e611a77f11e7fc7e2e04990ad6116e7.patch"
                 }
             },
             "autoload": {
@@ -3155,6 +3156,62 @@
             "homepage": "https://www.drupal.org/project/geofield_map",
             "support": {
                 "source": "http://cgit.drupalcode.org/geofield_map"
+            }
+        },
+        {
+            "name": "drupal/google_analytics",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/google_analytics",
+                "reference": "8.x-2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/google_analytics-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "15cd0642ad99f3776a46b702e5012713405a0733"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "drupal/php": "*",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.2",
+                    "datestamp": "1506372845",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/u/hass"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/49388/committers"
+                }
+            ],
+            "description": "Allows your site to be tracked by Google Analytics by adding a Javascript tracking code to every page.",
+            "homepage": "https://www.drupal.org/project/google_analytics",
+            "support": {
+                "source": "http://git.drupal.org/project/google_analytics.git",
+                "issues": "https://www.drupal.org/project/issues/google_analytics"
             }
         },
         {
