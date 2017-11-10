@@ -1,0 +1,16 @@
+uuid: 3aef67f6-4505-4758-a60a-5c22355f7b82
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.button
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: block_content.button
+target_entity_type_id: block_content
+target_bundle: button
+default_langcode: site_default
+language_alterable: true
