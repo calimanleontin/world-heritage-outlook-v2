@@ -25,7 +25,7 @@ class IucnSiteAssessmentsController extends ControllerBase {
    *   access.
    */
   public function access(Node $node) {
-    if ($node->bundle() == 'site' && $node->access('edit')) {
+    if ($node->bundle() == 'site' && $node->access('update')) {
       return AccessResult::allowed();
     }
     return AccessResult::forbidden();
