@@ -1,9 +1,8 @@
 {% if content %}
     <div{{ attributes.addClass(['container','pdf-download-button']) }}>
-            <a href="{{ content.field_pdf_file }}">
-                <i class="glyphicon glyphicon-download"></i>
-                <div>{{ content.field_pdf_button_title }}</div>
-                {{ content.field_pdf_title }}
+            <a href="{{ content.field_link.0['#title'] }}" target="_blank">
+                <div class="field--name-field-pdf-button-title">{{ content.field_title.0['#context'].value }}</div>
+                {{ content.field_subtitle.0['#context'].value }}
             </a>
     </div>
 {% endif %}

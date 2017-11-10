@@ -9,23 +9,31 @@ dependencies:
     - field.field.block_content.button.field_subtitle
     - field.field.block_content.button.field_title
   module:
+    - ds
     - link
-    - text
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_pdf_download_button
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_title
+        - field_subtitle
+        - field_link
 id: block_content.button.default
 targetEntityType: block_content
 bundle: button
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_link:
-    weight: 3
-    label: above
+    type: link
+    weight: 2
+    region: content
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -33,25 +41,24 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
-    region: content
   field_subtitle:
-    weight: 2
-    label: above
+    weight: 1
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_title:
-    weight: 1
+    type: string
+    weight: 0
+    region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-    region: content
 hidden:
+  body: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
