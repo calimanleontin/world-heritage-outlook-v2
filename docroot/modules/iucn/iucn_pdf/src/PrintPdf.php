@@ -244,7 +244,7 @@ class PrintPdf implements PrintPdfInterface {
   public function getFilename($entity_id, $language, $year) {
     $entity = Node::load($entity_id);
     $filename = \Drupal::transliteration()->transliterate($entity->getTitle(), 'en', '');
-    $filename = preg_replace('/[^a-zA-Z0-9\-\._]/','_', $filename) . '_' . $year . '_COA_' . $language . '.pdf';
+    $filename = preg_replace('/[^a-zA-Z0-9\-\._]/',' ', $filename) . ' - ' . $year . ' COA - ' . $language . '.pdf';
     return $filename;
   }
 
