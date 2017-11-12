@@ -216,7 +216,7 @@ function iucn_assessment_preprocess_field(&$variables) {
         $parent = $storage->loadParents($tid);
         $parent = reset($parent);
 
-        if ($parent->getName() == t('Nature conservation values')) {
+        if ($parent && $parent->getName() == t('Nature conservation values')) {
           unset($variables['items'][$idx]);
         }
       }
