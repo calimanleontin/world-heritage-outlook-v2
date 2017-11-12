@@ -100,7 +100,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       $overall_status_level = SiteStatus::getOverallAssessmentLevel($node);
       $threat_level = SiteStatus::getOverallThreatLevel($node);
       $protection_level = SiteStatus::getOverallProtectionLevel($node);
-      $value_level = SiteStatus::getOverallProtectionLevel($node);
+      $value_level = SiteStatus::getOverallValuesLevel($node);
       $detail = [
         '#theme' => 'homepage_map_site_detail',
         '#title' => $node->title->value,
