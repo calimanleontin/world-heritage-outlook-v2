@@ -174,7 +174,7 @@ function iucn_assessment_preprocess_field(&$variables) {
 
     case 'field_as_threats_categories':
       // Hide the parent terms for this field - show only sub-categories
-      if (count($variables['items'] == 2)) {
+      if (count($variables['items']) == 2) {
         unset($variables['items'][0]);
       }
       break;
