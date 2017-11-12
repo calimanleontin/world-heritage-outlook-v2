@@ -30,21 +30,31 @@ class ParentCategoryFormatter extends FormatterBase {
       if (empty($item->entity)) {
         continue;
       }
+      /** @var \Drupal\taxonomy\TermInterface $category */
       $category = $item->entity;
       if (empty($category->getName())) {
         continue;
       }
+      /** @var \Drupal\taxonomy\TermStorageInterface $storage */
       $storage = \Drupal::service('entity_type.manager')
         ->getStorage('taxonomy_term');
       $parent = $storage->loadParents($category->id());
       $parent = reset($parent);
-      if ($parent && !in_array($parent->id(), $added)) {
-        $markup = !empty($parent) ? $parent->getName() : $category->getName();
+      $markup = '';
+      if (!empty($parent)) {
+        if (!in_array($parent->id(), $added)) {
+          $markup = $parent->getName();
+          $added[] = $parent->id();
+        }
+      }
+      else {
+        $markup = $category->getName();
+      }
+      if (!empty($markup)) {
         $element[$delta] = [
           '#type' => 'markup',
           '#markup' => $markup,
         ];
-        $added[] = $parent->id();
       }
     }
     return $element;
