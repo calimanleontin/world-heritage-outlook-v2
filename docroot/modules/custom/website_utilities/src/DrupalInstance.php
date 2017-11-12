@@ -7,12 +7,11 @@ use Drupal\Core\Site\Settings;
 
 class DrupalInstance {
 
-
   const PRODUCTION = 'production';
   const STAGING = 'staging';
   const DEVELOPMENT = 'development';
   const LOCAL = 'local';
-
+  const ENVIRONMENT = 'environment';
 
   public static function isProductionInstance() {
     $env = self::getEnvironment();
@@ -39,7 +38,7 @@ class DrupalInstance {
 
   public static function getEnvironment($default = self::LOCAL) {
     $ret = $default;
-    if ($value = Settings::get('settings')) {
+    if ($value = Settings::get(self::ENVIRONMENT)) {
       $ret = $value;
     }
     return $ret;
