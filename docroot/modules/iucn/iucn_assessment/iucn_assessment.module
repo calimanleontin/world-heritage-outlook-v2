@@ -170,6 +170,14 @@ function iucn_assessment_preprocess_field(&$variables) {
           }
         }
       }
+      break;
+
+    case 'field_as_threats_categories':
+      // Hide the parent terms for this field - show only sub-categories
+      if (count($variables['items'] == 2)) {
+        unset($variables['items'][0]);
+      }
+      break;
 
     case 'field_as_references':
       // Sort this field by string alphabetically.
