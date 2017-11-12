@@ -25,6 +25,7 @@ class ParentCategoryFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
+    $added = [];
     foreach ($items as $delta => $item) {
       if (empty($item->entity)) {
         continue;
@@ -37,11 +38,14 @@ class ParentCategoryFormatter extends FormatterBase {
         ->getStorage('taxonomy_term');
       $parent = $storage->loadParents($category->id());
       $parent = reset($parent);
-      $markup = !empty($parent) ? $parent->getName() : $category->getName();
-      $element[$delta] = [
-        '#type' => 'markup',
-        '#markup' => $markup,
-      ];
+      if ($parent && !in_array($parent->id(), $added)) {
+        $markup = !empty($parent) ? $parent->getName() : $category->getName();
+        $element[$delta] = [
+          '#type' => 'markup',
+          '#markup' => $markup,
+        ];
+        $added[] = $parent->id();
+      }
     }
     return $element;
   }
