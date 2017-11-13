@@ -200,7 +200,9 @@ content:
     region: title
     label: hidden
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: '1'
   field_as_benefits_climate_level:
     type: assessment_factor
     weight: 21
