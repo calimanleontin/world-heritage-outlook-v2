@@ -81,7 +81,7 @@ third_party_settings:
         effect: none
         speed: fast
         id: ''
-        classes: html-list
+        classes: 'html-list hide-on-old-assessment'
       label: 'Factors negatively affecting provision of this benefit'
     group_climate_change:
       children:

@@ -1,0 +1,19 @@
+uuid: d9271b05-a4b7-4cdb-aa77-21b7eb32e7cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.button
+    - field.storage.block_content.field_title
+id: block_content.button.field_title
+field_name: field_title
+entity_type: block_content
+bundle: button
+label: Title
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

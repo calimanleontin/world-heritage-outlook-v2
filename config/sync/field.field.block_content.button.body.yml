@@ -1,0 +1,22 @@
+uuid: 71df66c2-e8c3-4c23-aa10-d06016fba133
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.button
+    - field.storage.block_content.body
+  module:
+    - text
+id: block_content.button.body
+field_name: body
+entity_type: block_content
+bundle: button
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

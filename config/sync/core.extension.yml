@@ -34,6 +34,7 @@ module:
   filter: 0
   geofield: 0
   geofield_map: 0
+  google_analytics: 0
   google_maps_api: 0
   image: 0
   image_effects: 0

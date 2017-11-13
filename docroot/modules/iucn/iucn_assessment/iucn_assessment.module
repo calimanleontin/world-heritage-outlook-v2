@@ -170,6 +170,14 @@ function iucn_assessment_preprocess_field(&$variables) {
           }
         }
       }
+      break;
+
+    case 'field_as_threats_categories':
+      // Hide the parent terms for this field - show only sub-categories
+      if (count($variables['items']) == 2) {
+        unset($variables['items'][0]);
+      }
+      break;
 
     case 'field_as_references':
       // Sort this field by string alphabetically.
@@ -204,20 +212,21 @@ function iucn_assessment_preprocess_field(&$variables) {
 
     case 'field_as_benefits':
       // Hide "nature conservation values" benefits for 2017 assessments.
-      if (empty($variables['items'][0]['content']['#paragraph']) ||
-        $variables['element']['#object']->field_as_cycle->value != '2017'
+      if (
+        empty($variables['items'][0]['content']['#paragraph'])
+        || $variables['element']['#object']->field_as_cycle->value != 2017
       ) {
         break;
       }
       foreach ($variables['items'] as $idx => &$item) {
-        $tid = $item['content']['#paragraph']->field_as_benefits_category->target_id;
-        $storage = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term');
-        $parent = $storage->loadParents($tid);
-        $parent = reset($parent);
-
-        if ($parent->getName() == t('Nature conservation values')) {
-          unset($variables['items'][$idx]);
+        if ($tid = $item['content']['#paragraph']->field_as_benefits_category->target_id) {
+          $storage = \Drupal::service('entity_type.manager')
+            ->getStorage('taxonomy_term');
+          $parent = $storage->loadParents($tid);
+          $parent = reset($parent);
+          if ($parent && $parent->getName() == t('Nature conservation values')) {
+            unset($variables['items'][$idx]);
+          }
         }
       }
       break;
@@ -344,7 +353,9 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
     $year = $entity->field_as_cycle->value;
     // 2017 assessments shouldn't have "Other important biodiversity values".
     if ($year == 2017) {
-      $entity->get('field_as_values_bio')->setValue(NULL);
+      unset(
+        $vars['content']['full_assessment_values']['group_assessment_information']['group_state_and_trend_of_values']['group_assessing_current_state']['display_field_copy:node-other_biodiv_values']
+      );
     }
   }
 }
