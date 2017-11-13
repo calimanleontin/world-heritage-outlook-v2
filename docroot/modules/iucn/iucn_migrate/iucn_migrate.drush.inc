@@ -45,17 +45,14 @@ function iucn_migrate_drush_command() {
     'aliases' => ['iucnusc'],
   ];
 
-  $commands['iucn-update-year-2014'] = [
-    'description' => 'Command for disabling 2014 assesments.',
-    'aliases' => ['iucny2014'],
+  $commands['iucn-update-assessments'] = [
+    'description' => 'Command for enabling/disabling site assessments.',
+    'aliases' => ['iucniua'],
+    'options' => array(
+      'year' => 'year',
+      'action' => 'publish/unpublish',
+    ),
   ];
-
-  $commands['iucn-update-year-2017'] = [
-    'description' => 'Command for enabling 2014 assesments.',
-    'aliases' => ['iucny2017'],
-  ];
-
-
   return $commands;
 }
 
@@ -63,33 +60,37 @@ function iucn_migrate_drush_command() {
  * Drush command logic.
  * drush_[MODULE_NAME]_[COMMAND_NAME]().
  */
-function drush_iucn_migrate_iucn_update_year_2014(){
+function drush_iucn_migrate_iucn_update_assessments(){
+  $year = drush_get_option('year', FALSE);
+  $action = drush_get_option('action', FALSE);
+
+  if(!$year || !action){
+    drush_print(dt("Please use this format: iucniua --year=yyyy --action=publish/unpublish "));
+    return;
+  }
   $nodes = \Drupal::entityTypeManager()
     ->getStorage('node')
-    ->loadByProperties(array('type' => ['site_assessment'] , 'field_as_cycle' => 2014));
-  if ($nodes) {
-    foreach ($nodes as $node) {
-      drush_print(dt("UNPUBLISHED: " . $node->label()));
-      $node->setPublished(FALSE);
-      $node->save();
+    ->loadByProperties(array('type' => ['site_assessment'], 'field_as_cycle' => $year));
+  if (in_array($action, ['publish', 'unpublish'])) {
+    if ($nodes) {
+      foreach ($nodes as $node) {
+        switch ($action) {
+          case 'publish':
+            $node->setPublished(TRUE);
+            drush_print(dt("PUBLISHED: " . $node->label()));
+            break;
+
+          case 'unpublish':
+            $node->setPublished(FALSE);
+            drush_print(dt("UNPUBLISHED: " . $node->label()));
+            break;
+        }
+        $node->save();
+      }
     }
   }
-}
-
-/**
- * Drush command logic.
- * drush_[MODULE_NAME]_[COMMAND_NAME]().
- */
-function drush_iucn_migrate_iucn_update_year_2017(){
-  $nodes = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadByProperties(array('type' => ['site_assessment'] , 'field_as_cycle' => 2017));
-  if ($nodes) {
-    foreach ($nodes as $node) {
-      drush_print(dt("PUBLISHED: " . $node->label()));
-      $node->setPublished(TRUE);
-      $node->save();
-    }
+  else {
+    drush_print(dt("invalid option for action. Please use --action=publish/unpublish "));
   }
 }
 
