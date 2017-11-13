@@ -152,6 +152,10 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
       $elements[$delta]['#cache']['tags'] = $entity->getCacheTags();
     }
 
+    if ($count == 0) {
+      return $elements;
+    }
+
     if ($this->getSetting('override_label')) {
       $label_title = '';
       if ($count == 1) {
@@ -160,6 +164,7 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
       elseif ($count > 1) {
         $label_title = $this->getSetting('plural') ? $this->getSetting('plural') : '';
       }
+
       $output = [
         0 => [
           '#plain_text' => t($label_title),
