@@ -58,7 +58,6 @@ global-styling:
       - iucn_who/bootstrap-js
       - iucn_who/flexibility
       - iucn_who/headroom
-      - iucn_who/disable-hover
 
 back-to-js:
   js:
