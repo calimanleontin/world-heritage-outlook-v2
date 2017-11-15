@@ -232,16 +232,35 @@ class SiteStatus {
       }
     }
     foreach($statuses as $status_id => $count) {
-      $ret[$status_id] = floor((100 * $count) / $total);
+      $ret[$status_id] = number_format((100 * $count) / $total ,  2, '.', '');
     }
 
-    $ret[$good->id()] = 20;
+    /*$ret[$good->id()] = 20;
     $ret[$good_concerns->id()] = 44;
     $ret[$significant->id()] = 29;
-    $ret[$critical->id()] = 7;
+    $ret[$critical->id()] = 7;*/
     return $ret;
   }
 
+  /**
+   * Return possible statuses.
+   *
+   * @return array
+   *   Array keyed by status
+   */
+  public static function getStatistictsTerms(){
+    $good = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD);
+    $good_concerns = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS);
+    $significant = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS);
+    $critical = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_CRITICAL);
+
+    return [
+      $good->id(),
+      $good_concerns->id(),
+      $significant->id(),
+      $critical->id(),
+    ];
+  }
 
   /**
    * Retrieve the taxonomy of assessment_benefits_category as tree containing
