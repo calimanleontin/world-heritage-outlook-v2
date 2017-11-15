@@ -51,6 +51,16 @@ function postInitMap(instance_id, map, config) {
         $called = true;
       }
     });
+    // Simplebar element in map sidebar
+    var simplebar = false;
+
+    $.iucnSimplebarHighlight = function () {
+      if(!simplebar) {
+        simplebar = $.data($('[data-iucn-simplebar]')[0], 'simplebar');
+      }
+      $(simplebar.getScrollElement()).scrollTop(0);
+      simplebar.flashScrollbar();
+    };
 
     $.iucnUpdateMapDetail = function(mapDetail) {
       var $mapDetails = $('#map-site-details');
@@ -59,6 +69,7 @@ function postInitMap(instance_id, map, config) {
       // setTimeout(function() {
       //   $('.col-left').animate({ scrollTop: $mapDetails.innerHeight() });
       // }, 300);
+      $.iucnSimplebarHighlight();
     };
 
     $.iucnResetMapDetail = function() {
@@ -66,6 +77,7 @@ function postInitMap(instance_id, map, config) {
       // $mapDetails.height('auto');
       $mapDetails.fadeOut(0).html(config.empty_placeholder).fadeIn(300);
       $('.col-left').animate({ scrollTop: 0 });
+      $.iucnSimplebarHighlight();
     }
 
     $.iucnResetAllMarkerIcons = function() {

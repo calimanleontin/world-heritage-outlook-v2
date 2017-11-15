@@ -1,4 +1,4 @@
-;(function ($, Drupal, drupalSettings, SimpleBar) {
+;(function ($, Drupal, drupalSettings) {
   'use strict';
 
   // https://tc39.github.io/ecma262/#sec-array.prototype.find
@@ -45,7 +45,39 @@
       }
     });
   }
+  // $.fn.scrollSidesReached = function () {
+  //   return this.each(function() {
+  //     var element = this;
+  //     var $parent = $(element).parent();
 
+  //     if(0 === element.scrollHeight - $(element).innerHeight() - $(element).scrollTop()) {
+  //       $parent.addClass('scroll-reached-bottom');
+  //     }
+  //     if(0 === $(element).scrollTop()) {
+  //       $parent.addClass('scroll-reached-top');
+  //     }
+  //     $(element).on('wheel', function (event) {
+  //       var wheelEvent = event.originalEvent;
+  //       var reachedBottom = false;
+  //       var reachedTop = false;
+  //       var preventDirection;
+
+  //       if($(element).hasScrollBar()) {
+  //         console.log('hasScrollBar');
+  //       }
+  //       if (wheelEvent.deltaY > 0) { // scroll down
+  //         reachedBottom = 0 === this.scrollHeight - $(this).innerHeight() - $(this).scrollTop();
+  //         if (reachedBottom) $parent.addClass('scroll-reached-bottom');
+  //       } else { // scroll up
+  //         reachedTop = 0 === $(this).scrollTop();
+  //         if (reachedTop) $parent.addClass('scroll-reached-top');
+  //       }
+  //       if(!reachedTop && !reachedBottom) {
+  //         $parent.removeClass('scroll-reached-top').removeClass('scroll-reached-bottom');
+  //       }
+  //     });
+  //   });
+  // };
   /**
    *  Prevent scroll on sidebar on desktop
    */
@@ -53,67 +85,47 @@
   var desktopBreakpoint = breakpoints['iucn_who.desktop'];
 
   $.fn.preventBodyScroll = function () {
-    var $parent = $(this).parent();
-    // $parent.addClass('scroll-prevented-top').addClass('scroll-prevented-bottom');
-    var prevent = false;
-    var preventDirection;
+    return this.each(function() {
+      var element = this;
+      var $parent = $(element).parent();
+      var prevent = false;
 
-    if(0 === this.scrollHeight- $(this).innerHeight() - $(this).scrollTop()) {
-      $parent.addClass('scroll-prevented-bottom');
-    }
-    if(0 === $(this).scrollTop()) {
-      $parent.addClass('scroll-prevented-top');
-    }
+       // Requires dependency on core/matchmedia in .libraries.yml
+       if (window.matchMedia(desktopBreakpoint).matches) {
+         $(element).on('wheel', function (event) {
+          var wheelEvent = event.originalEvent;
+          var prevent = false;
 
-     // Requires dependency on core/matchmedia in .libraries.yml
-     if (window.matchMedia(desktopBreakpoint).matches) {
-      // console.log('desktop');
-       $(this).on('wheel', function (event) {
-        var wheelEvent = event.originalEvent;
-        var prevent = false;
-        var preventDirection;
-        // var $parent = $(this);
+          if (wheelEvent.deltaY > 0) { // scroll down
+            prevent = 0 === this.scrollHeight- $(this).innerHeight() - $(this).scrollTop();
+          } else { // scroll up
+            prevent = 0 === $(this).scrollTop();
+          }
 
-        if (wheelEvent.deltaY > 0) { // scroll down
-          // console.log('scrollBottom: ' + (this.scrollHeight- $(this).innerHeight() - $(this).scrollTop()).toString() );
-          prevent = 0 === this.scrollHeight- $(this).innerHeight() - $(this).scrollTop();
-          preventDirection = 'bottom';
-        } else { // scroll up
-          // console.log('scrollTop: ' + $(this).scrollTop());
-          prevent = 0 === $(this).scrollTop();
-          preventDirection = 'top';
-        }
-
-        if (prevent) {
-          event.preventDefault();
-          event.stopPropagation();
-          // console.log('prevented');
-          $parent.addClass('scroll-prevented-' + preventDirection);
-          return false;
-        }
-        $parent.removeClass('scroll-prevented-top').removeClass('scroll-prevented-bottom');
-        // console.log('not prevented');
-      });
-    }
-    else {
-      // console.log('mobile');
-      $(this).off('wheel');
-    }
-
+          if (prevent) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+          }
+        });
+      }
+      else {
+        $(this).off('wheel');
+      }
+    });
   };
 
-  var $simplebarElements = $('[data-iucn-simplebar]');
+  if(SimpleBar) {
+    var $simplebarElements = $('[data-iucn-simplebar]');
+    $simplebarElements.each(function() {
+      var simpleBarElement = new SimpleBar(this, {
+        autoHide: ($(this).data('iucn-simplebar') === 'visible' ? false : true)
+      });
+      $.data(this, 'simplebar', simpleBarElement);
+      simpleBarElement.flashScrollbar();
+    });
+  }
 
-  var simpleBar = new SimpleBar($simplebarElements[0], {
-    autoHide: ($simplebarElements.data('iucn-simplebar') === 'visible' ? false : true)
-  });
+  $('[data-prevent-scroll]').preventBodyScroll();
 
-  $('[data-prevent-scroll] .simplebar-scroll-content').preventBodyScroll();
-
-  // handle resize events - throttled with underscore.js (optional - requires core/underscore be added as a dependency in .libraries.yml)
-  $(window).on('resize', _.debounce(
-    function() {
-      $('[data-prevent-scroll] .simplebar-scroll-content').preventBodyScroll();
-    }, 200));
-
-})(jQuery, Drupal, drupalSettings, SimpleBar);
+})(jQuery, Drupal, drupalSettings);

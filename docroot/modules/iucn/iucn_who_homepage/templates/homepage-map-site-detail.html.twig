@@ -1,22 +1,29 @@
 <div class="map-site-detail">
   <a class="close" href="javascript:homepageMapSiteDetailClose()"><span aria-hidden="true">&times;</span></a>
-  {% if status.label %}
-  <div class="ie-flex-fix">
-    <div class="status {{ status.entity.field_css_identifier.value }}"><span>{{ status.label }}</span></div>
+  <div class="map-site-detail-image">
+    {% if thumbnail %}
+    <a href="{{ link }}">
+      <img src="{{ thumbnail }}" height="160" width="300">
+    </a>
+    {% endif %}
+    {% if status.label %}
+    <div class="ie-flex-fix">
+      <div class="status {{ status.entity.field_css_identifier.value }}"><span>{{ status.label }}</span></div>
+    </div>
+    {% endif %}
+    <div class="title-container">
+      <h5 class="title {{ status.entity.field_css_identifier.value }}">{{ title }}</h5>
+    </div>
   </div>
-  {% endif %}
-  {% if thumbnail %}
-  <img src="{{ thumbnail }}" height="160" width="300">
-  {% endif %}
   <div class="map-site-detail-content map-site-detail-content-{{ status.entity.field_css_identifier.value }}">
-    <h5 class="title {{ status.entity.field_css_identifier.value }}">{{ title }}</h5>
+    <a class="more visible-desktop" href="{{ link }}">Read more</a>
     {% if country %}
     <div class="country">{{ country.label }}</div>
     {% endif %}
     {% if inscription %}
     <div class="inscription">Inscribed in <strong>{{ inscription }}</strong></div>
     {% endif %}
-    <a class="more" href="{{ link }}">Read more</a>
+    <a class="more visible-mobile" href="{{ link }}">Read more</a>
     <dl>
       {% if stat_values %}
       <dt class="values">Values</dt>
