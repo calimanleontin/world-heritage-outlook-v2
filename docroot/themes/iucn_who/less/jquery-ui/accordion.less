@@ -17,14 +17,17 @@
     border: none;
     margin-bottom: 1em;
   }
+  .ui-accordion-content a {
+    .light-link();
+  }
   .ui-icon {
-    background-image: none;
-    text-indent: 0;
     .svg-icon(collapse-plus);
-    height: 20px;
-    width: 20px;
-    background-size: contain;
     background-position: center;
+    background-size: contain;
+    height: 20px;
+    margin-right: .3em;
+    text-indent: 0;
+    width: 20px;
   }
 }
 .ui-accordion .ui-state-active .ui-icon {
