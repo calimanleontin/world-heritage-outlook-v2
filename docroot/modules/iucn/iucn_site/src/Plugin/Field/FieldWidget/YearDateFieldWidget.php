@@ -46,15 +46,16 @@ class YearDateFieldWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = [];
-    $years = [];
-    for($i = date("Y"); $i > 0; $i-- ) {
-      $years["$i-01-01"] = $i;
+    $years = ['0001-01-01' => t('none')];
+    for ($i = date("Y") + 10; $i > 1; $i--) {
+      $year = str_pad($i, 4, "0", STR_PAD_LEFT);
+      $years["$year-01-01"] = $i;
     }
     $element['value'] = $element + array(
-        '#type' => 'select',
-        '#options' => $years,
-        '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
-      );
+      '#type' => 'select',
+      '#options' => $years,
+      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : NULL,
+    );
     $element['value']['#title'] = $this->fieldDefinition->getLabel();
     $element['value']['#description'] = $this->fieldDefinition->getDescription();
 
