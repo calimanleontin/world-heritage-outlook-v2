@@ -5,7 +5,7 @@ dependencies: {  }
 id: fe166b7d74
 name: Varnish
 invalidationtype: tag
-hostname: worldheritageoutlook.iucn.org
+hostname: www.worldheritageoutlook.iucn.org
 port: 80
 path: /
 request_method: BAN
@@ -21,5 +21,5 @@ runtime_measurement: true
 timeout: !!float 1
 connect_timeout: !!float 1
 cooldown_time: !!float 0
-max_requests: 100
+max_requests: 1000
 http_errors: true

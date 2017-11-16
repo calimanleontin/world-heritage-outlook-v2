@@ -9,8 +9,9 @@ module:
   raven: 0
 theme: {  }
 blacklist:
-  - recaptcha.settings
   - raven.settings
+  - varnish_purger.settings.fe166b7d74
+  - recaptcha.settings
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
