@@ -35,7 +35,11 @@ module.exports = function (grunt) {
     postcss: {
       options: {
         processors: [
-          require('autoprefixer')({browsers: 'last 4 versions'}), // add vendor prefixes
+          require('postcss-cssnext')({
+            features: {
+              rem: false
+            }
+          }),
           require('postcss-flexibility')
         ]
       },

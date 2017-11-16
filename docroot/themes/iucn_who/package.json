@@ -13,6 +13,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-postcss": "^0.8.0",
     "headroom.js": "^0.9.4",
+    "postcss-cssnext": "^3.0.2",
     "postcss-flexibility": "^1.1.1",
     "simplebar": "^2.4.4"
   }
