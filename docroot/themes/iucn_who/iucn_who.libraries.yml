@@ -13,6 +13,10 @@ simplebar:
       theme:
         libraries/node_modules/simplebar/dist/simplebar.css: { minified: true }
 
+flexibility:
+    js:
+      libraries/node_modules/flexibility/flexibility.js: { minified: true }
+
 disable-hover:
     js:
       libraries/disable-hover/disable-hover.js: {}
@@ -52,8 +56,8 @@ global-styling:
       - core/jquery
       - core/underscore
       - iucn_who/bootstrap-js
+      - iucn_who/flexibility
       - iucn_who/headroom
-      - iucn_who/disable-hover
 
 back-to-js:
   js:

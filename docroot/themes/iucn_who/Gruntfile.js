@@ -77,7 +77,8 @@ module.exports = function (grunt) {
         dest: './libraries/node_modules',
         src: [
             'headroom.js/**',
-            'simplebar/**'
+            'simplebar/**',
+            'flexibility/**',
         ]
       }
     },
