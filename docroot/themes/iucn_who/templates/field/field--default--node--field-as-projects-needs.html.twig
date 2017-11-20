@@ -60,7 +60,7 @@ label_display == 'visually_hidden' ? 'sr-only',
       <th>&#x2116;</th>
       <th>{{ 'Site need title'|t }}</th>
       <th>{{ 'Brief description of potential site needs'|t }}</th>
-      {# <th>{{ 'Support needed for following years'|t }}</th> #}
+      <th>{{ 'Support needed for following years'|t }}</th>
     </tr>
     </thead>
     <tbody>
@@ -79,11 +79,20 @@ label_display == 'visually_hidden' ? 'sr-only',
           {{ item.content['#paragraph'].field_as_description.value|striptags }}
           {% endif %}
         </td>
-        {# <td>
-          {% if project_years is not empty %}
-          {{ project_years }}
-          {% endif %}
-        </td> #}
+        <td>
+            {% if item.content['#paragraph'].field_as_projects_from.value is not empty %}
+                {% set from_year = item.content['#paragraph'].field_as_projects_from.value|date("Y") %}
+                {% if from_year != "0001" %}
+                {{ 'From'|t }}: {{ from_year }}<br/>
+                {% endif %}
+            {% endif %}
+            {% if item.content['#paragraph'].field_as_projects_to.value is not empty %}
+                {% set to_year = item.content['#paragraph'].field_as_projects_to.value|date("Y") %}
+                {% if to_year != "0001" %}
+                {{ 'To'|t }}: {{ to_year }}
+                {% endif %}
+            {% endif %}
+        </td>
       </tr>
     {% endfor %}
     </tbody>
