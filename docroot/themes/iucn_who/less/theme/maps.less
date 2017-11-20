@@ -501,18 +501,27 @@
     padding-left: calc(~'15px - .4em');
     padding-right: .5em;
     padding-top: .4em;
-    @media @grid-mobile {
-      padding-right: 2em;
+    @media @grid-mobile { padding-right: 2em; }
+    .block-benefits-page-map & {
       .loop-conservation-ratings({
         &.@{conservation-rating-class} {
           color: @conservation-rating-color;
         }
       });
     }
-    @media @grid-desktop {
-      color: #fff;
-      margin-bottom: 0;
-      margin-top: 0;
+    .block-home-page-map & {
+      @media @grid-mobile {
+        .loop-conservation-ratings({
+          &.@{conservation-rating-class} {
+            color: @conservation-rating-color;
+          }
+        });
+      }
+      @media @grid-desktop {
+        color: #fff;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
     }
   }
   .country {

@@ -11514,27 +11514,47 @@ h6.view-sites-search .view-header {
   .map-site-detail .title {
     padding-right: 2em;
   }
-  .map-site-detail .title.coming-soon {
+}
+.block-benefits-page-map .map-site-detail .title.coming-soon {
+  color: #7e7e7e;
+}
+.block-benefits-page-map .map-site-detail .title.data-deficient {
+  color: #333333;
+}
+.block-benefits-page-map .map-site-detail .title.critical {
+  color: #ef3133;
+}
+.block-benefits-page-map .map-site-detail .title.significant-concern {
+  color: #f69232;
+}
+.block-benefits-page-map .map-site-detail .title.good-concerns {
+  color: #9cd07d;
+}
+.block-benefits-page-map .map-site-detail .title.good {
+  color: #3bb55e;
+}
+@media screen and (max-width: 767px) {
+  .block-home-page-map .map-site-detail .title.coming-soon {
     color: #7e7e7e;
   }
-  .map-site-detail .title.data-deficient {
+  .block-home-page-map .map-site-detail .title.data-deficient {
     color: #333333;
   }
-  .map-site-detail .title.critical {
+  .block-home-page-map .map-site-detail .title.critical {
     color: #ef3133;
   }
-  .map-site-detail .title.significant-concern {
+  .block-home-page-map .map-site-detail .title.significant-concern {
     color: #f69232;
   }
-  .map-site-detail .title.good-concerns {
+  .block-home-page-map .map-site-detail .title.good-concerns {
     color: #9cd07d;
   }
-  .map-site-detail .title.good {
+  .block-home-page-map .map-site-detail .title.good {
     color: #3bb55e;
   }
 }
 @media screen and (min-width: 768px) {
-  .map-site-detail .title {
+  .block-home-page-map .map-site-detail .title {
     color: #fff;
     margin-bottom: 0;
     margin-top: 0;
