@@ -30,13 +30,17 @@ class HtmlElementAssessment extends HtmlElement {
     parent::preRender($element, $rendering_object);
 
     $field_names = $this->getSetting('terms');
-
     if (!empty($field_names)) {
       $field_names = explode('|', $field_names);
       foreach ($field_names as $field_name) {
         if (isset($element[$field_name])) {
-          $element['#terms'][$field_name] = $field_name;
-          hide($element[$field_name]);
+          if (isset($element[$field_name][0])) {
+            $element['#terms'][$field_name] = $field_name;
+            hide($element[$field_name]);
+          }
+          else {
+            unset($element[$field_name]);
+          }
         }
       }
     }
