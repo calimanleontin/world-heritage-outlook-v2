@@ -78,13 +78,20 @@ function drush_iucn_migrate_iucn_update_threadextentvalue(){
           if (isset($version['assessingThreatsCurrent']) && is_array($version['assessingThreatsCurrent'])) {
             foreach ($version['assessingThreatsCurrent'] as $assessingThreats) {
               if (isset($assessingThreats['threadextentvalue']) && $assessingThreats['threadextentvalue']) {
-                $justification = $assessingThreats['justification'];
-                $specific_threat = $assessingThreats['currentThreat'];
-                iucn_mi_identiyfyMigratedParagraph($justification, $specific_threat, $assessment['assessmentCycle'], $assessingThreats['threadextentvalue']);
+                $sourceid1 = $assessingThreats['currentThreatId'];
+                $sourceid3 = 'assessingThreatsCurrent';
+                $sourceid4 = 'as_site_threat';
+                $value = $assessingThreats['threadextentvalue'];
+                $parent = $assessment['assessmentId'];
+                $p = iucn_mi_db_identiyfyMigratedParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
+
+                drush_print(dt($p));
+
+                //iucn_mi_identiyfyMigratedParagraph($justification, $specific_threat, $assessment['assessmentCycle'], $assessingThreats['threadextentvalue']);
               }
             }
           }
-          if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
+          /*if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
             foreach ($version['assessingThreatsPotential'] as $assessingThreats) {
               if (isset($assessingThreats['threadextentvalue']) && $assessingThreats['threadextentvalue']) {
                 $justification = $assessingThreats['justification'];
@@ -92,7 +99,7 @@ function drush_iucn_migrate_iucn_update_threadextentvalue(){
                 iucn_mi_identiyfyMigratedParagraph($justification, $specific_threat, $assessment['assessmentCycle'], $assessingThreats['threadextentvalue']);
               }
             }
-          }
+          }*/
         }
       }
     }
@@ -103,6 +110,44 @@ function drush_iucn_migrate_iucn_update_threadextentvalue(){
   drush_print(dt("assessingThreatsPotential = " . $assessingThreatsPotential_count));
 
 }
+
+function iucn_mi_db_identiyfyMigratedParagraph($sourceid1 = NULL, $sourceid3 = NUll, $sourceid4 = NULL, $value = NULL, $parent = NULL){
+  /*var_dump(
+    [$sourceid1, $sourceid3, $sourceid4,$value, $parent]
+  );*/
+
+  // Find the parent.
+  $query = \Drupal::database()->select('migrate_map_assessments', 'a');
+  $query->fields('a', ['destid1']);
+  $query->condition('a.sourceid1', $parent);
+  $result = $query->execute()->fetchAll();
+  if ($result && isset($result[0])) {
+    $node = Node::load($result[0]->destid1);
+    if (!$node) {
+      return;
+    }
+  }
+
+  // Find the paragraph.
+  $query = \Drupal::database()->select('migrate_map_assessments_paragraphs', 'mp');
+  $query->fields('mp', ['destid1']);
+  $query->condition('mp.sourceid1', $sourceid1);
+  $query->condition('mp.sourceid3', $sourceid3);
+  $query->condition('mp.sourceid4', $sourceid4);
+  $result = $query->execute()->fetchAll();
+
+  if ($result && isset($result[0])) {
+    $paragraph = Paragraph::load($result[0]->destid1);
+    if ($paragraph) {
+      $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($value)]);
+      $paragraph->save();
+      $node->save();
+      drush_print(dt("Updated node: " .$node->id() . ' paragraph: ' . $paragraph->id() . " with:" . $value));
+    }
+
+  }
+}
+
 
 function iucn_mi_identiyfyMigratedParagraph($justification = '', $specific_threat = '', $year = NULL, $value = '', $type = NULL){
 
