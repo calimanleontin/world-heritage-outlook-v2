@@ -58,63 +58,67 @@ function iucn_migrate_drush_command() {
   $commands['iucn-update-threadextentvalue'] = [
     'description' => 'Command for updating threadextentvalue.',
     'aliases' => ['iucnut'],
+    'options' => array(
+      'start' => 'start',
+    ),
   ];
 
   return $commands;
 }
 
-function drush_iucn_migrate_iucn_update_threadextentvalue(){
+function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 10){
+
+
+  drush_print(dt('Started: '. date('h:i')));
+
+  $start = drush_get_option('start', 0);
+
 
   $assessments_path = \Drupal::config('iucn_migration.settings')->get('assessment_path');
   $assessments_file_content = file_get_contents($assessments_path);
   $assessments = Json::decode($assessments_file_content);
-  $assessingThreatsCurrent_count = 0;
-  $assessingThreatsPotential_count = 0;
-
   if ($assessments) {
-    foreach ($assessments as $key => $assessment) {
+    for ($key = $start; $key < ($start+10); $key++) {
+      if (!isset($assessments[$key])) {
+        continue;
+      }
+      $assessment = $assessments[$key];
       if (isset($assessment['versions']) && is_array($assessment['versions'])) {
         foreach ($assessment['versions'] as $version) {
           if (isset($version['assessingThreatsCurrent']) && is_array($version['assessingThreatsCurrent'])) {
             foreach ($version['assessingThreatsCurrent'] as $assessingThreats) {
-              if (isset($assessingThreats['threadextentvalue']) && $assessingThreats['threadextentvalue']) {
+              if (isset($assessingThreats['threadextentvalue'])) {
                 $sourceid1 = $assessingThreats['currentThreatId'];
                 $sourceid3 = 'assessingThreatsCurrent';
                 $sourceid4 = 'as_site_threat';
                 $value = $assessingThreats['threadextentvalue'];
                 $parent = $assessment['assessmentId'];
-                $p = iucn_mi_db_identiyfyMigratedParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
-
-                drush_print(dt($p));
-
-                //iucn_mi_identiyfyMigratedParagraph($justification, $specific_threat, $assessment['assessmentCycle'], $assessingThreats['threadextentvalue']);
+                iucn_mi_db_identiyfyMigratedParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
               }
             }
           }
-          /*if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
+
+          if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
             foreach ($version['assessingThreatsPotential'] as $assessingThreats) {
-              if (isset($assessingThreats['threadextentvalue']) && $assessingThreats['threadextentvalue']) {
-                $justification = $assessingThreats['justification'];
-                $specific_threat = $assessingThreats['potentialThreat'];
-                iucn_mi_identiyfyMigratedParagraph($justification, $specific_threat, $assessment['assessmentCycle'], $assessingThreats['threadextentvalue']);
+              if (isset($assessingThreats['threadextentvalue'])) {
+                $sourceid1 = $assessingThreats['potentialThreatId'];
+                $sourceid3 = 'assessingThreatsPotential';
+                $sourceid4 = 'as_site_threat';
+                $value = $assessingThreats['threadextentvalue'];
+                $parent = $assessment['assessmentId'];
+                iucn_mi_db_identiyfyMigratedParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
               }
             }
-          }*/
+          }
+
         }
       }
     }
   }
-
-  drush_print(dt("----------------------------"));
-  drush_print(dt("assessingThreatsCurrent = " . $assessingThreatsCurrent_count));
-  drush_print(dt("assessingThreatsPotential = " . $assessingThreatsPotential_count));
-
+  drush_print(dt('Completed: ' . date('h:i')));
 }
 
 function iucn_mi_db_identiyfyMigratedParagraph($sourceid1 = NULL, $sourceid3 = NUll, $sourceid4 = NULL, $value = NULL, $parent = NULL){
-  /*var_dump(
-    [$sourceid1, $sourceid3, $sourceid4,$value, $parent]
-  );*/
 
   // Find the parent.
   $query = \Drupal::database()->select('migrate_map_assessments', 'a');
@@ -139,10 +143,24 @@ function iucn_mi_db_identiyfyMigratedParagraph($sourceid1 = NULL, $sourceid3 = N
   if ($result && isset($result[0])) {
     $paragraph = Paragraph::load($result[0]->destid1);
     if ($paragraph) {
-      $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($value)]);
-      $paragraph->save();
-      $node->save();
-      drush_print(dt("Updated node: " .$node->id() . ' paragraph: ' . $paragraph->id() . " with:" . $value));
+
+      $extent = assessmentThreatExtentTerm($value);
+      $paragraph_extent = $paragraph->get('field_as_threats_extent')->getValue();
+      if (!$paragraph_extent) {
+        if ($extent) {
+          $paragraph->set('field_as_threats_extent', [$extent]);
+          $paragraph->save();
+          $node->save();
+          drush_print(dt("Updated node: " . $node->id() . ' paragraph: ' . $paragraph->id() . " type: " . $sourceid3 . " with: " . $value));
+        }
+      }
+      else {
+        $paragraph->set('field_as_threats_extent', [$extent]);
+        $paragraph->save();
+        $node->save();
+        drush_print(dt("Updated node: " . $node->id() . ' paragraph: ' . $paragraph->id() . " type: " . $sourceid3 . " with: " . $value));
+      }
+
     }
 
   }
@@ -151,7 +169,7 @@ function iucn_mi_db_identiyfyMigratedParagraph($sourceid1 = NULL, $sourceid3 = N
 
 function iucn_mi_identiyfyMigratedParagraph($justification = '', $specific_threat = '', $year = NULL, $value = '', $type = NULL){
 
-  if ($year==2014) {
+  if ($year == 2014) {
     return;
   }
 
@@ -240,7 +258,10 @@ function assessmentsUpdateThreatsExtent($paragraph_id, $value = NULL){
  *
  * If the term is not found, it is created.
  */
-function assessmentThreatExtentTerm($value) {
+function assessmentThreatExtentTerm($value = NULL) {
+  if (!$value) {
+    return NULL;
+  }
   if ($terms = taxonomy_term_load_multiple_by_name($value, 'assessment_threat_extent')) {
     $term = reset($terms);
   }
@@ -250,6 +271,7 @@ function assessmentThreatExtentTerm($value) {
       'vid' => 'assessment_threat_extent',
     ]);
     $term->save();
+    drush_print(dt('!!! CREATED A NEW TERM: ' . $value));
   }
   return $term->id();
 }
