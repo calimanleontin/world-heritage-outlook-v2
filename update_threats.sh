@@ -12,10 +12,10 @@ cd docroot/
 echo "Started update..."
 echo ""
 
-for ((s=240; s<=470; s+=10)); do
+for ((s=0; s<=470; s+=10)); do
     echo "Processing:" $s
-    echo -e "Running ${GREEN}drush iucnut --start="$s"${WHITE}"
-    drush iucnut --start=$s
+    echo -e "Running ${GREEN}drush iucnut --start="$s" --update=update${WHITE}"
+    drush iucnut --start=$s --update=update
     echo "Done."
     echo "-----------------------------"
 done
