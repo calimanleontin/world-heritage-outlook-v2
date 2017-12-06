@@ -13186,6 +13186,9 @@ fieldset[disabled] .map-site-detail .close.focus {
   display: inline-block;
   vertical-align: top;
 }
+.field--name-field-as-threats-extent {
+  text-transform: lowercase;
+}
 .field--name-assessments-links ul {
   list-style-type: none;
   padding-left: 0;

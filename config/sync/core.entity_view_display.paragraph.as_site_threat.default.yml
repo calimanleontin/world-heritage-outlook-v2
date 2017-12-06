@@ -16,7 +16,6 @@ dependencies:
   module:
     - ds
     - field_group
-    - iucn_assessment
     - iucn_site
 third_party_settings:
   ds:
@@ -84,13 +83,12 @@ content:
       ds:
         ds_limit: ''
   field_as_threats_extent:
-    type: name_description
+    type: entity_reference_label
     weight: 5
     region: terms_second
     label: hidden
     settings:
-      separator: ' '
-      lowercase: '1'
+      link: false
     third_party_settings: {  }
   field_as_threats_in:
     type: boolean
