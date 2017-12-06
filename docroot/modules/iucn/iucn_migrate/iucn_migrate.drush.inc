@@ -67,6 +67,14 @@ function iucn_migrate_drush_command() {
   return $commands;
 }
 
+/**
+ Before running the command make sure to manually update the following taxonomies trems for Assessment threat extent:
+ * Throughout(>50%)
+ * Widespread(15-50%)
+ * Scattered(5-15%)
+ * Localised(<5%)
+ */
+
 function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 10){
 
 
@@ -139,12 +147,12 @@ function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 
           continue;
         }
 
-
+        // Process Current threats.
+        drush_print(dt('Processing Current threats'));
         if ($site_currentThreats = $site_assessment->get('field_as_threats_current')->getValue()) {
           if (count($site_currentThreats) != count($version['assessingThreatsCurrent'])) {
-            drush_print(dt('DB paragraphs count (' . count($site_currentThreats) . ') did not match JSON count (' . count($version['assessingThreatsCurrent']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+            drush_print(dt('DB paragraphs (current threats) count (' . count($site_currentThreats) . ') did not match JSON count (' . count($version['assessingThreatsCurrent']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
             drush_print(dt('-----------------'));
-            continue;
           }
           $paragraphs_updated = 0;
           foreach ($site_currentThreats as $site_currentThreat) {
@@ -155,7 +163,7 @@ function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 
                   if (isset($assessingThreats['threadextentvalue'])) {
                     if ($paragraph->get('field_as_threats_threat')->value == $assessingThreats['currentThreat']) {
                       if (!isset($paragraphs[$paragraph->id()])) {
-                        $paragraphs[$paragraph->id()] = $paragraphs[$paragraph->id()];
+                        $paragraphs[$paragraph->id()] = $paragraph->id();
                         if ($update) {
                           $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($assessingThreats['threadextentvalue'])]);
                           $paragraph->save();
@@ -185,193 +193,55 @@ function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 
           drush_print(dt('-----------------'));
         }
 
+        // Process Potential threats.
+        drush_print(dt('Processing Potential threats'));
+        if ($site_potentialThreats = $site_assessment->get('field_as_threats_potential')->getValue()) {
+          if (count($site_potentialThreats) != count($version['assessingThreatsPotential'])) {
+            drush_print(dt('DB paragraphs (potential threats) count (' . count($site_potentialThreats) . ') did not match JSON count (' . count($version['assessingThreatsPotential']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+            drush_print(dt('-----------------'));
+          }
+          $paragraphs_updated = 0;
+          foreach ($site_potentialThreats as $site_potentialThreat) {
+            $paragraph = Paragraph::load($site_potentialThreat['target_id']);
+            if ($paragraph) {
+              if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
+                foreach ($version['assessingThreatsPotential'] as $assessingThreats) {
+                  if (isset($assessingThreats['threadextentvalue'])) {
+                    if ($paragraph->get('field_as_threats_threat')->value == $assessingThreats['potentialThreat']) {
+                      if (!isset($paragraphs[$paragraph->id()])) {
+                        $paragraphs[$paragraph->id()] = $paragraph->id();
+                        if ($update) {
+                          $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($assessingThreats['threadextentvalue'])]);
+                          $paragraph->save();
+                          drush_print(dt('Updated paragraph: ' . $paragraph->id() . ' threat extent: ' . $assessingThreats['threadextentvalue']));
+                        }
+                        $paragraphs_updated++;
+                      }
+                      else {
+                        drush_print(dt('ERROR paragraph already fetched: ' . $paragraph->id()));
+                      }
+                    }
+                  }
+                }
+              }
 
 
-        if (isset($version['assessingThreatsCurrent']) && is_array($version['assessingThreatsCurrent'])) {
-          foreach ($version['assessingThreatsCurrent'] as $assessingThreats) {
-            if (isset($assessingThreats['threadextentvalue'])) {
-             /* $sourceid1 = $assessingThreats['currentThreatId'];
-              $sourceid3 = 'assessingThreatsCurrent';
-              $sourceid4 = 'as_site_threat';
-              $value = $assessingThreats['threadextentvalue'];
-              $parent = $assessment['assessmentId'];*/
-              //iucn_mi_identiyfyParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
+            }
+            else {
+              drush_print(dt('Not found paragraph: ' . $site_potentialThreat['target_id']));
             }
           }
+          if ($update && $paragraphs_updated != 0) {
+            $site_assessment->save();
+            drush_print(dt('Updated assessment: ' . $site_assessment_id));
+          }
+          drush_print(dt('Done assessment: ' . $site_assessment_id));
+          drush_print(dt('-----------------'));
         }
-
-        /*if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
-          foreach ($version['assessingThreatsPotential'] as $assessingThreats) {
-            if (isset($assessingThreats['threadextentvalue'])) {
-              $sourceid1 = $assessingThreats['potentialThreatId'];
-              $sourceid3 = 'assessingThreatsPotential';
-              $sourceid4 = 'as_site_threat';
-              $value = $assessingThreats['threadextentvalue'];
-              $parent = $assessment['assessmentId'];
-              iucn_mi_db_identiyfyMigratedParagraph($sourceid1, $sourceid3, $sourceid4, $value, $parent);
-            }
-          }
-        }*/
-
       }
     }
   }
   drush_print(dt('Completed: ' . date('h:i')));
-}
-
-
-function iucn_mi_db_identiyfyMigratedParagraph($sourceid1 = NULL, $sourceid3 = NUll, $sourceid4 = NULL, $value = NULL, $parent = NULL){
-
-/*  var_dump(
-    [
-      $sourceid1,
-      $sourceid3,
-      $sourceid4,
-      $value,
-      $parent,
-    ]
-  );*/
-
-  // Find the parent.
-  $query = \Drupal::database()->select('migrate_map_assessments', 'a');
-  $query->fields('a', ['destid1']);
-  $query->condition('a.sourceid1', $parent);
-  $result = $query->execute()->fetchAll();
-  if ($result && isset($result[0])) {
-    $node = Node::load($result[0]->destid1);
-    if (!$node) {
-      return;
-    }
-  }
-  else {
-    drush_print(dt("NOT FOUND node: " . $parent));
-  }
-
-  // Find the paragraph.
-  $query = \Drupal::database()->select('migrate_map_assessments_paragraphs', 'mp');
-  $query->fields('mp', ['destid1']);
-  $query->condition('mp.sourceid1', $sourceid1);
-  $query->condition('mp.sourceid3', $sourceid3);
-  $query->condition('mp.sourceid4', $sourceid4);
-  $result = $query->execute()->fetchAll();
-
-  if ($result && isset($result[0])) {
-    $paragraph = Paragraph::load($result[0]->destid1);
-    if ($paragraph) {
-
-      $extent = assessmentThreatExtentTerm($value);
-      //$paragraph_extent = $paragraph->get('field_as_threats_extent')->getValue();
-
-      $paragraph->set('field_as_threats_extent', [$extent]);
-      $paragraph->save();
-      $node->save();
-      drush_print(dt("Updated node: " . $node->id() . ' paragraph: ' . $paragraph->id() . " type: " . $sourceid3 . " with: " . $value));
-
-      /*if (!$paragraph_extent) {
-        if ($extent) {
-          $paragraph->set('field_as_threats_extent', [$extent]);
-          $paragraph->save();
-          $node->save();
-          drush_print(dt("Updated node: " . $node->id() . ' paragraph: ' . $paragraph->id() . " type: " . $sourceid3 . " with: " . $value));
-        }
-      }
-      else {
-        $paragraph->set('field_as_threats_extent', [$extent]);
-        $paragraph->save();
-        $node->save();
-        drush_print(dt("Updated node: " . $node->id() . ' paragraph: ' . $paragraph->id() . " type: " . $sourceid3 . " with: " . $value));
-      }*/
-
-    }
-
-  }
-}
-
-
-function iucn_mi_identiyfyMigratedParagraph($justification = '', $specific_threat = '', $year = NULL, $value = '', $type = NULL){
-
-  if ($year == 2014) {
-    return;
-  }
-
-  $query = \Drupal::database()->select('paragraph__field_as_description', 'd');
-  $query->fields('d', ['entity_id']);
-  $query->fields('fd', ['parent_id']);
-  $query->join('paragraph__field_as_threats_threat', 't', 't.entity_id = d.entity_id');
-  $query->join('paragraphs_item_field_data', 'fd', 'fd.id = d.entity_id');
-  $query->condition('d.bundle', 'as_site_threat');
-  $query->condition('d.field_as_description_value', $justification, 'like');
-  $query->condition('t.field_as_threats_threat_value', $specific_threat, 'like');
-  $query->condition('t.bundle', 'as_site_threat');
-  $query->condition('fd.parent_type', 'node');
-  $query->condition('fd.parent_id', '', '<>');
-
-  $result = $query->execute()->fetchAll();
-  $ids = [];
-
-  foreach ($result as $res) {
-    $ids[$res->parent_id] = [
-      'parent_id' => $res->parent_id,
-      'entity_id' => $res->entity_id,
-    ];
-  }
-
-  foreach ($ids as $id) {
-    $node = Node::load($id['parent_id']);
-    if ($node) {
-      if ($node->get('field_as_cycle')->value == $year) {
-        drush_print(dt('assessment [' . $id['parent_id'] . ']: ' . $node->getTitle()));
-        $paragraph = Paragraph::load($id['entity_id']);
-        /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
-        $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($value)]);
-        $paragraph->save();
-        $node->save();
-
-        drush_print(dt('paragraph [' . $id['entity_id'] . '] : ' . $paragraph->field_as_threats_threat->value));
-        drush_print(dt('Updated Threat extent to : ' . $value));
-        drush_print(dt("----------------------------"));
-      }
-    }
-  }
-  return TRUE;
-}
-
-function assessmentsMigrationDestinationId($sourceid1, $sourceid3){
-  $query = \Drupal::database()->select('migrate_map_assessments_paragraphs', 'm');
-  $query->fields('m', ['destid1']);
-  $query->condition('m.sourceid1', $sourceid1);
-  $query->condition('m.$sourceid3', $sourceid3);
-  $query->condition('m.sourceid4', 'as_site_threat');
-  $result = $query->execute()->fetchCol();
-  if (isset($result[0])) {
-    return $result[0];
-  }
-  return FALSE;
-}
-
-function assessmentsNodeId($sourceid1){
-  $query = \Drupal::database()->select('migrate_map_assessments', 'm');
-  $query->fields('m', ['destid1']);
-  $query->condition('m.sourceid1', $sourceid1);
-  $result = $query->execute()->fetchCol();
-  if (isset($result[0])) {
-    return $result[0];
-  }
-  return FALSE;
-}
-
-function assessmentsUpdateThreatsExtent($paragraph_id, $value = NULL){
-  $paragraph = Paragraph::load($paragraph_id);
-  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph->set('field_as_threats_extent', assessmentThreatExtentTerm($value));
-  if ($paragraph->save()) {
-    drush_print(dt('Updated paragraph id: ' . $paragraph_id . ',set field_as_threats_extent to:' . $value));
-  }
-  else {
-    drush_print(dt('COULD NOT SAVE paragraph id: ' . $paragraph_id . ', field_as_threats_extent to:' . $value));
-  }
-
-
 }
 
 /**
@@ -406,7 +276,7 @@ function drush_iucn_migrate_iucn_update_assessments(){
   $year = drush_get_option('year', FALSE);
   $action = drush_get_option('action', FALSE);
 
-  if(!$year || !action){
+  if (!$year || !$action) {
     drush_print(dt("Please use this format: iucniua --year=yyyy --action=publish/unpublish "));
     return;
   }
@@ -817,24 +687,6 @@ function drush_iucn_migrate_sites_multilingual() {
                 drush_print(dt("Removed [fr] translation from node: $node_id"));
               }
             }
-
-
-          /*if (isset($site['nameEs']) && !empty($site['nameEs'])){
-              if($node->hasTranslation('es')){
-                $node->getTranslation('es')->setTitle($site['nameEs'])->save();
-                drush_print(dt("Updated [es] translation for node: $node_id"));
-              }else{
-                $translation = $node->addTranslation('es', array('title' => $site['nameFr']));
-                $translation->save();
-                drush_print(dt("Added [es] translation to node: $node_id"));
-              }
-            }else{
-              if($node->hasTranslation('es')){
-                $node->removeTranslation('es');
-                drush_print(dt("Removed [es] translation from node: $node_id"));
-              }
-            }*/
-
             $node->save();
           }
         }
