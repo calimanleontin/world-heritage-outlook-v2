@@ -7,6 +7,7 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Component\Utility;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Implements hook_drush_command().
@@ -53,7 +54,218 @@ function iucn_migrate_drush_command() {
       'action' => 'publish/unpublish',
     ),
   ];
+
+  $commands['iucn-update-threadextentvalue'] = [
+    'description' => 'Command for updating threadextentvalue.',
+    'aliases' => ['iucnut'],
+    'options' => array(
+      'start' => 'start',
+      'update' => 'update',
+    ),
+  ];
+
   return $commands;
+}
+
+/**
+ Before running the command make sure to manually update the following taxonomies trems for Assessment threat extent:
+ * Throughout(>50%)
+ * Widespread(15-50%)
+ * Scattered(5-15%)
+ * Localised(<5%)
+ */
+
+function drush_iucn_migrate_iucn_update_threadextentvalue($start = 0, $number = 10){
+
+
+  drush_print(dt('Started: ' . date('h:i')));
+
+  $start = drush_get_option('start', 0);
+  $update = drush_get_option('update', FALSE);
+
+
+  $assessments_path = \Drupal::config('iucn_migration.settings')->get('assessment_path');
+  $assessments_file_content = file_get_contents($assessments_path);
+  $assessments = Json::decode($assessments_file_content);
+  if ($assessments) {
+
+    $paragraphs = [];
+
+    for ($key = $start; $key < ($start + 10); $key++) {
+      if (!isset($assessments[$key])) {
+        continue;
+      }
+      $assessment = $assessments[$key];
+
+      $siteId = $assessment['siteId'];
+      $assessmentCycle = $assessment['assessmentCycle'];
+
+      $site_ids = \Drupal::entityQuery('node')
+        ->condition('field_site_id', $siteId)
+        ->condition('type', 'site')
+        ->execute();
+
+      if ($site_ids) {
+        $site_id = reset($site_ids);
+        $site = Node::load($site_id);
+        if (!$site) {
+          drush_print(dt('Not found site: ' . $site_id));
+          drush_print(dt('-----------------'));
+          continue;
+        }
+
+        $site_assessment_ids = \Drupal::entityQuery('node')
+          ->condition('field_as_site', $site->id())
+          ->condition('type', 'site_assessment')
+          ->condition('field_as_cycle', $assessmentCycle)
+          ->execute();
+
+        if ($site_assessment_ids) {
+          $site_assessment_id = reset($site_assessment_ids);
+          $site_assessment = Node::load($site_assessment_id);
+          if (!$site_assessment) {
+            drush_print(dt('Not found site_assessment: ' . $site_assessment_id));
+            drush_print(dt('-----------------'));
+            continue;
+          }
+
+        }
+      }
+
+      if (isset($assessment['versions']) && is_array($assessment['versions'])) {
+
+        $assessments_versions = $assessment['versions'];
+        usort($assessments_versions, function ($a, $b) {
+          return ($a['versionCode'] > $b['versionCode']) ? -1 : 1;
+        });
+
+        $version = reset($assessments_versions);
+
+        if ($site_assessment->get('field_as_version')->value != $version['versionCode']) {
+          drush_print(dt('Different versions for assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' DB (' . $site_assessment->get('field_as_version')->value . ') JSON (' . $version['versionCode'] . ')'));
+          drush_print(dt('-----------------'));
+          continue;
+        }
+
+        // Process Current threats.
+        drush_print(dt('Processing Current threats'));
+        if ($site_currentThreats = $site_assessment->get('field_as_threats_current')->getValue()) {
+          if (count($site_currentThreats) != count($version['assessingThreatsCurrent'])) {
+            drush_print(dt('DB paragraphs (current threats) count (' . count($site_currentThreats) . ') did not match JSON count (' . count($version['assessingThreatsCurrent']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+            drush_print(dt('-----------------'));
+          }
+          $paragraphs_updated = 0;
+          foreach ($site_currentThreats as $site_currentThreat) {
+            $paragraph = Paragraph::load($site_currentThreat['target_id']);
+            if ($paragraph) {
+              if (isset($version['assessingThreatsCurrent']) && is_array($version['assessingThreatsCurrent'])) {
+                foreach ($version['assessingThreatsCurrent'] as $assessingThreats) {
+                  if (isset($assessingThreats['threadextentvalue'])) {
+                    if ($paragraph->get('field_as_threats_threat')->value == $assessingThreats['currentThreat']) {
+                      if (!isset($paragraphs[$paragraph->id()])) {
+                        $paragraphs[$paragraph->id()] = $paragraph->id();
+                        if ($update) {
+                          $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($assessingThreats['threadextentvalue'])]);
+                          $paragraph->save();
+                          drush_print(dt('Updated paragraph: ' . $paragraph->id() . ' threat extent: ' . $assessingThreats['threadextentvalue']));
+                        }
+                        $paragraphs_updated++;
+                      }
+                      else {
+                        drush_print(dt('ERROR paragraph already fetched: ' . $paragraph->id()));
+                      }
+                    }
+                  }
+                }
+              }
+
+
+            }
+            else {
+              drush_print(dt('Not found paragraph: ' . $site_currentThreat['target_id']));
+            }
+          }
+          if ($update && $paragraphs_updated != 0) {
+            $site_assessment->save();
+            drush_print(dt('Updated assessment: ' . $site_assessment_id));
+          }
+          drush_print(dt('Done assessment: ' . $site_assessment_id));
+          drush_print(dt('-----------------'));
+        }
+
+        // Process Potential threats.
+        drush_print(dt('Processing Potential threats'));
+        if ($site_potentialThreats = $site_assessment->get('field_as_threats_potential')->getValue()) {
+          if (count($site_potentialThreats) != count($version['assessingThreatsPotential'])) {
+            drush_print(dt('DB paragraphs (potential threats) count (' . count($site_potentialThreats) . ') did not match JSON count (' . count($version['assessingThreatsPotential']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+            drush_print(dt('-----------------'));
+          }
+          $paragraphs_updated = 0;
+          foreach ($site_potentialThreats as $site_potentialThreat) {
+            $paragraph = Paragraph::load($site_potentialThreat['target_id']);
+            if ($paragraph) {
+              if (isset($version['assessingThreatsPotential']) && is_array($version['assessingThreatsPotential'])) {
+                foreach ($version['assessingThreatsPotential'] as $assessingThreats) {
+                  if (isset($assessingThreats['threadextentvalue'])) {
+                    if ($paragraph->get('field_as_threats_threat')->value == $assessingThreats['potentialThreat']) {
+                      if (!isset($paragraphs[$paragraph->id()])) {
+                        $paragraphs[$paragraph->id()] = $paragraph->id();
+                        if ($update) {
+                          $paragraph->set('field_as_threats_extent', [assessmentThreatExtentTerm($assessingThreats['threadextentvalue'])]);
+                          $paragraph->save();
+                          drush_print(dt('Updated paragraph: ' . $paragraph->id() . ' threat extent: ' . $assessingThreats['threadextentvalue']));
+                        }
+                        $paragraphs_updated++;
+                      }
+                      else {
+                        drush_print(dt('ERROR paragraph already fetched: ' . $paragraph->id()));
+                      }
+                    }
+                  }
+                }
+              }
+
+
+            }
+            else {
+              drush_print(dt('Not found paragraph: ' . $site_potentialThreat['target_id']));
+            }
+          }
+          if ($update && $paragraphs_updated != 0) {
+            $site_assessment->save();
+            drush_print(dt('Updated assessment: ' . $site_assessment_id));
+          }
+          drush_print(dt('Done assessment: ' . $site_assessment_id));
+          drush_print(dt('-----------------'));
+        }
+      }
+    }
+  }
+  drush_print(dt('Completed: ' . date('h:i')));
+}
+
+/**
+ * Checks and returns term id for assessment_threat_extent taxonomy.
+ *
+ * If the term is not found, it is created.
+ */
+function assessmentThreatExtentTerm($value = NULL) {
+
+  if (empty($value) || $value == NULL) {
+    return NULL;
+  }
+  if ($terms = taxonomy_term_load_multiple_by_name($value, 'assessment_threat_extent')) {
+    $term = reset($terms);
+  }
+  else {
+    $term = Term::create([
+      'name' => $value,
+      'vid' => 'assessment_threat_extent',
+    ]);
+    $term->save();
+    drush_print(dt('!!! CREATED A NEW TERM: ' . $value));
+  }
+  return $term->id();
 }
 
 /**
@@ -64,7 +276,7 @@ function drush_iucn_migrate_iucn_update_assessments(){
   $year = drush_get_option('year', FALSE);
   $action = drush_get_option('action', FALSE);
 
-  if(!$year || !action){
+  if (!$year || !$action) {
     drush_print(dt("Please use this format: iucniua --year=yyyy --action=publish/unpublish "));
     return;
   }
@@ -475,24 +687,6 @@ function drush_iucn_migrate_sites_multilingual() {
                 drush_print(dt("Removed [fr] translation from node: $node_id"));
               }
             }
-
-
-          /*if (isset($site['nameEs']) && !empty($site['nameEs'])){
-              if($node->hasTranslation('es')){
-                $node->getTranslation('es')->setTitle($site['nameEs'])->save();
-                drush_print(dt("Updated [es] translation for node: $node_id"));
-              }else{
-                $translation = $node->addTranslation('es', array('title' => $site['nameFr']));
-                $translation->save();
-                drush_print(dt("Added [es] translation to node: $node_id"));
-              }
-            }else{
-              if($node->hasTranslation('es')){
-                $node->removeTranslation('es');
-                drush_print(dt("Removed [es] translation from node: $node_id"));
-              }
-            }*/
-
             $node->save();
           }
         }
