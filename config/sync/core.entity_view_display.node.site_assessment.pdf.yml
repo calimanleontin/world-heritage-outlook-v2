@@ -210,7 +210,7 @@ third_party_settings:
       weight: 0
       format_type: html_element
       format_settings:
-        label: 'Conservation outlook'
+        label: 'Conservation Outlook'
         element: div
         show_label: true
         label_element: h3
@@ -219,7 +219,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: conservation-outlook-summary-group
-      label: 'Conservation outlook'
+      label: 'Conservation Outlook'
     group_current_state_trend_values:
       children:
         - field_as_vass_wh_state
@@ -229,7 +229,7 @@ third_party_settings:
       weight: 2
       format_type: html_element
       format_settings:
-        label: 'Current state of trend and VALUES'
+        label: 'Current state and trend of VALUES'
         element: div
         show_label: true
         label_element: h3
@@ -238,7 +238,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: values-summary-group
-      label: 'Current state of trend and VALUES'
+      label: 'Current state and trend of VALUES'
     group_overall_threats:
       children:
         - field_as_threats_rating
@@ -247,7 +247,7 @@ third_party_settings:
       weight: 3
       format_type: html_element
       format_settings:
-        label: 'Overall Threats'
+        label: 'Overall THREATS'
         element: div
         show_label: true
         label_element: h3
@@ -256,7 +256,7 @@ third_party_settings:
         speed: fast
         id: ''
         classes: threats-summary-group
-      label: 'Overall Threats'
+      label: 'Overall THREATS'
     group_overall_prot_man:
       children:
         - field_as_protection_ov_rating

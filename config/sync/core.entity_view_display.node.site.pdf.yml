@@ -45,6 +45,8 @@ third_party_settings:
       entity_classes: all_classes
       settings: {  }
     regions:
+      header:
+        - assessments_pdf_header
       top:
         - assessments_notice
         - node_title
@@ -62,7 +64,7 @@ third_party_settings:
     fields:
       node_title:
         plugin_id: node_title
-        weight: 1
+        weight: 2
         label: hidden
         formatter: default
         settings:
@@ -71,7 +73,7 @@ third_party_settings:
           link: false
       assessment_rating:
         plugin_id: assessment_rating
-        weight: 9
+        weight: 10
         label: hidden
         formatter: image
         settings:
@@ -80,12 +82,17 @@ third_party_settings:
             image_link: ''
       assessments_notice:
         plugin_id: assessments_notice
-        weight: 0
+        weight: 1
         label: hidden
         formatter: default
       assessments_conservation_outlook:
         plugin_id: assessments_conservation_outlook
-        weight: 2
+        weight: 3
+        label: hidden
+        formatter: default
+      assessments_pdf_header:
+        plugin_id: assessments_pdf_header
+        weight: 0
         label: hidden
         formatter: default
 id: node.site.pdf
@@ -95,13 +102,13 @@ mode: pdf
 content:
   body:
     type: text_default
-    weight: 7
+    weight: 8
     region: site_information
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 10
+    weight: 11
     label: hidden
     settings:
       view_mode: pdf
@@ -113,7 +120,7 @@ content:
     region: content
   field_country:
     type: entity_reference_list
-    weight: 3
+    weight: 4
     region: site_information
     label: inline
     settings:
@@ -127,7 +134,7 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 6
+    weight: 7
     region: site_information
     label: inline
     settings:
@@ -141,7 +148,7 @@ content:
         ds_limit: ''
   field_image:
     type: image
-    weight: 8
+    weight: 9
     region: site_information
     label: hidden
     settings:
@@ -152,7 +159,7 @@ content:
         ds_limit: ''
   field_inscription_criteria:
     type: entity_reference_list
-    weight: 5
+    weight: 6
     region: site_information
     label: inline
     settings:
@@ -166,7 +173,7 @@ content:
         ds_limit: ''
   field_inscription_year:
     type: datetime_custom
-    weight: 4
+    weight: 5
     region: site_information
     label: inline
     settings:
