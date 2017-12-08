@@ -307,6 +307,22 @@ function iucn_who_preprocess_field(&$variables) {
       }
       break;
 
+    case 'field_as_protection':
+      // Do not display paragraphs that have empty Justification and Rating.
+      foreach ($variables['items'] as $key => $item) {
+        /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+        $paragraph = $item['content']['#paragraph'];
+        $justification = $paragraph->get('field_as_description')->getValue();
+        $rating = $paragraph->get('field_as_protection_rating')->getValue();
+        if (!$justification && !$rating) {
+          unset($variables['items'][$key]);
+        }
+      }
+      /** @var Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $items */
+      /*$items = $variables['element']['#items'];
+      var_dump($items->get('list'));*/
+      break;
+
     // Add custom classes to fields.
     case 'field_as_global_assessment_level':
     case 'field_as_vass_wh_state':
