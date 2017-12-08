@@ -3,16 +3,11 @@ set classes = [
 'iucn-site-assessment-wrapper',
 ]
 %}
-  {% set node = content['#node'] %}
-
 <div{{ attributes.addClass(classes) }}>
     <!-- Tab panes -->
-
     <div class="tab-content">
         <div role="tabpanel" class="tab--summary tab-pane active fade in" id="summary">
             <h2 class="tab-title summary visible-mobile">&nbsp;</h2>
-            {{ 'IUCN World Heritage Outlook:'|t }} <a href="{{ url('<front>') }}">{{ url('<front>') }}</a><br/>
-            {{ node.label }}
             <div class="summary visible-mobile pdf-tab-title">{{ 'Summary'|t }}</div>
             {{ content.summary }}
         </div>

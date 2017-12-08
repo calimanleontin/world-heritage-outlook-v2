@@ -27,10 +27,10 @@ class YearConservationOutlook extends DsFieldBase {
 
       $element = [
         '#type' => 'html_tag',
-        '#tag' => 'h3',
+        '#tag' => 'h2',
         '#attributes' => ['class' => []],
-        '#value' => t('%year Conservation outlook', [
-          '%year' => iucn_pdf_assessment_year_display($node),
+        '#value' => t('@year Conservation Outlook', [
+          '@year' => iucn_pdf_assessment_year_display($node),
         ]),
       ];
     }

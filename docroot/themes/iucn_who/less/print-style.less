@@ -4,12 +4,26 @@ body {
   font-family: "DejaVu Sans", Helvetica, Arial, sans-serif;
   margin: 0;
 }
-
-.page {
-  padding: 20px;
+header {
+  position: fixed;
+  top: -30px;
+  left: 20px;
+  right: 0px;
+  height: 60px;
+  z-index: -1;
+  font-size: .8em;
+}
+.pdf-header-cover{
+  z-index:1;
+  position:absolute;
+  background:#FFFFFF;
+  top: -30px;
+  left: 0px;
+  width:100%;
+  height:100px;
 }
 
-.page img {
+.page img{
   max-width: 100%;
   height: auto;
 }
@@ -18,6 +32,17 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: .8em;
   margin-top: 1.6em;
   page-break-after: avoid;
+}
+
+.field--name-field-as-threats-in,
+.field--name-field-as-threats-extent{
+  display: inline-block;
+}
+.field--name-field-as-threats-extent{
+  text-transform: lowercase;
+  &:before {
+    content: ', ';
+  }
 }
 
 button,
@@ -68,7 +93,7 @@ tbody td {
 th {
   font-weight: bold;
 }
-th, td {
+th, td {font-size: .8em;
   padding: .5em;
   text-align: left;
   vertical-align: top;

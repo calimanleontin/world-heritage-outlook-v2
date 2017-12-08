@@ -190,6 +190,8 @@ iucn_who_site_pdf:
   type: partial
   template: templates/layouts/iucn-who-site-pdf
   regions:
+    header:
+      label: Header
     top:
       label: Top
     site_information:

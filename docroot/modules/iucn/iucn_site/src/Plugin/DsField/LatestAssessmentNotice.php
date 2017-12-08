@@ -32,8 +32,8 @@ class LatestAssessmentNotice extends DsFieldBase {
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => ['class' => []],
-      '#value' => t('IUCN Conservation Outlook Assessment %year', [
-        '%year' => iucn_pdf_assessment_year_display($node),
+      '#value' => t('IUCN Conservation Outlook Assessment @year', [
+        '@year' => iucn_pdf_assessment_year_display($node),
       ]),
     ];
 
@@ -44,8 +44,8 @@ class LatestAssessmentNotice extends DsFieldBase {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#attributes' => ['class' => []],
-        '#value' => t('Finalised on %finalised', [
-          '%finalised' => $finalised,
+        '#value' => t('Finalised on @finalised', [
+          '@finalised' => $finalised,
         ]),
       ];
     }
@@ -55,9 +55,9 @@ class LatestAssessmentNotice extends DsFieldBase {
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => ['class' => ['latest-assessment-notice']],
-      '#value' => t('Please note: this is an archived Conservation Outlook Assessment for %site. To access the most up-to-date Conservation Outlook Assessment for this site, please visit %link.', [
-        '%site' => $node->getTitle(),
-        '%link' => \Drupal\Core\Link::fromTextAndUrl($base_url, $latest_url)->toString(),
+      '#value' => t('Please note: this is an archived Conservation Outlook Assessment for @site. To access the most up-to-date Conservation Outlook Assessment for this site, please visit @link.', [
+        '@site' => $node->getTitle(),
+        '@link' => \Drupal\Core\Link::fromTextAndUrl($base_url, $latest_url)->toString(),
       ]),
     ];
     }

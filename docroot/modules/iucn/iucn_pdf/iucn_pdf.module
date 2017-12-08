@@ -3,6 +3,7 @@
  * @file
  * This module enables iucn_pdf functionality.
  */
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_node_update().
@@ -71,4 +72,19 @@ function iucn_pdf_cron() {
   /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
   $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
   $print_pdf->runCron();
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function iucn_pdf_theme($existing, $type, $theme, $path) {
+  if (isset($existing['entity_print'])) {
+    $existing['entity_print']['path'] = $path . '/templates';
+    $existing['entity_print']['template'] = 'entity-print';
+    return [
+      'entity_print' => $existing['entity_print'],
+    ];
+  }
+  return [];
 }
