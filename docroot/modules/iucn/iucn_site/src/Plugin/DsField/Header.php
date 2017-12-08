@@ -31,7 +31,7 @@ class Header extends DsFieldBase {
       '#attributes' => ['class' => []],
       '#value' => '<em>' . t('IUCN World Heritage Outlook: @link', [
         '@link' => Link::createFromRoute($base_url, '<front>')->toString(),
-      ]) . '<br/>' . $node->getTitle() . ' - ' . iucn_pdf_assessment_year_display($node) . '</em>',
+      ]) . '<br/>' . $node->getTitle() . ' - ' . iucn_pdf_assessment_year_display($node) . ' ' .t('Conservation Outlook Assessment') . '</em>',
       '#suffix' => '<div class="pdf-header-cover"></div>',
     ];
     return $element;
