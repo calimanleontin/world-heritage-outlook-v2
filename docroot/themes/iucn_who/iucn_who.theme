@@ -308,13 +308,12 @@ function iucn_who_preprocess_field(&$variables) {
       break;
 
     case 'field_as_protection':
-      // Do not display paragraphs that have empty Justification and Rating.
+      // Do not display paragraphs that have empty Justification.
       foreach ($variables['items'] as $key => $item) {
         /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
         $paragraph = $item['content']['#paragraph'];
         $justification = $paragraph->get('field_as_description')->getValue();
-        $rating = $paragraph->get('field_as_protection_rating')->getValue();
-        if (!$justification && !$rating) {
+        if (!$justification) {
           unset($variables['items'][$key]);
         }
       }
