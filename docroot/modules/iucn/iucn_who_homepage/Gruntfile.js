@@ -4,6 +4,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-image-resize');
   grunt.loadNpmTasks('grunt-spritesmith');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -33,9 +34,16 @@ module.exports = function (grunt) {
       markers_temp: {
         src: ['images/out/**']
       }
-    }
+    },
+    imagemin: {
+        default: {
+            files: {
+                'dist/spritesheet.png': 'dist/spritesheet.png',
+            }
+        },
+    },
   });
 
-  grunt.registerTask('default', ['image_resize:resize_markers', 'sprite', 'clean:markers_temp']);
+  grunt.registerTask('default', ['image_resize:resize_markers', 'sprite', 'clean:markers_temp', 'imagemin']);
 
 };
