@@ -317,9 +317,6 @@ function iucn_who_preprocess_field(&$variables) {
           unset($variables['items'][$key]);
         }
       }
-      /** @var Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList $items */
-      /*$items = $variables['element']['#items'];
-      var_dump($items->get('list'));*/
       break;
 
     // Add custom classes to fields.
