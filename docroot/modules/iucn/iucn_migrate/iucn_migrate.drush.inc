@@ -64,8 +64,179 @@ function iucn_migrate_drush_command() {
     ),
   ];
 
+
+  $commands['iucn-update-protectiontopic'] = [
+    'description' => 'Command for updating assessment_protection_topic.',
+    'aliases' => ['iucnupt'],
+    'options' => array(
+      'start' => 'start',
+      'update' => 'update',
+    ),
+  ];
+
   return $commands;
 }
+/**
+* Before running the command make sure to manually update the following taxonomies trems for Assessment protection topic:
+* Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)
+* Integration into regional and national planning systems (including sea/landscape connectivity)
+* Management system (for transboundary/serial properties, integrated management system should also be described/evaluated)
+ */
+
+function drush_iucn_migrate_iucn_update_protectiontopic($start = 0, $number = 10){
+  drush_print(dt('Started: ' . date('h:i')));
+
+
+  $exluded_sites = [
+    116,
+    2302,
+    116,
+    1801,
+    152,
+    151,
+    28,
+    81,
+    179,
+    187,
+    207,
+    2301,
+    71,
+    68,
+    219,
+    169,
+    162,
+    195,
+    204,
+    126,
+    165,
+  ];
+
+  $start = drush_get_option('start', 0);
+  $update = drush_get_option('update', FALSE);
+
+
+  $assessments_path = \Drupal::config('iucn_migration.settings')->get('assessment_path');
+  $assessments_file_content = file_get_contents($assessments_path);
+  $assessments = Json::decode($assessments_file_content);
+  if ($assessments) {
+
+
+
+    for ($key = $start; $key < ($start + 10); $key++) {
+      drush_print(dt('-----------------------key--------------------- ' . $key));
+      if (!isset($assessments[$key])) {
+        continue;
+      }
+      $assessment = $assessments[$key];
+
+      $siteId = $assessment['siteId'];
+      $assessmentCycle = $assessment['assessmentCycle'];
+
+      if (in_array($siteId, $exluded_sites) && $assessmentCycle == 2017) {
+        drush_print(dt('Skipping site: ' . $siteId));
+        drush_print(dt('-----------------'));
+        continue;
+      }
+
+      $site_ids = \Drupal::entityQuery('node')
+        ->condition('field_site_id', $siteId)
+        ->condition('type', 'site')
+        ->execute();
+
+      if ($site_ids) {
+        $site_id = reset($site_ids);
+
+        $site = Node::load($site_id);
+        if (!$site) {
+          drush_print(dt('Not found site: ' . $site_id));
+          drush_print(dt('-----------------'));
+          continue;
+        }
+
+        $site_assessment_ids = \Drupal::entityQuery('node')
+          ->condition('field_as_site', $site->id())
+          ->condition('type', 'site_assessment')
+          ->condition('field_as_cycle', $assessmentCycle)
+          ->execute();
+
+        if ($site_assessment_ids) {
+          $site_assessment_id = reset($site_assessment_ids);
+          $site_assessment = Node::load($site_assessment_id);
+          if (!$site_assessment) {
+            drush_print(dt('Not found site_assessment: ' . $site_assessment_id));
+            drush_print(dt('-----------------'));
+            continue;
+          }
+
+        }
+      }
+
+      if (isset($assessment['versions']) && is_array($assessment['versions'])) {
+        $assessments_versions = $assessment['versions'];
+        usort($assessments_versions, function ($a, $b) {
+          return ($a['versionCode'] > $b['versionCode']) ? -1 : 1;
+        });
+
+        $version = reset($assessments_versions);
+
+        if ($site_assessment->get('field_as_version')->value != $version['versionCode']) {
+          drush_print(dt('Different versions for assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' DB (' . $site_assessment->get('field_as_version')->value . ') JSON (' . $version['versionCode'] . ')'));
+          drush_print(dt('-----------------'));
+          continue;
+        }
+
+        // Process Assessing Protection and Management.
+        drush_print(dt('Processing Assessing Protection and Management'));
+        $paragraphs_updated = 0;
+        if ($site_protections = $site_assessment->get('field_as_protection')->getValue()) {
+          $paragraphs_db = [];
+          foreach ($site_protections as $site_protection) {
+            $paragraph = Paragraph::load($site_protection['target_id']);
+            if ($paragraph) {
+              $paragraphs_db[] = $paragraph;
+            }
+          }
+          $paragraphs_json = [];
+          foreach ($version['protectionManagement'] as $protectionManagement) {
+            if ($protectionManagement["rating"]) {
+              $paragraphs_json[] = $protectionManagement;
+            }
+          }
+
+          if (count($site_protections) != count($version['protectionManagement'])) {
+            if (count($paragraphs_db) != count($paragraphs_json)) {
+              drush_print(dt('DB paragraphs count (' . count($site_protections) . ') did not match JSON count (' . count($version['protectionManagement']) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+              drush_print(dt('!!! AGAIN DB paragraphs count (' . count($paragraphs_db) . ') did not match JSON count (' . count($paragraphs_json) . ') site assessment id: ' . $site_assessment_id . ' json assessmentId: ' . $assessment['assessmentId'] . ' Please fix them manually !!!'));
+              drush_print(dt('-----------------'));
+              continue;
+            }
+          }
+
+          foreach ($paragraphs_db as $paragraph_db_key => $paragraph_db) {
+            if ($update) {
+              $paragraph_db->set('field_as_protection_topic', [assessmentTerm($paragraphs_json[$paragraph_db_key]['topic'], 'assessment_protection_topic')]);
+              $paragraph_db->set('field_as_protection_rating', [assessmentTerm($paragraphs_json[$paragraph_db_key]['rating'], 'assessment_protection_rating')]);
+              $paragraph_db->set('field_as_description', $paragraphs_json[$paragraph_db_key]['justification']);
+              $paragraph_db->save();
+              $paragraphs_updated++;
+              drush_print(dt('Updated paragraph: ' . $paragraph_db->id() . ' topic: ' . $paragraphs_json[$paragraph_db_key]['topic'] . ' - ' . $paragraphs_json[$paragraph_db_key]['rating']));
+            }
+          }
+
+          if ($update && $paragraphs_updated != 0) {
+            $site_assessment->save();
+            drush_print(dt('Updated assessment: ' . $site_assessment_id));
+          }
+          drush_print(dt('Done assessment: ' . $site_assessment_id));
+          drush_print(dt('-----------------'));
+        }
+
+      }
+    }
+  }
+  drush_print(dt('Completed: ' . date('h:i')));
+}
+
 
 /**
  Before running the command make sure to manually update the following taxonomies trems for Assessment threat extent:
@@ -264,6 +435,32 @@ function assessmentThreatExtentTerm($value = NULL) {
     ]);
     $term->save();
     drush_print(dt('!!! CREATED A NEW TERM: ' . $value));
+  }
+  return $term->id();
+}
+
+/**
+ * Checks and returns term id for specifiv vid taxonomy.
+ *
+ * If the term is not found, it is created.
+ */
+function assessmentTerm($value = NULL, $vid = NULL) {
+  if (empty($value) || $value == NULL) {
+    return NULL;
+  }
+  if (empty($vid) || $vid == NULL) {
+    return NULL;
+  }
+  if ($terms = taxonomy_term_load_multiple_by_name($value, $vid)) {
+    $term = reset($terms);
+  }
+  else {
+    $term = Term::create([
+      'name' => $value,
+      'vid' => $vid,
+    ]);
+    $term->save();
+    drush_print(dt('!!! CREATED A NEW TERM (' . $vid . ') : ' . $value));
   }
   return $term->id();
 }
