@@ -14810,6 +14810,8 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
   align-items: center;
   display: inline-block;
   margin-left: 1em;
+  float: left;
+  clear: both;
 }
 .html-list .inline-element-list:before {
   border-radius: 50%;
