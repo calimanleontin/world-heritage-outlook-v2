@@ -10,8 +10,10 @@ set classes = [
     <div class="panel-heading">
       <div class="panel-title">{{ content.title }}</div>
       <div class="panel-title-terms">
+        {%  spaceless  %}
         <div class="panel-title-terms-first">{{ content.terms }}</div>
         <div class="panel-title-terms-second">{{ content.terms_second }}</div>
+        {% endspaceless  %}
       </div>
     </div>
     <div class="panel-body">
