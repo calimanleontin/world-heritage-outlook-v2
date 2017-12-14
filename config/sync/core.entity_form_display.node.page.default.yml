@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.page.field_metatags
     - field.field.node.page.field_page_elements
     - node.type.page
   module:
+    - metatag
     - paragraphs
     - path
 id: node.page.default
@@ -19,6 +21,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_metatags:
+    weight: 122
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_page_elements:
     type: entity_reference_paragraphs
     weight: 1
