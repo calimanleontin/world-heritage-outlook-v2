@@ -184,8 +184,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $ret = [];
     $status = SitesQueryUtil::getSiteConservationRatings();
     $path = drupal_get_path('module', 'iucn_who_homepage');
-    $url = sprintf('/%s/dist/spritesheet.png', $path);
-    $absolute_url = Url::fromUserInput($url, ['absolute' => true])->toString();
+    $absolute_url =  sprintf('/%s/dist/spritesheet.png', $path);
     $json_path = $path . '/dist/sprites.json';
 
     $sprite_json = file_get_contents($json_path, TRUE);
