@@ -14842,6 +14842,12 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
     margin-left: 1em;
   }
 }
+.html-element-threats .field--name-field-as-threats-extent {
+  text-transform: lowercase;
+}
+.html-element-threats .field--name-field-as-threats-extent:before {
+  display: none;
+}
 /* ==========================================================================
     Benefits case studies page
     ========================================================================== */
