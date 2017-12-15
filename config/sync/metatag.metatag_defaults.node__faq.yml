@@ -1,0 +1,9 @@
+uuid: 0dc9653a-a3a7-49b9-83d8-e00eac5a652a
+langcode: en
+status: true
+dependencies: {  }
+id: node__faq
+label: 'Content: FAQ'
+tags:
+  description: '[node:field_answer]'
+  title: '[node:title]'
