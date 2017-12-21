@@ -10,7 +10,7 @@ id: ask_a_question
 title: 'Ask a Question'
 description: '<span class="aui-legend">Ask a Question</span>'
 category: ''
-elements: "ask_a_question_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your questions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\nquestion:\n  '#type': textarea\n  '#title': Question\n  '#required': true\n"
+elements: "ask_a_question_description:\n  '#type': processed_text\n  '#text': \"<p>Your input is valuable to us. Please send us your questions.</p>\\r\\n\"\n  '#format': html\nname:\n  '#type': textfield\n  '#title': Name\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#required': true\nquestion:\n  '#type': textarea\n  '#title': Question\n  '#wrapper_attributes':\n    class:\n      - form-group\n  '#required': true\ncaptcha:\n  '#type': captcha\n  '#captcha_type': recaptcha/reCAPTCHA\n"
 css: ''
 javascript: ''
 settings:
