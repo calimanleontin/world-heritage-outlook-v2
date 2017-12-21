@@ -10432,6 +10432,12 @@ a[rel="bookmark"] {
   display: none;
 }
 /* ==========================================================================
+    Ask a question page
+    ========================================================================== */
+.webform-submission-ask-a-question-form:not(.form-inline) .form-submit {
+  margin-top: 15px;
+}
+/* ==========================================================================
     Search block region
     ========================================================================== */
 .search-block-container {
@@ -14718,7 +14724,6 @@ h6.field--name-dynamic-block-fieldnode-site-feedback .field--label {
 }
 .g-recaptcha > div {
   margin: 0 auto;
-  margin-top: 1em;
 }
 /* ==========================================================================
    Conservation rating gauge
