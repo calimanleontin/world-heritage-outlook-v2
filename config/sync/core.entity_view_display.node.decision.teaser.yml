@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.decision.body
     - field.field.node.decision.field_decision
-    - field.field.node.decision.field_decision_image
     - field.field.node.decision.field_top_level_decision
     - node.type.decision
   module:
@@ -42,6 +41,5 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_decision: true
-  field_decision_image: true
   field_top_level_decision: true
   langcode: true

@@ -22,5 +22,6 @@ function iucn_decision_tree_theme($existing, $type, $theme, $path) {
 function iucn_decision_tree_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
   if ($entity->bundle() == 'decision') {
     $build['#attached']['library'][] = 'iucn_decision_tree/decision_tree';
+    $build['#attached']['library'][] = 'blazy/loading';
   }
 }

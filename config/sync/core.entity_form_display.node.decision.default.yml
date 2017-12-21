@@ -5,12 +5,9 @@ dependencies:
   config:
     - field.field.node.decision.body
     - field.field.node.decision.field_decision
-    - field.field.node.decision.field_decision_image
     - field.field.node.decision.field_top_level_decision
-    - image.style.thumbnail
     - node.type.decision
   module:
-    - image
     - paragraphs
     - path
     - text
@@ -45,14 +42,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
-  field_decision_image:
-    weight: 123
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-    third_party_settings: {  }
-    type: image_image
     region: content
   field_top_level_decision:
     weight: 124

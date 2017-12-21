@@ -15375,7 +15375,7 @@ h6.view-publications .view-header {
   content: '';
   top: 0;
   left: 48%;
-  background-color: #e1e1e1;
+  background-color: transparent;
 }
 .decision-button-holder:after {
   height: 30px;
@@ -15385,7 +15385,7 @@ h6.view-publications .view-header {
   content: '';
   bottom: 0;
   left: 48%;
-  background-color: #FFFFFF;
+  background-color: transparent;
 }
 .decision-button-holder.active {
   background-color: #def2fb;
