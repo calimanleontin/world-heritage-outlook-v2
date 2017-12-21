@@ -10,9 +10,6 @@ namespace Drupal\iucn_decision_tree\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\node\Entity\Node;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-
 
 class IucnDecisionTree extends ControllerBase {
 

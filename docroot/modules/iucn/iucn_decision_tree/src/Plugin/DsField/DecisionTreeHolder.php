@@ -2,15 +2,8 @@
 
 namespace Drupal\iucn_decision_tree\Plugin\DsField;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
 use Drupal\node\Entity\Node;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 
 /**
  * Plugin that renders Rating image.
