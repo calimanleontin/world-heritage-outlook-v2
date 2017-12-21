@@ -212,3 +212,15 @@ iucn_who_assessment_pdf:
       label: Full assessment
     references:
       label: References
+
+iucn_who_decision_tree:
+  label: Decision tree
+  category: IUCN
+  type: partial
+  class: '\Drupal\ds\Plugin\DsLayout'
+  template: templates/layouts/iucn-who-decision-tree
+  regions:
+    content:
+      label: Content
+    decision_tree_holder:
+      label: Decision tree holder

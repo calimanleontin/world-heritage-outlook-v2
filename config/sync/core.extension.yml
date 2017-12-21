@@ -41,6 +41,7 @@ module:
   image_widget_crop: 0
   inline_responsive_images: 0
   iucn_assessment: 0
+  iucn_decision_tree: 0
   iucn_migrate: 0
   iucn_pdf: 0
   iucn_site: 0

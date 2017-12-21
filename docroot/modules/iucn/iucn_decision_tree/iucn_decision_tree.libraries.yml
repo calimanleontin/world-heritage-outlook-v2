@@ -1,0 +1,4 @@
+decision_tree:
+  header: false
+  js:
+    js/decision-tree.js: {}

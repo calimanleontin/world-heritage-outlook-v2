@@ -1,0 +1,47 @@
+uuid: c5cd399d-f6be-477e-8587-06bec9d3c504
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.decision.body
+    - field.field.node.decision.field_decision
+    - field.field.node.decision.field_decision_image
+    - field.field.node.decision.field_top_level_decision
+    - node.type.decision
+  module:
+    - smart_trim
+    - user
+id: node.decision.teaser
+targetEntityType: node
+bundle: decision
+mode: teaser
+content:
+  body:
+    type: smart_trim
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: '600'
+      trim_type: chars
+      trim_suffix: ''
+      more_link: 0
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options: {  }
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_decision: true
+  field_decision_image: true
+  field_top_level_decision: true
+  langcode: true

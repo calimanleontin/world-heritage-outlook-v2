@@ -1,0 +1,55 @@
+uuid: efcdb864-4336-4dfe-98a1-048850ece36f
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.decision.body
+    - field.field.node.decision.field_decision
+    - field.field.node.decision.field_decision_image
+    - field.field.node.decision.field_top_level_decision
+    - node.type.decision
+  module:
+    - ds
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: layout_onecol
+      library: layout_discovery/onecol
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - node_title
+        - body
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+id: node.decision.full
+targetEntityType: node
+bundle: decision
+mode: full
+content:
+  body:
+    type: text_trimmed
+    weight: 1
+    region: content
+    label: above
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_decision: true
+  field_decision_image: true
+  field_top_level_decision: true
+  langcode: true
+  links: true
