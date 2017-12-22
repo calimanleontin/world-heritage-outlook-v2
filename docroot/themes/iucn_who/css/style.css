@@ -15397,8 +15397,11 @@ h6.view-publications .view-header {
   background-color: #def2fb;
 }
 .node--type-decision {
+  padding-bottom: 30px;
+}
+.node--type-decision.node--view-mode-ajax {
   background-color: #def2fb;
-  padding: 15px;
+  padding: 5px 15px 15px 15px;
   margin: 0;
 }
 .decision-tree-holder.media--loading {

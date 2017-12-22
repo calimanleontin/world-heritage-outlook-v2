@@ -1,9 +1,9 @@
-uuid: c5cd399d-f6be-477e-8587-06bec9d3c504
+uuid: ed13314e-e600-45ab-ae16-357d3eb3fd0b
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.ajax
     - field.field.node.decision.body
     - field.field.node.decision.field_decision
     - field.field.node.decision.field_top_level_decision
@@ -44,18 +44,18 @@ third_party_settings:
         label: hidden
         formatter: default
         settings:
-          link: true
-          wrapper: h2
-          class: left-border
+          wrapper: h3
+          class: ''
+          link: false
       decision_tree_holder:
         plugin_id: decision_tree_holder
         weight: 2
         label: hidden
         formatter: default
-id: node.decision.teaser
+id: node.decision.ajax
 targetEntityType: node
 bundle: decision
-mode: teaser
+mode: ajax
 content:
   body:
     type: text_default

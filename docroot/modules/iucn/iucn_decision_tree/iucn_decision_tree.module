@@ -10,6 +10,7 @@ function iucn_decision_tree_theme($existing, $type, $theme, $path) {
         'entity_id' => NULL,
         'decisions' => NULL,
         'rendered_content' => NULL,
+        'level' => NULL,
       ],
     ],
   ];

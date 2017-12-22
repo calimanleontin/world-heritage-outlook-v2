@@ -9,7 +9,7 @@ dependencies:
     - node.type.decision
   module:
     - ds
-    - text
+    - smart_trim
     - user
 third_party_settings:
   ds:
@@ -19,28 +19,26 @@ third_party_settings:
       disable_css: false
       entity_classes: all_classes
       settings:
-        wrappers: null
-        outer_wrapper: null
+        wrappers:
+          content: div
+          decision_tree_holder: div
+        outer_wrapper: div
         attributes: ''
-        link_attribute: null
-        link_custom: null
+        link_attribute: ''
+        link_custom: ''
         classes:
           layout_class: {  }
+          content: {  }
+          decision_tree_holder: {  }
     regions:
       content:
-        - node_title
         - body
       decision_tree_holder:
         - decision_tree_holder
     fields:
-      node_title:
-        plugin_id: node_title
-        weight: 0
-        label: hidden
-        formatter: default
       decision_tree_holder:
         plugin_id: decision_tree_holder
-        weight: 2
+        weight: 1
         label: hidden
         formatter: default
 id: node.decision.default
@@ -49,12 +47,20 @@ bundle: decision
 mode: default
 content:
   body:
-    type: text_trimmed
-    weight: 1
+    type: smart_trim
+    weight: 0
     region: content
     label: hidden
     settings:
-      trim_length: 600
+      trim_length: '600'
+      trim_type: chars
+      trim_suffix: ''
+      more_link: '0'
+      more_text: More
+      summary_handler: full
+      trim_options:
+        text: 0
+      more_class: more-link
     third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
