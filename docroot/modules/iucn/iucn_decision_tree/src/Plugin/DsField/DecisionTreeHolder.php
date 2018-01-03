@@ -44,16 +44,11 @@ class DecisionTreeHolder extends DsFieldBase {
         $rendered_content = $element['#value'];
       }
     }
-    $request = \Drupal::request();
-    $level = $request->get('level');
-    $level++;
-
     return [
       '#theme' => 'decision_tree',
       '#entity_id' => $this->entity()->id(),
       '#decisions' => $decisions,
       '#rendered_content' => $rendered_content,
-      '#level' => $level,
     ];
   }
 
