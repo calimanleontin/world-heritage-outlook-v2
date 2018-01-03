@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\node\NodeInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -24,5 +26,12 @@ function iucn_decision_tree_node_view_alter(array &$build, Drupal\Core\Entity\En
   if ($entity->bundle() == 'decision') {
     $build['#attached']['library'][] = 'iucn_decision_tree/decision_tree';
     $build['#attached']['library'][] = 'blazy/loading';
+  }
+}
+
+
+function iucn_decision_tree_node_view(array &$build, NodeInterface $node, $display, $view_mode) {
+  if ($node->getType() == 'decision') {
+    $build['#cache']['max-age'] = 0;
   }
 }
