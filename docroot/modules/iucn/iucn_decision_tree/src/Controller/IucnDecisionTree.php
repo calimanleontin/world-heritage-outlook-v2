@@ -61,7 +61,7 @@ class IucnDecisionTree extends ControllerBase {
   *
   * */
 
-  public function loadDecisionTree($node_title, $param1, $param2 = NULL, $param3 = NULL, $param4 = NULL, $param4 = NULL, $param5  = NULL){
+  public function loadDecisionTree($node_title, $param1, $param2 = NULL, $param3 = NULL, $param4 = NULL, $param5  = NULL){
     $render_output = [
       '#type' => 'markup',
       '#markup' => $node_title,
