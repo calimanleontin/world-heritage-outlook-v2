@@ -31,18 +31,18 @@ class IucnDecisionTree extends ControllerBase {
   }
 
   public function loadNodes($nodes) {
-    $render_output =
+
+    $render_output = [
+      '#type' => 'markup',
+      '#markup' => 'Nodes cannot be loaded.',
+    ];
+
     $node_ids = explode(',', $nodes);
     if ($node_ids) {
+      $render_output = [];
       foreach ($node_ids as $nid) {
         $render_output[] = $this->loadNode($nid);
       }
-    }
-    else {
-      $render_output = [
-        '#type' => 'markup',
-        '#markup' => 'Nodes cannot be loaded.',
-      ];
     }
     return new Response(render($render_output));
   }
