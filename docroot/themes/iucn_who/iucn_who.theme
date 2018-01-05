@@ -93,6 +93,7 @@ function iucn_who_preprocess_block(&$variables) {
         else {
           $items['#label'] .= ' A-Z';
         }
+        $items['#url'] = '?sort=title_sort&order=' . $items['#order'];
       }
 
       if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
@@ -108,6 +109,7 @@ function iucn_who_preprocess_block(&$variables) {
         }
         $label .= '</span>';
         $items['#label'] = new FormattableMarkup($label, []);
+        $items['#url'] = '?sort=title_sort&order=' . $items['#order'];
       }
 
       if ($variables['elements']['#id'] == 'sortbyviewpublicationsdisplaypage') {
