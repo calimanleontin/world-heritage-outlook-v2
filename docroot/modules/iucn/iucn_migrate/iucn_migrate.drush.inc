@@ -85,7 +85,10 @@ function iucn_migrate_drush_command() {
   return $commands;
 }
 
-
+/**
+ * After running the command make sure to manually update the detected paragraphs:
+ * Then remove Assessment protection topic: Assessment of the effectiveness of protection and management in addressing threats outside the site.
+ */
 function drush_iucn_migrate_iucn_fix_protectiontopic($update = FALSE){
 
   $site_assessments = \Drupal::entityQuery('node')
