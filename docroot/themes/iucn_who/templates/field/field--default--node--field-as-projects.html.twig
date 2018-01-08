@@ -59,6 +59,7 @@ label_display == 'visually_hidden' ? 'sr-only',
     <tr>
       <th>&#x2116;</th>
       <th>{{ 'Organization/ individuals'|t }}</th>
+      <th>{{ 'Project duration'|t }}</th>
       <th>{{ 'Brief description of Active Projects'|t }}</th>
     </tr>
     </thead>
@@ -71,6 +72,20 @@ label_display == 'visually_hidden' ? 'sr-only',
         <td>
           {% if item.content['#paragraph'].field_as_projects_organisation.value is not empty %}
           {{ item.content['#paragraph'].field_as_projects_organisation.value|striptags }}
+          {% endif %}
+        </td>
+        <td>
+          {% if item.content['#paragraph'].field_as_projects_from.value is not empty %}
+              {% set from_year = item.content['#paragraph'].field_as_projects_from.value|date("Y") %}
+              {% if from_year != "0001" %}
+                  {{ 'From'|t }}: {{ from_year }}<br/>
+              {% endif %}
+          {% endif %}
+          {% if item.content['#paragraph'].field_as_projects_to.value is not empty %}
+              {% set to_year = item.content['#paragraph'].field_as_projects_to.value|date("Y") %}
+              {% if to_year != "0001" %}
+                  {{ 'To'|t }}: {{ to_year }}
+              {% endif %}
           {% endif %}
         </td>
         <td>
