@@ -214,7 +214,7 @@ function iucn_assessment_preprocess_field(&$variables) {
       // Hide "nature conservation values" benefits for 2017 assessments.
       if (
         empty($variables['items'][0]['content']['#paragraph'])
-        || $variables['element']['#object']->field_as_cycle->value != 2017
+        || $variables['element']['#object']->field_as_cycle->value == \Drupal::service('iucn_assessment.assessments_year')->first()
       ) {
         break;
       }
@@ -321,19 +321,11 @@ function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_
 
   // Specific request to hide show only for 2017 assessments.
   if (!empty($element['#group_name'])
-    && $element['#group_name'] == 'group_key_conservation_issues') {
-    if (!empty($_iucn_assessment_display_year) && $_iucn_assessment_display_year != 2014) {
+    && ($element['#group_name'] == 'group_key_conservation_issues' || $element['#group_name'] == 'group_community')) {
+    if (!empty($_iucn_assessment_display_year) && $_iucn_assessment_display_year != \Drupal::service('iucn_assessment.assessments_year')->first()) {
       $element['#access'] = FALSE;
     }
   }
-
-  if (!empty($element['#group_name'])
-    && $element['#group_name'] == 'group_community') {
-    if (!empty($_iucn_assessment_display_year) && $_iucn_assessment_display_year != 2014) {
-      $element['#access'] = FALSE;
-    }
-  }
-
 }
 
 /**
@@ -359,7 +351,7 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
   if ($entity->bundle() == 'site_assessment') {
     $year = $entity->field_as_cycle->value;
     // 2017 assessments shouldn't have "Other important biodiversity values".
-    if ($year == 2017) {
+    if ($year != \Drupal::service('iucn_assessment.assessments_year')->first()) {
       unset(
         $vars['content']['full_assessment_values']['group_assessment_information']['group_state_and_trend_of_values']['group_assessing_current_state']['display_field_copy:node-other_biodiv_values']
       );
