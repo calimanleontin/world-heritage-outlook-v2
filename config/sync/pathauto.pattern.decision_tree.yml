@@ -1,0 +1,22 @@
+uuid: 500a3c2b-90a9-4420-9b3f-4eeeb202a123
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: decision_tree
+label: 'Decision tree'
+type: 'canonical_entities:node'
+pattern: '/benefits/decision-tree/[node:title]'
+selection_criteria:
+  37c3013e-f21d-4160-b9d6-e449cded0d17:
+    id: node_type
+    bundles:
+      decision: decision
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 37c3013e-f21d-4160-b9d6-e449cded0d17
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -15356,4 +15356,61 @@ h6.view-publications .view-header {
 .node-readmore a a {
   color: #03afdf;
 }
+.decision a[rel="bookmark"] {
+  display: block;
+}
+#block-decisiontree {
+  clear: both;
+}
+.decision-button-holder {
+  border-radius: 6px;
+  padding: 15px 0;
+  background-color: #e1e1e1;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  display: block;
+  margin: 30px 0;
+}
+.decision-button-holder:before {
+  height: 30px;
+  width: 15px;
+  display: inline-block;
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 48%;
+  background-color: transparent;
+}
+.decision-button-holder:after {
+  height: 30px;
+  width: 15px;
+  display: inline-block;
+  position: absolute;
+  content: '';
+  bottom: 0;
+  left: 48%;
+  background-color: transparent;
+}
+.decision-button-holder.active {
+  background-color: #def2fb;
+}
+.decision-button-holder.active:before {
+  background-color: #def2fb;
+}
+.decision-button-holder.active:after {
+  background-color: #def2fb;
+}
+.node--type-decision {
+  padding-bottom: 30px;
+}
+.node--type-decision.node--view-mode-ajax {
+  background-color: #def2fb;
+  padding: 5px 15px 15px 15px;
+  margin: 0;
+}
+.decision-tree-holder.media--loading {
+  margin: 15px 0;
+  min-height: 30px;
+}
 /*# sourceMappingURL=style.css.map */

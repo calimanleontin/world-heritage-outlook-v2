@@ -1,0 +1,37 @@
+<?php
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function iucn_decision_tree_theme($existing, $type, $theme, $path) {
+  return [
+    'decision_tree' => [
+      'variables' => [
+        'entity_id' => NULL,
+        'decisions' => NULL,
+        'rendered_content' => NULL,
+        'level' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+
+function iucn_decision_tree_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  if ($entity->bundle() == 'decision') {
+    $build['#attached']['library'][] = 'iucn_decision_tree/decision_tree';
+    $build['#attached']['library'][] = 'blazy/loading';
+  }
+}
+
+
+function iucn_decision_tree_node_view(array &$build, NodeInterface $node, $display, $view_mode) {
+  if ($node->getType() == 'decision') {
+    $build['#cache']['max-age'] = 0;
+  }
+}

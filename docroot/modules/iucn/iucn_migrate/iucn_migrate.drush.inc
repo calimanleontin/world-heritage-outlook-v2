@@ -74,7 +74,48 @@ function iucn_migrate_drush_command() {
     ),
   ];
 
+  $commands['iucn-fix-protectiontopic'] = [
+    'description' => 'Command for updating assessment_protection_topic.',
+    'aliases' => ['iucnfpt'],
+    'options' => array(
+      'update' => 'update',
+    ),
+  ];
+
   return $commands;
+}
+
+/**
+ * After running the command make sure to manually update the detected paragraphs:
+ * Then remove Assessment protection topic: Assessment of the effectiveness of protection and management in addressing threats outside the site.
+ */
+function drush_iucn_migrate_iucn_fix_protectiontopic($update = FALSE){
+
+  $site_assessments = \Drupal::entityQuery('node')
+    ->condition('type', 'site_assessment')
+    ->execute();
+
+  if ($site_assessments) {
+    foreach ($site_assessments as $site_assessment_id) {
+      $site_assessment = Node::load($site_assessment_id);
+      if ($site_assessment) {
+        if ($site_protections = $site_assessment->get('field_as_protection')->getValue()) {
+          foreach ($site_protections as $site_protection) {
+            $paragraph = Paragraph::load($site_protection['target_id']);
+            if ($paragraph && $paragraph->get('field_as_protection_topic') && $paragraph->get('field_as_protection_topic')->entity) {
+              $label = $paragraph->get('field_as_protection_topic')->entity->label();
+              if ($label == 'Assessment of the effectiveness of protection and management in addressing threats outside the site') {
+                drush_print(dt($label));
+                drush_print(dt($site_assessment->id() . ' : ' . $site_assessment->label()));
+                drush_print(dt('-----------------'));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
 /**
 * Before running the command make sure to manually update the following taxonomies trems for Assessment protection topic:

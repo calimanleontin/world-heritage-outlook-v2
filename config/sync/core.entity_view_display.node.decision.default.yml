@@ -1,0 +1,72 @@
+uuid: 3103a827-d0b0-49ae-b501-6b0479ce2712
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.decision.body
+    - field.field.node.decision.field_decision
+    - field.field.node.decision.field_top_level_decision
+    - node.type.decision
+  module:
+    - ds
+    - smart_trim
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_decision_tree
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          content: div
+          decision_tree_holder: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          content: {  }
+          decision_tree_holder: {  }
+    regions:
+      content:
+        - body
+      decision_tree_holder:
+        - decision_tree_holder
+    fields:
+      decision_tree_holder:
+        plugin_id: decision_tree_holder
+        weight: 1
+        label: hidden
+        formatter: default
+id: node.decision.default
+targetEntityType: node
+bundle: decision
+mode: default
+content:
+  body:
+    type: smart_trim
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: '600'
+      trim_type: chars
+      trim_suffix: ''
+      more_link: '0'
+      more_text: More
+      summary_handler: full
+      trim_options:
+        text: 0
+      more_class: more-link
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_decision: true
+  field_top_level_decision: true
+  langcode: true
+  links: true

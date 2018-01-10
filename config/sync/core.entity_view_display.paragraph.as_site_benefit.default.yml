@@ -25,6 +25,7 @@ dependencies:
     - ds
     - field_group
     - iucn_assessment
+    - iucn_site
 third_party_settings:
   ds:
     layout:
@@ -195,14 +196,19 @@ bundle: as_site_benefit
 mode: default
 content:
   field_as_benefits_category:
-    type: parent_category
+    type: entity_reference_list
     weight: 0
     region: title
     label: hidden
-    settings: {  }
+    settings:
+      separator: ','
+      singular: ''
+      plural: ''
+      link: 0
+      override_label: 0
     third_party_settings:
       ds:
-        ds_limit: '1'
+        ds_limit: ''
   field_as_benefits_climate_level:
     type: assessment_factor
     weight: 21

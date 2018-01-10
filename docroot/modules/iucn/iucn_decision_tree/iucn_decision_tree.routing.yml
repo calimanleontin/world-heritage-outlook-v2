@@ -1,0 +1,8 @@
+iucn_decision_tree.node:
+  path: 'decision_tree/nodes/{nodes}'
+  defaults:
+    _controller: '\Drupal\iucn_decision_tree\Controller\IucnDecisionTree::loadNodes'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
