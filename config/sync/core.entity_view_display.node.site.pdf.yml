@@ -27,12 +27,10 @@ dependencies:
     - field.field.node.site.field_transboundary
     - field.field.node.site.field_unesco_id
     - field.field.node.site.field_wdpa_id
-    - image.style.medium
     - node.type.site
   module:
     - datetime
     - ds
-    - image
     - iucn_site
     - text
     - user
@@ -57,7 +55,6 @@ third_party_settings:
         - field_inscription_criteria
         - field_designation
         - body
-        - field_image
         - assessment_rating
       content:
         - field_assessments
@@ -73,7 +70,7 @@ third_party_settings:
           link: false
       assessment_rating:
         plugin_id: assessment_rating
-        weight: 10
+        weight: 9
         label: hidden
         formatter: image
         settings:
@@ -108,7 +105,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 11
+    weight: 10
     label: hidden
     settings:
       view_mode: pdf
@@ -143,17 +140,6 @@ content:
       override_label: 0
       singular: ''
       plural: ''
-    third_party_settings:
-      ds:
-        ds_limit: ''
-  field_image:
-    type: image
-    weight: 9
-    region: site_information
-    label: hidden
-    settings:
-      image_style: medium
-      image_link: ''
     third_party_settings:
       ds:
         ds_limit: ''
@@ -193,6 +179,7 @@ hidden:
   field_danger_list: true
   field_geojson: true
   field_geolocation: true
+  field_image: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true

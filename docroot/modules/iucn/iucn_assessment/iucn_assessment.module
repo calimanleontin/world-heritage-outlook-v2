@@ -86,6 +86,13 @@ function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInte
  */
 function iucn_assessment_preprocess_field(&$variables) {
   switch ($variables['field_name']) {
+    case 'field_designation':
+      $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
+      if ($display_year == \Drupal::service('iucn_assessment.assessments_year')->first()) {
+        $variables['attributes']['class'][] = 'invisible';
+      }
+      break;
+
     case 'field_assessments':
       $variables['element']['#cache']['contexts'][] = 'url';
       if (!empty($variables['items'])) {
