@@ -37,10 +37,11 @@ class DecisionTreeHolder extends DsFieldBase {
       if (isset($decisions['yes']) && isset($decisions['no'])) {
         // Yes and No decisions are set.
       }
-      else {
+      elseif (isset($decisions['yes'][0])) {
         $decision = Node::load($decisions['yes'][0]);
         $render_controller = \Drupal::entityTypeManager()->getViewBuilder($decision->getEntityTypeId());
-        $rendered_content = render($render_controller->view($decision, 'ajax'));
+        $render = $render_controller->view($decision, 'ajax');
+        $rendered_content = render($render);
       }
     }
     return [
