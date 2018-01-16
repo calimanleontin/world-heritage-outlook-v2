@@ -2,6 +2,7 @@
     {{ rendered_content }}
 {% endif %}
 
+
 {% set random = random(1000) %}
 
 {% if decisions %}
@@ -13,3 +14,4 @@
     {% endif %}
 {% endif %}
 <div class="decision-tree-holder" id="decision-{{ entity_id }}-{{ random  }}"></div>
+

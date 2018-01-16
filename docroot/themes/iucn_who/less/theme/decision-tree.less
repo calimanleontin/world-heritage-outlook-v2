@@ -85,6 +85,10 @@
       height: 2 * @line-height-computed;
       top: 100%;
     }
+    &:active,
+    &:focus {
+      outline: none;
+    }
   }
 }
 
@@ -107,4 +111,15 @@
 .iucn-who-decision-tree-group {
   flex: 1;
   position: relative;
+}
+
+.final-decision {
+  .node--type-decision.node--view-mode-ajax {
+    background: orange;
+  }
+}
+.only-yes-decision{
+  > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+    background: green;
+  }
 }
