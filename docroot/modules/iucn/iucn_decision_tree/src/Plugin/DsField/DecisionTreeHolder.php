@@ -40,8 +40,7 @@ class DecisionTreeHolder extends DsFieldBase {
       else {
         $decision = Node::load($decisions['yes'][0]);
         $render_controller = \Drupal::entityTypeManager()->getViewBuilder($decision->getEntityTypeId());
-        $element['#value'] = render($render_controller->view($decision, 'ajax'));
-        $rendered_content = $element['#value'];
+        $rendered_content = render($render_controller->view($decision, 'ajax'));
       }
     }
     return [
