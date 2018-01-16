@@ -6,13 +6,9 @@
 
 {% if decisions %}
     {% if decisions['yes'] and decisions['no'] %}
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-xs-6">
-                <a class="decision-button-holder" href="#decision-{{ entity_id }}" rel="load-decisions" data-decisions="{{ decisions['yes']|join(',') }}" data-container="decision-{{ entity_id }}-{{ random  }}" data-param="yes">{{ 'Yes'|t }}</a>
-            </div>
-            <div class="col-sm-6 col-md-6 col-xs-6">
-                <a class="decision-button-holder" href="#decision-{{ entity_id }}" rel="load-decisions" data-decisions="{{ decisions['no']|join(',') }}" data-container="decision-{{ entity_id }}-{{ random  }}" data-param="no">{{ 'No'|t }}</a>
-            </div>
+        <div class="decision-button-holder-container">
+            <a class="decision-button-holder" href="#decision-{{ entity_id }}" rel="load-decisions" data-decisions="{{ decisions['yes']|join(',') }}" data-container="decision-{{ entity_id }}-{{ random  }}" data-param="yes">{{ 'Yes'|t }}</a>
+            <a class="decision-button-holder" href="#decision-{{ entity_id }}" rel="load-decisions" data-decisions="{{ decisions['no']|join(',') }}" data-container="decision-{{ entity_id }}-{{ random  }}" data-param="no">{{ 'No'|t }}</a>
         </div>
     {% endif %}
 {% endif %}

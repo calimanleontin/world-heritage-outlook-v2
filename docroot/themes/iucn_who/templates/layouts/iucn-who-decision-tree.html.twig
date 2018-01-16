@@ -3,7 +3,9 @@
     'iucn-who-decision-tree-wrapper',
 ]
 %}
-<div{{ attributes.addClass(classes) }}>
-     {{ content }}
+<div class="iucn-who-decision-tree-group">
+  <div{{ attributes.addClass(classes) }}>
+       {{ content }}
+  </div>
+  {{ decision_tree_holder }}
 </div>
-{{ decision_tree_holder }}
