@@ -45,17 +45,19 @@ class IucnDecisionTree extends ControllerBase {
         // Decisions are set.
         if (isset($decisions['yes']) && isset($decisions['no'])) {
           // Yes and No decisions are set.
+          $render_output['#prefix'] = '<div class="decision-wrapper yes-no-decision">';
+          $render_output['#suffix'] = '</div>';
         }
         elseif (isset($decisions['yes'][0])) {
           // Only yes decision is set.
           //No decisions. Assume these are final nodes.
-          $render_output['#prefix'] = '<div class="only-yes-decision">';
+          $render_output['#prefix'] = '<div class="decision-wrapper only-yes-decision">';
           $render_output['#suffix'] = '</div>';
         }
       }
       else {
         //No decisions. Assume these are final nodes.
-        $render_output['#prefix'] = '<div class="final-decision">';
+        $render_output['#prefix'] = '<div class="decision-wrapper final-decision">';
         $render_output['#suffix'] = '</div>';
       }
 
