@@ -1,4 +1,17 @@
+
 (function ($) {
+  // Tiny jQuery Plugin
+  // by Chris Goodchild
+  $.fn.exists = function(callback) {
+    var args = [].slice.call(arguments, 1);
+
+    if (this.length) {
+      callback.call(this, args);
+    }
+
+    return this;
+  };
+
   Drupal.behaviors.load_decision = {
     attach: function (context, settings) {
       $( document ).on( "click", "a[rel=load-decisions]", function() {
@@ -16,12 +29,21 @@
           type: 'GET',
         }).done(function($data) {
           $container_element.hide().html($data).removeClass('media--loading').fadeIn();
-          $this.addClass('active');
-          $this.parent().addClass('active-inside');
-          $this.closest('.iucn-who-decision-tree-group')
-            .siblings('.iucn-who-decision-tree-group').removeClass('active-group')
+          $this
+            .addClass('active')
+              .parent().addClass('active-inside')
             .end()
-            .addClass('active-group');
+              .closest('.iucn-who-decision-tree-group')
+                .siblings('.iucn-who-decision-tree-group').removeClass('active-group')
+              .end()
+              .addClass('active-group')
+            .end();
+
+
+          $container_element.find('.final-decision').exists(function() {
+            $this.addClass('has-final-decision');
+          });
+
         });
         return false;
       });

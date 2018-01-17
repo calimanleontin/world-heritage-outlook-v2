@@ -15957,8 +15957,7 @@ h6.view-publications .view-header {
 #block-decisiontree {
   clear: both;
 }
-.decision-tree-holder,
-.iucn-who-decision-tree-wrapper {
+.decision-tree-holder {
   width: 100%;
 }
 .decision-tree-holder.media--loading {
@@ -15969,16 +15968,15 @@ h6.view-publications .view-header {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  border: 2px dashed #ddd;
   border-radius: 6px;
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
-  margin-top: 2.4rem;
-  padding: 1em;
+  padding: 2rem;
+  padding-right: 0;
   padding-top: 0;
   position: relative;
-  top: -2px;
+  overflow: hidden;
   width: 100%;
   -webkit-transition: border-color 0.2s;
   transition: border-color 0.2s;
@@ -15986,6 +15984,10 @@ h6.view-publications .view-header {
 .decision-button-holder-container.active-inside:hover + .decision-tree-holder:not(:empty),
 .node--type-decision.node--view-mode-ajax:hover ~ .decision-tree-holder:not(:empty) {
   border-color: #def2fb;
+}
+.decision-tree-holder:not(:empty) > .iucn-who-decision-tree-group:only-child,
+.decision-tree-holder:not(:empty) > .decision-wrapper:only-child {
+  margin-left: -2rem;
 }
 .decision-button-holder-container {
   display: -webkit-box;
@@ -16017,8 +16019,6 @@ h6.view-publications .view-header {
 .decision-button-holder.active:before,
 .decision-button-holder.active:after {
   background-color: #def2fb;
-  border-left: 1rem solid #fff;
-  border-right: 1rem solid #fff;
   content: '';
   display: inline-block;
   height: 2.4rem;
@@ -16026,15 +16026,22 @@ h6.view-publications .view-header {
   position: absolute;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  width: 3rem;
+  width: 1rem;
   z-index: 1;
 }
 .decision-button-holder.active:before {
   bottom: 100%;
 }
 .decision-button-holder.active:after {
-  height: 4.8rem;
   top: 100%;
+}
+.decision-button-holder.active.has-final-decision:after {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#def2fb), to(#daf8c9));
+  background-image: linear-gradient(to bottom, #def2fb, #daf8c9);
+}
+.decision-button-holder.active:active,
+.decision-button-holder.active:focus {
+  outline: none;
 }
 .node--type-decision.node--view-mode-ajax {
   background-color: #def2fb;
@@ -16058,4 +16065,74 @@ h6.view-publications .view-header {
       -ms-flex: 1;
           flex: 1;
   position: relative;
+}
+.final-decision > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+  background-color: #daf8c9;
+}
+.only-yes-decision > .iucn-who-decision-tree-group > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+  margin-top: 0;
+  border-radius: 0 0 6px 6px;
+}
+.only-yes-decision > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+  border-radius: 6px 6px 0 0;
+  padding: 1em;
+  padding-bottom: 0;
+}
+.only-yes-decision > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax .field--name-node-title {
+  position: relative;
+  padding-left: 1.5em;
+  color: #666;
+}
+.only-yes-decision > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax .field--name-node-title:before {
+  content: '';
+  display: block;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%2223%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20fill%3D%22%23666%22%20d%3D%22M0%200v22.999L11%2011%200%200z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 100%;
+  width: .75em;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.decision-wrapper > .iucn-who-decision-tree-group > .node--type-decision {
+  position: relative;
+}
+.decision-wrapper > .iucn-who-decision-tree-group > .node--type-decision:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 2rem;
+  height: 9999%;
+  left: -2rem;
+  margin-top: 1rem;
+  border-left: 1rem solid #def2fb;
+  border-bottom: 1rem solid #def2fb;
+  top: 50%;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+}
+.final-decision > .iucn-who-decision-tree-group > .node--type-decision:before {
+  border-bottom-color: #daf8c9;
+}
+.final-decision + .final-decision > .iucn-who-decision-tree-group > .node--type-decision:before {
+  border-left-color: #daf8c9;
+}
+.decision-wrapper:first-child > .iucn-who-decision-tree-group > .node--type-decision:after {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 200%;
+  position: absolute;
+  top: 50%;
+  background-color: #fff;
+  left: -2rem;
+  z-index: 1;
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+}
+.decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:before,
+.decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:after {
+  display: none;
 }

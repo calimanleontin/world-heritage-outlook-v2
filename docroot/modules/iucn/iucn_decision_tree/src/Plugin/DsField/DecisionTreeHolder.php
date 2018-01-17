@@ -21,6 +21,7 @@ class DecisionTreeHolder extends DsFieldBase {
    */
   public function build() {
     $decisions = [];
+    $final_nodes = FALSE;
     $rendered_content = NULL;
     $children = $this->entity()->get('field_decision')->referencedEntities();
     if ($children) {
