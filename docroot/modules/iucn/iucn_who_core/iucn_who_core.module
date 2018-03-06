@@ -152,7 +152,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   $cache_max = $breadcrumb->getCacheMaxAge();
 
   // Custom breadcrumb for Webforms.
-  if (isset($parameters['webform']) && gettype($parameters['webform']) == 'object' && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
+  if (isset($parameters['webform']) && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
     $new_breadcrumb = new Breadcrumb();
     foreach ($breadcrumb->getLinks() as $key => $val) {
       if ($key == 0) {
