@@ -21,6 +21,7 @@ class DecisionTreeHolder extends DsFieldBase {
    */
   public function build() {
     $decisions = [];
+    $final_nodes = FALSE;
     $rendered_content = NULL;
     $children = $this->entity()->get('field_decision')->referencedEntities();
     if ($children) {
@@ -37,11 +38,11 @@ class DecisionTreeHolder extends DsFieldBase {
       if (isset($decisions['yes']) && isset($decisions['no'])) {
         // Yes and No decisions are set.
       }
-      else {
+      elseif (isset($decisions['yes'][0])) {
         $decision = Node::load($decisions['yes'][0]);
         $render_controller = \Drupal::entityTypeManager()->getViewBuilder($decision->getEntityTypeId());
-        $element['#value'] = render($render_controller->view($decision, 'ajax'));
-        $rendered_content = $element['#value'];
+        $render = $render_controller->view($decision, 'ajax');
+        $rendered_content = render($render);
       }
     }
     return [
