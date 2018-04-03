@@ -85,10 +85,11 @@ function postInitMap(instance_id, map, config) {
         var $active_markers = [];
         var $marker = $markers[$i];
         var $icon = config.icons[$filter_category];
-          if ($icon.url != $marker.getIcon().url) {
-            $marker.setIcon($icon);
-            $active_markers[$i] = $marker;
-          }
+
+        $marker.setIcon($icon);
+          // if ($icon.url != $marker.getIcon().url) {
+            // $active_markers[$i] = $marker;
+          // }
       }
     };
 
