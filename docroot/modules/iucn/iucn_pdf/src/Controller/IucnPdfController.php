@@ -3,6 +3,7 @@
 namespace Drupal\iucn_pdf\Controller;
 
 use Drupal\iucn_pdf\PrintPdfInterface;
+use Drupal\node\NodeInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\Component\Utility\Unicode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -124,9 +125,13 @@ class IucnPdfController extends FileDownloadController {
 
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
     $entity->addCacheContexts(['url']);
+    $year = $this->getYear();
+
+    if (!$this->allowDownload($entity, $year)) {
+      throw new NotFoundHttpException();
+    }
 
     $language = $this->getLanguage($entity);
-    $year = $this->getYear();
 
     $realpath = $this->printPdf->getRealPath($entity_id, $language, $year);
     $file_path = $this->printPdf->getFilePath($entity_id, $language, $year);
@@ -155,6 +160,31 @@ class IucnPdfController extends FileDownloadController {
     // already modified. We pass in FALSE for non-private schemes for the
     // $public parameter to make sure we don't change the headers.
     return new BinaryFileResponse($realpath, 200, $headers, TRUE);
+  }
+
+  /**
+   * Check access to PDF downloads.
+   *
+   * @param \Drupal\node\NodeInterface $entity
+   *   Node to check
+   * @param integer $year
+   *  Year to check
+   *
+   * @return bool
+   *   TRUE if download allowed.
+   */
+  function allowDownload(NodeInterface $entity, $year) {
+    if ($entity->bundle() == 'site' && $entity->hasField('field_assessments')) {
+      foreach ($entity->field_assessments as $idx => $item) {
+        if ($item->entity->field_as_cycle->value == $year && $item->entity->isPublished()) {
+          return TRUE;
+        }
+      }
+    }
+    if ($entity->bundle() == 'site_assessment' && $entity->isPublished() && !empty($entity->field_as_site->entity)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }
