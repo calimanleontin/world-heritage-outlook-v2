@@ -119,7 +119,7 @@ class PrintPdf implements PrintPdfInterface {
       if ($entity->hasField('field_assessments')) {
         if ($entity->field_assessments->count()) {
           foreach ($entity->field_assessments as $idx => $item) {
-            if (empty($item->entity)) {
+            if (empty($item->entity) || !$item->entity->isPublished()) {
               continue;
             }
             \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site] createItem site=@site year=@year site_assessment=@site_assessment',
@@ -142,7 +142,7 @@ class PrintPdf implements PrintPdfInterface {
       }
 
     }
-    if ($entity->bundle() == 'site_assessment' && !empty($entity->field_as_site->entity)) {
+    if ($entity->bundle() == 'site_assessment' && $entity->isPublished() && !empty($entity->field_as_site->entity)) {
       \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site_assessment] createItem site=@site year=@year site_assessment=@site_assessment',
         [
           '@site' => $entity->field_as_site->entity->id(),
@@ -208,7 +208,7 @@ class PrintPdf implements PrintPdfInterface {
       }
 
       $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
-      if (!$entity) {
+      if (!$entity || !$entity->isPublished()) {
         $this->queue->deleteItem($item);
         return;
       }
@@ -235,7 +235,10 @@ class PrintPdf implements PrintPdfInterface {
    * Save entity as pdf.
    */
   public function savePrintable(EntityInterface $entity, $file_path) {
-    return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
+    if ($entity->isPublished()) {
+      return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
+    }
+    return NULL;
   }
 
   /**
