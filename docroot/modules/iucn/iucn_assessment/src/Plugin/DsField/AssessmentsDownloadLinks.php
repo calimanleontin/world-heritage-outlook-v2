@@ -28,7 +28,7 @@ class AssessmentsDownloadLinks extends DsFieldBase {
     if ($node->hasField('field_assessments')) {
       if ($node->field_assessments->count()) {
         foreach ($node->field_assessments as $idx => $item) {
-          if (empty($item->entity)) {
+          if (empty($item->entity) || !$item->entity->isPublished()) {
             continue;
           }
           //TODO quick fix - removed access check
