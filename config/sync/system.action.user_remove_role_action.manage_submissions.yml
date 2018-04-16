@@ -1,0 +1,14 @@
+uuid: 5dca796b-bb65-406a-b9a4-4aaf81951574
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.manage_submissions
+  module:
+    - user
+id: user_remove_role_action.manage_submissions
+label: 'Remove the Manage submissions role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: manage_submissions
