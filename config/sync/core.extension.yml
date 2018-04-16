@@ -11,6 +11,7 @@ module:
   colorbox: 0
   config: 0
   config_filter: 0
+  config_ignore_keys: 0
   config_split: 0
   config_translation: 0
   contextual: 0
@@ -41,6 +42,7 @@ module:
   image_widget_crop: 0
   inline_responsive_images: 0
   iucn_assessment: 0
+  iucn_config_ignore: 0
   iucn_decision_tree: 0
   iucn_migrate: 0
   iucn_pdf: 0
