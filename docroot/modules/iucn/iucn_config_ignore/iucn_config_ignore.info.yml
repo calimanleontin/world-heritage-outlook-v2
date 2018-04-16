@@ -1,0 +1,7 @@
+name: iucn_site
+type: module
+description: 'IUCN Configuration Ignore'
+core: 8.x
+package: IUCN
+dependencies:
+  - config_ignore_keys

@@ -1,0 +1,14 @@
+uuid: 7fd53e86-c037-4fb0-999c-00d58a163cf2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.manage_submissions
+  module:
+    - user
+id: user_add_role_action.manage_submissions
+label: 'Add the Manage submissions role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: manage_submissions
