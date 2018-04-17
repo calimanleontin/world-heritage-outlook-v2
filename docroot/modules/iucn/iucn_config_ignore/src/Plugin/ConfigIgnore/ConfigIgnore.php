@@ -25,9 +25,6 @@ class ConfigIgnore extends PluginBase implements ConfigurationIgnorePluginInterf
       'webform.webform.ask_a_question' => [
         'handlers.email.settings.to_mail',
       ],
-      'webform.webform.contact' => [
-        'handlers.email_notification.settings.to_mail',
-      ],
       'webform.webform.site_feedback' => [
         'handlers.email.settings.to_mail',
       ],
