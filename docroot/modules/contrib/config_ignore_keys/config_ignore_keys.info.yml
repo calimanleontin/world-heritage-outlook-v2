@@ -1,0 +1,11 @@
+name: Config Ignore Keys
+type: module
+description: Allows the developer to ignore particular keys in the configuration
+# core: 8.x
+package: Config
+
+# Information added by Drupal.org packaging script on 2018-02-19
+version: '8.x-1.0'
+core: '8.x'
+project: 'config_ignore_keys'
+datestamp: 1519051392

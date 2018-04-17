@@ -130,6 +130,7 @@
     "drupal/captcha": "^1.0@beta",
     "drupal/chosen": "^2.3",
     "drupal/colorbox": "^1.4",
+    "drupal/config_ignore_keys": "^1.0",
     "drupal/config_split": "^1.0@beta",
     "drupal/core": "8.4.*",
     "drupal/devel": "^1.0@RC",
