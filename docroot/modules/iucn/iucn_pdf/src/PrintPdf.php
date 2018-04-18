@@ -51,7 +51,7 @@ class PrintPdf implements PrintPdfInterface {
     $this->entityTypeManager = $entity_type_manager;
 
     $this->printEngine = $plugin_manager->createSelectedInstance('pdf');
-    $this->directoryName = \Drupal::config('iucn_pdf.settings')->get('path');
+    $this->directoryName = 'download_pdf';
 
     $this->currentLanguage = \Drupal::languageManager()
       ->getCurrentLanguage()
@@ -89,7 +89,7 @@ class PrintPdf implements PrintPdfInterface {
    */
   public function savePrintable(EntityInterface $entity, $file_path) {
     if ($entity->isPublished()) {
-      return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'custom', $file_path);
+      return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
     }
     return NULL;
   }
@@ -115,7 +115,8 @@ class PrintPdf implements PrintPdfInterface {
    * Pdf real file path.
    */
   public function getRealPath($entity_id, $language, $year) {
-    return $this->getFilePath($entity_id, $language, $year);
+    $file_directory = \Drupal::service('file_system')->realpath("public://");
+    return $file_directory . '/' . $this->getFilePath($entity_id, $language, $year);
   }
 
 

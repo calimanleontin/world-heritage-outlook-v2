@@ -93,13 +93,7 @@ class PrintBuilder implements PrintBuilderInterface {
       $filename = $renderer->getFilename($entities) . '.' . $print_engine->getExportType()->getFileExtension();
     }
 
-    if ($scheme == 'custom') {
-      $uri = $filename;
-    }
-    else {
-      $uri = "$scheme://$filename";
-    }
-
+    $uri = "$scheme://$filename";
 
     // Save the file.
     return file_unmanaged_save_data($print_engine->getBlob(), $uri, FILE_EXISTS_REPLACE);
