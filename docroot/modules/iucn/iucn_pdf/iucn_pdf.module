@@ -9,11 +9,9 @@ use Drupal\node\Entity\Node;
  * Implements hook_node_update().
  */
 function iucn_pdf_node_update(Drupal\node\Entity\Node $node) {
-  /** @var \Drupal\node\Entity\Node $node */
-  if (($node->bundle() == 'site')||($node->bundle() == 'site_assessment') && $node->isPublished()) {
-    /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
+  if ($node->bundle() == 'site') {
     $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
-    $print_pdf->addToQueue($node);
+    $print_pdf->deletePdf($node);
   }
 }
 
@@ -54,8 +52,6 @@ function iucn_pdf_assessment_finalised_display(\Drupal\node\Entity\Node $site) {
   $param_helper = \Drupal::service('iucn_pdf.param_helper');
   $year = $param_helper->get('year', $iucn_config->get('assessment_year'));
 
-  //$active_date = $site->field_assessments->entity->field_as_cycle->value;
-  //$finalised = $site->field_assessments->entity->field_as_end_date->value;
   foreach ($site->field_assessments as $assessment) {
     if ($assessment->entity->field_as_cycle->value == $year) {
       $finalised = $site->field_assessments->entity->field_as_end_date->value;
@@ -64,16 +60,6 @@ function iucn_pdf_assessment_finalised_display(\Drupal\node\Entity\Node $site) {
   }
   return $finalised;
 }
-
-/**
- * Implements hook_cron().
- */
-function iucn_pdf_cron() {
-  /** @var \Drupal\iucn_pdf\PrintPdf $print_pdf */
-  $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
-  $print_pdf->runCron();
-}
-
 
 /**
  * Implements hook_theme().

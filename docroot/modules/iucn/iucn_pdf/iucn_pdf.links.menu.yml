@@ -1,7 +1,0 @@
-iucn_pdf.settings:
-  title: 'Site profile PDF generator'
-  description: 'Configure PDF generation during each CRON run'
-  route_name: iucn_pdf.settings
-  parent: who.admin_config_who
-  class: Drupal\Core\Menu\MenuLinkDefault
-  weight: 2
