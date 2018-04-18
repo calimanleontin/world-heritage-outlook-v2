@@ -1,0 +1,19 @@
+diff --git a/docroot/modules/contrib/entity_print/src/PrintBuilder.php b/docroot/modules/contrib/entity_print/src/PrintBuilder.php
+index 7da7a04..5033170 100644
+--- a/docroot/modules/contrib/entity_print/src/PrintBuilder.php
++++ b/docroot/modules/contrib/entity_print/src/PrintBuilder.php
+@@ -93,7 +93,13 @@ public function savePrintable(array $entities, PrintEngineInterface $print_engin
+       $filename = $renderer->getFilename($entities) . '.' . $print_engine->getExportType()->getFileExtension();
+     }
+ 
+-    $uri = "$scheme://$filename";
++    if ($scheme == 'custom') {
++      $uri = $filename;
++    }
++    else {
++      $uri = "$scheme://$filename";
++    }
++
+ 
+     // Save the file.
+     return file_unmanaged_save_data($print_engine->getBlob(), $uri, FILE_EXISTS_REPLACE);
