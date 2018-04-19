@@ -6,7 +6,6 @@ use Drupal\entity_print\Plugin\EntityPrintPluginManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\entity_print\PrintBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Queue\QueueFactory;
 use Drupal\node\Entity\Node;
 
 /**
@@ -27,23 +26,9 @@ class PrintPdf implements PrintPdfInterface {
    */
   protected $entityTypeManager;
 
-  /**
-   * Queue Factory.
-   *
-   * @var \Drupal\Core\Queue\QueueFactory
-   */
-  protected $queueFactory;
-
   protected $directoryName;
 
   protected $currentLanguage;
-
-  /**
-   * Queue.
-   *
-   * @var \Drupal\iucn_pdf\Plugin\QueueWorker\IucnPdfWorker
-   */
-  protected $queue;
 
   protected $printEngine;
 
@@ -56,25 +41,21 @@ class PrintPdf implements PrintPdfInterface {
    *   Main print controller.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Helper object for entity load.
-   * @param \Drupal\Core\Queue\QueueFactory $queue_factory
-   *   Queue service for node_ids.
    */
   public function __construct(EntityPrintPluginManagerInterface $plugin_manager,
                               PrintBuilderInterface $print_builder,
-                              EntityTypeManagerInterface $entity_type_manager,
-                              QueueFactory $queue_factory) {
+                              EntityTypeManagerInterface $entity_type_manager
+  ) {
 
     $this->printBuilder = $print_builder;
     $this->entityTypeManager = $entity_type_manager;
-    $this->queueFactory = $queue_factory;
 
     $this->printEngine = $plugin_manager->createSelectedInstance('pdf');
     $this->directoryName = 'download_pdf';
+
     $this->currentLanguage = \Drupal::languageManager()
       ->getCurrentLanguage()
       ->getId();
-    $this->queue = $this->queueFactory->get('iucn_pdf');
-    $this->queue->createQueue();
   }
 
   /**
@@ -91,76 +72,6 @@ class PrintPdf implements PrintPdfInterface {
   }
 
   /**
-   * Put all site assessments into queue.
-   */
-  public function queueAllPdfFiles() {
-    $query = \Drupal::entityQuery('node');
-    $query->condition('status', 1);
-    $query->condition('type', 'site_assessment');
-    $entity_ids = $query->execute();
-    if (!empty($entity_ids)) {
-      foreach ($entity_ids as $entity_id) {
-        // todo...
-        $this->queue->createItem(
-          [
-            'site_assessment' => $entity_id,
-          ]
-        );
-      }
-    }
-    return count($entity_ids);
-  }
-
-  /**
-   * Add site into queue.
-   */
-  public function addToQueue(EntityInterface $entity) {
-    if ($entity->bundle() == 'site') {
-      if ($entity->hasField('field_assessments')) {
-        if ($entity->field_assessments->count()) {
-          foreach ($entity->field_assessments as $idx => $item) {
-            if (empty($item->entity) || !$item->entity->isPublished()) {
-              continue;
-            }
-            \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site] createItem site=@site year=@year site_assessment=@site_assessment',
-              [
-                '@site' => $entity->id(),
-                '@site_assessment' => $item->entity->id(),
-                '@year' => $item->entity->field_as_cycle->value,
-              ]
-            );
-
-            $this->queue->createItem(
-              [
-                'site' => $entity->id(),
-                'site_assessment' => $item->entity->id(),
-                'year' => $item->entity->field_as_cycle->value,
-              ]
-            );
-          }
-        }
-      }
-
-    }
-    if ($entity->bundle() == 'site_assessment' && $entity->isPublished() && !empty($entity->field_as_site->entity)) {
-      \Drupal::service('logger.factory')->get('iucn_cron')->info('[addToQueue site_assessment] createItem site=@site year=@year site_assessment=@site_assessment',
-        [
-          '@site' => $entity->field_as_site->entity->id(),
-          '@site_assessment' => $entity->id(),
-          '@year' => $entity->field_as_cycle->value,
-        ]
-      );
-      $this->queue->createItem(
-        [
-          'site' => $entity->field_as_site->entity->id(),
-          'site_assessment' => $entity->id(),
-          'year' => $entity->field_as_cycle->value,
-        ]
-      );
-    }
-  }
-
-  /**
    * Get year from request.
    */
   public function getYear($entity, $year = NULL) {
@@ -171,64 +82,6 @@ class PrintPdf implements PrintPdfInterface {
       return $year;
     }
     return $param_helper->get('year');
-  }
-
-  /**
-   * Generate pdf file from sites.
-   */
-  public function runCron() {
-    global $base_url;
-
-    $cron_config = \Drupal::configFactory()->getEditable('iucn_pdf.settings');
-    $limit = $cron_config->get('sites_per_cron');
-    $count = $this->queue->numberOfItems();
-
-    $count = min($count, $limit);
-    if (!$count) {
-      return;
-    }
-
-    $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-
-    for ($i = 1; $i <= $count; $i++) {
-      $item = $this->queue->claimItem(60);
-
-      $year = @$item->data['year'];
-      $entity_id = @$item->data['site'];
-      $site_assessment = $item->data['site_assessment'];
-
-      if (!$entity_id) {
-        $entity = $this->entityTypeManager->getStorage('node')->load($site_assessment);
-        $entity_id = $entity->field_as_site->entity->id();
-        $year = $entity->field_as_cycle->value;
-      }
-      if (!$entity_id) {
-        $this->queue->deleteItem($item);
-        return;
-      }
-
-      $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
-      if (!$entity || !$entity->isPublished()) {
-        $this->queue->deleteItem($item);
-        return;
-      }
-      $this->getYear($entity, $year);
-
-      /** @var \Drupal\node\Entity\Node $entity */
-      $languages = array_keys($entity->getTranslationLanguages());
-      foreach ($languages as $langcode) {
-        $url = $base_url . '/';
-        if ($langcode != 'en') {
-          $url .= $langcode . '/';
-        }
-        $url .= 'node/' . $entity_id . '/pdf?year=' . $year;
-
-        \Drupal::service('logger.factory')->get('pdf_debug')->info('file_get_contents @url', ['@url' => $url]);
-
-        file_get_contents($url);
-        $this->queue->deleteItem($item);
-      }
-    }
   }
 
   /**
@@ -266,4 +119,28 @@ class PrintPdf implements PrintPdfInterface {
     return $file_directory . '/' . $this->getFilePath($entity_id, $language, $year);
   }
 
+
+  /**
+   * Delete pdf.
+   */
+  public function deletePdf(EntityInterface $entity) {
+    $years = [];
+    $currentYear = date('Y');
+    for ($i = 2014; $i <= $currentYear; $i += 3) {
+      $years[] = $i;
+    }
+    $languages = $entity->getTranslationLanguages();
+    foreach ($languages as $lang => $language) {
+      foreach ($years as $year) {
+        $realpath = $this->getRealPath($entity->id(), $lang, $year);
+        if (file_exists($realpath)) {
+          if (unlink($realpath)) {
+            \Drupal::logger('iucn_pdf')->notice('Successfully removed ' .  $realpath);
+          } else {
+            \Drupal::logger('iucn_pdf')->error('Could not remove ' .  $realpath);
+          }
+        }
+      }
+    }
+  }
 }

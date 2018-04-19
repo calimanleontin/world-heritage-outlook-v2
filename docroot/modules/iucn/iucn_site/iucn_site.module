@@ -22,8 +22,9 @@ function iucn_site_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('IUCN site related functionality') . '</p>';
       return $output;
-
+      break;
     default:
+      break;
   }
 }
 
