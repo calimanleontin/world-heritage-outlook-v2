@@ -25,7 +25,7 @@ docroot/MAINTAINERS.txt
 docroot/README.txt
 docroot/UPGRADE.txt
 docroot/web.config
-
+tmp/
 # Ignore configuration files that may contain sensitive information.
 docroot/sites/*/settings.local.php
 !docroot/sites/default/settings.testing.php
