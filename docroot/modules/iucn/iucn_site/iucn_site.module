@@ -109,10 +109,12 @@ function iucn_site_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
       }
     }
   }
+}
 
+function iucn_site_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
   // Create a new json file containing site geoJson and append it if another one doesn't exist already.
-  if ($node->bundle() == 'site') {
-    \Drupal::service('iucn_site.utils')->createGeoJson($node);
+  if ($entity->bundle() == 'site') {
+    \Drupal::service('iucn_site.utils')->createGeoJson($entity);
   }
 }
 
