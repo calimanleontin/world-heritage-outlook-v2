@@ -56,11 +56,7 @@ module.exports = function (grunt) {
       print: {
         options: {
           processors: [
-            require('postcss-rtl')({
-              options: {
-                onlyDirection: 'rtl'
-              }
-            }),
+            require('rtlcss'),
           ]
         },
         src: 'css/print-style-rtl.css'
@@ -71,7 +67,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: 'css',
-          src: ['print-style.css', '!print-style.min.css'],
+          src: ['print-style.css', 'print-style-rtl.css'],
           dest: 'css',
           ext: '.css'
         }]
@@ -86,11 +82,11 @@ module.exports = function (grunt) {
       },
       screen: {
         files: ['less/**/*.less', '!less/print-style.less', 'images/*.svg'],
-        tasks: ['less:screen', 'postcss:screen', 'less:print', 'cssmin:print']
+        tasks: ['screen']
       },
       print: {
-        files: ['less/print-style.less'],
-        tasks: ['less:print', 'copy:print', 'postcss:print', 'cssmin:print']
+        files: ['less/print-style.less', 'css/print-style-rtl-only.css'],
+        tasks: ['print']
       }
     },
     copy: {
@@ -126,6 +122,13 @@ module.exports = function (grunt) {
           'bootstrap/js/affix.js'
         ],
         dest: 'libraries/bootstrap/bootstrap.js'
+      },
+      print: {
+        src: [
+          'css/print-style-rtl.css',
+          'css/print-style-rtl-only.css'
+        ],
+        dest: 'css/print-style-rtl.css'
       }
     },
     uglify: {
@@ -147,7 +150,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('screen', ['less:screen', 'postcss:screen']);
 
-  grunt.registerTask('print', ['less:print', 'cssmin:print', 'postcss:print']);
+  grunt.registerTask('print', ['less:print', 'copy:print', 'concat:print', 'postcss:print', 'cssmin:print']);
 
   grunt.registerTask('build', ['screen', 'print']);
 
