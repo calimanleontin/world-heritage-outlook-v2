@@ -34,17 +34,36 @@ module.exports = function (grunt) {
     },
     postcss: {
       options: {
-        processors: [
-          require('postcss-cssnext')({
-            features: {
-              rem: false
-            }
-          }),
-          require('postcss-flexibility')
-        ]
+        map: {
+          inline: false, // save all sourcemaps as separate files...
+          annotation: 'css/' // ...to the specified directory
+        }
       },
-      dist: {
+      screen: {
+        options: {
+          processors: [
+            require('postcss-cssnext')({
+              features: {
+                rem: false
+              }
+            }),
+            require('postcss-flexibility'),
+            require('postcss-rtl'),
+          ],
+        },
         src: 'css/style.css'
+      },
+      print: {
+        options: {
+          processors: [
+            require('postcss-rtl')({
+              options: {
+                onlyDirection: 'rtl'
+              }
+            }),
+          ]
+        },
+        src: 'css/print-style-rtl.css'
       }
     },
     cssmin: {
@@ -67,11 +86,11 @@ module.exports = function (grunt) {
       },
       screen: {
         files: ['less/**/*.less', '!less/print-style.less', 'images/*.svg'],
-        tasks: ['less:screen', 'less:print', 'cssmin:print']
+        tasks: ['less:screen', 'postcss:screen', 'less:print', 'cssmin:print']
       },
       print: {
         files: ['less/print-style.less'],
-        tasks: ['less:print', 'cssmin:print']
+        tasks: ['less:print', 'copy:print', 'postcss:print', 'cssmin:print']
       }
     },
     copy: {
@@ -84,6 +103,10 @@ module.exports = function (grunt) {
             'simplebar/**',
             'flexibility/**',
         ]
+      },
+      print: {
+        src: 'css/print-style.css',
+        dest: 'css/print-style-rtl.css',
       }
     },
     concat: {
@@ -122,12 +145,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('nodemodules', ['copy:node_modules']);
 
-  grunt.registerTask('css', ['less', 'cssmin', 'postcss']);
+  grunt.registerTask('screen', ['less:screen', 'postcss:screen']);
+
+  grunt.registerTask('print', ['less:print', 'cssmin:print', 'postcss:print']);
+
+  grunt.registerTask('build', ['screen', 'print']);
 
   grunt.registerTask('js', ['concat', 'uglify']);
 
-  grunt.registerTask('prod', ['css']);
-
-  grunt.registerTask('default', ['less', 'cssmin', 'watch']);
+  grunt.registerTask('default', ['build', 'watch']);
 
 };

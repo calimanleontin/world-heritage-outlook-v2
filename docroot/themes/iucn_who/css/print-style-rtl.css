@@ -1,0 +1,559 @@
+@media screen and (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 768px) {
+}
+@media (max-width: 767px) {
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 768px) {
+}
+@media (max-width: 767px) {
+}
+@media (max-width: 767px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media (max-width: 767px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media screen and (min-width: 768px) {
+}
+@media screen and (max-width: 767px) {
+}
+@media screen and (max-width: 767px) {
+}
+body {
+  font-family: "DejaVu Sans", Helvetica, Arial, sans-serif;
+}
+[dir] body {
+  margin: 0;
+}
+header {
+  position: fixed;
+  top: -30px;
+  height: 60px;
+  z-index: -1;
+  font-size: .8em;
+}
+[dir=ltr] header {
+  left: 20px;
+  right: 0px;
+}
+[dir=rtl] header {
+  right: 20px;
+  left: 0px;
+}
+.pdf-header-cover {
+  z-index: 1;
+  position: absolute;
+  top: -30px;
+  width: 100%;
+  height: 100px;
+}
+[dir] .pdf-header-cover {
+  background: #FFFFFF;
+}
+[dir=ltr] .pdf-header-cover {
+  left: 0px;
+}
+[dir=rtl] .pdf-header-cover {
+  right: 0px;
+}
+.field--name-field-as-threats-in,
+.field--name-field-as-threats-extent {
+  display: inline;
+}
+.field--name-field-as-threats-extent {
+  text-transform: lowercase;
+}
+.page img {
+  max-width: 100%;
+  height: auto;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  page-break-after: avoid;
+}
+[dir] h1, [dir] h2, [dir] h3, [dir] h4, [dir] h5, [dir] h6 {
+  margin-bottom: .8em;
+  margin-top: 1.6em;
+}
+button,
+.field--name-assessments-links,
+.field--name-display-field-copynode-finalised-on,
+.assessment-expand {
+  display: none;
+}
+.showing-old-assessment .field--name-assessment-rating {
+  display: none !important;
+}
+.showing-old-assessment .hide-on-old-assessment {
+  display: none !important;
+}
+.showing-latest-assessment .field--name-assessment-rating {
+  display: block;
+}
+.showing-latest-assessment .field--name-assessment-rating .tab-pane {
+  display: none;
+}
+.showing-latest-assessment .field--name-assessment-rating .tab-pane.active {
+  display: block;
+}
+.showing-latest-assessment .field--name-field-image {
+  display: none;
+}
+.showing-latest-assessment .hide-on-latest-assessment {
+  display: none !important;
+}
+a {
+  color: #000000;
+  text-decoration: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+tbody td {
+  line-height: 1.1;
+}
+[dir] tbody td {
+  border-top: 1px solid #000;
+}
+th {
+  font-weight: bold;
+}
+th,
+td {
+  font-size: .8em;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+[dir] th, [dir] td {
+  padding: .5em;
+}
+[dir=ltr] th, [dir=ltr] td {
+  text-align: left;
+}
+[dir=rtl] th, [dir=rtl] td {
+  text-align: right;
+}
+.tab-title {
+  page-break-before: always;
+  text-transform: uppercase;
+}
+.panel-heading {
+  page-break-after: avoid;
+}
+[dir] .panel-heading {
+  margin-top: 1.5em;
+}
+.panel-title {
+  display: block;
+  font-weight: bold;
+  page-break-after: avoid;
+}
+[dir] .panel-title {
+  margin-bottom: .2em;
+}
+.panel-title h3,
+.panel-title h4 {
+  display: inline;
+}
+[dir] .panel-title h3, [dir] .panel-title h4 {
+  margin-bottom: 0;
+}
+.panel-title .field__items,
+.panel-title .field--items,
+.panel-title .field--item {
+  display: inline;
+}
+.panel-title-terms .field,
+.field--name-field-as-global-assessment-level,
+.field--name-field-as-vass-wh-state,
+.field--name-field-as-threats-rating,
+.field--name-field-as-protection-ov-rating,
+.field--name-display-field-copynode-protection-overall-rating,
+.field--name-field-as-threats-potent-rating,
+.field--name-display-field-copynode-assessment-trend-copy {
+  font-size: .8em;
+  font-weight: bold;
+  page-break-after: avoid;
+}
+.panel-title-terms-first .field--item {
+  display: inline-block;
+  vertical-align: middle;
+  page-break-after: avoid;
+}
+[dir] .panel-body {
+  clear: both;
+}
+.field--label {
+  font-weight: bold;
+}
+.field--name-body .field--label,
+.field--name-field-country .field--label,
+.field--name-field-as-end-date .field--label,
+.field--name-field-inscription-year .field--label,
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-designation .field--label {
+  font-weight: normal;
+}
+.field--label-inline .field--label:after,
+.field--name-field-as-end-date .field--label:after,
+.field--name-field-inscription-year .field--label:after,
+.field--name-field-inscription-criteria .field--label:after,
+.field--name-field-designation .field--label:after {
+  content: ':';
+}
+.field--label-inline .field--label,
+.field--name-field-as-end-date .field--label,
+.field--name-field-inscription-year .field--label,
+.field--name-field-inscription-criteria .field--label,
+.field--name-field-designation .field--label,
+.field--label-inline .field--item,
+.field--name-field-as-end-date .field--item,
+.field--name-field-inscription-year .field--item,
+.field--name-field-inscription-criteria .field--item,
+.field--name-field-designation .field--item,
+.field--label-inline .field__items,
+.field--name-field-as-end-date .field__items,
+.field--name-field-inscription-year .field__items,
+.field--name-field-inscription-criteria .field__items,
+.field--name-field-designation .field__items {
+  display: inline;
+  vertical-align: middle;
+}
+[dir=ltr] .field--label-inline .field--item + .field--item, [dir=ltr] .field--name-field-as-end-date .field--item + .field--item, [dir=ltr] .field--name-field-inscription-year .field--item + .field--item, [dir=ltr] .field--name-field-inscription-criteria .field--item + .field--item, [dir=ltr] .field--name-field-designation .field--item + .field--item {
+  margin-left: .1em;
+}
+[dir=rtl] .field--label-inline .field--item + .field--item, [dir=rtl] .field--name-field-as-end-date .field--item + .field--item, [dir=rtl] .field--name-field-inscription-year .field--item + .field--item, [dir=rtl] .field--name-field-inscription-criteria .field--item + .field--item, [dir=rtl] .field--name-field-designation .field--item + .field--item {
+  margin-right: .1em;
+}
+[dir] .field--name-body, [dir] .field--type-string-long, [dir] .field--name-display-field-copynode-protection-overall-effectiveness, [dir] .field--name-display-field-copynode-justification-of-assessment-valu {
+  margin-top: 1em;
+}
+.field--name-field-country .field--item {
+  display: inline;
+  vertical-align: top;
+}
+.field--name-field-as-end-date {
+  color: #818181;
+  line-height: 1.3;
+}
+[dir=ltr] .field--name-field-as-end-date {
+  float: right;
+}
+[dir=rtl] .field--name-field-as-end-date {
+  float: left;
+}
+[dir] .field--name-field-as-end-date + div {
+  clear: both;
+}
+.field--name-field-as-end-date .field--label {
+  font-weight: normal;
+}
+.field--name-field-as-end-date .field--label:after {
+  display: none;
+}
+.field--name-field-as-end-date .field--label,
+.field--name-field-as-end-date .field--item {
+  display: inline;
+  vertical-align: middle;
+}
+[dir=ltr] .field--name-field-as-end-date .field--label, [dir=ltr] .field--name-field-as-end-date .field--item {
+  padding-right: 0;
+}
+[dir=rtl] .field--name-field-as-end-date .field--label, [dir=rtl] .field--name-field-as-end-date .field--item {
+  padding-left: 0;
+}
+[dir] .field--name-field-as-global-assessment-text {
+  margin-top: 1em;
+}
+.conservation-outlook-summary-group h3 {
+  font-size: 1.3em;
+}
+[dir] .conservation-outlook-summary-group h3 {
+  margin-top: 0;
+}
+[dir=ltr] .conservation-outlook-summary-group h3 {
+  float: left;
+}
+[dir=rtl] .conservation-outlook-summary-group h3 {
+  float: right;
+}
+[dir] .assessment-section {
+  margin-top: 2em;
+}
+[dir] .html-list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.html-list > div:first-child:after {
+  content: ': ';
+}
+[dir=ltr] .html-list .inline-element-list {
+  margin-left: 1em;
+}
+[dir=rtl] .html-list .inline-element-list {
+  margin-right: 1em;
+}
+.html-list .inline-element-list > div {
+  display: inline;
+  vertical-align: middle;
+}
+.html-list .inline-element-list:before {
+  content: '-';
+  display: inline;
+  vertical-align: middle;
+}
+[dir=ltr] .html-list .inline-element-list:before {
+  margin-right: .1em;
+}
+[dir=rtl] .html-list .inline-element-list:before {
+  margin-left: .1em;
+}
+[dir=ltr] .html-list .inline-element-list > div:first-child {
+  margin-right: .1em;
+}
+[dir=rtl] .html-list .inline-element-list > div:first-child {
+  margin-left: .1em;
+}
+.html-list .inline-element-list > div:first-child:after {
+  content: ': ';
+}
+.html-list .inline-element-list > .field {
+  display: inline;
+  vertical-align: middle;
+}
+.html-list .inline-element-list > .field:after {
+  content: ', ';
+}
+.html-list .inline-element-list > .field:last-child:after {
+  content: '';
+}
+.html-list .inline-element-list > .field--name-field-as-benefits-commun-out:before {
+  content: '';
+}
+[dir] .assessment-projects.assessment-toggle > .panel-heading, [dir] .assessment-section > .assessment-toggle > .panel-heading {
+  border-bottom: 2px solid #000000;
+}
+[dir] .assessment-projects.assessment-toggle > .panel-heading > .panel-title, [dir] .assessment-section > .assessment-toggle > .panel-heading > .panel-title {
+  margin-bottom: .5em;
+}
+.iucn-assessment-panel-container .panel {
+  position: relative;
+}
+[dir=ltr] .iucn-assessment-panel-container .panel {
+  padding-left: 1em;
+}
+[dir=rtl] .iucn-assessment-panel-container .panel {
+  padding-right: 1em;
+}
+.iucn-assessment-panel-container .panel-title:before {
+  content: '▶';
+  display: inline;
+  font-size: .9em;
+  position: absolute;
+}
+[dir=ltr] .iucn-assessment-panel-container .panel-title:before {
+  left: 0;
+  margin-right: .2em;
+}
+[dir=rtl] .iucn-assessment-panel-container .panel-title:before {
+  right: 0;
+  margin-left: .2em;
+}
+.showing-latest-assessment h1 {
+  color: #134780;
+}
+[dir] .showing-latest-assessment h1 {
+  padding-bottom: 0.2em;
+  padding-top: .2em;
+}
+[dir=ltr] .showing-latest-assessment h1 {
+  border-left: 10px solid #134780;
+  padding-left: 10px;
+}
+[dir=rtl] .showing-latest-assessment h1 {
+  border-right: 10px solid #134780;
+  padding-right: 10px;
+}
+.showing-latest-assessment .assessment-section > h3 {
+  color: #134780;
+}
+.showing-latest-assessment .conservation-outlook-summary-group {
+  color: #134780;
+}
+[dir] .showing-latest-assessment .conservation-outlook-summary-group {
+  padding-bottom: .7em;
+  padding-top: .7em;
+}
+[dir=ltr] .showing-latest-assessment .conservation-outlook-summary-group {
+  border-left: .4em solid;
+  padding-left: .25em;
+}
+[dir=rtl] .showing-latest-assessment .conservation-outlook-summary-group {
+  border-right: .4em solid;
+  padding-right: .25em;
+}
+[dir] .showing-latest-assessment .conservation-outlook-summary-group h3 {
+  margin-bottom: .3em;
+}
+.showing-latest-assessment .field--name-field-as-global-assessment-level {
+  text-transform: uppercase;
+}
+.showing-latest-assessment .coming-soon > .field--item,
+.showing-latest-assessment .coming-soon.field--label-hidden {
+  color: #7e7e7e;
+}
+.showing-latest-assessment .data-deficient > .field--item,
+.showing-latest-assessment .data-deficient.field--label-hidden {
+  color: #333333;
+}
+.showing-latest-assessment .critical > .field--item,
+.showing-latest-assessment .critical.field--label-hidden {
+  color: #ef3133;
+}
+.showing-latest-assessment .significant-concern > .field--item,
+.showing-latest-assessment .significant-concern.field--label-hidden {
+  color: #f69232;
+}
+.showing-latest-assessment .good-concerns > .field--item,
+.showing-latest-assessment .good-concerns.field--label-hidden {
+  color: #9cd07d;
+}
+.showing-latest-assessment .good > .field--item,
+.showing-latest-assessment .good.field--label-hidden {
+  color: #3bb55e;
+}
+.showing-latest-assessment .tab--summary .iucn-threat--data-deficient > .field--item,
+.showing-latest-assessment .tab--summary .iucn-threat--data-deficient.field--label-hidden {
+  color: #333333;
+}
+.showing-latest-assessment .tab--summary .iucn-threat--very-high-threat > .field--item,
+.showing-latest-assessment .tab--summary .iucn-threat--very-high-threat.field--label-hidden {
+  color: #ef3133;
+}
+.showing-latest-assessment .tab--summary .iucn-threat--high-threat > .field--item,
+.showing-latest-assessment .tab--summary .iucn-threat--high-threat.field--label-hidden {
+  color: #f69232;
+}
+.showing-latest-assessment .tab--summary .iucn-threat--low-threat > .field--item,
+.showing-latest-assessment .tab--summary .iucn-threat--low-threat.field--label-hidden {
+  color: #9cd07d;
+}
+.showing-latest-assessment .tab--summary .iucn-threat--very-low-threat > .field--item,
+.showing-latest-assessment .tab--summary .iucn-threat--very-low-threat.field--label-hidden {
+  color: #3bb55e;
+}
+.showing-latest-assessment .tab--summary .iucn-state--data-deficient > .field--item,
+.showing-latest-assessment .tab--summary .iucn-state--data-deficient.field--label-hidden {
+  color: #333333;
+}
+.showing-latest-assessment .tab--summary .iucn-state--critical > .field--item,
+.showing-latest-assessment .tab--summary .iucn-state--critical.field--label-hidden {
+  color: #ef3133;
+}
+.showing-latest-assessment .tab--summary .iucn-state--high-concern > .field--item,
+.showing-latest-assessment .tab--summary .iucn-state--high-concern.field--label-hidden {
+  color: #f69232;
+}
+.showing-latest-assessment .tab--summary .iucn-state--low-concern > .field--item,
+.showing-latest-assessment .tab--summary .iucn-state--low-concern.field--label-hidden {
+  color: #9cd07d;
+}
+.showing-latest-assessment .tab--summary .iucn-state--good > .field--item,
+.showing-latest-assessment .tab--summary .iucn-state--good.field--label-hidden {
+  color: #3bb55e;
+}
+.showing-latest-assessment .tab--summary .iucn-pr-rating--data-deficient > .field--item,
+.showing-latest-assessment .tab--summary .iucn-pr-rating--data-deficient.field--label-hidden {
+  color: #333333;
+}
+.showing-latest-assessment .tab--summary .iucn-pr-rating--serious-concern > .field--item,
+.showing-latest-assessment .tab--summary .iucn-pr-rating--serious-concern.field--label-hidden {
+  color: #ef3133;
+}
+.showing-latest-assessment .tab--summary .iucn-pr-rating--some-concern > .field--item,
+.showing-latest-assessment .tab--summary .iucn-pr-rating--some-concern.field--label-hidden {
+  color: #f69232;
+}
+.showing-latest-assessment .tab--summary .iucn-pr-rating--effective > .field--item,
+.showing-latest-assessment .tab--summary .iucn-pr-rating--effective.field--label-hidden {
+  color: #9cd07d;
+}
+.showing-latest-assessment .tab--summary .iucn-pr-rating--highly-effective > .field--item,
+.showing-latest-assessment .tab--summary .iucn-pr-rating--highly-effective.field--label-hidden {
+  color: #3bb55e;
+}
+.latest-assessment-notice {
+  font-size: .9em;
+}
+[dir] .latest-assessment-notice {
+  margin-top: .5em;
+}
+.latest-assessment-notice,
+.latest-assessment-notice a {
+  color: #ef3133;
+}
+.showing-old-assessment .field--name-field-as-end-date {
+  display: none;
+}
+.pdf-tab-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+[dir] .pdf-tab-title {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+[dir] .panel-body > .field > .field--label, [dir] .panel-body > .panel > .panel-heading > .panel-title {
+  margin-top: 1em;
+}
+[dir=ltr] .iucn-assessment-panel-container .panel-body {
+  padding-left: 0;
+}
+[dir=rtl] .iucn-assessment-panel-container .panel-body {
+  padding-right: 0;
+}
+.showing-latest-assessment .assessment-section .assessment-toggle .assessment-toggle .field--label-above > .field--label {
+  color: #134780;
+}
+[dir=ltr] .assessment-section .assessment-toggle .assessment-toggle > .panel-collapse {
+  padding-left: 1em;
+}
+[dir=rtl] .assessment-section .assessment-toggle .assessment-toggle > .panel-collapse {
+  padding-right: 1em;
+}
+[dir] .values-summary-group > h3, [dir] .threats-summary-group > h3, [dir] .protection-management-summary-group > h3 {
+  margin-bottom: .3em;
+}
+.invisible {
+  display: none !important;
+}
+/*# sourceMappingURL=print-style-rtl.css.map */

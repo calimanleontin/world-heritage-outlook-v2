@@ -139,6 +139,9 @@ table.table-striped {
   height: @line-height-base * 1em;
   vertical-align: middle;
   width: 2.5em;
+  [dir="rtl"] & {
+    transform: rotate(180deg);
+  }
 }
 .back-icon {
   .svg-icon(icon-backarrow, @iucn-blue-light);
@@ -279,6 +282,7 @@ ol {
       display: block;
       position: absolute;
       right: 100%;
+      left: auto;
       top: 0;
       transform: rotateY(-80deg);
       transform-origin: right;
@@ -328,6 +332,9 @@ ol {
         position: absolute;
         top: 0;
         left: -1.5em;
+        [dir="rtl"] & {
+          transform: rotate(180deg);
+        }
       }
     }
   }
