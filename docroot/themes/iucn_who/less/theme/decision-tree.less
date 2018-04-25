@@ -1,5 +1,7 @@
 @decision-tree-border-radius: 6px;
 @decision-tree-final-bg: #daf8c9;
+@decision-tree-default: @iucn-gray-lighter;
+@decision-tree-selected:  #afe6ff;
 
 .view-decision-tree {
   .views-row + .views-row {
@@ -42,7 +44,7 @@
   transition: border-color .2s;
   .decision-button-holder-container.active-inside:hover + &,
   .node--type-decision.node--view-mode-ajax:hover ~ & {
-    border-color: @iucn-blue-lightest;
+    border-color: @decision-tree-selected;
   }
 
   > .iucn-who-decision-tree-group:only-child,
@@ -59,8 +61,9 @@
 }
 
 .decision-button-holder {
-  background-color: @iucn-gray-lighter;
+  background-color: @decision-tree-default;
   border-radius: @decision-tree-border-radius;
+  color: @text-color;
   display: block;
   font-size: 1.5em;
   font-weight: bold;
@@ -71,11 +74,11 @@
   text-align: center;
 
   &.active {
-    background-color: @iucn-blue-lightest;
-    color: @link-color;
+    background-color: @decision-tree-selected;
+    color: @text-color;
     &:before,
     &:after {
-      background-color: @iucn-blue-lightest;
+      background-color: @decision-tree-selected;
       content: '';
       display: inline-block;
       height: @line-height-computed;
@@ -88,7 +91,7 @@
     &:before { bottom: 100%; }
     &:after { top: 100%; }
     &.has-final-decision:after {
-      background-image: linear-gradient(to bottom, @iucn-blue-lightest, @decision-tree-final-bg);
+      background-image: linear-gradient(to bottom, @decision-tree-selected, @decision-tree-final-bg);
     }
     &:active,
     &:focus {
@@ -99,7 +102,7 @@
 }
 
 .node--type-decision.node--view-mode-ajax {
-  background-color: @iucn-blue-lightest;
+  background-color: @decision-tree-selected;
   border-radius: @decision-tree-border-radius;
   flex: 1;
   margin: 0;
@@ -198,8 +201,8 @@
     height: 9999%;
     left: -2rem;
     margin-top: 1rem;
-    border-left: 1rem solid @iucn-blue-lightest;
-    border-bottom: 1rem solid @iucn-blue-lightest;
+    border-left: 1rem solid @decision-tree-selected;
+    border-bottom: 1rem solid @decision-tree-selected;
     top: 50%;
     transform: translateY(-100%);
   }
