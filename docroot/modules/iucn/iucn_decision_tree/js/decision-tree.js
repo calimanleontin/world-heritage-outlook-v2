@@ -16,6 +16,9 @@
     attach: function (context, settings) {
       $( document ).on( "click", "a[rel=load-decisions]", function() {
         var $this = $(this);
+
+        if($this.hasClass('active')) { return false; }
+
         var $decisions = $this.data('decisions');
         var $container = $this.data('container');
         var $container_element = $('#' + $this.data('container'));
