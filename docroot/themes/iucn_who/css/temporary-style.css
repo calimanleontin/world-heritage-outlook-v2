@@ -1,7 +1,7 @@
 /*Temporarily hide certain blocks and fields*/
-#block-languagedropdownswitcher {
+/* #block-languagedropdownswitcher {
   display: none !important;
-}
+} */
 
 #block-designation {
   display: none !important;

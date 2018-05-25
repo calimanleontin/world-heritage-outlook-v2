@@ -27,6 +27,9 @@
       height: @line-height-base * 1em;
       display: inline-block;
       vertical-align: middle;
+      [dir="rtl"] & {
+        transform: rotate(180deg);
+      }
     }
     span[aria-hidden="true"] {
       font-size: 0;

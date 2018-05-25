@@ -70,3 +70,8 @@ print-styling:
     theme:
       css/print-style.css: { minified: true }
       css/temporary-style.css: {}
+
+print-styling-rtl:
+  css:
+    theme:
+      css/print-style-rtl.css: { minified: true }

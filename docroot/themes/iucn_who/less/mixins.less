@@ -377,6 +377,9 @@
   & {
     ol.iucn-list-@{index} {
       .loop-iucn-arrow(@index);
+
+        [dir="rtl"] & { padding-right: 0; }
+
     }
 
     // next iteration
@@ -390,6 +393,7 @@
     li.iucn-arrow:nth-child(@{newIndex}):before {
       //3
       transform: rotateY(-80deg) skewY( (@newIndex - 1) * (18deg) - (9 * (@index - 1)) );
+      [dir="rtl"] & { display: none; }
     }
     // next iteration
     .loop-iucn-arrow((@index-inner - 1));

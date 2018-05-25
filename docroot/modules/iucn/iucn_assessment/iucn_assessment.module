@@ -72,6 +72,11 @@ function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInte
   global $_iucn_assessment_is_latest_assessment;
   // Show a notice on PDF print that when is not latest.
   if ($entity->bundle() == 'site' && $view_mode == 'pdf') {
+    // Right to Left Support.
+    $language_direction = \Drupal::languageManager()->getCurrentLanguage()->getDirection();
+    if (\Drupal\Core\Language\LanguageInterface::DIRECTION_RTL == $language_direction) {
+      $build['#attributes']['dir'] = 'rtl';
+    }
     if (empty($_iucn_assessment_is_latest_assessment)) {
       $build['#attributes']['class'][] = 'showing-old-assessment';
     }
