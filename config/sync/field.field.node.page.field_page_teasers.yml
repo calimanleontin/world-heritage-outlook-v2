@@ -1,20 +1,18 @@
-uuid: 2fd2b7d7-ffb1-46d5-bf48-2b75816e8f7f
+uuid: 489a7682-7e52-460a-9b9f-514721ee9a3b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_page_elements
+    - field.storage.node.field_page_teasers
     - node.type.page
-    - paragraphs.paragraphs_type.content_html
-    - paragraphs.paragraphs_type.image_grid
-    - paragraphs.paragraphs_type.numbered_heading
+    - paragraphs.paragraphs_type.teaser
   module:
     - entity_reference_revisions
-id: node.page.field_page_elements
-field_name: field_page_elements
+id: node.page.field_page_teasers
+field_name: field_page_teasers
 entity_type: node
 bundle: page
-label: 'Page Elements'
+label: 'Page Teasers'
 description: ''
 required: false
 translatable: false
@@ -24,31 +22,8 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      content_html: content_html
-      numbered_heading: numbered_heading
-      image_grid: image_grid
+      teaser: teaser
     target_bundles_drag_drop:
-      danger_list:
-        weight: -15
-        enabled: false
-      content_html:
-        enabled: true
-        weight: -14
-      content_teasers:
-        weight: -13
-        enabled: false
-      number_heading_list:
-        weight: -12
-        enabled: false
-      numbered_heading:
-        enabled: true
-        weight: -11
-      teaser:
-        weight: -9
-        enabled: false
-      image_grid:
-        enabled: true
-        weight: 12
       as_site_benefit:
         weight: 17
         enabled: false
@@ -70,10 +45,31 @@ settings:
       as_site_value_wh:
         weight: 23
         enabled: false
+      content_html:
+        weight: 24
+        enabled: false
+      content_teasers:
+        weight: 25
+        enabled: false
+      danger_list:
+        weight: 26
+        enabled: false
       decision:
         weight: 27
         enabled: false
-      image_link:
+      image_grid:
         weight: 28
         enabled: false
+      image_link:
+        weight: 29
+        enabled: false
+      number_heading_list:
+        weight: 30
+        enabled: false
+      numbered_heading:
+        weight: 31
+        enabled: false
+      teaser:
+        enabled: true
+        weight: 32
 field_type: entity_reference_revisions
