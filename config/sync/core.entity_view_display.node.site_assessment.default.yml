@@ -39,6 +39,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_text
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_date_published
     - node.type.site_assessment
   module:
@@ -46,6 +47,7 @@ dependencies:
     - ds
     - entity_reference_revisions
     - field_group
+    - file
     - user
 third_party_settings:
   ds:
@@ -935,6 +937,13 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+  field_assessment_file:
+    weight: 45
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
