@@ -7112,7 +7112,9 @@ button.close {
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:before,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
 .iucn-site-wrapper .nav-tabs:before,
-.iucn-site-wrapper .nav-tabs:after {
+.iucn-site-wrapper .nav-tabs:after,
+.html-list:before,
+.html-list:after {
   content: " ";
   display: table;
 }
@@ -7135,7 +7137,8 @@ button.close {
 .filter-wrapper:after,
 .container-fluid article.page:after,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
-.iucn-site-wrapper .nav-tabs:after {
+.iucn-site-wrapper .nav-tabs:after,
+.html-list:after {
   clear: both;
 }
 .center-block {
