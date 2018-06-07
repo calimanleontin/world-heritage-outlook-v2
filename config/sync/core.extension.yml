@@ -37,6 +37,7 @@ module:
   geofield_map: 0
   google_analytics: 0
   google_maps_api: 0
+  honeypot: 0
   image: 0
   image_effects: 0
   image_widget_crop: 0
