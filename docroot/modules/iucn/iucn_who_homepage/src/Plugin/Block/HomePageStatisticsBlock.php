@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_who_core\SiteStatus;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\website_utilities\DrupalInstance;
+use Drupal\Core\Language\LanguageInterface;
 
 /**
  * @Block(
@@ -88,6 +89,8 @@ class HomePageStatisticsBlock extends BlockBase {
 
 
   public function getStatistics() {
+    $current_langcode = \Drupal::service('language_manager')->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+
     $ret = [];
     $terms = SiteStatus::getStatistictsTerms();
     $statistics = [];
@@ -97,13 +100,16 @@ class HomePageStatisticsBlock extends BlockBase {
     foreach($statistics as $tid => $percentage) {
       /** @var \Drupal\taxonomy\TermInterface $term */
       $term = Term::load($tid);
+
+      $taxonomy_term_trans = \Drupal::service('entity.repository')->getTranslationFromContext($term, $current_langcode);
       $id = $term->field_css_identifier->value;
       $ret[$id] = [
         'id' => $id,
         'value' => $percentage,
-        'label' => $term->label(),
+        'label' => $taxonomy_term_trans->label(),
       ];
     }
+
     return $ret;
   }
 }
