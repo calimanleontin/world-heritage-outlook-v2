@@ -183,31 +183,39 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
   private function getMarkersIcons() {
     $ret = [];
     $status = SitesQueryUtil::getSiteConservationRatings();
+
+
     $path = drupal_get_path('module', 'iucn_who_homepage');
     $absolute_url =  sprintf('/%s/dist/spritesheet.png', $path);
     $json_path = $path . '/dist/sprites.json';
 
     $sprite_json = file_get_contents($json_path, TRUE);
     $decoded_json = JSON::decode($sprite_json);
-
     foreach($status as $term) {
-      $term_identifier = $term->field_css_identifier->value;
-      $term_data = $decoded_json['marker-' . $term_identifier];
-      $term_data_active = $decoded_json['marker-' . $term_identifier . '-active'];
-      $ret['icon' . $term->id()] = [
-        'url' => $absolute_url,
-        'origin_x' => $term_data['x'],
-        'origin_y' => $term_data['y'],
-        'width' => $term_data['width'],
-        'height' => $term_data['height'],
-      ];
-      $ret['icon' . $term->id() . 'Active'] = [
-        'url' => $absolute_url,
-        'origin_x' => $term_data_active['x'],
-        'origin_y' => $term_data_active['y'],
-        'width' => $term_data_active['width'],
-        'height' => $term_data_active['height'],
-      ];
+      if($term_identifier = $term->get('field_css_identifier')->value) {
+        if(isset($decoded_json['marker-' . $term_identifier]) && isset($decoded_json['marker-' . $term_identifier .'-active'])) {
+          $term_data = $decoded_json['marker-' . $term_identifier];
+          $term_data_active = $decoded_json['marker-' . $term_identifier . '-active'];
+          $ret['icon' . $term->id()] = [
+            'url' => $absolute_url,
+            'origin_x' => $term_data['x'],
+            'origin_y' => $term_data['y'],
+            'width' => $term_data['width'],
+            'height' => $term_data['height'],
+          ];
+          $ret['icon' . $term->id() . 'Active'] = [
+            'url' => $absolute_url,
+            'origin_x' => $term_data_active['x'],
+            'origin_y' => $term_data_active['y'],
+            'width' => $term_data_active['width'],
+            'height' => $term_data_active['height'],
+          ];
+        }
+         else {
+           $ret['icon' . $term->id()] = [];
+           $ret['icon' . $term->id() . 'Active'] = [];
+         }
+      }
     }
     return $ret;
   }
