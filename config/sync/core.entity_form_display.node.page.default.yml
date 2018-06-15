@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.page.field_metatags
     - field.field.node.page.field_page_elements
+    - field.field.node.page.field_page_teasers
     - node.type.page
   module:
     - metatag
@@ -22,12 +23,24 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_metatags:
-    weight: 122
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: metatag_firehose
     region: content
   field_page_elements:
+    type: entity_reference_paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_page_teasers:
     type: entity_reference_paragraphs
     weight: 1
     settings:
@@ -56,7 +69,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 121
+    weight: 8
     third_party_settings: {  }
     region: content
   title:
@@ -68,8 +81,10 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 7
     region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 4

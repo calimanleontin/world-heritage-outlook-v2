@@ -115,10 +115,21 @@ class PrintPdf implements PrintPdfInterface {
    * Pdf real file path.
    */
   public function getRealPath($entity_id, $language, $year) {
+    if ($uploaded_pdf = $this->uploadedPdf($entity_id, $language, $year)) {
+      return $uploaded_pdf;
+    }
     $file_directory = \Drupal::service('file_system')->realpath("public://");
     return $file_directory . '/' . $this->getFilePath($entity_id, $language, $year);
   }
 
+
+  /**
+   * Pdf real file path of generated PDFs.
+   */
+  public function getRealPathGenerated($entity_id, $language, $year) {
+    $file_directory = \Drupal::service('file_system')->realpath("public://");
+    return $file_directory . '/' . $this->getFilePath($entity_id, $language, $year);
+  }
 
   /**
    * Delete pdf.
@@ -132,7 +143,7 @@ class PrintPdf implements PrintPdfInterface {
     $languages = $entity->getTranslationLanguages();
     foreach ($languages as $lang => $language) {
       foreach ($years as $year) {
-        $realpath = $this->getRealPath($entity->id(), $lang, $year);
+        $realpath = $this->getRealPathGenerated($entity->id(), $lang, $year);
         if (file_exists($realpath)) {
           if (unlink($realpath)) {
             \Drupal::logger('iucn_pdf')->notice('Successfully removed ' .  $realpath);
@@ -142,5 +153,35 @@ class PrintPdf implements PrintPdfInterface {
         }
       }
     }
-  }
+ }
+
+  /**
+   * Check if the pdf is generated or uploaded.
+   */
+ public function uploadedPdf($entity_id, $language , $year ){
+   $node = Node::load($entity_id);
+   if ($node->hasField('field_assessments')) {
+     if ($node->field_assessments->count()) {
+       foreach ($node->field_assessments as $idx => $item) {
+         $site_assessment_translations = $item->entity->getTranslationLanguages();
+         if (isset($site_assessment_translations[$language])) {
+            $assessment = $item->entity->getTranslation($language);
+         }
+         if ( $assessment
+           && $assessment->field_as_cycle->value == $year
+           && $assessment_file = $assessment->get('field_assessment_file')->getValue()
+         ) {
+           $fid = $assessment_file[0]['target_id'];
+           if ($file = \Drupal\file\Entity\File::load($fid)) {
+             /** @var \Drupal\file\Entity\File $file */
+             return $file->getFileUri();
+           }
+
+         }
+       }
+     }
+   }
+   return FALSE;
+ }
+
 }

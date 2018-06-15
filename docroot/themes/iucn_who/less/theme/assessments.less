@@ -172,7 +172,6 @@
   .field--name-body {
     margin-top: 1em;
   }
-
   .nav-tabs {
     .container();
     .remify(font-size, 15px);
@@ -184,6 +183,9 @@
     > li > a {
       .remify(padding, 20px);
       background-position: 1.5em 3em;
+      [dir="rtl"] & {
+        background-position: ~'calc(100% - 1.5em)' 3em;
+      }
       background-size: auto 4em;
       color: @text-color;
       display: flex;
@@ -345,6 +347,9 @@
       display: inline-block;
       vertical-align: middle;
       margin-left: .5em;
+      [dir="rtl"] & {
+        transform: rotate(180deg);
+      }
     }
   }
   .tab-title {
@@ -576,7 +581,7 @@
   }
   .panel-title:before {
     .svg-icon(list-icon);
-    background-position: left center;
+    background-position: left center /* rtl:ignore */ ;
     background-size: contain;
     content: '';
     display: block;
@@ -587,6 +592,9 @@
     top: 10px;
     left: @grid-gutter-width / 2;
     margin-top: .2em;
+    [dir="rtl"] & {
+      transform: rotate(180deg);
+    }
   }
   .panel-body {
     padding-top: 0;
@@ -876,6 +884,9 @@
       display: inline-block;
       height: 1em;
       width: 2em;
+      [dir="rtl"] & {
+        transform: rotate(180deg);
+      }
     }
   }
   @media @grid-desktop {

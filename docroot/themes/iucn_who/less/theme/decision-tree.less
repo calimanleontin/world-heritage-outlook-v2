@@ -1,59 +1,232 @@
-.decision{
-  a[rel="bookmark"]{
+@decision-tree-border-radius: 6px;
+@decision-tree-final-bg: #daf8c9;
+@decision-tree-default: @iucn-gray-lighter;
+@decision-tree-selected:  #afe6ff;
+
+.view-decision-tree {
+  .views-row + .views-row {
+    margin-top: (2 * @line-height-computed);
+  }
+}
+
+.decision {
+  a[rel="bookmark"] {
     display: block;
   }
 }
-#block-decisiontree{
-  clear:both;
+
+#block-decisiontree {
+  clear: both;
 }
-.decision-button-holder{
+
+.decision-tree-holder {
+  width: 100%;
+}
+
+.decision-tree-holder.media--loading {
+  margin: 15px 0;
+  min-height: (2 * @line-height-computed);
+}
+
+.decision-tree-holder:not(:empty) {
+  align-items: flex-start;
+  // border: 2px dashed #ddd;
   border-radius: 6px;
-  padding: 15px 0;
-  background-color: @iucn-gray-lighter;
-  text-align: center;
-  font-size:1.5em;
-  font-weight:bold;
+  justify-content: space-evenly;
+  // margin-top: 2.4rem;
+  padding: 2rem;
+  padding-right: 0;
+  padding-top: 0;
+  position: relative;
+  overflow: hidden;
+  // top: -2px;
+  width: 100%;
+  transition: border-color .2s;
+  .decision-button-holder-container.active-inside:hover + &,
+  .node--type-decision.node--view-mode-ajax:hover ~ & {
+    border-color: @decision-tree-selected;
+  }
+
+  > .iucn-who-decision-tree-group:only-child,
+  > .decision-wrapper:only-child {
+    margin-left: -2rem;
+  }
+}
+
+.decision-button-holder-container {
+  display: flex;
+  justify-content: space-evenly;
+  pointer-events: none;
+  width: 100%;
+}
+
+.decision-button-holder {
+  background-color: @decision-tree-default;
+  border-radius: @decision-tree-border-radius;
+  color: @text-color;
   display: block;
-  margin: 30px 0;
-  &:before{
-    height: 30px;
-    width: 15px;
-    display: inline-block;
-    position: absolute;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 2.4rem;
+  padding: .3em 1em;
+  pointer-events: all;
+  position: relative;
+  text-align: center;
+
+  &.active {
+    background-color: @decision-tree-selected;
+    color: @text-color;
+    &:before,
+    &:after {
+      background-color: @decision-tree-selected;
+      content: '';
+      display: inline-block;
+      height: @line-height-computed;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      width: 1rem;
+      z-index: 1;
+    }
+    &:before { bottom: 100%; }
+    &:after { top: 100%; }
+    &.has-final-decision:after {
+      background-image: linear-gradient(to bottom, @decision-tree-selected, @decision-tree-final-bg);
+    }
+    &:active,
+    &:focus {
+      outline: none;
+    }
+  }
+
+}
+
+.node--type-decision.node--view-mode-ajax {
+  background-color: @decision-tree-selected;
+  border-radius: @decision-tree-border-radius;
+  flex: 1;
+  margin: 0;
+  margin-top: 2.4rem;
+  padding: 1.5em 1em;
+  width: 100%;
+  h3 {
+    margin: 0;
+  }
+  .field--name-body {
+    margin-top: (@line-height-computed / 2);
+  }
+}
+
+.iucn-who-decision-tree-group {
+  flex: 1;
+  position: relative;
+}
+
+.final-decision > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+  background-color: @decision-tree-final-bg;
+}
+.only-yes-decision > .iucn-who-decision-tree-group {
+  > .iucn-who-decision-tree-group > .node--type-decision.node--view-mode-ajax {
+    margin-top: 0;
+    border-radius: 0 0 @decision-tree-border-radius @decision-tree-border-radius;
+  }
+  > .node--type-decision.node--view-mode-ajax {
+    border-radius: @decision-tree-border-radius @decision-tree-border-radius 0 0;
+    padding: 1em;
+    padding-bottom: 0;
+    .field--name-node-title {
+      position: relative;
+      padding-left: 1.5em;
+      color: #666;
+      &:before {
+        content: '';
+        display: block;
+        .svg-icon(list-icon, #666);
+        background-position: center;
+        background-size: contain;
+        height: 100%;
+        width: .75em;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+}
+
+// .final-decision {
+//   position: relative;
+//   &:before {
+//     content: '';
+//     display: block;
+//     position: absolute;
+//     width: 2rem;
+//     height: 200%;
+//     left: -2rem;
+//     border-left: 1rem solid #daf8c9;
+//     border-bottom: 1rem solid #daf8c9;
+//     font-size: 7em;
+//     top: 50%;
+//     line-height: 1;
+//     transform: translateY(-100%);
+//   }
+// }
+// .final-decision:first-child:after {
+//   content: '';
+//   display: block;
+//   width: 2rem;
+//   height: 100%;
+//   position: absolute;
+//   top: -1rem;
+//   background: white;
+//   left: -2rem;
+//   z-index: 1;
+//   transform: translateY(-50%);
+// }
+
+// .final-decision:only-child:before,
+// .final-decision:only-child:after {
+//   display: none;
+// }
+
+
+
+.decision-wrapper > .iucn-who-decision-tree-group > .node--type-decision {
+  position: relative;
+  &:before {
     content: '';
-    top: 0;
-    left: 48%;
-    background-color: transparent;
-  }
-  &:after{
-    height: 30px;
-    width: 15px;
-    display: inline-block;
+    display: block;
     position: absolute;
-    content: '';
-    bottom: 0;
-    left: 48%;
-    background-color: transparent;
+    width: 2rem;
+    height: 9999%;
+    left: -2rem;
+    margin-top: 1rem;
+    border-left: 1rem solid @decision-tree-selected;
+    border-bottom: 1rem solid @decision-tree-selected;
+    top: 50%;
+    transform: translateY(-100%);
   }
 }
-.decision-button-holder.active{
-  background-color: @iucn-blue-lightest;
-  &:before{
-    background-color: @iucn-blue-lightest;
-  }
-  &:after{
-    background-color: @iucn-blue-lightest;
-  }
+.final-decision > .iucn-who-decision-tree-group > .node--type-decision:before {
+  border-bottom-color: @decision-tree-final-bg;
 }
-.node--type-decision{
-  padding-bottom:30px;
+.final-decision + .final-decision > .iucn-who-decision-tree-group > .node--type-decision:before {
+  border-left-color: @decision-tree-final-bg;
 }
-.node--type-decision.node--view-mode-ajax{
-  background-color: @iucn-blue-lightest;
-  padding: 5px 15px 15px 15px;
-  margin:0;
+.decision-wrapper:first-child > .iucn-who-decision-tree-group > .node--type-decision:after {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 200%;
+  position: absolute;
+  top: 50%;
+  background-color: @body-bg;
+  left: -2rem;
+  z-index: 1;
+  transform: translateY(-100%);
 }
-.decision-tree-holder.media--loading{
-    margin:15px 0;
-    min-height: 30px;
+
+.decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:before,
+.decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:after {
+  display: none;
 }
