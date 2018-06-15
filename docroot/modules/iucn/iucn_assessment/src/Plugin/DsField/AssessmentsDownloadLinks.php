@@ -25,6 +25,9 @@ class AssessmentsDownloadLinks extends DsFieldBase {
 
     $element = [];
     $links = [];
+
+    $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
+    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
     if ($node->hasField('field_assessments')) {
       if ($node->field_assessments->count()) {
         foreach ($node->field_assessments as $idx => $item) {
@@ -38,11 +41,37 @@ class AssessmentsDownloadLinks extends DsFieldBase {
           $value = [
             'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
 //            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
-            'title' => $this->t('@year Conservation Outlook Assessment', ['@year' => $item->entity->field_as_cycle->value]),
+            'title' => $this->t('@year Conservation Outlook Assessment', [
+              '@year' => $item->entity->field_as_cycle->value,
+              //'@language' => ($current_language == 'ar' ? t('English') : t(\Drupal::languageManager()->getCurrentLanguage()->getName())),
+              ]),
           ];
           $value['attributes']['target'][] = '_blank';
-          $value['year'] = $item->entity->field_as_cycle->value;
+          $value['year'] = $item->entity->field_as_cycle->value + 10;
           $links[] = $value;
+
+
+          if($arabic_pdf = $print_pdf->uploadedPdf($node->id(), 'ar' , $item->entity->field_as_cycle->value)){
+            $value = [
+              //'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
+              'url' => Url::fromRoute('iucn_pdf.download_language',
+                [
+                  'entity_id' => $node->id(),
+                  'language' => 'ar',
+                  ],
+                ['query' => [
+                  'year' => $item->entity->field_as_cycle->value,
+                  ],
+                ]),
+              'title' => $this->t('@year Conservation Outlook Assessment (@language)', [
+                '@year' => $item->entity->field_as_cycle->value,
+                '@language' => 'Arabic'
+                ]),
+            ];
+            $value['attributes']['target'][] = '_blank';
+            $value['year'] = $item->entity->field_as_cycle->value;
+            $links[] = $value;
+          }
         }
       }
     }
