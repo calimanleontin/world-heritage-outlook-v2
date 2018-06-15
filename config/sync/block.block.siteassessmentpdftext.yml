@@ -1,9 +1,9 @@
-uuid: 9f16d5f1-5ac1-4fdf-80c4-2aff12e06e0e
+uuid: f7702fdc-9cca-4860-98c8-39e2aa4dcb65
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:text:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+    - 'block_content:text:e7d1fc9f-beec-4c7c-a429-21715edb79b7'
   module:
     - block_content
     - system
@@ -12,11 +12,11 @@ dependencies:
 id: siteassessmentpdftext
 theme: iucn_who
 region: header
-weight: -16
+weight: 0
 provider: null
-plugin: 'block_content:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+plugin: 'block_content:e7d1fc9f-beec-4c7c-a429-21715edb79b7'
 settings:
-  id: 'block_content:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+  id: 'block_content:e7d1fc9f-beec-4c7c-a429-21715edb79b7'
   label: 'Site assessment pdf text'
   provider: block_content
   label_display: '0'
