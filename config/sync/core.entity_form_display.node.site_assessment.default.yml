@@ -39,11 +39,13 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_text
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_date_published
     - node.type.site_assessment
   module:
     - datetime
     - field_group
+    - file
     - paragraphs
 third_party_settings:
   field_group:
@@ -526,6 +528,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
+    region: content
+  field_assessment_file:
+    weight: 123
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
     region: content
   field_date_published:
     weight: 13

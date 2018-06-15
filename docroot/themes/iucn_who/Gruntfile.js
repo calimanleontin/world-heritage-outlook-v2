@@ -34,17 +34,32 @@ module.exports = function (grunt) {
     },
     postcss: {
       options: {
-        processors: [
-          require('postcss-cssnext')({
-            features: {
-              rem: false
-            }
-          }),
-          require('postcss-flexibility')
-        ]
+        map: {
+          inline: false, // save all sourcemaps as separate files...
+          annotation: 'css/' // ...to the specified directory
+        }
       },
-      dist: {
+      screen: {
+        options: {
+          processors: [
+            require('postcss-cssnext')({
+              features: {
+                rem: false
+              }
+            }),
+            require('postcss-flexibility'),
+            require('postcss-rtl'),
+          ],
+        },
         src: 'css/style.css'
+      },
+      print: {
+        options: {
+          processors: [
+            require('rtlcss'),
+          ]
+        },
+        src: 'css/print-style-rtl.css'
       }
     },
     cssmin: {
@@ -52,7 +67,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: 'css',
-          src: ['print-style.css', '!print-style.min.css'],
+          src: ['print-style.css', 'print-style-rtl.css'],
           dest: 'css',
           ext: '.css'
         }]
@@ -67,11 +82,11 @@ module.exports = function (grunt) {
       },
       screen: {
         files: ['less/**/*.less', '!less/print-style.less', 'images/*.svg'],
-        tasks: ['less:screen', 'less:print', 'cssmin:print']
+        tasks: ['screen']
       },
       print: {
-        files: ['less/print-style.less'],
-        tasks: ['less:print', 'cssmin:print']
+        files: ['less/print-style.less', 'css/print-style-rtl-only.css'],
+        tasks: ['print']
       }
     },
     copy: {
@@ -84,6 +99,10 @@ module.exports = function (grunt) {
             'simplebar/**',
             'flexibility/**',
         ]
+      },
+      print: {
+        src: 'css/print-style.css',
+        dest: 'css/print-style-rtl.css',
       }
     },
     concat: {
@@ -103,6 +122,13 @@ module.exports = function (grunt) {
           'bootstrap/js/affix.js'
         ],
         dest: 'libraries/bootstrap/bootstrap.js'
+      },
+      print: {
+        src: [
+          'css/print-style-rtl.css',
+          'css/print-style-rtl-only.css'
+        ],
+        dest: 'css/print-style-rtl.css'
       }
     },
     uglify: {
@@ -122,12 +148,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('nodemodules', ['copy:node_modules']);
 
-  grunt.registerTask('css', ['less', 'cssmin', 'postcss']);
+  grunt.registerTask('screen', ['less:screen', 'postcss:screen']);
+
+  grunt.registerTask('print', ['less:print', 'copy:print', 'concat:print', 'postcss:print', 'cssmin:print']);
+
+  grunt.registerTask('build', ['screen', 'print']);
 
   grunt.registerTask('js', ['concat', 'uglify']);
 
-  grunt.registerTask('prod', ['css']);
-
-  grunt.registerTask('default', ['less', 'cssmin', 'watch']);
+  grunt.registerTask('default', ['build', 'watch']);
 
 };
