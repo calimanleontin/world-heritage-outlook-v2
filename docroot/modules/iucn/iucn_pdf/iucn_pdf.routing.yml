@@ -6,6 +6,15 @@ iucn_pdf.download:
   requirements:
     _permission: 'access content'
 
+iucn_pdf.download_language:
+  path: 'node/{entity_id}/pdf/{language}'
+  defaults:
+    _controller: '\Drupal\iucn_pdf\Controller\IucnPdfController::downloadLanguagePdf'
+    _title: 'Download Pdf'
+  requirements:
+    _permission: 'access content'
+
+
 iucn_pdf.download.debug:
   path: 'node/{entity_id}/pdf/debug'
   defaults:
