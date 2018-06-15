@@ -133,6 +133,52 @@ class IucnPdfController extends FileDownloadController {
 
     $language = $this->getLanguage($entity);
 
+    if($language == 'ar') {
+      $language = 'en';
+    }
+
+
+    $realpath = $this->printPdf->getRealPath($entity_id, $language, $year);
+    $file_path = $this->printPdf->getFilePath($entity_id, $language, $year);
+
+    if (!file_exists($realpath)) {
+      $this->printPdf->savePrintable($entity, $file_path);
+    }
+    if (!file_exists($realpath)) {
+      throw new NotFoundHttpException();
+    }
+
+    $filename = $this->printPdf->getFilename($entity_id, $language, $year);
+    $mime_type = Unicode::mimeHeaderEncode('application/pdf');
+    $headers = [
+      'Content-Type' => $mime_type,
+      'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+      'Content-Length' => filesize($realpath),
+      'Content-Transfer-Encoding' => 'binary',
+      'Pragma' => 'no-cache',
+      'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+      'Expires' => '0',
+      'Accept-Ranges' => 'bytes',
+    ];
+    // \Drupal\Core\EventSubscriber\FinishResponseSubscriber::onRespond()
+    // sets response as not cacheable if the Cache-Control header is not
+    // already modified. We pass in FALSE for non-private schemes for the
+    // $public parameter to make sure we don't change the headers.
+    return new BinaryFileResponse($realpath, 200, $headers, TRUE);
+  }
+
+  public function downloadLanguagePdf($entity_id, $language) {
+
+    /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
+
+    $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
+    $entity->addCacheContexts(['url']);
+    $year = $this->getYear();
+
+    if (!$this->allowDownload($entity, $year)) {
+      throw new NotFoundHttpException();
+    }
+
     $realpath = $this->printPdf->getRealPath($entity_id, $language, $year);
     $file_path = $this->printPdf->getFilePath($entity_id, $language, $year);
 

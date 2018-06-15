@@ -8705,11 +8705,13 @@ button.close {
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:before,
 .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after,
 .iucn-site-wrapper .nav-tabs:before,
-.iucn-site-wrapper .nav-tabs:after {
+.iucn-site-wrapper .nav-tabs:after,
+.html-list:before,
+.html-list:after {
   content: " ";
   display: table;
 }
-[dir] .clearfix:after, [dir] .dl-horizontal dd:after, [dir] .container:after, [dir] .container-fluid:after, [dir] .row:after, [dir] .form-horizontal .form-group:after, [dir] .btn-toolbar:after, [dir] .btn-group-vertical > .btn-group:after, [dir] .nav:after, [dir] .navbar:after, [dir] .navbar-header:after, [dir] .navbar-collapse:after, [dir] .pager:after, [dir] .panel-body:after, [dir] .modal-header:after, [dir] .modal-footer:after, [dir] .filter-wrapper:after, [dir] .container-fluid article.page:after, [dir] .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after, [dir] .iucn-site-wrapper .nav-tabs:after {
+[dir] .clearfix:after, [dir] .dl-horizontal dd:after, [dir] .container:after, [dir] .container-fluid:after, [dir] .row:after, [dir] .form-horizontal .form-group:after, [dir] .btn-toolbar:after, [dir] .btn-group-vertical > .btn-group:after, [dir] .nav:after, [dir] .navbar:after, [dir] .navbar-header:after, [dir] .navbar-collapse:after, [dir] .pager:after, [dir] .panel-body:after, [dir] .modal-header:after, [dir] .modal-footer:after, [dir] .filter-wrapper:after, [dir] .container-fluid article.page:after, [dir] .container-fluid .iucn-who-1col-cont-fluid-wrapper > .row:after, [dir] .iucn-site-wrapper .nav-tabs:after, [dir] .html-list:after {
   clear: both;
 }
 .center-block {

@@ -12,7 +12,7 @@ _core:
 id: homepagemap
 theme: iucn_who
 region: above_content
-weight: -11
+weight: -17
 provider: null
 plugin: home_page_map
 settings:

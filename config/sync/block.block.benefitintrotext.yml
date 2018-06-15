@@ -12,7 +12,7 @@ dependencies:
 id: benefitintrotext
 theme: iucn_who
 region: contained_content
-weight: -10
+weight: -17
 provider: null
 plugin: 'block_content:f2ca450e-104a-4095-8dda-2825a957118e'
 settings:
