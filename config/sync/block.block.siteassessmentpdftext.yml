@@ -1,0 +1,31 @@
+uuid: 9f16d5f1-5ac1-4fdf-80c4-2aff12e06e0e
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:text:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+  module:
+    - block_content
+    - system
+  theme:
+    - iucn_who
+id: siteassessmentpdftext
+theme: iucn_who
+region: header
+weight: -16
+provider: null
+plugin: 'block_content:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+settings:
+  id: 'block_content:659fe9f0-36e3-427c-8c8f-d3df54d9e713'
+  label: 'Site assessment pdf text'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: "/explore-sites/wdpaid/20388\r\n/explore-sites/wdpaid/4322\r\n/explore-sites/wdpaid/555622045\r\n/explore-sites/wdpaid/903138\r\n/explore-sites/wdpaid/4999\r\n/explore-sites/wdpaid/555622044\r\n/explore-sites/wdpaid/902487\r\n/explore-sites/wdpaid/555542337\r\n"
+    negate: false
+    context_mapping: {  }
