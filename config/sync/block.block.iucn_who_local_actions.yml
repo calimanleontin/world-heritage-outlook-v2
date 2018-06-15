@@ -9,7 +9,7 @@ _core:
 id: iucn_who_local_actions
 theme: iucn_who
 region: header
-weight: -7
+weight: -15
 provider: null
 plugin: local_actions_block
 settings:
