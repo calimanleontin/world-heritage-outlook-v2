@@ -15986,7 +15986,7 @@ h6.view-publications .view-header {
 }
 .decision-button-holder-container.active-inside:hover + .decision-tree-holder:not(:empty),
 .node--type-decision.node--view-mode-ajax:hover ~ .decision-tree-holder:not(:empty) {
-  border-color: #def2fb;
+  border-color: #afe6ff;
 }
 .decision-tree-holder:not(:empty) > .iucn-who-decision-tree-group:only-child,
 .decision-tree-holder:not(:empty) > .decision-wrapper:only-child {
@@ -16006,6 +16006,7 @@ h6.view-publications .view-header {
 .decision-button-holder {
   background-color: #e1e1e1;
   border-radius: 6px;
+  color: #333333;
   display: block;
   font-size: 1.5em;
   font-weight: bold;
@@ -16016,12 +16017,12 @@ h6.view-publications .view-header {
   text-align: center;
 }
 .decision-button-holder.active {
-  background-color: #def2fb;
-  color: #134780;
+  background-color: #afe6ff;
+  color: #333333;
 }
 .decision-button-holder.active:before,
 .decision-button-holder.active:after {
-  background-color: #def2fb;
+  background-color: #afe6ff;
   content: '';
   display: inline-block;
   height: 2.4rem;
@@ -16039,15 +16040,15 @@ h6.view-publications .view-header {
   top: 100%;
 }
 .decision-button-holder.active.has-final-decision:after {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#def2fb), to(#daf8c9));
-  background-image: linear-gradient(to bottom, #def2fb, #daf8c9);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#afe6ff), to(#daf8c9));
+  background-image: linear-gradient(to bottom, #afe6ff, #daf8c9);
 }
 .decision-button-holder.active:active,
 .decision-button-holder.active:focus {
   outline: none;
 }
 .node--type-decision.node--view-mode-ajax {
-  background-color: #def2fb;
+  background-color: #afe6ff;
   border-radius: 6px;
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -16110,8 +16111,8 @@ h6.view-publications .view-header {
   height: 9999%;
   left: -2rem;
   margin-top: 1rem;
-  border-left: 1rem solid #def2fb;
-  border-bottom: 1rem solid #def2fb;
+  border-left: 1rem solid #afe6ff;
+  border-bottom: 1rem solid #afe6ff;
   top: 50%;
   -webkit-transform: translateY(-100%);
           transform: translateY(-100%);
