@@ -28,6 +28,9 @@ class ConfigIgnore extends PluginBase implements ConfigurationIgnorePluginInterf
       'webform.webform.site_feedback' => [
         'handlers.email.settings.to_mail',
       ],
+      'block.block.siteassessmentpdftext' => [
+        'visibility.request_path.pages',
+      ]
     ];
   }
 }
