@@ -297,7 +297,12 @@ function iucn_who_preprocess_field(&$variables) {
     case 'field_page_teasers':
       $paragraph = $variables['element']['#object'];
       $items_no = $paragraph->field_page_teasers->count();
-      $variables['col_class'] = 'col-sm-' . round(12 / $items_no);
+      $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+      $variables['col_class'] = 'col-sm-12';
+      if ($variables['is_front']) {
+        $variables['col_class'] = 'col-sm-' . round(12 / $items_no);
+      }
+
       break;
 
       case 'field_teasers':
