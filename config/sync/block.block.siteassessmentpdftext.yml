@@ -12,7 +12,7 @@ dependencies:
 id: siteassessmentpdftext
 theme: iucn_who
 region: header
-weight: 0
+weight: -16
 provider: null
 plugin: 'block_content:ba564c70-c8cc-4136-b59e-dcf056429aa2'
 settings:
