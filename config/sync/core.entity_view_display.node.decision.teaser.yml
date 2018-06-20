@@ -35,8 +35,6 @@ third_party_settings:
       content:
         - node_title
         - body
-      decision_tree_holder:
-        - decision_tree_holder
     fields:
       node_title:
         plugin_id: node_title
@@ -47,11 +45,6 @@ third_party_settings:
           link: true
           wrapper: h2
           class: left-border
-      decision_tree_holder:
-        plugin_id: decision_tree_holder
-        weight: 2
-        label: hidden
-        formatter: default
 id: node.decision.teaser
 targetEntityType: node
 bundle: decision
