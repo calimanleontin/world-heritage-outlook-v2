@@ -13,7 +13,7 @@ third_party_settings:
     translation_sync:
       alt: alt
       title: title
-      file: '0'
+      file: file
 id: node.publication.field_publication_image
 field_name: field_publication_image
 entity_type: node
