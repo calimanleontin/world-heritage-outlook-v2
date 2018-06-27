@@ -86,7 +86,6 @@ function iucn_who_preprocess_block(&$variables) {
     case 'search_api_sorts_block':
       if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage') {
         $items = &$variables['content']['links']['#items'][0];
-        $variables['elements']['#cache']['max-age'] = 0;
         if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
           $items['#label'] .= ' Z-A';
         }
@@ -98,8 +97,6 @@ function iucn_who_preprocess_block(&$variables) {
 
       if ($variables['elements']['#id'] == 'sortbyviewsitessearchdisplaypage_2') {
         $items = &$variables['content']['links']['#items'][0];
-        $variables['elements']['#cache']['max-age'] = 0;
-
         $label = '<span class="sort-prefix">' . t('Sort by:') . '</span><span class="sort-body">' . t('Alphabetically');
         if ($items['#sort_field'] == 'title_sort' && $items['#order'] == 'desc') {
           $label .= t(' Z-A');

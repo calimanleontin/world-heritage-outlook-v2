@@ -38,9 +38,6 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
   public function build() {
     $content = parent::build();
     array_unshift($content['#attached']['library'], 'iucn_who_core/benefits-map');
-
-    // @todo remove line below to allow caching in production
-    $content['#cache'] = ['max-age' => 0];
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['markers'] = $this->getMarkers();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['icons'] = $this->getMarkersIcons();
     $content['#attached']['drupalSettings']['GoogleMapsBaseBlock'][self::$instance_count]['empty_placeholder'] = $this->getSiteSelectionPlaceholder();

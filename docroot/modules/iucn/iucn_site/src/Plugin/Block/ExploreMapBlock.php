@@ -74,9 +74,6 @@ class ExploreMapBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    // @todo remove line below to allow caching in production
-    $content = ['#cache' => ['max-age' => 0]];
-
     $config_button_url = \Drupal::state()->get(self::CONFIG_KEY_URL);
     $button_url = '#';
     $button_url_target = '_self';
@@ -95,14 +92,15 @@ class ExploreMapBlock extends BlockBase {
         $button_url_target = '_blank';
       }
     }
-
-    $content['output'] = [
-      '#theme' => 'explore_map',
-      '#button_prefix' => \Drupal::state()->get(self::CONFIG_KEY_PREFIX),
-      '#button_title' => \Drupal::state()->get(self::CONFIG_KEY_TITLE),
-      '#button_url' => $button_url,
-      '#button_url_target' => $button_url_target,
-    ];
+    $content =[
+      'output' => [
+        '#theme' => 'explore_map',
+        '#button_prefix' => \Drupal::state()->get(self::CONFIG_KEY_PREFIX),
+        '#button_title' => \Drupal::state()->get(self::CONFIG_KEY_TITLE),
+        '#button_url' => $button_url,
+        '#button_url_target' => $button_url_target,
+        ],
+      ];
     return $content;
   }
 }
