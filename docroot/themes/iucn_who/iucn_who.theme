@@ -133,7 +133,7 @@ function iucn_who_preprocess_block(&$variables) {
       }
       break;
     case 'system_breadcrumb_block':
-      $variables['elements']['#cache']['max-age'] = 0;
+      // $variables['elements']['#cache']['max-age'] = 0;
       break;
 
     default:
