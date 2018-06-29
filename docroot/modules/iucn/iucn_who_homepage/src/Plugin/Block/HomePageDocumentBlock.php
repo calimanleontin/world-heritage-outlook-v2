@@ -91,8 +91,7 @@ class HomePageDocumentBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    // @todo remove line below to allow caching in production
-    $content = ['#cache' => ['max-age' => 0]];
+    $content = [];
     $language = \Drupal::languageManager()->getCurrentLanguage();
     if (!$fid = \Drupal::state()->get(self::CONFIG_KEY_FILE . '.' . $language->getId())) {
       $fid = \Drupal::state()->get(self::CONFIG_KEY_FILE . '.en');

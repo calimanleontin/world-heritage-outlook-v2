@@ -76,12 +76,11 @@ class HomePageStatisticsBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    // @todo Line below to disables caching
-    $content = ['#cache' => ['max-age' => 0]];
     $statistics = $this->getStatistics();
-    $content['output'] = [
+    $content = ['output' => [
       '#theme' => 'homepage_statistics',
       '#statistics' => $statistics,
+      ],
     ];
     return $content;
   }
