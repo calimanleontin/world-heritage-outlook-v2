@@ -166,17 +166,17 @@ class PrintPdf implements PrintPdfInterface {
          $site_assessment_translations = $item->entity->getTranslationLanguages();
          if (isset($site_assessment_translations[$language])) {
             $assessment = $item->entity->getTranslation($language);
-         }
-         if ( $assessment
-           && $assessment->field_as_cycle->value == $year
-           && $assessment_file = $assessment->get('field_assessment_file')->getValue()
-         ) {
-           $fid = $assessment_file[0]['target_id'];
-           if ($file = \Drupal\file\Entity\File::load($fid)) {
-             /** @var \Drupal\file\Entity\File $file */
-             return $file->getFileUri();
-           }
+           if ( isset($assessment)
+             && $assessment->field_as_cycle->value == $year
+             && $assessment_file = $assessment->get('field_assessment_file')->getValue()
+           ) {
+             $fid = $assessment_file[0]['target_id'];
+             if ($file = \Drupal\file\Entity\File::load($fid)) {
+               /** @var \Drupal\file\Entity\File $file */
+               return $file->getFileUri();
+             }
 
+           }
          }
        }
      }
