@@ -3,8 +3,8 @@
     attach: function (context, settings) {
       $('.region-content').once('add-back-buttons').each(function () {
         var previousURI = document.referrer;
-        var view_url = settings.iucn_who.go_to_buttons.view_url;
-        var node_urls = settings.iucn_who.go_to_buttons.node_urls;
+        var view_url = settings.iucn_site.go_to_buttons.view_url;
+        var node_urls = settings.iucn_site.go_to_buttons.node_urls;
 
         $('a.go-to-button, a.back-button').addClass('hidden');
         if (!previousURI.startsWith(location.origin) || !previousURI.includes(view_url)) {

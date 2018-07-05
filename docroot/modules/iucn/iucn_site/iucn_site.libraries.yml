@@ -8,3 +8,9 @@ site-area-formatter:
   dependencies:
     - core/jquery
     - core/drupalSettings
+
+back-to-search-js:
+  js:
+    js/back-to-search.js: {}
+  dependencies:
+    - core/jquery
