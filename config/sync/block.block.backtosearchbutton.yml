@@ -1,0 +1,29 @@
+uuid: 693023c4-22f4-4fb8-a183-e498ac823393
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_site
+    - node
+  theme:
+    - iucn_who
+id: backtosearchbutton
+theme: iucn_who
+region: header
+weight: -16
+provider: null
+plugin: iucn_site_back_to_search
+settings:
+  id: iucn_site_back_to_search
+  label: 'Back to search button'
+  provider: iucn_site
+  label_display: '0'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      publication: publication
+      site: site
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
