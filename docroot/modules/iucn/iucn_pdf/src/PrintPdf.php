@@ -166,7 +166,7 @@ class PrintPdf implements PrintPdfInterface {
          $site_assessment_translations = $item->entity->getTranslationLanguages();
          if (isset($site_assessment_translations[$language])) {
             $assessment = $item->entity->getTranslation($language);
-           if ( isset($assessment)
+           if ( $assessment
              && $assessment->field_as_cycle->value == $year
              && $assessment_file = $assessment->get('field_assessment_file')->getValue()
            ) {
