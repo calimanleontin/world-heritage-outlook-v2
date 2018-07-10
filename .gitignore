@@ -43,6 +43,15 @@ docroot/core/install.php
 #################
 .vagrant
 
+# Docker Files #
+#################
+.env
+docker-compose.override.yml
+
+# Robo Files #
+#################
+robo.yml
+
 # Compiled source #
 ###################
 *.com
