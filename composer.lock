@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a87e8167b60c33d47eff9879c566b4b",
+    "content-hash": "90b6604bc91d5310bbec00ced92aa91f",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -5226,7 +5226,8 @@
             "homepage": "https://www.drupal.org/project/string_field_formatter",
             "support": {
                 "source": "http://cgit.drupalcode.org/string_field_formatter"
-            }
+            },
+            "time": "2017-01-10T11:38:31+00:00"
         },
         {
             "name": "drupal/token",
