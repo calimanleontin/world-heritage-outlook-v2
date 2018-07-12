@@ -10,20 +10,22 @@
  */
 #}
 {% if breadcrumb %}
-  <span class="breadcrumb-prefix">
-    {% trans %}
-      You are here:
-    {% endtrans %}
-  </span>
-  <ol class="breadcrumb">
-    {% for item in breadcrumb %}
-      <li {{ item.attributes }}>
-        {% if item.url %}
-          <a href="{{ item.url }}">{{ item.text }}</a>
-        {% else %}
-          {{ item.text }}
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ol>
+  <div class="breadcrumb-wrapper">
+    <span class="breadcrumb-prefix">
+      {% trans %}
+        You are here:
+      {% endtrans %}
+    </span>
+    <ol class="breadcrumb">
+      {% for item in breadcrumb %}
+        <li {{ item.attributes }}>
+          {% if item.url %}
+            <a href="{{ item.url }}">{{ item.text }}</a>
+          {% else %}
+            {{ item.text }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
 {% endif %}

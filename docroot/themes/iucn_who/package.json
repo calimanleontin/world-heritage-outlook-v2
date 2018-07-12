@@ -2,22 +2,27 @@
   "name": "IUCN-WHO",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^6.3.6",
+    "autoprefixer": "^8.6.4",
     "flexibility": "^2.0.1",
-    "grunt": "^1.0.2",
+    "grunt": "^1.0.3",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-postcss": "^0.8.0",
+    "grunt-postcss": "^0.9.0",
     "headroom.js": "^0.9.4",
     "postcss": "^6.0.22",
     "postcss-cssnext": "^3.0.2",
-    "postcss-flexibility": "^1.1.1",
+    "postcss-flexibility": "^2.0.0",
     "postcss-rtl": "^1.2.3",
     "rtlcss": "^2.2.1",
     "simplebar": "^2.4.4"
+  },
+  "scripts": {
+    "start": "grunt",
+    "build": "grunt build"
   }
+
 }
