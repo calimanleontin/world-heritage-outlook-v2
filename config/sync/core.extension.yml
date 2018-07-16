@@ -75,6 +75,7 @@ module:
   purge_processor_cron: 0
   purge_queuer_coretags: 0
   purge_tokens: 0
+  purge_ui: 0
   quickedit: 0
   recaptcha: 0
   redirect: 0

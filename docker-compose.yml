@@ -2,15 +2,35 @@ version: '2.0'
 
 services:
 
-  nginx:
+  nginx-front:
     image: nginx:1.13
+    volumes:
+      - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
+      - .docker/conf-nginx/varnish.conf:/etc/nginx/conf.d/varnish.conf
     depends_on:
-      - php71
+      - varnish
     env_file:
       - .env
+
+  varnish:
+    image: eeacms/varnish
     volumes:
-      - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
-      - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
+      - .docker/conf-varnish/drupal.vcl:/etc/varnish/conf.d/default.vcl
+      - .docker/conf-varnish/secret:/etc/varnish/secret
+    depends_on:
+      - nginx
+    env_file:
+      - .env
+
+  nginx:
+      image: nginx:1.13
+      depends_on:
+        - php71
+      env_file:
+        - .env
+      volumes:
+        - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf:ro
+        - .docker/conf-nginx/project.conf:/etc/nginx/conf.d/project.conf:ro
 
   php71:
     image: eaudeweb/php-fpm:7.1-1.0.1
