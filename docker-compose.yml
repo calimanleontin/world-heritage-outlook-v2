@@ -1,24 +1,11 @@
 version: '2.0'
 
 services:
-
-  nginx-front:
-    image: nginx:1.13
-    volumes:
-      - .docker/conf-nginx/globals.conf:/etc/nginx/conf.d/globals.conf
-      - .docker/conf-nginx/varnish.conf:/etc/nginx/conf.d/varnish.conf
-    depends_on:
-      - varnish
-    env_file:
-      - .env
-
   varnish:
     image: eeacms/varnish
     volumes:
       - .docker/conf-varnish/drupal.vcl:/etc/varnish/conf.d/default.vcl
       - .docker/conf-varnish/secret:/etc/varnish/secret
-    depends_on:
-      - nginx
     env_file:
       - .env
 
