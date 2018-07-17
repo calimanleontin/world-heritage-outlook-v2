@@ -28,7 +28,7 @@ backend appserver {
 acl purge {
     "localhost";
     "127.0.0.1";
-    "172.19.0.0/24";
+    "172.0.0.0/8";
 }
 
 sub vcl_init {
