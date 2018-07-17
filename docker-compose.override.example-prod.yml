@@ -1,0 +1,36 @@
+version: '2.0'
+
+services:
+
+  nginx:
+    container_name: iucn_frontend
+    ports:
+    - "127.0.0.1:8891:80"
+    restart: "unless-stopped"
+
+  php71:
+    container_name: iucn_php
+    restart: "unless-stopped"
+    volumes:
+      - ./composer.json:/var/www/html/composer.json
+      - ./composer.lock:/var/www/html/composer.lock
+      - ./vendor:/var/www/html/vendor
+      - ./content:/var/www/html/content
+      - ./private-storage:/var/www/html/private-storage
+
+  db:
+    container_name: iucn_db
+    restart: "unless-stopped"
+
+  mail:
+    image: eaudeweb/docker.postfix.satellite:1.0.0
+    container_name: iucn_mail
+    env_file:
+      - .env
+    volumes:
+      - postfix-logs:/var/log
+      - postfix-data:/var/spool/postfix
+
+volumes:
+  - postfix-logs
+  - postfix-data

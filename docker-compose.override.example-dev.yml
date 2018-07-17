@@ -1,0 +1,22 @@
+version: '2.0'
+
+services:
+
+  nginx:
+    container_name: iucn_frontend
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - .:/var/www/html
+
+  php71:
+    container_name: iucn_php
+    volumes:
+      - .:/var/www/html
+
+  db:
+    container_name: iucn_db
+
+  mail:
+    image: eaudeweb/mailtrap
+    container_name: iucn_mail
