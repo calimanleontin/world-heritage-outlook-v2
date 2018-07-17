@@ -46,6 +46,7 @@ docroot/core/install.php
 # Docker Files #
 #################
 .env
+.docker/conf-varnish/secret
 docker-compose.override.yml
 
 # Robo Files #
