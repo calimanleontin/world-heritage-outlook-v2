@@ -43,19 +43,71 @@
   }
 }
 
+/* ==========================================================================
+    Site page
+    ========================================================================== */
 .page-node-type-site {
+  .header-container {
+    position: relative;
+  }
+
+  .region-header {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * { width: 100%; }
+  }
+
   @media @grid-mobile {
     &.navbar-is-fixed-top {
       margin-top: @navbar-height--mobile;
     }
+    .region-header {
+      > .block-iucn-site-back-to-search {
+        order: 1;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: auto;
+        z-index: 2;
+      }
+    }
   }
   @media @grid-desktop {
-    .header-container, .contained-content {
-      > .region { padding-right: 11em; }
+    .region-header {
+      > .breadcrumb-wrapper {
+        flex: 1;
+      }
+      > .breadcrumb-wrapper,
+      > .block-iucn-site-back-to-search {
+        width: auto;
+        display: inline;
+      }
+      > .block-iucn-site-back-to-search {
+        margin-left: auto;
+      }
     }
   }
 }
-a[rel="bookmark"]{
+
+.sites-back-button {
+  text-transform: uppercase;
+  > a {
+    .light-link();
+    display: inline-flex;
+  }
+  @media @grid-mobile {
+    .background-variant(fade(#000, 40%), #fff);
+    padding: .8em 1.2em;
+  }
+  @media @grid-desktop {
+    display: inline;
+    margin-left: 2em;
+  }
+}
+
+
+a[rel="bookmark"] {
   display:none;
 }
 

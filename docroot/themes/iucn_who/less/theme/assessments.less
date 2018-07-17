@@ -27,26 +27,6 @@
   .field--name-node-title h1 {
     .left-bordered-heading();
   }
-  .sites-back-button {
-    text-transform: uppercase;
-    > a {
-      .light-link();
-      display: flex;
-    }
-    @media @grid-mobile {
-      .background-variant(fade(#000, 40%), #fff);
-      align-self: flex-end;
-      margin-bottom: 6em;
-      padding: .8em 1.2em;
-      position: relative;
-      z-index: 1;
-    }
-    @media @grid-desktop {
-      bottom: 100%;
-      position: absolute;
-      right: @grid-gutter-width / 2;
-    }
-  }
   @media @grid-mobile {
     padding: 0;
     position: relative;
@@ -54,7 +34,7 @@
     .field--name-node-title {
       position: relative;
       z-index: 1;
-      padding-top: 14px;
+      padding-top: 8em;
       padding-bottom: 14px;
       background-color: fade(#000, 40%);
       h1 {
@@ -83,6 +63,7 @@
     }
   }
 }
+
 .region-site-general-info {
   @media @grid-desktop {
     display: flex;

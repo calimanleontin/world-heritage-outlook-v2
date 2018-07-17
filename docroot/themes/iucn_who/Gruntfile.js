@@ -152,10 +152,12 @@ module.exports = function (grunt) {
 
   grunt.registerTask('print', ['less:print', 'copy:print', 'concat:print', 'postcss:print', 'cssmin:print']);
 
-  grunt.registerTask('build', ['screen', 'print']);
+  grunt.registerTask('start', ['screen', 'print']);
+
+  grunt.registerTask('build', ['nodemodules', 'screen', 'print']);
 
   grunt.registerTask('js', ['concat', 'uglify']);
 
-  grunt.registerTask('default', ['build', 'watch']);
+  grunt.registerTask('default', ['start', 'watch']);
 
 };
