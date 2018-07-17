@@ -12,8 +12,10 @@
 
 ## Grunt usage {#gruntusage}
 - in Terminal, navigate to theme folder and `npm install`
-- run `grunt` to only compile LESS without PostCSS and watch
-- run `grunt prod` to build for production (PostCSS)
+- First time setting up & for production build:
+    - run `grunt build`
+- During development:
+    - run `grunt start` to build and start the watcher
 
 **WARNING:** Do not modify the files inside of
 `./iucn_who/bootstrap` directly. Doing so may cause issues when upgrading the
