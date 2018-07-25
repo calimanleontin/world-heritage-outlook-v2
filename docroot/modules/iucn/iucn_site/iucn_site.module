@@ -161,3 +161,25 @@ function iucn_site_node_update(Drupal\node\Entity\Node $node) {
     $queue->createItem($node->id());
   }
 }
+
+/**
+ * Implements hook_block_access().
+ */
+function iucn_site_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation == 'view' && $block->getOriginalId() == 'siteassessmentpdftext') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node instanceof \Drupal\node\NodeInterface) {
+      $nid = $node->id();
+      $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
+      $currentYear = date('Y');
+      for ($i = 2014; $i <= $currentYear; $i += 3) {
+        // Check if there is at least one arabic pdf that was uploaded manually.
+        if($print_pdf->uploadedPdf($nid, 'ar' , $i )){
+          return \Drupal\Core\Access\AccessResult::neutral();
+        }
+      }
+      // There are no arabic pdfs uploaded manually. Do not display the block.
+      return \Drupal\Core\Access\AccessResult::forbidden();
+    }
+ }
+}
