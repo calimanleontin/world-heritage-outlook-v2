@@ -24,5 +24,4 @@
     "start": "grunt",
     "build": "grunt build"
   }
-
 }
