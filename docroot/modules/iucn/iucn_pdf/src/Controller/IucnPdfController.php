@@ -124,6 +124,9 @@ class IucnPdfController extends FileDownloadController {
     /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
 
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
+    if (!$entity) {
+      throw new NotFoundHttpException();
+    }
     $entity->addCacheContexts(['url']);
     $year = $this->getYear();
 
