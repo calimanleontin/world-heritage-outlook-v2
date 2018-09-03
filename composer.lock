@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "90b6604bc91d5310bbec00ced92aa91f",
+    "content-hash": "7fa4f1d69f4dc910752fabefc208534f",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -3208,30 +3208,30 @@
         },
         {
             "name": "drupal/geofield_map",
-            "version": "1.10.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/geofield_map",
-                "reference": "8.x-1.10"
+                "reference": "8.x-2.12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/geofield_map-8.x-1.10.zip",
-                "reference": "8.x-1.10",
-                "shasum": "71dbe33d932bebcf4e54f0b2104dba16cb0ab6f2"
+                "url": "https://ftp.drupal.org/files/projects/geofield_map-8.x-2.12.zip",
+                "reference": "8.x-2.12",
+                "shasum": "b225cd8352ce6ca3ddd62d20dab9a97ea9d49de7"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "drupal/geofield": "*"
+                "drupal/core": "*",
+                "drupal/geofield": "1.0.*@beta"
             },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-1.x": "1.x-dev"
+                    "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.10",
-                    "datestamp": "1504794244",
+                    "version": "8.x-2.12",
+                    "datestamp": "1535557380",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3244,14 +3244,16 @@
             ],
             "authors": [
                 {
-                    "name": "itamair",
-                    "homepage": "https://www.drupal.org/user/1179076"
+                    "name": "Italo Mairo",
+                    "homepage": "https://www.drupal.org/u/itamair",
+                    "role": "Creator/Maintainer"
                 }
             ],
-            "description": "Map Widget, Formatter and Views integration for Geofields.",
+            "description": "Geofield Map is an advanced, complete and easy-to-use Geo Mapping solution for Drupal 8, based on and fully compatible with the Geofield module.",
             "homepage": "https://www.drupal.org/project/geofield_map",
             "support": {
-                "source": "http://cgit.drupalcode.org/geofield_map"
+                "source": "http://git.drupal.org/project/geofield_map.git",
+                "issues": "https://www.drupal.org/project/issues/geofield_map"
             }
         },
         {
@@ -5226,8 +5228,7 @@
             "homepage": "https://www.drupal.org/project/string_field_formatter",
             "support": {
                 "source": "http://cgit.drupalcode.org/string_field_formatter"
-            },
-            "time": "2017-01-10T11:38:31+00:00"
+            }
         },
         {
             "name": "drupal/token",

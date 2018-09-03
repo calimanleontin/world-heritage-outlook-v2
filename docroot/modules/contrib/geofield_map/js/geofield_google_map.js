@@ -44,6 +44,21 @@
     maps_api_loading: false,
 
     /**
+     * Returns the re-coded google maps api language parameter, from html lang attribute.
+     */
+    googleMapsLanguage: function (html_language) {
+      switch (html_language) {
+        case 'zh-hans':
+          html_language = 'zh-CN'
+          break;
+        case 'zh-hant':
+          html_language = 'zh-TW'
+          break;
+      }
+      return html_language;
+    },
+
+    /**
      * Provides the callback that is called when maps loads.
      */
     googleCallback: function () {
@@ -70,6 +85,7 @@
     // Lead Google Maps library.
     loadGoogle: function (mapid, gmap_api_key, callback) {
       var self = this;
+      var html_language = $('html').attr("lang") ? $('html').attr("lang") : 'en'
 
       // Add the callback.
       self.addCallback(callback);
@@ -84,7 +100,7 @@
         // Google maps isn't loaded so lazy load google maps.
 
         // Default script path.
-        var scriptPath = '//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false';
+        var scriptPath = self.map_data[mapid]['gmap_api_localization'] + '?v=3.exp&sensor=false&libraries=places&language=' + self.googleMapsLanguage(html_language);
 
         // If a Google API key is set, use it.
         if (typeof gmap_api_key !== 'undefined' && gmap_api_key !== null) {
@@ -106,31 +122,48 @@
 
     place_feature: function(feature, icon_image, mapid) {
       var self = this;
-      var properties = feature.get('geojsonProperties');
 
-      if (feature.setTitle && properties && properties.title) {
-        feature.setTitle(properties.title);
+      // If the features are object of geofield map theming then remove custom url Icon Image
+      if (feature.geojsonProperties.theming) {
+        icon_image = null;
       }
+
+      // Override and set icon image with geojsonProperties.icon, if set as not null/empty.
+      if (feature.geojsonProperties.icon && feature.geojsonProperties.icon.length > 0) {
+        icon_image = feature.geojsonProperties.icon;
+      }
+
+      // Define the OverlappingMarkerSpiderfier flag.
+      var oms = self.map_data[mapid].oms ? self.map_data[mapid].oms : null;
 
       // Set the personalized Icon Image, if set.
       if (feature.setIcon && icon_image && icon_image.length > 0) {
-        $.ajax({
-          url: icon_image,
-          type:'HEAD',
-          error: function()
-          {
-            console.log('Geofield Gmap: The Icon Image doesn\'t exist at the set path');
-          },
-          success: function()
-          {
-            feature.setIcon(icon_image);
-          }
-        });
 
+        function checkImage(imageSrc, setIcon, logError) {
+          var img = new Image();
+          img.src = imageSrc;
+          img.onload = setIcon;
+          img.onerror = logError;
+        }
+
+        checkImage(icon_image,
+          // Success loading image.
+          function(){
+            feature.setIcon(icon_image);
+          },
+          // Error loading image.
+          function(){
+            console.log("Geofield Gmap: The Icon Image doesn't exist at the requested path: " + icon_image);
+          });
       }
 
       var map = self.map_data[mapid].map;
-      feature.setMap(map);
+      if (oms) {
+        self.map_data[mapid].oms.addMarker(feature);
+      }
+      else {
+        feature.setMap(map);
+      }
       self.map_data[mapid].markers.push(feature);
 
       if (feature.getPosition) {
@@ -140,16 +173,29 @@
         path.forEach(function(element) {
           self.map_data[mapid].map_bounds.extend(element);
         });
-      }
 
-      if (properties && properties.description) {
-        var bounds = feature.get('bounds');
-        google.maps.event.addListener(feature, 'click', function() {
-          map.infowindow.setContent(properties.description);
-          map.infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
-          map.infowindow.setPosition(bounds.getCenter());
-          map.infowindow.open(map);
-        });
+      }
+      // Check for eventual simple or OverlappingMarkerSpiderfier click Listener
+      var clickListener = oms ? 'spider_click' : 'click';
+      google.maps.event.addListener(feature, clickListener, function() {
+        self.infowindow_open(mapid, feature);
+      });
+    },
+
+    // Closes and open the Map Infowindow at the input feature.
+    infowindow_open: function (mapid, feature) {
+      var self = this;
+      var map = self.map_data[mapid].map;
+      var properties = feature.get('geojsonProperties');
+      if (feature.setTitle && properties && properties.title) {
+        feature.setTitle(properties.title);
+      }
+      map.infowindow.close();
+      if (properties.description) {
+        map.infowindow.setContent(properties.description);
+        setTimeout(function () {
+          map.infowindow.open(map, feature);
+        }, 200);
       }
     },
 
@@ -157,9 +203,6 @@
     map_initialize: function (mapid, map_settings, data) {
       var self = this;
       $.noConflict();
-
-      var zoomForce = !!map_settings.map_zoom_and_pan.zoom.force;
-      var centerForce = !!map_settings.map_center.center_force;
 
       // Checking to see if google variable exists. We need this b/c views breaks this sometimes. Probably
       // an AJAX/external javascript bug in core or something.
@@ -170,14 +213,31 @@
           zoom: map_settings.map_zoom_and_pan.zoom.initial ? parseInt(map_settings.map_zoom_and_pan.zoom.initial) : 8,
           minZoom: map_settings.map_zoom_and_pan.zoom.min ? parseInt(map_settings.map_zoom_and_pan.zoom.min) : 1,
           maxZoom: map_settings.map_zoom_and_pan.zoom.max ? parseInt(map_settings.map_zoom_and_pan.zoom.max) : 20,
-          scrollwheel: !!map_settings.map_zoom_and_pan.scrollwheel,
-          draggable: !!map_settings.map_zoom_and_pan.draggable,
+          gestureHandling: map_settings.map_zoom_and_pan.gestureHandling ? map_settings.map_zoom_and_pan.gestureHandling : 'auto',
           mapTypeId: map_settings.map_controls.map_type_id ? map_settings.map_controls.map_type_id : 'roadmap',
         };
+
+        // Manage the old scrollwheel & draggable settings (deprecated by google maps api).
+        if(!map_settings.map_zoom_and_pan.scrollwheel && !map_settings.map_zoom_and_pan.gestureHandling) {
+          mapOptions.scrollwheel = false;
+        }
+
+        if(!map_settings.map_zoom_and_pan.draggable && !map_settings.map_zoom_and_pan.gestureHandling) {
+          mapOptions.draggable = false;
+        }
 
         if(!!map_settings.map_controls.disable_default_ui) {
           mapOptions.disableDefaultUI = map_settings.map_controls.disable_default_ui;
         } else {
+
+          // Implement Custom Style Map, if Set.
+          if (map_settings.custom_style_map && map_settings.custom_style_map.custom_style_control && map_settings.custom_style_map.custom_style_name.length > 0 && map_settings.custom_style_map.custom_style_options.length > 0) {
+            var customMapStyleName = map_settings.custom_style_map.custom_style_name;
+            var customMapStyle = JSON.parse(map_settings.custom_style_map.custom_style_options);
+            var styledMapType = new google.maps.StyledMapType(customMapStyle, {name: customMapStyleName});
+            map_settings.map_controls.map_type_control_options_type_ids.push('custom_styled_map');
+          }
+
           mapOptions.zoomControl = !!map_settings.map_controls.zoom_control;
           mapOptions.mapTypeControl = !!map_settings.map_controls.map_type_control;
           mapOptions.mapTypeControlOptions = {
@@ -189,21 +249,23 @@
           mapOptions.fullscreenControl = !!map_settings.map_controls.fullscreen_control;
         }
 
-        var additionalOptions = map_settings.map_additional_options.length > 0 ? JSON.parse(map_settings.map_additional_options) : {};
-        // Transforms additionalOptions "true", "false" values into true & false.
-        for (var prop in additionalOptions) {
-          if (additionalOptions.hasOwnProperty(prop)) {
-            if (additionalOptions[prop] === 'true') {
-              additionalOptions[prop] = true;
-            }
-            if (additionalOptions[prop] === 'false') {
-              additionalOptions[prop] = false;
+        // Add map_additional_options if any.
+        if (map_settings.map_additional_options.length > 0) {
+          var additionalOptions = JSON.parse(map_settings.map_additional_options) ;
+          // Transforms additionalOptions "true", "false" values into true & false.
+          for (var prop in additionalOptions) {
+            if (additionalOptions.hasOwnProperty(prop)) {
+              if (additionalOptions[prop] === 'true') {
+                additionalOptions[prop] = true;
+              }
+              if (additionalOptions[prop] === 'false') {
+                additionalOptions[prop] = false;
+              }
             }
           }
+          // Merge mapOptions with additionalOptions.
+          $.extend(mapOptions, additionalOptions);
         }
-
-        // Merge mapOptions with additionalOptions.
-        Object.assign(mapOptions, additionalOptions);
 
         // Define the Geofield Google Map.
         var map = new google.maps.Map(document.getElementById(mapid), mapOptions);
@@ -220,19 +282,27 @@
           map.controls[google.maps.ControlPosition[mapResetControlPosition]].push(mapResetControlDiv);
         }
 
-        // Ensure map marker stays center on window resize
-        google.maps.event.addDomListener(window, "resize", function() {
-          var center = map.getCenter();
-          google.maps.event.trigger(map, "resize");
-          map.setCenter(center);
-        });
+        // If defined a Custom Map Style, associate the styled map with custom_styled_map MapTypeId and set it to display.
+        if (styledMapType) {
+          map.mapTypes.set('custom_styled_map', styledMapType);
+          // Set Custom Map Style to Default, if requested.
+          if (map_settings.custom_style_map && map_settings.custom_style_map.custom_style_default) {
+            map.setMapTypeId('custom_styled_map');
+          }
+        }
 
         // Define a mapid self property, so other code can interact with it.
         self.map_data[mapid].map = map;
+        self.map_data[mapid].map_options = mapOptions;
+        self.map_data[mapid].features = data.features;
         self.map_data[mapid].markers = [];
 
         // Define the MapBounds property.
         self.map_data[mapid].map_bounds = new google.maps.LatLngBounds();
+
+        // Set the zoom force and center property for the map.
+        self.map_data[mapid].zoom_force = !!map_settings.map_zoom_and_pan.zoom.force;
+        self.map_data[mapid].center_force = !!map_settings.map_center.center_force;
 
         // Fix map issue in field_groups / details & vertical tabs
         google.maps.event.addListenerOnce(map, "idle", function () {
@@ -254,6 +324,19 @@
 
         if (features && (!features.type || features.type !== 'Error')) {
 
+          /**
+           * Implement  OverlappingMarkerSpiderfier if its control set true.
+           */
+          if (map_settings.map_oms && map_settings.map_oms.map_oms_control && OverlappingMarkerSpiderfier) {
+            var omsOptions = map_settings.map_oms.map_oms_options.length > 0 ? JSON.parse(map_settings.map_oms.map_oms_options) : {
+              markersWontMove: true,
+              markersWontHide: true,
+              basicFormatEvents: true,
+              keepSpiderfied: true
+            };
+            self.map_data[mapid].oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+          }
+
           map.infowindow = new google.maps.InfoWindow({
             content: ''
           });
@@ -261,9 +344,11 @@
           // Define the icon_image, if set.
           var icon_image = map_settings.map_marker_and_infowindow.icon_image_path.length > 0 ? map_settings.map_marker_and_infowindow.icon_image_path : null;
 
+
           if (features.setMap) {
             self.place_feature(features, icon_image, mapid);
-          } else {
+          }
+          else {
             for (var i in features) {
               if (features[i].setMap) {
                 self.place_feature(features[i], icon_image, mapid);
@@ -285,41 +370,74 @@
               imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
             };
 
-            var markeclusterAdditionalOptions = map_settings.map_markercluster.markercluster_additional_options.length > 0 ? JSON.parse(map_settings.map_markercluster.markercluster_additional_options) : {};
-            // Merge markeclusterOption with markeclusterAdditionalOptions.
-            Object.assign(markeclusterOption, markeclusterAdditionalOptions);
+            // Add markercluster_additional_options if any.
+            if(map_settings.map_markercluster.markercluster_additional_options.length > 0) {
+              var markeclusterAdditionalOptions = JSON.parse(map_settings.map_markercluster.markercluster_additional_options);
+              // Merge markeclusterOption with markeclusterAdditionalOptions.
+              $.extend(markeclusterOption, markeclusterAdditionalOptions);
+            }
 
-            var markerCluster = new MarkerClusterer(map, self.map_data[mapid].markers, markeclusterOption);
+            // Define a markerCluster property, so other code can interact with it.
+            self.map_data[mapid].markerCluster = new MarkerClusterer(map, self.map_data[mapid].markers, markeclusterOption);
           }
         }
 
         // If the Map Initial State is defined by MapBounds.
         if (!self.map_data[mapid].map_bounds.isEmpty() && self.map_data[mapid].markers.length > 1) {
           map.fitBounds(self.map_data[mapid].map_bounds);
-          google.maps.event.addListenerOnce(map, 'idle', function() {
-            // Just once the fitBounds completes we can check to override it
-            // https://stackoverflow.com/questions/10835496/is-there-a-callback-after-map-fitbounds
-            if (centerForce) {
-              map.setCenter(mapOptions.center);
-            }
-            if (zoomForce) {
-              map.setZoom(mapOptions.zoom);
-            }
-            // Update the map initial state.
-            self.map_data[mapid].map_center = map.getCenter();
-            self.map_data[mapid].map_zoom = map.getZoom();
-          });
         }
-        // else if the Map Initial State is defined by just one marker.
-        else if (self.map_data[mapid].markers.length === 1 && !centerForce) {
+        // else if the Map Initial State is defined by just One marker.
+        else if (self.map_data[mapid].markers.length === 1) {
           map.setCenter(self.map_data[mapid].markers[0].getPosition());
           map.setZoom(mapOptions.zoom);
         }
 
-        // Define the map initial state.
-        self.map_data[mapid].map_center = self.map_data[mapid].markers[0].getPosition();
-        self.map_data[mapid].map_zoom = mapOptions.zoom;
+        // At the beginning (once) ...
+        google.maps.event.addListenerOnce(map, 'idle', function() {
+
+          // Open the Feature infowindow, is so set.
+          if (self.map_data[mapid].map_marker_and_infowindow.force_open && parseInt(self.map_data[mapid].map_marker_and_infowindow.force_open) === 1) {
+            map.setCenter(features[0].getPosition());
+            self.infowindow_open(mapid, features[0]);
+          }
+
+          // Check if the center and the zoom has to be forced.
+          self.map_check_force_state(mapid);
+          // Set the map start state.
+          self.map_set_start_state(mapid, map.getCenter(), map.getZoom());
+        });
+
+        // Update map initial state after everything is settled.
+        google.maps.event.addListener(map, 'idle', function() {
+          self.map_data[mapid].map_center = map.getCenter();
+          self.map_data[mapid].map_zoom = map.getZoom();
+        });
+
+        // Triggers Map resize listener on Window resize
+        google.maps.event.addDomListener(window, "resize", function() {
+          google.maps.event.trigger(map, "resize");
+        });
+
+        // Ensure map marker stays center on map resize
+        google.maps.event.addDomListener(map, "resize", function() {
+          map.setCenter(self.map_data[mapid].map_center);
+        });
+
       }
+    },
+    map_check_force_state: function (mapid) {
+      var self = this;
+      if (self.map_data[mapid].center_force) {
+        self.map_data[mapid].map.setCenter(self.map_data[mapid].map_options.center);
+      }
+      if (self.map_data[mapid].zoom_force) {
+        self.map_data[mapid].map.setZoom(self.map_data[mapid].map_options.zoom);
+      }
+    },
+    map_set_start_state: function (mapid, center, zoom) {
+      var self = this;
+      self.map_data[mapid].map_start_center = center;
+      self.map_data[mapid].map_start_zoom = zoom;
     },
     map_reset_control: function (controlDiv, mapid) {
       // Set CSS for the control border.
@@ -346,8 +464,8 @@
 
       // Setup the click event listeners: simply set the map to Chicago.
       controlUI.addEventListener('click', function() {
-        Drupal.geoFieldMap.map_data[mapid].map.setCenter(Drupal.geoFieldMap.map_data[mapid].map_center);
-        Drupal.geoFieldMap.map_data[mapid].map.setZoom(Drupal.geoFieldMap.map_data[mapid].map_zoom);
+        Drupal.geoFieldMap.map_data[mapid].map.setCenter(Drupal.geoFieldMap.map_data[mapid].map_start_center);
+        Drupal.geoFieldMap.map_data[mapid].map.setZoom(Drupal.geoFieldMap.map_data[mapid].map_start_zoom);
       });
     }
 

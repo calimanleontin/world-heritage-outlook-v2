@@ -4,6 +4,8 @@ namespace Drupal\geofield_map\Element;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\geofield\Element\GeofieldElementBase;
+use Drupal\Core\Url;
+use Drupal\Component\Utility\NestedArray;
 
 /**
  * Provides a Geofield Map form element.
@@ -15,32 +17,32 @@ class GeofieldMap extends GeofieldElementBase {
   /**
    * {@inheritdoc}
    */
-  public static $components = array(
-    'lat' => array(
+  public static $components = [
+    'lat' => [
       'title' => 'Latitude',
       'range' => 90,
-    ),
-    'lon' => array(
+    ],
+    'lon' => [
       'title' => 'Longitude',
       'range' => 180,
-    ),
-  );
+    ],
+  ];
 
   /**
    * {@inheritdoc}
    */
   public function getInfo() {
     $class = get_class($this);
-    return array(
+    return [
       '#input' => TRUE,
-      '#process' => array(
-        array($class, 'latLonProcess'),
-      ),
-      '#element_validate' => array(
-        array($class, 'elementValidate'),
-      ),
-      '#theme_wrappers' => array('fieldset'),
-    );
+      '#process' => [
+        [$class, 'latLonProcess'],
+      ],
+      '#element_validate' => [
+        [$class, 'elementValidate'],
+      ],
+      '#theme_wrappers' => ['fieldset'],
+    ];
   }
 
   /**
@@ -60,6 +62,13 @@ class GeofieldMap extends GeofieldElementBase {
    */
   public static function latLonProcess(array &$element, FormStateInterface $form_state, array &$complete_form) {
 
+    /* @var \Drupal\Core\Config\ConfigFactoryInterface $config */
+    $config = \Drupal::configFactory();
+    $geofield_map_settings = $config->get('geofield_map.settings');
+    /** @var \Drupal\geofield_map\Services\GoogleMapsService $google_maps_service */
+    $google_maps_service = \Drupal::service('geofield_map.google_maps');
+
+    // Conditionally use the Leaflet library from the D8 Module, if enabled.
     if ($element['#map_library'] == 'leaflet') {
       $element['#attached']['library'][] = \Drupal::moduleHandler()->moduleExists('leaflet') ? 'leaflet/leaflet' : 'geofield_map/leaflet';
     }
@@ -72,72 +81,87 @@ class GeofieldMap extends GeofieldElementBase {
     ];
 
     if (strlen($element['#gmap_api_key']) > 0) {
-      $element['map']['geocode'] = array(
+      $element['map']['geocode'] = [
         '#prefix' => '<label>' . t("Geocode address") . '</label>',
         '#type' => 'textfield',
-        '#description' => t("Use this to geocode you search location"),
+        '#description' => t("Use this to geocode your search location."),
         '#size' => 60,
         '#maxlength' => 128,
         '#attributes' => [
           'id' => 'search-' . $element['#id'],
           'class' => ['form-text', 'form-autocomplete', 'geofield-map-search'],
         ],
-      );
+      ];
+
+      if (\Drupal::currentUser()->hasPermission('configure geofield_map')) {
+        $element['map']['geocode']['#description'] .= '<div class="geofield-map-message">' . t('@google_places_autocomplete_message<br>@message_recipient', [
+          '@google_places_autocomplete_message' => !$element['#gmap_places'] ? 'Google Places Autocomplete Service disabled. Might be enabled in the Geofield Widget configuration.' : 'Google Places Autocomplete Service enabled.',
+          '@message_recipient' => t('(This message is only shown to the Geofield Map module administrator).'),
+        ]) . '</div>';
+      }
+
     }
-    else {
-      $element['map']['geocode_missing'] = array(
+    elseif (\Drupal::currentUser()->hasPermission('configure geofield_map')) {
+      $element['map']['geocode_missing'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => t('Gmap Api Key missing | The Geocode Address and ReverseGeocode functionality not available.'),
+        '#value' => t("Gmap Api Key missing | The Geocode & ReverseGeocode functionalities are not available. <br>@settings_page_link", [
+          '@settings_page_link' => \Drupal::linkGenerator()->generate(t('Set it in the Geofield Map Configuration Page'), Url::fromRoute('geofield_map.settings', [], [
+            'query' => [
+              'destination' => Url::fromRoute('<current>')
+                ->toString(),
+            ],
+          ])),
+        ]),
         '#attributes' => [
-          'class' => ['geofield-map-apikey-missing'],
+          'class' => ['geofield-map-message'],
         ],
-      );
+      ];
     }
 
-    $element['map']['geofield_map'] = array(
-      '#theme' => 'geofield_google_map',
+    $element['map']['geofield_map'] = [
+      '#theme' => 'geofield_map_widget',
       '#mapid' => $mapid,
       '#width' => isset($element['#map_dimensions']['width']) ? $element['#map_dimensions']['width'] : '100%',
       '#height' => isset($element['#map_dimensions']['height']) ? $element['#map_dimensions']['height'] : '450px',
-    );
+    ];
 
     $element['map']['actions'] = [
       '#type' => 'actions',
     ];
 
     if (!empty($element['#click_to_find_marker']) && $element['#click_to_find_marker'] == TRUE) {
-      $element['map']['actions']['click_to_find_marker'] = array(
+      $element['map']['actions']['click_to_find_marker'] = [
         '#type' => 'button',
         '#value' => t('Find marker'),
         '#name' => 'geofield-map-center',
         '#attributes' => [
           'id' => $element['#id'] . '-click-to-find-marker',
         ],
-      );
+      ];
       $element['#attributes']['class'] = ['geofield-map-center'];
     }
 
     if (!empty($element['#click_to_place_marker']) && $element['#click_to_place_marker'] == TRUE) {
-      $element['map']['actions']['click_to_place_marker'] = array(
+      $element['map']['actions']['click_to_place_marker'] = [
         '#type' => 'button',
         '#value' => t('Place marker here'),
         '#name' => 'geofield-map-marker',
         '#attributes' => [
           'id' => $element['#id'] . '-click-to-place-marker',
         ],
-      );
+      ];
       $element['#attributes']['class'] = ['geofield-map-marker'];
     }
 
     if (!empty($element['#geolocation']) && $element['#geolocation'] == TRUE) {
       $element['#attached']['library'][] = 'geofield_map/geolocation';
-      $element['map']['actions']['geolocation'] = array(
+      $element['map']['actions']['geolocation'] = [
         '#type' => 'button',
         '#value' => t('Find my location'),
         '#name' => 'geofield-html5-geocode-button',
         '#attributes' => ['mapid' => $mapid],
-      );
+      ];
       $element['#attributes']['class'] = ['auto-geocode'];
     }
 
@@ -146,64 +170,91 @@ class GeofieldMap extends GeofieldElementBase {
     $element['lat']['#attributes']['id'] = 'lat-' . $element['#id'];
     $element['lon']['#attributes']['id'] = 'lon-' . $element['#id'];
 
-    // Geoaddress Field Settings.
+    $address_field_exists = FALSE;
     if (!empty($element['#geoaddress_field']['field'])) {
-      $complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#description'] = (string) t('This value will be synchronized with the Geofield Map Reverse-Geocoded value.');
-      if ($element['#geoaddress_field']['hidden']) {
-        $complete_form[$element['#geoaddress_field']['field']]['#attributes']['class'][] = 'geofield_map_geoaddress_field_hidden';
+      $address_field_name = $element['#geoaddress_field']['field'];
+      $parents = array_slice($element['#array_parents'], 0, -4);
+      $parents[] = $address_field_name;
+
+      $address_field = NestedArray::getValue($complete_form, $parents, $address_field_exists);
+
+      // Geoaddress Field Settings.
+      if ($address_field_exists && ($address_field['widget']['#cardinality'] == '-1' || $address_field['widget']['#cardinality'] > $element['#delta'])) {
+
+        if ($element['#delta'] > 0 && !isset($address_field['widget'][$element['#delta']])) {
+          $address_field['widget'][$element['#delta']] = $address_field['widget'][$element['#delta'] - 1];
+          $address_field['widget'][$element['#delta']]['#delta'] = $element['#delta'];
+          $address_field['widget'][$element['#delta']]['_weight']['#default_value'] = $element['#delta'];
+          $address_field['widget'][$element['#delta']]['value']['#default_value'] = NULL;
+        }
+
+        $address_field['widget'][$element['#delta']]['value']['#description'] = (string) t('This value will be synchronized with the Geofield Map Reverse-Geocoded value.');
+        if ($element['#geoaddress_field']['hidden']) {
+          $address_field['#attributes']['class'][] = 'geofield_map_geoaddress_field_hidden';
+        }
+        if ($element['#geoaddress_field']['disabled']) {
+          $address_field['widget'][$element['#delta']]['value']['#attributes']['readonly'] = 'readonly';
+          $address_field['widget'][$element['#delta']]['value']['#description'] = (string) t('This field is readonly. It will be synchronized with the Geofield Map Reverse-Geocoded value.');
+        }
+
+        // Re-Generate the geoaddress_field #id.
+        $address_field['widget'][$element['#delta']]['value']['#id'] = $element['#geoaddress_field']['field'] . '-' . $element['#delta'];
+
+        NestedArray::setValue($complete_form, $parents, $address_field);
       }
-      if ($element['#geoaddress_field']['disabled']) {
-        $complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#attributes']['readonly'] = 'readonly';
-        $complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#description'] = (string) t('This field is readonly. It will be synchronized with the Geofield Map Reverse-Geocoded value.');
-      }
-      // Ensure the geoaddress_field has got an #id, otherwise generate it.
-      if (!isset($complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#id'])) {
-        $complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#id'] = $element['#geoaddress_field']['field'] . '-0';
-      }
+
     }
 
-    // Attach Geofield Map Library.
+    // Attach Geofield Map Libraries.
+    $element['#attached']['library'][] = 'geofield_map/geofield_map_general';
     $element['#attached']['library'][] = 'geofield_map/geofield_map_widget';
 
-    // The Node Form.
-    /* @var \Drupal\node\NodeForm $nodeForm */
-    $nodeForm = $form_state->getBuildInfo()['callback_object'];
-    $entity_operation = $nodeForm->getOperation();
+    // The Entity Form.
+    /* @var \Drupal\Core\Entity\ContentEntityFormInterface $entityForm */
+    $entityForm = $form_state->getBuildInfo()['callback_object'];
+    $entity_operation = method_exists($entityForm, 'getOperation') ? $entityForm->getOperation() : 'any';
 
-    $settings = [
-      $mapid => [
-        'entity_operation' => $entity_operation,
-        'id' => $element['#id'],
-        'gmap_api_key' => $element['#gmap_api_key'] && strlen($element['#gmap_api_key']) > 0 ? $element['#gmap_api_key'] : NULL,
-        'name' => $element['#name'],
-        'lat' => floatval($element['lat']['#default_value']),
-        'lng' => floatval($element['lon']['#default_value']),
-        'zoom_start' => intval($element['#zoom']['start']),
-        'zoom_focus' => intval($element['#zoom']['focus']),
-        'zoom_min' => intval($element['#zoom']['min']),
-        'zoom_max' => intval($element['#zoom']['max']),
-        'latid' => $element['lat']['#attributes']['id'],
-        'lngid' => $element['lon']['#attributes']['id'],
-        'searchid' => isset($element['map']['geocode']) ? $element['map']['geocode']['#attributes']['id'] : NULL,
-        'geoaddress_field' => !empty($element['#geoaddress_field']['field']) ? $element['#geoaddress_field']['field'] : NULL,
-        'geoaddress_field_id' => !empty($element['#geoaddress_field']['field']) ? $complete_form[$element['#geoaddress_field']['field']]['widget'][0]['value']['#id'] : NULL,
-        'mapid' => $mapid,
-        'widget' => TRUE,
-        'map_library' => $element['#map_library'],
-        'map_type' => $element['#map_type'],
-        'map_type_selector' => $element['#map_type_selector'] ? TRUE : FALSE,
-        'map_types_google' => $element['#map_types_google'],
-        'map_types_leaflet' => $element['#map_types_leaflet'],
-        'click_to_find_marker_id' => $element['#click_to_find_marker'] ? $element['map']['actions']['click_to_find_marker']['#attributes']['id'] : NULL,
-        'click_to_find_marker' => $element['#click_to_find_marker'] ? TRUE : FALSE,
-        'click_to_place_marker_id' => $element['#click_to_place_marker'] ? $element['map']['actions']['click_to_place_marker']['#attributes']['id'] : NULL,
-        'click_to_place_marker' => $element['#click_to_place_marker'] ? TRUE : FALSE,
+    // Geofield Map Element specific mapid settings.
+    $settings[$mapid] = [
+      'entity_operation' => $entity_operation,
+      'id' => $element['#id'],
+      'name' => $element['#name'],
+      'lat' => floatval($element['lat']['#default_value']),
+      'lng' => floatval($element['lon']['#default_value']),
+      'zoom_start' => intval($element['#zoom']['start']),
+      'zoom_focus' => intval($element['#zoom']['focus']),
+      'zoom_min' => intval($element['#zoom']['min']),
+      'zoom_max' => intval($element['#zoom']['max']),
+      'latid' => $element['lat']['#attributes']['id'],
+      'lngid' => $element['lon']['#attributes']['id'],
+      'searchid' => isset($element['map']['geocode']) ? $element['map']['geocode']['#attributes']['id'] : NULL,
+      'geoaddress_field_id' => $address_field_exists && isset($address_field['widget'][$element['#delta']]['value']['#id']) ? $address_field['widget'][$element['#delta']]['value']['#id'] : NULL,
+      'mapid' => $mapid,
+      'widget' => TRUE,
+      'gmap_places' => $element['#gmap_places'],
+      'gmap_places_options' => $element['#gmap_places_options'],
+      'map_library' => $element['#map_library'],
+      'map_type' => $element['#map_type'],
+      'map_type_selector' => $element['#map_type_selector'] ? TRUE : FALSE,
+      'map_types_google' => $element['#map_types_google'],
+      'map_types_leaflet' => $element['#map_types_leaflet'],
+      'click_to_find_marker_id' => $element['#click_to_find_marker'] ? $element['map']['actions']['click_to_find_marker']['#attributes']['id'] : NULL,
+      'click_to_find_marker' => $element['#click_to_find_marker'] ? TRUE : FALSE,
+      'click_to_place_marker_id' => $element['#click_to_place_marker'] ? $element['map']['actions']['click_to_place_marker']['#attributes']['id'] : NULL,
+      'click_to_place_marker' => $element['#click_to_place_marker'] ? TRUE : FALSE,
+      // Geofield Map Google Maps and Geocoder Settings.
+      'gmap_api_localization' => $google_maps_service->getGmapApiLocalization($geofield_map_settings->get('gmap_api_localization')),
+      'gmap_api_key' => $element['#gmap_api_key'] && strlen($element['#gmap_api_key']) > 0 ? $element['#gmap_api_key'] : NULL,
+      'geocoder' => !empty($geofield_map_settings->get('geocoder')) ? $geofield_map_settings->get('geocoder') : [],
+      'geocode_cache' => [
+        'clientside' => !empty($geofield_map_settings->get('geocoder.caching.clientside')) ? $geofield_map_settings->get('geocoder.caching.clientside') : 'session_storage',
       ],
     ];
 
     $element['#attached']['drupalSettings'] = [
       'geofield_map' => $settings,
     ];
+
     return $element;
   }
 
