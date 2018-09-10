@@ -127,7 +127,7 @@ class SocialMediaItem extends FieldItemBase implements OptionsProviderInterface 
    */
   public function isEmpty() {
     $value = $this->get('value')->getValue();
-    return $value === NULL || $value === '';
+    return $value === NULL || $value === ''|| $value === '0';
   }
 
 }

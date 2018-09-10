@@ -33,13 +33,21 @@ social_media:
     default_img: 1
     weight: 4 
     attributes : "target|_blank\nclass|twitter"
+  pinterest:
+    enable: 1
+    api_url: "https://www.pinterest.com/pin/create/button/?url=[current-page:url]&description=[current-page:title]"
+    api_event : "href"
+    text: "Pinterest"
+    default_img: 1
+    weight: 5
+    attributes : "target|_blank\nclass|pinterest"
   google_plus:
     enable: 1
     text: "Google Plus"
     api_url: "https://plus.google.com/share?url=[current-page:url]"
     api_event : "href"
     default_img: 1
-    weight: 5
+    weight: 6
     attributes : "target|_blank\nclass|google-plus"
   email:
     enable: 1
@@ -47,6 +55,6 @@ social_media:
     api_event : "href"
     text: "Email"
     default_img: 1
-    weight: 6
+    weight: 7
     attributes : "class|email"    
 langcode: en
