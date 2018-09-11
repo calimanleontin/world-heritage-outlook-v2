@@ -5550,63 +5550,6 @@
         }
     },
     {
-        "name": "drupal/varnish_purge",
-        "version": "1.9.0",
-        "version_normalized": "1.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/varnish_purge",
-            "reference": "8.x-1.9"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/varnish_purge-8.x-1.9.zip",
-            "reference": "8.x-1.9",
-            "shasum": "ecc6857c81c493609b360e659bab1fce65ceec3d"
-        },
-        "require": {
-            "drupal/core": "~8.0"
-        },
-        "require-dev": {
-            "drupal/purge": "*",
-            "drupal/purge_tokens": "*",
-            "drupal/varnish_purger": "*"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.9",
-                "datestamp": "1509622084",
-                "security-coverage": {
-                    "status": "covered",
-                    "message": "Covered by Drupal's security advisory policy"
-                }
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "MiSc",
-                "homepage": "https://www.drupal.org/user/382892"
-            },
-            {
-                "name": "deadbeef",
-                "homepage": "https://www.drupal.org/user/93644"
-            }
-        ],
-        "homepage": "https://www.drupal.org/project/varnish_purge",
-        "support": {
-            "source": "http://cgit.drupalcode.org/varnish_purge"
-        }
-    },
-    {
         "name": "drupal/webform",
         "version": "5.0.0-beta16",
         "version_normalized": "5.0.0.0-beta16",
@@ -10446,6 +10389,63 @@
         "support": {
             "source": "http://cgit.drupalcode.org/views_accordion",
             "issues": "https://www.drupal.org/project/issues/views_accordion"
+        }
+    },
+    {
+        "name": "drupal/varnish_purge",
+        "version": "1.11.0",
+        "version_normalized": "1.11.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/varnish_purge",
+            "reference": "8.x-1.11"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/varnish_purge-8.x-1.11.zip",
+            "reference": "8.x-1.11",
+            "shasum": "fbfa2eeb52e402775185f9069d0c8c34c7d4f1d8"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "require-dev": {
+            "drupal/purge": "*",
+            "drupal/purge_tokens": "*",
+            "drupal/varnish_purger": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.11",
+                "datestamp": "1530614920",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "MiSc",
+                "homepage": "https://www.drupal.org/user/382892"
+            },
+            {
+                "name": "deadbeef",
+                "homepage": "https://www.drupal.org/user/93644"
+            }
+        ],
+        "homepage": "https://www.drupal.org/project/varnish_purge",
+        "support": {
+            "source": "http://cgit.drupalcode.org/varnish_purge"
         }
     }
 ]
