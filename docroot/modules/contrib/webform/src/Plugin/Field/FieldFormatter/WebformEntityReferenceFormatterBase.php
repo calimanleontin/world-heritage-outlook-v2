@@ -2,12 +2,14 @@
 
 namespace Drupal\webform\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem;
 use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformMessageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,14 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormatterBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The webform message manager.
+   * The renderer.
    *
-   * @var \Drupal\webform\WebformMessageManagerInterface
+   * @var \Drupal\Core\Render\RendererInterface
    */
-  protected $messageManager;
+  protected $renderer;
 
   /**
-   * WebformEntityReferenceEntityFormatter constructor.
+   * WebformEntityReferenceLinkFormatter constructor.
    *
    * @param string $plugin_id
    *   The plugin_id for the formatter.
@@ -39,13 +41,13 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
    *   The view mode.
    * @param array $third_party_settings
    *   Third party settings.
-   * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
-   *   The webform message manager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, WebformMessageManagerInterface $message_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
 
-    $this->messageManager = $message_manager;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -60,86 +62,31 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('webform.message_manager')
+      $container->get('renderer')
     );
   }
 
   /**
-   * Returns the webform opened status indicator.
-   *
-   * @param \Drupal\webform\WebformInterface|null $webform
-   *   The webform entity reference webform.
-   * @param \Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem $item
-   *   The webform entity reference item.
-   *
-   * @return bool
-   *   TRUE if the webform is open to new submissions.
-   *
-   * @see \Drupal\webform\WebformInterface::isOpen
-   * @see \Drupal\webform\entity\Webform::isOpen
+   * {@inheritdoc}
    */
-  protected function isOpen(WebformInterface $webform = NULL, WebformEntityReferenceItem $item) {
-    // Make sure the webform exists.
-    if (!$webform) {
-      return FALSE;
+  protected function getEntitiesToView(EntityReferenceFieldItemListInterface $items, $langcode) {
+    /** @var \Drupal\webform\WebformInterface[] $entities */
+    $entities = parent::getEntitiesToView($items, $langcode);
+    foreach ($entities as $entity) {
+      /** @var \Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem $item */
+      $item = $entity->_referringItem;
+
+      // Only override an open webform.
+      if ($entity->isOpen()) {
+        // Directly call set override to prevent the altered webform from being
+        // saved.
+        $entity->setOverride();
+        $entity->set('open', $item->open);
+        $entity->set('close', $item->close);
+        $entity->setStatus($item->status);
+      }
     }
-
-    // If the webform is closed, all instances of the webform must be closed.
-    if (!$webform->isOpen()) {
-      return FALSE;
-    }
-
-    switch ($item->status) {
-      case WebformInterface::STATUS_OPEN:
-        return TRUE;
-
-      case WebformInterface::STATUS_CLOSED:
-        return FALSE;
-
-      case WebformInterface::STATUS_SCHEDULED:
-        $is_opened = TRUE;
-        if ($item->open && strtotime($item->open) > time()) {
-          $is_opened = FALSE;
-        }
-
-        $is_closed = FALSE;
-        if ($item->close && strtotime($item->close) < time()) {
-          $is_closed = TRUE;
-        }
-
-        return ($is_opened && !$is_closed) ? TRUE : FALSE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Determines if the webform is currently closed but scheduled to open.
-   *
-   * @param \Drupal\webform\WebformInterface|null $webform
-   *   The webform entity reference webform.
-   * @param \Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem $item
-   *   The webform entity reference item.
-   *
-   * @return bool
-   *   TRUE if the webform is currently closed but scheduled to open.
-   *
-   * @see \Drupal\webform\WebformInterface::isOpening
-   * @see \Drupal\webform\entity\Webform::isOpening
-   */
-  protected function isOpening(WebformInterface $webform, WebformEntityReferenceItem $item) {
-    // Make sure the webform exists.
-    if (!$webform) {
-      return FALSE;
-    }
-
-    if (!$webform->isOpen() && $webform->isOpening()) {
-      return TRUE;
-    }
-
-    $is_scheduled = ($item->status === WebformInterface::STATUS_SCHEDULED);
-    $is_opening = ($item->open && strtotime($item->open) > time());
-    return ($is_scheduled  && $is_opening) ? TRUE : FALSE;
+    return $entities;
   }
 
   /**
@@ -157,7 +104,7 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
     $config = \Drupal::config('webform.settings');
     \Drupal::service('renderer')->addCacheableDependency($elements, $config);
 
-    // Track if the webfor is updated.
+    // Track if the webform is updated.
     \Drupal::service('renderer')->addCacheableDependency($elements, $webform);
 
     // Calculate the max-age based on the open/close data/time for the item
@@ -169,7 +116,7 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
         $item_state = $item->$state;
         if ($item_state && strtotime($item_state) > time()) {
           $item_seconds = strtotime($item_state) - time();
-          if (!$max_age || $item_seconds > $max_age) {
+          if (!$max_age && $item_seconds > $max_age) {
             $max_age = $item_seconds;
           }
         }
@@ -178,7 +125,7 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
         $webform_state = $webform->get($state);
         if ($webform_state && strtotime($webform_state) > time()) {
           $webform_seconds = strtotime($webform_state) - time();
-          if (!$max_age || $webform_seconds > $max_age) {
+          if (!$max_age && $webform_seconds > $max_age) {
             $max_age = $webform_seconds;
           }
         }
@@ -188,6 +135,13 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
     if ($max_age) {
       $elements['#cache']['max-age'] = $max_age;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function checkAccess(EntityInterface $entity) {
+    return $entity->access('submission_create', NULL, TRUE);
   }
 
 }

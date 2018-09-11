@@ -12,6 +12,8 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("Toggle"),
  *   description = @Translation("Provides a form element for toggling a single on/off state."),
  *   category = @Translation("Advanced elements"),
+ *   deprecated = TRUE,
+ *   deprecated_message = @Translation("The Toogles library is not being maintained and has major accessibility issues. It has been <a href=""https://www.drupal.org/project/webform/issues/2890861"">deprecated</a> and will be removed before Webform 8.x-5.0."),
  * )
  */
 class WebformToggle extends Checkbox {
@@ -36,7 +38,7 @@ class WebformToggle extends Checkbox {
   /**
    * {@inheritdoc}
    */
-  public function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
 
     $format = $this->getItemFormat($element);

@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformYaml;
 
 /**
@@ -70,32 +71,20 @@ class WebformElementAttributes extends FormElement {
       $element['class'] = [
         '#type' => 'webform_select_other',
         '#title' => t('@title CSS classes', $t_args),
-        '#description' => t("Apply classes to the @type. Select 'custom...' to enter custom classes.", $t_args),
+        '#description' => t("Apply classes to the @type. Select 'custom…' to enter custom classes.", $t_args),
         '#multiple' => TRUE,
-        '#options' => [WebformSelectOther::OTHER_OPTION => t('custom...')] + array_combine($classes, $classes),
+        '#options' => [WebformSelectOther::OTHER_OPTION => t('custom…')] + array_combine($classes, $classes),
+        '#other__placeholder' => t('Enter custom classes…'),
         '#other__option_delimiter' => ' ',
         '#attributes' => [
           'class' => [
-            'js-webform-select2',
-            'webform-select2',
             'js-' . $element['#id'] . '-attributes-style',
           ],
         ],
-        '#attached' => ['library' => ['webform/webform.element.select2']],
+        '#select2' => TRUE,
         '#default_value' => $element['#default_value']['class'],
       ];
-
-      // ISSUE:
-      // Nested element with #element_validate callback that alter an
-      // element's value can break the returned value.
-      //
-      // WORKAROUND:
-      // Manually process the 'webform_select_other' element.
-      WebformSelectOther::valueCallback($element['class'], FALSE, $form_state);
-      WebformSelectOther::processWebformOther($element['class'], $form_state, $complete_form);
-
-      $element['class']['#type'] = 'item';
-      unset($element['class']['#element_validate']);
+      WebformElementHelper::process($element['class']);
     }
     else {
       $element['class'] = [
@@ -109,7 +98,7 @@ class WebformElementAttributes extends FormElement {
     // Custom options.
     $element['custom'] = [
       '#type' => 'texfield',
-      '#placeholder' => t('Enter custom classes...'),
+      '#placeholder' => t('Enter custom classes…'),
       '#states' => [
         'visible' => [
           'select.js-' . $element['#id'] . '-attributes-style' => ['value' => '_custom_'],
@@ -136,7 +125,7 @@ class WebformElementAttributes extends FormElement {
       '#title' => t('@title custom attributes (YAML)', $t_args),
       '#description' => t('Enter additional attributes to be added the @type.', $t_args),
       '#attributes__access' => (!\Drupal::moduleHandler()->moduleExists('webform_ui') || \Drupal::currentUser()->hasPermission('edit webform source')),
-      '#default_value' => WebformYaml::tidy(Yaml::encode($attributes)),
+      '#default_value' => WebformYaml::encode($attributes),
     ];
 
     // Apply custom properties. Typically used for descriptions.
@@ -147,13 +136,9 @@ class WebformElementAttributes extends FormElement {
       }
     }
 
-    // Set validation.
-    if (isset($element['#element_validate'])) {
-      $element['#element_validate'] = array_merge([[get_called_class(), 'validateWebformElementAttributes']], $element['#element_validate']);
-    }
-    else {
-      $element['#element_validate'] = [[get_called_class(), 'validateWebformElementAttributes']];
-    }
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformElementAttributes']);
 
     return $element;
   }
@@ -194,6 +179,8 @@ class WebformElementAttributes extends FormElement {
     $form_state->setValueForElement($element['class'], NULL);
     $form_state->setValueForElement($element['style'], NULL);
     $form_state->setValueForElement($element['attributes'], NULL);
+
+    $element['#value'] = $attributes;
     $form_state->setValueForElement($element, $attributes);
   }
 

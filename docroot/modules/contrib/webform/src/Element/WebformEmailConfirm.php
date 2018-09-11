@@ -5,7 +5,7 @@ namespace Drupal\webform\Element;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\CompositeFormElementTrait;
+use Drupal\webform\Utility\WebformElementHelper;
 
 /**
  * Provides a webform element requiring users to double-element and confirm an email address.
@@ -17,7 +17,7 @@ use Drupal\Core\Render\Element\CompositeFormElementTrait;
  */
 class WebformEmailConfirm extends FormElement {
 
-  use CompositeFormElementTrait;
+  use WebformCompositeFormElementTrait;
 
   /**
    * {@inheritdoc}
@@ -31,10 +31,8 @@ class WebformEmailConfirm extends FormElement {
         [$class, 'processWebformEmailConfirm'],
       ],
       '#pre_render' => [
-        [$class, 'preRenderCompositeFormElement'],
+        [$class, 'preRenderWebformCompositeFormElement'],
       ],
-      '#element_validate' => [[$class, 'validateWebformEmailConfirm']],
-      '#theme_wrappers' => ['form_element'],
       '#required' => FALSE,
     ];
   }
@@ -84,6 +82,7 @@ class WebformEmailConfirm extends FormElement {
     $element['mail_1'] = $element_shared_properties + array_intersect_key($element, array_combine($mail_1_properties, $mail_1_properties));
     $element['mail_1']['#attributes']['class'][] = 'webform-email';
     $element['mail_1']['#value'] = empty($element['#value']) ? NULL : $element['#value']['mail_1'];
+    $element['mail_1']['#error_no_message'] = TRUE;
 
     // Build mail_2 confirm email element.
     $element['mail_2'] = $element_shared_properties;
@@ -95,15 +94,24 @@ class WebformEmailConfirm extends FormElement {
     }
     $element['mail_2']['#attributes']['class'][] = 'webform-email-confirm';
     $element['mail_2']['#value'] = empty($element['#value']) ? NULL : $element['#value']['mail_2'];
+    $element['mail_2']['#error_no_message'] = TRUE;
 
     // Don't require the main element.
     $element['#required'] = FALSE;
 
+    // Hide title and description from being display.
+    $element['#title_display'] = 'invisible';
+    $element['#description_display'] = 'invisible';
+
     // Remove properties that are being applied to the sub elements.
-    unset($element['#title']);
-    unset($element['#description']);
     unset($element['#maxlength']);
     unset($element['#attributes']);
+    unset($element['#description']);
+
+    // Add validate callback.
+    $element += ['#element_validate' => []];
+    array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformEmailConfirm']);
+
     return $element;
   }
 
@@ -111,27 +119,19 @@ class WebformEmailConfirm extends FormElement {
    * Validates an email confirm element.
    */
   public static function validateWebformEmailConfirm(&$element, FormStateInterface $form_state, &$complete_form) {
-
     $mail_1 = trim($element['mail_1']['#value']);
     $mail_2 = trim($element['mail_2']['#value']);
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
     if ($has_access) {
       if ((!empty($mail_1) || !empty($mail_2)) && strcmp($mail_1, $mail_2)) {
-        $form_state->setError($element['mail_2'], t('The specified email addresses do not match.'));
+        $form_state->setError($element, t('The specified email addresses do not match.'));
       }
       else {
         // NOTE: Only mail_1 needs to be validated since mail_2 is the same value.
         // Verify the required value.
         if ($element['mail_1']['#required'] && empty($mail_1)) {
-          if (isset($element['#required_error'])) {
-            $form_state->setError($element, $element['#required_error']);
-          }
-          elseif (isset($element['mail_1']['#title'])) {
-            $form_state->setError($element, t('@name field is required.', ['@name' => $element['mail_1']['#title']]));
-          }
-          else {
-            $form_state->setError($element);
-          }
+          $required_error_title = (isset($element['mail_1']['#title'])) ? $element['mail_1']['#title'] : NULL;
+          WebformElementHelper::setRequiredError($element, $form_state, $required_error_title);
         }
         // Verify that the value is not longer than #maxlength.
         if (isset($element['mail_1']['#maxlength']) && Unicode::strlen($mail_1) > $element['mail_1']['#maxlength']) {
@@ -155,6 +155,8 @@ class WebformEmailConfirm extends FormElement {
     // string regardless of validation results.
     $form_state->setValueForElement($element['mail_1'], NULL);
     $form_state->setValueForElement($element['mail_2'], NULL);
+
+    $element['#value'] = $mail_1;
     $form_state->setValueForElement($element, $mail_1);
   }
 

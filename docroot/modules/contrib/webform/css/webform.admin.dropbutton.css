@@ -9,9 +9,26 @@
  */
 
 /**
+ * Fix webform submission views dropdown display.
+ */
+.js .webform-submission-views-dropbutton .dropbutton-wrapper {
+  display: block;
+  position: relative;
+  min-height: 2em;
+}
+
+.js .webform-submission-views-dropbutton .dropbutton-widget {
+  position: absolute;
+}
+
+/**
  * Hide dropbutton to prevent FOUC (flash of unstyled content).
  */
-.dropbutton-wrapper {
+.webform-dropbutton .dropbutton-wrapper {
   visibility: hidden;
   min-width: 100px;
+}
+
+.webform-dropbutton .dropbutton-wrapper .dropbutton-widget {
+  background-color: transparent;
 }

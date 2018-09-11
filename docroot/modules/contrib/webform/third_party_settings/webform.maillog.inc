@@ -49,12 +49,14 @@ function maillog_webform_submission_form_alter(array &$form, FormStateInterface 
   $build = [];
 
   // Display warning that all emails will be logged to admins only.
+  // Display warning that all emails will be logged to admins only.
   if (\Drupal::currentUser()->hasPermission('administer maillog')) {
+    $t_args = [':href' => Url::fromRoute('maillog.settings')->toString()];
     if ($config->get('log')) {
-      $build[] = ['#markup' => t('The <a href=":href">Maillog</a> module is logging all emails.')];
+      $build[] = ['#markup' => t('The <a href=":href">Maillog</a> module is logging all emails.', $t_args)];
     }
     else {
-      $build[] = ['#markup' => t('The <a href=":href">Maillog</a> module is installed.', [':href' => Url::fromRoute('maillog.settings')->toString()])];
+      $build[] = ['#markup' => t('The <a href=":href">Maillog</a> module is installed.', $t_args)];
     }
   }
 
@@ -67,6 +69,6 @@ function maillog_webform_submission_form_alter(array &$form, FormStateInterface 
   $build[] = ['#markup' => t('No emails will be sent.'), '#prefix' => ' <b>', '#suffix' => '</b>'];
 
   if ($build) {
-    drupal_set_message(\Drupal::service('renderer')->renderPlain($build), 'warning');
+    \Drupal::messenger()->addWarning(\Drupal::service('renderer')->renderPlain($build));
   }
 }

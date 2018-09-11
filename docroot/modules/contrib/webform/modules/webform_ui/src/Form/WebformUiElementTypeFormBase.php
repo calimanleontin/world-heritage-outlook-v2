@@ -98,6 +98,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
     $form['#prefix'] = '<div id="webform-ui-element-type-ajax-wrapper">';
     $form['#suffix'] = '</div>';
 
+    $form['#attached']['library'][] = 'webform/webform.admin';
     $form['#attached']['library'][] = 'webform/webform.form';
     $form['#attached']['library'][] = 'webform/webform.tooltip';
     $form['#attached']['library'][] = 'webform_ui/webform_ui';
@@ -131,6 +132,8 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
       '#attributes' => [
         'class' => ['webform-form-filter-text'],
         'data-element' => '.webform-ui-element-type-table',
+        'data-item-single' => $this->t('element'),
+        'data-item-plural' => $this->t('elements'),
         'title' => $this->t('Enter a part of the element name to filter by.'),
         'autofocus' => 'autofocus',
       ],
@@ -140,7 +143,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
   }
 
   /**
-   * Never trigge validation.
+   * Never trigger validation.
    */
   public function noValidate(array &$form, FormStateInterface $form_state) {
     $form_state->clearErrors();
@@ -209,8 +212,6 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
   /**
    * Build element type row.
    *
-   * @param array $plugin_definition
-   *   Webform element plugin definition.
    * @param \Drupal\webform\Plugin\WebformElementInterface $webform_element
    *   Webform element plugin.
    * @param \Drupal\Core\Url $url
@@ -221,17 +222,22 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
    * @return array
    *   A renderable array containing the element type row.
    */
-  protected function buildRow(array $plugin_definition, WebformElementInterface $webform_element, Url $url, $label) {
+  protected function buildRow(WebformElementInterface $webform_element, Url $url, $label) {
     $row = [];
 
     // Type.
-    $row['type'] = [
+    $row['type']['link'] = [
       '#type' => 'link',
-      '#title' => $plugin_definition['label'],
+      '#title' => $webform_element->getPluginLabel(),
       '#url' => $url,
-      '#attributes' => WebformDialogHelper::getModalDialogAttributes(800, ['webform-tooltip-link', 'js-webform-tooltip-link']) + ['title' => $plugin_definition['description']],
-      '#prefix' => '<div class="webform-form-filter-text-source">',
-      '#suffix' => '</div>',
+      '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(),
+      '#prefix' => '<span class="webform-form-filter-text-source">',
+      '#suffix' => '</span>',
+    ];
+    $row['type']['help'] = [
+      '#type' => 'webform_help',
+      '#help' => $webform_element->getPluginDescription(),
+      '#help_title' => $webform_element->getPluginLabel(),
     ];
 
     // Preview.
@@ -239,21 +245,21 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
       $row['preview'] = $this->buildElementPreview($webform_element);
     }
 
-    // Operation
+    // Operation.
     $row['operation'] = [
       '#type' => 'link',
       '#title' => $label,
       // Must clone the URL object to prevent the above 'label' link attributes
-      // (ie webform-tooltip-link) from being copied to 'operation' link.
+      // (i.e. webform-tooltip-link) from being copied to 'operation' link.
       '#url' => clone $url,
-      '#attributes' => WebformDialogHelper::getModalDialogAttributes(800, ['button', 'button--primary', 'button--small']),
+      '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(WebformDialogHelper::DIALOG_NORMAL, ['button', 'button--primary', 'button--small']),
     ];
 
     // Issue #2741877 Nested modals don't work: when using CKEditor in a
     // modal, then clicking the image button opens another modal,
     // which closes the original modal.
     // @todo Remove the below workaround once this issue is resolved.
-    if ($webform_element->getTypeName() == 'processed_text') {
+    if ($webform_element->getTypeName() == 'processed_text' && !WebformDialogHelper::useOffCanvas()) {
       unset($row['type']['#attributes']);
       unset($row['operation']['#attributes']);
       if (isset($row['operation'])) {
@@ -261,7 +267,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
       }
       $row['type']['#attributes']['class'][] = 'js-webform-tooltip-link';
       $row['type']['#attributes']['class'][] = 'webform-tooltip-link';
-      $row['type']['#attributes']['title'] = $plugin_definition['description'];
+      $row['type']['#attributes']['title'] = $webform_element->getPluginDescription();
     }
 
     return $row;
@@ -308,7 +314,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
     // Placeholders.
     switch ($webform_element->getTypeName()) {
       case 'container':
-        $element = $this->buildElementPreviewPlaceholder($this->t('Displays an HTML container. (ex @div)', ['@div' => '<div>']));
+        $element = $this->buildElementPreviewPlaceholder($this->t('Displays an HTML container. (i.e. @div)', ['@div' => '<div>']));
         break;
 
       case 'hidden':
@@ -316,7 +322,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
         break;
 
       case 'label':
-        $element = $this->buildElementPreviewPlaceholder($this->t('Displays a form label without any associated element. (ex @label)', ['@label' => '<label>']));
+        $element = $this->buildElementPreviewPlaceholder($this->t('Displays a form label without any associated element. (i.e. @label)', ['@label' => '<label>']));
         break;
 
       case 'processed_text':
@@ -325,7 +331,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
 
       case 'table':
         $element = $this->buildElementPreviewPlaceholder(
-          $this->t('Displays a custom table. (ex @table).', ['@table' => '<table>']) .
+          $this->t('Displays a custom table. (i.e. @table).', ['@table' => '<table>']) .
           '<br/><em>' . $this->t('Requires understanding <a href=":href">how to build tables using render arrays</a>.', [':href' => $webform_element->getPluginApiUrl()->toString()]) . '</em>'
         );
         break;
@@ -346,6 +352,10 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
         $element = $this->buildElementPreviewPlaceholder($this->t('Basic HTML markup.'));
         break;
 
+      case 'webform_section':
+        $default_section_title_tag = $this->config('webform.settings')->get('element.default_section_title_tag');
+        $element = $this->buildElementPreviewPlaceholder($this->t('Displays a section container (i.e. @section) with a header (i.e. @header).', ['@section' => '<section>', '@header' => '<' . $default_section_title_tag . '>']));
+        break;
     }
 
     // Disable all file uploads.
@@ -355,8 +365,10 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
 
     // Custom element type specific attributes.
     switch ($webform_element->getTypeName()) {
+      case 'details':
       case 'fieldset':
       case 'webform_email_confirm':
+        // Title needs to be displayed.
         unset($element['#title_display']);
         break;
 
@@ -408,7 +420,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
         ];
         break;
 
-      case 'webform_location':
+      case 'webform_location_geocomplete':
         unset($element['#map'], $element['#geolocation']);
         break;
 
@@ -471,11 +483,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
     foreach ($grouped_definitions as $grouped_definition) {
       $sorted_definitions += $grouped_definition;
     }
-    foreach ($sorted_definitions as &$plugin_definition) {
-      if (empty($plugin_definition['category'])) {
-        $plugin_definition['category'] = $this->t('Other elements');
-      }
-    }
+
     return $sorted_definitions;
   }
 

@@ -79,6 +79,23 @@ class WebformHandler extends Plugin {
    */
   public $results = WebformHandlerInterface::RESULTS_IGNORED;
 
+  /**
+   * Indicated whether handler supports condition logic.
+   *
+   * Most handlers will support conditional logic, this flat allows custom
+   * handlers and custom modules to easily disabled conditional logic for
+   * a handler.
+   *
+   * @var bool
+   */
+  public $conditions = TRUE;
+
+  /**
+   * Indicated whether handler supports tokens.
+   *
+   * @var bool
+   */
+  public $tokens = FALSE;
 
   /**
    * Indicated whether submission must be stored in the database for this handler processes results.

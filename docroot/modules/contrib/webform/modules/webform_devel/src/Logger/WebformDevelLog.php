@@ -3,8 +3,11 @@
 namespace Drupal\webform_devel\Logger;
 
 use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Messenger\MessengerTrait;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -13,13 +16,15 @@ use Psr\Log\LoggerInterface;
 class WebformDevelLog implements LoggerInterface {
 
   use RfcLoggerTrait;
+  use DependencySerializationTrait;
+  use MessengerTrait;
 
   /**
-   * A configuration object MSK admin settings.
+   * The configuration factory.
    *
-   * @var \Drupal\Core\Config\Config
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $config;
+  protected $configFactory;
 
   /**
    * The message's placeholders parser.
@@ -37,6 +42,8 @@ class WebformDevelLog implements LoggerInterface {
    *   The parser to use when extracting message variables.
    */
   public function __construct(ConfigFactory $config_factory, LogMessageParserInterface $parser) {
+    $this->configFactory = $config_factory;
+
     $this->config = $config_factory->get('webform_devel.settings');
     $this->parser = $parser;
   }
@@ -50,17 +57,27 @@ class WebformDevelLog implements LoggerInterface {
       return;
     }
 
-    $debug = $this->config->get('logger.debug') ?: 0;
+    // Never display log messages if the 'system.logging' 'error_level'
+    // is set to 'hide'.
+    if ($this->configFactory->get('system.logging')->get('error_level') === 'hide') {
+      return;
+    }
+
+    $debug = $this->configFactory->get('webform_devel.settings')->get('logger.debug') ?: 0;
     if ($debug == 1 && in_array($context['channel'], ['theme', 'php'])) {
       // Populate the message placeholders and then replace them in the message.
       $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
       $message = empty($message_placeholders) ? $message : strtr($message, $message_placeholders);
       $build = ['#markup' => $message];
-      // IMPORTANT: Do not injected the renderer into WebformDevelLog because it will cause 
-      // "LogicException: The database connection is not serializable." errors for all Ajax 
-      // callbacks.
+      // IMPORTANT: Do not inject the renderer into WebformDevelLog because
+      // it will cause…
+      // "LogicException: The database connection is not serializable." errors
+      // for all Ajax callbacks.
       // @see \Drupal\Core\Render\Renderer
-      drupal_set_message(\Drupal::service('renderer')->renderPlain($build), ($level <= 3) ? 'error' : 'warning');
+      $this->messenger()->addMessage(
+        \Drupal::service('renderer')->renderPlain($build),
+        ($level <= 3) ? MessengerInterface::TYPE_ERROR : MessengerInterface::TYPE_WARNING
+      );
     }
   }
 
