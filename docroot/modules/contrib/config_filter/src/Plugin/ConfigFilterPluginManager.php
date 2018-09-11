@@ -3,7 +3,6 @@
 namespace Drupal\config_filter\Plugin;
 
 use Drupal\config_filter\ConfigFilterManagerInterface;
-use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -76,22 +75,6 @@ class ConfigFilterPluginManager extends DefaultPluginManager implements ConfigFi
     });
 
     return $definitions;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFilteredStorage(StorageInterface $storage, $storage_name, array $excluded = []) {
-    trigger_error('plugin.manager.config_filter:getFilteredStorage() is deprecated.', E_USER_DEPRECATED);
-    return \Drupal::service('config_filter.storage_factory')->getFilteredStorage($storage, [$storage_name], $excluded);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFilteredSyncStorage() {
-    trigger_error('plugin.manager.config_filter:getFilteredSyncStorage() is deprecated.', E_USER_DEPRECATED);
-    return \Drupal::service('config_filter.storage_factory')->getSync();
   }
 
 }
