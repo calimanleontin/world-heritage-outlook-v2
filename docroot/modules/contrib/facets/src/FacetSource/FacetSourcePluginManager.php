@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\facets\Annotation\FacetsFacetSource;
 
 /**
  * Manages facet source plugins.
@@ -20,7 +21,7 @@ class FacetSourcePluginManager extends DefaultPluginManager {
    * {@inheritdoc}
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/facets/facet_source', $namespaces, $module_handler, 'Drupal\facets\FacetSource\FacetSourcePluginInterface', 'Drupal\facets\Annotation\FacetsFacetSource');
+    parent::__construct('Plugin/facets/facet_source', $namespaces, $module_handler, FacetSourcePluginInterface::class, FacetsFacetSource::class);
   }
 
   /**
@@ -58,7 +59,7 @@ class FacetSourcePluginManager extends DefaultPluginManager {
     // Definitions that are based on search api when search api is not enabled
     // should not exist, so make sure we do exactly that, we do this in
     // ::findDefinitions because this one is called before the result is saved.
-    $defs = array_filter($defs, function($item) {
+    $defs = array_filter($defs, function ($item) {
       if ($item['id'] === 'search_api' && !$this->moduleHandler->moduleExists('search_api')) {
         return FALSE;
       }

@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\facets\FacetSource\FacetSourcePluginManager;
 use Drupal\facets\Plugin\facets\facet_source\SearchApiDisplay;
 use Drupal\facets\FacetSource\SearchApiFacetSourceInterface;
 use Drupal\search_api\Plugin\search_api\display\ViewsRest;
@@ -28,14 +29,7 @@ class FacetForm extends EntityForm {
    *
    * @var \Drupal\facets\FacetInterface
    */
-  protected $facet;
-
-  /**
-   * The entity manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+  protected $entity;
 
   /**
    * The processor manager.
@@ -52,6 +46,13 @@ class FacetForm extends EntityForm {
   protected $widgetPluginManager;
 
   /**
+   * The plugin manager for facet sources.
+   *
+   * @var \Drupal\facets\FacetSource\FacetSourcePluginManager
+   */
+  protected $facetSourcePluginManager;
+
+  /**
    * Constructs an FacetDisplayForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -60,11 +61,14 @@ class FacetForm extends EntityForm {
    *   The processor plugin manager.
    * @param \Drupal\facets\Widget\WidgetPluginManager $widget_plugin_manager
    *   The plugin manager for widgets.
+   * @param \Drupal\facets\FacetSource\FacetSourcePluginManager $facet_source_plugin_manager
+   *   The plugin manager for facet sources.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ProcessorPluginManager $processor_plugin_manager, WidgetPluginManager $widget_plugin_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ProcessorPluginManager $processor_plugin_manager, WidgetPluginManager $widget_plugin_manager, FacetSourcePluginManager $facet_source_plugin_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->processorPluginManager = $processor_plugin_manager;
     $this->widgetPluginManager = $widget_plugin_manager;
+    $this->facetSourcePluginManager = $facet_source_plugin_manager;
   }
 
   /**
@@ -74,7 +78,8 @@ class FacetForm extends EntityForm {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('plugin.manager.facets.processor'),
-      $container->get('plugin.manager.facets.widget')
+      $container->get('plugin.manager.facets.widget'),
+      $container->get('plugin.manager.facets.facet_source')
     );
   }
 
@@ -83,16 +88,6 @@ class FacetForm extends EntityForm {
    */
   public function getBaseFormId() {
     return NULL;
-  }
-
-  /**
-   * Returns the widget plugin manager.
-   *
-   * @return \Drupal\facets\Widget\WidgetPluginManager
-   *   The widget plugin manager.
-   */
-  protected function getWidgetPluginManager() {
-    return $this->widgetPluginManager ?: \Drupal::service('plugin.manager.facets.widget');
   }
 
   /**
@@ -117,7 +112,7 @@ class FacetForm extends EntityForm {
     $widget = $facet->getWidgetInstance();
 
     $arguments = ['%widget' => $widget->getPluginDefinition()['label']];
-    if (!$config_form = $widget->buildConfigurationForm([], $form_state, $this->getEntity())) {
+    if (!$config_form = $widget->buildConfigurationForm([], $form_state, $facet)) {
       $type = 'details';
       $config_form = ['#markup' => $this->t('%widget widget needs no configuration.', $arguments)];
     }
@@ -140,12 +135,35 @@ class FacetForm extends EntityForm {
 
     /** @var \Drupal\facets\FacetInterface $facet */
     $facet = $this->entity;
-    $widget = $facet->getWidgetInstance();
+
+    $facet_sources = [];
+    foreach ($this->facetSourcePluginManager->getDefinitions() as $facet_source_id => $definition) {
+      $facet_sources[$definition['id']] = !empty($definition['label']) ? $definition['label'] : $facet_source_id;
+    }
+    if (isset($facet_sources[$facet->getFacetSourceId()])) {
+      $form['facet_source'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Facet source'),
+        '#markup' => $facet_sources[$facet->getFacetSourceId()],
+      ];
+    }
 
     $widget_options = [];
-    foreach ($this->getWidgetPluginManager()->getDefinitions() as $widget_id => $definition) {
+    foreach ($this->widgetPluginManager->getDefinitions() as $widget_id => $definition) {
       $widget_options[$widget_id] = !empty($definition['label']) ? $definition['label'] : $widget_id;
     }
+
+    // Filters all the available widgets to make sure that only those that
+    // this facet applies for are enabled.
+    foreach ($widget_options as $widget_id => $label) {
+      $widget = $this->widgetPluginManager->createInstance($widget_id);
+      if (!$widget->supportsFacet($facet)) {
+        unset($widget_options[$widget_id]);
+      }
+    }
+    unset($widget_id, $label, $widget);
+
+    $widget = $facet->getWidgetInstance();
     $form['widget'] = [
       '#type' => 'radios',
       '#title' => $this->t('Widget'),
@@ -195,10 +213,24 @@ class FacetForm extends EntityForm {
     }
     $enabled_processors = $facet->getProcessors(TRUE);
 
+    // Filters all the available processors to make sure that only those that
+    // this facet applies for are enabled.
+    foreach ($all_processors as $processor_id => $processor) {
+      if (!$processor->supportsFacet($facet)) {
+        unset($all_processors[$processor_id]);
+      }
+    }
+    unset($processor_id, $processor);
+
     $stages = $this->processorPluginManager->getProcessingStages();
     $processors_by_stage = [];
     foreach ($stages as $stage => $definition) {
-      $processors_by_stage[$stage] = $facet->getProcessorsByStage($stage, FALSE);
+      foreach ($facet->getProcessorsByStage($stage, FALSE) as $processor_id => $processor) {
+        if ($processor->supportsFacet($facet)) {
+          $processors_by_stage[$stage][$processor_id] = $processor;
+        }
+      }
+      unset($processor_id, $processor);
     }
 
     $form['#tree'] = TRUE;
@@ -340,6 +372,12 @@ class FacetForm extends EntityForm {
       '#default_value' => $facet->getUrlAlias(),
       '#maxlength' => 50,
       '#required' => TRUE,
+    ];
+    $form['facet_settings']['show_title'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show title of facet'),
+      '#description' => $this->t('Show the title of the facet trough a twig template'),
+      '#default_value' => $facet->get('show_title'),
     ];
 
     $empty_behavior_config = $facet->getEmptyBehavior();
@@ -598,8 +636,14 @@ class FacetForm extends EntityForm {
     elseif (preg_match('/[^a-zA-Z0-9_~\.\-]/', $url_alias)) {
       $form_state->setErrorByName('url_alias', $this->t('The URL alias contains characters that are not allowed.'));
     }
-    // @todo: validate if url_alias is already used by another facet with the
-    // same facet source.
+
+    $already_enabled_facets_on_same_source = \Drupal::service('facets.manager')->getFacetsByFacetSourceId($facet->getFacetSourceId());
+    /** @var \Drupal\facets\FacetInterface $other */
+    foreach ($already_enabled_facets_on_same_source as $other) {
+      if ($other->getUrlAlias() === $url_alias && $other->id() !== $facet->id()) {
+        $form_state->setErrorByName('url_alias', $this->t('This alias is already in use for another facet defined on the same source.'));
+      }
+    }
   }
 
   /**
@@ -609,8 +653,6 @@ class FacetForm extends EntityForm {
     $values = $form_state->getValues();
 
     // Store processor settings.
-    // @todo Go through all available processors, enable/disable with method on
-    //   processor plugin to allow reaction.
     /** @var \Drupal\facets\FacetInterface $facet */
     $facet = $this->entity;
 
@@ -672,6 +714,7 @@ class FacetForm extends EntityForm {
     $facet->setUseHierarchy($form_state->getValue(['facet_settings', 'use_hierarchy']));
     $facet->setExpandHierarchy($form_state->getValue(['facet_settings', 'expand_hierarchy']));
     $facet->setEnableParentWhenChildGetsDisabled($form_state->getValue(['facet_settings', 'enable_parent_when_child_gets_disabled']));
+    $facet->set('show_title', $form_state->getValue(['facet_settings', 'show_title'], FALSE));
 
     $facet->save();
     drupal_set_message($this->t('Facet %name has been updated.', ['%name' => $facet->getName()]));

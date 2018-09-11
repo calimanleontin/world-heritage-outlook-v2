@@ -12,17 +12,10 @@ use Drupal\facets\Widget\WidgetPluginBase;
  * @FacetsWidget(
  *   id = "array",
  *   label = @Translation("Array with raw results"),
- *   description = @Translation("A configurable widget that builds an array with results."),
+ *   description = @Translation("A widget that builds an array with results. This widget is not supposed to display any results, but it is needed for rest integration."),
  * )
  */
 class ArrayWidget extends WidgetPluginBase {
-
-  /**
-   * A flag that indicates if we should display the numbers.
-   *
-   * @var bool
-   */
-  protected $showNumbers = FALSE;
 
   /**
    * {@inheritdoc}
@@ -41,7 +34,7 @@ class ArrayWidget extends WidgetPluginBase {
         $items[$facet->getFieldIdentifier()][] = $text;
       }
       else {
-        $items[$facet->getFieldIdentifier()][] = $this->buildListItems($result);
+        $items[$facet->getFieldIdentifier()][] = $this->buildListItems($facet, $result);
       }
     }
 
@@ -49,15 +42,9 @@ class ArrayWidget extends WidgetPluginBase {
   }
 
   /**
-   * Builds an array with the results.
-   *
-   * @param \Drupal\facets\Result\ResultInterface $result
-   *   A result item.
-   *
-   * @return array
-   *   An array of the result.
+   * {@inheritdoc}
    */
-  protected function buildListItems(ResultInterface $result) {
+  protected function buildListItems(FacetInterface $facet, ResultInterface $result) {
     if ($children = $result->getChildren()) {
       $items = $this->prepare($result);
 

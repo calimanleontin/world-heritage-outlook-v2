@@ -139,7 +139,7 @@
     "drupal/editor_advanced_link": "^1.4",
     "drupal/editor_file": "^1.2",
     "drupal/entity_print": "^2.1",
-    "drupal/facets": "^1.0@alpha",
+    "drupal/facets": "^1.1",
     "drupal/facets_pretty_paths": "1.x-dev",
     "drupal/features": "^3.8",
     "drupal/field_group": "^1.0@RC",
