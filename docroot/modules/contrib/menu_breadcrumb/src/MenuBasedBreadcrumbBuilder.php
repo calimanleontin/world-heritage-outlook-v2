@@ -167,6 +167,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     // so we don't check for taxonomy fields on unfieldable nodes:
     $node_object = $route_match->getParameters()->get('node');
     $node_is_fieldable = $node_object instanceof FieldableEntityInterface;
+
     // Make sure menus are selected, and breadcrumb text strings, are displayed
     // in the content rather than the (default) interface language:
     $this->contentLanguage = $this->languageManager
@@ -178,8 +179,8 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     uasort($menus, function ($a, $b) {
       return SortArray::sortByWeightElement($a, $b);
     });
-
     foreach ($menus as $menu_name => $params) {
+
       // Look for current path on any enabled menu.
       if (!empty($params['enabled'])) {
 
@@ -249,7 +250,8 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
     // Breadcrumbs accumulate in this array, with lowest index being the root
     // (i.e., the reverse of the assigned breadcrumb trail):
-    $links = array();
+    $links = [];
+    // (https://www.drupal.org/docs/develop/standards/coding-standards#array)
 
     if ($this->languageManager->isMultilingual()) {
       $breadcrumb->addCacheContexts(['languages:language_content']);
@@ -262,14 +264,21 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     // Changing any module settings will invalidate the breadcrumb:
     $breadcrumb->addCacheableDependency($this->config);
 
-    // Changing the active trail of the current path, or taxonomy-attached path,
-    // on this menu will invalidate this breadcrumb:
+    // Changing the active trail or URL, of either the current path or the
+    // taxonomy-attached path, on this menu will invalidate this breadcrumb:
     $breadcrumb->addCacheContexts(['route.menu_active_trails:' . $this->menuName]);
+    $breadcrumb->addCacheContexts(['url.path']);
 
     // Generate basic breadcrumb trail from active trail.
     // Keep same link ordering as Menu Breadcrumb (so also reverses menu trail)
     foreach (array_reverse($this->menuTrail) as $id) {
       $plugin = $this->menuLinkManager->createInstance($id);
+
+      // Skip items that have an empty URL if the option is set.
+      if ($this->config->get('exclude_empty_url') && empty($plugin->getUrlObject()->toString())) {
+        continue;
+      }
+
       $links[] = Link::fromTextAndUrl($plugin->getTitle(), $plugin->getUrlObject());
       $breadcrumb->addCacheableDependency($plugin);
       // In the last line the MenuLinkContent plugin is not providing cache tags.
@@ -288,7 +297,8 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $langcode = $this->contentLanguage;
     $label = $this->config->get('home_as_site_name') ?
       $this->configFactory->get('system.site')->get('name') :
-      $this->t('Home', array(), array('langcode' => $langcode));
+      $this->t('Home', [], ['langcode' => $langcode]);
+      // (https://www.drupal.org/docs/develop/standards/coding-standards#array)
     $home_link = Link::createFromRoute($label, '<front>');
 
     // The first link from the menu trail, being the root, may be the
