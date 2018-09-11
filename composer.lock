@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d671d90d0452df42f7e65b71fcb9d9a",
+    "content-hash": "7daa35cfa7afbf936efe082e8e251f94",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -3873,17 +3873,17 @@
         },
         {
             "name": "drupal/menu_link_attributes",
-            "version": "1.0.0-beta3",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/menu_link_attributes",
-                "reference": "8.x-1.0-beta3"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/menu_link_attributes-8.x-1.0-beta3.zip",
-                "reference": "8.x-1.0-beta3",
-                "shasum": "60dbace4eca093fddf00c185396251b95d865fa0"
+                "url": "https://ftp.drupal.org/files/projects/menu_link_attributes-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "6386cc2fcd7ae0d17d2a82d690866028b132055c"
             },
             "require": {
                 "drupal/core": "*"
@@ -3894,8 +3894,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta3",
-                    "datestamp": "1467719639"
+                    "version": "8.x-1.0",
+                    "datestamp": "1507195827",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10190,7 +10194,6 @@
         "drupal/facets_pretty_paths": 20,
         "drupal/geofield": 15,
         "drupal/lang_dropdown": 10,
-        "drupal/menu_link_attributes": 10,
         "drupal/purge": 10,
         "drupal/search_api_autocomplete": 15,
         "drupal/search_api_sorts": 10,
