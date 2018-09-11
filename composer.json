@@ -151,7 +151,7 @@
     "drupal/geofield_map": "*",
     "drupal/google_analytics": "^2.3",
     "drupal/honeypot": "^1.27",
-    "drupal/image_effects": "1.1",
+    "drupal/image_effects": "^1.1",
     "drupal/image_widget_crop": "^2.2",
     "drupal/imce": "^1.6",
     "drupal/inline_responsive_images": "^2.1",

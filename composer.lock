@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b2a19cea5bbd5b8a6ac9b11ad786917",
+    "content-hash": "25d3e63ddde301d87f2fc4dd8416ea02",
     "packages": [
         {
             "name": "adamwulf/columnizer",
