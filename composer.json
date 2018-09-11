@@ -168,7 +168,7 @@
     "drupal/redirect": "^1.0@beta",
     "drupal/reroute_email": "^1.0@beta",
     "drupal/responsive_favicons": "^1.4",
-    "drupal/search_api": "^1.2",
+    "drupal/search_api": "^1.9",
     "drupal/search_api_autocomplete": "^1.0@alpha",
     "drupal/search_api_solr": "^1.0",
     "drupal/search_api_sorts": "^1.0@beta",

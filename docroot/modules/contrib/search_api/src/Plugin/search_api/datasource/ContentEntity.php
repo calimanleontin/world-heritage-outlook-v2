@@ -24,7 +24,6 @@ use Drupal\field\FieldStorageConfigInterface;
 use Drupal\search_api\Datasource\DatasourcePluginBase;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Plugin\PluginFormTrait;
-use Drupal\search_api\SearchApiException;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\search_api\Utility\Utility;
@@ -456,8 +455,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
         '#type' => 'radios',
         '#title' => $this->t('Which bundles should be indexed?'),
         '#options' => [
+          0 => $this->t('Only those selected'),
           1 => $this->t('All except those selected'),
-          0 => $this->t('None except those selected'),
         ],
         '#default_value' => (int) $this->configuration['bundles']['default'],
       ];
@@ -481,8 +480,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
         '#type' => 'radios',
         '#title' => $this->t('Which languages should be indexed?'),
         '#options' => [
+          0 => $this->t('Only those selected'),
           1 => $this->t('All except those selected'),
-          0 => $this->t('None except those selected'),
         ],
         '#default_value' => (int) $this->configuration['languages']['default'],
       ];
@@ -704,7 +703,7 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
 
     if (isset($page)) {
       $page_size = $this->getConfigValue('tracking_page_size');
-      assert('$page_size', 'Tracking page size is not set.');
+      assert($page_size, 'Tracking page size is not set.');
       $select->range($page * $page_size, $page_size);
       // For paging to reliably work, a sort should be present.
       $entity_id = $this->getEntityType()->getKey('id');
@@ -746,6 +745,13 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
       foreach ($translations as $langcode) {
         $item_ids[] = "$entity_id:$langcode";
       }
+    }
+
+    if (Utility::isRunningInCli()) {
+      // When running in the CLI, this might be executed for all entities from
+      // within a single process. To avoid running out of memory, reset the
+      // static cache after each batch.
+      $this->getEntityStorage()->resetCache($entity_ids);
     }
 
     return $item_ids;
@@ -803,12 +809,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
    * {@inheritdoc}
    */
   public function getViewModes($bundle = NULL) {
-    if (isset($bundle) && $this->hasBundles()) {
-      return $this->getEntityDisplayRepository()->getViewModeOptionsByBundle($this->getEntityTypeId(), $bundle);
-    }
-    else {
-      return $this->getEntityDisplayRepository()->getViewModeOptions($this->getEntityTypeId());
-    }
+    return $this->getEntityDisplayRepository()
+      ->getViewModeOptions($this->getEntityTypeId());
   }
 
   /**
@@ -835,7 +837,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
    */
   public function viewMultipleItems(array $items, $view_mode, $langcode = NULL) {
     try {
-      $view_builder = $this->getEntityTypeManager()->getViewBuilder($this->getEntityTypeId());
+      $view_builder = $this->getEntityTypeManager()
+        ->getViewBuilder($this->getEntityTypeId());
       // Langcode passed, use that for viewing.
       if (isset($langcode)) {
         $entities = [];
@@ -852,8 +855,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
       // Otherwise, separate the items by language, keeping the keys.
       $items_by_language = [];
       foreach ($items as $i => $item) {
-        if ($item instanceof EntityInterface) {
-          $items_by_language[$item->language()->getId()][$i] = $item;
+        if ($entity = $this->getEntity($item)) {
+          $items_by_language[$entity->language()->getId()][$i] = $entity;
         }
       }
       // Then build the items for each language. We initialize $build beforehand
@@ -954,8 +957,7 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
    * {@inheritdoc}
    */
   public static function getIndexesForEntity(ContentEntityInterface $entity) {
-    $entity_type = $entity->getEntityTypeId();
-    $datasource_id = 'entity:' . $entity_type;
+    $datasource_id = 'entity:' . $entity->getEntityTypeId();
     $entity_bundle = $entity->bundle();
     $has_bundles = $entity->getEntityType()->hasKey('bundle');
 
@@ -964,28 +966,70 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
     $indexes = Index::loadMultiple();
 
     foreach ($indexes as $index_id => $index) {
-      // Filter our indexes that don't contain the datasource in question.
+      // Filter out indexes that don't contain the datasource in question.
       if (!$index->isValidDatasource($datasource_id)) {
         unset($indexes[$index_id]);
       }
       elseif ($has_bundles) {
         // If the entity type supports bundles, we also have to filter out
         // indexes that exclude the entity's bundle.
-        try {
-          $config = $index->getDatasource($datasource_id)->getConfiguration();
-          $default = !empty($config['bundles']['default']);
-          $bundle_set = in_array($entity_bundle, $config['bundles']['selected']);
-          if ($default == $bundle_set) {
-            unset($indexes[$index_id]);
-          }
-        }
-        catch (SearchApiException $e) {
+        $config = $index->getDatasource($datasource_id)->getConfiguration();
+        if (!Utility::matches($entity_bundle, $config['bundles'])) {
           unset($indexes[$index_id]);
         }
       }
     }
 
     return $indexes;
+  }
+
+  /**
+   * Filters a set of datasource-specific item IDs.
+   *
+   * Returns only those item IDs that are valid for the given datasource and
+   * index. This method only checks the item language, though – whether an
+   * entity with that ID actually exists, or whether it has a bundle included
+   * for that datasource, is not verified.
+   *
+   * @param \Drupal\search_api\IndexInterface $index
+   *   The index for which to validate.
+   * @param string $datasource_id
+   *   The ID of the datasource on the index for which to validate.
+   * @param string[] $item_ids
+   *   The item IDs to be validated.
+   *
+   * @return string[]
+   *   All given item IDs that are valid for that index and datasource.
+   */
+  public static function filterValidItemIds(IndexInterface $index, $datasource_id, array $item_ids) {
+    if (!$index->isValidDatasource($datasource_id)) {
+      return $item_ids;
+    }
+    $config = $index->getDatasource($datasource_id)->getConfiguration();
+    // If the entity type doesn't allow translations, we just accept all IDs.
+    // (If the entity type were translatable, the config key would have been set
+    // with the default configuration.)
+    if (!isset($config['languages']['selected'])) {
+      return $item_ids;
+    }
+    $always_valid = [
+      LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      LanguageInterface::LANGCODE_NOT_APPLICABLE,
+    ];
+    $valid_ids = [];
+    foreach ($item_ids as $item_id) {
+      $pos = strrpos($item_id, ':');
+      // Item IDs without colons are always invalid.
+      if ($pos === FALSE) {
+        continue;
+      }
+      $langcode = substr($item_id, $pos + 1);
+      if (Utility::matches($langcode, $config['languages'])
+          || in_array($langcode, $always_valid)) {
+        $valid_ids[] = $item_id;
+      }
+    }
+    return $valid_ids;
   }
 
 }

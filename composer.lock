@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cafa1b056bbef541ebfa026bdfb66b18",
+    "content-hash": "46d2eea6d7fc4c8077cca6f863414e4a",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -4514,22 +4514,23 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.2.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/search_api",
-                "reference": "8.x-1.2"
+                "reference": "8.x-1.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "c6359692a220321ee8b4d6c61970b1c846afebe2"
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.9.zip",
+                "reference": "8.x-1.9",
+                "shasum": "b019b3af9e724a1804b540ae0e4a56d2ee98c603"
             },
             "require": {
-                "drupal/core": "^8.3"
+                "drupal/core": "^8.5"
             },
             "require-dev": {
+                "drupal/search_api_autocomplete": "@dev",
                 "drupal/search_api_db": "*"
             },
             "type": "drupal-module",
@@ -4538,8 +4539,17 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1498403342"
+                    "version": "8.x-1.9",
+                    "datestamp": "1531985581",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
