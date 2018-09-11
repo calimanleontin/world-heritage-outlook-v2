@@ -1,19 +1,19 @@
 <?php
 
-namespace Drupal\crop\Tests;
+namespace Drupal\Tests\crop\Functional;
 
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\crop\Entity\Crop;
 use Drupal\crop\Entity\CropType;
 use Drupal\file\Entity\File;
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Functional tests for crop API.
  *
  * @group crop
  */
-class CropFunctionalTest extends WebTestBase {
+class CropFunctionalTest extends BrowserTestBase {
 
   /**
    * Modules to enable.
@@ -52,7 +52,7 @@ class CropFunctionalTest extends WebTestBase {
     $this->adminUser = $this->drupalCreateUser(['administer crop types', 'administer image styles']);
 
     // Create test image style.
-    $this->testStyle = $this->container->get('entity.manager')->getStorage('image_style')->create([
+    $this->testStyle = $this->container->get('entity_type.manager')->getStorage('image_style')->create([
       'name' => 'test',
       'label' => 'Test image style',
       'effects' => [],
@@ -66,21 +66,24 @@ class CropFunctionalTest extends WebTestBase {
   public function testCropTypeCrud() {
     // Anonymous users don't have access to crop type admin pages.
     $this->drupalGet('admin/config/media/crop');
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
+
     $this->drupalGet('admin/config/media/crop/add');
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
+
 
     // Can access pages if logged in and no crop types exist.
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/config/media/crop');
-    $this->assertResponse(200);
-    $this->assertText(t('No crop types available.'));
-    $this->assertLink(t('Add crop type'));
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains(t('No crop types available.'));
+    $this->assertSession()->linkExists(t('Add crop type'));
 
     // Can access add crop type form.
     $this->clickLink(t('Add crop type'));
-    $this->assertResponse(200);
-    $this->assertUrl('admin/config/media/crop/add');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->addressEquals('admin/config/media/crop/add');
+
 
     // Create crop type.
     $crop_type_id = strtolower($this->randomMachineName());
@@ -90,31 +93,34 @@ class CropFunctionalTest extends WebTestBase {
       'description' => $this->randomGenerator->sentences(10),
     ];
     $this->drupalPostForm('admin/config/media/crop/add', $edit, t('Save crop type'));
-    $this->assertRaw(t('The crop type %name has been added.', ['%name' => $edit['label']]));
+    $this->assertSession()->responseContains(t('The crop type %name has been added.', ['%name' => $edit['label']]));
     $this->cropType = CropType::load($crop_type_id);
-    $this->assertUrl('admin/config/media/crop');
+    $this->assertSession()->addressEquals('admin/config/media/crop');
     $label = $this->xpath("//td[contains(concat(' ',normalize-space(@class),' '),' menu-label ')]");
-    $this->assert(strpos($label[0]->asXML(), $edit['label']) !== FALSE, 'Crop type label found on listing page.');
-    $this->assertText($edit['description']);
+    self::assertTrue(strpos($label[0]->getText(), $edit['label']) !== FALSE, 'Crop type label found on listing page.');
+    $this->assertSession()->pageTextContains($edit['description']);
+
 
     // Check edit form.
     $this->clickLink(t('Edit'));
-    $this->assertText(t('Edit @name crop type', ['@name' => $edit['label']]));
-    $this->assertRaw($edit['id']);
-    $this->assertFieldById('edit-label', $edit['label']);
-    $this->assertRaw($edit['description']);
+    $this->assertSession()->pageTextContains(t('Edit @name crop type', ['@name' => $edit['label']]));
+
+    $this->assertSession()->responseContains($edit['id']);
+    $this->assertSession()->fieldExists('edit-label');
+    $this->assertSession()->responseContains($edit['description']);
+
 
     // See if crop type appears on image effect configuration form.
     $this->drupalGet('admin/config/media/image-styles/manage/' . $this->testStyle->id() . '/add/crop_crop');
     $option = $this->xpath("//select[@id='edit-data-crop-type']/option");
-    $this->assert(strpos($option[0]->asXML(), $edit['label']) !== FALSE, 'Crop type label found on image effect page.');
+    self::assertTrue(strpos($option[0]->getText(), $edit['label']) !== FALSE, 'Crop type label found on image effect page.');
     $this->drupalPostForm('admin/config/media/image-styles/manage/' . $this->testStyle->id() . '/add/crop_crop', ['data[crop_type]' => $edit['id']], t('Add effect'));
-    $this->assertText(t('The image effect was successfully applied.'));
-    $this->assertText(t('Manual crop uses @name crop type', ['@name' => $edit['label']]));
-    $this->testStyle = $this->container->get('entity.manager')->getStorage('image_style')->loadUnchanged($this->testStyle->id());
-    $this->assertEqual($this->testStyle->getEffects()->count(), 1, 'One image effect added to test image style.');
+    $this->assertSession()->pageTextContains(t('The image effect was successfully applied.'));
+    $this->assertSession()->pageTextContains(t('Manual crop uses @name crop type', ['@name' => $edit['label']]));
+    $this->testStyle = $this->container->get('entity_type.manager')->getStorage('image_style')->loadUnchanged($this->testStyle->id());
+    self::assertEquals($this->testStyle->getEffects()->count(), 1, 'One image effect added to test image style.');
     $effect_configuration = $this->testStyle->getEffects()->getIterator()->current()->getConfiguration();
-    $this->assertEqual($effect_configuration['data'], ['crop_type' => $edit['id']], 'Manual crop effect uses correct image style.');
+    self::assertEquals($effect_configuration['data'], ['crop_type' => $edit['id']], 'Manual crop effect uses correct image style.');
 
     // Tests the image URI is extended with shortened hash in case of image
     // style and corresponding crop existence.
@@ -123,21 +129,24 @@ class CropFunctionalTest extends WebTestBase {
     // Try to access edit form as anonymous user.
     $this->drupalLogout();
     $this->drupalGet('admin/config/media/crop/manage/' . $edit['id']);
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
     $this->drupalLogin($this->adminUser);
 
     // Try to create crop type with same machine name.
     $this->drupalPostForm('admin/config/media/crop/add', $edit, t('Save crop type'));
-    $this->assertText(t('The machine-readable name is already in use. It must be unique.'));
+    $this->assertSession()->pageTextContains(t('The machine-readable name is already in use. It must be unique.'));
+
 
     // Delete crop type.
     $this->drupalGet('admin/config/media/crop');
-    $this->assertLink('Test image style');
+    $this->assertSession()->linkExists('Test image style');
     $this->clickLink(t('Delete'));
-    $this->assertText(t('Are you sure you want to delete the crop type @name?', ['@name' => $edit['label']]));
+    $this->assertSession()->pageTextContains(t('Are you sure you want to delete the crop type @name?', ['@name' => $edit['label']]));
+
     $this->drupalPostForm('admin/config/media/crop/manage/' . $edit['id'] . '/delete', [], t('Delete'));
-    $this->assertRaw(t('The crop type %name has been deleted.', ['%name' => $edit['label']]));
-    $this->assertText(t('No crop types available.'));
+    $this->assertSession()->responseContains(t('The crop type %name has been deleted.', ['%name' => $edit['label']]));
+    $this->assertSession()->pageTextContains(t('No crop types available.'));
+
   }
 
   /**
@@ -166,30 +175,34 @@ class CropFunctionalTest extends WebTestBase {
     $crop = Crop::create($values);
     $crop->save();
 
+    // Test that the hash is appended both when a URL is created and passed
+    // through file_create_url() and when a URL is created, without additional
+    // file_create_url() calls.
+    $shortened_hash = substr(md5(implode($crop->position()) . implode($crop->anchor())), 0, 8);
+
     // Build an image style derivative for the file URI.
     $image_style_uri = $this->testStyle->buildUri($file_uri);
-    // Build an image style URL.
-    $image_style_url = $this->testStyle->buildUrl($image_style_uri);
-    // This triggers crop_file_url_alter().
-    $altered_image_style_url = file_create_url($image_style_url);
+    $image_style_uri_url = file_create_url($image_style_uri);
+    $this->assertTrue(strpos($image_style_uri_url, $shortened_hash) !== FALSE, 'The image style URL contains a shortened hash.');
 
-    $shortened_hash = substr(md5(implode($crop->position()) . implode($crop->anchor())), 0, 8);
-    $this->assertTrue(strpos($altered_image_style_url, $shortened_hash) !== FALSE, 'The image style URL contains a shortened hash.');
+    // Build an image style URL.
+    $image_style_url = $this->testStyle->buildUrl($file_uri);
+    $this->assertTrue(strpos($image_style_url, $shortened_hash) !== FALSE, 'The image style URL contains a shortened hash.');
 
     // Update the crop to assert the hash has changed.
     $crop->setPosition('80', '80')->save();
     $old_hash = $shortened_hash;
     $new_hash = substr(md5(implode($crop->position()) . implode($crop->anchor())), 0, 8);
-    $altered_image_style_url = file_create_url($image_style_url);
-    $this->assertFalse(strpos($altered_image_style_url, $old_hash) !== FALSE, 'The image style URL does not contain the old hash.');
-    $this->assertTrue(strpos($altered_image_style_url, $new_hash) !== FALSE, 'The image style URL contains an updated hash.');
+    $image_style_url = $this->testStyle->buildUrl($file_uri);
+    $this->assertFalse(strpos($image_style_url, $old_hash) !== FALSE, 'The image style URL does not contain the old hash.');
+    $this->assertTrue(strpos($image_style_url, $new_hash) !== FALSE, 'The image style URL contains an updated hash.');
 
     // Delete the file and the crop entity associated,
     // the crop entity are auto cleaned by crop_file_delete().
     $file->delete();
 
-    // Check if crop entity are correctly deleted.
-    $this->assertFalse(Crop::cropExists($file_uri), 'The Crop entity are correctly deleted after file delete.');
+    // Check that the crop entity is correctly deleted.
+    $this->assertFalse(Crop::cropExists($file_uri), 'The Crop entity was correctly deleted after file delete.');
   }
 
 }
