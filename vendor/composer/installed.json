@@ -4804,75 +4804,6 @@
         }
     },
     {
-        "name": "drupal/reroute_email",
-        "version": "1.0.0-beta1",
-        "version_normalized": "1.0.0.0-beta1",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/reroute_email",
-            "reference": "8.x-1.0-beta1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/reroute_email-8.x-1.0-beta1.zip",
-            "reference": "8.x-1.0-beta1",
-            "shasum": "be2ac355300f49b50d381981f4a80b112b554c0c"
-        },
-        "require": {
-            "drupal/core": "~8.0"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.0-beta1",
-                "datestamp": "1473465540"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "B-Prod",
-                "homepage": "https://www.drupal.org/user/407852"
-            },
-            {
-                "name": "DYdave",
-                "homepage": "https://www.drupal.org/user/467284"
-            },
-            {
-                "name": "Devaraj johnson",
-                "homepage": "https://www.drupal.org/user/2698767"
-            },
-            {
-                "name": "Rohin Knight",
-                "homepage": "https://www.drupal.org/user/388531"
-            },
-            {
-                "name": "kbahey",
-                "homepage": "https://www.drupal.org/user/4063"
-            },
-            {
-                "name": "rfay",
-                "homepage": "https://www.drupal.org/user/30906"
-            },
-            {
-                "name": "wafaa",
-                "homepage": "https://www.drupal.org/user/50133"
-            }
-        ],
-        "description": "Reroutes emails send from the site to a predefined email. Useful for test sites.",
-        "homepage": "https://www.drupal.org/project/reroute_email",
-        "support": {
-            "source": "http://cgit.drupalcode.org/reroute_email"
-        }
-    },
-    {
         "name": "drupal/responsive_favicons",
         "version": "1.4.0",
         "version_normalized": "1.4.0.0",
@@ -10462,6 +10393,83 @@
             "source": "http://git.drupal.org/project/search_api.git",
             "issues": "https://www.drupal.org/project/issues/search_api",
             "irc": "irc://irc.freenode.org/drupal-search-api"
+        }
+    },
+    {
+        "name": "drupal/reroute_email",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/reroute_email",
+            "reference": "8.x-1.0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/reroute_email-8.x-1.0.zip",
+            "reference": "8.x-1.0",
+            "shasum": "84d75bc9674b66d7ba3b9b870f2a5ba1292f7509"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0",
+                "datestamp": "1513342685",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "B-Prod",
+                "homepage": "https://www.drupal.org/user/407852"
+            },
+            {
+                "name": "DYdave",
+                "homepage": "https://www.drupal.org/user/467284"
+            },
+            {
+                "name": "Devaraj johnson",
+                "homepage": "https://www.drupal.org/user/2698767"
+            },
+            {
+                "name": "Rohin Knight",
+                "homepage": "https://www.drupal.org/user/388531"
+            },
+            {
+                "name": "bohart",
+                "homepage": "https://www.drupal.org/user/289861"
+            },
+            {
+                "name": "kbahey",
+                "homepage": "https://www.drupal.org/user/4063"
+            },
+            {
+                "name": "rfay",
+                "homepage": "https://www.drupal.org/user/30906"
+            },
+            {
+                "name": "wafaa",
+                "homepage": "https://www.drupal.org/user/50133"
+            }
+        ],
+        "description": "Reroutes emails send from the site to a predefined email. Useful for test sites.",
+        "homepage": "https://www.drupal.org/project/reroute_email",
+        "support": {
+            "source": "http://cgit.drupalcode.org/reroute_email"
         }
     }
 ]

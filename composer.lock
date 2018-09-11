@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "46d2eea6d7fc4c8077cca6f863414e4a",
+    "content-hash": "c8d17d8bde1bf0bfd67050763dff5a48",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -4394,17 +4394,17 @@
         },
         {
             "name": "drupal/reroute_email",
-            "version": "1.0.0-beta1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/reroute_email",
-                "reference": "8.x-1.0-beta1"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/reroute_email-8.x-1.0-beta1.zip",
-                "reference": "8.x-1.0-beta1",
-                "shasum": "be2ac355300f49b50d381981f4a80b112b554c0c"
+                "url": "https://ftp.drupal.org/files/projects/reroute_email-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "84d75bc9674b66d7ba3b9b870f2a5ba1292f7509"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4415,13 +4415,17 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta1",
-                    "datestamp": "1473465540"
+                    "version": "8.x-1.0",
+                    "datestamp": "1513342685",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4439,6 +4443,10 @@
                 {
                     "name": "Rohin Knight",
                     "homepage": "https://www.drupal.org/user/388531"
+                },
+                {
+                    "name": "bohart",
+                    "homepage": "https://www.drupal.org/user/289861"
                 },
                 {
                     "name": "kbahey",
@@ -10134,7 +10142,6 @@
         "drupal/menu_link_attributes": 10,
         "drupal/purge": 10,
         "drupal/redirect": 10,
-        "drupal/reroute_email": 10,
         "drupal/search_api_autocomplete": 15,
         "drupal/search_api_sorts": 10,
         "drupal/slick_views": 5,

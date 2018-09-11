@@ -166,7 +166,7 @@
     "drupal/purge": "^3.0@beta",
     "drupal/recaptcha": "^2.2",
     "drupal/redirect": "^1.0@beta",
-    "drupal/reroute_email": "^1.0@beta",
+    "drupal/reroute_email": "^1.0",
     "drupal/responsive_favicons": "^1.4",
     "drupal/search_api": "^1.9",
     "drupal/search_api_autocomplete": "^1.0@alpha",

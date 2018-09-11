@@ -32,7 +32,7 @@ function reroute_email_test_mail($key, &$message, $params) {
   if ($key != 'test_reroute_email') {
     return;
   }
-  $message['subject'] = "Reroute Email Test: Message body is a string, Cc and Bcc header keys have  a special case";
+  $message['subject'] = 'Reroute Email Test: Message body is a string, Cc and Bcc header keys have a special case';
 
   // Body is provided as a string.
   if (!empty($params['body'])) {
@@ -63,8 +63,8 @@ function reroute_email_test_mail_alter(&$message) {
   // message has already been processed by reroute_email.
   if (is_string($message['body']) && isset($message['headers']['X-Rerouted-Mail-Key'])) {
     // Record to be checked in test in the log entries.
-    \Drupal::logger('reroute_email_test')->notice('A String was detected in the body: <pre>@body</pre>', array('@body' => $message['body']));
+    \Drupal::logger('reroute_email_test')->notice('A String was detected in the body: <pre>@body</pre>', ['@body' => $message['body']]);
     // Convert body to an Array.
-    $message['body'] = array($message['body']);
+    $message['body'] = [$message['body']];
   }
 }
