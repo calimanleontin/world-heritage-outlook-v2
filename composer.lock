@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e4d606ca3a8e24c458629a6a700bec2",
+    "content-hash": "7b2a19cea5bbd5b8a6ac9b11ad786917",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -3393,17 +3393,17 @@
         },
         {
             "name": "drupal/image_effects",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/image_effects",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/image_effects-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "d024069b56490959f0e5f3d7d967e5cfe0ead0d5"
+                "url": "https://ftp.drupal.org/files/projects/image_effects-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "8557df5501c285360b6a493c256f58824c387a3c"
             },
             "require": {
                 "drupal/core": "^8.2.0"
@@ -3418,19 +3418,19 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1492431842"
+                    "version": "8.x-1.1",
+                    "datestamp": "1524304384",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
-                {
-                    "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
-                },
                 {
                     "name": "mondrake",
                     "homepage": "https://www.drupal.org/user/1307444"
