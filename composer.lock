@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "325326584a14cf126d0ebf81d51758aa",
+    "content-hash": "1beb6a23e6bc6c67527a37669cf0b011",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -5353,17 +5353,17 @@
         },
         {
             "name": "drupal/views_accordion",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/views_accordion",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_accordion-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "04eee58a96f320ec17465d007a2d143c4ea27efc"
+                "url": "https://ftp.drupal.org/files/projects/views_accordion-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "2e5e1f758141bf271b26f1e4631211dfaa5dae27"
             },
             "require": {
                 "drupal/core": "*"
@@ -5374,8 +5374,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1494784384",
+                    "version": "8.x-1.1",
+                    "datestamp": "1521988085",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"

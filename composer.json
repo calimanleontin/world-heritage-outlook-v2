@@ -183,7 +183,7 @@
     "drupal/string_field_formatter": "1.x-dev",
     "drupal/token": "^1.4",
     "drupal/varnish_purge": "^1.9",
-    "drupal/views_accordion": "^1.0",
+    "drupal/views_accordion": "^1.1",
     "drupal/webform": "^5.0@beta",
     "drupal/xmlsitemap": "^1.0@alpha",
     "enyoo/dropzone": "^4.3",
