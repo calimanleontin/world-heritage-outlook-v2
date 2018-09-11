@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7fd65d3910cbe259dfcb4aff7edbb25",
+    "content-hash": "4a9d138a9aece8468f615be6a94524e4",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -1566,17 +1566,17 @@
         },
         {
             "name": "drupal/config_split",
-            "version": "1.0.0-beta6",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/config_split",
-                "reference": "8.x-1.0-beta6"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_split-8.x-1.0-beta6.zip",
-                "reference": "8.x-1.0-beta6",
-                "shasum": "c816e0e24375b697daeacd36d2112b48ed857ae2"
+                "url": "https://ftp.drupal.org/files/projects/config_split-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "2b98b26027a55a895468f11d2cea07546cdf3491"
             },
             "require": {
                 "drupal/config_filter": "*",
@@ -1588,8 +1588,17 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta6",
-                    "datestamp": "1496912342"
+                    "version": "8.x-1.3",
+                    "datestamp": "1511810585",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1598,12 +1607,16 @@
             ],
             "authors": [
                 {
-                    "name": "ademarco",
-                    "homepage": "https://www.drupal.org/user/186696"
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "email": "opensource@fabianbircher.com",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "bircher",
-                    "homepage": "https://www.drupal.org/user/1344166"
+                    "name": "Nuvole Web",
+                    "homepage": "http://nuvole.org",
+                    "email": "info@nuvole.org",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "pescetti",
@@ -1613,11 +1626,14 @@
             "description": "Configuration filter for importing and exporting extra config",
             "homepage": "https://www.drupal.org/project/config_split",
             "keywords": [
-                "Drupal"
+                "Drupal",
+                "configuration",
+                "configuration management"
             ],
             "support": {
                 "source": "http://cgit.drupalcode.org/config_split",
-                "issues": "https://www.drupal.org/project/issues/config_split"
+                "issues": "https://www.drupal.org/project/issues/config_split",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -10161,7 +10177,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/captcha": 10,
-        "drupal/config_split": 10,
         "drupal/devel": 5,
         "drupal/facets_pretty_paths": 20,
         "drupal/field_group": 5,
