@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1be2ad1ed3f2fc89f8dd721fc495acb",
+    "content-hash": "0d671d90d0452df42f7e65b71fcb9d9a",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -3026,17 +3026,17 @@
         },
         {
             "name": "drupal/field_group",
-            "version": "1.0.0-rc6",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/field_group",
-                "reference": "8.x-1.0-rc6"
+                "reference": "8.x-1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0-rc6.zip",
-                "reference": "8.x-1.0-rc6",
-                "shasum": "1ce3c6387e745a04a1099956a5bf39bb50096d44"
+                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "e8aa3fae5c3c5dec84644bb577996938d638a611"
             },
             "require": {
                 "drupal/core": "*"
@@ -3047,8 +3047,12 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc6",
-                    "datestamp": "1480365484"
+                    "version": "8.x-1.0",
+                    "datestamp": "1510352885",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -10180,7 +10184,6 @@
         "drupal/captcha": 10,
         "drupal/devel": 5,
         "drupal/facets_pretty_paths": 20,
-        "drupal/field_group": 5,
         "drupal/geofield": 15,
         "drupal/lang_dropdown": 10,
         "drupal/menu_link_attributes": 10,
