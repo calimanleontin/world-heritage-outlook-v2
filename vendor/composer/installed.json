@@ -4050,67 +4050,6 @@
         }
     },
     {
-        "name": "drupal/menu_block",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/menu_block",
-            "reference": "8.x-1.4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/menu_block-8.x-1.4.zip",
-            "reference": "8.x-1.4",
-            "shasum": "fd8d559452a9e1e07de6fefd9955df6feadc943a"
-        },
-        "require": {
-            "drupal/core": "*"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.4",
-                "datestamp": "1473063239"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "authors": [
-            {
-                "name": "Dave Reid",
-                "homepage": "https://www.drupal.org/user/53892"
-            },
-            {
-                "name": "JohnAlbin",
-                "homepage": "https://www.drupal.org/user/32095"
-            },
-            {
-                "name": "joelpittet",
-                "homepage": "https://www.drupal.org/user/160302"
-            },
-            {
-                "name": "kim.pepper",
-                "homepage": "https://www.drupal.org/user/370574"
-            },
-            {
-                "name": "rrrob",
-                "homepage": "https://www.drupal.org/user/273533"
-            }
-        ],
-        "description": "Provides configurable blocks of menu links.",
-        "homepage": "https://www.drupal.org/project/menu_block",
-        "support": {
-            "source": "http://cgit.drupalcode.org/menu_block"
-        }
-    },
-    {
         "name": "drupal/menu_breadcrumb",
         "version": "1.4.0",
         "version_normalized": "1.4.0.0",
@@ -10470,6 +10409,71 @@
         "homepage": "https://www.drupal.org/project/reroute_email",
         "support": {
             "source": "http://cgit.drupalcode.org/reroute_email"
+        }
+    },
+    {
+        "name": "drupal/menu_block",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/menu_block",
+            "reference": "8.x-1.5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/menu_block-8.x-1.5.zip",
+            "reference": "8.x-1.5",
+            "shasum": "b3ac3e23e426f702974d88cc8bf93bf2a0b6236b"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.5",
+                "datestamp": "1525200184",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Dave Reid",
+                "homepage": "https://www.drupal.org/user/53892"
+            },
+            {
+                "name": "JohnAlbin",
+                "homepage": "https://www.drupal.org/user/32095"
+            },
+            {
+                "name": "joelpittet",
+                "homepage": "https://www.drupal.org/user/160302"
+            },
+            {
+                "name": "kim.pepper",
+                "homepage": "https://www.drupal.org/user/370574"
+            },
+            {
+                "name": "rrrob",
+                "homepage": "https://www.drupal.org/user/273533"
+            }
+        ],
+        "description": "Provides configurable blocks of menu links.",
+        "homepage": "https://www.drupal.org/project/menu_block",
+        "support": {
+            "source": "http://cgit.drupalcode.org/menu_block"
         }
     }
 ]
