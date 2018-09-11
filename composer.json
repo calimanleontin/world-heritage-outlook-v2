@@ -141,7 +141,7 @@
     "drupal/entity_print": "^2.1",
     "drupal/facets": "^1.0@alpha",
     "drupal/facets_pretty_paths": "1.x-dev",
-    "drupal/features": "^3.5",
+    "drupal/features": "^3.8",
     "drupal/field_group": "^1.0@RC",
     "drupal/file_browser": "^1.1",
     "drupal/geofield": "^1.0@alpha",
