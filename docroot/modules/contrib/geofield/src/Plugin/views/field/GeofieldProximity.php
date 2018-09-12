@@ -1,14 +1,10 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\geofield\Plugin\views\field\GeofieldProximity.
- */
-
 namespace Drupal\geofield\Plugin\views\field;
 
-use Drupal\Component\Annotation\PluginID;
-use Drupal\views\Plugin\views\field\Numeric;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Plugin\views\field\NumericField;
+use Drupal\views\ResultRow;
 
 /**
  * Field handler to render a Geofield proximity in Views.
@@ -17,10 +13,10 @@ use Drupal\views\Plugin\views\field\Numeric;
  *
  * @PluginID("geofield_proximity")
  */
-class GeofieldProximity extends Numeric {
+class GeofieldProximity extends NumericField {
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
@@ -38,9 +34,9 @@ class GeofieldProximity extends Numeric {
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
-  public function buildOptionsForm(&$form, &$form_state) {
+  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
     $form['source'] = [
@@ -68,24 +64,24 @@ class GeofieldProximity extends Numeric {
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
-  public function validateOptionsForm(&$form, &$form_state) {
+  public function validateOptionsForm(&$form, FormStateInterface $form_state) {
     $proximityPlugin = geofield_proximity_load_plugin($form_state['values']['options']['source']);
     $proximityPlugin->options_validate($form, $form_state, $this);
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
-  public function getValue($values, $field = NULL) {
+  public function getValue(ResultRow $values, $field = NULL) {
     if (isset($values->{$this->field_alias})) {
       return $values->{$this->field_alias};
     }
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function query() {
     $this->ensureMyTable();

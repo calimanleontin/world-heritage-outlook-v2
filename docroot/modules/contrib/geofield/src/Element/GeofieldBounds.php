@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Element\GeofieldBounds.
- */
-
 namespace Drupal\geofield\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\FormElement;
 
 /**
  * Provides a Geofield bounds form element.
@@ -51,7 +44,7 @@ class GeofieldBounds extends GeofieldElementBase {
         [$class, 'elementProcess'],
       ],
       '#element_validate' => [
-        [$class, 'boundsValidate']
+        [$class, 'boundsValidate'],
       ],
       '#theme' => 'geofield_bounds',
       '#theme_wrappers' => ['fieldset'],
@@ -68,7 +61,7 @@ class GeofieldBounds extends GeofieldElementBase {
    * @param array $complete_form
    *   The complete form structure.
    */
-  public static function boundsValidate(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function boundsValidate(array &$element, FormStateInterface $form_state, array &$complete_form) {
     static::elementValidate($element, $form_state, $complete_form);
 
     $pairs = [
@@ -84,7 +77,14 @@ class GeofieldBounds extends GeofieldElementBase {
 
     foreach ($pairs as $pair) {
       if ($element[$pair['smaller']]['#value'] >= $element[$pair['bigger']]['#value']) {
-        $form_state->setError($element[$pair['smaller']], t('@title: @component_bigger must be greater than @component_smaller.', ['@title' => $element['#title'], '@component_bigger' => static::$components[$pair['bigger']]['title'], '@component_smaller' => static::$components[$pair['smaller']]['title']]));
+        $form_state->setError(
+          $element[$pair['smaller']],
+          t('@title: @component_bigger must be greater than @component_smaller.', [
+            '@title' => $element['#title'],
+            '@component_bigger' => static::$components[$pair['bigger']]['title'],
+            '@component_smaller' => static::$components[$pair['smaller']]['title'],
+          ])
+        );
       }
     }
   }

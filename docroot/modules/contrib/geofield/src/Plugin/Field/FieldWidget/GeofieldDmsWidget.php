@@ -3,7 +3,6 @@
 namespace Drupal\geofield\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\geofield\DmsConverter;
 use Drupal\geofield\DmsPoint;
@@ -19,7 +18,7 @@ use Drupal\geofield\DmsPoint;
  *   }
  * )
  */
-class GeofieldDmsWidget extends WidgetBase {
+class GeofieldDmsWidget extends GeofieldBaseWidget {
 
   /**
    * {@inheritdoc}
@@ -45,7 +44,7 @@ class GeofieldDmsWidget extends WidgetBase {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $delta => $value) {
       $components = DmsConverter::dmsToDecimal(new DmsPoint($value['value']['lon'], $value['value']['lat']));
-      $values[$delta]['value'] = \Drupal::service('geofield.wkt_generator')->WktGeneratePoint($components);
+      $values[$delta]['value'] = $this->wktGenerator->wktGeneratePoint($components);
     }
 
     return $values;

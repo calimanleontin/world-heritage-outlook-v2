@@ -2,9 +2,13 @@
 
 namespace Drupal\geofield;
 
+/**
+ * Defines an interface for DmsConverter.
+ */
 interface DmsConverterInterface {
+
   /**
-   * Transforms a DMS point to a decimal one
+   * Transforms a DMS point to a decimal one.
    *
    * @param \Drupal\geofield\DmsPoint $point
    *   The DMS Point to transform.
@@ -15,6 +19,8 @@ interface DmsConverterInterface {
   public static function dmsToDecimal(DmsPoint $point);
 
   /**
+   * Transforms a Decimal point to a dms one.
+   *
    * @param float $lon
    *   The Decimal Point to transform longitude.
    * @param float $lat

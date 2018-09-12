@@ -1,14 +1,13 @@
 <?php
 
 namespace Drupal\geofield\Plugin\Field\FieldFormatter;
-use Drupal\Core\Field\FieldDefinitionInterface;
+
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\geofield\DmsConverter;
 
 /**
- * Plugin implementation of the 'geofield_dms' formatter.
+ * Plugin implementation of the 'geofield_latlon' formatter.
  *
  * @FieldFormatter(
  *   id = "geofield_latlon",
@@ -18,27 +17,39 @@ use Drupal\geofield\DmsConverter;
  *   }
  * )
  */
-class LatLonFormatter extends FormatterBase {
-
-  /**
-   * @var \Drupal\geofield\GeoPHP\GeoPHPInterface
-   *   The GeoPHP service.
-   */
-  protected $geophp;
-
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings) {
-    parent::__construct($plugin_id, $plugin_definition,  $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
-    $this->geophp = \Drupal::service('geofield.geophp');
-  }
+class LatLonFormatter extends GeofieldDefaultFormatter {
 
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
     return [
-      'output_format' => 'decimal'
+      'output_format' => 'decimal',
     ];
+  }
+
+  /**
+   * Helper function to get the formatter settings options.
+   *
+   * @return array
+   *   The formatter settings options.
+   */
+  protected function formatOptions() {
+    return [
+      'decimal' => $this->t("Decimal Format (17.76972)"),
+      'dms' => $this->t("DMS Format (17° 46' 11'' N)"),
+      'dm' => $this->t("DM Format (17° 46.19214' N)"),
+    ];
+  }
+
+  /**
+   * Returns the output format, set or default one.
+   *
+   * @return string
+   *   The output format string.
+   */
+  protected function getOutputFormat() {
+    return in_array($this->getSetting('output_format'), array_keys($this->formatOptions())) ? $this->getSetting('output_format') : self::defaultSettings()['output_format'];
   }
 
   /**
@@ -50,7 +61,7 @@ class LatLonFormatter extends FormatterBase {
     $elements['output_format'] = [
       '#title' => $this->t('Output Format'),
       '#type' => 'select',
-      '#default_value' => $this->getSetting('output_format'),
+      '#default_value' => $this->getOutputFormat(),
       '#options' => $this->formatOptions(),
       '#required' => TRUE,
     ];
@@ -61,7 +72,7 @@ class LatLonFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() {
-    $summary[] = $this->t('Geospatial output format: @format', ['@format' => $this->formatOptions()[$this->getSetting('output_format')]]);
+    $summary[] = $this->t('Geospatial output format: @format', ['@format' => $this->formatOptions()[$this->getOutputFormat()]]);
     return $summary;
   }
 
@@ -73,9 +84,10 @@ class LatLonFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       $output = ['#markup' => ''];
-      $geom = $this->geophp->load($item->value);
+      $geom = $this->geoPhpWrapper->load($item->value);
       if ($geom && $geom->getGeomType() == 'Point') {
-        if ($this->getSetting('output_format') == 'decimal') {
+        /* @var \Point $geom */
+        if ($this->getOutputFormat() == 'decimal') {
           $output = [
             '#theme' => 'geofield_latlon',
             '#lat' => $geom->y(),
@@ -97,20 +109,6 @@ class LatLonFormatter extends FormatterBase {
   }
 
   /**
-   * Helper function to get the formatter settings options.
-   *
-   * @return array
-   *  The formatter settings options.
-   */
-  protected function formatOptions() {
-    return [
-      'decimal' => $this->t('Decimal Format (17.76972)'),
-      'dms' => $this->t('DMS Format (17° 46\' 11" N)'),
-      'dm' => $this->t('DM Format (17° 46.19214\' N)'),
-    ];
-  }
-
-  /**
    * Generates the DMS expected components given a Point.
    *
    * @param \Point $point
@@ -119,7 +117,7 @@ class LatLonFormatter extends FormatterBase {
    * @return array
    *   The DMS LatLon components
    */
-  protected function getDmsComponents($point) {
+  protected function getDmsComponents(\Point $point) {
     $dms_point = DmsConverter::decimalToDms($point->x(), $point->y());
     $components = [];
     foreach (['lat', 'lon'] as $component) {

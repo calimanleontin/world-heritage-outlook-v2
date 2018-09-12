@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\geofield\Plugin\views\sort\GeofieldProximity.
- */
-
 namespace Drupal\geofield\Plugin\views\sort;
 
-use Drupal\Component\Annotation\PluginID;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\sort\SortPluginBase;
 
@@ -20,26 +14,32 @@ use Drupal\views\Plugin\views\sort\SortPluginBase;
  */
 class GeofieldProximity extends SortPluginBase {
 
+  /**
+   * {@inheritdoc}
+   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     // Data sources and info needed.
     $options['source'] = ['default' => 'manual'];
 
-    $proximityHandlers = geofield_proximity_views_handlers();
-    foreach ($proximityHandlers as $key => $handler) {
-      $proximityPlugin = geofield_proximity_load_plugin($key);
-      $proximityPlugin->option_definition($options, $this);
+    $proximity_handlers = geofield_proximity_views_handlers();
+    foreach ($proximity_handlers as $key => $handler) {
+      $proximity_plugin = geofield_proximity_load_plugin($key);
+      $proximity_plugin->option_definition($options, $this);
     }
     return $options;
   }
 
-  function query() {
+  /**
+   * {@inheritdoc}
+   */
+  public function query() {
     $this->ensureMyTable();
     $lat_alias = $this->tableAlias . '.' . $this->definition['field_name'] . '_lat';
     $lon_alias = $this->tableAlias . '.' . $this->definition['field_name'] . '_lon';
 
-    $proximityPlugin = geofield_proximity_load_plugin($this->options['source']);
-    $options = $proximityPlugin->getSourceValue($this);
+    $proximity_plugin = geofield_proximity_load_plugin($this->options['source']);
+    $options = $proximity_plugin->getSourceValue($this);
 
     if ($options != FALSE) {
       $haversine_options = [
@@ -53,7 +53,10 @@ class GeofieldProximity extends SortPluginBase {
     }
   }
 
-  function buildOptionsForm(&$form, FormStateInterface $form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
     $form['source'] = [
@@ -64,16 +67,20 @@ class GeofieldProximity extends SortPluginBase {
       '#default_value' => $this->options['source'],
     ];
 
-    $proximityHandlers = geofield_proximity_views_handlers();
-    foreach ($proximityHandlers as $key => $handler) {
+    $proximity_handlers = geofield_proximity_views_handlers();
+    foreach ($proximity_handlers as $key => $handler) {
       $form['source']['#options'][$key] = $handler['name'];
-      $proximityPlugin = geofield_proximity_load_plugin($key);
-      $proximityPlugin->options_form($form, $form_state, $this);
+      $proximity_plugin = geofield_proximity_load_plugin($key);
+      $proximity_plugin->options_form($form, $form_state, $this);
     }
   }
 
-  function validateOptionsForm(&$form, FormStateInterface $form_state) {
-    $proximityPlugin = geofield_proximity_load_plugin($form_state['values']['options']['source']);
-    $proximityPlugin->options_validate($form, $form_state, $this);
+  /**
+   * {@inheritdoc}
+   */
+  public function validateOptionsForm(&$form, FormStateInterface $form_state) {
+    $proximity_plugin = geofield_proximity_load_plugin($form_state['values']['options']['source']);
+    $proximity_plugin->options_validate($form, $form_state, $this);
   }
+
 }

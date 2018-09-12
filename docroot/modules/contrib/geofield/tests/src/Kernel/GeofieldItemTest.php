@@ -8,6 +8,7 @@ use Drupal\entity_test\Entity\EntityTest;
 use Drupal\Tests\field\Kernel\FieldKernelTestBase;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+
 /**
  * Tests using entity fields of the geofield field type.
  *
@@ -25,7 +26,7 @@ class GeofieldItemTest extends FieldKernelTestBase {
   /**
    * Field storage entity.
    *
-   * @var \Drupal\field\Entity\FieldStorageConfig.
+   * @var \Drupal\field\Entity\FieldStorageConfig
    */
   protected $fieldStorage;
 
@@ -36,7 +37,9 @@ class GeofieldItemTest extends FieldKernelTestBase {
    */
   protected $field;
 
-
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -55,7 +58,6 @@ class GeofieldItemTest extends FieldKernelTestBase {
     $entity->geofield_field->value = $value = \Drupal::service('geofield.wkt_generator')->WktGenerateGeometry();
     $entity->name->value = $this->randomMachineName();
     $entity->save();
-
 
     $entity = EntityTest::load($entity->id());
     $this->assertTrue($entity->geofield_field instanceof FieldItemListInterface, 'Field implements interface.');
@@ -102,7 +104,7 @@ class GeofieldItemTest extends FieldKernelTestBase {
       'type' => 'geofield',
       'settings' => [
         'backend' => 'geofield_backend_default',
-      ]
+      ],
     ]);
     $this->fieldStorage->save();
 
@@ -110,6 +112,9 @@ class GeofieldItemTest extends FieldKernelTestBase {
       'field_storage' => $this->fieldStorage,
       'bundle' => $entity_type,
       'description' => 'Description for geofield_field',
+      'settings' => [
+        'backend' => 'geofield_backend_default',
+      ],
       'required' => TRUE,
     ]);
     $this->field->save();

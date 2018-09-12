@@ -2,16 +2,54 @@
 
 namespace Drupal\chosen\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\system\Form;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Messenger\MessengerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Extension\ThemeHandler;
 
 /**
  * Implements a ChosenConfig form.
  */
 class ChosenConfigForm extends ConfigFormBase {
+
+  /**
+   * The Messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * Theme handler.
+   *
+   * @var \Drupal\Core\Extension\ThemeHandler
+   *   Theme handler.
+   */
+  protected $themeHandler;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, ThemeHandler $themeHandler, MessengerInterface $messenger) {
+    parent::__construct($config_factory);
+    $this->themeHandler = $themeHandler;
+    $this->messenger = $messenger;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('theme_handler'),
+      $container->get('messenger')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -38,9 +76,9 @@ class ChosenConfigForm extends ConfigFormBase {
       $url = Url::fromUri(CHOSEN_WEBSITE_URL);
       $link = Link::fromTextAndUrl($this->t('Chosen JavaScript file'), $url)->toString();
 
-      drupal_set_message($this->t('The library could not be detected. You need to download the @chosen and extract the entire contents of the archive into the %path directory on your server.',
+      $this->messenger->addError($this->t('The library could not be detected. You need to download the @chosen and extract the entire contents of the archive into the %path directory on your server.',
         ['@chosen' => $link, '%path' => 'libraries']
-      ), 'error');
+      ));
       return $form;
     }
 
@@ -107,6 +145,13 @@ class ChosenConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enable or disable the search box in the results list to filter out possible options.'),
     ];
 
+    $form['options']['allow_single_deselect'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow Deselect on Single Selects'),
+      '#default_value' => $chosen_conf->get('allow_single_deselect'),
+      '#description' => $this->t('Enable or disable the deselect on single selects. Requires an empty default option.'),
+    ];
+
     $form['theme_options'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Chosen per theme options'),
@@ -161,7 +206,7 @@ class ChosenConfigForm extends ConfigFormBase {
 
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('submit'),
+      '#value' => $this->t('Submit'),
     ];
 
     return $form;
@@ -186,6 +231,7 @@ class ChosenConfigForm extends ConfigFormBase {
       ->set('jquery_selector', $form_state->getValue('jquery_selector'))
       ->set('search_contains', $form_state->getValue('search_contains'))
       ->set('disable_search', $form_state->getValue('disable_search'))
+      ->set('allow_single_deselect', $form_state->getValue('allow_single_deselect'))
       ->set('disabled_themes', $form_state->getValue('disabled_themes'))
       ->set('chosen_include', $form_state->getValue('chosen_include'))
       ->set('placeholder_text_multiple', $form_state->getValue('placeholder_text_multiple'))
@@ -204,9 +250,7 @@ class ChosenConfigForm extends ConfigFormBase {
     $options = [];
 
     // Get a list of available themes.
-    $theme_handler = \Drupal::service('theme_handler');
-
-    $themes = $theme_handler->listInfo();
+    $themes = $this->themeHandler->listInfo();
 
     foreach ($themes as $theme_name => $theme) {
       // Only create options for enabled themes.

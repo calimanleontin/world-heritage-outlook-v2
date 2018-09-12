@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @TODO: Provide function/method to determine version.
+ * @file
+ * Contains the geofield.module.
  */
 
 use Drupal\Core\Template\Attribute;
@@ -32,7 +33,7 @@ define('GEOFIELD_TYPE_LINESTRING', 'LINESTRING');
  *
  * @var string
  */
-define('GEOFIELD_TYPE_MULTILINESTRING' , 'MULTILINESTRING');
+define('GEOFIELD_TYPE_MULTILINESTRING', 'MULTILINESTRING');
 
 /**
  * Polygon feature constant.
@@ -120,9 +121,15 @@ function geofield_radius_options() {
 }
 
 /**
- * Theme wrapper for form item
+ * Theme wrapper for geofield_proximity form item.
+ *
+ * @param array $vars
+ *   The variables.
+ *
+ * @return string
+ *   The return markup..
  */
-function theme_geofield_proximity($vars) {
+function theme_geofield_proximity(array $vars) {
   $element = $vars['element'];
 
   $attributes = !empty($element['#wrapper_attributes']) ? $element['#wrapper_attributes'] : ['class' => []];
@@ -132,8 +139,9 @@ function theme_geofield_proximity($vars) {
   $wrapper_attributes = [];
   $wrapper_attributes['class'][] = 'clearfix';
 
-  if (isset($element['#children']))
+  if (isset($element['#children'])) {
     $element['#children'] = '<div id="' . $element['#id'] . '" ' . new Attribute($wrapper_attributes) . '>' . $element['#children'] . '</div>';
+  }
 
   $output = '<div ' . new Attribute($attributes) . '>' . render($vars) . '</div>';
 

@@ -1,16 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Element\GeofieldElementBase.
- */
-
 namespace Drupal\geofield\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\FormElement;
 
+/**
+ * Provides a base class for Geofield Form elements.
+ */
 abstract class GeofieldElementBase extends FormElement {
 
   /**
@@ -18,7 +15,7 @@ abstract class GeofieldElementBase extends FormElement {
    *
    * @var array
    */
-   public static $components = [];
+  public static $components = [];
 
   /**
    * Generates a Geofield generic component based form element.
@@ -35,14 +32,14 @@ abstract class GeofieldElementBase extends FormElement {
    * @return array
    *   The processed element.
    */
-  public static function elementProcess(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function elementProcess(array &$element, FormStateInterface $form_state, array &$complete_form) {
     $element['#tree'] = TRUE;
     $element['#input'] = TRUE;
 
     foreach (static::$components as $name => $component) {
       $element[$name] = [
         '#type' => 'textfield',
-        '#title' => t($component['title']),
+        '#title' => $component['title'],
         '#required' => (!empty($element['#required'])) ? $element['#required'] : FALSE,
         '#default_value' => (isset($element['#default_value'][$name])) ? $element['#default_value'][$name] : '',
         '#attributes' => [
@@ -68,9 +65,9 @@ abstract class GeofieldElementBase extends FormElement {
    * @param array $complete_form
    *   The complete form structure.
    */
-  public static function elementValidate(&$element, FormStateInterface $form_state, &$complete_form) {
-    $allFilled = TRUE;
-    $anyFilled = FALSE;
+  public static function elementValidate(array &$element, FormStateInterface $form_state, array &$complete_form) {
+    $all_filled = TRUE;
+    $any_filled = FALSE;
     $error_label = isset($element['#error_label']) ? $element['#error_label'] : $element['#title'];
     foreach (static::$components as $key => $component) {
       if (!empty($element[$key]['#value'])) {
@@ -82,13 +79,13 @@ abstract class GeofieldElementBase extends FormElement {
         }
       }
       if ($element[$key]['#value'] == '') {
-        $allFilled = FALSE;
+        $all_filled = FALSE;
       }
       else {
-        $anyFilled = TRUE;
+        $any_filled = TRUE;
       }
     }
-    if ($anyFilled && !$allFilled) {
+    if ($any_filled && !$all_filled) {
       foreach (self::$components as $key => $component) {
         if ($element[$key]['#value'] == '') {
           $form_state->setError($element[$key], t('@title: @component_title must be filled too.', ['@title' => $error_label, '@component_title' => $component['title']]));

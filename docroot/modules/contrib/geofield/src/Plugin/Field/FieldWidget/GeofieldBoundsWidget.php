@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Plugin\Field\FieldWidget\GeofieldBoundsWidget.
- */
-
 namespace Drupal\geofield\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -22,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class GeofieldBoundsWidget extends WidgetBase {
+class GeofieldBoundsWidget extends GeofieldBaseWidget {
 
   /**
    * Bounds widget components.
@@ -69,7 +63,7 @@ class GeofieldBoundsWidget extends WidgetBase {
         [$components['right'], $components['top']],
       ];
 
-      $values[$delta]['value'] = \Drupal::service('geofield.wkt_generator')->WktBuildPolygon($bounds);
+      $values[$delta]['value'] = $this->wktGenerator->wktBuildPolygon($bounds);
     }
 
     return $values;

@@ -2,6 +2,9 @@
 
 namespace Drupal\geofield\GeoPHP;
 
+/**
+ * Provides a geoPHP Wrapper class.
+ */
 class GeoPHPWrapper implements GeoPHPInterface {
 
   /**
@@ -14,7 +17,7 @@ class GeoPHPWrapper implements GeoPHPInterface {
   /**
    * {@inheritdoc}
    */
-  public function load() {
+  public function load($data = NULL, $type = NULL) {
     return call_user_func_array(['\geoPHP', 'load'], func_get_args());
   }
 
