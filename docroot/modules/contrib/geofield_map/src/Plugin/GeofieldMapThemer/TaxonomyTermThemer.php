@@ -142,7 +142,7 @@ class TaxonomyTermThemer extends MapThemerBase {
         $target_bundles = $this->config->get('field.field.' . $entity_type . '.' . $bundle . '.' . $field_id)->get('settings.handler_settings.target_bundles');
         $target_bundles = is_array($target_bundles) ? array_keys($target_bundles) : [];
         if (!empty($target_bundles)) {
-          $taxonomy_ref_fields[$field_id]['target_bundles'] = array_merge($taxonomy_ref_fields[$field_id]['target_bundles'], $target_bundles);
+          $taxonomy_ref_fields[$field_id]['target_bundles'] = array_unique(array_merge($taxonomy_ref_fields[$field_id]['target_bundles'], $target_bundles));
         }
       }
     }
