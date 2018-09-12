@@ -15,7 +15,7 @@ This module provides the API to do so but does not influence a sites operation.
 Configuration Filter swaps the config.storage.sync service from Drupal 8 core.
 The new service wraps the file storage and applies filters to it.
 This allows other modules to change the configuration as it gets imported or
-exported both in the Drupal UI and with drush. (drupal console patch pending)
+exported both in the Drupal UI and with drush.
 
 ## What is a ConfigFilter
 
@@ -40,3 +40,11 @@ The weight allows the filters to be sorted. The status allows the filter to be
 active or inactive, the `ConfigFilterManagerInterface::getFiltersForStorages`
 will only take active filters into consideration. The weight, status and
 storages are optional and the above values are the default.
+
+## Alternative Config Filter Managers
+
+Plugins are only available from enabled modules. If you want to provide a
+config filter from a php library, all you have to do is implement the
+`\Drupal\config_filter\ConfigFilterManagerInterface` and add it to the
+service container with a `config.filter` tag.
+Services with higher priority will have their filters added first.

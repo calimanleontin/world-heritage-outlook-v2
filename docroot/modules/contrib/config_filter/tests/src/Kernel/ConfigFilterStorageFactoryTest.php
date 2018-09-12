@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\config_filter\Kernel;
 
-use Drupal\config_filter\Config\FilteredStorage;
 use Drupal\Core\Config\DatabaseStorage;
 use Drupal\KernelTests\KernelTestBase;
 
@@ -16,7 +15,12 @@ class ConfigFilterStorageFactoryTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['system', 'config_filter', 'config_filter_test', 'config_filter_split_test'];
+  public static $modules = [
+    'system',
+    'config_filter',
+    'config_filter_test',
+    'config_filter_split_test',
+  ];
 
   /**
    * {@inheritdoc}
@@ -26,6 +30,9 @@ class ConfigFilterStorageFactoryTest extends KernelTestBase {
     $this->installConfig(['system']);
   }
 
+  /**
+   * Test that the config.storage.sync is decorated with the filtering version.
+   */
   public function testServiceProvider() {
     // Export the configuration.
     $this->copyConfig($this->container->get('config.storage'), $this->container->get('config.storage.sync'));
@@ -42,6 +49,9 @@ class ConfigFilterStorageFactoryTest extends KernelTestBase {
     $this->assertEquals($config, $this->container->get('config.storage.sync')->read('system.site'));
   }
 
+  /**
+   * Test the storage factory decorating properly.
+   */
   public function testStorageFactory() {
     /** @var \Drupal\Core\Database\Connection $database */
     $database = $this->container->get('database');

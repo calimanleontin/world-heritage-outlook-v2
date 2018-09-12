@@ -62,16 +62,16 @@ available in Drupal 8 is supported by the Webform module.
 Form elements include:
 
 - **HTML:** Textfield, Textareas, Checkboxes, Radios, Select menu, 
-  Password, and more...
+  Password, and more…
 - **HTML5:** Email, Url, Number, Telephone, Date, Number, Range, 
-  and more...
+  and more…
 - **Drupal specific** File uploads, Entity References, Table select, Date list, 
-  and more...
+  and more…
 - **Custom:** [Likert scale](https://en.wikipedia.org/wiki/Likert_scale), 
-  Star rating, Toggle, Buttons, Credit card number, Geolocation, 
-  Select/Checkboxes/Radios with other, and more...
+  Star rating, Toggle, Buttons, Geolocation, 
+  Select/Checkboxes/Radios with other, and more…
 - **Markups** Inline dismissable messages, HTML Markup, Details, and Fieldsets.   
-- **Composite elements:** Name, Address, Contact, and Credit Card 
+- **Composite elements:** Name, Address, and Contact 
 
 
 ## Element Settings
@@ -278,7 +278,6 @@ and more.
 Reusable options include:
 
 - Country codes & names	
-- Credit card codes
 - Days, Months, Time zones
 - Education, Employment status, Ethnicity, Industry, Languages, Marital status, Relationship, Size, and Titles
 - Likert agreement, comparison, importance, quality, satisfaction, ten scale, and

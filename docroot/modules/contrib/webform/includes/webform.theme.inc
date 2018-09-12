@@ -2,957 +2,935 @@
 
 /**
  * @file
- * Preprocessors and helper functions to make theming easier.
+ * Theme hooks, preprocessor, and suggestions.
  */
 
-use Drupal\Core\Link;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Url;
-use Drupal\Core\Serialization\Yaml;
+use Drupal\file\Entity\File;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Template\Attribute;
-use Drupal\Component\Utility\Xss;
-use Drupal\webform\Element\WebformCodeMirror;
-use Drupal\webform\WebformMessageManagerInterface;
-use Drupal\webform\Utility\WebformYaml;
-use Drupal\webform\Utility\WebformDateHelper;
-use Drupal\webform\Utility\WebformDialogHelper;
+use Drupal\webform\Utility\WebformAccessibilityHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 
-/**
- * Prepares variables for webform help.
- *
- * Default template: webform_help.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - title: Help title.
- *   - content: Help content.
- */
-function template_preprocess_webform_help(array &$variables) {
-  /** @var \Drupal\webform\WebformHelpManagerInterface $help_manager */
-  $help_manager = \Drupal::service('webform.help_manager');
-
-  $help_info = $variables['info'];
-
-  $variables += $help_info;
-
-  $help = [];
-  if (!empty($help_info['menu']) && !\Drupal::config('webform.settings')->get('ui.help_menu_disabled')) {
-    $help['menu'] = $help_manager->buildHelpMenu();
-  }
-  if (is_array($help_info['content'])) {
-    $help['content'] = $help_info['content'];
-  }
-  else {
-    $help['content'] = [
-      '#markup' => $help_info['content'],
-    ];
-  }
-
-  // Build watch video link.
-  // If help info load the video else this is the video info.
-  $video_info = (isset($help_info['video_id'])) ? $help_manager->getVideo($help_info['video_id']) : $help_info;
-  if (!empty($video_info['youtube_id'])) {
-    $classes = ['button', 'button-action', 'button--small', 'button-webform-play'];
-
-    $video_display = \Drupal::config('webform.settings')->get('ui.video_display');
-    switch ($video_display) {
-      case 'dialog':
-        $variables['#attached']['library'][] = 'webform/webform.ajax';
-        $help['link'] = [
-          '#type' => 'link',
-          '#title' => t('Watch video'),
-          '#url' => Url::fromRoute('webform.help.video', ['id' => str_replace('_', '-', $video_info['id'])]),
-          '#attributes' => WebformDialogHelper::getModalDialogAttributes(1000, $classes),
-          '#prefix' => ' ',
-        ];
-        break;
-
-      case 'link':
-        $help['link'] = [
-          '#type' => 'link',
-          '#title' => t('Watch video'),
-          '#url' => Url::fromUri('https://youtu.be/' . $video_info['youtube_id']),
-          '#attributes' => ['class' => $classes],
-          '#prefix' => ' ',
-        ];
-        break;
-
-      case 'hidden':
-      default:
-        break;
-    }
-  }
-
-  $variables['help'] = $help;
-}
+/******************************************************************************/
+// Theme hooks.
+/******************************************************************************/
 
 /**
- * Prepares variables for webform templates.
- *
- * Default template: webform.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #action, #method, #attributes, #webform_children.
+ * Implements hook_theme().
  */
-function template_preprocess_webform(array &$variables) {
-  template_preprocess_form($variables);
-}
+function webform_theme() {
+  $info = [
+    'webform_help' => [
+      'variables' => ['info' => []],
+    ],
+    'webform_help_video_youtube' => [
+      'variables' => ['youtube_id' => NULL, 'autoplay' => TRUE],
+    ],
 
-/**
- * Prepares variables for webform actions templates.
- *
- * Default template: webform-actions.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties and buttons.
- *
- * @see \Drupal\webform\WebformSubmissionForm::actionsElement
- * @see \Drupal\webform\WebformSubmissionForm::actions
- */
-function template_preprocess_webform_actions(array &$variables) {
-  $element = $variables['element'];
-  // Buttons include submit, previous, next, and draft.
-  foreach (Element::children($element) as $key) {
-    $variables[$key] = $element[$key];
-  }
-}
-
-/**
- * Prepares variables for webform preview templates.
- *
- * Default template: webform-preview.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_preview(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-  $webform = $webform_submission->getWebform();
-
-  $variables['preview'] = [
-    '#theme' => 'webform_submission_html',
-    '#webform_submission' => $webform_submission,
-    '#excluded_elements' => $webform->getSetting('preview_excluded_elements'),
-    '#exclude_empty' => $webform->getSetting('preview_exclude_empty'),
-  ];
-
-  $settings = $webform->getSettings();
-
-  // Set attributes.
-  $variables['attributes'] = new Attribute($settings['preview_attributes']);
-}
-
-/**
- * Prepares variables for webform confirmation templates.
- *
- * Default template: webform-confirmation.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform: A webform.
- *   - webform_submission: A webform submission.
- *   - source_entity: A webform submission source entity.
- */
-function template_preprocess_webform_confirmation(array &$variables) {
-  /** @var \Drupal\webform\WebformInterface $webform */
-  $webform = $variables['webform'];
-  /** @var \Drupal\Core\Entity\EntityInterface $source_entity */
-  $source_entity = $variables['source_entity'];
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  /** @var \Drupal\webform\WebformMessageManagerInterface $message_manager */
-  $message_manager = \Drupal::service('webform.message_manager');
-  $message_manager->setWebformSubmission($webform_submission);
-  // Must set webform and source entity because webform submission could be
-  // NULL.
-  $message_manager->setWebform($webform);
-  $message_manager->setSourceEntity($source_entity);
-
-  // Assets: Add custom shared and webform specific CSS and JS.
-  // @see webform_css_alter()
-  // @see webform_js_alter()
-  $assets = $webform->getAssets();
-  foreach ($assets as $type => $value) {
-    if ($value) {
-      $variables['#attached']['library'][] = "webform/webform.assets.$type";
-      $variables['#attached']['drupalSettings']['webform']['assets'][$type][$webform->id()] = md5($value);
-    }
-  }
-
-  $settings = $webform->getSettings();
-
-  // Set progress.
-  if ($webform->getPages() && $settings['wizard_complete'] && ($settings['wizard_progress_bar'] || $settings['wizard_progress_pages'] || $settings['wizard_progress_percentage'])) {
-    $variables['progress'] = [
-      '#theme' => 'webform_progress',
-      '#webform' => $webform,
-      '#current_page' => 'webform_complete',
-    ];
-  }
-
-  // Set message.
-  $variables['message'] = $message_manager->build(WebformMessageManagerInterface::SUBMISSION_CONFIRMATION);
-
-  // Set attributes.
-  $variables['attributes'] = new Attribute($settings['confirmation_attributes']);
-
-  // Set back.
-  $variables['back'] = $settings['confirmation_back'];
-  $variables['back_label'] = $settings['confirmation_back_label'] ?: \Drupal::config('webform.settings')->get('settings.default_confirmation_back_label');
-  $variables['back_attributes'] = new Attribute($settings['confirmation_back_attributes']);
-
-  // Get query string parameters.
-  $query = \Drupal::request()->query->all();
-
-  // Add Ajax trigger to back link.
-  // @see \Drupal\webform\WebformSubmissionForm::getCustomForm
-  // @see Drupal.behaviors.webformConfirmationBackAjax (js/webform.ajax.js)
-  $is_ajax = (!empty($query['ajax_form'])) ? TRUE : FALSE;
-  if (!empty($is_ajax)) {
-    $variables['back_attributes']->addClass('js-webform-confirmation-back-link-ajax');
-  }
-
-  // Apply all passed query string parameters to the 'Back to form' link.
-  unset($query['webform_id'], $query['ajax_form'], $query['_wrapper_format'], $query['token']);
-  $options = ($query) ? ['query' => $query] : [];
-
-  // Set back_url.
-  if ($source_entity && $source_entity->hasLinkTemplate('canonical')) {
-    $variables['back_url'] = $source_entity->toUrl('canonical', $options)->toString();
-  }
-  elseif ($webform_submission) {
-    $variables['back_url'] = $webform_submission->getSourceUrl()->toString();
-  }
-  else {
-    $variables['back_url'] = $webform->toUrl('canonical', $options)->toString();
-  }
-}
-
-/**
- * Prepares variables for webform submission navigation templates.
- *
- * Default template: webform-submission-navigation.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- *   - rel: Webform submission link template.
- *          (canonical, edit-form, resend-form, html, text, or yaml).
- */
-function template_preprocess_webform_submission_navigation(array &$variables) {
-  /** @var \Drupal\webform\WebformRequestInterface $request_handler */
-  $request_handler = \Drupal::service('webform.request');
-  /** @var \Drupal\webform\WebformSubmissionStorageInterface $webform_submission_storage */
-  $webform_submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
-
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  // Get the route name, parameters, and source entity for the current page.
-  // This ensures that the user stays within their current context as they are
-  // paging through submission.
-  $route_name = \Drupal::routeMatch()->getRouteName();
-  $route_parameters = \Drupal::routeMatch()->getRawParameters()->all();
-  $source_entity = $request_handler->getCurrentSourceEntity('webform_submission');
-
-  if (strpos(\Drupal::routeMatch()->getRouteName(), 'webform.user.submission') !== FALSE) {
-    $account = \Drupal::currentUser();
-    $options = ['in_draft' => FALSE];
-  }
-  else {
-    $account = NULL;
-    $options = ['in_draft' => NULL];
-  }
-
-  if ($previous_submission = $webform_submission_storage->getPreviousSubmission($webform_submission, $source_entity, $account, $options)) {
-    $variables['prev_url'] = Url::fromRoute($route_name, ['webform_submission' => $previous_submission->id()] + $route_parameters)->toString();
-  }
-  if ($next_submission = $webform_submission_storage->getNextSubmission($webform_submission, $source_entity, $account, $options)) {
-    $variables['next_url'] = Url::fromRoute($route_name, ['webform_submission' => $next_submission->id()] + $route_parameters)->toString();
-  }
-
-  $variables['#attached']['library'][] = 'webform/webform.navigation';
-
-  // Never cache navigation because previous and next submission will change
-  // as submissions are added and deleted.
-  $variables['#cache'] = ['max-age' => 0];
-}
-
-/**
- * Prepares variables for webform submission template.
- *
- * Default template: webform-submission.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-  /** @var \Drupal\Core\Entity\EntityInterface $source_entity */
-  $source_entity = $variables['source_entity'];
-  $type = $variables['type'];
-
-  // Make sure $type is supported, else use the HTML template and
-  // display submission information because the submission is most likely
-  // being rendered without context.
-  if (in_array($type, ['html', 'table', 'text', 'yaml'])) {
-    $submission_template = 'webform_submission_' . $type;
-  }
-  else {
-    $submission_template = 'webform_submission_html';
-  }
-
-  // Information.
-  $variables['information'] = [
-    '#theme' => 'webform_submission_information',
-    '#webform_submission' => $webform_submission,
-    '#source_entity' => $source_entity,
-  ];
-
-  // Submission.
-  $variables['data'] = [
-    '#theme' => $submission_template,
-    '#webform_submission' => $webform_submission,
-    '#source_entity' => $source_entity,
-  ];
-
-  // Wrap plain text and YAML in CodeMirror view widget.
-  if (in_array($type, ['text', 'yaml'])) {
-    $variables['data'] = [
-      '#theme' => 'webform_codemirror',
-      '#code' => $variables['data'],
-      '#type' => $type,
-    ];
-  }
-
-  $variables['#attached']['library'][] = 'webform/webform.admin';
-}
-
-/**
- * Prepares variables for webform submission information template.
- *
- * Default template: webform-submission-information.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission_information(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-  $webform = $webform_submission->getWebform();
-
-  $variables['webform_id'] = $webform->id();
-  $variables['serial'] = $webform_submission->serial();
-  $variables['sid'] = $webform_submission->id();
-  $variables['uuid'] = $webform_submission->uuid();
-  $variables['is_draft'] = $webform_submission->isDraft() ? t('Yes') : t('No');
-  $variables['current_page'] = $webform_submission->getCurrentPageTitle();
-  $variables['remote_addr'] = $webform_submission->getRemoteAddr();
-  $variables['submitted_by'] = $webform_submission->getOwner()->toLink();
-  $variables['webform'] = $webform->toLink();
-  $variables['created'] = WebformDateHelper::format($webform_submission->getCreatedTime());
-  $variables['completed'] = WebformDateHelper::format($webform_submission->getCompletedTime());
-  $variables['changed'] = WebformDateHelper::format($webform_submission->getChangedTime());
-  $variables['sticky'] = $webform_submission->isSticky() ? t('Yes') : '';
-  $variables['notes'] = $webform_submission->getNotes();
-
-  // @see \Drupal\Core\Field\Plugin\Field\FieldFormatter\LanguageFormatter::viewValue()
-  $languages = \Drupal::languageManager()->getNativeLanguages();
-  $langcode = $webform_submission->get('langcode')->value;
-  $variables['language'] = isset($languages[$langcode]) ? $languages[$langcode]->getName() : $langcode;
-
-  if ($source_url = $webform_submission->getSourceUrl()) {
-    $variables['uri'] = Link::fromTextAndUrl($source_url->setAbsolute(FALSE)->toString(), $source_url);;
-  }
-
-  if ($webform->getSetting('token_update')) {
-    $token_url = $webform_submission->getTokenUrl();
-    $variables['token_update'] = Link::fromTextAndUrl($token_url->setAbsolute(FALSE)->toString(), $token_url);
-  }
-
-  if (($source_entity = $webform_submission->getSourceEntity()) && $source_entity->hasLinkTemplate('canonical')) {
-    $variables['submitted_to'] = $source_entity->toLink();
-  }
-
-  $variables['submissions_view'] = FALSE;
-  if ($webform->access('submission_view_any')) {
-    $variables['submissions_view'] = TRUE;
-  }
-  elseif ($source_entity) {
-    $entity_type = $source_entity->getEntityTypeId();
-    if (\Drupal::currentUser()->hasPermission("view webform node submissions any $entity_type")) {
-      $variables['submissions_view'] = TRUE;
-    }
-    elseif (\Drupal::currentUser()->hasPermission("view webform node submissions own $entity_type")
-      && method_exists($source_entity, 'getOwnerId')
-      && $source_entity->getOwnerId() == \Drupal::currentUser()->id()
-    ) {
-      $variables['submissions_view'] = TRUE;
-    }
-  }
-}
-
-/**
- * Prepares variables for webform submission HTML template.
- *
- * Default template: webform-submission-html.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission_html(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
-
-  $webform = $webform_submission->getWebform();
-  $elements = $webform->getElementsInitialized();
-  $options = [
-    'excluded_elements' => $variables['excluded_elements'],
-    'exclude_empty' => $variables['exclude_empty'],
-  ];
-  $variables['html'] = $view_builder->buildElements($elements, $webform_submission, $options);
-}
-
-/**
- * Prepares variables for webform submission table template.
- *
- * Default template: webform-submission-table.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission_table(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
-
-  $webform = $webform_submission->getWebform();
-  $elements = $webform->getElementsInitializedFlattenedAndHasValue();
-  $options = [
-    'excluded_elements' => $variables['excluded_elements'],
-    'exclude_empty' => $variables['exclude_empty'],
-  ];
-  $variables['table'] = $view_builder->buildTable($elements, $webform_submission, $options);
-}
-
-/**
- * Prepares variables for webform submission plain text template.
- *
- * Default template: webform-submission-text.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission_text(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
-  $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
-
-  $webform = $webform_submission->getWebform();
-  $elements = $webform->getElementsInitialized();
-  $options = [
-    'excluded_elements' => $variables['excluded_elements'],
-    'exclude_empty' => $variables['exclude_empty'],
-  ];
-  $variables['text'] = $view_builder->buildElements($elements, $webform_submission, $options, 'text');
-}
-
-/**
- * Prepares variables for webform submission YAML template.
- *
- * Default template: webform-submission-yaml.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform_submission: A webform submission.
- */
-function template_preprocess_webform_submission_yaml(array &$variables) {
-  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-  $webform_submission = $variables['webform_submission'];
-
-  $data = $webform_submission->toArray(TRUE, TRUE);
-  $yaml = Yaml::encode($data);
-  $yaml = WebformYaml::tidy($yaml);
-  $variables['yaml'] = [
-    '#markup' => $yaml,
-    '#allowed_tags' => Xss::getAdminTagList(),
-  ];;
-}
-
-/**
- * Prepares variables for webform CodeMirror template.
- *
- * Default template: webform-codemirror.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - code: The code.
- *   - type: The type of code.
- */
-function template_preprocess_webform_codemirror(array &$variables) {
-  $variables['mode'] = WebformCodeMirror::getMode($variables['type']);
-  if (is_string($variables['code'])) {
-    $variables['code'] = [
-      '#markup' => $variables['code'],
-      '#allowed_tags' => Xss::getAdminTagList(),
-    ];
-  }
-}
-
-/**
- * Prepares variables for webform element base HTML template.
- *
- * Default template: webform-element-base-html.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *     - multiline: Flag to determine if value spans multiple lines.
- *     - email: Flag to determine if element is for an email.
- */
-function template_preprocess_webform_element_base_html(array &$variables) {
-  $element = $variables['element'];
-
-  // Set title.
-  _template_progress_webform_set_title($variables);
-
-  // Build form (item) element for HTML display.
-  // @see form-element.html.twig
-  // @see template_preprocess_form_element
-  if (empty($variables['options']['email'])) {
-    $type = $element['#type'];
-
-    $variables['item'] = [
-      '#type' => 'item',
-      '#title' => $variables['title'],
-      '#name' => $element['#webform_key'],
-      // Use wrapper attributes for the id instead of #id,
-      // this stops the <label> from having a 'for' attribute.
-      '#wrapper_attributes' => [
-        'id' => $element['#webform_id'],
-        'class' => [
-          'webform-element',
-          'webform-element-type-' . str_replace('_', '-', $type),
-        ],
+    'webform_contribute' => [
+      'variables' => [
+        'account' => [],
+        'membership' => [],
+        'contribution' => [],
       ],
-    ];
-    if (is_array($variables['value'])) {
-      $variables['item']['value'] = $variables['value'];
+    ],
+
+    'webform' => [
+      'render element' => 'element',
+    ],
+    'webform_actions' => [
+      'render element' => 'element',
+    ],
+    'webform_handler_action_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
+    'webform_handler_debug_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
+    'webform_handler_email_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
+    'webform_handler_remote_post_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
+    'webform_handler_settings_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL],
+    ],
+
+    'webform_confirmation' => [
+      'variables' => ['webform' => NULL, 'source_entity' => NULL, 'webform_submission' => NULL],
+    ],
+
+    'webform_required' => [
+      'variables' => ['label' => NULL],
+    ],
+
+    'webform_submission' => [
+      'render element' => 'elements',
+    ],
+
+    'webform_submission_form' => [
+      'render element' => 'form',
+    ],
+
+    'webform_submission_navigation' => [
+      'variables' => ['webform_submission' => NULL],
+    ],
+    'webform_submission_information' => [
+      'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'open' => TRUE],
+    ],
+
+    'webform_element_base_html' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
+    ],
+    'webform_element_base_text' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
+    ],
+
+    'webform_container_base_html' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
+    ],
+    'webform_container_base_text' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
+    ],
+
+    'webform_element_help' => [
+      'variables' => ['help' => NULL, 'help_title' => '', 'attributes' => []],
+    ],
+
+    'webform_element_more' => [
+      'variables' => ['more' => NULL, 'more_title' => '', 'attributes' => []],
+    ],
+
+    'webform_element_managed_file' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL],
+    ],
+    'webform_element_audio_file' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL],
+    ],
+    'webform_element_document_file' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL],
+    ],
+    'webform_element_image_file' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL, 'style_name' => NULL, 'format' => NULL],
+    ],
+    'webform_element_video_file' => [
+      'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL],
+    ],
+
+    'webform_email_html' => [
+      'variables' => ['subject' => '', 'body' => ''],
+    ],
+    'webform_email_message_html' => [
+      'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
+    ],
+    'webform_email_message_text' => [
+      'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
+    ],
+
+    'webform_horizontal_rule' => [
+      'render element' => 'element',
+    ],
+    'webform_message' => [
+      'render element' => 'element',
+    ],
+    'webform_section' => [
+      'render element' => 'element',
+    ],
+
+    'webform_composite_address' => [
+      'render element' => 'element',
+    ],
+    'webform_composite_contact' => [
+      'render element' => 'element',
+    ],
+    'webform_composite_location' => [
+      'render element' => 'element',
+    ],
+    'webform_composite_link' => [
+      'render element' => 'element',
+    ],
+    'webform_composite_name' => [
+      'render element' => 'element',
+    ],
+    'webform_composite_telephone' => [
+      'render element' => 'element',
+    ],
+
+    'webform_codemirror' => [
+      'variables' => ['code' => NULL, 'type' => 'text'],
+    ],
+
+    'webform_progress' => [
+      'variables' => [
+        'webform' => NULL,
+        'current_page' => NULL,
+        'operation' => NULL,
+      ],
+    ],
+
+    'webform_progress_bar' => [
+      'variables' => [
+        'webform' => NULL,
+        'current_page' => NULL,
+        'operation' => NULL,
+        'max_pages' => 10,
+      ],
+    ],
+
+    'webform_progress_tracker' => [
+      'variables' => [
+        'webform' => NULL,
+        'current_page' => NULL,
+        'operation' => NULL,
+        'max_pages' => 10,
+      ],
+    ],
+  ];
+
+  // Since any rendering of a webform is going to require 'webform.theme.inc'
+  // we are going to just add it to every template.
+  foreach ($info as &$template) {
+    $template['file'] = 'includes/webform.theme.template.inc';
+  }
+
+  return $info;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function webform_theme_registry_alter(&$theme_registry) {
+  // Allow attributes to be defined for status messages so that #states
+  // can be added to messages.
+  // @see \Drupal\webform\Element\WebformMessage
+  if (!isset($theme_registry['status_messages']['variables']['attributes'])) {
+    $theme_registry['status_messages']['variables']['attributes'] = [];
+  }
+}
+
+/******************************************************************************/
+// Preprocessors.
+/******************************************************************************/
+
+/**
+ * Prepares variables for single local action link templates.
+ *
+ * Applies custom link attributes to local actions.
+ * Custom attributes are used to open Webform UI modals.
+ *
+ * @see template_preprocess_menu_local_action();
+ * @see \Drupal\webform\WebformEntityHandlersForm
+ * @see \Drupal\webform_ui\WebformUiEntityEditForm
+ * @see https://www.drupal.org/node/2897396
+ */
+function webform_preprocess_menu_local_action(&$variables) {
+  $link = $variables['element']['#link'];
+  // Only need to update local actions with link attributes.
+  if (!isset($link['attributes'])) {
+    return;
+  }
+
+  $link += [
+    'localized_options' => [],
+  ];
+  $link['localized_options']['attributes'] = $link['attributes'];
+  $link['localized_options']['attributes']['class'][] = 'button';
+  $link['localized_options']['attributes']['class'][] = 'button-action';
+  $link['localized_options']['set_active_class'] = TRUE;
+
+  $variables['link'] = [
+    '#type' => 'link',
+    '#title' => $link['title'],
+    '#options' => $link['localized_options'],
+    '#url' => $link['url'],
+  ];
+}
+
+/**
+ * Prepares variables for checkboxes templates.
+ *
+ * @see \Drupal\webform\Plugin\WebformElement\OptionsBase
+ */
+function webform_preprocess_checkboxes(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  _webform_preprocess_options($variables);
+}
+
+/**
+ * Prepares variables for radios templates.
+ *
+ * @see \Drupal\webform\Plugin\WebformElement\OptionsBase
+ */
+function webform_preprocess_radios(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  _webform_preprocess_options($variables);
+}
+
+/******************************************************************************/
+// Preprocess containers.
+/******************************************************************************/
+
+/**
+ * Prepares variables for datetime form element templates.
+ */
+function webform_preprocess_datetime_form(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  // Add .container-inline to datetime form wrapper which is missing from the
+  // stable base theme.
+  // @see core/themes/classy/templates/form/datetime-form.html.twig
+  // @see core/themes/stable/templates/form/datetime-form.html.twig
+  $variables['attributes']['class'][] = 'container-inline';
+}
+
+/**
+ * Prepares variables for details element templates.
+ */
+function webform_preprocess_details(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  // Setup description, help, and more.
+  _webform_preprocess_element($variables);
+
+  $element = &$variables['element'];
+
+  // Hide details title.
+  if (isset($element['#title_display']) && $element['#title_display'] === 'invisible') {
+    $variables['title'] = WebformAccessibilityHelper::buildVisuallyHidden($variables['title']);
+  }
+
+  // Remove invalid 'required' and 'aria-required' attributes from details.
+  if (isset($element['#webform_key'])) {
+    unset(
+      $variables['attributes']['required'],
+      $variables['attributes']['aria-required']
+    );
+  }
+}
+
+/**
+ * Prepares variables for fieldset element templates.
+ */
+function webform_preprocess_fieldset(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  // Setup description, help, and more.
+  _webform_preprocess_element($variables, ['legend', 'title']);
+
+  $element = &$variables['element'];
+
+  // If the description is displayed 'before' we need to move it to the
+  // fieldset's prefix.
+  // @see fieldset.html.twig
+  if (isset($element['#description_display']) && $element['#description_display'] === 'before' && !empty($variables['description']['content'])) {
+    if (isset($variables['prefix'])) {
+      if (is_array($variables['prefix'])) {
+        $variables['prefix'] = ['prefix' => $variables['prefix']];
+      }
+      else {
+        $variables['prefix'] = ['prefix' => ['#markup' => $variables['prefix']] ];
+      }
     }
     else {
-      $variables['item']['#markup'] = $variables['value'];
+      $variables['prefix'] = [];
     }
-  }
-}
-
-/**
- * Prepares variables for webform element base text template.
- *
- * Default template: webform-element-base-text.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *     - multiline: Flag to determine if value spans multiple lines.
- *     - email: Flag to determine if element is for an email.
- */
-function template_preprocess_webform_element_base_text(array &$variables) {
-  // Set title.
-  _template_progress_webform_set_title($variables, TRUE);
-}
-
-/**
- * Set variables title to element #title or #admin_title.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- * @param bool $strip_tags
- *   Remove HTML tags from title.
- */
-function _template_progress_webform_set_title(array &$variables, $strip_tags = FALSE) {
-  $element = $variables['element'];
-
-  // Set title.
-  $variables['title'] = (WebformElementHelper::isTitleDisplayed($element)) ? $element['#title'] : NULL;
-  if (empty($variables['title']) && !empty($element['#admin_title'])) {
-    $variables['title'] = $element['#admin_title'];
+    $variables['prefix']['description'] = $variables['description']['content'];
+    unset($variables['description']['content']);
   }
 
-  // Strip all HTML tags from the title.
-  if ($strip_tags) {
-    $variables['title'] = strip_tags($variables['title']);
+  // Apply inline title defined by radios, checkboxes, and buttons.
+  // @see \Drupal\webform\Plugin\WebformElement\OptionsBase::prepare
+  if (isset($element['#_title_display'])) {
+    $variables['attributes']['class'][] = 'webform-fieldset--title-inline';
+  }
+
+  // Add .js-webform-form-type-* class to be used JavaScript and #states API.
+  // @see js/webform.element.location.geocomplete.js
+  // @see js/webform.states.js
+  if (isset($element['#type'])) {
+    $variables['attributes']['class'][] = 'js-webform-type-' . Html::getClass($element['#type']);
+    $variables['attributes']['class'][] = 'webform-type-' . Html::getClass($element['#type']);
+  }
+
+  // Remove invalid 'required' and 'aria-required' attributes from fieldset.
+  if (isset($element['#webform_key'])) {
+    unset(
+      $variables['attributes']['required'],
+      $variables['attributes']['aria-required']
+    );
   }
 }
 
 /******************************************************************************/
-// Progress templates.
+// Preprocess form element.
 /******************************************************************************/
 
 /**
- * Prepares variables for webform 'wizard' progress template.
- *
- * Default template: webform-progress.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform: A webform.
- *   - current_page: The current wizard page.
+ * Prepares variables for form element templates.
  */
-function template_preprocess_webform_progress(array &$variables) {
-  /** @var \Drupal\webform\WebformLibrariesManagerInterface $libaries_manager */
-  $libaries_manager = \Drupal::service('webform.libraries_manager');
+function webform_preprocess_form_element(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
 
-  /** @var \Drupal\webform\WebformInterface $webform */
-  $webform = $variables['webform'];
-  $current_page = $variables['current_page'];
+  // Setup description, help, and more.
+  _webform_preprocess_element($variables);
 
-  $pages = $webform->getPages();
+  $element = &$variables['element'];
 
-  $page_keys = array_keys($pages);
-  $page_indexes = array_flip($page_keys);
-  $current_index = $page_indexes[$current_page];
+  // Add #help, #help_attributes, and #_title_display to label.
+  // Note: #_title_display is used to track inline titles.
+  // @see \Drupal\webform\Plugin\WebformElementBase::prepare
+  $variables['label'] += array_intersect_key($element, array_flip(['#help', '#help_title', '#help_attributes', '#_title_display']));
+}
 
-  $total = count($page_keys);
+/**
+ * Prepares variables for form label templates.
+ */
+function webform_preprocess_form_element_label(&$variables) {
+  $element = &$variables['element'];
 
-  if ($webform->getSetting('wizard_progress_bar')) {
-    $variables['bar'] = [
-      '#theme' => ($libaries_manager->isIncluded('progress-tracker')) ? 'webform_progress_tracker' : 'webform_progress_bar',
-      '#webform' => $variables['webform'],
-      '#current_page' => $variables['current_page'],
+  // Restructure the label's title to include #help.
+  _webform_preprocess_help_title($variables['title'], $element);
+}
+
+/******************************************************************************/
+// Preprocess file/image elements.
+/******************************************************************************/
+
+/**
+ * Prepares variables for file managed file templates.
+ *
+ * @see https://stackoverflow.com/questions/21842274/cross-browser-custom-styling-for-file-upload-button
+ * @see template_preprocess_file_managed_file()
+ */
+function webform_preprocess_file_managed_file(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  $element = &$variables['element'];
+  if (empty($element['#button'])) {
+    return;
+  }
+
+  // Don't alter hidden file upload input.
+  if (isset($element['upload']['#access']) && $element['upload']['#access'] === FALSE) {
+    return;
+  }
+
+  // Create an unique id for the file upload input and label.
+  $button_id = Html::getUniqueId($variables['element']['upload']['#id'] . '-button');
+
+  // Create a label that is styled like an action button.
+  $label = [
+    '#type' => 'html_tag',
+    '#tag' => 'label',
+    '#value' => (isset($element['#button__title'])) ? $element['#button__title'] : (empty($element['#multiple']) ? t('Choose file') : t('Choose files')),
+    '#attributes' => (isset($element['#button__attributes'])) ? $element['#button__attributes'] : [],
+  ];
+
+  // Add 'for' attribute.
+  $label['#attributes']['for'] = $button_id;
+
+  // Add default button classes.
+  if (empty($label['#attributes']['class'])) {
+    $label['#attributes']['class'][] = 'button';
+    $label['#attributes']['class'][] = 'button-action';
+  }
+
+  // Add .webform-file-button.
+  $label['#attributes']['class'][] = 'webform-file-button';
+
+  // Make sure the label is first.
+  $element = ['label' => $label] + $element;
+
+  // Set the custom button ID for file upload input.
+  $element['upload']['#attributes']['id'] = $button_id;
+
+  // Hide the file upload.
+  $element['upload']['#attributes']['class'][] = 'webform-file-button-input';
+
+  // Attach library.
+  $element['#attached']['library'][] = 'webform/webform.element.file.button';
+}
+
+/**
+ * Prepares variables for file link templates.
+ *
+ * @see webform_file_access
+ */
+function webform_preprocess_file_link(&$variables) {
+  /** @var \Drupal\file\FileInterface $file */
+  $file = $variables['file'];
+  $file = ($file instanceof File) ? $file : File::load($file->fid);
+
+  // Remove link to temporary anonymous private file uploads.
+  if ($file->isTemporary() && $file->getOwner()->isAnonymous() && strpos($file->getFileUri(), 'private://webform/') === 0) {
+    $variables['link'] = $file->getFilename();
+  }
+}
+
+/**
+ * Prepares variables for image.
+ *
+ * Make sure the image src for the 'webform_image_file' src is an absolute URL.
+ */
+function webform_preprocess_image(&$variables) {
+  global $base_url;
+  if (isset($variables['attributes']['class']) && in_array('webform-image-file', (array) $variables['attributes']['class'])) {
+    $variables['attributes']['src'] = $base_url . preg_replace('/^' . preg_quote(base_path(), '/') . '/', '/', $variables['attributes']['src']);
+  }
+}
+
+/******************************************************************************/
+// Preprocess webform specific elements.
+/******************************************************************************/
+
+/**
+ * Prepares variables for webform section element templates.
+ */
+function webform_preprocess_webform_section(&$variables) {
+  // Setup description, help, and more.
+  _webform_preprocess_element($variables);
+}
+
+/******************************************************************************/
+// Preprocess helpers.
+/******************************************************************************/
+
+/**
+ * Prepares variables for checkboxes and radios options templates.
+ *
+ * Below code must be called by template_preprocess_(radios|checkboxes) which
+ * reset the element's 'attributes';
+ */
+function _webform_preprocess_options(array &$variables) {
+  $element =& $variables['element'];
+
+  $variables['attributes']['class'][] = Html::getClass('js-webform-' . $element['#type']);
+
+  if (!empty($element['#options_display'])) {
+    $variables['attributes']['class'][] = Html::getClass('webform-options-display-' . $element['#options_display']);
+    $variables['#attached']['library'][] = 'webform/webform.element.options';
+  }
+}
+
+/**
+ * Prepares webform element description, help, and more templates.
+ *
+ * @see template_preprocess_form_element()
+ * @see core/modules/system/templates/form-element.html.twig
+ * @see template_preprocess_details()
+ * @see /core/modules/system/templates/details.html.twig
+ * @see template_preprocess_fieldset()
+ * @see /core/modules/system/templates/fieldset.html.twig
+ * @see template_preprocess_webform_section()
+ * @see /webform/templates/webform-section.html.twig
+ */
+function _webform_preprocess_element(array &$variables, $title_parents = ['title']) {
+  $element =& $variables['element'];
+  $type = $element['#type'];
+
+  // Fix details 'description' property which does not have description.content.
+  // @see template_preprocess_details
+  // @see Issue #2896169: Details elements have incorrect aria-describedby attributes
+  if (!empty($element['#description'])) {
+    // Convert the current description to simple #markup.
+    if (is_array($element['#description'])) {
+      // Make a copy of the element's #description so that it can be rendered
+      // without affecting the element's #description.
+      $element_description = $element['#description'];
+      $description = ['#markup' => \Drupal::service('renderer')->render($element_description)];
+    }
+    else {
+      $description = ['#markup' => $element['#description']];
+    }
+
+    if ($type === 'details') {
+      $description_attributes = [];
+      if (!empty($element['#id'])) {
+        $description_attributes['id'] = $element['#id'] . '--description';
+      }
+      $variables['description'] = [];
+      $variables['description']['content'] = [
+        '#type' => 'container',
+        '#attributes' => new Attribute($description_attributes),
+      ] + $description;
+    }
+    else {
+      // Wrap description in a container.
+      $variables['description']['content'] = [
+        '#type' => 'container',
+        '#attributes' => $variables['description']['attributes'],
+      ] + $description;
+      $variables['description']['attributes'] = new Attribute();
+    }
+
+    $variables['description']['content']['#attributes']->addClass('webform-element-description');
+
+    // Handle invisible descriptions.
+    if (isset($element['#description_display']) && $element['#description_display'] === 'invisible') {
+      $variables['description']['content']['#attributes']->addClass('visually-hidden');
+      $variables['description_display'] = 'after';
+    }
+
+    // Nest description content so that we can a more link
+    // below the description.
+    $variables['description']['content'] = [
+      'description' => $variables['description']['content'],
     ];
   }
 
-  if ($webform->getSetting('wizard_progress_pages')) {
-    $variables['summary'] = t('Page @start of @end', ['@start' => $current_index + 1, '@end' => $total]);
-  }
+  $title =& NestedArray::getValue($variables, $title_parents);
 
-  if ($webform->getSetting('wizard_progress_percentage')) {
-    $variables['percentage'] = number_format(($current_index / ($total - 1)) * 100, 0) . '%';
-  }
+  // Move #description to #help for webform admin routes.
+  _webform_preprocess_description_help($variables);
+
+  // Add (read) more to #description.
+  _webform_preprocess_form_element_description_more($variables);
+
+  // Add help to title (aka label).
+  _webform_preprocess_help_title($title, $element);
 }
 
 /**
- * Prepares variables for webform 'wizard' progress bar template.
- *
- * Default template: webform-progress-bar.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform: A webform.
- *   - current_page: The current wizard page.
+ * Prepares #description and #help properties for form element templates.
  */
-function template_preprocess_webform_progress_bar(array &$variables) {
-  _template_preprocess_webform_progress($variables);
-}
+function _webform_preprocess_description_help(array &$variables) {
+  $element = &$variables['element'];
+  // Move #description to #help for webform admin routes.
+  if (\Drupal::config('webform.settings')->get('ui.description_help')
+    && \Drupal::service('webform.request')->isWebformAdminRoute()
+    && \Drupal::routeMatch()->getRouteName() != 'webform.contribute.settings'
+    && !isset($element['#help'])
+    && !empty($element['#title']) && (empty($element['#title_display']) || !in_array($element['#title_display'], ['attribute', 'invisible']))
+    && !empty($element['#description']) && (empty($element['#description_display']) || !in_array($element['#description_display'], ['invisible']))
+  ) {
+    // Render the description.
+    $description = (is_array($element['#description'])) ? \Drupal::service('renderer')->render($element['#description']) : $element['#description'];
+    // Replace breaks in admin tooltips with horizontal rules.
+    $description = str_replace('<br /><br />', '<hr />', $description);
+    $element['#help'] = ['#markup' => $description];
 
-/**
- * Prepares variables for webform 'wizard' progress tracker template.
- *
- * Default template: webform-progress-tracker.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform: A webform.
- *   - current_page: The current wizard page.
- */
-function template_preprocess_webform_progress_tracker(array &$variables) {
-  _template_preprocess_webform_progress($variables);
-}
+    // We must still render the description as visually hidden because the input
+    // has an 'aria-describedby' attribute pointing to the description's id.
+    $variables['description_display'] = 'after';
+    $variables['description']['content']['description']['#attributes']->addClass('visually-hidden');
 
-/**
- * Prepares variables for webform 'wizard' progress bar & tracker template.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - webform: A webform.
- *   - current_page: The current wizard page.
- */
-function _template_preprocess_webform_progress(array &$variables) {
-  /** @var \Drupal\webform\WebformInterface $webform */
-  $webform = $variables['webform'];
-  $current_page = $variables['current_page'];
-
-  $pages = $webform->getPages();
-
-  $page_keys = array_keys($pages);
-  $page_indexes = array_flip($page_keys);
-  $current_index = $page_indexes[$current_page];
-  $variables['current_index'] = $current_index;
-
-  // Reset the pages variable.
-  $variables['progress'] = [];
-  foreach ($pages as $page) {
-    $variables['progress'][] = (isset($page['#title'])) ? $page['#title'] : '';
-  }
-}
-
-/******************************************************************************/
-// Element templates.
-/******************************************************************************/
-
-/**
- * Prepares variables for Webform message templates.
- *
- * Default template: webform-message.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #id, #attributes, #children.
- *
- * @see template_preprocess_container()
- */
-function template_preprocess_webform_message(array &$variables) {
-  $variables['has_parent'] = FALSE;
-  $element = $variables['element'];
-  // Ensure #attributes is set.
-  $element += ['#attributes' => []];
-
-  // Special handling for webform elements.
-  if (isset($element['#array_parents'])) {
-    // Assign an html ID.
-    if (!isset($element['#attributes']['id'])) {
-      $element['#attributes']['id'] = $element['#id'];
-    }
-    $variables['has_parent'] = TRUE;
-  }
-
-  $variables['message'] = $element['#message'];
-  $variables['attributes'] = $element['#attributes'];
-  if (isset($element['#closed'])) {
-    $variables['closed'] = $element['#closed'];
-  }
-}
-
-/******************************************************************************/
-// Composite templates
-/******************************************************************************/
-
-/**
- * Prepares variables for composite element templates.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function _template_preprocess_webform_composite(array &$variables) {
-  $element = $variables['element'];
-
-  // Copy all accessible element children to content.
-  foreach (Element::children($element) as $key) {
-    if (!isset($element[$key]['#access']) || $element[$key]['#access']) {
-      $variables['content'][$key] = $element[$key];
+    // Remove all links from the #description since it will be .visually-hidden
+    // and unreachable via tabbing.
+    if (isset($variables['description']['content']['description']['#markup'])) {
+      $variables['description']['content']['description']['#markup'] = strip_tags($variables['description']['content']['description']['#markup']);
     }
   }
-
-  // Set flexbox variable used for multi column element layout.
-  $variables['flexbox'] = (isset($element['#flexbox'])) ? $element['#flexbox'] : FALSE;
 }
 
 /**
- * Prepares variables for address composite element templates.
- *
- * Default template: webform-element-address.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
+ * Append #help to title variable.
  */
-function template_preprocess_webform_composite_address(array &$variables) {
-  _template_preprocess_webform_composite($variables);
-}
+function _webform_preprocess_help_title(&$variables, array &$element) {
+  if (empty($variables) || empty($element['#help'])) {
+    return;
+  }
 
-/**
- * Prepares variables for contact composite element templates.
- *
- * Default template: webform-element-contact.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_contact(array &$variables) {
-  _template_preprocess_webform_composite($variables);
-}
+  // Default #help_title to element's #title.
+  if (empty($element['#help_title']) && !empty($element['#title'])) {
+    $element['#help_title'] = $element['#title'];
+  }
 
-/**
- * Prepares variables for creditcard composite element templates.
- *
- * Default template: webform-element-creditcard.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_creditcard(array &$variables) {
-  _template_preprocess_webform_composite($variables);
-}
+  $variables = [
+    'title' => (is_array($variables)) ? $variables : ['#markup' => $variables],
+    'help' => [
+      '#type' => 'webform_help',
+    ] + array_intersect_key($element, array_flip(['#help', '#help_title'])),
+  ];
 
-/**
- * Prepares variables for link composite element templates.
- *
- * Default template: webform-element-link.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_link(array &$variables) {
-  $variables['content'] = $variables['element'];
-}
+  // Add help attributes.
+  if (isset($element['#help_attributes'])) {
+    $variables['help']['#attributes'] = $element['#help_attributes'];
+  }
 
-/**
- * Prepares variables for location composite element templates.
- *
- * Default template: webform-element-location.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_location(array &$variables) {
-  $variables['content'] = $variables['element'];
-}
+  // Get #title_display and move help before title for 'inline' titles.
+  if (isset($element['#_title_display'])) {
+    // #_title_display is set via WebformElementBase::prepare.
+    // @see \Drupal\webform\Plugin\WebformElementBase::prepare.
+    $title_display = $element['#_title_display'];
+  }
+  elseif (isset($element['#title_display'])) {
+    $title_display = $element['#title_display'];
+  }
+  else {
+    $title_display = NULL;
+  }
 
-/**
- * Prepares variables for name composite element templates.
- *
- * Default template: webform-element-name.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_name(array &$variables) {
-  _template_preprocess_webform_composite($variables);
-}
-
-/**
- * Prepares variables for telephone composite element templates.
- *
- * Default template: webform-element-telephone.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- */
-function template_preprocess_webform_composite_telephone(array &$variables) {
-  _template_preprocess_webform_composite($variables);
-}
-
-/******************************************************************************/
-// Element templates
-/******************************************************************************/
-
-/**
- * Prepares variables for a managed file element.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *   - file: The element's File object.
- */
-function template_preprocess_webform_element_managed_file(array &$variables) {
-  if (!empty($variables['file'])) {
-    /** @var \Drupal\file\FileInterface $file */
-    $file = $variables['file'];
-    $variables['uri'] = file_create_url($file->getFileUri());
-    $variables['extension'] = strtolower(pathinfo($variables['uri'], PATHINFO_EXTENSION));
-    $variables['type'] = \Drupal::service('file.mime_type.guesser')->guess($variables['uri']);
-    $variables['file_link'] = [
-      '#theme' => 'file_link',
-      '#file' => $file,
-    ];
+  if ($title_display === 'inline') {
+    $variables['title']['#weight'] = 0;
+    $variables['help']['#weight'] = -1;
   }
 }
 
 /**
- * Prepares variables for an audio file element.
+ * Prepares #more property for form element template.
  *
- * Default template: webform-element-audio-file.html.twig.
+ * @see template_preprocess_form_element()
+ * @see form-element.html.twig
+ * @see template_preprocess_datetime_wrapper()
+ * @see datetime-wrapper.html.twig
+ */
+function _webform_preprocess_form_element_description_more(array &$variables) {
+  $element = &$variables['element'];
+  if (empty($element['#more'])) {
+    return;
+  }
+
+  // Make sure description is displayed.
+  if (!isset($variables['description_display'])) {
+    $variables['description_display'] = 'after';
+  }
+
+  // Add more element.
+  $variables['description']['content']['more'] = [
+    '#type' => 'webform_more',
+    '#attributes' => (!empty($element['#id'])) ? ['id' => $element['#id'] . '--more'] : [],
+  ] + array_intersect_key($element, array_flip(['#more', '#more_title']));
+}
+
+/******************************************************************************/
+// Theme suggestions.
+/******************************************************************************/
+
+/**
+ * Provides alternate named suggestions for a specific theme hook.
  *
  * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *   - file: The element's File object.
+ *   An array of variables passed to the theme hook.
+ * @param string $hook
+ *   The base hook name.
+ *
+ * @return array
+ *   An array of theme suggestions.
  */
-function template_preprocess_webform_element_audio_file(array &$variables) {
-  template_preprocess_webform_element_managed_file($variables);
+function _webform_theme_suggestions(array $variables, $hook) {
+  $suggestions = [];
+
+  if ($hook == 'webform' && isset($variables['element']) && isset($variables['element']['#webform_id'])) {
+    $suggestions[] = $hook . '__' . $variables['element']['#webform_id'];
+  }
+  elseif ($hook == 'webform_submission_form' && isset($variables['form']) && isset($variables['form']['#webform_id'])) {
+    $suggestions[] = $hook . '__' . $variables['form']['#webform_id'];
+  }
+  elseif (strpos($hook, 'webform_element_base_') === 0 || strpos($hook, 'webform_container_base_') === 0) {
+    $element = $variables['element'];
+
+    if (!empty($element['#type'])) {
+      $type = $element['#type'];
+      $name = $element['#webform_key'];
+
+      $suggestions[] = $hook . '__' . $type;
+      $suggestions[] = $hook . '__' . $type . '__' . $name;
+    }
+  }
+  else {
+    $webform = NULL;
+    $webform_submission = NULL;
+    $sanitized_view_mode = NULL;
+    if (isset($variables['elements']) && isset($variables['elements']['#webform_submission'])) {
+      /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+      $webform_submission = $variables['elements']['#webform_submission'];
+      $webform = $webform_submission->getWebform();
+      $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+    }
+    elseif (isset($variables['webform_submission'])) {
+      /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+      $webform_submission = $variables['webform_submission'];
+      $webform = $webform_submission->getWebform();
+    }
+    elseif (isset($variables['webform'])) {
+      /** @var \Drupal\webform\WebformInterface $webform */
+      $webform = $variables['webform'];
+    }
+
+    if ($webform) {
+      $suggestions[] = $hook . '__' . $webform->id();
+      if (isset($variables['handler'])) {
+        /** @var \Drupal\webform\Plugin\WebformHandlerInterface $handler */
+        $handler = $variables['handler'];
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $handler->getPluginId();
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $handler->getPluginId() . '__' . $handler->getHandlerId();
+      }
+      if ($sanitized_view_mode) {
+        $suggestions[] = $hook . '__' . $webform->id() . '__' . $sanitized_view_mode;
+        $suggestions[] = $hook . '__' . $sanitized_view_mode;
+      }
+    }
+  }
+
+  return $suggestions;
 }
 
 /**
- * Prepares variables for a document file element.
- *
- * Default template: webform-element-document-file.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *   - file: The element's File object.
+ * Helper function used to generate hook_theme_suggestions_HOOK().
  */
-function template_preprocess_webform_element_document_file(array &$variables) {
-  template_preprocess_webform_element_managed_file($variables);
+function _webform_devel_hook_theme_suggestions_generate() {
+  $theme = webform_theme();
+  print '<pre>';
+  foreach ($theme as $hook => $info) {
+    $suggestion = FALSE;
+    if ($hook == 'webform') {
+      $suggestion = TRUE;
+    }
+    elseif (strpos($hook, 'webform_element_base_') === 0 || strpos($hook, 'webform_container_base_') === 0) {
+      $suggestion = TRUE;
+    }
+    elseif (isset($info['variables'])
+      && !array_key_exists('element', $info['variables'])
+      && (array_key_exists('webform_submission', $info['variables']) || array_key_exists('webform', $info['variables']))) {
+      $suggestion = TRUE;
+    }
+
+    if ($suggestion) {
+      print "/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_$hook(array \$variables) {
+  return _webform_theme_suggestions(\$variables, '$hook');
+}
+
+";
+    }
+  }
+  print '</pre>';
+  exit;
+}
+
+/******************************************************************************/
+// Theme suggestions.
+// Generate using _webform_devel_hook_theme_suggestions_generate();
+/******************************************************************************/
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform');
 }
 
 /**
- * Prepares variables for an image file element.
- *
- * Default template: webform-element-image-file.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *   - file: The element's File object.
+ * Implements hook_theme_suggestions_HOOK().
  */
-function template_preprocess_webform_element_image_file(array &$variables) {
-  template_preprocess_webform_element_managed_file($variables);
+function webform_theme_suggestions_webform_confirmation(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_confirmation');
 }
 
 /**
- * Prepares variables for a video file element.
- *
- * Default template: webform-element-video-file.html.twig.
- *
- * @param array $variables
- *   An associative array containing the following key:
- *   - element: The webform element.
- *   - value: The content for the element.
- *   - options Associative array of options for element.
- *   - file: The element's File object.
+ * Implements hook_theme_suggestions_HOOK().
  */
-function template_preprocess_webform_element_video_file(array &$variables) {
-  template_preprocess_webform_element_managed_file($variables);
+function webform_theme_suggestions_webform_preview(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_preview');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_submission_navigation(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_navigation');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_submission(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_submission_form(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_form');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_submission_information(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_information');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_element_base_html(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_element_base_html');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_element_base_text(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_element_base_text');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_container_base_html(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_container_base_html');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_container_base_text(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_container_base_text');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_email_message_html(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_email_message_html');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_email_message_text(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_email_message_text');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_progress(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_progress');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_progress_bar(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_progress_bar');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_progress_tracker(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_progress_tracker');
 }

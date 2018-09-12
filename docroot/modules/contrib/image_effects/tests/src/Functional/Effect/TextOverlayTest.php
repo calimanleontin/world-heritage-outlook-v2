@@ -22,7 +22,7 @@ class TextOverlayTest extends ImageEffectsTestBase {
   }
 
   /**
-   * Test effect on required toolkits.
+   * Text overlay effect test.
    *
    * @param string $toolkit_id
    *   The id of the toolkit to set up.
@@ -33,16 +33,9 @@ class TextOverlayTest extends ImageEffectsTestBase {
    *
    * @dataProvider providerToolkits
    */
-  public function testOnToolkits($toolkit_id, $toolkit_config, array $toolkit_settings) {
+  public function testTextOverlayEffect($toolkit_id, $toolkit_config, array $toolkit_settings) {
     $this->changeToolkit($toolkit_id, $toolkit_config, $toolkit_settings);
-  }
 
-  /**
-   * Text overlay effect test.
-   *
-   * @depends testOnToolkits
-   */
-  public function testTextOverlayEffect() {
     // Add Text overlay effect to the test image style.
     $effect_config = [
       'id' => 'image_effects_text_overlay',

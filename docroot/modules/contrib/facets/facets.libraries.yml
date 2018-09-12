@@ -51,4 +51,14 @@ soft-limit:
   dependencies:
     - core/jquery
     - core/jquery.once
+    - core/drupal
     - core/drupalSettings
+drupal.facets.views-ajax:
+  js:
+    js/facets-views-ajax.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.ajax

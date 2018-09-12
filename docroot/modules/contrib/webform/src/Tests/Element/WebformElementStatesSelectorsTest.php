@@ -3,7 +3,6 @@
 namespace Drupal\webform\Tests\Element;
 
 use Drupal\Core\Form\OptGroup;
-use Drupal\webform\Tests\WebformTestBase;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\WebformInterface;
 
@@ -12,7 +11,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group Webform
  */
-class WebformElementStatesSelectorsTest extends WebformTestBase {
+class WebformElementStatesSelectorsTest extends WebformElementTestBase {
 
   /**
    * Modules to enable.
@@ -36,6 +35,15 @@ class WebformElementStatesSelectorsTest extends WebformTestBase {
 
     // Create 'tags' vocabulary.
     $this->createTags();
+
+    \Drupal::configFactory()->getEditable('webform.settings')
+      ->set('libraries.excluded_libraries', [])
+      ->save();
+
+    // Enable all elements, including password and password_confirm.
+    \Drupal::configFactory()->getEditable('webform.settings')
+      ->set('element.excluded_elements', [])
+      ->save();
   }
 
   /**

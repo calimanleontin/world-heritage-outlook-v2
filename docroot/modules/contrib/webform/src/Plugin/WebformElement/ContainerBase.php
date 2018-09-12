@@ -4,7 +4,9 @@ namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\webform\Plugin\WebformElementBase;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -19,15 +21,26 @@ abstract class ContainerBase extends WebformElementBase {
   public function getDefaultProperties() {
     return [
       'title' => '',
-      // General settings.
-      'description' => '',
       // Form validation.
       'required' => FALSE,
+      // Randomize.
+      'randomize' => FALSE,
       // Attributes.
       'attributes' => [],
       // Format.
       'format' => $this->getItemDefaultFormat(),
+      'format_html' => '',
+      'format_text' => '',
     ] + $this->getDefaultBaseProperties();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultBaseProperties() {
+    $properties = parent::getDefaultBaseProperties();
+    unset($properties['prepopulate']);
+    return $properties;
   }
 
   /**
@@ -50,11 +63,13 @@ abstract class ContainerBase extends WebformElementBase {
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
-    // Containers can only hide (aka invisible) the title by removing the
-    // #title attribute.
-    // @see core/modules/system/templates/fieldset.html.twig
-    if (isset($element['#title_display']) && $element['#title_display'] === 'invisible') {
-      unset($element['#title']);
+    if (!empty($element['#randomize'])) {
+      $elements = [];
+      foreach (Element::children($element) as $child_key) {
+        $elements[$child_key] = $element[$child_key];
+        unset($element[$child_key]);
+      }
+      $element += WebformElementHelper::randomize($elements);
     }
   }
 
@@ -69,20 +84,22 @@ abstract class ContainerBase extends WebformElementBase {
       return NULL;
     }
 
-    // Add #first and #last property to $children.
-    // This is used to remove returns from #last with multiple lines of
-    // text.
-    // @see webform-element-base-text.html.twig
-    reset($formatted_value);
-    $first_key = key($formatted_value);
-    if (isset($formatted_value[$first_key]['#options'])) {
-      $formatted_value[$first_key]['#options']['first'] = TRUE;
-    }
+    if (is_array($formatted_value)) {
+      // Add #first and #last property to $children.
+      // This is used to remove returns from #last with multiple lines of
+      // text.
+      // @see webform-element-base-text.html.twig
+      reset($formatted_value);
+      $first_key = key($formatted_value);
+      if (isset($formatted_value[$first_key]['#options'])) {
+        $formatted_value[$first_key]['#options']['first'] = TRUE;
+      }
 
-    end($formatted_value);
-    $last_key = key($formatted_value);
-    if (isset($formatted_value[$last_key]['#options'])) {
-      $formatted_value[$last_key]['#options']['last'] = TRUE;
+      end($formatted_value);
+      $last_key = key($formatted_value);
+      if (isset($formatted_value[$last_key]['#options'])) {
+        $formatted_value[$last_key]['#options']['last'] = TRUE;
+      }
     }
 
     return [
@@ -92,14 +109,6 @@ abstract class ContainerBase extends WebformElementBase {
       '#webform_submission' => $webform_submission,
       '#options' => $options,
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function format($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $item_function = 'format' . $type . 'Item';
-    return $this->$item_function($element, $webform_submission, $options);
   }
 
   /**
@@ -116,7 +125,7 @@ abstract class ContainerBase extends WebformElementBase {
     $format = $this->getItemFormat($element);
 
     // Emails can only display div containers with <h3>.
-    if (!empty($variables['options']['email'])) {
+    if (!empty($options['email'])) {
       $format = 'header';
     }
 
@@ -155,19 +164,10 @@ abstract class ContainerBase extends WebformElementBase {
       case 'header':
       default:
         return [
-          '#type' => 'container',
+          '#type' => 'webform_section',
           '#id' => $element['#webform_id'],
-          '#attributes' => [
-            'class' => [
-              'webform-container',
-              'webform-container-type-header',
-            ],
-          ],
-          'title' => [
-            '#markup' => $element['#title'],
-            '#prefix' => '<h3 class="webform-container-type-header--title">',
-            '#suffix' => '</h3>',
-          ],
+          '#title' => $element['#title'],
+          '#title_tag' => \Drupal::config('webform.settings')->get('element.default_section_title_tag'),
         ] + $children;
     }
   }
@@ -194,8 +194,27 @@ abstract class ContainerBase extends WebformElementBase {
         '#suffix' => PHP_EOL,
       ];
     }
-    $build += $children;
+    $build['children'] = $children;
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function formatCustomItem($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $name = strtolower($type);
+
+    // Parse children from template and children to context.
+    $template = trim($element['#format_' . $name]);
+    if (strpos($template, 'children') != FALSE) {
+      /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('webform_submission');
+      $options['context'] = [
+        'children' => $view_builder->buildElements($element, $webform_submission, $options, $name),
+      ];
+    }
+
+    return parent::formatCustomItem($type, $element, $webform_submission, $options);
   }
 
   /**
@@ -222,17 +241,30 @@ abstract class ContainerBase extends WebformElementBase {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
+
+    // Randomize.
+    $form['element']['randomize'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Randomize elements'),
+      '#description' => $this->t('Randomizes the order of the sub-element when they are displayed in the webform.'),
+      '#return_value' => TRUE,
+    ];
+
     // Containers are wrappers, therefore wrapper classes should be used by the
     // container element.
     $form['element_attributes']['attributes']['#classes'] = $this->configFactory->get('webform.settings')->get('element.wrapper_classes');
 
     // Containers can only hide the title using #title_display: invisible.
-    // @see core/modules/system/templates/fieldset.html.twig
-    $form['form']['title_display']['#options'] = [
-      '' => '',
+    // @see fieldset.html.twig
+    // @see webform-section.html.twig
+    $form['form']['display_container']['title_display']['#options'] = [
       'invisible' => $this->t('Invisible'),
     ];
 
+    // Remove value from item custom display replacement patterns.
+    $item_patterns = &$form['display']['item']['patterns']['#value']['items']['#items'];
+    unset($item_patterns['value']);
+    $item_patterns = ['children' => '{{ children }}'] + $item_patterns;
     return $form;
   }
 

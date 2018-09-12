@@ -2,6 +2,7 @@
  * @file
  * Provides the slider functionality.
  */
+
 (function ($) {
 
   'use strict';
@@ -10,7 +11,7 @@
 
   Drupal.behaviors.facet_slider = {
     attach: function (context, settings) {
-      if (settings.facets !== undefined && settings.facets.sliders !== undefined) {
+      if (settings.facets !== 'undefined' && settings.facets.sliders !== 'undefined') {
         $.each(settings.facets.sliders, function (facet, settings) {
           Drupal.facets.addSlider(facet, settings);
         });
@@ -32,7 +33,7 @@
 
     $.extend(defaults, settings);
 
-    $('#' + facet).slider(defaults)
+    $('[id^="' + facet +'"][id$="' + facet +'"]').slider(defaults)
     .slider('pips', {
       prefix: settings.prefix,
       suffix: settings.suffix

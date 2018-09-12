@@ -63,6 +63,7 @@ class SocialMediaAdminForm extends ConfigFormBase {
 
     $config = $this->config('social_media.settings');
     $social_medias = $this->getSocialMedias();
+    $token_types = ['current_page'];
     foreach ($social_medias as $key => $label) {
       $form[$key] = array(
         '#type' => 'details',
@@ -80,6 +81,13 @@ class SocialMediaAdminForm extends ConfigFormBase {
         '#type' => 'textfield',
         '#title' => $this->t('API url'),
         '#default_value' => $config->get('social_media.' . $key . '.api_url'),
+      ];
+
+      $form[$key]['token_browser'] = [
+        '#theme' => 'token_tree_link',
+        '#token_types' => $token_types,
+        '#click_insert' => TRUE,
+        '#dialog' => TRUE,
       ];
 
       // Handle some extra configuration for email service.
@@ -243,6 +251,7 @@ class SocialMediaAdminForm extends ConfigFormBase {
       'facebook_msg' => 'Facebook messenger',
       'linkedin' => 'Linkedin',
       'twitter' => 'Twitter',
+      'pinterest' => 'Pinterest',
       'google_plus' => 'Google Plus',
       'email' => 'Email',
     );

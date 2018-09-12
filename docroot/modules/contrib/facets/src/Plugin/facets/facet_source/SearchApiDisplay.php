@@ -3,8 +3,10 @@
 namespace Drupal\facets\Plugin\facets\facet_source;
 
 use Drupal\Component\Plugin\DependentPluginInterface;
+use Drupal\Core\Extension\ModuleHandler;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\facets\Exception\Exception;
 use Drupal\facets\Exception\InvalidQueryTypeException;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\FacetSource\FacetSourcePluginBase;
@@ -58,6 +60,13 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
   protected $request;
 
   /**
+   * The Drupal module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandler
+   */
+  protected $moduleHandler;
+
+  /**
    * Constructs a SearchApiBaseFacetSource object.
    *
    * @param array $configuration
@@ -74,12 +83,15 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
    *   The display plugin manager.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   A request object for the current request.
+   * @param \Drupal\Core\Extension\ModuleHandler $moduleHandler
+   *   Core's module handler class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, QueryTypePluginManager $query_type_plugin_manager, QueryHelper $search_results_cache, DisplayPluginManager $display_plugin_manager, Request $request) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, QueryTypePluginManager $query_type_plugin_manager, QueryHelper $search_results_cache, DisplayPluginManager $display_plugin_manager, Request $request, ModuleHandler $moduleHandler) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $query_type_plugin_manager);
 
     $this->searchApiQueryHelper = $search_results_cache;
     $this->displayPluginManager = $display_plugin_manager;
+    $this->moduleHandler = $moduleHandler;
     $this->request = clone $request;
   }
 
@@ -101,7 +113,8 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
       $container->get('plugin.manager.facets.query_type'),
       $container->get('search_api.query_helper'),
       $container->get('plugin.manager.search_api.display'),
-      $container->get('request_stack')->getMasterRequest()
+      $container->get('request_stack')->getMasterRequest(),
+      $container->get('module_handler')
     );
   }
 
@@ -172,7 +185,7 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
     // query type.
     foreach ($facets as $facet) {
       $configuration = [
-        'query' => NULL,
+        'query' => $results->getQuery(),
         'facet' => $facet,
         'results' => isset($facet_results[$facet->getFieldIdentifier()]) ? $facet_results[$facet->getFieldIdentifier()] : [],
       ];
@@ -279,6 +292,7 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
     switch ($data_type_plugin_id) {
       case 'date':
         $query_types['date'] = 'search_api_date';
+        $query_types['range'] = 'search_api_range';
         break;
 
       case 'decimal':
@@ -325,6 +339,73 @@ class SearchApiDisplay extends FacetSourcePluginBase implements SearchApiFacetSo
   public function getDisplay() {
     return $this->displayPluginManager
       ->createInstance($this->pluginDefinition['display_id']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewsDisplay() {
+    if (!$this->moduleHandler->moduleExists('views')) {
+      return NULL;
+    }
+
+    $search_api_display_definition = $this->getDisplay()->getPluginDefinition();
+    if (empty($search_api_display_definition['view_id'])) {
+      return NULL;
+    }
+
+    $view_id = $search_api_display_definition['view_id'];
+    $view_display = $search_api_display_definition['view_display'];
+
+    $view = Views::getView($view_id);
+    $view->setDisplay($view_display);
+    return $view;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDataDefinition($field_name) {
+    $field = $this->getIndex()->getField($field_name);
+    if ($field) {
+      return $field->getDataDefinition();
+    }
+    throw new Exception("Field with name {$field_name} does not have a definition");
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildFacet() {
+    $build = parent::buildFacet();
+    $view = $this->getViewsDisplay();
+    if ($view === NULL) {
+      return $build;
+    }
+
+    // Add JS for Views with Ajax Enabled.
+    if ($view->display_handler->ajaxEnabled()) {
+      $js_settings = [
+        'view_id' => $view->id(),
+        'current_display_id' => $view->current_display,
+        'view_base_path' => ltrim($view->getPath(), '/'),
+        'ajax_path' => Url::fromRoute('views.ajax')->toString(),
+      ];
+      $build['#attached']['library'][] = 'facets/drupal.facets.views-ajax';
+      $build['#attached']['drupalSettings']['facets_views_ajax'] = [
+        $this->facet->id() => $js_settings,
+      ];
+      $build['#use_ajax'] = TRUE;
+    }
+    return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCount() {
+    $search_id = $this->getDisplay()->getPluginId();
+    return $this->searchApiQueryHelper->getResults($search_id)->getResultCount();
   }
 
 }

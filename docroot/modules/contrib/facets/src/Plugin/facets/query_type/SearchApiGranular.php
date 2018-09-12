@@ -23,7 +23,7 @@ class SearchApiGranular extends QueryTypeRangeBase {
   public function calculateRange($value) {
     return [
       'start' => $value,
-      'stop' => $value + $this->getGranularity(),
+      'stop' => (int) $value + $this->getGranularity(),
     ];
   }
 
@@ -31,9 +31,28 @@ class SearchApiGranular extends QueryTypeRangeBase {
    * {@inheritdoc}
    */
   public function calculateResultFilter($value) {
+    assert($this->getGranularity() > 0);
+
+    $min_value = (int) $this->getMinValue();
+    $max_value = $this->getMaxValue();
+    $granularity = $this->getGranularity();
+
+    if ($value < $min_value || (!empty($max_value) && $value > ($max_value + $granularity - 1))) {
+      return FALSE;
+    }
+
     return [
-      'display' => $value - ($value % $this->getGranularity()),
-      'raw' => $value - ($value % $this->getGranularity()) ,
+      'display' => $value - fmod($value - $min_value, $this->getGranularity()),
+      'raw' => $value - fmod($value - $min_value, $this->getGranularity()),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFacetOptions() {
+    return parent::getFacetOptions() + [
+      'granularity' => $this->getGranularity(),
     ];
   }
 
@@ -42,11 +61,35 @@ class SearchApiGranular extends QueryTypeRangeBase {
    *
    * Default behaviour an integer for the steps that the facet works in.
    *
-   * @return mixed
+   * @return int
    *   If not an integer the inheriting class needs to deal with calculations.
    */
   protected function getGranularity() {
-    return $this->facet->getWidgetInstance()->getConfiguration()['granularity'];
+    return $this->facet->getProcessors()['granularity_item']->getConfiguration()['granularity'];
+  }
+
+  /**
+   * Looks at the configuration for this facet to determine the min value.
+   *
+   * Default behaviour an integer for the minimum value of the facets.
+   *
+   * @return mixed
+   *   It can be a number or an empty value.
+   */
+  protected function getMinValue() {
+    return $this->facet->getProcessors()['granularity_item']->getConfiguration()['min_value'];
+  }
+
+  /**
+   * Looks at the configuration for this facet to determine the max value.
+   *
+   * Default behaviour an integer for the maximum value of the facets.
+   *
+   * @return mixed
+   *   It can be a number or an empty value.
+   */
+  protected function getMaxValue() {
+    return $this->facet->getProcessors()['granularity_item']->getConfiguration()['max_value'];
   }
 
 }

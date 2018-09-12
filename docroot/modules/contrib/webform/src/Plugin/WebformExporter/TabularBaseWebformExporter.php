@@ -112,6 +112,7 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
     switch ($field_type) {
       case 'created':
       case 'changed':
+      case 'timestamp':
         $record[] = date('Y-m-d H:i:s', $webform_submission->get($field_name)->value);
         break;
 
@@ -172,7 +173,7 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
 
     // Add custom entity reference field definitions which rely on the
     // entity type and entity id.
-    if ($export_options['entity_reference_format'] == 'link' && isset($this->fieldDefinitions['entity_type']) && isset($this->fieldDefinitions['entity_id'])) {
+    if (isset($this->fieldDefinitions['entity_type']) && isset($this->fieldDefinitions['entity_id'])) {
       $this->fieldDefinitions['entity_title'] = [
         'name' => 'entity_title',
         'title' => t('Submitted to: Entity title'),
@@ -201,9 +202,12 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
 
     $export_options = $this->getConfiguration();
     $this->elements = $this->getWebform()->getElementsInitializedFlattenedAndHasValue('view');
+    // Replace tokens which can be used in an element's #title.
+    $this->elements = $this->tokenManager->replace($this->elements, $this->getWebform());
     if ($export_options['excluded_columns']) {
       $this->elements = array_diff_key($this->elements, $export_options['excluded_columns']);
     }
+
     return $this->elements;
   }
 

@@ -16,6 +16,8 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * Adds all ancestors' IDs to a hierarchical field.
+ *
  * @SearchApiProcessor(
  *   id = "hierarchy",
  *   label = @Translation("Index hierarchy"),
@@ -118,7 +120,7 @@ class AddHierarchy extends ProcessorPluginBase implements PluginFormInterface {
             $property_label = $property->getLabel();
             $property = $this->getFieldsHelper()->getInnerProperty($property);
             if ($property instanceof EntityDataDefinitionInterface) {
-              $options = self::findHierarchicalProperties($property, $property_label);
+              $options = static::findHierarchicalProperties($property, $property_label);
               if ($options) {
                 $field_options += [$field_id => []];
                 $field_options[$field_id] += $options;

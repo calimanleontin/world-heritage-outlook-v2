@@ -53,7 +53,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
         'message' => 'Please ignore this email.',
       ],
     ];
-    $webform_submission = WebformSubmissionForm::submitValues($values);
+    $webform_submission = WebformSubmissionForm::submitFormValues($values);
     $this->assertEqual($webform_submission->id(), $this->getLastSubmissionId($contact_webform));
 
     // Check validating a simple webform.
@@ -63,7 +63,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
         'email' => 'invalid',
       ],
     ];
-    $errors = WebformSubmissionForm::validateValues($values);
+    $errors = WebformSubmissionForm::validateFormValues($values);
     WebformElementHelper::convertRenderMarkupToStrings($errors);
     $this->assertEqual($errors, [
       'name' => 'Your Name field is required.',
@@ -78,7 +78,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
       'in_draft' => TRUE,
       'data' => [],
     ];
-    $errors = WebformSubmissionForm::validateValues($values);
+    $errors = WebformSubmissionForm::validateFormValues($values);
     if ($errors) {
       WebformElementHelper::convertRenderMarkupToStrings($errors);
     }
@@ -95,7 +95,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
       'in_draft' => TRUE,
       'data' => [],
     ];
-    $webform_submission = WebformSubmissionForm::submitValues($values);
+    $webform_submission = WebformSubmissionForm::submitFormValues($values);
     $this->assert($webform_submission instanceof WebformSubmissionInterface);
 
     /**************************************************************************/
@@ -104,7 +104,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
 
     $test_form_wizard_advanced_webform = Webform::load('test_form_wizard_advanced');
 
-    // Check submitting a multistep form with required fields.
+    // Check submitting a multi-step form with required fields.
     $values = [
       'webform_id' => 'test_form_wizard_advanced',
       'data' => [
@@ -116,24 +116,24 @@ class WebformSubmissionApiTest extends WebformTestBase {
         'comments' => 'Huius, Lyco, oratione locuples, rebus ipsis ielunior. Duo Reges: constructio interrete. Sed haec in pueris; Sed utrum hortandus es nobis, Luci, inquit, an etiam tua sponte propensus es? Sapiens autem semper beatus est et est aliquando in dolore; Immo videri fortasse. Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Et ille ridens: Video, inquit, quid agas;',
       ],
     ];
-    $webform_submission = WebformSubmissionForm::submitValues($values);
+    $webform_submission = WebformSubmissionForm::submitFormValues($values);
     $this->assertEqual($webform_submission->id(), $this->getLastSubmissionId($test_form_wizard_advanced_webform));
 
-    // Check validating a multistep form with required fields.
+    // Check validating a multi-step form with required fields.
     $values = [
       'webform_id' => 'test_form_wizard_advanced',
       'data' => [
         'email' => 'invalid',
       ],
     ];
-    $errors = WebformSubmissionForm::validateValues($values);
+    $errors = WebformSubmissionForm::validateFormValues($values);
     WebformElementHelper::convertRenderMarkupToStrings($errors);
     // $this->debug($errors);
     $this->assertEqual($errors, [
       'email' => 'The email address <em class="placeholder">invalid</em> is not valid.',
     ]);
 
-    // Check validating a multistep form with invalid #options.
+    // Check validating a multi-step form with invalid #options.
     $values = [
       'webform_id' => 'test_form_wizard_advanced',
       'data' => [
@@ -145,11 +145,11 @@ class WebformSubmissionApiTest extends WebformTestBase {
         'comments' => 'Huius, Lyco, oratione locuples, rebus ipsis ielunior. Duo Reges: constructio interrete. Sed haec in pueris; Sed utrum hortandus es nobis, Luci, inquit, an etiam tua sponte propensus es? Sapiens autem semper beatus est et est aliquando in dolore; Immo videri fortasse. Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Et ille ridens: Video, inquit, quid agas;',
       ],
     ];
-    $errors = WebformSubmissionForm::validateValues($values);
+    $errors = WebformSubmissionForm::validateFormValues($values);
     WebformElementHelper::convertRenderMarkupToStrings($errors);
     // $this->debug($errors);
     $this->assertEqual($errors, [
-        'gender' => 'An illegal choice has been detected. Please contact the site administrator.',
+      'gender' => 'An illegal choice has been detected. Please contact the site administrator.',
     ]);
 
     /**************************************************************************/
@@ -170,7 +170,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
         'name' => 'Oratione',
       ],
     ];
-    $webform_submission = WebformSubmissionForm::submitValues($values);
+    $webform_submission = WebformSubmissionForm::submitFormValues($values);
     $this->assertEqual($webform_submission->id(), $this->getLastSubmissionId($test_form_limit_webform));
 
     // Check that user limit is reached.
@@ -179,9 +179,9 @@ class WebformSubmissionApiTest extends WebformTestBase {
 
     // Submit the form 3 more times to trigger the form total limit.
     $this->drupalLogin($this->rootUser);
-    WebformSubmissionForm::submitValues($values);
-    WebformSubmissionForm::submitValues($values);
-    WebformSubmissionForm::submitValues($values);
+    WebformSubmissionForm::submitFormValues($values);
+    WebformSubmissionForm::submitFormValues($values);
+    WebformSubmissionForm::submitFormValues($values);
 
     // Check that total limit is reached.
     $result = WebformSubmissionForm::isOpen($test_form_limit_webform);
@@ -190,7 +190,7 @@ class WebformSubmissionApiTest extends WebformTestBase {
     // Check form closed message.
     $test_form_limit_webform->setStatus(FALSE)->save();
     $result = WebformSubmissionForm::isOpen($test_form_limit_webform);
-    $this->assertEqual($result['#markup'], 'Sorry...This form is closed to new submissions.');
+    $this->assertEqual($result['#markup'], 'Sorry…This form is closed to new submissions.');
   }
 
 }

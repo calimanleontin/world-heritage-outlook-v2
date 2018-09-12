@@ -57,7 +57,7 @@ function _webform_honeypot_form(array &$form, FormStateInterface $form_state, $h
   $t_args = [
     '%label' => $label,
     ':href_honeypot' => Url::fromRoute('honeypot.config')->toString(),
-    ':href_webform' => Url::fromRoute('webform.settings')->toString(),
+    ':href_webform' => Url::fromRoute('webform.config')->toString(),
   ];
 
   // Honeypot.
@@ -201,7 +201,7 @@ function honeypot_webform_third_party_settings_form_alter(&$form, FormStateInter
  */
 function honeypot_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Only add a Honeypot when a webform is initially load.
-  // After a webform is submitted, via a multistep webform and/or saving a draft,
+  // After a webform is submitted, via a multi-step webform and/or saving a draft,
   // we can skip adding a Honeypot.
   if ($form_state->isSubmitted()) {
     return;

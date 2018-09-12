@@ -2,6 +2,8 @@ services:
   plugin.manager.config_filter:
     class: Drupal\config_filter\Plugin\ConfigFilterPluginManager
     parent: default_plugin_manager
+    tags:
+      - { name: config.filter }
   config_filter.storage.sync:
     class: Drupal\config_filter\Config\FilteredStorage
     factory: config_filter.storage_factory:getSync
@@ -9,4 +11,6 @@ services:
     public: false
   config_filter.storage_factory:
     class: Drupal\config_filter\ConfigFilterStorageFactory
-    arguments: ['@config_filter.storage.sync.inner', '@plugin.manager.config_filter']
+    arguments: ['@config_filter.storage.sync.inner']
+    tags:
+      - { name: service_collector, tag: 'config.filter', call: addConfigFilterManager }

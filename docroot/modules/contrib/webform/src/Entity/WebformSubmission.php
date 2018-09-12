@@ -2,6 +2,8 @@
 
 namespace Drupal\webform\Entity;
 
+use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -12,7 +14,6 @@ use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-use Drupal\webform\Plugin\Field\FieldType\WebformEntityReferenceItem;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -33,7 +34,11 @@ use Drupal\webform\WebformSubmissionInterface;
  *     "list_builder" = "Drupal\webform\WebformSubmissionListBuilder",
  *     "access" = "Drupal\webform\WebformSubmissionAccessControlHandler",
  *     "form" = {
- *       "default" = "Drupal\webform\WebformSubmissionForm",
+ *       "add" = "Drupal\webform\WebformSubmissionForm",
+ *       "edit" = "Drupal\webform\WebformSubmissionForm",
+ *       "edit_all" = "Drupal\webform\WebformSubmissionForm",
+ *       "api" = "Drupal\webform\WebformSubmissionForm",
+ *       "test" = "Drupal\webform\WebformSubmissionForm",
  *       "notes" = "Drupal\webform\WebformSubmissionNotesForm",
  *       "duplicate" = "Drupal\webform\WebformSubmissionDuplicateForm",
  *       "delete" = "Drupal\webform\Form\WebformSubmissionDeleteForm",
@@ -46,20 +51,21 @@ use Drupal\webform\WebformSubmissionInterface;
  *   entity_keys = {
  *     "id" = "sid",
  *     "bundle" = "webform_id",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "langcode" = "langcode"
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}",
+ *     "access-denied" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/access-denied",
  *     "table" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/table",
  *     "text" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/text",
- *     "yaml" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/yaml",
  *     "yaml" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/yaml",
  *     "edit-form" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/edit",
  *     "notes-form" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/notes",
  *     "resend-form" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/resend",
  *     "duplicate-form" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/duplicate",
  *     "delete-form" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/delete",
- *     "collection" = "/admin/structure/webform/results/manage/list"
+ *     "collection" = "/admin/structure/webform/submissions/manage/list"
  *   },
  *   permission_granularity = "bundle"
  * )
@@ -93,7 +99,7 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   protected $originalData = [];
 
   /**
-   * Flag to indicated is submission is being converted from anonymous to authenticated.
+   * Flag to indicated if submission is being converted from anonymous to authenticated.
    *
    * @var bool
    */
@@ -180,12 +186,17 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
 
     // Can't use entity reference without a target type because it defaults to
     // an integer which limits reference to only content entities (and not
-    // config entities like Views, Panels, etc...).
+    // config entities like Views, Panels, etc…).
     // @see \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem::propertyDefinitions()
     $fields['entity_id'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Submitted to: Entity ID'))
       ->setDescription(t('The ID of the entity of which this webform submission was submitted from.'))
       ->setSetting('max_length', 255);
+
+    $fields['locked'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Locked'))
+      ->setDescription(t('A flag that indicates a locked webform submission.'))
+      ->setDefaultValue(FALSE);
 
     $fields['sticky'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Sticky'))
@@ -213,7 +224,7 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   public function label() {
     $submission_label = $this->getWebform()->getSetting('submission_label')
       ?: \Drupal::config('webform.settings')->get('settings.default_submission_label');
-    return \Drupal::service('webform.token_manager')->replace($submission_label, $this);
+    return PlainTextOutput::renderFromHtml(\Drupal::service('webform.token_manager')->replace($submission_label, $this));
   }
 
   /**
@@ -297,6 +308,14 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
+  public function setLocked($locked) {
+    $this->set('locked', $locked);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getRemoteAddr() {
     return $this->get('remote_addr')->value ?: $this->t('(unknown)');
   }
@@ -329,20 +348,33 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
    */
   public function getCurrentPageTitle() {
     $current_page = $this->getCurrentPage();
-    $page = $this->getWebform()->getPage($current_page);
+    $page = $this->getWebform()->getPage('default', $current_page);
     return ($page && isset($page['#title'])) ? $page['#title'] : $current_page;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getData($key = NULL) {
-    if ($key !== NULL) {
-      return (isset($this->data[$key])) ? $this->data[$key] : NULL;
+  public function getElementData($key) {
+    return (isset($this->data[$key])) ? $this->data[$key] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setElementData($key, $value) {
+    // Make sure the element exists before setting its value.
+    if ($this->getWebform()->getElement($key)) {
+      $this->data[$key] = $value;
     }
-    else {
-      return $this->data;
-    }
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getData() {
+    return $this->data;
   }
 
   /**
@@ -356,13 +388,8 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
-  public function getOriginalData($key = NULL) {
-    if ($key !== NULL) {
-      return (isset($this->originalData[$key])) ? $this->originalData[$key] : NULL;
-    }
-    else {
-      return $this->originalData;
-    }
+  public function getOriginalData() {
+    return $this->originalData;
   }
 
   /**
@@ -395,11 +422,20 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
-  public function getSourceEntity() {
+  public function getSourceEntity($translate = FALSE) {
     if ($this->entity_type->value && $this->entity_id->value) {
       $entity_type = $this->entity_type->value;
       $entity_id = $this->entity_id->value;
-      return $this->entityTypeManager()->getStorage($entity_type)->load($entity_id);
+      $source_entity = $this->entityTypeManager()->getStorage($entity_type)->load($entity_id);
+
+      // If translated is set, get the translated source entity.
+      if ($translate && $source_entity instanceof ContentEntityInterface) {
+        $langcode = $this->language()->getId();
+        if ($source_entity->hasTranslation($langcode)) {
+          $source_entity = $source_entity->getTranslation($langcode);
+        }
+      }
+      return $source_entity;
     }
     else {
       return NULL;
@@ -426,8 +462,10 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
    * {@inheritdoc}
    */
   public function getTokenUrl() {
-    return $this->getSourceUrl()
-      ->setOption('query', ['token' => $this->token->value]);
+    $uri = $this->getSourceUrl();
+    $options = $uri->getOptions();
+    $options['query']['token'] = $this->getToken();
+    return $uri->setOptions($options);
   }
 
   /**
@@ -506,6 +544,13 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
+  public function isLocked() {
+    return $this->get('locked')->value ? TRUE : FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isSticky() {
     return (bool) $this->get('sticky')->value;
   }
@@ -529,6 +574,9 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
     }
     elseif ($this->isDraft()) {
       return self::STATE_DRAFT;
+    }
+    elseif ($this->isLocked()) {
+      return self::STATE_LOCKED;
     }
     elseif ($this->completed->value == $this->changed->value) {
       return self::STATE_COMPLETED;
@@ -566,9 +614,10 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
     $duplicate->set('changed', NULL);
     $duplicate->set('completed', NULL);
 
-    // Clear admin notes and sticky.
+    // Clear admin notes, sticky, and locked.
     $duplicate->set('notes', '');
     $duplicate->set('sticky', FALSE);
+    $duplicate->set('locked', FALSE);
 
     return $duplicate;
   }
@@ -588,7 +637,7 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
 
     // Get temporary webform entity and store it in the static
     // WebformSubmission::$webform property.
-    // This could be reworked to use \Drupal\user\PrivateTempStoreFactory
+    // This could be reworked to use \Drupal\Core\TempStore\PrivateTempStoreFactory
     // but it might be overkill since we are just using this to validate
     // that a webform's elements can be rendered.
     // @see \Drupal\webform\WebformEntityElementsValidator::validateRendering()
@@ -626,7 +675,11 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
       $source_entity = \Drupal::entityTypeManager()
         ->getStorage($values['entity_type'])
         ->load($values['entity_id']);
-      if ($webform_field_name = WebformEntityReferenceItem::getEntityWebformFieldName($source_entity)) {
+
+      /** @var \Drupal\webform\WebformEntityReferenceManagerInterface $entity_reference_manager */
+      $entity_reference_manager = \Drupal::service('webform.entity_reference_manager');
+
+      if ($webform_field_name = $entity_reference_manager->getFieldName($source_entity)) {
         if ($source_entity->$webform_field_name->target_id == $webform->id() && $source_entity->$webform_field_name->default_data) {
           $values['data'] += Yaml::decode($source_entity->$webform_field_name->default_data);
         }
@@ -693,6 +746,13 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
+  public function resave() {
+    return $this->entityManager()->getStorage($this->entityTypeId)->resave($this);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function convert(UserInterface $account) {
     $this->converting = TRUE;
     $this->setOwner($account);
@@ -740,7 +800,6 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
       return $values;
     }
   }
-
 
   /**
    * Default value callback for 'uid' base field definition.

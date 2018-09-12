@@ -4,7 +4,6 @@ namespace Drupal\geofield_map;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -29,31 +28,34 @@ trait GeofieldMapFieldTrait {
   ];
 
   /**
+   * Google Map Types Options.
+   *
+   * @var array
+   */
+  protected $infowindowFieldTypesOptions = [
+    'string_long',
+    'string',
+    'text',
+    'text_long',
+    "text_with_summary",
+  ];
+
+  protected $customMapStylePlaceholder = '[{"elementType":"geometry","stylers":[{"color":"#1d2c4d"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#8ec3b9"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#1a3646"}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"color":"#4b6878"}]},{"featureType":"administrative.province","elementType":"geometry.stroke","stylers":[{"color":"#4b6878"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#0e1626"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#4e6d70"}]}]';
+
+  /**
    * The Link generator Service.
    *
    * @var \Drupal\Core\Utility\LinkGeneratorInterface $this->link
    */
 
   /**
-   * Get the GMap Api Key from the geofield_map settings/configuration.
+   * Get the GMap Api Key from the geofield_map.google_maps service.
    *
    * @return string
    *   The GMap Api Key
    */
   private function getGmapApiKey() {
-    /* @var \Drupal\Core\Config\ConfigFactoryInterface $config */
-    $config = $this->config;
-    $geofield_map_settings = $config->getEditable('geofield_map.settings');
-    $gmap_api_key = $geofield_map_settings->get('gmap_api_key');
-
-    // In the first release of Geofield_Map the google_api_key was stored in
-    // the specific Field Widget settings.
-    // So we try and copy into the geofield_map.settings config, in the case.
-    if (method_exists(get_class($this), 'getSetting') && !empty($this->getSetting('map_google_api_key')) && empty($gmap_api_key)) {
-      $gmap_api_key = $this->getSetting('map_google_api_key');
-      $geofield_map_settings->set('gmap_api_key', $gmap_api_key)->save();
-    }
-    return $gmap_api_key;
+    return \Drupal::service('geofield_map.google_maps')->getGmapApiKey();
   }
 
   /**
@@ -105,15 +107,30 @@ trait GeofieldMapFieldTrait {
         'fullscreen_control' => 1,
       ],
       'map_marker_and_infowindow' => [
+        'icon_image_mode' => 'icon_file',
         'icon_image_path' => '',
+        'icon_file_wrapper' => [
+          'icon_file' => '',
+        ],
         'infowindow_field' => 'title',
+        'multivalue_split' => 0,
+        'force_open' => 0,
+      ],
+      'map_oms' => [
+        'map_oms_control' => 1,
+        'map_oms_options' => '{"markersWontMove": "true", "markersWontHide": "true", "basicFormatEvents": "true", "nearbyDistance": 3}',
+      ],
+      'map_additional_options' => '',
+      'custom_style_map' => [
+        'custom_style_control' => 0,
+        'custom_style_name' => '',
+        'custom_style_options' => '',
+        'custom_style_default' => 0,
       ],
       'map_markercluster' => [
         'markercluster_control' => 0,
         'markercluster_additional_options' => '',
       ],
-      'map_additional_options' => '',
-
     ];
   }
 
@@ -131,17 +148,14 @@ trait GeofieldMapFieldTrait {
    *
    * @return array
    *   The GMap Settings Form*/
-  public function generateGmapSettingsForm($form, FormStateInterface $form_state, $settings, $default_settings) {
+  public function generateGmapSettingsForm(array $form, FormStateInterface $form_state, array $settings, array $default_settings) {
 
-    /* @var \Drupal\Core\Utility\LinkGeneratorInterface $link */
-    $link = $this->link;
+    $elements['#attached'] = [
+      'library' => [
+        'geofield_map/geofield_map_view_display_settings',
+      ],
+    ];
 
-    // If it is a Field Formatter, then get the field definition.
-    /* @var \Drupal\Core\Field\FieldDefinitionInterface|NULL $fieldDefinition */
-    $fieldDefinition = property_exists(get_class($this), 'fieldDefinition') ? $this->fieldDefinition : NULL;
-
-    /* @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
-    $entityFieldManager = $this->entityFieldManager;
     $elements = [];
 
     // Attach Geofield Map Library.
@@ -149,42 +163,177 @@ trait GeofieldMapFieldTrait {
       'geofield_map/geofield_map_general',
     ];
 
+    // Set Google Api Key Element.
+    $this->setMapGoogleApiKeyElement($elements);
+
+    // Set Map Dimension Element.
+    $this->setMapDimensionsElement($settings, $elements);
+
+    // Set Map Empty Options Element.
+    $this->setMapEmptyElement($settings, $elements);
+
+    $elements['gmaps_api_link_markup'] = [
+      '#markup' => $this->t('The following settings comply with the @gmaps_api_link.', [
+        '@gmaps_api_link' => $this->link->generate($this->t('Google Maps JavaScript API Library'), Url::fromUri('https://developers.google.com/maps/documentation/javascript', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+    ];
+
+    // Set Map Center Element.
+    $this->setMapCenterElement($settings, $elements);
+
+    // Set Map Zoom and Pan Element.
+    $this->setMapZoomAndPanElement($settings, $default_settings, $elements);
+
+    // Set Map Control Element.
+    $this->setMapControlsElement($settings, $elements);
+
+    // Set Map Marker and Infowindow Element.
+    $this->setMapMarkerAndInfowindowElement($form, $settings, $elements);
+
+    // Set Map Additional Options Element.
+    $this->setMapAdditionalOptionsElement($settings, $elements);
+
+    // Set Overlapping Marker Spiderfier Element.
+    $this->setMapOmsElement($settings, $default_settings, $elements);
+
+    // Set Custom Map Style Element.
+    $this->setCustomStyleMapElement($settings, $elements);
+
+    // Set Map Marker Cluster Element.
+    $this->setMapMarkerclusterElement($settings, $elements);
+
+    return $elements;
+
+  }
+
+  /**
+   * Pre Process the MapSettings.
+   *
+   * Performs some preprocess on the maps settings before sending to js.
+   *
+   * @param array $map_settings
+   *   The map settings.
+   */
+  protected function preProcessMapSettings(array &$map_settings) {
+    /* @var \Drupal\Core\Config\ConfigFactoryInterface $config */
+    $config = $this->config;
+    $geofield_map_settings = $config->getEditable('geofield_map.settings');
+
+    // Set the gmap_api_key as map settings.
+    $map_settings['gmap_api_key'] = $this->getGmapApiKey();
+
+    // Geofield Map Google Maps and Geocoder Settings.
+    $map_settings['gmap_api_localization'] = $this->googleMapsService->getGmapApiLocalization($geofield_map_settings->get('gmap_api_localization'));
+
+    // Transform into simple array values the map_type_control_options_type_ids.
+    $map_settings['map_controls']['map_type_control_options_type_ids'] = array_keys(array_filter($map_settings['map_controls']['map_type_control_options_type_ids'], function ($value) {
+      return $value !== 0;
+    }));
+
+    // Generate Absolute icon_image_path, if it is not.
+    $icon_image_path = $map_settings['map_marker_and_infowindow']['icon_image_path'];
+    if (!empty($icon_image_path) && !UrlHelper::isExternal($map_settings['map_marker_and_infowindow']['icon_image_path'])) {
+      $map_settings['map_marker_and_infowindow']['icon_image_path'] = Url::fromUri('base:' . $icon_image_path, ['absolute' => TRUE])
+        ->toString();
+    }
+  }
+
+  /**
+   * Transform Geofield data into Geojson features.
+   *
+   * @param mixed $items
+   *   The Geofield Data Values.
+   * @param string $description
+   *   The description value.
+   * @param array $additional_data
+   *   Additional data to be added to the feature properties, i.e.
+   *   GeofieldGoogleMapViewStyle will add row fields (already rendered).
+   *
+   * @return array
+   *   The data array for the current feature, including Geojson and additional
+   *   data.
+   */
+  protected function getGeoJsonData($items, $description = NULL, array $additional_data = NULL) {
+    $data = [];
+    foreach ($items as $delta => $item) {
+
+      /* @var \Point $geometry */
+      if (is_a($item, '\Drupal\geofield\Plugin\Field\FieldType\GeofieldItem') && isset($item->value)) {
+        $geometry = $this->geoPhpWrapper->load($item->value);
+      }
+      elseif (preg_match('/^(POINT|LINESTRING|POLYGON|MULTIPOINT|MULTILINESTRING|MULTIPOLYGON|GEOMETRYCOLLECTION).*\(.*.*\)$/', $item)) {
+        $geometry = $this->geoPhpWrapper->load($item);
+      }
+      if (isset($geometry)) {
+        $datum = [
+          "type" => "Feature",
+          "geometry" => json_decode($geometry->out('json')),
+        ];
+        $datum['properties'] = [
+          // If a multivalue field value with the same index exist, use this,
+          // else use the first item as fallback.
+          'description' => isset($description[$delta]) ? $description[$delta] : (isset($description[0]) ? $description[0] : NULL),
+          'data' => $additional_data,
+        ];
+
+        $data[] = $datum;
+      }
+    }
+    return $data;
+  }
+
+  /**
+   * Set Map Google Api Key Element.
+   *
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapGoogleApiKeyElement(array &$elements) {
     $gmap_api_key = $this->getGmapApiKey();
 
-    // If it is defined GMap API Key in the general configuration,
-    // force to use it, instead.
-    if (!empty($gmap_api_key)) {
-      $elements['map_google_api_key'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $this->t('<strong>Gmap Api Key:</strong> @gmaps_api_key_link', [
-          '@gmaps_api_key_link' => $link->generate($gmap_api_key, Url::fromRoute('geofield_map.settings', [], [
-            'query' => [
-              'destination' => Url::fromRoute('<current>')
-                ->toString(),
-            ],
-          ])),
-        ]),
-      ];
-    }
-    else {
-      $elements['map_google_api_key_missing'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => t("Gmap Api Key missing | The Geocode Address and ReverseGeocode functionalities won't be available.<br>@settings_page_link", [
-          '@settings_page_link' => $link->generate(t('Set it in the Geofield Map Configuration Page'), Url::fromRoute('geofield_map.settings', [], [
-            'query' => [
-              'destination' => Url::fromRoute('<current>')
-                ->toString(),
-            ],
-          ])),
-        ]),
-        '#attributes' => [
-          'class' => ['geofield-map-apikey-missing'],
-        ],
-      ];
+    $query = [];
+    if (isset($this->fieldDefinition)) {
+      $query['destination'] = Url::fromRoute('<current>')->toString();
     }
 
+    // Define the Google Maps API Key value message markup.
+    if (!empty($gmap_api_key)) {
+      $map_google_api_key_value = $this->t('<strong>Gmap Api Key:</strong> @gmaps_api_key_link<br><div class="description">A valid Gmap Api Key is needed anyway for the Widget Geocode and ReverseGeocode functionalities (provided by the Google Map Geocoder)</div>', [
+        '@gmaps_api_key_link' => $this->link->generate($gmap_api_key, Url::fromRoute('geofield_map.settings', [], [
+          'query' => $query,
+        ])),
+      ]);
+    }
+    else {
+      $map_google_api_key_value = $this->t("<span class='geofield-map-warning'>Gmap Api Key missing.<br>Google Maps functionality may not be available. </span>@settings_page_link", [
+        '@settings_page_link' => $this->link->generate($this->t('Set it in the Geofield Map Configuration Page'), Url::fromRoute('geofield_map.settings', [], [
+          'query' => [
+            'destination' => Url::fromRoute('<current>')
+              ->toString(),
+          ],
+        ])),
+      ]);
+    }
+
+    $elements['map_google_api_key'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => $map_google_api_key_value,
+    ];
+  }
+
+  /**
+   * Set Map Dimension Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapDimensionsElement(array $settings, array &$elements) {
     $elements['map_dimensions'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Map Dimensions'),
@@ -208,22 +357,24 @@ trait GeofieldMapFieldTrait {
       '#description' => $this->t('The default height of a Google map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
       '#required' => TRUE,
     ];
+  }
 
-    $elements['gmaps_api_link_markup'] = [
-      '#markup' => $this->t('The following settings comply with the @gmaps_api_link.', [
-        '@gmaps_api_link' => $link->generate(t('Google Maps JavaScript API Library'), Url::fromUri('https://developers.google.com/maps/documentation/javascript', [
-          'absolute' => TRUE,
-          'attributes' => ['target' => 'blank'],
-        ])),
-      ]),
+  /**
+   * Set Map Empty Options Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapEmptyElement(array $settings, array &$elements) {
+    $elements['map_empty'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Which behaviour for the empty map?'),
+      '#description' => $this->t('If there are no entries on the map, what should be the output of field?'),
     ];
 
-    if (isset($fieldDefinition)) {
-      $elements['map_empty'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Which behaviour for the empty map?'),
-        '#description' => $this->t('If there are no entries on the map, what should be the output of field?'),
-      ];
+    if (isset($this->fieldDefinition)) {
       $elements['map_empty']['empty_behaviour'] = [
         '#type' => 'select',
         '#title' => $this->t('Behaviour'),
@@ -237,18 +388,30 @@ trait GeofieldMapFieldTrait {
         '#default_value' => $settings['map_empty']['empty_message'],
         '#states' => [
           'visible' => [
-            ':input[name="fields[' . $fieldDefinition->getName() . '][settings_edit_form][settings][map_empty][empty_behaviour]"]' => ['value' => '1'],
+            ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_empty][empty_behaviour]"]' => ['value' => '1'],
           ],
         ],
       ];
     }
     else {
       $elements['map_empty']['empty_behaviour'] = [
-        '#type' => 'value',
-        '#value' => '1',
+        '#type' => 'select',
+        '#title' => $this->t('Behaviour'),
+        '#default_value' => $settings['map_empty']['empty_behaviour'],
+        '#options' => $this->emptyMapOptions,
       ];
     }
+  }
 
+  /**
+   * Set Map Center Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapCenterElement(array $settings, array &$elements) {
     $elements['map_center'] = [
       '#type' => 'geofield_latlon',
       '#title' => $this->t('Default Center'),
@@ -264,6 +427,19 @@ trait GeofieldMapFieldTrait {
         '#return_value' => 1,
       ],
     ];
+  }
+
+  /**
+   * Set Map Zoom and Pan Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $default_settings
+   *   The default_settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapZoomAndPanElement(array $settings, array $default_settings, array &$elements) {
 
     $elements['map_zoom_and_pan'] = [
       '#type' => 'fieldset',
@@ -304,19 +480,30 @@ trait GeofieldMapFieldTrait {
         '#element_validate' => [[get_class($this), 'maxZoomLevelValidate']],
       ],
     ];
+    $elements['map_zoom_and_pan']['gestureHandling'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Gesture Handling (Controlling Zoom and Pan)'),
+      '#options' => [
+        'auto' => 'auto',
+        'greedy' => 'greedy',
+        'cooperative' => 'cooperative' ,
+        'none' => 'none',
+      ],
+      '#default_value' => isset($settings['map_zoom_and_pan']['gestureHandling']) ? $settings['map_zoom_and_pan']['gestureHandling'] : 'auto',
+      '#description' => $this->t("This control sets how users can zoom and pan the map, and also whether the user's page scrolling actions take priority over the map's zooming and panning.<br>Visit the @google_map_page to inspect and learn the corresponding behaviours of the different options.", [
+        '@google_map_page' => $this->link->generate(t("Official Google Maps Javascript API 'Controlling Zoom and Pan' page"), Url::fromUri('https://developers.google.com/maps/documentation/javascript/interaction', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+    ];
     $elements['map_zoom_and_pan']['scrollwheel'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Scrollwheel'),
-      '#description' => $this->t('Enable scrollwheel zooming'),
+      '#type' => 'hidden',
       '#default_value' => $settings['map_zoom_and_pan']['scrollwheel'],
-      '#return_value' => 1,
     ];
     $elements['map_zoom_and_pan']['draggable'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Draggable'),
-      '#description' => $this->t('Enable dragging/panning on the map'),
+      '#type' => 'hidden',
       '#default_value' => $settings['map_zoom_and_pan']['draggable'],
-      '#return_value' => 1,
     ];
 
     $elements['map_zoom_and_pan']['map_reset'] = [
@@ -326,9 +513,19 @@ trait GeofieldMapFieldTrait {
       '#default_value' => isset($settings['map_zoom_and_pan']['map_reset']) ? $settings['map_zoom_and_pan']['map_reset'] : FALSE,
       '#return_value' => 1,
     ];
+  }
 
-    if (isset($fieldDefinition)) {
-      $disable_default_ui_selector = ':input[name="fields[' . $fieldDefinition->getName() . '][settings_edit_form][settings][map_controls][disable_default_ui]"]';
+  /**
+   * Set Map Control Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapControlsElement(array $settings, array &$elements) {
+    if (isset($this->fieldDefinition)) {
+      $disable_default_ui_selector = ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_controls][disable_default_ui]"]';
     }
     else {
       $disable_default_ui_selector = ':input[name="style_options[map_controls][disable_default_ui]"]';
@@ -384,24 +581,19 @@ trait GeofieldMapFieldTrait {
       '#return_value' => 1,
     ];
 
-    if (isset($fieldDefinition)) {
+    if (isset($this->fieldDefinition)) {
       $elements['map_controls']['map_type_control_options_type_ids']['#states'] = [
-        'visible' => [
-          ':input[name="fields[' . $fieldDefinition->getName() . '][settings_edit_form][settings][map_controls][map_type_control]"]' => ['checked' => TRUE],
-        ],
         'invisible' => [
-          $disable_default_ui_selector => ['checked' => TRUE],
+          [':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_controls][map_type_control]"]' => ['checked' => FALSE]],
+          [$disable_default_ui_selector => ['checked' => TRUE]],
         ],
       ];
     }
     else {
       $elements['map_controls']['map_type_control_options_type_ids']['#states'] = [
-        'visible' => [
-          ':input[name="style_options[map_controls][map_type_control]"]' => ['checked' => TRUE],
-        ],
         'invisible' => [
-          $disable_default_ui_selector => ['checked' => TRUE],
-
+          [':input[name="style_options[map_controls][map_type_control]"]' => ['checked' => FALSE]],
+          [$disable_default_ui_selector => ['checked' => TRUE]],
         ],
       ];
     }
@@ -442,6 +634,22 @@ trait GeofieldMapFieldTrait {
         ],
       ],
     ];
+  }
+
+  /**
+   * Set Map Marker and Infowindow Element.
+   *
+   * @param array $form
+   *   The Form array.
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapMarkerAndInfowindowElement(array $form, array $settings, array &$elements) {
+
+    // Get the configurations of possible entity fields.
+    $fields_configurations = $this->entityFieldManager->getFieldStorageDefinitions('node');
 
     $elements['map_marker_and_infowindow'] = [
       '#type' => 'fieldset',
@@ -449,49 +657,45 @@ trait GeofieldMapFieldTrait {
     ];
     $elements['map_marker_and_infowindow']['icon_image_path'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Icon Image'),
+      '#title' => $this->t('Icon Image Path'),
       '#size' => '120',
-      '#description' => $this->t('Input the Specific Icon Image path (absolute or relative to the Drupal site root). If not set, the Default Google Marker will be used.'),
+      '#description' => $this->t('Input the Specific Icon Image path (absolute path, or relative to the Drupal site root prefixed with a trailing hash). If not set, or not found/loadable, the Default Google Marker will be used.'),
       '#default_value' => $settings['map_marker_and_infowindow']['icon_image_path'],
-      '#placeholder' => 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+      '#placeholder' => 'modules/custom/geofield_map/images/beachflag.png',
       '#element_validate' => [[get_class($this), 'urlValidate']],
+      '#weight' => -10,
     ];
 
-    // Check if a Field Formatter is being managed and define its possible
-    // Entity Type and Bundles.
-    if (isset($form['#entity_type'])) {
-      $entityType = $form['#entity_type'];
-      $bundles = (!empty($form['#bundle'])) ? [$form['#bundle']] : [];
-    }
-    elseif (property_exists(get_class($this), 'fieldDefinition')) {
-      $entityType = $this->fieldDefinition->getTargetEntityTypeId();
-      $field_name = $this->fieldDefinition->getName();
-      $fields = $this->entityFieldManager->getFieldMapByFieldType($this->fieldDefinition->getType());
-      $bundles = !empty($fields['node'][$field_name]['bundles']) ? $fields['node'][$field_name]['bundles'] : [];
+    $multivalue_fields_states = [];
+
+    $infowindow_fields_options = [];
+    foreach ($this->infowindowFieldTypesOptions as $field_type) {
+      $infowindow_fields_options = array_merge_recursive($infowindow_fields_options, $this->entityFieldManager->getFieldMapByFieldType($field_type));
     }
 
     // In case it is a Field Formatter.
-    if (isset($entityType)) {
+    if (isset($this->fieldDefinition)) {
       $desc_options = [
         '0' => $this->t('- Any - No Infowindow'),
         'title' => $this->t('- Title -'),
       ];
 
-      $fields_list = array_merge_recursive(
-        $this->entityFieldManager->getFieldMapByFieldType('string_long'),
-        $this->entityFieldManager->getFieldMapByFieldType('string'),
-        $this->entityFieldManager->getFieldMapByFieldType('text'),
-        $this->entityFieldManager->getFieldMapByFieldType('text_long')
-      );
+      // Get the Cardinality set for the Formatter Field.
+      $field_cardinality = $this->fieldDefinition->getFieldStorageDefinition()
+        ->getCardinality();
 
-      foreach ($fields_list[$entityType] as $k => $field) {
-        if (isset($bundles) && !empty(array_intersect($field['bundles'], $bundles)) &&
+      foreach ($infowindow_fields_options[$form['#entity_type']] as $k => $field) {
+        if (!empty(array_intersect($field['bundles'], [$form['#bundle']])) &&
           !in_array($k, ['title', 'revision_log'])) {
           $desc_options[$k] = $k;
+          /* @var \\Drupal\Core\Field\BaseFieldDefinition $fields_configurations[$k] */
+          if ($field_cardinality !== 1 && (isset($fields_configurations[$k]) && $fields_configurations[$k]->getCardinality() !== 1)) {
+            $multivalue_fields_states[] = ['value' => $k];
+          }
         }
       }
 
-      $desc_options['#rendered_entity'] = $this->t('- Rendered @entity entity -', array('@entity' => $entityType));
+      $desc_options['#rendered_entity'] = $this->t('- Rendered @entity entity -', ['@entity' => $form['#entity_type']]);
 
       $info_window_source_options = $desc_options;
 
@@ -499,62 +703,275 @@ trait GeofieldMapFieldTrait {
     // Else it is a Geofield View Style Format Settings.
     else {
       $info_window_source_options = isset($settings['infowindow_content_options']) ? $settings['infowindow_content_options'] : [];
+
+      foreach ($info_window_source_options as $k => $field) {
+        /* @var \\Drupal\Core\Field\BaseFieldDefinition $fields_configurations[$k] */
+        if (array_key_exists($k, $fields_configurations) && $fields_configurations[$k]->getCardinality() !== 1) {
+          $multivalue_fields_states[] = ['value' => $k];
+        }
+
+        if (array_key_exists($k, $fields_configurations) && $fields_configurations[$k]->getCardinality() !== 1) {
+          $multivalue_fields_states[] = ['value' => $k];
+        }
+
+        // Remove the fields options that are not string/text type fields
+        // of the view entity type.
+        if (isset($this->entityType) && substr($k, 0, 5) == 'field' && !array_key_exists($k, $infowindow_fields_options[$this->entityType])) {
+          unset($info_window_source_options[$k]);
+        }
+
+      }
+
     }
 
     if (!empty($info_window_source_options)) {
       $elements['map_marker_and_infowindow']['infowindow_field'] = [
         '#type' => 'select',
         '#title' => $this->t('Marker Infowindow Content from'),
-        '#description' => $this->t('Choose an existing string type field from which populate the Marker Infowindow'),
+        '#description' => $this->t('Choose an existing string/text type field from which populate the Marker Infowindow'),
         '#options' => $info_window_source_options,
         '#default_value' => $settings['map_marker_and_infowindow']['infowindow_field'],
       ];
     }
 
-    if (isset($entityType)) {
+    $elements['map_marker_and_infowindow']['multivalue_split'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Multivalue Field Split (<u>A Multivalue Field as been selected for the Infowindow Content)</u>'),
+      '#description' => $this->t('If checked, each field value will be split into each matching infowindow, following the same progressive order<br>(the first value of the field will be used otherwise, or as fallback in case of no match)'),
+      '#default_value' => !empty($settings['map_marker_and_infowindow']['multivalue_split']) ? $settings['map_marker_and_infowindow']['multivalue_split'] : 0,
+      '#return_value' => 1,
+    ];
+
+    if (isset($this->fieldDefinition)) {
+      $elements['map_marker_and_infowindow']['multivalue_split']['#description'] = $this->t('If checked, each field value will be split into each matching infowindow / geofield, following the same progressive order<br>(the first value of the field will be used otherwise, or as fallback in case of no match)');
+      $elements['map_marker_and_infowindow']['multivalue_split']['#states'] = [
+        'visible' => [
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_marker_and_infowindow][infowindow_field]"]' => $multivalue_fields_states,
+        ],
+      ];
+    }
+    else {
+      $elements['map_marker_and_infowindow']['multivalue_split']['#description'] = $this->t('If checked, each field value will be split into each matching infowindow /geofield value (as simple text), following the same progressive order. Note: No rewrite, links or replacements patterns might be applied.<br>(The Multiple Field settings from the View Display will be used otherwise).');
+      $elements['map_marker_and_infowindow']['multivalue_split']['#states'] = [
+        'visible' => [
+          ':input[name="style_options[map_marker_and_infowindow][infowindow_field]"]' => $multivalue_fields_states,
+        ],
+      ];
+    }
+
+    if (isset($this->fieldDefinition)) {
       // Get the human readable labels for the entity view modes.
-      $view_mode_options = array();
-      foreach ($this->entityDisplayRepository->getViewModes($entityType) as $key => $view_mode) {
+      $view_mode_options = [];
+      foreach ($this->entityDisplayRepository->getViewModes($form['#entity_type']) as $key => $view_mode) {
         $view_mode_options[$key] = $view_mode['label'];
       }
       // The View Mode drop-down is visible conditional on "#rendered_entity"
       // being selected in the Description drop-down above.
-      $elements['map_marker_and_infowindow']['view_mode'] = array(
+      $elements['map_marker_and_infowindow']['view_mode'] = [
         '#type' => 'select',
         '#title' => $this->t('View mode'),
         '#description' => $this->t('View mode the entity will be displayed in the Infowindow.'),
         '#options' => $view_mode_options,
         '#default_value' => !empty($settings['map_marker_and_infowindow']['view_mode']) ? $settings['map_marker_and_infowindow']['view_mode'] : NULL,
-        '#states' => array(
-          'visible' => array(
-            ':input[name$="[settings][map_marker_and_infowindow][infowindow_field]"]' => array(
+        '#states' => [
+          'visible' => [
+            ':input[name$="[settings][map_marker_and_infowindow][infowindow_field]"]' => [
               'value' => '#rendered_entity',
-            ),
-          ),
-        ),
-      );
+            ],
+          ],
+        ],
+      ];
     }
 
+    if (isset($this->fieldDefinition)) {
+      $elements['map_marker_and_infowindow']['force_open'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Open Infowindow on Load'),
+        '#description' => $this->t('If checked the Infowindow will automatically open on page load.<br><b>Note:</b> in case of multivalue Geofield, the Infowindow will be opened (and the Map centered) on the first item.'),
+        '#default_value' => !empty($settings['map_marker_and_infowindow']['force_open']) ? $settings['map_marker_and_infowindow']['force_open'] : 0,
+        '#return_value' => 1,
+      ];
+    }
+  }
+
+  /**
+   * Set Map Additional Options Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapAdditionalOptionsElement(array $settings, array &$elements) {
     $elements['map_additional_options'] = [
       '#type' => 'textarea',
       '#rows' => 5,
       '#title' => $this->t('Map Additional Options'),
-      '#description' => $this->t('<strong>These will override the above settings</strong><br>An object literal of additional map options, that comply with the Google Maps JavaScript API. The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.<br>It is even possible to input Map Control Positions. For this use the numeric values of the google.maps.ControlPosition, otherwise the option will be passed as incomprehensible string to Google Maps API.'),
+      '#description' => $this->t('<strong>These will override the above settings</strong><br>An object literal of additional map options, that comply with the Google Maps JavaScript API.<br>The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.<br>It is even possible to input Map Control Positions. For this use the numeric values of the google.maps.ControlPosition, otherwise the option will be passed as incomprehensible string to Google Maps API.'),
       '#default_value' => $settings['map_additional_options'],
-      '#placeholder' => $this->t('{"disableDoubleClickZoom": "cooperative",
+      '#placeholder' => '{"disableDoubleClickZoom": "cooperative",
 "gestureHandling": "none",
 "streetViewControlOptions": {"position": 5}
-}'),
+}',
+      '#element_validate' => [[get_class($this), 'jsonValidate']],
+    ];
+  }
+
+  /**
+   * Set Overlapping Marker Spiderfier Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $default_settings
+   *   The default settings array.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapOmsElement(array $settings, array $default_settings, array &$elements) {
+    $elements['map_oms'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Overlapping Markers'),
+      '#description' => $this->t('<b>Note: </b>To make this working in conjunction with the Markercluster Option (see below) a "maxZoom" property should be set in the Marker Cluster Additional Options.'),
+      '#description_display' => 'before',
+    ];
+    $elements['map_oms']['map_oms_control'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Spiderfy overlapping markers'),
+      '#description' => $this->t('Use the standard setup of the @overlapping_marker_spiderfier to manage Overlapping Markers located in the exact same position.', [
+        '@overlapping_marker_spiderfier' => $this->link->generate(t('Overlapping Marker Spiderfier Library (for Google Maps)'), Url::fromUri('https://github.com/jawj/OverlappingMarkerSpiderfier#overlapping-marker-spiderfier-for-google-maps-api-v3', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+      '#default_value' => isset($settings['map_oms']['map_oms_control']) ? $settings['map_oms']['map_oms_control'] : $default_settings['map_oms']['map_oms_control'],
+      '#return_value' => 1,
+    ];
+    $elements['map_oms']['map_oms_options'] = [
+      '#type' => 'textarea',
+      '#rows' => 2,
+      '#title' => $this->t('Markers Spiderfy Options'),
+      '#description' => $this->t('An object literal of Spiderfy options, that comply with the Overlapping Marker Spiderfier Library (see link above).<br>The syntax should respect the javascript object notation (json) format.<br>Always use double quotes (") both for the indexes and the string values.<br><b>Note: </b>This first three default options are the library ones suggested to save memory and CPU (in the simplest/standard implementation).'),
+      '#default_value' => isset($settings['map_oms']['map_oms_options']) ? $settings['map_oms']['map_oms_options'] : $default_settings['map_oms']['map_oms_options'],
+      '#placeholder' => '{"markersWontMove": "true", "markersWontHide": "true", "basicFormatEvents": "true", "nearbyDistance": 3}',
       '#element_validate' => [[get_class($this), 'jsonValidate']],
     ];
 
-    $elements['map_markercluster'] = array(
+    if (isset($this->fieldDefinition)) {
+      $elements['map_oms']['map_oms_options']['#states'] = [
+        'visible' => [
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_oms][map_oms_control]"]' => ['checked' => TRUE],
+        ],
+      ];
+    }
+    else {
+      $elements['map_oms']['map_oms_options']['#states'] = [
+        'visible' => [
+          ':input[name="style_options[map_oms][map_oms_control]"]' => ['checked' => TRUE],
+        ],
+      ];
+    }
+  }
+
+  /**
+   * Set Custom Map Style Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setCustomStyleMapElement(array $settings, array &$elements) {
+    $elements['custom_style_map'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Custom Styled Map'),
+    ];
+    $elements['custom_style_map']['custom_style_control'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Create a @custom_google_map_style_link.', [
+        '@custom_google_map_style_link' => $this->link->generate($this->t('Custom Google Map Style'), Url::fromUri('https://developers.google.com/maps/documentation/javascript/examples/maptype-styled-simple', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+      '#description' => $this->t('This option allows to create a new map type, which the user can select from the map type control. The map type includes custom styles.'),
+      '#default_value' => $settings['custom_style_map']['custom_style_control'],
+      '#return_value' => 1,
+    ];
+    $elements['custom_style_map']['custom_style_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Custom Map Style Name'),
+      '#description' => $this->t('Input the Name of the Custom Map Style you want to create.'),
+      '#default_value' => $settings['custom_style_map']['custom_style_name'],
+      '#placeholder' => $this->t('My Custom Map Style'),
+      '#element_validate' => [[get_class($this), 'customMapStyleValidate']],
+    ];
+    $elements['custom_style_map']['custom_style_options'] = [
+      '#type' => 'textarea',
+      '#rows' => 5,
+      '#title' => $this->t('Custom Map Style Options'),
+      '#description' => $this->t('An object literal of map style options, that comply with the Google Maps JavaScript API.<br>The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.<br>(As a useful reference consider using @snappy_maps).', [
+        '@snappy_maps' => $this->link->generate($this->t('Snappy Maps'), Url::fromUri('https://snazzymaps.com', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+      '#default_value' => $settings['custom_style_map']['custom_style_options'],
+      '#placeholder' => $this->customMapStylePlaceholder,
+      '#element_validate' => [
+        [get_class($this), 'jsonValidate'],
+        [get_class($this), 'customMapStyleValidate'],
+      ],
+    ];
+    $elements['custom_style_map']['custom_style_default'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Force the Custom Map Style as Default'),
+      '#description' => $this->t('The Custom Map Style will be the Default starting one.'),
+      '#default_value' => $settings['custom_style_map']['custom_style_default'],
+      '#return_value' => 1,
+    ];
+
+    if (isset($this->fieldDefinition)) {
+      $custom_style_map_control_selector = ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][custom_style_map][custom_style_control]"]';
+    }
+    else {
+      $custom_style_map_control_selector = ':input[name="style_options[custom_style_map][custom_style_control]"]';
+    }
+    $elements['custom_style_map']['custom_style_name']['#states'] = [
+      'visible' => [
+        $custom_style_map_control_selector => ['checked' => TRUE],
+      ],
+      'required' => [
+        $custom_style_map_control_selector => ['checked' => TRUE],
+      ],
+    ];
+    $elements['custom_style_map']['custom_style_options']['#states'] = [
+      'visible' => [
+        $custom_style_map_control_selector => ['checked' => TRUE],
+      ],
+    ];
+    $elements['custom_style_map']['custom_style_default']['#states'] = [
+      'visible' => [
+        $custom_style_map_control_selector => ['checked' => TRUE],
+      ],
+    ];
+  }
+
+  /**
+   * Set Map Marker Cluster Element.
+   *
+   * @param array $settings
+   *   The Form Settings.
+   * @param array $elements
+   *   The Form element to alter.
+   */
+  private function setMapMarkerclusterElement(array $settings, array &$elements) {
+    $elements['map_markercluster'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Marker Clustering'),
-    );
+    ];
     $elements['map_markercluster']['markup'] = [
       '#markup' => $this->t('Enable the functionality of the @markeclusterer_api_link.', [
-        '@markeclusterer_api_link' => $link->generate(t('Marker Clusterer Google Maps JavaScript Library'), Url::fromUri('https://github.com/googlemaps/js-marker-clusterer', [
+        '@markeclusterer_api_link' => $this->link->generate($this->t('Marker Clusterer Google Maps JavaScript Library'), Url::fromUri('https://github.com/googlemaps/js-marker-clusterer', [
           'absolute' => TRUE,
           'attributes' => ['target' => 'blank'],
         ])),
@@ -568,18 +985,43 @@ trait GeofieldMapFieldTrait {
     ];
     $elements['map_markercluster']['markercluster_additional_options'] = [
       '#type' => 'textarea',
-      '#rows' => 5,
+      '#rows' => 4,
       '#title' => $this->t('Marker Cluster Additional Options'),
-      '#description' => $this->t('An object literal of additional marker cluster options, that comply with the Marker Clusterer Google Maps JavaScript Library. The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.'),
+      '#description' => $this->t('An object literal of additional marker cluster options, that comply with the Marker Clusterer Google Maps JavaScript Library.<br>The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.'),
       '#default_value' => $settings['map_markercluster']['markercluster_additional_options'],
-      '#placeholder' => $this->t('{"maxZoom": 12, "gridSize": 25, "imagePath": "modules/custom/geofield_map/images/m"}'),
+      '#placeholder' => '{"maxZoom": 12, "gridSize": 25, "imagePath": "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"}',
       '#element_validate' => [[get_class($this), 'jsonValidate']],
     ];
 
-    if (isset($fieldDefinition)) {
+    $elements['map_markercluster']['markercluster_warning'] = [
+      '#type' => 'container',
+      'warning' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => $this->t('WARNING:') . " ",
+        '#attributes' => [
+          'class' => ['geofield-map-warning'],
+        ],
+      ],
+      'warning_text' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => $this->t('Markers Spiderfy is Active ! | If not, a "maxZoom" property should be set in the Marker Cluster Additional Options to be able to output the Spederfy effect.'),
+      ],
+    ];
+
+    if (isset($this->fieldDefinition)) {
       $elements['map_markercluster']['markercluster_additional_options']['#states'] = [
         'visible' => [
-          ':input[name="fields[' . $fieldDefinition->getName() . '][settings_edit_form][settings][map_markercluster][markercluster_control]"]' => ['checked' => TRUE],
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_markercluster][markercluster_control]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $elements['map_markercluster']['markercluster_warning']['#states'] = [
+        'visible' => [
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_oms][map_oms_control]"]' => ['checked' => TRUE],
+        ],
+        'invisible' => [
+          ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_markercluster][markercluster_control]"]' => ['checked' => FALSE],
         ],
       ];
     }
@@ -589,131 +1031,15 @@ trait GeofieldMapFieldTrait {
           ':input[name="style_options[map_markercluster][markercluster_control]"]' => ['checked' => TRUE],
         ],
       ];
+      $elements['map_markercluster']['markercluster_warning']['#states'] = [
+        'visible' => [
+          ':input[name="style_options[map_oms][map_oms_control]"]' => ['checked' => TRUE],
+        ],
+        'invisible' => [
+          ':input[name="style_options[map_markercluster][markercluster_control]"]' => ['checked' => FALSE],
+        ],
+      ];
     }
-
-    return $elements;
-
-  }
-
-  /**
-   * Form element validation handler for a Map Zoom level.
-   */
-  public static function zoomLevelValidate($element, FormStateInterface &$form_state) {
-    // Get to the actual values in a form tree.
-    $parents = $element['#parents'];
-    $values = $form_state->getValues();
-    for ($i = 0; $i < count($parents) - 1; $i++) {
-      $values = $values[$parents[$i]];
-    }
-    // Check the initial map zoom level.
-    $zoom = $element['#value'];
-    $min_zoom = $values['min'];
-    $max_zoom = $values['max'];
-    if ($zoom < $min_zoom || $zoom > $max_zoom) {
-      $form_state->setError($element, t('The @zoom_field should be between the Minimum and the Maximum Zoom levels.', ['@zoom_field' => $element['#title']]));
-    }
-  }
-
-  /**
-   * Form element validation handler for the Map Max Zoom level.
-   */
-  public static function maxZoomLevelValidate($element, FormStateInterface &$form_state) {
-    // Get to the actual values in a form tree.
-    $parents = $element['#parents'];
-    $values = $form_state->getValues();
-    for ($i = 0; $i < count($parents) - 1; $i++) {
-      $values = $values[$parents[$i]];
-    }
-    // Check the max zoom level.
-    $min_zoom = $values['min'];
-    $max_zoom = $element['#value'];
-    if ($max_zoom && $max_zoom <= $min_zoom) {
-      $form_state->setError($element, t('The Max Zoom level should be above the Minimum Zoom level.'));
-    }
-  }
-
-  /**
-   * Form element json format validation handler.
-   */
-  public static function jsonValidate($element, FormStateInterface &$form_state) {
-    $element_values_array = JSON::decode($element['#value']);
-    // Check the jsonValue.
-    if (!empty($element['#value']) && $element_values_array == NULL) {
-      $form_state->setError($element, t('The @field field is not valid Json Format.', ['@field' => $element['#title']]));
-    }
-    elseif (!empty($element['#value'])) {
-      $form_state->setValueForElement($element, JSON::encode($element_values_array));
-    }
-  }
-
-  /**
-   * Form element url format validation handler.
-   */
-  public static function urlValidate($element, FormStateInterface &$form_state) {
-    $path = $element['#value'];
-    // Check the jsonValue.
-    if (UrlHelper::isExternal($path) && !UrlHelper::isValid($path, TRUE)) {
-      $form_state->setError($element, t('The @field field is not valid Url Format.', ['@field' => $element['#title']]));
-    }
-    elseif (!UrlHelper::isExternal($path)) {
-      $path = Url::fromUri('base:' . $path, ['absolute' => TRUE])->toString();
-      if (!UrlHelper::isValid($path)) {
-        $form_state->setError($element, t('The @field field is not valid internal Drupal path.', ['@field' => $element['#title']]));
-      }
-    }
-  }
-
-  /**
-   * Pre Process the MapSettings.
-   *
-   * Performs some preprocess on the maps settings before sending to js.
-   *
-   * @param array $map_settings
-   *   The map settings.
-   */
-  protected function preProcessMapSettings(&$map_settings) {
-    // Set the gmap_api_key as map settings.
-    $map_settings['gmap_api_key'] = $this->getGmapApiKey();
-
-    // Transform into simple array values the map_type_control_options_type_ids.
-    $map_settings['map_controls']['map_type_control_options_type_ids'] = array_keys(array_filter($map_settings['map_controls']['map_type_control_options_type_ids'], function ($value) {
-      return $value !== 0;
-    }));
-
-    // Generate Absolute icon_image_path, if it is not.
-    $icon_image_path = $map_settings['map_marker_and_infowindow']['icon_image_path'];
-    if (!empty($icon_image_path) && !UrlHelper::isExternal($map_settings['map_marker_and_infowindow']['icon_image_path'])) {
-      $map_settings['map_marker_and_infowindow']['icon_image_path'] = Url::fromUri('base:' . $icon_image_path, ['absolute' => TRUE])
-        ->toString();
-    }
-  }
-
-  /**
-   * Transform Geofield data into Geojson features.
-   *
-   * @param mixed $items
-   *   The Geofield Data Values.
-   * @param string $description
-   *   The description value.
-   */
-  protected function getGeoJsonData($items, $description = NULL) {
-    $data = [];
-    foreach ($items as $delta => $item) {
-
-      /* @var \Point $geometry */
-      $geometry = $this->GeoPHPWrapper->load(is_a($item, '\Drupal\geofield\Plugin\Field\FieldType\GeofieldItem') ? $item->value : $item);
-      if (!empty($geometry)) {
-        $datum = [
-          "type" => "Feature",
-          "geometry" => json_decode($geometry->out('json')),
-        ];
-        $datum['properties'] = [
-          'description' => isset($description) ? $description : NULL,
-        ];
-        $data[] = $datum;
-      }
-    }
-    return $data;
   }
 
 }

@@ -6,6 +6,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\Result\Result;
 use Drupal\facets\Result\ResultInterface;
@@ -30,15 +31,9 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
   protected $facet;
 
   /**
-   * Constructs a plugin object.
-   *
-   * @param array $configuration
-   *   (optional) An optional configuration to be passed to the plugin. If
-   *   empty, the plugin is initialized with its default plugin configuration.
+   * {@inheritdoc}
    */
-  public function __construct(array $configuration = []) {
-    $plugin_id = $this->getPluginId();
-    $plugin_definition = $this->getPluginDefinition();
+  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->setConfiguration($configuration);
   }
@@ -49,19 +44,35 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
   public function build(FacetInterface $facet) {
     $this->facet = $facet;
 
-    $items = array_map(function (Result $result) {
+    $items = array_map(function (Result $result) use ($facet) {
       if (empty($result->getUrl())) {
         return $this->buildResultItem($result);
       }
       else {
-        return $this->buildListItems($result);
+        // When the facet is being build in an AJAX request, and the facetsource
+        // is a block, we need to update the url to use the current request url.
+        if ($result->getUrl()->isRouted() && $result->getUrl()->getRouteName() === 'facets.block.ajax') {
+          $request = \Drupal::request();
+          $url_object = \Drupal::service('path.validator')
+            ->getUrlIfValid($request->getPathInfo());
+          if ($url_object) {
+            $url = $result->getUrl();
+            $options = $url->getOptions();
+            $route_params = $url_object->getRouteParameters();
+            $route_name = $url_object->getRouteName();
+            $result->setUrl(new Url($route_name, $route_params, $options));
+          }
+        }
+
+        return $this->buildListItems($facet, $result);
       }
     }, $facet->getResults());
 
     $widget = $facet->getWidget();
 
     return [
-      '#theme' => 'facets_item_list',
+      '#theme' => $this->getFacetItemListThemeHook($facet),
+      '#facet' => $facet,
       '#items' => $items,
       '#attributes' => [
         'data-drupal-facet-id' => $facet->id(),
@@ -75,6 +86,24 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
         ],
       ],
     ];
+  }
+
+  /**
+   * Provides a full array of possible theme functions to try for a given hook.
+   *
+   * This allows the following template suggestions:
+   *  - facets-item-list--WIDGET_TYPE--FACET_ID
+   *  - facets-item-list--WIDGET_TYPE
+   *  - facets-item-list.
+   *
+   * @param \Drupal\facets\FacetInterface $facet
+   *   The facet whose output is being generated.
+   *
+   * @return string
+   *   A theme hook name with suggestions, suitable for the #theme property.
+   */
+  protected function getFacetItemListThemeHook(FacetInterface $facet) {
+    return 'facets_item_list__' . $facet->getWidget()['type'] . '__' . $facet->id();
   }
 
   /**
@@ -104,8 +133,8 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function getQueryType(array $query_types) {
-    return $query_types['string'];
+  public function getQueryType() {
+    return NULL;
   }
 
   /**
@@ -130,13 +159,15 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
   /**
    * Builds a renderable array of result items.
    *
+   * @param \Drupal\facets\FacetInterface $facet
+   *   The facet we need to build.
    * @param \Drupal\facets\Result\ResultInterface $result
    *   A result item.
    *
    * @return array
    *   A renderable array of the result.
    */
-  protected function buildListItems(ResultInterface $result) {
+  protected function buildListItems(FacetInterface $facet, ResultInterface $result) {
     $classes = ['facet-item'];
     $items = $this->prepareLink($result);
 
@@ -147,11 +178,11 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
       $child_items = [];
       $classes[] = 'facet-item--expanded';
       foreach ($children as $child) {
-        $child_items[] = $this->buildListItems($child);
+        $child_items[] = $this->buildListItems($facet, $child);
       }
 
       $items['children'] = [
-        '#theme' => 'facets_item_list',
+        '#theme' => $this->getFacetItemListThemeHook($facet),
         '#items' => $child_items,
       ];
 
@@ -212,6 +243,8 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
       '#value' => $result->getDisplayValue(),
       '#show_count' => $this->getConfiguration()['show_numbers'] && ($count !== NULL),
       '#count' => $count,
+      '#facet' => $result->getFacet(),
+      '#raw_value' => $result->getRawValue(),
     ];
   }
 
@@ -220,6 +253,13 @@ abstract class WidgetPluginBase extends PluginBase implements WidgetPluginInterf
    */
   public function isPropertyRequired($name, $type) {
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function supportsFacet(FacetInterface $facet) {
+    return TRUE;
   }
 
 }

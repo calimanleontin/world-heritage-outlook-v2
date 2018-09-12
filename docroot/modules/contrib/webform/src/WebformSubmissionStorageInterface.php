@@ -63,7 +63,7 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
   /**
    * Check field definition access.
    *
-   * Access checks include...
+   * Access checks include…
    * - Only allowing user who can update any access to the 'token' field.
    *
    * @param \Drupal\webform\WebformInterface $webform
@@ -75,6 +75,38 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *   Field definitions with access checked.
    */
   public function checkFieldDefinitionAccess(WebformInterface $webform, array $definitions);
+
+  /**
+   * Load webform submissions by their related entity references.
+   *
+   * @param \Drupal\webform\WebformInterface|null $webform
+   *   (optional) The webform that the submission token is associated with.
+   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+   *   (optional) A webform submission source entity.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   (optional) A user account.
+   *
+   * @return \Drupal\webform\WebformSubmissionInterface[]
+   *   An array of webform submission objects indexed by their ids.
+   */
+  public function loadByEntities(WebformInterface $webform, EntityInterface $source_entity = NULL, AccountInterface $account = NULL);
+
+  /**
+   * Load submission using webform (secure) token.
+   *
+   * @param string $token
+   *   The submission (secure) token.
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform that the submission token is associated with.
+   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+   *   (optional) A webform submission source entity.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   (optional) A user account.
+   *
+   * @return \Drupal\webform\WebformSubmissionInterface|null
+   *   A webform submission.
+   */
+  public function loadFromToken($token, WebformInterface $webform, EntityInterface $source_entity = NULL, AccountInterface $account = NULL);
 
   /**
    * Delete all webform submissions.
@@ -103,14 +135,16 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *   (optional) A webform submission source entity.
    * @param \Drupal\Core\Session\AccountInterface|null $account
    *   (optional) A user account.
-   * @param bool $in_draft
-   *   (optional) Look for submissions in draft. Defaults to FALSE.
-   *   Setting to NULL will return all saved submissions and drafts.
+   * @param array $options
+   *   Options/conditions include:
+   *   - in_draft (boolean): NULL will return all saved submissions and drafts.
+   *     Defaults to FALSE.
+   *   - interval (int): Limit total within an seconds interval.
    *
    * @return int
    *   Total number of submissions.
    */
-  public function getTotal(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $in_draft = FALSE);
+  public function getTotal(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, array $options = []);
 
   /**
    * Get the maximum sid.
@@ -142,6 +176,45 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
   public function hasSubmissionValue(WebformInterface $webform, $element_key);
 
   /****************************************************************************/
+  // Source entity methods.
+  /****************************************************************************/
+
+  /**
+   * Get total number of source entities.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   A webform.
+   *
+   * @return int
+   *   Total number of source entities.
+   */
+  public function getSourceEntitiesTotal(WebformInterface $webform);
+
+  /**
+   * Get source entities associated for a specified webform.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   A webform.
+   *
+   * @return array
+   *   An associative array contain source entities associated for
+   *   a specified webform grouped by entity type.
+   */
+  public function getSourceEntities(WebformInterface $webform);
+
+  /**
+   * Get source entities as options for a specified webform.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   A webform.
+   *
+   * @return array
+   *   An associative array contain ource entities as options for
+   *   a specified webform.
+   */
+  public function getSourceEntitiesAsOptions(WebformInterface $webform);
+
+  /****************************************************************************/
   // Query methods.
   /****************************************************************************/
 
@@ -158,6 +231,11 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *   (optional) The current user account.
    * @param array $options
    *   (optional) Additional options and query conditions.
+   *   Options/conditions include:
+   *   - in_draft (boolean): NULL will return all saved submissions and drafts.
+   *     Defaults to NULL
+   *   - check_source_entity (boolean): Check that a source entity is defined.
+   *   - interval (int): Limit total within an seconds interval.
    */
   public function addQueryConditions(AlterableInterface $query, WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, array $options = []);
 
@@ -260,7 +338,7 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    * @param bool $include_elements
    *   Flag that include all form element in the list of columns.
    *
-   * @return array|mixed
+   * @return array
    *   An associative array of columns keyed by name.
    */
   public function getCustomColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
@@ -277,10 +355,60 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    * @param bool $include_elements
    *   Flag that include all form element in the list of columns.
    *
-   * @return array|mixed
+   * @return array
    *   An associative array of columns keyed by name.
    */
   public function getUserColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
+
+  /**
+   * Get default submission columns used to display results.
+   *
+   * @param \Drupal\webform\WebformInterface|null $webform
+   *   A webform.
+   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+   *   A webform submission source entity.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   A user account.
+   * @param bool $include_elements
+   *   Flag that include all form element in the list of columns.
+   *
+   * @return array
+   *   An associative array of columns keyed by name.
+   */
+  public function getDefaultColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
+
+  /**
+   * Get submissions columns.
+   *
+   * @return array
+   *   An associative array of columns keyed by name.
+   */
+  public function getSubmissionsColumns();
+
+  /**
+   * Get user submissions columns.
+   *
+   * @return array
+   *   An associative array of columns keyed by name.
+   */
+  public function getUsersSubmissionsColumns();
+
+  /**
+   * Get submission columns used to display results table.
+   *
+   * @param \Drupal\webform\WebformInterface|null $webform
+   *   A webform.
+   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+   *   A webform submission source entity.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   A user account.
+   * @param bool $include_elements
+   *   Flag that include all form element in the list of columns.
+   *
+   * @return array
+   *   An associative array of columns keyed by name.
+   */
+  public function getColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
 
   /**
    * Get user default submission columns used to display results.
@@ -294,7 +422,7 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    * @param bool $include_elements
    *   Flag that include all form element in the list of columns.
    *
-   * @return array|mixed
+   * @return array
    *   An associative array of columns names.
    */
   public function getUserDefaultColumnNames(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
@@ -311,27 +439,14 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    * @param bool $include_elements
    *   Flag that include all form element in the list of columns.
    *
-   * @return array|mixed
-   *   An associative array of columns keyed by name.
+   * @return array
+   *   An associative array of columns names.
    */
-  public function getDefaultColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
+  public function getDefaultColumnNames(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
 
-  /**
-   * Get submission columns used to display results table.
-   *
-   * @param \Drupal\webform\WebformInterface|null $webform
-   *   A webform.
-   * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
-   *   A webform submission source entity.
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   A user account.
-   * @param bool $include_elements
-   *   Flag that include all form element in the list of columns.
-   *
-   * @return array|mixed
-   *   An associative array of columns keyed by name.
-   */
-  public function getColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE);
+  /****************************************************************************/
+  // Custom settings methods.
+  /****************************************************************************/
 
   /**
    * Get customize setting.
@@ -349,6 +464,25 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *   Custom setting.
    */
   public function getCustomSetting($name, $default, WebformInterface $webform = NULL, EntityInterface $source_entity = NULL);
+
+  /****************************************************************************/
+  // Custom CRUD methods.
+  /****************************************************************************/
+
+  /**
+   * Resaves the entity without triggering any hooks or handlers.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to save.
+   *
+   * @return bool|int
+   *   If the record insert or update failed, returns FALSE. If it succeeded,
+   *   returns SAVED_NEW or SAVED_UPDATED, depending on the operation performed.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   In case of failures, an exception is thrown.
+   */
+  public function resave(EntityInterface $entity);
 
   /****************************************************************************/
   // Invoke methods.
@@ -401,7 +535,7 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
   /**
    * Save webform submission data to the 'webform_submission_data' table.
    *
-   * This method is public the allow webform handler (ie remote posts) to
+   * This method is public the allow webform handler (i.e. remote posts) to
    * update [webform:handler] tokens stored in the submission data.
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission

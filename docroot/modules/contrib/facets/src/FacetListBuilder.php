@@ -7,15 +7,14 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
 use Drupal\facets_summary\Entity\FacetsSummary;
 use Drupal\facets_summary\FacetsSummaryInterface;
-
 
 /**
  * Builds a listing of facet entities.
  */
 class FacetListBuilder extends DraggableListBuilder {
-
 
   /**
    * {@inheritdoc}
@@ -92,6 +91,7 @@ class FacetListBuilder extends DraggableListBuilder {
   public function buildHeader() {
     $header = [
       'type' => $this->t('Type'),
+      'machine_name' => $this->t('Machine name'),
       'title' => [
         'data' => $this->t('Title'),
       ],
@@ -104,7 +104,9 @@ class FacetListBuilder extends DraggableListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     /** @var \Drupal\facets\FacetInterface $entity */
-    $facet = $entity;
+    $facet_configs = \Drupal::entityTypeManager()
+      ->getStorage('facets_facet')
+      ->load($entity->getConfigTarget());
     $row = [
       'type' => [
         '#theme_wrappers' => [
@@ -115,16 +117,17 @@ class FacetListBuilder extends DraggableListBuilder {
         '#type' => 'markup',
         '#markup' => 'Facet',
       ],
+      'machine_name' => ['#markup' => $entity->id()],
       'title' => [
         '#type' => 'link',
-        '#title' => $facet->label(),
-        '#suffix' => '<div>' . $entity->getFieldAlias() . ' - ' . $facet->getWidget()['type'] . '</div>',
+        '#title' => $facet_configs->get('name'),
+        '#suffix' => '<div>' . $entity->getFieldAlias() . ' - ' . $entity->getWidget()['type'] . '</div>',
         '#attributes' => [
           'class' => ['search-api-title'],
         ],
-      ] + $facet->toUrl('edit-form')->toRenderArray(),
+      ] + $entity->toUrl('edit-form')->toRenderArray(),
       '#attributes' => [
-        'title' => $this->t('ID: @name', ['@name' => $facet->id()]),
+        'title' => $this->t('ID: @name', ['@name' => $entity->id()]),
         'class' => [
           'facet',
         ],
@@ -137,8 +140,6 @@ class FacetListBuilder extends DraggableListBuilder {
    * Builds an array of facet summary for display in the overview.
    */
   public function buildFacetSummaryRow(FacetsSummaryInterface $entity) {
-    /** @var \Drupal\facets\FacetInterface $entity */;
-    $facet = $entity;
     $row = parent::buildRow($entity);
     return [
       'type' => [
@@ -150,24 +151,25 @@ class FacetListBuilder extends DraggableListBuilder {
         '#type' => 'markup',
         '#markup' => 'Facets Summary',
       ],
+      'machine_name' => ['#markup' => $entity->id()],
       'title' => [
-          '#theme_wrappers' => [
-            'container' => [
-              '#attributes' => ['class' => 'facets-title'],
-            ]
+        '#theme_wrappers' => [
+          'container' => [
+            '#attributes' => ['class' => 'facets-title'],
           ],
-          '#type' => 'link',
-          '#title' => $facet->label(),
-          '#attributes' => [
-            'class' => ['search-api-title'],
-          ],
-          '#wrapper_attributes' => [
-            'colspan' => 2,
-          ],
-        ] + $facet->toUrl('edit-form')->toRenderArray(),
-      'oprations' => $row['operations'],
+        ],
+        '#type' => 'link',
+        '#title' => $entity->label(),
+        '#attributes' => [
+          'class' => ['search-api-title'],
+        ],
+        '#wrapper_attributes' => [
+          'colspan' => 2,
+        ],
+      ] + $entity->toUrl('edit-form')->toRenderArray(),
+      'operations' => $row['operations'],
       '#attributes' => [
-        'title' => $this->t('ID: @name', ['@name' => $facet->id()]),
+        'title' => $this->t('ID: @name', ['@name' => $entity->id()]),
         'class' => [
           'facet',
         ],
@@ -193,12 +195,12 @@ class FacetListBuilder extends DraggableListBuilder {
         '#theme_wrappers' => [
           'container' => [
             '#attributes' => ['class' => 'facets-title'],
-          ]
+          ],
         ],
         '#type' => 'markup',
         '#markup' => $facet_source['id'],
         '#wrapper_attributes' => [
-          'colspan' => 2,
+          'colspan' => 3,
         ],
       ],
       'operations' => [
@@ -257,13 +259,13 @@ class FacetListBuilder extends DraggableListBuilder {
         'subgroup' => $subgroup_class,
       ];
       $form['facets'][$facet_source_group['facet_source']['id']] = $this->buildFacetSourceRow($facet_source_group['facet_source']);
-      foreach ($facet_source_group['facets'] as $i => $facet) {
+      foreach ($facet_source_group['facets'] as $facet) {
         if ($facet instanceof FacetInterface) {
           $form['facets'][$facet->id()] = $this->buildRow($facet);
           $form['facets'][$facet->id()]['weight']['#attributes']['class'][] = $subgroup_class;
           $form['facets'][$facet->id()]['weight']['#delta'] = $delta;
         }
-        elseif ($facet instanceof FacetsSummaryInterface){
+        elseif ($facet instanceof FacetsSummaryInterface) {
           $form['facets'][$facet->id()] = $this->buildFacetSummaryRow($facet);
         }
       }
@@ -292,7 +294,14 @@ class FacetListBuilder extends DraggableListBuilder {
           'colspan' => 4,
         ],
       ];
-      foreach ($facet_source_group['facets'] as $i => $facet) {
+      /** @var \Drupal\facets\FacetInterface $facet */
+      foreach ($groups['lone_facets'] as $facet) {
+        // Facets core search moved into a separate project. Show a clean
+        // message to notify users how to resolve their broken facets.
+        if (substr($facet->getFacetSourceId(), 0, 16) == 'core_node_search') {
+          $project_link = Link::fromTextAndUrl('https://www.drupal.org/project/facets_core_search', Url::fromUri('https://www.drupal.org/project/facets_core_search'))->toString();
+          drupal_set_message(t('Core search facets has been moved to a separate project. You need to download and enable this module from @project_link to continue using your core search facets.', ['@project_link' => $project_link]), 'error');
+        }
         $form['facets'][$facet->id()] = $this->buildRow($facet);
         $form['facets'][$facet->id()]['weight']['#attributes']['class'][] = $subgroup_class;
       }
@@ -373,4 +382,5 @@ class FacetListBuilder extends DraggableListBuilder {
       'lone_facets' => $facets,
     ];
   }
+
 }

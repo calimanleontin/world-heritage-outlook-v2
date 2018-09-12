@@ -3,6 +3,8 @@
 }
 .social-media-sharing ul {
   padding-left:0px;
+  display: inline-flex;
+  text-align: center;
 }
 .social-media-sharing li {
     display: inline-block;

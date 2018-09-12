@@ -2,6 +2,7 @@
 
 namespace Drupal\config_filter\Config;
 
+use Drupal\config_filter\Exception\InvalidStorageFilterException;
 use Drupal\Core\Config\StorageInterface;
 
 /**
@@ -43,6 +44,9 @@ class FilteredStorage implements FilteredStorageInterface {
 
     // Set the storage to all the filters.
     foreach ($this->filters as $filter) {
+      if (!$filter instanceof StorageFilterInterface) {
+        throw new InvalidStorageFilterException();
+      }
       $filter->setSourceStorage(new ReadOnlyStorage($storage));
       $filter->setFilteredStorage($this);
     }
@@ -202,10 +206,10 @@ class FilteredStorage implements FilteredStorageInterface {
    */
   public function createCollection($collection) {
     $filters = [];
-    foreach ($this->filters as $filter) {
+    foreach ($this->filters as $key => $filter) {
       $filter = $filter->filterCreateCollection($collection);
       if ($filter) {
-        $filters[] = $filter;
+        $filters[$key] = $filter;
       }
     }
 

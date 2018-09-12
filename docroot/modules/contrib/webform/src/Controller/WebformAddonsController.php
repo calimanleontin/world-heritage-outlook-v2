@@ -53,25 +53,22 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
       ],
     ];
 
-    // Promotions.
-    $build['promotions'] = [
-      '#type' => 'container',
+    // Filter.
+    $build['filter'] = [
+      '#type' => 'search',
+      '#title' => $this->t('Filter'),
+      '#title_display' => 'invisible',
+      '#size' => 30,
+      '#placeholder' => $this->t('Filter by keyword'),
       '#attributes' => [
-        'class' => ['webform-addons-promotions'],
+        'class' => ['webform-form-filter-text'],
+        'data-element' => '.admin-list',
+        'data-source' => 'li',
+        'data-parent' => 'li',
+        'title' => $this->t('Enter a keyword to filter by.'),
+        'autofocus' => 'autofocus',
       ],
-
     ];
-    $promotions = $this->addons->getPromotions();
-    foreach ($promotions as $promotion_name => $promotion) {
-      $build['promotions'][$promotion_name] = [
-        '#type' => 'webform_message',
-        '#message_type' => $promotion_name,
-        '#message_message' => $promotion['content'],
-        '#message_close' => TRUE,
-        '#message_id' => 'webform.addons.promotion.' . $promotion_name,
-        '#message_storage' => WebformMessage::STORAGE_SESSION,
-      ];
-    }
 
     // Projects.
     $build['projects'] = [
@@ -80,7 +77,6 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
         'class' => ['webform-addons-projects', 'js-webform-details-toggle', 'webform-details-toggle'],
       ],
     ];
-    $build['projects']['#attached']['library'][] = 'webform/webform.addons';
 
     $categories = $this->addons->getCategories();
     foreach ($categories as $category_name => $category) {
@@ -94,11 +90,12 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
       foreach ($projects as $project_name => &$project) {
         $project['description'] .= '<br /><small>' . $project['url']->toString() . '</small>';
 
-        if (!empty($project['recommended']) && !$this->moduleHandler()->moduleExists($project_name)) {
+        // Append recommended to project's description.
+        if (!empty($project['recommended'])) {
+          $project['description'] .= '<br /><b class="color-success"> ★' . $this->t('Recommended') . '</b>';
+        }
 
-          // Append recommended to project's description.
-          $project['description'] .= '<br /><b class="color-error">' . $this->t('Recommended') . '</b>';
-
+        if (!empty($project['install']) && !$this->moduleHandler()->moduleExists($project_name)) {
           // If current user can install module then display a dismissible warning.
           if ($this->currentUser()->hasPermission('administer modules')) {
             $build['projects'][$project_name . '_message'] = [
@@ -119,6 +116,9 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
         '#content' => $projects,
       ];
     }
+
+    $build['#attached']['library'][] = 'webform/webform.addons';
+    $build['#attached']['library'][] = 'webform/webform.admin';
 
     return $build;
   }
