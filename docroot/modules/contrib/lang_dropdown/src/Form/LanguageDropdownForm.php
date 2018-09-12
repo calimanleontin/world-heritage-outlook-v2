@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\lang_dropdown\Form\LanguageDropdownForm.
+ */
+
 namespace Drupal\lang_dropdown\Form;
 
 use Drupal\Component\Render\FormattableMarkup;
@@ -7,7 +12,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\Language;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 
 /**
@@ -29,14 +33,14 @@ class LanguageDropdownForm extends FormBase {
   /**
    * Constructs a \Drupal\lang_dropdown\Form\LanguageDropdownForm object.
    *
-   * @param array $languages
+   * @param $languages
    *   The languages for the switcher.
-   * @param string $type
+   * @param $type
    *   The type of negotiation.
-   * @param array $settings
+   * @param $settings
    *   The configuration for the switcher form.
    */
-  public function __construct(array $languages, $type, array $settings = []) {
+  public function __construct($languages, $type, $settings) {
     $this->languages = $languages;
     $this->type = $type;
     $this->settings = $settings;
@@ -48,68 +52,71 @@ class LanguageDropdownForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $language_url = \Drupal::languageManager()->getCurrentLanguage(Language::TYPE_URL);
 
-    $unique_id = uniqid('lang_dropdown_form', TRUE);
+    $unique_id = uniqid();
 
-    $options = $hidden_elements = [];
-    $js_settings = [
+    $options  = $hidden_elements = array();
+    $js_settings = array(
       'key' => $unique_id,
-    ];
+    );
 
     $selected_option_language_icon = $language_selected = $language_session_selected = '';
 
-    $form['lang_dropdown_type'] = [
+    $form['lang_dropdown_type'] = array(
       '#type' => 'value',
       '#default_value' => $this->type,
-    ];
-    $form['lang_dropdown_tohome'] = [
+    );
+    $form['lang_dropdown_tohome'] = array(
       '#type' => 'value',
       '#default_value' => $this->settings['tohome'],
-    ];
+    );
 
-    // Iterate on $languages to build the needed options for the select element.
+    $language_objects = \Drupal::languageManager()->getLanguages();
+
+    if ($domain_locale_exists = \Drupal::moduleHandler()->moduleExists('domain_locale')) {
+      // TODO: Add domain_locale support when the module is ready for Drupal 8.
+      // global $_domain;
+      // $domain_languages = domain_locale_lookup($_domain['domain_id']);
+    }
+
+    // Now we iterate on $languages to build the needed options for the select element.
     foreach ($this->languages as $lang_code => $lang_options) {
-      /** @var \Drupal\Core\Language\LanguageInterface $language */
-      $language = $lang_options['language'];
 
-      // There is no translation for this language
-      // and not all languages are shown.
-      if (!$this->settings['showall'] && in_array('locale-untranslated', $lang_options['attributes']['class'], TRUE)) {
-        continue;
-      }
+      // The language is not enabled on this domain
+      // if ($domain_locale_exists && !array_key_exists($lang_code, $domain_languages)) continue;
 
-      // Build the options in an associative array,
-      // so it will be ready for #options in select form element.
+      // There is no translation for this language and not all languages are shown
+      if (in_array('locale-untranslated', $lang_options['attributes']['class']) && !$this->settings['showall']) continue;
+
+      // Build the options in an associative array, so it will be ready for #options in select form element.
       switch ($this->settings['display']) {
         case LANGDROPDOWN_DISPLAY_TRANSLATED:
         default:
-          $options += [$lang_code => $this->t($language->getName())];
+          $options += array($lang_code => $this->t($lang_options['language']->getName()));
           break;
-
         case LANGDROPDOWN_DISPLAY_NATIVE:
-          $options += [$lang_code => $language->getName()];
+          $options += array($lang_code => $lang_options['language']->getName());
           break;
-
         case LANGDROPDOWN_DISPLAY_LANGCODE:
-          $options += [$lang_code => $lang_code];
+          $options += array($lang_code => $lang_code);
           break;
       }
 
-      // Identify selected language.
+      // Identify selected language
       if (isset($lang_options['url'])) {
         /** @var \Drupal\Core\Url $url */
         $url = $lang_options['url'];
         if ($url->isRouted()) {
           $route_name = $url->getRouteName();
-          $is_current_path = ($route_name === '<current>') || ($route_name == \Drupal::routeMatch()->getRouteName()) || ($route_name === '<front>' && \Drupal::service('path.matcher')->isFrontPage());
-          $is_current_language = (empty($language) || $language->getId() == $language_url->getId());
+          $is_current_path = ($route_name == '<current>') || ($route_name == \Drupal::routeMatch()->getRouteName()) || ($route_name == '<front>' && \Drupal::service('path.matcher')->isFrontPage());
+          $is_current_language = (empty($lang_options['language']) || $lang_options['language']->getId() == $language_url->getId());
           if ($is_current_path && $is_current_language) {
             $language_selected = $lang_code;
           }
         }
       }
 
-      // Identify if session negotiation had set session-active class.
-      if (in_array('session-active', $lang_options['attributes']['class'], TRUE)) {
+      // Identify if session negotiation had set session-active class
+      if (in_array('session-active', $lang_options['attributes']['class'])) {
         $language_session_selected = $lang_code;
       }
 
@@ -118,114 +125,105 @@ class LanguageDropdownForm extends FormBase {
       if (!isset($lang_options['query'])) {
         $lang_options['query'] = \Drupal::request()->query->all();
       }
-      $hidden_elements[$lang_code] = [
+      $hidden_elements[$lang_code] = array(
         '#type' => 'hidden',
         '#value' => $url->setOptions($url->getOptions() + $lang_options)->toString(),
-      ];
+      );
 
       // Handle flags with Language icons module using JS widget.
-      if (isset($this->settings['widget']) && \Drupal::moduleHandler()->moduleExists('languageicons')) {
+      if (\Drupal::moduleHandler()->moduleExists('languageicons') && $this->settings['widget']) {
         $languageicons_config = $this->configFactory()->get('languageicons.settings');
         $languageicons_path = $languageicons_config->get('path');
         $js_settings['languageicons'][$lang_code] = file_create_url(str_replace('*', $lang_code, $languageicons_path));
       }
     }
 
-    // If session-active is set that's the selected language
-    // otherwise rely on $language_selected.
-    $selected_option = ($language_session_selected === '') ? $language_selected : $language_session_selected;
+    // If session-active is set that's the selected language otherwise rely on $language_selected
+    $selected_option = ($language_session_selected == '') ? $language_selected : $language_session_selected;
 
-    // Icon for the selected language.
-    if (!$this->settings['widget'] && \Drupal::moduleHandler()->moduleExists('languageicons')) {
-      /** @var \Drupal\Core\Language\LanguageInterface $language */
-      $language = $this->languages[$selected_option]['language'];
-      $selected_option_language_icon = [
-        '#theme' => 'languageicons_link_content',
-        '#language' => $language,
-        '#title' => $language->getName(),
-      ];
-      $selected_option_language_icon = render($selected_option_language_icon);
+    // Icon for the selected language
+    if (\Drupal::moduleHandler()->moduleExists('languageicons') && !$this->settings['widget']) {
+      // TODO: Update for Drupal 8
+//      $selected_option_language_icon = theme('languageicons_icon', array(
+//        'language' => (object) array('language' => $selected_option),
+//        'title' => $language_names[$selected_option],
+//      ));
     }
 
     // Add required files and settings for JS widget.
     if ($this->settings['widget'] == LANGDROPDOWN_MSDROPDOWN) {
-      $js_settings += [
+      $js_settings += array(
         'widget' => 'msdropdown',
         'visibleRows' => $this->settings['msdropdown']['visible_rows'],
         'roundedCorner' => $this->settings['msdropdown']['rounded'],
         'animStyle' => $this->settings['msdropdown']['animation'],
         'event' => $this->settings['msdropdown']['event'],
-      ];
+      );
 
       $selected_skin = $this->settings['msdropdown']['skin'];
-      if ($selected_skin === 'custom') {
+      if ($selected_skin == 'custom') {
         $custom_skin = Html::escape($this->settings['msdropdown']['custom_skin']);
         $form['#attached']['library'][] = 'ms-dropdown';
-        $js_settings += [
+        $js_settings += array(
           'mainCSS' => $custom_skin,
-        ];
-      }
-      else {
+        );
+      } else {
         $skins = _lang_dropdown_get_msdropdown_skins();
         $skin_data = $skins[$selected_skin];
         $form['#attached']['library'][] = 'lang_dropdown/' . $selected_skin;
-        $js_settings += [
+        $js_settings += array(
           'mainCSS' => $skin_data['mainCSS'],
-        ];
+        );
       }
       $form['#attached']['library'][] = 'lang_dropdown/ms-dropdown';
-      $form['#attached']['drupalSettings']['lang_dropdown'][$unique_id] = $js_settings;
+      $form['#attached']['drupalSettings']['lang_dropdown']['ms-dropdown'] = $js_settings;
     }
-    elseif ($this->settings['widget'] == LANGDROPDOWN_CHOSEN) {
-      $js_settings += [
+    else if ($this->settings['widget'] == LANGDROPDOWN_CHOSEN) {
+      $js_settings += array(
         'widget' => 'chosen',
         'disable_search' => $this->settings['chosen']['disable_search'],
         'no_results_text' => $this->settings['chosen']['no_results_text'],
-      ];
+      );
 
       $form['#attached']['library'][] = 'lang_dropdown/chosen';
-      $form['#attached']['drupalSettings']['lang_dropdown'][$unique_id] = $js_settings;
+      $form['#attached']['drupalSettings']['lang_dropdown']['chosen'] = $js_settings;
     }
-    elseif ($this->settings['widget'] == LANGDROPDOWN_DDSLICK) {
+    else if ($this->settings['widget'] == LANGDROPDOWN_DDSLICK) {
       $form['#attached']['library'][] = 'lang_dropdown/ddslick';
       $selected_skin = $this->settings['ddslick']['skin'];
-      $js_settings += [
+      $js_settings += array(
         'widget' => 'ddslick',
         'width' => $this->settings['width'],
         'height' => $this->settings['ddslick']['ddslick_height'],
         'showSelectedHTML' => $this->settings['ddslick']['showSelectedHTML'],
         'imagePosition' => $this->settings['ddslick']['imagePosition'],
-      ];
-      $form['#attributes']['class'][] = ($selected_skin === 'custom') ?
+      );
+      $form['#attributes']['class'][] = ($selected_skin == 'custom') ?
         Html::escape($this->settings['ddslick']['custom_skin']) : $selected_skin;
       $form['#attached']['library'][] = 'lang_dropdown/' . $selected_skin;
-      $form['#attached']['drupalSettings']['lang_dropdown'][$unique_id] = $js_settings;
+      $form['#attached']['drupalSettings']['lang_dropdown']['ddslick'] = $js_settings;
     }
-    else {
-      $form['#attached']['drupalSettings']['lang_dropdown']['lang-dropdown-form'] = $js_settings;
-    }
-    $flag_position = $this->settings['languageicons']['flag_position'] ? '#suffix' : '#prefix';
+
+    $flag_position = ($this->settings['languageicons']['flag_position']) ? '#suffix' : '#prefix';
 
     // Now we build the $form array.
-    $form['lang_dropdown_select'] = [
+    $form['lang_dropdown_select'] = array(
       '#title' => $this->t('Select your language'),
       '#title_display' => 'invisible',
       '#type' => 'select',
-      '#default_value' => $selected_option ? $selected_option : key($options),
+      '#default_value' => isset($selected_option) ? $selected_option : key($options),
       '#options' => $options,
-      '#attributes' => [
+      '#attributes' => array(
         'style' => 'width:' . $this->settings['width'] . 'px',
-        'class' => ['lang-dropdown-select-element'],
+        'class' => array('lang-dropdown-select-element'),
         'id' => 'lang-dropdown-select-' . $unique_id,
-      ],
-      '#attached' => [
-        'library' => ['lang_dropdown/lang-dropdown-form'],
-      ],
-    ];
+      ),
+      '#attached' => array(
+        'library' => array('lang_dropdown/lang-dropdown-form'),
+      ),
+    );
 
-    if (empty($hidden_elements)) {
-      return [];
-    }
+    if (empty($hidden_elements)) return array();
 
     $form += $hidden_elements;
     if (\Drupal::moduleHandler()->moduleExists('languageicons')) {
@@ -235,15 +233,14 @@ class LanguageDropdownForm extends FormBase {
     $form['#attributes']['class'][] = 'lang_dropdown_form';
     $form['#attributes']['class'][] = $this->type;
     $form['#attributes']['id'] = 'lang_dropdown_form_' . $unique_id;
-    $form['submit'] = [
+    $form['submit'] = array(
       '#type' => 'submit',
-      '#value' => $this->t('Go'),
+      '#value' => t('Go'),
       '#noscript' => TRUE,
-      // The below prefix & suffix for graceful fallback
-      // if JavaScript was disabled.
-      '#prefix' => new FormattableMarkup('<noscript><div>', []),
-      '#suffix' => new FormattableMarkup('</div></noscript>', []),
-    ];
+      // The below prefix & suffix for gracefull fallback if JavaScript was disabled
+      '#prefix' => new FormattableMarkup("<noscript><div>", []),
+      '#suffix' => new FormattableMarkup("</div></noscript>", []),
+    );
 
     return $form;
   }
@@ -257,14 +254,10 @@ class LanguageDropdownForm extends FormBase {
     $tohome = $form_state->getValue('lang_dropdown_tohome');
 
     $language_codes = \Drupal::languageManager()->getLanguages();
-    if (!array_key_exists($language_code, $language_codes)) {
-      return;
-    }
+    if (!array_key_exists($language_code, $language_codes)) return;
 
     $types = \Drupal::languageManager()->getDefinedLanguageTypesInfo();
-    if (!array_key_exists($type, $types)) {
-      return;
-    }
+    if (!array_key_exists($type, $types)) return;
 
     $route = \Drupal::service('path.matcher')->isFrontPage() ? '<front>' : '<current>';
     $url = Url::fromRoute($route);
