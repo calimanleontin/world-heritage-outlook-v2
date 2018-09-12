@@ -3155,21 +3155,21 @@
         },
         {
             "name": "drupal/geofield",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/geofield",
-                "reference": "8.x-1.0-alpha4"
+                "reference": "8.x-1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.0-alpha4.zip",
-                "reference": "8.x-1.0-alpha4",
-                "shasum": "3bd9f6077bfce43631b35bee37e0b0d04c12c0e3"
+                "url": "https://ftp.drupal.org/files/projects/geofield-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "c27dc2399ec0e6c39266b0210ad794aeaa7b9a99"
             },
             "require": {
                 "drupal/core": "~8.0",
-                "phayes/geophp": "dev-master"
+                "phayes/geophp": "dev-master#6855624"
             },
             "type": "drupal-module",
             "extra": {
@@ -3177,11 +3177,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha4",
-                    "datestamp": "1496311442",
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1519775884",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3201,24 +3201,17 @@
                     "role": "Maintainer"
                 },
                 {
-                    "name": "chachasikes",
-                    "homepage": "https://www.drupal.org/user/50674"
+                    "name": "Italo Mairo",
+                    "homepage": "https://www.drupal.org/u/itamair",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "davidseth",
                     "homepage": "https://www.drupal.org/user/254857"
                 },
                 {
-                    "name": "dtarc",
-                    "homepage": "https://www.drupal.org/user/114087"
-                },
-                {
-                    "name": "jherencia",
-                    "homepage": "https://www.drupal.org/user/360690"
-                },
-                {
-                    "name": "nikhiltri",
-                    "homepage": "https://www.drupal.org/user/270223"
+                    "name": "itamair",
+                    "homepage": "https://www.drupal.org/user/1179076"
                 },
                 {
                     "name": "phayes",

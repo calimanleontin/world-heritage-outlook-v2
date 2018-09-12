@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Element\GeofieldProximity.
- */
-
 namespace Drupal\geofield\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\FormElement;
 
 /**
@@ -21,7 +15,6 @@ class GeofieldProximity extends FormElement {
   /**
    * {@inheritdoc}
    */
-
   public function getInfo() {
     $class = get_class($this);
     return [
@@ -49,7 +42,7 @@ class GeofieldProximity extends FormElement {
    * @return array
    *   The processed element.
    */
-  public static function proximityProcess(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function proximityProcess(array &$element, FormStateInterface $form_state, array &$complete_form) {
     $element['#attributes'] = ['class' => ['clearfix']];
     $element['#tree'] = TRUE;
     $element['#attached']['css'] = [drupal_get_path('module', 'geofield') . '/css/proximity-element.css'];
@@ -99,10 +92,10 @@ class GeofieldProximity extends FormElement {
 
     $class = get_called_class();
     if (isset($element['#element_validate'])) {
-      array_push($element['#element_validate'], [$class,'boundsValidate']);
+      array_push($element['#element_validate'], [$class, 'boundsValidate']);
     }
     else {
-      $element['#element_validate'] = [[$class,'boundsValidate']];
+      $element['#element_validate'] = [[$class, 'boundsValidate']];
     }
 
     return $element;

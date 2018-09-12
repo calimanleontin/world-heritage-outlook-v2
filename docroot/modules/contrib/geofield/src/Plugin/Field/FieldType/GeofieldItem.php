@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Field\FieldType\GeofieldItem.
- */
-
 namespace Drupal\geofield\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -29,31 +24,40 @@ class GeofieldItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public static function defaultInstanceSettings() {
+  public static function defaultStorageSettings() {
     return [
       'backend' => 'geofield_backend_default',
-    ] + parent::defaultInstanceSettings();
+    ] + parent::defaultStorageSettings();
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultFieldSettings() {
+    return [
+      'backend' => 'geofield_backend_default',
+    ] + parent::defaultFieldSettings();
   }
 
   /**
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field) {
-    $backendManager = \Drupal::service('plugin.manager.geofield_backend');
-    $backendPlugin = NULL;
+    $backend_manager = \Drupal::service('plugin.manager.geofield_backend');
+    $backend_plugin = NULL;
 
-    if (isset($field->settings['backend']) && $backendManager->getDefinition($field->settings['backend']) != NULL) {
-      $backendPlugin = $backendManager->createInstance($field->getSetting('backend'));
-    } 
+    /* @var \Drupal\geofield\Plugin\GeofieldBackendPluginInterface $backend_plugin */
+    if (isset($field->settings['backend']) && $backend_manager->getDefinition($field->getSetting('backend')) != NULL) {
+      $backend_plugin = $backend_manager->createInstance($field->getSetting('backend'));
+    }
 
-    if ($backendPlugin === NULL) {
-      $backendPlugin = $backendManager->createInstance('geofield_backend_default');
+    if ($backend_plugin === NULL) {
+      $backend_plugin = $backend_manager->createInstance('geofield_backend_default');
     }
 
     return [
       'columns' => [
-        'value' => $backendPlugin->schema(),
+        'value' => $backend_plugin->schema(),
         'geo_type' => [
           'type' => 'varchar',
           'default' => '',
@@ -109,14 +113,14 @@ class GeofieldItem extends FieldItemBase {
         'left' => ['left'],
         'right' => ['right'],
         'geohash' => ['geohash'],
-        'centroid' => ['lat','lon'],
-        'bbox' => ['top','bottom','left','right'],
+        'centroid' => ['lat', 'lon'],
+        'bbox' => ['top', 'bottom', 'left', 'right'],
       ],
     ];
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['value'] = DataDefinition::create('string')
@@ -156,14 +160,14 @@ class GeofieldItem extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function instanceSettingsForm(array $form, FormStateInterface $form_state) {
-    // @TODO: Backend plugins need to define requirement/settings methods,
-    //   allow them to inject data here.
+  public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
+    // Backend plugins need to define requirement/settings methods,
+    // allow them to inject data here.
     $element = [];
 
-    $backendManager = \Drupal::service('plugin.manager.geofield_backend');
+    $backend_manager = \Drupal::service('plugin.manager.geofield_backend');
 
-    $backends = $backendManager->getDefinitions();
+    $backends = $backend_manager->getDefinitions();
     $backend_options = [];
 
     foreach ($backends as $id => $backend) {
@@ -190,10 +194,7 @@ class GeofieldItem extends FieldItemBase {
   }
 
   /**
-   * Overrides \Drupal\Core\TypedData\FieldItemBase::setValue().
-   *
-   * @param array|null $values
-   *   An array of property values.
+   * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
     parent::setValue($values);
@@ -204,9 +205,12 @@ class GeofieldItem extends FieldItemBase {
    * Populates computed variables.
    */
   protected function populateComputedValues() {
+
+    /* @var \Geometry $geom */
     $geom = \Drupal::service('geofield.geophp')->load($this->value);
 
     if (!empty($geom)) {
+      /* @var \Point $centroid */
       $centroid = $geom->getCentroid();
       $bounding = $geom->getBBox();
 
@@ -226,7 +230,6 @@ class GeofieldItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public function prepareCache() {
-    
   }
 
   /**
@@ -236,7 +239,6 @@ class GeofieldItem extends FieldItemBase {
     $value = [
       'value' => \Drupal::service('geofield.wkt_generator')->WktGenerateGeometry(),
     ];
-
     return $value;
   }
 

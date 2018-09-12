@@ -45,7 +45,7 @@ class GeofieldDms extends FormElement {
    * @return array
    *   The processed element.
    */
-  public static function dmsProcess(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function dmsProcess(array &$element, FormStateInterface $form_state, array &$complete_form) {
     $element['#tree'] = TRUE;
     $element['#input'] = TRUE;
     $default_value = NULL;
@@ -86,30 +86,30 @@ class GeofieldDms extends FormElement {
    * @param array $complete_form
    *   The complete form structure.
    */
-  public static function elementValidate(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function elementValidate(array &$element, FormStateInterface $form_state, array &$complete_form) {
 
   }
 
   /**
-   * Helper funtion to generate each coordinate component form element.
+   * Helper function to generate each coordinate component form element.
    *
-   * @param $element
+   * @param array $element
    *   The form element.
-   * @param $type
+   * @param string $type
    *   The component type.
    * @param array $options
    *   The component options.
-   * @param $default_value
+   * @param array $default_value
    *   The component default value array.
    */
-  protected static function processComponent(&$element, $type, array $options, $default_value) {
+  protected static function processComponent(array &$element, $type, array $options, array $default_value) {
     $element[$type] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => [
           'container-inline',
         ],
-      ]
+      ],
     ];
 
     $element[$type]['orientation'] = [
@@ -126,7 +126,7 @@ class GeofieldDms extends FormElement {
         ],
         'style' => [
           'min-width: 6em',
-        ]
+        ],
       ],
     ];
     $element[$type]['degrees'] = [

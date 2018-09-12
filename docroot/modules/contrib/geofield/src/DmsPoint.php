@@ -8,23 +8,26 @@ namespace Drupal\geofield;
 class DmsPoint {
 
   /**
+   * The longitude component.
+   *
    * @var array
-   *   The longitude component.
    */
   protected $lon;
 
   /**
+   * The latitude component.
+   *
    * @var array
-   *   The latitude component.
    */
   protected $lat;
 
   /**
    * DmsPoint constructor.
+   *
    * @param array $lon
    *   The longitude components.
    * @param array $lat
-   *   The latitde components.
+   *   The latitude components.
    */
   public function __construct(array $lon, array $lat) {
     $this->lat = $lat;
@@ -34,8 +37,8 @@ class DmsPoint {
   /**
    * Retrieves an object property.
    *
-   * @param $property
-   *   The property to get
+   * @param string $property
+   *   The property to get.
    *
    * @return array|null
    *   The property if exists, otherwise NULL.
@@ -45,30 +48,42 @@ class DmsPoint {
   }
 
   /**
+   * Get the Longitude property.
+   *
    * @return array
+   *   The lon components.
    */
   public function getLon() {
     return $this->lon;
   }
 
   /**
+   * Set the Longitude property.
+   *
    * @param array $lon
+   *   The lon components.
    */
-  public function setLon($lon) {
+  public function setLon(array $lon) {
     $this->lon = $lon;
   }
 
   /**
+   * Get the Latitude property.
+   *
    * @return array
+   *   The lat components.
    */
   public function getLat() {
     return $this->lat;
   }
 
   /**
+   * Set the Latitude property.
+   *
    * @param array $lat
+   *   The lat components.
    */
-  public function setLat($lat) {
+  public function setLat(array $lat) {
     $this->lat = $lat;
   }
 

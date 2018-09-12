@@ -1,14 +1,9 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\geofield\Plugin\views\filter\GeofieldProximity.
- */
-
 namespace Drupal\geofield\Plugin\views\filter;
 
-use Drupal\Component\Annotation\PluginID;
-use Drupal\views\Plugin\views\filter\Numeric;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Plugin\views\filter\NumericFilter;
 
 /**
  * Field handler to filter Geofields by proximity.
@@ -17,8 +12,11 @@ use Drupal\views\Plugin\views\filter\Numeric;
  *
  * @PluginID("geofield_proximity")
  */
-class GeofieldProximity extends Numeric {
+class GeofieldProximity extends NumericFilter {
 
+  /**
+   * {@inheritdoc}
+   */
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -40,6 +38,9 @@ class GeofieldProximity extends Numeric {
     return $options;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function operators() {
     $operators = [
       '<' => [
@@ -95,6 +96,9 @@ class GeofieldProximity extends Numeric {
     return $operators;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function query() {
     $proximityPlugin = geofield_proximity_load_plugin($this->options['source']);
     $options = $proximityPlugin->getSourceValue($this);
@@ -126,7 +130,10 @@ class GeofieldProximity extends Numeric {
     $this->query->add_where_expression($this->options['group'], geofield_haversine($options) . ' ' . $this->operator . ' ' . $this->value['distance']);
   }
 
-  public function buildOptionsForm(&$form, &$form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
     $form['source'] = [
       '#type' => 'select',
@@ -144,12 +151,13 @@ class GeofieldProximity extends Numeric {
     $form['source_change'] = [
       '#type' => 'submit',
       '#value' => 'Change Source Widget',
-      '#submit' => ['geofield_views_ui_change_proximity_widget'],
+      '#submit' => [[get_class($this), 'geofieldViewsUiChangeProximityWidget']],
     ];
 
     $proximityHandlers = geofield_proximity_views_handlers();
     foreach ($proximityHandlers as $key => $handler) {
-      // Manually skip 'Exposed Filter', since it wouldn't make any sense in this context.
+      // Manually skip 'Exposed Filter', since it wouldn't make any sense
+      // in this context.
       if ($key != 'exposed_geofield_filter') {
         $form['source']['#options'][$key] = $handler['name'];
 
@@ -158,22 +166,28 @@ class GeofieldProximity extends Numeric {
       }
     }
 
-    // Look for any top-level item with a #proximity_plugin_value_element set. If found, it doesn't
-    // belong in this particular field.
-    foreach ($form as $key =>$form_item) {
+    // Look for any top-level item with a #proximity_plugin_value_element set.
+    // If found, it doesn't belong in this particular field.
+    foreach ($form as $key => $form_item) {
       if (isset($form_item['#proximity_plugin_value_element']) && $form_item['#proximity_plugin_value_element'] == TRUE) {
         unset($form[$key]);
       }
     }
   }
 
-  public function validateOptionsForm(&$form, &$form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  public function validateOptionsForm(&$form, FormStateInterface $form_state) {
     parent::validateOptionsForm($form, $form_state);
     $proximityPlugin = geofield_proximity_load_plugin($form_state['values']['options']['source']);
     $proximityPlugin->options_validate($form, $form_state, $this);
   }
 
-  protected function valueForm(&$form, &$form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  protected function valueForm(&$form, FormStateInterface $form_state) {
     $form['value'] = [
       '#type' => 'geofield_proximity',
       '#title' => t('Proximity Search'),
@@ -212,7 +226,7 @@ class GeofieldProximity extends Numeric {
     $options = $this->operator_options('short');
     $output = check_plain($options[$this->operator]);
     if (in_array($this->operator, $this->operator_values(2))) {
-      $output .= ' ' . t('@min and @max', array('@min' => $this->value['distance'], '@max' => $this->value['distance2']));
+      $output .= ' ' . t('@min and @max', ['@min' => $this->value['distance'], '@max' => $this->value['distance2']]);
     }
     elseif (in_array($this->operator, $this->operator_values(1))) {
       $output .= ' ' . check_plain($this->value['distance']);
@@ -221,6 +235,8 @@ class GeofieldProximity extends Numeric {
   }
 
   /**
+   * Validation of the Exposed Input Filter.
+   *
    * Check to see if input from the exposed filters should change
    * the behavior of this filter.
    *   - @TODO: This could be more polished.
@@ -240,26 +256,37 @@ class GeofieldProximity extends Numeric {
     $this->value['origin'] = $input[$input_id]['origin'];
     return TRUE;
   }
-} // class GeofieldProximity
 
-function geofield_views_ui_change_proximity_widget($form, &$form_state) {
-  $item = &$form_state['handler']->options;
-  $changed = $item['source'] != $form_state['values']['options']['source'];
-  $item['source'] = $form_state['values']['options']['source'];
+  /**
+   * Function geofieldViewsUiChangeProximityWidget.
+   *
+   * @param array $form
+   *   The Form array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The Form State array.
+   *
+   * @TODO: This function should be embedded in the class, if really needed.
+   */
+  public static function geofieldViewsUiChangeProximityWidget(array $form, FormStateInterface &$form_state) {
+    $item = &$form_state['handler']->options;
+    $changed = $item['source'] != $form_state['values']['options']['source'];
+    $item['source'] = $form_state['values']['options']['source'];
 
-  if ($changed) {
-    if ($item['source'] == 'manual') {
-      $item['value']['origin'] = ['lat' => '', 'lon' => ''];
+    if ($changed) {
+      if ($item['source'] == 'manual') {
+        $item['value']['origin'] = ['lat' => '', 'lon' => ''];
+      }
+      else {
+        $item['value']['origin'] = '';
+      }
     }
-    else {
-      $item['value']['origin'] = '';
-    }
+
+    $form_state['view']->set_item($form_state['display_id'], $form_state['type'], $form_state['id'], $item);
+
+    views_ui_cache_set($form_state['view']);
+    $form_state['rerender'] = TRUE;
+    $form_state['rebuild'] = TRUE;
+    $form_state['force_expose_options'] = TRUE;
   }
 
-  $form_state['view']->set_item($form_state['display_id'], $form_state['type'], $form_state['id'], $item);
-
-  views_ui_cache_set($form_state['view']);
-  $form_state['rerender'] = TRUE;
-  $form_state['rebuild'] = TRUE;
-  $form_state['force_expose_options'] = TRUE;
 }

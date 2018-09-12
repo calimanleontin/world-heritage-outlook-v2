@@ -15,4 +15,5 @@ use Symfony\Component\Validator\Constraint;
 class GeoConstraint extends Constraint {
 
   public $message = '"@value" is not a valid geospatial content.';
+
 }

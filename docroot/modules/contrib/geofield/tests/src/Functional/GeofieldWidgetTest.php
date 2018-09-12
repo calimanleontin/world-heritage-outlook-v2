@@ -43,6 +43,9 @@ class GeofieldWidgetTest extends FieldTestBase {
    */
   protected $assertSession;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -52,7 +55,7 @@ class GeofieldWidgetTest extends FieldTestBase {
       'type' => 'geofield',
       'settings' => [
         'backend' => 'geofield_backend_default',
-      ]
+      ],
     ]);
     $this->fieldStorage->save();
 
@@ -60,6 +63,9 @@ class GeofieldWidgetTest extends FieldTestBase {
       'field_storage' => $this->fieldStorage,
       'bundle' => 'entity_test',
       'description' => 'Description for geofield_field',
+      'settings' => [
+        'backend' => 'geofield_backend_default',
+      ],
       'required' => TRUE,
     ]);
     $this->field->save();
@@ -116,7 +122,7 @@ class GeofieldWidgetTest extends FieldTestBase {
     $this->drupalPostForm(NULL, $edit, t('Save'));
     $this->assertFieldValues($entity, 'geofield_field', ['POINT (125.6 10.1)']);
 
-    //Test a valid WKB value.
+    // Test a valid WKB value.
     $edit = [
       'name[0][value]' => 'Arnedo',
       'geofield_field[0][value]' => '0101000020E6100000705F07CE19D100C0865AD3BCE31C4540',
@@ -273,7 +279,7 @@ class GeofieldWidgetTest extends FieldTestBase {
       'geofield_field[0][value][lon][seconds]' => 7,
     ];
     $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertFieldValues($entity, 'geofield_field', ['POINT (-2.1019444444444 42.225555555556)']);
+    $this->assertFieldValues($entity, 'geofield_field', ['POINT (-2.10194444444 42.2255555556)']);
 
     // Add invalid data.
     $edit = [
