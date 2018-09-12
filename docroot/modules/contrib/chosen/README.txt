@@ -28,10 +28,10 @@
       "type": "package",
       "package": {
         "name": "harvesthq/chosen",
-        "version": "1.6.1",
+        "version": "1.8.2",
         "type": "drupal-library",
         "dist": {
-          "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
+          "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.2/chosen_v1.8.2.zip",
           "type": "zip"
         },
         "require": {

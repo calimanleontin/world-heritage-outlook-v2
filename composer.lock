@@ -1240,17 +1240,17 @@
         },
         {
             "name": "drupal/chosen",
-            "version": "2.3.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/chosen",
-                "reference": "8.x-2.3"
+                "reference": "8.x-2.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/chosen-8.x-2.3.zip",
-                "reference": "8.x-2.3",
-                "shasum": "0fb121035f4a936e83734333e8fe2d014676d274"
+                "url": "https://ftp.drupal.org/files/projects/chosen-8.x-2.6.zip",
+                "reference": "8.x-2.6",
+                "shasum": "b43565838274ba8f32fff6df221d16a3f21c0607"
             },
             "require": {
                 "drupal/chosen_lib": "*",
@@ -1262,8 +1262,12 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.3",
-                    "datestamp": "1493719085"
+                    "version": "8.x-2.6",
+                    "datestamp": "1531588121",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -1321,7 +1325,7 @@
         },
         {
             "name": "drupal/chosen_lib",
-            "version": "2.3.0",
+            "version": "2.6.0",
             "require": {
                 "drupal/chosen": "self.version",
                 "drupal/core": "~8.0"
@@ -1332,13 +1336,17 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.3",
-                    "datestamp": "1493719085"
+                    "version": "8.x-2.6",
+                    "datestamp": "1531588121",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
