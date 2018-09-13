@@ -13666,6 +13666,7 @@ a[rel="bookmark"] {
 .view-sites-search .view-header .block-search-api-sorts li > a {
   color: #03afdf;
 }
+.view-sites-search .view-header .block-search-api-sorts li > a .glyphicon,
 .view-sites-search .view-header .block-search-api-sorts li > a .tablesort {
   display: none;
 }
@@ -19403,6 +19404,7 @@ a[rel="bookmark"] {
 .view-publications .view-header .block-search-api-sorts ul li > a {
   color: #03afdf;
 }
+.view-publications .view-header .block-search-api-sorts ul li > a .glyphicon,
 .view-publications .view-header .block-search-api-sorts ul li > a .tablesort {
   display: none;
 }
