@@ -98,35 +98,33 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
             $substitution_type = $entity_type === 'file' ? 'file' : SubstitutionManagerInterface::DEFAULT_SUBSTITUTION;
           }
 
-          if ($entity_type) {
-            $entity = $this->entityRepository->loadEntityByUuid($entity_type, $uuid);
-            if ($entity) {
+          $entity = $this->entityRepository->loadEntityByUuid($entity_type, $uuid);
+          if ($entity) {
 
-              $entity = $this->entityRepository->getTranslationFromContext($entity, $langcode);
+            $entity = $this->entityRepository->getTranslationFromContext($entity, $langcode);
 
-              /** @var \Drupal\Core\GeneratedUrl $url */
-              $url = $this->substitutionManager
-                ->createInstance($substitution_type)
-                ->getUrl($entity);
+            /** @var \Drupal\Core\GeneratedUrl $url */
+            $url = $this->substitutionManager
+              ->createInstance($substitution_type)
+              ->getUrl($entity);
 
-              $element->setAttribute('href', $url->getGeneratedUrl());
-              $access = $entity->access('view', NULL, TRUE);
+            $element->setAttribute('href', $url->getGeneratedUrl());
+            $access = $entity->access('view', NULL, TRUE);
 
-              // Set the appropriate title attribute.
-              if ($this->settings['title'] && !$access->isForbidden() && !$element->getAttribute('title')) {
-                $element->setAttribute('title', $entity->label());
-              }
-
-              // The processed text now depends on:
-              $result
-                // - the linked entity access for the current user.
-                ->addCacheableDependency($access)
-                // - the generated URL (which has undergone path & route
-                // processing)
-                ->addCacheableDependency($url)
-                // - the linked entity (whose URL and title may change)
-                ->addCacheableDependency($entity);
+            // Set the appropriate title attribute.
+            if ($this->settings['title'] && !$access->isForbidden() && !$element->getAttribute('title')) {
+              $element->setAttribute('title', $entity->label());
             }
+
+            // The processed text now depends on:
+            $result
+              // - the linked entity access for the current user.
+              ->addCacheableDependency($access)
+              // - the generated URL (which has undergone path & route
+              // processing)
+              ->addCacheableDependency($url)
+              // - the linked entity (whose URL and title may change)
+              ->addCacheableDependency($entity);
           }
         }
         catch (\Exception $e) {
