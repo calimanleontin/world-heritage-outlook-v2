@@ -11,6 +11,9 @@
     "drupal/facets_pretty_paths": {
       "translation_problem": "patches/facets_pretty_paths/translation_problem.patch"
     },
+    "drupal/linkit": {
+      "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
+    },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     },
