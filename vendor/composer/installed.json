@@ -6495,6 +6495,9 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
             }
         },
         "installation-source": "dist",
