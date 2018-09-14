@@ -98,6 +98,7 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
             $substitution_type = $entity_type === 'file' ? 'file' : SubstitutionManagerInterface::DEFAULT_SUBSTITUTION;
           }
 
+          if ($entity_type) {
           $entity = $this->entityRepository->loadEntityByUuid($entity_type, $uuid);
           if ($entity) {
 
@@ -126,6 +127,7 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
               // - the linked entity (whose URL and title may change)
               ->addCacheableDependency($entity);
           }
+        }
         }
         catch (\Exception $e) {
           watchdog_exception('linkit_filter', $e);
