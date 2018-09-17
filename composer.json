@@ -132,7 +132,7 @@
     "drupal/colorbox": "^1.4",
     "drupal/config_ignore_keys": "^1.0",
     "drupal/config_split": "^1.0@beta",
-    "drupal/core": "8.5.*",
+    "drupal/core": "8.*",
     "drupal/devel": "^1.0@RC",
     "drupal/display_field_copy": "^1.0",
     "drupal/ds": "^3.1",
