@@ -46,7 +46,7 @@ dependencies:
     - datetime
     - field_group
     - file
-    - paragraphs
+    - iucn_assessment
 third_party_settings:
   field_group:
     group_as_tabs:
@@ -243,15 +243,21 @@ content:
     type: boolean_checkbox
     region: content
   field_as_benefits:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 8
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_benefits_summary:
@@ -289,51 +295,75 @@ content:
     type: string_textarea
     region: content
   field_as_key_cons:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 37
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_projects:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 16
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_projects_needs:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 17
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_protection:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 33
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_protection_ov_out_rate:
@@ -393,15 +423,21 @@ content:
     type: datetime_default
     region: content
   field_as_threats_current:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 22
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_threats_current_rating:
@@ -433,15 +469,21 @@ content:
     type: string_textarea
     region: content
   field_as_threats_potential:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 23
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_threats_rating:
@@ -459,27 +501,39 @@ content:
     type: string_textarea
     region: content
   field_as_values_bio:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 15
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_values_wh:
-    type: entity_reference_paragraphs
+    type: row_entity_reference_paragraphs
     weight: 14
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: 0
     third_party_settings: {  }
     region: content
   field_as_vass_bio_state:
@@ -566,6 +620,11 @@ content:
     third_party_settings: {  }
   translation:
     weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
     region: content
     settings: {  }
     third_party_settings: {  }
