@@ -1,0 +1,25 @@
+.paragraphs-tabs-wrapper table tbody tr:first-child .field-multiple-drag {
+    display: none;
+}
+
+.paragraphs-tabs-wrapper table tbody tr:not(:first-child) thead {
+    display: none;
+}
+
+.paragraphs-tabs-wrapper table tbody tr {
+    display: block;
+}
+
+.paragraphs-tabs-wrapper table tbody table tr {
+    border-bottom: none;
+}
+
+.paragraphs-tabs-wrapper table tbody table tr td,
+.paragraphs-tabs-wrapper th {
+    max-width: 15rem;
+    min-width: 15rem;
+}
+
+.paragraph-top {
+    display: block !important;
+}

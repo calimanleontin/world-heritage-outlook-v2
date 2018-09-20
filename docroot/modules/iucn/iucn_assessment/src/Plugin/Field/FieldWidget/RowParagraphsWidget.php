@@ -3,12 +3,12 @@
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
-use Drupal\bootstrap\Utility\Unicode;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Component\Utility\Unicode;
 
 /**
  * Plugin implementation of the 'entity_reference paragraphs' widget.
@@ -42,12 +42,17 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
     $summary = $this->getSummaryComponents($paragraphs_entity);
+    $summary_row = [
+      '#type' => 'table',
+      '#header' => array_keys($summary),
+      '#rows' => [$summary],
+      '#attributes' => ['class' => ['table', 'table-responsive']],
+    ];
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
 
-    $element['top']['summary'] = $summary;
-//    dpm(array_keys($element['top']));
+    $element['top']['summary'] = $summary_row;
     return $element;
   }
 
@@ -56,7 +61,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $elements = parent::formMultipleElements($items, $form, $form_state);
-    $elements['#attached']['library'] = [];
+    $field_name = $this->fieldDefinition->getName();
+
+    $parents = $elements[0]['#field_parents'];
+
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
+    $paragraphs_entity = NULL;
+    $widget_state = static::getWidgetState($parents, $field_name, $form_state);
+    $paragraphs_entity = $widget_state['paragraphs'][0]['entity'];
+    $components = $this->getSummaryComponents($paragraphs_entity);
+    array_unshift($components, ['xd' => 'xd']);
+    $header = [
+      '#type' => 'table',
+      '#rows' => [],
+      '#header' => array_keys($components),
+    ];
+    array_unshift($elements, $header);
+
+    $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     return $elements;
   }
 
@@ -66,7 +88,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getSummaryComponents(ParagraphInterface $paragraph) {
     $show_behavior_summary = isset($options['show_behavior_summary']) ? $options['show_behavior_summary'] : TRUE;
-    $depth_limit = isset($options['depth_limit']) ? $options['depth_limit'] : 1;
     $paragraph->summaryCount = 0;
     $summary = [];
     $components = entity_get_form_display('paragraph', $paragraph->getType(), 'default')->getComponents();
@@ -98,12 +119,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
-        continue;
         // Decrease the depth, since we are entering a nested paragraph.
-        $nested_summary = $this->getNestedSummary($paragraph, $field_name, [
-          'show_behavior_summary' => $show_behavior_summary,
-          'depth_limit' => $depth_limit - 1
-        ]);
+        $nested_summary = $this->getNestedSummary($paragraph, $field_name);
         if ($nested_summary != '') {
           $summary[$label] = $nested_summary;
         }
@@ -147,20 +164,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     foreach ($summary as &$value) {
       $value = strip_tags($value);
-//      $value = [
-//        '#type' => 'markup',
-//        '#markup' => strip_tags($value),
-//        '#prefix' => "<div>",
-//        '#suffix' => "</div>",
-//      ];
-////      $value = strip_tags($value);
     }
-    return [
-      '#type' => 'table',
-      '#header' => array_keys($summary),
-      '#rows' => [$summary],
-      '#attributes' => ['class' => ['table', 'table-responsive']],
-    ];
     return $summary;
   }
 
@@ -198,33 +202,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
     return trim($summary);
   }
 
-  /**
-   * Returns summary for nested paragraphs.
-   *
-   * @param string $field_name
-   *   Field definition id for paragraph.
-   * @param array $options
-   *   (optional) An associative array of additional options.
-   *   See \Drupal\paragraphs\ParagraphInterface::getSummary() for all of the
-   *   available options.
-   *
-   * @return string
-   *   Short summary for nested Paragraphs type
-   *   or NULL if the summary is empty.
-   */
-  protected function getNestedSummary(ParagraphInterface $paragraph, $field_name, array $options) {
+  protected function getNestedSummary(ParagraphInterface $paragraph, $field_name) {
     $summary = [];
-    if ($options['depth_limit'] >= 0) {
-      foreach ($paragraph->get($field_name) as $item) {
-        $entity = $item->entity;
-        if ($entity instanceof ParagraphInterface) {
-          $summary[] = $entity->label();
-          $paragraph->summaryCount++;
-        }
+
+    foreach ($paragraph->get($field_name) as $item) {
+      $entity = $item->entity;
+      if ($entity instanceof ParagraphInterface) {
+        $summary_components = $this->getSummaryComponents($entity);
+        $first_component = reset($summary_components);
+        $summary[] = $first_component;
+
       }
     }
-
-    $summary = array_filter($summary);
 
     if (empty($summary)) {
       return NULL;
