@@ -20,7 +20,6 @@
         {% set dialogOptions = "data-dialog-options=" ~ {'width': '600'}|json_encode %}
       {% endif %}
       <li>
-    {{ foo }}
         <a {{ dialogType }} {{ dialogOptions }} {{ element.attr.target }} {{ element.attr.class.addClass(classes) }}  {{ element.api }}
           title="{{ element.text }}">
           {% if element.img %}

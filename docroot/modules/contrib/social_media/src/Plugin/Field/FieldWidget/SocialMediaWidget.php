@@ -35,7 +35,7 @@ class SocialMediaWidget extends WidgetBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['display_label'] = [
       '#type' => 'checkbox',
-      '#title' => t('Use field label instead of the "On label" as label'),
+      '#title' => t('Use field label instead of the "On" label as the label.'),
       '#default_value' => $this->getSetting('display_label'),
       '#weight' => -1,
     ];
@@ -73,4 +73,5 @@ class SocialMediaWidget extends WidgetBase {
 
     return $element;
   }
+
 }

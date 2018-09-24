@@ -86,7 +86,7 @@ class ReadonlyStorageTest extends UnitTestCase {
 
     $readonlyReflection = new \ReflectionClass(ReadOnlyStorage::class);
     $storageProperty = $readonlyReflection->getProperty('storage');
-    $storageProperty->setAccessible(true);
+    $storageProperty->setAccessible(TRUE);
     $actualSource = $storageProperty->getValue($collectionStorage);
     $this->assertEquals($collectionSource, $actualSource);
   }
@@ -106,7 +106,7 @@ class ReadonlyStorageTest extends UnitTestCase {
       $this->fail();
     }
     catch (UnsupportedMethod $exception) {
-      $this->assertEquals( ReadOnlyStorage::class .'::' . $method . ' is not allowed on a ReadOnlyStorage', $exception->getMessage());
+      $this->assertEquals(ReadOnlyStorage::class . '::' . $method . ' is not allowed on a ReadOnlyStorage', $exception->getMessage());
     }
   }
 

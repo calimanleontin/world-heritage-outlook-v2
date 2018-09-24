@@ -7,6 +7,10 @@
 
   'use strict';
 
+  Drupal.webform = Drupal.webform || {};
+  Drupal.webform.detailsToggle = Drupal.webform.detailsToggle || {};
+  Drupal.webform.detailsToggle.options = Drupal.webform.detailsToggle.options || {};
+
   /**
    * Attach handler to toggle details open/close state.
    *
@@ -16,11 +20,13 @@
     attach: function (context) {
       $('.js-webform-details-toggle', context).once('webform-details-toggle').each(function () {
         var $form = $(this);
+        var $tabs = $form.find('.webform-tabs');
 
-        // Get only the main details elements and ingnore all nested details.
-        var $details = $form.find('details').filter(function() {
+        // Get only the main details elements and ignore all nested details.
+        var selector = ($tabs.length) ? '.webform-tab' : '.js-webform-details-toggle';
+        var $details = $form.find('details').filter(function () {
           // @todo Figure out how to optimize the below code.
-          var $parents = $(this).parentsUntil('.js-webform-details-toggle');
+          var $parents = $(this).parentsUntil(selector);
           return ($parents.find('details').length === 0);
         });
 
@@ -29,8 +35,12 @@
           return;
         }
 
-        // Add toggle state link to first details element.
-        $details.first().before($('<button type="button" class="link webform-details-toggle-state"></button>')
+        var options = $.extend({
+          'button': '<button type="button" class="webform-details-toggle-state"></button>'
+        }, Drupal.webform.detailsToggle.options);
+
+        // Create toggle buttons.
+        var $toggle = $(options.button)
           .attr('title', Drupal.t('Toggle details widget state.'))
           .on('click', function (e) {
             var open;
@@ -56,8 +66,16 @@
             }
           })
           .wrap('<div class="webform-details-toggle-state-wrapper"></div>')
-          .parent()
-        );
+          .parent();
+
+        if ($tabs.length) {
+          // Add toggle state before the tabs.
+          $tabs.find('.item-list').before($toggle);
+        }
+        else {
+          // Add toggle state link to first details element.
+          $details.eq(0).before($toggle);
+        }
 
         setDetailsToggleLabel($form);
       });
@@ -84,8 +102,13 @@
    *   A webform.
    */
   function setDetailsToggleLabel($form) {
-    var label = (isFormDetailsOpen($form)) ? Drupal.t('Collapse all') : Drupal.t('Expand all');
+    var isOpen = isFormDetailsOpen($form);
+
+    var label = (isOpen) ? Drupal.t('Collapse all') : Drupal.t('Expand all');
     $form.find('.webform-details-toggle-state').html(label);
+
+    var text = (isOpen) ? Drupal.t('All details have been expanded.') : Drupal.t('All details have been collapsed.');
+    Drupal.announce(text);
   }
 
 })(jQuery, Drupal);

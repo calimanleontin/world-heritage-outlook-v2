@@ -50,14 +50,12 @@ class BreadcrumbIntegrationTest extends FacetsTestBase {
   public function testGroupingIntegration() {
     $this->editFacetConfig();
     $id = 'keywords';
-    $name = 'Keywords';
-    $this->createFacet($name, $id, 'keywords');
+    $this->createFacet('Keywords', $id, 'keywords');
     $this->resetAll();
     $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
 
     $id = 'type';
-    $name = 'Type';
-    $this->createFacet($name, $id);
+    $this->createFacet('Type', $id);
     $this->resetAll();
     $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
     $this->drupalPostForm(NULL, ['facet_settings[weight]' => '1'], 'Save');
@@ -76,12 +74,47 @@ class BreadcrumbIntegrationTest extends FacetsTestBase {
   }
 
   /**
+   * Tests Breadcrumb integration without grouping.
+   */
+  public function testNonGroupingIntegration() {
+    $this->markTestSkipped('Not yet implemented.');
+  }
+
+  /**
+   * Tests enabling + disabling the breadcrumb label prefix.
+   */
+  public function testBreadcrumbLabel() {
+    $id = 'type';
+    $this->createFacet('Type', $id);
+    $this->resetAll();
+    $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
+    $this->drupalPostForm(NULL, ['facet_settings[weight]' => '1'], 'Save');
+    $this->editFacetConfig(['breadcrumb[before]' => FALSE]);
+
+    $initial_query = ['search_api_fulltext' => 'foo'];
+    $this->drupalGet('search-api-test-fulltext', ['query' => $initial_query]);
+
+    $this->clickLink('item');
+    $breadcrumb = $this->getSession()->getPage()->find('css', '.breadcrumb');
+    $this->assertFalse(strpos($breadcrumb->getText(), 'Type'));
+    $breadcrumb->findLink('item');
+
+    $this->editFacetConfig(['breadcrumb[before]' => TRUE]);
+
+    $initial_query = ['search_api_fulltext' => 'foo'];
+    $this->drupalGet('search-api-test-fulltext', ['query' => $initial_query]);
+    $this->clickLink('item');
+    $breadcrumb = $this->getSession()->getPage()->find('css', '.breadcrumb');
+    $this->assertTrue(strpos($breadcrumb->getText(), 'Type'));
+  }
+
+  /**
    * Edit the facet configuration with the given values.
    *
    * @param array $config
-   *   The new configuration for the facet
+   *   The new configuration for the facet.
    */
-  public function editFacetConfig(array $config = []) {
+  protected function editFacetConfig(array $config = []) {
     $this->drupalGet('admin/config/search/facets');
     $this->clickLink('Configure', 1);
     $default_config = [
@@ -98,8 +131,7 @@ class BreadcrumbIntegrationTest extends FacetsTestBase {
    * Tests Breadcrumb with the given config.
    */
   protected function breadcrumbTest() {
-    // Breadcrumb should show Keywords: orange > Type: article, item
-
+    // Breadcrumb should show Keywords: orange > Type: article, item.
     $initial_query = ['search_api_fulltext' => 'foo', 'test_param' => 1];
     $this->drupalGet('search-api-test-fulltext', ['query' => $initial_query]);
 
@@ -133,10 +165,4 @@ class BreadcrumbIntegrationTest extends FacetsTestBase {
     $this->assertArraySubset($initial_query, $curr_url['query']);
   }
 
-  /**
-   * Tests Breadcrumb integration without grouping.
-   */
-  public function testNonGroupingIntegration() {
-    $this->markTestSkipped('Not yet implemented.');
-  }
 }

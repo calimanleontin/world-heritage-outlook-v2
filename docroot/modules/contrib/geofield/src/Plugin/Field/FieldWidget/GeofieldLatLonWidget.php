@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Plugin\Field\FieldWidget\GeofieldLatLonWidget.
- */
-
 namespace Drupal\geofield\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -22,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class GeofieldLatLonWidget extends WidgetBase {
+class GeofieldLatLonWidget extends GeofieldBaseWidget {
 
   /**
    * Lat Lon widget components.
@@ -60,7 +54,7 @@ class GeofieldLatLonWidget extends WidgetBase {
    */
   public function settingsSummary() {
     return [
-      $this->t('HTML5 Geolocation button is @state', ['@state' => $this->getSetting('html5_geolocation') ? $this->t('enabled') : $this->t('disabled')])
+      $this->t('HTML5 Geolocation button is @state', ['@state' => $this->getSetting('html5_geolocation') ? $this->t('enabled') : $this->t('disabled')]),
     ];
   }
 
@@ -96,7 +90,7 @@ class GeofieldLatLonWidget extends WidgetBase {
         }
       }
       $components = $value['value'];
-      $values[$delta]['value'] = \Drupal::service('geofield.wkt_generator')->WktBuildPoint([$components['lon'], $components['lat']]);
+      $values[$delta]['value'] = $this->wktGenerator->wktBuildPoint([$components['lon'], $components['lat']]);
     }
 
     return $values;

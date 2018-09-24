@@ -5,6 +5,7 @@ namespace Drupal\search_api\Query;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\search_api\Display\DisplayPluginManagerInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\ParseMode\ParseModeInterface;
 use Drupal\search_api\ParseMode\ParseModePluginManager;
@@ -164,7 +165,7 @@ class Query implements QueryInterface {
   /**
    * The display plugin manager.
    *
-   * @var \Drupal\search_api\Display\DisplayPluginManager|null
+   * @var \Drupal\search_api\Display\DisplayPluginManagerInterface|null
    */
   protected $displayPluginManager;
 
@@ -174,6 +175,13 @@ class Query implements QueryInterface {
    * @var \Drupal\search_api\Utility\QueryHelperInterface|null
    */
   protected $queryHelper;
+
+  /**
+   * The original query before preprocessing.
+   *
+   * @var static|null
+   */
+  protected $originalQuery;
 
   /**
    * Constructs a Query object.
@@ -256,7 +264,7 @@ class Query implements QueryInterface {
   /**
    * Retrieves the display plugin manager.
    *
-   * @return \Drupal\search_api\Display\DisplayPluginManager
+   * @return \Drupal\search_api\Display\DisplayPluginManagerInterface
    *   The display plugin manager.
    */
   public function getDisplayPluginManager() {
@@ -266,12 +274,12 @@ class Query implements QueryInterface {
   /**
    * Sets the display plugin manager.
    *
-   * @param \Drupal\search_api\Display\DisplayPluginManager $display_plugin_manager
+   * @param \Drupal\search_api\Display\DisplayPluginManagerInterface $display_plugin_manager
    *   The new display plugin manager.
    *
    * @return $this
    */
-  public function setDisplayPluginManager($display_plugin_manager) {
+  public function setDisplayPluginManager(DisplayPluginManagerInterface $display_plugin_manager) {
     $this->displayPluginManager = $display_plugin_manager;
     return $this;
   }
@@ -361,7 +369,7 @@ class Query implements QueryInterface {
    * {@inheritdoc}
    */
   public function setLanguages(array $languages = NULL) {
-    $this->languages = $languages;
+    $this->languages = isset($languages) ? array_values($languages) : NULL;
     return $this;
   }
 
@@ -464,7 +472,7 @@ class Query implements QueryInterface {
    * {@inheritdoc}
    */
   public function getAbortMessage() {
-    return is_bool($this->aborted) ? $this->aborted : NULL;
+    return !is_bool($this->aborted) ? $this->aborted : NULL;
   }
 
   /**
@@ -510,6 +518,9 @@ class Query implements QueryInterface {
     if (!$this->wasAborted() && $this->languages !== []) {
       return FALSE;
     }
+    if (!$this->originalQuery) {
+      $this->originalQuery = clone $this;
+    }
     $this->postExecute();
     return TRUE;
   }
@@ -520,8 +531,14 @@ class Query implements QueryInterface {
   public function preExecute() {
     // Make sure to only execute this once per query, and not for queries with
     // the "none" processing level.
-    if (!$this->preExecuteRan && $this->processingLevel != self::PROCESSING_NONE) {
+    if (!$this->preExecuteRan) {
+      $this->originalQuery = clone $this;
+      $this->originalQuery->executed = FALSE;
       $this->preExecuteRan = TRUE;
+
+      if ($this->processingLevel == self::PROCESSING_NONE) {
+        return;
+      }
 
       // Preprocess query.
       $this->index->preprocessSearchQuery($this);
@@ -675,9 +692,19 @@ class Query implements QueryInterface {
   /**
    * {@inheritdoc}
    */
+  public function getOriginalQuery() {
+    return $this->originalQuery ?: clone $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function __clone() {
     $this->results = $this->getResults()->getCloneForQuery($this);
     $this->conditionGroup = clone $this->conditionGroup;
+    if ($this->originalQuery) {
+      $this->originalQuery = clone $this->originalQuery;
+    }
     if ($this->parseMode) {
       $this->parseMode = clone $this->parseMode;
     }
@@ -696,12 +723,16 @@ class Query implements QueryInterface {
    * Implements the magic __wakeup() method to reload the query's index.
    */
   public function __wakeup() {
-    if (!isset($this->index) && !empty($this->indexId) && \Drupal::hasContainer()) {
+    if (!isset($this->index)
+        && !empty($this->indexId)
+        && \Drupal::hasContainer()
+        && \Drupal::getContainer()->has('entity_type.manager')) {
       $this->index = \Drupal::entityTypeManager()
         ->getStorage('search_api_index')
         ->load($this->indexId);
       $this->indexId = NULL;
     }
+
     $this->traitWakeup();
   }
 

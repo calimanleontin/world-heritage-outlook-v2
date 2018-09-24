@@ -1,33 +1,31 @@
 {
   "name": "drupal/config_filter",
   "type": "drupal-module",
-  "description": "Config Filter.",
-  "keywords": ["drupal", "configuration"],
-  "minimum-stability": "stable",
-  "license": "GPL-2.0+",
+  "description": "Config Filter allows other modules to interact with a ConfigStorage through filter plugins.",
+  "keywords": ["Drupal", "configuration", "configuration management"],
   "authors": [
     {
+      "name": "Fabian Bircher",
+      "email": "opensource@fabianbircher.com",
+      "homepage": "https://www.drupal.org/u/bircher",
+      "role": "Maintainer"
+    },
+    {
       "name": "Nuvole Web",
-      "email": "info@nuvole.org"
+      "email": "info@nuvole.org",
+      "homepage": "http://nuvole.org",
+      "role": "Maintainer"
     }
   ],
-  "prefer-stable": true,
-  "require-dev": {
-    "drupal/coder": "*"
+  "homepage": "https://www.drupal.org/project/config_filter",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/config_filter",
+    "irc": "irc://irc.freenode.org/drupal-contribute",
+    "source": "http://cgit.drupalcode.org/config_filter"
   },
-  "scripts": {
-    "post-install-cmd": [
-      "./vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
-      "./vendor/bin/phpcs --config-set show_progress 1",
-      "cp ./tests/scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
-    ],
-    "post-update-cmd": [
-      "./vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
-      "./vendor/bin/phpcs --config-set show_progress 1",
-      "cp ./tests/scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
-    ],
-    "phpcs": "./vendor/bin/phpcs --standard=Drupal,DrupalPractice . --ignore=./vendor,./tests",
-    "phpcs-n": "./vendor/bin/phpcs --standard=Drupal,DrupalPractice . --ignore=./vendor,./tests -n",
-    "phpcbf": "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice . --ignore=./vendor,./tests"
+  "license": "GPL-2.0+",
+  "require": {},
+  "suggest": {
+    "drupal/config_split": "Split site configuration for different environments."
   }
 }

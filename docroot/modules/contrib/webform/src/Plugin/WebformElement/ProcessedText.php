@@ -11,6 +11,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "processed_text",
+ *   default_key = "processed_text",
  *   label = @Translation("Advanced HTML/Text"),
  *   category = @Translation("Markup elements"),
  *   description = @Translation("Provides an element to render advanced HTML markup and processed text."),
@@ -35,12 +36,13 @@ class ProcessedText extends WebformMarkupBase {
       $default_format = '';
     }
 
-    return parent::getDefaultProperties() + [
+    return [
       'wrapper_attributes' => [],
+      'label_attributes' => [],
       // Markup settings.
       'text' => '',
       'format' => $default_format ,
-    ];
+    ] + parent::getDefaultProperties();
   }
 
   /**
@@ -82,7 +84,7 @@ class ProcessedText extends WebformMarkupBase {
     // which closes the original modal.
     // @todo Remove the below workaround once this issue is resolved.
     if (!$form_state->getUserInput() && \Drupal::currentUser()->hasPermission('administer webform')) {
-      drupal_set_message($this->t('Processed text element can not be opened within a modal. Please see <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>.'), 'warning');
+      $this->messenger()->addWarning($this->t('Processed text element can not be opened within a modal. Please see <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>.'));
     }
     $form = parent::form($form, $form_state);
 

@@ -48,8 +48,7 @@ class SliderIntegrationTest extends FacetsTestBase {
   public function testSliderWidget() {
     $this->createIntegerField();
     $id = 'owl';
-    $name = 'Owl widget.';
-    $this->createFacet($name, $id, 'field_integer');
+    $this->createFacet('Owl widget.', $id, 'field_integer');
 
     $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
 
@@ -123,7 +122,7 @@ class SliderIntegrationTest extends FacetsTestBase {
         'type' => 'item',
         'keywords' => ['orange'],
         'category' => 'item_category',
-        'field_integer' => (bool) $i%2 ? $i : $i+1,
+        'field_integer' => (bool) $i % 2 ? $i : $i + 1,
       ])->save();
     }
 

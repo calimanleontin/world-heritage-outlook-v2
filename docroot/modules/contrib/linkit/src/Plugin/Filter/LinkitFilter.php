@@ -51,6 +51,8 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
    *   The plugin implementation definition.
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
    *   The entity repository service.
+   * @param \Drupal\linkit\SubstitutionManagerInterface $substitution_manager
+   *   The substitution manager.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityRepositoryInterface $entity_repository, SubstitutionManagerInterface $substitution_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -95,36 +97,37 @@ class LinkitFilter extends FilterBase implements ContainerFactoryPluginInterface
           if (!$substitution_type = $element->getAttribute('data-entity-substitution')) {
             $substitution_type = $entity_type === 'file' ? 'file' : SubstitutionManagerInterface::DEFAULT_SUBSTITUTION;
           }
-          if($entity_type){
-            $entity = $this->entityRepository->loadEntityByUuid($entity_type, $uuid);
-            if ($entity) {
 
-              $entity = $this->entityRepository->getTranslationFromContext($entity, $langcode);
+          if ($entity_type) {
+          $entity = $this->entityRepository->loadEntityByUuid($entity_type, $uuid);
+          if ($entity) {
 
-              /** @var \Drupal\Core\GeneratedUrl $url */
-              $url = $this->substitutionManager
-                ->createInstance($substitution_type)
-                ->getUrl($entity);
+            $entity = $this->entityRepository->getTranslationFromContext($entity, $langcode);
 
-              $element->setAttribute('href', $url->getGeneratedUrl());
-              $access = $entity->access('view', NULL, TRUE);
+            /** @var \Drupal\Core\GeneratedUrl $url */
+            $url = $this->substitutionManager
+              ->createInstance($substitution_type)
+              ->getUrl($entity);
 
-              // Set the appropriate title attribute.
-              if ($this->settings['title'] && !$access->isForbidden() && !$element->getAttribute('title')) {
-                $element->setAttribute('title', $entity->label());
-              }
+            $element->setAttribute('href', $url->getGeneratedUrl());
+            $access = $entity->access('view', NULL, TRUE);
 
-              // The processed text now depends on:
-              $result
-                // - the linked entity access for the current user.
-                ->addCacheableDependency($access)
-                // - the generated URL (which has undergone path & route
-                // processing)
-                ->addCacheableDependency($url)
-                // - the linked entity (whose URL and title may change)
-                ->addCacheableDependency($entity);
+            // Set the appropriate title attribute.
+            if ($this->settings['title'] && !$access->isForbidden() && !$element->getAttribute('title')) {
+              $element->setAttribute('title', $entity->label());
             }
+
+            // The processed text now depends on:
+            $result
+              // - the linked entity access for the current user.
+              ->addCacheableDependency($access)
+              // - the generated URL (which has undergone path & route
+              // processing)
+              ->addCacheableDependency($url)
+              // - the linked entity (whose URL and title may change)
+              ->addCacheableDependency($entity);
           }
+        }
         }
         catch (\Exception $e) {
           watchdog_exception('linkit_filter', $e);

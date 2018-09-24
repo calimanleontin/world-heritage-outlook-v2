@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Element;
 
+use Drupal\webform\Twig\TwigExtension;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -12,40 +13,41 @@ use Drupal\webform\WebformSubmissionInterface;
 class WebformComputedTwig extends WebformComputedBase {
 
   /**
+   * Whitespace spaceless.
+   *
+   * Remove whitespace around the computed value and between HTML tags.
+   */
+  const WHITESPACE_SPACELESS = 'spaceless';
+
+  /**
+   * Whitespace trim.
+   *
+   * Remove whitespace around the computed value.
+   */
+  const WHITESPACE_TRIM = 'trim';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getInfo() {
+    return parent::getInfo() + [
+      '#whitespace' => '',
+    ];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function processValue(array $element, WebformSubmissionInterface $webform_submission) {
-    $mode = static::getMode($element);
-    $template = $element['#value'];
+    $whitespace = (!empty($element['#whitespace'])) ? $element['#whitespace'] : '';
 
-    // Add 'html' key to webform_submission tokens in Twig markup.
-    // @see _webform_token_get_submission_value()
-    if ($mode === static::MODE_HTML) {
-      $template = preg_replace('/\[(webform_submission:values:[^]]+)\]/', '[\1:html]', $template);
-    }
+    $template = ($whitespace === static::WHITESPACE_SPACELESS) ? '{% spaceless %}' . $element['#value'] . '{% endspaceless %}' : $element['#value'];
 
-    $context = [
-      'webform_submission' => $webform_submission,
-      'webform' => $webform_submission->getWebform(),
-      'elements' => $webform_submission->getWebform()->getElementsDecoded(),
-      'elements_flattened' => $webform_submission->getWebform()->getElementsDecodedAndFlattened(),
-    ] + $webform_submission->toArray(TRUE);
+    $options = ['html' => (static::getMode($element) === static::MODE_HTML)];
 
-    $build = [
-      '#type' => 'inline_template',
-      '#template' => $template,
-      '#context' => $context,
-    ];
+    $value = TwigExtension::renderTwigTemplate($webform_submission, $template, $options);
 
-    try {
-      return \Drupal::service('renderer')->renderPlain($build);
-    }
-    catch (\Exception $exception) {
-      if ($webform_submission->getWebform()->access('update')) {
-        drupal_set_message(t('Failed to render computed Twig value due to error "%error"', ['%error' => $exception->getMessage()]), 'error');
-      }
-      return '';
-    }
+    return ($whitespace === static::WHITESPACE_TRIM) ? trim($value) : $value;
   }
 
 }

@@ -80,8 +80,9 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
     $settings = [];
     $icon_path = $base_url . '/' . drupal_get_path('module', 'social_media') . '/icons/';
     $elements = array();
-    $social_medias = $this->configFactory->get('social_media.settings')->get('social_media');
-    
+    $social_medias = $this->configFactory->get('social_media.settings')
+      ->get('social_media');
+
     // call pre_execute event before doing anything.
     $event = new SocialMediaEvent($social_medias);
     $this->eventDispatcher->dispatch('social_media.pre_execute', $event);
@@ -91,10 +92,10 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
     foreach ($social_medias as $name => $social_media) {
 
       // replace api url with different link.
-      if($name == "email" &&  isset($social_media['enable_forward']) && $social_media['enable_forward']){
-        $social_media['api_url'] = str_replace('mailto:','/social-media-forward',$social_media['api_url']);
-        $social_media['api_url'] .= '&destination='.$this->currentPath->getPath();
-        if(isset($social_media['show_forward']) && $social_media['show_forward'] == 1) {
+      if ($name == "email" && isset($social_media['enable_forward']) && $social_media['enable_forward']) {
+        $social_media['api_url'] = str_replace('mailto:', '/social-media-forward', $social_media['api_url']);
+        $social_media['api_url'] .= '&destination=' . $this->currentPath->getPath();
+        if (isset($social_media['show_forward']) && $social_media['show_forward'] == 1) {
           $library[] = 'core/drupal.dialog.ajax';
         }
       }
@@ -120,8 +121,8 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
           $elements[$name]['img'] = $base_url . '/' . $social_media['img'];
         }
 
-        if(isset($social_media['enable_forward']) && $social_media['enable_forward']){
-          if(isset($social_media['show_forward']) && $social_media['show_forward'] == 1) {
+        if (isset($social_media['enable_forward']) && $social_media['enable_forward']) {
+          if (isset($social_media['show_forward']) && $social_media['show_forward'] == 1) {
             $elements[$name]['forward_dialog'] = $social_media['show_forward'];
           }
 
@@ -158,7 +159,7 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
   protected function sortSocialMedias(&$element) {
-    $weight = array();
+    $weight = [];
     foreach ($element as $key => $row) {
       $weight[$key] = $row['weight'];
     }
@@ -172,8 +173,8 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
     if (count($variable)) {
       foreach ($variable as $each) {
         $var = explode("|", $each);
-        $value = str_replace(array("\r\n", "\n", "\r"), "", $var[1]);
-        $attributes[$var[0]] = new Attribute(array($var[0] => $value));
+        $value = str_replace(["\r\n", "\n", "\r"], "", $var[1]);
+        $attributes[$var[0]] = new Attribute([$var[0] => $value]);
       }
     }
     return $attributes;
@@ -185,7 +186,7 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
     if (count($variable)) {
       foreach ($variable as $each) {
         $var = explode("|", $each);
-        $settings[$var[0]] = str_replace(array("\r\n", "\n", "\r"), "", $var[1]);
+        $settings[$var[0]] = str_replace(["\r\n", "\n", "\r"], "", $var[1]);
       }
     }
 

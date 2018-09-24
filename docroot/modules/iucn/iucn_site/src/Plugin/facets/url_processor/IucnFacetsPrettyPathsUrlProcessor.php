@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_site\Plugin\facets\url_processor;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\UrlProcessor\UrlProcessorPluginBase;
@@ -29,14 +30,15 @@ class IucnFacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $request) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $request, EntityTypeManagerInterface $entity_type_manager) {
 
     $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
     $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $this->entityTypeManager = $entity_type_manager;
     if($default_language != $current_language){
       $this->currentLanguage = "/$current_language";
     }
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $request);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $request, $entity_type_manager);
     $this->initializeActiveFilters($configuration);
   }
 

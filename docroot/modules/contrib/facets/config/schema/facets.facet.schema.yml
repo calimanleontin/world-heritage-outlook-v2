@@ -7,7 +7,7 @@ facets.facet.*:
       label: 'ID'
     name:
       type: label
-      label: Name'
+      label: Name
     uuid:
       type: string
       label: 'UUID'
@@ -18,7 +18,7 @@ facets.facet.*:
       type: integer
       label: 'Minimum count'
     url_alias:
-      type: string
+      type: label
       label: 'Name of facet as used in the URL'
     facet_source_id:
       type: string
@@ -73,6 +73,9 @@ facets.facet.*:
     show_only_one_result:
       type: boolean
       label: 'Show only one result'
+    show_title:
+      type: boolean
+      label: 'Show title'
     processor_configs:
       type: sequence
       label: 'Processor settings'

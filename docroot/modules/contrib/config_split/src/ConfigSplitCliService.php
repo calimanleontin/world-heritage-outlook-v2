@@ -6,8 +6,6 @@ use Drupal\config_filter\Config\FilteredStorage;
 use Drupal\config_filter\ConfigFilterManagerInterface;
 use Drupal\config_filter\ConfigFilterStorageFactory;
 use Drupal\config_split\Config\GhostStorage;
-use Drupal\config_split\Entity\ConfigSplitEntity;
-use Drupal\config_split\Plugin\ConfigFilter\SplitFilter;
 use Drupal\Core\Config\ConfigImporter;
 use Drupal\Core\Config\ConfigImporterException;
 use Drupal\Core\Config\ConfigManagerInterface;
@@ -178,8 +176,10 @@ class ConfigSplitCliService {
    *   The io interface of the cli tool calling the method.
    * @param callable $t
    *   The translation function akin to t().
+   * @param bool $confirmed
+   *   Whether the export is already confirmed by the console input.
    */
-  public function ioExport($split, $io, callable $t) {
+  public function ioExport($split, $io, callable $t, $confirmed = FALSE) {
     if (!$split) {
       $message = $t('Do a normal (including filters) config export?');
       $storage = $this->syncStorage;
@@ -187,7 +187,7 @@ class ConfigSplitCliService {
     else {
       $config_name = $this->getSplitName($split);
 
-      $plugin_id = $this->getPliginIdFromConfigName($config_name);
+      $plugin_id = $this->getPluginIdFromConfigName($config_name);
       $filter = $this->configFilterManager->getFilterInstance($plugin_id);
 
       // Use a GhostStorage so that we only export the split.
@@ -201,7 +201,7 @@ class ConfigSplitCliService {
       $message .= $t('Export the configuration?');
     }
 
-    if ($io->confirm($message)) {
+    if ($confirmed || $io->confirm($message)) {
       $this->export($storage);
       $io->success($t("Configuration successfully exported."));
     }
@@ -216,15 +216,17 @@ class ConfigSplitCliService {
    *   The $io interface of the cli tool calling.
    * @param callable $t
    *   The translation function akin to t().
+   * @param bool $confirmed
+   *   Whether the import is already confirmed by the console input.
    */
-  public function ioImport($split, $io, callable $t) {
+  public function ioImport($split, $io, callable $t, $confirmed = FALSE) {
     if (!$split) {
       $message = $t('Do a normal (including filters) config import?');
       $storage = $this->syncStorage;
     }
     else {
       $config_name = $this->getSplitName($split);
-      $filter = $this->configFilterManager->getFilterInstance($this->getPliginIdFromConfigName($config_name));
+      $filter = $this->configFilterManager->getFilterInstance($this->getPluginIdFromConfigName($config_name));
 
       // Filter the active storage so we only import the split.
       $storage = new FilteredStorage($this->activeStorage, [$filter]);
@@ -237,7 +239,7 @@ class ConfigSplitCliService {
     }
 
     try {
-      if ($io->confirm($message)) {
+      if ($confirmed || $io->confirm($message)) {
         $status = $this->import($storage);
         switch ($status) {
           case ConfigSplitCliService::COMPLETE:
@@ -270,26 +272,38 @@ class ConfigSplitCliService {
    *
    * @param \Drupal\Core\Config\StorageInterface $storage
    *   The config storage to export to.
+   * @param \Drupal\Core\Config\StorageInterface|null $active
+   *   The config storage to export from (optional).
    */
-  public function export(StorageInterface $storage) {
+  public function export(StorageInterface $storage, StorageInterface $active = NULL) {
+    if (!isset($active)) {
+      // Use the active storage.
+      $active = $this->activeStorage;
+    }
+
+    // Make the storage to be the default collection.
+    if ($storage->getCollectionName() != StorageInterface::DEFAULT_COLLECTION) {
+      // This is probably not necessary, but we do it as a precaution.
+      $storage = $storage->createCollection(StorageInterface::DEFAULT_COLLECTION);
+    }
 
     // Delete all, the filters are responsible for keeping some configuration.
     $storage->deleteAll();
 
     // Get the default active storage to copy it to the sync storage.
-    if ($this->activeStorage->getCollectionName() != StorageInterface::DEFAULT_COLLECTION) {
+    if ($active->getCollectionName() != StorageInterface::DEFAULT_COLLECTION) {
       // This is probably not necessary, but we do it as a precaution.
-      $this->activeStorage = $this->activeStorage->createCollection(StorageInterface::DEFAULT_COLLECTION);
+      $active = $active->createCollection(StorageInterface::DEFAULT_COLLECTION);
     }
 
     // Copy everything.
-    foreach ($this->activeStorage->listAll() as $name) {
-      $storage->write($name, $this->activeStorage->read($name));
+    foreach ($active->listAll() as $name) {
+      $storage->write($name, $active->read($name));
     }
 
     // Get all override data from the remaining collections.
-    foreach ($this->activeStorage->getAllCollectionNames() as $collection) {
-      $source_collection = $this->activeStorage->createCollection($collection);
+    foreach ($active->getAllCollectionNames() as $collection) {
+      $source_collection = $active->createCollection($collection);
       $destination_collection = $storage->createCollection($collection);
       // Delete everything in the collection sub-directory.
       try {
@@ -374,7 +388,7 @@ class ConfigSplitCliService {
    * @return string
    *   The plugin id.
    */
-  protected function getPliginIdFromConfigName($name) {
+  protected function getPluginIdFromConfigName($name) {
     return 'config_split:' . str_replace('config_split.config_split.', '', $name);
   }
 
@@ -394,7 +408,12 @@ class ConfigSplitCliService {
     }
 
     if (!in_array($name, $this->activeStorage->listAll('config_split.config_split.'))) {
-      throw new \InvalidArgumentException('The following split is not available: ' . $name);
+      $names = '';
+      foreach ($this->activeStorage->listAll('config_split.config_split.') as $name) {
+        $names .= $name . ', ';
+      }
+
+      throw new \InvalidArgumentException('The following split is not available: ' . $name . PHP_EOL . 'Available names: ' . $names);
     }
 
     return $name;

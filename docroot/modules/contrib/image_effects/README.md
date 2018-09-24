@@ -21,6 +21,7 @@ The effects that this module provides include:
 
 Effect name              | Description                                                                                  | GD toolkit | [ImageMagick](https://drupal.org/project/imagemagick) toolkit<sup>1</sup> |
 -------------------------|----------------------------------------------------------------------------------------------|:----------:|:-------------------:|
+Aspect switcher          | Choose image styles to apply based on source image orientation (portrait or landscape).      | X          | X                   |
 Auto orientation         | Uses EXIF Orientation tags to determine the image orientation.                               | X          | X                   |
 Background               | Places the source image anywhere over a selected background image.                           | X          | IM only             |
 Brightness               | Supports changing brightness settings of an image. Also supports negative values (darkening).| X          | IM only             |
@@ -77,8 +78,11 @@ information.
 
 ## Installing
 
-Install as usual, see the [official documentation](https://www.drupal.org/documentation/install/modules-themes/modules-8)
+__Versions 8.x-1.x:__ Install as usual, see the [official documentation](https://www.drupal.org/documentation/install/modules-themes/modules-8)
 for further information.
+
+__Versions 8.x-2.x:__ The module requires [using Composer to manage Drupal site dependencies](https://www.drupal.org/node/2718229). Require the module via
+```composer require drupal/image_effects:~2.0```, then enable the module as usual.
 
 
 ## Configuration
@@ -144,6 +148,11 @@ Advantages of GD toolkit on the other hand:
 
 Please also note that effects may give different results depending on the
 toolkit used.
+
+
+## Developing
+
+Contributions to the module are welcome! Please read carefully the [DEVELOPING.md](DEVELOPING.md) file for developers' instructions.
 
 
 ## Maintainers

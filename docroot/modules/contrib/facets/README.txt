@@ -4,6 +4,7 @@ CONTENTS OF THIS FILE
  * Installation
  * Configuration
  * Features
+ * Extension modules
  * FAQ
 
 INTRODUCTION
@@ -16,13 +17,11 @@ No other modules required, we're supporting drupal core's search as a source for
 creating facets. Though we recommend using Search API, as that integration is
 better tested.
 
-
 INSTALLATION
 ------------
  * Install as you would normally install a contributed drupal module. See:
    https://drupal.org/documentation/install/modules-themes/modules-7
    for further information.
-
 
 CONFIGURATION
 -------------
@@ -126,6 +125,13 @@ A filter is a string with one of the following forms:
 - `!`: Filter for items without a value for this field (i.e., the "missing"
   facet).
 
+EXTENSION MODULES
+-----------------
+
+- https://www.drupal.org/project/entity_reference_facet_link
+ Provides a link the a facet trough an entity reference field.
+- https://www.drupal.org/project/facets_prefix_suffix
+ Provides a plugin to configure a prefix/suffix per result.
 
 FAQ
 ---
@@ -133,10 +139,31 @@ FAQ
 Q: Why do the facets disappear after a refresh.
 A: We don't support cached views, change the view to disable caching.
 
-Q: Why doesn't chosen (or similiar javascript dropdown replacement) not work
+Q: Why doesn't chosen (or similar javascript dropdown replacement) not work
 with the dropdown widget.
 A: Because the dropdown we create for the widget is created trough javascript,
 the chosen module (and others, probably) doesn't find the select element.
 So the library should be attached to the block in custom code, we haven't done
 this in facets because we don't want to support all possible frameworks.
 See https://www.drupal.org/node/2853121 for more information.
+
+Q: Why are facets results links from another language showing in the facet
+results?
+A: Facets use the same limitations as the query object passed, so when using
+views, add a filter to the view to limit to one language.
+Otherwise, this is solved by adding a `hook_search_api_query_alter()` that
+limits the results to the current language.
+
+Q: I would like a prefix/suffix for facet result items.
+A: If you just need to show text, use
+https://www.drupal.org/project/facets_prefix_suffix.
+However if you need to include html you can use
+hook_preprocess_facets_result_item().
+
+Q: Why are results shown for inaccessible content?
+A: If the "Content access" Search API processor is enabled but results still
+aren't properly access-checked, you might need to write a custom processor to do
+the access checks for you.
+This should only happen if you're not using the default node access framework
+provided by Core, though. You need to use a combination of hook_node_grants and
+hook_node_access_records instead of hook_node_access.

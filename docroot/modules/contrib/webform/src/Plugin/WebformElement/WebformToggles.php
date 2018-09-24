@@ -12,6 +12,8 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("Toggles"),
  *   description = @Translation("Provides a form element for toggling multiple on/off states."),
  *   category = @Translation("Options elements"),
+ *   deprecated = TRUE,
+ *   deprecated_message = @Translation("The Toogles library is not being maintained and has major accessibility issues. It has been <a href=""https://www.drupal.org/project/webform/issues/2890861"">deprecated</a> and will be removed before Webform 8.x-5.0."),
  * )
  */
 class WebformToggles extends OptionsBase {
@@ -22,13 +24,13 @@ class WebformToggles extends OptionsBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    $properties = parent::getDefaultProperties() + [
+    $properties = [
       'toggle_theme' => 'light',
       'toggle_size' => 'medium',
       'on_text' => '',
       'off_text' => '',
-    ];
-    unset($properties['required']);
+    ] + parent::getDefaultProperties();
+    unset($properties['required'], $properties['required_message']);
     return $properties;
 
   }

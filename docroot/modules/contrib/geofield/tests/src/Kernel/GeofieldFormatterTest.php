@@ -47,13 +47,18 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
       'type' => 'geofield',
       'settings' => [
         'backend' => 'geofield_backend_default',
-      ]])->save();
+      ],
+    ]
+    )->save();
 
     FieldConfig::create([
       'entity_type' => $this->entityType,
       'bundle' => $this->bundle,
       'field_name' => 'geofield',
       'label' => 'GeoField',
+      'settings' => [
+        'backend' => 'geofield_backend_default',
+      ],
     ])->save();
   }
 
@@ -115,7 +120,7 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     0'
           0\"
         E
-  </span>"
+  </span>",
       ],
       'DM Value' => [
         'POINT (40 -3)',
@@ -130,12 +135,12 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     40°
     0.00000'
         E
-  </span>"
+  </span>",
       ],
       'LatLon Value' => [
         'POINT (40 -3)',
         'decimal',
-        '<span class="latlon latlon-lat">-3</span>, <span class="latlon latlon-lon">40</span>'
+        '<span class="latlon latlon-lat">-3</span>, <span class="latlon latlon-lon">40</span>',
       ],
       'DMS Value long' => [
         'POINT (85.24587 45.625358)',
@@ -152,7 +157,7 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     14'
           45\"
         E
-  </span>"
+  </span>",
       ],
       'DM Value long' => [
         'POINT (85.24587 45.625358)',
@@ -167,7 +172,7 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     85°
     14.75000'
         E
-  </span>"
+  </span>",
       ],
       'LatLon Value long' => [
         'POINT (85.24587 45.625358)',
@@ -189,7 +194,7 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     6'
           8\"
         W
-  </span>"
+  </span>",
       ],
       'DM Arnedo' => [
         'POINT (-2.1021 42.2257)',
@@ -204,13 +209,13 @@ class GeofieldFormatterTest extends EntityKernelTestBase {
     2°
     6.13333'
         W
-  </span>"
+  </span>",
       ],
       'Decimal Arnedo' => [
         'POINT (-2.1021 42.2257)',
         'decimal',
-        '<span class="latlon latlon-lat">42.2257</span>, <span class="latlon latlon-lon">-2.1021</span>'
-      ]
+        '<span class="latlon latlon-lat">42.2257</span>, <span class="latlon latlon-lon">-2.1021</span>',
+      ],
     ];
   }
 

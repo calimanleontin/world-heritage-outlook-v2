@@ -16,49 +16,49 @@ class WktGeneratorTest extends KernelTestBase {
    *
    * @var \Drupal\geofield\WktGenerator
    */
-  public $wkt_generator;
+  public $wktGenerator;
 
   /**
    * Generic WKT point regex.
    *
    * @var string
    */
-  public $point_regex = '/^POINT \([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/';
+  public $pointRegex = '/^POINT \([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/';
 
   /**
    * Generic WKT multipoint regex.
    *
    * @var string
    */
-  public $multipoint_regex = '/^MULTIPOINT \((\([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\), )*(\([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\))\)$/';
+  public $multipointRegex = '/^MULTIPOINT \((\([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\), )*(\([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\))\)$/';
 
   /**
    * Generic WKT linestring regex.
    *
    * @var string
    */
-  public $linestring_regex = '/^LINESTRING \(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/';
+  public $linestringRegex = '/^LINESTRING \(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/';
 
   /**
    * Generic WKT multilinestring regex.
    *
    * @var string
    */
-  public $multilinestring_regex = '/^MULTILINESTRING \((\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\), )*\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/';
+  public $multilinestringRegex = '/^MULTILINESTRING \((\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\), )*\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/';
 
   /**
    * Generic WKT polygon regex.
    *
    * @var string
    */
-  public $polygon_regex = '/^POLYGON \(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/';
+  public $polygonRegex = '/^POLYGON \(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/';
 
   /**
    * Generic WKT multipolygon regex.
    *
    * @var string
    */
-  public $multipolygon_regex = '/^MULTIPOLYGON \((\(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\), )*\(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)\)$/';
+  public $multipolygonRegex = '/^MULTIPOLYGON \((\(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\), )*\(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)\)$/';
 
   /**
    * {@inheritdoc}
@@ -72,22 +72,22 @@ class WktGeneratorTest extends KernelTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->wkt_generator = \Drupal::service('geofield.wkt_generator');
+    $this->wktGenerator = \Drupal::service('geofield.wkt_generator');
   }
 
   /**
    * Tests the generation of WKT points and multipoints.
    */
   public function testPoint() {
-    $point = $this->wkt_generator->WktGeneratePoint(['3', '4']);
+    $point = $this->wktGenerator->wktGeneratePoint(['3', '4']);
     $this->assertEqual('POINT (3 4)', $point, 'Point generated properly');
 
-    $point = $this->wkt_generator->WktGeneratePoint();
-    $match = preg_match($this->point_regex, $point);
+    $point = $this->wktGenerator->wktGeneratePoint();
+    $match = preg_match($this->pointRegex, $point);
     $this->assertTrue($match, 'Point generated properly');
 
-    $multipoint = $this->wkt_generator->WktGenerateMultipoint();
-    $match = preg_match($this->multipoint_regex, $multipoint);
+    $multipoint = $this->wktGenerator->wktGenerateMultipoint();
+    $match = preg_match($this->multipointRegex, $multipoint);
     $this->assertTrue($match, 'Multipoint generated properly');
   }
 
@@ -95,24 +95,24 @@ class WktGeneratorTest extends KernelTestBase {
    * Tests the generation of WKT linestrings and multilinestrings.
    */
   public function testLinestring() {
-    $linestring = $this->wkt_generator->WktGenerateLinestring();
-    $match = preg_match($this->linestring_regex, $linestring);
+    $linestring = $this->wktGenerator->wktGenerateLinestring();
+    $match = preg_match($this->linestringRegex, $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $linestring = $this->wkt_generator->WktGenerateLinestring([7.34, -45.66]);
+    $linestring = $this->wktGenerator->wktGenerateLinestring([7.34, -45.66]);
     $match = preg_match('/^LINESTRING \(7.34 -45.66, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $linestring = $this->wkt_generator->WktGenerateLinestring(NULL, 9);
+    $linestring = $this->wktGenerator->wktGenerateLinestring(NULL, 9);
     $match = preg_match('/^LINESTRING \(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){8}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $linestring = $this->wkt_generator->WktGenerateLinestring([7, 45], 6);
+    $linestring = $this->wktGenerator->wktGenerateLinestring([7, 45], 6);
     $match = preg_match('/^LINESTRING \(7 45, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){4}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)$/', $linestring);
     $this->assertTrue($match, 'Linestring generated properly');
 
-    $multilinestring = $this->wkt_generator->WktGenerateMultilinestring();
-    $match = preg_match($this->multilinestring_regex, $multilinestring);
+    $multilinestring = $this->wktGenerator->wktGenerateMultilinestring();
+    $match = preg_match($this->multilinestringRegex, $multilinestring);
     $this->assertTrue($match, 'Multilinestring generated properly');
   }
 
@@ -120,24 +120,24 @@ class WktGeneratorTest extends KernelTestBase {
    * Tests the generation of WKT polygons and multipolygons.
    */
   public function testPolygon() {
-    $polygon = $this->wkt_generator->WktGeneratePolygon();
-    $match = preg_match($this->polygon_regex, $polygon);
+    $polygon = $this->wktGenerator->wktGeneratePolygon();
+    $match = preg_match($this->polygonRegex, $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $polygon = $this->wkt_generator->WktGeneratePolygon([7.34, -45.66]);
+    $polygon = $this->wktGenerator->wktGeneratePolygon([7.34, -45.66]);
     $match = preg_match('/^POLYGON \(\(7.34 -45.66, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, )*7.34 -45.66\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $polygon = $this->wkt_generator->WktGeneratePolygon(NULL, 9);
+    $polygon = $this->wktGenerator->wktGeneratePolygon(NULL, 9);
     $match = preg_match('/^POLYGON \(\(([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){9}[-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $polygon = $this->wkt_generator->WktGeneratePolygon([7, 45], 6);
+    $polygon = $this->wktGenerator->wktGeneratePolygon([7, 45], 6);
     $match = preg_match('/^POLYGON \(\(7 45, ([-]?[0-9]*\.?[0-9]+ [-]?[0-9]*\.?[0-9]+\, ){5}7 45\)\)$/', $polygon);
     $this->assertTrue($match, 'Polygon generated properly');
 
-    $multipolygon = $this->wkt_generator->WktGenerateMultipolygon();
-    $match = preg_match($this->multipolygon_regex, $multipolygon);
+    $multipolygon = $this->wktGenerator->wktGenerateMultipolygon();
+    $match = preg_match($this->multipolygonRegex, $multipolygon);
     $this->assertTrue($match, 'Multipolygon generated properly');
   }
 
@@ -146,14 +146,14 @@ class WktGeneratorTest extends KernelTestBase {
    */
   public function testRandomGeometry() {
     $find = FALSE;
-    $geometry = $this->wkt_generator->WktGenerateGeometry();
+    $geometry = $this->wktGenerator->wktGenerateGeometry();
     $patterns = [
-      $this->point_regex,
-      $this->multipoint_regex,
-      $this->linestring_regex,
-      $this->multilinestring_regex,
-      $this->polygon_regex,
-      $this->multipolygon_regex,
+      $this->pointRegex,
+      $this->multipointRegex,
+      $this->linestringRegex,
+      $this->multilinestringRegex,
+      $this->polygonRegex,
+      $this->multipolygonRegex,
     ];
 
     foreach ($patterns as $pattern) {

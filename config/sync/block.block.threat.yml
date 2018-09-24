@@ -20,6 +20,7 @@ settings:
   label: Threat
   provider: facets
   label_display: visible
+  block_id: threat
 visibility:
   request_path:
     id: request_path

@@ -13,11 +13,12 @@ use Drupal\facets_summary\Processor\ProcessorPluginManager;
 use Drupal\facets_summary\FacetsSummaryInterface;
 
 /**
- * The facet manager.
+ * The facet summary manager.
  *
- * The manager is responsible for interactions with the Search backend, such as
- * altering the query, it is also responsible for executing and building the
- * facet. It is also responsible for running the processors.
+ * The manager wires everything together, it's responsible for gather the
+ * results and creating the summary.
+ * It also runs the processors and returns a renderable array from the build
+ * method.
  */
 class DefaultFacetsSummaryManager {
 
@@ -95,12 +96,16 @@ class DefaultFacetsSummaryManager {
     $facets_config = $facets_summary->getFacets();
     // Exclude facets which were not selected for this summary.
     $facets = array_filter($facets,
-      function($item) use ($facets_config) {
+      function ($item) use ($facets_config) {
         return (isset($facets_config[$item->id()]));
       }
     );
 
     foreach ($facets as $facet) {
+      // Do not build the facet in summary if facet is not rendered.
+      if (!$facet->getActiveItems()) {
+        continue;
+      }
       // For clarity, process facets is called each build.
       // The first facet therefor will trigger the processing. Note that
       // processing is done only once, so repeatedly calling this method will
@@ -145,18 +150,25 @@ class DefaultFacetsSummaryManager {
    * @return array
    *   The rendered links to the active facets.
    */
-  protected function buildResultTree($show_count, $results) {
+  protected function buildResultTree($show_count, array $results) {
     $items = [];
     foreach ($results as $result) {
       if ($result->isActive()) {
         $item = [
-          '#theme' => 'facets_result_item',
+          '#theme' => 'facets_result_item__summary',
           '#value' => $result->getDisplayValue(),
           '#show_count' => $show_count,
           '#count' => $result->getCount(),
           '#is_active' => TRUE,
+          '#facet' => $result->getFacet(),
+          '#raw_value' => $result->getRawValue(),
         ];
         $item = (new Link($item, $result->getUrl()))->toRenderable();
+        $item['#wrapper_attributes'] = [
+          'class' => [
+            'facet-summary-item--facet',
+          ],
+        ];
         $items[] = $item;
       }
       if ($children = $result->getChildren()) {

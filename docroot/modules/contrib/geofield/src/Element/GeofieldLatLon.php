@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Element\GeofieldLatLon.
- */
-
 namespace Drupal\geofield\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\FormElement;
 
 /**
  * Provides a Geofield Lat Lon form element.
@@ -64,7 +57,7 @@ class GeofieldLatLon extends GeofieldElementBase {
    * @return array
    *   The processed element.
    */
-  public static function latlonProcess(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function latlonProcess(array &$element, FormStateInterface $form_state, array &$complete_form) {
     static::elementProcess($element, $form_state, $complete_form);
 
     if (!empty($element['#geolocation']) && $element['#geolocation'] == TRUE) {

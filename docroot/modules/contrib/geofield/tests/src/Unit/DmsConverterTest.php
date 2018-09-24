@@ -36,51 +36,51 @@ class DmsConverterTest extends UnitTestCase {
     return [
       'Simple' => [
         new DmsPoint([
-            'orientation' => 'E',
-            'degrees' => 40,
-            'minutes' => 0,
-            'seconds' => 0
-          ],
+          'orientation' => 'E',
+          'degrees' => 40,
+          'minutes' => 0,
+          'seconds' => 0,
+        ],
           [
             'orientation' => 'N',
             'degrees' => 9,
             'minutes' => 0,
-            'seconds' => 0
+            'seconds' => 0,
           ]
         ),
-        [40, 9]
+        [40, 9],
       ],
       'Negative' => [
         new DmsPoint([
-            'orientation' => 'W',
-            'degrees' => 40,
-            'minutes' => 0,
-            'seconds' => 0
-          ],
+          'orientation' => 'W',
+          'degrees' => 40,
+          'minutes' => 0,
+          'seconds' => 0,
+        ],
           [
             'orientation' => 'S',
             'degrees' => 9,
             'minutes' => 0,
-            'seconds' => 0
+            'seconds' => 0,
           ]
         ),
-        [-40, -9]
+        [-40, -9],
       ],
       'Decimal' => [
         new DmsPoint([
           'orientation' => 'W',
           'degrees' => 3,
           'minutes' => 3,
-          'seconds' => 3
+          'seconds' => 3,
         ],
           [
             'orientation' => 'S',
             'degrees' => 2,
             'minutes' => 2,
-            'seconds' => 2
+            'seconds' => 2,
           ]
         ),
-        [-3.0508333333333333, -2.0338888888888889]
+        [-3.0508333333333333, -2.0338888888888889],
       ],
     ];
 

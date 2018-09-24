@@ -326,6 +326,14 @@ class SplitFilterTest extends UnitTestCase {
     $filter = $this->getFilter(new NullStorage(), [], $modules, $themes);
     $this->assertEquals($extensions, $filter->filterWrite('core.extension', $extensions));
     $this->assertEquals($extensions, $filter->filterWrite('core.extension', $extensions_extra));
+
+    // Test that empty config is not written to the split storage.
+    $storage = $this->prophesize(StorageInterface::class);
+    $storage->write($name2, [])->shouldNotBeCalled();
+    $storage->write($name3, [])->shouldNotBeCalled();
+    $filter = $this->getFilter($storage->reveal(), [$name2], [], [], [$name3], 'test', TRUE);
+    $this->assertNull($filter->filterWrite($name2, []));
+    $this->assertNull($filter->filterWrite($name3, []));
   }
 
   /**
@@ -468,7 +476,7 @@ class SplitFilterTest extends UnitTestCase {
   }
 
   /**
-   * Test that the static create method works and folders contain the htacces.
+   * Test that the static create method works and folders contain the htaccess.
    */
   public function testSplitFilterCreate() {
     $name = 'config_split.' . $this->getRandomGenerator()->name();

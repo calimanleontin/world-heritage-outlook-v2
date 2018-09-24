@@ -50,7 +50,7 @@ interface WebformEntityStorageInterface extends ConfigEntityStorageInterface, Im
    * @param \Drupal\webform\WebformInterface $webform
    *   A webform.
    * @param int $next_serial
-   *   The next serial number
+   *   The next serial number.
    */
   public function setNextSerial(WebformInterface $webform, $next_serial);
 
@@ -72,5 +72,14 @@ interface WebformEntityStorageInterface extends ConfigEntityStorageInterface, Im
    *   The next serial number.
    */
   public function getMaxSerial(WebformInterface $webform);
+
+  /**
+   * Get total results for all webforms.
+   *
+   * @return array
+   *   An associative array keyed by webform id contains total results for
+   *   all webforms.
+   */
+  public function getTotalNumberOfResults();
 
 }

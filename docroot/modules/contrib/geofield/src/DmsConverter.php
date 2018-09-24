@@ -26,35 +26,35 @@ class DmsConverter implements DmsConverterInterface {
    * {@inheritdoc}
    */
   public static function decimalToDms($lon, $lat) {
-    $latDirection = $lat < 0 ? 'S': 'N';
-    $lonDirection = $lon < 0 ? 'W': 'E';
+    $lat_direction = $lat < 0 ? 'S' : 'N';
+    $lon_direction = $lon < 0 ? 'W' : 'E';
 
-    $latInDegrees = floor(abs($lat));
-    $lonInDegrees = floor(abs($lon));
+    $lat_in_degrees = floor(abs($lat));
+    $lon_in_degrees = floor(abs($lon));
 
-    $latDecimal = (abs($lat) - $latInDegrees) * 60;
-    $lonDecimal = (abs($lon) - $lonInDegrees) * 60;
+    $la_decimal = (abs($lat) - $lat_in_degrees) * 60;
+    $lon_decimal = (abs($lon) - $lon_in_degrees) * 60;
 
-    $latMinutes = floor($latDecimal);
-    $lonMinutes = floor($lonDecimal);
+    $lat_minutes = floor($la_decimal);
+    $lon_minutes = floor($lon_decimal);
 
-    $latDecimal = ($latDecimal - $latMinutes) * 60;
-    $lonDecimal = ($lonDecimal - $lonMinutes) * 60;
+    $la_decimal = ($la_decimal - $lat_minutes) * 60;
+    $lon_decimal = ($lon_decimal - $lon_minutes) * 60;
 
-    $latSeconds = round($latDecimal);
-    $lonSeconds = round($lonDecimal);
+    $lat_seconds = round($la_decimal);
+    $lon_seconds = round($lon_decimal);
 
     return new DmsPoint([
-        'orientation' => $lonDirection,
-        'degrees' => $lonInDegrees,
-        'minutes' => $lonMinutes,
-        'seconds' => $lonSeconds,
-      ],
+      'orientation' => $lon_direction,
+      'degrees' => $lon_in_degrees,
+      'minutes' => $lon_minutes,
+      'seconds' => $lon_seconds,
+    ],
       [
-        'orientation' => $latDirection,
-        'degrees' => $latInDegrees,
-        'minutes' => $latMinutes,
-        'seconds' => $latSeconds,
+        'orientation' => $lat_direction,
+        'degrees' => $lat_in_degrees,
+        'minutes' => $lat_minutes,
+        'seconds' => $lat_seconds,
       ]
     );
   }

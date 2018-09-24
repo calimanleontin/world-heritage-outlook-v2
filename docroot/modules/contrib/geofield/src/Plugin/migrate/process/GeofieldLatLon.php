@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\geofield\Plugin\migrate\process\GeofieldLatLon.
- */
 namespace Drupal\geofield\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
@@ -28,7 +24,7 @@ class GeofieldLatLon extends ProcessPluginBase {
 
     if (empty($lat) || empty($lon)) {
       return NULL;
-     }
+    }
 
     $lonlat = \Drupal::service('geofield.wkt_generator')->WktBuildPoint([$lon, $lat]);
 

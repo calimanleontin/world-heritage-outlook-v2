@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "config_split",
  *   label = @Translation("Config Split"),
  *   storages = {"config.storage.sync"},
- *   deriver = "\Drupal\config_split\Plugin\Derivative\SplitFilter"
+ *   deriver = "\Drupal\config_split\Plugin\ConfigFilter\SplitFilterDeriver"
  * )
  */
 class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInterface {
@@ -75,7 +75,7 @@ class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInte
     $this->manager = $manager;
     $this->secondaryStorage = $secondary;
     $this->calculateBlacklist();
-    $this->calcualteGraylist();
+    $this->calculateGraylist();
   }
 
   /**
@@ -143,14 +143,18 @@ class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInte
     $data['module'] = array_merge($data['module'], $modules);
     $data['theme'] = array_merge($data['theme'], $themes);
     // Sort the modules.
-    uksort($data['module'], function ($a, $b) use ($data) {
+    $sort_modules = $data['module'];
+    uksort($sort_modules, function ($a, $b) use ($sort_modules) {
       // Sort by module weight, this assumes the schema of core.extensions.
-      if ($data['module'][$a] != $data['module'][$b]) {
-        return $data['module'][$a] > $data['module'][$b] ? 1 : -1;
+      if ($sort_modules[$a] != $sort_modules[$b]) {
+        return $sort_modules[$a] > $sort_modules[$b] ? 1 : -1;
       }
       // Or sort by module name.
       return $a > $b ? 1 : -1;
     });
+
+    $data['module'] = $sort_modules;
+
     return $data;
   }
 
@@ -163,7 +167,9 @@ class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInte
     }
 
     if (in_array($name, $this->blacklist)) {
-      $this->secondaryStorage->write($name, $data);
+      if ($data) {
+        $this->secondaryStorage->write($name, $data);
+      }
 
       return NULL;
     }
@@ -172,7 +178,9 @@ class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInte
         // The configuration is in the graylist but skip-equal is not set or
         // the source does not have the same data, so write to secondary and
         // return source data or null if it doesn't exist in the source.
-        $this->secondaryStorage->write($name, $data);
+        if ($data) {
+          $this->secondaryStorage->write($name, $data);
+        }
 
         // If the source has it, return that so it doesn't get changed.
         if ($this->source) {
@@ -338,7 +346,7 @@ class SplitFilter extends ConfigFilterBase implements ContainerFactoryPluginInte
   /**
    * Calculate the graylist by including dependents and resolving wild cards.
    */
-  protected function calcualteGraylist() {
+  protected function calculateGraylist() {
     $graylist = $this->configuration['graylist'];
     $graylist = array_filter($this->manager->getConfigFactory()->listAll(), function ($name) use ($graylist) {
       // Add the config name to the graylist if it is in the wildcard list.

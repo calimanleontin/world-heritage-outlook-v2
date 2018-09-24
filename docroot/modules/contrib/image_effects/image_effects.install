@@ -83,3 +83,10 @@ function image_effects_update_8004() {
 /**
  * @} End of "addtogroup updates-8.x-1.0-alpha".
  */
+
+/**
+ * Clear caches to discover new effects.
+ */
+function image_effects_update_8101() {
+  // Empty function.
+}
