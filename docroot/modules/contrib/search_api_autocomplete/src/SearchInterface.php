@@ -3,6 +3,7 @@
 namespace Drupal\search_api_autocomplete;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\search_api_autocomplete\Suggester\SuggesterInterface;
 
 /**
  * Describes the autocomplete settings for a certain search.
@@ -10,66 +11,12 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 interface SearchInterface extends ConfigEntityInterface {
 
   /**
-   * Determines whether autocompletion is currently supported for this search.
+   * Retrieves the default options for a search.
    *
-   * @return bool
-   *   TRUE if autocompletion is possible for this search with the current
-   *   settings; FALSE otherwise.
+   * @return array
+   *   An associative array of options.
    */
-  public function supportsAutocompletion();
-
-  /**
-   * Creates a query object for this search.
-   *
-   * @param string $keys
-   *   The search keys.
-   *
-   * @return \Drupal\search_api\Query\QueryInterface
-   *   The query that would normally be executed when $keys is entered as the
-   *   keywords for this search.
-   *
-   * @throws \Drupal\search_api\SearchApiException
-   *   Thrown if the query couldn't be created.
-   */
-  public function getQuery($keys);
-
-  /**
-   * Retrieves the ID of the suggester plugin for this search.
-   *
-   * @return string
-   *   This search's suggester plugin's ID.
-   */
-  public function getSuggesterId();
-
-  /**
-   * Sets the suggester ID.
-   *
-   * @param string $suggester_id
-   *   The suggester plugin ID.
-   *
-   * @return $this
-   */
-  public function setSuggesterId($suggester_id);
-
-  /**
-   * Retrieves the suggester plugin for this search.
-   *
-   * @param bool $reset
-   *   (optional) If TRUE, clear the internal static cache and reload the
-   *   suggester.
-   *
-   * @return \Drupal\search_api_autocomplete\Suggester\SuggesterInterface|null
-   *   This search's suggester plugin, or NULL if it could not be loaded.
-   */
-  public function getSuggesterInstance($reset = FALSE);
-
-  /**
-   * Sets the label for this search.
-   *
-   * @param string $label
-   *   The label for the autocomplete.
-   */
-  public function setLabel($label);
+  public static function getDefaultOptions();
 
   /**
    * Retrieves the ID of the index this search belongs to.
@@ -80,48 +27,176 @@ interface SearchInterface extends ConfigEntityInterface {
   public function getIndexId();
 
   /**
-   * Sets the ID of the index this search belongs to.
+   * Determines whether this search has a valid index set.
    *
-   * @param string $index_id
-   *   The index ID.
-   *
-   * @return $this
+   * @return bool
+   *   TRUE if the index this search belongs to can be loaded, FALSE otherwise.
    */
-  public function setIndexId($index_id);
+  public function hasValidIndex();
 
   /**
    * Retrieves the index this search belongs to.
    *
    * @return \Drupal\search_api\IndexInterface
    *   The index this search belongs to.
+   *
+   * @throws \Drupal\search_api_autocomplete\SearchApiAutocompleteException
+   *   Thrown if the index couldn't be retrieved.
    */
-  public function getIndexInstance();
+  public function getIndex();
 
   /**
-   * Gets the autocompletion type.
+   * Retrieves this search's suggester plugins.
    *
-   * @return string
-   *   The autocompletion type.
+   * @return \Drupal\search_api_autocomplete\Suggester\SuggesterInterface[]
+   *   The suggester plugins used by this search, keyed by plugin ID.
    */
-  public function getType();
+  public function getSuggesters();
 
   /**
-   * Sets the autocompletion type.
+   * Retrieves the IDs of all suggesters enabled for this search.
    *
-   * @param string $type
-   *   The autocompletion type.
+   * @return string[]
+   *   The IDs of the suggester plugins used by this search.
+   */
+  public function getSuggesterIds();
+
+  /**
+   * Determines whether the given suggester ID is valid for this search.
+   *
+   * The general contract of this method is that it should return TRUE if, and
+   * only if, a call to getSuggester() with the same ID would not result in an
+   * exception.
+   *
+   * @param string $suggester_id
+   *   A suggester plugin ID.
+   *
+   * @return bool
+   *   TRUE if the suggester with the given ID is enabled for this search and
+   *   can be loaded. FALSE otherwise.
+   */
+  public function isValidSuggester($suggester_id);
+
+  /**
+   * Retrieves a specific suggester plugin for this search.
+   *
+   * @param string $suggester_id
+   *   The ID of the suggester plugin to return.
+   *
+   * @return \Drupal\search_api_autocomplete\Suggester\SuggesterInterface
+   *   The suggester plugin with the given ID.
+   *
+   * @throws \Drupal\search_api_autocomplete\SearchApiAutocompleteException
+   *   Thrown if the specified suggester isn't enabled for this search, or
+   *   couldn't be loaded.
+   */
+  public function getSuggester($suggester_id);
+
+  /**
+   * Adds a suggester to this search.
+   *
+   * An existing suggester with the same ID will be replaced.
+   *
+   * @param \Drupal\search_api_autocomplete\Suggester\SuggesterInterface $suggester
+   *   The suggester to be added.
    *
    * @return $this
    */
-  public function setType($type);
+  public function addSuggester(SuggesterInterface $suggester);
 
   /**
-   * Gets the options.
+   * Removes a suggester from this search.
+   *
+   * @param string $suggester_id
+   *   The ID of the suggester to remove.
+   *
+   * @return $this
+   */
+  public function removeSuggester($suggester_id);
+
+  /**
+   * Sets this search's suggester plugins.
+   *
+   * @param \Drupal\search_api_autocomplete\Suggester\SuggesterInterface[] $suggesters
+   *   An array of suggesters.
+   *
+   * @return $this
+   */
+  public function setSuggesters(array $suggesters);
+
+  /**
+   * Retrieves the weights set for the search's suggesters.
+   *
+   * @return int[]
+   *   The suggester weights, keyed by suggester ID.
+   */
+  public function getSuggesterWeights();
+
+  /**
+   * Retrieves the individual limits set for the search's suggesters.
+   *
+   * @return int[]
+   *   The suggester limits (where set), keyed by suggester ID.
+   */
+  public function getSuggesterLimits();
+
+  /**
+   * Determines whether the search plugin set for this search is valid.
+   *
+   * @return bool
+   *   TRUE if the search plugin is valid, FALSE otherwise.
+   */
+  public function hasValidSearchPlugin();
+
+  /**
+   * Retrieves the search plugin's ID.
+   *
+   * @return string
+   *   The ID of the search plugin used by this search.
+   */
+  public function getSearchPluginId();
+
+  /**
+   * Retrieves the search plugin.
+   *
+   * @return \Drupal\search_api_autocomplete\Search\SearchPluginInterface
+   *   The search's search plugin.
+   *
+   * @throws \Drupal\search_api_autocomplete\SearchApiAutocompleteException
+   *   Thrown if the search plugin couldn't be instantiated.
+   */
+  public function getSearchPlugin();
+
+  /**
+   * Gets a specific option's value.
+   *
+   * @param string $key
+   *   The key of the option.
+   *
+   * @return mixed|null
+   *   The option's value, or NULL if the option is unknown.
+   */
+  public function getOption($key);
+
+  /**
+   * Gets the search's options.
    *
    * @return array
    *   The options.
    */
   public function getOptions();
+
+  /**
+   * Sets an option.
+   *
+   * @param string $name
+   *   The name of an option.
+   * @param mixed $option
+   *   The new option.
+   *
+   * @return $this
+   */
+  public function setOption($name, $option);
 
   /**
    * Sets the search options.
@@ -134,16 +209,21 @@ interface SearchInterface extends ConfigEntityInterface {
   public function setOptions(array $options);
 
   /**
-   * Gets a specific option.
+   * Creates a query object for this search.
    *
-   * @param string $key
-   *   The key of the option.
-   * @param mixed|null $default
-   *   (optional) The default value.
+   * @param string $keys
+   *   The fulltext search keywords to place on the query.
+   * @param array $data
+   *   (optional) Additional data passed to the callback.
    *
-   * @return mixed|null
-   *   A specific option's value.
+   * @return \Drupal\search_api\Query\QueryInterface
+   *   The query that would normally be executed when $keys is entered as the
+   *   keywords for this search. Callers should check whether keywords are
+   *   actually set on the query.
+   *
+   * @throws \Drupal\search_api_autocomplete\SearchApiAutocompleteException
+   *   Thrown if the query couldn't be created.
    */
-  public function getOption($key, $default = NULL);
+  public function createQuery($keys, array $data = []);
 
 }

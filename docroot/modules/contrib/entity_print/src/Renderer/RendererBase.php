@@ -82,7 +82,6 @@ abstract class RendererBase implements RendererInterface, EntityHandlerInterface
    */
   public function generateHtml(array $entities, array $render, $use_default_css, $optimize_css) {
     $rendered_css = $this->assetRenderer->render($entities, $use_default_css, $optimize_css);
-
     $render['#entity_print_css'] = $this->renderer->executeInRenderContext(new RenderContext(), function () use (&$rendered_css) {
       return $this->renderer->render($rendered_css);
     });
@@ -93,6 +92,7 @@ abstract class RendererBase implements RendererInterface, EntityHandlerInterface
 
     // Allow other modules to alter the generated HTML.
     $this->dispatcher->dispatch(PrintEvents::POST_RENDER, new PrintHtmlAlterEvent($html, $entities));
+
     return $html;
   }
 

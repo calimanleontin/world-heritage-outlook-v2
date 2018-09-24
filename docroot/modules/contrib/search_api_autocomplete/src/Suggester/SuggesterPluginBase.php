@@ -2,170 +2,50 @@
 
 namespace Drupal\search_api_autocomplete\Suggester;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
-use Drupal\search_api\IndexInterface;
-use Drupal\search_api\Plugin\ConfigurablePluginInterface;
+use Drupal\search_api_autocomplete\Plugin\PluginBase;
 use Drupal\search_api_autocomplete\SearchInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a base class for suggester plugins.
  *
+ * Plugins extending this class need to define a plugin definition array through
+ * annotation. The definition includes the following keys:
+ * - id: The unique, system-wide identifier of the suggester plugin.
+ * - label: The human-readable name of the suggester plugin, translated.
+ * - description: A human-readable description for the suggester plugin,
+ *   translated.
+ * - default_weight: (optional) The default weight to assign to the suggester.
+ *   Defaults to 0.
+ *
+ * A complete plugin definition should be written as in this example:
+ *
+ * @code
+ * @SearchApiAutocompleteSuggester(
+ *   id = "my_suggester",
+ *   label = @Translation("My Suggester"),
+ *   description = @Translation("Creates suggestions based on internet memes."),
+ *   default_weight = -10,
+ * )
+ * @endcode
+ *
+ * @see \Drupal\search_api_autocomplete\Annotation\SearchApiAutocompleteSuggester
  * @see \Drupal\search_api_autocomplete\Suggester\SuggesterInterface
  * @see \Drupal\search_api_autocomplete\Suggester\SuggesterManager
- * @see \Drupal\search_api_autocomplete\Annotation\SearchApiAutocompleteSuggester
+ * @see plugin_api
+ * @see hook_search_api_autocomplete_suggester_info_alter()
  */
-abstract class SuggesterPluginBase extends PluginBase implements SuggesterInterface, ConfigurablePluginInterface {
-
-  /**
-   * The search this suggester is attached to.
-   *
-   * @var \Drupal\search_api_autocomplete\SearchInterface
-   */
-  protected $search;
-
-  /**
-   * The suggester plugin's ID.
-   *
-   * @var string
-   */
-  protected $pluginId;
-
-  /**
-   * The suggester plugin's definition.
-   *
-   * @var array
-   */
-  protected $pluginDefinition = [];
-
-  /**
-   * The suggester plugin's configuration.
-   *
-   * @var array
-   */
-  protected $configuration = [];
+abstract class SuggesterPluginBase extends PluginBase implements SuggesterInterface {
 
   /**
    * {@inheritdoc}
    */
-  public static function supportsIndex(IndexInterface $index) {
+  public function alterAutocompleteElement(array &$element) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function supportsSearch(SearchInterface $search) {
     return TRUE;
-  }
-
-  /**
-   * Constructs a SuggesterPluginBase object.
-   *
-   * @param \Drupal\search_api_autocomplete\SearchInterface $search
-   *   The search to which this suggester is attached.
-   * @param array $configuration
-   *   An associative array containing the suggester's configuration, if any.
-   * @param string $plugin_id
-   *   The suggester's plugin ID.
-   * @param array $plugin_definition
-   *   The suggester plugin's definition.
-   */
-  public function __construct(SearchInterface $search, array $configuration, $plugin_id, array $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->setConfiguration($configuration);
-    $this->search = $search;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $search = $configuration['#search'];
-    unset($configuration['#search']);
-    return new static(
-      $search,
-      $configuration,
-      $plugin_id,
-      $plugin_definition
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSearch() {
-    return $this->search;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIndex() {
-    return $this->search->getIndexInstance();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDescription() {
-    return isset($this->pluginDefinition['description']) ? $this->pluginDefinition['description'] : NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfiguration() {
-    return $this->configuration;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setConfiguration(array $configuration) {
-    $this->configuration = $configuration + $this->defaultConfiguration();
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function defaultConfiguration() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {}
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-    $this->setConfiguration($form_state->getValues());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function label() {
-    return $this->pluginDefinition['label'];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function calculateDependencies() {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function onDependencyRemoval(array $dependencies) {
   }
 
 }

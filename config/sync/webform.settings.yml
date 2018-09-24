@@ -127,8 +127,8 @@ element:
     webform_location_geocomplete: webform_location_geocomplete
 html_editor:
   disabled: false
-  element_format: ''
-  mail_format: ''
+  element_format: null
+  mail_format: null
   tidy: true
   make_unused_managed_files_temporary: true
 file:
@@ -171,6 +171,7 @@ ui:
 libraries:
   excluded_libraries:
     - jquery.chosen
+    - jquery.toggles
     - jquery.toggles
 requirements:
   cdn: true

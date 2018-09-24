@@ -3,222 +3,100 @@
  * Expands the behaviour of the default autocompletion.
  */
 
-(function ($) {
+(function ($, Drupal, drupalSettings) {
 
-  var oldSelect = Drupal.autocomplete.options.select;
-  // Override the "select" option of the jQueryUI auto-complete to
-  // add the functionality to submit the form if the auto_submit class
-  // is present.
-  Drupal.autocomplete.options.select = function (event, ui) {
-    oldSelect.call(this, event, ui);
-    if ($(this).hasClass('auto_submit')) {
-      var selector = getSettingD8(this, 'selector', ':submit');
-      $(selector, this.form).trigger('click');
-    }
-  };
+  'use strict';
 
-  var getSettingD8 = function (input, setting, defaultValue) {
-    var search = $(input).data('search-api-autocomplete-search');
-    if (typeof search == 'undefined'
-        || typeof drupalSettings.search_api_autocomplete == 'undefined'
-        || typeof drupalSettings.search_api_autocomplete[search] == 'undefined'
-        || typeof drupalSettings.search_api_autocomplete[search][setting] == 'undefined') {
-      return defaultValue;
-    }
-    return Drupal.settings.search_api_autocomplete[search][setting];
-  };
-
-  // @todo All of the below is outdated in D8.
-
-  // Auto-submit main search input after autocomplete.
-  if (typeof Drupal.jsAC != 'undefined') {
-
-    var getSetting = function (input, setting, defaultValue) {
-      // Earlier versions of jQuery, like the default for Drupal 7, don't properly
-      // convert data-* attributes to camel case, so we access it via the verbatim
-      // name from the attribute (which also works in newer versions).
-      var search = $(input).data('search-api-autocomplete-search');
-      if (typeof search == 'undefined'
-          || typeof Drupal.settings.search_api_autocomplete == 'undefined'
-          || typeof Drupal.settings.search_api_autocomplete[search] == 'undefined'
-          || typeof Drupal.settings.search_api_autocomplete[search][setting] == 'undefined') {
-        return defaultValue;
-      }
-      return Drupal.settings.search_api_autocomplete[search][setting];
-    };
-
-    var oldJsAC = Drupal.jsAC;
-    /**
-     * An AutoComplete object.
-     *
-     * Overridden to set the proper "role" attribute on the input element.
-     */
-    Drupal.jsAC = function ($input, db) {
-      if ($input.data('search-api-autocomplete-search')) {
-        $input.attr('role', 'combobox');
-        $input.parent().attr('role', 'search');
-      }
-      oldJsAC.call(this, $input, db);
-    };
-    Drupal.jsAC.prototype = oldJsAC.prototype;
-
-    /**
-     * Handler for the "keyup" event.
-     *
-     * Extend from Drupal's autocomplete.js to automatically submit the form
-     * when Enter is hit.
-     */
-    var default_onkeyup = Drupal.jsAC.prototype.onkeyup;
-    Drupal.jsAC.prototype.onkeyup = function (input, e) {
-      if (!e) {
-        e = window.event;
-      }
-      // Fire standard function.
-      default_onkeyup.call(this, input, e);
-
-      if (13 == e.keyCode && $(input).hasClass('auto_submit')) {
-        var selector = getSetting(input, 'selector', ':submit');
-        $(selector, input.form).trigger('click');
-      }
-    };
-
-    /**
-     * Handler for the "keydown" event.
-     *
-     * Extend from Drupal's autocomplete.js to avoid ajax interfering with the
-     * autocomplete.
-     */
-    var default_onkeydown = Drupal.jsAC.prototype.onkeydown;
-    Drupal.jsAC.prototype.onkeydown = function (input, e) {
-      if (!e) {
-        e = window.event;
-      }
-      // Fire standard function.
-      default_onkeydown.call(this, input, e);
-
-      // Prevent that the ajax handling of Views fires too early and thus
-      // misses the form update.
-      if (13 == e.keyCode && $(input).hasClass('auto_submit')) {
-        e.preventDefault();
-        return false;
-      }
-    };
-
-    Drupal.jsAC.prototype.select = function (node) {
-      var autocompleteValue = $(node).data('autocompleteValue');
-      // Check whether this is not a suggestion but a "link".
-      if (autocompleteValue.charAt(0) == ' ') {
-        window.location.href = autocompleteValue.substr(1);
-        return false;
-      }
-      this.input.value = autocompleteValue;
-      $(this.input).trigger('autocompleteSelect', [node]);
-      if ($(this.input).hasClass('auto_submit')) {
-        if (typeof Drupal.search_api_ajax != 'undefined') {
-          // Use Search API Ajax to submit.
-          Drupal.search_api_ajax.navigateQuery($(this.input).val());
-        }
-        else {
-          var selector = getSetting(this.input, 'selector', ':submit');
-          $(selector, this.input.form).trigger('click');
-        }
-        return true;
-      }
-    };
-
-    /**
-     * Overwrite default behaviour.
-     *
-     * Just always return true to make it possible to submit even when there was
-     * an autocomplete suggestion list open.
-     */
-    Drupal.autocompleteSubmit = function () {
-      $('#autocomplete').each(function () {
-        this.owner.hidePopup();
-      });
-      return true;
-    };
-
-    /**
-     * Performs a cached and delayed search.
-     */
-    Drupal.ACDB.prototype.search = function (searchString) {
-      this.searchString = searchString;
-
-      // Check allowed length of string for autocomplete.
-      var data = $(this.owner.input).first().data('min-autocomplete-length');
-      if (data && searchString.length < data) {
-        return;
-      }
-
-      // See if this string needs to be searched for anyway.
-      if (searchString.match(/^\s*$/)) {
-        return;
-      }
-
-      // Prepare search string.
-      searchString = searchString.replace(/^\s+/, '');
-      searchString = searchString.replace(/\s+/g, ' ');
-
-      // See if this key has been searched for before.
-      if (this.cache[searchString]) {
-        return this.owner.found(this.cache[searchString]);
-      }
-
-      var db = this;
-      this.searchString = searchString;
-
-      // Initiate delayed search.
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      var sendAjaxRequest = function () {
-        db.owner.setStatus('begin');
-
-        var url;
-
-        // Allow custom Search API Autocomplete overrides for specific searches.
-        if (getSetting(db.owner.input, 'custom_path', false)) {
-          var queryChar = db.uri.indexOf('?') >= 0 ? '&' : '?';
-          url = db.uri + queryChar + 'search=' + encodeURIComponent(searchString);
-        }
-        else {
-          // We use Drupal.encodePath instead of encodeURIComponent to allow
-          // autocomplete search terms to contain slashes.
-          url = db.uri + '/' + Drupal.encodePath(searchString);
-        }
-
-        // Ajax GET request for autocompletion.
-        $.ajax({
-          type: 'GET',
-          url: url,
-          dataType: 'json',
-          success: function (matches) {
-            if (typeof matches.status == 'undefined' || matches.status != 0) {
-              db.cache[searchString] = matches;
-              // Verify if these are still the matches the user wants to see.
-              if (db.searchString == searchString) {
-                db.owner.found(matches);
-              }
-              db.owner.setStatus('found');
-            }
-          },
-          error: function (xmlhttp) {
-            if (xmlhttp.status) {
-              alert(Drupal.ajaxError(xmlhttp, db.uri));
-            }
-          }
-        });
-      };
-      // Make it possible to override the delay via a setting.
-      var delay = getSetting(this.owner.input, 'delay', this.delay);
-      if (delay > 0) {
-        this.timer = setTimeout(sendAjaxRequest, delay);
-      }
-      else {
-        sendAjaxRequest.apply();
-      }
-    };
+  // As a safety precaution, bail if the Drupal Core autocomplete framework is
+  // not present.
+  if (!Drupal.autocomplete) {
+    return;
   }
 
-})(jQuery);
+  var autocomplete = {};
+
+  /**
+   * Retrieves the custom settings for an autocomplete-enabled input field.
+   *
+   * @param {HTMLElement} input
+   *   The input field.
+   * @param {object} globalSettings
+   *   The object containing global settings. If none is passed, drupalSettings
+   *   is used instead.
+   *
+   * @return {object}
+   *   The effective settings for the given input fields, with defaults set if
+   *   applicable.
+   */
+  autocomplete.getSettings = function (input, globalSettings) {
+    globalSettings = globalSettings || drupalSettings || {};
+    // Set defaults for all known settings.
+    var settings = {
+      auto_submit: false,
+      delay: 0,
+      min_length: 1,
+      selector: ':submit',
+    };
+    var search = $(input).data('search-api-autocomplete-search');
+    if (search
+        && globalSettings.search_api_autocomplete
+        && globalSettings.search_api_autocomplete[search]) {
+      $.extend(settings, globalSettings.search_api_autocomplete[search]);
+    }
+    return settings;
+  };
+
+  /**
+   * Attaches our custom autocomplete settings to all affected fields.
+   *
+   * @type {Drupal~behavior}
+   *
+   * @prop {Drupal~behaviorAttach} attach
+   *   Attaches the autocomplete behaviors.
+   */
+  Drupal.behaviors.searchApiAutocomplete = {
+    attach: function (context, settings) {
+      // Find all our fields with autocomplete settings
+      $(context)
+        .find('.ui-autocomplete-input[data-search-api-autocomplete-search]')
+        .once('search-api-autocomplete')
+        .each(function () {
+          var uiAutocomplete = $(this).data('ui-autocomplete');
+          if (!uiAutocomplete) {
+            return;
+          }
+          var $element = uiAutocomplete.menu.element;
+          $element.addClass('search-api-autocomplete-search');
+          var elementSettings = autocomplete.getSettings(this, settings);
+          if (elementSettings['delay']) {
+            uiAutocomplete.options['delay'] = elementSettings['delay'];
+          }
+          if (elementSettings['min_length']) {
+            uiAutocomplete.options['minLength'] = elementSettings['min_length'];
+          }
+          // Override the "select" callback of the jQuery UI autocomplete.
+          var oldSelect = uiAutocomplete.options.select;
+          uiAutocomplete.options.select = function (event, ui) {
+            // If this is a URL suggestion (recognized by its leading space),
+            // instead of autocompleting we redirect the user to that URL.
+            if (ui.item.value.charAt(0) === ' ') {
+              location.href = ui.item.value.substr(1);
+              return false;
+            }
+
+            var ret = oldSelect.apply(this, arguments);
+
+            // If auto-submit is enabled, submit the form.
+            if (elementSettings['auto_submit'] && elementSettings['selector']) {
+              $(elementSettings['selector'], this.form).trigger('click');
+            }
+
+            return ret;
+          };
+        });
+    }
+  };
+
+  Drupal.SearchApiAutocomplete = autocomplete;
+
+})(jQuery, Drupal, drupalSettings);

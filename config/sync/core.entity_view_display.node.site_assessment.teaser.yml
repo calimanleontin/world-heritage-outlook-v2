@@ -40,6 +40,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_text
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_date_published
     - node.type.site_assessment
   module:
@@ -62,6 +63,9 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_archived: true
   field_as_archived: true
   field_as_benefits: true
@@ -98,6 +102,7 @@ hidden:
   field_as_vass_wh_text: true
   field_as_vass_wh_trend: true
   field_as_version: true
+  field_assessment_file: true
   field_date_published: true
   field_field_as_cycle: true
   field_site: true
