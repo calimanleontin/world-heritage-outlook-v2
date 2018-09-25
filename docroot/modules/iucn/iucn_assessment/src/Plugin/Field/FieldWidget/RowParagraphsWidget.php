@@ -41,11 +41,14 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
     $summary = $this->getSummaryComponents($paragraphs_entity);
+    $summary['#rows'][0]['actions'] = render($element['top']['actions']);
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
+    unset($element['top']['actions']);
 
     $element['top']['summary'] = $summary;
+
     return $element;
   }
 
