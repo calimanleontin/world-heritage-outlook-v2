@@ -12,7 +12,7 @@ use Drupal\search_api\Backend\BackendInterface;
  * return value of its getSupportedFeatures() implementation.
  *
  * Please note that this interface is purely documentational. You shouldn't, and
- * can't, implement it explicitly (unless the module is depending on this one).
+ * can't, implement it explicitly (unless your module is depending on this one).
  */
 interface AutocompleteBackendInterface extends BackendInterface {
 
@@ -35,7 +35,7 @@ interface AutocompleteBackendInterface extends BackendInterface {
    * @param string $user_input
    *   The complete user input for the fulltext search keywords so far.
    *
-   * @return \Drupal\search_api_autocomplete\SuggestionInterface[]
+   * @return \Drupal\search_api_autocomplete\Suggestion\SuggestionInterface[]
    *   An array of autocomplete suggestions.
    */
   public function getAutocompleteSuggestions(QueryInterface $query, SearchInterface $search, $incomplete_key, $user_input);

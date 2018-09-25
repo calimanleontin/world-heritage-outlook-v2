@@ -119,7 +119,7 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
     $this->determineLookupProperties($destinationProperty);
 
-    $this->destinationProperty = $destinationProperty;
+    $this->destinationProperty = $this->configuration['destination_field'];
 
     return $this->query($value);
   }

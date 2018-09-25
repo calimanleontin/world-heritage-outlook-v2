@@ -2,26 +2,33 @@
 
 namespace Drupal\Tests\search_api_autocomplete\Unit;
 
-use Drupal\search_api_autocomplete\AutocompleteFormUtility;
+use Drupal\search_api_autocomplete\Utility\AutocompleteHelper;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Tests various utility methods of the Search API Autocomplete module.
  *
  * @group search_api_autocomplete
  *
- * @coversDefaultClass \Drupal\search_api_autocomplete\AutocompleteFormUtility
+ * @coversDefaultClass \Drupal\search_api_autocomplete\Utility\AutocompleteHelper
  */
-class AutocompleteFormUtilityTest extends \PHPUnit_Framework_TestCase {
+class AutocompleteHelperTest extends UnitTestCase {
 
   /**
    * Tests splitting of user input into complete and incomplete words.
+   *
+   * @param string $keys
+   *   The processed keywords.
+   * @param string[] $expected
+   *   The expected result of splitting the given user input.
    *
    * @covers ::splitKeys
    *
    * @dataProvider providerTestSplitKeys
    */
   public function testSplitKeys($keys, array $expected) {
-    $this->assertEquals($expected, AutocompleteFormUtility::splitKeys($keys));
+    $service = new AutocompleteHelper();
+    $this->assertEquals($expected, $service->splitKeys($keys));
   }
 
   /**
@@ -29,11 +36,12 @@ class AutocompleteFormUtilityTest extends \PHPUnit_Framework_TestCase {
    */
   public function providerTestSplitKeys() {
     $data = [];
-    $data['simple-word'] = ['word', ['', 'word']];
-    $data['simple-word-dash'] = ['word-dash', ['', 'word-dash']];
-    $data['whitespace-right-side'] = ['word-dash ', ['word-dash', '']];
-    $data['quote-word-start'] = ['"word" other', ['"word"', 'other']];
-    $data['quote-word-end'] = ['word "other"', ['word "other"', '']];
+    $data['simple word'] = ['word', ['', 'word']];
+    $data['simple word with dash'] = ['word-dash', ['', 'word-dash']];
+    $data['trailing whitespace'] = ['word-dash ', ['word-dash', '']];
+    $data['quoted first word'] = ['"word" other', ['"word"', 'other']];
+    $data['quoted word in middle'] = ['word "other" word', ['word "other"', 'word']];
+    $data['quoted last word'] = ['word "other"', ['word "other"', '']];
 
     return $data;
   }

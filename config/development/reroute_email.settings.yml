@@ -1,3 +1,4 @@
-reroute_email_enable: false
-reroute_email_address: drupal@eaudeweb.ro
-reroute_email_enable_message: true
+whitelist: drupal@eaudeweb.ro
+address: drupal@eaudeweb.ro
+enable: false
+description: true

@@ -1,10 +1,9 @@
 search_api_autocomplete.autocomplete:
-  path: /search_api_autocomplete/{search_api_autocomplete_search}/{fields}
+  path: /search_api_autocomplete/{search_api_autocomplete_search}
   defaults:
     _controller: \Drupal\search_api_autocomplete\Controller\AutocompleteController::autocomplete
-    fields: ''
   requirements:
-    _custom_access: \Drupal\search_api_autocomplete\Controller\AutocompleteController::access
+    _search_api_autocomplete: 'TRUE'
 
 search_api_autocomplete.admin_overview:
   path: /admin/config/search/search-api/index/{search_api_index}/autocomplete
@@ -12,4 +11,4 @@ search_api_autocomplete.admin_overview:
     _form: \Drupal\search_api_autocomplete\Form\IndexOverviewForm
     title: 'Autocomplete'
   requirements:
-    _entity_access: search_api_index.update
+    _permission: administer search_api_autocomplete

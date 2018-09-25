@@ -1,16 +1,14 @@
-uuid: a529d6c4-8469-46a8-96c3-f5688685a107
 langcode: en
 status: open
 dependencies:
   module:
     - honeypot
-third_party_settings:
-  honeypot:
-    honeypot: true
 open: null
 close: null
+weight: 0
 uid: 1
 template: false
+archive: false
 id: ask_a_question
 title: 'Ask a Question'
 description: '<span class="aui-legend">Ask a Question</span>'
@@ -20,6 +18,7 @@ css: ''
 javascript: ''
 settings:
   ajax: false
+  ajax_scroll_top: form
   page: true
   page_submit_path: /more/contact-us/ask-a-question
   page_confirm_path: ''
@@ -38,21 +37,45 @@ settings:
   form_reset: false
   form_disable_autocomplete: true
   form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
   form_unsaved: false
   form_disable_back: false
+  form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns:
     - serial
     - created
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
   wizard_progress_bar: true
   wizard_progress_pages: false
   wizard_progress_percentage: false
+  wizard_progress_link: false
   wizard_start_label: ''
-  wizard_complete: true
-  wizard_complete_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -60,6 +83,7 @@ settings:
   preview_attributes: {  }
   preview_excluded_elements: {  }
   preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
   draft: none
   draft_multiple: false
   draft_auto_save: false
@@ -73,14 +97,20 @@ settings:
   confirmation_back: true
   confirmation_back_label: ''
   confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
   limit_total: null
+  limit_total_interval: null
   limit_total_message: ''
   limit_user: null
+  limit_user_interval: null
   limit_user_message: ''
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
   purge: completed
   purge_days: 1
-  entity_limit_total: null
-  entity_limit_user: null
   results_disabled: false
   results_disabled_ignore: false
   token_update: false
@@ -119,25 +149,34 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
 handlers:
   email:
     id: email
     label: Email
     handler_id: email
     status: true
+    conditions: {  }
     weight: 0
     settings:
       states:
         - completed
-      to_mail: default
+      to_mail: _default
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: default
+      from_mail: _default
       from_options: {  }
-      from_name: default
+      from_name: _default
       subject: 'Ask a Question submitted'
       body: "Ask a Question submitted&lt;br/&gt;&lt;br/&gt;<br />\n&lt;strong&gt;Name&lt;/strong&gt;: [webform_submission:values:name:value]&lt;br/&gt;<br />\n&lt;strong&gt;Email&lt;/strong&gt;: [webform_submission:values:email:value]&lt;br/&gt;<br />\n&lt;strong&gt;Question&lt;/strong&gt;: [webform_submission:values:question:value]&lt;br/&gt;&lt;br/&gt;<br />\n<br />\nSubmitted on: [webform_submission:completed]<br />\n&nbsp;"
       excluded_elements: {  }
@@ -148,3 +187,12 @@ handlers:
       debug: false
       reply_to: ''
       return_path: ''
+      exclude_empty_checkbox: false
+      twig: false
+      sender_mail: ''
+      sender_name: ''
+      theme: ''
+uuid: a529d6c4-8469-46a8-96c3-f5688685a107
+third_party_settings:
+  honeypot:
+    honeypot: true

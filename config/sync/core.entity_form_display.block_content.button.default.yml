@@ -50,6 +50,8 @@ content:
   translation:
     weight: 10
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   body: true
   langcode: true
