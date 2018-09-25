@@ -3,7 +3,6 @@
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
-use Drupal\bootstrap\Utility\Unicode;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -189,8 +188,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       $text = $paragraph->get($field_name)->value;
       if (strlen($text) > 150) {
-        $text = Unicode::truncate($text, 150);
-        $text .= '...';
+        $text = substr($text, 0, 150) . '...';
       }
       $summary = $text;
     }
