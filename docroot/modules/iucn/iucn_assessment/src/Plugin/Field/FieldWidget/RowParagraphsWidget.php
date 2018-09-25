@@ -46,7 +46,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
     unset($element['top']['icons']);
 
     $element['top']['summary'] = $summary;
-//    dpm(array_keys($element['top']));
     return $element;
   }
 
@@ -146,17 +145,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     foreach ($summary as &$value) {
       $value = strip_tags($value);
-//      $value = [
-//        '#type' => 'markup',
-//        '#markup' => strip_tags($value),
-//        '#prefix' => "<div>",
-//        '#suffix' => "</div>",
-//      ];
-////      $value = strip_tags($value);
     }
     return [
       '#type' => 'table',
-      '#header' => array_keys($summary),
+//      '#header' => array_keys($summary),
       '#rows' => [$summary],
       '#attributes' => ['class' => ['table', 'table-responsive']],
     ];
