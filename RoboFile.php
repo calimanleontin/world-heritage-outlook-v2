@@ -61,7 +61,7 @@ class RoboFile extends \Robo\Tasks {
   public function siteInstall() {
     if ($this->sqlSync()->wasSuccessful() && $this->siteUpdate()->wasSuccessful()) {
       $execStack = $this->taskExecStack()->stopOnFail();
-      $execStack->exec("{$this->drush} user:password drupal@eaudeweb.ro password");
+      $execStack->exec("{$this->drush} user:password iucn password");
       $execStack->exec("{$this->drush} cset system.logging error_level verbose -y");
       $execStack->exec("{$this->drush} cr");
       return $execStack->run();
