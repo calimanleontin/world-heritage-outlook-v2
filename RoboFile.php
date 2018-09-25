@@ -15,37 +15,19 @@ class RoboFile extends \Robo\Tasks {
    * @command sql:sync
    */
   public function sqlSync() {
-    $url =  Robo::config()->get('project.sync.sql.url');
-    $username = Robo::config()->get('project.sync.sql.username');
-    $password = Robo::config()->get('project.sync.sql.password');
-    $tmp_sql_dump = '/tmp/latest.sql';
-    $tmp_sql_dump_gz = '/tmp/latest.sql.gz';
+    $config = Robo::config();
+    $url =  $config->get('project.sync.sql.url');
+    $username = $config->get('project.sync.sql.username');
+    $password = $config->get('project.sync.sql.password');
+    $sql_dump = '/tmp/db.sql';
+    $sql_dump_gz = '/tmp/db.sql.gz';
 
-    $collection = $this->collectionBuilder();
-    $collection->addTask(
-      $this->taskExec('rm')->option('-f')->arg($tmp_sql_dump)
-    );
-    $collection->addTask(
-      $this->taskExec('rm')->option('-f')->arg($tmp_sql_dump_gz)
-    );
-    $collection->addTask(
-      $this->taskExec('curl')
-      ->arg($url)
-      ->option('-o', $tmp_sql_dump_gz)
-      ->option('-u', "$username:$password")
-    );
-    $collection->addTask(
-      $this->taskExec('drush')
-        ->dir('./docroot')
-        ->arg('sql-drop')
-        ->arg('-y')
-    );
-    $collection->addTask(
-      $this->taskExec('drush')
-      ->dir('./docroot')
-      ->arg('sqlq')
-      ->arg("--file={$tmp_sql_dump_gz}")
-    );
-    $collection->run();
+    $execStack = $this->taskExecStack()->stopOnFail();
+    $execStack->exec("rm -f $sql_dump $sql_dump_gz");
+    $execStack->exec("curl $url --create-dirs -o $sql_dump_gz -u $username:$password");
+    $execStack->exec("gzip -d $sql_dump_gz");
+    $execStack->exec("./vendor/bin/drush sql:drop -y");
+    $execStack->exec("./vendor/bin/drush sql:query --file=$sql_dump -y");
+    return $execStack->run();
   }
 }
