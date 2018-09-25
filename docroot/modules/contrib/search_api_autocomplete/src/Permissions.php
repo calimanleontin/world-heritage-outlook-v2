@@ -22,7 +22,7 @@ class Permissions implements ContainerInjectionInterface {
   protected $storage;
 
   /**
-   * Creates a Permissions object.
+   * Constructs a Permissions object.
    *
    * @param \Drupal\Core\Entity\EntityStorageInterface $storage
    *   The entity storage service.
@@ -43,8 +43,8 @@ class Permissions implements ContainerInjectionInterface {
   /**
    * Returns a list of permissions, one per configured search.
    *
-   * @return string[]
-   *   A list of permissions.
+   * @return array[]
+   *   A list of permission definitions, keyed by permission machine name.
    */
   public function bySearch() {
     $perms = [];

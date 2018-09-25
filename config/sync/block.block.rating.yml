@@ -20,6 +20,7 @@ settings:
   label: Rating
   provider: facets
   label_display: visible
+  block_id: rating
 visibility:
   request_path:
     id: request_path

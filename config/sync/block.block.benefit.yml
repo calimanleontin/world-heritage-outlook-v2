@@ -20,6 +20,7 @@ settings:
   label: Benefit
   provider: facets
   label_display: visible
+  block_id: benefit
 visibility:
   request_path:
     id: request_path

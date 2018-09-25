@@ -20,6 +20,7 @@ settings:
   label: Region
   provider: facets
   label_display: visible
+  block_id: iucnregion
 visibility:
   request_path:
     id: request_path

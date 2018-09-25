@@ -3,12 +3,15 @@
 namespace Drupal\search_api_autocomplete\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\PluginFormInterface;
-use Drupal\search_api\IndexInterface;
-use Drupal\search_api_autocomplete\Type\TypeManager;
+use Drupal\search_api_autocomplete\Suggester\SuggesterInterface;
+use Drupal\search_api_autocomplete\Search\SearchPluginManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,52 +34,46 @@ class SearchEditForm extends EntityForm {
   protected $suggesterManager;
 
   /**
-   * The autocomplete type manager.
+   * The autocomplete search plugin manager.
    *
-   * @var \Drupal\search_api_autocomplete\Type\TypeManager
+   * @var \Drupal\search_api_autocomplete\Search\SearchPluginManager
    */
-  protected $typeManager;
+  protected $searchPluginManager;
+
+  /**
+   * The logger to use.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
 
   /**
    * Creates a new SearchEditForm instance.
    *
    * @param \Drupal\Component\Plugin\PluginManagerInterface $suggester_manager
    *   The suggester manager.
-   * @param \Drupal\search_api_autocomplete\Type\TypeManager $autocomplete_type_manager
-   *   The autocomplete type manager.
+   * @param \Drupal\search_api_autocomplete\Search\SearchPluginManager $search_plugin_manager
+   *   The search plugin manager.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(PluginManagerInterface $suggester_manager, TypeManager $autocomplete_type_manager) {
+  public function __construct(PluginManagerInterface $suggester_manager, SearchPluginManager $search_plugin_manager, LoggerInterface $logger) {
     $this->suggesterManager = $suggester_manager;
-    $this->typeManager = $autocomplete_type_manager;
+    $this->searchPluginManager = $search_plugin_manager;
+    $this->logger = $logger;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
+    /** @var \Psr\Log\LoggerInterface $logger */
+    $logger = $container->get('logger.channel.search_api_autocomplete');
     return new static(
       $container->get('plugin.manager.search_api_autocomplete.suggester'),
-      $container->get('plugin.manager.search_api_autocomplete.type')
+      $container->get('plugin.manager.search_api_autocomplete.search'),
+      $logger
     );
-  }
-
-  /**
-   * Returns all suggesters matching for a particular search index.
-   *
-   * @param \Drupal\search_api\IndexInterface $index
-   *   The search index to filter by.
-   *
-   * @return \Drupal\search_api_autocomplete\Suggester\SuggesterInterface[]
-   *   An array of suggesters.
-   */
-  protected function getSuggestersForIndex(IndexInterface $index) {
-    $suggesters = array_map(function ($suggester_info) {
-      return $suggester_info['class'];
-    }, $this->suggesterManager->getDefinitions());
-    $suggesters = array_filter($suggesters, function ($suggester_class) use ($index) {
-      return $suggester_class::supportsIndex($index);
-    });
-    return $suggesters;
   }
 
   /**
@@ -84,126 +81,55 @@ class SearchEditForm extends EntityForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $search = $search_api_autocomplete_search = $this->entity;
-    $form['#title'] = $this->t('Configure autocompletion for %search', ['%search' => $search_api_autocomplete_search->label()]);
 
-    // If this is a re-build (i.e., most likely an AJAX call due to a new
-    // suggester being selected), prepare the suggester sub-form state
-    // accordingly.
-    $selected_suggester_id = $search->getSuggesterId();
-    if (!empty($form_state->getValue('suggester'))) {
-      $selected_suggester_id = $form_state->getValue('suggester');
-      // Don't let submitted values for a different suggester influence another
-      // suggester's form.
-      if ($selected_suggester_id != $form_state->getValue('old_suggester_id')) {
-        $form_state->setValue('suggester_settings', NULL);
-        $form_state->set('suggester_settings', NULL);
-      }
-    }
+    $search = $this->entity;
+    $form['#title'] = $this->t('Configure autocompletion for %search', ['%search' => $search->label()]);
 
-    /** @var \Drupal\search_api_autocomplete\Type\TypeInterface $type */
-    $type = $this->typeManager->createInstance($search->getType(), $search->get('type_settings'));
-    $form_state->set(['type'], $type);
-    if (!$type) {
-      drupal_set_message(t('No information about the type of this search was found.'), 'error');
-      return [];
-    }
     $form['#tree'] = TRUE;
+
     $form['status'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enabled'),
       '#default_value' => $search->status(),
     ];
-    $form['suggester'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Suggester plugin'),
-      '#description' => $this->t('Choose the suggester implementation to use.'),
-      '#options' => [],
+
+    $form['suggesters'] = $this->buildSuggestersForm($form_state);
+
+    if (!$search->hasValidSearchPlugin()) {
+      drupal_set_message($this->t('No information about this search could be found. Unless this is a temporary problem for some reason, you are advised to delete this search configuration.'), 'error');
+    }
+    else {
+      $search_plugin = $search->getSearchPlugin();
+      if ($search_plugin instanceof PluginFormInterface) {
+        $form['search_settings'] = [];
+        $plugin_form_state = SubFormState::createForSubform($form['search_settings'], $form, $form_state);
+        $form['search_settings'] = $search_plugin->buildConfigurationForm($form['search_settings'], $plugin_form_state);
+      }
+    }
+
+    $form['options']['limit'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Maximum number of suggestions'),
+      '#description' => $this->t('The maximum number of autocomplete suggestions to display in total.'),
       '#required' => TRUE,
-      '#default_value' => $selected_suggester_id,
-      '#ajax' => [
-        'callback' => 'search_api_autocomplete_suggester_ajax_callback',
-        'wrapper' => 'search-api-suggester-settings',
-      ],
+      '#min' => 1,
+      '#step' => 1,
+      '#default_value' => $search->getOption('limit'),
     ];
-
-    foreach ($this->getSuggestersForIndex($search->getIndexInstance()) as $suggester_id => $definition) {
-      // Load the suggester plugin. If the suggester is unchanged from the one
-      // on the saved version of the search, use the saved configuration.
-      $configuration = [];
-      if ($suggester_id == $search->getSuggesterId()) {
-        $configuration = $search->get('suggester_settings') ?: [];
-      }
-      $configuration['#search'] = $search;
-      /** @var \Drupal\search_api_autocomplete\Suggester\SuggesterInterface $suggester */
-      $suggester = $this->suggesterManager
-        ->createInstance($suggester_id, $configuration);
-      if (!$suggester) {
-        continue;
-      }
-
-      // Add the suggester to the suggester options.
-      $form['suggester']['#options'][$suggester_id] = $suggester->label();
-      $form['suggester'][$suggester_id]['#description'] = $suggester->getDescription();
-
-      // Then, also add the configuration form for the selected suggester.
-      if ($suggester_id != $selected_suggester_id) {
-        continue;
-      }
-      $form['suggester_settings'] = [];
-      $suggester_form_state = SubFormState::createForSubform($form['suggester_settings'], $form, $form_state);
-      if ($suggester_form = $suggester->buildConfigurationForm([], $suggester_form_state)) {
-        $form['suggester_settings'] = $suggester_form;
-        $form['suggester_settings']['#type'] = 'fieldset';
-        $form['suggester_settings']['#title'] = $this->t('Configure the %suggester suggester plugin', ['%suggester' => $suggester->label()]);
-        $form['suggester_settings']['#description'] = $suggester->getDescription();
-        $form['suggester_settings']['#collapsible'] = TRUE;
-      }
-      else {
-        $form['suggester_settings']['#type'] = 'item';
-      }
-      $form['suggester_settings']['#prefix'] = '<div id="search-api-suggester-settings">';
-      $form['suggester_settings']['#suffix'] = '</div>';
-    }
-    $form['suggester_settings']['old_suggester_id'] = [
-      '#type' => 'hidden',
-      '#value' => $selected_suggester_id,
-      '#tree' => FALSE,
-    ];
-
-    // If there is only a single plugin available, hide the "suggester" option.
-    if (count($form['suggester']['#options']) == 1) {
-      $form['suggester'] = [
-        '#type' => 'value',
-        '#value' => key($form['suggester']['#options']),
-      ];
-    }
-
     $form['options']['min_length'] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t('Minimum length of keywords for autocompletion'),
       '#description' => $this->t('If the entered keywords are shorter than this, no autocomplete suggestions will be displayed.'),
-      '#default_value' => $search->getOption('min_length', 1),
-      '#validate' => ['element_validate_integer_positive'],
+      '#min' => 1,
+      '#step' => 1,
+      '#default_value' => $search->getOption('min_length'),
     ];
     $form['options']['show_count'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display result count estimates'),
       '#description' => $this->t('Display the estimated number of result for each suggestion. This option might not have an effect for some servers or types of suggestion.'),
-      '#default_value' => (bool) $search->getOption('show_count', FALSE),
+      '#default_value' => (bool) $search->getOption('show_count'),
     ];
-    $form['options']['delay'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Delay in ms'),
-      '#default_value' => $search->getOption('delay'),
-    ];
-
-    $type_form = empty($form['type_settings']) ? [] : $form['type_settings'];
-    if ($type instanceof PluginFormInterface) {
-      $form['type_settings'] = [];
-      $type_form_state = SubFormState::createForSubform($form['type_settings'], $form, $form_state);
-      $form['type_settings'] = $type->buildConfigurationForm($type_form, $type_form_state);
-    }
 
     $form['advanced'] = [
       '#type' => 'fieldset',
@@ -211,108 +137,263 @@ class SearchEditForm extends EntityForm {
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     ];
-    $form['advanced']['submit_button_selector'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Search button selector'),
-      '#description' => $this->t('<a href="@jquery_url">jQuery selector</a> to identify the search button in the search form. Use the ID attribute of the "Search" submit button to prevent issues when another button is present (e.g., "Reset"). The selector is evaluated relative to the form. The default value is ":submit".', ['@jquery_url' => 'https://api.jquery.com/category/selectors/']),
-      '#default_value' => $search->getOption('submit_button_selector', ':submit'),
-      '#required' => TRUE,
-      '#parents' => ['options', 'submit_button_selector'],
-    ];
     $form['advanced']['autosubmit'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable auto-submit'),
       '#description' => $this->t('When enabled, the search form will automatically be submitted when a selection is made by pressing "Enter".'),
-      '#default_value' => $search->getOption('autosubmit', TRUE),
+      '#default_value' => $search->getOption('autosubmit'),
       '#parents' => ['options', 'autosubmit'],
+    ];
+    $form['advanced']['submit_button_selector'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Search button selector'),
+      '#description' => $this->t('<a href="@jquery_url">jQuery selector</a> identifying the button to use for submitting the search form. Use the ID attribute of the "Search" submit button to prevent issues when another button is present (e.g., "Reset"). The selector is evaluated relative to the form. The default value is "@default".', ['@jquery_url' => 'https://api.jquery.com/category/selectors/', '@default' => ':submit']),
+      '#default_value' => $search->getOption('submit_button_selector'),
+      '#required' => TRUE,
+      '#parents' => ['options', 'submit_button_selector'],
+      '#states' => [
+        'visible' => [
+          ':input[name="options[autosubmit]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['advanced']['delay'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Delay (in ms)'),
+      '#description' => $this->t('The delay in milliseconds between when a keystroke occurs and when a search is performed. Low values will result in a more responsive experience for users, but can also cause a higher load on the server. Defaults to 300 ms.'),
+      '#min' => 0,
+      '#step' => 1,
+      '#default_value' => $search->getOption('delay'),
+      '#parents' => ['options', 'delay'],
     ];
 
     return $form;
   }
 
   /**
-   * Form AJAX handler for search_api_autocomplete_admin_search_edit().
+   * Builds a form for the search's suggester plugins.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the (parent) form.
+   *
+   * @return array
+   *   A form for selecting and configuring the search's suggesters.
    */
-  public function search_api_autocomplete_suggester_ajax_callback(array $form, array &$form_state) {
-    return $form['suggester_settings'];
+  protected function buildSuggestersForm(FormStateInterface $form_state) {
+    $search = $this->entity;
+
+    $available_suggesters = $this->getAvailableSuggesters();
+    $suggester_ids = array_keys($available_suggesters);
+    $suggester_weights = $search->getSuggesterWeights();
+    $suggester_weights += array_fill_keys($suggester_ids, 0);
+    $suggester_limits = $search->getSuggesterLimits();
+    $suggester_limits += array_fill_keys($suggester_ids, NULL);
+
+    $form = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Suggester plugins'),
+      '#description' => $this->t('Suggester plugins represent methods for creating autocomplete suggestions from user input.'),
+    ];
+    $form['enabled'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Enabled suggesters'),
+      '#description' => $this->t('Choose the suggester plugins to use for creating autocomplete suggestions.'),
+      '#options' => [],
+      '#required' => TRUE,
+      '#default_value' => $search->getSuggesterIds(),
+    ];
+    $form['weights'] = [
+      '#type' => 'table',
+    ];
+    $form['weights']['#tabledrag'][] = [
+      'action' => 'order',
+      'relationship' => 'sibling',
+      'group' => 'search-api-autocomplete-suggester-weight',
+    ];
+
+    // For the "limit" setting we use a sentence. This requires a bit of
+    // preparation.
+    $sentence = (string) $this->t('At most @num results');
+    list($prefix, $suffix) = explode('@num', $sentence);
+    $prefix = '<div class="container-inline">' . $prefix;
+    $suffix .= '</div>';
+
+    foreach ($available_suggesters as $suggester_id => $suggester) {
+      $label = $suggester->label();
+
+      // Option (with additional description) for the "Enabled" checkboxes.
+      $form['enabled']['#options'][$suggester_id] = $label;
+      $form['enabled'][$suggester_id] = [
+        '#description' => $suggester->getDescription(),
+      ];
+
+      $states = [
+        'visible' => [
+          ":input[name=\"suggesters[enabled][$suggester_id]\"]" => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+
+      // Entry in the "Suggester order" table. (Hidden while the suggester is
+      // disabled.)
+      $form['weights'][$suggester_id] = [
+        '#weight' => $suggester_weights[$suggester_id],
+        'label' => [
+          '#plain_text' => $label,
+        ],
+        'limit' => [
+          '#type' => 'number',
+          '#prefix' => $prefix,
+          '#suffix' => $suffix,
+          '#min' => 1,
+          '#step' => 1,
+          '#size' => 2,
+          '#default_value' => $suggester_limits[$suggester_id],
+        ],
+        'weight' => [
+          '#type' => 'weight',
+          '#title' => $this->t('Weight for suggester %label', ['%label' => $label]),
+          '#title_display' => 'invisible',
+          '#delta' => 50,
+          '#default_value' => $suggester_weights[$suggester_id],
+          '#attributes' => [
+            'class' => ['search-api-autocomplete-suggester-weight'],
+          ],
+        ],
+        '#attributes' => [
+          'class' => ['draggable', 'js-form-wrapper'],
+          'data-drupal-states' => Json::encode($states),
+        ],
+      ];
+
+      // "Details" container with the suggester config form, if any. (Hidden
+      // while the suggester is disabled.)
+      if ($suggester instanceof PluginFormInterface) {
+        $args = ['%label' => $suggester->label()];
+        $form['settings'][$suggester_id] = [
+          '#type' => 'details',
+          '#title' => $this->t('Configure suggester %label', $args),
+          '#states' => $states,
+        ];
+        $suggester_form_state = SubformState::createForSubform($form['settings'][$suggester_id], $form, $form_state);
+        $form['settings'][$suggester_id] += $suggester->buildConfigurationForm($form['settings'][$suggester_id], $suggester_form_state);
+      }
+    }
+
+    if (!empty($form['weights'])) {
+      uasort($form['weights'], [SortArray::class, 'sortByWeightProperty']);
+    }
+
+    return $form;
   }
 
   /**
-   * Validate callback for search_api_autocomplete_admin_search_edit().
-   *
-   * @see search_api_autocomplete_admin_search_edit()
-   * @see search_api_autocomplete_admin_search_edit_submit()
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $values = &$form_state->getValues();
-    // Call the config form validation method of the selected suggester plugin,
-    // but only if it was the same plugin that created the form.
-    if ($values['suggester'] == $values['old_suggester_id']) {
-      $configuration = [];
-      if (!empty($values['suggester_settings'])) {
-        $configuration = $values['suggester_settings'];
+
+    // Iterate over all suggesters that have a form and are enabled.
+    $available_suggesters = $this->getAvailableSuggesters();
+    $enabled_suggesters = array_keys(array_filter($values['suggesters']['enabled']));
+    foreach ($enabled_suggesters as $suggester_id) {
+      $suggester = $available_suggesters[$suggester_id];
+      if ($suggester instanceof PluginFormInterface) {
+        $suggester_form_state = SubformState::createForSubform($form['suggesters']['settings'][$suggester_id], $form, $form_state);
+        $suggester->validateConfigurationForm($form['suggesters']['settings'][$suggester_id], $suggester_form_state);
       }
-      $suggester = $this->suggesterManager->createInstance($values['suggester'], ['#search' => $this->entity] + $configuration);
-      $suggester_form = $form['suggester_settings'];
-      unset($suggester_form['old_suggester_id']);
-      $suggester_form_state = SubFormState::createForSubform($form['suggester_settings'], $form, $form_state);
-      $suggester->validateConfigurationForm($suggester_form, $suggester_form_state);
     }
 
-    /** @var \Drupal\search_api_autocomplete\Type\TypeInterface $type */
-    $type = $form_state->get('type');
-    if ($type instanceof PluginFormInterface) {
-      $custom_form = empty($form['type_settings']) ? [] : $form['type_settings'];
-      $type_form_state = SubFormState::createForSubform($form['type_settings'], $form, $form_state);
-      $type->validateConfigurationForm($custom_form, $type_form_state);
+    $search_plugin = $this->entity->getSearchPlugin();
+    if ($search_plugin instanceof PluginFormInterface) {
+      $plugin_form_state = SubFormState::createForSubform($form['search_settings'], $form, $form_state);
+      $search_plugin->validateConfigurationForm($form['search_settings'], $plugin_form_state);
     }
   }
 
   /**
-   * Submit callback for search_api_autocomplete_admin_search_edit().
-   *
-   * @see search_api_autocomplete_admin_search_edit()
-   * @see search_api_autocomplete_admin_search_edit_validate()
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $values = &$form_state->getValues();
-    $type = $form_state->get('type');
-    if ($type instanceof PluginFormInterface) {
-      $type_form = empty($form['type_settings']) ? [] : $form['type_settings'];
-      $type_form_state = SubFormState::createForSubform($form['type_settings'], $form, $form_state);
-      $type->submitConfigurationForm($type_form, $type_form_state);
-    }
-
+    // Remove button and internal Form API values from submitted values.
+    $form_state->cleanValues();
+    $this->entity = $this->buildEntity($form, $form_state);
     $search = $this->entity;
+    $values = $form_state->getValues();
+
+    // Iterate over all suggesters that are enabled.
+    $available_suggesters = $this->getAvailableSuggesters();
+    /** @var \Drupal\search_api_autocomplete\Suggester\SuggesterInterface[] $enabled_suggesters */
+    $enabled_suggesters = array_intersect_key($available_suggesters, array_filter($values['suggesters']['enabled']));
+    $suggester_weights = [];
+    $suggester_limits = [];
+    foreach ($enabled_suggesters as $suggester_id => $suggester) {
+      // Submit the form, if there is one.
+      if ($suggester instanceof PluginFormInterface) {
+        $suggester_form_state = SubformState::createForSubform($form['suggesters']['settings'][$suggester_id], $form, $form_state);
+        $suggester->submitConfigurationForm($form['suggesters']['settings'][$suggester_id], $suggester_form_state);
+      }
+      $suggester_weights[$suggester_id] = (int) $values['suggesters']['weights'][$suggester_id]['weight'];
+      if (is_numeric($values['suggesters']['weights'][$suggester_id]['limit'])) {
+        $suggester_limits[$suggester_id] = (int) $values['suggesters']['weights'][$suggester_id]['limit'];
+      }
+    }
+    $search->setSuggesters($enabled_suggesters);
+    $search->set('suggester_weights', $suggester_weights);
+    $search->set('suggester_limits', $suggester_limits);
+
+    $search_plugin = $this->entity->getSearchPlugin();
+    if ($search_plugin instanceof PluginFormInterface) {
+      $plugin_form = empty($form['search_settings']) ? [] : $form['search_settings'];
+      $plugin_form_state = SubFormState::createForSubform($form['search_settings'], $form, $form_state);
+      $search_plugin->submitConfigurationForm($plugin_form, $plugin_form_state);
+      $search->set('search_settings', $search_plugin->getConfiguration());
+    }
 
     $form_state->setRedirect('search_api_autocomplete.admin_overview', ['search_api_index' => $search->getIndexId()]);
 
-    // Allow the suggester to decide how to save its configuration. If the user
-    // has disabled JS in the browser, or AJAX didn't work for some other
-    // reason, a different suggester might be selected than that which created
-    // the config form. In that case, we don't call the form submit method, save
-    // empty configuration for the plugin and stay on the page.
-    if ($values['suggester'] == $values['old_suggester_id']) {
-      $configuration = [];
-      if (!empty($values['suggester_settings'])) {
-        $configuration = $values['suggester_settings'];
+    drupal_set_message($this->t('The autocompletion settings for the search have been saved.'));
+  }
+
+  /**
+   * Returns all suggesters available for this search.
+   *
+   * @return \Drupal\search_api_autocomplete\Suggester\SuggesterInterface[]
+   *   The available suggesters, sorted by label.
+   */
+  protected function getAvailableSuggesters() {
+    $suggesters = $this->entity->getSuggesters();
+    $settings['#search'] = $this->entity;
+
+    $definitions = $this->suggesterManager->getDefinitions();
+    foreach ($definitions as $plugin_id => $definition) {
+      if (isset($suggesters[$plugin_id])) {
+        continue;
       }
-      $suggester = $this->suggesterManager->createInstance($values['suggester'], [
-        '#search' => $search,
-      ] + $configuration);
-      $suggester_form = $form['suggester_settings'];
-      unset($suggester_form['old_suggester_id']);
-      $suggester_form_state = SubFormState::createForSubform($form['suggester_settings'], $form, $form_state);
-      $suggester->submitConfigurationForm($suggester_form, $suggester_form_state);
-      $values['suggester_settings'] = $suggester->getConfiguration();
-    }
-    else {
-      $values['suggester_settings'] = [];
-      $form_state->disableRedirect();
-      drupal_set_message(t('The used suggester plugin has changed. Please review the configuration for the new plugin.'), 'warning');
+      if (class_exists($definition['class'])) {
+        $method = [$definition['class'], 'supportsSearch'];
+        if (call_user_func($method, $this->entity)) {
+          /** @var \Drupal\search_api_autocomplete\Suggester\SuggesterInterface $suggester */
+          $suggester = $this->suggesterManager
+            ->createInstance($plugin_id, $settings);
+          $suggesters[$plugin_id] = $suggester;
+        }
+      }
+      else {
+        $this->logger->warning('Suggester %id specifies a non-existing class %class.', [
+          '%id' => $plugin_id,
+          '%class' => $definition['class'],
+        ]);
+      }
     }
 
-    drupal_set_message(t('The autocompletion settings for the search have been saved.'));
+    $compare = function (SuggesterInterface $a, SuggesterInterface $b) {
+      return strnatcasecmp($a->label(), $b->label());
+    };
+    uasort($suggesters, $compare);
+
+    return $suggesters;
   }
 
 }

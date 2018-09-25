@@ -2,23 +2,29 @@
 
 namespace Drupal\search_api_autocomplete\Controller;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\search_api\SearchApiException;
-use Drupal\search_api_autocomplete\AutocompleteFormUtility;
+use Drupal\search_api_autocomplete\SearchApiAutocompleteException;
 use Drupal\search_api_autocomplete\SearchInterface;
+use Drupal\search_api_autocomplete\Utility\AutocompleteHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Component\Transliteration\TransliterationInterface;
 
 /**
  * Provides a controller for autocompletion.
  */
 class AutocompleteController extends ControllerBase implements ContainerInjectionInterface {
+
+  /**
+   * The autocomplete helper service.
+   *
+   * @var \Drupal\search_api_autocomplete\Utility\AutocompleteHelperInterface
+   */
+  protected $autocompleteHelper;
 
   /**
    * The renderer.
@@ -28,13 +34,26 @@ class AutocompleteController extends ControllerBase implements ContainerInjectio
   protected $renderer;
 
   /**
+   * The transliterator.
+   *
+   * @var \Drupal\Component\Transliteration\TransliterationInterface
+   */
+  protected $transliterator;
+
+  /**
    * Creates a new AutocompleteController instance.
    *
+   * @param \Drupal\search_api_autocomplete\Utility\AutocompleteHelperInterface $autocomplete_helper
+   *   The autocomplete helper service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\Component\Transliteration\TransliterationInterface $transliterator
+   *   The transliterator.
    */
-  public function __construct(RendererInterface $renderer) {
+  public function __construct(AutocompleteHelperInterface $autocomplete_helper, RendererInterface $renderer, TransliterationInterface $transliterator) {
+    $this->autocompleteHelper = $autocomplete_helper;
     $this->renderer = $renderer;
+    $this->transliterator = $transliterator;
   }
 
   /**
@@ -42,7 +61,9 @@ class AutocompleteController extends ControllerBase implements ContainerInjectio
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('renderer')
+      $container->get('search_api_autocomplete.helper'),
+      $container->get('renderer'),
+      $container->get('transliteration')
     );
   }
 
@@ -51,109 +72,136 @@ class AutocompleteController extends ControllerBase implements ContainerInjectio
    *
    * @param \Drupal\search_api_autocomplete\SearchInterface $search_api_autocomplete_search
    *   The search for which to retrieve autocomplete suggestions.
-   * @param string $fields
-   *   A comma-separated list of fields on which to do autocompletion. Or "-"
-   *   to use all fulltext fields.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   The autocompletion response.
    */
-  public function autocomplete(SearchInterface $search_api_autocomplete_search, $fields, Request $request) {
+  public function autocomplete(SearchInterface $search_api_autocomplete_search, Request $request) {
     $matches = [];
-    $autocomplete_utility = new AutocompleteFormUtility($this->renderer);
+    $search = $search_api_autocomplete_search;
+
+    if (!$search->status()|| !$search->hasValidIndex()) {
+      return new JsonResponse($matches);
+    }
+
     try {
-      if ($search_api_autocomplete_search->supportsAutocompletion()) {
-        $keys = $request->query->get('q');
-        list($complete, $incomplete) = $autocomplete_utility->splitKeys($keys);
-        $query = $search_api_autocomplete_search->getQuery($complete);
-        if ($query) {
-          // @todo Maybe make range configurable?
-          $query->range(0, 10);
-          $query->setOption('search id', 'search_api_autocomplete:' . $search_api_autocomplete_search->id());
-          if (!empty($search_api_autocomplete_search->getOption('fields'))) {
-            $query->setFulltextFields($search_api_autocomplete_search->getOption('fields'));
-          }
-          elseif ($fields != '-') {
-            $fields = explode(' ', $fields);
-            $query->setFulltextFields($fields);
-          }
-          $query->preExecute();
-          $suggestions = $search_api_autocomplete_search->getSuggesterInstance()
-            ->getAutocompleteSuggestions($query, $incomplete, $keys);
-          if ($suggestions) {
-            foreach ($suggestions as $suggestion) {
-              if (!$search_api_autocomplete_search->getOption('show_count')) {
-                $suggestion->setResults(NULL);
-              }
+      $keys = $request->query->get('q');
+      // If the "Transliteration" processor is enabled for the search index, we
+      // also need to transliterate the user input for autocompletion.
+      if ($search->getIndex()->isValidProcessor('transliteration')) {
+        $langcode = $this->languageManager()->getCurrentLanguage()->getId();
+        $keys = $this->transliterator->transliterate($keys, $langcode);
+      }
+      $split_keys = $this->autocompleteHelper->splitKeys($keys);
+      list($complete, $incomplete) = $split_keys;
+      $data = $request->query->all();
+      unset($data['q']);
+      $query = $search->createQuery($complete, $data);
+      if (!$query) {
+        return new JsonResponse($matches);
+      }
 
-              // Decide what the action of the suggestion is – entering specific
-              // search terms or redirecting to a URL.
-              if ($suggestion->getUrl()) {
-                $key = ' ' . $suggestion->getUrl()->toString();
-              }
-              else {
-                $key = trim($suggestion->getKeys());
-              }
+      // Prepare the query.
+      $query->setSearchId('search_api_autocomplete:' . $search->id());
+      $query->addTag('search_api_autocomplete');
+      $query->preExecute();
 
-              if (!isset($ret[$key])) {
-                $ret[$key] = $suggestion;
-              }
-            }
+      // Get total limit and per-suggester limits.
+      $limit = $search->getOption('limit');
+      $suggester_limits = $search->getSuggesterLimits();
 
-            $alter_params = [
-              'query' => $query,
-              'search' => $search_api_autocomplete_search,
-              'incomplete_key' => $incomplete,
-              'user_input' => $keys,
-            ];
-            $this->moduleHandler()->alter('search_api_autocomplete_suggestions', $ret, $alter_params);
+      // Get all enabled suggesters, ordered by weight.
+      $suggesters = $search->getSuggesters();
+      $suggester_weights = $search->getSuggesterWeights();
+      $suggester_weights = array_intersect_key($suggester_weights, $suggesters);
+      $suggester_weights += array_fill_keys(array_keys($suggesters), 0);
+      asort($suggester_weights);
 
-            /*** @var \Drupal\search_api_autocomplete\SuggestionInterface $suggestion */
-            foreach ($ret as $suggestion) {
-              if ($build = $suggestion->toRenderable()) {
-                $matches[] = [
-                  // @todo Why doesn't $key work here for numeric suggestions?
-                  'value' => $suggestion->getKeys(),
-                  'label' => $this->renderer->render($build),
-                ];
-              }
-            }
+      /** @var \Drupal\search_api_autocomplete\Suggestion\SuggestionInterface[] $suggestions */
+      $suggestions = [];
+      // Go through all enabled suggesters in order of increasing weight and
+      // add their suggestions (until the limit is reached).
+      foreach (array_keys($suggester_weights) as $suggester_id) {
+        // Clone the query in case the suggester makes any modifications.
+        $tmp_query = clone $query;
+
+        // Compute the applicable limit based on (remaining) total limit and
+        // the suggester-specific limit (if set).
+        if (isset($suggester_limits[$suggester_id])) {
+          $suggester_limit = min($limit, $suggester_limits[$suggester_id]);
+        }
+        else {
+          $suggester_limit = $limit;
+        }
+        $tmp_query->range(0, $suggester_limit);
+
+        // Add suggestions in a loop so we're sure they're numerically
+        // indexed.
+        $new_suggestions = $suggesters[$suggester_id]
+          ->getAutocompleteSuggestions($tmp_query, $incomplete, $keys);
+        foreach ($new_suggestions as $suggestion) {
+          $suggestions[] = $suggestion;
+
+          if (--$limit == 0) {
+            // If we've reached the limit, stop adding suggestions.
+            break 2;
           }
         }
       }
+
+      // Allow other modules to alter the created suggestions.
+      $alter_params = [
+        'query' => $query,
+        'search' => $search,
+        'incomplete_key' => $incomplete,
+        'user_input' => $keys,
+      ];
+      $this->moduleHandler()
+        ->alter('search_api_autocomplete_suggestions', $suggestions, $alter_params);
+
+      // Then, add the suggestions to the $matches return array in the form
+      // expected by Drupal's autocomplete Javascript.
+      $show_count = $search->getOption('show_count');
+      foreach ($suggestions as $suggestion) {
+        // If "Display result count estimates" was disabled, remove the
+        // count from the suggestion.
+        if (!$show_count) {
+          $suggestion->setResultsCount(NULL);
+        }
+        if ($build = $suggestion->toRenderable()) {
+          // Decide what the action of the suggestion is – entering specific
+          // search terms or redirecting to a URL.
+          if ($suggestion->getUrl()) {
+            // Our JavaScript code recognizes URLs by their leading space.
+            $value = ' ' . $suggestion->getUrl()->toString();
+          }
+          else {
+            $value = trim($suggestion->getSuggestedKeys());
+          }
+
+          try {
+            $matches[] = [
+              'value' => $value,
+              'label' => $this->renderer->render($build),
+            ];
+          }
+          catch (\Exception $e) {
+            watchdog_exception('search_api_autocomplete', $e, '%type while rendering an autocomplete suggestion: !message in %function (line %line of %file).');
+          }
+        }
+      }
+    }
+    // @todo Use a multi-catch once we can depend on PHP 7.1+.
+    catch (SearchApiAutocompleteException $e) {
+      watchdog_exception('search_api_autocomplete', $e, '%type while retrieving autocomplete suggestions: !message in %function (line %line of %file).');
     }
     catch (SearchApiException $e) {
       watchdog_exception('search_api_autocomplete', $e, '%type while retrieving autocomplete suggestions: !message in %function (line %line of %file).');
     }
 
     return new JsonResponse($matches);
-  }
-
-  /**
-   * Checks access to the autocompletion route.
-   *
-   * @param \Drupal\search_api_autocomplete\SearchInterface $search_api_autocomplete_search
-   *   The configured autocompletion search.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   The access result.
-   */
-  public function access(SearchInterface $search_api_autocomplete_search, AccountInterface $account) {
-    $permission = 'use search_api_autocomplete for ' . $search_api_autocomplete_search->id();
-    $access = AccessResult::allowedIf($search_api_autocomplete_search->status())
-      ->andIf(AccessResult::allowedIf($search_api_autocomplete_search->getIndexInstance()->status()))
-      ->andIf(AccessResult::allowedIfHasPermission($account, $permission))
-      ->andIf(AccessResult::allowedIf($search_api_autocomplete_search->supportsAutocompletion()))
-      ->cachePerPermissions()
-      ->addCacheableDependency($search_api_autocomplete_search);
-    if ($access instanceof AccessResultReasonInterface) {
-      $access->setReason("The \"$permission\" permission is required and autocomplete for this search must be enabled.");
-    }
-    return $access;
   }
 
 }
