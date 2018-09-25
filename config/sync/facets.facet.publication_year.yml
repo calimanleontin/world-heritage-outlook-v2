@@ -16,12 +16,9 @@ show_only_one_result: false
 field_identifier: field_publication_year
 facet_source_id: 'search_api:views_page__publications__publications_page_database'
 widget:
-  type: datebasic
+  type: links
   config:
     show_numbers: false
-    display_relative: false
-    granularity: '6'
-    date_display: ''
 query_operator: or
 use_hierarchy: false
 expand_hierarchy: false
@@ -30,6 +27,14 @@ hard_limit: 0
 exclude: false
 only_visible_when_facet_source_is_visible: true
 processor_configs:
+  date_item:
+    processor_id: date_item
+    weights:
+      build: 35
+    settings:
+      date_format: ''
+      granularity: 6
+      date_display: actual_date
   display_value_widget_order:
     processor_id: display_value_widget_order
     weights:

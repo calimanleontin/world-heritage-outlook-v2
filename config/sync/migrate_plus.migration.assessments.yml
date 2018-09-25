@@ -1,0 +1,365 @@
+uuid: 69c99038-9462-4bea-ad67-c6796965ac1a
+langcode: en
+status: true
+dependencies: {  }
+id: assessments
+migration_tags: null
+migration_group: assessments
+label: Assesments
+source:
+  plugin: iucn_assessments
+  path_setting: assessment_path
+  ids:
+    assessmentId:
+      type: string
+  fields:
+    -
+      name: title
+      label: Title
+    -
+      name: assessmentId
+      label: assessmentId
+    -
+      name: siteId
+      label: 'Site ID'
+    -
+      name: archived
+      label: Archived
+      selector: archived
+    -
+      name: startDate
+      label: 'Start date'
+    -
+      name: endDate
+      label: 'End date'
+    -
+      name: versionCode
+      label: versionCode
+process:
+  created:
+    -
+      plugin: cast
+      cast_to: string
+      source: initiationDate
+    -
+      plugin: substr
+      start: 0
+      length: -3
+  type:
+    plugin: default_value
+    default_value: site_assessment
+  status:
+    source: status
+    plugin: default_value
+    default_value: 0
+  revision:
+    plugin: default_value
+    default_value: 1
+  revision_timestamp:
+    -
+      plugin: cast
+      cast_to: string
+      source: startDate
+    -
+      plugin: substr
+      start: 0
+      length: -3
+  revision_log: assessmentStage
+  langcode: langcode
+  title: title
+  field_as_site:
+    plugin: entity_lookup
+    source: siteId
+    value_key: field_site_id
+    bundle_key: type
+    bundle: site
+    entity_type: node
+  field_as_archived:
+    source: archived
+    plugin: boolean
+  field_as_start_date:
+    -
+      plugin: cast
+      cast_to: string
+      source: startDate
+    -
+      plugin: substr
+      start: 0
+      length: -3
+    -
+      plugin: format_date
+      from_format: U
+      to_format: Y-m-d
+  field_as_end_date:
+    -
+      plugin: cast
+      cast_to: string
+      source: endDate
+    -
+      plugin: substr
+      start: 0
+      length: -3
+    -
+      plugin: format_date
+      from_format: U
+      to_format: Y-m-d
+  field_as_version: versionCode
+  field_as_cycle: assessmentCycle
+  field_date_published:
+    -
+      plugin: cast
+      cast_to: string
+      source: publishedDate
+    -
+      plugin: substr
+      start: 0
+      length: -3
+    -
+      plugin: format_date
+      from_format: U
+      to_format: Y-m-d
+  field_as_references:
+    plugin: multiple_extract
+    source: references
+    default: null
+    index:
+      - references
+  field_as_key_cons:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: keyConservationIssuesIds
+  field_as_values_wh:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: assessmentWhvaluesIds
+  field_as_values_bio:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: biodiversityValuesIds
+  field_as_global_assessment_text:
+    plugin: multiple_extract
+    source: conservationOutlooks
+    default: null
+    index:
+      - justification
+  field_as_global_assessment_level:
+    -
+      plugin: multiple_extract
+      source: conservationOutlooks
+      default: null
+      index:
+        - rating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_conservation_rating
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_projects:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: activeConservationProjectsIds
+  field_as_projects_needs:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: potentialProjectNeedsIds
+  field_as_benefits:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: benefitsIds
+  field_as_benefits_summary:
+    plugin: multiple_extract
+    source: benefitsSummary
+    default: null
+    index:
+      - summary
+  field_as_protection:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: protectionManagementIds
+  field_as_protection_ov_text:
+    plugin: multiple_extract
+    source: protMgmtOverall
+    default: null
+    index:
+      - justification
+  field_as_protection_ov_rating:
+    -
+      plugin: multiple_extract
+      source: protMgmtOverall
+      default: null
+      index:
+        - rating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_protection_rating
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_protection_ov_out_text:
+    plugin: multiple_extract
+    source: effectiveProtMgmtIothreats
+    default: null
+    index:
+      - justification
+  field_as_protection_ov_out_rate:
+    -
+      plugin: multiple_extract
+      source: effectiveProtMgmtIothreats
+      default: null
+      index:
+        - rating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_protection_rating
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_protection_ov_practices:
+    plugin: multiple_extract
+    source: protMgmtBestPractices
+    default: null
+    index:
+      - description
+  field_as_threats_current:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: assessingThreatsCurrentIds
+  field_as_threats_potential:
+    plugin: migration_lookup_paragraphs
+    migration: assessments_paragraphs
+    source: assessingThreatsPotentialIds
+  field_as_threats_current_text:
+    plugin: multiple_extract
+    source: threatSummaryCurrent
+    default: null
+    index:
+      - overallCurrent
+  field_as_threats_current_rating:
+    -
+      plugin: multiple_extract
+      source: threatSummaryCurrent
+      default: null
+      index:
+        - threatRating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_threat_level
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_threats_potent_text:
+    plugin: multiple_extract
+    source: threatSummaryPotential
+    default: null
+    index:
+      - overallPotential
+  field_as_threats_potent_rating:
+    -
+      plugin: multiple_extract
+      source: threatSummaryPotential
+      default: null
+      index:
+        - threatRating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_threat_level
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_threats_text:
+    plugin: multiple_extract
+    source: threatSummaryOverall
+    default: null
+    index:
+      - overallThreat
+  field_as_threats_rating:
+    -
+      plugin: multiple_extract
+      source: threatSummaryOverall
+      default: null
+      index:
+        - threatRating
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_threat_level
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_vass_wh_text:
+    plugin: multiple_extract
+    source: stateTrendWhvalues
+    default: null
+    index:
+      - justification
+  field_as_vass_wh_state:
+    -
+      plugin: multiple_extract
+      source: stateTrendWhvalues
+      default: null
+      index:
+        - state
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_value_state
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_vass_wh_trend:
+    -
+      plugin: multiple_extract
+      source: stateTrendWhvalues
+      default: null
+      index:
+        - trend
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_value_trend
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_vass_bio_text:
+    plugin: multiple_extract
+    source: stateTrendBiodivvalsEntities
+    default: null
+    index:
+      - justification
+  field_as_vass_bio_state:
+    -
+      plugin: multiple_extract
+      source: stateTrendBiodivvalsEntities
+      default: null
+      index:
+        - state
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_value_state
+      entity_type: taxonomy_term
+      ignore_case: true
+  field_as_vass_bio_trend:
+    -
+      plugin: multiple_extract
+      source: stateTrendBiodivvalsEntities
+      default: null
+      index:
+        - trend
+    -
+      plugin: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: assessment_value_trend
+      entity_type: taxonomy_term
+      ignore_case: true
+destination:
+  plugin: 'entity:node'
+migration_dependencies: null

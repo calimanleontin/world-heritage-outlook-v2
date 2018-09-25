@@ -3,10 +3,12 @@
 namespace Drupal\search_api_autocomplete\Plugin\search_api_autocomplete\suggester;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Query\QueryInterface;
 use Drupal\search_api_autocomplete\AutocompleteBackendInterface;
-use Drupal\search_api_autocomplete\Suggester\SuggesterInterface;
+use Drupal\search_api_autocomplete\SearchInterface;
 use Drupal\search_api_autocomplete\Suggester\SuggesterPluginBase;
 
 /**
@@ -21,13 +23,15 @@ use Drupal\search_api_autocomplete\Suggester\SuggesterPluginBase;
  *   description = @Translation("Make suggestions based on the data indexed on the server."),
  * )
  */
-class Server extends SuggesterPluginBase implements SuggesterInterface {
+class Server extends SuggesterPluginBase implements PluginFormInterface {
+
+  use PluginFormTrait;
 
   /**
    * {@inheritdoc}
    */
-  public static function supportsIndex(IndexInterface $index) {
-    return (bool) static::getBackend($index);
+  public static function supportsSearch(SearchInterface $search) {
+    return (bool) static::getBackend($search->getIndex());
   }
 
   /**
@@ -43,10 +47,10 @@ class Server extends SuggesterPluginBase implements SuggesterInterface {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    // Add a list of fields to include for autocomplete searches.
+    // Let the user select the fulltext fields to use for autocomplete.
     $search = $this->getSearch();
-    $fields = $search->getIndexInstance()->getFields();
-    $fulltext_fields = $search->getIndexInstance()->getFulltextFields();
+    $fields = $search->getIndex()->getFields();
+    $fulltext_fields = $search->getIndex()->getFulltextFields();
     $options = [];
     foreach ($fulltext_fields as $field) {
       $options[$field] = $fields[$field]->getFieldIdentifier();
@@ -77,14 +81,14 @@ class Server extends SuggesterPluginBase implements SuggesterInterface {
    * {@inheritdoc}
    */
   public function getAutocompleteSuggestions(QueryInterface $query, $incomplete_key, $user_input) {
+    if (!($backend = static::getBackend($this->getSearch()->getIndex()))) {
+      return [];
+    }
+
     if ($this->configuration['fields']) {
       $query->setFulltextFields($this->configuration['fields']);
     }
-
-    if ($backend = static::getBackend($this->getIndex())) {
-      return $backend->getAutocompleteSuggestions($query, $this->getSearch(), $incomplete_key, $user_input);
-    }
-    return NULL;
+    return $backend->getAutocompleteSuggestions($query, $this->getSearch(), $incomplete_key, $user_input);
   }
 
   /**

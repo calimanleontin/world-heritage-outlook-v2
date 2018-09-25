@@ -1,0 +1,7 @@
+test:
+  host: 88.99.2.80
+  paths:
+    files: sites/default/files
+  root: /opt/edw/iucn-who.edw.ro/docroot/
+  uri: iucn-who.edw.ro
+  user: USER

@@ -20,6 +20,7 @@ settings:
   label: Designation
   provider: facets
   label_display: visible
+  block_id: designation
 visibility:
   request_path:
     id: request_path

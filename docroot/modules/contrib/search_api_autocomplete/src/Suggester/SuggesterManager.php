@@ -10,9 +10,10 @@ use Drupal\search_api_autocomplete\Annotation\SearchApiAutocompleteSuggester;
 /**
  * Provides a plugin manager for autocomplete suggestion plugins.
  *
+ * @see \Drupal\search_api_autocomplete\Annotation\SearchApiAutocompleteSuggester
  * @see \Drupal\search_api_autocomplete\Suggester\SuggesterInterface
  * @see \Drupal\search_api_autocomplete\Suggester\SuggesterPluginBase
- * @see \Drupal\search_api_autocomplete\Annotation\SearchApiAutocompleteSuggester
+ * @see plugin_api
  */
 class SuggesterManager extends DefaultPluginManager {
 
@@ -31,7 +32,7 @@ class SuggesterManager extends DefaultPluginManager {
     parent::__construct('Plugin/search_api_autocomplete/suggester', $namespaces, $module_handler, SuggesterInterface::class, SearchApiAutocompleteSuggester::class);
 
     $this->setCacheBackend($cache_backend, 'search_api_autocomplete_suggester');
-    $this->alterInfo('search_api_autocomplete_suggester');
+    $this->alterInfo('search_api_autocomplete_suggester_info');
   }
 
 }
