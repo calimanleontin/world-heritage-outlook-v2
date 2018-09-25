@@ -1,7 +1,0 @@
-test:
-  host: 5.9.54.24
-  paths:
-    files: sites/default/files
-  root: /var/www/html/iucn-who/docroot
-  uri: iucn-who.edw.ro
-  user: php
