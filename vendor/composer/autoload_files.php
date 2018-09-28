@@ -24,6 +24,9 @@ return array(
     '0b0974a5566a1077e4f2e111341112c1' => $vendorDir . '/zendframework/zend-diactoros/src/functions/normalize_server.php',
     '1ca3bc274755662169f9629d5412a1da' => $vendorDir . '/zendframework/zend-diactoros/src/functions/normalize_uploaded_files.php',
     '40360c0b9b437e69bcbb7f1349ce029e' => $vendorDir . '/zendframework/zend-diactoros/src/functions/parse_cookie_header.php',
+    '2cffec82183ee1cea088009cef9a6fc3' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+    'fbeead2280a8f3911a1fe6dd034f7d5e' => $vendorDir . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvancedInterface.php',
+    '96f8d8288528d52059397cad6ec61f17' => $vendorDir . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvanced.php',
     '952683d815ff0a7bf322b93c0be7e4e4' => $vendorDir . '/chi-teck/drupal-code-generator/src/bootstrap.php',
     '801c31d8ed748cfa537fa45402288c95' => $vendorDir . '/psy/psysh/src/functions.php',
 );

@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function iucn_diff_revisions_node_presave(Drupal\node\Entity\Node $node) {
+  if ($node->bundle() == 'site_assessment' && !$node->isNew()) {
+    $results  = \Drupal::service('iucn_diff_revisions.diff_revision_comparison')->updateRevisionsDiff($node);
+    // The $results variable represents the configured diff table.
+    // This variable will be saved in the revision's field that stores the diff data
+    var_dump($results);
+    die();
+  }
+}

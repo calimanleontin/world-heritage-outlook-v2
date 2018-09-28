@@ -136,6 +136,7 @@
     "drupal/core": "8.6.*",
     "drupal/crop": "^1.5",
     "drupal/devel": "^1.0@RC",
+    "drupal/diff": "^1.0@RC",
     "drupal/display_field_copy": "^1.0",
     "drupal/ds": "^3.1",
     "drupal/editor_advanced_link": "^1.4",
@@ -189,13 +190,13 @@
     "drupal/views_accordion": "^1.1",
     "drupal/webform": "^5.0@RC",
     "drupal/xmlsitemap": "^1.0@alpha",
+    "drush/drush": "^9.4.0",
     "enyoo/dropzone": "^4.3",
     "harvesthq/chosen": "^1.6",
     "jackmoore/colorbox": "^1.6",
     "kenwheeler/slick": "^1.6",
     "webflo/drupal-finder": "^1.1",
-    "webmozart/path-util": "^2.3",
-    "drush/drush": "^9.4.0"
+    "webmozart/path-util": "^2.3"
   },
   "require-dev": {
     "consolidation/robo": "~1",

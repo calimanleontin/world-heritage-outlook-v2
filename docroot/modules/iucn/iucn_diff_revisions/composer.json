@@ -1,0 +1,16 @@
+{
+  "name": "drupal/iucn_diff_revisions",
+  "description": "Compares two entity revisions",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Stefan Copetchi(Kopezaur)",
+      "homepage": "https://www.drupal.org/u/kopezaur",
+      "role": "Maintainer"
+    }
+  ],
+  "require":{
+    "drupal/diff": "8.x-1.0-rc2"
+  }
+}

@@ -1,0 +1,3 @@
+services:
+  iucn_diff_revisions.diff_revision_comparison:
+    class: Drupal\iucn_diff_revisions\DiffRevisionComparison
