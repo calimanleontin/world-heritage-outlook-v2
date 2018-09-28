@@ -3,6 +3,7 @@ namespace Drupal\iucn_assessment\Commands;
 
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 
 /**
 *
@@ -23,77 +24,220 @@ class AssessmentComands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
    * Constructs a new DrushCommand.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->entityFieldManager = $entity_field_manager;
   }
 
-/**
-* @command iucn_assessment:compare-fields
-* @param array $options An associative array of options whose values come from cli, aliases, config, etc.
-* @validate-module-enabled iucn_assessment
-* @aliases iucn_assessment:compare-fields, iucn:cf
-*/
-  public function listArt($options = ['id' => NULL])
+  /**
+   * @command iucn_assessment:process-fields
+   * @validate-module-enabled iucn_assessment
+   * @aliases iucn_assessment:process-fields, iucn:pf
+   */
+  public function processFields()
   {
+    // Query with entity_type.manager (The way to go)
+    $query = $this->entityTypeManager->getStorage('node');
+    $assessments = $query->getQuery()
+      ->condition('type', 'site_assessment')
+      ->execute();
+    $not_ok = [];
+    if ($assessments) {
+      $count_assessments = count($assessments);
+      foreach ($assessments as $nid) {
+        //Process.
+        if(!$this->process($nid)) {
+          $not_ok[] = $nid;
+        }
+      }
+    }
+
+    if(!empty($not_ok)) {
+      $this->output->writeln("");
+      $count_not_ok = count($not_ok);
+      $this->logger->error("Could not process {$count_not_ok} out of {$count_assessments} assessments");
+      $this->logger->error(implode(" ", $not_ok));
+
+    }
+  }
+
+  /**
+   * @command iucn_assessment:compare-fields
+   * @param array $options
+   * @validate-module-enabled iucn_assessment
+   * @aliases iucn_assessment:compare-fields, iucn:cf
+   * @throws \Exception
+   *   If the passed $options is not correctly set.
+   */
+  public function compareFields($options = ['id' => NULL])
+  {
+
     if (!$options['id'] ) {
         throw new \Exception(dt('You did not enter any assessment id.'));
     }
 
-    $assessment = $this->entityTypeManager->getStorage('node')->load($options['id']);
+    //Process.
+    $this->process($options['id']);
+  }
+
+  public function process($assessment_id) {
+    $this->output->writeln("");
+    $this->output->write("Processing assessment: {$assessment_id} ");
+
+    //Load assessment.
+    $assessment = $this->entityTypeManager->getStorage('node')->load($assessment_id);
+
     if ( !$assessment || $assessment->bundle() != 'site_assessment') {
-      throw new \Exception(dt('Could not find assessment with nid: {nid}', ['nid' => $options['id']]));
+      throw new \Exception(dt('Could not find assessment with nid: {nid}', ['nid' => $assessment_id]));
     }
 
-    //
-    $this->logger->info(dt('Comparing: {title}', ['title' => $assessment->get('title')->value]));
+    // Process 'field_as_values_wh'
+    $field_as_values_wh = [];
+    $this->extractValues($assessment, 'field_as_values_wh', $this->entityFields('paragraph', 'as_site_value_wh'), $field_as_values_wh);
 
-    $fields = [
-      'field_as_description',
-      'field_as_values_curr_text',
-      'field_as_values_curr_state',
-      'field_as_values_curr_trend',
-      'field_as_values_value',
-      'field_as_values_criteria',
-
-    ];
-
-    foreach ( $assessment->field_as_values_wh as $k => $v) {
-      $this->logger->alert("row: $k entity_id: {$v->entity->id()}");
-      foreach ($fields as $field) {
-        $this->output()->writeln('');
-        $this->logger->notice("$field:");
-        $this->output()->writeln('');
-
-        $type = $v->entity->{$field}->getFieldDefinition()->getType();
-
-        $this->logger->warning($type);
-
-        switch ($type) {
-
-          case 'string_long':
-            $this->output()->writeln($v->entity->{$field}->value);
-
-          case 'entity_reference':
-            foreach ($v->entity->{$field} as $key => $value) {
-              $this->output()->writeln($value->target_id);
-            }
-            break;
-          default:
-            break;
-        }
-
-        $this->output()->writeln('');
-        $this->output()->writeln('');
+    // Process 'field_as_threats_current'
+    $field_as_threats_current = [];
+    foreach ($assessment->field_as_threats_current as $k => $v) {
+      if ($v->entity) {
+        $this->extractValues($v->entity, 'field_as_threats_values_wh', $this->entityFields('paragraph', 'as_site_value_wh'), $field_as_threats_current);
       }
     }
 
-    $this->logger->notice('Done.');
+    // Compare
+    return $this->compare($field_as_values_wh, $field_as_threats_current);
   }
 
+  public function compare($original, $data){
+    $found = 0;
+    $entity_fields = $this->entityFields('paragraph', 'as_site_value_wh');
+
+    //var_dump($entity_fields);
+    $entity_fields_count = count($entity_fields);
+    $new_field = '';
+    foreach ($data as $k => $v) {
+      foreach ($original as $kk => $vv) {
+        $fields_found = 0;
+        foreach ($entity_fields as $kkk => $vvv) {
+          $compare_field = $vvv['name'];
+
+          if ($v[$compare_field] == $vv[$compare_field]) {
+            $fields_found++;
+          }
+        }
+        if ($fields_found == $entity_fields_count) {
+          $found++;
+        } else {
+          print_r($vv);
+          
+        }
+      }
+    }
+    $this->output->writeln("");
+    foreach ($original as $k=>$v) {
+      $this->output->writeln($v['field_as_values_value']);
+    }
+    $this->output->writeln("---");
+    foreach ($data as $k=>$v) {
+      $this->output->writeln($v['field_as_values_value']);
+    }
+
+    $count_data = count($data);
+    if ($found != $count_data) {
+      $this->logger->error("Found {$found} out of {$count_data}.");
+      return FALSE;
+    } else {
+      $this->logger->success("Found all {$found}.");
+      return TRUE;
+    }
+  }
+
+
+  /**
+   * Loads one entity.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $assessment
+   *   The ID of the entity to load.
+   *
+   * @param 'string'
+   *   The name of the field to extract the values from.
+   *
+   * @return mixed
+   *   Array of values.
+
+   * @throws \Exception
+   *   If the passed $assessment or $field is NULL.
+   */
+  public function extractValues($assessment = NULL, $assessment_field = NULL, $entity_fields = [], &$field_values) {
+    if (!$assessment || !$assessment_field) {
+      throw new \Exception(dt('No assessment or field.'));
+    }
+
+    $values = [];
+    foreach ( $assessment->{$assessment_field} as $k => $v) {
+      //$this->logger->alert("row: $k entity_id: {$v->entity->id()}");
+      foreach ($entity_fields as $key => $entity_field) {
+        $values[$k]['entity_id'] = $v->entity->id();
+        switch ($entity_field['type']) {
+          case 'string':
+          case 'string_long':
+            $values[$k][$entity_field['name']] = "{$v->entity->{$entity_field['name']}->value}";
+            break;
+
+          case 'entity_reference':
+            foreach ($v->entity->{$entity_field['name']} as $key => $value) {
+              if ($value->target_id) {
+                $values[$k][$entity_field['name']][$key] = "{$value->target_id}";
+              }
+            }
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+    if (!empty($values)){
+      foreach($values as $value) {
+        $field_values[] = $value;
+      }
+    }
+    return;
+  }
+
+  /**
+   * Gets entity type custom felds.
+   *
+   * @param 'string'
+   *   The entity type.
+   * @param 'string'
+   *   The entity_type machine name.
+   * @return mixed
+   *   Array of fields.
+   */
+  public function entityFields($type, $machine_name) {
+    $custom_fields = [];
+    foreach ($this->entityFieldManager->getFieldDefinitions($type, $machine_name) as $k=>$v) {
+      /**  @var $v \Drupal\Core\Field\FieldDefinitionInterface */
+      if (preg_match('#^field_#', $v->getName()) === 1) {
+        $custom_fields[] = [
+          'name' => $v->getName(),
+          'type' => $v->getType(),
+          ];
+      }
+    }
+    return $custom_fields;
+  }
 
 }
