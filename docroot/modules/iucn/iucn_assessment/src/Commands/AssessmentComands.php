@@ -64,7 +64,7 @@ class AssessmentComands extends DrushCommands {
       }
     }
 
-    if(!empty($not_ok)) {
+    if($count_assessments != 0 && !empty($not_ok)) {
       $this->output->writeln("");
       $count_not_ok = count($not_ok);
       $this->logger->error("Could not process {$count_not_ok} out of {$count_assessments} assessments");
@@ -89,10 +89,10 @@ class AssessmentComands extends DrushCommands {
     }
 
     //Process.
-    $this->process($options['id']);
+    $this->process($options['id'], TRUE);
   }
 
-  public function process($assessment_id) {
+  public function process($assessment_id, $debug = FALSE) {
     $this->output->writeln("");
     $this->output->write("Processing assessment: {$assessment_id} ");
 
@@ -106,6 +106,11 @@ class AssessmentComands extends DrushCommands {
     // Process 'field_as_values_wh'
     $field_as_values_wh = [];
     $this->extractValues($assessment, 'field_as_values_wh', $this->entityFields('paragraph', 'as_site_value_wh'), $field_as_values_wh);
+    /*foreach ($field_as_values_wh as $k=>$v){
+      var_dump($v);
+    }*/
+
+
 
     // Process 'field_as_threats_current'
     $field_as_threats_current = [];
@@ -114,18 +119,16 @@ class AssessmentComands extends DrushCommands {
         $this->extractValues($v->entity, 'field_as_threats_values_wh', $this->entityFields('paragraph', 'as_site_value_wh'), $field_as_threats_current);
       }
     }
-
     // Compare
-    return $this->compare($field_as_values_wh, $field_as_threats_current);
+    return $this->compare($field_as_values_wh, $field_as_threats_current, $debug);
   }
 
-  public function compare($original, $data){
+  public function compare($original, $data, $debug = FALSE){
+
     $found = 0;
     $entity_fields = $this->entityFields('paragraph', 'as_site_value_wh');
-
-    //var_dump($entity_fields);
     $entity_fields_count = count($entity_fields);
-    $new_field = '';
+
     foreach ($data as $k => $v) {
       foreach ($original as $kk => $vv) {
         $fields_found = 0;
@@ -138,19 +141,15 @@ class AssessmentComands extends DrushCommands {
         }
         if ($fields_found == $entity_fields_count) {
           $found++;
+          break;
         } else {
-          print_r($vv);
-          
+          if ($debug) {
+            $this->output->writeln("----------------------------");
+            $this->logger->error("Debugging: $k");
+            $this->debug($original, $data[$k]);
+          }
         }
       }
-    }
-    $this->output->writeln("");
-    foreach ($original as $k=>$v) {
-      $this->output->writeln($v['field_as_values_value']);
-    }
-    $this->output->writeln("---");
-    foreach ($data as $k=>$v) {
-      $this->output->writeln($v['field_as_values_value']);
     }
 
     $count_data = count($data);
@@ -163,6 +162,66 @@ class AssessmentComands extends DrushCommands {
     }
   }
 
+
+  public function debug($original, $data){
+    $entity_fields = $this->entityFields('paragraph', 'as_site_value_wh');
+
+      // Try finding the title first.
+      foreach ($original as $kk => $vv) {
+        if ($data['field_as_values_value'] == $vv['field_as_values_value']) {
+          $this->logger->success('Found mathching titles.');
+          $this->logger->success($data['field_as_values_value']);
+          foreach($entity_fields as $entity_field){
+            if ($data[$entity_field['name']] != $vv[$entity_field['name']]) {
+              $this->logger->error('ERROR');
+              $this->output->writeln($entity_field['name']);
+              $this->output->writeln(":");
+              $this->output->writeln($data[$entity_field['name']]);
+              $this->output->writeln("|");
+              $this->output->writeln($vv[$entity_field['name']]);
+              $this->output->writeln("---");
+            }
+          }
+          break;
+        }
+      }
+    /*$this->logger->error('Did not find mathching titles.');
+    foreach ($original as $kk => $vv){
+      foreach($entity_fields as $entity_field){
+        if ($data[$entity_field['name']] != $vv[$entity_field['name']]) {
+          $this->logger->error('ERROR');
+          $this->output->writeln($entity_field['name']);
+          $this->output->writeln(":");
+          $this->output->writeln($data[$entity_field['name']]);
+          $this->output->writeln("|");
+          $this->output->writeln($vv[$entity_field['name']]);
+          $this->output->writeln("---");
+        }
+      }
+    }*/
+    /*foreach ($data as $k => $v) {
+      if($k == 'entity_id') continue;
+      foreach ($original as $kk => $vv){
+        if($kk == 'entity_id') continue;
+        if ($v == $vv[$k]){
+          $this->output->writeln(" ");
+          $this->output->writeln(" ");
+          $this->logger->success("$k");
+          $this->output->writeln("---");
+          $this->output->writeln($v);
+          $this->output->writeln("---");
+          $this->output->writeln($vv[$k]);
+        } else {
+          $this->logger->error("$k");
+          $this->output->writeln("---");
+          $this->output->writeln($v);
+          $this->output->writeln("---");
+          $this->output->writeln($vv[$k]);
+        }
+
+      }
+    }*/
+  }
 
   /**
    * Loads one entity.
@@ -188,6 +247,7 @@ class AssessmentComands extends DrushCommands {
     foreach ( $assessment->{$assessment_field} as $k => $v) {
       //$this->logger->alert("row: $k entity_id: {$v->entity->id()}");
       foreach ($entity_fields as $key => $entity_field) {
+        if(empty($v->entity->field_as_values_value->value)) continue;
         $values[$k]['entity_id'] = $v->entity->id();
         switch ($entity_field['type']) {
           case 'string':
@@ -198,8 +258,11 @@ class AssessmentComands extends DrushCommands {
           case 'entity_reference':
             foreach ($v->entity->{$entity_field['name']} as $key => $value) {
               if ($value->target_id) {
-                $values[$k][$entity_field['name']][$key] = "{$value->target_id}";
+                $values[$k][$entity_field['name']][$value->target_id] = "{$value->target_id}";
               }
+            }
+            if($values[$k][$entity_field['name']]){
+              ksort($values[$k][$entity_field['name']]);
             }
             break;
 
