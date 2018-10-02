@@ -41,6 +41,42 @@ class AssessmentComands extends DrushCommands {
     $this->entityFieldManager = $entity_field_manager;
   }
 
+
+  /**
+   * @command iucn_assessment
+   * :count-threat-values
+   * @validate-module-enabled iucn_assessment
+   * @aliases iucn_assessment:count-threat-values, iucn:ctv
+   */
+  public function countThreatValues()
+  {
+    // Query with entity_type.manager (The way to go)
+    $query = $this->entityTypeManager->getStorage('node');
+    $assessments = $query->getQuery()
+      ->condition('type', 'site_assessment')
+      ->execute();
+    if ($assessments) {
+      foreach ($assessments as $nid) {
+        //Process.
+        $assessment = $this->entityTypeManager->getStorage('node')->load($nid);
+        /*var_dump($assessment->field_as_threats_current->entity);
+        die();*/
+        if ($assessment->field_as_threats_current) {
+          foreach($assessment->field_as_threats_current as $field_as_threats_current){
+            if(count($field_as_threats_current->entity->field_as_threats_values_wh) > 1) {
+              $this->output->writeln($assessment->id());
+              $this->output->writeln(count($field_as_threats_current->entity->field_as_threats_values_wh));
+              die();
+            }
+          }
+        }
+
+
+      }
+    }
+
+  }
+
   /**
    * @command iucn_assessment:process-fields
    * @validate-module-enabled iucn_assessment
