@@ -1,8 +1,8 @@
-.paragraphs-tabs-wrapper table tbody tr:first-child .field-multiple-drag {
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child .field-multiple-drag {
     visibility: hidden;
 }
 
-.paragraphs-tabs-wrapper table tbody tr:first-child:hover {
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
     background: inherit;
 }
 
@@ -137,8 +137,4 @@
 .layout-region-node-secondary {
     width: auto;
     float: left;
-}
-
-.paragraph-header:hover {
-
 }
