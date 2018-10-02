@@ -41,7 +41,6 @@ dependencies:
     - field.field.node.site_assessment.field_as_version
     - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_date_published
-    - field.field.node.site_assessment.field_diff
     - node.type.site_assessment
   module:
     - datetime
@@ -596,13 +595,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
-    region: content
-  field_diff:
-    weight: 124
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
     region: content
   langcode:
     type: language_select
