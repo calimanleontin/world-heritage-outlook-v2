@@ -1,25 +1,144 @@
 .paragraphs-tabs-wrapper table tbody tr:first-child .field-multiple-drag {
-    display: none;
+    visibility: hidden;
 }
 
-.paragraphs-tabs-wrapper table tbody tr:not(:first-child) thead {
-    display: none;
+.paragraphs-tabs-wrapper table tbody tr:first-child:hover {
+    background: inherit;
 }
 
-.paragraphs-tabs-wrapper table tbody tr {
-    display: block;
+.details-wrapper {
+    overflow-x: scroll;
 }
 
-.paragraphs-tabs-wrapper table tbody table tr {
-    border-bottom: none;
+.paragraph-summary-component {
+    grid-row: 1 / span 1;
+    font-size: .9em;
 }
 
-.paragraphs-tabs-wrapper table tbody table tr td,
-.paragraphs-tabs-wrapper th {
-    max-width: 15rem;
-    min-width: 15rem;
+.js .paragraph-top {
+    display: grid;
+    grid-gap: 10px;
+    align-items: baseline;
 }
 
-.paragraph-top {
-    display: block !important;
+.paragraph-summary-component-span-2 {
+    grid-column-end: span 2;
+}
+
+.js .paragraph-top-col-23 {
+    grid-template-columns: repeat(23 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-22 {
+    grid-template-columns: repeat(22 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-21 {
+    grid-template-columns: repeat(21 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-20 {
+    grid-template-columns: repeat(20 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-19 {
+    grid-template-columns: repeat(19 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-18 {
+    grid-template-columns: repeat(18 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-17 {
+    grid-template-columns: repeat(17 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-16 {
+    grid-template-columns: repeat(16 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-15 {
+    grid-template-columns: repeat(15 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-14 {
+    grid-template-columns: repeat(14 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-13 {
+    grid-template-columns: repeat(13 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-12 {
+    grid-template-columns: repeat(12 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-11 {
+    grid-template-columns: repeat(11 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-10 {
+    grid-template-columns: repeat(10 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-9 {
+    grid-template-columns: repeat(9 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-8 {
+    grid-template-columns: repeat(8 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-7 {
+    grid-template-columns: repeat(7 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-6 {
+    grid-template-columns: repeat(6 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-5 {
+    grid-template-columns: repeat(5 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-4 {
+    grid-template-columns: repeat(4 , minmax(6.5rem, 1fr));
+}
+
+.js .paragraph-top-col-3 {
+    grid-template-columns: repeat(3 , minmax(6.5rem, 1fr));
+}
+
+.paragraph-summary-component-field {
+    column-span: 1;
+}
+
+.paragraphs-actions {
+    justify-self: normal !important;
+    grid-column: -2 / span 1 !important;
+}
+
+.paragraph-header {
+    font-weight: bold;
+}
+
+.horizontal-tabs-panes details > .details-wrapper {
+    padding: 0;
+}
+
+.horizontal-tabs-pane {
+    padding: 0;
+}
+
+.layout-region-node-main {
+    width: auto !important;
+}
+
+.layout-region-node-secondary {
+    width: auto;
+    float: left;
+}
+
+.paragraph-header:hover {
+
 }
