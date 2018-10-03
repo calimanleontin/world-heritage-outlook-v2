@@ -1,0 +1,7 @@
+name: iucn_diff_revisions
+type: module
+description: 'IUCN functionality for differentiating modifications on node revisions'
+core: 8.x
+package: IUCN
+dependencies:
+  - diff

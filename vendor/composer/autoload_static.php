@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
+class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -25,6 +25,9 @@ class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
         '0b0974a5566a1077e4f2e111341112c1' => __DIR__ . '/..' . '/zendframework/zend-diactoros/src/functions/normalize_server.php',
         '1ca3bc274755662169f9629d5412a1da' => __DIR__ . '/..' . '/zendframework/zend-diactoros/src/functions/normalize_uploaded_files.php',
         '40360c0b9b437e69bcbb7f1349ce029e' => __DIR__ . '/..' . '/zendframework/zend-diactoros/src/functions/parse_cookie_header.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        'fbeead2280a8f3911a1fe6dd034f7d5e' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvancedInterface.php',
+        '96f8d8288528d52059397cad6ec61f17' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvanced.php',
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
     );
@@ -511,6 +514,10 @@ class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
             array (
                 0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src',
             ),
+            'Sunra\\PhpSimple\\HtmlDomParser' => 
+            array (
+                0 => __DIR__ . '/..' . '/sunra/php-simple-html-dom-parser/Src',
+            ),
             'Stack' => 
             array (
                 0 => __DIR__ . '/..' . '/stack/builder/src',
@@ -542,6 +549,13 @@ class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
                 0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
             ),
         ),
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
+        ),
         'E' => 
         array (
             'Egulias\\' => 
@@ -566,6 +580,13 @@ class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
             'Dflydev\\DotAccessData' => 
             array (
                 0 => __DIR__ . '/..' . '/dflydev/dot-access-data/src',
+            ),
+        ),
+        'C' => 
+        array (
+            'Caxy\\HtmlDiff' => 
+            array (
+                0 => __DIR__ . '/..' . '/caxy/php-htmldiff/lib',
             ),
         ),
     );
@@ -1044,10 +1065,10 @@ class ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitafdf5e1dbb3414f307eed6c1c94a888a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$classMap;
 
         }, null, ClassLoader::class);
     }
