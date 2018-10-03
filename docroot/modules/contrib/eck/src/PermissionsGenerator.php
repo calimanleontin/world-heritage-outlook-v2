@@ -2,7 +2,6 @@
 
 namespace Drupal\eck;
 
-use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\eck\Entity\EckEntityType;
 
@@ -13,7 +12,6 @@ use Drupal\eck\Entity\EckEntityType;
  */
 class PermissionsGenerator {
   use StringTranslationTrait;
-  use UrlGeneratorTrait;
 
   /**
    * Returns an array of entity type permissions.
@@ -22,7 +20,7 @@ class PermissionsGenerator {
    *   The permissions.
    */
   public function entityPermissions() {
-    $perms = array();
+    $perms = [];
     // Generate entity permissions for all entity types.
     foreach (EckEntityType::loadMultiple() as $eck_type) {
       $perms = array_merge($perms, $this->buildPermissions($eck_type));

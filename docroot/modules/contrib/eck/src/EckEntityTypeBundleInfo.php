@@ -5,7 +5,7 @@ namespace Drupal\eck;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeBundleInfo;
 
-class EckEntityTypeBundleInfo extends EntityTypeBundleInfo{
+class EckEntityTypeBundleInfo extends EntityTypeBundleInfo {
 
   /**
    * {@inheritdoc}
@@ -20,13 +20,17 @@ class EckEntityTypeBundleInfo extends EntityTypeBundleInfo{
         $this->bundleInfo = $this->moduleHandler->invokeAll('entity_bundle_info');
         foreach ($this->entityTypeManager->getDefinitions() as $type => $entity_type) {
           if ($bundle_entity_type = $entity_type->getBundleEntityType()) {
-            foreach ($this->entityTypeManager->getStorage($bundle_entity_type)->loadMultiple() as $entity) {
+            foreach ($this->entityTypeManager->getStorage($bundle_entity_type)
+                       ->loadMultiple() as $entity) {
               $this->bundleInfo[$type][$entity->id()]['label'] = $entity->label();
             }
           }
         }
         $this->moduleHandler->alter('entity_bundle_info', $this->bundleInfo);
-        $this->cacheSet("eck_entity_bundle_info:$langcode", $this->bundleInfo, Cache::PERMANENT, ['entity_types', 'entity_bundles']);
+        $this->cacheSet("eck_entity_bundle_info:$langcode", $this->bundleInfo, Cache::PERMANENT, [
+          'entity_types',
+          'entity_bundles'
+        ]);
       }
     }
 

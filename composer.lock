@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e0a36c9ccb884496dbc75bc3eae7871",
+    "content-hash": "d50df1cc0a6d4b9f28d76bc13aa9f8fe",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -3412,17 +3412,11 @@
         },
         {
             "name": "drupal/eck",
-            "version": "1.0.0-alpha3",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/eck",
-                "reference": "8.x-1.0-alpha3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/eck-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "584f0867487608792ebcf46b2b79b27168be558f"
+                "reference": "12ec075f92dde17c0003eea298917a8e8b40f221"
             },
             "require": {
                 "drupal/core": "^8"
@@ -3433,8 +3427,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1483437543",
+                    "version": "8.x-1.0-alpha3+32-dev",
+                    "datestamp": "1538410686",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3491,12 +3485,13 @@
                     "homepage": "https://www.drupal.org/user/813890"
                 }
             ],
-            "description": "ECK (Entity Contruction Kit) allows users to create and administer entity types, bundles and entities from the UI.",
+            "description": "ECK (Entity Construction Kit) allows users to create and administer entity types, bundles and entities from the UI.",
             "homepage": "https://www.drupal.org/project/eck",
             "support": {
                 "source": "http://git.drupal.org/project/eck.git",
                 "issues": "https://www.drupal.org/project/issues/eck"
-            }
+            },
+            "time": "2018-10-02T16:57:55+00:00"
         },
         {
             "name": "drupal/editor_advanced_link",
@@ -6582,7 +6577,8 @@
             "homepage": "https://www.drupal.org/project/string_field_formatter",
             "support": {
                 "source": "http://cgit.drupalcode.org/string_field_formatter"
-            }
+            },
+            "time": "2018-02-22T14:59:18+00:00"
         },
         {
             "name": "drupal/token",
@@ -11689,8 +11685,8 @@
     "stability-flags": {
         "drupal/captcha": 10,
         "drupal/devel": 5,
-        "drupal/eck": 15,
         "drupal/diff": 5,
+        "drupal/eck": 20,
         "drupal/facets_pretty_paths": 20,
         "drupal/geofield": 15,
         "drupal/ief_table_view_mode": 10,

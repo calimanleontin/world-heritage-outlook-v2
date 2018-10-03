@@ -7,9 +7,9 @@ use Drupal\eck\PermissionsGenerator;
 /**
  * Tests the form element implementation.
  *
- * @group Eck
+ * @group eck
  */
-class PermissionsGeneratorTest extends UnitTestBase{
+class PermissionsGeneratorTest extends UnitTestBase {
 
   /** @var \Drupal\eck\PermissionsGenerator $sut */
   private $sut;
@@ -27,11 +27,8 @@ class PermissionsGeneratorTest extends UnitTestBase{
    * @return \Drupal\eck\PermissionsGenerator
    */
   private function createNewSubjectUnderTest() {
-    $urlGeneratorMock = $this->getMockForAbstractClass('\Drupal\Core\Routing\UrlGeneratorInterface');
-
     $permissionsGenerator = new PermissionsGenerator();
     $permissionsGenerator->setStringTranslation($this->getStringTranslationStub());
-    $permissionsGenerator->setUrlGenerator($urlGeneratorMock);
 
     return $permissionsGenerator;
   }

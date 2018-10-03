@@ -3,14 +3,24 @@
 namespace Drupal\Tests\eck\Unit {
 
   use Drupal\Core\Entity\EntityInterface;
+  use Drupal\Core\Entity\EntityManagerInterface;
+  use Drupal\Core\Entity\EntityTypeInterface;
+  use Drupal\Core\Entity\EntityTypeManagerInterface;
+  use Drupal\Core\Entity\EntityTypeRepositoryInterface;
   use Drupal\eck\Entity\EckEntityType;
   use Drupal\Tests\eck\Unit\TestDoubles\FieldTypePluginManagerMock;
   use Drupal\Tests\UnitTestCase;
 
   abstract class UnitTestBase extends UnitTestCase {
 
+    /**
+     * @var array
+     */
     protected $entities;
 
+    /**
+     * @var array
+     */
     private $services;
 
     /**
@@ -22,6 +32,8 @@ namespace Drupal\Tests\eck\Unit {
       $this->prepareContainer();
       $this->registerServiceWithContainerMock('current_user', $this->getNewUserMock());
       $this->registerServiceWithContainerMock('entity.manager', $this->getEntityManagerMock());
+      $this->registerServiceWithContainerMock('entity_type.manager', $this->getEntityTypeManagerMock());
+      $this->registerServiceWithContainerMock('entity_type.repository', $this->getEntityTypeRepositoryMock());
       $this->registerServiceWithContainerMock('plugin.manager.field.field_type', new FieldTypePluginManagerMock());
     }
 
@@ -43,23 +55,47 @@ namespace Drupal\Tests\eck\Unit {
       ]);
     }
 
-    private function getEntityManagerMock() {
+    private function getEntityStorageMock() {
       $entity_storage = $this->getMockForAbstractClass('\Drupal\Core\Entity\EntityStorageInterface');
       $entity_storage->method('loadMultiple')->willReturnCallback([
         $this,
-        'entityStorageLoadMultiple'
+        'entityStorageLoadMultiple',
       ]);
       $entity_storage->method('load')->willReturnCallback([
         $this,
-        'entityStorageLoadMultiple'
+        'entityStorageLoadMultiple',
       ]);
-      $definition = $this->getMockForAbstractClass('\Drupal\Core\Entity\EntityTypeInterface');
 
-      $entity_manager = $this->getMockForAbstractClass('\Drupal\Core\Entity\EntityManagerInterface');
+      return $entity_storage;
+    }
+
+    private function getEntityManagerMock() {
+      $entity_storage = $this->getEntityStorageMock();
+      $definition = $this->getMockForAbstractClass(EntityTypeInterface::class);
+
+      $entity_manager = $this->getMockForAbstractClass(EntityManagerInterface::class);
       $entity_manager->method('getStorage')->willReturn($entity_storage);
       $entity_manager->method('getDefinition')->willReturn($definition);
 
       return $entity_manager;
+    }
+
+    private function getEntityTypeManagerMock() {
+      $entity_storage = $this->getEntityStorageMock();
+      $definition = $this->getMockForAbstractClass(EntityTypeInterface::class);
+
+      $entity_type_manager = $this->getMockForAbstractClass(EntityTypeManagerInterface::class);
+      $entity_type_manager->method('getStorage')->willReturn($entity_storage);
+      $entity_type_manager->method('getDefinition')->willReturn($definition);
+
+      return $entity_type_manager;
+    }
+
+    private function getEntityTypeRepositoryMock() {
+      $entity_type_repository = $this->getMockForAbstractClass(EntityTypeRepositoryInterface::class);
+      $entity_type_repository->method('getEntityTypeFromClass')
+        ->willReturn('eck_entity_type');
+      return $entity_type_repository;
     }
 
     /**
@@ -106,7 +142,7 @@ namespace Drupal\Tests\eck\Unit {
 
     protected function createLanguageManagerMock() {
       $current_language_mock = $this->getMockForAbstractClass('\Drupal\Core\Language\LanguageInterface');
-      $current_language_mock->method('id')->willReturn('en');
+      $current_language_mock->method('getId')->willReturn('en');
 
       $mock = $this->getMockForAbstractClass('\Drupal\Core\Language\LanguageManagerInterface');
       $mock->method('getCurrentLanguage')->willReturn($current_language_mock);
@@ -141,7 +177,7 @@ namespace Drupal\Tests\eck\Unit {
 
     protected function assertArrayKeysEqual($expectedKeys, $arrayToAssert) {
       $this->assertEquals($expectedKeys, array_keys($arrayToAssert));
-  }
+    }
 
   }
 }

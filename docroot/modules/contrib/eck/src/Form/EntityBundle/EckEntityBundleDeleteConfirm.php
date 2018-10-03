@@ -3,10 +3,10 @@
 namespace Drupal\eck\Form\EntityBundle;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a form for ECK entity bundle deletion.
@@ -16,20 +16,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EckEntityBundleDeleteConfirm extends EntityConfirmFormBase {
 
   /**
-   * The query factory to create entity queries.
+   * The entity type manager.
    *
-   * @var \Drupal\Core\Entity\Query\QueryFactory
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $queryFactory;
+  protected $entityTypeManager;
 
   /**
    * Constructs a new EckEntityBundleDeleteConfirm object.
    *
-   * @param QueryFactory $query_factory
-   *   The query factory.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(QueryFactory $query_factory) {
-    $this->queryFactory = $query_factory;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -37,7 +37,7 @@ class EckEntityBundleDeleteConfirm extends EntityConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.query')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -45,7 +45,7 @@ class EckEntityBundleDeleteConfirm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return t('Are you sure you want to delete the entity bundle %type?', array('%type' => $this->entity->label()));
+    return t('Are you sure you want to delete the entity bundle %type?', ['%type' => $this->entity->label()]);
   }
 
   /**
@@ -67,14 +67,15 @@ class EckEntityBundleDeleteConfirm extends EntityConfirmFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Check if any entity of this type already exists.
-    $content_number = $this->queryFactory->get($this->entity->getEntityType()->getBundleOf())
+    $content_number = $this->entityTypeManager->getStorage($this->entity->getEntityType()
+      ->getBundleOf())->getQuery()
       ->condition('type', $this->entity->id())
       ->count()
       ->execute();
     if (!empty($content_number)) {
-      $warning_message = '<p>' . $this->formatPlural($content_number, '%type is used by 1 entity on your site. You can not remove this entity type until you have removed all of the %type entities.', '%type is used by @count entities on your site. You may not remove %type until you have removed all of the %type entities.', array('%type' => $this->entity->label())) . '</p>';
+      $warning_message = '<p>' . $this->formatPlural($content_number, '%type is used by 1 entity on your site. You can not remove this entity type until you have removed all of the %type entities.', '%type is used by @count entities on your site. You may not remove %type until you have removed all of the %type entities.', ['%type' => $this->entity->label()]) . '</p>';
       $form['#title'] = $this->getQuestion();
-      $form['description'] = array('#markup' => $warning_message);
+      $form['description'] = ['#markup' => $warning_message];
       return $form;
     }
     return parent::buildForm($form, $form_state);
@@ -85,9 +86,10 @@ class EckEntityBundleDeleteConfirm extends EntityConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->delete();
-    $t_args = array('%name' => $this->entity->label());
-    drupal_set_message(t('The entity bundle %name has been deleted', $t_args));
-    $this->logger($this->entity->getEntityType()->getBundleOf())->notice('Delete entity type %name', $t_args);
+    $t_args = ['%name' => $this->entity->label()];
+    \Drupal::messenger()->addMessage($this->t('The entity bundle %name has been deleted', $t_args));
+    $this->logger($this->entity->getEntityType()->getBundleOf())
+      ->notice('Delete entity type %name', $t_args);
 
     $form_state->setRedirectUrl($this->getCancelUrl());
   }

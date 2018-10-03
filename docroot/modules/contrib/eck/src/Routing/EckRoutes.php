@@ -39,7 +39,7 @@ class EckRoutes {
    * @return \Symfony\Component\Routing\Route
    */
   private function createListRoute($entityTypeId, $entityTypeLabel) {
-    $path = 'admin/structure/eck/entity/' . $entityTypeId;
+    $path = "admin/content/{$entityTypeId}";
     $defaults = [
       '_entity_list' => $entityTypeId,
       '_title' => '%type content',
@@ -60,7 +60,7 @@ class EckRoutes {
    * @return \Symfony\Component\Routing\Route
    */
   private function createBundleListRoute($entityTypeId, $entityTypeLabel) {
-    $path = "admin/structure/eck/entity/{$entityTypeId}/types";
+    $path = "admin/structure/eck/{$entityTypeId}/bundles";
     $defaults = [
       '_controller' => '\Drupal\Core\Entity\Controller\EntityListController::listing',
       'entity_type' => "{$entityTypeId}_type",
@@ -83,7 +83,7 @@ class EckRoutes {
    * @return \Symfony\Component\Routing\Route
    */
   private function createAddBundleRoute($entityTypeId, $entityTypeLabel) {
-    $path = "admin/structure/eck/entity/{$entityTypeId}/types/add";
+    $path = "admin/structure/eck/{$entityTypeId}/bundles/add";
     return $this->createBundleCrudRoute($entityTypeId, $entityTypeLabel, $path, "add");
   }
 
@@ -109,7 +109,7 @@ class EckRoutes {
    * @return \Symfony\Component\Routing\Route
    */
   private function createEditBundleRoute($entityTypeId, $entityTypeLabel) {
-    $path = "admin/structure/eck/entity/{$entityTypeId}/types/manage/{{$entityTypeId}_type}";
+    $path = "admin/structure/eck/{$entityTypeId}/bundles/{{$entityTypeId}_type}";
     return $this->createBundleCrudRoute($entityTypeId, $entityTypeLabel, $path, "edit");
   }
 
@@ -120,7 +120,7 @@ class EckRoutes {
    * @return \Symfony\Component\Routing\Route
    */
   private function createDeleteBundleRoute($entityTypeId, $entityTypeLabel) {
-    $path = "admin/structure/eck/entity/{$entityTypeId}/types/manage/{{$entityTypeId}_type}/delete";
+    $path = "admin/structure/eck/{$entityTypeId}/bundles/{{$entityTypeId}_type}/delete";
     return $this->createBundleCrudRoute($entityTypeId, $entityTypeLabel, $path, "delete");
   }
 }

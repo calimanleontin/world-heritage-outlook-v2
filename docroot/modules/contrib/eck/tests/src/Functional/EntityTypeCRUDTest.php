@@ -1,30 +1,28 @@
 <?php
 
-namespace Drupal\eck\Tests;
+namespace Drupal\Tests\eck\Functional;
 
 use Drupal\Core\Url;
 
 /**
- * Tests if eck entities are correctly created and updated
+ * Tests if eck entity types are correctly created and updated.
  *
- * @group Eck
- *
- * @codeCoverageIgnore because we don't have to test the tests
+ * @group eck
  */
-class EntityCreateUpdateTest extends TestBase {
+class EntityTypeCRUDTest extends FunctionalTestBase {
 
-  public function setUp() {
-    parent::setUp();
-
-    $this->drupalLogin($this->drupalCreateUser([], [], TRUE));
-  }
-
+  /**
+   * Test if creation of an entity does not result in mismatched definitions.
+   */
   public function testEntityCreationDoesNotResultInMismatchedEntityDefinitions() {
     $this->createEntityType([], 'TestType');
 
     $this->assertNoMismatchedFieldDefinitions();
   }
 
+  /**
+   * Test if updating an entity type does not result in mismatched definitions.
+   */
   public function testIfEntityUpdateDoesNotResultInMismatchedEntityDefinitions() {
     $this->createEntityType([], 'TestType');
 
@@ -37,9 +35,12 @@ class EntityCreateUpdateTest extends TestBase {
     $this->assertNoMismatchedFieldDefinitions();
   }
 
-  public function assertNoMismatchedFieldDefinitions() {
+  /**
+   * Asserts that there are no mismatched definitions.
+   */
+  private function assertNoMismatchedFieldDefinitions() {
     $this->drupalGet(Url::fromRoute('system.status'));
-    $this->assertNoRaw('Mismatched entity and/or field definitions');
+    $this->assertSession()->responseNotContains('Mismatched entity and/or field definitions');
   }
 
 }

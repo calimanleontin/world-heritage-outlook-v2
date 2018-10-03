@@ -57,8 +57,11 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
     $entityTypeManager = $this->entityTypeManager();
 
     /** @var EckEntityBundle $bundle */
-    foreach ($entityTypeManager->getStorage($entityTypeBundle)->loadMultiple() as $bundle) {
-      if ($entityTypeManager->getAccessControlHandler($eck_entity_type->id())->createAccess($bundle->type)) {
+    foreach ($entityTypeManager->getStorage($entityTypeBundle)
+               ->loadMultiple() as $bundle) {
+      if ($entityTypeManager->getAccessControlHandler($eck_entity_type->id())
+        ->createAccess($bundle->type)
+      ) {
         $content[$bundle->type] = $bundle;
       }
     }
@@ -85,7 +88,8 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
    *   The entity submission form.
    */
   public function add(EckEntityTypeInterface $eck_entity_type, $eck_entity_bundle) {
-    $entityStorage = $this->entityTypeManager()->getStorage($eck_entity_type->id());
+    $entityStorage = $this->entityTypeManager()
+      ->getStorage($eck_entity_type->id());
 
     $entity = $entityStorage->create(['type' => $eck_entity_bundle]);
 

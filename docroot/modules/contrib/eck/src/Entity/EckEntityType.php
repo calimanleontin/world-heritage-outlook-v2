@@ -4,7 +4,6 @@ namespace Drupal\eck\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Routing\LinkGeneratorTrait;
 use Drupal\eck\EckEntityTypeInterface;
 
 /**
@@ -27,8 +26,8 @@ use Drupal\eck\EckEntityTypeInterface;
  *     "label" = "label"
  *   },
  *   links = {
- *     "edit-form" = "/admin/structure/eck/entity_type/manage/{eck_entity_type}",
- *     "delete-form" = "/admin/structure/eck/entity_type/manage/{eck_entity_type}/delete"
+ *     "edit-form" = "/admin/structure/eck/{eck_entity_type}",
+ *     "delete-form" = "/admin/structure/eck/{eck_entity_type}/delete"
  *   },
  *   config_export = {
  *     "id",
@@ -96,7 +95,8 @@ class EckEntityType extends ConfigEntityBase implements EckEntityTypeInterface {
 
       // Notify storage to create the database schema.
       $entity_type = $this->entityTypeManager()->getDefinition($this->id());
-      \Drupal::service('entity_type.listener')->onEntityTypeCreate($entity_type);
+      \Drupal::service('entity_type.listener')
+        ->onEntityTypeCreate($entity_type);
 
       $this->logger($this->id())->notice(
         'Entity type %label has been added.',
@@ -105,6 +105,63 @@ class EckEntityType extends ConfigEntityBase implements EckEntityTypeInterface {
     }
 
     \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+  }
+
+  /**
+   * Load all reference fields with provided target type.
+   *
+   * @param string $target_entity_type_id
+   *   The entity type id created by ECK.
+   *
+   * @return \Drupal\field\FieldConfigInterface[]
+   *   Returns loaded config fields entities.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   */
+  public static function loadReferenceFieldsByType($target_entity_type_id) {
+    $entity_manager = \Drupal::entityTypeManager();
+
+    $fields_array = \Drupal::service('entity_field.manager')->getFieldMapByFieldType('entity_reference');
+    $field_storage = $entity_manager->getStorage('field_config');
+
+    /** @var \Drupal\field\FieldConfigInterface[] $fields_list */
+    $fields_list = $list = [];
+
+    // Get list of fields with type entity_reference.
+    foreach ($fields_array as $entity_type_id => $fields) {
+      foreach ($fields as $field_name => $info) {
+        foreach ($info['bundles'] as $bundle) {
+          if ($field = $field_storage->load($entity_type_id . '.' . $bundle . '.' . $field_name)) {
+            $fields_list[] = $field;
+          }
+        }
+      }
+    }
+
+    foreach ($fields_list as $field) {
+      if ($field->getSetting('target_type') == $target_entity_type_id) {
+        $list[] = $field;
+      }
+    }
+
+    return $list;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
+
+    // Remove all reference fields.
+    foreach (array_keys($entities) as $entity_type_id) {
+      if ($fields = static::loadReferenceFieldsByType($entity_type_id)) {
+        foreach ($fields as $field) {
+          $field->delete();
+          field_purge_field($field);
+        }
+      }
+    }
   }
 
   /**

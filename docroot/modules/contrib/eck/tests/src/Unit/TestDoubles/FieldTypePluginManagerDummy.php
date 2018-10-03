@@ -6,6 +6,9 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
+/**
+ * Dummy implementation of FieldTypePluginManagerInterface.
+ */
 class FieldTypePluginManagerDummy implements FieldTypePluginManagerInterface {
 
   /**
@@ -53,7 +56,7 @@ class FieldTypePluginManagerDummy implements FieldTypePluginManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function createInstance($plugin_id, array $configuration = array()) {
+  public function createInstance($plugin_id, array $configuration = []) {
     // Stub.
   }
 
@@ -105,4 +108,12 @@ class FieldTypePluginManagerDummy implements FieldTypePluginManagerInterface {
   public function getInstance(array $options) {
     // Stub.
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPreconfiguredOptions($field_type) {
+    // Stub.
+  }
+
 }

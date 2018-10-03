@@ -9,7 +9,7 @@ use Drupal\eck\Entity\EckEntity;
 use Drupal\eck\Entity\EckEntityType;
 
 /**
- * @group Eck
+ * @group eck
  */
 class EckEntityTest extends UnitTestBase {
   public function baseFieldDefinitionTestDataProvider() {

@@ -68,11 +68,11 @@ class EckEntityContentLocalTask extends DeriverBase implements ContainerDeriverI
    */
   private function createDerivativeDefinition($routeName, $weight, $title, $base_route) {
     $derivative = [
-      'route_name' => $routeName,
-      'weight' => $weight,
-      'title' => $this->t($title),
-      'base_route' => $base_route,
-    ] + $this->basePluginDefinition;
+        'route_name' => $routeName,
+        'weight' => $weight,
+        'title' => $this->t($title),
+        'base_route' => $base_route,
+      ] + $this->basePluginDefinition;
     return $derivative;
   }
 }

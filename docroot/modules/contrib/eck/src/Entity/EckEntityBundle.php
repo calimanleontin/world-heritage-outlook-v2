@@ -100,7 +100,8 @@ class EckEntityBundle extends ConfigEntityBundleBase implements EckEntityBundleI
     // Update workflow options.
     // @todo Make it possible to get default values without an entity.
     //   https://www.drupal.org/node/2318187
-    $eckEntityStorage = \Drupal::entityTypeManager()->getStorage($this->getEckEntityTypeMachineName());
+    $eckEntityStorage = \Drupal::entityTypeManager()
+      ->getStorage($this->getEckEntityTypeMachineName());
     $eckEntityStorage->create(['type' => $this->id()]);
 
     \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
@@ -124,7 +125,7 @@ class EckEntityBundle extends ConfigEntityBundleBase implements EckEntityBundleI
     // Because we use a single class for multiple entity bundles we need to
     // parse all entity types and load the bundles.
     $entity_manager = \Drupal::entityTypeManager();
-    $bundles = array();
+    $bundles = [];
     /** @var EckEntityType $entity */
     foreach (EckEntityType::loadMultiple() as $entity) {
       $bundleStorage = $entity_manager->getStorage($entity->id() . '_type');

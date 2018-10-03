@@ -1,12 +1,13 @@
 <?php
 
 namespace Drupal\eck\Tests;
+
 use Drupal\Core\Url;
 
 /**
  * Tests if eck's UI elements are working properly.
  *
- * @group Eck
+ * @group eck
  *
  * @codeCoverageIgnore because we don't have to test the tests
  */
@@ -74,11 +75,12 @@ class UITest extends TestBase {
     $entityTypeManager = \Drupal::entityTypeManager();
     $entity = $entityTypeManager->getDefinition('eck_entity_type');
     $this->drupalGet(Url::fromRoute('eck.entity_type.list'));
-    $this->assertText(t('There is no @label yet.', array('@label' => $entity->getLabel())));
+    $noEntitiesYetText = t('There are no @label entities yet.', ['@label' => \strtolower($entity->getLabel())]);
+    $this->assertText($noEntitiesYetText);
 
     $entityType = $this->createEntityType();
     $this->drupalGet(Url::fromRoute('eck.entity_type.list'));
-    $this->assertNoText(t('There is no @label yet.', array('@label' => $entity->getLabel())));
+    $this->assertNoText($noEntitiesYetText);
     foreach (['Add content', 'Content list'] as $option) {
       $this->assertNoLink(t($option), t('No %option option is shown when there are no bundles.', ['%option' => t($option)]));
     }
@@ -89,7 +91,7 @@ class UITest extends TestBase {
 
     $bundles[] = $this->createEntityBundle($entityType['id'], $entityType['id']);
     $this->drupalGet(Url::fromRoute('eck.entity_type.list'));
-    $this->assertNoText(t('There is no @label yet.', array('@label' => $entity->getLabel())));
+    $this->assertNoText($noEntitiesYetText);
     $this->assertNoLink(t('Content list'), t('No %option option is shown when there is no content.', ['%option' => t('Content list')]));
     $this->assertLink(t('Add content'));
     $this->assertLink(t('Bundle list'));
@@ -104,7 +106,7 @@ class UITest extends TestBase {
     // There is now content in the datbase, which means the content list link
     // should also be displayed.
     $this->drupalGet(Url::fromRoute('eck.entity_type.list'));
-    $this->assertNoText(t('There is no @label yet.', array('@label' => $entity->getLabel())));
+    $this->assertNoText($noEntitiesYetText);
     $this->assertLink(t('Content list'));
     $this->assertLink(t('Add content'));
     $this->assertLink(t('Bundle list'));

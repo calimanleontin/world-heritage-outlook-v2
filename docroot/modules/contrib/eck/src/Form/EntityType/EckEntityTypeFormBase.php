@@ -3,10 +3,9 @@
 namespace Drupal\eck\Form\EntityType;
 
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Class EckEntityTypeFormBase.
@@ -16,20 +15,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EckEntityTypeFormBase extends EntityForm {
 
   /**
-   * The entity query factory.
+   * The entity storage class.
    *
-   * @var \Drupal\Core\Entity\Query\QueryFactory
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $entityQueryFactory;
+  protected $eckEntityTypeStorage;
 
   /**
    * Construct the EckEntityTypeFormBase.
    *
-   * @param QueryFactory $query_factory
-   *   The query factory.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $eck_entity_type_storage
+   *   The eck_entity_type storage.
    */
-  public function __construct(QueryFactory $query_factory) {
-    $this->entityQueryFactory = $query_factory;
+  public function __construct(EntityStorageInterface $eck_entity_type_storage) {
+    $this->eckEntityTypeStorage = $eck_entity_type_storage;
   }
 
   /**
@@ -38,7 +37,8 @@ class EckEntityTypeFormBase extends EntityForm {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('entity.query'));
+    return new static($container->get('entity_type.manager')
+      ->getStorage('eck_entity_type'));
   }
 
   /**
@@ -51,26 +51,26 @@ class EckEntityTypeFormBase extends EntityForm {
     $eck_entity_type = $this->entity;
 
     // Build the form.
-    $form['label'] = array(
+    $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $eck_entity_type->label(),
       '#required' => TRUE,
-    );
+    ];
 
-    $form['id'] = array(
+    $form['id'] = [
       '#type' => 'machine_name',
       '#title' => $this->t('Machine name'),
       '#maxlength' => 32,
       '#default_value' => $eck_entity_type->id(),
-      '#machine_name' => array(
-        'exists' => array($this, 'exists'),
+      '#machine_name' => [
+        'exists' => [$this, 'exists'],
         'replace_pattern' => '([^a-z0-9_]+)|(^custom$)',
         'error' => 'The machine-readable name must be unique, and can only contain lowercase letters, numbers, and underscores. Additionally, it can not be the reserved word "custom".',
-      ),
+      ],
       '#disabled' => !$eck_entity_type->isNew(),
-    );
+    ];
 
     $form['base_fields'] = [
       '#type' => 'fieldset',
@@ -106,7 +106,7 @@ class EckEntityTypeFormBase extends EntityForm {
    */
   public function exists($entity_id, array $element, FormStateInterface $form_state) {
     // Use the query factory to build a new event entity query.
-    $query = $this->entityQueryFactory->get('eck_entity_type');
+    $query = $this->eckEntityTypeStorage->getQuery();
 
     // Query the entity ID to see if its in use.
     $result = $query->condition('id', $element['#field_prefix'] . $entity_id)
@@ -136,22 +136,12 @@ class EckEntityTypeFormBase extends EntityForm {
     // The entity object is already populated with the values from the form.
     $status = $this->entity->save();
 
-    if ($status == SAVED_UPDATED) {
-      drupal_set_message(
-        $this->t(
-          'Entity type %label has been updated.',
-          array('%label' => $this->entity->label())
-        )
-      );
+    $messageArgs = ['%label' => $this->entity->label()];
+    $message = $this->t('Entity type %label has been added.', $messageArgs);
+    if ($status === SAVED_UPDATED) {
+      $message = $this->t('Entity type %label has been updated.', $messageArgs);
     }
-    else {
-      drupal_set_message(
-        $this->t(
-          'Entity type %label has been added.',
-          array('%label' => $this->entity->label())
-        )
-      );
-    }
+    \Drupal::messenger()->addMessage($message);
 
     // Redirect the user back to the listing route after the save operation.
     $form_state->setRedirect('eck.entity_type.list');

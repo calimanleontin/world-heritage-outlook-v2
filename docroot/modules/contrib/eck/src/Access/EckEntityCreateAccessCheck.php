@@ -13,7 +13,7 @@ use Drupal\eck\EckEntityTypeInterface;
  */
 class EckEntityCreateAccessCheck implements AccessInterface {
 
-  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager. */
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager . */
   protected $entityTypeManager;
 
   /**
@@ -42,14 +42,15 @@ class EckEntityCreateAccessCheck implements AccessInterface {
   public function access(AccountInterface $account, EckEntityTypeInterface $eck_entity_type, $eck_entity_bundle = NULL) {
     $access_control_handler = $this->entityTypeManager->getAccessControlHandler($eck_entity_type->id());
     if (!empty($eck_entity_bundle)) {
-      return $access_control_handler->createAccess($eck_entity_bundle, $account, array(), TRUE);
+      return $access_control_handler->createAccess($eck_entity_bundle, $account, [], TRUE);
     }
     // Get the entity type bundles.
-    $bundles = $this->entityTypeManager->getStorage($eck_entity_type->id() . '_type')->loadMultiple();
+    $bundles = $this->entityTypeManager->getStorage($eck_entity_type->id() . '_type')
+      ->loadMultiple();
 
     // If checking whether an entity of any type may be created.
     foreach ($bundles as $eck_entity_bundle) {
-      if (($access = $access_control_handler->createAccess($eck_entity_bundle->id(), $account, array(), TRUE)) && $access->isAllowed()) {
+      if (($access = $access_control_handler->createAccess($eck_entity_bundle->id(), $account, [], TRUE)) && $access->isAllowed()) {
         return $access;
       }
     }

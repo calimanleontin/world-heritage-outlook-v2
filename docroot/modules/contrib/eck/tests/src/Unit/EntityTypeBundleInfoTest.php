@@ -16,7 +16,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 /**
  * Tests the form element implementation.
  *
- * @group Eck
+ * @group eck
  */
 class EntityTypeBundleInfoTest extends UnitTestBase {
 
@@ -70,7 +70,9 @@ class EntityTypeBundleInfoTest extends UnitTestBase {
    */
   public function usesCachedDataWhenAvailable() {
     $this->cacheBackendMock = $this->cacheBackendMock = $this->getMockForAbstractClass(CacheBackendInterface::class);
-    $this->cacheBackendMock->expects($this->once())->method('get')->willReturn((object) ['data' =>'obviously not normal bundle info']);
+    $this->cacheBackendMock->expects($this->once())
+      ->method('get')
+      ->willReturn((object) ['data' => 'obviously not normal bundle info']);
 
     $sut = $this->createNewTestSubject();
     $this->assertSame('obviously not normal bundle info', $sut->getAllBundleInfo());
@@ -130,20 +132,20 @@ class EntityTypeBundleInfoTest extends UnitTestBase {
    * @return EckEntityTypeBundleInfo
    */
   protected function createNewTestSubject() {
-    if (empty($this->entityTypeManagerMock)) {
+    if (NULL === $this->entityTypeManagerMock) {
       $this->entityTypeManagerMock = $this->getMockForAbstractClass(EntityTypeManagerInterface::class);
       $this->entityTypeManagerMock->method('getDefinitions')->willReturn([]);
     }
-    if (empty($this->languageManagerMock)) {
+    if (NULL === $this->languageManagerMock) {
       $this->languageManagerMock = $this->createLanguageManagerMock();
     }
-    if (empty($this->moduleHandlerMock)) {
+    if (NULL === $this->moduleHandlerMock) {
       $this->moduleHandlerMock = $this->getMockForAbstractClass(ModuleHandlerInterface::class);
     }
-    if (empty($this->typedDataManagerMock)) {
+    if (NULL === $this->typedDataManagerMock) {
       $this->typedDataManagerMock = $this->getMockForAbstractClass(TypedDataManagerInterface::class);
     }
-    if (empty($this->cacheBackendMock)) {
+    if (NULL === $this->cacheBackendMock) {
       $this->cacheBackendMock = $this->getMockForAbstractClass(CacheBackendInterface::class);
     }
 
@@ -156,13 +158,13 @@ class EntityTypeBundleInfoTest extends UnitTestBase {
    *
    * @return EckEntityTypeBundleInfo
    */
-  protected function createNewTestSubjectWithEntityType(PHPUnit_Framework_MockObject_MockObject $entityTypeMock = NULL, PHPUnit_Framework_MockObject_MockObject$entityStorageMock = NULL) {
-    if (empty($entityTypeMock)) {
+  protected function createNewTestSubjectWithEntityType(PHPUnit_Framework_MockObject_MockObject $entityTypeMock = NULL, PHPUnit_Framework_MockObject_MockObject $entityStorageMock = NULL) {
+    if (NULL === $entityTypeMock) {
       $entityTypeMock = $this->getMockForAbstractClass(EntityTypeInterface::class);
       $entityTypeMock->method('getBundleEntityType')
         ->willReturn('eck_entity_bundle');
     }
-    if (empty($entityStorageMock)) {
+    if (NULL === $entityStorageMock) {
       $entityStorageMock = $this->getMockForAbstractClass(EntityStorageInterface::class);
       $entityStorageMock->method('loadMultiple')->willReturn([]);
     }

@@ -30,6 +30,7 @@ class EckEntityListBuilder extends EntityListBuilder {
   public function buildHeader() {
     $header['id'] = $this->t('ID');
     $header['title'] = $this->t('Title');
+    $header['bundle'] = $this->t('Bundle');
 
     return $header + parent::buildHeader();
   }
@@ -39,11 +40,13 @@ class EckEntityListBuilder extends EntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     $entityTypeId = $entity->getEntityTypeId();
+    $entityBundle = $entity->type->entity->label();
     $route = "entity.{$entityTypeId}.canonical";
     $routeArguments = [$entityTypeId => $entity->id()];
 
     $row['id'] = $entity->id();
     $row['title'] = new Link($entity->label(), Url::fromRoute($route, $routeArguments));
+    $row['bundle'] = $entityBundle;
 
     return array_merge($row, parent::buildRow($entity));
   }

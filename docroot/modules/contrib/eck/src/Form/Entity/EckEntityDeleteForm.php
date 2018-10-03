@@ -17,7 +17,7 @@ class EckEntityDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete entity %title?', array('%title' => $this->entity->label()));
+    return $this->t('Are you sure you want to delete entity %title?', ['%title' => $this->entity->label()]);
   }
 
   /**
@@ -42,10 +42,10 @@ class EckEntityDeleteForm extends ContentEntityConfirmFormBase {
     $entity->delete();
 
     \Drupal::logger('eck')->notice('@type: deleted %title.',
-      array(
+      [
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
-      ));
+      ]);
     $form_state->setRedirectUrl(new Url('eck.entity.' . $this->entity->getEntityTypeId() . '.list'));
   }
 

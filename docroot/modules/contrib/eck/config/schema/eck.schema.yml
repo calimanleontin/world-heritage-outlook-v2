@@ -2,6 +2,14 @@
 
 # This schema tells the config system how to read the config YML files.
 
+eck.settings:
+  type: config_object
+  label: 'ECK settings'
+  mapping:
+    use_admin_theme:
+      type: boolean
+      label: 'Use administration theme when editing or creating ECK entities'
+
 eck.eck_entity_type.*:
   type: config_entity
   label: 'ECK Entity Type'

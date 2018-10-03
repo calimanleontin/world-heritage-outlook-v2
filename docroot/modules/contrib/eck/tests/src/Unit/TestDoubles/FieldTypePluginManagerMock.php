@@ -2,6 +2,9 @@
 
 namespace Drupal\Tests\eck\Unit\TestDoubles;
 
+/**
+ * Mock implementation of FieldTypePluginManagerInterface.
+ */
 class FieldTypePluginManagerMock extends FieldTypePluginManagerDummy {
 
   /**
@@ -17,4 +20,5 @@ class FieldTypePluginManagerMock extends FieldTypePluginManagerDummy {
   public function getDefaultFieldSettings($type) {
     return [];
   }
+
 }

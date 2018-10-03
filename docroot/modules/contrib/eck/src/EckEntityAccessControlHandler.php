@@ -35,15 +35,15 @@ class EckEntityAccessControlHandler extends EntityAccessControlHandler {
    * @return \Drupal\Core\Access\AccessResult|bool
    */
   private function getBypassAccessResult($return_as_object) {
-      $result = AccessResult::allowed()->cachePerPermissions();
-      return $return_as_object ? $result : $result->isAllowed();
+    $result = AccessResult::allowed()->cachePerPermissions();
+    return $return_as_object ? $result : $result->isAllowed();
   }
 
   /**
    * {@inheritdoc}
    */
   public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    if ($this->canBypassAccessCheck($account)){
+    if ($this->canBypassAccessCheck($account)) {
       return $this->getBypassAccessResult($return_as_object);
     }
     else {
@@ -54,8 +54,8 @@ class EckEntityAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
-  public function createAccess($entity_bundle = NULL, AccountInterface $account = NULL, array $context = array(), $return_as_object = FALSE) {
-    if ($this->canBypassAccessCheck($account)){
+  public function createAccess($entity_bundle = NULL, AccountInterface $account = NULL, array $context = [], $return_as_object = FALSE) {
+    if ($this->canBypassAccessCheck($account)) {
       return $this->getBypassAccessResult($return_as_object);
     }
     else {

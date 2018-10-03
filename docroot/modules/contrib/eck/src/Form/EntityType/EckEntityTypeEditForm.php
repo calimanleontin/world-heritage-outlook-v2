@@ -17,7 +17,7 @@ class EckEntityTypeEditForm extends EckEntityTypeFormBase {
   protected function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
     // Change the submit button value.
-    $actions['submit']['#value'] = $this->t('Update @type', array('@type' => $this->entity->label()));
+    $actions['submit']['#value'] = $this->t('Update @type', ['@type' => $this->entity->label()]);
 
     return $actions;
   }

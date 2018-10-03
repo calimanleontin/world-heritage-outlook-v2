@@ -17,9 +17,9 @@ class EckEntityTypeDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to delete entity type %label?', array(
+    return $this->t('Are you sure you want to delete entity type %label?', [
         '%label' => $this->entity->label(),
-      )
+      ]
     );
   }
 
@@ -39,12 +39,21 @@ class EckEntityTypeDeleteForm extends EntityDeleteForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Exception
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $bundles = entity_get_bundles($this->entity->id());
-    if (!empty($bundles) && empty($bundles[$this->entity->id()])) {
-      $warning_message = '<p>' . $this->formatPlural(count($bundles), '%type has 1 bundle. Please delete all %type bundles.', '%type has @count bundles. Please delete all %type bundles.', array('%type' => $this->entity->label())) . '</p>';
-      $form['description'] = array('#markup' => $warning_message);
+    $content_number = $this->entityTypeManager
+      ->getStorage($this->entity->id())
+      ->getQuery()
+      ->count()
+      ->execute();
+
+    if (!empty($content_number)) {
+      $warning_message = '<p>' . $this->formatPlural($content_number, 'There is 1 %type entity. You can not remove this entity type until you have removed all of the %type entities.', 'There are @count %type entities. You may not remove %type until you have removed all of the %type entities.', ['%type' => $this->entity->label()]) . '</p>';
+
+      $form['#title'] = $this->getConfirmText();
+      $form['description'] = ['#markup' => $warning_message];
       return $form;
     }
 
@@ -55,19 +64,7 @@ class EckEntityTypeDeleteForm extends EntityDeleteForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $content_entity = $this->entityTypeManager->getDefinition($this->entity->id());
-    \Drupal::service('entity_type.listener')->onEntityTypeDelete($content_entity);
-    // Delete the entity type.
-    $this->entity->delete();
-    // Set a message that the entity type was deleted.
-    drupal_set_message(
-      t(
-        'Entity type %label was deleted.',
-        array(
-          '%label' => $this->entity->label(),
-        )
-      )
-    );
+    parent::submitForm($form, $form_state);
 
     // Redirect to list when completed.
     $form_state->setRedirectUrl(new Url('eck.entity_type.list'));

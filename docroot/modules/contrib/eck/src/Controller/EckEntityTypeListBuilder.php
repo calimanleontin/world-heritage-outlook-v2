@@ -4,12 +4,11 @@ namespace Drupal\eck\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Url;
 use Drupal\eck\EckEntityTypeBundleInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a listing of ECK entities.
@@ -19,14 +18,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class EckEntityTypeListBuilder extends ConfigEntityListBuilder {
 
   /**
-   * @var \Drupal\eck\EckEntityTypeBundleInfo $eckBundleInfo
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $eckBundleInfo;
+  protected $entityTypeManager;
+
 
   /**
-   * @var \Drupal\Core\Entity\Query\QueryFactory $queryFactory
+   * EckEntityTypeBundleInfo service.
+   *
+   * @var \Drupal\eck\EckEntityTypeBundleInfo
    */
-  protected $queryFactory;
+  protected $eckBundleInfo;
 
   /**
    * {@inheritdoc}
@@ -34,9 +38,8 @@ class EckEntityTypeListBuilder extends ConfigEntityListBuilder {
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
-      $container->get('eck.entity_type.bundle.info'),
-      $container->get('entity.query')
+      $container->get('entity_type.manager'),
+      $container->get('eck.entity_type.bundle.info')
     );
   }
 
@@ -45,13 +48,16 @@ class EckEntityTypeListBuilder extends ConfigEntityListBuilder {
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.
-   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
-   *   The entity storage class.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\eck\EckEntityTypeBundleInfo $bundle_info
+   *   ECK Entity Bundle Info service.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EckEntityTypeBundleInfo $bundle_info, QueryFactory $query_factory) {
+  public function __construct(EntityTypeInterface $entity_type, EntityTypeManagerInterface $entity_type_manager, EckEntityTypeBundleInfo $bundle_info) {
+    $storage = $entity_type_manager->getStorage($entity_type->id());
     parent::__construct($entity_type, $storage);
+    $this->entityTypeManager = $entity_type_manager;
     $this->eckBundleInfo = $bundle_info;
-    $this->queryFactory = $query_factory;
   }
 
   /**
@@ -93,7 +99,8 @@ class EckEntityTypeListBuilder extends ConfigEntityListBuilder {
         $row['operations']['data']['#links']['add_content']['url'] = new Url('eck.entity.add', $arguments);
       }
 
-      $contentExists = (bool) $this->queryFactory->get($entity->id())
+      $contentExists = (bool) $this->entityTypeManager->getStorage($entity->id())
+        ->getQuery()
         ->range(0, 1)
         ->execute();
       if ($contentExists) {
