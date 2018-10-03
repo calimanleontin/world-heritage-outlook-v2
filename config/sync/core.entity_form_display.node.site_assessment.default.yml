@@ -40,9 +40,13 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
     - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_assessor
+    - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_reviewers
     - node.type.site_assessment
   module:
+    - content_moderation
     - datetime
     - field_group
     - file
@@ -590,11 +594,29 @@ content:
     third_party_settings: {  }
     type: file_generic
     region: content
+  field_assessor:
+    weight: 125
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_coordinator:
+    weight: 124
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_date_published:
     weight: 13
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
+  field_reviewers:
+    weight: 126
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   langcode:
     type: language_select
@@ -602,6 +624,12 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
