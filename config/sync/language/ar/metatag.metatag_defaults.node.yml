@@ -1,1 +1,4 @@
 label: المحتوى
+tags:
+  description: '[node:summary] [node:body]'
+  canonical_url: '/node/[node:nid]'

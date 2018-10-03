@@ -1,0 +1,21 @@
+uuid: 2a63a5e6-227b-4095-832e-58a5df466178
+langcode: en
+status: true
+dependencies:
+  module:
+    - eck
+id: assessment_child.field_as_values_value
+field_name: field_as_values_value
+entity_type: assessment_child
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
