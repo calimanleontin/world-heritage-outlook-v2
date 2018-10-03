@@ -1,0 +1,21 @@
+iucn_who_diff.diff_prototype_form:
+  path: '/diff-prototype/{node}'
+  defaults:
+    _title: 'Diff Prototype'
+    _controller: '\Drupal\iucn_who_diff\Controller\IucnDiffPrototypeController::content'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+  requirements:
+    _permission: 'access content'
+
+iucn_who_diff.diff_prototype_modal:
+  path: '/diff-prototype-modal'
+  defaults:
+    _controller: '\Drupal\iucn_who_diff\Controller\IucnDiffPrototypeController::modal'
+  options:
+    _admin_route: TRUE
+  requirements:
+    _permission: 'access content'

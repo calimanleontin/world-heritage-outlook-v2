@@ -1,0 +1,12 @@
+<?php
+
+function iucn_who_diff_theme($existing, $type, $theme, $path) {
+  return [
+    'diff_prototype' => [
+      'variables' => ['values' => NULL],
+    ],
+    'diff_prototype_modal' => [
+      'variables' => ['values' => NULL],
+    ],
+  ];
+}
