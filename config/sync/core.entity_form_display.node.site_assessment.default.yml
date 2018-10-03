@@ -255,8 +255,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -307,8 +307,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -318,15 +318,15 @@ content:
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: closed
+      edit_mode: open
       closed_mode: summary
       autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -343,8 +343,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -361,8 +361,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -435,8 +435,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -481,8 +481,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -513,8 +513,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
@@ -531,8 +531,8 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
+        duplicate: 0
+        collapse_edit_all: 0
         add_above: 0
     third_party_settings: {  }
     region: content
