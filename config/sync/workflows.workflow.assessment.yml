@@ -1,0 +1,99 @@
+uuid: 3657923f-20e6-4829-8f35-54a38b4abb59
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.site_assessment
+  module:
+    - content_moderation
+id: assessment
+label: Assessment
+type: content_moderation
+type_settings:
+  states:
+    approved:
+      published: false
+      default_revision: false
+      label: Approved
+      weight: 2
+    draft:
+      published: false
+      default_revision: false
+      label: New
+      weight: -4
+    published:
+      label: Published
+      published: true
+      default_revision: true
+      weight: 3
+    ready_for_review:
+      published: false
+      default_revision: false
+      label: 'Ready for review'
+      weight: -2
+    reviewed:
+      published: false
+      default_revision: false
+      label: Reviewed
+      weight: 0
+    under_assessment:
+      published: false
+      default_revision: false
+      label: 'Under assessment'
+      weight: -3
+    under_comparison:
+      published: false
+      default_revision: false
+      label: 'Under comparison'
+      weight: 1
+    under_review:
+      published: false
+      default_revision: false
+      label: 'Under review'
+      weight: -1
+  transitions:
+    approved_published:
+      label: 'Approved > Published'
+      from:
+        - approved
+      to: published
+      weight: 4
+    new_under_assessment:
+      label: 'New > Under assessment'
+      from:
+        - draft
+      to: under_assessment
+      weight: -2
+    ready_for_review_under_review:
+      label: 'Ready for review > Under review'
+      from:
+        - ready_for_review
+      to: under_review
+      weight: 0
+    under_assessment_ready_for_review:
+      label: 'Under assessment > Ready for review'
+      from:
+        - under_assessment
+      to: ready_for_review
+      weight: -1
+    under_comparison_approved:
+      label: 'Under comparison > Approved'
+      from:
+        - under_comparison
+      to: approved
+      weight: 3
+    under_review_reviewed:
+      label: 'Under review > Reviewed'
+      from:
+        - under_review
+      to: reviewed
+      weight: 1
+    under_review_under_comparison:
+      label: 'Under review > Under comparison'
+      from:
+        - under_review
+      to: under_comparison
+      weight: 2
+  entity_types:
+    node:
+      - site_assessment
