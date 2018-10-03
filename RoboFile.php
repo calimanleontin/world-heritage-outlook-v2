@@ -46,7 +46,7 @@ class RoboFile extends \Robo\Tasks {
     $execStack->exec("{$this->drush} cr");
     $execStack->exec("{$this->drush} updatedb -y");
     $execStack->exec("{$this->drush} entup -y");
-    $execStack->exec("{$this->drush} cim sync -y");
+    $execStack->exec("{$this->drush} csim -y");
     return $execStack->run();
   }
 
