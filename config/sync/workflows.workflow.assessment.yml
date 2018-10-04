@@ -52,36 +52,78 @@ type_settings:
       label: 'Under review'
       weight: -1
   transitions:
+    approved_approved:
+      label: 'Approved > Approved'
+      from:
+        - approved
+      to: approved
+      weight: 11
     approved_published:
       label: 'Approved > Published'
       from:
         - approved
       to: published
       weight: 4
+    new_new:
+      label: 'New > New'
+      from:
+        - draft
+      to: draft
+      weight: 5
     new_under_assessment:
       label: 'New > Under assessment'
       from:
         - draft
       to: under_assessment
       weight: -2
+    published_published:
+      label: 'Published > Published'
+      from:
+        - published
+      to: published
+      weight: 12
+    ready_for_review_ready_for_review:
+      label: 'Ready for review > Ready for review'
+      from:
+        - ready_for_review
+      to: ready_for_review
+      weight: 7
     ready_for_review_under_review:
       label: 'Ready for review > Under review'
       from:
         - ready_for_review
       to: under_review
       weight: 0
+    reviewed_reviewed:
+      label: 'Reviewed > Reviewed'
+      from:
+        - reviewed
+      to: reviewed
+      weight: 9
     under_assessment_ready_for_review:
       label: 'Under assessment > Ready for review'
       from:
         - under_assessment
       to: ready_for_review
       weight: -1
+    under_assessment_under_assessment:
+      label: 'Under assessment > Under assessment'
+      from:
+        - under_assessment
+      to: under_assessment
+      weight: 6
     under_comparison_approved:
       label: 'Under comparison > Approved'
       from:
         - under_comparison
       to: approved
       weight: 3
+    under_comparison_under_comparison:
+      label: 'Under comparison > Under comparison'
+      from:
+        - under_comparison
+      to: under_comparison
+      weight: 10
     under_review_reviewed:
       label: 'Under review > Reviewed'
       from:
@@ -94,6 +136,12 @@ type_settings:
         - under_review
       to: under_comparison
       weight: 2
+    under_review_under_review:
+      label: 'Under review > Under review'
+      from:
+        - under_review
+      to: under_review
+      weight: 8
   entity_types:
     node:
       - site_assessment

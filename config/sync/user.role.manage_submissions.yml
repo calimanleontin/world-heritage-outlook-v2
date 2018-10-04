@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: manage_submissions
 label: 'Webforms manager'
-weight: 1
+weight: 4
 is_admin: null
 permissions:
   - 'access webform overview'

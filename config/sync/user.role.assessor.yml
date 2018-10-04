@@ -4,6 +4,15 @@ status: true
 dependencies: {  }
 id: assessor
 label: Assessor
-weight: 3
+weight: -5
 is_admin: null
-permissions: {  }
+permissions:
+  - 'administer nodes'
+  - 'create content unpublished'
+  - 'edit own site_assessment content'
+  - 'use assessment transition new_new'
+  - 'use assessment transition under_assessment_ready_for_review'
+  - 'use assessment transition under_assessment_under_assessment'
+  - 'view any unpublished content'
+  - 'view latest version'
+  - 'view site_assessment revisions'

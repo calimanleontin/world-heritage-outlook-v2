@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: edit_world_heritage_site_information
 label: 'Edit World Heritage site information'
-weight: -5
+weight: 2
 is_admin: null
 permissions:
   - 'create content translations'

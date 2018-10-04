@@ -1,0 +1,12 @@
+type: module
+name: 'Role hierarchy'
+description: 'Provides security updates for platforms that are using a clear role hierarchy.'
+# core: 8.x
+dependencies:
+  - user
+
+# Information added by Drupal.org packaging script on 2018-02-07
+version: '8.x-1.0'
+core: '8.x'
+project: 'role_hierarchy'
+datestamp: 1518010107

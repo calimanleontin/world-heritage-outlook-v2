@@ -171,6 +171,7 @@
     "drupal/redirect": "^1.2",
     "drupal/reroute_email": "^1.0",
     "drupal/responsive_favicons": "^1.4",
+    "drupal/role_hierarchy": "^1.0",
     "drupal/search_api": "^1.9",
     "drupal/search_api_autocomplete": "^1.0@alpha",
     "drupal/search_api_solr": "^1.2",
@@ -189,13 +190,13 @@
     "drupal/views_accordion": "^1.1",
     "drupal/webform": "^5.0@RC",
     "drupal/xmlsitemap": "^1.0@alpha",
+    "drush/drush": "^9.4.0",
     "enyoo/dropzone": "^4.3",
     "harvesthq/chosen": "^1.6",
     "jackmoore/colorbox": "^1.6",
     "kenwheeler/slick": "^1.6",
     "webflo/drupal-finder": "^1.1",
-    "webmozart/path-util": "^2.3",
-    "drush/drush": "^9.4.0"
+    "webmozart/path-util": "^2.3"
   },
   "require-dev": {
     "consolidation/robo": "~1",

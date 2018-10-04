@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: edit_world_heritage_site_assessments
 label: 'Edit World Heritage site assessments'
-weight: -3
+weight: -8
 is_admin: null
 permissions:
   - 'create content translations'
@@ -17,4 +17,18 @@ permissions:
   - 'revert site_assessment revisions'
   - 'translate site_assessment node'
   - 'update content translations'
+  - 'use assessment transition approved_approved'
+  - 'use assessment transition approved_published'
+  - 'use assessment transition new_new'
+  - 'use assessment transition new_under_assessment'
+  - 'use assessment transition published_published'
+  - 'use assessment transition ready_for_review_ready_for_review'
+  - 'use assessment transition ready_for_review_under_review'
+  - 'use assessment transition reviewed_reviewed'
+  - 'use assessment transition under_assessment_under_assessment'
+  - 'use assessment transition under_comparison_approved'
+  - 'use assessment transition under_comparison_under_comparison'
+  - 'use assessment transition under_review_reviewed'
+  - 'use assessment transition under_review_under_comparison'
+  - 'use assessment transition under_review_under_review'
   - 'view site_assessment revisions'

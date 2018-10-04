@@ -5,3 +5,9 @@ services:
       - { name: event_subscriber }
   iucn_assessment.assessments_year:
     class: 'Drupal\iucn_assessment\Plugin\IucnAssessmentYear'
+  iucn_assessment.route_subscriber:
+    class: Drupal\iucn_assessment\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  iucn_assessment.access:
+    class: 'Drupal\iucn_assessment\Plugin\IucnAccess'
