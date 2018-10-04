@@ -56,11 +56,11 @@ class IucnAccess {
 
     switch ($state) {
       case 'new':
-        // Any coordinator can edit assessments with no coordinators.
-        if (empty($node->field_coordinator->entity)) {
-          return $account_role_weight <= $coordinator_weight;
-        }
-        // Otherwise, assessments can only be edited by their coordinators.
+        // Any coordinator or higher can edit assessments.
+        return $account_role_weight <= $coordinator_weight;
+
+      case 'under_evaluation':
+        // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
       case 'under_assessment':
