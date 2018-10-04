@@ -9,5 +9,5 @@ services:
     class: Drupal\iucn_assessment\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
-  iucn_assessment.access:
-    class: 'Drupal\iucn_assessment\Plugin\IucnAccess'
+  iucn_assessment.workflow:
+    class: 'Drupal\iucn_assessment\Plugin\AssessmentWorkflow'

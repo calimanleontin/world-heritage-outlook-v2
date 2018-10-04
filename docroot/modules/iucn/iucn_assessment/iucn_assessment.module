@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\role_hierarchy\RoleHierarchyHelper;
+use Drupal\Core\Form\FormStateInterface;
 
 function iucn_assessment_theme() {
   return [
@@ -362,6 +364,55 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
       unset(
         $vars['content']['full_assessment_values']['group_assessment_information']['group_state_and_trend_of_values']['group_assessing_current_state']['display_field_copy:node-other_biodiv_values']
       );
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Assessment user fields are only enabled during certain states.
+  // Additionally, some of them are required for moving to other states.
+  if ($form_id == 'node_site_assessment_edit_form') {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
+    $form['#validate'][] = '_iucn_assessment_edit_form_validate';
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $current_user = \Drupal::currentUser();
+    $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
+    $coordinator_weight = Role::load('coordinator')->getWeight();
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+      if ($weight >= $coordinator_weight) {
+        // Enable these fields only in certain assessment states
+        // for roles >= coordinators.
+        $enabled = $workflow_service->isFieldEnabledForAssessment($field, $node);
+        $form[$field]['#disabled'] = !$enabled;
+      }
+      else {
+        // Hide the field for lower roles.
+        $form[$field]['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Callback validation function for node_site_assessment_edit_form.
+ */
+function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_state) {
+  $state = $form_state->getValue('moderation_state')[0]['value'];
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+  foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    $value = $form_state->getValue($field);
+    $required = $workflow_service->isFieldRequiredForState($field, $state);
+    if ($required && empty($value)) {
+      $form_state->setErrorByName($field, t('@field is required before moving to state @state', [
+        '@field' => $field,
+        '@state' => $state,
+      ]));
     }
   }
 }

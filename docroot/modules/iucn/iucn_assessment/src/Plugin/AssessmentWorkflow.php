@@ -10,7 +10,7 @@ use Drupal\node\NodeInterface;
 /**
  * Service class used to assess an user's access on certain parts of the site.
  */
-class IucnAccess {
+class AssessmentWorkflow {
 
   /**
    * Check if an user can edit an assessment.
@@ -91,6 +91,47 @@ class IucnAccess {
         // After being published, assessments can only be edited by admins.
         return $account_role_weight < $coordinator_weight;
     }
+
+    return TRUE;
+  }
+
+  /**
+   * Check if an user field (e.g. assessor) is visible on an assessment.
+   *
+   * @param string $field
+   *   The field id.
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   *
+   * @return bool
+   *   True if a field is visible for an assessment in a certain state.
+   */
+  public function isFieldEnabledForAssessment($field, NodeInterface $node) {
+    if ($node->bundle() != 'site_assessment') {
+      return FALSE;
+    }
+
+    $state = $node->moderation_state->value;
+    return $field == 'field_coordinator' && $state == 'new'
+      || $field == 'field_assessor' && $state == 'under_evaluation'
+      || $field == 'field_reviewers' && $state == 'ready_for_review';
+  }
+
+  /**
+   * Check if a field is required for an assessment to move to a certain state.
+   *
+   * @param string $field
+   *   The field.
+   * @param string $state
+   *   The next state (e.g. 'under_assessment').
+   *
+   * @return bool
+   *   True if the field is required.
+   */
+  public function isFieldRequiredForState($field, $state) {
+    return $field == 'field_coordinator' && $state == 'under_evaluation'
+      || $field == 'field_assessor' && $state == 'under_assessment'
+      || $field == 'field_reviewers' && $state == 'under_review';
   }
 
 }
