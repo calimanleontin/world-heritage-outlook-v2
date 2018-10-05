@@ -111,6 +111,12 @@ type_settings:
         - reviewed
       to: reviewed
       weight: 4
+    reviewed_under_comparison:
+      label: 'Reviewed > Under comparison'
+      from:
+        - reviewed
+      to: under_comparison
+      weight: 9
     under_assessment_ready_for_review:
       label: 'Under assessment > Ready for review'
       from:

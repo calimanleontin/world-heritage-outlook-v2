@@ -55,7 +55,7 @@ class AssessmentWorkflow {
     }
 
     switch ($state) {
-      case 'new':
+      case 'draft':
         // Any coordinator or higher can edit assessments.
         return $account_role_weight <= $coordinator_weight;
 
@@ -112,7 +112,7 @@ class AssessmentWorkflow {
     }
 
     $state = $node->moderation_state->value;
-    return $field == 'field_coordinator' && $state == 'new'
+    return $field == 'field_coordinator' && $state == 'draft'
       || $field == 'field_assessor' && $state == 'under_evaluation'
       || $field == 'field_reviewers' && $state == 'ready_for_review';
   }

@@ -2,6 +2,7 @@
 
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\Role;
 
 function iucn_assessment_theme() {
   return [
@@ -372,23 +373,36 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_user = \Drupal::currentUser();
+  if ($form_id == 'node_site_assessment_form') {
+    if ($current_user->id() == 1) {
+      return;
+    }
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+      $form[$field]['#disabled'] = TRUE;
+    }
+  }
   // Assessment user fields are only enabled during certain states.
   // Additionally, some of them are required for moving to other states.
   if ($form_id == 'node_site_assessment_edit_form') {
+    \Drupal::messenger()->deleteAll();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $form_state->getFormObject()->getEntity();
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $current_user = \Drupal::currentUser();
     $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
     $coordinator_weight = Role::load('coordinator')->getWeight();
+    // Do not alter the form for user 1.
+    if ($current_user->id() == 1) {
+      return;
+    }
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
-      if ($weight >= $coordinator_weight) {
+      if ($weight <= $coordinator_weight) {
         // Enable these fields only in certain assessment states
         // for roles >= coordinators.
         $enabled = $workflow_service->isFieldEnabledForAssessment($field, $node);
-        $form[$field]['#disabled'] = !$enabled;
+        $form[$field]['#access'] = $enabled;
       }
       else {
         // Hide the field for lower roles.
