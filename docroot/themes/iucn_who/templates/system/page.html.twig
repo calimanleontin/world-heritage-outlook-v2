@@ -141,7 +141,8 @@
         {% block main_container %}
         <div class="row">
           {# Sidebar First #}
-          {% if page.sidebar_first or page.facets %}
+          {% if hide_sidebar_first is not defined %}
+          {% if page.sidebar_first or page.facets  %}
             <aside class="col-sm-3 sidemenu" role="complementary" id="sidemenu">
               {% if page.sidebar_top %}
                   {% block sidebar_top %}
@@ -170,6 +171,12 @@
               (page.sidebar_first or page.facets  or page.sidebar_top) is empty and page.sidebar_second is empty ? 'col-sm-12'
             ]
           %}
+          {% else %}
+          {%
+            set content_classes = ['col-sm-12']
+          %}
+
+          {% endif %}
           <section{{ content_attributes.addClass(content_classes) }}>
 
             {# Highlighted #}
@@ -248,7 +255,7 @@
       <hr>
       <div class="container">
         <div class="copyright">
-          <span class="copyright-text">©  
+          <span class="copyright-text">©
               {% trans %}
                 International Union for Conservation of Nature and Natural Resources
               {% endtrans %}

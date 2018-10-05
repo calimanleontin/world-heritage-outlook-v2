@@ -1,8 +1,12 @@
+uuid: a529d6c4-8469-46a8-96c3-f5688685a107
 langcode: en
 status: open
 dependencies:
   module:
     - honeypot
+third_party_settings:
+  honeypot:
+    honeypot: true
 open: null
 close: null
 weight: 0
@@ -192,7 +196,4 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme: ''
-uuid: a529d6c4-8469-46a8-96c3-f5688685a107
-third_party_settings:
-  honeypot:
-    honeypot: true
+      theme_name: ''

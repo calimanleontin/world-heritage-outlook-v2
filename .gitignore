@@ -7,7 +7,7 @@ docroot/sites/*/files-private
 docroot/sites/*/private
 docroot/modules/contrib/examples
 acquia-files
-
+drush/sites/self.site.yml
 # Configs
 config/*/recaptcha.settings.yml
 
