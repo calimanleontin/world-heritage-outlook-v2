@@ -43,10 +43,10 @@ elements: |
       '#type': textfield
       '#title': Email
       '#input_mask': '''alias'': ''email'''
-    date:
+    datetime:
       '#type': textfield
-      '#title': 'Date (mm/dd/yyyy)'
-      '#input_mask': '''alias'': ''mm/dd/yyyy'''
+      '#title': 'Date time (2007-06-09'T'17:46:21)'
+      '#input_mask': '''alias'': ''datetime'''
     currency:
       '#type': textfield
       '#title': Currency
@@ -77,6 +77,14 @@ elements: |
       '#type': textfield
       '#title': 'VIN (Vehicle identification number)'
       '#input_mask': '''alias'': ''vin'''
+    uppercase:
+      '#type': textfield
+      '#title': UPPERCASE
+      '#input_mask': '''casing'': ''upper'''
+    lowercase:
+      '#type': textfield
+      '#title': lowercase
+      '#input_mask': '''casing'': ''lower'''
   
 css: ''
 javascript: ''
@@ -112,6 +120,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }

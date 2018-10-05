@@ -25,6 +25,7 @@ use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformElement\Checkbox;
 use Drupal\webform\Plugin\WebformElement\Checkboxes;
+use Drupal\webform\Plugin\WebformElement\ContainerBase;
 use Drupal\webform\Plugin\WebformElement\Details;
 use Drupal\webform\Twig\TwigExtension;
 use Drupal\webform\Utility\WebformArrayHelper;
@@ -269,6 +270,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'flex' => 1,
       // Conditional logic.
       'states' => [],
+      'states_clear' => TRUE,
       // Element access.
       'access_create_roles' => ['anonymous', 'authenticated'],
       'access_create_users' => [],
@@ -748,6 +750,11 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $element[$attributes_property]['class'][] = 'webform-has-field-suffix';
     }
 
+    // Add 'data-webform-states-no-clear' attribute if #states_clear is FALSE.
+    if (isset($element['#states_clear']) && $element['#states_clear'] === FALSE) {
+      $element[$attributes_property]['data-webform-states-no-clear'] = TRUE;
+    }
+
     // Set element's #element_validate callback so that is not replaced by
     // additional #element_validate callbacks.
     $this->setElementDefaultCallback($element, 'element_validate');
@@ -1200,7 +1207,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (isset($options['delta'])) {
         return $this->$item_function($element, $webform_submission, $options);
       }
-      elseif ($this->getItemsFormat($element) == 'custom') {
+      elseif ($this->getItemsFormat($element) === 'custom') {
         return $this->formatCustomItems($type, $element, $webform_submission, $options);
       }
       else {
@@ -1208,7 +1215,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
     else {
-      if ($this->getItemFormat($element) == 'custom') {
+      if ($this->getItemFormat($element) === 'custom') {
         return $this->formatCustomItem($type, $element, $webform_submission, $options);
       }
       else {
@@ -1450,12 +1457,19 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     // Add submission data to context.
     $context['data'] = $webform_submission->getData();
 
-    // Return inline template.
-    return [
+    $build = [
       '#type' => 'inline_template',
       '#template' => $template,
       '#context' => $context,
     ];
+
+    // Return inline template.
+    if ($type === 'Text') {
+      return \Drupal::service('renderer')->renderPlain($build);
+    }
+    else {
+      return $build;
+    }
   }
 
   /**
@@ -2492,6 +2506,15 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_element_states',
       '#state_options' => $this->getElementStateOptions(),
       '#selector_options' => $webform->getElementsSelectorOptions(),
+    ];
+    $form['conditional_logic']['states_clear'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Clear value(s) when hidden',
+      '#return_value' => TRUE,
+      '#description' => ($this instanceof ContainerBase) ?
+        $this->t("When this container is hidden all this container's subelement values will be cleared.")
+        :
+        $this->t("When this element is hidden, this element's value will be cleared."),
     ];
     if ($this->hasProperty('states') && $this->hasProperty('required')) {
       $form['conditional_logic']['states_required_message'] = [

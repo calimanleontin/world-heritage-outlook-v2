@@ -13,8 +13,8 @@ dependencies:
   - 'webform:webform'
   - 'webform:webform_node'
 
-# Information added by Drupal.org packaging script on 2018-09-08
-version: '8.x-5.0-rc21'
+# Information added by Drupal.org packaging script on 2018-10-02
+version: '8.x-5.0-rc22'
 core: '8.x'
 project: 'webform'
-datestamp: 1536405494
+datestamp: 1538482694

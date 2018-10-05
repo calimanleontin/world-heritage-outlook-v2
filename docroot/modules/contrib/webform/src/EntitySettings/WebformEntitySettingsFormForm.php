@@ -157,9 +157,9 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#title' => $this->t('When a user is denied access to this webform'),
       '#options' => [
         WebformInterface::ACCESS_DENIED_DEFAULT => $this->t('Default (Displays the default access denied page)'),
-        WebformInterface::ACCESS_DENIED_MESSAGE => $this->t('Inline (Displays message when access is denied to field and blocks)'),
-        WebformInterface::ACCESS_DENIED_PAGE => $this->t('Page (Displays message when access is denied to forms, fields, and blocks)'),
-        WebformInterface::ACCESS_DENIED_LOGIN => $this->t('Login (Redirects to user login form and displays message)'),
+        WebformInterface::ACCESS_DENIED_MESSAGE => $this->t('Inline (Displays message when access is denied to field, nodes, and blocks)'),
+        WebformInterface::ACCESS_DENIED_PAGE => $this->t('Page (Displays message when access is denied to forms, fields, nodes, and blocks)'),
+        WebformInterface::ACCESS_DENIED_LOGIN => $this->t('Login (Redirects to user login form and displays message. Field, nodes, and block only display the message.)'),
       ],
       '#required' => TRUE,
       '#default_value' => $settings['form_access_denied'],
@@ -431,6 +431,22 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#default_value' => $settings['preview_attributes'],
     ];
     $form['preview_settings']['preview_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+
+    // File settings.
+    $form['file_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('File settings'),
+      '#open' => TRUE,
+      '#access' => $webform->hasManagedFile(),
+    ];
+    $form['file_settings']['form_file_limit'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('File upload limit'),
+      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to set the file upload limit for this form.'),
+      '#element_validate' => [['\Drupal\webform\Form\AdminConfig\WebformAdminConfigElementsForm', 'validateMaxFilesize']],
+      '#size' => 10,
+      '#default_value' => $settings['form_file_limit'],
+    ];
 
     // Custom settings.
     $properties = WebformElementHelper::getProperties($webform->getElementsDecoded());

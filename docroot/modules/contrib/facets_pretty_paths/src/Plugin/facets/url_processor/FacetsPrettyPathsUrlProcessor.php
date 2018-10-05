@@ -2,9 +2,14 @@
 
 namespace Drupal\facets_pretty_paths\Plugin\facets\url_processor;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\facets\Entity\Facet;
 use Drupal\facets\FacetInterface;
 use Drupal\facets\UrlProcessor\UrlProcessorPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,20 +21,49 @@ use Symfony\Component\HttpFoundation\Request;
  *   description = @Translation("Pretty paths uses slashes as separator, e.g. /brand/drupal/color/blue"),
  * )
  */
-class FacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase {
+class FacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase implements ContainerFactoryPluginInterface {
 
   /**
-   * @var array
-   *   An array containing the active filters
+  * The current_route_match service.
+  *
+  * @var \Drupal\Core\Routing\ResettableStackedRouteMatchInterface
+  */
+  protected $routeMatch;
+
+  /**
+   * Constructs FacetsPrettyPathsUrlProcessor object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   A request object for the current request.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   The entity type manager service.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The route match service.
    */
-  protected $activeFilters = [];
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $request, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $routeMatch) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $request, $entity_type_manager);
+    $this->routeMatch = $routeMatch;
+    $this->initializeActiveFilters($configuration);
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $request) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $request);
-    $this->initializeActiveFilters($configuration);
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('request_stack')->getMasterRequest(),
+      $container->get('entity_type.manager'),
+      $container->get('current_route_match')
+    );
   }
 
   /**
@@ -42,8 +76,9 @@ class FacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase {
       return [];
     }
 
-    $path = rtrim($this->request->getPathInfo(), '/');
-    $filters = substr($path, (strlen($facet->getFacetSource()->getPath())));
+    $initialized_coders = [];
+    $initialized_facets = [];
+    $filters = $this->getActiveFilters();
     $coder_plugin_manager = \Drupal::service('plugin.manager.facets_pretty_paths.coder');
     $coder_id = $facet->getThirdPartySetting('facets_pretty_paths', 'coder', 'default_coder');
     $coder = $coder_plugin_manager->createInstance($coder_id, ['facet' => $facet]);
@@ -51,48 +86,74 @@ class FacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase {
     /** @var \Drupal\facets\Result\ResultInterface $result */
     foreach ($results as &$result) {
       $raw_value = $result->getRawValue();
-      $encoded_value = $coder->encode($raw_value);
 
       $filters_current_result = $filters;
-      $filter_key = $facet->getUrlAlias();
       // If the value is active, remove the filter string from the parameters.
       if ($result->isActive()) {
-        $filters_current_result = str_replace('/' . $filter_key . '/' . $encoded_value, '', $filters_current_result);
-        if ($facet->getEnableParentWhenChildGetsDisabled() && $facet->getUseHierarchy()) {
+        if (($key = array_search($raw_value, $filters_current_result[$result->getFacet()->id()])) !== false) {
+          unset($filters_current_result[$result->getFacet()->id()][$key]);
+        }
+        if ($result->getFacet()->getEnableParentWhenChildGetsDisabled() && $result->getFacet()->getUseHierarchy()) {
           // Enable parent id again if exists.
-          $parent_ids = $facet->getHierarchyInstance()->getParentIds($raw_value);
+          $parent_ids = $result->getFacet()->getHierarchyInstance()->getParentIds($raw_value);
           if (isset($parent_ids[0]) && $parent_ids[0]) {
-            $filters_current_result .= '/' . $filter_key . '/' . $coder->encode($parent_ids[0]);
+            $filters_current_result[$result->getFacet()->id()][] = $coder->encode($parent_ids[0]);
           }
         }
       }
       // If the value is not active, add the filter string.
       else {
-        $filters_current_result .= '/' . $filter_key . '/' . $encoded_value;
+        $filters_current_result[$result->getFacet()->id()][] = $raw_value;
 
-        if ($facet->getUseHierarchy()) {
+        if ($result->getFacet()->getUseHierarchy()) {
           // If hierarchy is active, unset parent trail and every child when
           // building the enable-link to ensure those are not enabled anymore.
-          $parent_ids = $facet->getHierarchyInstance()->getParentIds($raw_value);
-          $child_ids = $facet->getHierarchyInstance()->getNestedChildIds($raw_value);
+          $parent_ids = $result->getFacet()->getHierarchyInstance()->getParentIds($raw_value);
+          $child_ids = $result->getFacet()->getHierarchyInstance()->getNestedChildIds($raw_value);
           $parents_and_child_ids = array_merge($parent_ids, $child_ids);
           foreach ($parents_and_child_ids as $id) {
-            $filters_current_result = str_replace('/' . $filter_key . '/' . $coder->encode($id) . '/', '/', $filters_current_result);
+            if (($key = array_search($id, $filters_current_result[$result->getFacet()->id()])) !== false) {
+              unset($filters_current_result[$result->getFacet()->id()][$key]);
+            }
           }
         }
         // Exclude currently active results from the filter params if we are in
         // the show_only_one_result mode.
-        if ($facet->getShowOnlyOneResult()) {
+        if ($result->getFacet()->getShowOnlyOneResult()) {
           foreach ($results as $result2) {
             if ($result2->isActive()) {
-              $active_filter_string = '/' . $filter_key . '/' . $coder->encode($result2->getRawValue());
-              $filters_current_result = str_replace($active_filter_string, '', $filters_current_result);
+              if (($key = array_search($result2->getRawValue(), $filters_current_result[$facet->id()])) !== false) {
+                unset($filters_current_result[$result->getFacet()->id()][$key]);
+              }
             }
           }
         }
       }
 
-      $url = Url::fromUri('base:' . $facet->getFacetSource()->getPath() . $filters_current_result);
+      // Now we start transforming $filters_current_result array into a string
+      // which we append later to the current path.
+      $pretty_paths_presort_data = [];
+      foreach($filters_current_result as $facet_id => $active_values){
+        foreach($active_values as $active_value){
+          // Ensure we only load every facet and coder once.
+          if(!isset($initialized_facets[$facet_id])){
+            $facet = Facet::load($facet_id);
+            $initialized_facets[$facet_id] = $facet;
+            $coder_id = $facet->getThirdPartySetting('facets_pretty_paths', 'coder', 'default_coder');
+            $coder = $coder_plugin_manager->createInstance($coder_id, ['facet' => $facet]);
+            $initialized_coders[$facet_id] = $coder;
+          }
+          $encoded_value = $initialized_coders[$facet_id]->encode($active_value);
+          $pretty_paths_presort_data[] = [
+            'weight' => $initialized_facets[$facet_id]->getWeight(),
+            'name' => $initialized_facets[$facet_id]->getName(),
+            'pretty_path_alias' => "/" . $initialized_facets[$facet_id]->getUrlAlias() . "/" . $encoded_value
+          ];
+        }
+      }
+      usort($pretty_paths_presort_data, [$this, 'sortByWeightAndName']);
+      $pretty_paths_string = implode('', array_column($pretty_paths_presort_data, 'pretty_path_alias'));
+      $url = Url::fromUri('internal:' . $facet->getFacetSource()->getPath() . $pretty_paths_string);
 
       // First get the current list of get parameters.
       $get_params = $this->request->query;
@@ -114,52 +175,102 @@ class FacetsPrettyPathsUrlProcessor extends UrlProcessorPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Sorts an array with weight and name values first by weight, then by name.
+   *
+   * @param array $a
+   *   First item for comparison.
+   * @param array $b
+   *   Second item for comparison.
+   *
+   * @return int
+   *   The comparison result for uasort().
    */
-  public function setActiveItems(FacetInterface $facet) {
-    // Get the filter key of the facet.
-    if (isset($this->activeFilters[$facet->getUrlAlias()])) {
-      $coder_plugin_manager = \Drupal::service('plugin.manager.facets_pretty_paths.coder');
-      $coder_id = $facet->getThirdPartySetting('facets_pretty_paths', 'coder', 'default_coder');
-      $coder = $coder_plugin_manager->createInstance($coder_id, ['facet' => $facet]);
-
-      foreach ($this->activeFilters[$facet->getUrlAlias()] as $value) {
-        $facet->setActiveItem(trim($coder->decode($value), '"'));
-      }
+  function sortByWeightAndName($a, $b){
+    if($a['weight'] == $b['weight']){
+      return strcasecmp($a['name'], $b['name']);
+    }else{
+      return $a['weight'] < $b['weight'] ? -1 : 1;
     }
   }
 
+
   /**
-   * Initialize the active filters.
+   * Initializes the active filters from the url.
    *
-   * Get all the filters that are active. This method only get's all the
-   * filters but doesn't assign them to facets. In the processFacet method the
-   * active values for a specific facet are added to the facet.
+   * Get all the filters that are active by checking the request url and store
+   * them in activeFilters which is an array where key is the facet id and value
+   * is an array of raw values.
    */
   protected function initializeActiveFilters($configuration) {
-    if ($configuration['facet']) {
-      $facet_source_path = $configuration['facet']->getFacetSource()->getPath();
-    }
 
-    $path = $this->request->getPathInfo();
-    if (strpos($path, $facet_source_path, 0) === 0) {
-      $filters = substr($path, (strlen($facet_source_path) + 1));
-      $parts = explode('/', $filters);
-      $key = '';
-      foreach ($parts as $index => $part) {
-        if ($index % 2 == 0) {
-          $key = $part;
+    $facet_source_id = $this->configuration['facet']->getFacetSourceId();
+
+    // Do heavy lifting only once per facet source id.
+    $mapping = &drupal_static('facets_pretty_paths_init',[]);
+    if (!isset($mapping[$facet_source_id])) {
+      $mapping[$facet_source_id] = [];
+      $coder_plugin_manager = \Drupal::service('plugin.manager.facets_pretty_paths.coder');
+      $initialized_coders = []; // Will hold all initialized coders.
+      if ($filters = $this->routeMatch->getParameter('facets_query')) {
+        $parts = explode('/', $filters);
+        if(count($parts) % 2 !== 0){
+          // Our key/value combination should always be even. If uneven, we just
+          // assume that the first string is not part of the filters, and remove
+          // it. This can occur when an url lives in the same path as our facet
+          // source, e.g. /search/overview where /search is the facet source path.
+          array_shift($parts);
         }
-        else {
-          if (!isset($this->activeFilters[$key])) {
-            $this->activeFilters[$key] = [$part];
+        foreach ($parts as $index => $part) {
+          if ($index % 2 == 0) {
+            $url_alias = $part;
           }
           else {
-            $this->activeFilters[$key][] = $part;
+            $facet_id = $this->getFacetIdByUrlAlias($url_alias, $facet_source_id);
+            if(!$facet_id){
+              continue; // No valid facet url alias specified in url.
+            }
+            // Only initialize facet and their coder once per facet id.
+            if(!isset($initialized_coders[$facet_id])){
+              $facet = Facet::load($facet_id);
+              $coder_id = $facet->getThirdPartySetting('facets_pretty_paths', 'coder', 'default_coder');
+              $coder = $coder_plugin_manager->createInstance($coder_id, ['facet' => $facet]);
+              $initialized_coders[$facet_id] = $coder;
+            }
+            if (!isset($mapping[$facet_source_id][$facet_id])) {
+              $mapping[$facet_source_id][$facet_id] = [$initialized_coders[$facet_id]->decode($part)];
+            }
+            else {
+              $mapping[$facet_source_id][$facet_id][] = $initialized_coders[$facet_id]->decode($part);
+            }
           }
         }
       }
     }
+    $this->activeFilters = $mapping[$facet_source_id];
+  }
+
+  /**
+   * Gets the facet id from the url alias & facet source id.
+   *
+   * @param string $url_alias
+   *   The url alias.
+   * @param string $facet_source_id
+   *   The facet source id.
+   *
+   * @return bool|string
+   *   Either the facet id, or FALSE if that can't be loaded.
+   */
+  protected function getFacetIdByUrlAlias($url_alias, $facet_source_id) {
+    $mapping = &drupal_static(__FUNCTION__);
+    if (!isset($mapping[$facet_source_id][$url_alias])) {
+      $storage = $this->entityTypeManager->getStorage('facets_facet');
+      $facet = current($storage->loadByProperties(['url_alias' => $url_alias, 'facet_source_id' => $facet_source_id]));
+      if (!$facet) {
+        return NULL;
+      }
+      $mapping[$facet_source_id][$url_alias] = $facet->id();
+    }
+    return $mapping[$facet_source_id][$url_alias];
   }
 
 }

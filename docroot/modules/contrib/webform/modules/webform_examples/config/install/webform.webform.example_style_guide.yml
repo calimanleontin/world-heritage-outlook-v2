@@ -409,6 +409,11 @@ elements: |
       '#type': textfield
       '#title': 'Form element (Input mask: Phone)'
       '#input_mask': '(999) 999-9999'
+    form_element_input_hide:
+      '#type': textfield
+      '#title': 'Form element (Input hiding)'
+      '#input_hide': true
+      '#default_value': '{value}'
     title_display_before:
       '#type': textfield
       '#title': 'Title displayed before'
@@ -595,6 +600,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }
