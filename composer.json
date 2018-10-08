@@ -145,7 +145,7 @@
     "drupal/entity_print": "^2.1",
     "drupal/entity_reference_revisions": "^1.5",
     "drupal/facets": "^1.1",
-    "drupal/facets_pretty_paths": "1.x-dev",
+    "drupal/facets_pretty_paths": "^1.0",
     "drupal/features": "^3.8",
     "drupal/field_group": "^1.0",
     "drupal/file_browser": "^1.1",
@@ -199,7 +199,9 @@
     "jackmoore/colorbox": "^1.6",
     "kenwheeler/slick": "^1.6",
     "webflo/drupal-finder": "^1.1",
-    "webmozart/path-util": "^2.3"
+    "webmozart/path-util": "^2.3",
+    "drush/drush": "^9.4.0",
+    "drupal/console": "^1.7.0"
   },
   "require-dev": {
     "consolidation/robo": "~1",

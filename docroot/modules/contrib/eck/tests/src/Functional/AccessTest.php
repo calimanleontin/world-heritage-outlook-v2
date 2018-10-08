@@ -90,6 +90,9 @@ class AccessTest extends FunctionalTestBase {
       "view any {$this->entityTypeInfo['id']} entities" => [
         "eck.entity.{$this->entityTypeInfo['id']}.list",
       ],
+      "access {$this->entityTypeInfo['id']} entity listing" => [
+        "eck.entity.{$this->entityTypeInfo['id']}.list",
+      ],
       'bypass eck entity access' => [
         "eck.entity.{$this->entityTypeInfo['id']}.list",
       ],

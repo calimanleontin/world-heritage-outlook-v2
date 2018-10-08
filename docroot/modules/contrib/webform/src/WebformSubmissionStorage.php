@@ -41,12 +41,20 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   protected $currentUser;
 
   /**
+   * Webform access rules manager service.
+   *
+   * @var \Drupal\webform\WebformAccessRulesManagerInterface
+   */
+  protected $accessRulesManager;
+
+  /**
    * WebformSubmissionStorage constructor.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager) {
     parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
 
     $this->currentUser = $current_user;
+    $this->accessRulesManager = $access_rules_manager;
   }
 
   /**
@@ -59,7 +67,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $container->get('entity.manager'),
       $container->get('cache.entity'),
       $container->get('language_manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('webform.access_rules_manager')
     );
   }
 
@@ -560,6 +569,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function getSubmissionsColumns() {
     $columns = $this->getColumns(NULL, NULL, NULL, FALSE);
+
     // Unset columns.
     // Note: 'serial' is displayed instead of 'sid'.
     unset(
@@ -678,6 +688,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     if ($view_any && empty($source_entity)) {
       $columns['entity'] = [
         'title' => $this->t('Submitted to'),
+        'sort' => FALSE,
       ];
     }
 
@@ -1430,7 +1441,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     if ($this->currentUser->hasPermission('view own webform submission')) {
       return TRUE;
     }
-    elseif ($webform->checkAccessRules('view_own', $this->currentUser)->isAllowed()) {
+    elseif ($this->accessRulesManager->checkWebformSubmissionAccess('view_own', $this->currentUser, $webform_submission)->isAllowed()) {
       return TRUE;
     }
     elseif ($webform->getSetting('form_convert_anonymous')) {

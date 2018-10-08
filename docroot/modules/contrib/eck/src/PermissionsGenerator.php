@@ -39,7 +39,19 @@ class PermissionsGenerator {
    *   An array of permissions.
    */
   private function buildPermissions(EckEntityType $eck_type) {
-    return array_merge($this->getCreatePermission($eck_type), $this->getEditPermissions($eck_type));
+    return array_merge(
+      $this->getCreatePermission($eck_type),
+      $this->getEditPermissions($eck_type),
+      $this->getListingPermission($eck_type)
+    );
+  }
+
+  private function getListingPermission(EckEntityType $entity_type) {
+    return [
+      "access {$entity_type->id()} entity listing" => [
+        'title' => $this->t('Access %type_name listing page', ['%type_name' => $entity_type->label()]),
+      ]
+    ];
   }
 
   private function getCreatePermission(EckEntityType $entity_type) {

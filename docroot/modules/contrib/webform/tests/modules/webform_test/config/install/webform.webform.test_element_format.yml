@@ -1235,6 +1235,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }
@@ -1371,7 +1372,7 @@ handlers:
       html: false
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -1405,7 +1406,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''

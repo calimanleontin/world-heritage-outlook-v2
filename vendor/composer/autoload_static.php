@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
+class ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -28,8 +28,9 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'fbeead2280a8f3911a1fe6dd034f7d5e' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvancedInterface.php',
         '96f8d8288528d52059397cad6ec61f17' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvanced.php',
-        '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
+        '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
+        '5a12a5271c58108e0aa33355e6ac54ea' => __DIR__ . '/..' . '/drupal/console-core/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -94,6 +95,7 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
             'Symfony\\Component\\BrowserKit\\' => 29,
             'Symfony\\Cmf\\Component\\Routing\\' => 30,
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
+            'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
             'SelfUpdate\\' => 11,
         ),
         'R' => 
@@ -115,6 +117,10 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         'L' => 
         array (
             'League\\Container\\' => 17,
+        ),
+        'J' => 
+        array (
+            'JakubOnderka\\PhpConsoleColor\\' => 29,
         ),
         'I' => 
         array (
@@ -139,6 +145,9 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
             'Drush\\' => 6,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
+            'Drupal\\Console\\Core\\' => 20,
+            'Drupal\\Console\\Composer\\Plugin\\' => 31,
+            'Drupal\\Console\\' => 15,
             'Drupal\\Component\\' => 17,
             'DrupalComposer\\DrupalScaffold\\' => 30,
             'DrupalCodeGenerator\\' => 20,
@@ -167,6 +176,7 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         'A' => 
         array (
             'Asm89\\Stack\\' => 12,
+            'Alchemy\\Zippy\\' => 14,
         ),
     );
 
@@ -325,6 +335,10 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         array (
             0 => __DIR__ . '/..' . '/symfony/psr-http-message-bridge',
         ),
+        'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
+        ),
         'SelfUpdate\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/self-update/src',
@@ -360,6 +374,10 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         'League\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/container/src',
+        ),
+        'JakubOnderka\\PhpConsoleColor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
         ),
         'Interop\\Container\\' => 
         array (
@@ -408,6 +426,18 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         'Drupal\\Core\\' => 
         array (
             0 => __DIR__ . '/../..' . '/docroot/core/lib/Drupal/Core',
+        ),
+        'Drupal\\Console\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/drupal/console-core/src',
+        ),
+        'Drupal\\Console\\Composer\\Plugin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/drupal/console-extend-plugin/src',
+        ),
+        'Drupal\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/drupal/console/src',
         ),
         'Drupal\\Component\\' => 
         array (
@@ -491,6 +521,10 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
         array (
             0 => __DIR__ . '/..' . '/asm89/stack-cors/src/Asm89/Stack',
         ),
+        'Alchemy\\Zippy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/alchemy/zippy/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -544,10 +578,6 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
             array (
                 0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
             ),
-            'JakubOnderka\\PhpConsoleColor' => 
-            array (
-                0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
-            ),
         ),
         'H' => 
         array (
@@ -577,9 +607,17 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
             array (
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
             ),
+            'Dflydev\\PlaceholderResolver' => 
+            array (
+                0 => __DIR__ . '/..' . '/dflydev/placeholder-resolver/src',
+            ),
             'Dflydev\\DotAccessData' => 
             array (
                 0 => __DIR__ . '/..' . '/dflydev/dot-access-data/src',
+            ),
+            'Dflydev\\DotAccessConfiguration' => 
+            array (
+                0 => __DIR__ . '/..' . '/dflydev/dot-access-configuration/src',
             ),
         ),
         'C' => 
@@ -1065,10 +1103,10 @@ class ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit5b37cd237b3e290d853cfd84c0beb9af::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -3,6 +3,7 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
@@ -18,12 +19,14 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElement\Hidden;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformElementHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -1429,6 +1432,43 @@ class WebformSubmissionForm extends ContentEntityForm {
         call_user_func_array($form_state->prepareCallback($callback), $arguments);
       }
     }
+
+    // Validate file (upload) limit.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::validateManagedFileLimit
+    $file_limit = $this->getWebform()->getSetting('form_file_limit')
+      ?: \Drupal::config('webform.settings')->get('settings.default_form_file_limit')
+      ?: '';
+    $file_limit = Bytes::toInt($file_limit);
+    if (!$file_limit) {
+      return;
+    }
+
+    // Validate file upload limit.
+    $file_names = [];
+    $total_file_size = 0;
+    $element_keys = $this->getWebform()->getElementsManagedFiles();
+    foreach ($element_keys as $element_key) {
+      $data = $this->entity->getElementData($element_key);
+      if ($data) {
+        $fids = (array) $data;
+        /** @var \Drupal\file\FileInterface[] $files */
+        $files = File::loadMultiple($fids);
+        foreach ($files as $file) {
+          $total_file_size += (int) $file->getSize();
+          $file_names[] = $file->getFilename() . ' - ' . format_size($file->getSize(), $this->entity->language()->getId());
+        }
+      }
+    }
+    if ($total_file_size > $file_limit) {
+      $t_args = ['%quota' => format_size($file_limit)];
+      $message = [];
+      $message['content'] = ['#markup' => t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
+      $message['files'] = [
+        '#theme' => 'item_list',
+        '#items' => $file_names,
+      ];
+      $form_state->setErrorByName(NULL, $this->renderer->renderPlain($message));
+    }
   }
 
   /**
@@ -1680,7 +1720,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       }
       else {
         $current_page = $this->entity->getCurrentPage();
-        if ($current_page && isset($pages[$current_page])) {
+        if ($current_page && isset($pages[$current_page]) && !$this->entity->isCompleted()) {
           $form_state->set('current_page', $current_page);
         }
         else {
@@ -1957,7 +1997,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function hideElements(array &$elements) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -1980,7 +2020,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function prepareElements(array &$elements, array &$form, FormStateInterface $form_state) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -2022,7 +2062,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function populateElements(array &$elements, array $values) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -2112,17 +2152,8 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Allow anonymous and authenticated users edit own submission.
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webform_submission = $this->getEntity();
-    if ($webform_submission->id()) {
-      if ($this->currentUser()->isAnonymous()) {
-        if (!empty($_SESSION['webform_submissions']) && in_array($webform_submission->id(), $_SESSION['webform_submissions'])) {
-          return FALSE;
-        }
-      }
-      else {
-        if ($webform_submission->getOwnerId() === $this->currentUser()->id()) {
-          return FALSE;
-        }
-      }
+    if ($webform_submission->id() && $webform_submission->isOwner($this->currentUser())) {
+      return FALSE;
     }
 
     // Get the submission owner and not current user.

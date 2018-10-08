@@ -92,6 +92,12 @@ abstract class TextBase extends WebformElementBase {
       $element['#attributes']['class'][] = 'js-webform-input-mask';
       $element['#attached']['library'][] = 'webform/webform.element.inputmask';
     }
+
+    // Input hiding.
+    if (!empty($element['#input_hide'])) {
+      $element['#attributes']['class'][] = 'js-webform-input-hide';
+      $element['#attached']['library'][] = 'webform/webform.element.inputhide';
+    }
   }
 
   /**
@@ -112,7 +118,7 @@ abstract class TextBase extends WebformElementBase {
       '#options' => [
         'Basic' => [
           "'alias': 'currency'" => $this->t('Currency - @format', ['@format' => '$ 9.99']),
-          "'alias': 'mm/dd/yyyy'" => $this->t('Date - @format', ['@format' => 'mm/dd/yyyy']),
+          "'alias': 'datetime'" => $this->t('Date - @format', ['@format' => "2007-06-09'T'17:46:21"]),
           "'alias': 'decimal'" => $this->t('Decimal - @format', ['@format' => '1.234']),
           "'alias': 'email'" => $this->t('Email - @format', ['@format' => 'example@example.com']),
           "'alias': 'percentage'" => $this->t('Percentage - @format', ['@format' => '99%']),
@@ -124,13 +130,23 @@ abstract class TextBase extends WebformElementBase {
           '[9-]AAA-999' => $this->t('License plate - @format', ['@format' => '[9-]AAA-999']),
           "'alias': 'mac'" => $this->t('MAC addresses - @format', ['@format' => '99-99-99-99-99-99']),
           '999-99-9999' => $this->t('SSN - @format', ['@format' => '999-99-9999']),
-          "'alias': 'vin'" => 'VIN (Vehicle identification number)',
+          "'alias': 'vin'" => $this->t('VIN (Vehicle identification number)'),
+          "'casing': 'upper'" => $this->t('Uppercase - UPPERCASE'),
+          "'casing': 'lower'" => $this->t('Lowercase - lowercase'),
         ],
       ],
     ];
     if ($this->librariesManager->isExcluded('jquery.inputmask')) {
       $form['form']['input_mask']['#access'] = FALSE;
     }
+
+    // Input hiding.
+    $form['form']['input_hide'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Input hiding'),
+      '#description' => $this->t('Hide the input of the element when the input is not being focused.'),
+      '#return_value' => TRUE,
+    ];
 
     // Pattern.
     $form['validation']['pattern'] = [

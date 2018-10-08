@@ -108,6 +108,7 @@ function eck_entity_type_build(array &$entity_types) {
           'default' => 'Drupal\eck\Form\Entity\EckEntityForm',
         ],
         'list_builder' => 'Drupal\eck\Controller\EckEntityBundleListBuilder',
+        'access' => 'Drupal\eck\EckBundleAccessControlHandler',
       ],
       'admin_permission' => 'administer eck entity bundles',
     ];

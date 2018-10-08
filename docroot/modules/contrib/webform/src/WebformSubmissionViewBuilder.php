@@ -3,12 +3,13 @@
 namespace Drupal\webform;
 
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Render\Element;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformYaml;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,6 +74,20 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
       $container->get('plugin.manager.webform.element'),
       $container->get('webform_submission.conditions_validator')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getBuildDefaults(EntityInterface $entity, $view_mode) {
+    $build = parent::getBuildDefaults($entity, $view_mode);
+    // The webform submission will be rendered in the wrapped webform submission
+    // template already and thus has no entity template itself.
+    // @see \Drupal\contact_storage\ContactMessageViewBuilder
+    // @see \Drupal\comment\CommentViewBuilder::getBuildDefaults
+    // @see \Drupal\block_content\BlockContentViewBuilder::getBuildDefaults
+    unset($build['#theme']);
+    return $build;
   }
 
   /**
@@ -146,8 +161,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
     $build = [];
 
     foreach ($elements as $key => $element) {
-      // Make sure this is an element.
-      if (!is_array($element) || Element::property($key)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -186,7 +200,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
 
       $title = $element['#admin_title'] ?: $element['#title'] ?: '(' . $key . ')';
       $html = $webform_element->formatHtml($element, $webform_submission, $options);
-      $rows[] = [
+      $rows[$key] = [
         ['header' => TRUE, 'data' => $title],
         ['data' => (is_string($html)) ? ['#markup' => $html] : $html],
       ];

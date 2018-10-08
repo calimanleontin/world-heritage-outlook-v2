@@ -48,6 +48,7 @@ class EckRoutes {
     $permissions = [
       "view own {$entityTypeId} entities",
       "view any {$entityTypeId} entities",
+      "access {$entityTypeId} entity listing",
       "bypass eck entity access",
     ];
     $requirements = ['_permission' => implode('+', $permissions)];

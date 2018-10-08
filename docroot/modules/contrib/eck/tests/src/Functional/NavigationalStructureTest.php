@@ -489,7 +489,7 @@ class NavigationalStructureTest extends BrowserTestBase {
     $route = "entity.{$this->entityTypeMachineName}.edit_form";
     $routeArguments = [$this->entityTypeMachineName => $entity->id()];
     $expectedUrl = "{$this->entityTypeMachineName}/{$entity->id()}/edit";
-    $expectedTitle = "Edit{$this->entityTypeLabel}";
+    $expectedTitle = "Edit {$this->entityTypeLabel}";
     $this->baseCrumbs = ['Home'];
     $crumbs = [
       $this->entityTypeLabel,

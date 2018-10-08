@@ -3,6 +3,7 @@
   <div role="main" class="main-container js-quickedit-main-content">
     <div>
       {% block main_container %}
+        {% set hide_sidebar_first = 1 %}
         {{ parent() }}
       {% endblock %}
     </div>
