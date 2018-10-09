@@ -9,7 +9,7 @@ use Robo\Robo;
  */
 class RoboFile extends \Robo\Tasks {
 
-  protected $drush = './vendor/bin/drush';
+  protected $drush = '../vendor/bin/drush';
 
   /**
    * Sync DB from production.
