@@ -34,6 +34,26 @@ class RoboFile extends \Robo\Tasks {
   }
 
   /**
+   * Export database dump to a file.
+   *
+   * @param string $destination
+   *  Destination file path.
+   * @param bool $gzip
+   *  If TRUE, the dump will be gzipped.
+   *
+   * @return \Robo\Result
+   *
+   * @command sql:dump
+   */
+  public function sqlDump($destination = 'sites/default/files/sync/database.sql', $gzip = TRUE) {
+    $task = $this->taskExec("{$this->drush} sql:dump --result-file={$destination}");
+    if ($gzip === TRUE) {
+      $task->arg('--gzip');
+    }
+    return $task->run();
+  }
+
+  /**
    * Update the local instance.
    *
    * @return \Robo\Result
