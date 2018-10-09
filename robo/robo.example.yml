@@ -1,6 +1,6 @@
 project:
   sync:
     sql:
-      url: https://path/to/dump
+      url: https://iucn-who.edw.ro/sites/default/files/sync/database.sql.gz
       username: username
       password: password
