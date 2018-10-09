@@ -1,11 +1,10 @@
 <?php
 
-namespace Drupal\iucn_diff_revisions;
+namespace Drupal\iucn_diff_revisions\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\node\NodeInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\diff\Controller\NodeRevisionController;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\diff\DiffEntityComparison;
 
 
 /**
@@ -13,21 +12,38 @@ use Drupal\diff\Controller\NodeRevisionController;
  */
 class DiffController extends ControllerBase {
 
-  protected $nodeRevisionController;
+  protected $entityTypeManager;
 
-  public function __construct(NodeRevisionController $nodeRevisionController) {
-    $this->nodeRevisionController = $nodeRevisionController;
+  protected $nodeStorage;
+
+  protected $entityComparison;
+
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, DiffEntityComparison $entityComparison) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    $this->entityComparison = $entityComparison;
   }
 
-  public static function create(ContainerInterface $container) {
-    return new static(
-      NodeRevisionController::create($container)
-    );
-  }
+  public function compareRevisions($vid1, $vid2) {
+    /** @var \Drupal\node\NodeInterface $revision1 */
+    $revision1 = $this->nodeStorage->loadRevision($vid1);
+    /** @var \Drupal\node\NodeInterface $revision2 */
+    $revision2 = $this->nodeStorage->loadRevision($vid2);
 
-  public function getDifferences(NodeInterface $revision_1, NodeInterface $revision_2) {
-    // @todo
-    return [];
+    $fields = $this->entityComparison->compareRevisions($revision1, $revision2);
+
+    $diff = [];
+    foreach ($fields as $key => $field) {
+      $this->entityComparison->processStateLine($field);
+      $field_diff_rows = $this->entityComparison->getRows(
+        $field['#data']['#left'],
+        $field['#data']['#right']
+      );
+      if (!empty($field_diff_rows)) {
+        $diff[$key] = $field_diff_rows;
+      }
+    }
+    return $diff;
   }
 
 }
