@@ -66,16 +66,11 @@ class DeleteRevisionsCommands extends DrushCommands {
 
         $defaultVid = $node->getRevisionId();
         $vids = $this->nodeStorage->revisionIds($node);
-        if (!empty($vids) && count($vids) > 1) {
-          foreach ($vids as $vid) {
-            if ($vid != $defaultVid) {
-              $this->logger->info("Deleting revision vid={$vid} for node nid={$nid}");
-              $this->nodeStorage->deleteRevision($vid);
-            }
+        foreach ($vids as $vid) {
+          if ($vid != $defaultVid) {
+            $this->logger->info("Deleting revision vid={$vid} for node nid={$nid}");
+            $this->nodeStorage->deleteRevision($vid);
           }
-        }
-        else {
-          $this->logger->info("No revisions to delete for node {$nid}");
         }
       }
     }
