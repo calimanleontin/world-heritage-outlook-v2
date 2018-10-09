@@ -5,6 +5,7 @@ namespace Drupal\iucn_diff_revisions\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\diff\DiffEntityComparison;
+use Drupal\node\NodeInterface;
 
 
 /**
@@ -25,11 +26,12 @@ class DiffController extends ControllerBase {
   }
 
   public function compareRevisions($vid1, $vid2) {
-    /** @var \Drupal\node\NodeInterface $revision1 */
     $revision1 = $this->nodeStorage->loadRevision($vid1);
-    /** @var \Drupal\node\NodeInterface $revision2 */
     $revision2 = $this->nodeStorage->loadRevision($vid2);
 
+    if (!$revision1 instanceof NodeInterface || !$revision2 instanceof NodeInterface) {
+      throw new \InvalidArgumentException('Invalid revisions ids.');
+    }
     if ($revision1->id() != $revision2->id()) {
       throw new \InvalidArgumentException('Can only compare 2 revisions of same node.');
     }
