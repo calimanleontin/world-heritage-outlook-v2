@@ -40,13 +40,28 @@ class DiffController extends ControllerBase {
 
     $diff = [];
     foreach ($fields as $key => $field) {
-      $this->entityComparison->processStateLine($field);
-      $field_diff_rows = $this->entityComparison->getRows(
-        $field['#data']['#left'],
-        $field['#data']['#right']
-      );
-      if (!empty($field_diff_rows)) {
-        $diff[$key] = $field_diff_rows;
+      if (preg_match('/(\d+)\:(.+)\.(.+)/', $key, $matches)) {
+        $this->entityComparison->processStateLine($field);
+        $field_diff_rows = $this->entityComparison->getRows(
+          $field['#data']['#left'],
+          $field['#data']['#right']
+        );
+        if (!empty($field_diff_rows)) {
+          $entityId = $matches[1];
+          $entityType = $matches[2];
+          $fieldName = $matches[3];
+          if (empty($diff[$entityId])) {
+            $diff[$entityId] = [
+              'entity_id' => $entityId,
+              'entity_type' => $entityType,
+              'diff' => [],
+            ];
+          }
+          $diff[$entityId]['diff'][$fieldName][] = $field_diff_rows;
+        }
+      }
+      else {
+        $this->getLogger('iucn_diff_revisions')->error('Invalid field diff key.');
       }
     }
     return $diff;
