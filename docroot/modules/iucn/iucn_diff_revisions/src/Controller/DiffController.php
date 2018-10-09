@@ -30,6 +30,10 @@ class DiffController extends ControllerBase {
     /** @var \Drupal\node\NodeInterface $revision2 */
     $revision2 = $this->nodeStorage->loadRevision($vid2);
 
+    if ($revision1->id() != $revision2->id()) {
+      throw new \InvalidArgumentException('Can only compare 2 revisions of same node.');
+    }
+
     $fields = $this->entityComparison->compareRevisions($revision1, $revision2);
 
     $diff = [];
