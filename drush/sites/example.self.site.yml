@@ -1,5 +1,5 @@
 test:
-  host: 5.2.158.243
+  host: 159.69.149.22
   paths:
     files: sites/default/files
   root: /var/www/html/iucn-who.edw.ro/docroot/
