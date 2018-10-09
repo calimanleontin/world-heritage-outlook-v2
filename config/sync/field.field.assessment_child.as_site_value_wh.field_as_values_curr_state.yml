@@ -1,0 +1,29 @@
+uuid: bace302f-0e78-4228-8b89-7e244d3ccdb4
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.assessment_child.as_site_value_wh
+    - field.storage.assessment_child.field_as_values_curr_state
+    - taxonomy.vocabulary.assessment_value_state
+id: assessment_child.as_site_value_wh.field_as_values_curr_state
+field_name: field_as_values_curr_state
+entity_type: assessment_child
+bundle: as_site_value_wh
+label: State
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      assessment_value_state: assessment_value_state
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

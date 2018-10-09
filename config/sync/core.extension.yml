@@ -21,6 +21,7 @@ module:
   display_field_copy: 0
   ds: 0
   dynamic_page_cache: 0
+  eck: 0
   editor: 0
   editor_advanced_link: 0
   editor_file: 0
@@ -38,9 +39,11 @@ module:
   google_analytics: 0
   google_maps_api: 0
   honeypot: 0
+  ief_table_view_mode: 0
   image: 0
   image_effects: 0
   image_widget_crop: 0
+  inline_entity_form: 0
   inline_responsive_images: 0
   iucn_assessment: 0
   iucn_config_ignore: 0
