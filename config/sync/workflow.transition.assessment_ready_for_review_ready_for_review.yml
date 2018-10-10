@@ -1,0 +1,10 @@
+uuid: 58c96891-68c3-4b5b-90bb-793e061d4e70
+langcode: en
+status: true
+dependencies: {  }
+id: assessment_ready_for_review_ready_for_review
+label: Save
+module: workflow
+from_sid: assessment_ready_for_review
+to_sid: assessment_ready_for_review
+roles: {  }

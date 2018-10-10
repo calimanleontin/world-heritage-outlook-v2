@@ -1,10 +1,10 @@
-uuid: d81b7173-ae8b-4c70-99e6-69e6e2ca9ed8
+uuid: 2a864827-ec52-4b11-8591-b99eeeacbf7b
 langcode: en
 status: true
 dependencies: {  }
-id: assessment_creation
+id: assessment_new
 label: New
 module: workflow
 wid: assessment
-weight: -11
-sysid: 1
+weight: -9
+sysid: 0
