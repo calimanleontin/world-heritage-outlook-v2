@@ -7,5 +7,5 @@ services:
     class: 'Drupal\iucn_assessment\Plugin\IucnAssessmentYear'
   iucn_assessment.cycle_creator:
     class: 'Drupal\iucn_assessment\Plugin\AssessmentCycleCreator'
-    arguments: ['@entity_type.manager', '@entity_field.manager', '@state']
+    arguments: ['@entity_type.manager', '@entity_field.manager', '@state', '@logger.factory']
 
