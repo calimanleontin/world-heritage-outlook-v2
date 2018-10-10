@@ -1,0 +1,10 @@
+uuid: 75c4d620-ac0c-45b3-b5be-26c309e58fa4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.conservation_outlook
+label: 'Conservation Outlook'
+targetEntityType: node
+cache: true

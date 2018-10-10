@@ -1,84 +1,79 @@
 <?php
+
 namespace Drupal\iucn_assessment\Commands;
 
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
-*
-* In addition to a commandfile like this one, you need a drush.services.yml
-* in root of your module.
-*
-* See these files for an example of injecting Drupal services:
-*   - http://cgit.drupalcode.org/devel/tree/src/Commands/DevelCommands.php
-*   - http://cgit.drupalcode.org/devel/tree/drush.services.yml
-*
-* Add this command to be executed when running database updates.
-* function iucn_assessment_update_8xxx() {
-*   drush_invoke_process('@self','iucn:dr');
-* }
-*
-*/
+ *
+ * In addition to a commandfile like this one, you need a drush.services.yml
+ * in root of your module.
+ *
+ * See these files for an example of injecting Drupal services:
+ *   - http://cgit.drupalcode.org/devel/tree/src/Commands/DevelCommands.php
+ *   - http://cgit.drupalcode.org/devel/tree/drush.services.yml
+ *
+ * Add this command to be executed when running database updates.
+ * function iucn_assessment_update_8xxx() {
+ *   drush_invoke_process('@self','iucn_assessment:delete-revisions');
+ * }
+ *
+ */
 class DeleteRevisionsCommands extends DrushCommands {
 
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
+  /** @var \Drupal\node\NodeStorageInterface */
+  protected $nodeStorage;
+
   /**
-   * Constructs a new DrushCommand.
+   * DeleteRevisionsCommands constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
   }
 
-
   /**
+   * Delete all non-default revisions for site assessments.
+   *
    * @command iucn_assessment:delete-revisions
-   * @validate-module-enabled iucn_assessment
-   * @aliases iucn_assessment:delete-revisions, iucn:dr
+   *
+   * @throws \Exception
    */
-  public function deleteRevisions()
-  {
-    // Query with entity_type.manager.
-    $query = $this->entityTypeManager->getStorage('node');
-    $nodes = $query->getQuery()
+  public function deleteRevisions() {
+    $nodes = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
       ->execute();
-    if ($nodes) {
+    if (!empty($nodes)) {
       foreach ($nodes as $nid) {
-        //Process.
-        $node_storage = $this->entityTypeManager->getStorage('node');
-        $node = $node_storage->load($nid);
-        $this->output->writeln("Processing: $nid");
-        $default_revision = $node->get('vid')->value;
-        if (!$default_revision) {
-          $this->logger->error("Could not find the default revision.");
-          continue;
+        $this->logger->notice("Processing node {$nid}");
+
+        /** @var \Drupal\node\NodeInterface $node */
+        $node = $this->nodeStorage->load($nid);
+
+        if ($node->isDefaultRevision() === FALSE) {
+          throw new \Exception("Node::load didn't load the default revision for node {$nid}");
         }
-        $vids = $node_storage->revisionIds($node);
-        if ($vids && count($vids) > 1) {
-          foreach($vids as $vid) {
-            if($vid != $default_revision){
-              $this->output->writeln("Deleting revision: $vid");
-              $node_storage->deleteRevision($vid);
-            }
+
+        $defaultVid = $node->getRevisionId();
+        $vids = $this->nodeStorage->revisionIds($node);
+        foreach ($vids as $vid) {
+          if ($vid != $defaultVid) {
+            $this->logger->info("Deleting revision vid={$vid} for node nid={$nid}");
+            $this->nodeStorage->deleteRevision($vid);
           }
         }
-          else {
-            $this->output->writeln("No revisions do delete. Skipping.");
-        }
-        $this->logger->success("Done.");
-        $this->output->writeln("");
-        }
+      }
     }
-
   }
 
 }

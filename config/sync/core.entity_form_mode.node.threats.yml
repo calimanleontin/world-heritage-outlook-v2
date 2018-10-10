@@ -1,0 +1,10 @@
+uuid: 78882b7a-7695-4ae2-9ca5-9af374525d5d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.threats
+label: Threats
+targetEntityType: node
+cache: true

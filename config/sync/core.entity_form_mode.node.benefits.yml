@@ -1,0 +1,10 @@
+uuid: 95bc53be-66eb-4cc6-a1b4-47c2f76d8b6c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.benefits
+label: Benefits
+targetEntityType: node
+cache: true
