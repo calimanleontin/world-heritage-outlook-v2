@@ -4,7 +4,9 @@ namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\State\StateInterface;
+use Drupal\node\Entity\Node;
 
 class AssessmentCycleCreator {
 
@@ -12,6 +14,8 @@ class AssessmentCycleCreator {
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
+
+  protected $nodeStorage;
 
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface */
   protected $entityFieldManager;
@@ -22,13 +26,16 @@ class AssessmentCycleCreator {
   /** @var array */
   protected $availableCycles = [];
 
+  /** @var array|\Drupal\Core\Field\FieldDefinitionInterface[] */
+  protected $siteAssessmentFields = [];
+
   public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, StateInterface $state) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
     $this->entityFieldManager = $entityFieldManager;
     $this->state = $state;
-    /** @var \Drupal\field\FieldConfigInterface $cycleFieldDefinition */
-    $cycleFieldDefinition = $this->entityFieldManager->getFieldDefinitions('node', 'site_assessment')['field_as_cycle'];
-    $this->availableCycles = $cycleFieldDefinition->getSetting('allowed_values');
+    $this->siteAssessmentFields = $this->entityFieldManager->getFieldDefinitions('node', 'site_assessment');
+    $this->availableCycles = $this->siteAssessmentFields['field_as_cycle']->getSetting('allowed_values');
   }
 
   /**
@@ -50,5 +57,27 @@ class AssessmentCycleCreator {
     }
     $createdCycles[] = $cycle;
     $this->state->set(self::CREATED_CYCLES_STATE, $createdCycles);
+
+    $originalAssessmentsIds = $this->nodeStorage->getQuery()
+      ->condition('type', 'site_assessment')
+      ->condition('field_as_cycle', $originalCycle)
+      ->execute();
+    foreach ($originalAssessmentsIds as $nid) {
+      $originalNode = Node::load($nid);
+      $duplicate = $originalNode->createDuplicate();
+      foreach ($this->siteAssessmentFields as $fieldName => $fieldSettings) {
+        if (!$fieldSettings instanceof BaseFieldDefinition) { //  && in_array($fieldSettings->getType(), ['entity_reference', 'entity_reference_revisions'])
+          switch ($fieldSettings->getType()) {
+            case 'entity_reference':
+            case 'entity_reference_revisions':
+              foreach ($duplicate->{$fieldName} as &$value) {
+                $value->entity = $value->entity->createDuplicate();
+              }
+              break;
+          }
+        }
+      }
+      $duplicate->save();
+    }
   }
 }
