@@ -1,0 +1,22 @@
+uuid: 47d9855a-ff39-438f-9aa5-470082c4d247
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_state
+    - node.type.site_assessment
+  module:
+    - workflow
+id: node.site_assessment.field_state
+field_name: field_state
+entity_type: node
+bundle: site_assessment
+label: State
+description: ''
+required: true
+translatable: false
+default_value:
+  - {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow
