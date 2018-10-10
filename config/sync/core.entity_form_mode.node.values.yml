@@ -1,0 +1,10 @@
+uuid: 003f7613-382e-45fc-b401-bb1d22ef9fe5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.values
+label: Values
+targetEntityType: node
+cache: true

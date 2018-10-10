@@ -1,0 +1,40 @@
+iucn_assessment.node.values:
+  route_name: iucn_assessment.node.values
+  base_route: entity.node.canonical
+  title: Values
+  weight: 29
+iucn_assessment.node.threats:
+  route_name: iucn_assessment.node.threats
+  base_route: entity.node.canonical
+  title: Threats
+  weight: 39
+iucn_assessment.node.assessing_values:
+  route_name: iucn_assessment.node.assessing_values
+  base_route: entity.node.canonical
+  title: Assessing values
+  weight: 49
+iucn_assessment.node.benefits:
+  route_name: iucn_assessment.node.benefits
+  base_route: entity.node.canonical
+  title: Benefits
+  weight: 59
+iucn_assessment.node.conservation_outlook:
+  route_name: iucn_assessment.node.conservation_outlook
+  base_route: entity.node.canonical
+  title: Conservation Outlook
+  weight: 69
+iucn_assessment.node.projects:
+  route_name: iucn_assessment.node.projects
+  base_route: entity.node.canonical
+  title: Projects
+  weight: 79
+iucn_assessment.node.protection_and_management:
+  route_name: iucn_assessment.node.protection_and_management
+  base_route: entity.node.canonical
+  title: Protection and management
+  weight: 89
+iucn_assessment.node.references:
+  route_name: iucn_assessment.node.references
+  base_route: entity.node.canonical
+  title: References
+  weight: 99
