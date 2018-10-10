@@ -4,7 +4,8 @@ node.revision_edit:
     _entity_form: node.edit
     _title: 'Edit revision'
   requirements:
-    _access_node_revision: 'update'
+    access: 'update'
     node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
   options:
     _node_operation_route: TRUE

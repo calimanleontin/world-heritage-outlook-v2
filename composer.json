@@ -189,6 +189,7 @@
     "drupal/varnish_purge": "^1.11",
     "drupal/views_accordion": "^1.1",
     "drupal/webform": "^5.0@RC",
+    "drupal/workflow": "^1.1",
     "drupal/xmlsitemap": "^1.0@alpha",
     "drush/drush": "^9.4.0",
     "enyoo/dropzone": "^4.3",

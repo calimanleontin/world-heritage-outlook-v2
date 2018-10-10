@@ -11626,5 +11626,86 @@
         "support": {
             "source": "http://cgit.drupalcode.org/role_hierarchy"
         }
+    },
+    {
+        "name": "drupal/workflow",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/workflow",
+            "reference": "8.x-1.1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/workflow-8.x-1.1.zip",
+            "reference": "8.x-1.1",
+            "shasum": "97c2efcab4d59beb2ca80a7b776435ed9d135ab8"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.1",
+                "datestamp": "1525039380",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Bastlynn",
+                "homepage": "https://www.drupal.org/user/275249"
+            },
+            {
+                "name": "Heine",
+                "homepage": "https://www.drupal.org/user/17943"
+            },
+            {
+                "name": "JacobSingh",
+                "homepage": "https://www.drupal.org/user/68912"
+            },
+            {
+                "name": "NancyDru",
+                "homepage": "https://www.drupal.org/user/101412"
+            },
+            {
+                "name": "eaton",
+                "homepage": "https://www.drupal.org/user/16496"
+            },
+            {
+                "name": "johnv",
+                "homepage": "https://www.drupal.org/user/591042"
+            },
+            {
+                "name": "jvandyk",
+                "homepage": "https://www.drupal.org/user/2375"
+            },
+            {
+                "name": "mfredrickson",
+                "homepage": "https://www.drupal.org/user/31994"
+            },
+            {
+                "name": "q0rban",
+                "homepage": "https://www.drupal.org/user/31022"
+            }
+        ],
+        "description": "Defines a field type with Workflows, containing customizable state transitions.",
+        "homepage": "https://www.drupal.org/project/workflow",
+        "support": {
+            "source": "http://cgit.drupalcode.org/workflow"
+        }
     }
 ]

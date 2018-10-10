@@ -3,6 +3,7 @@
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\Role;
+use Drupal\Core\Entity\EntityInterface;
 
 function iucn_assessment_theme() {
   return [
@@ -400,8 +401,15 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     // be created in hook_node_presave().
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
-    $form['revision']['#access'] = $is_user_1;
-    $form['advanced']['#access'] = $is_user_1;
+    $form['revision']['#access'] = FALSE;
+    if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
+      $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
+    }
+
+    // Do not alter the form for user 1.
+    if ($is_user_1) {
+      return;
+    }
 
     /** @var \Drupal\node\NodeInterface $node */
     $node = $form_state->getFormObject()->getEntity();
@@ -410,10 +418,6 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
     $coordinator_weight = Role::load('coordinator')->getWeight();
-    // Do not alter the form for user 1.
-    if ($is_user_1) {
-      return;
-    }
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       if ($weight <= $coordinator_weight) {
         // Enable these fields only in certain assessment states
@@ -436,22 +440,28 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
  * Callback validation function for node_site_assessment_edit_form.
  */
 function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_state) {
-  $state = $form_state->getValue('moderation_state')[0]['value'];
+  /** @var \Drupal\workflow\Entity\WorkflowTransitionInterface $transition */
+  $transition = $form_state->getValue('field_state')[0]['workflow_transition'];
+  $state = $transition->getToState();
+  $entity = $transition->getTargetEntity();
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
   $workflow_service = \Drupal::service('iucn_assessment.workflow');
   foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
     $value = $form_state->getValue($field);
-    $required = $workflow_service->isFieldRequiredForState($field, $state);
+    $required = $workflow_service->isFieldRequiredForState($field, $state->id());
     if ($required && empty($value)) {
       $form_state->setErrorByName($field, t('@field is required before moving to state @state', [
-        '@field' => $field,
-        '@state' => $state,
+        '@field' => $entity->{$field}->getFieldDefinition()->getLabel(),
+        '@state' => $state->label(),
       ]));
     }
   }
 }
 
-function iucn_assessment_node_prepare_form(\Drupal\Core\Entity\EntityInterface $entity, $operation, \Drupal\Core\Form\FormStateInterface $form_state) {
+/**
+ * Implements hook_ENTITY_TYPE_prepare_form().
+ */
+function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   // The revision edit page is actually the node edit page.
   // We need to change the form entity to the selected revision.
   if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
@@ -460,7 +470,6 @@ function iucn_assessment_node_prepare_form(\Drupal\Core\Entity\EntityInterface $
       $revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($node_revision);
-      $revision->setChangedTime(time() + 100);
       $revision->setNewRevision(FALSE);
       $revision->isDefaultRevision(FALSE);
       /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
@@ -470,12 +479,10 @@ function iucn_assessment_node_prepare_form(\Drupal\Core\Entity\EntityInterface $
   }
 }
 
-
 function xd() {
-  $revision = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadRevision(12185);
-  $revision->title = 'test';
-  $revision->isDefaultRevision(FALSE);
-  $revision->save();
+  foreach ([1686, 1795, 1799, 1802, 1803, 1804, 1805] as $nid) {
+    $node = \Drupal\node\Entity\Node::load($nid);
+    if (empty($node)) continue;
+    $node->delete();
+  }
 }
