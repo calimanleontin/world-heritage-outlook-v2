@@ -65,6 +65,8 @@ class AssessmentCycleCreator {
     foreach ($originalAssessmentsIds as $nid) {
       $originalNode = Node::load($nid);
       $duplicate = $originalNode->createDuplicate();
+      $duplicate->set('field_as_cycle', $cycle);
+      $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
       foreach ($this->siteAssessmentFields as $fieldName => $fieldSettings) {
         if (!$fieldSettings instanceof BaseFieldDefinition) { //  && in_array($fieldSettings->getType(), ['entity_reference', 'entity_reference_revisions'])
           switch ($fieldSettings->getType()) {
