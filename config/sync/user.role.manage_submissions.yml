@@ -10,4 +10,5 @@ permissions:
   - 'access webform overview'
   - 'access webform submission log'
   - 'administer webform submission'
+  - 'create assessment workflow_transition'
   - 'delete any webform submission'

@@ -4,7 +4,7 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: انتقاء
+          submit_button: تطبيق
           reset_button_label: 'إعادة الضبط'
           exposed_sorts_label: 'الترتيب حسب'
           sort_asc_label: تصاعدي
@@ -14,23 +14,9 @@ display:
           expose:
             items_per_page_options_all_label: '- الكل -'
       fields:
-        title:
-          label: العنوان
-        type:
-          label: 'نوع المحتوى'
-        name:
-          label: المؤلف
-        changed:
-          label: التحديث
         operations:
           label: عمليات
-      filters:
-        title:
-          expose:
-            label: العنوان
-        type:
-          expose:
-            label: 'نوع المحتوى'
-        langcode:
-          expose:
-            label: اللغة
+      arguments:
+        entity_id:
+          exception:
+            title: الكل

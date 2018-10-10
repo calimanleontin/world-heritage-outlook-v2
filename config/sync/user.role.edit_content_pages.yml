@@ -9,6 +9,7 @@ is_admin: null
 permissions:
   - 'access content'
   - 'administer blocks'
+  - 'create assessment workflow_transition'
   - 'create benefit content'
   - 'create content translations'
   - 'create content unpublished'

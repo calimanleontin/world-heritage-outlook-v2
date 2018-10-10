@@ -7,6 +7,7 @@ label: 'Publish World Heritage site assessments'
 weight: -7
 is_admin: null
 permissions:
+  - 'create assessment workflow_transition'
   - 'create site_assessment content'
   - 'delete any site_assessment content'
   - 'delete content translations'

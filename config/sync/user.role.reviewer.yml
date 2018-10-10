@@ -8,6 +8,7 @@ weight: -4
 is_admin: null
 permissions:
   - 'administer nodes'
+  - 'create assessment workflow_transition'
   - 'create content unpublished'
   - 'edit any site_assessment content'
   - 'edit own site_assessment content'

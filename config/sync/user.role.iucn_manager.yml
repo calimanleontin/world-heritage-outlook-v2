@@ -23,6 +23,7 @@ permissions:
   - 'administer users'
   - 'administer views'
   - 'bypass node access'
+  - 'create assessment workflow_transition'
   - 'create url aliases'
   - 'delete all revisions'
   - 'delete terms in assessment_benefits_category'

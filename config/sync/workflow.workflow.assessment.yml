@@ -1,0 +1,14 @@
+uuid: bcdb3d79-9b0e-4995-852d-ad956d81a4e1
+langcode: en
+status: true
+dependencies: {  }
+id: assessment
+label: Assessment
+module: workflow
+options:
+  name_as_title: 0
+  fieldset: 0
+  options: buttons
+  schedule_timezone: 0
+  comment_log_node: 0
+  watchdog_log: 1

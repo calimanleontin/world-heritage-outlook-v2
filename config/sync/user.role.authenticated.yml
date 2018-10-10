@@ -16,6 +16,7 @@ permissions:
   - 'access files overview'
   - 'access site in maintenance mode'
   - 'access toolbar'
+  - 'create assessment workflow_transition'
   - 'search content'
   - 'use search autocomplete'
   - 'use search_api_autocomplete for search_api_views_sites_search'
