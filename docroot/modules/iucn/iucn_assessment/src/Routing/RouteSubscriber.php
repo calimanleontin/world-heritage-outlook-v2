@@ -25,6 +25,14 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setRequirement('_custom_access', 'Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit');
     }
+
+    // Alter the revision page so we can add the Revision Edit button.
+    $route = $collection->get('entity.node.version_history');
+    if ($route) {
+      $route->setDefaults(array(
+        '_controller' => '\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview',
+      ));
+    }
   }
 
 }

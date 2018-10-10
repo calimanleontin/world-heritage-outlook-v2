@@ -134,4 +134,58 @@ class AssessmentWorkflow {
       || $field == 'field_reviewers' && $state == 'under_review';
   }
 
+  /**
+   * All the functions that need to be called when an assessment is saved.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   */
+  public function assessmentPreSave(NodeInterface $node) {
+    if ($node->isNewRevision()) {
+      return;
+    }
+    dpm($node->isDefaultRevision());
+
+    $original = $node->original;
+    $original_reviewers = $original->get('field_reviewers')->getValue();
+    foreach ($original_reviewers as &$reviewer) {
+      $reviewer = $reviewer['target_id'];
+    }
+
+    $new_reviewers = $node->get('field_reviewers')->getValue();
+    foreach ($new_reviewers as &$reviewer) {
+      $reviewer = $reviewer['target_id'];
+    }
+
+    $added_reviewers = array_diff($new_reviewers, $original_reviewers);
+    $deleted_reviewers = array_diff($original_reviewers, $new_reviewers);
+
+    if (empty($added_reviewers) && empty($deleted_reviewers)) {
+      return;
+    }
+
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage($node->getEntityTypeId());
+    /** @var \Drupal\node\NodeInterface $new_revision */
+    // Create a revision for each newly added reviewer.
+    foreach ($added_reviewers as $added_reviewer) {
+      $new_revision = $storage->createRevision($node, FALSE);
+      $new_revision->setRevisionCreationTime(time());
+      $new_revision->setRevisionUserId($added_reviewer);
+      $new_revision->save();
+    }
+
+    // Delete all revisions of reviewers no longer assigned on this assessment.
+    $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
+    foreach ($assessment_revisions_ids as $rid) {
+      $node_revision = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadRevision($rid);
+      if (in_array($node_revision->getRevisionUserId(), $deleted_reviewers) && !$node_revision->isDefaultRevision()) {
+        \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($rid);
+      }
+    }
+
+  }
+
 }

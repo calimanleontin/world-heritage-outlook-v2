@@ -1,0 +1,10 @@
+node.revision_edit:
+  path: '/node/{node}/revisions/{node_revision}/edit'
+  defaults:
+    _entity_form: node.edit
+    _title: 'Edit revision'
+  requirements:
+    _access_node_revision: 'update'
+    node: \d+
+  options:
+    _node_operation_route: TRUE
