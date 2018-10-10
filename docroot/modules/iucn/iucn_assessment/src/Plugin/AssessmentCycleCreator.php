@@ -4,10 +4,12 @@ namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 class AssessmentCycleCreator {
 
@@ -31,9 +33,6 @@ class AssessmentCycleCreator {
   /** @var int[] */
   protected $availableCycles = [];
 
-  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] */
-  protected $siteAssessmentFields = [];
-
   public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, StateInterface $state, LoggerChannelFactoryInterface $loggerChannelFactory) {
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $entityTypeManager->getStorage('node');
@@ -41,8 +40,9 @@ class AssessmentCycleCreator {
     $this->state = $state;
     $this->logger = $loggerChannelFactory->get('iucn_assessment.cycle_creator');
 
-    $this->siteAssessmentFields = $this->entityFieldManager->getFieldDefinitions('node', 'site_assessment');
-    $this->availableCycles = $this->siteAssessmentFields['field_as_cycle']->getSetting('allowed_values');
+    $siteAssessmentFields = $this->entityFieldManager->getFieldDefinitions('node', 'site_assessment');
+    $fieldAsCycleConfig = $siteAssessmentFields['field_as_cycle'];
+    $this->availableCycles = $fieldAsCycleConfig->getSetting('allowed_values');
   }
 
   /**
@@ -74,23 +74,51 @@ class AssessmentCycleCreator {
       ->execute();
     foreach ($originalAssessmentsIds as $nid) {
       $originalNode = Node::load($nid);
-      $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
-      $duplicate = $originalNode->createDuplicate();
-      $duplicate->set('field_as_cycle', $cycle);
-      $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
-      foreach ($this->siteAssessmentFields as $fieldName => $fieldSettings) {
-        if (!$fieldSettings instanceof BaseFieldDefinition) { //  && in_array($fieldSettings->getType(), ['entity_reference', 'entity_reference_revisions'])
-          switch ($fieldSettings->getType()) {
-            case 'entity_reference':
-            case 'entity_reference_revisions':
-              foreach ($duplicate->{$fieldName} as &$value) {
-                $value->entity = $value->entity->createDuplicate();
-              }
-              break;
+      $this->createDuplicateAssessment($originalNode, $cycle, $originalCycle);
+    }
+  }
+
+  /**
+   * Duplicate the original assessment node and all its child-entities. A node
+   * with a new id is returned.
+   *
+   * @param \Drupal\node\NodeInterface $originalNode
+   * @param int $cycle
+   * @param int $originalCycle
+   *
+   * @return \Drupal\node\NodeInterface
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function createDuplicateAssessment(NodeInterface $originalNode, $cycle, $originalCycle) {
+    $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
+    $duplicate = $originalNode->createDuplicate();
+    $duplicate->set('field_as_cycle', $cycle);
+    $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
+    $this->createDuplicateReferencedEntities($duplicate);
+    $duplicate->save();
+    return $duplicate;
+  }
+
+  /**
+   * Duplicate all child entities.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   */
+  protected function createDuplicateReferencedEntities(FieldableEntityInterface $entity) {
+    foreach ($entity->getFieldDefinitions() as $fieldName => $fieldSettings) {
+      if (!$fieldSettings instanceof BaseFieldDefinition && in_array($fieldSettings->getType(), [
+          'entity_reference',
+          'entity_reference_revisions',
+        ])) {
+        foreach ($entity->{$fieldName} as &$value) {
+          $childEntity = $value->entity;
+          if ($childEntity instanceof FieldableEntityInterface) {
+            $this->createDuplicateReferencedEntities($childEntity);
           }
+          $value->entity = $childEntity->createDuplicate();
         }
       }
-      $duplicate->save();
     }
   }
 }
