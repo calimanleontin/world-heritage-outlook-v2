@@ -106,11 +106,9 @@ class AssessmentCycleCreator {
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    */
   protected function createDuplicateReferencedEntities(FieldableEntityInterface $entity) {
+    $this->logger->info("Creating child duplicates for {$entity->getEntityTypeId()} {$entity->id()}");
     foreach ($entity->getFieldDefinitions() as $fieldName => $fieldSettings) {
-      if (!$fieldSettings instanceof BaseFieldDefinition && in_array($fieldSettings->getType(), [
-          'entity_reference',
-          'entity_reference_revisions',
-        ])) {
+      if (!$fieldSettings instanceof BaseFieldDefinition && $fieldSettings->getType() == 'entity_reference_revisions') {
         foreach ($entity->{$fieldName} as &$value) {
           $childEntity = $value->entity;
           if ($childEntity instanceof FieldableEntityInterface) {
