@@ -386,22 +386,19 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       return;
     }
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
-      $form[$field]['#disabled'] = TRUE;
+      $form[$field]['#access'] = FALSE;
     }
   }
   // Assessment user fields are only enabled during certain states.
   // Additionally, some of them are required for moving to other states.
   elseif ($form_id == 'node_site_assessment_edit_form') {
-    // Lower tier roles do not have access to the users_by_type view.
-    // Because of this, an error message will be shown.
-    // We want to hide that message.
-    \Drupal::messenger()->deleteAll();
-
     // Hide all revision related settings and check if a new revision should
     // be created in hook_node_presave().
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
     $form['revision']['#access'] = FALSE;
+
+    // Hide state change scheduling.
     if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
       $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
     }
@@ -411,13 +408,13 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       return;
     }
 
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $form_state->getFormObject()->getEntity();
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
     $coordinator_weight = Role::load('coordinator')->getWeight();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       if ($weight <= $coordinator_weight) {
         // Enable these fields only in certain assessment states
@@ -479,10 +476,10 @@ function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, 
   }
 }
 
-function xd() {
-  foreach ([1686, 1795, 1799, 1802, 1803, 1804, 1805] as $nid) {
-    $node = \Drupal\node\Entity\Node::load($nid);
-    if (empty($node)) continue;
-    $node->delete();
+function iucn_assessment_entity_type_alter(array &$entity_types) {
+  foreach ($entity_types as $entity_type) {
+    $constraints = $entity_type->getConstraints();
+    unset($constraints['EntityUntranslatableFields']);
+    $entity_type->setConstraints($constraints);
   }
 }
