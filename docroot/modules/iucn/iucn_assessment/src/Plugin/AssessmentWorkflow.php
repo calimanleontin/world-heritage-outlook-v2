@@ -120,7 +120,7 @@ class AssessmentWorkflow {
     $state = $node->field_state->value;
     return $field == 'field_coordinator' && $state == 'assessment_new'
       || $field == 'field_assessor' && $state == 'assessment_under_evaluation'
-      || $field == 'field_reviewers' && $state == 'assessment_ready_for_review';
+      || $field == 'field_reviewers' && ($state == 'assessment_ready_for_review' || $state == 'assessment_under_review');
   }
 
   /**

@@ -30,14 +30,18 @@ class AssessmentAccess {
       return AccessResult::allowed();
     }
 
-    if ($account->id() == 1) {
-      return AccessResult::allowed();
-    }
-
     if (!empty($node_revision)) {
       $node = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($node_revision);
+    }
+
+    if (empty($node)) {
+      return AccessResult::allowed();
+    }
+
+    if ($account->id() == 1) {
+      return AccessResult::allowed();
     }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */

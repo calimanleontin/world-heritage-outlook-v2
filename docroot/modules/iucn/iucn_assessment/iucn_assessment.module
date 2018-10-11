@@ -4,6 +4,7 @@ use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\Role;
 use Drupal\Core\Entity\EntityInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 function iucn_assessment_theme() {
   return [
@@ -385,6 +386,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     if ($is_user_1) {
       return;
     }
+
+    // Hide revision log message.
+    $form['advanced']['#access'] = FALSE;
     // Hide publish settings.
     $form['footer']['#access'] = FALSE;
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
@@ -399,6 +403,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
     $form['revision']['#access'] = FALSE;
+    // Hide revision log message.
+    $form['advanced']['#access'] = FALSE;
 
     // Hide state change scheduling.
     if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
@@ -452,7 +458,7 @@ function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_sta
     $value = $form_state->getValue($field);
     $required = $workflow_service->isFieldRequiredForState($field, $state->id());
     if ($required && empty($value)) {
-      $form_state->setErrorByName($field, t('@field is required before moving to state @state', [
+      $form_state->setErrorByName($field, t('<b>@field</b> is required before moving to state <b>@state</b>', [
         '@field' => $entity->{$field}->getFieldDefinition()->getLabel(),
         '@state' => $state->label(),
       ]));
@@ -472,6 +478,9 @@ function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, 
       $revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($node_revision);
+      if (empty($revision)) {
+        throw new NotFoundHttpException();
+      }
       $revision->setNewRevision(FALSE);
       $revision->isDefaultRevision(FALSE);
       /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
