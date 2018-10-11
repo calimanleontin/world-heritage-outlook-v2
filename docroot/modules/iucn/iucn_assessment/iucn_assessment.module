@@ -385,6 +385,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     if ($is_user_1) {
       return;
     }
+    // Hide publish settings.
+    $form['footer']['#access'] = FALSE;
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       $form[$field]['#access'] = FALSE;
     }
@@ -407,6 +409,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     if ($is_user_1) {
       return;
     }
+
+    // Hide publish settings.
+    $form['footer']['#access'] = FALSE;
 
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
