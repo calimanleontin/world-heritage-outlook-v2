@@ -45,6 +45,9 @@ class RoleHierarchyHelper {
    *   The weight of the role.
    */
   public static function getRoleWeight($role) {
+    if ($role == 'workflow_author') {
+      return 9999;
+    }
     return Role::load($role)->getWeight();
   }
 
