@@ -11,9 +11,9 @@ roles:
   workflow_author: workflow_author
   administrator: administrator
   iucn_manager: iucn_manager
+  coordinator: coordinator
   edit_world_heritage_site_assessments: '0'
   publish_world_heritage_site_assessments: '0'
-  coordinator: '0'
   assessor: '0'
   reviewer: '0'
   anonymous: '0'
