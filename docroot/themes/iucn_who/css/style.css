@@ -13102,6 +13102,7 @@ textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database
   display: -ms-inline-flexbox;
   -js-display: inline-flex;
   display: inline-flex;
+  vertical-align: middle;
 }
 .sites-back-button > a,
 .sites-back-button > a a {
@@ -13133,7 +13134,10 @@ textarea.block-views-exposed-filter-blocksites-search-sites-search-page-database
 }
 @media screen and (min-width: 768px) {
   .sites-back-button {
-    display: inline;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    -js-display: inline-flex;
+    display: inline-flex;
   }
   [dir=ltr] .sites-back-button {
     margin-left: 2em;
@@ -18251,7 +18255,7 @@ a[rel="bookmark"] {
   .field--name-dynamic-block-fieldnode-site-feedback a:hover,
   .field--name-dynamic-block-fieldnode-site-feedback a:focus,
   .field--name-dynamic-block-fieldnode-site-feedback a:active {
-    color: #fff;
+    color: inherit;
   }
 }
 [dir] .node--type-site-assessment .col-sm-4 .field + .field--name-dynamic-block-fieldnode-site-feedback {
@@ -18584,6 +18588,9 @@ a[rel="bookmark"] {
 }
 [dir] .g-recaptcha > div {
   margin: 0 auto;
+}
+.captcha .help-block {
+  color: inherit;
 }
 /* ==========================================================================
    Conservation rating gauge
