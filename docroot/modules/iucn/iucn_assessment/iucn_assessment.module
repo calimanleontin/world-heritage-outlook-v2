@@ -497,3 +497,12 @@ function iucn_assessment_entity_type_alter(array &$entity_types) {
     $entity_type->setConstraints($constraints);
   }
 }
+
+/**
+ * Implements hook_validation_constraint_alter().
+ */
+function iucn_assessment_validation_constraint_alter(array &$definitions) {
+  if (isset($definitions['EntityChanged'])) {
+    $definitions['EntityChanged']['class'] = 'Drupal\iucn_assessment\Plugin\Validation\Constraint\IucnAssessmentEntityChangedConstraint';
+  }
+}

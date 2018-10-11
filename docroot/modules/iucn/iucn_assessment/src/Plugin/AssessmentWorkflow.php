@@ -81,8 +81,12 @@ class AssessmentWorkflow {
         // Reviewers can edit their respective revisions.
         return $node->getRevisionUser()->id() == $account->id();
 
-      case 'assessment_reviewed':
-        // Reviewed assessments can no longer be edited.
+      case 'assessment_finished_reviewing':
+        // Reviewed assessments can only be edited by the coordinator.
+        if ($node->isDefaultRevision()) {
+          return $coordinator == $account->id();
+        }
+        // Reviewers can no longer edit their respective revisions.
         return FALSE;
 
       case 'assessment_under_comparison':
@@ -175,8 +179,6 @@ class AssessmentWorkflow {
     $removed_reviewers = $this->getRemovedReviewers($node, $original);
 
     if (!empty($added_reviewers) || !empty($removed_reviewers)) {
-      // We need to create a new revision when creating revisions for reviewers.
-      $create_revision = TRUE;
       $revision_message .= 'Reviewers field changed. ';
 
       // Create a revision for each newly added reviewer.
