@@ -75,9 +75,19 @@ class WorkflowConfigTransition extends ConfigEntityBase implements WorkflowConfi
     // Please be aware that $entity_type and $entityType are different things!
     parent::__construct($values, $entity_type = 'workflow_config_transition');
     $state = WorkflowState::load($this->to_sid ? $this->to_sid : $this->from_sid);
-    if($state) {
+    if($state && $state->getWorkflow()) {
       $this->setWorkflow($state->getWorkflow());
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    parent::calculateDependencies();
+    $this->addDependency('config', $this->getFromState()->getConfigDependencyName());
+    $this->addDependency('config', $this->getToState()->getConfigDependencyName());
+    return $this;
   }
 
   /**
