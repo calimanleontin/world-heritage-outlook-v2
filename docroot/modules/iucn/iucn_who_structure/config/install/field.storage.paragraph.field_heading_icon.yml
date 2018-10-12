@@ -1,0 +1,30 @@
+uuid: a6b48527-90e9-4173-b47c-2a3ef4797273
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_heading_icon
+field_name: field_heading_icon
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: values
+      label: Values
+    -
+      value: threats
+      label: Threats
+    -
+      value: protection-management
+      label: 'Protection and Management'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

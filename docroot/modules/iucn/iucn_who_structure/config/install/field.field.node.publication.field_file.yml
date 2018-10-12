@@ -1,0 +1,27 @@
+uuid: e20fbcad-b87d-42b7-99d0-6c89745edcdd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_file
+    - node.type.publication
+  module:
+    - file
+id: node.publication.field_file
+field_name: field_file
+entity_type: node
+bundle: publication
+label: File
+description: 'Add this only for internal publications.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: files/publications
+  file_extensions: pdf
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

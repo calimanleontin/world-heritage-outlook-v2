@@ -1,0 +1,910 @@
+uuid: 6ae49379-85f4-4603-91c2-13c3370514a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.pdf
+    - field.field.node.site_assessment.field_as_archived
+    - field.field.node.site_assessment.field_as_benefits
+    - field.field.node.site_assessment.field_as_benefits_summary
+    - field.field.node.site_assessment.field_as_cycle
+    - field.field.node.site_assessment.field_as_end_date
+    - field.field.node.site_assessment.field_as_global_assessment_level
+    - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_key_cons
+    - field.field.node.site_assessment.field_as_projects
+    - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_protection
+    - field.field.node.site_assessment.field_as_protection_ov_out_rate
+    - field.field.node.site_assessment.field_as_protection_ov_out_text
+    - field.field.node.site_assessment.field_as_protection_ov_practices
+    - field.field.node.site_assessment.field_as_protection_ov_rating
+    - field.field.node.site_assessment.field_as_protection_ov_text
+    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_site
+    - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_threats_current
+    - field.field.node.site_assessment.field_as_threats_current_rating
+    - field.field.node.site_assessment.field_as_threats_current_text
+    - field.field.node.site_assessment.field_as_threats_potent_rating
+    - field.field.node.site_assessment.field_as_threats_potent_text
+    - field.field.node.site_assessment.field_as_threats_potential
+    - field.field.node.site_assessment.field_as_threats_rating
+    - field.field.node.site_assessment.field_as_threats_text
+    - field.field.node.site_assessment.field_as_values_bio
+    - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_vass_bio_state
+    - field.field.node.site_assessment.field_as_vass_bio_text
+    - field.field.node.site_assessment.field_as_vass_bio_trend
+    - field.field.node.site_assessment.field_as_vass_wh_state
+    - field.field.node.site_assessment.field_as_vass_wh_text
+    - field.field.node.site_assessment.field_as_vass_wh_trend
+    - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_date_published
+    - node.type.site_assessment
+  module:
+    - datetime
+    - ds
+    - entity_reference_revisions
+    - field_group
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_pdf
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          summary: div
+          full_assessment_values: div
+          references: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          summary: {  }
+          full_assessment_values: {  }
+          references: {  }
+    regions:
+      full_assessment_values:
+        - field_as_threats_current_rating
+        - field_as_benefits_summary
+        - field_as_threats_potent_rating
+        - 'display_field_copy:node-protection_overall_rating'
+        - field_as_protection_ov_out_rate
+        - field_as_benefits
+        - 'display_field_copy:node-world_heritage_values'
+        - field_as_protection_ov_out_text
+        - 'display_field_copy:node-protection_overall_effectiveness'
+        - field_as_threats_potent_text
+        - field_as_threats_current_text
+        - field_as_threats_current
+        - field_as_threats_potential
+        - group_ass_pm_outside
+        - group_best_practice_examples
+        - field_as_projects
+        - field_as_key_cons
+        - group_values
+        - group_key_conservation_issues
+        - field_as_projects_needs
+        - 'display_field_copy:node-finalised_on'
+        - group_ass_protection_manag
+        - field_as_vass_bio_state
+        - group_description_of_values
+        - group_threats
+        - group_assessment_information
+        - field_as_protection
+        - group_overall_ass_prot
+        - field_as_vass_bio_trend
+        - group_benefits
+        - group_additional_information
+        - group_protection_and_management
+        - field_as_vass_bio_text
+        - field_as_protection_ov_practices
+        - group_projects
+        - group_understanding_benefits
+        - group_state_and_trend_of_values
+        - group_summary_of_benefits
+        - 'display_field_copy:node-copy_assessment_values'
+        - field_as_vass_wh_trend
+        - 'display_field_copy:node-justification_of_assessment_valu'
+        - group_active_projects
+        - group_assessing_current_state
+        - group_current_threats
+        - group_projects_needs
+        - group_summary_values
+        - 'display_field_copy:node-identifying_and_describing_value'
+        - group_ass_state_wh
+        - 'display_field_copy:node-other_biodiv_values'
+        - group_ass_state_bv
+        - group_potential_threats
+        - group_world_heritage_values
+        - group_other_important_biodiversi
+        - field_as_values_bio
+      summary:
+        - group_conservation_outlook
+        - field_as_threats_rating
+        - field_as_protection_ov_rating
+        - field_as_protection_ov_text
+        - field_as_threats_text
+        - field_as_global_assessment_text
+        - group_current_state_trend_values
+        - group_overall_threats
+        - group_overall_prot_man
+        - field_as_vass_wh_state
+        - 'display_field_copy:node-assessment_trend_copy'
+        - field_as_vass_wh_text
+        - field_as_end_date
+        - field_as_global_assessment_level
+      references:
+        - field_as_references
+    fields:
+      'display_field_copy:node-assessment_trend_copy':
+        plugin_id: 'display_field_copy:node-assessment_trend_copy'
+        weight: 11
+        label: inline
+        formatter: entity_reference_label
+        settings:
+          formatter:
+            link: 0
+      'display_field_copy:node-copy_assessment_values':
+        plugin_id: 'display_field_copy:node-copy_assessment_values'
+        weight: 13
+        label: hidden
+        formatter: entity_reference_label
+        settings:
+          formatter:
+            link: 0
+      'display_field_copy:node-finalised_on':
+        plugin_id: 'display_field_copy:node-finalised_on'
+        weight: 5
+        label: inline
+        formatter: datetime_custom
+        settings:
+          formatter:
+            timezone_override: ''
+            date_format: 'd M Y'
+      'display_field_copy:node-identifying_and_describing_value':
+        plugin_id: 'display_field_copy:node-identifying_and_describing_value'
+        weight: 21
+        label: above
+        formatter: entity_reference_revisions_entity_view
+        settings:
+          formatter:
+            view_mode: default_2
+      'display_field_copy:node-justification_of_assessment_valu':
+        plugin_id: 'display_field_copy:node-justification_of_assessment_valu'
+        weight: 15
+        label: hidden
+        formatter: basic_string
+      'display_field_copy:node-other_biodiv_values':
+        plugin_id: 'display_field_copy:node-other_biodiv_values'
+        weight: 22
+        label: above
+        formatter: entity_reference_revisions_entity_view
+      'display_field_copy:node-protection_overall_effectiveness':
+        plugin_id: 'display_field_copy:node-protection_overall_effectiveness'
+        weight: 1
+        label: hidden
+        formatter: basic_string
+      'display_field_copy:node-protection_overall_rating':
+        plugin_id: 'display_field_copy:node-protection_overall_rating'
+        weight: 0
+        label: hidden
+        formatter: entity_reference_label
+      'display_field_copy:node-world_heritage_values':
+        plugin_id: 'display_field_copy:node-world_heritage_values'
+        weight: 0
+        label: hidden
+        formatter: entity_reference_revisions_entity_view
+  field_group:
+    group_conservation_outlook:
+      children:
+        - field_as_end_date
+        - field_as_global_assessment_level
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        label: 'Conservation Outlook'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: conservation-outlook-summary-group
+      label: 'Conservation Outlook'
+    group_current_state_trend_values:
+      children:
+        - field_as_vass_wh_state
+        - 'display_field_copy:node-assessment_trend_copy'
+        - field_as_vass_wh_text
+      parent_name: ''
+      weight: 2
+      format_type: html_element
+      format_settings:
+        label: 'Current state and trend of VALUES'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: values-summary-group
+      label: 'Current state and trend of VALUES'
+    group_overall_threats:
+      children:
+        - field_as_threats_rating
+        - field_as_threats_text
+      parent_name: ''
+      weight: 3
+      format_type: html_element
+      format_settings:
+        label: 'Overall THREATS'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: threats-summary-group
+      label: 'Overall THREATS'
+    group_overall_prot_man:
+      children:
+        - field_as_protection_ov_rating
+        - field_as_protection_ov_text
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      format_settings:
+        label: 'Overall PROTECTION and MANAGEMENT'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: protection-management-summary-group
+      label: 'Overall PROTECTION and MANAGEMENT'
+    group_description_of_values:
+      children:
+        - group_values
+      parent_name: ''
+      weight: 6
+      format_type: html_element
+      format_settings:
+        label: 'Description of values'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: 'assessment-desc-values-section assessment-section'
+      label: 'Description of values'
+    group_assessment_information:
+      children:
+        - group_threats
+        - group_protection_and_management
+        - group_state_and_trend_of_values
+      parent_name: ''
+      weight: 7
+      format_type: html_element
+      format_settings:
+        label: 'Assessment information'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: 'assessment-information-section assessment-section'
+      label: 'Assessment information'
+    group_additional_information:
+      children:
+        - group_key_conservation_issues
+        - group_benefits
+      parent_name: ''
+      weight: 8
+      format_type: html_element
+      format_settings:
+        label: 'Additional information'
+        element: div
+        show_label: true
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: 'assessment-additional-section assessment-section'
+      label: 'Additional information'
+    group_values:
+      children:
+        - group_world_heritage_values
+        - group_other_important_biodiversi
+      parent_name: group_description_of_values
+      weight: 5
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-values assessment-toggle'
+        open: false
+        required_fields: false
+      label: Values
+    group_state_and_trend_of_values:
+      children:
+        - group_assessing_current_state
+        - group_summary_values
+      parent_name: group_assessment_information
+      weight: 10
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-state-values assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'State and trend of values'
+    group_protection_and_management:
+      children:
+        - group_ass_protection_manag
+        - group_overall_ass_prot
+      parent_name: group_assessment_information
+      weight: 8
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-protection assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Protection and management'
+    group_benefits:
+      children:
+        - group_understanding_benefits
+        - group_summary_of_benefits
+      parent_name: group_additional_information
+      weight: 7
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-benefits assessment-toggle'
+        open: false
+        required_fields: false
+      label: Benefits
+    group_projects:
+      children:
+        - group_active_projects
+        - group_projects_needs
+      parent_name: ''
+      weight: 9
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-projects assessment-toggle'
+        open: false
+        required_fields: false
+      label: Projects
+    group_key_conservation_issues:
+      children:
+        - field_as_key_cons
+      parent_name: group_additional_information
+      weight: 5
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-key-cons assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Key conservation issues'
+    group_threats:
+      children:
+        - group_current_threats
+        - group_potential_threats
+      parent_name: group_assessment_information
+      weight: 7
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-threats assessment-toggle'
+        open: false
+        required_fields: false
+      label: Threats
+    group_current_threats:
+      children:
+        - field_as_threats_current_rating
+        - field_as_threats_current_text
+        - field_as_threats_current
+      parent_name: group_threats
+      weight: 20
+      format_type: details_assessment
+      format_settings:
+        label: 'Current Threats'
+        terms: field_as_threats_current_rating
+        id: ''
+        classes: 'assessment-current-threats assessment-toggle'
+        open: 0
+      label: 'Current Threats'
+    group_potential_threats:
+      children:
+        - field_as_threats_potent_rating
+        - field_as_threats_potent_text
+        - field_as_threats_potential
+      parent_name: group_threats
+      weight: 22
+      format_type: details_assessment
+      format_settings:
+        label: 'Potential Threats'
+        terms: field_as_threats_potent_rating
+        id: ''
+        classes: 'assessment-potential-threats assessment-toggle'
+        open: 0
+      label: 'Potential Threats'
+    group_ass_protection_manag:
+      children:
+        - field_as_protection
+      parent_name: group_protection_and_management
+      weight: 6
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-ass-prot-man assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Assessing Protection and Management'
+    group_overall_ass_prot:
+      children:
+        - 'display_field_copy:node-protection_overall_rating'
+        - 'display_field_copy:node-protection_overall_effectiveness'
+        - group_ass_pm_outside
+        - group_best_practice_examples
+      parent_name: group_protection_and_management
+      weight: 7
+      format_type: details_assessment
+      format_settings:
+        label: 'Overall assessment of protection and management'
+        terms: 'display_field_copy:node-protection_overall_rating'
+        id: ''
+        classes: 'assessment-overall-ass-prot assessment-toggle'
+        open: 0
+      label: 'Overall assessment of protection and management'
+    group_ass_pm_outside:
+      children:
+        - field_as_protection_ov_out_rate
+        - field_as_protection_ov_out_text
+      parent_name: group_overall_ass_prot
+      weight: 2
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Assessment of the effectiveness of protection and management in addressing threats outside the site'
+        terms: field_as_protection_ov_out_rate
+        element: div
+        show_label: '1'
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Assessment of the effectiveness of protection and management in addressing threats outside the site'
+    group_best_practice_examples:
+      children:
+        - field_as_protection_ov_practices
+      parent_name: group_overall_ass_prot
+      weight: 3
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: true
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Best practice examples'
+    group_understanding_benefits:
+      children:
+        - field_as_benefits
+      parent_name: group_benefits
+      weight: 10
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-understanding-benefits assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Understanding Benefits'
+    group_summary_of_benefits:
+      children:
+        - field_as_benefits_summary
+      parent_name: group_benefits
+      weight: 12
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-sum-benefits assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Summary of benefits'
+    group_active_projects:
+      children:
+        - field_as_projects
+      parent_name: group_projects
+      weight: 20
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-active-projects assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Compilation of active conservation projects'
+    group_projects_needs:
+      children:
+        - field_as_projects_needs
+      parent_name: group_projects
+      weight: 21
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-projects-needs assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Compilation of potential site needs'
+    group_assessing_current_state:
+      children:
+        - 'display_field_copy:node-identifying_and_describing_value'
+        - 'display_field_copy:node-other_biodiv_values'
+      parent_name: group_state_and_trend_of_values
+      weight: 20
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-curr-state assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Assessing the current state and trend of values'
+    group_summary_values:
+      children:
+        - group_ass_state_wh
+        - group_ass_state_bv
+      parent_name: group_state_and_trend_of_values
+      weight: 21
+      format_type: details
+      format_settings:
+        id: ''
+        classes: 'assessment-summary-values assessment-toggle'
+        open: false
+        required_fields: false
+      label: 'Summary of the Values'
+    group_ass_state_wh:
+      children:
+        - 'display_field_copy:node-copy_assessment_values'
+        - field_as_vass_wh_trend
+        - 'display_field_copy:node-justification_of_assessment_valu'
+      parent_name: group_summary_values
+      weight: 21
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Assessment of the current state and trend of World Heritage values'
+        terms: 'display_field_copy:node-copy_assessment_values|field_as_vass_wh_trend'
+        element: div
+        show_label: '1'
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Assessment of the current state and trend of World Heritage values'
+    group_ass_state_bv:
+      children:
+        - field_as_vass_bio_state
+        - field_as_vass_bio_trend
+        - field_as_vass_bio_text
+      parent_name: group_summary_values
+      weight: 22
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Assessment of the current state and trend of other important biodiversity values'
+        terms: field_as_vass_bio_state|field_as_vass_bio_trend
+        element: div
+        show_label: '1'
+        label_element: div
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Assessment of the current state and trend of other important biodiversity values'
+    group_world_heritage_values:
+      children:
+        - 'display_field_copy:node-world_heritage_values'
+      parent_name: group_values
+      weight: 24
+      format_type: details_assessment
+      format_settings:
+        id: ''
+        classes: 'assessment-current-threats assessment-toggle'
+        open: 0
+        terms: ''
+      label: 'World Heritage values'
+    group_other_important_biodiversi:
+      children:
+        - field_as_values_bio
+      parent_name: group_values
+      weight: 25
+      format_type: details_assessment
+      format_settings:
+        id: ''
+        classes: 'assessment-current-threats assessment-toggle'
+        open: 0
+        terms: ''
+      label: 'Other important biodiversity values'
+id: node.site_assessment.pdf
+targetEntityType: node
+bundle: site_assessment
+mode: pdf
+content:
+  field_as_benefits:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_benefits_summary:
+    type: basic_string
+    weight: 0
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_end_date:
+    weight: 42
+    label: inline
+    settings:
+      timezone_override: ''
+      date_format: 'd M Y'
+    third_party_settings: {  }
+    type: datetime_custom
+    region: summary
+  field_as_global_assessment_level:
+    weight: 43
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: summary
+  field_as_global_assessment_text:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: summary
+  field_as_key_cons:
+    type: entity_reference_revisions_entity_view
+    weight: 5
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_projects:
+    type: entity_reference_revisions_entity_view
+    weight: 4
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_projects_needs:
+    type: entity_reference_revisions_entity_view
+    weight: 5
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_protection:
+    type: entity_reference_revisions_entity_view
+    weight: 7
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_protection_ov_out_rate:
+    type: entity_reference_label
+    weight: 0
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_protection_ov_out_text:
+    type: basic_string
+    weight: 1
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_protection_ov_practices:
+    type: basic_string
+    weight: 9
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_protection_ov_rating:
+    type: entity_reference_label
+    weight: 0
+    region: summary
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_protection_ov_text:
+    type: basic_string
+    weight: 1
+    region: summary
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_references:
+    weight: 10
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: references
+  field_as_threats_current:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_threats_current_rating:
+    type: entity_reference_label
+    weight: 0
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_current_text:
+    type: basic_string
+    weight: 1
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_potent_rating:
+    type: entity_reference_label
+    weight: 0
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_potent_text:
+    type: basic_string
+    weight: 1
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_potential:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_threats_rating:
+    type: entity_reference_label
+    weight: 0
+    region: summary
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_text:
+    type: basic_string
+    weight: 1
+    region: summary
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_bio:
+    type: entity_reference_revisions_entity_view
+    weight: 26
+    region: full_assessment_values
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_vass_bio_state:
+    type: entity_reference_label
+    weight: 6
+    region: full_assessment_values
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_bio_text:
+    type: basic_string
+    weight: 8
+    region: full_assessment_values
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_vass_bio_trend:
+    type: entity_reference_label
+    weight: 7
+    region: full_assessment_values
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_wh_state:
+    type: entity_reference_label
+    weight: 10
+    region: summary
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_wh_text:
+    type: basic_string
+    weight: 12
+    region: summary
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_vass_wh_trend:
+    type: entity_reference_label
+    weight: 14
+    region: full_assessment_values
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_as_archived: true
+  field_as_cycle: true
+  field_as_site: true
+  field_as_start_date: true
+  field_as_values_wh: true
+  field_as_version: true
+  field_date_published: true
+  langcode: true
+  links: true
+  site_assessments_link: true
+  site_assessments_rating: true

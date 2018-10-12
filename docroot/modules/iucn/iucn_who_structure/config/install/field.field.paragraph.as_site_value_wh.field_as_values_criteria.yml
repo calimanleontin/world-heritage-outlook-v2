@@ -1,10 +1,11 @@
+uuid: 466d9ce5-1ce2-406b-b41b-0c176e73eacd
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_as_values_criteria
     - paragraphs.paragraphs_type.as_site_value_wh
-    - taxonomy.vocabulary.assessment_wh_criteria
+    - taxonomy.vocabulary.inscription_criteria
 id: paragraph.as_site_value_wh.field_as_values_criteria
 field_name: field_as_values_criteria
 entity_type: paragraph
@@ -19,9 +20,9 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      assessment_wh_criteria: assessment_wh_criteria
+      inscription_criteria: inscription_criteria
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: assessment_wh_criteria
 field_type: entity_reference

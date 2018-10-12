@@ -1,0 +1,20 @@
+uuid: 862f43ec-d52c-4d59-837b-35df1f683dde
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.benefit
+id: node.benefit.uid
+field_name: uid
+entity_type: node
+bundle: benefit
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getCurrentUserId'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

@@ -1,0 +1,37 @@
+uuid: 82601819-ee4b-47ef-9dc2-057a1ee17e88
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.number_heading_list.field_headline_bg
+    - field.field.paragraph.number_heading_list.field_numbered_headings
+    - paragraphs.paragraphs_type.number_heading_list
+  module:
+    - paragraphs
+id: paragraph.number_heading_list.default
+targetEntityType: paragraph
+bundle: number_heading_list
+mode: default
+content:
+  field_headline_bg:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_numbered_headings:
+    type: entity_reference_paragraphs
+    weight: 0
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

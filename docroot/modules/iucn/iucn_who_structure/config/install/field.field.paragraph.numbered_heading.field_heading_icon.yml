@@ -1,0 +1,21 @@
+uuid: d69329d4-5161-45ed-843b-5d1875596d71
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_heading_icon
+    - paragraphs.paragraphs_type.numbered_heading
+  module:
+    - options
+id: paragraph.numbered_heading.field_heading_icon
+field_name: field_heading_icon
+entity_type: paragraph
+bundle: numbered_heading
+label: Icon
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

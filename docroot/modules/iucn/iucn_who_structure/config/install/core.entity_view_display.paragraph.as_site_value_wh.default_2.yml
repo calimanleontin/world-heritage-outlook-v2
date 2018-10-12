@@ -1,0 +1,71 @@
+uuid: af9c3919-db08-48dd-bfd7-e2e0ac47a0fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.default_2
+    - field.field.paragraph.as_site_value_wh.field_as_description
+    - field.field.paragraph.as_site_value_wh.field_as_values_criteria
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_wh.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_wh
+  module:
+    - ds
+    - string_field_formatter
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_values_value
+      terms:
+        - field_as_values_curr_state
+        - field_as_values_curr_trend
+      description:
+        - field_as_values_curr_text
+id: paragraph.as_site_value_wh.default_2
+targetEntityType: paragraph
+bundle: as_site_value_wh
+mode: default_2
+content:
+  field_as_values_curr_state:
+    type: entity_reference_label
+    weight: 1
+    region: terms
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    type: basic_string
+    weight: 3
+    region: description
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_curr_trend:
+    type: entity_reference_label
+    weight: 2
+    region: terms
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_value:
+    weight: 0
+    label: hidden
+    settings:
+      wrap_tag: h4
+    third_party_settings: {  }
+    type: plain_string_formatter
+    region: title
+hidden:
+  field_as_description: true
+  field_as_values_criteria: true

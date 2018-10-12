@@ -1,3 +1,4 @@
+uuid: 6d92b878-95f4-45eb-8344-29d8859b491d
 langcode: en
 status: true
 dependencies:
@@ -11,6 +12,6 @@ name: 'Site assessment'
 type: site_assessment
 description: 'Contains assessments related to sites'
 help: ''
-new_revision: true
+new_revision: false
 preview_mode: 0
 display_submitted: false

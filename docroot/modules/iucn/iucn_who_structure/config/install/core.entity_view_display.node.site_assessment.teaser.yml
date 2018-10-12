@@ -1,3 +1,4 @@
+uuid: a341ec1c-3a77-4713-9596-5d6d1b3d8d58
 langcode: en
 status: true
 dependencies:
@@ -6,18 +7,41 @@ dependencies:
     - field.field.node.site_assessment.field_as_archived
     - field.field.node.site_assessment.field_as_benefits
     - field.field.node.site_assessment.field_as_benefits_summary
-    - field.field.node.site_assessment.field_as_conservation
+    - field.field.node.site_assessment.field_as_cycle
     - field.field.node.site_assessment.field_as_end_date
     - field.field.node.site_assessment.field_as_global_assessment_level
     - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_key_cons
     - field.field.node.site_assessment.field_as_projects
     - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_protection
+    - field.field.node.site_assessment.field_as_protection_ov_out_rate
+    - field.field.node.site_assessment.field_as_protection_ov_out_text
+    - field.field.node.site_assessment.field_as_protection_ov_practices
+    - field.field.node.site_assessment.field_as_protection_ov_rating
+    - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_threats_current
+    - field.field.node.site_assessment.field_as_threats_current_rating
+    - field.field.node.site_assessment.field_as_threats_current_text
+    - field.field.node.site_assessment.field_as_threats_potent_rating
+    - field.field.node.site_assessment.field_as_threats_potent_text
+    - field.field.node.site_assessment.field_as_threats_potential
+    - field.field.node.site_assessment.field_as_threats_rating
+    - field.field.node.site_assessment.field_as_threats_text
     - field.field.node.site_assessment.field_as_values_bio
     - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_vass_bio_state
+    - field.field.node.site_assessment.field_as_vass_bio_text
+    - field.field.node.site_assessment.field_as_vass_bio_trend
+    - field.field.node.site_assessment.field_as_vass_wh_state
+    - field.field.node.site_assessment.field_as_vass_wh_text
+    - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_date_published
     - node.type.site_assessment
   module:
     - user
@@ -39,11 +63,14 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_archived: true
   field_as_archived: true
   field_as_benefits: true
   field_as_benefits_summary: true
-  field_as_conservation: true
+  field_as_cycle: true
   field_as_end_date: true
   field_as_global_assessment_level: true
   field_as_global_assessment_text: true
@@ -75,7 +102,10 @@ hidden:
   field_as_vass_wh_text: true
   field_as_vass_wh_trend: true
   field_as_version: true
+  field_assessment_file: true
   field_date_published: true
   field_field_as_cycle: true
   field_site: true
   langcode: true
+  site_assessments_link: true
+  site_assessments_rating: true
