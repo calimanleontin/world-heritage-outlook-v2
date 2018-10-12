@@ -130,11 +130,7 @@
     padding: 0;
 }
 
-.layout-region-node-main {
+.layout-region-node-footer {
     width: auto !important;
-}
-
-.layout-region-node-secondary {
-    width: auto;
     float: left;
 }
