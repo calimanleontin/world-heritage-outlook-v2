@@ -201,7 +201,7 @@
   },
   "require-dev": {
     "consolidation/robo": "~1",
-    "phpunit/phpunit": ">=4.8.28 <5"
+    "phpunit/phpunit": "^6.0"
   },
   "conflict": {
     "drupal/drupal": "*"
@@ -229,7 +229,8 @@
     ],
     "post-update-cmd": [
       "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ]
+    ],
+    "drupal-phpunit-upgrade": "@composer update phpunit/phpunit --with-dependencies --no-progress"
   },
   "extra": {
     "installer-paths": {

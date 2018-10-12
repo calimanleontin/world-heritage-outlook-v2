@@ -128,6 +128,18 @@ class WorkflowState extends ConfigEntityBase {
   /**
    * {@inheritdoc}
    */
+  public function calculateDependencies() {
+    parent::calculateDependencies();
+    // We cannot use $this->getWorkflow()->getConfigDependencyName() because
+    // calling $this->getWorkflow() here causes an infinite loop.
+    $workflow_type = \Drupal::entityTypeManager()->getDefinition('workflow_type');
+    $this->addDependency('config', $workflow_type->getConfigPrefix() . '.' . $this->getWorkflowId());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function save($create_creation_state = TRUE) {
     // Create the machine_name for new states.
     // N.B.: Keep machine_name in WorkflowState and ~ListBuilder aligned.

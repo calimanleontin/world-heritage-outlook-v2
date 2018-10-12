@@ -13,6 +13,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Manages entity type plugin definitions.
@@ -165,6 +166,7 @@ class WorkflowManager implements WorkflowManagerInterface {
         $comment = '';
         $old_sid = WorkflowManager::getPreviousStateId($entity, $field_name);
         $new_sid = $entity->$field_name->value;
+        $field_info = FieldStorageConfig::loadByName($entity->getEntityTypeId(), $field_name);
         if ((!$new_sid) && $wid = $field_info->getSetting('workflow_type')) {
           /** @var Workflow $workflow */
           $workflow = Workflow::load($wid);
