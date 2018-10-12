@@ -1,6 +1,8 @@
 <?php
 
 namespace Drupal\iucn_assessment\Tests;
+
+use Drupal\node\NodeInterface;
 use Drupal\simpletest\WebTestBase;
 use Drupal\views\Tests\ViewTestData;
 
@@ -26,6 +28,18 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
     \Drupal::entityDefinitionUpdateManager()->applyUpdates();
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createAllTestData();
+  }
+
+  protected function setAssessmentState(NodeInterface $node, $state) {
+    $this->userLogIn(TestSupport::ADMINISTRATOR);
+    $node->field_state->value = $state;
+    $node->save();
+  }
+
+  protected function userLogIn($mail) {
+    $user = user_load_by_mail($mail);
+    $user->pass_raw = 'password';
+    $this->drupalLogin($user);
   }
 
 }

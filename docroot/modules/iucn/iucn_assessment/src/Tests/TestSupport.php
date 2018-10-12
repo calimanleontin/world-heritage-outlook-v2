@@ -4,6 +4,8 @@ namespace Drupal\iucn_assessment\Tests;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Drupal\workflow\Entity\WorkflowState;
+use Drupal\workflow\Entity\WorkflowTransition;
 
 /**
  * Class TestSupport populates database with test data for various scenarios.
@@ -71,10 +73,7 @@ class TestSupport {
    */
   public static function getAssessments() {
     return [
-      self::ASSESSMENT1 => [
-        'field_state' => 'assessment_new',
-        'langcode' => 'en',
-      ],
+      self::ASSESSMENT1,
     ];
   }
 
@@ -117,30 +116,25 @@ class TestSupport {
    *
    * @param string $title
    *   The title.
-   * @param string $state
-   *   The initial field_state.
-   * @param string $langcode
-   *   The langcode.
    *
    * @return int
    *   The node id.
    */
-  public static function createAssessment($title = NULL, $state = 'assessment_new', $langcode = 'en') {
+  public static function createAssessment($title = NULL) {
     if (empty($title)) {
       $title = 'test assessment';
     }
     $assessment = [
       'type' => 'site_assessment',
       'title' => $title,
-      'langcode' => $langcode,
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
       'status' => 0,
-//      'field_state' => $state,
-    ];#->
+    ];
     $node = Node::create($assessment);
     $node->save();
+
     return $node->id();
   }
 
@@ -148,10 +142,8 @@ class TestSupport {
    * Create all the test assessments.
    */
   public static function createAssessments() {
-    foreach (self::getAssessments() as $title => $data) {
-      $state = !empty($data['state']) ? $data['state'] : NULL;
-      $langcode = !empty($data['langcode']) ? $data['langcode'] : NULL;
-      self::createAssessment($title, $state, $langcode);
+    foreach (self::getAssessments() as $title) {
+      self::createAssessment($title);
     }
   }
 

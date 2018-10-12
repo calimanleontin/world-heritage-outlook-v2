@@ -57,7 +57,9 @@ class AssessmentWorkflow {
     }
 
     switch ($state) {
+      case 'assessment_creation':
       case 'assessment_new':
+      case NULL:
         // Any coordinator or higher can edit assessments.
         return $account_role_weight <= $coordinator_weight;
 
