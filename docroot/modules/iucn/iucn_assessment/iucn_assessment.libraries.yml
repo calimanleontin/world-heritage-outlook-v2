@@ -5,3 +5,14 @@ iucn_assessment.row_paragraph:
       css/row_paragraph_widget.css: {}
   js:
     js/row_paragraph_widget.js: {}
+element.assessment_horizontal_tabs:
+  version: VERSION
+  js:
+    # Load before field_group/core.
+    formatters/assessment_tabs/assessment_horizontal_tabs.js: {weight: -1}
+  css:
+    component:
+      formatters/assessment_tabs/assessment_horizontal_tabs.css: {}
+  dependencies:
+  - core/drupal.collapse
+

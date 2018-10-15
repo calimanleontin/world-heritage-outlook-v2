@@ -14,6 +14,34 @@ use Drupal\user\Entity\User;
  */
 class AssessmentWorkflow {
 
+  /** @var string New assessment was just created, waiting for coordinator to be assigned. */
+  const STATUS_NEW = 'assessment_new';
+
+  /** @var string Coordinator is editing, waiting for assessor to be assigned. */
+  const STATUS_UNDER_EVALUATION = 'assessment_under_evaluation';
+
+  /** @var string Assessor is assigned and can start editing. */
+  const STATUS_UNDER_ASSESSMENT = 'assessment_under_assessment';
+
+  /** @var string Assessor has finished, Coordinator is reviewing changes and adds reviewers. */
+  const STATUS_READY_FOR_REVIEW = 'assessment_ready_for_review';
+
+  /** @var string Reviewers start working. */
+  const STATUS_UNDER_REVIEW = 'assessment_under_review';
+
+  /** @var string When all reviewers are finished. */
+  const STATUS_FINISHED_REVIEWING = 'assessment_finished_reviewing';
+
+  /** @var string Coordinator starts the review / comparison phase to merge the changes. */
+  const STATUS_UNDER_COMPARISON = 'assessment_under_comparison';
+
+  /** @var string Coordinator has done the comparison and merge phase. */
+  const STATUS_APPROVED = 'assessment_approved';
+
+  /** @var string Site is published. */
+  const STATUS_PUBLISHED = 'assessment_published';
+
+
   /**
    * Check if an user can edit an assessment.
    *
@@ -57,25 +85,25 @@ class AssessmentWorkflow {
     }
 
     switch ($state) {
-      case 'assessment_creation':
-      case 'assessment_new':
+      case 'assessment_creation': // Internal state that should not be normally used.
+      case self::STATUS_NEW:
       case NULL:
         // Any coordinator or higher can edit assessments.
         return $account_role_weight <= $coordinator_weight;
 
-      case 'assessment_under_evaluation':
+      case self::STATUS_UNDER_EVALUATION:
         // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
-      case 'assessment_under_assessment':
+      case self::STATUS_UNDER_ASSESSMENT:
         // In this state, assessments can only be edited by their assessors.
         return $assessor == $account->id();
 
-      case 'assessment_ready_for_review':
+      case self::STATUS_READY_FOR_REVIEW:
         // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
-      case 'assessment_under_review':
+      case self::STATUS_UNDER_REVIEW:
         // Only coordinators can edit the main revision.
         if ($node->isDefaultRevision()) {
           return $coordinator == $account->id();
@@ -83,7 +111,7 @@ class AssessmentWorkflow {
         // Reviewers can edit their respective revisions.
         return $node->getRevisionUser()->id() == $account->id();
 
-      case 'assessment_finished_reviewing':
+      case self::STATUS_FINISHED_REVIEWING:
         // Reviewed assessments can only be edited by the coordinator.
         if ($node->isDefaultRevision()) {
           return $coordinator == $account->id();
@@ -91,15 +119,15 @@ class AssessmentWorkflow {
         // Reviewers can no longer edit their respective revisions.
         return FALSE;
 
-      case 'assessment_under_comparison':
+      case self::STATUS_UNDER_COMPARISON:
         // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
-      case 'assessment_approved':
+      case self::STATUS_APPROVED:
         // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
-      case 'assessment_published':
+      case self::STATUS_PUBLISHED:
         // After being published, assessments can only be edited by admins.
         return $account_role_weight < $coordinator_weight;
     }
@@ -122,11 +150,10 @@ class AssessmentWorkflow {
     if ($node->bundle() != 'site_assessment') {
       return FALSE;
     }
-
     $state = $node->field_state->value;
-    return $field == 'field_coordinator' && $state == 'assessment_new'
-      || $field == 'field_assessor' && $state == 'assessment_under_evaluation'
-      || $field == 'field_reviewers' && ($state == 'assessment_ready_for_review' || $state == 'assessment_under_review');
+    return ($field == 'field_coordinator' && (in_array($state, ['assessment_creation', self::STATUS_NEW]) || empty($state)))
+      || ($field == 'field_assessor' && $state == self::STATUS_UNDER_EVALUATION)
+      || ($field == 'field_reviewers' && ($state == self::STATUS_READY_FOR_REVIEW || $state == self::STATUS_UNDER_REVIEW));
   }
 
   /**
@@ -141,9 +168,9 @@ class AssessmentWorkflow {
    *   True if the field is required.
    */
   public function isFieldRequiredForState($field, $state) {
-    return $field == 'field_coordinator' && $state == 'assessment_under_evaluation'
-      || $field == 'field_assessor' && $state == 'assessment_under_assessment'
-      || $field == 'field_reviewers' && $state == 'assessment_under_review';
+    return ($field == 'field_coordinator' && $state == self::STATUS_UNDER_EVALUATION)
+      || ($field == 'field_assessor' && $state == self::STATUS_UNDER_ASSESSMENT)
+      || ($field == 'field_reviewers' && $state == self::STATUS_UNDER_REVIEW);
   }
 
   /**
@@ -164,10 +191,10 @@ class AssessmentWorkflow {
     // have marked their revision is done.
     // If so, mark the default revision as done.
     if (!$node->isDefaultRevision()) {
-      if ($state == 'assessment_finished_reviewing' && $original->field_state->value == 'assessment_under_review') {
+      if ($state == self::STATUS_FINISHED_REVIEWING && $original->field_state->value == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $default_revision->field_state->value = 'assessment_finished_reviewing';
+          $default_revision->field_state->value = self::STATUS_FINISHED_REVIEWING;
           $default_revision->save();
         }
       }
@@ -206,7 +233,7 @@ class AssessmentWorkflow {
       $node->setRevisionLogMessage($revision_message);
     }
 
-    if ($state = 'assessment_published') {
+    if ($state == self::STATUS_PUBLISHED) {
       $node->setPublished(TRUE);
     }
     else {
@@ -247,7 +274,7 @@ class AssessmentWorkflow {
         continue;
       }
 
-      if (!$node_revision->isDefaultRevision() && $node_revision->field_state->value == 'assessment_under_review') {
+      if (!$node_revision->isDefaultRevision() && $node_revision->field_state->value == self::STATUS_UNDER_REVIEW) {
         return FALSE;
       }
     }

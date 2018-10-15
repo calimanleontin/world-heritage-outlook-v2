@@ -65,7 +65,7 @@ third_party_settings:
         - group_as_references
       parent_name: ''
       weight: 9
-      format_type: tabs
+      format_type: assessment_tabs
       format_settings:
         id: ''
         classes: ''
@@ -77,9 +77,9 @@ third_party_settings:
         - field_as_values_bio
       parent_name: group_as_tabs
       weight: 20
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: values
         classes: ''
         formatter: open
         description: ''
@@ -97,9 +97,9 @@ third_party_settings:
         - field_as_threats_rating
       parent_name: group_as_tabs
       weight: 21
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: threats
         classes: ''
         formatter: closed
         description: ''
@@ -115,13 +115,13 @@ third_party_settings:
         - field_as_protection_ov_practices
       parent_name: group_as_tabs
       weight: 22
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
         label: 'Protection and management'
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
+        id: protection_management
         classes: ''
       label: 'Protection and management'
     group_as_assessing_values:
@@ -130,9 +130,9 @@ third_party_settings:
         - group_as_values_bio
       parent_name: group_as_tabs
       weight: 23
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: assessing_values
         classes: ''
         formatter: closed
         description: ''
@@ -144,9 +144,9 @@ third_party_settings:
         - field_as_global_assessment_level
       parent_name: group_as_tabs
       weight: 24
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: conservation_outlook
         classes: ''
         formatter: closed
         description: ''
@@ -158,9 +158,9 @@ third_party_settings:
         - field_as_benefits_summary
       parent_name: group_as_tabs
       weight: 25
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: benefits
         classes: ''
         formatter: closed
         description: ''
@@ -172,9 +172,9 @@ third_party_settings:
         - field_as_projects_needs
       parent_name: group_as_tabs
       weight: 26
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: projects
         classes: ''
         formatter: closed
         description: ''
@@ -185,9 +185,9 @@ third_party_settings:
         - field_as_references
       parent_name: group_as_tabs
       weight: 27
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: references
         classes: ''
         formatter: closed
         description: ''

@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowConfigTransition;
@@ -12,6 +13,7 @@ use Drupal\workflow\Entity\WorkflowConfigTransition;
  * Defines test scenarios for the assessment workflow.
  *
  * @package Drupal\iucn_assessment\Tests
+ * @group iucn
  */
 class WorkflowTest extends IucnAssessmentTestBase {
 
@@ -66,7 +68,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $state = $assessment->field_state->value;
 
     // Coordinators cannot edit assessments in under_assessment or published.
-    if ($state == 'assessment_under_assessment' || $state == 'assessment_published') {
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
     }
     else {
@@ -79,6 +81,12 @@ class WorkflowTest extends IucnAssessmentTestBase {
     }
     else {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
+      if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+        $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
+      }
+      else {
+        $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
+      }
     }
 
     // Coordinator 2 can only edit the assessment when it has no coordinator.
@@ -104,30 +112,24 @@ class WorkflowTest extends IucnAssessmentTestBase {
    */
   protected function checkAccessOnEveryState(NodeInterface $assessment) {
     $states = [
-      'assessment_creation',
-      'assessment_new',
-      'assessment_under_evaluation',
-      'assessment_under_assessment',
-      'assessment_ready_for_review',
-      'assessment_under_review',
-      'assessment_finished_reviewing',
-      'assessment_under_comparison',
-      'assessment_approved',
-      'assessment_published',
+      AssessmentWorkflow::STATUS_NEW,
+      AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_REVIEW,
+      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_APPROVED,
+      AssessmentWorkflow::STATUS_PUBLISHED,
     ];
     foreach ($states as $state) {
       $field_changes = NULL;
-      if ($state == 'assessment_under_evaluation') {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = user_load_by_mail(TestSupport::COORDINATOR1);
-        $field_changes = ['field_coordinator' => $user->id()];
-      }
-      if ($state == 'assessment_under_assessment') {
+      if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::ASSESSOR1);
         $field_changes = ['field_assessor' => $user->id()];
       }
-      elseif ($state == 'assessment_under_review') {
+      elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::REVIEWER1);
         $field_changes = ['field_reviewers' => $user->id()];
