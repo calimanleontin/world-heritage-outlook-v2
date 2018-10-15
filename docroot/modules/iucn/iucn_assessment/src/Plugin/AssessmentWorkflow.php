@@ -206,7 +206,7 @@ class AssessmentWorkflow {
       $node->setRevisionLogMessage($revision_message);
     }
 
-    if ($state = 'assessment_published') {
+    if ($state == 'assessment_published') {
       $node->setPublished(TRUE);
     }
     else {
