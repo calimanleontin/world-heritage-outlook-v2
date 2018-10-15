@@ -1,3 +1,21 @@
-definitions: {  }
+definitions:
+  chm_common__dashboard__settings__site:
+    weight: -49
+    menu_name: dashboard
+    parent: chm_common.dashboard.settings
+    expanded: false
+    enabled: true
+  chm_common__dashboard__settings__clear_cache:
+    weight: -48
+    menu_name: dashboard
+    parent: chm_common.dashboard.settings
+    expanded: false
+    enabled: true
+  chm_common__dashboard__settings__maintenance_mode:
+    weight: -47
+    menu_name: dashboard
+    parent: chm_common.dashboard.settings
+    expanded: false
+    enabled: true
 _core:
   default_config_hash: jdY7AU0tU-QsjmiOw3W8vwpYMb-By--_MSFgbqKUTYM

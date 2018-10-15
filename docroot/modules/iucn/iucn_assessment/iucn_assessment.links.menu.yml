@@ -1,0 +1,82 @@
+chm_common.dashboard.cm:
+  title: 'Content Management'
+  description: 'Content management tasks'
+  route_name: <nolink>
+  menu_name: dashboard
+  weight: 0
+
+
+chm_common.dashboard.create_content:
+  title: 'Create Content'
+  description: 'Create a new content for the website'
+  parent: chm_common.dashboard.cm
+  route_name: node.add_page
+  menu_name: dashboard
+  weight: 5
+
+chm_common.dashboard.view content:
+  title: 'View Content'
+  description: "View the website's already created content"
+  parent: chm_common.dashboard.cm
+  url: internal:/admin/content
+  menu_name: dashboard
+  weight: 10
+
+chm_common.dashboard.translate_interface:
+  title: 'Translate Interface'
+  description: 'Translate the interface into a different language'
+  parent: chm_common.dashboard.cm
+  route_name: locale.translate_page
+  menu_name: dashboard
+  weight: 15
+
+chm_common.dashboard.manage_labels:
+  title: 'Manage Labels'
+  description: "Manage the content's labels"
+  parent: chm_common.dashboard.cm
+  route_name: <nolink>
+  menu_name: dashboard
+  weight: 20
+
+chm_common.dashboard.settings:
+  title: 'Administrative Settings'
+  description: 'Administrative settings'
+  route_name: <nolink>
+  menu_name: dashboard
+  weight: 30
+
+chm_common.dashboard.settings.site:
+  title: 'Configuration'
+  description: 'Configure settings like website title, slogan and email addresses'
+  parent: chm_common.dashboard.settings
+  route_name: system.admin_config
+  menu_name: dashboard
+  weight: 35
+
+chm_common.dashboard.settings.clear_cache:
+  title: 'Clear Cache'
+  description: "Clear the website's caches"
+  parent: chm_common.dashboard.settings
+  route_name: system.performance_settings
+  menu_name: dashboard
+  weight: 40
+
+chm_common.dashboard.settings.maintenance_mode:
+  title: 'Maintenance Mode'
+  description: 'Put your website in maintenance mode, your visitors will see only a custom message instead of regular page content. Visitors cannot access any pages. Use with care in case of emergency!'
+  parent: chm_common.dashboard.settings
+  route_name: system.site_maintenance_mode
+  menu_name: dashboard
+  weight: 45
+
+chm_common.dashboard.support_request:
+  title: 'Support Requests'
+  description: "View the support requests"
+  parent: chm_common.dashboard.settings
+  route_name: <nolink>
+  menu_name: dashboard
+  weight: 50
+
+
+
+
