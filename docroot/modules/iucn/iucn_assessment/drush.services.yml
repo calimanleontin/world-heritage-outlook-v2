@@ -1,6 +1,6 @@
 services:
   iucn_assessment.commands:
-    class: \Drupal\iucn_assessment\Commands\DeleteRevisionsCommands
-    arguments: ['@entity_type.manager']
+    class: \Drupal\iucn_assessment\Commands\IucnAssessmentCommands
+    arguments: ['@entity_type.manager', '@iucn_assessment.cycle_creator']
     tags:
       - { name: drush.command }
