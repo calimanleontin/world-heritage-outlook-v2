@@ -16,10 +16,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
    * Test the assessment workflow, going through all the states.
    */
   public function testAssessmentWorkflow() {
-    // Fresh assessment with state = NEW and no coordinator.
     $assessment = TestSupport::getNodeByTitle(TestSupport::ASSESSMENT1);
-
-    $this->assertAllUserAccessOnAssessmentEdit($assessment);
 
     $this->checkAccessOnEveryState($assessment);
   }
@@ -63,23 +60,37 @@ class WorkflowTest extends IucnAssessmentTestBase {
     // Administrators and manages can edit any assessment, regardless of state.
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
+
+
     $state = $assessment->field_state->value;
 
-    if ($state == 'assessment_under_assessment') {
+    // Coordinators cannot edit assessments in under_assessment or published.
+    if ($state == 'assessment_under_assessment' || $state == 'assessment_published') {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
     }
     else {
-      if ($state == 'assessment_published') {
-        $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
-      }
-      else {
-        $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
-      }
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
     }
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
+
+    // Assessor 1 should only be able to edit in the under_assessment state.
+    if ($state == 'assessment_under_assessment') {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
+    }
+    else {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
+    }
+
+    // Coordinator 2 can only edit the assessment when it has no coordinator.
+    if ($state == 'assessment_new' || $state == 'assessment_creation') {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 200);
+    }
+    else {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
+    }
+
+    // Assessor 2 is never allowed to edit this assessment.
+    $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
+    // The reviewers are never allowed to edit assessments, only revisions.
     $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER2, $assessment, 403);
   }
@@ -92,6 +103,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
    */
   protected function checkAccessOnEveryState(NodeInterface $assessment) {
     $states = [
+      'assessment_creation',
       'assessment_new',
       'assessment_under_evaluation',
       'assessment_under_assessment',
@@ -104,6 +116,11 @@ class WorkflowTest extends IucnAssessmentTestBase {
     ];
     foreach ($states as $state) {
       $field_changes = NULL;
+      if ($state == 'assessment_under_evaluation') {
+        /** @var \Drupal\user\Entity\User $user */
+        $user = user_load_by_mail(TestSupport::COORDINATOR1);
+        $field_changes = ['field_coordinator' => $user->id()];
+      }
       if ($state == 'assessment_under_assessment') {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::ASSESSOR1);
@@ -112,12 +129,13 @@ class WorkflowTest extends IucnAssessmentTestBase {
       elseif ($state == 'assessment_under_review') {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::REVIEWER1);
-        $field_changes = ['field_assessor' => $user->id()];
+        $field_changes = ['field_reviewers' => $user->id()];
       }
       $this->setAssessmentState($assessment, $state, $field_changes);
+      $this->assertEqual($assessment->field_state->value, $state, "Testing state: $state");
+      $this->assertAllUserAccessOnAssessmentEdit($assessment);
     }
 
-    $this->assertAllUserAccessOnAssessmentEdit($assessment);
 
   }
 
