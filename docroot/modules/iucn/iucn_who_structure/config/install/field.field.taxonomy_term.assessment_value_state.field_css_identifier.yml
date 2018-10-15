@@ -1,0 +1,19 @@
+uuid: 0f93f894-57b4-4aad-8804-6f4d7ae5c1cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_css_identifier
+    - taxonomy.vocabulary.assessment_value_state
+id: taxonomy_term.assessment_value_state.field_css_identifier
+field_name: field_css_identifier
+entity_type: taxonomy_term
+bundle: assessment_value_state
+label: 'CSS identifier'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

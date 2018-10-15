@@ -1,0 +1,75 @@
+uuid: f015cfb7-3b03-4088-9cb8-2645b5a61ad5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision
+    - node.type.decision
+    - paragraphs.paragraphs_type.decision
+  module:
+    - entity_reference_revisions
+id: node.decision.field_decision
+field_name: field_decision
+entity_type: node
+bundle: decision
+label: Decision
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      decision: decision
+    target_bundles_drag_drop:
+      decision:
+        enabled: true
+        weight: 17
+      as_site_benefit:
+        weight: 18
+        enabled: false
+      as_site_key_conservation:
+        weight: 19
+        enabled: false
+      as_site_project:
+        weight: 20
+        enabled: false
+      as_site_protection:
+        weight: 21
+        enabled: false
+      as_site_threat:
+        weight: 22
+        enabled: false
+      as_site_value_bio:
+        weight: 23
+        enabled: false
+      as_site_value_wh:
+        weight: 24
+        enabled: false
+      content_html:
+        weight: 25
+        enabled: false
+      content_teasers:
+        weight: 26
+        enabled: false
+      danger_list:
+        weight: 27
+        enabled: false
+      image_grid:
+        weight: 28
+        enabled: false
+      image_link:
+        weight: 29
+        enabled: false
+      number_heading_list:
+        weight: 30
+        enabled: false
+      numbered_heading:
+        weight: 31
+        enabled: false
+      teaser:
+        weight: 32
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,11 @@
+node.revision_edit:
+  path: '/node/{node}/revisions/{node_revision}/edit'
+  defaults:
+    _entity_form: node.edit
+    _title: 'Edit revision'
+  requirements:
+    access: 'update'
+    node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
+  options:
+    _node_operation_route: TRUE

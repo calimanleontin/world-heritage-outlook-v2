@@ -1,0 +1,131 @@
+uuid: 6ac3eae1-999a-45c2-b09f-2b386fbae7af
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.publication.body
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
+    - field.field.node.publication.field_publication_image
+    - field.field.node.publication.field_publication_year
+    - node.type.publication
+  module:
+    - blazy
+    - datetime
+    - ds
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_publications_teaser
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - node_title
+      content_year:
+        - field_publication_year
+      left_1:
+        - field_publication_image
+      content:
+        - body
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
+id: node.publication.teaser
+targetEntityType: node
+bundle: publication
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_publication_image:
+    type: blazy
+    weight: 1
+    region: left_1
+    label: hidden
+    settings:
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: teaser
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      style: ''
+      box_media_style: ''
+      grid: 0
+      grid_header: ''
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+  field_publication_year:
+    type: datetime_custom
+    weight: 0
+    region: content_year
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'Y'
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_author: true
+  field_external_website: true
+  field_file: true
+  langcode: true
+  links: true

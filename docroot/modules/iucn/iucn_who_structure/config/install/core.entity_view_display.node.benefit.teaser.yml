@@ -1,0 +1,123 @@
+uuid: 53a93aeb-b44e-4ffe-ba78-05796ed85707
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.benefit.body
+    - field.field.node.benefit.field_author_name
+    - field.field.node.benefit.field_benefit_category
+    - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_benefit_year
+    - field.field.node.benefit.field_links
+    - field.field.node.benefit.field_page_elements
+    - node.type.benefit
+  module:
+    - blazy
+    - ds
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: ds_1col_wrapper
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - field_benefit_image
+        - node_title
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
+id: node.benefit.teaser
+targetEntityType: node
+bundle: benefit
+mode: teaser
+content:
+  field_benefit_image:
+    type: blazy
+    weight: 0
+    region: ds_content
+    label: hidden
+    settings:
+      style: ''
+      image_style: large
+      thumbnail_style: ''
+      responsive_image_style: ''
+      media_switch: ''
+      box_style: ''
+      box_caption: ''
+      box_caption_custom: ''
+      ratio: ''
+      grid: null
+      grid_medium: null
+      grid_small: null
+      sizes: ''
+      breakpoints:
+        xs:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        sm:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        md:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        lg:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+        xl:
+          image_style: ''
+          width: ''
+          breakpoint: ''
+      current_view_mode: teaser
+      background: false
+      caption:
+        title: '0'
+        alt: '0'
+      grid_header: ''
+      iframe_lazy: true
+      icon: ''
+      layout: ''
+      view_mode: ''
+      cache: 0
+      optionset: default
+      skin: ''
+      box_media_style: ''
+    third_party_settings:
+      ds:
+        ds_limit: '1'
+hidden:
+  body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_author_name: true
+  field_benefit_category: true
+  field_benefit_year: true
+  field_links: true
+  field_page_elements: true
+  langcode: true
+  links: true

@@ -1,3 +1,4 @@
+uuid: adc73e4f-03df-40bd-8e51-d751b86aef3d
 langcode: en
 status: true
 dependencies:
@@ -11,7 +12,7 @@ bundle: site_assessment
 label: 'Summary of benefits'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

@@ -1,0 +1,23 @@
+uuid: 5eb83d45-bbd5-430b-834d-fa2ce29f5979
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_external_website
+    - node.type.publication
+  module:
+    - link
+id: node.publication.field_external_website
+field_name: field_external_website
+entity_type: node
+bundle: publication
+label: 'External website'
+description: 'Add this only for external publications.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link

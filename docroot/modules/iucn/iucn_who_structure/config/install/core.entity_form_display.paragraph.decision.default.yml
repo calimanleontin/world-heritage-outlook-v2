@@ -1,0 +1,32 @@
+uuid: cdd6cd1d-0f4f-49ad-89c6-9b318d818f45
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.decision.field_decision
+    - field.field.paragraph.decision.field_relation
+    - paragraphs.paragraphs_type.decision
+id: paragraph.decision.default
+targetEntityType: paragraph
+bundle: decision
+mode: default
+content:
+  field_decision:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_relation:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

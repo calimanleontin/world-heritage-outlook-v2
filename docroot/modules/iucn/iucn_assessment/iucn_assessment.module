@@ -1,5 +1,10 @@
 <?php
 
+use Drupal\role_hierarchy\RoleHierarchyHelper;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\Role;
+use Drupal\Core\Entity\EntityInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 function iucn_assessment_theme() {
   return [
@@ -48,6 +53,11 @@ function template_preprocess_field_group_html_element_list(&$variables) {
 function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
   if ($node->bundle() == 'site' && !$node->isNew()) {
     _iucn_assessment_set_site_assessments($node);
+  }
+  elseif ($node->bundle() == 'site_assessment') {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $workflow_service->assessmentPreSave($node);
   }
 }
 
@@ -363,5 +373,136 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
         $vars['content']['full_assessment_values']['group_assessment_information']['group_state_and_trend_of_values']['group_assessing_current_state']['display_field_copy:node-other_biodiv_values']
       );
     }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_user = \Drupal::currentUser();
+  $is_user_1 = $current_user->id() == 1;
+  if ($form_id == 'node_site_assessment_form') {
+    if ($is_user_1) {
+      return;
+    }
+
+    // Hide revision log message.
+    $form['advanced']['#access'] = FALSE;
+    // Hide publish settings.
+    $form['footer']['#access'] = FALSE;
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+      $form[$field]['#access'] = FALSE;
+    }
+  }
+  // Assessment user fields are only enabled during certain states.
+  // Additionally, some of them are required for moving to other states.
+  elseif ($form_id == 'node_site_assessment_edit_form') {
+    // Hide all revision related settings and check if a new revision should
+    // be created in hook_node_presave().
+    $form['revision']['#default_value'] = FALSE;
+    $form['revision']['#disabled'] = FALSE;
+    $form['revision']['#access'] = FALSE;
+    // Hide revision log message.
+    $form['advanced']['#access'] = FALSE;
+
+    // Hide state change scheduling.
+    if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
+      $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
+    }
+
+    // Do not alter the form for user 1.
+    if ($is_user_1) {
+      return;
+    }
+
+    // Hide publish settings.
+    $form['footer']['#access'] = FALSE;
+
+    $form['#validate'][] = '_iucn_assessment_edit_form_validate';
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
+    $coordinator_weight = Role::load('coordinator')->getWeight();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+      if ($weight <= $coordinator_weight) {
+        // Enable these fields only in certain assessment states
+        // for roles >= coordinators.
+        $enabled = $workflow_service->isFieldEnabledForAssessment($field, $node);
+        $form[$field]['#access'] = $enabled;
+      }
+      else {
+        // Hide the field for lower roles.
+        $form[$field]['#access'] = FALSE;
+      }
+    }
+  }
+  elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
+    $form['account']['roles']['#access'] = $current_user->hasPermission('administer users');
+  }
+}
+
+/**
+ * Callback validation function for node_site_assessment_edit_form.
+ */
+function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_state) {
+  /** @var \Drupal\workflow\Entity\WorkflowTransitionInterface $transition */
+  $transition = $form_state->getValue('field_state')[0]['workflow_transition'];
+  $state = $transition->getToState();
+  $entity = $transition->getTargetEntity();
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+  foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    $value = $form_state->getValue($field);
+    $required = $workflow_service->isFieldRequiredForState($field, $state->id());
+    if ($required && empty($value)) {
+      $form_state->setErrorByName($field, t('<b>@field</b> is required before moving to state <b>@state</b>', [
+        '@field' => $entity->{$field}->getFieldDefinition()->getLabel(),
+        '@state' => $state->label(),
+      ]));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_prepare_form().
+ */
+function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  // The revision edit page is actually the node edit page.
+  // We need to change the form entity to the selected revision.
+  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
+    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
+    if (!empty($node_revision)) {
+      $revision = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadRevision($node_revision);
+      if (empty($revision)) {
+        throw new NotFoundHttpException();
+      }
+      $revision->setNewRevision(FALSE);
+      $revision->isDefaultRevision(FALSE);
+      /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
+      $storage = \Drupal::entityTypeManager()->getStorage('node');
+      $form_state->getFormObject()->setEntity($revision);
+    }
+  }
+}
+
+function iucn_assessment_entity_type_alter(array &$entity_types) {
+  foreach ($entity_types as $entity_type) {
+    $constraints = $entity_type->getConstraints();
+    unset($constraints['EntityUntranslatableFields']);
+    $entity_type->setConstraints($constraints);
+  }
+}
+
+/**
+ * Implements hook_validation_constraint_alter().
+ */
+function iucn_assessment_validation_constraint_alter(array &$definitions) {
+  if (isset($definitions['EntityChanged'])) {
+    $definitions['EntityChanged']['class'] = 'Drupal\iucn_assessment\Plugin\Validation\Constraint\IucnAssessmentEntityChangedConstraint';
   }
 }

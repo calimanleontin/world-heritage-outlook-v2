@@ -1,0 +1,10 @@
+uuid: 9a2a306c-cbb1-4297-87ff-75dbdd392723
+langcode: en
+status: true
+dependencies: {  }
+id: assessment_published
+label: Published
+module: workflow
+wid: assessment
+weight: -1
+sysid: 0

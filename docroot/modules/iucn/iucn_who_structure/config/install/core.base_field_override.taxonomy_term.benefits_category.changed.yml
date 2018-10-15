@@ -1,0 +1,18 @@
+uuid: 901db366-b22d-47dc-80d3-9b62da43a914
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.benefits_category
+id: taxonomy_term.benefits_category.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: benefits_category
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

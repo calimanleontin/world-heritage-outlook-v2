@@ -11,15 +11,20 @@ dependencies:
   - entity_reference_revisions
   - field
   - field_group
+  - geofield
   - image
+  - image_widget_crop
   - iucn_site
+  - iucn_assessment
   - language
   - menu_ui
+  - metatag
   - node
   - options
   - paragraphs
   - path
   - smart_trim
+  - string_field_formatter
   - taxonomy
   - text
   - user
