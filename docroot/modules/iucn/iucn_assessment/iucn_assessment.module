@@ -77,7 +77,7 @@ function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
     $arg = explode('/', $path);
     $tab = $arg[3];
     $form_modes = \Drupal::entityManager()->getFormModes('node');
-    if ($tab && $form_modes[$tab]) {
+    if ($tab && !empty($form_modes[$tab])) {
       $entity_manager = \Drupal::entityTypeManager();
       $entity_default_display = $entity_manager->getStorage('entity_form_display')->load($id . '.' . $tab);
       if ($entity_default_display) {
