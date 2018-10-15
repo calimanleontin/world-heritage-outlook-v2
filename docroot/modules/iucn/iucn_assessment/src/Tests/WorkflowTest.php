@@ -3,7 +3,10 @@
 namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
+use Drupal\workflow\Entity\WorkflowConfigTransition;
 
 /**
  * Defines test scenarios for the assessment workflow.
@@ -15,7 +18,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
   /**
    * Test the assessment workflow, going through all the states.
    */
-  public function testAssessmentWorkflow() {
+  public function testAssessmentWorkflowAccess() {
     $assessment = TestSupport::getNodeByTitle(TestSupport::ASSESSMENT1);
 
     $this->checkAccessOnEveryState($assessment);
@@ -43,9 +46,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
     else {
       $url = Url::fromRoute('node.revision_edit', ['node' => $assessment->id(), 'node_revision' => $vid]);
     }
-    $user = user_load_by_mail($mail);
-    $user->pass_raw = 'password';
-    $this->drupalLogin($user);
+    $this->userLogIn($mail);
     $this->drupalGet($url);
     $this->assertResponse($assert_response_code);
   }
@@ -135,8 +136,29 @@ class WorkflowTest extends IucnAssessmentTestBase {
       $this->assertEqual($assessment->field_state->value, $state, "Testing state: $state");
       $this->assertAllUserAccessOnAssessmentEdit($assessment);
     }
+  }
 
+  protected function testValidTransitions() {
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT2);
+    $this->setAssessmentState($assessment, 'assessment_new');
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $url = $assessment->toUrl('edit-form');
 
+    $transition = WorkflowConfigTransition::load('assessment_new_under_evaluation');
+    $button_label = $transition->label();
+    // Try to change the state without assigning coordinator.
+    $this->drupalPostForm($url, [], t($button_label));
+    // Reload node.
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_new');
+
+    /** @var \Drupal\user\Entity\User $coordinator1 */
+    $coordinator1 = user_load_by_mail(TestSupport::COORDINATOR1);
+    $this->drupalPostForm($url, ['field_coordinator' => $coordinator1->id()], t($button_label));
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_under_evaluation');
   }
 
 }
