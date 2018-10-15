@@ -3,6 +3,11 @@
 
 function iucn_assessment_theme() {
   return [
+    'assessment_horizontal_tabs' => array(
+      'render element' => 'element',
+      'template' => 'assessment-horizontal-tabs',
+      'file' => 'templates/theme.inc',
+    ),
     'field_group_html_element_list' => [
       'render element' => 'element',
       'template' => 'field-group-html-element-list',
@@ -12,6 +17,48 @@ function iucn_assessment_theme() {
       'template' => 'rating-image-switcher',
     ],
   ];
+
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ *
+ * @param array $suggestions
+ * @param array $variables
+ * @param $hook
+ */
+function iucn_assessment_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  switch ($hook) {
+    case 'assessment_horizontal_tabs':
+      $element = $variables['element'];
+
+      $name = $element['#group_name'];
+      $entity_type = $element['#entity_type'];
+      $bundle = $element['#bundle'];
+
+      $wrapper = '';
+      if (isset($element['#wrapper_element'])) {
+        $wrapper = $element['#wrapper_element'];
+        $suggestions[] = $hook . '__' . $wrapper;
+      }
+
+      $suggestions[] = $hook . '__' . $entity_type;
+      $suggestions[] = $hook . '__' . $bundle;
+      $suggestions[] = $hook . '__' . $name;
+
+      if ($wrapper) {
+        $suggestions[] = $hook . '__' . $entity_type . '__' . $wrapper;
+      }
+
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle;
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $name;
+
+      if ($wrapper) {
+        $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle . '__' . $wrapper;
+      }
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle . '__' . $name;
+      break;
+  }
 
 }
 

@@ -18,7 +18,7 @@
     function handleResize(e) {
       $tab.addClass('is-horizontal');
       var $tabs = $tab.find('.tabs');
-      var isHorizontal = true;//$tabs.outerHeight() <= $tabs.find('.tabs__tab').outerHeight();
+      var isHorizontal = $tabs.outerHeight() <= $tabs.find('.tabs__tab').outerHeight();
       $tab.toggleClass('is-horizontal', isHorizontal);
       if (isCollapsible) {
         $tab.toggleClass('is-collapse-enabled', !isHorizontal);
