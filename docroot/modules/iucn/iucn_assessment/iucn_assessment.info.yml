@@ -18,7 +18,11 @@ dependencies:
   - node
   - paragraphs
   - path
+  - role_hierarchy
   - smart_trim
   - taxonomy
   - text
   - user
+  - workflow
+  - workflow_access
+  - workflow_ui

@@ -1,3 +1,4 @@
+uuid: 37b25c61-d496-4086-bba9-c518f2523fec
 langcode: en
 status: true
 dependencies:
@@ -14,7 +15,8 @@ content:
     type: language_select
     weight: 2
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
@@ -30,5 +32,10 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  translation:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
 hidden:
   description: true

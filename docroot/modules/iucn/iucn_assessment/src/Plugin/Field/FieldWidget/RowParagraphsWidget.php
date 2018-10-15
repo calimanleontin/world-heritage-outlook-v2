@@ -208,6 +208,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getFieldComponents(ParagraphInterface $paragraph) {
     $bundle = $paragraph->getType();
     $components = EntityFormDisplay::load("paragraph.$bundle.default")->getComponents();
+    if (array_key_exists('moderation_state', $components)) {
+      unset($components['moderation_state']);
+    }
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }

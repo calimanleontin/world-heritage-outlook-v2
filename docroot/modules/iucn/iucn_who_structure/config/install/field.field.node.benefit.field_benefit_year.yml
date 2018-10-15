@@ -1,0 +1,21 @@
+uuid: c7320fdc-ce91-45a7-9c15-e0a8d211f7f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_benefit_year
+    - node.type.benefit
+  module:
+    - options
+id: node.benefit.field_benefit_year
+field_name: field_benefit_year
+entity_type: node
+bundle: benefit
+label: Year
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

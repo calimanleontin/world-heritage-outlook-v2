@@ -1,0 +1,14 @@
+uuid: 1b54e89e-9f00-4ff9-beb8-b567bcc181a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.reviewer
+  module:
+    - user
+id: user_remove_role_action.reviewer
+label: 'Remove the Reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: reviewer

@@ -1,0 +1,26 @@
+uuid: aa13c80d-e8ac-42ec-9bc8-b80402842dfd
+langcode: en
+status: true
+dependencies: {  }
+id: assessment_under_evaluation_under_assessment
+label: 'Assign assessor'
+module: workflow
+from_sid: assessment_under_evaluation
+to_sid: assessment_under_assessment
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  edit_world_heritage_site_assessments: '0'
+  publish_world_heritage_site_assessments: '0'
+  assessor: '0'
+  reviewer: '0'
+  anonymous: '0'
+  authenticated: '0'
+  edit_content_pages: '0'
+  publish_content_pages: '0'
+  menu_editor: '0'
+  edit_world_heritage_site_information: '0'
+  publish_world_heritage_site_information: '0'
+  manage_submissions: '0'

@@ -1,3 +1,4 @@
+uuid: d4594b31-24ac-4999-9502-1a2e694492b2
 langcode: en
 status: true
 dependencies:
@@ -10,7 +11,7 @@ id: node.site.body
 field_name: body
 entity_type: node
 bundle: site
-label: Description
+label: 'Site description'
 description: ''
 required: false
 translatable: true

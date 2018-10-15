@@ -1,3 +1,4 @@
+uuid: 4afec893-88f5-4b83-b936-80b58e9078e6
 langcode: en
 status: true
 dependencies:
@@ -17,14 +18,14 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: site
+  file_directory: images/site
   file_extensions: 'png gif jpg jpeg'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''
-  alt_field: false
-  alt_field_required: true
-  title_field: false
+  alt_field: true
+  alt_field_required: false
+  title_field: true
   title_field_required: false
   default_image:
     uuid: ''

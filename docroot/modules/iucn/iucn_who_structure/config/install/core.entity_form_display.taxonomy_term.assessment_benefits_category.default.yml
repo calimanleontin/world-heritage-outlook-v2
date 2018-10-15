@@ -1,0 +1,69 @@
+uuid: 48c7d676-bb35-45b6-ad77-653f256b3f2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.assessment_benefits_category.field_category_image
+    - field.field.taxonomy_term.assessment_benefits_category.field_image
+    - image.style.thumbnail
+    - taxonomy.vocabulary.assessment_benefits_category
+  module:
+    - image
+    - path
+    - text
+id: taxonomy_term.assessment_benefits_category.default
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_category
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_category_image:
+    weight: 32
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  field_image:
+    weight: 31
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

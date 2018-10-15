@@ -1,14 +1,10 @@
 <?php
 
+use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 
 /**
- * Implements hook_install().
+ * Update the field_css_identifier for some terms.
  */
-function iucn_assessment_install() {
-//  \Drupal\iucn_assessment\WHOTaxonomiesInstaller::install();
-}
-
-// Update the field_css_identifier for some terms.
 function iucn_assessment_update_8001() {
   $css_identifiers = [
     'data-deficient' => ['Data Deficient'],
@@ -37,4 +33,11 @@ function iucn_assessment_update_8001() {
       }
     }
   }
+}
+
+/**
+ * Set 2014 and 2017 cycles as "created".
+ */
+function iucn_assessment_update_8002() {
+  \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
 }

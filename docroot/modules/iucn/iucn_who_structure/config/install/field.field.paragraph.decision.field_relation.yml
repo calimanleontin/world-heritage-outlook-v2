@@ -1,0 +1,21 @@
+uuid: 5a74907a-408c-484c-9506-3141c55d4bb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_relation
+    - paragraphs.paragraphs_type.decision
+  module:
+    - options
+id: paragraph.decision.field_relation
+field_name: field_relation
+entity_type: paragraph
+bundle: decision
+label: Relation
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

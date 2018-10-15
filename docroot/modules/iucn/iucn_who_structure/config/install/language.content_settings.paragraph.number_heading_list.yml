@@ -1,0 +1,16 @@
+uuid: 08c238d7-82d0-4d84-a260-9d9b8b701f6e
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.number_heading_list
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+id: paragraph.number_heading_list
+target_entity_type_id: paragraph
+target_bundle: number_heading_list
+default_langcode: site_default
+language_alterable: false
