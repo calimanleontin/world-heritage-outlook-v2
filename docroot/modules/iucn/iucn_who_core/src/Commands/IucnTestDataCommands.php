@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iucn_site\Commands;
+namespace Drupal\iucn_who_core\Commands;
 
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
