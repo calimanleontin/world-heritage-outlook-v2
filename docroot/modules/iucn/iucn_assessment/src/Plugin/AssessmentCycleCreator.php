@@ -10,6 +10,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 class AssessmentCycleCreator {
 
@@ -93,8 +94,9 @@ class AssessmentCycleCreator {
   protected function createDuplicateAssessment(NodeInterface $originalNode, $cycle, $originalCycle) {
     $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
     $duplicate = $originalNode->createDuplicate();
-    $duplicate->set('field_as_cycle', $cycle);
     $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
+    $duplicate->set('field_as_cycle', $cycle);
+    $duplicate->set('field_state', AssessmentWorkflow::STATUS_NEW);
     $this->createDuplicateReferencedEntities($duplicate);
     $duplicate->save();
     return $duplicate;
