@@ -1,3 +1,4 @@
 services:
-  iucn_diff_revisions.diff_revision_comparison:
-    class: Drupal\iucn_diff_revisions\DiffRevisionComparison
+  iucn_diff_revisions.diff_controller:
+    class: Drupal\iucn_diff_revisions\Controller\DiffController
+    arguments: ['@entity_type.manager', '@diff.entity_comparison']

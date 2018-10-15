@@ -3,6 +3,11 @@
 
 function iucn_assessment_theme() {
   return [
+    'assessment_horizontal_tabs' => array(
+      'render element' => 'element',
+      'template' => 'assessment-horizontal-tabs',
+      'file' => 'templates/theme.inc',
+    ),
     'field_group_html_element_list' => [
       'render element' => 'element',
       'template' => 'field-group-html-element-list',
@@ -14,6 +19,69 @@ function iucn_assessment_theme() {
   ];
 
 }
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ *
+ * @param array $suggestions
+ * @param array $variables
+ * @param $hook
+ */
+function iucn_assessment_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  switch ($hook) {
+    case 'assessment_horizontal_tabs':
+      $element = $variables['element'];
+
+      $name = $element['#group_name'];
+      $entity_type = $element['#entity_type'];
+      $bundle = $element['#bundle'];
+
+      $wrapper = '';
+      if (isset($element['#wrapper_element'])) {
+        $wrapper = $element['#wrapper_element'];
+        $suggestions[] = $hook . '__' . $wrapper;
+      }
+
+      $suggestions[] = $hook . '__' . $entity_type;
+      $suggestions[] = $hook . '__' . $bundle;
+      $suggestions[] = $hook . '__' . $name;
+
+      if ($wrapper) {
+        $suggestions[] = $hook . '__' . $entity_type . '__' . $wrapper;
+      }
+
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle;
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $name;
+
+      if ($wrapper) {
+        $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle . '__' . $wrapper;
+      }
+      $suggestions[] = $hook . '__' . $entity_type . '__' . $bundle . '__' . $name;
+      break;
+  }
+
+}
+
+/**
+ * Implements hook_entity_form_display_alter().
+ */
+function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
+  $id = $context['entity_type'] . '.' . $context['bundle'];
+  if ($id == 'node.site_assessment') {
+    $path = \Drupal::request()->getpathInfo();
+    $arg = explode('/', $path);
+    $tab = $arg[3];
+    $form_modes = \Drupal::entityManager()->getFormModes('node');
+    if ($tab && $form_modes[$tab]) {
+      $entity_manager = \Drupal::entityTypeManager();
+      $entity_default_display = $entity_manager->getStorage('entity_form_display')->load($id . '.' . $tab);
+      if ($entity_default_display) {
+        $form_display = $entity_default_display;
+      }
+    }
+  }
+}
+
 
 function template_preprocess_rating_image_switcher(&$variables) {
   $element = $variables['element'];
