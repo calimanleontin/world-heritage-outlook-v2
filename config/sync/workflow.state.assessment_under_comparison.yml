@@ -1,0 +1,10 @@
+uuid: cd9102a1-ac4b-4c05-b96e-c8b2f4cf2218
+langcode: en
+status: true
+dependencies: {  }
+id: assessment_under_comparison
+label: 'Under comparison'
+module: workflow
+wid: assessment
+weight: -3
+sysid: 0

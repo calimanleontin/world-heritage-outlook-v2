@@ -1,0 +1,25 @@
+uuid: f29c9f45-7d0a-464e-9b53-a6cd668f41b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.decision.field_decision
+    - field.field.paragraph.decision.field_relation
+    - paragraphs.paragraphs_type.decision
+id: paragraph.decision.default
+targetEntityType: paragraph
+bundle: decision
+mode: default
+content:
+  field_decision:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: entity_reference_entity_id
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_relation: true

@@ -8,4 +8,9 @@ services:
   iucn_assessment.cycle_creator:
     class: 'Drupal\iucn_assessment\Plugin\AssessmentCycleCreator'
     arguments: ['@entity_type.manager', '@entity_field.manager', '@state', '@logger.factory']
-
+  iucn_assessment.route_subscriber:
+    class: Drupal\iucn_assessment\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  iucn_assessment.workflow:
+    class: 'Drupal\iucn_assessment\Plugin\AssessmentWorkflow'

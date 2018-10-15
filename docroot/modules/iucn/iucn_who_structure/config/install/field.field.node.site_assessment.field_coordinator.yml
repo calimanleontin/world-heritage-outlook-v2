@@ -1,0 +1,25 @@
+uuid: d59dc979-3adb-498d-b500-8f41939b9267
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_coordinator
+    - node.type.site_assessment
+id: node.site_assessment.field_coordinator
+field_name: field_coordinator
+entity_type: node
+bundle: site_assessment
+label: Coordinator
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: users_by_roles
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

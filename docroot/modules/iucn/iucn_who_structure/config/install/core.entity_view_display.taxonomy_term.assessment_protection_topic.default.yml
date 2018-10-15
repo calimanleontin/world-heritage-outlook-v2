@@ -1,0 +1,34 @@
+uuid: d08bfc88-6236-49ec-8ba2-0f50e303e6dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.assessment_protection_topic.field_name_2014
+    - taxonomy.vocabulary.assessment_protection_topic
+  module:
+    - text
+id: taxonomy_term.assessment_protection_topic.default
+targetEntityType: taxonomy_term
+bundle: assessment_protection_topic
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_name_2014:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

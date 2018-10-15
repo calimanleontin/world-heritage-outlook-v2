@@ -1,0 +1,18 @@
+uuid: 65b54f2b-d53d-4b58-98b1-97656bac892a
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.conservation_rating
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+_core:
+  default_config_hash: AxbnKOxCXJloMLyypem9YjP1Beks_kosqj27wOa95bQ
+id: taxonomy_term.conservation_rating
+target_entity_type_id: taxonomy_term
+target_bundle: conservation_rating
+default_langcode: site_default
+language_alterable: false

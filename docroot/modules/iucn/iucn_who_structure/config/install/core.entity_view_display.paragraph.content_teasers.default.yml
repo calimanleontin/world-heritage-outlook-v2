@@ -1,0 +1,47 @@
+uuid: c9a86e7b-8ca4-43fd-a0dc-30dc0447cb42
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_teasers.field_paragraph_background
+    - field.field.paragraph.content_teasers.field_teasers
+    - field.field.paragraph.content_teasers.field_teasers_layout
+    - paragraphs.paragraphs_type.content_teasers
+  module:
+    - ds
+    - entity_reference_revisions
+    - options
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_teasers
+id: paragraph.content_teasers.default
+targetEntityType: paragraph
+bundle: content_teasers
+mode: default
+content:
+  field_teasers:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_teasers_layout:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  field_paragraph_background: true

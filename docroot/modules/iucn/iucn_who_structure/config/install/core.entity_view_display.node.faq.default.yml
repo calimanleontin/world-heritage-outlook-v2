@@ -1,0 +1,27 @@
+uuid: 3c6bc1f9-7e2f-4e4f-9479-6e3c8d2d1aed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.faq.field_answer
+    - field.field.node.faq.field_weight
+    - node.type.faq
+  module:
+    - text
+    - user
+id: node.faq.default
+targetEntityType: node
+bundle: faq
+mode: default
+content:
+  field_answer:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  field_weight: true
+  langcode: true
+  links: true

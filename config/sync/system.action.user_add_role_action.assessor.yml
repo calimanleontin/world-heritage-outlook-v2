@@ -1,0 +1,14 @@
+uuid: dde76451-a969-4d69-8870-5c359beb9644
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.assessor
+  module:
+    - user
+id: user_add_role_action.assessor
+label: 'Add the Assessor role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: assessor

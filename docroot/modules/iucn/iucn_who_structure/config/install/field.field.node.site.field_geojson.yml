@@ -1,0 +1,27 @@
+uuid: d2d5d32f-e813-4f88-9fe4-0f263bd198d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_geojson
+    - node.type.site
+  module:
+    - file
+id: node.site.field_geojson
+field_name: field_geojson
+entity_type: node
+bundle: site
+label: geoJson
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: json
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

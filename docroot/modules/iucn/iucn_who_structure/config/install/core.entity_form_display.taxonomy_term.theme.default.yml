@@ -1,3 +1,4 @@
+uuid: a98f2eca-4a98-4c7b-8001-b76b3b9b8586
 langcode: en
 status: true
 dependencies:
@@ -14,7 +15,8 @@ content:
     type: language_select
     weight: 2
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield

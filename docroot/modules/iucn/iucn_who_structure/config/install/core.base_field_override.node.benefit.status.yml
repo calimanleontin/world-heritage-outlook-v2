@@ -1,0 +1,22 @@
+uuid: ffbe9926-6a4e-4bf8-a4ca-5edea6b0bf88
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.benefit
+id: node.benefit.status
+field_name: status
+entity_type: node
+bundle: benefit
+label: 'Publishing status'
+description: 'A boolean indicating the published state.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

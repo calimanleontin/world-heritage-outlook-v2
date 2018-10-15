@@ -175,6 +175,7 @@
     "drupal/redirect": "^1.2",
     "drupal/reroute_email": "^1.0",
     "drupal/responsive_favicons": "^1.4",
+    "drupal/role_hierarchy": "^1.0",
     "drupal/search_api": "^1.9",
     "drupal/search_api_autocomplete": "^1.0@alpha",
     "drupal/search_api_solr": "^1.2",
@@ -192,6 +193,7 @@
     "drupal/varnish_purge": "^1.11",
     "drupal/views_accordion": "^1.1",
     "drupal/webform": "^5.0@RC",
+    "drupal/workflow": "^1.1",
     "drupal/xmlsitemap": "^1.0@alpha",
     "drush/drush": "^9.4.0",
     "enyoo/dropzone": "^4.3",
@@ -201,11 +203,12 @@
     "webflo/drupal-finder": "^1.1",
     "webmozart/path-util": "^2.3",
     "drush/drush": "^9.4.0",
-    "drupal/console": "^1.7.0"
+    "drupal/console": "^1.7.0",
+    "webmozart/path-util": "^2.3"
   },
   "require-dev": {
     "consolidation/robo": "~1",
-    "phpunit/phpunit": ">=4.8.28 <5"
+    "phpunit/phpunit": "^6.0"
   },
   "conflict": {
     "drupal/drupal": "*"
@@ -233,7 +236,8 @@
     ],
     "post-update-cmd": [
       "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ]
+    ],
+    "drupal-phpunit-upgrade": "@composer update phpunit/phpunit --with-dependencies --no-progress"
   },
   "extra": {
     "installer-paths": {
