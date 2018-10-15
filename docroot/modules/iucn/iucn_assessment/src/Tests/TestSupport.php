@@ -1,11 +1,9 @@
 <?php
 
 namespace Drupal\iucn_assessment\Tests;
+
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
-use Drupal\workflow\Entity\WorkflowState;
-use Drupal\workflow\Entity\WorkflowTransition;
 
 /**
  * Class TestSupport populates database with test data for various scenarios.

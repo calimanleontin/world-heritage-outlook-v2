@@ -44,6 +44,7 @@ dependencies:
     - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
     - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_state
     - node.type.site_assessment
   module:
     - datetime
@@ -51,6 +52,7 @@ dependencies:
     - entity_reference_revisions
     - field_group
     - file
+    - options
     - user
 third_party_settings:
   ds:
@@ -949,6 +951,13 @@ content:
     third_party_settings: {  }
     type: file_default
     region: summary
+  field_state:
+    weight: 44
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true
