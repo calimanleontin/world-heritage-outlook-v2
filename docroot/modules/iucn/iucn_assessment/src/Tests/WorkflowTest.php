@@ -10,6 +10,7 @@ use Drupal\node\NodeInterface;
  * Defines test scenarios for the assessment workflow.
  *
  * @package Drupal\iucn_assessment\Tests
+ * @group iucn
  */
 class WorkflowTest extends IucnAssessmentTestBase {
 
