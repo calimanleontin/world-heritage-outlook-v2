@@ -10,7 +10,6 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 class AssessmentCycleCreator {
 
