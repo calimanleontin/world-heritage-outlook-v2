@@ -1,0 +1,46 @@
+.paragraph-summary-component textarea {
+  max-width: 100%;
+  width: 100%;
+}
+
+.js .paragraph-top {
+  align-items: flex-start;
+}
+
+.chosen-container {
+  width: 100% !important;
+}
+
+.paragraph-summary-component select {
+  font-size: 1em;
+}
+
+.paragraph-summary-component {
+  height: 100%;
+}
+
+.btn-reset {
+  visibility: hidden;
+}
+
+/* .paragraph-summary-component:hover .btn-reset {
+  visibility: visible;
+} */
+
+/* .paragraphs-actions {
+  display: flex;
+}
+
+.paragraphs-actions > .button {
+  flex: 1;
+}
+ */
+
+.diff-changed,
+.diff-changed:hover {
+  background-color: #fcf8e3;
+}
+
+.ui-dialog {
+  margin: 15px;
+}

@@ -7,3 +7,5 @@ dependencies:
   - paragraphs
   - iucn_who_core
   - iucn_assessment
+  - diff
+  - iucn_diff_revisions

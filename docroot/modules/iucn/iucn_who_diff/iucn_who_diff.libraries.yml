@@ -1,0 +1,7 @@
+iucn_who_diff.diff_prototype:
+  version: VERSION
+  css:
+    theme:
+      css/diff-prototype.css: {}
+  js:
+    js/diff-prototype.js: {}

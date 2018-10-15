@@ -18,7 +18,7 @@
 .js .paragraph-top {
     display: grid;
     grid-gap: 10px;
-    align-items: baseline;
+    align-items: flex-start;
 }
 
 .paragraph-summary-component-span-2 {
