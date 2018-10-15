@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\Core\Url;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 
 /**
@@ -65,14 +66,14 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
     $state = $assessment->field_state->value;
 
-    if ($state == 'assessment_under_assessment') {
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
     }
     else {
-      if ($state == 'assessment_published') {
+      if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
         $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
       }
       else {
@@ -92,24 +93,24 @@ class WorkflowTest extends IucnAssessmentTestBase {
    */
   protected function checkAccessOnEveryState(NodeInterface $assessment) {
     $states = [
-      'assessment_new',
-      'assessment_under_evaluation',
-      'assessment_under_assessment',
-      'assessment_ready_for_review',
-      'assessment_under_review',
-      'assessment_finished_reviewing',
-      'assessment_under_comparison',
-      'assessment_approved',
-      'assessment_published',
+      AssessmentWorkflow::STATUS_NEW,
+      AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_REVIEW,
+      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_APPROVED,
+      AssessmentWorkflow::STATUS_PUBLISHED,
     ];
     foreach ($states as $state) {
       $field_changes = NULL;
-      if ($state == 'assessment_under_assessment') {
+      if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::ASSESSOR1);
         $field_changes = ['field_assessor' => $user->id()];
       }
-      elseif ($state == 'assessment_under_review') {
+      elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
         /** @var \Drupal\user\Entity\User $user */
         $user = user_load_by_mail(TestSupport::REVIEWER1);
         $field_changes = ['field_assessor' => $user->id()];
