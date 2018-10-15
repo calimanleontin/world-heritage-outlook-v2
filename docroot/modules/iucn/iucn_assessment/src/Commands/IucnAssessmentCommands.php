@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Commands;
 
+use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
@@ -20,13 +21,16 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  * }
  *
  */
-class DeleteRevisionsCommands extends DrushCommands {
+class IucnAssessmentCommands extends DrushCommands {
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
   /** @var \Drupal\node\NodeStorageInterface */
   protected $nodeStorage;
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator */
+  protected $assessmentCycleCreator;
 
   /**
    * DeleteRevisionsCommands constructor.
@@ -37,9 +41,10 @@ class DeleteRevisionsCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, AssessmentCycleCreator $assessmentCycleCreator) {
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    $this->assessmentCycleCreator = $assessmentCycleCreator;
   }
 
   /**
@@ -74,6 +79,21 @@ class DeleteRevisionsCommands extends DrushCommands {
         }
       }
     }
+  }
+
+  /**
+   * Create site assessments for a new cycle by duplicating the ones from an
+   * older cycle.
+   *
+   * @param $cycle
+   * @param int $originalCycle
+   *
+   * @command iucn_assessment:create-assessments
+   *
+   * @throws \Exception
+   */
+  public function createAssessments($cycle, $originalCycle = 2017) {
+    $this->assessmentCycleCreator->createAssessments($cycle, $originalCycle);
   }
 
 }
