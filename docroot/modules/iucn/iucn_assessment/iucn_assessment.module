@@ -406,18 +406,24 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     // Hide revision log message.
     $form['advanced']['#access'] = FALSE;
 
+    // Hide publish settings.
+    $form['footer']['#access'] = FALSE;
+  }
+  elseif ($form_id == 'node_site_assessment_state_change_form') {
     // Hide state change scheduling.
     if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
       $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
     }
 
+    $form['advanced']['#access'] = FALSE;
+    $form['revision']['#default_value'] = FALSE;
+    $form['revision']['#disabled'] = FALSE;
+    $form['revision']['#access'] = FALSE;
+
     // Do not alter the form for user 1.
     if ($is_user_1) {
       return;
     }
-
-    // Hide publish settings.
-    $form['footer']['#access'] = FALSE;
 
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
@@ -472,7 +478,7 @@ function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_sta
 function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   // The revision edit page is actually the node edit page.
   // We need to change the form entity to the selected revision.
-  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
+  if ($entity->bundle() == 'site_assessment' && in_array($operation, ['edit', 'state_change'])) {
     $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
     if (!empty($node_revision)) {
       $revision = \Drupal::entityTypeManager()
@@ -505,4 +511,12 @@ function iucn_assessment_validation_constraint_alter(array &$definitions) {
   if (isset($definitions['EntityChanged'])) {
     $definitions['EntityChanged']['class'] = 'Drupal\iucn_assessment\Plugin\Validation\Constraint\IucnAssessmentEntityChangedConstraint';
   }
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function iucn_assessment_entity_type_build(array &$entity_types) {
+  // Add the custom form mode.
+  $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
 }
