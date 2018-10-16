@@ -19,13 +19,15 @@
   height: 100%;
 }
 
+.btn-copy,
 .btn-reset {
   visibility: hidden;
 }
 
-/* .paragraph-summary-component:hover .btn-reset {
+.paragraph-summary-component:hover .btn-reset,
+.paragraph-summary-component:hover .btn-copy {
   visibility: visible;
-} */
+}
 
 /* .paragraphs-actions {
   display: flex;
@@ -45,3 +47,14 @@
   margin: 15px;
   max-width: 90vw;
 }
+
+.responsive-wrapper {
+  overflow: auto;
+  position: relative;
+}
+/*
+.paragraphs-actions {
+  position: absolute;
+  right: 0;
+}
+ */
