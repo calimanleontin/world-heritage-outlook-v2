@@ -191,6 +191,7 @@ class AssessmentWorkflow {
       || $state == 'assessment_creation'
       || empty($original->field_state->value)
       || $original->field_state->value == 'assessment_creation') {
+      $node->field_state->value = self::STATUS_NEW;
       return;
     }
 
