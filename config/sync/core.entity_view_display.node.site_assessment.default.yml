@@ -44,6 +44,7 @@ dependencies:
     - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
     - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_settings
     - field.field.node.site_assessment.field_state
     - node.type.site_assessment
   module:
@@ -184,7 +185,7 @@ third_party_settings:
         formatter: basic_string
       'display_field_copy:node-finalised_on':
         plugin_id: 'display_field_copy:node-finalised_on'
-        weight: 6
+        weight: 7
         label: inline
         formatter: datetime_custom
         settings:
@@ -308,7 +309,7 @@ third_party_settings:
       children:
         - group_values
       parent_name: ''
-      weight: 7
+      weight: 8
       format_type: html_element
       format_settings:
         label: 'Description of values'
@@ -327,7 +328,7 @@ third_party_settings:
         - group_protection_and_management
         - group_state_and_trend_of_values
       parent_name: ''
-      weight: 8
+      weight: 9
       format_type: html_element
       format_settings:
         label: 'Assessment information'
@@ -345,7 +346,7 @@ third_party_settings:
         - group_key_conservation_issues
         - group_benefits
       parent_name: ''
-      weight: 9
+      weight: 10
       format_type: html_element
       format_settings:
         label: 'Additional information'
@@ -415,7 +416,7 @@ third_party_settings:
         - group_active_projects
         - group_projects_needs
       parent_name: ''
-      weight: 10
+      weight: 11
       format_type: details
       format_settings:
         id: ''
@@ -819,7 +820,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_as_references:
-    weight: 11
+    weight: 12
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -952,7 +953,7 @@ content:
     type: file_default
     region: summary
   field_state:
-    weight: 44
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -973,6 +974,7 @@ hidden:
   field_coordinator: true
   field_date_published: true
   field_reviewers: true
+  field_settings: true
   langcode: true
   links: true
   site_assessments_link: true

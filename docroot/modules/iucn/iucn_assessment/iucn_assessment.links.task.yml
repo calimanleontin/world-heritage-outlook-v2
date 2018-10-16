@@ -1,0 +1,17 @@
+iucn_assessment.node.state_change:
+  route_name: iucn_assessment.node.state_change
+  base_route: entity.node.canonical
+  title: Change state
+  weight: 4
+
+node.revision_edit:
+  route_name: node.revision_edit
+  base_route: node.revision_edit
+  title: Edit
+  weight: 1
+
+iucn_assessment.node_revision.state_change:
+  route_name: iucn_assessment.node_revision.state_change
+  base_route: node.revision_edit
+  title: Change state
+  weight: 2

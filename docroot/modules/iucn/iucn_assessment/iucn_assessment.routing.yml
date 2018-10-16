@@ -9,3 +9,27 @@ node.revision_edit:
     _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
   options:
     _node_operation_route: TRUE
+
+iucn_assessment.node.state_change:
+  path: '/node/{node}/state_change'
+  defaults:
+    _title: 'State change'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
+  requirements:
+    node: \d+
+    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+
+iucn_assessment.node_revision.state_change:
+  path: '/node/{node}/revisions/{node_revision}/state_change'
+  defaults:
+    _title: 'State change'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
+  requirements:
+    node: \d+
+    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE

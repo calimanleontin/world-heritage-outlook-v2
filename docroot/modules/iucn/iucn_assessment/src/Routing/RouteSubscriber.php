@@ -33,6 +33,12 @@ class RouteSubscriber extends RouteSubscriberBase {
         '_controller' => '\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview',
       ));
     }
+
+    // Hide unnecessary workflow tab.
+    $route = $collection->get('entity.node.workflow_history');
+    if ($route) {
+      $route->setRequirement('_access', 'FALSE');
+    }
   }
 
 }
