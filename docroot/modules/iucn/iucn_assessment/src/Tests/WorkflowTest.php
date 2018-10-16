@@ -64,7 +64,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
 
-
     $state = $assessment->field_state->value;
 
     // Coordinators cannot edit assessments in under_assessment or published.
@@ -144,7 +143,12 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT2);
     $this->setAssessmentState($assessment, 'assessment_new');
     $this->userLogIn(TestSupport::COORDINATOR1);
-    $url = $assessment->toUrl('edit-form');
+    $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+    $this->drupalGet($url);
+    $this->assertText(t('Coordinator'));
+    $this->assertNoText(t('Assessor'));
+    $this->assertNoText(t('Reviewers'));
 
     $transition = WorkflowConfigTransition::load('assessment_new_under_evaluation');
     $button_label = $transition->label();
@@ -161,6 +165,55 @@ class WorkflowTest extends IucnAssessmentTestBase {
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEqual($assessment->field_state->value, 'assessment_under_evaluation');
+
+    $this->drupalGet($url);
+    $this->assertNoText(t('Coordinator'));
+    $this->assertText(t('Assessor'));
+    $this->assertNoText(t('Reviewers'));
+
+    $transition = WorkflowConfigTransition::load('assessment_under_evaluation_under_assessment');
+    $button_label = $transition->label();
+    // Try to change the state without assigning assessor.
+    $this->drupalPostForm($url, [], t($button_label));
+    // Reload node.
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_under_evaluation');
+
+    /** @var \Drupal\user\Entity\User $coordinator1 */
+    $assessor1 = user_load_by_mail(TestSupport::ASSESSOR1);
+    $this->drupalPostForm($url, ['field_assessor' => $assessor1->id()], t($button_label));
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_under_assessment');
+
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $transition = WorkflowConfigTransition::load('assessment_under_assessment_ready_for_review');
+    $button_label = $transition->label();
+    $this->drupalPostForm($url, [], t($button_label));
+    drupal_flush_all_caches();
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalGet($url);
+    $this->assertNoText(t('Coordinator'));
+    $this->assertNoText(t('Assessor'));
+    $this->assertText(t('Reviewers'));
+
+    $transition = WorkflowConfigTransition::load('assessment_ready_for_review_under_review');
+    $button_label = $transition->label();
+    // Try to change the state without assigning reviewer.
+    $this->drupalPostForm($url, [], t($button_label));
+    // Reload node.
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_ready_for_review');
+
+    /** @var \Drupal\user\Entity\User $coordinator1 */
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $this->drupalPostForm($url, ['field_reviewers[]' => [$reviewer1->id()]], t($button_label));
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEqual($assessment->field_state->value, 'assessment_under_review');
   }
 
 }
