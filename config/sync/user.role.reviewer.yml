@@ -7,7 +7,6 @@ label: Reviewer
 weight: -4
 is_admin: null
 permissions:
-  - 'administer nodes'
   - 'create assessment workflow_transition'
   - 'create content unpublished'
   - 'edit any site_assessment content'
@@ -18,4 +17,3 @@ permissions:
   - 'use assessment transition under_review_under_review'
   - 'view any unpublished content'
   - 'view latest version'
-  - 'view site_assessment revisions'
