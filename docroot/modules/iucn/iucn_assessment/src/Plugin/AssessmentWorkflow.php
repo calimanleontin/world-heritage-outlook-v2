@@ -105,8 +105,9 @@ class AssessmentWorkflow {
 
       case self::STATUS_UNDER_REVIEW:
         // Only coordinators can edit the main revision.
+        // Reviewers will be redirected to their revision.
         if ($node->isDefaultRevision()) {
-          return $coordinator == $account->id();
+          return $coordinator == $account->id() || in_array($account->id(), $reviewers);
         }
         // Reviewers can edit their respective revisions.
         return $node->getRevisionUser()->id() == $account->id();
@@ -186,6 +187,12 @@ class AssessmentWorkflow {
 
     $state = $node->field_state->value;
     $original = $node->original;
+    if (empty($state)
+      || $state == 'assessment_creation'
+      || empty($original->field_state->value)
+      || $original->field_state->value == 'assessment_creation') {
+      return;
+    }
 
     // When a reviewer marks his revision as done, check if all other reviewers
     // have marked their revision is done.
@@ -208,11 +215,9 @@ class AssessmentWorkflow {
     $removed_reviewers = $this->getRemovedReviewers($node, $original);
 
     if (!empty($added_reviewers) || !empty($removed_reviewers)) {
-      $revision_message .= 'Reviewers field changed. ';
-
       // Create a revision for each newly added reviewer.
       foreach ($added_reviewers as $added_reviewer) {
-        $this->createRevisionForUser($node, $added_reviewer);
+        $this->createRevisionForReviewer($node, $added_reviewer);
       }
 
       // Delete revisions of reviewers no longer assigned on this assessment.
@@ -223,13 +228,14 @@ class AssessmentWorkflow {
 
     if ($original->field_state->value != $state) {
       $create_revision = TRUE;
-      $revision_message .= 'State changed from <b>' . $original->field_state->value . '</b> to <b>' . $node->field_state->value . '</b>. ';
+      $revision_message .= 'State: ' . $node->field_state->value . '. ';
     }
 
     if ($create_revision) {
-      $node->setNewRevision(TRUE);
-      $node->setRevisionCreationTime(time());
-      $node->setRevisionUserId(\Drupal::currentUser()->id());
+      // When using $node->setNewRevision(), editing paragraphs makes
+      // the changes visible in all revisions.
+      // @todo: check why this is happening.
+      $this->createRevision($node, NULL, NULL, TRUE);
       $node->setRevisionLogMessage($revision_message);
     }
 
@@ -240,6 +246,58 @@ class AssessmentWorkflow {
       $node->setPublished(FALSE);
     }
 
+    $node->setRevisionCreationTime(time());
+  }
+
+  /**
+   * Create a revision for an assessment.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param int $uid
+   *   The user id of the reviewer.
+   * @param string $message
+   *   The revision log message.
+   * @param bool $use_original
+   *   If this is set, the revision will be created using the
+   *   field values set before the save.
+   */
+  public function createRevision(NodeInterface $node, $uid = NULL, $message = '', $use_original = FALSE) {
+    if (empty($uid)) {
+      $uid = \Drupal::currentUser()->id();
+    }
+    if (!empty($use_original)) {
+      $node = $node->original;
+    }
+    if (empty($message)) {
+      $message = 'State: ' . $node->field_state->value . '. ';
+    }
+    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage($node->getEntityTypeId());
+
+    /** @var \Drupal\node\NodeInterface $new_revision */
+    $new_revision = $storage->createRevision($node, FALSE);
+    $new_revision->setRevisionCreationTime(time());
+    $new_revision->setRevisionLogMessage($message);
+    $new_revision->setRevisionUserId($uid);
+    $new_revision->save();
+  }
+
+  /**
+   * Creates a revision for a reviewer.
+   *
+   * This function sets the appropiate revision user id and message when
+   * creating a revision for a reviewer.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param int $uid
+   *   The user id of the reviewer.
+   */
+  public function createRevisionForReviewer(NodeInterface $node, $uid) {
+    $revision_user = User::load($uid)->getUsername();
+    $message = 'Revision created for reviewer ' . $revision_user;
+    $this->createRevision($node, $uid, $message);
   }
 
   /**
@@ -339,31 +397,22 @@ class AssessmentWorkflow {
   }
 
   /**
-   * Creates a revision for a reviewer.
-   *
-   * This function sets the appropiate revision user id and message when
-   * creating a revision for a reviewer.
+   * Deletes the revision created for a reviewer.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The assessment.
    * @param int $uid
    *   The user id of the reviewer.
    */
-  public function createRevisionForUser(NodeInterface $node, $uid) {
-    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-    $storage = \Drupal::entityTypeManager()->getStorage($node->getEntityTypeId());
-
-    /** @var \Drupal\node\NodeInterface $new_revision */
-    $new_revision = $storage->createRevision($node, FALSE);
-    $new_revision->setRevisionCreationTime(time());
-    $revision_user = User::load($uid)->getUsername();
-    $new_revision->setRevisionLogMessage('Revision created for reviewer ' . $revision_user);
-    $new_revision->setRevisionUserId($uid);
-    $new_revision->save();
+  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
+    $reviewer_revision = $this->getReviewerRevision($node, $uid);
+    if (!empty($reviewer_revision)) {
+      \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($reviewer_revision->vid->value);
+    }
   }
 
   /**
-   * Deletes all the revisions of a reviewer.
+   * Retrieves the revision created for a reviewer.
    *
    * All the reviewer revisions have their revision user id set
    * equal to the uid of the reviewer.
@@ -372,17 +421,25 @@ class AssessmentWorkflow {
    *   The assessment.
    * @param int $uid
    *   The user id of the reviewer.
+   *
+   * @return \Drupal\node\NodeInterface
+   *   The revision.
    */
-  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
+  public function getReviewerRevision(NodeInterface $node, $uid) {
+    $reviewers = $this->getReviewersArray($node);
+    if (!in_array($uid, $reviewers)) {
+      return NULL;
+    }
     $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     foreach ($assessment_revisions_ids as $rid) {
       $node_revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($rid);
       if ($node_revision->getRevisionUserId() == $uid && !$node_revision->isDefaultRevision()) {
-        \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($rid);
+        return $node_revision;
       }
     }
+    return NULL;
   }
 
 }
