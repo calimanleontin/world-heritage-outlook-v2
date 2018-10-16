@@ -13673,6 +13673,7 @@ a[rel="bookmark"] {
 .view-sites-search .view-header .block-search-api-sorts li > a {
   color: #03afdf;
 }
+.view-sites-search .view-header .block-search-api-sorts li > a .icon,
 .view-sites-search .view-header .block-search-api-sorts li > a .tablesort {
   display: none;
 }
