@@ -139,8 +139,15 @@ class WorkflowTest extends IucnAssessmentTestBase {
     }
   }
 
+  /**
+   * Make sure transition conditions are respected.
+   *
+   * Moving to state under_evaluation requires a coordinator.
+   * Moving to state under_assessment requires an assessor.
+   * Moving to state under_review requires a reviewer.
+   */
   protected function testValidTransitions() {
-    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT2);
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
     $this->setAssessmentState($assessment, 'assessment_new');
     $this->userLogIn(TestSupport::COORDINATOR1);
     $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);

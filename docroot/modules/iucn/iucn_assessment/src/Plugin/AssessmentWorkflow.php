@@ -105,8 +105,9 @@ class AssessmentWorkflow {
 
       case self::STATUS_UNDER_REVIEW:
         // Only coordinators can edit the main revision.
+        // Reviewers will be redirected to their revision.
         if ($node->isDefaultRevision()) {
-          return $coordinator == $account->id();
+          return $coordinator == $account->id() || in_array($account->id(), $reviewers);
         }
         // Reviewers can edit their respective revisions.
         return $node->getRevisionUser()->id() == $account->id();
@@ -363,7 +364,22 @@ class AssessmentWorkflow {
   }
 
   /**
-   * Deletes all the revisions of a reviewer.
+   * Deletes the revision created for a reviewer.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param int $uid
+   *   The user id of the reviewer.
+   */
+  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
+    $reviewer_revision = $this->getReviewerRevision($node, $uid);
+    if (!empty($reviewer_revision)) {
+      \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($reviewer_revision->vid->value);
+    }
+  }
+
+  /**
+   * Retrieves the revision created for a reviewer.
    *
    * All the reviewer revisions have their revision user id set
    * equal to the uid of the reviewer.
@@ -372,17 +388,25 @@ class AssessmentWorkflow {
    *   The assessment.
    * @param int $uid
    *   The user id of the reviewer.
+   *
+   * @return \Drupal\node\NodeInterface
+   *   The revision.
    */
-  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
+  public function getReviewerRevision(NodeInterface $node, $uid) {
+    $reviewers = $this->getReviewersArray($node);
+    if (!in_array($uid, $reviewers)) {
+      return NULL;
+    }
     $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     foreach ($assessment_revisions_ids as $rid) {
       $node_revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($rid);
       if ($node_revision->getRevisionUserId() == $uid && !$node_revision->isDefaultRevision()) {
-        \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($rid);
+        return $node_revision;
       }
     }
+    return NULL;
   }
 
 }

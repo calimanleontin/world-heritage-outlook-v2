@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Access;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 
 class AssessmentAccess {
@@ -30,17 +31,22 @@ class AssessmentAccess {
       return AccessResult::allowed();
     }
 
+    if ($account->id() == 1) {
+      return AccessResult::allowed();
+    }
+
     if (!empty($node_revision)) {
       $node = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($node_revision);
+
+      // Only under_review revisions should be editable.
+      if ($node->field_state->value != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        return AccessResult::forbidden();
+      }
     }
 
     if (empty($node)) {
-      return AccessResult::allowed();
-    }
-
-    if ($account->id() == 1) {
       return AccessResult::allowed();
     }
 
