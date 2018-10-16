@@ -33,7 +33,7 @@ class IucnTestDataCommands extends DrushCommands {
           'mail' =>  "{$role->id()}_{$i}@iucn.local",
           'pass' => 'password',
           'status' => 1,
-          'roles' => ['authenticated', $role->id()],
+          'roles' => [$role->id()],
         ]);
         $user->save();
       }
