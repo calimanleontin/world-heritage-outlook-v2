@@ -103,12 +103,11 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
           $revision = $workflow_service->getReviewerRevision($node, $current_user->id());
           if (!empty($revision)) {
             $url = Url::fromRoute($route, ['node' => $node->id(), 'node_revision' => $revision->vid->value]);
-            $response = new TrustedRedirectResponse($url->toString(), 301);
+            $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
             $event->setResponse($response);
           }
           else {
-            $response = new AccessDeniedHttpException();
-            $event->setResponse($response);
+            throw new AccessDeniedHttpException();
           }
         }
       }

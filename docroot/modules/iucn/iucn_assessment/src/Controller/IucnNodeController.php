@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class IucnNodeController extends NodeController {
 
@@ -43,6 +44,9 @@ class IucnNodeController extends NodeController {
    * Prepare the iucn_assessment.node.state_change route.
    */
   public function stateChangeForm(NodeInterface $node) {
+    if ($node->bundle() != 'site_assessment') {
+      throw new NotFoundHttpException();
+    }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     return \Drupal::formBuilder()->getForm($edit_form);
   }

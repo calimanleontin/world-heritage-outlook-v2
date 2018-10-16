@@ -187,6 +187,12 @@ class AssessmentWorkflow {
 
     $state = $node->field_state->value;
     $original = $node->original;
+    if (empty($state)
+      || $state == 'assessment_creation'
+      || empty($original->field_state->value)
+      || $original->field_state->value == 'assessment_creation') {
+      return;
+    }
 
     // When a reviewer marks his revision as done, check if all other reviewers
     // have marked their revision is done.

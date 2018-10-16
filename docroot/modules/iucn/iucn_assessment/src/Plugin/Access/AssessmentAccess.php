@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
+use Drupal\node\Plugin\views\filter\Access;
 
 class AssessmentAccess {
 
@@ -59,6 +60,26 @@ class AssessmentAccess {
     }
 
     return AccessResult::allowed();
+  }
+
+  /**
+   * Custom access check for the state change edit route.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account.
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment that is being edited.
+   * @param int $node_revision
+   *   The revision being edited. This is NULL on node edit pages.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   Denied or neutral.
+   */
+  public function assessmentStateEdit(AccountInterface $account, NodeInterface $node = NULL, $node_revision = NULL) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::forbidden();
+    }
+    return $this->assessmentEdit($account, $node, $node_revision);
   }
 
 }
