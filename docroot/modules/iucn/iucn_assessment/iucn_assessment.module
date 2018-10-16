@@ -588,8 +588,3 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
   // Add the custom form mode.
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
 }
-
-function xd() {
-  $node = \Drupal\node\Entity\Node::load(1);
-  var_dump($node->field_coordinator->target_id);
-}
