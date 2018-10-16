@@ -52,7 +52,6 @@ dependencies:
     - field_group
     - file
     - iucn_assessment
-    - workflow
 third_party_settings:
   field_group:
     group_as_tabs:
@@ -596,29 +595,11 @@ content:
     third_party_settings: {  }
     type: file_generic
     region: content
-  field_assessor:
-    weight: 16
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_coordinator:
-    weight: 15
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_date_published:
     weight: 11
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
-    region: content
-  field_reviewers:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_settings:
     type: string_textarea
@@ -628,12 +609,6 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_state:
-    weight: 18
-    settings: {  }
-    third_party_settings: {  }
-    type: workflow_default
-    region: content
   langcode:
     type: language_select
     weight: 2
@@ -668,6 +643,10 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_assessor: true
+  field_coordinator: true
+  field_reviewers: true
+  field_state: true
   path: true
   promote: true
   sticky: true
