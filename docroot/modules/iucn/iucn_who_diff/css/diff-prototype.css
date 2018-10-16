@@ -43,4 +43,5 @@
 
 .ui-dialog {
   margin: 15px;
+  max-width: 90vw;
 }
