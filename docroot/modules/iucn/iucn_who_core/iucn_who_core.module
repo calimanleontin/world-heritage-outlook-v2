@@ -181,6 +181,15 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   $breadcrumb = $new_breadcrumb;
   }*/
 
+
+  // Custom breadcrumb for sites_search_page_database view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'sites_search' && isset($parameters['display_id']) && $parameters['display_id'] == 'sites_search_page_database') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Explore sites'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
+  }
+
   // Custom breadcrumb for site ctype.
   if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'publication') {
     $new_breadcrumb = new Breadcrumb();
