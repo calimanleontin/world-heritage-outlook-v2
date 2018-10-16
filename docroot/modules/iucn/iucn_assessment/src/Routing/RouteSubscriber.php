@@ -27,12 +27,12 @@ class RouteSubscriber extends RouteSubscriberBase {
     }
 
     // Alter the revision page so we can add the Revision Edit button.
-    $route = $collection->get('entity.node.version_history');
-    if ($route) {
-      $route->setDefaults(array(
-        '_controller' => '\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview',
-      ));
-    }
+//    $route = $collection->get('entity.node.version_history');
+//    if ($route) {
+//      $route->setDefaults(array(
+//        '_controller' => '\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview',
+//      ));
+//    }
 
     // Hide unnecessary workflow tab.
     $route = $collection->get('entity.node.workflow_history');

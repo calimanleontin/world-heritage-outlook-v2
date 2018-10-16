@@ -448,6 +448,10 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'revision_overview_form') {
+    $last = array_pop($form['node_revisions_table']);
+    array_unshift($form['node_revisions_table'], $last);
+  }
   $current_user = \Drupal::currentUser();
   $is_user_1 = $current_user->id() == 1;
   if ($form_id == 'node_site_assessment_form') {
