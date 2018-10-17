@@ -1,3 +1,22 @@
 .layout-node-form .layout-region {
     width: 100%;
 }
+
+.layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
+    padding: 0;
+}
+
+.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
+    padding: 5px 10px 5px 0;
+}
+
+.layout-node-form #edit-group-as-key-cons .details-wrapper{
+    padding: 0;
+}

@@ -7,7 +7,6 @@ package: Custom
 version: VERSION
 core: 8.x
 libraries:
- - seven/global-styling
  - iucn_backend/global-styling
 
 regions:
