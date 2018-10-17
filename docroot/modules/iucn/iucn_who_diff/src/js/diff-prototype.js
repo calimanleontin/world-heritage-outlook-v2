@@ -1,40 +1,33 @@
+import shave from 'shave';
+window.shave = shave;
+
 (function($) {
+    Drupal.behaviors.shave = {
+        attach: function (context, settings) {
+            $('.diff-deletedline', context).each(function() {
+                console.log(this);
+                window.shave(this, 100);
+                // var btn = $('<button class="js-shave-button">' + Drupal.t('Expand') + ' </button>',),
+                //     textEl = this,
+                //     textString = textEl.textContent;
 
-  // $( '[data-name]' ).on( 'click', '[data-copy]', ( e ) => {
-  //   $eventTarget = $( e.target );
-  //   $delegateTarget = $( e.delegateTarget );
-  //   $name = $delegateTarget.data('name');
+                // if(!$(this).hasClass('shave-processed')) {
+                //     $(this).append(btn);
+                //     $(this).addClass('shave-processed');
+                // }
+            });
+            // $('body').on('click', '.js-shave-button', function(e) {
+            //       var hasShave = this.querySelector('#demo-text .js-shave');
+            //       if (hasShave !== null) {
+            //         this.textContent = textString;
+            //         btn.textContent = 'Truncate Text ✁';
+            //         return;
+            //       }
+            //       shave(this, 120);
+            //       btn.textContent = 'Reset ⏎';
+            //       return;
 
-  //   console.log($name, $delegateTarget.find('.diff-addedline > .diff-content').html());
-
-  //   $targetValue = $delegateTarget.find('.diff-addedline > .diff-content').html();
-
-
-  //   $target = $('#final-version')
-  //               .find('[data-name="' + $name + '"]');
-  //   $target.find('textarea').val($targetValue);
-  //   // $target.find('.chosen-enable').val($targetValue);
-  //   // $target.html($targetValue);
-  //   // console.log(Drupal.behaviors.chosen.getElements());
-
-  // });
-
-  // $( '[data-name]' ).on( 'click', '[data-initial]', ( e ) => {
-  //   $eventTarget = $( e.target );
-  //   $delegateTarget = $( e.delegateTarget );
-  //   $name = $delegateTarget.data('name');
-
-  //   $initialTargetValue = $('#initial-version')
-  //                           .find('[data-name="' + $name + '"]').html();
-
-  //   $target = $('#final-version')
-  //               .find('[data-name="' + $name + '"]');
-  //   $target.find('textarea').val($initialTargetValue.trim());
-  //   // $target.find('.chosen-enable').val($targetValue);
-  //   // $target.html($targetValue);
-  //   // console.log(Drupal.behaviors.chosen.getElements());
-
-  // });
-
-
-}(jQuery));
+            // });
+        }
+    }
+})(jQuery);

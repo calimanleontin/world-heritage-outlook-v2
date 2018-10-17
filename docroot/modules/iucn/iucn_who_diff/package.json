@@ -21,6 +21,7 @@
     "start": "NODE_ENV=development webpack --mode=development --progress --colors --watch"
   },
   "dependencies": {
-    "clipboard": "^2.0.1"
+    "clipboard": "^2.0.1",
+    "shave": "^2.5.2"
   }
 }
