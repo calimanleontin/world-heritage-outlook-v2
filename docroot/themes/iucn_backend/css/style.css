@@ -1,6 +1,9 @@
 .layout-node-form .layout-region {
     width: 100%;
 }
+.layout-node-form .layout-region-node-footer__content {
+    border-top: none;
+}
 
 .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
 .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
