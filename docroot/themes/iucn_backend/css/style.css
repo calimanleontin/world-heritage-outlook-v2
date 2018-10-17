@@ -27,3 +27,12 @@
 .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
     padding: 0 10px;
 }
+
+.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
+    margin: 10px;
+}
+
+.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
+    position: relative;
+    top: 0;
+}
