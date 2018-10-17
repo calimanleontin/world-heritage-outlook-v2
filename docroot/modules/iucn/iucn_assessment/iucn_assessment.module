@@ -1,10 +1,10 @@
 <?php
 
-use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\user\Entity\Role;
 use Drupal\Core\Entity\EntityInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 
 function iucn_assessment_theme() {
   return [
@@ -448,10 +448,16 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // When messing with the revision creation workflow, the position of
-  // the default revision is not always the first on the /revisions page.
-  // This is a workaround to fix this issue.
-  if ($form_id == 'revision_overview_form') {
+  if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
+    NodeSiteAssessmentForm::alter($form, $form_state);
+  }
+  elseif ($form_id == 'node_site_assessment_state_change_form') {
+    NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
+  }
+  elseif ($form_id == 'revision_overview_form') {
+    // When messing with the revision creation workflow, the position of
+    // the default revision is not always the first on the /revisions page.
+    // This is a workaround to fix this issue.
     $revisions = $form['node_revisions_table'];
     $current_revision = NULL;
     foreach ($revisions as $key => $revision) {
@@ -473,74 +479,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       array_unshift($form['node_revisions_table'], $revision);
     }
   }
-
-  $current_user = \Drupal::currentUser();
-  $is_user_1 = $current_user->id() == 1;
-  if ($form_id == 'node_site_assessment_form') {
-    // Hide revision log message.
-    $form['advanced']['#access'] = FALSE;
-    // Hide publish settings.
-    $form['footer']['#access'] = FALSE;
-
-    if ($is_user_1) {
-      return;
-    }
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
-      $form[$field]['#access'] = FALSE;
-    }
-  }
-  // Assessment user fields are only enabled during certain states.
-  // Additionally, some of them are required for moving to other states.
-  elseif ($form_id == 'node_site_assessment_edit_form') {
-    // Hide all revision related settings and check if a new revision should
-    // be created in hook_node_presave().
-    $form['revision']['#default_value'] = FALSE;
-    $form['revision']['#disabled'] = FALSE;
-    $form['revision']['#access'] = FALSE;
-    // Hide revision log message.
-    $form['advanced']['#access'] = FALSE;
-
-    // Hide publish settings.
-    $form['footer']['#access'] = FALSE;
-  }
-  elseif ($form_id == 'node_site_assessment_state_change_form') {
-    // Hide state change scheduling.
-    if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
-      $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
-    }
-
-    $form['advanced']['#access'] = FALSE;
-    $form['revision']['#default_value'] = FALSE;
-    $form['revision']['#disabled'] = FALSE;
-    $form['revision']['#access'] = FALSE;
-
-    // Do not alter the form for user 1.
-    if ($is_user_1) {
-      return;
-    }
-
-    $form['#validate'][] = '_iucn_assessment_edit_form_validate';
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
-    $coordinator_weight = Role::load('coordinator')->getWeight();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $form_state->getFormObject()->getEntity();
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
-      if ($weight <= $coordinator_weight) {
-        // Enable these fields only in certain assessment states
-        // for roles >= coordinators.
-        $enabled = $workflow_service->isFieldEnabledForAssessment($field, $node);
-        $form[$field]['#access'] = $enabled;
-      }
-      else {
-        // Hide the field for lower roles.
-        $form[$field]['#access'] = FALSE;
-      }
-    }
-  }
   elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
-    $form['account']['roles']['#access'] = $current_user->hasPermission('administer users');
+    $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
   }
 }
 
