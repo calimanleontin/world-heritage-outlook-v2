@@ -18,15 +18,11 @@
   <div class="layout-region layout-region-node-main">
     {{ form|without('advanced', 'footer', 'actions', 'group_as_tabs') }}
   </div>
-  {% if form.advanced is defined %}
-    <div class="layout-region layout-region-node-secondary">
-      {{ form.advanced }}
-    </div>
-  {% endif %}
   <div class="layout-region layout-region-node-footer">
     <div class="layout-region-node-footer__content">
       {{ form.group_as_tabs }}
       {{ form.footer }}
+      {{ form.advanced }}
       {{ form.actions }}
     </div>
   </div>
