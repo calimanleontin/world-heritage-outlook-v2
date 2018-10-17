@@ -17,6 +17,10 @@
     padding: 5px 10px 5px 0;
 }
 
-.layout-node-form #edit-group-as-key-cons .details-wrapper{
+.layout-node-form #edit-group-as-key-cons .details-wrapper {
     padding: 0;
+}
+
+.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
+    padding: 0 10px;
 }
