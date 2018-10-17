@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Controller;
 
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
@@ -27,4 +28,10 @@ class IucnNodeController extends NodeController {
 
     return $build;
   }
+
+  public function stateChangeForm(NodeInterface $node) {
+    $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
+    return \Drupal::formBuilder()->getForm($edit_form);
+  }
+
 }

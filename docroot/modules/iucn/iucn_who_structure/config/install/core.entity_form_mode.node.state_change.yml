@@ -1,0 +1,10 @@
+uuid: c5b13194-a72c-49ac-927d-25b72f0057d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.state_change
+label: 'State change'
+targetEntityType: node
+cache: true
