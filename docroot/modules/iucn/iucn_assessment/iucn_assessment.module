@@ -448,10 +448,32 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // When messing with the revision creation workflow, the position of
+  // the default revision is not always the first on the /revisions page.
+  // This is a workaround to fix this issue.
   if ($form_id == 'revision_overview_form') {
-    $last = array_pop($form['node_revisions_table']);
-    array_unshift($form['node_revisions_table'], $last);
+    $revisions = $form['node_revisions_table'];
+    $current_revision = NULL;
+    foreach ($revisions as $key => $revision) {
+      if (!is_int($key)) {
+        continue;
+      }
+      if (empty($revision['#attributes']['class'])) {
+        continue;
+      }
+      $classes = $revision['#attributes']['class'];
+      if (in_array('revision-current', $classes)) {
+        $current_revision = $key;
+        break;
+      }
+    }
+    if (!empty($current_revision)) {
+      $revision = $form['node_revisions_table'][$current_revision];
+      unset($form['node_revisions_table'][$current_revision]);
+      array_unshift($form['node_revisions_table'], $revision);
+    }
   }
+
   $current_user = \Drupal::currentUser();
   $is_user_1 = $current_user->id() == 1;
   if ($form_id == 'node_site_assessment_form') {

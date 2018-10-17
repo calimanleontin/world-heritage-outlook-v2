@@ -3,11 +3,14 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Drupal\workflow\Entity\WorkflowManager;
+use Drupal\workflow\Entity\WorkflowTransition;
 
 /**
  * Service class used to assess an user's access on certain parts of the site.
@@ -181,18 +184,28 @@ class AssessmentWorkflow {
    *   The assessment.
    */
   public function assessmentPreSave(NodeInterface $node) {
-    if ($node->isNew()) {
+    $state = $node->field_state->value;
+    $original = $node->original;
+
+    // When saving an assessment with no state, we want to set the NEW state.
+    if ($this->assessmentHasNoState($node) && !$node->isNew()) {
+      $this->forceAssessmentState($node, self::STATUS_NEW);
       return;
     }
 
-    $state = $node->field_state->value;
-    $original = $node->original;
-    if (empty($state)
-      || $state == 'assessment_creation'
-      || empty($original->field_state->value)
-      || $original->field_state->value == 'assessment_creation') {
+    // No further edits are done to new assessments.
+    if ($node->isNew()) {
       $node->field_state->value = self::STATUS_NEW;
       return;
+    }
+
+    if ($node->field_state->value == self::STATUS_NEW) {
+      return;
+    }
+
+    // Set the original status to new so a proper revision is created.
+    if ($this->assessmentHasNoState($original)) {
+      $original->field_state->value = self::STATUS_NEW;
     }
 
     // When a reviewer marks his revision as done, check if all other reviewers
@@ -441,6 +454,38 @@ class AssessmentWorkflow {
       }
     }
     return NULL;
+  }
+
+  /**
+   * Force a state change on an assessment.
+   *
+   * @param \Drupal\node\NodeInterface $assessment
+   *   The assessment.
+   * @param string $new_state
+   *   The new state id.
+   */
+  public function forceAssessmentState(NodeInterface $assessment, $new_state) {
+    $field_name = 'field_state';
+    $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
+    $user = User::load(1);
+    $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
+    $transition->setValues($new_state, $user->id(), \Drupal::time()->getRequestTime(), '', TRUE);
+    $transition->setTargetEntity($assessment);
+    $transition->executeAndUpdateEntity(TRUE);
+  }
+
+  /**
+   * Check if an assessment has either no state or the creation state.
+   *
+   * @param \Drupal\node\NodeInterface $assessment
+   *   The assessment.
+   *
+   * @return bool
+   *   True or false.
+   */
+  public function assessmentHasNoState(NodeInterface $assessment) {
+    return $assessment->field_state->value == 'assessment_creation'
+      || empty($assessment->field_state->value);
   }
 
 }
