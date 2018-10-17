@@ -583,13 +583,14 @@ function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, 
       }
       $revision->setNewRevision(FALSE);
       $revision->isDefaultRevision(FALSE);
-      /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
-      $storage = \Drupal::entityTypeManager()->getStorage('node');
       $form_state->getFormObject()->setEntity($revision);
     }
   }
 }
 
+/**
+ * Implements hook_entity_type_alter().
+ */
 function iucn_assessment_entity_type_alter(array &$entity_types) {
   foreach ($entity_types as $entity_type) {
     $constraints = $entity_type->getConstraints();

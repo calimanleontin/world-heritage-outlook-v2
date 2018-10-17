@@ -457,6 +457,41 @@ class AssessmentWorkflow {
   }
 
   /**
+   * Gets a revisions with a certain state.
+   *
+   * If state is under_revision, reviewer revisions are ignored.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param string $state
+   *   The desired state.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   *   A revision or null.
+   */
+  public function getRevisionByState(NodeInterface $node, $state) {
+    $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
+    $reviewers = $this->getReviewersArray($node);
+    foreach ($assessment_revisions_ids as $rid) {
+      /** @var Node $node_revision */
+      $node_revision = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadRevision($rid);
+
+      // We are not interested in reviewer revisions.
+      if ($state == self::STATUS_UNDER_REVIEW
+        && in_array($reviewers, $node_revision->getRevisionUserId())) {
+        continue;
+      }
+
+      if ($node_revision->field_state->value == $state) {
+        return $node_revision;
+      }
+    }
+    return NULL;
+  }
+
+  /**
    * Force a state change on an assessment.
    *
    * @param \Drupal\node\NodeInterface $assessment
