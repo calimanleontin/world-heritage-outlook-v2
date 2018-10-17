@@ -245,33 +245,33 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $breadcrumb = $new_breadcrumb;
   }
 
-//  $menu_items = iucn_who_get_all_menu('main');
-//
-//  // Remove duplicate labels from breadcrumb.
-//  $new_breadcrumb = new Breadcrumb();
-//  $text = NULL;
-//  foreach ($breadcrumb->getLinks() as $key => $val) {
-//
-//    $currentLanguage = '';
-//    $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
-//    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-//    if ($default_language != $current_language) {
-//      $currentLanguage = "/$current_language";
-//    }
-//
-//    $url = $currentLanguage . $val->getUrl()->toString();
-//
-//    if (array_key_exists($url, $menu_items)) {
-//      /** @val \Drupal\Core\Link $val */
-//      $val->setText($menu_items[$url]);
-//    }
-//    if ($text != $val->getText()) {
-//      $new_breadcrumb->addLink($val);
-//    }
-//    $text = $val->getText();
-//    /** @val \Drupal\Core\Link $val */
-//  }
-  //$breadcrumb = $new_breadcrumb;
+  $menu_items = iucn_who_get_all_menu('main');
+
+  // Remove duplicate labels from breadcrumb.
+  $new_breadcrumb = new Breadcrumb();
+  $text = NULL;
+  foreach ($breadcrumb->getLinks() as $key => $val) {
+
+    $currentLanguage = '';
+    $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if ($default_language != $current_language) {
+      $currentLanguage = "/$current_language";
+    }
+
+    $url = $currentLanguage . $val->getUrl()->toString();
+
+    if (array_key_exists($url, $menu_items)) {
+      /** @val \Drupal\Core\Link $val */
+      $val->setText($menu_items[$url]);
+    }
+    if ($text != $val->getText()) {
+      $new_breadcrumb->addLink($val);
+    }
+    $text = $val->getText();
+    /** @val \Drupal\Core\Link $val */
+  }
+  $breadcrumb = $new_breadcrumb;
 
 
   $breadcrumb->addCacheTags($cache_tags);
