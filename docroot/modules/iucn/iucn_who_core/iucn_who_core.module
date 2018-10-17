@@ -166,23 +166,26 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
       }
     }
     $breadcrumb = $new_breadcrumb;
-
   }
 
-  // Custom breadcrumb for benefits_list view.
-  /*if (isset($parameters['view_id']) && $parameters['view_id'] == 'benefits_list' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
-  $new_breadcrumb = new Breadcrumb();
-  foreach ($breadcrumb->getLinks() as $key => $val) {
-  $new_breadcrumb->addLink($val);
-  if ($key == 0) {
-  $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+  // Custom breadcrumb for sites_search view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'publications' && isset($parameters['display_id']) && $parameters['display_id'] == 'publications_page_database') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
   }
+
+  // Custom breadcrumb for frequently_asked_questions view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'frequently_asked_questions' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('FAQ'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
   }
-  $breadcrumb = $new_breadcrumb;
-  }*/
 
-
-  // Custom breadcrumb for sites_search_page_database view.
+  // Custom breadcrumb for sites_search view.
   if (isset($parameters['view_id']) && $parameters['view_id'] == 'sites_search' && isset($parameters['display_id']) && $parameters['display_id'] == 'sites_search_page_database') {
     $new_breadcrumb = new Breadcrumb();
     $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
@@ -190,7 +193,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $breadcrumb = $new_breadcrumb;
   }
 
-  // Custom breadcrumb for site ctype.
+  // Custom breadcrumb for publication ctype.
   if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'publication') {
     $new_breadcrumb = new Breadcrumb();
     foreach ($breadcrumb->getLinks() as $key => $val) {
@@ -199,6 +202,16 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
         $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
       }
     }
+    $breadcrumb = $new_breadcrumb;
+  }
+
+  // Custom breadcrumb for news view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'news' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => &$val) {
+      $new_breadcrumb->addLink($val);
+    }
+    $new_breadcrumb->addLink(Link::createFromRoute(t('News'), '<none>'));
     $breadcrumb = $new_breadcrumb;
   }
 
@@ -232,33 +245,33 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $breadcrumb = $new_breadcrumb;
   }
 
-  $menu_items = iucn_who_get_all_menu('main');
-
-  // Remove duplicate labels from breadcrumb.
-  $new_breadcrumb = new Breadcrumb();
-  $text = NULL;
-  foreach ($breadcrumb->getLinks() as $key => $val) {
-
-    $currentLanguage = '';
-    $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
-    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    if ($default_language != $current_language) {
-      $currentLanguage = "/$current_language";
-    }
-
-    $url = $currentLanguage . $val->getUrl()->toString();
-
-    if (array_key_exists($url, $menu_items)) {
-      /** @val \Drupal\Core\Link $val */
-      $val->setText($menu_items[$url]);
-    }
-    if ($text != $val->getText()) {
-      $new_breadcrumb->addLink($val);
-    }
-    $text = $val->getText();
-    /** @val \Drupal\Core\Link $val */
-  }
-  $breadcrumb = $new_breadcrumb;
+//  $menu_items = iucn_who_get_all_menu('main');
+//
+//  // Remove duplicate labels from breadcrumb.
+//  $new_breadcrumb = new Breadcrumb();
+//  $text = NULL;
+//  foreach ($breadcrumb->getLinks() as $key => $val) {
+//
+//    $currentLanguage = '';
+//    $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+//    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+//    if ($default_language != $current_language) {
+//      $currentLanguage = "/$current_language";
+//    }
+//
+//    $url = $currentLanguage . $val->getUrl()->toString();
+//
+//    if (array_key_exists($url, $menu_items)) {
+//      /** @val \Drupal\Core\Link $val */
+//      $val->setText($menu_items[$url]);
+//    }
+//    if ($text != $val->getText()) {
+//      $new_breadcrumb->addLink($val);
+//    }
+//    $text = $val->getText();
+//    /** @val \Drupal\Core\Link $val */
+//  }
+  //$breadcrumb = $new_breadcrumb;
 
 
   $breadcrumb->addCacheTags($cache_tags);
