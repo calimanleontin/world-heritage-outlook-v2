@@ -129,8 +129,3 @@
 .horizontal-tabs-pane {
     padding: 0;
 }
-
-.layout-region-node-footer {
-    width: auto !important;
-    float: left;
-}
