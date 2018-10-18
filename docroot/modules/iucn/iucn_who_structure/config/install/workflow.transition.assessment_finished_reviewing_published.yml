@@ -1,7 +1,10 @@
 uuid: 5f864523-3c6d-431d-910a-0e9a4ff8c2e7
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_published
 id: assessment_finished_reviewing_published
 label: ''
 module: workflow

@@ -1,7 +1,10 @@
 uuid: 97b62afd-70e4-4837-8f70-3541856b313c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_creation
+    - workflow.state.assessment_under_comparison
 id: assessment_creation_under_comparison
 label: ''
 module: workflow

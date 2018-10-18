@@ -1,0 +1,12 @@
+uuid: 647b11cf-1390-4057-b762-a09cdada80e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_reviewing_references
+id: assessment_reviewing_references_reviewing_references
+label: Save
+module: workflow
+from_sid: assessment_reviewing_references
+to_sid: assessment_reviewing_references
+roles: {  }
