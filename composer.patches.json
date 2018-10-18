@@ -1,7 +1,8 @@
 {
   "patches": {
     "drupal/core": {
-      "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch"
+      "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
+      "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch"
     },
     "drupal/display_field_copy": {
       "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
