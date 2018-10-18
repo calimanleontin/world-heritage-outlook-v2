@@ -13751,6 +13751,10 @@ a[rel="bookmark"] {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
+.block-search-api-sorts .sort-item .icon,
+.block-search-api-sorts .sort-item .tablesort {
+  display: none;
+}
 .map-container {
   position: static !important;
   height: 100% !important;
