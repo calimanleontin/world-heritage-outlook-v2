@@ -151,7 +151,7 @@ class WorkflowManager implements WorkflowManagerInterface {
       // Transition is created in widget or WorkflowTransitionForm.
       /** @var $transition WorkflowTransitionInterface */
       $transition = $entity->$field_name->__get('workflow_transition');
-      if (!empty($transition)) {
+      if (!$transition) {
         // We come from creating/editing an entity via entity_form, with core widget or hidden Workflow widget.
         // @todo D8: from an Edit form with hidden widget.
         /** @noinspection PhpUndefinedFieldInspection */
@@ -174,33 +174,34 @@ class WorkflowManager implements WorkflowManagerInterface {
         }
         $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
         $transition->setValues($new_sid, $user->id(), \Drupal::time()->getRequestTime(), $comment, TRUE);
-      }
 
-      // We come from Content/Comment edit page, from widget.
-      // Set the just-saved entity explicitly. Not necessary for update,
-      // but upon insert, the old version didn't have an ID, yet.
-      $transition->setTargetEntity($entity);
 
-      if ($transition->isScheduled()) {
-        $executed = $transition->save(); // Returns a positive integer.
-      }
-      elseif ($entity->getEntityTypeId() == 'comment') {
-        // If Transition is added via CommentForm, save Comment AND Entity.
-        // Execute and check the result.
-        $new_sid = $transition->executeAndUpdateEntity();
-        $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
-      }
-      else {
-        // Execute and check the result.
-        $new_sid = $transition->execute();
-        $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
-      }
+        // We come from Content/Comment edit page, from widget.
+        // Set the just-saved entity explicitly. Not necessary for update,
+        // but upon insert, the old version didn't have an ID, yet.
+        $transition->setTargetEntity($entity);
 
-      // If the transition failed, revert the entity workflow status.
-      // For new entities, we do nothing: it has no original.
-      if (!$executed && isset($entity->original)) {
-        $originalValue = $entity->original->{$field_name}->value;
-        $entity->{$field_name}->setValue($originalValue);
+        if ($transition->isScheduled()) {
+          $executed = $transition->save(); // Returns a positive integer.
+        }
+        elseif ($entity->getEntityTypeId() == 'comment') {
+          // If Transition is added via CommentForm, save Comment AND Entity.
+          // Execute and check the result.
+          $new_sid = $transition->executeAndUpdateEntity();
+          $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
+        }
+        else {
+          // Execute and check the result.
+          $new_sid = $transition->execute();
+          $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
+        }
+
+        // If the transition failed, revert the entity workflow status.
+        // For new entities, we do nothing: it has no original.
+        if (!$executed && isset($entity->original)) {
+          $originalValue = $entity->original->{$field_name}->value;
+          $entity->{$field_name}->setValue($originalValue);
+        }
       }
     }
   }
