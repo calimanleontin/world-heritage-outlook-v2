@@ -1,0 +1,34 @@
+diff --git a/src/Entity/WorkflowManager.php b/src/Entity/WorkflowManager.php
+index 316dd22..250391c 100644
+--- a/src/Entity/WorkflowManager.php
++++ b/src/Entity/WorkflowManager.php
+@@ -151,7 +151,7 @@ public static function executeTransitionsOfEntity(EntityInterface $entity) {
+       // Transition is created in widget or WorkflowTransitionForm.
+       /** @var $transition WorkflowTransitionInterface */
+       $transition = $entity->$field_name->__get('workflow_transition');
+-      if (!$transition) {
++      if (!empty($transition)) {
+         // We come from creating/editing an entity via entity_form, with core widget or hidden Workflow widget.
+         // @todo D8: from an Edit form with hidden widget.
+         /** @noinspection PhpUndefinedFieldInspection */
+diff --git a/src/Entity/WorkflowTransition.php b/src/Entity/WorkflowTransition.php
+index 2563d6f..8ed986c 100644
+--- a/src/Entity/WorkflowTransition.php
++++ b/src/Entity/WorkflowTransition.php
+@@ -561,7 +561,7 @@ public function executeAndUpdateEntity($force = FALSE) {
+ 
+ 
+     // Generate error and stop if transition has no new State.
+-    if (!$to_sid) {
++    if (empty($to_sid)) {
+       $t_args = [
+         '%sid2' => $this->getToState()->label(),
+         '%entity_label' => $this->getTargetEntity()->label(),
+@@ -576,6 +576,7 @@ public function executeAndUpdateEntity($force = FALSE) {
+     // Save the (scheduled) transition.
+     $do_update_entity = (!$this->isScheduled() && !$this->isExecuted());
+     if ($do_update_entity) {
++      $to_sid = $this->execute($force);
+       $this->_updateEntity();
+     }
+     else {

@@ -151,7 +151,7 @@ class WorkflowManager implements WorkflowManagerInterface {
       // Transition is created in widget or WorkflowTransitionForm.
       /** @var $transition WorkflowTransitionInterface */
       $transition = $entity->$field_name->__get('workflow_transition');
-      if (!$transition) {
+      if (!empty($transition)) {
         // We come from creating/editing an entity via entity_form, with core widget or hidden Workflow widget.
         // @todo D8: from an Edit form with hidden widget.
         /** @noinspection PhpUndefinedFieldInspection */

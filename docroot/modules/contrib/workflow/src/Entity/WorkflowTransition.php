@@ -561,7 +561,7 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
 
 
     // Generate error and stop if transition has no new State.
-    if (!$to_sid) {
+    if (empty($to_sid)) {
       $t_args = [
         '%sid2' => $this->getToState()->label(),
         '%entity_label' => $this->getTargetEntity()->label(),
@@ -576,6 +576,7 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
     // Save the (scheduled) transition.
     $do_update_entity = (!$this->isScheduled() && !$this->isExecuted());
     if ($do_update_entity) {
+      $to_sid = $this->execute($force);
       $this->_updateEntity();
     }
     else {
