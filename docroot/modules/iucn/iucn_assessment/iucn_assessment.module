@@ -572,7 +572,7 @@ function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_sta
 function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   // The revision edit page is actually the node edit page.
   // We need to change the form entity to the selected revision.
-  if ($entity->bundle() == 'site_assessment' && in_array($operation, ['edit', 'state_change'])) {
+  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
     $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
     if (!empty($node_revision)) {
       $revision = \Drupal::entityTypeManager()
@@ -581,8 +581,6 @@ function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, 
       if (empty($revision)) {
         throw new NotFoundHttpException();
       }
-      $revision->setNewRevision(FALSE);
-      $revision->isDefaultRevision(FALSE);
       $form_state->getFormObject()->setEntity($revision);
     }
   }

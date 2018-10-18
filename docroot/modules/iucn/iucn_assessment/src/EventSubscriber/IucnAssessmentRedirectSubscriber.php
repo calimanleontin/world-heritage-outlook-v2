@@ -95,9 +95,9 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       }
       $state = $node->field_state->value;
       $current_user = $this->accountProxy;
+      /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+      $workflow_service = \Drupal::service('iucn_assessment.workflow');
       if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-        /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-        $workflow_service = \Drupal::service('iucn_assessment.workflow');
         $reviewers = $workflow_service->getReviewersArray($node);
         if (in_array($current_user->id(), $reviewers)) {
           $revision = $workflow_service->getReviewerRevision($node, $current_user->id());
@@ -109,6 +109,14 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
           else {
             throw new AccessDeniedHttpException();
           }
+        }
+      }
+      elseif ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+        $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
+        if (!empty($draft_revision)) {
+          $url = Url::fromRoute($route, ['node' => $node->id(), 'node_revision' => $draft_revision->vid->value]);
+          $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
+          $event->setResponse($response);
         }
       }
     }

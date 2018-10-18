@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
+use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class IucnNodeController extends NodeController {
@@ -43,12 +44,33 @@ class IucnNodeController extends NodeController {
   /**
    * Prepare the iucn_assessment.node.state_change route.
    */
-  public function stateChangeForm(NodeInterface $node) {
+  public function stateChangeForm(NodeInterface $node, $node_revision = NULL) {
     if ($node->bundle() != 'site_assessment') {
       throw new NotFoundHttpException();
     }
+    if (!empty($node_revision)) {
+      $node = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadRevision($node_revision);
+      if (empty($node)) {
+        throw new NotFoundHttpException();
+      }
+    }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
-    return \Drupal::formBuilder()->getForm($edit_form);
+    $build = \Drupal::formBuilder()->getForm($edit_form);
+    if (!empty($node->field_state->value)) {
+      $state = WorkflowState::load($node->field_state->value);
+    }
+    else {
+      $state = NULL;
+    }
+    $state_label = !empty($state) ? $state->label() : 'Creation';
+    $build['current_state'] = [
+      '#weight' => 9999,
+      '#type' => 'markup',
+      '#markup' => $this->t('Current state: <b>@state</b>', ['@state' => $state_label]),
+    ];
+    return $build;
   }
 
 }

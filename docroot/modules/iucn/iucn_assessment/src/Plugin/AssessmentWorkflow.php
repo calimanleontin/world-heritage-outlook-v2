@@ -13,7 +13,7 @@ use Drupal\workflow\Entity\WorkflowManager;
 use Drupal\workflow\Entity\WorkflowTransition;
 
 /**
- * Service class used to assess an user's access on certain parts of the site.
+ * Service class used to for the workflow functionality.
  */
 class AssessmentWorkflow {
 
@@ -38,12 +38,17 @@ class AssessmentWorkflow {
   /** @var string Coordinator starts the review / comparison phase to merge the changes. */
   const STATUS_UNDER_COMPARISON = 'assessment_under_comparison';
 
+  /** @var string Coordinator starts reviewing the references. */
+  const STATUS_REVIEWING_REFERENCES = 'assessment_reviewing_references';
+
   /** @var string Coordinator has done the comparison and merge phase. */
   const STATUS_APPROVED = 'assessment_approved';
 
   /** @var string Site is published. */
   const STATUS_PUBLISHED = 'assessment_published';
 
+  /** @var string Site is unpublished. */
+  const STATUS_DRAFT = 'assessment_draft';
 
   /**
    * Check if an user can edit an assessment.
@@ -123,15 +128,14 @@ class AssessmentWorkflow {
         // Reviewers can no longer edit their respective revisions.
         return FALSE;
 
+      // Assessments can only be edited by their coordinator.
       case self::STATUS_UNDER_COMPARISON:
-        // Assessments can only be edited by their coordinator.
-        return $coordinator == $account->id();
-
+      case self::STATUS_REVIEWING_REFERENCES:
       case self::STATUS_APPROVED:
-        // Assessments can only be edited by their coordinator.
         return $coordinator == $account->id();
 
       case self::STATUS_PUBLISHED:
+      case self::STATUS_DRAFT:
         // After being published, assessments can only be edited by admins.
         return $account_role_weight < $coordinator_weight;
     }
@@ -185,21 +189,16 @@ class AssessmentWorkflow {
    */
   public function assessmentPreSave(NodeInterface $node) {
     $state = $node->field_state->value;
-    $original = $node->original;
+    $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
 
     // When saving an assessment with no state, we want to set the NEW state.
-    if ($this->assessmentHasNoState($node) && !$node->isNew()) {
-      $this->forceAssessmentState($node, self::STATUS_NEW);
-      return;
-    }
-
-    // No further edits are done to new assessments.
-    if ($node->isNew()) {
+    if ($this->assessmentHasNoState($node)) {
       $node->field_state->value = self::STATUS_NEW;
       return;
     }
 
-    if ($node->field_state->value == self::STATUS_NEW) {
+    // Ignore new assessments.
+    if ($node->isNew() || $state == self::STATUS_NEW) {
       return;
     }
 
@@ -208,10 +207,10 @@ class AssessmentWorkflow {
       $original->field_state->value = self::STATUS_NEW;
     }
 
-    // When a reviewer marks his revision as done, check if all other reviewers
-    // have marked their revision is done.
-    // If so, mark the default revision as done.
     if (!$node->isDefaultRevision()) {
+      // When a reviewer finishes his revision, check if all other reviewers
+      // have marked their revision is done.
+      // If so, mark the default revision as done.
       if ($state == self::STATUS_FINISHED_REVIEWING && $original->field_state->value == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
@@ -219,11 +218,13 @@ class AssessmentWorkflow {
           $default_revision->save();
         }
       }
+      // When the draft revision is published,
+      // create a new default revision with the published state.
+      elseif ($state == self::STATUS_PUBLISHED && $original->field_state->value == self::STATUS_DRAFT) {
+        $this->createRevision($node, NULL, NULL, self::STATUS_PUBLISHED, TRUE);
+      }
       return;
     }
-
-    $create_revision = FALSE;
-    $revision_message = '';
 
     $added_reviewers = $this->getAddedReviewers($node, $original);
     $removed_reviewers = $this->getRemovedReviewers($node, $original);
@@ -240,16 +241,19 @@ class AssessmentWorkflow {
       }
     }
 
+    // Check if the state was changed.
     if ($original->field_state->value != $state) {
-      $create_revision = TRUE;
-      $revision_message .= 'State: ' . $node->field_state->value . '. ';
-    }
-
-    if ($create_revision) {
       // When using $node->setNewRevision(), editing paragraphs makes
       // the changes visible in all revisions.
       // @todo: check why this is happening.
-      $this->createRevision($node, NULL, NULL, TRUE);
+      $revision_state = $original->field_state->value;
+      $is_unpublished = NULL;
+      if ($state == self::STATUS_DRAFT && $original->field_state->value == self::STATUS_PUBLISHED) {
+        $state = $node->field_state->value = self::STATUS_PUBLISHED;
+        $revision_state = self::STATUS_DRAFT;
+      }
+      $this->createRevision($node, NULL, NULL, $revision_state);
+      $revision_message = 'State: ' . $node->field_state->value;
       $node->setRevisionLogMessage($revision_message);
     }
 
@@ -272,28 +276,33 @@ class AssessmentWorkflow {
    *   The user id of the reviewer.
    * @param string $message
    *   The revision log message.
-   * @param bool $use_original
-   *   If this is set, the revision will be created using the
-   *   field values set before the save.
+   * @param bool $state
+   *   If this is set, the revision will have a certain state.
+   * @param bool $is_default
+   *   Whether or not the created revision is the default one.
    */
-  public function createRevision(NodeInterface $node, $uid = NULL, $message = '', $use_original = FALSE) {
+  public function createRevision(NodeInterface $node, $uid = NULL, $message = '', $state = NULL, $is_default = FALSE) {
     if (empty($uid)) {
       $uid = \Drupal::currentUser()->id();
     }
-    if (!empty($use_original)) {
-      $node = $node->original;
+    if (empty($state)) {
+      $state = $node->field_state->value;
     }
     if (empty($message)) {
-      $message = 'State: ' . $node->field_state->value . '. ';
+      $message = 'State: ' . $state;
     }
     /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
     $storage = \Drupal::entityTypeManager()->getStorage($node->getEntityTypeId());
 
     /** @var \Drupal\node\NodeInterface $new_revision */
-    $new_revision = $storage->createRevision($node, FALSE);
+    $new_revision = $storage->createRevision($node, $is_default);
     $new_revision->setRevisionCreationTime(time());
     $new_revision->setRevisionLogMessage($message);
     $new_revision->setRevisionUserId($uid);
+    if (empty($is_published)) {
+      $new_revision->setPublished(FALSE);
+    }
+    $new_revision->field_state->value = $state;
     $new_revision->save();
   }
 
@@ -338,9 +347,8 @@ class AssessmentWorkflow {
 
     $revision_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     foreach ($revision_ids as $revision_id) {
-      $node_revision = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadRevision($revision_id);
+      /** @var \Drupal\node\Entity\Node $node_revision */
+      $node_revision = $this->getAssessmentRevision($revision_id);
 
       if (!empty($last_review)  && $revision_id == $last_review) {
         continue;
@@ -446,9 +454,8 @@ class AssessmentWorkflow {
     }
     $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     foreach ($assessment_revisions_ids as $rid) {
-      $node_revision = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadRevision($rid);
+      /** @var \Drupal\node\Entity\Node $node_revision */
+      $node_revision = $this->getAssessmentRevision($rid);
       if ($node_revision->getRevisionUserId() == $uid && !$node_revision->isDefaultRevision()) {
         return $node_revision;
       }
@@ -473,7 +480,7 @@ class AssessmentWorkflow {
     $assessment_revisions_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     $reviewers = $this->getReviewersArray($node);
     foreach ($assessment_revisions_ids as $rid) {
-      /** @var Node $node_revision */
+      /** @var \Drupal\node\Entity\Node $node_revision */
       $node_revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($rid);
@@ -494,6 +501,8 @@ class AssessmentWorkflow {
   /**
    * Force a state change on an assessment.
    *
+   * DO NOT use this in a presave hook, because it calls $node->save().
+   *
    * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
    * @param string $new_state
@@ -502,9 +511,10 @@ class AssessmentWorkflow {
   public function forceAssessmentState(NodeInterface $assessment, $new_state) {
     $field_name = 'field_state';
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
-    $user = User::load(1);
+    $user = \Drupal::currentUser();
+    $user_id = !empty($user) ? $user->id() : 1;
     $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
-    $transition->setValues($new_state, $user->id(), \Drupal::time()->getRequestTime(), '', TRUE);
+    $transition->setValues($new_state, $user_id, \Drupal::time()->getRequestTime(), '', TRUE);
     $transition->setTargetEntity($assessment);
     $transition->executeAndUpdateEntity(TRUE);
   }
@@ -521,6 +531,22 @@ class AssessmentWorkflow {
   public function assessmentHasNoState(NodeInterface $assessment) {
     return $assessment->field_state->value == 'assessment_creation'
       || empty($assessment->field_state->value);
+  }
+
+  /**
+   * Get an assessment revision by its vid.
+   *
+   * @param int $vid
+   *   The revision id.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   *   The revision.
+   */
+  public function getAssessmentRevision($vid) {
+    $node_revision = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadRevision($vid);
+    return $node_revision;
   }
 
 }
