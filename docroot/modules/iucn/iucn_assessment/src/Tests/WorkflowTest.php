@@ -43,6 +43,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
    *   The revision id.
    */
   protected function assertUserAccessOnAssessmentEdit($mail, NodeInterface $assessment, $assert_response_code, $vid = NULL) {
+    \Drupal::service('page_cache_kill_switch')->trigger();
     if (empty($vid)) {
       $url = $assessment->toUrl('edit-form');
     }
@@ -61,18 +62,19 @@ class WorkflowTest extends IucnAssessmentTestBase {
    *   The assessment.
    */
   protected function assertAllUserAccessOnAssessmentEdit(NodeInterface $assessment) {
-    // Administrators and manages can edit any assessment, regardless of state.
+    $state = $assessment->field_state->value;
+    // Administrators and managers can edit any assessment, regardless of state.
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
-
-    $state = $assessment->field_state->value;
-
-    // Coordinators cannot edit assessments in under_assessment or published.
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT || $state == AssessmentWorkflow::STATUS_PUBLISHED) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
     }
     else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
+    }
+    if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW || $state == AssessmentWorkflow::STATUS_PUBLISHED) {
+      $redirected = strpos($this->getUrl(), '/state_change') !== FALSE;
+      $this->assertTrue($redirected, 'The coordinator got redirected to the state change page.');
     }
 
     // Assessor 1 should only be able to edit in the under_assessment state.
@@ -122,8 +124,10 @@ class WorkflowTest extends IucnAssessmentTestBase {
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
       AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
       AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
       AssessmentWorkflow::STATUS_APPROVED,
       AssessmentWorkflow::STATUS_PUBLISHED,
+      AssessmentWorkflow::STATUS_DRAFT,
     ];
     foreach ($states as $state) {
       $field_changes = NULL;
@@ -143,8 +147,14 @@ class WorkflowTest extends IucnAssessmentTestBase {
         $field_changes = ['field_reviewers' => $user->id()];
       }
       $this->setAssessmentState($assessment, $state, $field_changes);
-      drupal_flush_all_caches();
-      $this->assertEqual($assessment->field_state->value, $state, "Testing state: $state");
+      if ($state != AssessmentWorkflow::STATUS_DRAFT) {
+        $this->assertEqual($assessment->field_state->value, $state, "Testing state: $state");
+      }
+      else {
+        // The state of the assessment is never draft.
+        // We only have draft revisions.
+        $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_PUBLISHED, "Testing state: $state");
+      }
       $this->assertAllUserAccessOnAssessmentEdit($assessment);
     }
   }

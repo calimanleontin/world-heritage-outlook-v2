@@ -9,10 +9,12 @@ dependencies:
   - datetime
   - ds
   - entity_reference_revisions
+  - disable_field
   - field
   - field_group
   - image
   - iucn_site
+  - iucn_diff_revisions
   - language
   - menu_ui
   - node
