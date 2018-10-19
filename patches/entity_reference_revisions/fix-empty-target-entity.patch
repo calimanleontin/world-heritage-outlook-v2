@@ -1,0 +1,17 @@
+diff --git a/entity_reference_revisions/entity_reference_revisions.module b/entity_reference_revisions/entity_reference_revisions.module
+index cead27b..bf3533c 100644
+--- a/entity_reference_revisions/entity_reference_revisions.module
++++ b/entity_reference_revisions/entity_reference_revisions.module
+@@ -263,8 +263,10 @@ function entity_reference_revisions_entity_revision_create(ContentEntityInterfac
+ 
+             /** @var \Drupal\Core\Entity\ContentEntityInterface $target_entity */
+             $target_entity = $item->entity;
+-            if (!$target_entity->hasTranslation($active_langcode)) {
+-              $target_entity->addTranslation($active_langcode, $target_entity->toArray());
++            if (!empty($target_entity)) {
++              if (!$target_entity->hasTranslation($active_langcode)) {
++                $target_entity->addTranslation($active_langcode, $target_entity->toArray());
++              }
+             }
+             $target_entity = $item->entity->getTranslation($active_langcode);
+             $revised_entity = $target_storage->createRevision($target_entity, $new_revision->isDefaultRevision(), $keep_untranslatable_fields);
