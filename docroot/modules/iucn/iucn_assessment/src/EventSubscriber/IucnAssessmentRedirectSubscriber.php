@@ -155,6 +155,9 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
 
     $current_user = $this->accountProxy;
     $reviewers = $workflow_service->getReviewersArray($node);
+    if (empty($reviewers)) {
+      return FALSE;
+    }
     if (in_array($current_user->id(), $reviewers)) {
       $revision = $workflow_service->getReviewerRevision($node, $current_user->id());
       if (!empty($revision)) {

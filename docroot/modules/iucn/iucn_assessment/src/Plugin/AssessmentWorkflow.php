@@ -249,16 +249,21 @@ class AssessmentWorkflow {
       $added_reviewers = $this->getAddedReviewers($node, $original);
       $removed_reviewers = $this->getRemovedReviewers($node, $original);
 
-      if (!empty($added_reviewers) || !empty($removed_reviewers)) {
-        // Create a revision for each newly added reviewer.
+      // Create a revision for each newly added reviewer.
+      if (!empty($added_reviewers)) {
         foreach ($added_reviewers as $added_reviewer) {
           $this->createRevisionForReviewer($node, $added_reviewer);
         }
-
-        // Delete revisions of reviewers no longer assigned on this assessment.
+      }
+      // Delete revisions of reviewers no longer assigned on this assessment.
+      if (!empty($removed_reviewers)) {
         foreach ($removed_reviewers as $removed_reviewer) {
           $this->deleteReviewerRevisions($node, $removed_reviewer);
         }
+      }
+      $unfinished_reviews = $this->getUnfinishedReviewerRevisions($node);
+      if (empty($unfinished_reviews)) {
+        $node->field_state->value = self::STATUS_FINISHED_REVIEWING;
       }
     }
 
@@ -462,7 +467,7 @@ class AssessmentWorkflow {
     if (empty($reviewers)) {
       return array_column($reviewers, 'target_id');
     }
-    return NULL;
+    return [];
   }
 
   /**
@@ -517,10 +522,13 @@ class AssessmentWorkflow {
    *
    * @return array
    *   The revisions.
+   *
+   * @throws \Exception
+   *   Use this function when the default revision is under review.
    */
   public function getReviewerRevisions(NodeInterface $node) {
     if ($node->field_state->value != self::STATUS_UNDER_REVIEW) {
-      return [];
+      throw new \Exception('Default revision is not under review.');
     }
     /** @var \Drupal\node\NodeStorageInterface $node_storage */
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
@@ -548,8 +556,11 @@ class AssessmentWorkflow {
   public function getUnfinishedReviewerRevisions(NodeInterface $node) {
     $unfinished = [];
     $revisions = $this->getReviewerRevisions($node);
+    $reviewers = $this->getReviewersArray($node);
+    /** @var \Drupal\node\NodeInterface $revision */
     foreach ($revisions as $revision) {
-      if ($revision->field_state->value == self::STATUS_UNDER_REVIEW) {
+      if ($revision->field_state->value == self::STATUS_UNDER_REVIEW
+       && in_array($revision->getRevisionUserId(), $reviewers)) {
         $unfinished[] = $revision;
       }
     }
@@ -564,15 +575,8 @@ class AssessmentWorkflow {
    *
    * @return bool
    *   True or false.
-   *
-   * @throws \Exception
-   *   Use this function when the default revision is under review.
    */
   public function isReviewerRevision(NodeInterface $node) {
-    $original = Node::load($node->id());
-    if ($original->field_state->value != self::STATUS_UNDER_REVIEW) {
-      throw new \Exception('Default revision is not under review.');
-    }
     return in_array($node->field_state->value, [self::STATUS_UNDER_REVIEW, self::STATUS_FINISHED_REVIEWING]) && !$node->isDefaultRevision();
   }
 
