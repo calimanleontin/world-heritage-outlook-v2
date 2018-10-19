@@ -104,22 +104,9 @@ class AssessmentWorkflow {
       return TRUE;
     }
 
-    $coordinator = $node->get('field_coordinator')->getValue();
-    if (!empty($coordinator)) {
-      $coordinator = $coordinator[0]['target_id'];
-    }
-    $assessor = $node->get('field_assessor')->getValue();
-    if (!empty($assessor)) {
-      $assessor = $assessor[0]['target_id'];
-    }
-    $reviewers = $node->get('field_reviewers')->getValue();
-    if (!empty($reviewers)) {
-      $reviewers_array = [];
-      foreach ($reviewers as $reviewer) {
-        $reviewers_array[] = $reviewer['target_id'];
-      }
-      $reviewers = $reviewers_array;
-    }
+    $coordinator = $node->field_coordinator->target_id;
+    $assessor = $node->field_assessor->target_id;
+    $reviewers = $this->getReviewersArray($node);
 
     switch ($state) {
       case self::STATUS_CREATION:
@@ -473,14 +460,9 @@ class AssessmentWorkflow {
   public function getReviewersArray(NodeInterface $node) {
     $reviewers = $node->get('field_reviewers')->getValue();
     if (empty($reviewers)) {
-      return [];
+      return array_column($reviewers, 'target_id');
     }
-
-    foreach ($reviewers as &$reviewer) {
-      $reviewer = $reviewer['target_id'];
-    }
-
-    return $reviewers;
+    return NULL;
   }
 
   /**
