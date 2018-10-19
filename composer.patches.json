@@ -8,6 +8,9 @@
       "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
       "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
     },
+    "drupal/entity_reference_revisions": {
+      "Fix empty target entity": "patches/entity_reference_revisions/fix-empty-target-entity.patch"
+    },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
     },
