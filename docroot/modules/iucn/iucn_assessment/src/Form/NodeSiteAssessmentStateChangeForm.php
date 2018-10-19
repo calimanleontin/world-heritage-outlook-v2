@@ -18,6 +18,7 @@ class NodeSiteAssessmentStateChangeForm {
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
     $form['revision']['#access'] = FALSE;
+    $form['field_state']['#access'] = FALSE;
 
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */

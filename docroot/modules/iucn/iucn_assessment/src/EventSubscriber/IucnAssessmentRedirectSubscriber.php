@@ -9,7 +9,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -34,7 +34,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return([
-      KernelEvents::REQUEST => [
+      KernelEvents::RESPONSE => [
         ['redirectRevisions'], ['redirectNodeEdit'],
       ],
     ]);
@@ -45,7 +45,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *
    * custom handled the revision loading into iucn_assessment_preprocess_field()
    */
-  public function redirectRevisions(GetResponseEvent $event) {
+  public function redirectRevisions(FilterResponseEvent $event) {
     $request = $event->getRequest();
     // Taxonomy term pages are forbidden for anonymous users.
     if ($request->attributes->get('_route') === 'entity.node.revision') {
@@ -79,8 +79,9 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
   /**
    * Redirect reviewers from node edit page to the edit page of their revision.
    */
-  public function redirectNodeEdit(GetResponseEvent $event) {
+  public function redirectNodeEdit(FilterResponseEvent $event) {
     $request = $event->getRequest();
+
     $route = $request->attributes->get('_route');
     if (in_array($route, ['entity.node.edit_form', 'iucn_assessment.node.state_change'])) {
       if ($route === 'entity.node.edit_form') {
@@ -123,13 +124,20 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    * @return bool
    *   Whether or not the redirect happens.
    */
-  private function redirectToDraftRevision(NodeInterface $node, $route, GetResponseEvent $event) {
+  private function redirectToDraftRevision(NodeInterface $node, $route, FilterResponseEvent $event) {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
     if (!empty($draft_revision)) {
       $url = Url::fromRoute($route, ['node' => $node->id(), 'node_revision' => $draft_revision->vid->value]);
+      $build = [
+        '#cache' => [
+          'max-age' => 0,
+        ],
+      ];
+      $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
       $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
+      $response->addCacheableDependency($cache_metadata);
       $event->setResponse($response);
       return TRUE;
     }
@@ -149,7 +157,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    * @return bool
    *   Whether or not the redirect happens.
    */
-  private function redirectToReviewerRevision(NodeInterface $node, $route, GetResponseEvent $event) {
+  private function redirectToReviewerRevision(NodeInterface $node, $route, FilterResponseEvent $event) {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
 
@@ -162,7 +170,14 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       $revision = $workflow_service->getReviewerRevision($node, $current_user->id());
       if (!empty($revision)) {
         $url = Url::fromRoute($route, ['node' => $node->id(), 'node_revision' => $revision->vid->value]);
+        $build = [
+          '#cache' => [
+            'max-age' => 0,
+          ],
+        ];
+        $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
         $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
+        $response->addCacheableDependency($cache_metadata);
         $event->setResponse($response);
         return TRUE;
       }
@@ -182,14 +197,21 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
    *   The response event.
    */
-  private function redirectToStateChangeForm(NodeInterface $node, GetResponseEvent $event) {
+  private function redirectToStateChangeForm(NodeInterface $node, FilterResponseEvent $event) {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
     if (in_array($route, ['iucn_assessment.node.state_change', 'iucn_assessment.node_revision.state_change'])) {
       return;
     }
     $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $node->id()]);
+    $build = [
+      '#cache' => [
+        'max-age' => 0,
+      ],
+    ];
+    $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
     $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
+    $response->addCacheableDependency($cache_metadata);
     $event->setResponse($response);
   }
 

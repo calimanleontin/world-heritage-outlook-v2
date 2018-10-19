@@ -202,10 +202,11 @@ class AssessmentWorkflow {
    *   The assessment.
    */
   public function assessmentPreSave(NodeInterface $node) {
-    /** @var \Drupal\node\NodeInterface $original */
-    $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
-    $state = $node->field_state->value;
-    $original_state = $original->field_state->value;
+    // Ignore new assessments.
+    if ($node->isNew()) {
+      $node->get('field_state')->setValue(self::STATUS_NEW);
+      return;
+    }
 
     // When saving an assessment with no state, we want to set the NEW state.
     if ($this->assessmentHasNoState($node)) {
@@ -213,10 +214,10 @@ class AssessmentWorkflow {
       return;
     }
 
-    // Ignore new assessments.
-    if ($node->isNew() || $state == self::STATUS_NEW) {
-      return;
-    }
+    $state = $node->field_state->value;
+    /** @var \Drupal\node\NodeInterface $original */
+    $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
+    $original_state = $original->field_state->value;
 
     // Set the original status to new so a proper revision is created.
     if ($this->assessmentHasNoState($original)) {
