@@ -246,7 +246,13 @@ class AssessmentWorkflow {
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
-      $added_reviewers = $this->getAddedReviewers($node, $original);
+      if ($original_state == self::STATUS_UNDER_REVIEW) {
+        $added_reviewers = $this->getAddedReviewers($node, $original);
+      }
+      else {
+        $ready_for_review_revision = $this->getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
+        $added_reviewers = $this->getAddedReviewers($node, $ready_for_review_revision);
+      }
       $removed_reviewers = $this->getRemovedReviewers($node, $original);
 
       // Create a revision for each newly added reviewer.
@@ -401,9 +407,6 @@ class AssessmentWorkflow {
     if ($node->bundle() != 'site_assessment') {
       return FALSE;
     }
-
-    /** @var \Drupal\node\NodeStorageInterface $node_storage */
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $unfinished_revisions = $this->getUnfinishedReviewerRevisions($node);
     if (count($unfinished_revisions) > 1) {
       return FALSE;
@@ -464,7 +467,7 @@ class AssessmentWorkflow {
    */
   public function getReviewersArray(NodeInterface $node) {
     $reviewers = $node->get('field_reviewers')->getValue();
-    if (empty($reviewers)) {
+    if (!empty($reviewers)) {
       return array_column($reviewers, 'target_id');
     }
     return [];
@@ -500,10 +503,6 @@ class AssessmentWorkflow {
    *   The revision.
    */
   public function getReviewerRevision(NodeInterface $node, $uid) {
-    $reviewers = $this->getReviewersArray($node);
-    if (!in_array($uid, $reviewers)) {
-      return NULL;
-    }
     $reviewer_revisions = $this->getReviewerRevisions($node);
     foreach ($reviewer_revisions as $node_revision) {
       /** @var \Drupal\node\Entity\Node $node_revision */
@@ -556,11 +555,9 @@ class AssessmentWorkflow {
   public function getUnfinishedReviewerRevisions(NodeInterface $node) {
     $unfinished = [];
     $revisions = $this->getReviewerRevisions($node);
-    $reviewers = $this->getReviewersArray($node);
     /** @var \Drupal\node\NodeInterface $revision */
     foreach ($revisions as $revision) {
-      if ($revision->field_state->value == self::STATUS_UNDER_REVIEW
-       && in_array($revision->getRevisionUserId(), $reviewers)) {
+      if ($revision->field_state->value == self::STATUS_UNDER_REVIEW) {
         $unfinished[] = $revision;
       }
     }
@@ -577,6 +574,10 @@ class AssessmentWorkflow {
    *   True or false.
    */
   public function isReviewerRevision(NodeInterface $node) {
+    $reviewers = $this->getReviewersArray($node);
+    if (!in_array($node->getRevisionUserId(), $reviewers)) {
+      return FALSE;
+    }
     return in_array($node->field_state->value, [self::STATUS_UNDER_REVIEW, self::STATUS_FINISHED_REVIEWING]) && !$node->isDefaultRevision();
   }
 
