@@ -247,7 +247,7 @@ class AssessmentWorkflow {
           $default_revision->save();
         }
         // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($node, $default_revision);
+        $this->appendDiffToFieldSettings($node, $default_revision, FALSE);
       }
       // When the draft revision is published,
       // create a new default revision with the published state.
@@ -322,7 +322,7 @@ class AssessmentWorkflow {
    */
   public function appendDiffToFieldSettings(NodeInterface $node, NodeInterface $compare, $save = TRUE) {
     $diff = \Drupal::service('iucn_diff_revisions.diff_controller')->compareRevisions($compare->getRevisionId(), $node->getRevisionId());
-    $field_settings_json = $node->get('field_settings')->getValue();
+    $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
     $field_settings['diff'] = $diff;
     $field_settings_json = json_encode($field_settings);
