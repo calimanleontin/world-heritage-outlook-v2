@@ -1,3 +1,88 @@
+.js #diff-prototype .paragraph-top-col-23 {
+    grid-template-columns: repeat(22 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-22 {
+    grid-template-columns: repeat(21 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-21 {
+    grid-template-columns: repeat(20 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-20 {
+    grid-template-columns: repeat(19 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-19 {
+    grid-template-columns: repeat(18 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-18 {
+    grid-template-columns: repeat(17 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-17 {
+    grid-template-columns: repeat(16 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-16 {
+    grid-template-columns: repeat(15 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-15 {
+    grid-template-columns: repeat(14 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-14 {
+    grid-template-columns: repeat(13 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-13 {
+    grid-template-columns: repeat(12 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-12 {
+    grid-template-columns: repeat(11 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-11 {
+    grid-template-columns: repeat(10 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-10 {
+    grid-template-columns: repeat(9 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-9 {
+    grid-template-columns: repeat(8 , minmax(6.5rem, 1fr)) 10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-8 {
+    grid-template-columns: repeat(7 , minmax(6.5rem, 1fr))  10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-7 {
+    grid-template-columns: repeat(6 , minmax(6.5rem, 1fr))  10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-6 {
+    grid-template-columns: repeat(5 , minmax(6.5rem, 1fr))  10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-5 {
+    grid-template-columns: repeat(4 , minmax(6.5rem, 1fr))  10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-4 {
+    grid-template-columns: repeat(3 , minmax(6.5rem, 1fr))  10rem;
+}
+
+.js #diff-prototype .paragraph-top-col-3 {
+    grid-template-columns: repeat(2 , minmax(6.5rem, 1fr))  10rem;
+}
+
+
 .paragraph-summary-component textarea {
   max-width: 100%;
   width: 100% !important;
@@ -5,7 +90,7 @@
 }
 
 .js .paragraph-top {
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .chosen-container {
@@ -17,11 +102,19 @@
 }
 
 .paragraph-summary-component {
-  height: 100%;
+
+  /* height: 100%; */
 }
 
 .paragraph-summary-component,
-.relative {
+.paragraphs-actions > .inner {
+
+  /* padding: 10px 12px; */
+}
+
+.paragraph-summary-component,
+.relative,
+.relative-wrapper {
   position: relative;
 }
 
@@ -35,12 +128,12 @@
 
 /* .btn-copy .icon,
 .btn-reset .icon {
-  width: 3em;
-  height: 3em;
+width: 3em;
+height: 3em;
 } */
-
 .btn-copy {
-/*   background: transparent;
+
+  /*   background: transparent;
   border: none;
   box-shadow: none; */
   position: absolute;
@@ -62,22 +155,54 @@
 }
 
 .paragraphs-actions {
-  display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  /* grid-column: -2 / span 2 !important; */
 }
 
-.paragraph-header .paragraphs-actions {
+.paragraphs-actions .inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: absolute;
+  top: auto;
+  right: 0;
+  flex-wrap: wrap;  /* border-left: 1px solid #ddd; */
+}
+
+.paragraph-header .paragraphs-actions .inner {
   justify-content: center;
+  right: 0;
 }
 
 /* .paragraphs-actions > .button {
-  flex: 1;
+flex: 1;
 } */
+tr {
+  background-color: #fff;
+}
 
+td {
+  background-color: inherit;  /* padding: 0 !important; */
+}
 
-.diff-changed,
-.diff-changed:hover {
+td div {
+  background-color: inherit;
+}
+
+tbody tr:hover div,
+tbody tr:focus div {
+  background-color: #f7fcff;
+}
+
+.diff-changed td,
+.diff-changed:hover td,
+.diff-changed td div,
+.diff-changed:hover td div {
   background-color: #fcf8e3;
+}
+
+.paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
+  background-color: #fff;
 }
 
 .ui-dialog {
@@ -86,12 +211,43 @@
 }
 
 .responsive-wrapper {
-  overflow: auto;
-  position: relative;
+  overflow: auto;  /* position: relative; */
 }
+
 /*
 .paragraphs-actions {
-  position: absolute;
-  right: 0;
+position: absolute;
+right: 0;
 }
  */
+
+/* .slide-button {
+position: absolute;
+top: 0;
+bottom: 0;
+z-index: 1;
+left: 0;
+}
+.slide-right {
+right: 10rem;
+left: auto;
+}
+ */
+
+.wrapper1,
+.wrapper2 {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.wrapper1 {
+  height: 20px;
+}
+
+.div1 {
+  height: 20px;
+}
+
+.div2 {
+  overflow: auto;
+}

@@ -2,6 +2,6 @@ iucn_who_diff.diff_prototype:
   version: VERSION
   css:
     theme:
-      css/diff-prototype.css: {}
+      css/diff-prototype.css: { weight: 50 }
   js:
     js/diff-prototype.js: {}
