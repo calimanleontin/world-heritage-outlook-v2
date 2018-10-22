@@ -680,17 +680,17 @@ class AssessmentWorkflow {
    */
   public function isAssessmentEditable(NodeInterface $node) {
     if ($node->isDefaultRevision() && $node->field_state->value == self::STATUS_UNDER_REVIEW) {
-      return TRUE;
+      return FALSE;
     }
     if ($node->field_state->value == self::STATUS_PUBLISHED) {
-      return TRUE;
+      return FALSE;
     }
     $current_user = \Drupal::currentUser();
     if ($node->field_state->value == self::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
-      return TRUE;
+      return FALSE;
     }
-    return FALSE;
+    return TRUE;
   }
 
 }
