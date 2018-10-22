@@ -13,6 +13,35 @@ use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
 /**
+ * Implements hook_views_data_alter().
+ */
+function iucn_who_core_views_data_alter(array &$data) {
+  $data['users']['user_assessor'] = array(
+    'title' => t('Assessor'),
+    'field' => array(
+      'title' => t('Assessor'),
+      'help' => t('Assessor.'),
+      'id' => 'iucn_who_core_assessor',
+    ),
+  );
+  $data['users']['user_coordinator'] = array(
+    'title' => t('Coordinator'),
+    'field' => array(
+      'title' => t('Coordinator'),
+      'help' => t('Coordinator.'),
+      'id' => 'iucn_who_core_coordinator',
+    ),
+  );
+  $data['users']['user_reviewer'] = array(
+    'title' => t('Reviewer'),
+    'field' => array(
+      'title' => t('Reviewer'),
+      'help' => t('Reviewer.'),
+      'id' => 'iucn_who_core_reviewer',
+    ),
+  );
+}
+/**
  * Implements hook_toolbar().
  */
 function iucn_who_core_toolbar() {
