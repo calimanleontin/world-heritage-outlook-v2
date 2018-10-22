@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
+use Drupal\node\Entity\Node;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -40,4 +41,14 @@ function iucn_assessment_update_8001() {
  */
 function iucn_assessment_update_8002() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
+}
+
+function iucn_assessment_update_8003() {
+  $nids = \Drupal::entityQuery('node')->condition('type', 'site_assessment')->execute();
+  $nodes = Node::loadMultiple($nids);
+  foreach ($nodes as $node) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, $workflow_service::STATUS_PUBLISHED);
+  }
 }
