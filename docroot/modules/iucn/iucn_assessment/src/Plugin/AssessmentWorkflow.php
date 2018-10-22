@@ -14,6 +14,8 @@ use Drupal\user\Entity\User;
  */
 class AssessmentWorkflow {
 
+  const ASSESSMENT_BUNDLE = "site_assessment";
+
   /** @var string New assessment was just created, waiting for coordinator to be assigned. */
   const STATUS_NEW = 'assessment_new';
 
@@ -187,9 +189,11 @@ class AssessmentWorkflow {
     $state = $node->field_state->value;
     $original = $node->original;
 
-    // When a reviewer marks his revision as done, check if all other reviewers
-    // have marked their revision is done.
-    // If so, mark the default revision as done.
+    $this->updateRevisionDifferences($node);
+
+    // Block only for reviewers' revision:
+    // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
+    // Creates a new revision
     if (!$node->isDefaultRevision()) {
       if ($state == self::STATUS_FINISHED_REVIEWING && $original->field_state->value == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
@@ -383,6 +387,40 @@ class AssessmentWorkflow {
         \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($rid);
       }
     }
+  }
+
+  /**
+   *
+   */
+  public function updateRevisionDifferences(NodeInterface $revision) {
+    $state = $revision->field_state->value;
+
+  }
+
+  /**
+   * Retrieve parent revision for the provided revision.
+   *
+   * The parent revision is used by the comparison functionality.
+   *  - READY_FOR_REVIEW has parent STATUS_UNDER_EVALUATION
+   *  - UNDER_COMPARISON has parent STATUS_UNDER_REVIEW
+   *
+   * @param NodeInterface $revision
+   *   Current revision.
+   *
+   * @return integer
+   *   The original revision to be compared with the current one.
+   */
+  public function getComparisonRevisionId($nid, $vid) {
+    /** @var \Drupal\Core\Database\Query\Select $query */
+    $query = \Drupal::database()
+      ->select('node_revision', 'a')->fields('a', ['vid'])
+      ->innerJoin('node_revision__field_state', 'b', 'a.nid = b.entity_id AND a.vid = b.revision_id AND a.langcode = b.langcode')
+      ->condition('a.nid', $nid)
+      ->condition('a.revision_default', 0)
+      ->condition('b.field_state_value', [self::STATUS_UNDER_REVIEW, self::STATUS_FINISHED_REVIEWING], 'IN');
+    $ret = $query->execute()->fetchCol();
+
+    return 0;
   }
 
 }
