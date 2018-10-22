@@ -1,15 +1,18 @@
 uuid: 4f1f2ef1-b920-49f9-87a6-557a6db55d91
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_new
+    - workflow.state.assessment_under_evaluation
 id: assessment_under_evaluation_new
 label: ''
 module: workflow
 from_sid: assessment_under_evaluation
 to_sid: assessment_new
 roles:
-  administrator: administrator
   workflow_author: '0'
+  administrator: '0'
   iucn_manager: '0'
   edit_world_heritage_site_assessments: '0'
   publish_world_heritage_site_assessments: '0'

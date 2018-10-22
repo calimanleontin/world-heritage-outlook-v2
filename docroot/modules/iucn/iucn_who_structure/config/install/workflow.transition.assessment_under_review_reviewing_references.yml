@@ -1,0 +1,29 @@
+uuid: 7a0ad086-602a-4719-9ded-8e1796d72928
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_reviewing_references
+    - workflow.state.assessment_under_review
+id: assessment_under_review_reviewing_references
+label: ''
+module: workflow
+from_sid: assessment_under_review
+to_sid: assessment_reviewing_references
+roles:
+  administrator: administrator
+  workflow_author: '0'
+  iucn_manager: '0'
+  edit_world_heritage_site_assessments: '0'
+  publish_world_heritage_site_assessments: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  anonymous: '0'
+  authenticated: '0'
+  edit_content_pages: '0'
+  publish_content_pages: '0'
+  menu_editor: '0'
+  edit_world_heritage_site_information: '0'
+  publish_world_heritage_site_information: '0'
+  manage_submissions: '0'

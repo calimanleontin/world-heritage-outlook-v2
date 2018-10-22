@@ -1,7 +1,10 @@
 uuid: ef73c963-ccda-40ce-956b-d5f0432973bb
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_under_comparison
 id: assessment_finished_reviewing_under_comparison
 label: 'Start comparing reviews'
 module: workflow

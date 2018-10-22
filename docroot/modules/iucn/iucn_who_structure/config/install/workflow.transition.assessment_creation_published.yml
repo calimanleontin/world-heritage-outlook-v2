@@ -1,7 +1,10 @@
 uuid: 6af6bd62-ae42-4f95-bb34-b9ed1b0ec300
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_creation
+    - workflow.state.assessment_published
 id: assessment_creation_published
 label: ''
 module: workflow

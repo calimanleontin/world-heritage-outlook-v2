@@ -5,7 +5,9 @@ namespace Drupal\iucn_assessment\Plugin\Access;
 use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
+use Drupal\node\Plugin\views\filter\Access;
 
 class AssessmentAccess {
 
@@ -30,17 +32,22 @@ class AssessmentAccess {
       return AccessResult::allowed();
     }
 
+    if ($account->id() == 1) {
+      return AccessResult::allowed();
+    }
+
     if (!empty($node_revision)) {
       $node = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($node_revision);
+
+      // Only under_review or draft revisions should be editable.
+      if (!in_array($node->field_state->value, [AssessmentWorkflow::STATUS_UNDER_REVIEW, AssessmentWorkflow::STATUS_DRAFT])) {
+        return AccessResult::forbidden();
+      }
     }
 
     if (empty($node)) {
-      return AccessResult::allowed();
-    }
-
-    if ($account->id() == 1) {
       return AccessResult::allowed();
     }
 
@@ -53,6 +60,26 @@ class AssessmentAccess {
     }
 
     return AccessResult::allowed();
+  }
+
+  /**
+   * Custom access check for the state change edit route.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account.
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment that is being edited.
+   * @param int $node_revision
+   *   The revision being edited. This is NULL on node edit pages.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   Denied or neutral.
+   */
+  public function assessmentStateEdit(AccountInterface $account, NodeInterface $node = NULL, $node_revision = NULL) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::forbidden();
+    }
+    return $this->assessmentEdit($account, $node, $node_revision);
   }
 
 }

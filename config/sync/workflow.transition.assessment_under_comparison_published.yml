@@ -1,15 +1,18 @@
 uuid: 212bf432-da37-49c0-a07f-2d36f347d967
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_published
+    - workflow.state.assessment_under_comparison
 id: assessment_under_comparison_published
 label: ''
 module: workflow
 from_sid: assessment_under_comparison
 to_sid: assessment_published
 roles:
-  administrator: administrator
   workflow_author: '0'
+  administrator: '0'
   iucn_manager: '0'
   edit_world_heritage_site_assessments: '0'
   publish_world_heritage_site_assessments: '0'
