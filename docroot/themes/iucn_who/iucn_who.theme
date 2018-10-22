@@ -367,3 +367,44 @@ function iucn_who_preprocess_iucn_who_sites_search(&$variables) {
     }
   }
 }
+
+
+/**
+ *
+ * See also: modules/iucn/iucn_who_core/iucn_who_core.module iucn_who_core_system_breadcrumb_alter function.
+ *
+ * Prepares variables for breadcrumb templates.
+ *
+ * Default template: breadcrumb.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - links: A list of \Drupal\Core\Link objects which should be rendered.
+ */
+function iucn_who_preprocess_breadcrumb(&$variables) {
+  $parameters = \Drupal::routeMatch()->getParameters()->all();
+  if(isset($parameters['view_id'])) {
+    $item = NULL;
+    switch ($parameters['view_id']){
+      case 'sites_search':
+      //case 'publications':
+        $item = 2;
+        break;
+      case 'frequently_asked_questions':
+      case 'news':
+        $item = 3;
+        break;
+
+      break;
+      default:
+        break;
+    }
+
+    if ($item && isset($variables['breadcrumb'][$item])) {
+      if (isset($variables['breadcrumb'][$item - 1])) {
+        $variables['breadcrumb'][$item - 1]['attributes'] = $variables['breadcrumb'][$item]['attributes'];
+      }
+      unset($variables['breadcrumb'][$item]);
+    }
+  }
+}

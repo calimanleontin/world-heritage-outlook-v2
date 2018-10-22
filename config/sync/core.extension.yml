@@ -19,6 +19,7 @@ module:
   ctools: 0
   datetime: 0
   disable_field: 0
+  dblog: 0
   display_field_copy: 0
   ds: 0
   dynamic_page_cache: 0
