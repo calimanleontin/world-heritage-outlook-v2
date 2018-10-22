@@ -29,7 +29,7 @@ class NodeSiteAssessmentStateChangeForm {
     // When under review, the save button is useful
     // for adding/removing reviewers.
     if ($current_state != AssessmentWorkflow::STATUS_UNDER_REVIEW && $node->isDefaultRevision()) {
-      unset($form['field_state']['widget'][0]['to_sid']['#options'][$current_state]);
+      $form['actions']['workflow_' . $current_state]['#access'] = FALSE;
     }
 
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
