@@ -3,8 +3,11 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
+use Drupal\workflow\Entity\WorkflowState;
+use Drupal\workflow\Entity\WorkflowTransition;
 
 class NodeSiteAssessmentStateChangeForm {
 
@@ -19,14 +22,31 @@ class NodeSiteAssessmentStateChangeForm {
     $form['revision']['#disabled'] = FALSE;
     $form['revision']['#access'] = FALSE;
     $form['field_state']['#access'] = FALSE;
+    $node = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\node\NodeInterface $node */
+    $current_state = $node->field_state->value;
+    // Hide the save button for every state except under_review.
+    // When under review, the save button is useful
+    // for adding/removing reviewers.
+    if ($current_state != AssessmentWorkflow::STATUS_UNDER_REVIEW && $node->isDefaultRevision()) {
+      unset($form['field_state']['widget'][0]['to_sid']['#options'][$current_state]);
+    }
 
     $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $weight = RoleHierarchyHelper::getAccountRoleWeight(\Drupal::currentUser());
+    $current_user = \Drupal::currentUser();
+    $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
     $coordinator_weight = Role::load('coordinator')->getWeight();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $form_state->getFormObject()->getEntity();
+    // Coordinators can only add themselves as coordinator.
+    if ($weight == $coordinator_weight) {
+      if (!empty($form['field_coordinator']) && !empty($form['field_coordinator']['widget']['#options'])) {
+        $form['field_coordinator']['widget']['#options'] = [
+          '_none' => '- ' . t('None') . ' -',
+          $current_user->id() => $current_user->getAccountName(),
+        ];
+      }
+    }
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       if ($weight <= $coordinator_weight) {
         // Enable these fields only in certain assessment states
