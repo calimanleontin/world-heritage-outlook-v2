@@ -9,3 +9,4 @@ dependencies:
   - iucn_assessment
   - diff
   - iucn_diff_revisions
+  - chosen
