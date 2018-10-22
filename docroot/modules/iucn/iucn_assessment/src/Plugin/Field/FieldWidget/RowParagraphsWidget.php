@@ -79,29 +79,30 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = $this->getSummaryContainers($components);
 
     $element['top']['actions']['#weight'] = 9999;
-
-    // Create the custom 'Diff' button
-    $element['top']['actions']['actions']['diff_button'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Diff'),
-      '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
-      '#weight' => 2,
-      '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
-      '#ajax' => [
-        'callback' => 'Drupal\iucn_assessment\Controller\DiffModalFormController::openDiffModalForm',
-        'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
-      ],
-      '#access' => $paragraphs_entity->access('update'),
-      '#paragraphs_mode' => 'diff',
-      '#attributes' => [
-        'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
-        'title' => $this->t('Diff'),
-      ],
-      '#attached' => [
-        'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
-      ],
-      '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
-    ];
+    if(!empty($element['top']['actions']['actions']['edit_button'])) {
+      // Create the custom 'Diff' button
+      $element['top']['actions']['actions']['diff_button'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Diff'),
+        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+        '#weight' => 2,
+        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+        '#ajax' => [
+          'callback' => 'Drupal\iucn_assessment\Controller\DiffModalFormController::openDiffModalForm',
+          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+        ],
+        '#access' => $paragraphs_entity->access('update'),
+        '#paragraphs_mode' => 'diff',
+        '#attributes' => [
+          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+          'title' => $this->t('Diff'),
+        ],
+        '#attached' => [
+          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
+        ],
+        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
+      ];
+    }
 
     $element['top']['summary'] = $containers;
     $count = count($containers) + 1;
