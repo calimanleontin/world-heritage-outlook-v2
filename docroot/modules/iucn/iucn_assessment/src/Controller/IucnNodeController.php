@@ -59,13 +59,14 @@ class IucnNodeController extends NodeController {
     }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
-    if (!empty($node->field_state->value)) {
-      $state = WorkflowState::load($node->field_state->value);
+    $current_state = $node->field_state->value;
+    if (!empty($current_state)) {
+      $state_entity = WorkflowState::load($current_state);
     }
     else {
-      $state = NULL;
+      $state_entity = NULL;
     }
-    $state_label = !empty($state) ? $state->label() : 'Creation';
+    $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
     $build['current_state'] = [
       '#weight' => 9999,
       '#type' => 'markup',
@@ -75,7 +76,7 @@ class IucnNodeController extends NodeController {
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     if (!$workflow_service->isAssessmentEditable($node)) {
       $message = $this->t('The assessment is not editable in this state.');
-      if ($node->field_state->value == $workflow_service::STATUS_UNDER_REVIEW) {
+      if ($current_state == $workflow_service::STATUS_UNDER_REVIEW) {
         $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($node);
         if (!empty($unfinished_reviews)) {
           $reviewers = [];
@@ -89,8 +90,11 @@ class IucnNodeController extends NodeController {
           $message .= implode(', ', $reviewers);
         }
       }
-      elseif ($node->field_state->value == $workflow_service::STATUS_PUBLISHED) {
+      elseif ($current_state == $workflow_service::STATUS_PUBLISHED) {
         $message .= ' ' . $this->t('Please create a draft first.');
+      }
+      elseif ($current_state == $workflow_service::STATUS_UNDER_ASSESSMENT) {
+        $message .= ' ' . $this->t('Please wait for the assessment to be finished.');
       }
       \Drupal::messenger()->addWarning($message);
     }
