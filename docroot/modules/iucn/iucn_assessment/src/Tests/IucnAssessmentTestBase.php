@@ -44,16 +44,12 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    *   An array of field changes.
    */
   protected function setAssessmentState(NodeInterface $node, $state, $field_changes = NULL) {
-    // We need to log in as an administrator because
-    // it is the only role capable of executing every transition.
-    $this->userLogIn(TestSupport::ADMINISTRATOR);
-    $node->field_state->value = $state;
     if (!empty($field_changes)) {
       foreach ($field_changes as $field => $target_id) {
         $node->{$field}->target_id = $target_id;
       }
     }
-    $node->save();
+    \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, $state);
   }
 
   /**

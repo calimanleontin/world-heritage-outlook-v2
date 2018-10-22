@@ -1,7 +1,10 @@
 uuid: 9949af18-e14e-4814-89b8-59cfe3ae1ef8
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_under_assessment
 id: assessment_approved_under_assessment
 label: ''
 module: workflow

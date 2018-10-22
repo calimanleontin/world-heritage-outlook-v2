@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8
+class ComposerStaticInitbf8110bbe2a2df4cd474a0b1da0de9fb
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -30,8 +30,8 @@ class ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8
         'fbeead2280a8f3911a1fe6dd034f7d5e' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvancedInterface.php',
         '96f8d8288528d52059397cad6ec61f17' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvanced.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
-        '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
         '5a12a5271c58108e0aa33355e6ac54ea' => __DIR__ . '/..' . '/drupal/console-core/src/functions.php',
+        '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -1204,10 +1204,10 @@ class ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit193bf04fbcbdf9e9232859a5222bd9f8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitbf8110bbe2a2df4cd474a0b1da0de9fb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitbf8110bbe2a2df4cd474a0b1da0de9fb::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitbf8110bbe2a2df4cd474a0b1da0de9fb::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitbf8110bbe2a2df4cd474a0b1da0de9fb::$classMap;
 
         }, null, ClassLoader::class);
     }

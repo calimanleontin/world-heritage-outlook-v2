@@ -95,13 +95,14 @@
   > a {
     .light-link();
     display: inline-flex;
+    vertical-align: middle;
   }
   @media @grid-mobile {
     .background-variant(fade(#000, 40%), #fff);
     padding: .8em 1.2em;
   }
   @media @grid-desktop {
-    display: inline;
+    display: inline-flex;
     margin-left: 2em;
   }
 }

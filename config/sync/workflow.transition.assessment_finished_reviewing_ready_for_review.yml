@@ -1,15 +1,18 @@
 uuid: c61b4677-7ed2-441a-9c0f-12f57553634b
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_ready_for_review
 id: assessment_finished_reviewing_ready_for_review
 label: ''
 module: workflow
 from_sid: assessment_finished_reviewing
 to_sid: assessment_ready_for_review
 roles:
-  administrator: administrator
   workflow_author: '0'
+  administrator: '0'
   iucn_manager: '0'
   edit_world_heritage_site_assessments: '0'
   publish_world_heritage_site_assessments: '0'
