@@ -42,7 +42,12 @@ class AssessmentAccess {
         ->loadRevision($node_revision);
 
       // Only under_review or draft revisions should be editable.
-      if (!in_array($node->field_state->value, [AssessmentWorkflow::STATUS_UNDER_REVIEW, AssessmentWorkflow::STATUS_DRAFT])) {
+      // Editing a published revision will redirect to the default revision.
+      if (!in_array($node->field_state->value, [
+        AssessmentWorkflow::STATUS_UNDER_REVIEW,
+        AssessmentWorkflow::STATUS_DRAFT,
+        AssessmentWorkflow::STATUS_PUBLISHED,
+      ])) {
         return AccessResult::forbidden();
       }
     }
