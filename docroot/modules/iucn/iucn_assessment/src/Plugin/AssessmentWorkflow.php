@@ -135,7 +135,6 @@ class AssessmentWorkflow {
     return TRUE;
   }
 
-
   /**
    * Check if an user field (e.g. assessor) is visible on an assessment.
    *
@@ -152,11 +151,10 @@ class AssessmentWorkflow {
       return FALSE;
     }
     $state = $node->field_state->value;
-    return ($field == 'field_coordinator' && $state == self::STATUS_NEW)
+    return ($field == 'field_coordinator' && (in_array($state, ['assessment_creation', self::STATUS_NEW]) || empty($state)))
       || ($field == 'field_assessor' && $state == self::STATUS_UNDER_EVALUATION)
       || ($field == 'field_reviewers' && ($state == self::STATUS_READY_FOR_REVIEW || $state == self::STATUS_UNDER_REVIEW));
   }
-
 
   /**
    * Check if a field is required for an assessment to move to a certain state.
@@ -174,7 +172,6 @@ class AssessmentWorkflow {
       || ($field == 'field_assessor' && $state == self::STATUS_UNDER_ASSESSMENT)
       || ($field == 'field_reviewers' && $state == self::STATUS_UNDER_REVIEW);
   }
-
 
   /**
    * All the functions that need to be called when an assessment is saved.

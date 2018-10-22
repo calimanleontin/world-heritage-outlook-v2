@@ -17,8 +17,8 @@ class TestSupport {
   const IUCN_MANAGER = 'manager@test.ro';
 
   // Coordinators.
-  const COORDINATOR1 = 'coord1@test.ro';
-  const COORDINATOR2 = 'coord2@test.ro';
+  const COORDINATOR1 = 'coordinator1@test.ro';
+  const COORDINATOR2 = 'coordinator2@test.ro';
 
   // Assessors.
   const ASSESSOR1 = 'assessor1@test.ro';
@@ -31,6 +31,10 @@ class TestSupport {
 
   // Assessments.
   const ASSESSMENT1 = 'assessment1';
+  const ASSESSMENT2 = 'assessment2';
+  const ASSESSMENT3 = 'assessment3';
+  const ASSESSMENT4 = 'assessment4';
+
 
   /**
    * Create all the test data.
@@ -72,6 +76,9 @@ class TestSupport {
   public static function getAssessments() {
     return [
       self::ASSESSMENT1,
+      self::ASSESSMENT2,
+      self::ASSESSMENT3,
+      self::ASSESSMENT4,
     ];
   }
 
@@ -128,7 +135,10 @@ class TestSupport {
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
+      'field_state' => 'assessment_creation',
       'status' => 0,
+      'field_as_version' => 1,
+      'field_as_cycle' => 2020,
     ];
     $node = Node::create($assessment);
     $node->save();

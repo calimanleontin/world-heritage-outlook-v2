@@ -1,0 +1,22 @@
+uuid: cbd9b422-665d-4134-ac3b-126caf93f0d4
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - iucn_backend
+_core:
+  default_config_hash: 9RnnTUBcn0WRWXfrGOnId2H0Q31uQUeu_F5TnDxl2yg
+id: iucn_backend_messages
+theme: iucn_backend
+region: highlighted
+weight: -15
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

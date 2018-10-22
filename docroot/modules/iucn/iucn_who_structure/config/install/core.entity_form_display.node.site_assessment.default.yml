@@ -51,7 +51,6 @@ dependencies:
     - field_group
     - file
     - iucn_assessment
-    - workflow
 third_party_settings:
   field_group:
     group_as_tabs:
@@ -66,7 +65,7 @@ third_party_settings:
         - group_as_references
       parent_name: ''
       weight: 9
-      format_type: tabs
+      format_type: assessment_tabs
       format_settings:
         id: ''
         classes: ''
@@ -78,9 +77,9 @@ third_party_settings:
         - field_as_values_bio
       parent_name: group_as_tabs
       weight: 20
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: values
         classes: ''
         formatter: open
         description: ''
@@ -98,9 +97,9 @@ third_party_settings:
         - field_as_threats_rating
       parent_name: group_as_tabs
       weight: 21
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: threats
         classes: ''
         formatter: closed
         description: ''
@@ -116,13 +115,13 @@ third_party_settings:
         - field_as_protection_ov_practices
       parent_name: group_as_tabs
       weight: 22
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
         label: 'Protection and management'
         formatter: closed
         description: ''
         required_fields: true
-        id: ''
+        id: protection_management
         classes: ''
       label: 'Protection and management'
     group_as_assessing_values:
@@ -131,9 +130,9 @@ third_party_settings:
         - group_as_values_bio
       parent_name: group_as_tabs
       weight: 23
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: assessing_values
         classes: ''
         formatter: closed
         description: ''
@@ -145,9 +144,9 @@ third_party_settings:
         - field_as_global_assessment_level
       parent_name: group_as_tabs
       weight: 24
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: conservation_outlook
         classes: ''
         formatter: closed
         description: ''
@@ -159,9 +158,9 @@ third_party_settings:
         - field_as_benefits_summary
       parent_name: group_as_tabs
       weight: 25
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: benefits
         classes: ''
         formatter: closed
         description: ''
@@ -173,9 +172,9 @@ third_party_settings:
         - field_as_projects_needs
       parent_name: group_as_tabs
       weight: 26
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: projects
         classes: ''
         formatter: closed
         description: ''
@@ -186,9 +185,9 @@ third_party_settings:
         - field_as_references
       parent_name: group_as_tabs
       weight: 27
-      format_type: tab
+      format_type: assessment_tab
       format_settings:
-        id: ''
+        id: references
         classes: ''
         formatter: closed
         description: ''
@@ -589,41 +588,17 @@ content:
     type: number
     region: content
   field_assessment_file:
-    weight: 123
+    weight: 14
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
-  field_assessor:
-    weight: 125
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_coordinator:
-    weight: 124
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_date_published:
-    weight: 13
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
-    region: content
-  field_reviewers:
-    weight: 126
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_state:
-    weight: 127
-    settings: {  }
-    third_party_settings: {  }
-    type: workflow_default
     region: content
   langcode:
     type: language_select
@@ -636,7 +611,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 121
+    weight: 13
     third_party_settings: {  }
     region: content
   title:
@@ -653,12 +628,16 @@ content:
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_assessor: true
+  field_coordinator: true
+  field_reviewers: true
+  field_state: true
   path: true
   promote: true
   sticky: true
