@@ -32,7 +32,6 @@ class NodeSiteAssessmentStateChangeForm {
       $form['actions']['workflow_' . $current_state]['#access'] = FALSE;
     }
 
-    $form['#validate'][] = '_iucn_assessment_edit_form_validate';
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $current_user = \Drupal::currentUser();
@@ -53,6 +52,7 @@ class NodeSiteAssessmentStateChangeForm {
         // for roles >= coordinators.
         $enabled = $workflow_service->isFieldEnabledForAssessment($field, $node);
         $form[$field]['#access'] = $enabled;
+        $form[$field]['widget']['#required'] = $enabled;
       }
       else {
         // Hide the field for lower roles.

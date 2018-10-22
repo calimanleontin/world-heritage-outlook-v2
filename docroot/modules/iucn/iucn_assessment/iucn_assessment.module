@@ -485,28 +485,6 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 /**
- * Callback validation function for node_site_assessment_edit_form.
- */
-function _iucn_assessment_edit_form_validate($form, FormStateInterface $form_state) {
-  /** @var \Drupal\workflow\Entity\WorkflowTransitionInterface $transition */
-  $transition = $form_state->getValue('field_state')[0]['workflow_transition'];
-  $state = $transition->getToState();
-  $entity = $transition->getTargetEntity();
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
-    $value = $form_state->getValue($field);
-    $required = $workflow_service->isFieldRequiredForState($field, $state->id());
-    if ($required && empty($value)) {
-      $form_state->setErrorByName($field, t('<b>@field</b> is required before moving to state <b>@state</b>', [
-        '@field' => $entity->{$field}->getFieldDefinition()->getLabel(),
-        '@state' => $state->label(),
-      ]));
-    }
-  }
-}
-
-/**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
 function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
