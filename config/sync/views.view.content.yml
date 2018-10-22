@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_assessor
     - field.storage.node.field_coordinator
     - field.storage.node.field_reviewers
+    - field.storage.node.field_state
   module:
     - node
     - options
@@ -284,36 +285,14 @@ display:
           plugin_id: field
           entity_type: node
           entity_field: status
-        changed:
-          id: changed
-          table: node_field_data
-          field: changed
-          label: Updated
-          exclude: false
-          alter:
-            alter_text: false
-          element_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          plugin_id: field
-          entity_type: node
-          entity_field: changed
-        operations:
-          id: operations
-          table: node
-          field: operations
+        field_state:
+          id: field_state
+          table: node__field_state
+          field: field_state
           relationship: none
           group_type: group
           admin_label: ''
-          label: Operations
+          label: 'Workflow state'
           exclude: false
           alter:
             alter_text: false
@@ -350,65 +329,14 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: n/a
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          destination: true
-          plugin_id: entity_operations
-        field_coordinator:
-          id: field_coordinator
-          table: node__field_coordinator
-          field: field_coordinator
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Coordinator
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -419,14 +347,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_reviewers:
-          id: field_reviewers
-          table: node__field_reviewers
-          field: field_reviewers
+        field_coordinator:
+          id: field_coordinator
+          table: node__field_coordinator
+          field: field_coordinator
           relationship: none
           group_type: group
           admin_label: ''
-          label: Reviewers
+          label: Coordinator
           exclude: false
           alter:
             alter_text: false
@@ -545,6 +473,141 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_reviewers:
+          id: field_reviewers
+          table: node__field_reviewers
+          field: field_reviewers
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Reviewers
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        changed:
+          id: changed
+          table: node_field_data
+          field: changed
+          label: Updated
+          exclude: false
+          alter:
+            alter_text: false
+          element_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
+          plugin_id: field
+          entity_type: node
+          entity_field: changed
+        operations:
+          id: operations
+          table: node
+          field: operations
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Operations
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          destination: true
+          plugin_id: entity_operations
       filters:
         title:
           id: title
@@ -806,6 +869,7 @@ display:
         - 'config:field.storage.node.field_assessor'
         - 'config:field.storage.node.field_coordinator'
         - 'config:field.storage.node.field_reviewers'
+        - 'config:field.storage.node.field_state'
   page_1:
     display_options:
       path: admin/content/node
@@ -840,3 +904,4 @@ display:
         - 'config:field.storage.node.field_assessor'
         - 'config:field.storage.node.field_coordinator'
         - 'config:field.storage.node.field_reviewers'
+        - 'config:field.storage.node.field_state'
