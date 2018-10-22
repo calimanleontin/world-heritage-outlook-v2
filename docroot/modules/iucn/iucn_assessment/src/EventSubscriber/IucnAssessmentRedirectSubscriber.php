@@ -82,6 +82,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    */
   public function redirectNodeEdit(FilterResponseEvent $event) {
     $request = $event->getRequest();
+    $request->query->remove('destination');
 
     $route = $request->attributes->get('_route');
     /** @var \Drupal\node\Entity\Node $node */
@@ -104,6 +105,9 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       // will be redirected to the state change form.
       if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
         && $node->field_assessor->target_id != $this->accountProxy->id()) {
+        $this->redirectToStateChangeForm($node, $event);
+      }
+      elseif (in_array($state, [AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_FINISHED_REVIEWING])) {
         $this->redirectToStateChangeForm($node, $event);
       }
       // When trying to edit an under review assessment,

@@ -681,14 +681,19 @@ class AssessmentWorkflow {
    *   Whether or not the assessment is editable.
    */
   public function isAssessmentEditable(NodeInterface $node) {
-    if ($node->isDefaultRevision() && $node->field_state->value == self::STATUS_UNDER_REVIEW) {
+    $state = $node->field_state->value;
+    if ($node->isDefaultRevision() && $state == self::STATUS_UNDER_REVIEW) {
       return FALSE;
     }
-    if ($node->field_state->value == self::STATUS_PUBLISHED) {
+    if (in_array($state, [
+      self::STATUS_PUBLISHED,
+      self::STATUS_NEW, self::STATUS_FINISHED_REVIEWING,
+    ])) {
       return FALSE;
     }
+
     $current_user = \Drupal::currentUser();
-    if ($node->field_state->value == self::STATUS_UNDER_ASSESSMENT
+    if ($state == self::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
       return FALSE;
     }
