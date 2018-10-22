@@ -81,19 +81,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['top']['actions']['#weight'] = 9999;
 
     // Create the custom 'Diff' button
-    $diff_button = $element['top']['actions']['actions']['edit_button'];
-    $diff_button['#value'] = $this->t('Diff');
-    $diff_button['#attributes']['title'] = $this->t('Diff');;
-    $diff_button['#name'] = substr($diff_button['#name'], 0 , -4) . 'diff_button';
-    unset($diff_button['#submit']);
-    $diff_button['#attributes']['class'][] = 'use-ajax';
-    $diff_button['#ajax']['callback'] = 'Drupal\iucn_assessment\Controller\DiffModalFormController::openDiffModalForm';
-    $diff_button['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $diff_button['#attached']['library'][] = 'core/jquery.form';
-    $diff_button['#id'] = substr($diff_button['#id'], 0, -7) . 'diff-button';
-
-    // Add the custom button to the element
-    $element['top']['actions']['actions']['diff_button'] = $diff_button;
+    $element['top']['actions']['actions']['diff_button'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Diff'),
+      '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+      '#weight' => 2,
+      '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+      '#ajax' => [
+        'callback' => 'Drupal\iucn_assessment\Controller\DiffModalFormController::openDiffModalForm',
+        'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+      ],
+      '#access' => $paragraphs_entity->access('update'),
+      '#paragraphs_mode' => 'diff',
+      '#attributes' => [
+        'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+        'title' => $this->t('Diff'),
+      ],
+      '#attached' => [
+        'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
+      ],
+      '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
+    ];
 
     $element['top']['summary'] = $containers;
     $count = count($containers) + 1;
