@@ -638,7 +638,10 @@ class AssessmentWorkflow {
     $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
     $transition->setValues($new_state, $user_id, \Drupal::time()->getRequestTime(), '', TRUE);
     $transition->setTargetEntity($assessment);
-    $transition->executeAndUpdateEntity(TRUE);
+    $transition->force(TRUE);
+    $assessment->field_state->value = $new_state;
+    $assessment->field_state->workflow_transition = $transition;
+    $transition->execute(TRUE);
   }
 
   /**
