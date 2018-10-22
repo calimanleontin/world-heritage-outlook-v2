@@ -12,6 +12,7 @@ use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Drupal\Core\Cache\CacheableMetadata;
 
 class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
 
@@ -35,7 +36,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return([
       KernelEvents::RESPONSE => [
-        ['redirectRevisions'], ['redirectNodeEdit'],
+        ['redirectRevisions', 27], ['redirectNodeEdit', 27],
       ],
     ]);
   }
@@ -118,7 +119,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *   The assessment.
    * @param string $route
    *   The route: node_edit or state_change form.
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The response event.
    *
    * @return bool
@@ -135,7 +136,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
           'max-age' => 0,
         ],
       ];
-      $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
+      $cache_metadata = CacheableMetadata::createFromRenderArray($build);
       $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
       $response->addCacheableDependency($cache_metadata);
       $event->setResponse($response);
@@ -151,7 +152,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *   The assessment.
    * @param string $route
    *   The route: node_edit or state_change form.
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The response event.
    *
    * @return bool
@@ -175,7 +176,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
             'max-age' => 0,
           ],
         ];
-        $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
+        $cache_metadata = CacheableMetadata::createFromRenderArray($build);
         $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
         $response->addCacheableDependency($cache_metadata);
         $event->setResponse($response);
@@ -194,7 +195,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\node\NodeInterface $node
    *   The assessment.
-   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The response event.
    */
   private function redirectToStateChangeForm(NodeInterface $node, FilterResponseEvent $event) {
@@ -209,7 +210,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
         'max-age' => 0,
       ],
     ];
-    $cache_metadata = \Drupal\Core\Cache\CacheableMetadata::createFromRenderArray($build);
+    $cache_metadata = CacheableMetadata::createFromRenderArray($build);
     $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
     $response->addCacheableDependency($cache_metadata);
     $event->setResponse($response);
