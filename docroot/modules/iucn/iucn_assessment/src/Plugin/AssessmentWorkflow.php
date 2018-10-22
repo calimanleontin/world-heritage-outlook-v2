@@ -9,6 +9,8 @@ use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Drupal\workflow\Entity\Workflow;
+use Drupal\workflow\Entity\WorkflowConfigTransition;
 use Drupal\workflow\Entity\WorkflowManager;
 use Drupal\workflow\Entity\WorkflowTransition;
 
@@ -205,12 +207,14 @@ class AssessmentWorkflow {
     // Ignore new assessments.
     if ($node->isNew()) {
       $node->get('field_state')->setValue(self::STATUS_NEW);
+      $node->field_state->workflow_transition = WorkflowConfigTransition::load('assessment_creation_new');
       return;
     }
 
     // When saving an assessment with no state, we want to set the NEW state.
     if ($this->assessmentHasNoState($node)) {
       $node->get('field_state')->setValue(self::STATUS_NEW);
+      $node->field_state->workflow_transition = WorkflowConfigTransition::load('assessment_creation_new');
       return;
     }
 
