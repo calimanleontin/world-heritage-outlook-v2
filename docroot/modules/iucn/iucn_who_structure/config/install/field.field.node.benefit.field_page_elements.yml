@@ -1,0 +1,81 @@
+uuid: 02119c03-3fe5-43a8-b381-e6f4407bb801
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_elements
+    - node.type.benefit
+    - paragraphs.paragraphs_type.content_html
+    - paragraphs.paragraphs_type.content_teasers
+    - paragraphs.paragraphs_type.image_grid
+    - paragraphs.paragraphs_type.numbered_heading
+  module:
+    - entity_reference_revisions
+id: node.benefit.field_page_elements
+field_name: field_page_elements
+entity_type: node
+bundle: benefit
+label: 'Page Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      content_html: content_html
+      content_teasers: content_teasers
+      image_grid: image_grid
+      numbered_heading: numbered_heading
+    target_bundles_drag_drop:
+      content_html:
+        enabled: true
+        weight: 9
+      content_teasers:
+        enabled: true
+        weight: 10
+      danger_list:
+        weight: 11
+        enabled: false
+      image_grid:
+        enabled: true
+        weight: 12
+      number_heading_list:
+        weight: 13
+        enabled: false
+      numbered_heading:
+        enabled: true
+        weight: 14
+      pdf_download_button:
+        weight: 15
+        enabled: false
+      teaser:
+        weight: 16
+        enabled: false
+      as_site_benefit:
+        weight: 17
+        enabled: false
+      as_site_key_conservation:
+        weight: 18
+        enabled: false
+      as_site_project:
+        weight: 19
+        enabled: false
+      as_site_protection:
+        weight: 20
+        enabled: false
+      as_site_threat:
+        weight: 21
+        enabled: false
+      as_site_value_bio:
+        weight: 22
+        enabled: false
+      as_site_value_wh:
+        weight: 23
+        enabled: false
+      image_link:
+        weight: 28
+        enabled: false
+field_type: entity_reference_revisions

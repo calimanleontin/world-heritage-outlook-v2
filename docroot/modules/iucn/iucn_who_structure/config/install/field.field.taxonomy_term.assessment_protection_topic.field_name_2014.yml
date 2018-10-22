@@ -1,0 +1,19 @@
+uuid: 80c96f64-9633-46e7-804e-b51d5ec29681
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_name_2014
+    - taxonomy.vocabulary.assessment_protection_topic
+id: taxonomy_term.assessment_protection_topic.field_name_2014
+field_name: field_name_2014
+entity_type: taxonomy_term
+bundle: assessment_protection_topic
+label: 'Name 2014'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,79 @@
+uuid: 2fd2b7d7-ffb1-46d5-bf48-2b75816e8f7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_elements
+    - node.type.page
+    - paragraphs.paragraphs_type.content_html
+    - paragraphs.paragraphs_type.image_grid
+    - paragraphs.paragraphs_type.numbered_heading
+  module:
+    - entity_reference_revisions
+id: node.page.field_page_elements
+field_name: field_page_elements
+entity_type: node
+bundle: page
+label: 'Page Elements'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      content_html: content_html
+      numbered_heading: numbered_heading
+      image_grid: image_grid
+    target_bundles_drag_drop:
+      danger_list:
+        weight: -15
+        enabled: false
+      content_html:
+        enabled: true
+        weight: -14
+      content_teasers:
+        weight: -13
+        enabled: false
+      number_heading_list:
+        weight: -12
+        enabled: false
+      numbered_heading:
+        enabled: true
+        weight: -11
+      teaser:
+        weight: -9
+        enabled: false
+      image_grid:
+        enabled: true
+        weight: 12
+      as_site_benefit:
+        weight: 17
+        enabled: false
+      as_site_key_conservation:
+        weight: 18
+        enabled: false
+      as_site_project:
+        weight: 19
+        enabled: false
+      as_site_protection:
+        weight: 20
+        enabled: false
+      as_site_threat:
+        weight: 21
+        enabled: false
+      as_site_value_bio:
+        weight: 22
+        enabled: false
+      as_site_value_wh:
+        weight: 23
+        enabled: false
+      decision:
+        weight: 27
+        enabled: false
+      image_link:
+        weight: 28
+        enabled: false
+field_type: entity_reference_revisions

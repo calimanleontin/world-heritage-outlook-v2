@@ -1,0 +1,25 @@
+uuid: 6cc466bc-8725-4bce-8af8-c1fd58163eae
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_assessor
+    - node.type.site_assessment
+id: node.site_assessment.field_assessor
+field_name: field_assessor
+entity_type: node
+bundle: site_assessment
+label: Assessor
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: users_by_roles
+      display_name: entity_reference_2
+      arguments: {  }
+field_type: entity_reference

@@ -1,3 +1,4 @@
+uuid: 4e1ecbc9-008b-4b91-b2ae-a1910c865873
 langcode: en
 status: true
 dependencies:
@@ -16,7 +17,7 @@ default_value: {  }
 default_value_callback: ''
 settings:
   min: null
-  max: null
+  max: 2147483647
   prefix: ''
   suffix: ''
 field_type: integer

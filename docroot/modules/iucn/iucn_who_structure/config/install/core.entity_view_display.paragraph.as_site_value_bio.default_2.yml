@@ -1,0 +1,68 @@
+uuid: dbc31096-3b24-4a18-b312-40469e8765d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.default_2
+    - field.field.paragraph.as_site_value_bio.field_as_description
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_bio.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_bio
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_values_value
+      terms:
+        - field_as_values_curr_state
+        - field_as_values_curr_trend
+      description:
+        - field_as_values_curr_text
+id: paragraph.as_site_value_bio.default_2
+targetEntityType: paragraph
+bundle: as_site_value_bio
+mode: default_2
+content:
+  field_as_values_curr_state:
+    weight: 1
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: terms
+  field_as_values_curr_text:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: description
+  field_as_values_curr_trend:
+    weight: 2
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: terms
+  field_as_values_value:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: title
+hidden:
+  field_as_description: true

@@ -13,6 +13,13 @@
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     },
+    "drupal/role_hierarchy": {
+      "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
+    },
+    "drupal/workflow": {
+      "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
+      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
+    },
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"
     }

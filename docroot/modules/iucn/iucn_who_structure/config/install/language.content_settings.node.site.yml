@@ -1,3 +1,4 @@
+uuid: 185231a3-1146-4ab5-8b66-20679d191d86
 langcode: en
 status: true
 dependencies:
@@ -12,4 +13,4 @@ id: node.site
 target_entity_type_id: node
 target_bundle: site
 default_langcode: site_default
-language_alterable: true
+language_alterable: false

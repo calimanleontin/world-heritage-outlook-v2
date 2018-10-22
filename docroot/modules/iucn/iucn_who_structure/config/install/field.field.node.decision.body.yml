@@ -1,0 +1,22 @@
+uuid: a5227167-5b06-45a3-a6fd-f25741d696fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.decision
+  module:
+    - text
+id: node.decision.body
+field_name: body
+entity_type: node
+bundle: decision
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

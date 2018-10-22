@@ -14,8 +14,8 @@ use Drupal\field_group\FieldGroupFormatterBase;
  * @FieldGroupFormatter(
  *   id = "assessment_tabs",
  *   label = @Translation("Assessment Tabs"),
- *   description = @Translation("This fieldgroup renders child groups in its own tabs wrapper."),
- *   supported_contexts = {
+ *   description = @Translation("This fieldgroup renders child groups in its
+ *   own tabs wrapper."), supported_contexts = {
  *     "form",
  *   }
  * )
@@ -28,13 +28,13 @@ class AssessmentTabs extends FieldGroupFormatterBase {
   public function preRender(&$element, $rendering_object) {
     parent::preRender($element, $rendering_object);
 
-    $element += array(
+    $element += [
       '#prefix' => '<div class=" ' . implode(' ', $this->getClasses()) . '">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
-      '#parents' => array($this->group->group_name),
+      '#parents' => [$this->group->group_name],
       '#default_tab' => '',
-    );
+    ];
 
     if ($this->getSetting('id')) {
       $element['#id'] = Html::getId($this->getSetting('id'));
@@ -47,17 +47,17 @@ class AssessmentTabs extends FieldGroupFormatterBase {
 
     $form_state = new FormState();
 
-    $element += array(
+    $element += [
       '#type' => 'assessment_horizontal_tabs',
-      '#theme_wrappers' => array('assessment_horizontal_tabs'),
-    );
+      '#theme_wrappers' => ['assessment_horizontal_tabs'],
+    ];
     $on_form = $this->context == 'form';
 
     $element = AssessmentHorizontalTabs::processHorizontalTabs($element, $form_state, $on_form);
 
     // Make sure the group has 1 child. This is needed to succeed at form_pre_render_vertical_tabs().
     // Skipping this would force us to move all child groups to this array, making it an un-nestable.
-    $element['group']['#groups'][$this->group->group_name] = array(0 => array());
+    $element['group']['#groups'][$this->group->group_name] = [0 => []];
     $element['group']['#groups'][$this->group->group_name]['#group_exists'] = TRUE;
 
     // Search for a tab that was marked as open. First one wins.
@@ -68,27 +68,6 @@ class AssessmentTabs extends FieldGroupFormatterBase {
       }
     }
   }
-
-  /**
-   * {@inheritdoc}
-   */
-//  public function settingsForm() {
-//
-//    $form = parent::settingsForm();
-//
-//    $form['direction'] = array(
-//      '#title' => $this->t('Direction'),
-//      '#type' => 'select',
-//      '#options' => array(
-//        'vertical' => $this->t('Vertical'),
-//        'horizontal' => $this->t('Horizontal'),
-//      ),
-//      '#default_value' => $this->getSetting('direction'),
-//      '#weight' => 1,
-//    );
-//
-//    return $form;
-//  }
 
   /**
    * {@inheritdoc}

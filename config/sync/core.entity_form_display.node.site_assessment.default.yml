@@ -40,7 +40,12 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
     - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_assessor
+    - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_settings
+    - field.field.node.site_assessment.field_state
     - node.type.site_assessment
   module:
     - datetime
@@ -60,7 +65,7 @@ third_party_settings:
         - group_as_projects
         - group_as_references
       parent_name: ''
-      weight: 9
+      weight: 12
       format_type: assessment_tabs
       format_settings:
         id: ''
@@ -110,7 +115,7 @@ third_party_settings:
         - field_as_protection_ov_out_rate
         - field_as_protection_ov_practices
       parent_name: group_as_tabs
-      weight: 22
+      weight: 23
       format_type: assessment_tab
       format_settings:
         label: 'Protection and management'
@@ -125,7 +130,7 @@ third_party_settings:
         - group_as_values_wh
         - group_as_values_bio
       parent_name: group_as_tabs
-      weight: 23
+      weight: 24
       format_type: assessment_tab
       format_settings:
         id: assessing_values
@@ -139,7 +144,7 @@ third_party_settings:
         - field_as_global_assessment_text
         - field_as_global_assessment_level
       parent_name: group_as_tabs
-      weight: 24
+      weight: 25
       format_type: assessment_tab
       format_settings:
         id: conservation_outlook
@@ -153,7 +158,7 @@ third_party_settings:
         - field_as_benefits
         - field_as_benefits_summary
       parent_name: group_as_tabs
-      weight: 25
+      weight: 26
       format_type: assessment_tab
       format_settings:
         id: benefits
@@ -167,7 +172,7 @@ third_party_settings:
         - field_as_projects
         - field_as_projects_needs
       parent_name: group_as_tabs
-      weight: 26
+      weight: 27
       format_type: assessment_tab
       format_settings:
         id: projects
@@ -180,7 +185,7 @@ third_party_settings:
       children:
         - field_as_references
       parent_name: group_as_tabs
-      weight: 27
+      weight: 28
       format_type: assessment_tab
       format_settings:
         id: references
@@ -221,7 +226,7 @@ third_party_settings:
       children:
         - field_as_key_cons
       parent_name: ''
-      weight: 10
+      weight: 11
       format_type: tab
       format_settings:
         id: ''
@@ -235,13 +240,6 @@ targetEntityType: node
 bundle: site_assessment
 mode: default
 content:
-  field_as_archived:
-    weight: 6
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_as_benefits:
     type: row_entity_reference_paragraphs
     weight: 8
@@ -275,7 +273,7 @@ content:
     type: options_select
     region: content
   field_as_end_date:
-    weight: 8
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
@@ -417,7 +415,7 @@ content:
     type: options_select
     region: content
   field_as_start_date:
-    weight: 7
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
@@ -576,22 +574,15 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_as_version:
-    weight: 5
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_assessment_file:
-    weight: 123
+    weight: 10
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
     region: content
   field_date_published:
-    weight: 13
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
@@ -607,7 +598,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 121
+    weight: 9
     third_party_settings: {  }
     region: content
   title:
@@ -624,12 +615,19 @@ content:
     settings: {  }
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_as_archived: true
+  field_as_version: true
+  field_assessor: true
+  field_coordinator: true
+  field_reviewers: true
+  field_settings: true
+  field_state: true
   path: true
   promote: true
   sticky: true

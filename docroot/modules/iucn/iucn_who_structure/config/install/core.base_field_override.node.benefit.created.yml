@@ -1,0 +1,18 @@
+uuid: f0ff8ca0-a1b7-4a2d-b9b5-dbc33ae72485
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.benefit
+id: node.benefit.created
+field_name: created
+entity_type: node
+bundle: benefit
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

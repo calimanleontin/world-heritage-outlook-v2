@@ -1,0 +1,26 @@
+uuid: 1227abe7-2ef9-46e9-b011-78eb01dfbae5
+langcode: en
+status: true
+dependencies: {  }
+id: assessment_under_assessment_ready_for_review
+label: 'Assessment finished'
+module: workflow
+from_sid: assessment_under_assessment
+to_sid: assessment_ready_for_review
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  assessor: assessor
+  workflow_author: '0'
+  edit_world_heritage_site_assessments: '0'
+  publish_world_heritage_site_assessments: '0'
+  coordinator: '0'
+  reviewer: '0'
+  anonymous: '0'
+  authenticated: '0'
+  edit_content_pages: '0'
+  publish_content_pages: '0'
+  menu_editor: '0'
+  edit_world_heritage_site_information: '0'
+  publish_world_heritage_site_information: '0'
+  manage_submissions: '0'

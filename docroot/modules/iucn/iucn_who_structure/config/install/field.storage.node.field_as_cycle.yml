@@ -1,0 +1,33 @@
+uuid: 3dea0395-20bb-4f35-8ad2-d8b1dbc7d412
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_as_cycle
+field_name: field_as_cycle
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '2014'
+      label: '2014'
+    -
+      value: '2017'
+      label: '2017'
+    -
+      value: '2020'
+      label: '2020'
+    -
+      value: '2023'
+      label: '2023'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

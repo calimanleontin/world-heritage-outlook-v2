@@ -1,0 +1,19 @@
+uuid: 21255256-6438-4ba5-938e-3ebad774ff78
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_settings
+    - node.type.site_assessment
+id: node.site_assessment.field_settings
+field_name: field_settings
+entity_type: node
+bundle: site_assessment
+label: Settings
+description: 'Store on the node/revision custom assessment data like comments, revision diffs etc. The data stored here is serialized as JSON.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

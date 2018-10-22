@@ -4,10 +4,12 @@ namespace Drupal\eck\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\eck\EckEntityTypeInterface;
 use Drupal\eck\Entity\EckEntityBundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a content controller for entities.
@@ -53,13 +55,11 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
    */
   public function addPage(EckEntityTypeInterface $eck_entity_type) {
     $content = [];
-    $entityTypeBundle = "{$eck_entity_type->id()}_type";
-    $entityTypeManager = $this->entityTypeManager();
-
+    $bundleStorage = $this->getBundleStorage($eck_entity_type);
     /** @var EckEntityBundle $bundle */
-    foreach ($entityTypeManager->getStorage($entityTypeBundle)
-               ->loadMultiple() as $bundle) {
-      if ($entityTypeManager->getAccessControlHandler($eck_entity_type->id())
+    foreach ($bundleStorage->loadMultiple() as $bundle) {
+      if ($this->entityTypeManager()
+        ->getAccessControlHandler($eck_entity_type->id())
         ->createAccess($bundle->type)
       ) {
         $content[$bundle->type] = $bundle;
@@ -88,8 +88,12 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
    *   The entity submission form.
    */
   public function add(EckEntityTypeInterface $eck_entity_type, $eck_entity_bundle) {
-    $entityStorage = $this->entityTypeManager()
-      ->getStorage($eck_entity_type->id());
+    $bundleStorage = $this->getBundleStorage($eck_entity_type);
+    if (!$bundleStorage->load($eck_entity_bundle)) {
+      throw new NotFoundHttpException($this->t('Bundle %bundle does not exist', ['%bundle' => $eck_entity_bundle]));
+    }
+
+    $entityStorage = $this->entityTypeManager()->getStorage($eck_entity_type->id());
 
     $entity = $entityStorage->create(['type' => $eck_entity_bundle]);
 
@@ -113,7 +117,7 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
    * Title callback for add page.
    *
    * @param string $eck_entity_bundle
-   *   The entity type.
+   *   The bundle id.
    *
    * @return string
    *   The title.
@@ -121,6 +125,21 @@ class EckContentController extends ControllerBase implements ContainerInjectionI
   public function addContentPageTitle($eck_entity_bundle) {
     $eck_entity_bundle = EckEntityBundle::load($eck_entity_bundle);
     return $this->t('Add %label content', ['%label' => $eck_entity_bundle->get('name')]);
+  }
+
+  /**
+   * Retrieves the bundle storage for the given entity type.
+   *
+   * @param \Drupal\eck\EckEntityTypeInterface $eck_entity_type
+   *   The entity type.
+   *
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The bundle storage.
+   */
+  private function getBundleStorage(EckEntityTypeInterface $eck_entity_type) {
+    $entityTypeBundle = "{$eck_entity_type->id()}_type";
+    $bundleStorage = $this->entityTypeManager()->getStorage($entityTypeBundle);
+    return $bundleStorage;
   }
 
 }
