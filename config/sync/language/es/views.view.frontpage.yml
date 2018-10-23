@@ -4,8 +4,6 @@ display:
   default:
     display_options:
       empty:
-        area_text_custom:
-          content: 'Todavía no se ha creado contenido para la portada.'
         title:
           title: 'Bienvenido a [site:name]'
       exposed_form:
