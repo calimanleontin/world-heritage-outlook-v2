@@ -709,7 +709,7 @@ class AssessmentWorkflow {
 
     $current_user = \Drupal::currentUser();
     if ($state == self::STATUS_UNDER_ASSESSMENT
-      && $node->field_assessor->target_id == $current_user->id()) {
+      && $node->field_assessor->target_id != $current_user->id()) {
       return FALSE;
     }
     return TRUE;
