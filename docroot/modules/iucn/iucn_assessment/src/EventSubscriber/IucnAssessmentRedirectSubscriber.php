@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -93,6 +94,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
     if ($node->bundle() != 'site_assessment') {
       return;
     }
+
     if (in_array($route, ['entity.node.edit_form', 'iucn_assessment.node.state_change'])) {
       if ($route === 'entity.node.edit_form') {
         $route = 'node.revision_edit';
@@ -134,6 +136,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
     elseif (in_array($route, ['node.revision_edit', 'iucn_assessment.node_revision.state_change'])) {
       /** @var \Drupal\node\Entity\Node $node_revision */
       $node_revision = $request->attributes->get('node_revision');
+
       /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
       $workflow_service = \Drupal::service('iucn_assessment.workflow');
       $node_revision = $workflow_service->getAssessmentRevision($node_revision);
@@ -236,6 +239,12 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
     $response = new TrustedRedirectResponse($url->setAbsolute(TRUE)->toString(), 301);
     $this->setUncacheableResponse($response);
     $event->setResponse($response);
+
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $current_state = $node->field_state->value;
+
+    $this->showRedirectToStateChangeFormMessage($node);
   }
 
   /**
@@ -252,6 +261,41 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
     ];
     $cache_metadata = CacheableMetadata::createFromRenderArray($build);
     $response->addCacheableDependency($cache_metadata);
+  }
+
+  /**
+   * Show why the user was redirected to the state change form.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   */
+  private function showRedirectToStateChangeFormMessage(NodeInterface $node) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $current_state = $node->field_state->value;
+
+    $message = t('The assessment is not editable in this state.');
+    if ($current_state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($node);
+      if (!empty($unfinished_reviews)) {
+        $reviewers = [];
+        /** @var \Drupal\node\Entity\Node $unfinished_review */
+        foreach ($unfinished_reviews as $unfinished_review) {
+          $uid = $unfinished_review->getRevisionUserId();
+          $user = User::load($uid)->getUsername();
+          $reviewers[] = $user;
+        }
+        $message .= ' ' . t('Please wait for the following reviewers to finish their reviews:') . ' ';
+        $message .= implode(', ', $reviewers);
+      }
+    }
+    elseif ($current_state == $workflow_service::STATUS_PUBLISHED) {
+      $message .= ' ' . t('Please create a draft first.');
+    }
+    elseif ($current_state == $workflow_service::STATUS_UNDER_ASSESSMENT) {
+      $message .= ' ' . t('Please wait for the assessment to be finished.');
+    }
+    \Drupal::messenger()->addWarning($message);
   }
 
 }
