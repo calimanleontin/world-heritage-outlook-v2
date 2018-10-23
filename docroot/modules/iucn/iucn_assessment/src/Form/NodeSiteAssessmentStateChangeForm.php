@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
@@ -17,11 +18,21 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
     }
 
+    // Redirect to node edit on form submit.
+    $form['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm', 'stateChangeSubmitRedirect'];
+    foreach ($form['actions'] as $key => &$action) {
+      if (strpos($key, 'workflow_') !== FALSE) {
+        $action['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm', 'stateChangeSubmitRedirect'];
+      }
+    }
+
+    // Hide unnecessary fields.
     $form['advanced']['#access'] = FALSE;
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
     $form['revision']['#access'] = FALSE;
     $form['field_state']['#access'] = FALSE;
+
     $node = $form_state->getFormObject()->getEntity();
     /** @var \Drupal\node\NodeInterface $node */
     $current_state = $node->field_state->value;
@@ -37,6 +48,7 @@ class NodeSiteAssessmentStateChangeForm {
     $current_user = \Drupal::currentUser();
     $weight = RoleHierarchyHelper::getAccountRoleWeight($current_user);
     $coordinator_weight = Role::load('coordinator')->getWeight();
+
     // Coordinators can only add themselves as coordinator.
     if ($weight == $coordinator_weight) {
       if (!empty($form['field_coordinator']) && !empty($form['field_coordinator']['widget']['#options'])) {
@@ -46,6 +58,7 @@ class NodeSiteAssessmentStateChangeForm {
         ];
       }
     }
+
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       if ($weight <= $coordinator_weight) {
         // Enable these fields only in certain assessment states
@@ -60,4 +73,29 @@ class NodeSiteAssessmentStateChangeForm {
       }
     }
   }
+
+  /**
+   * Submit callback for the state change form.
+   *
+   * Redirects the user to the assessment edit page if he can access it.
+   * Otherwise, this will redirect the user to /user.
+   *
+   * @param array $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public static function stateChangeSubmitRedirect(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
+      $form_state->setRedirectUrl($node->toUrl('edit-form'));
+    }
+    else {
+      $form_state->setRedirect('user.page');
+    }
+  }
+
 }
