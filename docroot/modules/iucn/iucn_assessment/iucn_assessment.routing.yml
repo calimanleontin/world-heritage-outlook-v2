@@ -33,14 +33,3 @@ iucn_assessment.node_revision.state_change:
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
-
-iucn_assessment.open_modal_form:
-  path: '/admin/config/modal_form'
-  defaults:
-    _title: 'Modal Form'
-    _controller: '\Drupal\iucn_assessment\Controller\DiffModalFormController::openModalForm'
-  requirements:
-    node: \d+
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
