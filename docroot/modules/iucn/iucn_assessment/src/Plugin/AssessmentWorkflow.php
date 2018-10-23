@@ -228,8 +228,6 @@ class AssessmentWorkflow {
       $original->get('field_state')->setValue(self::STATUS_NEW);
     }
 
-    $this->updateRevisionDifferences($node);
-
     // Block only for reviewers' revision:
     // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
     // Creates a new revision
