@@ -37,8 +37,10 @@
     top: 0;
 }
 
-.views-field-operations .dropbutton a {
-    max-width: 100px;
+.views-field-operations .dropbutton a,
+.js .dropbutton-widget .dropbutton-action a {
+    max-width: 140px;
+    padding: 4px 8px;
     text-overflow: ellipsis;
     overflow: hidden;
 }
