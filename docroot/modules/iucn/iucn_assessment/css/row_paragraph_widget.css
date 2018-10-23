@@ -1,4 +1,6 @@
-.field--widget-row-entity-reference-paragraphs table tbody tr td {
+.field--widget-row-entity-reference-paragraphs tbody tr,
+.field--widget-row-entity-reference-paragraphs tbody tr:hover,
+.field--widget-row-entity-reference-paragraphs tbody tr:focus {
     background-color: #fcfcfa;
 }
 
@@ -160,23 +162,27 @@
 
 .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
     position: absolute;
     top: auto;
     right: 0;
     flex-wrap: wrap;
-    border: 1px solid #ddd;
+    border-left: 1px solid #ddd;
     grid: none;
     min-height: min-content;
     background: #fcfcfa;
-    margin-top: -11px;
-    margin-right: -2px;
+    margin-top: -10px;
     padding: 10px 12px;
 }
 
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .button + .button {
+    margin-top: 5px;
+}
+
 .js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
-    justify-content: center;
+    align-items: center;
     right: 0;
     border-top-color: #bfbfba;
 }

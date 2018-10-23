@@ -1,88 +1,3 @@
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
-    grid-template-columns: repeat(22 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
-    grid-template-columns: repeat(21 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
-    grid-template-columns: repeat(20 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
-    grid-template-columns: repeat(19 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
-    grid-template-columns: repeat(18 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
-    grid-template-columns: repeat(17 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
-    grid-template-columns: repeat(16 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
-    grid-template-columns: repeat(15 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
-    grid-template-columns: repeat(14 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
-    grid-template-columns: repeat(13 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
-    grid-template-columns: repeat(12 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
-    grid-template-columns: repeat(11 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
-    grid-template-columns: repeat(10 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
-    grid-template-columns: repeat(9 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
-    grid-template-columns: repeat(8 , minmax(6.5rem, 1fr)) 10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
-    grid-template-columns: repeat(7 , minmax(6.5rem, 1fr))  10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
-    grid-template-columns: repeat(6 , minmax(6.5rem, 1fr))  10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
-    grid-template-columns: repeat(5 , minmax(6.5rem, 1fr))  10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
-    grid-template-columns: repeat(4 , minmax(6.5rem, 1fr))  10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
-    grid-template-columns: repeat(3 , minmax(6.5rem, 1fr))  10rem;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
-    grid-template-columns: repeat(2 , minmax(6.5rem, 1fr))  10rem;
-}
-
-
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component textarea {
   max-width: 100%;
   width: 100% !important;
@@ -112,7 +27,7 @@
   /* padding: 10px 12px; */
 }
 
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component,
+/* .field--widget-row-entity-reference-paragraphs .paragraph-summary-component, */
 .field--widget-row-entity-reference-paragraphs .relative,
 .field--widget-row-entity-reference-paragraphs .relative-wrapper {
   position: relative;
@@ -154,7 +69,7 @@ height: 3em;
   padding: 0;
 }
 
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
+/* .field--widget-row-entity-reference-paragraphs .paragraphs-actions {
   flex-wrap: wrap;
   /* grid-column: -2 / span 2 !important; */
 }
@@ -172,24 +87,25 @@ height: 3em;
 .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
   justify-content: center;
   right: 0;
-}
+} */
 
 /* .paragraphs-actions > .button {
 flex: 1;
 } */
 .field--widget-row-entity-reference-paragraphs tr {
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 .field--widget-row-entity-reference-paragraphs td {
-  background-color: inherit;  /* padding: 0 !important; */
+  /* background-color: inherit;   */
+  /* padding: 0 !important; */
 }
 
 .field--widget-row-entity-reference-paragraphs td div {
-  background-color: inherit;
+  /* background-color: inherit; */
 }
 
-.field--widget-row-entity-reference-paragraphs tbody tr:hover div,
+/* .field--widget-row-entity-reference-paragraphs tbody tr:hover div,
 .field--widget-row-entity-reference-paragraphs tbody tr:focus div {
   background-color: #f7fcff;
 }
@@ -199,7 +115,7 @@ flex: 1;
 .field--widget-row-entity-reference-paragraphs .diff-changed td div,
 .field--widget-row-entity-reference-paragraphs .diff-changed:hover td div {
   background-color: #fcf8e3;
-}
+} */
 
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
   background-color: #fff;
@@ -210,14 +126,14 @@ flex: 1;
   max-width: 90vw;
 }
 
-.field--widget-row-entity-reference-paragraphs.responsive-wrapper {
+/* .field--widget-row-entity-reference-paragraphs.responsive-wrapper {
   overflow: auto;
-}
+} */
 
-.relative-wrapper {
+/* .relative-wrapper {
   position: relative;
 }
-
+ */
 /*
 .paragraphs-actions {
 position: absolute;
