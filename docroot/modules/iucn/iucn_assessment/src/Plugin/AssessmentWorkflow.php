@@ -206,13 +206,13 @@ class AssessmentWorkflow {
   public function assessmentPreSave(NodeInterface $node) {
     // Ignore new assessments.
     if ($node->isNew()) {
-      $this->setAssessmentState($node, 'assessment_new');
+      $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
     }
 
     // When saving an assessment with no state, we want to set the NEW state.
     if ($this->assessmentHasNoState($node)) {
-      $this->setAssessmentState($node, 'assessment_new');
+      $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
     }
 
@@ -233,7 +233,7 @@ class AssessmentWorkflow {
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->setAssessmentState($node, self::STATUS_FINISHED_REVIEWING);
+          $this->forceAssessmentState($node, self::STATUS_FINISHED_REVIEWING, FALSE);
           $default_revision->save();
         }
         // Save the differences on the revision.
@@ -290,7 +290,7 @@ class AssessmentWorkflow {
       $revision_state = $original_state;
       $is_unpublished = NULL;
       if ($state == self::STATUS_DRAFT && $original_state == self::STATUS_PUBLISHED) {
-        $this->setAssessmentState($node, self::STATUS_PUBLISHED);
+        $this->forceAssessmentState($node, self::STATUS_PUBLISHED, FALSE);
         $revision_state = self::STATUS_DRAFT;
       }
       $this->createRevision($node, NULL, NULL, $revision_state);
@@ -368,7 +368,7 @@ class AssessmentWorkflow {
     if (empty($is_published)) {
       $new_revision->setPublished(FALSE);
     }
-    $this->setAssessmentState($new_revision, $state);
+    $this->forceAssessmentState($new_revision, $state, FALSE);
     $new_revision->save();
   }
 
@@ -623,14 +623,17 @@ class AssessmentWorkflow {
   /**
    * Force a state change on an assessment.
    *
-   * DO NOT use this in a presave hook, because it calls $node->save().
+   * If used in a node presave, set $execute = FALSE.
    *
    * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
    * @param string $new_state
    *   The new state id.
+   * @param bool $execute
+   *   If true, node_save will be called on the node.
+   *   Do not use in hook_node_presave().
    */
-  public function forceAssessmentState(NodeInterface $assessment, $new_state) {
+  public function forceAssessmentState(NodeInterface $assessment, $new_state, $execute = TRUE) {
     $field_name = 'field_state';
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
     $user = \Drupal::currentUser();
@@ -639,9 +642,13 @@ class AssessmentWorkflow {
     $transition->setValues($new_state, $user_id, \Drupal::time()->getRequestTime(), '', TRUE);
     $transition->setTargetEntity($assessment);
     $transition->force(TRUE);
-    $assessment->field_state->value = $new_state;
-    $assessment->field_state->workflow_transition = $transition;
-    $transition->execute(TRUE);
+    if ($execute) {
+      $transition->executeAndUpdateEntity(TRUE);
+    }
+    else {
+      $assessment->field_state->value = $new_state;
+      $assessment->field_state->workflow_transition = $transition;
+    }
   }
 
   /**
@@ -701,22 +708,6 @@ class AssessmentWorkflow {
       return FALSE;
     }
     return TRUE;
-  }
-
-  /**
-   * Set an assessment state. Use this in a node presave hook.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   * @param string $new_state
-   *   The new state.
-   */
-  public function setAssessmentState(NodeInterface $node, $new_state) {
-    $current_state = $node->field_state->value;
-    $node->field_state->value = $new_state;
-    $new_state = str_replace('assessment_' , '_', $new_state);
-    $transition = WorkflowConfigTransition::load($current_state . $new_state);
-    $node->field_state->workflow_transition = $transition;
   }
 
 }
