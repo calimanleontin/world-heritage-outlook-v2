@@ -327,26 +327,6 @@ function iucn_who_get_all_menu($menu_name){
   return $menu_items;
 }
 
-/**
- * Implements hook_entity_presave().
- * {@inheritdoc}
- */
-function iucn_who_core_entity_presave(Drupal\Core\Entity\EntityInterface $node) {
-  /**
-   * Temporary workaround until workflow is implemented. The editors cannot make
-   * the content published by default.
-   */
-  if ($node instanceof NodeInterface
-      && $node->isNew()
-      && \Drupal::currentUser()->hasPermission('create content unpublished')) {
-    drupal_set_message(
-      t('Please note this content is not yet published. Ask a content manager to publish when ready.'),
-      'warning'
-    );
-    $node->setUnpublished();
-  }
-}
-
 function iucn_who_get_menu($menu_name,$depth = 1) {
 
   $menu_tree = \Drupal::menuTree();
