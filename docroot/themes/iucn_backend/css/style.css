@@ -36,3 +36,15 @@
     position: relative;
     top: 0;
 }
+
+.js td .dropbutton-wrapper {
+    width: 157px;
+}
+
+.views-field-operations .dropbutton a,
+.js .dropbutton-widget .dropbutton-action a {
+    max-width: 140px;
+    padding: 4px 8px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

@@ -88,7 +88,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         '#weight' => 2,
         '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
         '#ajax' => [
-          'callback' => 'Drupal\iucn_assessment\Controller\DiffModalFormController::openDiffModalForm',
+          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
           'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
         ],
         '#access' => $paragraphs_entity->access('update'),

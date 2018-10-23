@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\iucn_assessment\Controller;
+namespace Drupal\iucn_who_diff\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -49,10 +49,12 @@ class DiffModalFormController extends ControllerBase {
    */
   public function openModalForm() {
     $response = new AjaxResponse();
+
     // Get the modal form using the form builder.
-    $modal_form = \Drupal::formBuilder()->getForm('Drupal\iucn_assessment\Form\ModalForm');
+    $modal_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_diff\Form\IucnDiffModalForm');
+
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand('My Modal Form', $modal_form, ['width' => '800']));
+    $response->addCommand(new OpenModalDialogCommand('Diff Modal Form', $modal_form, ['width' => '1200']));
     return $response;
   }
 

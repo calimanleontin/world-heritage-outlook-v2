@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
@@ -59,45 +60,7 @@ class IucnNodeController extends NodeController {
     }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
-    $current_state = $node->field_state->value;
-    if (!empty($current_state)) {
-      $state_entity = WorkflowState::load($current_state);
-    }
-    else {
-      $state_entity = NULL;
-    }
-    $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
-    $build['current_state'] = [
-      '#weight' => 9999,
-      '#type' => 'markup',
-      '#markup' => $this->t('Current state: <b>@state</b>', ['@state' => $state_label]),
-    ];
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    if (!$workflow_service->isAssessmentEditable($node)) {
-      $message = $this->t('The assessment is not editable in this state.');
-      if ($current_state == $workflow_service::STATUS_UNDER_REVIEW) {
-        $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($node);
-        if (!empty($unfinished_reviews)) {
-          $reviewers = [];
-          /** @var \Drupal\node\Entity\Node $unfinished_review */
-          foreach ($unfinished_reviews as $unfinished_review) {
-            $uid = $unfinished_review->getRevisionUserId();
-            $user = User::load($uid)->getUsername();
-            $reviewers[] = $user;
-          }
-          $message .= ' ' . $this->t('Please wait for the following reviewers to finish their reviews:') . ' ';
-          $message .= implode(', ', $reviewers);
-        }
-      }
-      elseif ($current_state == $workflow_service::STATUS_PUBLISHED) {
-        $message .= ' ' . $this->t('Please create a draft first.');
-      }
-      elseif ($current_state == $workflow_service::STATUS_UNDER_ASSESSMENT) {
-        $message .= ' ' . $this->t('Please wait for the assessment to be finished.');
-      }
-      \Drupal::messenger()->addWarning($message);
-    }
+    $build['current_state'] = NodeSiteAssessmentForm::getCurrentStateMarkup($node);
     return $build;
   }
 
