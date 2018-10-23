@@ -79,6 +79,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = $this->getSummaryContainers($components);
 
     $element['top']['actions']['#weight'] = 9999;
+    $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
+    $element['top']['actions']['#suffix'] = '</div>';
+
     if(!empty($element['top']['actions']['actions']['edit_button'])) {
       // Create the custom 'Diff' button
       $element['top']['actions']['actions']['diff_button'] = [
@@ -126,11 +129,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $elements = parent::formMultipleElements($items, $form, $form_state);
-
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
       $header_containers = $this->getHeaderContainers($header_components);
+      $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
+      $header_containers['actions']['#suffix'] = '</div>';
       $count = $this->colCount;
 
       $header = [
@@ -150,7 +154,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $elements += $header;
     }
     $prefix = $elements['#prefix'];
-    $prefix = str_replace('is-horizontal paragraphs-tabs-wrapper', 'relative-wrapper is-horizontal paragraphs-tabs-wrapper', $prefix);
+    $prefix = str_replace('is-horizontal paragraphs-tabs-wrapper', 'responsive-wrapper is-horizontal paragraphs-tabs-wrapper', $prefix);
     $elements['#prefix'] = $prefix;
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     return $elements;

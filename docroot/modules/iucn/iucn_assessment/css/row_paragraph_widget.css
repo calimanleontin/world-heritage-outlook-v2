@@ -17,12 +17,26 @@
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
     grid-row: 1 / span 1;
     font-size: .9em;
+    padding: 10px 12px;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top {
     display: grid;
     grid-gap: 10px;
-    align-items: flex-start;
+    align-items: stretch;
+}
+
+.field--widget-row-entity-reference-paragraphs td {
+    padding: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs .field-multiple-table .field-multiple-drag {
+    vertical-align: top;
+}
+
+.field--widget-row-entity-reference-paragraphs .draggable a.tabledrag-handle {
+    float: none;
+    margin-left: 0;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-2 {
@@ -30,87 +44,87 @@
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
-    grid-template-columns: repeat(23 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
-    grid-template-columns: repeat(22 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
-    grid-template-columns: repeat(21 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
-    grid-template-columns: repeat(20 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
-    grid-template-columns: repeat(19 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
-    grid-template-columns: repeat(18 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
-    grid-template-columns: repeat(17 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
-    grid-template-columns: repeat(16 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
-    grid-template-columns: repeat(15 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
-    grid-template-columns: repeat(14 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
-    grid-template-columns: repeat(13 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
-    grid-template-columns: repeat(12 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
-    grid-template-columns: repeat(11 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
-    grid-template-columns: repeat(10 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
-    grid-template-columns: repeat(9 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
-    grid-template-columns: repeat(8 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
-    grid-template-columns: repeat(7 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
-    grid-template-columns: repeat(6 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
-    grid-template-columns: repeat(5 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
-    grid-template-columns: repeat(4 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
-    grid-template-columns: repeat(3 , minmax(6.5rem, 1fr));
+    grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 10rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
@@ -138,4 +152,43 @@
 
 .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item .field-add-more-submit {
     margin: 10px;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
+    flex-wrap: wrap;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: absolute;
+    top: auto;
+    right: 0;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    grid: none;
+    min-height: min-content;
+    background: #fcfcfa;
+    margin-top: -11px;
+    margin-right: -2px;
+    padding: 10px 12px;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+    justify-content: center;
+    right: 0;
+    border-top-color: #bfbfba;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
+    overflow: auto;
+}
+
+.js .field--widget-row-entity-reference-paragraphs {
+    position: relative;
+}
+
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
+    position: static;
 }

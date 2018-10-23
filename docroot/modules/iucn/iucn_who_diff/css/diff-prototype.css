@@ -1,103 +1,103 @@
-.js #diff-prototype .paragraph-top-col-23 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
     grid-template-columns: repeat(22 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-22 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
     grid-template-columns: repeat(21 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-21 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
     grid-template-columns: repeat(20 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-20 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
     grid-template-columns: repeat(19 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-19 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
     grid-template-columns: repeat(18 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-18 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
     grid-template-columns: repeat(17 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-17 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
     grid-template-columns: repeat(16 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-16 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
     grid-template-columns: repeat(15 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-15 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
     grid-template-columns: repeat(14 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-14 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
     grid-template-columns: repeat(13 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-13 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
     grid-template-columns: repeat(12 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-12 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
     grid-template-columns: repeat(11 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-11 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
     grid-template-columns: repeat(10 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-10 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
     grid-template-columns: repeat(9 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-9 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
     grid-template-columns: repeat(8 , minmax(6.5rem, 1fr)) 10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-8 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
     grid-template-columns: repeat(7 , minmax(6.5rem, 1fr))  10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-7 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
     grid-template-columns: repeat(6 , minmax(6.5rem, 1fr))  10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-6 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
     grid-template-columns: repeat(5 , minmax(6.5rem, 1fr))  10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-5 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
     grid-template-columns: repeat(4 , minmax(6.5rem, 1fr))  10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-4 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
     grid-template-columns: repeat(3 , minmax(6.5rem, 1fr))  10rem;
 }
 
-.js #diff-prototype .paragraph-top-col-3 {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
     grid-template-columns: repeat(2 , minmax(6.5rem, 1fr))  10rem;
 }
 
 
-.paragraph-summary-component textarea {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component textarea {
   max-width: 100%;
   width: 100% !important;
   padding: 0;
 }
 
-.js .paragraph-top {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top {
   align-items: stretch;
 }
 
-.chosen-container {
+.field--widget-row-entity-reference-paragraphs .chosen-container {
   width: 100% !important;
 }
 
-.paragraph-summary-component select {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
 }
 
@@ -106,20 +106,20 @@
   /* height: 100%; */
 }
 
-.paragraph-summary-component,
-.paragraphs-actions > .inner {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component,
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions > .inner {
 
   /* padding: 10px 12px; */
 }
 
-.paragraph-summary-component,
-.relative,
-.relative-wrapper {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component,
+.field--widget-row-entity-reference-paragraphs .relative,
+.field--widget-row-entity-reference-paragraphs .relative-wrapper {
   position: relative;
 }
 
-.btn-copy,
-.btn-reset {
+.field--widget-row-entity-reference-paragraphs .btn-copy,
+.field--widget-row-entity-reference-paragraphs .btn-reset {
   visibility: hidden;
   display: flex;
   align-items: center;
@@ -131,7 +131,7 @@
 width: 3em;
 height: 3em;
 } */
-.btn-copy {
+.field--widget-row-entity-reference-paragraphs .btn-copy {
 
   /*   background: transparent;
   border: none;
@@ -141,25 +141,25 @@ height: 3em;
   right: 0;
 }
 
-.btn-reset {
+.field--widget-row-entity-reference-paragraphs .btn-reset {
   margin-left: auto;
 }
 
-.relative:hover .btn-reset,
-.relative:hover .btn-copy {
+.field--widget-row-entity-reference-paragraphs .relative:hover .btn-reset,
+.field--widget-row-entity-reference-paragraphs .relative:hover .btn-copy {
   visibility: visible;
 }
 
-.no-padding {
+.field--widget-row-entity-reference-paragraphs .no-padding {
   padding: 0;
 }
 
-.paragraphs-actions {
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
   flex-wrap: wrap;
   /* grid-column: -2 / span 2 !important; */
 }
 
-.paragraphs-actions .inner {
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .inner {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -169,7 +169,7 @@ height: 3em;
   flex-wrap: wrap;  /* border-left: 1px solid #ddd; */
 }
 
-.paragraph-header .paragraphs-actions .inner {
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
   justify-content: center;
   right: 0;
 }
@@ -177,31 +177,31 @@ height: 3em;
 /* .paragraphs-actions > .button {
 flex: 1;
 } */
-tr {
+.field--widget-row-entity-reference-paragraphs tr {
   background-color: #fff;
 }
 
-td {
+.field--widget-row-entity-reference-paragraphs td {
   background-color: inherit;  /* padding: 0 !important; */
 }
 
-td div {
+.field--widget-row-entity-reference-paragraphs td div {
   background-color: inherit;
 }
 
-tbody tr:hover div,
-tbody tr:focus div {
+.field--widget-row-entity-reference-paragraphs tbody tr:hover div,
+.field--widget-row-entity-reference-paragraphs tbody tr:focus div {
   background-color: #f7fcff;
 }
 
-.diff-changed td,
-.diff-changed:hover td,
-.diff-changed td div,
-.diff-changed:hover td div {
+.field--widget-row-entity-reference-paragraphs .diff-changed td,
+.field--widget-row-entity-reference-paragraphs .diff-changed:hover td,
+.field--widget-row-entity-reference-paragraphs .diff-changed td div,
+.field--widget-row-entity-reference-paragraphs .diff-changed:hover td div {
   background-color: #fcf8e3;
 }
 
-.paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
   background-color: #fff;
 }
 
@@ -210,8 +210,12 @@ tbody tr:focus div {
   max-width: 90vw;
 }
 
-.responsive-wrapper {
-  overflow: auto;  /* position: relative; */
+.field--widget-row-entity-reference-paragraphs.responsive-wrapper {
+  overflow: auto;
+}
+
+.relative-wrapper {
+  position: relative;
 }
 
 /*
@@ -234,20 +238,20 @@ left: auto;
 }
  */
 
-.wrapper1,
-.wrapper2 {
+.field--widget-row-entity-reference-paragraphs .wrapper1,
+.field--widget-row-entity-reference-paragraphs .wrapper2 {
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-.wrapper1 {
+.field--widget-row-entity-reference-paragraphs .wrapper1 {
   height: 20px;
 }
 
-.div1 {
+.field--widget-row-entity-reference-paragraphs .div1 {
   height: 20px;
 }
 
-.div2 {
+.field--widget-row-entity-reference-paragraphs .div2 {
   overflow: auto;
 }
