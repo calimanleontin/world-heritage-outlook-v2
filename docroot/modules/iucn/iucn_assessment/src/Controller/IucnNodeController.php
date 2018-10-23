@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
@@ -59,19 +60,7 @@ class IucnNodeController extends NodeController {
     }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
-    $current_state = $node->field_state->value;
-    if (!empty($current_state)) {
-      $state_entity = WorkflowState::load($current_state);
-    }
-    else {
-      $state_entity = NULL;
-    }
-    $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
-    $build['current_state'] = [
-      '#weight' => 9999,
-      '#type' => 'markup',
-      '#markup' => $this->t('Current state: <b>@state</b>', ['@state' => $state_label]),
-    ];
+    $build['current_state'] = NodeSiteAssessmentForm::getCurrentStateMarkup($node);
     return $build;
   }
 
