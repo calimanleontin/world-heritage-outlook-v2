@@ -91,7 +91,12 @@ class NodeSiteAssessmentStateChangeForm {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
-      $form_state->setRedirectUrl($node->toUrl('edit-form'));
+      if ($workflow_service->isAssessmentEditable($node)) {
+        $form_state->setRedirectUrl($node->toUrl('edit-form'));
+      }
+      else {
+        $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
+      }
     }
     else {
       $form_state->setRedirect('user.page');
