@@ -19,8 +19,7 @@
     },
     "drupal/workflow": {
       "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
-      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch",
-      "Fix transition execute API": "patches/workflow/fix-state-change-api.patch"
+      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
     },
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"

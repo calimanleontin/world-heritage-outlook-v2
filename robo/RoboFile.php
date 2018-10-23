@@ -64,8 +64,8 @@ class RoboFile extends \Robo\Tasks {
   public function siteUpdate() {
     $execStack = $this->taskExecStack()->stopOnFail();
     $execStack->exec("{$this->drush} cr");
-    $execStack->exec("{$this->drush} updatedb --entity-updates -y");
     $execStack->exec("{$this->drush} csim -y");
+    $execStack->exec("{$this->drush} updatedb --entity-updates -y");
     return $execStack->run();
   }
 
