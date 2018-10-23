@@ -1,7 +1,7 @@
 <?php
 
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
-use \Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 /**
  * Update the field_css_identifier for some terms.
