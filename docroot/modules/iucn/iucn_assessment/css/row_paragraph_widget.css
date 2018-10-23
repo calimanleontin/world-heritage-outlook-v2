@@ -126,6 +126,11 @@
     font-weight: bold;
 }
 
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: relative;
     margin-top: 0;

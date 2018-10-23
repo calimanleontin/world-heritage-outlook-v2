@@ -105,7 +105,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
-      $header_containers = $this->getSummaryContainers($header_components);
+      $header_containers = $this->getHeaderContainers($header_components);
       $count = $this->colCount;
 
       $header = [
@@ -170,6 +170,23 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ],
     ];
     return $header;
+  }
+
+  /**
+   * Creates the markup for header components.
+   *
+   * @param array $components
+   *   The header components.
+   *
+   * @return array
+   *   The header markup.
+   */
+  public function getHeaderContainers(array $components) {
+    $containers = $this->getSummaryContainers($components);
+    foreach ($containers as &$container) {
+      $container['#attributes']['title'] = $container['data'];
+    }
+    return $containers;
   }
 
   /**
