@@ -19,6 +19,8 @@ use Drupal\workflow\Entity\WorkflowTransition;
  */
 class AssessmentWorkflow {
 
+  const ASSESSMENT_BUNDLE = "site_assessment";
+
   /**
    * This state is usually assigned to assessments with no state.
    *
@@ -226,6 +228,11 @@ class AssessmentWorkflow {
       $original->get('field_state')->setValue(self::STATUS_NEW);
     }
 
+    $this->updateRevisionDifferences($node);
+
+    // Block only for reviewers' revision:
+    // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
+    // Creates a new revision
     if (!$node->isDefaultRevision()) {
       // When a reviewer finishes his revision, check if all other reviewers
       // have marked their revision is done.

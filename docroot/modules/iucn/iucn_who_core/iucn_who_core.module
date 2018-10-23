@@ -13,6 +13,35 @@ use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
 /**
+ * Implements hook_views_data_alter().
+ */
+function iucn_who_core_views_data_alter(array &$data) {
+  $data['users']['user_assessor'] = array(
+    'title' => t('Assessor'),
+    'field' => array(
+      'title' => t('Assessor'),
+      'help' => t('Assessor.'),
+      'id' => 'iucn_who_core_assessor',
+    ),
+  );
+  $data['users']['user_coordinator'] = array(
+    'title' => t('Coordinator'),
+    'field' => array(
+      'title' => t('Coordinator'),
+      'help' => t('Coordinator.'),
+      'id' => 'iucn_who_core_coordinator',
+    ),
+  );
+  $data['users']['user_reviewer'] = array(
+    'title' => t('Reviewer'),
+    'field' => array(
+      'title' => t('Reviewer'),
+      'help' => t('Reviewer.'),
+      'id' => 'iucn_who_core_reviewer',
+    ),
+  );
+}
+/**
  * Implements hook_toolbar().
  */
 function iucn_who_core_toolbar() {
@@ -166,20 +195,32 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
       }
     }
     $breadcrumb = $new_breadcrumb;
-
   }
 
-  // Custom breadcrumb for benefits_list view.
-  /*if (isset($parameters['view_id']) && $parameters['view_id'] == 'benefits_list' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
-  $new_breadcrumb = new Breadcrumb();
-  foreach ($breadcrumb->getLinks() as $key => $val) {
-  $new_breadcrumb->addLink($val);
-  if ($key == 0) {
-  $new_breadcrumb->addLink(Link::createFromRoute(t('Resources'), '<none>'));
+  // Custom breadcrumb for sites_search view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'publications' && isset($parameters['display_id']) && $parameters['display_id'] == 'publications_page_database') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
   }
+
+  // Custom breadcrumb for frequently_asked_questions view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'frequently_asked_questions' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('FAQ'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
   }
-  $breadcrumb = $new_breadcrumb;
-  }*/
+
+  // Custom breadcrumb for sites_search view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'sites_search' && isset($parameters['display_id']) && $parameters['display_id'] == 'sites_search_page_database') {
+    $new_breadcrumb = new Breadcrumb();
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Home'), '<front>'));
+    $new_breadcrumb->addLink(Link::createFromRoute(t('Explore sites'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
+  }
 
   // Custom breadcrumb for publication ctype.
   if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'publication') {
@@ -193,6 +234,16 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     $breadcrumb = $new_breadcrumb;
   }
 
+  // Custom breadcrumb for news view.
+  if (isset($parameters['view_id']) && $parameters['view_id'] == 'news' && isset($parameters['display_id']) && $parameters['display_id'] == 'page_1') {
+    $new_breadcrumb = new Breadcrumb();
+    foreach ($breadcrumb->getLinks() as $key => &$val) {
+      $new_breadcrumb->addLink($val);
+    }
+    $new_breadcrumb->addLink(Link::createFromRoute(t('News'), '<none>'));
+    $breadcrumb = $new_breadcrumb;
+  }
+
   // Custom breadcrumb for news ctype.
   if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'news') {
     $new_breadcrumb = new Breadcrumb();
@@ -202,6 +253,23 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
         $new_breadcrumb->addLink(Link::createFromRoute(t('More'), '<none>'));
       }
 
+    }
+    $breadcrumb = $new_breadcrumb;
+  }
+
+
+  if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface) && $parameters['node']->getType() == 'site') {
+    $new_breadcrumb = new Breadcrumb();
+
+
+    foreach ($breadcrumb->getLinks() as $key => &$val) {
+      if ($key == 1){
+        /** @var  Drupal\Core\Link $val */
+        $val->setText(t('Explore sites'));
+      }
+      if ($key != 2){
+        $new_breadcrumb->addLink($val);
+      }
     }
     $breadcrumb = $new_breadcrumb;
   }
@@ -233,6 +301,7 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
     /** @val \Drupal\Core\Link $val */
   }
   $breadcrumb = $new_breadcrumb;
+
 
   $breadcrumb->addCacheTags($cache_tags);
   $breadcrumb->addCacheContexts($cache_context);
