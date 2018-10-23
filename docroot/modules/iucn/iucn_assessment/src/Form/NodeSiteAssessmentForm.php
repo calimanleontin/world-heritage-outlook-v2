@@ -3,11 +3,15 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 
 class NodeSiteAssessmentForm {
 
   public static function alter(&$form, FormStateInterface $form_state, $form_id) {
+    $request = \Drupal::request();
+    $tab = $request->get('tab') ?: 'values';
+
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -30,8 +34,44 @@ class NodeSiteAssessmentForm {
         '#type' => 'markup',
         '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
       ];
+      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
+        $settings = json_decode($node->field_settings->value, TRUE);
+        $form["comment_$tab"] = [
+          '#type' => 'textarea',
+          '#title' => t('Comment'),
+          '#weight' => !empty($form['#fieldgroups']["group_as_$tab"]->weight) ? $form['#fieldgroups']["group_as_$tab"]->weight : 19,
+          '#default_value' => !empty($settings['comments'][$tab]) ? $settings['comments'][$tab] : '',
+        ];
+      }
     }
-    $form['actions']['submit']['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentForm', 'assessmentSubmitRedirect'];
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+    $form['actions']['submit']['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+  }
+
+  /**
+   * Store comments on node.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+    $values = $form_state->getValues();
+
+    $settings = json_decode($node->field_settings->value, TRUE);
+    foreach ($values as $key => $value) {
+      if (preg_match('/^comment\_(.+)$/', $key, $matches)) {
+        $commented_tab = $matches[1];
+        $settings['comments'][$commented_tab] = $value;
+      }
+    }
+    $node->field_settings->setValue(json_encode($settings));
+    $nodeForm->setEntity($node);
+    $form_state->setFormObject($nodeForm);
   }
 
   /**
