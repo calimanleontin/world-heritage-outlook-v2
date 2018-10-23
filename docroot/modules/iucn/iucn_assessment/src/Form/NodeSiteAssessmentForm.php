@@ -22,6 +22,7 @@ class NodeSiteAssessmentForm {
       $node = $form_state->getFormObject()->getEntity();
       $form['current_state'] = self::getCurrentStateMarkup($node);
     }
+    $form['actions']['submit']['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentForm', 'assessmentSubmitRedirect'];
   }
 
   public static function getCurrentStateMarkup($node, $weight = -1000) {
@@ -39,4 +40,34 @@ class NodeSiteAssessmentForm {
       '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
     ];
   }
+
+  /**
+   * Submit callback for the state change form.
+   *
+   * Redirects the user to the assessment edit page if he can access it.
+   * Otherwise, this will redirect the user to /user.
+   *
+   * @param array $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public static function assessmentSubmitRedirect(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
+      if ($workflow_service->isAssessmentEditable($node)) {
+        $form_state->setRedirectUrl($node->toUrl('edit-form'));
+      }
+      else {
+        $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
+      }
+    }
+    else {
+      $form_state->setRedirect('user.page');
+    }
+  }
+
 }
