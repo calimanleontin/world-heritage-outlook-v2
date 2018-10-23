@@ -36,10 +36,14 @@ class NodeSiteAssessmentForm {
       ];
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
         $settings = json_decode($node->field_settings->value, TRUE);
+        $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
+        $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
+          ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
+          : t('Comment about current tab');
         $form["comment_$tab"] = [
           '#type' => 'textarea',
-          '#title' => t('Comment'),
-          '#weight' => !empty($form['#fieldgroups']["group_as_$tab"]->weight) ? $form['#fieldgroups']["group_as_$tab"]->weight : 19,
+          '#title' => $comment_title,
+          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
           '#default_value' => !empty($settings['comments'][$tab]) ? $settings['comments'][$tab] : '',
         ];
       }
