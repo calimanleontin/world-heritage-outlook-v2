@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldConfig;
 
 function iucn_backend_theme($existing, $type, $theme, $path) {
   return [
@@ -36,4 +37,31 @@ function iucn_backend_form_node_form_alter(&$form, FormStateInterface $form_stat
   if($form['#form_id'] == 'site_assessment') {
     $form['#theme'] = ['site_assessment_edit_form'];
   }
+}
+
+/**
+ * Implements hook_preprocess_field_multiple_value_form().
+ */
+function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
+  if (!empty($variables['table']['#header']) && !empty($variables['element']['#field_name'])) {
+    $field_name = $variables['element']['#field_name'];
+    $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
+    if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
+      && $field_entity->getSetting('handler') == 'default:paragraph') {
+      _iucn_backend_field_multiple_value_form_alter_header($variables['table']);
+    }
+  }
+}
+
+/**
+ * Helper function used to bring a table header to the same level as the table.
+ */
+function _iucn_backend_field_multiple_value_form_alter_header(&$table) {
+  $header = $table['#header'][0]['data']['#markup'];
+  $table['#prefix'] = '
+    <table class="field-label paragraphs-header">
+      <tr><th colspan="2">' . $header . '</th></tr>
+    </table>
+  ';
+  unset($table['#header']);
 }
