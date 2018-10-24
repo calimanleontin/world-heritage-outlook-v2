@@ -16,6 +16,12 @@ class IucnNodeController extends NodeController {
 
   /**
    * Alter the revisions page to add edit buttons for under_review revisions.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function revisionOverview(NodeInterface $node) {
     $build = parent::revisionOverview($node);
@@ -45,6 +51,13 @@ class IucnNodeController extends NodeController {
 
   /**
    * Prepare the iucn_assessment.node.state_change route.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   * @param null $node_revision
+   *
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function stateChangeForm(NodeInterface $node, $node_revision = NULL) {
     if ($node->bundle() != 'site_assessment') {
@@ -61,6 +74,16 @@ class IucnNodeController extends NodeController {
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
     $build['current_state'] = NodeSiteAssessmentForm::getCurrentStateMarkup($node);
+
+    $state = $node->field_state->value;
+    if (!empty($state)) {
+      $state_entity = WorkflowState::load($state);
+      $build['current_state'] = [
+        '#weight' => -100,
+        '#type' => 'markup',
+        '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
+      ];
+    }
     return $build;
   }
 

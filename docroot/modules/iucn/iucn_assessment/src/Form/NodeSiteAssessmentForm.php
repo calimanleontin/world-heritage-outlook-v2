@@ -3,11 +3,21 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 
 class NodeSiteAssessmentForm {
 
   public static function alter(&$form, FormStateInterface $form_state, $form_id) {
+    $request = \Drupal::request();
+    $tab = $request->get('tab') ?: 'values';
+
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+    $state = $node->field_state->value;
+
     foreach (['status', 'revision_log', 'revision_information', 'revision'] as $item) {
       $form[$item]['#access'] = FALSE;
     }
@@ -17,28 +27,55 @@ class NodeSiteAssessmentForm {
     $form['revision']['#default_value'] = FALSE;
     $form['revision']['#disabled'] = FALSE;
 
-    // Add the current state on the node edit page.
-    if ($form_id == 'node_site_assessment_edit_form') {
-      $node = $form_state->getFormObject()->getEntity();
-      $form['current_state'] = self::getCurrentStateMarkup($node);
+    if (!empty($node->id()) && !empty($state)) {
+      $state_entity = WorkflowState::load($state);
+      $form['current_state'] = [
+        '#weight' => -100,
+        '#type' => 'markup',
+        '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
+      ];
+      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
+        $settings = json_decode($node->field_settings->value, TRUE);
+        $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
+        $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
+          ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
+          : t('Comment about current tab');
+        $form["comment_$tab"] = [
+          '#type' => 'textarea',
+          '#title' => $comment_title,
+          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
+          '#default_value' => !empty($settings['comments'][$tab]) ? $settings['comments'][$tab] : '',
+        ];
+      }
     }
-    $form['actions']['submit']['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentForm', 'assessmentSubmitRedirect'];
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+    $form['actions']['submit']['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
   }
 
-  public static function getCurrentStateMarkup($node, $weight = -1000) {
-    $current_state = $node->field_state->value;
-    if (!empty($current_state)) {
-      $state_entity = WorkflowState::load($current_state);
+  /**
+   * Store comments on node.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+    $values = $form_state->getValues();
+
+    $settings = json_decode($node->field_settings->value, TRUE);
+    foreach ($values as $key => $value) {
+      if (preg_match('/^comment\_(.+)$/', $key, $matches)) {
+        $commented_tab = $matches[1];
+        $settings['comments'][$commented_tab] = $value;
+      }
     }
-    else {
-      $state_entity = NULL;
-    }
-    $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
-    return [
-      '#weight' => $weight,
-      '#type' => 'markup',
-      '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
-    ];
+    $node->field_settings->setValue(json_encode($settings));
+    $nodeForm->setEntity($node);
+    $form_state->setFormObject($nodeForm);
   }
 
   /**
@@ -47,14 +84,16 @@ class NodeSiteAssessmentForm {
    * Redirects the user to the assessment edit page if he can access it.
    * Otherwise, this will redirect the user to /user.
    *
-   * @param array $form
-   *   The form.
+   * @param $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public static function assessmentSubmitRedirect(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
-    $node = $form_state->getFormObject()->getEntity();
+    $node = $nodeForm->getEntity();
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
