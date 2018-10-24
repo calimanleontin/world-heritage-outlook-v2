@@ -5,18 +5,20 @@ window.shave = shave;
 
     Drupal.behaviors.shave = {
         attach: function (context, settings) {
-            $('.diff-deletedline', context).each(function() {
-                // console.log(this);
-                // window.shave(this, 100);
-                // var btn = $('<button class="js-shave-button">' + Drupal.t('Expand') + ' </button>',),
-                //     textEl = this,
-                //     textString = textEl.textContent;
+            $(function(){
+                $('.diff-deletedline', context).each(function() {
+                    // console.log(this);
+                    // window.shave(this, 100);
+                    // var btn = $('<button class="js-shave-button">' + Drupal.t('Expand') + ' </button>',),
+                    //     textEl = this,
+                    //     textString = textEl.textContent;
 
-                // if(!$(this).hasClass('shave-processed')) {
-                //     $(this).append(btn);
-                //     $(this).addClass('shave-processed');
-                // }
-            });
+                    // if(!$(this).hasClass('shave-processed')) {
+                    //     $(this).append(btn);
+                    //     $(this).addClass('shave-processed');
+                    // }
+                });
+            })
             // $('body').on('click', '.js-shave-button', function(e) {
             //       var hasShave = this.querySelector('#demo-text .js-shave');
             //       if (hasShave !== null) {
@@ -32,28 +34,28 @@ window.shave = shave;
         }
     }
 
-    Drupal.behaviors.fixedActions = {
-        attach: function(context, settings) {
+    // Drupal.behaviors.fixedActions = {
+    //     attach: function(context, settings) {
 
-            $(function(){
-                var $items = $('.paragraphs-actions .inner', context),
-                inheritParentDims = function() {
-                    $items.each(function() {
-                        let $parent = $(this).parent();
-                        let $parentHeight = $parent.height();
-                        let $parentWidth = $parent.width();
-                        console.log($parentHeight);
-                        console.log($parentWidth);
-                        $(this).height($parentHeight);
-                        $(this).width($parentWidth);
-                    });
-                };
+    //         $(function(){
+    //             var $items = $('.paragraphs-actions .inner', context),
+    //             inheritParentDims = function() {
+    //                 $items.each(function() {
+    //                     let $parent = $(this).parent();
+    //                     let $parentHeight = $parent.height();
+    //                     let $parentWidth = $parent.width();
+    //                     // console.log($parentHeight);
+    //                     // console.log($parentWidth);
+    //                     $(this).height($parentHeight);
+    //                     $(this).width($parentWidth);
+    //                 });
+    //             };
 
-                inheritParentDims();
-                $(window).once("bind-to-window").resize(inheritParentDims);
-            });
-        }
-    }
+    //             inheritParentDims();
+    //             $(window).once("bind-to-window").resize(inheritParentDims);
+    //         });
+    //     }
+    // }
 
     // Drupal.behaviors.horizontalScroll = {
     //     attach: function(context, settings) {
