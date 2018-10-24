@@ -28,19 +28,34 @@ class IucnDiffPrototypeController extends ControllerBase {
         //   // dpm($diff);
         // }
 
+        $tab = $request->query->get('tab');
         $build = [
           '#theme' => 'diff_prototype',
-          // '#values' =>
+          '#values' => !empty($tab) ? $tab : ''
         ];
 
         $build['#attached']['library'][] = 'core/drupal.dialog.ajax';
+        $build['#attached']['library'][] = 'chosen/drupal.chosen';
         $build['#attached']['library'][] = 'paragraphs/drupal.paragraphs.widget';
         $build['#attached']['library'][] = 'paragraphs/drupal.paragraphs.actions';
         $build['#attached']['library'][] = 'diff/diff.general';
         $build['#attached']['library'][] = 'diff/diff.colors';
         $build['#attached']['library'][] = 'diff/diff.single_column';
         $build['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
+        $build['#attached']['library'][] = 'iucn_assessment/element.assessment_horizontal_tabs';
         $build['#attached']['library'][] = 'iucn_who_diff/iucn_who_diff.diff_prototype';
+
+        $chosen_conf = \Drupal::config('chosen.settings');
+
+        $css_disabled_themes = $chosen_conf->get('disabled_themes');
+        if (empty($css_disabled_themes)) {
+          $css_disabled_themes = [];
+        }
+
+        $theme_name = \Drupal::theme()->getActiveTheme()->getName();
+        if (!in_array($theme_name, $css_disabled_themes, TRUE)) {
+          $build['#attached']['library'][] = 'chosen_lib/chosen.css';
+        }
 
         return $build;
     }
@@ -53,6 +68,7 @@ class IucnDiffPrototypeController extends ControllerBase {
           '#values' => !empty($type) ? $type : '',
         ];
 
+        $build['#attached']['library'][] = 'chosen/drupal.chosen';
         $build['#attached']['library'][] = 'diff/diff.general';
         $build['#attached']['library'][] = 'diff/diff.colors';
         $build['#attached']['library'][] = 'diff/diff.single_column';
@@ -60,7 +76,6 @@ class IucnDiffPrototypeController extends ControllerBase {
         $build['#attached']['library'][] = 'paragraphs/drupal.paragraphs.actions';
         $build['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
         $build['#attached']['library'][] = 'iucn_who_diff/iucn_who_diff.diff_prototype';
-        $build['#attached']['library'][] = 'chosen/drupal.chosen';
 
         $chosen_conf = \Drupal::config('chosen.settings');
 

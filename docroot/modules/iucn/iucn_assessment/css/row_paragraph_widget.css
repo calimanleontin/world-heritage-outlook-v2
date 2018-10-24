@@ -4,9 +4,9 @@
     background-color: #fcfcfa;
 }
 
-.field--widget-row-entity-reference-paragraphs table tbody tr:first-child .field-multiple-drag {
+/* .field--widget-row-entity-reference-paragraphs table tbody tr:first-child .field-multiple-drag {
     visibility: hidden;
-}
+} */
 
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
     background: inherit;
@@ -142,6 +142,19 @@
     font-weight: bold;
 }
 
+.field--widget-row-entity-reference-paragraphs .paragraphs-header {
+    margin-bottom: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle {
+    float: right;
+    margin-top: 5px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle[disabled] {
+    opacity: .5;
+    pointer-events: none;
+}
+
 .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -161,14 +174,15 @@
 }
 
 .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    text-align: right;
+    /* flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-end; */
+    /* flex-wrap: wrap; */
     position: absolute;
     top: auto;
     right: 0;
-    flex-wrap: wrap;
     border-left: 1px solid #ddd;
     grid: none;
     min-height: min-content;
@@ -177,18 +191,27 @@
     padding: 10px 12px;
 }
 
+/* .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .button {
+    display: block;
+} */
+
 .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .button + .button {
     margin-top: 5px;
 }
 
+
 .js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
-    align-items: center;
+    text-align: center;
     right: 0;
     border-top-color: #bfbfba;
 }
 
 .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
     overflow: auto;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper .field-multiple-table {
+    border-top: 1px solid grey;
 }
 
 .js .field--widget-row-entity-reference-paragraphs {

@@ -7,6 +7,7 @@ iucn_who_diff.diff_prototype_form:
     _admin_route: TRUE
   requirements:
     _permission: 'access content'
+    _role: 'authenticated'
 
 iucn_who_diff.diff_prototype_modal:
   path: '/diff-prototype-modal'
@@ -16,6 +17,7 @@ iucn_who_diff.diff_prototype_modal:
     _admin_route: TRUE
   requirements:
     _permission: 'access content'
+    _role: 'authenticated'
 
 iucn_who_diff.iucn_diff_modal_form:
   path: '/admin/config/diff-modal'

@@ -1,23 +1,23 @@
-<div class="" id="diff-prototype">
+{% extends "@iucn_who_diff/wrapper.html.twig" %}
+
+{% block values %}
   <div class="field--widget-row-entity-reference-paragraphs">
+    <table class="field-label paragraphs-header">
+      <thead>
+        <tr>
+          <th class="field-label">
+            <h4 class="label">Identifying and describing values</h4>
+          </th>
+        </tr>
+      </thead>
+    </table>
     <div class="responsive-wrapper">
       <table class="field-multiple-table responsive-enabled" data-striping="1">
-        <thead>
-          <tr>
-            <th colspan="3" class="field-label">
-              <h4 class="label">Identifying and describing values</h4>
-            </th>
-          </tr>
-        </thead>
         <tbody>
           <tr class="odd">
             <td>
-              {# <button class="slide-button slide-left" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024">
-                  <path d="M445.44 38.183L-2.53 512l447.97 473.817 85.857-81.173-409.6-433.23v81.172l409.6-433.23L445.44 38.18z"></path>
-                </svg></button>
-              <button class="slide-button slide-right" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 551 1024">
-                  <path d="M105.56 985.817L553.53 512 105.56 38.183l-85.857 81.173 409.6 433.23v-81.172l-409.6 433.23 85.856 81.174z"></path>
-                </svg></button> #}
+              <button class="slide-button slide-left" type="button" title="Scroll left"></button>
+              <button class="slide-button slide-right" type="button" title="Scroll right"></button>
               <div class="paragraph-top paragraph-header paragraph-top-col-9 js-form-wrapper form-wrapper">
                 <div class="paragraph-summary-component paragraph-summary-component-field_as_values_value paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Value</div>
                 <div class="paragraph-summary-component paragraph-summary-component-field_as_values_criteria paragraph-summary-component-span-1 js-form-wrapper form-wrapper">WH Criteria</div>
@@ -45,12 +45,12 @@
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_values_curr_state paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Low Concern</div>
                     <div class="paragraph-summary-component">
                       <div class="paragraphs-actions">
-                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit">
-                        <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=value">Compare revisions</a>
+                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit" disabled>
+                        <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=value">Diff</a>
                         <div class="paragraphs-dropdown">
-                          <button class="paragraphs-dropdown-toggle"><span class="visually-hidden">Toggle Actions</span></button>
+                          <button class="paragraphs-dropdown-toggle" disabled><span class="visually-hidden">Toggle Actions</span></button>
                           <div class="paragraphs-dropdown-actions">
-                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove">
+                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove" >
                           </div>
                         </div>
                       </div>
@@ -73,11 +73,11 @@
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_values_curr_state paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Low Concern</div>
                     <div class="paragraph-summary-component">
                       <div class="paragraphs-actions">
-                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit">
+                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit" disabled>
                         <div class="paragraphs-dropdown">
-                          <button class="paragraphs-dropdown-toggle"><span class="visually-hidden">Toggle Actions</span></button>
+                          <button class="paragraphs-dropdown-toggle" disabled><span class="visually-hidden">Toggle Actions</span></button>
                           <div class="paragraphs-dropdown-actions">
-                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove">
+                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove" >
                           </div>
                         </div>
                       </div>
@@ -91,6 +91,8 @@
       </table>
     </div>
   </div>
+{% endblock %}
+{% block threats %}
   <div class="field--widget-row-entity-reference-paragraphs">
     <div class="responsive-wrapper">
       <table class="field-multiple-table responsive-enabled" data-striping="1">
@@ -104,9 +106,9 @@
         <tbody>
           <tr class="odd">
             <td>
-              <div class="paragraph-top paragraph-header paragraph-top-col-10 js-form-wrapper form-wrapper">
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_values_value paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Specific threat</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_values_criteria paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Justification</div>
+              <div class="paragraph-top paragraph-header paragraph-top-col-12 js-form-wrapper form-wrapper">
+                <div class="paragraph-summary-component paragraph-summary-component-field_as_values_value paragraph-summary-component-span-2 js-form-wrapper form-wrapper">Specific threat</div>
+                <div class="paragraph-summary-component paragraph-summary-component-field_as_values_criteria paragraph-summary-component-span-2 js-form-wrapper form-wrapper">Justification</div>
                 <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Threat extent</div>
                 <div class="paragraph-summary-component paragraph-summary-component-field_as_values_curr_text paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Inside site</div>
                 <div class="paragraph-summary-component paragraph-summary-component-field_as_values_curr_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper">Outside site</div>
@@ -125,9 +127,9 @@
             <td>
               <div id="field-as-threats-current-0-item-wrapper">
                 <div data-drupal-selector="edit-field-as-threats-current-0" id="edit-field-as-threats-current-0" class="js-form-wrapper form-wrapper">
-                  <div class="paragraph-top add-above-off paragraph-top-col-10 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top" id="edit-field-as-threats-current-0-top">
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_threat paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-threat" id="edit-field-as-threats-current-0-top-summary-field-as-threats-threat">Solid waste</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-description" id="edit-field-as-threats-current-0-top-summary-field-as-description">The waste dump near Ushakovskoe has been reported to have been cleaned however, any potential remaining impacts are unclear (State Party of the Russian Federation, 2015). Close to 4000 barrels removed and 45.000 were supposed to be removed in 2016-17 (Information provided to the UNESCO/IUCN Reactive Monitoring Mission, 2017).</div>
+                  <div class="paragraph-top add-above-off paragraph-top-col-12 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top" id="edit-field-as-threats-current-0-top">
+                    <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_threat paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-threat" id="edit-field-as-threats-current-0-top-summary-field-as-threats-threat">Solid waste</div>
+                    <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-description" id="edit-field-as-threats-current-0-top-summary-field-as-description">The waste dump near Ushakovskoe has been reported to have been cleaned however, any potential remaining impacts are unclear (State Party of the Russian Federation, 2015). Close to 4000 barrels removed and 45.000 were supposed to be removed in 2016-17 (Information provided to the UNESCO/IUCN Reactive Monitoring Mission, 2017).</div>
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_extent paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-extent" id="edit-field-as-threats-current-0-top-summary-field-as-threats-extent">Localised(<5%)</div> <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_in paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-in" id="edit-field-as-threats-current-0-top-summary-field-as-threats-in">Yes</div>
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_out paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-out" id="edit-field-as-threats-current-0-top-summary-field-as-threats-out">No</div>
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_rating paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-rating" id="edit-field-as-threats-current-0-top-summary-field-as-threats-rating">Data Deficient</div>
@@ -136,12 +138,12 @@
                     <div class="paragraph-summary-component paragraph-summary-component-field_as_threats_values_bio paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-threats-current-0-top-summary-field-as-threats-values-bio" id="edit-field-as-threats-current-0-top-summary-field-as-threats-values-bio"></div>
                     <div class="paragraph-summary-component">
                       <div class="paragraphs-actions">
-                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit">
-                        <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=threat">Compare revisions</a>
+                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-values-wh-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-values-wh-0-edit--2" name="field_as_values_wh_0_edit" value="Edit" disabled>
+                        <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=threat">Diff</a>
                         <div class="paragraphs-dropdown">
-                          <button class="paragraphs-dropdown-toggle"><span class="visually-hidden">Toggle Actions</span></button>
+                          <button class="paragraphs-dropdown-toggle" disabled><span class="visually-hidden">Toggle Actions</span></button>
                           <div class="paragraphs-dropdown-actions">
-                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove">
+                            <input formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" value="Remove" >
                           </div>
                         </div>
                       </div>
@@ -154,86 +156,88 @@
       </table>
     </div>
   </div>
-  <!-- {# BENEFITS #}
-  <div class="field--widget-row-entity-reference-paragraphs">
-    <div class="responsive-wrapper">
-      <table class="field-multiple-table responsive-enabled" data-striping="1">
-        <thead>
-          <tr>
-            <th colspan="3" class="field-label">
-              <h4 class="label">Benefits</h4>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="odd">
-            <td>
-              <div class="paragraph-top paragraph-header paragraph-top-col-20 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header" id="edit-field-as-benefits-header">
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_category paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-category" id="edit-field-as-benefits-header-data-field-as-benefits-category">Category</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-description" id="edit-field-as-benefits-header-data-field-as-description">Summary</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_datadeficient paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-datadeficient" id="edit-field-as-benefits-header-data-field-as-benefits-datadeficient">Data deficient</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_in paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-in" id="edit-field-as-benefits-header-data-field-as-benefits-commun-in">Community within site</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_out paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-out" id="edit-field-as-benefits-header-data-field-as-benefits-commun-out">Community outside site</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_wide paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-wide" id="edit-field-as-benefits-header-data-field-as-benefits-commun-wide">Wider community</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-hab-level" id="edit-field-as-benefits-header-data-field-as-benefits-hab-level">Habitat change level</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-hab-trend" id="edit-field-as-benefits-header-data-field-as-benefits-hab-trend">Habitat change trend</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-pollut-level" id="edit-field-as-benefits-header-data-field-as-benefits-pollut-level">Pollution level</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-pollut-trend" id="edit-field-as-benefits-header-data-field-as-benefits-pollut-trend">Pollution trend</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-oex-level" id="edit-field-as-benefits-header-data-field-as-benefits-oex-level">Overexploitation level</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-oex-trend" id="edit-field-as-benefits-header-data-field-as-benefits-oex-trend">Overexploitation trend</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-climate-level" id="edit-field-as-benefits-header-data-field-as-benefits-climate-level">Climate change level</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-climate-trend" id="edit-field-as-benefits-header-data-field-as-benefits-climate-trend">Climate change trend</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-invassp-level" id="edit-field-as-benefits-header-data-field-as-benefits-invassp-level">Invasive species level</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-invassp-trend" id="edit-field-as-benefits-header-data-field-as-benefits-invassp-trend">Invasive species trend</div>
-                <div class="paragraph-summary-component paragraph-summary-component-field_as_comment paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-comment" id="edit-field-as-benefits-header-data-field-as-comment">Comments on factors</div>
-                <div class="paragraph-summary-component">
-                  <div class="paragraphs-actions js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-actions" id="edit-field-as-benefits-header-data-actions">
-                    Actions</div>
-                </div>
+{% endblock %}
+{% block benefits %}
+<!-- {# BENEFITS #}
+<div class="field--widget-row-entity-reference-paragraphs">
+  <div class="responsive-wrapper">
+    <table class="field-multiple-table responsive-enabled" data-striping="1">
+      <thead>
+        <tr>
+          <th colspan="3" class="field-label">
+            <h4 class="label">Benefits</h4>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            <div class="paragraph-top paragraph-header paragraph-top-col-20 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header" id="edit-field-as-benefits-header">
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_category paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-category" id="edit-field-as-benefits-header-data-field-as-benefits-category">Category</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-description" id="edit-field-as-benefits-header-data-field-as-description">Summary</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_datadeficient paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-datadeficient" id="edit-field-as-benefits-header-data-field-as-benefits-datadeficient">Data deficient</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_in paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-in" id="edit-field-as-benefits-header-data-field-as-benefits-commun-in">Community within site</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_out paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-out" id="edit-field-as-benefits-header-data-field-as-benefits-commun-out">Community outside site</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_wide paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-commun-wide" id="edit-field-as-benefits-header-data-field-as-benefits-commun-wide">Wider community</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-hab-level" id="edit-field-as-benefits-header-data-field-as-benefits-hab-level">Habitat change level</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-hab-trend" id="edit-field-as-benefits-header-data-field-as-benefits-hab-trend">Habitat change trend</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-pollut-level" id="edit-field-as-benefits-header-data-field-as-benefits-pollut-level">Pollution level</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-pollut-trend" id="edit-field-as-benefits-header-data-field-as-benefits-pollut-trend">Pollution trend</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-oex-level" id="edit-field-as-benefits-header-data-field-as-benefits-oex-level">Overexploitation level</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-oex-trend" id="edit-field-as-benefits-header-data-field-as-benefits-oex-trend">Overexploitation trend</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-climate-level" id="edit-field-as-benefits-header-data-field-as-benefits-climate-level">Climate change level</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-climate-trend" id="edit-field-as-benefits-header-data-field-as-benefits-climate-trend">Climate change trend</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-invassp-level" id="edit-field-as-benefits-header-data-field-as-benefits-invassp-level">Invasive species level</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-benefits-invassp-trend" id="edit-field-as-benefits-header-data-field-as-benefits-invassp-trend">Invasive species trend</div>
+              <div class="paragraph-summary-component paragraph-summary-component-field_as_comment paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-field-as-comment" id="edit-field-as-benefits-header-data-field-as-comment">Comments on factors</div>
+              <div class="paragraph-summary-component">
+                <div class="paragraphs-actions js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-header-data-actions" id="edit-field-as-benefits-header-data-actions">
+                  Actions</div>
               </div>
-            </td>
-          </tr>
-          <tr class="draggable even diff-changed">
-            <td>
-              <div id="field-as-benefits-0-item-wrapper">
-                <div data-drupal-selector="edit-field-as-benefits-0" id="edit-field-as-benefits-0" class="js-form-wrapper form-wrapper">
-                  <div class="paragraph-top add-above-off paragraph-top-col-20 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top" id="edit-field-as-benefits-0-top">
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_category paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-category" id="edit-field-as-benefits-0-top-summary-field-as-benefits-category">Food</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-description" id="edit-field-as-benefits-0-top-summary-field-as-description">No information on coastal fisheries around Wrangel Island is available but it is likely that some fisheries activities are ongoing.</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_datadeficient paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-datadeficient" id="edit-field-as-benefits-0-top-summary-field-as-benefits-datadeficient">No</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_in paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-in" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-in">Minor</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_out paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-out" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-out">Major</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_wide paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-wide" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-wide">Major</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-level">High</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-trend">Decreasing</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-level">Low</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-trend">Continuing</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-level">Moderate</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-trend">Continuing</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-level">Very High</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-trend">Continuing</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-level">Low</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-trend">Continuing</div>
-                    <div class="paragraph-summary-component paragraph-summary-component-field_as_comment paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-comment" id="edit-field-as-benefits-0-top-summary-field-as-comment">SOME DUMMY TEXT</div>
-                    <div class="paragraph-summary-component">
-                      <div class="paragraphs-actions">
-                        <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=benefit">Compare revisions</a>
-                        <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-benefits-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-benefits-0-edit--2" name="field_as_benefits_0_edit" value="Edit">
-                        <div class="paragraphs-dropdown">
-                          <button class="paragraphs-dropdown-toggle"><span class="visually-hidden">Toggle Actions</span></button>
-                          <div class="paragraphs-dropdown-actions">
-                            <input data-drupal-selector="field-as-benefits-0-remove" formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" id="field-as-benefits-0-remove" name="field_as_benefits_0_remove" value="Remove">
-                          </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="draggable even diff-changed">
+          <td>
+            <div id="field-as-benefits-0-item-wrapper">
+              <div data-drupal-selector="edit-field-as-benefits-0" id="edit-field-as-benefits-0" class="js-form-wrapper form-wrapper">
+                <div class="paragraph-top add-above-off paragraph-top-col-20 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top" id="edit-field-as-benefits-0-top">
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_category paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-category" id="edit-field-as-benefits-0-top-summary-field-as-benefits-category">Food</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_description paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-description" id="edit-field-as-benefits-0-top-summary-field-as-description">No information on coastal fisheries around Wrangel Island is available but it is likely that some fisheries activities are ongoing.</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_datadeficient paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-datadeficient" id="edit-field-as-benefits-0-top-summary-field-as-benefits-datadeficient">No</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_in paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-in" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-in">Minor</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_out paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-out" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-out">Major</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_commun_wide paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-wide" id="edit-field-as-benefits-0-top-summary-field-as-benefits-commun-wide">Major</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-level">High</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_hab_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-hab-trend">Decreasing</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-level">Low</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_pollut_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-pollut-trend">Continuing</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-level">Moderate</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_oex_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-oex-trend">Continuing</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-level">Very High</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_climate_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-climate-trend">Continuing</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_level paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-level" id="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-level">Low</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_benefits_invassp_trend paragraph-summary-component-span-1 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-trend" id="edit-field-as-benefits-0-top-summary-field-as-benefits-invassp-trend">Continuing</div>
+                  <div class="paragraph-summary-component paragraph-summary-component-field_as_comment paragraph-summary-component-span-2 js-form-wrapper form-wrapper" data-drupal-selector="edit-field-as-benefits-0-top-summary-field-as-comment" id="edit-field-as-benefits-0-top-summary-field-as-comment">SOME DUMMY TEXT</div>
+                  <div class="paragraph-summary-component">
+                    <div class="paragraphs-actions">
+                      <a class="paragraphs-icon-button paragraphs-icon-button-edit button use-ajax" data-dialog-type="modal" data-dialog-options="{&quot;width&quot;:&quot;auto&quot;,&quot;height&quot;:&quot;auto&quot;}" href="/diff-prototype-modal?type=benefit">Diff</a>
+                      <input class="paragraphs-icon-button paragraphs-icon-button-edit button js-form-submit form-submit" title="Edit" data-drupal-selector="field-as-benefits-0-edit-2" formnovalidate="formnovalidate" type="submit" id="field-as-benefits-0-edit--2" name="field_as_benefits_0_edit" value="Edit" disabled>
+                      <div class="paragraphs-dropdown">
+                        <button class="paragraphs-dropdown-toggle" disabled><span class="visually-hidden">Toggle Actions</span></button>
+                        <div class="paragraphs-dropdown-actions">
+                          <input data-drupal-selector="field-as-benefits-0-remove" formnovalidate="formnovalidate" class="paragraphs-dropdown-action button js-form-submit form-submit" type="submit" id="field-as-benefits-0-remove" name="field_as_benefits_0_remove" value="Remove" >
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div> -->
-</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+{% endblock %}
