@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -41,3 +42,30 @@ function iucn_assessment_update_8001() {
 function iucn_assessment_update_8002() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
 }
+
+// @todo
+// Uncomment the following 2 hook_update_N functions.
+// They are commented because it takes too long for them to run.
+
+/**
+ * Delete old revisions.
+ */
+//function iucn_assessment_update_8003() {
+//  drush_invoke_process('@self','iucn_assessment:delete-revisions');
+//}
+
+/**
+ * Set "Published" status to all existing assessments.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ */
+//function iucn_assessment_update_8004() {
+//  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+//  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+//  /** @var \Drupal\node\NodeInterface[] $nodes */
+//  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
+//  foreach ($nodes as $node) {
+//    $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+//  }
+//}

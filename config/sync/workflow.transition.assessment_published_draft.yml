@@ -1,0 +1,29 @@
+uuid: 1e5f0a7b-88d1-44c5-a841-8570bc2ca130
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_draft
+    - workflow.state.assessment_published
+id: assessment_published_draft
+label: 'Start working on a draft'
+module: workflow
+from_sid: assessment_published
+to_sid: assessment_draft
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  workflow_author: '0'
+  edit_world_heritage_site_assessments: '0'
+  publish_world_heritage_site_assessments: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  anonymous: '0'
+  authenticated: '0'
+  edit_content_pages: '0'
+  publish_content_pages: '0'
+  menu_editor: '0'
+  edit_world_heritage_site_information: '0'
+  publish_world_heritage_site_information: '0'
+  manage_submissions: '0'

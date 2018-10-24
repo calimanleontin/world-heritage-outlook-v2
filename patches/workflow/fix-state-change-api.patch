@@ -1,0 +1,84 @@
+diff --git a/docroot/modules/contrib/workflow/src/Entity/WorkflowManager.php b/docroot/modules/contrib/workflow/src/Entity/WorkflowManager.php
+index 8d27ce1..4002bab 100644
+--- a/docroot/modules/contrib/workflow/src/Entity/WorkflowManager.php
++++ b/docroot/modules/contrib/workflow/src/Entity/WorkflowManager.php
+@@ -150,7 +150,7 @@ public static function executeTransitionsOfEntity(EntityInterface $entity) {
+       // Transition is created in widget or WorkflowTransitionForm.
+       /** @var $transition WorkflowTransitionInterface */
+       $transition = $entity->$field_name->__get('workflow_transition');
+-      if (!$transition) {
++      if (!empty($transition)) {
+         // We come from creating/editing an entity via entity_form, with core widget or hidden Workflow widget.
+         // @todo D8: from an Edit form with hidden widget.
+         /** @noinspection PhpUndefinedFieldInspection */
+@@ -172,33 +172,34 @@ public static function executeTransitionsOfEntity(EntityInterface $entity) {
+         }
+         $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
+         $transition->setValues($new_sid, $user->id(), \Drupal::time()->getRequestTime(), $comment, TRUE);
+-      }
+ 
+-      // We come from Content/Comment edit page, from widget.
+-      // Set the just-saved entity explicitly. Not necessary for update,
+-      // but upon insert, the old version didn't have an ID, yet.
+-      $transition->setTargetEntity($entity);
+ 
+-      if ($transition->isScheduled()) {
+-        $executed = $transition->save(); // Returns a positive integer.
+-      }
+-      elseif ($entity->getEntityTypeId() == 'comment') {
+-        // If Transition is added via CommentForm, save Comment AND Entity.
+-        // Execute and check the result.
+-        $new_sid = $transition->executeAndUpdateEntity();
+-        $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
+-      }
+-      else {
+-        // Execute and check the result.
+-        $new_sid = $transition->execute();
+-        $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
+-      }
++        // We come from Content/Comment edit page, from widget.
++        // Set the just-saved entity explicitly. Not necessary for update,
++        // but upon insert, the old version didn't have an ID, yet.
++        $transition->setTargetEntity($entity);
+ 
+-      // If the transition failed, revert the entity workflow status.
+-      // For new entities, we do nothing: it has no original.
+-      if (!$executed && isset($entity->original)) {
+-        $originalValue = $entity->original->{$field_name}->value;
+-        $entity->{$field_name}->setValue($originalValue);
++        if ($transition->isScheduled()) {
++          $executed = $transition->save(); // Returns a positive integer.
++        }
++        elseif ($entity->getEntityTypeId() == 'comment') {
++          // If Transition is added via CommentForm, save Comment AND Entity.
++          // Execute and check the result.
++          $new_sid = $transition->executeAndUpdateEntity();
++          $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
++        }
++        else {
++          // Execute and check the result.
++          $new_sid = $transition->execute();
++          $executed = ($new_sid == $transition->getToSid()) ? TRUE : FALSE;
++        }
++
++        // If the transition failed, revert the entity workflow status.
++        // For new entities, we do nothing: it has no original.
++        if (!$executed && isset($entity->original)) {
++          $originalValue = $entity->original->{$field_name}->value;
++          $entity->{$field_name}->setValue($originalValue);
++        }
+       }
+     }
+   }
+diff --git a/docroot/modules/contrib/workflow/src/Entity/WorkflowTransition.php b/docroot/modules/contrib/workflow/src/Entity/WorkflowTransition.php
+index 2563d6f..55c2d21 100644
+--- a/docroot/modules/contrib/workflow/src/Entity/WorkflowTransition.php
++++ b/docroot/modules/contrib/workflow/src/Entity/WorkflowTransition.php
+@@ -576,6 +576,7 @@ public function executeAndUpdateEntity($force = FALSE) {
+     // Save the (scheduled) transition.
+     $do_update_entity = (!$this->isScheduled() && !$this->isExecuted());
+     if ($do_update_entity) {
++      $to_sid = $this->execute($force);
+       $this->_updateEntity();
+     }
+     else {

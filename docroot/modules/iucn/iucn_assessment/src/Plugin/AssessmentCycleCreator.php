@@ -10,6 +10,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 class AssessmentCycleCreator {
 
@@ -94,6 +95,11 @@ class AssessmentCycleCreator {
     $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
     $duplicate = $originalNode->createDuplicate();
     $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
+    $duplicate->setCreatedTime(time());
+    $duplicate->setChangedTime(time());
+    $duplicate->setRevisionUserId(1);
+    $duplicate->set('field_as_start_date', date(DateTimeItemInterface::DATE_STORAGE_FORMAT, time()));
+    $duplicate->set('field_as_end_date', NULL);
     $duplicate->set('field_as_cycle', $cycle);
     $duplicate->set('field_state', AssessmentWorkflow::STATUS_NEW);
     $this->createDuplicateReferencedEntities($duplicate);

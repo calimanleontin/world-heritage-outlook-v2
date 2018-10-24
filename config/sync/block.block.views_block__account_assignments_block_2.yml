@@ -1,0 +1,31 @@
+uuid: ad306e03-67f2-48cc-9fdd-1c3fdfe54923
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.account_assignments
+  module:
+    - system
+    - views
+  theme:
+    - iucn_who
+id: views_block__account_assignments_block_2
+theme: iucn_who
+region: content
+weight: -17
+provider: null
+plugin: 'views_block:account_assignments-block_2'
+settings:
+  id: 'views_block:account_assignments-block_2'
+  label: 'You are assessor of the folloswing assesments'
+  provider: views
+  label_display: visible
+  views_label: 'You are assessor of the folloswing assesments'
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: "/user/*\r\n!/user/*/*\r\n"
+    negate: false
+    context_mapping: {  }

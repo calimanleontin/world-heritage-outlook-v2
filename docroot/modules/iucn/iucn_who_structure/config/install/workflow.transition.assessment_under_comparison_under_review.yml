@@ -1,7 +1,10 @@
 uuid: 863201ad-c0a3-448a-8702-e614e3c86f5d
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_under_comparison
+    - workflow.state.assessment_under_review
 id: assessment_under_comparison_under_review
 label: ''
 module: workflow

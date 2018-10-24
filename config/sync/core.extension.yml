@@ -3,6 +3,7 @@ module:
   blazy: 0
   block: 0
   block_content: 0
+  block_exclude_pages: 0
   breakpoint: 0
   captcha: 0
   chosen: 0
@@ -19,6 +20,7 @@ module:
   ctools: 0
   datetime: 0
   dblog: 0
+  diff: 0
   disable_field: 0
   display_field_copy: 0
   ds: 0
@@ -47,9 +49,9 @@ module:
   image_widget_crop: 0
   inline_entity_form: 0
   inline_responsive_images: 0
-  iucn_assessment: 0
   iucn_config_ignore: 0
   iucn_decision_tree: 0
+  iucn_diff_revisions: 0
   iucn_migrate: 0
   iucn_pdf: 0
   iucn_site: 0
@@ -123,6 +125,7 @@ module:
   content_translation: 10
   paragraphs: 11
   minimal: 1000
+  iucn_assessment: 9999
 theme:
   stark: 0
   stable: 0

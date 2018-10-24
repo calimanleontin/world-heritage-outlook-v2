@@ -1,7 +1,9 @@
 uuid: 6d1790de-0367-4fa1-83c6-6b975048f922
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.workflow.assessment
 id: assessment_under_evaluation
 label: 'Under evaluation'
 module: workflow

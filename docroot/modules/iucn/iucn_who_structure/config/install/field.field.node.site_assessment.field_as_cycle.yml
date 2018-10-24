@@ -6,7 +6,14 @@ dependencies:
     - field.storage.node.field_as_cycle
     - node.type.site_assessment
   module:
+    - disable_field
     - options
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: all
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_cycle
 field_name: field_as_cycle
 entity_type: node

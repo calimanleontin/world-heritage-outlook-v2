@@ -1,9 +1,12 @@
 uuid: 80f3fbfb-4782-4f4b-8255-4b35219689a2
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_under_review
 id: assessment_under_review_finished_reviewing
-label: 'Finished reviewing'
+label: 'Finish reviewing'
 module: workflow
 from_sid: assessment_under_review
 to_sid: assessment_finished_reviewing

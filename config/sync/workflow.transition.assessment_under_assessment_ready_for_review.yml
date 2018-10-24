@@ -1,9 +1,12 @@
 uuid: 1227abe7-2ef9-46e9-b011-78eb01dfbae5
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflow.state.assessment_ready_for_review
+    - workflow.state.assessment_under_assessment
 id: assessment_under_assessment_ready_for_review
-label: 'Assessment finished'
+label: 'Finish assessment'
 module: workflow
 from_sid: assessment_under_assessment
 to_sid: assessment_ready_for_review
