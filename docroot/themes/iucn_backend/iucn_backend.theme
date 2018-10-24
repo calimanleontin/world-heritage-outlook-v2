@@ -48,20 +48,13 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
     $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
     if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
       && $field_entity->getSetting('handler') == 'default:paragraph') {
-      _iucn_backend_field_multiple_value_form_alter_header($variables['table']);
+      $title = $variables['element']['#title'];
+      $variables['paragraph_header'] = [
+        '#type' => 'table',
+        '#header' => [$title],
+        '#rows' => [],
+      ];
+      unset($variables['table']['#header']);
     }
   }
-}
-
-/**
- * Helper function used to bring a table header to the same level as the table.
- */
-function _iucn_backend_field_multiple_value_form_alter_header(&$table) {
-  $header = $table['#header'][0]['data']['#markup'];
-  $table['#prefix'] = '
-    <table class="field-label paragraphs-header">
-      <tr><th colspan="2">' . $header . '</th></tr>
-    </table>
-  ';
-  unset($table['#header']);
 }

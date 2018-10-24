@@ -153,9 +153,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
       $elements += $header;
     }
-    $prefix = $elements['#prefix'];
-    $prefix = str_replace('is-horizontal paragraphs-tabs-wrapper', 'responsive-wrapper is-horizontal paragraphs-tabs-wrapper', $prefix);
-    $elements['#prefix'] = $prefix;
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     return $elements;
   }
