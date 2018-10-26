@@ -76,14 +76,12 @@ function iucn_assessment_theme_suggestions_alter(array &$suggestions, array $var
  */
 function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
   $id = $context['entity_type'] . '.' . $context['bundle'];
-  if ($id == 'node.site_assessment') {
-    $path = \Drupal::request()->getpathInfo();
-    $arg = explode('/', $path);
-    $tab = $arg[3];
-    $form_modes = \Drupal::entityManager()->getFormModes('node');
+  if (($id == 'node.site_assessment') || ($id == 'paragraph.as_site_value_wh')) {
+    $form_modes = \Drupal::entityManager()->getFormModeOptionsByBundle($context['entity_type'], $context['bundle']);
+    $tab = \Drupal::request()->query->get('tab');
+    $tab = str_replace('-', '_', $tab);
     if ($tab && !empty($form_modes[$tab])) {
-      $entity_manager = \Drupal::entityTypeManager();
-      $entity_default_display = $entity_manager->getStorage('entity_form_display')->load($id . '.' . $tab);
+      $entity_default_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load($id . '.' . $tab);
       if ($entity_default_display) {
         $form_display = $entity_default_display;
       }
