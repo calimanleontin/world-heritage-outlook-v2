@@ -162,13 +162,33 @@ class NodeSiteAssessmentForm {
     foreach ($read_only_paragraph_fields as $field) {
       $form[$field]['widget']['add_more']['#access'] = FALSE;
       $paragraphs = &$form[$field]['widget'];
+      if (!empty($paragraphs['header']['data']['actions'])) {
+        $paragraphs['header']['data']['actions']['#access'] = FALSE;
+        $classes = &$paragraphs['header']['#attributes']['class'];
+        foreach ($classes as &$class) {
+          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
+            $col_number = $matches[1];
+            $col_class = $class;
+            $new_col_number = $col_number - 1;
+            $new_col_class = "paragraph-top-col-$new_col_number";
+            $class = $new_col_class;
+          }
+        }
+      }
       foreach ($paragraphs as $key => &$paragraph) {
         if (!is_int($key)) {
           continue;
         }
         $paragraph['top']['actions']['#access'] = FALSE;
+        $classes = &$paragraph['top']['#attributes']['class'];
+        if (!empty($new_col_class)) {
+          foreach ($classes as &$class) {
+            if ($class == $col_class) {
+              $class = $new_col_class;
+            }
+          }
+        }
       }
-      $paragraphs['add_mode']['#access'] = FALSE;
     }
   }
 
