@@ -29,3 +29,5 @@ who.user-dashboard:
     _title: 'Dashboard'
   requirements:
     _role: 'authenticated'
+  options:
+    _admin_route: TRUE

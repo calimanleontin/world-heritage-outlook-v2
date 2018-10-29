@@ -9,7 +9,7 @@ _core:
 id: iucn_backend_local_actions
 theme: iucn_backend
 region: content
-weight: -14
+weight: -3
 provider: null
 plugin: local_actions_block
 settings:
