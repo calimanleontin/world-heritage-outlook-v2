@@ -1,11 +1,11 @@
 login_redirection:
-  administrator: /dashboard
-  iucn_manager: /dashboard
+  administrator: /admin/dashboard
+  iucn_manager: /admin/dashboard
   edit_world_heritage_site_assessments: /
   publish_world_heritage_site_assessments: /
-  coordinator: /dashboard
-  assessor: /dashboard
-  reviewer: /dashboard
+  coordinator: /admin/dashboard
+  assessor: /admin/dashboard
+  reviewer: /admin/dashboard
   anonymous: null
   authenticated: /
   edit_content_pages: /
