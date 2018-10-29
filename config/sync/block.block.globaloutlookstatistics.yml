@@ -10,7 +10,7 @@ dependencies:
 id: globaloutlookstatistics
 theme: iucn_who
 region: content
-weight: -15
+weight: -16
 provider: null
 plugin: home_page_statistics
 settings:

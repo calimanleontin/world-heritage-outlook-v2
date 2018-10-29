@@ -681,9 +681,8 @@ display:
             title: All
           title_enable: false
           title: ''
-          default_argument_type: user
-          default_argument_options:
-            user: false
+          default_argument_type: current_user
+          default_argument_options: {  }
           default_argument_skip_url: false
           summary_options:
             base_path: ''
@@ -717,6 +716,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
