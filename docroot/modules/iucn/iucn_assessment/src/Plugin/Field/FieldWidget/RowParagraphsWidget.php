@@ -202,7 +202,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = [];
     foreach ($components as $key => $component) {
       $span = $component['span'];
-      $data = is_array($component['value']) ? implode(', ', $component['value']) : $component['value'];
+      $data = is_array($component['value']) ? implode('; ', $component['value']) : $component['value'];
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -321,6 +321,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
       elseif (empty($value)) {
         continue;
+      }
+
+      $prefix = $this->getSummaryPrefix($field_name);
+      if (!empty($prefix)) {
+        $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
       $summary[$summary_field_name]['value'][] = $value;
@@ -450,6 +455,31 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ],
 
     ];
+  }
+
+  /**
+   * Retrieves a prefix that should show up before a paragraph summary value.
+   *
+   * @param $field
+   *   The name of the field.
+   *
+   * @return mixed|null
+   *   The prefix.
+   */
+  private function getSummaryPrefix($field) {
+    $prefixes = [
+      'field_as_benefits_hab_trend' => 'Trend',
+      'field_as_benefits_pollut_trend' => 'Trend',
+      'field_as_benefits_oex_trend' => 'Trend',
+      'field_as_benefits_climate_trend' => 'Trend',
+      'field_as_benefits_invassp_trend' => 'Trend',
+      'field_as_benefits_hab_level' => 'Impact level',
+      'field_as_benefits_pollut_level' => 'Impact level',
+      'field_as_benefits_oex_level' => 'Impact level',
+      'field_as_benefits_climate_level' => 'Impact level',
+      'field_as_benefits_invassp_level' => 'Impact level',
+    ];
+    return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
   }
 
 }
