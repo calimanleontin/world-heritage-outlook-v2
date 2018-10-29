@@ -19,9 +19,13 @@ function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\C
   $assessment_year = $assessment->field_as_cycle->value;
   $options = &$element['#options'];
   foreach ($options as $tid => &$label) {
-    /** @var \Drupal\iucn_fields\Plugin\TermLabelService $label_service */
-    $label_service = \Drupal::service('iucn_fields.labels');
-    $term_label = $label_service->getTermLabel($tid, $assessment_year);
+    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+    if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
+      unset($options[$tid]);
+      continue;
+    }
+    $term_label = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
     if (!empty($term_label)) {
       $label = $term_label;
     }
@@ -56,9 +60,9 @@ function iucn_fields_preprocess_field(&$variables) {
   /** @var \Drupal\taxonomy\Entity\Term $term */
   $term = $paragraph->{$field_name}->entity;
 
-  /** @var \Drupal\iucn_fields\Plugin\TermLabelService $label_service */
-  $label_service = \Drupal::service('iucn_fields.labels');
-  $term_label = $label_service->getTermLabel($term->id(), $assessment_year);
+  /** @var \Drupal\iucn_fields\Plugin\TermAlterService $label_service */
+  $label_service = \Drupal::service('iucn_fields.term_alter');
+  $term_label = $label_service->getTermLabelForYear($term->id(), $assessment_year);
   if (!empty($term_label)) {
     $term->name->value = $term_label;
   }
