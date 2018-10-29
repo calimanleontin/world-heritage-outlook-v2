@@ -52,3 +52,19 @@
 .path-dashboard .block {
     margin-bottom: 40px;
 }
+
+.path-dashboard .block-views {
+    margin-bottom: 40px;
+}
+
+.path-dashboard .block-views table {
+    table-layout: fixed;
+}
+
+.path-dashboard .block-views table .views-field-title {
+    width: 350px;
+}
+
+.path-dashboard .block-views table .views-field-operations {
+    width: 150px;
+}
