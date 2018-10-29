@@ -116,13 +116,15 @@ flex: 1;
 .field--widget-row-entity-reference-paragraphs tbody tr:focus div {
   background-color: #f7fcff;
 }
+ */
 
 .field--widget-row-entity-reference-paragraphs .diff-changed td,
 .field--widget-row-entity-reference-paragraphs .diff-changed:hover td,
 .field--widget-row-entity-reference-paragraphs .diff-changed td div,
-.field--widget-row-entity-reference-paragraphs .diff-changed:hover td div {
+.field--widget-row-entity-reference-paragraphs .diff-changed:hover td div,
+.js .field--widget-row-entity-reference-paragraphs .diff-changed .paragraph-summary-component.processed .paragraphs-actions {
   background-color: #fcf8e3;
-} */
+}
 
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
   background-color: #fff;
@@ -188,4 +190,16 @@ right: 0;
 
 .diff-context-wrapper td {
   padding: 5px;
+}
+
+.button.paragraphs-icon-button.paragraphs-icon-button-compare {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .button.paragraphs-icon-button.paragraphs-icon-button-compare {
+    background-image: url(../images/compare.svg);
+  }
 }

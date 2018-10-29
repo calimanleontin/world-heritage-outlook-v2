@@ -3,7 +3,7 @@
  * Javascript functionality for the row paragraphs widget.
  */
 
-(function ($, Drupal) {
+(function ($, Drupal, _) {
 
   'use strict';
 
@@ -32,7 +32,7 @@
         };
 
         inheritParentDims();
-        $(window).once("bind-to-window").resize(inheritParentDims);
+        $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
 
         // var resizeTimer;
         // $('textarea', context).on('resize', function() {
@@ -95,8 +95,15 @@
                 $(this).siblings(".responsive-wrapper")
                     .scrollLeft($(this).scrollLeft());
             });
+
+            $(window).once("bind-dsb-to-window").on('resize', _.debounce(function(){
+                $(".responsive-wrapper", context).each(function() {
+                    var $table = $(this).find('.field-multiple-table');
+                    $(this).siblings(".responsive-wrapper-2").find('.inner').width($table.width());
+                });
+            }, 100));
         });
     }
   };
 
-})(jQuery, Drupal);
+})(jQuery, Drupal, _);
