@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\Core\Form\FormStateInterface &$form_state, $context) {
+  if ($element['#entity_type'] != 'paragraph') {
+    return;
+  }
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $context['items'];
+  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
+  $field_definition = $items->getFieldDefinition();
+  $target_type = $field_definition->getSetting('target_type');
+  if ($target_type != 'taxonomy_term') {
+    return;
+  }
+  $assessment = $form_state->getFormObject()->getEntity();
+  $assessment_year = $assessment->field_as_cycle->value;
+  $options = &$element['#options'];
+  foreach ($options as $tid => &$label) {
+    /** @var \Drupal\iucn_fields\Plugin\TermLabelService $label_service */
+    $label_service = \Drupal::service('iucn_fields.labels');
+    $term_label = $label_service->getTermLabel($tid, $assessment_year);
+    if (!empty($term_label)) {
+      $label = $term_label;
+    }
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function iucn_fields_preprocess_field(&$variables) {
+  if ($variables['element']['#entity_type'] != 'paragraph' || $variables['element']['#field_type'] != 'entity_reference') {
+    return;
+  }
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $variables['element']['#items'];
+  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
+  $field_definition = $items->getFieldDefinition();
+  $target_type = $field_definition->getSetting('target_type');
+  if ($target_type != 'taxonomy_term') {
+    return;
+  }
+  $field_name = $variables['field_name'];
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['element']['#object'];
+  /** @var \Drupal\node\Entity\Node $assessment */
+  $assessment = $paragraph->getParentEntity();
+  if ($assessment->getType() != 'site_assessment') {
+    return;
+  }
+  $assessment_year = $assessment->field_as_cycle->value;
+  /** @var \Drupal\taxonomy\Entity\Term $term */
+  $term = $paragraph->{$field_name}->entity;
+
+  /** @var \Drupal\iucn_fields\Plugin\TermLabelService $label_service */
+  $label_service = \Drupal::service('iucn_fields.labels');
+  $term_label = $label_service->getTermLabel($term->id(), $assessment_year);
+  if (!empty($term_label)) {
+    $term->name->value = $term_label;
+  }
+}

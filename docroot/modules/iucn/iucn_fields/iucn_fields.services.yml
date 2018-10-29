@@ -1,0 +1,3 @@
+services:
+  iucn_fields.labels:
+    class: 'Drupal\iucn_fields\Plugin\TermLabelService'
