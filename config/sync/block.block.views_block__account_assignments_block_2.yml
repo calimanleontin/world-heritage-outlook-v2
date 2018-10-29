@@ -17,10 +17,10 @@ provider: null
 plugin: 'views_block:account_assignments-block_2'
 settings:
   id: 'views_block:account_assignments-block_2'
-  label: 'You are assessor of the folloswing assesments'
+  label: ''
   provider: views
   label_display: visible
-  views_label: 'You are assessor of the folloswing assesments'
+  views_label: ''
   items_per_page: none
   context_mapping: {  }
 visibility:

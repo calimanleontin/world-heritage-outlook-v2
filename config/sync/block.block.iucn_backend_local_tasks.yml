@@ -9,7 +9,7 @@ _core:
 id: iucn_backend_local_tasks
 theme: iucn_backend
 region: content
-weight: -13
+weight: -2
 provider: null
 plugin: local_tasks_block
 settings:

@@ -584,7 +584,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      title: Coordinator
+      title: 'You are coordinator of the following assessments'
       defaults:
         title: false
         relationships: false
@@ -664,7 +664,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      title: Assessor
+      title: 'You are assessor of the folloswing assesments'
       defaults:
         title: false
         relationships: false
@@ -764,7 +764,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      title: Reviewer
+      title: 'You are assigned to review the following assessments'
       defaults:
         title: false
         pager: false

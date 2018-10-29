@@ -48,3 +48,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.path-dashboard .block {
+    margin-bottom: 40px;
+}

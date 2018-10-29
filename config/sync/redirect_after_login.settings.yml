@@ -1,16 +1,16 @@
 login_redirection:
   administrator: /dashboard
   iucn_manager: /dashboard
-  edit_world_heritage_site_assessments: /dashboard
-  publish_world_heritage_site_assessments: /dashboard
+  edit_world_heritage_site_assessments: /
+  publish_world_heritage_site_assessments: /
   coordinator: /dashboard
   assessor: /dashboard
   reviewer: /dashboard
   anonymous: null
-  authenticated: /dashboard
-  edit_content_pages: /dashboard
-  publish_content_pages: /dashboard
-  menu_editor: /dashboard
-  edit_world_heritage_site_information: /dashboard
-  publish_world_heritage_site_information: /dashboard
-  manage_submissions: /dashboard
+  authenticated: /
+  edit_content_pages: /
+  publish_content_pages: /
+  menu_editor: /
+  edit_world_heritage_site_information: /
+  publish_world_heritage_site_information: /
+  manage_submissions: /
