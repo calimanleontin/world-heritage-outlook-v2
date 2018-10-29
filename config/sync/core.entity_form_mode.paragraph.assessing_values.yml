@@ -1,0 +1,10 @@
+uuid: a719cb80-7b0f-41f8-8bbd-a48c9c86047c
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.assessing_values
+label: 'Assessing values'
+targetEntityType: paragraph
+cache: true
