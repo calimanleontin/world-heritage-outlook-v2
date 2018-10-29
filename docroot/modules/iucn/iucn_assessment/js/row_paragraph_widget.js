@@ -79,4 +79,24 @@
     }
   };
 
+  Drupal.behaviors.doubleScrollBar = {
+    attach: function (context, settings) {
+        $(function(){
+            $(".responsive-wrapper", context).each(function() {
+                var $table = $(this).find('.field-multiple-table');
+                $(this).siblings(".responsive-wrapper-2").find('.inner').width($table.width());
+            });
+
+            $(".responsive-wrapper", context).scroll(function(){
+                $(this).siblings(".responsive-wrapper-2")
+                    .scrollLeft($(this).scrollLeft());
+            });
+            $(".responsive-wrapper-2", context).scroll(function(){
+                $(this).siblings(".responsive-wrapper")
+                    .scrollLeft($(this).scrollLeft());
+            });
+        });
+    }
+  };
+
 })(jQuery, Drupal);

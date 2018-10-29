@@ -206,8 +206,15 @@
     border-top-color: #bfbfba;
 }
 
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper,
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 {
     overflow: auto;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2,
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 .inner {
+    height: 30px;
+    overflow-y: hidden;
 }
 
 .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper .field-multiple-table {

@@ -1,12 +1,12 @@
-import shave from 'shave';
-window.shave = shave;
+// import shave from 'shave';
+// window.shave = shave;
 
-(function($) {
+// (function($) {
 
-    Drupal.behaviors.shave = {
-        attach: function (context, settings) {
-            $(function(){
-                $('.diff-deletedline', context).each(function() {
+//     Drupal.behaviors.shave = {
+//         attach: function (context, settings) {
+//             $(function(){
+                // $('.diff-deletedline', context).each(function() {
                     // console.log(this);
                     // window.shave(this, 100);
                     // var btn = $('<button class="js-shave-button">' + Drupal.t('Expand') + ' </button>',),
@@ -17,8 +17,8 @@ window.shave = shave;
                     //     $(this).append(btn);
                     //     $(this).addClass('shave-processed');
                     // }
-                });
-            })
+                // });
+            // })
             // $('body').on('click', '.js-shave-button', function(e) {
             //       var hasShave = this.querySelector('#demo-text .js-shave');
             //       if (hasShave !== null) {
@@ -31,8 +31,8 @@ window.shave = shave;
             //       return;
 
             // });
-        }
-    }
+        // }
+    // }
 
     // Drupal.behaviors.fixedActions = {
     //     attach: function(context, settings) {
@@ -57,68 +57,68 @@ window.shave = shave;
     //     }
     // }
 
-    Drupal.behaviors.horizontalScroll = {
-        attach: function(context, settings) {
+    // Drupal.behaviors.horizontalScroll = {
+    //     attach: function(context, settings) {
 
-            $(function(){
-                var $buttons = $('.slide-button', context);
-                $buttons.each(function() {
-                    var $container = $(this).closest('.responsive-wrapper');
-                    $(this).height($container.height());
-                    $(this).css({ top: $(this).parent().offsetTop });
-                })
+    //         $(function(){
+    //             var $buttons = $('.slide-button', context);
+    //             $buttons.each(function() {
+    //                 var $container = $(this).closest('.responsive-wrapper');
+    //                 $(this).height($container.height());
+    //                 $(this).css({ top: $(this).parent().offsetTop });
+    //             })
 
-            });
+    //         });
 
-            function sideScroll(element,direction,speed,distance,step){
-                var scrollAmount = 0;
-                var slideTimer = setInterval(function(){
-                    if(direction == 'left'){
-                        element.scrollLeft -= step;
-                    } else {
-                        element.scrollLeft += step;
-                    }
-                    scrollAmount += step;
-                    if(scrollAmount >= distance){
-                        window.clearInterval(slideTimer);
-                    }
-                }, speed);
-            }
+    //         function sideScroll(element,direction,speed,distance,step){
+    //             var scrollAmount = 0;
+    //             var slideTimer = setInterval(function(){
+    //                 if(direction == 'left'){
+    //                     element.scrollLeft -= step;
+    //                 } else {
+    //                     element.scrollLeft += step;
+    //                 }
+    //                 scrollAmount += step;
+    //                 if(scrollAmount >= distance){
+    //                     window.clearInterval(slideTimer);
+    //                 }
+    //             }, speed);
+    //         }
 
-            // $(context).on(
-            //     'mousedown touchstart': function () {
-            //         $(".sidebar-menu").animate({scrollTop: 0}, 2000);
-            //     },
-            //     'mouseup touchend': function () {
-            //         $(".sidebar-menu").stop(true);
-            //     }
-            // );
+    //         // $(context).on(
+    //         //     'mousedown touchstart': function () {
+    //         //         $(".sidebar-menu").animate({scrollTop: 0}, 2000);
+    //         //     },
+    //         //     'mouseup touchend': function () {
+    //         //         $(".sidebar-menu").stop(true);
+    //         //     }
+    //         // );
 
 
-            $(context).on('mousedown', '.slide-button', function() {
+    //         $(context).on('mousedown', '.slide-button', function() {
 
-                var container = $(this).closest('.responsive-wrapper')[0];
-                    // scrollLeft = container.scrollLeft,
-                    // scrollWidth = container.scrollWidth;
+    //             var container = $(this).closest('.responsive-wrapper')[0];
+    //                 // scrollLeft = container.scrollLeft,
+    //                 // scrollWidth = container.scrollWidth;
 
-                // console.log(scrollLeft, scrollWidth );
+    //             // console.log(scrollLeft, scrollWidth );
 
-                if($(this).hasClass('slide-right')) {
-                    // console.log(container);
-                    // if(scrollLeft == scrollWidth) {
-                    //   // $(this).addClass('hidden');
-                    // }
-                    sideScroll(container,'right',25,100,10);
-                }
-                if($(this).hasClass('slide-left')) {
-                    // if(scrollLeft == 0) {
-                    //   // $(this).addClass('hidden');
-                    // }
-                    sideScroll(container,'left',25,100,10);
-                }
-            });
+    //             if($(this).hasClass('slide-right')) {
+    //                 // console.log(container);
+    //                 // if(scrollLeft == scrollWidth) {
+    //                 //   // $(this).addClass('hidden');
+    //                 // }
+    //                 sideScroll(container,'right',25,100,10);
+    //             }
+    //             if($(this).hasClass('slide-left')) {
+    //                 // if(scrollLeft == 0) {
+    //                 //   // $(this).addClass('hidden');
+    //                 // }
+    //                 sideScroll(container,'left',25,100,10);
+    //             }
+    //         });
 
-        }
-    }
+    //     }
+    // }
 
-})(jQuery);
+// })(jQuery);
