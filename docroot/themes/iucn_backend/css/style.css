@@ -49,6 +49,18 @@
     overflow: hidden;
 }
 
-.path-dashboard .block {
+.path-admin div[class*="block-views-blockaccount-assignments-"] {
     margin-bottom: 40px;
+}
+
+.path-admin div[class*="block-views-blockaccount-assignments-"] table {
+    table-layout: fixed;
+}
+
+.path-admin div[class*="block-views-blockaccount-assignments-"] table .views-field-title {
+    width: 350px;
+}
+
+.path-admin div[class*="block-views-blockaccount-assignments-"] table .views-field-operations {
+    width: 150px;
 }
