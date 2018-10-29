@@ -21,3 +21,11 @@ who.general_settings:
     _title: 'WHO settings'
   requirements:
     _permission: 'administer site configuration'
+
+who.user-dashboard:
+  path: '/dashboard'
+  defaults:
+    _controller: '\Drupal\iucn_who_core\Controller\PagesController::dashboard'
+    _title: 'Dashboard'
+  requirements:
+    _role: 'authenticated'

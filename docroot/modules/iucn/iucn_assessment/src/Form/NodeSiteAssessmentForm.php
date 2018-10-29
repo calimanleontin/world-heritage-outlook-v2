@@ -174,7 +174,7 @@ class NodeSiteAssessmentForm {
       }
     }
     else {
-      $form_state->setRedirect('user.page');
+      $form_state->setRedirect('who.user-dashboard');
     }
   }
 

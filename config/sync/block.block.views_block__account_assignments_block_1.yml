@@ -1,0 +1,31 @@
+uuid: 2afc13e3-8997-4ca8-a679-07fa3c7f6bcf
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.account_assignments
+  module:
+    - system
+    - views
+  theme:
+    - iucn_who
+id: views_block__account_assignments_block_1
+theme: iucn_who
+region: content
+weight: -15
+provider: null
+plugin: 'views_block:account_assignments-block_1'
+settings:
+  id: 'views_block:account_assignments-block_1'
+  label: 'You are coordinator of the following assessments'
+  provider: views
+  label_display: visible
+  views_label: 'You are coordinator of the following assessments'
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /dashboard
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,31 @@
+uuid: 661aaa6c-db33-432d-95d8-ad03832ea3d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.account_assignments
+  module:
+    - system
+    - views
+  theme:
+    - iucn_who
+id: views_block__account_assignments_block_4
+theme: iucn_who
+region: content
+weight: -12
+provider: null
+plugin: 'views_block:account_assignments-block_4'
+settings:
+  id: 'views_block:account_assignments-block_4'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /dashboard
+    negate: false
+    context_mapping: {  }
