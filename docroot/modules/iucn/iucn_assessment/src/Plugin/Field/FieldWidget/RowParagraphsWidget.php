@@ -423,8 +423,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
     }
 
     foreach ($summary as &$component) {
-      foreach ($component['value'] as &$value) {
-        $value = strip_tags($value);
+      if (is_array($component['value'])) {
+        foreach ($component['value'] as &$value) {
+          $value = strip_tags($value);
+        }
+      }
+      else {
+        $component['value'] = strip_tags($component['value']);
       }
     }
     return $summary;
