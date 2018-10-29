@@ -50,11 +50,57 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'edit_mode' => 'closed',
       'closed_mode' => 'summary',
       'autocollapse' => 'none',
+      'show_numbers' => 'no',
       'add_mode' => 'dropdown',
       'form_display_mode' => 'default',
       'default_paragraph_type' => '',
       'features' => [],
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+    $options = $this->getSettingOptions('show_numbers');
+    $elements['show_numbers'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Show numbers'),
+      '#description' => $this->t('Show number column in table.'),
+      '#options' => $options,
+      '#default_value' => $this->getSetting('show_numbers'),
+      '#required' => TRUE,
+    ];
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getSettingOptions($setting_name) {
+    $options = parent::getSettingOptions($setting_name);
+    switch($setting_name) {
+      case 'show_numbers':
+        $options = [
+          'no' => $this->t('No'),
+          'yes' => $this->t('Yes'),
+        ];
+        break;
+    }
+
+    return isset($options) ? $options : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+    $options = $this->getSettingOptions('show_numbers');
+    $show_numbers = $options[$this->getSetting('show_numbers')];
+    $summary[] = $this->t('Show numbers: @show_numbers', ['@show_numbers' => $show_numbers]);
+    return $summary;
   }
 
   /**
@@ -111,7 +157,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $count = count($containers) + 1;
 
     foreach ($components as $key => $component) {
-      if ($component['span'] == 2) {
+      if (!empty($component['span']) && $component['span'] == 2) {
         $count++;
       }
     }
@@ -169,6 +215,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
     $grouped_fields = $this->getGroupedFields();
+    if ($this->getSetting('show_numbers') == 'yes') {
+      $header['num'] = [
+          'value' => $this->t('No.'),
+          'span' => 1,
+        ];
+    }
 
     $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
@@ -230,8 +282,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getSummaryContainers(array $components) {
     $containers = [];
     foreach ($components as $key => $component) {
-      $span = $component['span'];
       $data = is_array($component['value']) ? implode(', ', $component['value']) : $component['value'];
+      $span = !empty($component['span']) ? $component['span'] : 1;
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -262,7 +314,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getFieldComponents(ParagraphInterface $paragraph) {
     $bundle = $paragraph->getType();
-    $components = EntityFormDisplay::load("paragraph.$bundle.default")->getComponents();
+    $form_display_mode = $this->getSetting('form_display_mode');
+    if (empty($form_display_mode)) {
+      $form_display_mode = 'default';
+    }
+    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")->getComponents();
     if (array_key_exists('moderation_state', $components)) {
       unset($components['moderation_state']);
     }
@@ -282,6 +338,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getSummaryComponents(ParagraphInterface $paragraph) {
     $summary = [];
     $grouped_fields = $this->getGroupedFields();
+    static $num = 0;
+    if ($this->getSetting('show_numbers') == 'yes') {
+      $num += 1;
+      $summary['num']['value'] = $num;
+    }
 
     $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {

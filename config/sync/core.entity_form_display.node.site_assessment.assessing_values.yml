@@ -1,8 +1,9 @@
-uuid: 2340dc69-f6d3-4f9f-83b8-02314a09b68a
+uuid: 0fe57321-6d54-4363-9acf-018f14c3a6a8
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.assessing_values
     - field.field.node.site_assessment.field_as_archived
     - field.field.node.site_assessment.field_as_benefits
     - field.field.node.site_assessment.field_as_benefits_summary
@@ -74,7 +75,6 @@ third_party_settings:
       label: Tabs
     group_as_values:
       children:
-        - field_as_values_wh
         - field_as_values_bio
       parent_name: group_as_tabs
       weight: 20
@@ -127,6 +127,7 @@ third_party_settings:
       label: 'Protection and management'
     group_as_assessing_values:
       children:
+        - field_as_values_wh
         - group_as_values_wh
         - group_as_values_bio
       parent_name: group_as_tabs
@@ -200,13 +201,13 @@ third_party_settings:
         - field_as_vass_wh_state
         - field_as_vass_wh_trend
       parent_name: group_as_assessing_values
-      weight: 20
-      format_type: fieldset
+      weight: 15
+      format_type: assessment_table
       format_settings:
+        label: 'Assessment of the current state and trend of World Heritage values'
+        wrapper: '0'
         id: ''
         classes: ''
-        description: ''
-        required_fields: true
       label: 'Assessment of the current state and trend of World Heritage values'
     group_as_values_bio:
       children:
@@ -214,13 +215,13 @@ third_party_settings:
         - field_as_vass_bio_state
         - field_as_vass_bio_trend
       parent_name: group_as_assessing_values
-      weight: 21
-      format_type: fieldset
+      weight: 16
+      format_type: assessment_table
       format_settings:
+        label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
+        wrapper: '0'
         id: ''
         classes: ''
-        description: ''
-        required_fields: true
       label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
     group_as_key_cons:
       children:
@@ -235,10 +236,10 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
-id: node.site_assessment.default
+id: node.site_assessment.assessing_values
 targetEntityType: node
 bundle: site_assessment
-mode: default
+mode: assessing_values
 content:
   field_as_benefits:
     type: row_entity_reference_paragraphs
@@ -534,7 +535,7 @@ content:
       closed_mode: summary
       autocollapse: none
       add_mode: dropdown
-      form_display_mode: default
+      form_display_mode: assessing_values
       default_paragraph_type: _none
       show_numbers: 'yes'
       features:

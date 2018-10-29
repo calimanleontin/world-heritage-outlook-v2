@@ -25,9 +25,8 @@ class NodeSiteAssessmentForm {
       $form[$item]['#access'] = FALSE;
     }
 
-    $tab = \Drupal::request()->query->get('tab');
     // On the values tab, only coordinators and above can edit the values.
-    if (empty($tab)) {
+    if ($tab == 'values') {
       $account = \Drupal::currentUser();
       $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
       $coordinator_weight = Role::load('coordinator')->getWeight();
@@ -96,6 +95,7 @@ class NodeSiteAssessmentForm {
   }
 
   /*
+   *
    * Store comments on node.
    *
    * @param $form
@@ -118,6 +118,33 @@ class NodeSiteAssessmentForm {
     $node->field_settings->setValue(json_encode($settings));
     $nodeForm->setEntity($node);
     $form_state->setFormObject($nodeForm);
+  }
+
+  /**
+   * Get the markup for the current state label.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param int $weight
+   *   The weight of the state label.
+   *
+   * @return array
+   *   The renderable array.
+   */
+  public static function getCurrentStateMarkup(NodeInterface $node, $weight = -1000) {
+    $current_state = $node->field_state->value;
+    if (!empty($current_state)) {
+      $state_entity = WorkflowState::load($current_state);
+    }
+    else {
+      $state_entity = NULL;
+    }
+    $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
+    return [
+      '#weight' => $weight,
+      '#type' => 'markup',
+      '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
+    ];
   }
 
   /**
