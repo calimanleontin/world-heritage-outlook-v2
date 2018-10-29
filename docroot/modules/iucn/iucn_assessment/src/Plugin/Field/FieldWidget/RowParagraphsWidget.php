@@ -129,7 +129,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $count = count($containers) + 1;
 
     foreach ($components as $key => $component) {
-      if ($component['span'] == 2) {
+      if (!empty($component['span']) && $component['span'] == 2) {
         $count++;
       }
     }
@@ -228,7 +228,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getSummaryContainers(array $components) {
     $containers = [];
     foreach ($components as $key => $component) {
-      $span = $component['span'];
+      $span = !empty($component['span']) ? $component['span'] : 1;
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
