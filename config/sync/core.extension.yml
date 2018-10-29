@@ -51,6 +51,7 @@ module:
   iucn_config_ignore: 0
   iucn_decision_tree: 0
   iucn_diff_revisions: 0
+  iucn_fields: 0
   iucn_migrate: 0
   iucn_pdf: 0
   iucn_site: 0
@@ -119,12 +120,12 @@ module:
   workflow_access: 0
   workflow_ui: 0
   xmlsitemap: 0
+  iucn_assessment: 1
   menu_link_content: 1
   pathauto: 1
   content_translation: 10
   paragraphs: 11
   minimal: 1000
-  iucn_assessment: 9999
 theme:
   stark: 0
   stable: 0
