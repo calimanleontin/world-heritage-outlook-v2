@@ -70,7 +70,7 @@ class ToolbarHandler implements ContainerInjectionInterface {
     if ($this->account->hasPermission('view the administration theme')) {
       $items['iucn_who'] += [
         '#type' => 'toolbar_item',
-        '#weight' => 100,
+        '#weight' => 1000,
         'tab' => [
           '#type' => 'link',
           '#title' => $this->t('WHO'),
@@ -95,7 +95,7 @@ class ToolbarHandler implements ContainerInjectionInterface {
 
     $items['who.user-dashboard']=  [
       '#type' => 'toolbar_item',
-      '#weight' => 101,
+      '#weight' => 1001,
       '#cache' => [
         'contexts' => ['user.permissions'],
       ],
