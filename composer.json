@@ -176,6 +176,7 @@
     "drupal/purge": "^3.0@beta",
     "drupal/recaptcha": "^2.3",
     "drupal/redirect": "^1.2",
+    "drupal/redirect_after_login": "^2.3",
     "drupal/reroute_email": "^1.0",
     "drupal/responsive_favicons": "^1.4",
     "drupal/role_hierarchy": "^1.0",
