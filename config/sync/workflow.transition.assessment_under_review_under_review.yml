@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.state.assessment_under_review
 id: assessment_under_review_under_review
-label: Save
+label: 'Assign reviewers'
 module: workflow
 from_sid: assessment_under_review
 to_sid: assessment_under_review
