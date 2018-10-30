@@ -20,7 +20,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     // Redirect to node edit on form submit.
     foreach ($form['actions'] as $key => &$action) {
-      if (strpos($key, 'workflow_') !== FALSE) {
+      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
         $action['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentForm', 'assessmentSubmitRedirect'];
       }
     }
