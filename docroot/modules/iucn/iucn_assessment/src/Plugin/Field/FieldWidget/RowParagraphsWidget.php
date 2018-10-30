@@ -282,8 +282,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function getSummaryContainers(array $components) {
     $containers = [];
     foreach ($components as $key => $component) {
-      $data = is_array($component['value']) ? implode(', ', $component['value']) : $component['value'];
       $span = !empty($component['span']) ? $component['span'] : 1;
+      if (is_array($component['value'])) {
+        foreach ($component['value'] as $idx => $value) {
+          if (empty($value)) {
+            unset($component['value'][$idx]);
+          }
+        }
+        $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+      }
+      else {
+        $data = $component['value'];
+      }
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -405,12 +415,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if (!array_key_exists($summary_field_name, $summary)) {
         $summary[$summary_field_name]['value'] = [];
-        if (empty($value)) {
-          $value = '';
-        }
       }
-      elseif (empty($value)) {
-        continue;
+
+      $prefix = $this->getSummaryPrefix($field_name);
+      if (!empty($prefix) && !empty($value)) {
+        $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
       $summary[$summary_field_name]['value'][] = $value;
@@ -525,7 +534,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     return [
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
-        'label' => $this->t('Habitat level'),
+        'label' => $this->t('Habitat'),
       ],
       'field_as_benefits_pollut_trend' => [
         'grouped_with' => 'field_as_benefits_pollut_level',
@@ -545,6 +554,31 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ],
 
     ];
+  }
+
+  /**
+   * Retrieves a prefix that should show up before a paragraph summary value.
+   *
+   * @param $field
+   *   The name of the field.
+   *
+   * @return mixed|null
+   *   The prefix.
+   */
+  private function getSummaryPrefix($field) {
+    $prefixes = [
+      'field_as_benefits_hab_trend' => 'Trend',
+      'field_as_benefits_pollut_trend' => 'Trend',
+      'field_as_benefits_oex_trend' => 'Trend',
+      'field_as_benefits_climate_trend' => 'Trend',
+      'field_as_benefits_invassp_trend' => 'Trend',
+      'field_as_benefits_hab_level' => 'Impact level',
+      'field_as_benefits_pollut_level' => 'Impact level',
+      'field_as_benefits_oex_level' => 'Impact level',
+      'field_as_benefits_climate_level' => 'Impact level',
+      'field_as_benefits_invassp_level' => 'Impact level',
+    ];
+    return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
   }
 
 }
