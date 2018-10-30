@@ -257,7 +257,7 @@ class AssessmentWorkflow {
       if ($original_state == self::STATUS_UNDER_REVIEW) {
         $added_reviewers = $this->getAddedReviewers($node, $original);
       }
-      else {
+      elseif ($original_state == self::STATUS_READY_FOR_REVIEW) {
         $ready_for_review_revision = $this->getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
         $added_reviewers = $this->getAddedReviewers($node, $ready_for_review_revision);
       }
