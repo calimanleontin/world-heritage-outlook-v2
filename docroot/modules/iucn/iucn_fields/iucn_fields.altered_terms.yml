@@ -1,3 +1,10 @@
+# Edit term labels for an assessment cycle.
+
+# The first key is the assessment cycle.
+# The second key is the term tid.
+
+# If a term is no longer available, set it's label to <hidden>
+
 2023:
 #  1384: '<hidden>'
 2020:
