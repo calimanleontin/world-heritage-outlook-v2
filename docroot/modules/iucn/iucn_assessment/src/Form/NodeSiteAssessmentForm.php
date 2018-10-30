@@ -136,7 +136,7 @@ class NodeSiteAssessmentForm {
    */
   public static function isValuesTab() {
     $tab = \Drupal::request()->query->get('tab');
-    return empty($tab);
+    return empty($tab) || $tab == 'values';
   }
 
   /**
