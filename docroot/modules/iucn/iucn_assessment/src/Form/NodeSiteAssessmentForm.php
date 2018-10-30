@@ -53,7 +53,11 @@ class NodeSiteAssessmentForm {
           '#title' => $comment_title,
           '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
           '#default_value' => !empty($settings['comments'][$tab]) ? $settings['comments'][$tab] : '',
+          '#prefix' => '<div class="paragraph-comments-textarea">',
+          '#suffix' => '</div>',
         ];
+        $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
+        $form['#attached']['library'][] = 'iucn_backend/font-awesome';
       }
     }
 

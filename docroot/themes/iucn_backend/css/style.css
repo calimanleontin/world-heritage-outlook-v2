@@ -64,3 +64,50 @@
 .path-admin div[class*="block-views-blockaccount-assignments-"] table .views-field-operations {
     width: 150px;
 }
+
+.paragraph-comments-textarea {
+    z-index:50;
+    position:absolute;
+    background-color: white;
+    padding: 25px;
+    border: 1px solid black;
+    /*right: 5%;*/
+    width: 50%;
+    display: none;
+}
+
+.horizontal-tab-button .fa {
+    font-size: 1em;
+    margin: 0 2.1em 0 1em;
+    position: relative;
+    color: #fafafa;
+    -webkit-text-stroke: 1px #0074bd;
+    transition: color .1s;
+}
+
+.horizontal-tab-button .fa:hover {
+    color: #0074bd;
+}
+
+.horizontal-tab-button .fa:before {
+    font-size: 2em;
+    position: absolute;
+    right: -22px;
+    top: -30px;
+    z-index: 9999;
+}
+
+
+.horizontal-tabs ul.horizontal-tabs-list li.selected {
+    display: flex;
+    align-items: center;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li.selected a {
+    padding-left: 1em;
+}
+
+.horizontal-tab-button .fa:hover {
+    -webkit-text-stroke: initial;
+}
+
