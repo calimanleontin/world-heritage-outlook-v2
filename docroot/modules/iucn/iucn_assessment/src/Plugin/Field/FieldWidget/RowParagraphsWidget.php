@@ -262,10 +262,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          /** @var \Drupal\Core\Entity $entity */
+          /** @var \Drupal\Core\Entity\Entity $entity */
           $entity = $paragraph->get($field_name)->entity;
-          $label = $this->getEntityLabel($entity);
-          $summary[$field_name]['value'] = $label;
+          if (!$this->isHiddenTerm($entity)) {
+            $label = $this->getEntityLabel($entity);
+            $summary[$field_name]['value'] = $label;
+          }
         }
       }
 
@@ -409,6 +411,21 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $label = $entity->label();
     }
     return $label;
+  }
+
+  protected function isHiddenTerm(Entity $entity) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if (!$moduleHandler->moduleExists('iucn_fields')) {
+      return FALSE;
+    }
+    if ($entity->getEntityType()->id() != 'taxonomy_term') {
+      return FALSE;
+    }
+    /** @var \Drupal\Core\Entity\Term $entity */
+    $tid = $entity->id();
+    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
   }
 
 }

@@ -20,6 +20,7 @@ function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\C
   $assessment = $form_state->getFormObject()->getEntity();
   $assessment_year = $assessment->field_as_cycle->value;
   $options = &$element['#options'];
+  $removed_tids = [];
   foreach ($options as $tid => &$label) {
     $term = Term::load($tid);
     if (empty($term)) {
@@ -29,12 +30,19 @@ function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\C
     /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
     $term_alter_service = \Drupal::service('iucn_fields.term_alter');
     if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
+      $removed_tids[] = $tid;
       unset($options[$tid]);
       continue;
     }
     $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
     if (!empty($term_new_name)) {
       $label = str_replace($term_name, $term_new_name, $label);
+    }
+  }
+
+  foreach ($element['#default_value'] as $idx => $value) {
+    if (in_array($value, $removed_tids)) {
+      unset($element['#default_value'][$idx]);
     }
   }
 
@@ -67,10 +75,16 @@ function iucn_fields_preprocess_field(&$variables) {
   /** @var \Drupal\taxonomy\Entity\Term $term */
   $term = $paragraph->{$field_name}->entity;
 
-  /** @var \Drupal\iucn_fields\Plugin\TermAlterService $label_service */
-  $label_service = \Drupal::service('iucn_fields.term_alter');
-  $term_label = $label_service->getTermLabelForYear($term->id(), $assessment_year);
-  if (!empty($term_label)) {
-    $term->name->value = $term_label;
+  /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+  $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+  $is_hidden = $term_alter_service->isTermHiddenForYear($term->id(), $assessment_year);
+  if ($is_hidden) {
+    $term->name->value = '';
+  }
+  else {
+    $term_label = $term_alter_service->getTermLabelForYear($term->id(), $assessment_year);
+    if (!empty($term_label)) {
+      $term->name->value = $term_label;
+    }
   }
 }
