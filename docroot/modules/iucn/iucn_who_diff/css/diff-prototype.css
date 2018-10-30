@@ -1,0 +1,205 @@
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component textarea {
+  max-width: 100%;
+  width: 100% !important;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .paragraph-top {
+  align-items: stretch;
+}
+
+.field--widget-row-entity-reference-paragraphs .chosen-container {
+  width: 100% !important;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
+  font-size: 1em;
+}
+
+.paragraph-summary-component {
+
+  /* height: 100%; */
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component,
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions > .inner {
+
+  /* padding: 10px 12px; */
+}
+
+/* .field--widget-row-entity-reference-paragraphs .paragraph-summary-component, */
+.field--widget-row-entity-reference-paragraphs .relative,
+.field--widget-row-entity-reference-paragraphs .relative-wrapper {
+  position: relative;
+}
+
+.field--widget-row-entity-reference-paragraphs .btn-copy,
+.field--widget-row-entity-reference-paragraphs .btn-reset {
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  padding: .4em;
+}
+
+/* .btn-copy .icon,
+.btn-reset .icon {
+width: 3em;
+height: 3em;
+} */
+.field--widget-row-entity-reference-paragraphs .btn-copy {
+
+  /*   background: transparent;
+  border: none;
+  box-shadow: none; */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs .btn-reset {
+  margin-left: auto;
+  margin-top: 5px;
+}
+
+.field--widget-row-entity-reference-paragraphs .btn-reset .fa,
+.field--widget-row-entity-reference-paragraphs .btn-reset .svg-inline--fa {
+  margin-left: .2em;
+}
+
+.field--widget-row-entity-reference-paragraphs .relative:hover .btn-reset,
+.field--widget-row-entity-reference-paragraphs .relative:hover .btn-copy {
+  visibility: visible;
+}
+
+.field--widget-row-entity-reference-paragraphs .no-padding {
+  padding: 0;
+}
+
+/* .field--widget-row-entity-reference-paragraphs .paragraphs-actions {
+  flex-wrap: wrap;
+  /* grid-column: -2 / span 2 !important; */
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: absolute;
+  top: auto;
+  right: 0;
+  flex-wrap: wrap;  /* border-left: 1px solid #ddd; */
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
+  justify-content: center;
+  right: 0;
+} */
+
+/* .paragraphs-actions > .button {
+flex: 1;
+} */
+.field--widget-row-entity-reference-paragraphs tr {
+  /* background-color: #fff; */
+}
+
+.field--widget-row-entity-reference-paragraphs td {
+  /* background-color: inherit;   */
+  /* padding: 0 !important; */
+}
+
+.field--widget-row-entity-reference-paragraphs td div {
+  /* background-color: inherit; */
+}
+
+/* .field--widget-row-entity-reference-paragraphs tbody tr:hover div,
+.field--widget-row-entity-reference-paragraphs tbody tr:focus div {
+  background-color: #f7fcff;
+}
+ */
+
+.field--widget-row-entity-reference-paragraphs .diff-changed td,
+.field--widget-row-entity-reference-paragraphs .diff-changed:hover td,
+.field--widget-row-entity-reference-paragraphs .diff-changed td div,
+.field--widget-row-entity-reference-paragraphs .diff-changed:hover td div,
+.js .field--widget-row-entity-reference-paragraphs .diff-changed .paragraph-summary-component.processed .paragraphs-actions {
+  background-color: #fcf8e3;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .paragraphs-dropdown .paragraphs-dropdown-actions {
+  background-color: #fff;
+}
+
+.ui-dialog {
+  margin: 15px;
+  max-width: 90vw;
+}
+
+/* .field--widget-row-entity-reference-paragraphs.responsive-wrapper {
+  overflow: auto;
+} */
+
+/* .relative-wrapper {
+  position: relative;
+}
+ */
+/*
+.paragraphs-actions {
+position: absolute;
+right: 0;
+}
+ */
+
+.js .field--widget-row-entity-reference-paragraphs .slide-button {
+  left: 0;
+  padding: 0;
+  position: absolute;
+  width: 8px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+.js .field--widget-row-entity-reference-paragraphs:hover .slide-button {
+  opacity: 1;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .slide-right {
+  left: auto;
+  right: 10rem;
+}
+
+
+.field--widget-row-entity-reference-paragraphs .wrapper1,
+.field--widget-row-entity-reference-paragraphs .wrapper2 {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.field--widget-row-entity-reference-paragraphs .wrapper1 {
+  height: 20px;
+}
+
+.field--widget-row-entity-reference-paragraphs .div1 {
+  height: 20px;
+}
+
+.field--widget-row-entity-reference-paragraphs .div2 {
+  overflow: auto;
+}
+
+.diff-context-wrapper td {
+  padding: 5px;
+}
+
+.button.paragraphs-icon-button.paragraphs-icon-button-compare {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .button.paragraphs-icon-button.paragraphs-icon-button-compare {
+    background-image: url(../images/compare.svg);
+  }
+}

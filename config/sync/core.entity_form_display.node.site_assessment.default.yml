@@ -256,6 +256,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_benefits_summary:
@@ -308,6 +309,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_projects:
@@ -326,6 +328,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_projects_needs:
@@ -344,6 +347,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_protection:
@@ -362,6 +366,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_protection_ov_out_rate:
@@ -436,6 +441,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_threats_current_rating:
@@ -482,6 +488,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_threats_rating:
@@ -514,6 +521,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_values_wh:
@@ -528,6 +536,7 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      show_numbers: 'yes'
       features:
         duplicate: 0
         collapse_edit_all: 0

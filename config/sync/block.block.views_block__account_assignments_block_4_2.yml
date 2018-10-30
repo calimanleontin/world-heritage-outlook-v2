@@ -1,0 +1,30 @@
+uuid: fbe4e5c0-0f8b-4068-a84f-cc8deb418081
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.account_assignments
+  module:
+    - system
+    - views
+  theme:
+    - iucn_backend
+id: views_block__account_assignments_block_4_2
+theme: iucn_backend
+region: content
+weight: 2
+provider: null
+plugin: 'views_block:account_assignments-block_4'
+settings:
+  id: 'views_block:account_assignments-block_4'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/dashboard
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,50 @@
+uuid: aefa339d-f515-4cf1-bd66-46ef58bdc9ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.paragraph.assessing_values
+    - field.field.paragraph.as_site_value_wh.field_as_description
+    - field.field.paragraph.as_site_value_wh.field_as_values_criteria
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_wh.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_wh
+id: paragraph.as_site_value_wh.assessing_values
+targetEntityType: paragraph
+bundle: as_site_value_wh
+mode: assessing_values
+content:
+  field_as_values_curr_state:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_as_values_curr_trend:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  translation:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_as_description: true
+  field_as_values_criteria: true
+  field_as_values_value: true
+  status: true
+  uid: true

@@ -3,6 +3,7 @@ module:
   blazy: 0
   block: 0
   block_content: 0
+  block_exclude_pages: 0
   breakpoint: 0
   captcha: 0
   chosen: 0
@@ -18,9 +19,9 @@ module:
   crop: 0
   ctools: 0
   datetime: 0
+  dblog: 0
   diff: 0
   disable_field: 0
-  dblog: 0
   display_field_copy: 0
   ds: 0
   dynamic_page_cache: 0
@@ -55,6 +56,7 @@ module:
   iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
+  iucn_who_diff: 0
   iucn_who_homepage: 0
   kint: 0
   lang_dropdown: 0
@@ -85,6 +87,7 @@ module:
   quickedit: 0
   recaptcha: 0
   redirect: 0
+  redirect_after_login: 0
   responsive_favicons: 0
   responsive_image: 0
   role_hierarchy: 0

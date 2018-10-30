@@ -1,0 +1,12 @@
+name: iucn_who_diff
+type: module
+description: Diff prototype
+core: 8.x
+package: Other
+dependencies:
+  - paragraphs
+  - iucn_who_core
+  - iucn_assessment
+  - diff
+  - iucn_diff_revisions
+  - chosen

@@ -3,10 +3,10 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 
 class NodeSiteAssessmentForm {
@@ -25,7 +25,6 @@ class NodeSiteAssessmentForm {
       $form[$item]['#access'] = FALSE;
     }
 
-    $tab = \Drupal::request()->query->get('tab');
     // On the values tab, only coordinators and above can edit the values.
     if (self::isValuesTab() && self::currentUserIsAssessorOrLower()) {
       self::hideParagraphsActions($form);
@@ -41,7 +40,7 @@ class NodeSiteAssessmentForm {
       $form['current_state'] = [
         '#weight' => -100,
         '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
+        '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
         $settings = json_decode($node->field_settings->value, TRUE);
@@ -62,7 +61,8 @@ class NodeSiteAssessmentForm {
     $form['actions']['submit']['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
   }
 
-  /**
+  /*
+   *
    * Store comments on node.
    *
    * @param $form
@@ -146,7 +146,7 @@ class NodeSiteAssessmentForm {
       }
     }
     else {
-      $form_state->setRedirect('user.page');
+      $form_state->setRedirect('who.user-dashboard');
     }
   }
 
