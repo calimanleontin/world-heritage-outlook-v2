@@ -1,6 +1,6 @@
 # Edit term labels for an assessment cycle.
 
-# The first key is the assessment cycle.
+# The first key is the assessment cycle. Keep the order descending.
 # The second key is the term tid.
 
 # If a term is no longer available, set it's label to <hidden>
