@@ -2,6 +2,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 
 function iucn_backend_theme($existing, $type, $theme, $path) {
   return [
@@ -48,6 +49,12 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
     $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
     if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
       && $field_entity->getSetting('handler') == 'default:paragraph') {
+
+      if (NodeSiteAssessmentForm::currentUserIsAssessorOrLower()
+        && NodeSiteAssessmentForm::isValuesTab()) {
+        _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+      }
+
       $title = $variables['element']['#title'];
       $variables['paragraph_header'] = [
         '#type' => 'table',
@@ -55,6 +62,26 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
         '#rows' => [],
       ];
       unset($variables['table']['#header']);
+    }
+  }
+}
+
+/**
+ * Helper function used to remove the tabledrag from a multiple value form.
+ */
+function _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag(&$variables) {
+  if (isset($variables['table']['#tabledrag'])) {
+    unset($variables['table']['#tabledrag']);
+    array_pop($variables['table']['#header']);
+    foreach ($variables['table']['#rows'] as &$row) {
+      foreach (array_keys($row['data']) as $key) {
+        if (!empty($row['data'][$key]['class']) && array_intersect($row['data'][$key]['class'], [
+          'field-multiple-drag',
+          'delta-order',
+        ])) {
+          unset($row['data'][$key]);
+        }
+      }
     }
   }
 }

@@ -27,14 +27,8 @@ class NodeSiteAssessmentForm {
 
     $tab = \Drupal::request()->query->get('tab');
     // On the values tab, only coordinators and above can edit the values.
-    if (empty($tab)) {
-      $account = \Drupal::currentUser();
-      $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-      $coordinator_weight = Role::load('coordinator')->getWeight();
-
-      if ($account_role_weight > $coordinator_weight) {
-        self::hideParagraphsActions($form);
-      }
+    if (self::isValuesTab() && self::currentUserIsAssessorOrLower()) {
+      self::hideParagraphsActions($form);
     }
 
     // Hide all revision related settings and check if a new revision should
@@ -138,9 +132,14 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $tab = \Drupal::request()->query->get('tab');
+    $options = [];
+    if (!empty($tab)) {
+      $options = ['query' => ['tab' => $tab]];
+    }
     if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
       if ($workflow_service->isAssessmentEditable($node)) {
-        $form_state->setRedirectUrl($node->toUrl('edit-form'));
+        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
       else {
         $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
@@ -162,14 +161,53 @@ class NodeSiteAssessmentForm {
     foreach ($read_only_paragraph_fields as $field) {
       $form[$field]['widget']['add_more']['#access'] = FALSE;
       $paragraphs = &$form[$field]['widget'];
+      if (!empty($paragraphs['header']['data']['actions'])) {
+        $paragraphs['header']['data']['actions']['#access'] = FALSE;
+        $classes = &$paragraphs['header']['#attributes']['class'];
+        foreach ($classes as &$class) {
+          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
+            $col_number = $matches[1];
+            $col_class = $class;
+            $new_col_number = $col_number - 1;
+            $new_col_class = "paragraph-top-col-$new_col_number";
+            $class = $new_col_class;
+          }
+        }
+      }
       foreach ($paragraphs as $key => &$paragraph) {
         if (!is_int($key)) {
           continue;
         }
         $paragraph['top']['actions']['#access'] = FALSE;
+        $classes = &$paragraph['top']['#attributes']['class'];
+        if (!empty($new_col_class)) {
+          foreach ($classes as &$class) {
+            if ($class == $col_class) {
+              $class = $new_col_class;
+            }
+          }
+        }
       }
-      $paragraphs['add_mode']['#access'] = FALSE;
     }
+  }
+
+  /**
+   * Check if we are on the values tab.
+   */
+  public static function isValuesTab() {
+    $tab = \Drupal::request()->query->get('tab');
+    return empty($tab) || $tab == 'values';
+  }
+
+  /**
+   * Check if the current user is an assessor or lower role.
+   */
+  public static function currentUserIsAssessorOrLower() {
+    $account = \Drupal::currentUser();
+    $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
+    $coordinator_weight = Role::load('coordinator')->getWeight();
+
+    return $account_role_weight > $coordinator_weight;
   }
 
 }
