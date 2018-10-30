@@ -2,7 +2,9 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -10,6 +12,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -40,6 +43,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
   protected $colCount;
 
   /**
+   * The parent node.
+   *
+   * @var \Drupal\Node\NodeInterface
+   */
+  protected $parentNode;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -61,6 +71,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $this->parentNode = $form_state->getFormObject()->getEntity();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -101,7 +112,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $elements = parent::formMultipleElements($items, $form, $form_state);
-
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
@@ -252,7 +262,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          $summary[$field_name]['value'] = $paragraph->get($field_name)->entity->label();
+          /** @var \Drupal\Core\Entity $entity */
+          $entity = $paragraph->get($field_name)->entity;
+          $label = $this->getEntityLabel($entity);
+          $summary[$field_name]['value'] = $label;
         }
       }
 
@@ -365,6 +378,37 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $paragraph_summary = implode(', ', $summary);
     return $paragraph_summary;
+  }
+
+  /**
+   * Retrieves the label for an entity.
+   *
+   * @param \Drupal\Core\Entity\Entity $entity
+   *   The entity.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|null|string
+   *   The label
+   */
+  protected function getEntityLabel(Entity $entity) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if (!$moduleHandler->moduleExists('iucn_fields')) {
+      return NULL;
+    }
+    $label = '';
+    if ($entity->getEntityType()->id() == 'taxonomy_term') {
+      /** @var \Drupal\Core\Entity\Term $entity */
+      $tid = $entity->id();
+      /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+      $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+      $term_new_name = $term_alter_service->getTermLabelForYear($tid, $this->parentNode->field_as_cycle->value);
+      if (!empty($term_new_name)) {
+        $label = $term_new_name;
+      }
+    }
+    if (empty($label)) {
+      $label = $entity->label();
+    }
+    return $label;
   }
 
 }

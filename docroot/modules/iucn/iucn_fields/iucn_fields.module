@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\taxonomy\Entity\Term;
+
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
@@ -19,15 +21,20 @@ function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\C
   $assessment_year = $assessment->field_as_cycle->value;
   $options = &$element['#options'];
   foreach ($options as $tid => &$label) {
+    $term = Term::load($tid);
+    if (empty($term)) {
+      continue;
+    }
+    $term_name = $term->getName();
     /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
     $term_alter_service = \Drupal::service('iucn_fields.term_alter');
     if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
       unset($options[$tid]);
       continue;
     }
-    $term_label = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
-    if (!empty($term_label)) {
-      $label = $term_label;
+    $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
+    if (!empty($term_new_name)) {
+      $label = str_replace($term_name, $term_new_name, $label);
     }
   }
 
