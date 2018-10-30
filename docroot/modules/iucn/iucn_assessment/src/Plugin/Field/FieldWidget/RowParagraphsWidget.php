@@ -202,7 +202,19 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = [];
     foreach ($components as $key => $component) {
       $span = $component['span'];
-      $data = is_array($component['value']) ? implode('; ', $component['value']) : $component['value'];
+
+      if (is_array($component['value'])) {
+        foreach ($component['value'] as $idx => $value) {
+          if (empty($value)) {
+            unset($component['value'][$idx]);
+          }
+        }
+        $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+      }
+      else {
+        $data = $component['value'];
+      }
+
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -315,16 +327,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if (!array_key_exists($summary_field_name, $summary)) {
         $summary[$summary_field_name]['value'] = [];
-        if (empty($value)) {
-          $value = '';
-        }
-      }
-      elseif (empty($value)) {
-        continue;
       }
 
       $prefix = $this->getSummaryPrefix($field_name);
-      if (!empty($prefix)) {
+      if (!empty($prefix) && !empty($value)) {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
@@ -435,7 +441,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     return [
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
-        'label' => $this->t('Habitat level'),
+        'label' => $this->t('Habitat'),
       ],
       'field_as_benefits_pollut_trend' => [
         'grouped_with' => 'field_as_benefits_pollut_level',
