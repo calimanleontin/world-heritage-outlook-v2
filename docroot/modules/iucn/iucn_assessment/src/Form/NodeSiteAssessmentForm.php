@@ -17,14 +17,8 @@ class NodeSiteAssessmentForm {
 
     $tab = \Drupal::request()->query->get('tab');
     // On the values tab, only coordinators and above can edit the values.
-    if (empty($tab)) {
-      $account = \Drupal::currentUser();
-      $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-      $coordinator_weight = Role::load('coordinator')->getWeight();
-
-      if ($account_role_weight > $coordinator_weight) {
-        self::hideParagraphsActions($form);
-      }
+    if (self::isValuesTab() && self::currentUserIsAssessorOrLower()) {
+      self::hideParagraphsActions($form);
     }
 
     // Hide all revision related settings and check if a new revision should
@@ -135,6 +129,25 @@ class NodeSiteAssessmentForm {
         }
       }
     }
+  }
+
+  /**
+   * Check if we are on the values tab.
+   */
+  public static function isValuesTab() {
+    $tab = \Drupal::request()->query->get('tab');
+    return empty($tab);
+  }
+
+  /**
+   * Check if the current user is an assessor or lower role.
+   */
+  public static function currentUserIsAssessorOrLower() {
+    $account = \Drupal::currentUser();
+    $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
+    $coordinator_weight = Role::load('coordinator')->getWeight();
+
+    return $account_role_weight > $coordinator_weight;
   }
 
 }
