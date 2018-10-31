@@ -49,18 +49,18 @@
     overflow: hidden;
 }
 
-.path-admin div[class*="block-views-blockaccount-assignments-"] {
+.path-admin div[class*="block-views-"] {
     margin-bottom: 40px;
 }
 
-.path-admin div[class*="block-views-blockaccount-assignments-"] table {
+.path-admin div[class*="block-views-"] table {
     table-layout: fixed;
 }
 
-.path-admin div[class*="block-views-blockaccount-assignments-"] table .views-field-title {
+.path-admin div[class*="block-views-"] table .views-field-title {
     width: 350px;
 }
 
-.path-admin div[class*="block-views-blockaccount-assignments-"] table .views-field-operations {
+.path-admin div[class*="block-views-"] table .views-field-operations {
     width: 150px;
 }
