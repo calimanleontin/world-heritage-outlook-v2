@@ -64,3 +64,7 @@
 .path-admin div[class*="block-views-"] table .views-field-operations {
     width: 150px;
 }
+
+#autosave-notification {
+    z-index: 9999;
+}
