@@ -67,12 +67,14 @@ class UserAssignForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL) {
-    if (!$user instanceof UserInterface || empty($roles = array_intersect(['coordinator', 'assessor'], $user->getRoles()))) {
-      $this->messenger()->addError('Only coordinators and assessors can be assigned to multiple site assessments at once.');
+    if (!$user instanceof UserInterface || empty($roles = array_intersect(['coordinator', 'assessor', 'reviewer'], $user->getRoles()))) {
+      $this->messenger()->addError('This user cannot be assigned to any site.');
       return;
     }
     $roles = array_combine($roles, $roles);
-
+    $form = [
+      '#title' => t('Assign %user to multiple sites', ['%user' => $user->getAccountName()]),
+    ];
     $form['role'] = [
       '#type' => 'select',
       '#title' => $this->t('Role'),
