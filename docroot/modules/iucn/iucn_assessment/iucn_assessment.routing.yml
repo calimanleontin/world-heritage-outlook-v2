@@ -34,7 +34,7 @@ iucn_assessment.node_revision.state_change:
     _node_operation_route: TRUE
     _admin_route: TRUE
 
-iucn_assessment.user_assign_form:
+iucn_assessment.user_assign:
   path: '/user/{user}/assign'
   defaults:
     _form: '\Drupal\iucn_assessment\Form\UserAssignForm'

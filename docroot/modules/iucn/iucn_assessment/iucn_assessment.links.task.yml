@@ -15,3 +15,8 @@ iucn_assessment.node_revision.state_change:
   base_route: node.revision_edit
   title: Change state
   weight: 2
+
+iucn_assessment.user.assign:
+  route_name: iucn_assessment.user_assign
+  base_route: entity.user.canonical
+  title: Assign

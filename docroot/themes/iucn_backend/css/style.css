@@ -64,3 +64,7 @@
 .path-admin div[class*="block-views-"] table .views-field-operations {
     width: 150px;
 }
+
+.user-assign-form .form-submit {
+    margin-left: 0;
+}
