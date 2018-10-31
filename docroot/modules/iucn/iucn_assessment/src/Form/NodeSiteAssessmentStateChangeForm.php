@@ -25,6 +25,10 @@ class NodeSiteAssessmentStateChangeForm {
       }
     }
 
+    if (!empty($form['actions']['delete'])) {
+      $form['actions']['delete']['#access'] = FALSE;
+    }
+
     // Hide unnecessary fields.
     $form['advanced']['#access'] = FALSE;
     $form['revision']['#default_value'] = FALSE;
