@@ -530,8 +530,8 @@ function iucn_assessment_validation_constraint_alter(array &$definitions) {
  * Implements hook_entity_type_build().
  */
 function iucn_assessment_entity_type_build(array &$entity_types) {
-  // Add the custom form mode.
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
 }
 
 /**
@@ -567,6 +567,14 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       $operations[$transition->id()] = [
         'title' => $label,
         'url' => Url::fromRoute('iucn_assessment.node.state_change', ['node' => $entity->id()]),
+        'weight' => 20,
+      ];
+    }
+
+    if (in_array($entity->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES)) {
+      $operations['assign_users'] = [
+        'title' => t('Assign users'),
+        'url' => Url::fromRoute('iucn_assessment.node.assign_users', ['node' => $entity->id()]),
         'weight' => 20,
       ];
     }

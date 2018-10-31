@@ -2,11 +2,10 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,16 +30,6 @@ class UserAssignForm extends FormBase {
       $container->get('entity_type.manager')
     );
   }
-
-  /**
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   */
-  public function access(AccountInterface $account) {
-    return AccessResult::allowedIf($account->hasPermission('administer users'));
-  }
-
 
   /**
    * {@inheritdoc}
@@ -186,16 +175,9 @@ class UserAssignForm extends FormBase {
       return [];
     }
 
-    $states = [
-      'assessment_creation',
-      'assessment_new',
-      'assessment_under_evaluation',
-      'assessment_under_assessment',
-      'assessment_ready_for_review',
-    ];
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
-      ->condition('field_state', $states, 'IN')
+      ->condition('field_state', AssessmentWorkflow::USER_ASSIGNMENT_STATES, 'IN')
       ->notExists($this->getFieldName($role));
     $ids = $query->execute();
     if (empty($ids)) {

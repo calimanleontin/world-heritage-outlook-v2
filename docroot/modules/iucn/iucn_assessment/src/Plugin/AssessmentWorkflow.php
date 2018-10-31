@@ -3,14 +3,11 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\facets\Exception\Exception;
 use Drupal\node\Entity\Node;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
-use Drupal\workflow\Entity\Workflow;
-use Drupal\workflow\Entity\WorkflowConfigTransition;
 use Drupal\workflow\Entity\WorkflowManager;
 use Drupal\workflow\Entity\WorkflowTransition;
 
@@ -82,6 +79,18 @@ class AssessmentWorkflow {
    * Site is unpublished.
    */
   const STATUS_DRAFT = 'assessment_draft';
+
+  /**
+   * If node has one of the following states, coordinators/assessors/reviewers
+   * can be assigned.
+   */
+  const USER_ASSIGNMENT_STATES = [
+    self::STATUS_CREATION,
+    self::STATUS_NEW,
+    self::STATUS_UNDER_EVALUATION,
+    self::STATUS_UNDER_ASSESSMENT,
+    self::STATUS_READY_FOR_REVIEW,
+  ];
 
   /**
    * Check if an user can edit an assessment.
