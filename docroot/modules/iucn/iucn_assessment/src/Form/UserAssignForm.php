@@ -50,8 +50,7 @@ class UserAssignForm extends FormBase {
    * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function access(AccountInterface $account) {
-    // @todo
-    return AccessResult::allowed();
+    return AccessResult::allowedIf($account->hasPermission('administer users'));
   }
 
 
