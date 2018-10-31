@@ -18,18 +18,10 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
  */
 class UserAssignForm extends FormBase {
 
-  /**
-   * Drupal\Core\Session\AccountProxyInterface definition.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
+  /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
-  /**
-   * Drupal\iucn_assessment\Plugin\AssessmentWorkflow definition.
-   *
-   * @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow
-   */
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $iucnAssessmentWorkflow;
 
   /** @var \Drupal\node\NodeStorageInterface */
@@ -55,7 +47,7 @@ class UserAssignForm extends FormBase {
   /**
    * @param \Drupal\Core\Session\AccountInterface $account
    *
-   * @return \Drupal\Core\Access\AccessResultAllowed
+   * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function access(AccountInterface $account) {
     // @todo
@@ -117,11 +109,17 @@ class UserAssignForm extends FormBase {
     return $form;
   }
 
+  /**
+   * Provide assessments select options.
+   */
   public function afterBuild($form, FormStateInterface $form_state) {
     $form['assessments']['#options'] = $this->getAvailableAssessments($form_state->getValue('role'));
     return $form;
   }
 
+  /**
+   * Refresh the assessments select element.
+   */
   public function roleAjaxCallback(array $form, FormStateInterface $form_state) {
     return $form['assessments'];
   }
@@ -159,6 +157,9 @@ class UserAssignForm extends FormBase {
     batch_set($batch);
   }
 
+  /**
+   * Assign the user to assessment.
+   */
   public function processAssessment(UserInterface $user, $role, $assessmentId, &$context) {
     if (empty($context['results'])) {
       $context['results']['count'] = 0;
@@ -178,6 +179,9 @@ class UserAssignForm extends FormBase {
     }
   }
 
+  /**
+   * The batch process finished.
+   */
   public function finishProcessingAssessments($success, $results, $operations) {
     if ($success) {
       $this->messenger()->addStatus($this->t('Successfully assigned user to %num assessments.', ['%num' => $results['count']]));
@@ -187,6 +191,9 @@ class UserAssignForm extends FormBase {
     }
   }
 
+  /**
+   * Retrieve available assessments for a specific role.
+   */
   protected function getAvailableAssessments($role) {
     if (empty($role)) {
       return [];
@@ -219,6 +226,10 @@ class UserAssignForm extends FormBase {
     return $options;
   }
 
+  /**
+   * Calculate name of the field based on user role (field_coordinator,
+   * field_assessor OR field_reviewers).
+   */
   protected function getFieldName($role) {
     return ($role == 'reviewer') ? "field_{$role}s" : "field_{$role}";
   }
