@@ -72,7 +72,7 @@
     padding: 25px;
     border: 1px solid black;
     /*right: 5%;*/
-    width: 50%;
+    width: 40%;
     display: none;
 }
 
@@ -105,6 +105,10 @@
 
 .horizontal-tabs ul.horizontal-tabs-list li.selected a {
     padding-left: 1em;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
+    background-color: initial;
 }
 
 .horizontal-tab-button .fa:hover {
