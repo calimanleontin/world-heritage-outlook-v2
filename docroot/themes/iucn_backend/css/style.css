@@ -87,6 +87,7 @@
 
 .horizontal-tab-button .fa:hover {
     color: #0074bd;
+    cursor: pointer;
 }
 
 .horizontal-tab-button .fa:before {
