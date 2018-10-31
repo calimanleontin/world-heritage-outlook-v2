@@ -10,19 +10,11 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 /**
  * Bulk assign a single user to multiple assessments.
  */
 class UserAssignForm extends FormBase {
-
-  /** @var \Drupal\Core\Session\AccountProxyInterface */
-  protected $currentUser;
-
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
-  protected $iucnAssessmentWorkflow;
 
   /** @var \Drupal\node\NodeStorageInterface */
   protected $nodeStorage;
@@ -30,16 +22,12 @@ class UserAssignForm extends FormBase {
   /**
    * Constructs a new UserAssignForm object.
    */
-  public function __construct(AccountProxyInterface $currentUser, AssessmentWorkflow $iucnAssessmentWorkflow, EntityTypeManagerInterface $entityTypeManager) {
-    $this->currentUser = $currentUser;
-    $this->iucnAssessmentWorkflow = $iucnAssessmentWorkflow;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
   }
 
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('current_user'),
-      $container->get('iucn_assessment.workflow'),
       $container->get('entity_type.manager')
     );
   }
@@ -232,5 +220,4 @@ class UserAssignForm extends FormBase {
   protected function getFieldName($role) {
     return ($role == 'reviewer') ? "field_{$role}s" : "field_{$role}";
   }
-
 }
