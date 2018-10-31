@@ -10,7 +10,7 @@ use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Drupal\Core\Cache\CacheableMetadata;
@@ -36,7 +36,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return([
-      KernelEvents::RESPONSE => [
+      KernelEvents::REQUEST => [
         ['redirectRevisions', 27], ['redirectNodeEdit', 27],
       ],
     ]);
@@ -47,7 +47,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *
    * custom handled the revision loading into iucn_assessment_preprocess_field()
    */
-  public function redirectRevisions(FilterResponseEvent $event) {
+  public function redirectRevisions(GetResponseEvent $event) {
     $request = $event->getRequest();
     // Taxonomy term pages are forbidden for anonymous users.
     if ($request->attributes->get('_route') === 'entity.node.revision') {
@@ -81,11 +81,10 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
   /**
    * Redirect reviewers from node edit page to the edit page of their revision.
    */
-  public function redirectNodeEdit(FilterResponseEvent $event) {
+  public function redirectNodeEdit(GetResponseEvent $event) {
     $request = $event->getRequest();
     $request->query->remove('destination');
 
-    $route = $request->attributes->get('_route');
     /** @var \Drupal\node\Entity\Node $node */
     $node = $request->attributes->get('node');
     if (empty($node)) {
@@ -93,6 +92,14 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
     }
     if ($node->bundle() != 'site_assessment') {
       return;
+    }
+
+    $route = $request->attributes->get('_route');
+    if ($route == 'entity.node.edit_form') {
+      $redirected = $this->redirectToLastTab($node, $event);
+      if ($redirected) {
+        return;
+      }
     }
 
     if (in_array($route, ['entity.node.edit_form', 'iucn_assessment.node.state_change'])) {
@@ -162,13 +169,13 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *   The assessment.
    * @param string $route
    *   The route: node_edit or state_change form.
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
    *   The response event.
    *
    * @return bool
    *   Whether or not the redirect happens.
    */
-  private function redirectToDraftRevision(NodeInterface $node, $route, FilterResponseEvent $event) {
+  private function redirectToDraftRevision(NodeInterface $node, $route, GetResponseEvent $event) {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
@@ -189,13 +196,13 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *   The assessment.
    * @param string $route
    *   The route: node_edit or state_change form.
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
    *   The response event.
    *
    * @return bool
    *   Whether or not the redirect happens.
    */
-  private function redirectToReviewerRevision(NodeInterface $node, $route, FilterResponseEvent $event) {
+  private function redirectToReviewerRevision(NodeInterface $node, $route, GetResponseEvent $event) {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
 
@@ -226,10 +233,10 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\node\NodeInterface $node
    *   The assessment.
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
    *   The response event.
    */
-  private function redirectToStateChangeForm(NodeInterface $node, FilterResponseEvent $event) {
+  private function redirectToStateChangeForm(NodeInterface $node, GetResponseEvent $event) {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
     if (in_array($route, ['iucn_assessment.node.state_change'])) {
@@ -296,6 +303,36 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       $message .= ' ' . t('Please wait for the assessment to be finished.');
     }
     \Drupal::messenger()->addWarning($message);
+  }
+
+  /**
+   * Redirect an user to the last assessment tab if no tab is explicitly selected.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+   *   The response event.
+   *
+   * @return bool
+   *   True if successfully redirected.
+   */
+  private function redirectToLastTab(NodeInterface $node, GetResponseEvent $event) {
+    $nid = $node->id();
+    $request = $event->getRequest();
+    $current_tab = $request->query->get('tab');
+    if (empty($current_tab) && empty($request->query->get('_wrapper_format'))) {
+      $tempstore = \Drupal::service('user.private_tempstore')->get('iucn_assessment');
+      $last_tab = $tempstore->get("last_tab[$nid]");
+      if (!empty($last_tab)) {
+        $request->query->set('tab', $last_tab);
+        $url = Url::fromUri($request->getUri(), ['query' => ['tab' => $last_tab]]);;
+        $response = new TrustedRedirectResponse($url->toString(), 301);
+        $this->setUncacheableResponse($response);
+        $event->setResponse($response);
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 }

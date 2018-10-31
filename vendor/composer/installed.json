@@ -13280,5 +13280,48 @@
             "stdlib",
             "zf"
         ]
+    },
+    {
+        "name": "drupal/autosave_form",
+        "version": "dev-1.x",
+        "version_normalized": "dev-1.x",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/autosave_form",
+            "reference": "ce325c837b958b2240759596eaf6525c6e70fbdb"
+        },
+        "require": {
+            "drupal/core": "^8.3"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.x-dev",
+                "datestamp": "1537370581",
+                "security-coverage": {
+                    "status": "not-covered",
+                    "message": "Project has not opted into security advisory coverage!"
+                }
+            }
+        },
+        "installation-source": "source",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "hchonov",
+                "homepage": "https://www.drupal.org/user/2901211"
+            }
+        ],
+        "description": "Adds autosave feature on forms.",
+        "homepage": "https://www.drupal.org/project/autosave_form",
+        "support": {
+            "source": "http://cgit.drupalcode.org/autosave_form"
+        }
     }
 ]

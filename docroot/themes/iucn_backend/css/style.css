@@ -68,3 +68,7 @@
 .user-assign-form .form-submit {
     margin-left: 0;
 }
+
+#autosave-notification {
+    z-index: 9999;
+}
