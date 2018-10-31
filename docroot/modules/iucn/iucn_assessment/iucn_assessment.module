@@ -574,7 +574,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
   elseif ($entity->getEntityTypeId() == 'user') {
     $operations['assign'] = [
       'title' => t('Assign'),
-      'url' => Url::fromRoute('iucn_assessment.user_assign_form', ['user' => $entity->id()]),
+      'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
       'weight' => 20,
     ];
   }
