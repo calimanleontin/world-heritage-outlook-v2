@@ -19,7 +19,14 @@ class NodeSiteAssessmentForm {
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
+    $nid = $node->id();
     $state = $node->field_state->value;
+
+    // Save the last visited tab.
+    if ($form_id == 'node_site_assessment_edit_form') {
+      $tempstore = \Drupal::service('user.private_tempstore')->get('iucn_assessment');
+      $tempstore->set("last_tab[$nid]", $tab);
+    }
 
     foreach (['status', 'revision_log', 'revision_information', 'revision'] as $item) {
       $form[$item]['#access'] = FALSE;
