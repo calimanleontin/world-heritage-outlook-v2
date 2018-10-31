@@ -33,3 +33,16 @@ iucn_assessment.node_revision.state_change:
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
+
+iucn_assessment.user_assign_form:
+  path: '/user/{user}/assign'
+  defaults:
+    _form: '\Drupal\iucn_assessment\Form\UserAssignForm'
+    _title: 'Assign user to multiple assessments'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Form\UserAssignForm::access'
+  options:
+    _admin_route: TRUE
+    parameters:
+      user:
+        type: entity:user
