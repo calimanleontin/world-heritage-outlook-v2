@@ -5,6 +5,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
@@ -455,6 +456,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   }
   elseif ($form_id == 'node_site_assessment_state_change_form') {
     NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
+  }
+  elseif ($form_id == 'node_site_assessment_assign_users_form') {
+    NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
   }
   elseif ($form_id == 'revision_overview_form') {
     // When messing with the revision creation workflow, the position of

@@ -41,6 +41,7 @@ iucn_assessment.node.assign_users:
     _title: 'Assign users'
   requirements:
     _permission: 'assign users to assessments'
+    _custom_access: '\Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm::access'
   options:
     form_display: assign_users
     _admin_route: TRUE

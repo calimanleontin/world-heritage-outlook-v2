@@ -11,6 +11,26 @@ use Drupal\workflow\Entity\WorkflowState;
 
 class NodeSiteAssessmentForm {
 
+  public static function hideUnnecessaryFields(array &$form) {
+    // Hide unnecessary fields.
+    unset($form['actions']['delete']);
+    unset($form['advanced']);
+    unset($form['revision']);
+    unset($form['revision_log']);
+    unset($form['field_state']);
+    unset($form['author']);
+    unset($form['meta']);
+  }
+
+  public static function addRedirectToAllActions(array &$form) {
+    // Redirect to node edit on form submit.
+    foreach ($form['actions'] as $key => &$action) {
+      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
+        $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+      }
+    }
+  }
+
   public static function alter(&$form, FormStateInterface $form_state, $form_id) {
     $request = \Drupal::request();
     $tab = $request->get('tab') ?: 'values';
@@ -58,7 +78,7 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-    $form['actions']['submit']['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+    self::addRedirectToAllActions($form);
   }
 
   /*

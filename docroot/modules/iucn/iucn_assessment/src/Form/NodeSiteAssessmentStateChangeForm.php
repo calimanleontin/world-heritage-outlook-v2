@@ -18,23 +18,8 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_state']['widget'][0]['workflow_scheduling']['#access'] = FALSE;
     }
 
-    // Redirect to node edit on form submit.
-    foreach ($form['actions'] as $key => &$action) {
-      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
-        $action['#submit'][] = ['Drupal\iucn_assessment\Form\NodeSiteAssessmentForm', 'assessmentSubmitRedirect'];
-      }
-    }
-
-    if (!empty($form['actions']['delete'])) {
-      $form['actions']['delete']['#access'] = FALSE;
-    }
-
-    // Hide unnecessary fields.
-    $form['advanced']['#access'] = FALSE;
-    $form['revision']['#default_value'] = FALSE;
-    $form['revision']['#disabled'] = FALSE;
-    $form['revision']['#access'] = FALSE;
-    $form['field_state']['#access'] = FALSE;
+    NodeSiteAssessmentForm::hideUnnecessaryFields($form);
+    NodeSiteAssessmentForm::addRedirectToAllActions($form);
 
     $node = $form_state->getFormObject()->getEntity();
     /** @var \Drupal\node\NodeInterface $node */
