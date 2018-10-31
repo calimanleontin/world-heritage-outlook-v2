@@ -7,13 +7,14 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\node\Entity\Node;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 /**
- * Class UserAssignForm.
+ * Bulk assign a single user to multiple assessments.
  */
 class UserAssignForm extends FormBase {
 
@@ -73,48 +74,122 @@ class UserAssignForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL) {
-    if (!$user instanceof UserInterface || empty($roles = array_intersect(['coordinator', 'assessor', 'reviewer'], $user->getRoles()))) {
+    if (!$user instanceof UserInterface || empty($roles = array_intersect([
+        'coordinator',
+        'assessor',
+        'reviewer',
+      ], $user->getRoles()))) {
       $this->messenger()->addError('This user cannot be assigned to any site.');
-      return;
+      return $form;
     }
-    $roles = [NULL => t('- Select -')] + array_combine($roles, $roles);
-    $form = [
-      '#title' => t('Assign %user to multiple sites', ['%user' => $user->getAccountName()]),
-      'role' => [
-        '#type' => 'select',
-        '#title' => $this->t('Role'),
-        '#multiple' => FALSE,
-        '#required' => TRUE,
-        '#options' => $roles,
-        '#ajax' => [
-          'callback' => '::roleAjaxCallback',
-          'wrapper' => 'sites-container',
-        ],
-
-      ],
-      'sites' => [
-        '#type' => 'select',
-        '#title' => $this->t('Sites'),
-        '#multiple' => TRUE,
-        '#required' => TRUE,
-        '#options' => [],
-        '#chosen' => TRUE,
-        '#prefix' => '<div id="sites-container">',
-        '#suffix' => '</div>',
-      ],
-      'submit' => [
-        '#type' => 'submit',
-        '#value' => $this->t('Assign'),
+    $roles = [NULL => $this->t('- Select -')] + array_combine($roles, $roles);
+    $form['#title'] = $this->t('Assign %user to multiple assessments', ['%user' => $user->getAccountName()]);
+    $form['user'] = [
+      '#type' => 'value',
+      '#value' => $user,
+    ];
+    $form['role'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Role'),
+      '#multiple' => FALSE,
+      '#required' => TRUE,
+      '#options' => $roles,
+      '#ajax' => [
+        'callback' => '::roleAjaxCallback',
+        'wrapper' => 'assessments-container',
       ],
     ];
+    $form['assessments'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Assessments'),
+      '#multiple' => TRUE,
+      '#required' => TRUE,
+      '#options' => [],
+      '#chosen' => TRUE,
+      '#prefix' => '<div id="assessments-container">',
+      '#suffix' => '</div>',
+    ];
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Assign'),
+    ];
+    $form['#after_build'][] = [$this, 'afterBuild'];
+    return $form;
+  }
+
+  public function afterBuild($form, FormStateInterface $form_state) {
+    $form['assessments']['#options'] = $this->getAvailableAssessments($form_state->getValue('role'));
     return $form;
   }
 
   public function roleAjaxCallback(array $form, FormStateInterface $form_state) {
+    return $form['assessments'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $user = $form_state->getValue('user');
     $role = $form_state->getValue('role');
+    $assessments = $form_state->getValue('assessments');
+    $operations = [];
+    foreach ($assessments as $assessment) {
+      $operations[] = [
+        [$this, 'processAssessment'],
+        [
+          'user' => $user,
+          'role' => $role,
+          'assessmentId' => $assessment,
+        ],
+      ];
+    }
+    $batch = [
+      'title' => $this->t('Processing assessments...'),
+      'operations' => $operations,
+      'finished' => [$this, 'finishProcessingAssessments'],
+    ];
+    batch_set($batch);
+  }
+
+  public function processAssessment(UserInterface $user, $role, $assessmentId, &$context) {
+    if (empty($context['results'])) {
+      $context['results']['count'] = 0;
+    }
+    $assessment = Node::load($assessmentId);
+    $fieldName = $this->getFieldName($role);
+    try {
+      if (!empty($assessment->{$fieldName}->getValue())) {
+        throw new \Exception('Field is not empty');
+      }
+      $assessment->set($fieldName, $user->id());
+      $assessment->save();
+      $context['results']['count']++;
+    }
+    catch (\Exception $e) {
+      $this->messenger()->addError($this->t('Could not save assessment %ass', ['%ass' => $assessment->toLink()->toString()]));
+    }
+  }
+
+  public function finishProcessingAssessments($success, $results, $operations) {
+    if ($success) {
+      $this->messenger()->addStatus($this->t('Successfully assigned user to %num assessments.', ['%num' => $results['count']]));
+    }
+    else {
+      $this->messenger()->addError($this->t('The batch processing failed'));
+    }
+  }
+
+  protected function getAvailableAssessments($role) {
     if (empty($role)) {
-      $form['sites']['#options'] = [];
-      return $form['sites'];
+      return [];
     }
 
     $states = [
@@ -127,11 +202,12 @@ class UserAssignForm extends FormBase {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
       ->condition('field_state', $states, 'IN')
-      ->notExists(($role == 'reviewer') ? "field_{$role}s" : "field_{$role}");
+      ->notExists($this->getFieldName($role));
     $ids = $query->execute();
     if (empty($ids)) {
-      $this->messenger()->addError(t('There are no assessments to which the user can be assigned.'));
-      return $form['sites'];
+      $this->messenger()
+        ->addError($this->t('There are no assessments to which the user can be assigned.'));
+      return [];
     }
 
     /** @var \Drupal\node\NodeInterface[] $assessments */
@@ -140,23 +216,11 @@ class UserAssignForm extends FormBase {
     foreach ($assessments as $assessment) {
       $options[$assessment->id()] = $assessment->getTitle();
     }
-    $form['sites']['#options'] = $options;
-    return $form['sites'];
+    return $options;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-    // @todo
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo BATCH!
+  protected function getFieldName($role) {
+    return ($role == 'reviewer') ? "field_{$role}s" : "field_{$role}";
   }
 
 }
