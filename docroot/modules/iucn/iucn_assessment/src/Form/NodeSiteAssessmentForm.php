@@ -26,8 +26,17 @@ class NodeSiteAssessmentForm {
     }
 
     // On the values tab, only coordinators and above can edit the values.
-    if (self::isValuesTab() && self::currentUserIsAssessorOrLower()) {
-      self::hideParagraphsActions($form);
+    if (self::currentUserIsAssessorOrLower()) {
+      if (self::isValuesTab()) {
+        self::hideParagraphsActions($form);
+      }
+      $form['field_date_published']['#access'] = FALSE;
+      $form['field_assessment_file']['#access'] = FALSE;
+    }
+
+    // Hide key conservation issues for >2014 assessments.
+    if ($node->field_as_cycle->value != 2014) {
+      $form['field_as_key_cons']['#access'] = FALSE;
     }
 
     // Hide all revision related settings and check if a new revision should
