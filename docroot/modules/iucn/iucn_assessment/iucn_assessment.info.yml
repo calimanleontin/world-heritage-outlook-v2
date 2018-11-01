@@ -10,6 +10,7 @@ dependencies:
   - ds
   - entity_reference_revisions
   - disable_field
+  - diff
   - field
   - field_group
   - image

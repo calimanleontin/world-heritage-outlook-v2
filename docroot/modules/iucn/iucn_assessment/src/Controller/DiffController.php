@@ -18,7 +18,7 @@ class DiffController extends ControllerBase {
   protected $entityComparison;
 
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
     // Can't add it to arguments list in services.yml because of the following error:
     // The service "iucn_assessment.diff_controller" has a dependency on a non-existent service "diff.entity_comparison".
     $this->entityComparison = \Drupal::service('diff.entity_comparison');
