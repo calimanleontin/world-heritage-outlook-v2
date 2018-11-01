@@ -127,7 +127,6 @@
     "desandro/masonry": "^4.2",
     "dinbror/blazy": "^1.8",
     "drupal-composer/drupal-scaffold": "^2.2",
-    "drupal/autosave_form": "1.x-dev",
     "drupal/block_exclude_pages": "^1.2",
     "drupal/captcha": "^1.0@beta",
     "drupal/chosen": "^2.3",
