@@ -18,6 +18,8 @@ use Drupal\workflow\Entity\WorkflowConfigTransition;
  */
 class WorkflowTest extends IucnAssessmentTestBase {
 
+  protected $hasDraftRevision;
+
   /**
    * Test the assessment workflow, going through all the states.
    */
@@ -53,6 +55,42 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->userLogIn($mail);
     $this->drupalGet($url);
     $this->assertResponse($assert_response_code);
+    if ($assert_response_code == 200) {
+      $this->_testStateChangeFormRedirect($mail, $assessment->field_state->value);
+    }
+  }
+
+  /**
+   * Helper function to test if a user got redirected to the state change form.
+   *
+   * @param string $user
+   *   The user.
+   * @param string $state
+   *   The state.
+   */
+  protected function _testStateChangeFormRedirect($user, $state) {
+    // Published state only redirects to state change form when there is no draft,
+    // otherwise it redirects to the draft edit.
+    $uneditable_states = [
+      AssessmentWorkflow::STATUS_UNDER_REVIEW,
+//      AssessmentWorkflow::STATUS_PUBLISHED,
+      AssessmentWorkflow::STATUS_NEW,
+      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+    ];
+    $redirected = strpos($this->getUrl(), '/state_change') !== FALSE;
+    if (in_array($user, [TestSupport::COORDINATOR1, TestSupport::ADMINISTRATOR, TestSupport::IUCN_MANAGER])) {
+      if (in_array($state, $uneditable_states)
+        || $state == AssessmentWorkflow::STATUS_PUBLISHED && empty($this->hasDraftRevision)) {
+        $this->assertTrue($redirected, 'User ' . $user . ' got redirected to the state change page in state: ' . $state);
+      }
+    }
+    elseif ($user == TestSupport::COORDINATOR2 && $state == AssessmentWorkflow::STATUS_NEW) {
+      $this->assertTrue($redirected, 'User ' . $user . ' got redirected to the state change page in state: ' . $state);
+    }
+    else {
+      $this->assertFalse($redirected, 'User ' . $user . ' did not get redirected to the state change page in state: ' . $state);
+    }
   }
 
   /**
@@ -60,6 +98,8 @@ class WorkflowTest extends IucnAssessmentTestBase {
    *
    * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
+   * @param bool $has_draft
+   *   True if the assessment has a draft revision.
    */
   protected function assertAllUserAccessOnAssessmentEdit(NodeInterface $assessment) {
     $state = $assessment->field_state->value;
@@ -67,14 +107,10 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
-    }
-    else {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
     }
-    if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW || $state == AssessmentWorkflow::STATUS_PUBLISHED) {
-      $redirected = strpos($this->getUrl(), '/state_change') !== FALSE;
-      $this->assertTrue($redirected, 'The coordinator got redirected to the state change page.');
+    else {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
     }
 
     // Assessor 1 should only be able to edit in the under_assessment state.
@@ -154,6 +190,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
         // The state of the assessment is never draft.
         // We only have draft revisions.
         $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_PUBLISHED, "Testing state: $state");
+        $this->hasDraftRevision = TRUE;
       }
       $this->assertAllUserAccessOnAssessmentEdit($assessment);
     }
