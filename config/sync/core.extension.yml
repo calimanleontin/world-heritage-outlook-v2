@@ -1,6 +1,5 @@
 module:
   anchor_only: 0
-  autosave_form: 0
   blazy: 0
   block: 0
   block_content: 0
