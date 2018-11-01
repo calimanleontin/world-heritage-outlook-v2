@@ -15,9 +15,9 @@ class NodeSiteAssessmentForm {
     unset($form['advanced']);
     unset($form['revision']);
     unset($form['revision_log']);
-    unset($form['field_state']);
     unset($form['author']);
     unset($form['meta']);
+    $form['field_state']['#access'] = FALSE;
   }
 
   public static function addRedirectToAllActions(array &$form) {
