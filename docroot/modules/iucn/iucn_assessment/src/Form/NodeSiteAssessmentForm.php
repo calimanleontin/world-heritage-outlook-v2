@@ -173,7 +173,7 @@ class NodeSiteAssessmentForm {
     if (!empty($tab)) {
       $options = ['query' => ['tab' => $tab]];
     }
-    if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
+    if ($workflow_service->checkAssessmentAccess($node)) {
       if ($workflow_service->isAssessmentEditable($node)) {
         $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }

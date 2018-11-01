@@ -58,13 +58,7 @@ class AssessmentAccess {
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $has_access = $workflow_service->hasAssessmentEditPermission($account, $node);
-
-    if (!$has_access) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
+    return $workflow_service->checkAssessmentAccess($node, 'edit', $account);
   }
 
   /**
