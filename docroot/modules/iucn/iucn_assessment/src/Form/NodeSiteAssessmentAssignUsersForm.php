@@ -11,10 +11,22 @@ use Drupal\node\NodeInterface;
 class NodeSiteAssessmentAssignUsersForm {
 
   public static function access(AccountInterface $account, NodeInterface $node) {
-    return AccessResult::allowedIf($account->hasPermission('assign users to assessments')
-      && !empty($node->field_state->value)
-      && in_array($node->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES)
-    );
+    $state = $node->field_state->value;
+    switch ($state) {
+      case AssessmentWorkflow::STATUS_CREATION:
+      case AssessmentWorkflow::STATUS_NEW:
+        $access = AccessResult::allowedIfHasPermission($account, 'assign users to assessments');
+        break;
+
+      case AssessmentWorkflow::STATUS_UNDER_EVALUATION:
+      case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
+        $access = AccessResult::allowedIf($account->hasPermission('edit assessment in any state')
+          || $node->field_coordinator->target_id == $account->id());
+        break;
+    }
+    $access->addCacheableDependency($node);
+    return $access;
   }
 
   public static function alter(&$form, FormStateInterface $form_state) {
