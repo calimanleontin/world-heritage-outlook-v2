@@ -6,7 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\iucn_diff_revisions\Controller\DiffController;
+use Drupal\iucn_assessment\Controller\DiffController;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
@@ -72,7 +72,7 @@ class AssessmentWorkflow {
   /** @var \Drupal\node\NodeStorageInterface */
   protected $nodeStorage;
 
-  /** @var \Drupal\iucn_diff_revisions\Controller\DiffController */
+  /** @var \Drupal\iucn_assessment\Controller\DiffController */
   protected $diffController;
 
   public function __construct(AccountProxyInterface $currentUser, EntityTypeManagerInterface $entityTypeManager, DiffController $diffController) {

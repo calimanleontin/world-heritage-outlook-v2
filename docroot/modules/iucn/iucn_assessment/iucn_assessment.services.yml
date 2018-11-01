@@ -1,19 +1,21 @@
 services:
   iucn_assessment.redirect_revision:
     class: Drupal\iucn_assessment\EventSubscriber\IucnAssessmentRedirectSubscriber
-    arguments:
-      - '@current_user'
+    arguments: ['@current_user']
     tags:
       - { name: event_subscriber }
   iucn_assessment.assessments_year:
-    class: 'Drupal\iucn_assessment\Plugin\IucnAssessmentYear'
+    class: Drupal\iucn_assessment\Plugin\IucnAssessmentYear
   iucn_assessment.cycle_creator:
-    class: 'Drupal\iucn_assessment\Plugin\AssessmentCycleCreator'
+    class: Drupal\iucn_assessment\Plugin\AssessmentCycleCreator
     arguments: ['@entity_type.manager', '@entity_field.manager', '@state', '@logger.factory']
   iucn_assessment.route_subscriber:
     class: Drupal\iucn_assessment\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  iucn_assessment.diff_controller:
+    class: Drupal\iucn_assessment\Controller\DiffController
+    arguments: ['@entity_type.manager']
   iucn_assessment.workflow:
-    class: 'Drupal\iucn_assessment\Plugin\AssessmentWorkflow'
-    arguments: ['@current_user', '@entity_type.manager', '@iucn_diff_revisions.diff_controller']
+    class: Drupal\iucn_assessment\Plugin\AssessmentWorkflow
+    arguments: ['@current_user', '@entity_type.manager', '@iucn_assessment.diff_controller']
