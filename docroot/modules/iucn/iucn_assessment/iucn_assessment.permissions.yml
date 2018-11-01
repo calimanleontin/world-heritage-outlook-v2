@@ -4,6 +4,9 @@ assign users to assessments:
 assign any coordinator to assessment:
   title: 'Assign any coordinator to assessment'
 
+bulk assign users to assessments:
+  title: 'Bulk assign users to assessments'
+
 edit assessment in any state:
   title: 'Edit assessment in any state'
 

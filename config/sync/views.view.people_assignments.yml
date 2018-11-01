@@ -28,7 +28,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access user profiles'
+          perm: 'bulk assign users to assessments'
       cache:
         type: tag
         options: {  }

@@ -58,7 +58,7 @@ iucn_assessment.user_assign:
   defaults:
     _form: '\Drupal\iucn_assessment\Form\UserAssignForm'
   requirements:
-    _permission: 'assign users to assessments, administer users'
+    _permission: 'bulk assign users to assessments'
   options:
     _admin_route: TRUE
     parameters:
