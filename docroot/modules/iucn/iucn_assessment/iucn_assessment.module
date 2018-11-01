@@ -560,7 +560,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         continue;
       }
       /** @var \Drupal\node\NodeInterface $entity */
-      if (!$transition->isAllowed($current_user) || !$workflow_service->hasAssessmentEditPermission($current_account, $entity)) {
+      if (!$transition->isAllowed($current_user) || $workflow_service->checkAssessmentAccess($entity)->isForbidden()) {
         continue;
       }
       $label = $transition->label();
@@ -602,7 +602,7 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     // Remove the edit entity operation when it isn't actually allowed.
-    if (!$workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $entity)
+    if ($workflow_service->checkAssessmentAccess($entity)->isForbidden()
       || !$workflow_service->isAssessmentEditable($entity)) {
       unset($operations['edit']);
     }

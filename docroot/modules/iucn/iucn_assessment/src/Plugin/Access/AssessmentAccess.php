@@ -2,89 +2,38 @@
 
 namespace Drupal\iucn_assessment\Plugin\Access;
 
-use Drupal\Core\Entity\RevisionableInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
-use Drupal\node\Plugin\views\filter\Access;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AssessmentAccess {
+class AssessmentAccess implements ContainerInjectionInterface {
 
-  /**
-   * Custom access check for the site assessment edit route.
-   *
-   * Assessors and reviewers are only allowed to edit
-   * assessments they are assigned to.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account.
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment that is being edited.
-   * @param int $node_revision
-   *   The revision being edited. This is NULL on node edit pages.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Denied or neutral.
-   */
-  public function assessmentEdit(AccountInterface $account, NodeInterface $node = NULL, $node_revision = NULL) {
-    if ($node->bundle() != 'site_assessment') {
-      return AccessResult::allowed();
-    }
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $assessmentWorkflow;
 
-    if ($account->id() == 1) {
-      return AccessResult::allowed();
-    }
+  /** @var \Drupal\node\NodeStorageInterface */
+  protected $nodeStorage;
 
-    if (!empty($node_revision)) {
-      $node = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadRevision($node_revision);
-
-      // Only under_review or draft revisions should be editable.
-      // Editing a published revision will redirect to the default revision.
-      if (!in_array($node->field_state->value, [
-        AssessmentWorkflow::STATUS_UNDER_REVIEW,
-        AssessmentWorkflow::STATUS_DRAFT,
-        AssessmentWorkflow::STATUS_PUBLISHED,
-      ])) {
-        return AccessResult::forbidden();
-      }
-    }
-
-    if (empty($node)) {
-      return AccessResult::allowed();
-    }
-
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $has_access = $workflow_service->hasAssessmentEditPermission($account, $node);
-
-    if (!$has_access) {
-      return AccessResult::forbidden();
-    }
-
-    return AccessResult::allowed();
+  public function __construct(AssessmentWorkflow $assessmentWorkflow, EntityTypeManagerInterface $entityTypeManager) {
+    $this->assessmentWorkflow = $assessmentWorkflow;
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
   }
 
-  /**
-   * Custom access check for the state change edit route.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account.
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment that is being edited.
-   * @param int $node_revision
-   *   The revision being edited. This is NULL on node edit pages.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Denied or neutral.
-   */
-  public function assessmentStateEdit(AccountInterface $account, NodeInterface $node = NULL, $node_revision = NULL) {
-    if ($node->bundle() != 'site_assessment') {
-      return AccessResult::forbidden();
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('iucn_assessment.workflow'),
+      $container->get('entity_type.manager')
+    );
+  }
+
+  public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
+    if (!empty($node_revision)) {
+      $node = $this->nodeStorage->loadRevision($node_revision);
     }
-    return $this->assessmentEdit($account, $node, $node_revision);
+    return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
   }
 
 }

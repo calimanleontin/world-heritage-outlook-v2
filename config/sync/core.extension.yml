@@ -51,7 +51,6 @@ module:
   inline_responsive_images: 0
   iucn_config_ignore: 0
   iucn_decision_tree: 0
-  iucn_diff_revisions: 0
   iucn_migrate: 0
   iucn_pdf: 0
   iucn_site: 0

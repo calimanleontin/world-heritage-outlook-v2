@@ -4,8 +4,6 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
-use Drupal\user\Entity\Role;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 
@@ -53,7 +51,7 @@ class NodeSiteAssessmentForm {
     }
 
     // On the values tab, only coordinators and above can edit the values.
-    if (self::currentUserIsAssessorOrLower()) {
+    if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       if (self::isValuesTab()) {
         self::hideParagraphsActions($form);
       }
@@ -173,7 +171,7 @@ class NodeSiteAssessmentForm {
     if (!empty($tab)) {
       $options = ['query' => ['tab' => $tab]];
     }
-    if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
+    if ($workflow_service->checkAssessmentAccess($node)->isAllowed()) {
       if ($workflow_service->isAssessmentEditable($node)) {
         $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
@@ -233,17 +231,6 @@ class NodeSiteAssessmentForm {
   public static function isValuesTab() {
     $tab = \Drupal::request()->query->get('tab');
     return empty($tab) || $tab == 'values';
-  }
-
-  /**
-   * Check if the current user is an assessor or lower role.
-   */
-  public static function currentUserIsAssessorOrLower() {
-    $account = \Drupal::currentUser();
-    $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-    $coordinator_weight = Role::load('coordinator')->getWeight();
-
-    return $account_role_weight > $coordinator_weight;
   }
 
 }
