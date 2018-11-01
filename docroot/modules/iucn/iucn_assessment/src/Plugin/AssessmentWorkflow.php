@@ -2,7 +2,9 @@
 
 namespace Drupal\iucn_assessment\Plugin;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
@@ -91,6 +93,69 @@ class AssessmentWorkflow {
     self::STATUS_UNDER_ASSESSMENT,
     self::STATUS_READY_FOR_REVIEW,
   ];
+
+  protected $currentUser;
+
+  public function __construct(AccountProxyInterface $currentUser) {
+    $this->currentUser = $currentUser;
+  }
+
+  /**
+   * @param \Drupal\node\NodeInterface $node
+   * @param string $action
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *
+   * @return \Drupal\Core\Access\AccessResult|\Drupal\Core\Access\AccessResultAllowed|\Drupal\Core\Access\AccessResultForbidden
+   */
+  public function checkAssessmentAccess(NodeInterface $node, $action = 'edit', AccountInterface $account = NULL) {
+    if (empty($account)) {
+      $account = $this->currentUser;
+    }
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::forbidden();
+    }
+    if ($action == 'edit') {
+      if ($account->hasPermission('edit assessment in any state')) {
+        return AccessResult::allowed();
+      }
+
+      $state = $node->field_state->value ?: self::STATUS_CREATION;
+      $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
+      $accountIsAssessor = $node->field_assessor->target_id === $account->id();
+
+      switch ($state) {
+        case self::STATUS_CREATION:
+        case self::STATUS_NEW:
+          return AccessResult::allowedIf($account->hasPermission('edit new assessments'));
+
+        case self::STATUS_UNDER_EVALUATION:
+        case self::STATUS_READY_FOR_REVIEW:
+        case self::STATUS_UNDER_COMPARISON:
+        case self::STATUS_REVIEWING_REFERENCES:
+        case self::STATUS_APPROVED:
+        case self::STATUS_PUBLISHED:
+        case self::STATUS_DRAFT:
+          // Assessments can only be edited by their coordinator.
+          return AccessResult::allowedIf($accountIsCoordinator);
+
+        case self::STATUS_UNDER_ASSESSMENT:
+          // In this state, assessments can only be edited by their assessors.
+          return AccessResult::allowedIf($accountIsAssessor);
+
+        case self::STATUS_UNDER_REVIEW:
+          // Only coordinators can edit the main revision.
+          // Reviewers can edit their respective revisions.
+          return AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+
+        case self::STATUS_FINISHED_REVIEWING:
+          // Reviewed assessments can only be edited by the coordinator.
+          // Reviewers can no longer edit their respective revisions.
+          return AccessResult::allowedIf($node->isDefaultRevision() && $accountIsCoordinator);
+      }
+      return AccessResult::forbidden();
+    }
+    return AccessResult::allowed();
+  }
 
   /**
    * Check if an user can edit an assessment.
