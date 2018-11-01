@@ -16,7 +16,7 @@ iucn_assessment.node.state_change:
     _title: 'State change'
     _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
   requirements:
-    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
@@ -31,7 +31,7 @@ iucn_assessment.node_revision.state_change:
     _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
   requirements:
     node_revision: \d+
-    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
@@ -58,7 +58,6 @@ iucn_assessment.user_assign:
     _form: '\Drupal\iucn_assessment\Form\UserAssignForm'
   requirements:
     _permission: 'assign users to assessments, administer users'
-    _custom_access: '\Drupal\iucn_assessment\Form\UserAssignForm::access'
   options:
     _admin_route: TRUE
     parameters:
