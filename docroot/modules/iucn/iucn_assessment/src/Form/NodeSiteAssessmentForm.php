@@ -3,9 +3,11 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class NodeSiteAssessmentForm {
 
@@ -29,26 +31,31 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  public static function alter(&$form, FormStateInterface $form_state, $form_id) {
-    $request = \Drupal::request();
-    $tab = $request->get('tab') ?: 'values';
-
+  public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $tab = \Drupal::request()->get('tab') ?: 'values';
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
-    $nid = $node->id();
     $state = $node->field_state->value;
 
-    // Save the last visited tab.
-    if ($form_id == 'node_site_assessment_edit_form') {
-      $tempstore = \Drupal::service('user.private_tempstore')->get('iucn_assessment');
-      $tempstore->set("last_tab[$nid]", $tab);
+    if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+      // Redirect the user to edit form of the draft assessment.
+      $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
+      if (!empty($draft_revision)) {
+        $url = Url::fromRoute('node.revision_edit', ['node' => $node->id(), 'node_revision' => $draft_revision->getRevisionId()]);
+      }
+      else {
+        $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $node->id()]);
+      }
+      $response = new RedirectResponse($url->toString());
+      $response->send();
     }
 
-    foreach (['status', 'revision_log', 'revision_information', 'revision'] as $item) {
-      $form[$item]['#access'] = FALSE;
-    }
+    self::hideUnnecessaryFields($form);
+    self::addRedirectToAllActions($form);
 
     // On the values tab, only coordinators and above can edit the values.
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
@@ -92,7 +99,6 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-    self::addRedirectToAllActions($form);
   }
 
   /*

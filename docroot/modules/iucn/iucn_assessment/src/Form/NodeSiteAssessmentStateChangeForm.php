@@ -32,6 +32,7 @@ class NodeSiteAssessmentStateChangeForm {
     // When under review, the save button is useful
     // for adding/removing reviewers.
     if ($node->isDefaultRevision() && $state != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      $form['actions']['submit']['#access'] = FALSE;
       $form['actions']['workflow_' . $state]['#access'] = FALSE;
     }
 

@@ -95,7 +95,7 @@ class AssessmentWorkflow {
       $account = $this->currentUser;
     }
     if ($node->bundle() != 'site_assessment') {
-      return AccessResult::forbidden();
+      return AccessResult::neutral();
     }
     if ($action == 'edit') {
       if ($account->hasPermission('edit assessment in any state')) {
@@ -109,7 +109,8 @@ class AssessmentWorkflow {
       switch ($state) {
         case self::STATUS_CREATION:
         case self::STATUS_NEW:
-          return AccessResult::allowedIf($account->hasPermission('edit new assessments'));
+          $access = AccessResult::allowedIfHasPermission($account, 'edit new assessments');
+          break;
 
         case self::STATUS_UNDER_EVALUATION:
         case self::STATUS_READY_FOR_REVIEW:
@@ -119,25 +120,34 @@ class AssessmentWorkflow {
         case self::STATUS_PUBLISHED:
         case self::STATUS_DRAFT:
           // Assessments can only be edited by their coordinator.
-          return AccessResult::allowedIf($accountIsCoordinator);
+          $access = AccessResult::allowedIf($accountIsCoordinator);
+          break;
+
 
         case self::STATUS_UNDER_ASSESSMENT:
           // In this state, assessments can only be edited by their assessors.
-          return AccessResult::allowedIf($accountIsAssessor);
+          $access = AccessResult::allowedIf($accountIsAssessor);
+          break;
 
         case self::STATUS_UNDER_REVIEW:
           // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          return AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+          break;
 
         case self::STATUS_FINISHED_REVIEWING:
           // Reviewed assessments can only be edited by the coordinator.
           // Reviewers can no longer edit their respective revisions.
-          return AccessResult::allowedIf($node->isDefaultRevision() && $accountIsCoordinator);
+          $access = AccessResult::allowedIf($node->isDefaultRevision() && $accountIsCoordinator);
+          break;
+
+        default:
+          $access = AccessResult::forbidden();
       }
-      return AccessResult::forbidden();
+      $access->addCacheableDependency($node);
+      return $access;
     }
-    return AccessResult::allowed();
+    return AccessResult::neutral();
   }
 
   /**
