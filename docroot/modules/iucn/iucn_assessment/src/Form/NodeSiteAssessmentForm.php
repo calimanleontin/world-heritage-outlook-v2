@@ -53,7 +53,7 @@ class NodeSiteAssessmentForm {
     }
 
     // On the values tab, only coordinators and above can edit the values.
-    if (self::currentUserIsAssessorOrLower()) {
+    if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       if (self::isValuesTab()) {
         self::hideParagraphsActions($form);
       }
@@ -233,17 +233,6 @@ class NodeSiteAssessmentForm {
   public static function isValuesTab() {
     $tab = \Drupal::request()->query->get('tab');
     return empty($tab) || $tab == 'values';
-  }
-
-  /**
-   * Check if the current user is an assessor or lower role.
-   */
-  public static function currentUserIsAssessorOrLower() {
-    $account = \Drupal::currentUser();
-    $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-    $coordinator_weight = Role::load('coordinator')->getWeight();
-
-    return $account_role_weight > $coordinator_weight;
   }
 
 }

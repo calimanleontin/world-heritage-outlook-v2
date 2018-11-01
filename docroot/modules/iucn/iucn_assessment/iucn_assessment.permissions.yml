@@ -6,3 +6,6 @@ edit assessment in any state:
 
 edit new assessments:
   title: 'Edit new assessments'
+
+edit assessment main data:
+  title: 'Edit assessment main data (values entities, published date, etc)'
