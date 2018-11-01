@@ -239,8 +239,16 @@ class AssessmentWorkflow {
 
     // Block only for reviewers' revision:
     // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
-    // Creates a new revision
+    // Creates a new revision.
     if (!$node->isDefaultRevision()) {
+      // IMPORTANT: when programatically saving a revision
+      // field_state->workflow_transition is empty.
+      // When the transition is empty, the workflow module automatically creates
+      // a transition, but incorrectly calculates the from_state and to_state
+      // for revisions.
+      // We need to call our function that correctly populates the transition.
+      $this->forceAssessmentState($node, $node->field_state->value, FALSE);
+
       // When a reviewer finishes his revision, check if all other reviewers
       // have marked their revision is done.
       // If so, mark the default revision as done.
