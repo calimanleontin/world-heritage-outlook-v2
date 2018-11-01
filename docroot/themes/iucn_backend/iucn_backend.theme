@@ -50,7 +50,7 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
     if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
       && $field_entity->getSetting('handler') == 'default:paragraph') {
 
-      if (NodeSiteAssessmentForm::currentUserIsAssessorOrLower()
+      if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE
         && NodeSiteAssessmentForm::isValuesTab()) {
         _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
       }
