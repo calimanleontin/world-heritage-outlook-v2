@@ -64,6 +64,7 @@ class AssessmentWorkflow {
     self::STATUS_UNDER_EVALUATION,
     self::STATUS_UNDER_ASSESSMENT,
     self::STATUS_READY_FOR_REVIEW,
+    self::STATUS_UNDER_REVIEW,
   ];
 
   /** @var \Drupal\Core\Session\AccountProxyInterface */
