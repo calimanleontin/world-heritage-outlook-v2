@@ -16,4 +16,4 @@ services:
       - { name: event_subscriber }
   iucn_assessment.workflow:
     class: 'Drupal\iucn_assessment\Plugin\AssessmentWorkflow'
-    arguments: ['@current_user']
+    arguments: ['@current_user', '@entity_type.manager']

@@ -23,7 +23,7 @@ class RouteSubscriber extends RouteSubscriberBase {
   protected function alterRoutes(RouteCollection $collection) {
     $route = $collection->get('entity.node.edit_form');
     if ($route) {
-      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\AssessmentWorkflow::assessmentEditAccess');
+      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess');
     }
 
     // Hide unnecessary workflow tab.

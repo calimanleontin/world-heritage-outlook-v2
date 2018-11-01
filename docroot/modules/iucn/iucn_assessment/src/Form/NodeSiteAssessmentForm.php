@@ -4,8 +4,6 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
-use Drupal\user\Entity\Role;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 

@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
@@ -16,68 +17,40 @@ use Drupal\workflow\Entity\WorkflowTransition;
  */
 class AssessmentWorkflow {
 
-  const ASSESSMENT_BUNDLE = "site_assessment";
-
-  /**
-   * This state is usually assigned to assessments with no state.
-   *
-   * Do not use this.
-   */
+  /** This state is usually assigned to assessments with no state */
   const STATUS_CREATION = 'assessment_creation';
 
-  /**
-   * New assessment was just created, waiting for coordinator to be assigned.
-   */
+  /** New assessment was just created, waiting for coordinator to be assigned */
   const STATUS_NEW = 'assessment_new';
 
-  /**
-   * Coordinator is editing, waiting for assessor to be assigned.
-   */
+  /** Coordinator is editing, waiting for assessor to be assigned */
   const STATUS_UNDER_EVALUATION = 'assessment_under_evaluation';
 
-  /**
-   * Assessor is assigned and can start editing.
-   */
+  /** Assessor is assigned and can start editing */
   const STATUS_UNDER_ASSESSMENT = 'assessment_under_assessment';
 
-  /**
-   * Assessor has finished, Coordinator is reviewing changes and adds reviewers.
-   */
+  /** Assessor has finished, Coordinator is reviewing changes and adds reviewers */
   const STATUS_READY_FOR_REVIEW = 'assessment_ready_for_review';
 
-  /**
-   * Reviewers start working.
-   */
+  /** Reviewers start working */
   const STATUS_UNDER_REVIEW = 'assessment_under_review';
 
-  /**
-   * When all reviewers are finished.
-   */
+  /** When all reviewers are finished */
   const STATUS_FINISHED_REVIEWING = 'assessment_finished_reviewing';
 
-  /**
-   * Coordinator starts the review / comparison phase to merge the changes.
-   */
+  /** Coordinator starts the review / comparison phase to merge the changes */
   const STATUS_UNDER_COMPARISON = 'assessment_under_comparison';
 
-  /**
-   * Coordinator starts reviewing the references.
-   */
+  /** Coordinator starts reviewing the references */
   const STATUS_REVIEWING_REFERENCES = 'assessment_reviewing_references';
 
-  /**
-   * Coordinator has done the comparison and merge phase.
-   */
+  /** Coordinator has done the comparison and merge phase */
   const STATUS_APPROVED = 'assessment_approved';
 
-  /**
-   * Site is published.
-   */
+  /** Assessment is published */
   const STATUS_PUBLISHED = 'assessment_published';
 
-  /**
-   * Site is unpublished.
-   */
+  /** Assessment is unpublished */
   const STATUS_DRAFT = 'assessment_draft';
 
   /**
@@ -92,18 +65,25 @@ class AssessmentWorkflow {
     self::STATUS_READY_FOR_REVIEW,
   ];
 
+  /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
-  public function __construct(AccountProxyInterface $currentUser) {
+  /** @var \Drupal\node\NodeStorageInterface */
+  protected $nodeStorage;
+
+  public function __construct(AccountProxyInterface $currentUser, EntityTypeManagerInterface $entityTypeManager) {
     $this->currentUser = $currentUser;
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
   }
 
   /**
+   * Check assessment node view/edit acccess.
+   *
    * @param \Drupal\node\NodeInterface $node
    * @param string $action
    * @param \Drupal\Core\Session\AccountInterface $account
    *
-   * @return \Drupal\Core\Access\AccessResult|\Drupal\Core\Access\AccessResultAllowed|\Drupal\Core\Access\AccessResultForbidden
+   * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function checkAssessmentAccess(NodeInterface $node, $action = 'edit', AccountInterface $account = NULL) {
     if (empty($account)) {
@@ -153,51 +133,6 @@ class AssessmentWorkflow {
       return AccessResult::forbidden();
     }
     return AccessResult::allowed();
-  }
-
-  public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
-    if (!empty($node_revision)) {
-      $node = $this->nodeStorage->loadRevision($node_revision);
-    }
-    return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
-  }
-
-  /**
-   * Check if an user field (e.g. assessor) is visible on an assessment.
-   *
-   * @param string $field
-   *   The field id.
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   *
-   * @return bool
-   *   True if a field is visible for an assessment in a certain state.
-   */
-  public function isFieldEnabledForAssessment($field, NodeInterface $node) {
-    if ($node->bundle() != 'site_assessment') {
-      return FALSE;
-    }
-    $state = $node->field_state->value;
-    return ($field == 'field_coordinator' && (in_array($state, [self::STATUS_CREATION, self::STATUS_NEW]) || empty($state)))
-      || ($field == 'field_assessor' && $state == self::STATUS_UNDER_EVALUATION)
-      || ($field == 'field_reviewers' && ($state == self::STATUS_READY_FOR_REVIEW || $state == self::STATUS_UNDER_REVIEW));
-  }
-
-  /**
-   * Check if a field is required for an assessment to move to a certain state.
-   *
-   * @param string $field
-   *   The field.
-   * @param string $state
-   *   The next state (e.g. 'under_assessment').
-   *
-   * @return bool
-   *   True if the field is required.
-   */
-  public function isFieldRequiredForState($field, $state) {
-    return ($field == 'field_coordinator' && $state == self::STATUS_UNDER_EVALUATION)
-      || ($field == 'field_assessor' && $state == self::STATUS_UNDER_ASSESSMENT)
-      || ($field == 'field_reviewers' && $state == self::STATUS_UNDER_REVIEW);
   }
 
   /**

@@ -1,6 +1,9 @@
 assign users to assessments:
   title: 'Assign users to assessments'
 
+assign any coordinator to assessment:
+  title: 'Assign any coordinator to assessment'
+
 edit assessment in any state:
   title: 'Edit assessment in any state'
 
