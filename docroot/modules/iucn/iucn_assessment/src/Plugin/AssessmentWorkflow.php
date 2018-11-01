@@ -6,8 +6,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\Entity\Node;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
-use Drupal\user\Entity\Role;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowManager;
@@ -155,6 +153,13 @@ class AssessmentWorkflow {
       return AccessResult::forbidden();
     }
     return AccessResult::allowed();
+  }
+
+  public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
+    if (!empty($node_revision)) {
+      $node = $this->nodeStorage->loadRevision($node_revision);
+    }
+    return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
   }
 
   /**
