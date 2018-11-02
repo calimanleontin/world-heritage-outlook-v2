@@ -4,12 +4,10 @@
     background-color: #fcfcfa;
 }
 
-/* .field--widget-row-entity-reference-paragraphs table tbody tr:first-child .field-multiple-drag {
-    visibility: hidden;
-} */
-
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child,
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
-    background: inherit;
+    background: #ececec;
+    border-bottom: 1px solid grey
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -21,10 +19,13 @@
     font-size: .9em;
     padding: 10px 12px;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
+    border-right: 1px solid rgb(230, 228, 223);
+}
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top {
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 0;
     align-items: stretch;
 }
 

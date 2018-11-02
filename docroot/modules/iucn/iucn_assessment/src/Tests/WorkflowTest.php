@@ -18,6 +18,8 @@ use Drupal\workflow\Entity\WorkflowConfigTransition;
  */
 class WorkflowTest extends IucnAssessmentTestBase {
 
+  protected $hasDraftRevision;
+
   /**
    * Test the assessment workflow, going through all the states.
    */
@@ -67,14 +69,10 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
-    }
-    else {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
     }
-    if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW || $state == AssessmentWorkflow::STATUS_PUBLISHED) {
-      $redirected = strpos($this->getUrl(), '/state_change') !== FALSE;
-      $this->assertTrue($redirected, 'The coordinator got redirected to the state change page.');
+    else {
+      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
     }
 
     // Assessor 1 should only be able to edit in the under_assessment state.
@@ -83,17 +81,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
     }
     else {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
-    }
-
-    // When an assessment is under review,
-    // the reviewers will get redirected to their revisions.
-    if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 200);
-      $redirected = strpos($this->getUrl(), '/revisions/') !== FALSE;
-      $this->assertTrue($redirected, 'The reviewer got redirected to the revision edit page.');
-    }
-    else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
     }
 
     // Coordinator 2 can only edit the assessment when it has no coordinator.
@@ -105,6 +92,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
     }
 
     // Assessor 2 is never allowed to edit this assessment.
+    $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER2, $assessment, 403);
   }
@@ -154,6 +142,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
         // The state of the assessment is never draft.
         // We only have draft revisions.
         $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_PUBLISHED, "Testing state: $state");
+        $this->hasDraftRevision = TRUE;
       }
       $this->assertAllUserAccessOnAssessmentEdit($assessment);
     }

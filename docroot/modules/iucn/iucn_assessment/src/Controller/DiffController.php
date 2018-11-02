@@ -1,28 +1,27 @@
 <?php
 
-namespace Drupal\iucn_diff_revisions\Controller;
+namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\diff\DiffEntityComparison;
 use Drupal\node\NodeInterface;
-
 
 /**
  * Revision comparison service that prepares a diff of a pair of revisions.
  */
 class DiffController extends ControllerBase {
 
-  protected $entityTypeManager;
-
+  /** @var \Drupal\Core\Entity\EntityStorageInterface */
   protected $nodeStorage;
 
+  /** @var \Drupal\diff\DiffEntityComparison */
   protected $entityComparison;
 
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, DiffEntityComparison $entityComparison) {
-    $this->entityTypeManager = $entityTypeManager;
-    $this->nodeStorage = $this->entityTypeManager->getStorage('node');
-    $this->entityComparison = $entityComparison;
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->nodeStorage = $entityTypeManager->getStorage('node');
+    // Can't add it to arguments list in services.yml because of the following error:
+    // The service "iucn_assessment.diff_controller" has a dependency on a non-existent service "diff.entity_comparison".
+    $this->entityComparison = \Drupal::service('diff.entity_comparison');
   }
 
   public function compareRevisions($vid1, $vid2) {
@@ -61,7 +60,7 @@ class DiffController extends ControllerBase {
         }
       }
       else {
-        $this->getLogger('iucn_diff_revisions')->error('Invalid field diff key.');
+        $this->getLogger('iucn_diff')->error('Invalid field diff key.');
       }
     }
     return $diff;
