@@ -87,8 +87,9 @@ class NodeSiteAssessmentForm {
         '#type' => 'markup',
         '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
-      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
-        $settings = json_decode($node->field_settings->value, TRUE);
+      $settings = json_decode($node->field_settings->value, TRUE);
+      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
+        || !empty($settings['comments'][$tab])) {
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
         $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
           ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
@@ -102,6 +103,10 @@ class NodeSiteAssessmentForm {
           '#suffix' => '</div>',
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
         ];
+        if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
+          $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
+          unset($form["comment_$tab"]['#description']);
+        }
         $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
         $form['#attached']['library'][] = 'iucn_backend/font-awesome';
       }
