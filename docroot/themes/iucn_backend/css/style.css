@@ -57,6 +57,11 @@
     table-layout: fixed;
 }
 
+.path-admin div[class*="block-views-"] table .views-field {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .path-admin div[class*="block-views-"] table .views-field-title {
     width: 350px;
 }
