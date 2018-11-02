@@ -33,40 +33,6 @@
 
         inheritParentDims();
         $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
-
-        // var resizeTimer;
-        // $('textarea', context).on('resize', function() {
-        //   console.log('resize');
-        //   inheritParentDims();
-        //   // clearTimeout(resizeTimer);
-        //   // resizeTimer = setTimeout(function() {
-        //   // }, 250);
-        // });
-
-        // var $textareas = jQuery('textarea');
-
-         // // store init (default) state
-         // $textareas.data('x', $textareas.outerWidth());
-         // $textareas.data('y', $textareas.outerHeight());
-
-         // $textareas.mouseup(function(){
-
-         //    var $this = jQuery(this);
-
-         //    if (  $this.outerWidth()  != $this.data('x')
-         //       || $this.outerHeight() != $this.data('y') )
-         //    {
-         //        // Resize Action Here
-         //        alert( $this.outerWidth()  + ' - ' + $this.data('x') + '\n'
-         //             + $this.outerHeight() + ' - ' + $this.data('y')
-         //             );
-         //    }
-
-         //    // store new height/width
-         //    $this.data('x', $this.outerWidth());
-         //    $this.data('y', $this.outerHeight());
-         // });
-
       });
     }
   };
