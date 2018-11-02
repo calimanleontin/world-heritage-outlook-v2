@@ -32,12 +32,12 @@
     attach: function (context) {
       $("form.node-form").trackChanges();
 
-      var width = drupalSettings.widthBreakpoint || 640;
-      var mq = '(max-width: ' + width + 'px)';
-
-      if (window.matchMedia(mq).matches) {
-        return;
-      }
+      // var width = drupalSettings.widthBreakpoint || 640;
+      // var mq = '(max-width: ' + width + 'px)';
+      //
+      // if (window.matchMedia(mq).matches) {
+      //   return;
+      // }
 
       $(context).find('[data-horizontal-tabs-panes]').once('horizontal-tabs').each(function () {
 
