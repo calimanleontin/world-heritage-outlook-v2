@@ -62,6 +62,8 @@ class NodeSiteAssessmentForm {
       if (self::isValuesTab()) {
         self::hideParagraphsActions($form);
       }
+      $form['field_as_start_date']['#access'] = FALSE;
+      $form['field_as_end_date']['#access'] = FALSE;
       $form['field_date_published']['#access'] = FALSE;
       $form['field_assessment_file']['#access'] = FALSE;
     }
