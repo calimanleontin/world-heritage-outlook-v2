@@ -53,21 +53,21 @@
     margin-bottom: 40px;
 }
 
-.path-admin div[class*="block-views-"] table {
-    table-layout: fixed;
-}
-
 .path-admin div[class*="block-views-"] table .views-field:not(.views-field-operations) {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.path-admin div[class*="block-views-"] table .views-field-title {
-    width: 350px;
-}
-
-.path-admin div[class*="block-views-"] table .views-field-operations {
-    width: 180px;
+@media screen and (min-width: 1024px) {
+    .path-admin div[class*="block-views-"] table {
+        table-layout: fixed;
+    }
+    .path-admin div[class*="block-views-"] table .views-field-title {
+        width: 150px;
+    }
+    .path-admin div[class*="block-views-"] table .views-field-operations {
+        width: 180px;
+    }
 }
 
 .user-assign-form .form-submit {

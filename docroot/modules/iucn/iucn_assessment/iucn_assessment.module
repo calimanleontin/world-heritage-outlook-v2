@@ -581,7 +581,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
     $operations['assign'] = [
       'title' => t('Assign'),
       'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
-      'weight' => 20,
+      'weight' => 0,
     ];
   }
   return $operations;
