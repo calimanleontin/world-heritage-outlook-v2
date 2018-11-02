@@ -57,7 +57,7 @@
     table-layout: fixed;
 }
 
-.path-admin div[class*="block-views-"] table .views-field {
+.path-admin div[class*="block-views-"] table .views-field:not(.views-field-operations) {
     overflow: hidden;
     text-overflow: ellipsis;
 }
