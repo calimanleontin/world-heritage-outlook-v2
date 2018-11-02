@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -10,7 +11,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Url;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -41,10 +41,17 @@ class RowParagraphsWidget extends ParagraphsWidget {
   protected $colCount;
 
   /**
+   * The parent node.
+   *
+   * @var \Drupal\Node\NodeInterface
+   */
+  protected $parentNode;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
+    return [
       'title' => t('Paragraph'),
       'title_plural' => t('Paragraphs'),
       'edit_mode' => 'closed',
@@ -55,7 +62,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'form_display_mode' => 'default',
       'default_paragraph_type' => '',
       'features' => [],
-    );
+    ];
   }
 
   /**
@@ -80,7 +87,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   protected function getSettingOptions($setting_name) {
     $options = parent::getSettingOptions($setting_name);
-    switch($setting_name) {
+    switch ($setting_name) {
       case 'show_numbers':
         $options = [
           'no' => $this->t('No'),
@@ -108,6 +115,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $this->parentNode = $form_state->getFormObject()->getEntity();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -128,30 +136,30 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
     $element['top']['actions']['#suffix'] = '</div>';
 
-    if(!empty($element['top']['actions']['actions']['edit_button'])) {
+    if (!empty($element['top']['actions']['actions']['edit_button'])) {
       // Create the custom 'Diff' button
       // @todo
-//      $element['top']['actions']['actions']['diff_button'] = [
-//        '#type' => 'submit',
-//        '#value' => $this->t('Diff'),
-//        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
-//        '#weight' => 2,
-//        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
-//        '#ajax' => [
-//          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
-//          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
-//        ],
-//        '#access' => $paragraphs_entity->access('update'),
-//        '#paragraphs_mode' => 'diff',
-//        '#attributes' => [
-//          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
-//          'title' => $this->t('Diff'),
-//        ],
-//        '#attached' => [
-//          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
-//        ],
-//        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
-//      ];
+      //      $element['top']['actions']['actions']['diff_button'] = [
+      //        '#type' => 'submit',
+      //        '#value' => $this->t('Diff'),
+      //        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+      //        '#weight' => 2,
+      //        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+      //        '#ajax' => [
+      //          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
+      //          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+      //        ],
+      //        '#access' => $paragraphs_entity->access('update'),
+      //        '#paragraphs_mode' => 'diff',
+      //        '#attributes' => [
+      //          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+      //          'title' => $this->t('Diff'),
+      //        ],
+      //        '#attached' => [
+      //          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
+      //        ],
+      //        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
+      //      ];
     }
 
     $element['top']['summary'] = $containers;
@@ -218,9 +226,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $grouped_fields = $this->getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
-          'value' => $this->t('No.'),
-          'span' => 1,
-        ];
+        'value' => $this->t('No.'),
+        'span' => 1,
+      ];
     }
 
     $components = $this->getFieldComponents($paragraph);
@@ -329,7 +337,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (empty($form_display_mode)) {
       $form_display_mode = 'default';
     }
-    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")->getComponents();
+    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
+      ->getComponents();
     if (array_key_exists('moderation_state', $components)) {
       unset($components['moderation_state']);
     }
@@ -364,7 +373,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $field_definition = $paragraph->getFieldDefinition($field_name);
       // We do not add content to the summary from base fields, skip them
       // keeps performance while building the paragraph summary.
-      if (!($field_definition instanceof FieldConfigInterface) || !$paragraph->get($field_name)->access('view')) {
+      if (!($field_definition instanceof FieldConfigInterface) || !$paragraph->get($field_name)
+          ->access('view')) {
         continue;
       }
 
@@ -391,13 +401,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
           $value = $paragraph->get($field_name)->entity->label();
+          /** @var \Drupal\Core\Entity\Entity $entity */
+          $entity = $paragraph->get($field_name)->entity;
+          if (!$this->isHiddenTerm($entity)) {
+            $label = $this->getEntityLabel($entity);
+            $summary[$field_name]['value'] = $label;
+          }
         }
       }
 
       // Add the Block admin label referenced by block_field.
       if ($field_definition->getType() == 'block_field') {
         if (!empty($paragraph->get($field_name)->first())) {
-          $block_admin_label = $paragraph->get($field_name)->first()->getBlock()->getPluginDefinition()['admin_label'];
+          $block_admin_label = $paragraph->get($field_name)
+            ->first()
+            ->getBlock()
+            ->getPluginDefinition()['admin_label'];
           $value = $block_admin_label;
         }
       }
@@ -580,6 +599,52 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'field_as_benefits_invassp_level' => 'Impact level',
     ];
     return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
+  }
+
+  /**
+   * Retrieves the label for an entity.
+   *
+   * @param \Drupal\Core\Entity\Entity $entity
+   *   The entity.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|null|string
+   *   The label
+   */
+  protected function getEntityLabel(Entity $entity) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if (!$moduleHandler->moduleExists('iucn_fields')) {
+      return NULL;
+    }
+    $label = '';
+    if ($entity->getEntityType()->id() == 'taxonomy_term') {
+      /** @var \Drupal\Core\Entity\Term $entity */
+      $tid = $entity->id();
+      /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+      $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+      $term_new_name = $term_alter_service->getTermLabelForYear($tid, $this->parentNode->field_as_cycle->value);
+      if (!empty($term_new_name)) {
+        $label = $term_new_name;
+      }
+    }
+    if (empty($label)) {
+      $label = $entity->label();
+    }
+    return $label;
+  }
+
+  protected function isHiddenTerm(Entity $entity) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if (!$moduleHandler->moduleExists('iucn_fields')) {
+      return FALSE;
+    }
+    if ($entity->getEntityType()->id() != 'taxonomy_term') {
+      return FALSE;
+    }
+    /** @var \Drupal\Core\Entity\Term $entity */
+    $tid = $entity->id();
+    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
   }
 
 }
