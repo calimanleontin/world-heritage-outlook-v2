@@ -27,6 +27,7 @@
     font-size: .9em;
     padding: 10px 12px;
 }
+.field--widget-row-entity-reference-paragraphs .field-multiple-drag,
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
     border-right: 1px solid rgb(230, 228, 223);
 }
