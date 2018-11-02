@@ -128,3 +128,7 @@
 .horizontal-tab-button .fa:hover {
     -webkit-text-stroke: initial;
 }
+
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+    background-color: #ececec;
+}
