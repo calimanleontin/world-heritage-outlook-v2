@@ -55,42 +55,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->userLogIn($mail);
     $this->drupalGet($url);
     $this->assertResponse($assert_response_code);
-    if ($assert_response_code == 200) {
-      $this->_testStateChangeFormRedirect($mail, $assessment->field_state->value);
-    }
-  }
-
-  /**
-   * Helper function to test if a user got redirected to the state change form.
-   *
-   * @param string $user
-   *   The user.
-   * @param string $state
-   *   The state.
-   */
-  protected function _testStateChangeFormRedirect($user, $state) {
-    // Published state only redirects to state change form when there is no draft,
-    // otherwise it redirects to the draft edit.
-    $uneditable_states = [
-      AssessmentWorkflow::STATUS_UNDER_REVIEW,
-//      AssessmentWorkflow::STATUS_PUBLISHED,
-      AssessmentWorkflow::STATUS_NEW,
-      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
-      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
-    ];
-    $redirected = strpos($this->getUrl(), '/state_change') !== FALSE;
-    if (in_array($user, [TestSupport::COORDINATOR1, TestSupport::ADMINISTRATOR, TestSupport::IUCN_MANAGER])) {
-      if (in_array($state, $uneditable_states)
-        || $state == AssessmentWorkflow::STATUS_PUBLISHED && empty($this->hasDraftRevision)) {
-        $this->assertTrue($redirected, 'User ' . $user . ' got redirected to the state change page in state: ' . $state);
-      }
-    }
-    elseif ($user == TestSupport::COORDINATOR2 && $state == AssessmentWorkflow::STATUS_NEW) {
-      $this->assertTrue($redirected, 'User ' . $user . ' got redirected to the state change page in state: ' . $state);
-    }
-    else {
-      $this->assertFalse($redirected, 'User ' . $user . ' did not get redirected to the state change page in state: ' . $state);
-    }
   }
 
   /**
@@ -98,8 +62,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
    *
    * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
-   * @param bool $has_draft
-   *   True if the assessment has a draft revision.
    */
   protected function assertAllUserAccessOnAssessmentEdit(NodeInterface $assessment) {
     $state = $assessment->field_state->value;
@@ -121,17 +83,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
     }
 
-    // When an assessment is under review,
-    // the reviewers will get redirected to their revisions.
-    if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 200);
-      $redirected = strpos($this->getUrl(), '/revisions/') !== FALSE;
-      $this->assertTrue($redirected, 'The reviewer got redirected to the revision edit page.');
-    }
-    else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
-    }
-
     // Coordinator 2 can only edit the assessment when it has no coordinator.
     if ($state == AssessmentWorkflow::STATUS_NEW || $state == 'assessment_creation') {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 200);
@@ -141,6 +92,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
     }
 
     // Assessor 2 is never allowed to edit this assessment.
+    $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER2, $assessment, 403);
   }
