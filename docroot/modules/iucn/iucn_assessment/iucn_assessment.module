@@ -546,11 +546,34 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       ];
     }
 
-    if (in_array($entity->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES)) {
+    if (in_array($entity->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES)
+      && NodeSiteAssessmentAssignUsersForm::access($current_account, $entity)->isAllowed()) {
       $operations['assign_users'] = [
         'title' => t('Assign users'),
         'url' => Url::fromRoute('iucn_assessment.node.assign_users', ['node' => $entity->id()]),
         'weight' => 30,
+      ];
+    }
+
+    // Add correct operations for reviewers.
+    if ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_REVIEW
+      && !empty($reviewer_revision = $workflow_service->getReviewerRevision($entity, $current_account->id()))) {
+      /** @var \Drupal\node\NodeInterface $reviewer_revision */
+      $operations['edit_reviewer_revision'] = [
+        'title' => t('Edit'),
+        'url' => Url::fromRoute('node.revision_edit', [
+          'node' => $entity->id(),
+          'node_revision' => $reviewer_revision->getRevisionId(),
+        ]),
+        'weight' => 10,
+      ];
+      $operations['finish_reviewer_revision'] = [
+        'title' => t('Finish reviewing'),
+        'url' => Url::fromRoute('iucn_assessment.node_revision.state_change', [
+          'node' => $entity->id(),
+          'node_revision' => $reviewer_revision->getRevisionId(),
+        ]),
+        'weight' => 10,
       ];
     }
   }
