@@ -307,13 +307,13 @@
 }
 
 .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper,
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 {
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper {
     overflow: auto;
 }
 
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2,
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 .inner {
-    height: 30px;
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper,
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+    height: 14px;
     overflow-y: hidden;
 }
 
