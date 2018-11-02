@@ -10,6 +10,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Url;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -124,6 +125,34 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = $this->getSummaryContainers($components);
 
     $element['top']['actions']['#weight'] = 9999;
+    $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
+    $element['top']['actions']['#suffix'] = '</div>';
+
+    if(!empty($element['top']['actions']['actions']['edit_button'])) {
+      // Create the custom 'Diff' button
+      // @todo
+//      $element['top']['actions']['actions']['diff_button'] = [
+//        '#type' => 'submit',
+//        '#value' => $this->t('Diff'),
+//        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+//        '#weight' => 2,
+//        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+//        '#ajax' => [
+//          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
+//          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+//        ],
+//        '#access' => $paragraphs_entity->access('update'),
+//        '#paragraphs_mode' => 'diff',
+//        '#attributes' => [
+//          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+//          'title' => $this->t('Diff'),
+//        ],
+//        '#attached' => [
+//          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
+//        ],
+//        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
+//      ];
+    }
 
     $element['top']['summary'] = $containers;
     $count = count($containers) + 1;
@@ -147,11 +176,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
     $elements = parent::formMultipleElements($items, $form, $form_state);
-
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
-      $header_containers = $this->getSummaryContainers($header_components);
+      $header_containers = $this->getHeaderContainers($header_components);
+      $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
+      $header_containers['actions']['#suffix'] = '</div>';
       $count = $this->colCount;
 
       $header = [
@@ -185,6 +215,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
+    $grouped_fields = $this->getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
           'value' => $this->t('No.'),
@@ -198,7 +229,14 @@ class RowParagraphsWidget extends ParagraphsWidget {
         continue;
       }
       $field_definition = $paragraph->getFieldDefinition($field_name);
-      $header[$field_name]['value'] = $field_definition->getLabel();
+      if (!empty($grouped_fields[$field_name])) {
+        $label = $grouped_fields[$field_name]['label'];
+        $field_name = $grouped_fields[$field_name]['grouped_with'];
+      }
+      else {
+        $label = $field_definition->getLabel();
+      }
+      $header[$field_name]['value'] = $label;
       if ($field_definition->getType() == 'string_long') {
         $header[$field_name]['span'] = 2;
       }
@@ -217,6 +255,23 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   /**
+   * Creates the markup for header components.
+   *
+   * @param array $components
+   *   The header components.
+   *
+   * @return array
+   *   The header markup.
+   */
+  public function getHeaderContainers(array $components) {
+    $containers = $this->getSummaryContainers($components);
+    foreach ($containers as &$container) {
+      $container['#attributes']['title'] = $container['data'];
+    }
+    return $containers;
+  }
+
+  /**
    * Creates the markup for the summary components.
    *
    * @param array $components
@@ -229,6 +284,17 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $containers = [];
     foreach ($components as $key => $component) {
       $span = !empty($component['span']) ? $component['span'] : 1;
+      if (is_array($component['value'])) {
+        foreach ($component['value'] as $idx => $value) {
+          if (empty($value)) {
+            unset($component['value'][$idx]);
+          }
+        }
+        $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+      }
+      else {
+        $data = $component['value'];
+      }
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -238,7 +304,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
             "paragraph-summary-component-span-$span",
           ],
         ],
-        'data' => ['#markup' => $component['value']],
+        'data' => ['#markup' => $data],
       ];
       if ($key === 'actions') {
         $containers[$key]['#attributes']['class'] = 'paragraphs-actions';
@@ -282,6 +348,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getSummaryComponents(ParagraphInterface $paragraph) {
     $summary = [];
+    $grouped_fields = $this->getGroupedFields();
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
       $num += 1;
@@ -301,20 +368,29 @@ class RowParagraphsWidget extends ParagraphsWidget {
         continue;
       }
 
+
+      if (!empty($grouped_fields[$field_name])) {
+        $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
+      }
+      else {
+        $summary_field_name = $field_name;
+      }
+
+
       $text_summary = $this->getTextSummary($paragraph, $field_name, $field_definition);
-      $summary[$field_name]['value'] = $text_summary;
+      $value = $text_summary;
 
       if ($field_definition->getType() == 'image' || $field_definition->getType() == 'file') {
-        $summary[$field_name]['value'] = $paragraph->getFileSummary($field_name);
+        $value = $paragraph->getFileSummary($field_name);
       }
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
-        $summary[$field_name]['value'] = $this->getNestedSummary($paragraph, $field_name);
+        $value = $this->getNestedSummary($paragraph, $field_name);
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          $summary[$field_name]['value'] = $paragraph->get($field_name)->entity->label();
+          $value = $paragraph->get($field_name)->entity->label();
         }
       }
 
@@ -322,7 +398,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($field_definition->getType() == 'block_field') {
         if (!empty($paragraph->get($field_name)->first())) {
           $block_admin_label = $paragraph->get($field_name)->first()->getBlock()->getPluginDefinition()['admin_label'];
-          $summary[$field_name]['value'] = $block_admin_label;
+          $value = $block_admin_label;
         }
       }
 
@@ -330,24 +406,41 @@ class RowParagraphsWidget extends ParagraphsWidget {
         if (!empty($paragraph->get($field_name)->first())) {
           // If title is not set, fallback to the uri.
           if ($title = $paragraph->get($field_name)->title) {
-            $summary[$field_name]['value'] = $title;
+            $value = $title;
           }
           else {
-            $summary[$field_name]['value'] = $paragraph->get($field_name)->uri;
+            $value = $paragraph->get($field_name)->uri;
           }
         }
       }
 
+      if (!array_key_exists($summary_field_name, $summary)) {
+        $summary[$summary_field_name]['value'] = [];
+      }
+
+      $prefix = $this->getSummaryPrefix($field_name);
+      if (!empty($prefix) && !empty($value)) {
+        $value = $this->t("$prefix - @value", ['@value' => $value]);
+      }
+
+      $summary[$summary_field_name]['value'][] = $value;
       if ($field_definition->getType() == 'string_long') {
-        $summary[$field_name]['span'] = 2;
+        $summary[$summary_field_name]['span'] = 2;
       }
       else {
-        $summary[$field_name]['span'] = 1;
+        $summary[$summary_field_name]['span'] = 1;
       }
     }
 
-    foreach ($summary as &$value) {
-      $value['value'] = strip_tags($value['value']);
+    foreach ($summary as &$component) {
+      if (is_array($component['value'])) {
+        foreach ($component['value'] as &$value) {
+          $value = strip_tags($value);
+        }
+      }
+      else {
+        $component['value'] = strip_tags($component['value']);
+      }
     }
     return $summary;
   }
@@ -417,7 +510,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($entity instanceof ParagraphInterface) {
         $summary_components = $this->getSummaryComponents($entity);
         $first_component = reset($summary_components);
-        $summary[] = $first_component['value'];
+        $summary[] = implode(', ', $first_component['value']);
       }
     }
 
@@ -427,6 +520,66 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $paragraph_summary = implode(', ', $summary);
     return $paragraph_summary;
+  }
+
+  /**
+   * Get the array defining grouped fields.
+   *
+   * The key of the array is the field that needs to be grouped with
+   * another field, under a common label.
+   *
+   * @return array
+   *   The grouped fields.
+   */
+  private function getGroupedFields() {
+    return [
+      'field_as_benefits_hab_trend' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'label' => $this->t('Habitat'),
+      ],
+      'field_as_benefits_pollut_trend' => [
+        'grouped_with' => 'field_as_benefits_pollut_level',
+        'label' => $this->t('Pollution'),
+      ],
+      'field_as_benefits_oex_trend' => [
+        'grouped_with' => 'field_as_benefits_oex_level',
+        'label' => $this->t('Overexploatation'),
+      ],
+      'field_as_benefits_climate_trend' => [
+        'grouped_with' => 'field_as_benefits_climate_level',
+        'label' => $this->t('Climate change'),
+      ],
+      'field_as_benefits_invassp_trend' => [
+        'grouped_with' => 'field_as_benefits_invassp_level',
+        'label' => $this->t('Invasive species'),
+      ],
+
+    ];
+  }
+
+  /**
+   * Retrieves a prefix that should show up before a paragraph summary value.
+   *
+   * @param $field
+   *   The name of the field.
+   *
+   * @return mixed|null
+   *   The prefix.
+   */
+  private function getSummaryPrefix($field) {
+    $prefixes = [
+      'field_as_benefits_hab_trend' => 'Trend',
+      'field_as_benefits_pollut_trend' => 'Trend',
+      'field_as_benefits_oex_trend' => 'Trend',
+      'field_as_benefits_climate_trend' => 'Trend',
+      'field_as_benefits_invassp_trend' => 'Trend',
+      'field_as_benefits_hab_level' => 'Impact level',
+      'field_as_benefits_pollut_level' => 'Impact level',
+      'field_as_benefits_oex_level' => 'Impact level',
+      'field_as_benefits_climate_level' => 'Impact level',
+      'field_as_benefits_invassp_level' => 'Impact level',
+    ];
+    return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
   }
 
 }

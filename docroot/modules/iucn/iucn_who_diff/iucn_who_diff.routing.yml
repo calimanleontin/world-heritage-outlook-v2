@@ -1,0 +1,31 @@
+iucn_who_diff.diff_prototype_form:
+  path: '/diff-prototype'
+  defaults:
+    _title: 'Diff Prototype'
+    _controller: '\Drupal\iucn_who_diff\Controller\IucnDiffPrototypeController::content'
+  options:
+    _admin_route: TRUE
+  requirements:
+    _permission: 'access content'
+    _role: 'authenticated'
+
+iucn_who_diff.diff_prototype_modal:
+  path: '/diff-prototype-modal'
+  defaults:
+    _controller: '\Drupal\iucn_who_diff\Controller\IucnDiffPrototypeController::modal'
+  options:
+    _admin_route: TRUE
+  requirements:
+    _permission: 'access content'
+    _role: 'authenticated'
+
+iucn_who_diff.iucn_diff_modal_form:
+  path: '/admin/config/diff-modal'
+  defaults:
+    _title: 'Diff Modal Form'
+    _controller: '\Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm'
+  requirements:
+    node: \d+
+    _permission: 'access content'
+  options:
+    _admin_route: TRUE

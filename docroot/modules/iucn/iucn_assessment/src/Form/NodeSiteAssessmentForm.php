@@ -3,13 +3,33 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\workflow\Entity\WorkflowState;
 
 class NodeSiteAssessmentForm {
+
+  public static function hideUnnecessaryFields(array &$form) {
+    // Hide unnecessary fields.
+    unset($form['actions']['delete']);
+    unset($form['advanced']);
+    unset($form['revision']);
+    unset($form['revision_log']);
+    unset($form['field_state']);
+    unset($form['author']);
+    unset($form['meta']);
+  }
+
+  public static function addRedirectToAllActions(array &$form) {
+    // Redirect to node edit on form submit.
+    foreach ($form['actions'] as $key => &$action) {
+      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
+        $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+      }
+    }
+  }
 
   public static function alter(&$form, FormStateInterface $form_state, $form_id) {
     $request = \Drupal::request();
@@ -19,22 +39,31 @@ class NodeSiteAssessmentForm {
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
+    $nid = $node->id();
     $state = $node->field_state->value;
+
+    // Save the last visited tab.
+    if ($form_id == 'node_site_assessment_edit_form') {
+      $tempstore = \Drupal::service('user.private_tempstore')->get('iucn_assessment');
+      $tempstore->set("last_tab[$nid]", $tab);
+    }
 
     foreach (['status', 'revision_log', 'revision_information', 'revision'] as $item) {
       $form[$item]['#access'] = FALSE;
     }
 
-    $tab = \Drupal::request()->query->get('tab');
     // On the values tab, only coordinators and above can edit the values.
-    if (empty($tab)) {
-      $account = \Drupal::currentUser();
-      $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-      $coordinator_weight = Role::load('coordinator')->getWeight();
-
-      if ($account_role_weight > $coordinator_weight) {
+    if (self::currentUserIsAssessorOrLower()) {
+      if (self::isValuesTab()) {
         self::hideParagraphsActions($form);
       }
+      $form['field_date_published']['#access'] = FALSE;
+      $form['field_assessment_file']['#access'] = FALSE;
+    }
+
+    // Hide key conservation issues for >2014 assessments.
+    if ($node->field_as_cycle->value != 2014) {
+      $form['field_as_key_cons']['#access'] = FALSE;
     }
 
     // Hide all revision related settings and check if a new revision should
@@ -47,7 +76,7 @@ class NodeSiteAssessmentForm {
       $form['current_state'] = [
         '#weight' => -100,
         '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
+        '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
         $settings = json_decode($node->field_settings->value, TRUE);
@@ -65,10 +94,11 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-    $form['actions']['submit']['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+    self::addRedirectToAllActions($form);
   }
 
-  /**
+  /*
+   *
    * Store comments on node.
    *
    * @param $form
@@ -138,16 +168,21 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $tab = \Drupal::request()->query->get('tab');
+    $options = [];
+    if (!empty($tab)) {
+      $options = ['query' => ['tab' => $tab]];
+    }
     if ($workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $node)) {
       if ($workflow_service->isAssessmentEditable($node)) {
-        $form_state->setRedirectUrl($node->toUrl('edit-form'));
+        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
       else {
         $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
       }
     }
     else {
-      $form_state->setRedirect('user.page');
+      $form_state->setRedirect('who.user-dashboard');
     }
   }
 
@@ -162,14 +197,53 @@ class NodeSiteAssessmentForm {
     foreach ($read_only_paragraph_fields as $field) {
       $form[$field]['widget']['add_more']['#access'] = FALSE;
       $paragraphs = &$form[$field]['widget'];
+      if (!empty($paragraphs['header']['data']['actions'])) {
+        $paragraphs['header']['data']['actions']['#access'] = FALSE;
+        $classes = &$paragraphs['header']['#attributes']['class'];
+        foreach ($classes as &$class) {
+          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
+            $col_number = $matches[1];
+            $col_class = $class;
+            $new_col_number = $col_number - 1;
+            $new_col_class = "paragraph-top-col-$new_col_number";
+            $class = $new_col_class;
+          }
+        }
+      }
       foreach ($paragraphs as $key => &$paragraph) {
         if (!is_int($key)) {
           continue;
         }
         $paragraph['top']['actions']['#access'] = FALSE;
+        $classes = &$paragraph['top']['#attributes']['class'];
+        if (!empty($new_col_class)) {
+          foreach ($classes as &$class) {
+            if ($class == $col_class) {
+              $class = $new_col_class;
+            }
+          }
+        }
       }
-      $paragraphs['add_mode']['#access'] = FALSE;
     }
+  }
+
+  /**
+   * Check if we are on the values tab.
+   */
+  public static function isValuesTab() {
+    $tab = \Drupal::request()->query->get('tab');
+    return empty($tab) || $tab == 'values';
+  }
+
+  /**
+   * Check if the current user is an assessor or lower role.
+   */
+  public static function currentUserIsAssessorOrLower() {
+    $account = \Drupal::currentUser();
+    $account_role_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
+    $coordinator_weight = Role::load('coordinator')->getWeight();
+
+    return $account_role_weight > $coordinator_weight;
   }
 
 }

@@ -20,6 +20,14 @@ who.general_settings:
   class: Drupal\Core\Menu\MenuLinkDefault
   weight: 0
 
+who.user_agreement_settings_form:
+  route_name: who.user_agreement_settings_form
+  title: 'User Agreement settings'
+  description: 'Add Agreement settings to the login page.'
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 1
+
 who.homepage_map:
   title: 'Homepage map configuration'
   description: 'Configuration parameters for the home page map'
@@ -71,3 +79,8 @@ who.main_menu:
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
   weight: 60
+
+who.user_agreement_form:
+  route_name: who.user_agreement_form
+  title: 'User Agreement'
+  base_route: who.user_agreement_form

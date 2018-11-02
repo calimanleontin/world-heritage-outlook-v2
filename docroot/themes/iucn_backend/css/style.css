@@ -48,3 +48,27 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.path-admin div[class*="block-views-"] {
+    margin-bottom: 40px;
+}
+
+.path-admin div[class*="block-views-"] table {
+    table-layout: fixed;
+}
+
+.path-admin div[class*="block-views-"] table .views-field-title {
+    width: 350px;
+}
+
+.path-admin div[class*="block-views-"] table .views-field-operations {
+    width: 150px;
+}
+
+.user-assign-form .form-submit {
+    margin-left: 0;
+}
+
+#autosave-notification {
+    z-index: 9999;
+}

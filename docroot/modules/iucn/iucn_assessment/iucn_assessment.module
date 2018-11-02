@@ -5,6 +5,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
@@ -148,7 +149,7 @@ function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function iucn_assessment_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function iucn_assessment_node_view(array &$build, EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
   global $_iucn_assessment_is_latest_assessment;
   // Show a notice on PDF print that when is not latest.
   if ($entity->bundle() == 'site' && $view_mode == 'pdf') {
@@ -418,7 +419,7 @@ function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_
 /**
  * Implements hook_webform_element_alter().
  */
-function iucn_assessment_webform_element_alter(array &$element, \Drupal\Core\Form\FormStateInterface $form_state, array $context) {
+function iucn_assessment_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
   if ($element['#webform_id'] == 'site_feedback--subject' && $element['#webform_key'] == 'subject') {
     /* @var \Drupal\node\Entity\Node $node */
     $node = \Drupal::routeMatch()->getParameter('node');
@@ -455,6 +456,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   }
   elseif ($form_id == 'node_site_assessment_state_change_form') {
     NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
+  }
+  elseif ($form_id == 'node_site_assessment_assign_users_form') {
+    NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
   }
   elseif ($form_id == 'revision_overview_form') {
     // When messing with the revision creation workflow, the position of
@@ -530,45 +534,59 @@ function iucn_assessment_validation_constraint_alter(array &$definitions) {
  * Implements hook_entity_type_build().
  */
 function iucn_assessment_entity_type_build(array &$entity_types) {
-  // Add the custom form mode.
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
 }
 
 /**
  * Implements hook_entity_operation().
  */
-function iucn_assessment_entity_operation(\Drupal\Core\Entity\EntityInterface $entity) {
-  if ($entity->getEntityType()->id() != 'node' || $entity->bundle() != 'site_assessment') {
-    return [];
-  }
-  // Add the available transitions as entity operations.
+function iucn_assessment_entity_operation(EntityInterface $entity) {
   $operations = [];
-  $transitions = \Drupal::entityTypeManager()
-    ->getStorage('workflow_config_transition')
-    ->loadByProperties(['from_sid' => $entity->field_state->value]);
-  /** @var \Drupal\workflow\Entity\WorkflowConfigTransition $transition */
-  $current_account = \Drupal::currentUser();
-  $current_user = User::load($current_account->id());
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+  if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'site_assessment') {
+    // Add the available transitions as entity operations.
+    $transitions = \Drupal::entityTypeManager()
+      ->getStorage('workflow_config_transition')
+      ->loadByProperties(['from_sid' => $entity->field_state->value]);
+    /** @var \Drupal\workflow\Entity\WorkflowConfigTransition $transition */
+    $current_account = \Drupal::currentUser();
+    $current_user = User::load($current_account->id());
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
 
-  foreach ($transitions as $transition) {
-    if ($transition->getFromSid() == $transition->getToSid()
-      && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      continue;
+    foreach ($transitions as $transition) {
+      if ($transition->getFromSid() == $transition->getToSid()
+        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        continue;
+      }
+      /** @var \Drupal\node\NodeInterface $entity */
+      if (!$transition->isAllowed($current_user) || !$workflow_service->hasAssessmentEditPermission($current_account, $entity)) {
+        continue;
+      }
+      $label = $transition->label();
+      if (empty($label)) {
+        $to_state = WorkflowState::load($transition->getToSid());
+        $label = $to_state->label();
+      }
+      $operations[$transition->id()] = [
+        'title' => $label,
+        'url' => Url::fromRoute('iucn_assessment.node.state_change', ['node' => $entity->id()]),
+        'weight' => 20,
+      ];
     }
-    /** @var \Drupal\node\NodeInterface $entity */
-    if (!$transition->isAllowed($current_user) || !$workflow_service->hasAssessmentEditPermission($current_account, $entity)) {
-      continue;
+
+    if (in_array($entity->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES)) {
+      $operations['assign_users'] = [
+        'title' => t('Assign users'),
+        'url' => Url::fromRoute('iucn_assessment.node.assign_users', ['node' => $entity->id()]),
+        'weight' => 20,
+      ];
     }
-    $label = $transition->label();
-    if (empty($label)) {
-      $to_state = WorkflowState::load($transition->getToSid());
-      $label = $to_state->label();
-    }
-    $operations[$transition->id()] = [
-      'title' => $label,
-      'url' => Url::fromRoute('iucn_assessment.node.state_change', ['node' => $entity->id()]),
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    $operations['assign'] = [
+      'title' => t('Assign'),
+      'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
       'weight' => 20,
     ];
   }
@@ -578,16 +596,15 @@ function iucn_assessment_entity_operation(\Drupal\Core\Entity\EntityInterface $e
 /**
  * Implements hook_entity_operation_alter().
  */
-function iucn_assessment_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
-  if ($entity->getEntityType()->id() != 'node' || $entity->bundle() != 'site_assessment') {
-    return;
-  }
-  /** @var \Drupal\node\NodeInterface $entity */
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  // Remove the edit entity operation when it isn't actually allowed.
-  if (!$workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $entity)
-    || !$workflow_service->isAssessmentEditable($entity)) {
-    unset($operations['edit']);
+function iucn_assessment_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'site_assessment') {
+    /** @var \Drupal\node\NodeInterface $entity */
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    // Remove the edit entity operation when it isn't actually allowed.
+    if (!$workflow_service->hasAssessmentEditPermission(\Drupal::currentUser(), $entity)
+      || !$workflow_service->isAssessmentEditable($entity)) {
+      unset($operations['edit']);
+    }
   }
 }

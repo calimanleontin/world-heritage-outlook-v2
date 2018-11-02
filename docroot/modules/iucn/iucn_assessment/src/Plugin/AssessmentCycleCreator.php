@@ -95,6 +95,7 @@ class AssessmentCycleCreator {
     $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
     $duplicate = $originalNode->createDuplicate();
     $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
+    $duplicate->setPublished(FALSE);
     $duplicate->setCreatedTime(time());
     $duplicate->setChangedTime(time());
     $duplicate->setRevisionUserId(1);

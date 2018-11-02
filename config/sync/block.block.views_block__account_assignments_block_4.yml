@@ -12,7 +12,7 @@ dependencies:
 id: views_block__account_assignments_block_4
 theme: iucn_who
 region: content
-weight: -15
+weight: -12
 provider: null
 plugin: 'views_block:account_assignments-block_4'
 settings:
@@ -26,6 +26,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/user/*\r\n!/user/*/*\r\n"
+    pages: /admin/dashboard
     negate: false
     context_mapping: {  }
