@@ -1,0 +1,29 @@
+uuid: f5157539-2875-48f0-866d-7298f443b20b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_agreement_accepted
+  module:
+    - disable_field
+    - user
+third_party_settings:
+  disable_field:
+    add_disable: all
+    add_disable_roles: {  }
+    edit_disable: all
+    edit_disable_roles: {  }
+id: user.user.field_agreement_accepted
+field_name: field_agreement_accepted
+entity_type: user
+bundle: user
+label: 'agreement accepted'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1540998473
+default_value_callback: ''
+settings: {  }
+field_type: timestamp
