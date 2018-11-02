@@ -442,7 +442,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
-      $summary[$summary_field_name]['value'][] = $value;
+      $summary[$summary_field_name]['value'] = $value;
       if ($field_definition->getType() == 'string_long') {
         $summary[$summary_field_name]['span'] = 2;
       }
@@ -529,7 +529,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($entity instanceof ParagraphInterface) {
         $summary_components = $this->getSummaryComponents($entity);
         $first_component = reset($summary_components);
-        $summary[] = implode(', ', $first_component['value']);
+        $summary[] = is_array($first_component['value'])
+          ? implode(', ', $first_component['value'])
+          : $first_component['value'];
       }
     }
 
