@@ -24,6 +24,7 @@ permissions:
   - 'administer views'
   - 'assign any coordinator to assessment'
   - 'assign users to assessments'
+  - 'bulk assign users to assessments'
   - 'bypass node access'
   - 'create assessment workflow_transition'
   - 'create url aliases'
