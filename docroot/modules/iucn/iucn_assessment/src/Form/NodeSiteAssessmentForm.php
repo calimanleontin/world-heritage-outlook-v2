@@ -50,7 +50,7 @@ class NodeSiteAssessmentForm {
       else {
         $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $node->id()]);
       }
-      $response = new RedirectResponse($url->toString());
+      $response = new RedirectResponse($url->setAbsolute()->toString());
       $response->send();
     }
 
