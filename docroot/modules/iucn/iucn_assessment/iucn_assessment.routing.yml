@@ -6,7 +6,7 @@ node.revision_edit:
   requirements:
     access: 'update'
     node: \d+
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEdit'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
 
@@ -16,11 +16,13 @@ iucn_assessment.node.state_change:
     _title: 'State change'
     _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
   requirements:
-    node: \d+
-    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentStateEdit'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
 
 iucn_assessment.node_revision.state_change:
   path: '/node/{node}/revisions/{node_revision}/state_change'
@@ -28,11 +30,14 @@ iucn_assessment.node_revision.state_change:
     _title: 'State change'
     _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
   requirements:
-    node: \d+
-    _custom_access:  '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentStateEdit'
+    node_revision: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
     _admin_route: TRUE
+    parameters:
+      node:
+        node: entity:node
 
 iucn_assessment.node.assign_users:
   path: '/node/{node}/assign_users'
@@ -40,22 +45,20 @@ iucn_assessment.node.assign_users:
     _entity_form: node.assign_users
     _title: 'Assign users'
   requirements:
-    _permission: 'assign users to assessments'
     _custom_access: '\Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm::access'
   options:
     form_display: assign_users
     _admin_route: TRUE
     parameters:
-      user:
-        type: entity:user
+      node:
+        type: entity:node
 
 iucn_assessment.user_assign:
   path: '/user/{user}/assign'
   defaults:
     _form: '\Drupal\iucn_assessment\Form\UserAssignForm'
   requirements:
-    _permission: 'assign users to assessments, administer users'
-    _custom_access: '\Drupal\iucn_assessment\Form\UserAssignForm::access'
+    _permission: 'bulk assign users to assessments'
   options:
     _admin_route: TRUE
     parameters:

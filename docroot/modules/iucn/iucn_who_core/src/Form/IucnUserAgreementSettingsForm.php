@@ -41,6 +41,16 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function getEditableConfigNames() {
     return [
       'user_agreement.settings',
@@ -58,32 +68,33 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     $config = $this->config('user_agreement.settings');
+    $nid = $config->get('user_agreement_node');
     $form['user_agreement'] = [
       '#type' => 'fieldset',
+      'user_agreement_node' => [
+        '#type' => 'entity_autocomplete',
+        '#target_type' => 'node',
+        '#selection_settings' => [
+          'target_bundles' => ['page'],
+        ],
+        '#title' => $this->t('User agreement node'),
+        '#description' => $this->t('Node <em>title</em> of the page where your User Agreement are published.'),
+        '#default_value' => !empty($nid) ? $this->entityTypeManager->getStorage('node')->load($config->get('user_agreement_node')) : NULL,
+      ],
+      'user_agreement_label_checkbox' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Label for the checkbox'),
+        '#description' => $this->t('Type here something like "By clicking Confirm button I agree to User Agreement.".'),
+        '#default_value' => $config->get('user_agreement_label_checkbox'),
+      ],
+      'user_agreement_label_button' => [
+        '#type' => 'textfield',
+        '#title' => $this->t('Label for the submit button'),
+        '#description' => $this->t('Type here the title for submit button.'),
+        '#default_value' => $config->get('user_agreement_label_button'),
+      ],
     ];
-
-    $form['user_agreement']['user_agreement_node'] = [
-      '#type' => 'entity_autocomplete',
-      '#target_type' => 'node',
-      '#default_value' => $this->entityTypeManager->getStorage('node')->load($config->get('user_agreement_node')),
-      '#title' => t('Title of the post where your User Agreement are published'),
-      '#description' => t('Node <em>title</em> of the page where your User Agreement are published.'),
-    ];
-
-    $form['user_agreement']['user_agreement_label_checkbox'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Label for the checkbox'),
-      '#default_value' => $config->get('user_agreement_label_checkbox'),
-      '#description' => t('Type here something like "By clicking Confirm button I agree to User Agreement.".'),
-    );
-    $form['user_agreement']['user_agreement_label_button'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Label for the submit button'),
-      '#default_value' => $config->get('user_agreement_label_button'),
-      '#description' => t('Type here the title for submit button.'),
-    );
     return parent::buildForm($form, $form_state);
   }
 
@@ -92,22 +103,11 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
     $this->config('user_agreement.settings')
       ->set('user_agreement_node', $form_state->getValue('user_agreement_node'))
       ->set('user_agreement_label_button', $form_state->getValue('user_agreement_label_button'))
       ->set('user_agreement_label_checkbox', $form_state->getValue('user_agreement_label_checkbox'))
       ->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('config.factory'),
-      $container->get('entity_type.manager')
-    );
   }
 
 }

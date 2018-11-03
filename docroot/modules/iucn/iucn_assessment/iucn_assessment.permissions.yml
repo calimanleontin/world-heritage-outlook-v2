@@ -1,2 +1,17 @@
 assign users to assessments:
   title: 'Assign users to assessments'
+
+assign any coordinator to assessment:
+  title: 'Assign any coordinator to assessment'
+
+bulk assign users to assessments:
+  title: 'Bulk assign users to assessments'
+
+edit assessment in any state:
+  title: 'Edit assessment in any state'
+
+edit new assessments:
+  title: 'Edit new assessments'
+
+edit assessment main data:
+  title: 'Edit assessment main data (values entities, published date, etc)'

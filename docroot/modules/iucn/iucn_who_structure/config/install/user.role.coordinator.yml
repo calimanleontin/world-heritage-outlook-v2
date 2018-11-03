@@ -9,9 +9,11 @@ is_admin: null
 permissions:
   - 'access user profiles'
   - 'administer users'
+  - 'assign users to assessments'
   - 'create assessment workflow_transition'
   - 'create content unpublished'
   - 'edit any site_assessment content'
+  - 'edit new assessments'
   - 'edit own site_assessment content'
   - 'use assessment transition approved_approved'
   - 'use assessment transition new_new'
