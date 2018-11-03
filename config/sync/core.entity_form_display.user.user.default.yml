@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_agreement_accepted
+    - field.field.user.user.field_accepted_agreement
   module:
     - path
     - user
@@ -39,5 +39,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_agreement_accepted: true
+  field_accepted_agreement: true
   langcode: true

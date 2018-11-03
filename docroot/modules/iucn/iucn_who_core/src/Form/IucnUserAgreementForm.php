@@ -90,7 +90,7 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
       $current_user = \Drupal::currentUser();
       $uid = $current_user->id();
       $user = User::load($uid);
-      if (!empty($user->field_agreement_accepted->value)) {
+      if (!empty($user->field_accepted_agreement->value)) {
         $agreed = TRUE;
       }
 
@@ -153,8 +153,8 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     if ($nid) {
       $uid = $this->account->id();
       $user = User::load($uid);
-      if (empty($user->field_agreement_accepted->value)) {
-        $user->set('field_agreement_accepted', time());
+      if (empty($user->field_accepted_agreement->value)) {
+        $user->set('field_accepted_agreement', date('Y-m-d\TH:i:s', time()));
         $user->save();
       }
     }
