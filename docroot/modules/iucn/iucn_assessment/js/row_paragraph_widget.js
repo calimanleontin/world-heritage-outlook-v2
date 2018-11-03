@@ -33,40 +33,6 @@
 
         inheritParentDims();
         $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
-
-        // var resizeTimer;
-        // $('textarea', context).on('resize', function() {
-        //   console.log('resize');
-        //   inheritParentDims();
-        //   // clearTimeout(resizeTimer);
-        //   // resizeTimer = setTimeout(function() {
-        //   // }, 250);
-        // });
-
-        // var $textareas = jQuery('textarea');
-
-         // // store init (default) state
-         // $textareas.data('x', $textareas.outerWidth());
-         // $textareas.data('y', $textareas.outerHeight());
-
-         // $textareas.mouseup(function(){
-
-         //    var $this = jQuery(this);
-
-         //    if (  $this.outerWidth()  != $this.data('x')
-         //       || $this.outerHeight() != $this.data('y') )
-         //    {
-         //        // Resize Action Here
-         //        alert( $this.outerWidth()  + ' - ' + $this.data('x') + '\n'
-         //             + $this.outerHeight() + ' - ' + $this.data('y')
-         //             );
-         //    }
-
-         //    // store new height/width
-         //    $this.data('x', $this.outerWidth());
-         //    $this.data('y', $this.outerHeight());
-         // });
-
       });
     }
   };
@@ -84,14 +50,14 @@
         $(function(){
             $(".responsive-wrapper", context).each(function() {
                 var $table = $(this).find('.field-multiple-table');
-                $(this).siblings(".responsive-wrapper-2").find('.inner').width($table.width());
+                $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
             });
 
             $(".responsive-wrapper", context).scroll(function(){
-                $(this).siblings(".responsive-wrapper-2")
+                $(this).siblings(".double-scrollbar-helper")
                     .scrollLeft($(this).scrollLeft());
             });
-            $(".responsive-wrapper-2", context).scroll(function(){
+            $(".double-scrollbar-helper", context).scroll(function(){
                 $(this).siblings(".responsive-wrapper")
                     .scrollLeft($(this).scrollLeft());
             });
@@ -99,7 +65,7 @@
             $(window).once("bind-dsb-to-window").on('resize', _.debounce(function(){
                 $(".responsive-wrapper", context).each(function() {
                     var $table = $(this).find('.field-multiple-table');
-                    $(this).siblings(".responsive-wrapper-2").find('.inner').width($table.width());
+                    $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
                 });
             }, 100));
         });

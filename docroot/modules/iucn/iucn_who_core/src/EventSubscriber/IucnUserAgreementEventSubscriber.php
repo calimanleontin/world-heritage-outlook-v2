@@ -131,7 +131,7 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
   protected function userAcceptedAgreement() {
     $uid = $this->currentUser->id();
     $user = User::load($uid);
-    return $user->field_agreement_accepted->value || $user->hasRole('administrator');
+    return $user->field_accepted_agreement->value || $user->hasRole('administrator');
   }
 
 }

@@ -11,12 +11,19 @@
     attach: function (context) {
 
       var selected = $(context).find('li.horizontal-tab-button.selected');
-      var selected_html = selected.html();
-      selected_html += '<i class="fa fa-comment-dots"></i>';
-      selected.html(selected_html);
       var comments_textarea = $(context).find('.paragraph-comments-textarea');
-      var comment_dots = $(context).find(".fa-comment-dots");
 
+      if (comments_textarea.length === 0) {
+        return;
+      }
+
+      var comment_dots;
+      selected.once('commentBubbles').each(function () {
+        var selected_html = selected.html();
+        selected_html += '<i class="fa fa-comment-dots"></i>';
+        selected.html(selected_html);
+        comment_dots = $(context).find(".fa-comment-dots");
+      });
       function deselect(e) {
         comments_textarea.slideFadeToggle(function() {
           e.removeClass('selected');

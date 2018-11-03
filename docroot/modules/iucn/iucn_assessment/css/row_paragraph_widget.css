@@ -1,3 +1,7 @@
+.field--widget-row-entity-reference-paragraphs table {
+    margin-bottom: 0;
+}
+
 .field--widget-row-entity-reference-paragraphs tbody tr,
 .field--widget-row-entity-reference-paragraphs tbody tr:hover,
 .field--widget-row-entity-reference-paragraphs tbody tr:focus {
@@ -7,7 +11,11 @@
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child,
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
     background: #ececec;
-    border-bottom: 1px solid grey
+    border-bottom: 1px solid #bfbfba;
+}
+
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
+    background: #ececec!important;
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -19,6 +27,7 @@
     font-size: .9em;
     padding: 10px 12px;
 }
+.field--widget-row-entity-reference-paragraphs .field-multiple-drag,
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
     border-right: 1px solid rgb(230, 228, 223);
 }
@@ -40,6 +49,10 @@
 .field--widget-row-entity-reference-paragraphs .draggable a.tabledrag-handle {
     float: none;
     margin-left: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs .tabledrag-toggle-weight-wrapper {
+    display: none;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-2 {
@@ -278,18 +291,13 @@
     justify-content: flex-end;
 }
 
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
+    justify-content: center;
+    right: 0;
+}
 .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .ajax-progress-throbber {
 
 }
-
-/* .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .button {
-    display: block;
-} */
-
-.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions .button + .button {
-    /* margin-top: 5px; */
-}
-
 
 .js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
     text-align: center;
@@ -299,18 +307,14 @@
 }
 
 .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper,
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 {
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper {
     overflow: auto;
 }
 
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2,
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper-2 .inner {
-    height: 30px;
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper,
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+    height: 14px;
     overflow-y: hidden;
-}
-
-.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper .field-multiple-table {
-    border-top: 1px solid grey;
 }
 
 .js .field--widget-row-entity-reference-paragraphs {
