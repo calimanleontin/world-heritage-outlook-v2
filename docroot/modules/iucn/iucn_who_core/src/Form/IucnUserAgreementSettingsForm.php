@@ -69,18 +69,14 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('user_agreement.settings');
-    $nid = $config->get('user_agreement_node');
+    $content = $config->get('user_agreement_content');
     $form['user_agreement'] = [
       '#type' => 'fieldset',
-      'user_agreement_node' => [
-        '#type' => 'entity_autocomplete',
-        '#target_type' => 'node',
-        '#selection_settings' => [
-          'target_bundles' => ['page'],
-        ],
-        '#title' => $this->t('User agreement node'),
-        '#description' => $this->t('Node <em>title</em> of the page where your User Agreement are published.'),
-        '#default_value' => !empty($nid) ? $this->entityTypeManager->getStorage('node')->load($config->get('user_agreement_node')) : NULL,
+      'user_agreement_content' => [
+        '#type' => 'text_format',
+        '#title' => $this->t('User agreement page content'),
+        '#format'=> 'html',
+        '#default_value' => !empty($content['value']) ? $content['value'] : '',
       ],
       'user_agreement_label_checkbox' => [
         '#type' => 'textfield',
@@ -104,7 +100,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
     $this->config('user_agreement.settings')
-      ->set('user_agreement_node', $form_state->getValue('user_agreement_node'))
+      ->set('user_agreement_content', $form_state->getValue('user_agreement_content'))
       ->set('user_agreement_label_button', $form_state->getValue('user_agreement_label_button'))
       ->set('user_agreement_label_checkbox', $form_state->getValue('user_agreement_label_checkbox'))
       ->save();
