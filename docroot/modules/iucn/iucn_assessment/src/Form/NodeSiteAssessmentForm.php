@@ -114,9 +114,12 @@ class NodeSiteAssessmentForm {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
               $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
             }
+            $form["comment_$tab"]['#type'] = 'markup';
+            $form["comment_$tab"]['#markup'] = $comments;
           }
-          $form["comment_$tab"]['#type'] = 'markup';
-          $form["comment_$tab"]['#markup'] = $comments;
+          else {
+            $form["comment_$tab"]['#access'] = FALSE;
+          }
         }
         $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
         $form['#attached']['library'][] = 'iucn_backend/font-awesome';
