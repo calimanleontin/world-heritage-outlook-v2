@@ -107,7 +107,6 @@ class NodeSiteAssessmentForm {
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
-          dpm($settings);
           $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
           unset($form["comment_$tab"]['#description']);
           $comments = '';
