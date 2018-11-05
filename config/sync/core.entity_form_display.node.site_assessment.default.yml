@@ -318,17 +318,17 @@ content:
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
       closed_mode: summary
       autocollapse: none
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: _none
+      show_numbers: 'no'
       features:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
-      show_numbers: 'no'
     third_party_settings: {  }
     region: content
   field_as_projects_needs:
