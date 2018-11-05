@@ -99,6 +99,7 @@ class AssessmentCycleCreator {
     $duplicate->setCreatedTime(time());
     $duplicate->setChangedTime(time());
     $duplicate->setRevisionUserId(1);
+    $duplicate->set('uid', 1);
     $duplicate->set('field_as_start_date', date(DateTimeItemInterface::DATE_STORAGE_FORMAT, time()));
     $duplicate->set('field_as_end_date', NULL);
     $duplicate->set('field_as_cycle', $cycle);
