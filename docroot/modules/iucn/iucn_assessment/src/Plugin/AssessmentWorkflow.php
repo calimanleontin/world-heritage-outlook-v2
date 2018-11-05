@@ -192,7 +192,8 @@ class AssessmentWorkflow {
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->forceAssessmentState($node, self::STATUS_FINISHED_REVIEWING, FALSE);
+          $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
+          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
           $default_revision->save();
         }
         // Save the differences on the revision.
@@ -208,19 +209,15 @@ class AssessmentWorkflow {
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
-      if ($original_state == self::STATUS_UNDER_REVIEW) {
-        $added_reviewers = $this->getAddedReviewers($node, $original);
-      }
-      elseif ($original_state == self::STATUS_READY_FOR_REVIEW) {
-        $ready_for_review_revision = $this->getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
-        $added_reviewers = $this->getAddedReviewers($node, $ready_for_review_revision);
-      }
+      $added_reviewers = $this->getAddedReviewers($node, $original);
       $removed_reviewers = $this->getRemovedReviewers($node, $original);
 
       // Create a revision for each newly added reviewer.
       if (!empty($added_reviewers)) {
         foreach ($added_reviewers as $added_reviewer) {
-          $this->createRevisionForReviewer($node, $added_reviewer);
+          if (empty($this->getReviewerRevision($node, $added_reviewer))) {
+            $this->createRevisionForReviewer($node, $added_reviewer);
+          }
         }
       }
       // Delete revisions of reviewers no longer assigned on this assessment.
@@ -285,6 +282,39 @@ class AssessmentWorkflow {
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
     $field_settings['diff'] = $diff;
+    $field_settings_json = json_encode($field_settings);
+    $node->get('field_settings')->setValue($field_settings_json);
+    if ($save) {
+      $node->save();
+    }
+  }
+
+  /**
+   * Adds the comments from a reviewer revision to the main revision.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The default revision.
+   * @param \Drupal\node\NodeInterface $revision
+   *   The reviewer revision.
+   * @param bool $save
+   *   Is node->save called.
+   */
+  public function appendCommentsToFieldSettings(NodeInterface $node, NodeInterface $revision, $save = TRUE) {
+    $revision_field_settings_json = $revision->field_settings->value;
+    $revision_field_settings = json_decode($revision_field_settings_json, TRUE);
+    $revision_comments = $revision_field_settings['comments'];
+    if (empty($revision_comments)) {
+      return;
+    }
+
+    $field_settings_json = $node->field_settings->value;
+    $field_settings = json_decode($field_settings_json, TRUE);
+
+    foreach ($revision_comments as $tab => $revision_comment) {
+      if (!empty($revision_comment[$revision->getRevisionUserId()])) {
+        $field_settings['comments'][$tab][$revision->getRevisionUserId()] = $revision_comment[$revision->getRevisionUserId()];
+      }
+    }
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
     if ($save) {
