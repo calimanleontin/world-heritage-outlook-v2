@@ -193,7 +193,7 @@ class AssessmentWorkflow {
         $default_revision = Node::load($node->id());
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
           $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
-          $this->forceAssessmentState($node, self::STATUS_FINISHED_REVIEWING, FALSE);
+          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
           $default_revision->save();
         }
         // Save the differences on the revision.
@@ -303,6 +303,9 @@ class AssessmentWorkflow {
     $revision_field_settings_json = $revision->field_settings->value;
     $revision_field_settings = json_decode($revision_field_settings_json, TRUE);
     $revision_comments = $revision_field_settings['comments'];
+    if (empty($revision_comments)) {
+      return;
+    }
 
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
