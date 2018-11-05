@@ -47,7 +47,7 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
   public function __construct(RouteMatchInterface $routeMatch, AccountProxyInterface $currentUser, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
     $this->routeMatch = $routeMatch;
     $this->currentUser = $currentUser;
-    $this->config = $config_factory->get('user_agreement.settings');
+    $this->config = $config_factory->get('iucn_who_core.settings');
     $this->messenger = $messenger;
   }
 

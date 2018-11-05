@@ -53,7 +53,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'user_agreement.settings',
+      'iucn_who_core.settings',
     ];
   }
 
@@ -68,7 +68,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('user_agreement.settings');
+    $config = $this->config('iucn_who_core.settings');
     $content = $config->get('user_agreement_content');
     $form['user_agreement'] = [
       '#type' => 'fieldset',
@@ -99,7 +99,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $this->config('user_agreement.settings')
+    $this->config('iucn_who_core.settings')
       ->set('user_agreement_content', $form_state->getValue('user_agreement_content'))
       ->set('user_agreement_label_button', $form_state->getValue('user_agreement_label_button'))
       ->set('user_agreement_label_checkbox', $form_state->getValue('user_agreement_label_checkbox'))

@@ -66,7 +66,7 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
   public function __construct(AccountProxy $account, LanguageManagerInterface $languageManager, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->account = $account;
     $this->languageManager = $languageManager;
-    $this->config = $config_factory->get('user_agreement.settings');
+    $this->config = $config_factory->get('iucn_who_core.settings');
     $this->entityTypeManager = $entity_type_manager;
   }
 
@@ -93,7 +93,7 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = \Drupal::config('user_agreement.settings');
+    $config = \Drupal::config('iucn_who_core.settings');
     $current_user = \Drupal::currentUser();
     $user = User::load($current_user->id());
     $agreed = !empty($user->field_accepted_agreement->value);
