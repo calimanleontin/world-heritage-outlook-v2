@@ -112,7 +112,7 @@ class NodeSiteAssessmentForm {
           $comments = '';
           if (!empty($settings['comments'][$tab])) {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
-              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "\n\n";
+              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
             }
           }
           $form["comment_$tab"]['#type'] = 'markup';
