@@ -98,9 +98,12 @@ class AssessmentWorkflow {
     if ($node->bundle() != 'site_assessment') {
       return AccessResult::neutral();
     }
-    if ($action == 'edit') {
+    if ($action == 'edit' || $action == 'change_state') {
       if ($account->hasPermission('edit assessment in any state')) {
         return AccessResult::allowed();
+      }
+      elseif ($action == 'edit' && !$this->isAssessmentEditable($node)) {
+        return AccessResult::forbidden();
       }
 
       $state = $node->field_state->value ?: self::STATUS_CREATION;

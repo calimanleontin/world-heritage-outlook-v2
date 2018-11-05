@@ -36,4 +36,11 @@ class AssessmentAccess implements ContainerInjectionInterface {
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
   }
 
+  public function assessmentStateChangeAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
+    if (!empty($node_revision)) {
+      $node = $this->nodeStorage->loadRevision($node_revision);
+    }
+    return $this->assessmentWorkflow->checkAssessmentAccess($node, 'change_state', $account);
+  }
+
 }

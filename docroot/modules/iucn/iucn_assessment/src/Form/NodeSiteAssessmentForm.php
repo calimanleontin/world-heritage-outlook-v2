@@ -204,16 +204,16 @@ class NodeSiteAssessmentForm {
     if (!empty($tab)) {
       $options = ['query' => ['tab' => $tab]];
     }
-    if ($workflow_service->checkAssessmentAccess($node)->isAllowed()) {
+    if ($workflow_service->checkAssessmentAccess($node, 'edit')->isAllowed()) {
       if (!$node->isDefaultRevision()) {
         $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
       }
-      elseif ($workflow_service->isAssessmentEditable($node)) {
+      else {
         $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
-      else {
-        $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
-      }
+    }
+    elseif ($workflow_service->checkAssessmentAccess($node, 'change_state')->isAllowed()) {
+      $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
     }
     else {
       $form_state->setRedirect('who.user-dashboard');
