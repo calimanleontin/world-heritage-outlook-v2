@@ -132,3 +132,23 @@
 .js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
     background-color: #ececec;
 }
+
+.field--widget-row-entity-reference-paragraphs .description {
+    position: relative;
+    margin: 0;
+    padding: 5px 5px 5px 24px;
+    border: none;
+    background-image: linear-gradient(to bottom, white, #ffffbe);
+    font-style: italic;
+}
+
+.field--widget-row-entity-reference-paragraphs .description:before {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 14px;
+    height: 16px;
+    content: ' ';
+    background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+}
