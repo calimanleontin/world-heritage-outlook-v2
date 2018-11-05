@@ -14,7 +14,6 @@ permissions:
   - 'create content unpublished'
   - 'edit any site_assessment content'
   - 'edit assessment main data'
-  - 'edit new assessments'
   - 'edit own site_assessment content'
   - 'use assessment transition approved_approved'
   - 'use assessment transition new_new'
