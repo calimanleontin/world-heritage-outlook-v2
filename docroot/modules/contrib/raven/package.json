@@ -2,9 +2,10 @@
   "name": "drupal-raven",
   "description": "Raven Drupal module",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "raven-js": "^3.0.4"
+    "raven-js": "^3.26.3"
+  },
+  "scripts": {
+    "postinstall": "cp node_modules/raven-js/dist/*.* js/raven-js"
   },
   "repository": {
     "type": "git",

@@ -53,16 +53,21 @@
     margin-bottom: 40px;
 }
 
-.path-admin div[class*="block-views-"] table {
-    table-layout: fixed;
+.path-admin div[class*="block-views-"] table .views-field:not(.views-field-operations) {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.path-admin div[class*="block-views-"] table .views-field-title {
-    width: 350px;
-}
-
-.path-admin div[class*="block-views-"] table .views-field-operations {
-    width: 180px;
+@media screen and (min-width: 1024px) {
+    .path-admin div[class*="block-views-"] table {
+        table-layout: fixed;
+    }
+    .path-admin div[class*="block-views-"] table .views-field-title {
+        width: 150px;
+    }
+    .path-admin div[class*="block-views-"] table .views-field-operations {
+        width: 180px;
+    }
 }
 
 .user-assign-form .form-submit {
@@ -122,4 +127,28 @@
 
 .horizontal-tab-button .fa:hover {
     -webkit-text-stroke: initial;
+}
+
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+    background-color: #ececec;
+}
+
+.horizontal-tabs-panes .description {
+    position: relative;
+    margin: 0;
+    padding: 5px 5px 5px 24px;
+    border: none;
+    background-image: linear-gradient(to bottom, white, #ffffbe);
+    font-style: italic;
+}
+
+.horizontal-tabs-panes .description:before {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 14px;
+    height: 16px;
+    content: ' ';
+    background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
 }

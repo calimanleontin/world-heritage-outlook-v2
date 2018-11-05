@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -50,7 +51,7 @@ class NodeSiteAssessmentForm {
       else {
         $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $node->id()]);
       }
-      $response = new RedirectResponse($url->toString());
+      $response = new RedirectResponse($url->setAbsolute()->toString());
       $response->send();
     }
 
@@ -62,6 +63,10 @@ class NodeSiteAssessmentForm {
       if (self::isValuesTab()) {
         self::hideParagraphsActions($form);
       }
+      $form['title']['#disabled'] = TRUE;
+      $form['langcode']['#disabled'] = TRUE;
+      $form['field_as_start_date']['#access'] = FALSE;
+      $form['field_as_end_date']['#access'] = FALSE;
       $form['field_date_published']['#access'] = FALSE;
       $form['field_assessment_file']['#access'] = FALSE;
     }
@@ -83,8 +88,11 @@ class NodeSiteAssessmentForm {
         '#type' => 'markup',
         '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
-      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])) {
-        $settings = json_decode($node->field_settings->value, TRUE);
+      $settings = json_decode($node->field_settings->value, TRUE);
+      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
+        || !empty($settings['comments'][$tab])) {
+        $current_user = \Drupal::currentUser();
+
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
         $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
           ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
@@ -93,11 +101,26 @@ class NodeSiteAssessmentForm {
           '#type' => 'textarea',
           '#title' => $comment_title,
           '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
-          '#default_value' => !empty($settings['comments'][$tab]) ? $settings['comments'][$tab] : '',
+          '#default_value' => !empty($settings['comments'][$tab][$current_user->id()]) ? $settings['comments'][$tab][$current_user->id()] : '',
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
         ];
+        if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
+          $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
+          unset($form["comment_$tab"]['#description']);
+          $comments = '';
+          if (!empty($settings['comments'][$tab])) {
+            foreach ($settings['comments'][$tab] as $uid => $comment) {
+              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
+            }
+            $form["comment_$tab"]['#type'] = 'markup';
+            $form["comment_$tab"]['#markup'] = $comments;
+          }
+          else {
+            $form["comment_$tab"]['#access'] = FALSE;
+          }
+        }
         $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
         $form['#attached']['library'][] = 'iucn_backend/font-awesome';
       }
@@ -114,6 +137,8 @@ class NodeSiteAssessmentForm {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
+    $current_user = \Drupal::currentUser();
+
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -124,7 +149,7 @@ class NodeSiteAssessmentForm {
     foreach ($values as $key => $value) {
       if (preg_match('/^comment\_(.+)$/', $key, $matches)) {
         $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab] = $value;
+        $settings['comments'][$commented_tab][$current_user->id()] = $value;
       }
     }
     $node->field_settings->setValue(json_encode($settings));
@@ -182,13 +207,16 @@ class NodeSiteAssessmentForm {
     if (!empty($tab)) {
       $options = ['query' => ['tab' => $tab]];
     }
-    if ($workflow_service->checkAssessmentAccess($node)->isAllowed()) {
-      if ($workflow_service->isAssessmentEditable($node)) {
-        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
+    if ($workflow_service->checkAssessmentAccess($node, 'edit')->isAllowed()) {
+      if (!$node->isDefaultRevision()) {
+        $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
       }
       else {
-        $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
+        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
+    }
+    elseif ($workflow_service->checkAssessmentAccess($node, 'change_state')->isAllowed()) {
+      $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
     }
     else {
       $form_state->setRedirect('who.user-dashboard');

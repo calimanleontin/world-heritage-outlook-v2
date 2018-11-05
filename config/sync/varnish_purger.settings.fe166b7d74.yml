@@ -1,11 +1,11 @@
-uuid: 7ddc4d2c-6823-4cdd-b0fa-7c18865254da
+uuid: 67094b30-5bdb-4eb1-92a4-0bcf891436bf
 langcode: en
 status: true
 dependencies: {  }
 id: fe166b7d74
-name: 'Varnish purger'
+name: Varnish
 invalidationtype: tag
-hostname: varnish
+hostname: localhost
 port: 6081
 path: /
 request_method: BAN
@@ -21,5 +21,5 @@ runtime_measurement: true
 timeout: !!float 1
 connect_timeout: !!float 1
 cooldown_time: !!float 0
-max_requests: 100
+max_requests: 200
 http_errors: true
