@@ -15,6 +15,10 @@ function raven_page_attachments(array &$page) {
     if (!isset($page['#attached']['drupalSettings']['raven']['options'])) {
       $page['#attached']['drupalSettings']['raven']['options'] = new \stdClass();
     }
+    $page['#attached']['drupalSettings']['raven']['options']->environment = \Drupal::config('raven.settings')->get('environment') ?: \Drupal::getContainer()->getParameter('kernel.environment');
+    if ($release = \Drupal::config('raven.settings')->get('release')) {
+      $page['#attached']['drupalSettings']['raven']['options']->release = $release;
+    }
     $page['#attached']['library'][] = 'raven/raven';
   }
 }

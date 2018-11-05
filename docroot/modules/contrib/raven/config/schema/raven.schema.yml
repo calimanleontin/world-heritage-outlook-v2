@@ -5,6 +5,12 @@ raven.settings:
     client_key:
       type: string
       label: 'Sentry DSN'
+    environment:
+      type: string
+      label: 'Environment'
+    release:
+      type: string
+      label: 'Release'
     log_levels:
       type: mapping
       label: 'Log levels'
@@ -54,3 +60,9 @@ raven.settings:
     public_dsn:
       type: string
       label: 'Sentry public DSN'
+    ssl:
+      type: string
+      label: 'Options to Verify SSL'
+    ca_cert:
+      type: string
+      label: 'Path to the CA certificate file of the Sentry server specified in the DSN'

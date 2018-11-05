@@ -23,7 +23,7 @@ class Raven implements LoggerInterface {
    *
    * @var \Raven_Client
    */
-  protected $client;
+  public $client;
 
   /**
    * A configuration object containing syslog settings.
@@ -66,19 +66,33 @@ class Raven implements LoggerInterface {
     $this->config = $config_factory->get('raven.settings');
     $this->moduleHandler = $module_handler;
     $this->parser = $parser;
+    if (!empty($this->config->get('environment'))) {
+      $environment = $this->config->get('environment');
+    }
     $options = [
       'auto_log_stacks' => $this->config->get('stack'),
       'curl_method' => 'async',
       'dsn' => $this->config->get('client_key'),
       'environment' => $environment,
-      'processorOptions' => [
-        'Raven_SanitizeDataProcessor' => [
-          'fields_re' => '/(SESS|pass|authorization|password|passwd|secret|password_confirmation|card_number|auth_pw)/i',
-        ],
-      ],
+      'processors' => ['Drupal\raven\Processor\SanitizeDataProcessor'],
       'timeout' => $this->config->get('timeout'),
       'trace' => $this->config->get('trace'),
+      'verify_ssl' => TRUE,
     ];
+
+    $ssl = $this->config->get('ssl');
+    // Verify against a CA certificate.
+    if ($ssl == 'ca_cert') {
+      $options['ca_cert'] = realpath($this->config->get('ca_cert'));
+    }
+    // Don't verify at all.
+    elseif ($ssl == 'no_verify_ssl') {
+      $options['verify_ssl'] = FALSE;
+    }
+
+    if (!empty($this->config->get('release'))) {
+      $options['release'] = $this->config->get('release');
+    }
     $this->moduleHandler->alter('raven_options', $options);
     try {
       $this->client = new Raven_Client($options);
@@ -91,6 +105,7 @@ class Raven implements LoggerInterface {
     if ($this->config->get('fatal_error_handler')) {
       $error_handler = new Raven_ErrorHandler($this->client);
       $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
+      register_shutdown_function([$this->client, 'onShutdown']);
     }
   }
 
@@ -118,14 +133,30 @@ class Raven implements LoggerInterface {
     $data['level'] = $levels[$level];
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
     $data['message'] = empty($message_placeholders) ? $message : strtr($message, $message_placeholders);
+    $data['timestamp'] = gmdate('Y-m-d\TH:i:s\Z', $context['timestamp']);
     $data['tags']['channel'] = $context['channel'];
     $data['extra']['link'] = $context['link'];
     $data['extra']['referer'] = $context['referer'];
     $data['extra']['request_uri'] = $context['request_uri'];
-    $data['extra']['timestamp'] = $context['timestamp'];
     $data['user']['id'] = $context['uid'];
     $data['user']['ip_address'] = $context['ip'];
     $stack = isset($context['backtrace']) ? $context['backtrace'] : NULL;
+
+    // Allow modules to alter or ignore this message.
+    $filter = [
+      'level' => $level,
+      'message' => $message,
+      'context' => $context,
+      'data' => &$data,
+      'stack' => &$stack,
+      'client' => $this->client,
+      'process' => TRUE,
+    ];
+    $this->moduleHandler->alter('raven_filter', $filter);
+    if (!$filter['process']) {
+      return;
+    }
+
     $this->client->capture($data, $stack);
   }
 

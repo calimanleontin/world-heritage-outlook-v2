@@ -576,6 +576,13 @@ class ComposerStaticInit08b3296ffc4122683e602b46e7e7d4b2
                 0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
             ),
         ),
+        'R' => 
+        array (
+            'Raven_' => 
+            array (
+                0 => __DIR__ . '/..' . '/sentry/sentry/lib',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 

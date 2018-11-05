@@ -1,11 +1,11 @@
 name: Raven
-description: Raven is an exception logging client for Sentry (getsentry.com).
+description: Raven is an exception logging client for Sentry (sentry.io).
 type: module
 # core: 8.x
 configure: raven.admin
 
-# Information added by Drupal.org packaging script on 2017-04-13
-version: '8.x-2.3'
+# Information added by Drupal.org packaging script on 2018-07-04
+version: '8.x-2.6'
 core: '8.x'
 project: 'raven'
-datestamp: 1492103346
+datestamp: 1530739725
