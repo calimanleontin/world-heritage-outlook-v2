@@ -313,6 +313,8 @@
 
 .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper,
 .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+    background: #ececec;
+    border-bottom: 1px solid rgb(230, 228, 223);
     height: 14px;
     overflow-y: hidden;
 }
