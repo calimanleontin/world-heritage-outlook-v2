@@ -1,0 +1,10 @@
+uuid: 2104f797-1c77-413a-af06-348da681b1b0
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.threats
+label: Threats
+targetEntityType: paragraph
+cache: true

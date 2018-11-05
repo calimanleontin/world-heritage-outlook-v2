@@ -320,3 +320,16 @@
 .js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: static;
 }
+
+.raw-paragraphs-tabs-wrapper .paragraphs-tabs {
+    display: none;
+}
+
+.raw-paragraphs-tabs-wrapper > .form-item {
+    position: relative;
+    margin-top: 0;
+}
+
+.raw-paragraphs-tabs-wrapper table {
+    margin-bottom: 0;
+}

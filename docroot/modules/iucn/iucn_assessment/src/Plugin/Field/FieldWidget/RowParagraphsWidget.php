@@ -209,6 +209,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $elements += $header;
     }
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
+    $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
     return $elements;
   }
 
