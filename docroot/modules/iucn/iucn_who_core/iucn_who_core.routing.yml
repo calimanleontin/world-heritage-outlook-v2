@@ -22,6 +22,14 @@ who.general_settings:
   requirements:
     _permission: 'administer site configuration'
 
+who.user_agreement_settings_form:
+  path: '/admin/config/who/user-agreement'
+  defaults:
+    _form: '\Drupal\iucn_who_core\Form\IucnUserAgreementSettingsForm'
+    _title: 'User Agreement Settings'
+  requirements:
+    _permission: 'administer site configuration'
+
 who.user-dashboard:
   path: '/admin/dashboard'
   defaults:
@@ -31,3 +39,12 @@ who.user-dashboard:
     _role: 'authenticated'
   options:
     _admin_route: TRUE
+
+who.user_agreement_form:
+  path: '/user-agreement'
+  defaults:
+    _form: '\Drupal\iucn_who_core\Form\IucnUserAgreementForm'
+    _title: 'User Agreement'
+  requirements:
+    _permission: 'access content'
+    _role: 'authenticated'
