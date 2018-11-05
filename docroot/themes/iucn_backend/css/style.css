@@ -133,7 +133,7 @@
     background-color: #ececec;
 }
 
-.field--widget-row-entity-reference-paragraphs .description {
+.horizontal-tabs-panes .description {
     position: relative;
     margin: 0;
     padding: 5px 5px 5px 24px;
@@ -142,7 +142,7 @@
     font-style: italic;
 }
 
-.field--widget-row-entity-reference-paragraphs .description:before {
+.horizontal-tabs-panes .description:before {
     display: block;
     position: absolute;
     top: 5px;
