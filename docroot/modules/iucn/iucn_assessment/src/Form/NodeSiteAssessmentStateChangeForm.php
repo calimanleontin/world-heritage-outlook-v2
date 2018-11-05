@@ -51,7 +51,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
     else {
       $form['field_coordinator']['#access'] = FALSE;
-      $form['field_assessor']['#access'] =  FALSE;
+      $form['field_assessor']['#access'] = FALSE;
       $form['field_reviewers']['#access'] = FALSE;
     }
   }

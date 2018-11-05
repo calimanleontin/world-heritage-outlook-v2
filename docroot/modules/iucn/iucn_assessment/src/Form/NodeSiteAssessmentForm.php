@@ -205,7 +205,10 @@ class NodeSiteAssessmentForm {
       $options = ['query' => ['tab' => $tab]];
     }
     if ($workflow_service->checkAssessmentAccess($node)->isAllowed()) {
-      if ($workflow_service->isAssessmentEditable($node)) {
+      if (!$node->isDefaultRevision()) {
+        $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
+      }
+      elseif ($workflow_service->isAssessmentEditable($node)) {
         $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
       }
       else {
