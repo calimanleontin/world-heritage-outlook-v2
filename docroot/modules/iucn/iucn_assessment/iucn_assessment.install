@@ -50,9 +50,9 @@ function iucn_assessment_update_8002() {
 /**
  * Delete old revisions.
  */
-function iucn_assessment_update_8003() {
-  drush_invoke_process('@self','iucn_assessment:delete-revisions');
-}
+//function iucn_assessment_update_8003() {
+//  drush_invoke_process('@self','iucn_assessment:delete-revisions');
+//}
 
 /**
  * Set "Published" status to all existing assessments.
@@ -66,6 +66,8 @@ function iucn_assessment_update_8004() {
   /** @var \Drupal\node\NodeInterface[] $nodes */
   $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
   foreach ($nodes as $node) {
-    $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+    if ($node->isPublished()) {
+      $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+    }
   }
 }
