@@ -313,6 +313,8 @@
 
 .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper,
 .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+    background: #ececec;
+    border-bottom: 1px solid rgb(230, 228, 223);
     height: 14px;
     overflow-y: hidden;
 }
@@ -323,4 +325,17 @@
 
 .js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: static;
+}
+
+.raw-paragraphs-tabs-wrapper .paragraphs-tabs {
+    display: none;
+}
+
+.raw-paragraphs-tabs-wrapper > .form-item {
+    position: relative;
+    margin-top: 0;
+}
+
+.raw-paragraphs-tabs-wrapper table {
+    margin-bottom: 0;
 }

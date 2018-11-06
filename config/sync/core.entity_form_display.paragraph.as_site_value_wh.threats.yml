@@ -1,0 +1,40 @@
+uuid: a55c262b-05fb-4b9b-8289-9f3ecb1f2fde
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.paragraph.threats
+    - field.field.paragraph.as_site_value_wh.field_as_description
+    - field.field.paragraph.as_site_value_wh.field_as_values_criteria
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_wh.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_wh
+id: paragraph.as_site_value_wh.threats
+targetEntityType: paragraph
+bundle: as_site_value_wh
+mode: threats
+content:
+  field_as_values_value:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  translation:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_as_description: true
+  field_as_values_criteria: true
+  field_as_values_curr_state: true
+  field_as_values_curr_text: true
+  field_as_values_curr_trend: true
+  status: true
+  uid: true

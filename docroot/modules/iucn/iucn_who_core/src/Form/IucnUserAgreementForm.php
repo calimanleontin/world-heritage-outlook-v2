@@ -66,8 +66,20 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
   public function __construct(AccountProxy $account, LanguageManagerInterface $languageManager, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->account = $account;
     $this->languageManager = $languageManager;
-    $this->config = $config_factory->get('user_agreement.settings');
+    $this->config = $config_factory->get('iucn_who_core.settings');
     $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('current_user'),
+      $container->get('language_manager'),
+      $container->get('config.factory'),
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
@@ -81,25 +93,12 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
-    $config = \Drupal::config('user_agreement.settings');
-    $nid = $config->get('user_agreement_node');
-    $agreed = FALSE;
-    $data = '';
-    if ($nid) {
-      $current_user = \Drupal::currentUser();
-      $uid = $current_user->id();
-      $user = User::load($uid);
-      if (!empty($user->field_accepted_agreement->value)) {
-        $agreed = TRUE;
-      }
-
-      $node = $this->entityTypeManager->getStorage('node')->load($nid);
-      if (!empty($node) && !empty($node->field_page_elements[0]->target_id)) {
-        $p = Paragraph::load($node->field_page_elements[0]->target_id);
-        $data = $p->field_content->value;
-      }
-    }
+    $config = \Drupal::config('iucn_who_core.settings');
+    $current_user = \Drupal::currentUser();
+    $user = User::load($current_user->id());
+    $agreed = !empty($user->field_accepted_agreement->value);
+    $data = $config->get('user_agreement_content');
+    $data = !empty($data['value']) ? $data['value'] : '';
     $agree_checkbox = $config->get('user_agreement_label_checkbox');
     $agree_submit = $config->get('user_agreement_label_button');
 
@@ -108,7 +107,6 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
       '#tree' => FALSE,
       'user_agreement_data' => [
         '#type'          => 'textarea',
-        '#title'         => t('User Agreement'),
         '#default_value' => PlainTextOutput::renderFromHtml($data),
         '#value'         => PlainTextOutput::renderFromHtml($data),
         '#rows'          => 10,
@@ -136,10 +134,8 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     return $form;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Nothing to do here.
   }
 
   /**
@@ -148,28 +144,13 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = \Drupal::config('user_agreement.settings');
-    $nid = $config->get('user_agreement_node');
-    if ($nid) {
-      $uid = $this->account->id();
-      $user = User::load($uid);
-      if (empty($user->field_accepted_agreement->value)) {
-        $user->set('field_accepted_agreement', date('Y-m-d\TH:i:s', time()));
-        $user->save();
-      }
+    $uid = $this->account->id();
+    $user = User::load($uid);
+    if (empty($user->field_accepted_agreement->value)) {
+      $user->set('field_accepted_agreement', date('Y-m-d\TH:i:s', time()));
+      $user->save();
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('current_user'),
-      $container->get('language_manager'),
-      $container->get('config.factory'),
-      $container->get('entity_type.manager')
-    );
+    $form_state->setRedirect('<front>');
   }
 
 }

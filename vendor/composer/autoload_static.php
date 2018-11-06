@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514
+class ComposerStaticInita7010543fd7f8c191f6c0ad3e5efec05
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -574,6 +574,13 @@ class ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514
             'Sabberworm\\CSS' => 
             array (
                 0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
+            ),
+        ),
+        'R' => 
+        array (
+            'Raven_' => 
+            array (
+                0 => __DIR__ . '/..' . '/sentry/sentry/lib',
             ),
         ),
         'P' => 
@@ -1204,10 +1211,10 @@ class ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitac9550fbbcaab27b1ed1c9b8d17eb514::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita7010543fd7f8c191f6c0ad3e5efec05::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita7010543fd7f8c191f6c0ad3e5efec05::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInita7010543fd7f8c191f6c0ad3e5efec05::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInita7010543fd7f8c191f6c0ad3e5efec05::$classMap;
 
         }, null, ClassLoader::class);
     }
