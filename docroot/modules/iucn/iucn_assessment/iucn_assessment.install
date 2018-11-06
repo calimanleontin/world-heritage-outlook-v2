@@ -60,14 +60,14 @@ function iucn_assessment_update_8002() {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-function iucn_assessment_update_8004() {
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  /** @var \Drupal\node\NodeInterface[] $nodes */
-  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
-  foreach ($nodes as $node) {
-    if ($node->isPublished()) {
-      $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
-    }
-  }
-}
+//function iucn_assessment_update_8004() {
+//  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+//  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+//  /** @var \Drupal\node\NodeInterface[] $nodes */
+//  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
+//  foreach ($nodes as $node) {
+//    if ($node->isPublished()) {
+//      $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+//    }
+//  }
+//}
