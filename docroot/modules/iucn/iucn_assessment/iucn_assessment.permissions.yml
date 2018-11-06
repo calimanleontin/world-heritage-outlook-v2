@@ -1,6 +1,9 @@
 assign users to assessments:
   title: 'Assign users to assessments'
 
+assign coordinator to assessment:
+  title: 'Assign coordinator to assessment'
+
 assign any coordinator to assessment:
   title: 'Assign any coordinator to assessment'
 

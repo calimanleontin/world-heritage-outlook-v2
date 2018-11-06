@@ -9,6 +9,7 @@ is_admin: null
 permissions:
   - 'access user profiles'
   - 'administer users'
+  - 'assign coordinator to assessment'
   - 'assign users to assessments'
   - 'create assessment workflow_transition'
   - 'create content unpublished'
