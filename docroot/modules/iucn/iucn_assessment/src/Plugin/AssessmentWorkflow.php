@@ -626,9 +626,8 @@ class AssessmentWorkflow {
    *   Do not use in hook_node_presave().
    */
   public function forceAssessmentState(NodeInterface $assessment, $new_state, $execute = TRUE) {
-    $field_name = 'field_state';
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
-    $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
+    $transition = WorkflowTransition::create([$old_sid, 'field_name' => 'field_state']);
     $transition->setValues($new_state, $this->currentUser->id() ?: 1, time(), '', TRUE);
     $transition->setTargetEntity($assessment);
     $transition->force(TRUE);

@@ -12,6 +12,7 @@ dependencies:
     - node
     - options
     - user
+    - views_bulk_operations
     - workflow
 _core:
   default_config_hash: tS8PbpJX90aRFC3-UTgXzdqkq7_2frk2pz4TMijEebM
@@ -909,7 +910,7 @@ display:
         - 'config:field.storage.node.field_state'
   page_2:
     display_options:
-      path: admin/content/node
+      path: admin/content/assessments
       menu:
         type: tab
         title: Assessments
@@ -1183,14 +1184,14 @@ display:
         groups:
           1: AND
       fields:
-        node_bulk_form:
-          id: node_bulk_form
-          table: node
-          field: node_bulk_form
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Node operations bulk form'
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -1223,7 +1224,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1231,12 +1232,36 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          batch: true
+          batch_size: 1
+          form_step: true
+          buttons: false
+          clear_on_exposed: 0
           action_title: Action
-          include_exclude: include
           selected_actions:
-            - node_publish_action
-          entity_type: node
-          plugin_id: node_bulk_form
+            entity_print_download_action: 0
+            node_assign_owner_action: 0
+            node_unpublish_by_keyword_action: 0
+            node_promote_action: 0
+            node_make_sticky_action: 0
+            node_make_unsticky_action: 0
+            node_save_action: 0
+            node_unpublish_action: 0
+            node_unpromote_action: 0
+            node_publish_action: 0
+            views_bulk_operations_delete_entity: 0
+            workflow_node_next_state_action: 0
+            workflow_node_given_state_action: 0
+            publish_site_assessment: publish_site_assessment
+            pathauto_update_alias: 0
+            'entity:delete_action:node': 0
+            'entity:publish_action:node': 0
+            'entity:save_action:node': 0
+            'entity:unpublish_action:node': 0
+          preconfiguration:
+            publish_site_assessment:
+              label_override: ''
+          plugin_id: views_bulk_operations_bulk_form
         title:
           id: title
           table: node_field_data
