@@ -42,6 +42,7 @@ class NodeSiteAssessmentStateChangeForm {
         '_none' => t('- Select -'),
         $currentUser->id() => $currentUser->getAccountName(),
       ];
+      $form['field_coordinator']['widget']['#default_value'] = $currentUser->id();
     }
 
     if ($currentUser->hasPermission('assign users to assessments')) {
