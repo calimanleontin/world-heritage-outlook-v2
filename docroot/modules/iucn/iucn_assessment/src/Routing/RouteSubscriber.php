@@ -39,7 +39,12 @@ class RouteSubscriber extends RouteSubscriberBase {
       ));
     }
 
-
+    $route = $collection->get('geysir.modal.add_form_first');
+    if ($route) {
+      $route->setDefaults(array(
+        '_controller' => '\Drupal\iucn_assessment\Controller\IucnGeysirModalController::addFirst',
+      ));
+    }
   }
 
 }
