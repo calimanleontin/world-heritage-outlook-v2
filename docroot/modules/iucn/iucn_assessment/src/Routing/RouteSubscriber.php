@@ -31,6 +31,15 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setRequirement('_access', 'FALSE');
     }
+
+    $route = $collection->get('geysir.modal.edit_form');
+    if ($route) {
+      $route->setDefaults(array(
+        '_controller' => '\Drupal\iucn_assessment\Controller\IucnGeysirModalController::edit',
+      ));
+    }
+
+
   }
 
 }
