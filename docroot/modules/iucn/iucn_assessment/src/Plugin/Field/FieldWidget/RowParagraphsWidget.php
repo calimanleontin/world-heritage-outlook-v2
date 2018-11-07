@@ -423,13 +423,23 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          $value = $paragraph->get($field_name)->entity->label();
-          /** @var \Drupal\Core\Entity\Entity $entity */
-          $entity = $paragraph->get($field_name)->entity;
-          if (!$this->isHiddenTerm($entity)) {
-            $label = $this->getEntityLabel($entity);
-            $summary[$field_name]['value'] = $label;
+          $entities = $paragraph->get($field_name)->getValue();
+          $target_type = $field_definition->getFieldStorageDefinition()->getSetting('target_type');
+          $ids = array_column($entities, 'target_id');
+          $labels = [];
+          foreach ($ids as $id) {
+            $entity = \Drupal::entityTypeManager()->getStorage($target_type)->load($id);
+            if ($target_type == 'taxonomy_term') {
+              if (!$this->isHiddenTerm($entity)) {
+                $label = $this->getEntityLabel($entity);
+              }
+            }
+            else {
+              $label = $entity->label();
+            }
+            $labels[] = $label;
           }
+          $value = !empty($labels) ? implode(', ', $labels) : NULL;
         }
       }
 
