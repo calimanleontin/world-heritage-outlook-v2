@@ -186,7 +186,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'parent_entity_bundle' => 'site_assessment',
         'parent_entity_revision' => $this->parentNode->getRevisionId(),
         'field' => $field_name,
-        'field_wrapper_id' => 'edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
         'delta' => $delta,
         'paragraph' => $paragraphs_entity->id(),
         'paragraph_revision' => $paragraphs_entity->getRevisionId(),
