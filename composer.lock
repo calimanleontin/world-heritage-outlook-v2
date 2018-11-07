@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "403d2b1f9db141cc1edde55f6d007a72",
+    "content-hash": "a21a66dcec0c3a93b004c2f7abd1c4e1",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -4902,6 +4902,62 @@
             }
         },
         {
+            "name": "drupal/geysir",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/geysir",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/geysir-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "652c0a04e4f6af26b59db705ab54a9ba62eef369"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/paragraphs": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1536598008",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "AMPLEXOR",
+                    "homepage": "https://www.drupal.org/user/213049"
+                },
+                {
+                    "name": "jover",
+                    "homepage": "https://www.drupal.org/user/310720"
+                },
+                {
+                    "name": "vollepeer",
+                    "homepage": "https://www.drupal.org/user/628398"
+                }
+            ],
+            "description": "Enhancing the Drupal Author Experience.",
+            "homepage": "https://www.drupal.org/project/geysir",
+            "support": {
+                "source": "http://cgit.drupalcode.org/geysir"
+            }
+        },
+        {
             "name": "drupal/google_analytics",
             "version": "2.3.0",
             "source": {
@@ -5977,6 +6033,54 @@
             "homepage": "https://www.drupal.org/project/paragraphs",
             "support": {
                 "source": "http://cgit.drupalcode.org/paragraphs"
+            }
+        },
+        {
+            "name": "drupal/paragraphs_edit",
+            "version": "2.0.0-alpha6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/paragraphs_edit",
+                "reference": "8.x-2.0-alpha6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/paragraphs_edit-8.x-2.0-alpha6.zip",
+                "reference": "8.x-2.0-alpha6",
+                "shasum": "30ffe95b9160eedfa5aafc1e7a65e252d67d8b4e"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/paragraphs": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha6",
+                    "datestamp": "1509009544",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "casey",
+                    "homepage": "https://www.drupal.org/user/32403"
+                }
+            ],
+            "description": "Allows users to edit/clone and delete paragraphs.",
+            "homepage": "https://www.drupal.org/project/paragraphs_edit",
+            "support": {
+                "source": "http://cgit.drupalcode.org/paragraphs_edit"
             }
         },
         {
@@ -7273,7 +7377,8 @@
             "homepage": "https://www.drupal.org/project/string_field_formatter",
             "support": {
                 "source": "http://cgit.drupalcode.org/string_field_formatter"
-            }
+            },
+            "time": "2018-02-22T14:59:18+00:00"
         },
         {
             "name": "drupal/token",
@@ -12976,6 +13081,7 @@
         "drupal/geofield": 15,
         "drupal/ief_table_view_mode": 10,
         "drupal/inline_entity_form": 5,
+        "drupal/paragraphs_edit": 15,
         "drupal/purge": 10,
         "drupal/search_api_autocomplete": 15,
         "drupal/search_api_sorts": 10,
