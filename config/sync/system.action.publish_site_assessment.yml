@@ -1,0 +1,11 @@
+uuid: 64deb040-288e-4d63-ab2c-6ce2444ca040
+langcode: en
+status: true
+dependencies:
+  module:
+    - iucn_assessment
+id: publish_site_assessment
+label: 'Publish approved assessments'
+type: node
+plugin: publish_site_assessment
+configuration: {  }

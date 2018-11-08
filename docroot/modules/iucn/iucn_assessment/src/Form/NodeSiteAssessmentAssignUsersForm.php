@@ -11,15 +11,22 @@ use Drupal\node\NodeInterface;
 class NodeSiteAssessmentAssignUsersForm {
 
   public static function access(AccountInterface $account, NodeInterface $node) {
-    $isUserAssignmentState = !empty($node->field_state->value) && in_array($node->field_state->value, AssessmentWorkflow::USER_ASSIGNMENT_STATES);
-    $coordinator = !empty($node->field_coordinator->target_id) ? $node->field_coordinator->target_id : -1;
-    if ($isUserAssignmentState == FALSE) {
+    if ($node->bundle() != 'site_assessment') {
       $access = AccessResult::forbidden();
     }
     else {
-      $access = !empty($coordinator)
-        ? AccessResult::allowedIf($account->hasPermission('edit assessment in any state') || $coordinator == $account->id())
-        : AccessResult::allowedIfHasPermission($account, 'assign users to assessments');
+      $state = $node->field_state->value;
+      $isUserAssignmentState = !empty($node->field_state->value) && in_array($state, AssessmentWorkflow::USER_ASSIGNMENT_STATES);
+      $coordinator = !empty($node->field_coordinator->target_id) ? $node->field_coordinator->target_id : -1;
+      if ($isUserAssignmentState == FALSE) {
+        $access = AccessResult::forbidden();
+      }
+      else {
+        $access = !empty($coordinator)
+          ? AccessResult::allowedIf($account->hasPermission('edit assessment in any state')
+            || ($coordinator == $account->id() && $state != AssessmentWorkflow::STATUS_NEW))
+          : AccessResult::allowedIfHasPermission($account, 'assign users to assessments');
+      }
     }
     $access->addCacheableDependency($node);
     return $access;

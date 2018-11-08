@@ -62,6 +62,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'form_display_mode' => 'default',
       'default_paragraph_type' => '',
       'features' => [],
+      'empty_message' => '',
     ];
   }
 
@@ -79,6 +80,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#default_value' => $this->getSetting('show_numbers'),
       '#required' => TRUE,
     ];
+    $elements['empty_message'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Empty message'),
+      '#description' => $this->t('Show a message when there are no paragraphs.'),
+      '#default_value' => $this->getSetting('empty_message'),
+    ];
+
     return $elements;
   }
 
@@ -106,7 +114,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $summary = parent::settingsSummary();
     $options = $this->getSettingOptions('show_numbers');
     $show_numbers = $options[$this->getSetting('show_numbers')];
+    $empty_message = $this->getSetting('empty_message');
+
     $summary[] = $this->t('Show numbers: @show_numbers', ['@show_numbers' => $show_numbers]);
+    if (!empty($empty_message)) {
+      $summary[] = $this->t('Empty message: @empty_message', ['@empty_message' => $empty_message]);
+    }
     return $summary;
   }
 
@@ -207,6 +220,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
         ],
       ];
       $elements += $header;
+    }
+    else {
+      $empty_message = $this->getSetting('empty_message');
+      if (!empty($empty_message)) {
+        $elements['empty_message'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['paragraph-summary-component', 'paragraph-empty']],
+          'data' => ['#markup' => $empty_message],
+        ];
+      }
     }
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
@@ -401,13 +424,23 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          $value = $paragraph->get($field_name)->entity->label();
-          /** @var \Drupal\Core\Entity\Entity $entity */
-          $entity = $paragraph->get($field_name)->entity;
-          if (!$this->isHiddenTerm($entity)) {
-            $label = $this->getEntityLabel($entity);
-            $summary[$field_name]['value'] = $label;
+          $entities = $paragraph->get($field_name)->getValue();
+          $target_type = $field_definition->getFieldStorageDefinition()->getSetting('target_type');
+          $ids = array_column($entities, 'target_id');
+          $labels = [];
+          foreach ($ids as $id) {
+            $entity = \Drupal::entityTypeManager()->getStorage($target_type)->load($id);
+            if ($target_type == 'taxonomy_term') {
+              if (!$this->isHiddenTerm($entity)) {
+                $label = $this->getEntityLabel($entity);
+              }
+            }
+            else {
+              $label = $entity->label();
+            }
+            $labels[] = $label;
           }
+          $value = !empty($labels) ? implode(', ', $labels) : NULL;
         }
       }
 

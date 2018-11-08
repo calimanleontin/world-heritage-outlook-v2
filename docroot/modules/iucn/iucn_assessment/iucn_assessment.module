@@ -557,8 +557,9 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
         continue;
       }
+
       /** @var \Drupal\node\NodeInterface $entity */
-      if (!$transition->isAllowed($current_user) || !$workflow_service->checkAssessmentAccess($entity)->isAllowed()) {
+      if (!$transition->isAllowed($current_user) || !$workflow_service->checkAssessmentAccess($entity, 'change_state')->isAllowed()) {
         continue;
       }
       $label = $transition->label();

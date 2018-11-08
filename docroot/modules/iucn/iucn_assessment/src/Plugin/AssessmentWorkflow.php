@@ -98,17 +98,14 @@ class AssessmentWorkflow {
     if ($node->bundle() != 'site_assessment') {
       return AccessResult::neutral();
     }
-    if ($action == 'edit' || $action == 'change_state') {
+    $access = AccessResult::neutral();
+    $state = $node->field_state->value ?: self::STATUS_CREATION;
+    $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
+    $accountIsAssessor = $node->field_assessor->target_id === $account->id();
+    if ($action == 'edit') {
       if ($account->hasPermission('edit assessment in any state')) {
         return AccessResult::allowed();
       }
-      elseif ($action == 'edit' && !$this->isAssessmentEditable($node)) {
-        return AccessResult::forbidden();
-      }
-
-      $state = $node->field_state->value ?: self::STATUS_CREATION;
-      $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
-      $accountIsAssessor = $node->field_assessor->target_id === $account->id();
 
       switch ($state) {
         case self::STATUS_CREATION:
@@ -148,10 +145,20 @@ class AssessmentWorkflow {
         default:
           $access = AccessResult::forbidden();
       }
-      $access->addCacheableDependency($node);
-      return $access;
     }
-    return AccessResult::neutral();
+    elseif ($action == 'change_state') {
+      switch ($state) {
+        case self::STATUS_CREATION:
+        case self::STATUS_NEW:
+          $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
+          break;
+
+        default:
+          return $this->checkAssessmentAccess($node, 'edit', $account);
+      }
+    }
+    $access->addCacheableDependency($node);
+    return $access;
   }
 
   /**
@@ -619,9 +626,8 @@ class AssessmentWorkflow {
    *   Do not use in hook_node_presave().
    */
   public function forceAssessmentState(NodeInterface $assessment, $new_state, $execute = TRUE) {
-    $field_name = 'field_state';
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
-    $transition = WorkflowTransition::create([$old_sid, 'field_name' => $field_name]);
+    $transition = WorkflowTransition::create([$old_sid, 'field_name' => 'field_state']);
     $transition->setValues($new_state, $this->currentUser->id() ?: 1, time(), '', TRUE);
     $transition->setTargetEntity($assessment);
     $transition->force(TRUE);
@@ -659,24 +665,6 @@ class AssessmentWorkflow {
    */
   public function getAssessmentRevision($vid) {
     return $this->nodeStorage->loadRevision($vid);
-  }
-
-  /**
-   * Checks if an assessment is editable.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   *
-   * @return bool
-   *   Whether or not the assessment is editable.
-   */
-  public function isAssessmentEditable(NodeInterface $node) {
-    $state = $node->field_state->value;
-    if (in_array($state, [self::STATUS_PUBLISHED, self::STATUS_NEW, self::STATUS_FINISHED_REVIEWING]) ||
-      ($state == self::STATUS_UNDER_REVIEW && $node->isDefaultRevision())) {
-      return FALSE;
-    }
-    return TRUE;
   }
 
 }
