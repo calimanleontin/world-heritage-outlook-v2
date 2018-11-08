@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_who_diff\Controller;
 
+use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
@@ -47,14 +48,18 @@ class DiffModalFormController extends ControllerBase {
   /**
    * Callback for opening the modal form.
    */
-  public function openModalForm() {
+  public function openModalForm(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
+    $triggering_element = $form_state->getTriggeringElement();
+    preg_match('/(.*)_(\d+)_diff/', $triggering_element['#name'], $matches);
+    $field_name = $matches[1];
+    $delta = $matches[2];
 
     // Get the modal form using the form builder.
     $modal_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_diff\Form\IucnDiffModalForm');
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand('Diff Modal Form', $modal_form, ['width' => '1200']));
+    $response->addCommand(new OpenModalDialogCommand('See differences', $modal_form, ['width' => '1200']));
     return $response;
   }
 

@@ -248,6 +248,11 @@ class AssessmentWorkflow {
       $this->appendDiffToFieldSettings($node, $under_evaluation_revision, FALSE);
     }
 
+    // After leaving the ready for review state, we no longer need the diff.
+    if ($state != $original_state && $original_state == self::STATUS_READY_FOR_REVIEW) {
+      $this->clearKeyFromFieldSettings($node, 'diff', FALSE);
+    }
+
     // Check if the state was changed.
     if ($original_state != $state) {
       // When using $node->setNewRevision(), editing paragraphs makes
@@ -291,7 +296,10 @@ class AssessmentWorkflow {
     $diff = $this->diffController->compareRevisions($compare->getRevisionId(), $node->getRevisionId());
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
-    $field_settings['diff'] = $diff;
+    if (empty($field_settings['diff'])) {
+      $field_settings['diff'] = [];
+    }
+    $field_settings['diff'][$compare->getRevisionId()] = $diff;
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
     if ($save) {
@@ -665,6 +673,28 @@ class AssessmentWorkflow {
    */
   public function getAssessmentRevision($vid) {
     return $this->nodeStorage->loadRevision($vid);
+  }
+
+  /**
+   * Clear a key from an assessment's field settings.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param string $key
+   *   The key to be deleted.
+   * @param bool $save
+   *   Save the node or not.
+   */
+  public function clearKeyFromFieldSettings(NodeInterface $node, $key, $save = TRUE) {
+    $settings = $node->field_settings->value;
+    $settings = json_decode($settings, TRUE);
+    if (!empty($settings[$key])) {
+      unset($settings[$key]);
+    }
+    $node->field_settings->value = json_encode($settings);
+    if ($save) {
+      $node->save();
+    }
   }
 
 }

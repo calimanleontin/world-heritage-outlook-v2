@@ -50,6 +50,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
   protected $parentNode;
 
   /**
+   * The diff array.
+   *
+   * @var array
+   */
+  protected $diff;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -130,7 +137,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
-    $this->parentNode = $form_state->getFormObject()->getEntity();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -139,11 +145,19 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_name = $this->fieldDefinition->getName();
     $parents = $element['#field_parents'];
 
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
-    $paragraphs_entity = NULL;
     $widget_state = static::getWidgetState($parents, $field_name, $form_state);
 
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
+
+    $show_diff = FALSE;
+    foreach($this->diff as $vid => $diff) {
+      if (array_keys($diff)[0] == $paragraphs_entity->id()) {
+        $show_diff = TRUE;
+        break;
+      }
+    }
+
     $components = $this->getSummaryComponents($paragraphs_entity);
     $containers = $this->getSummaryContainers($components);
 
@@ -151,30 +165,30 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
     $element['top']['actions']['#suffix'] = '</div>';
 
-    if (!empty($element['top']['actions']['actions']['edit_button'])) {
+    if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
       // Create the custom 'Diff' button
       // @todo
-      //      $element['top']['actions']['actions']['diff_button'] = [
-      //        '#type' => 'submit',
-      //        '#value' => $this->t('Diff'),
-      //        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
-      //        '#weight' => 2,
-      //        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
-      //        '#ajax' => [
-      //          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
-      //          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
-      //        ],
-      //        '#access' => $paragraphs_entity->access('update'),
-      //        '#paragraphs_mode' => 'diff',
-      //        '#attributes' => [
-      //          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
-      //          'title' => $this->t('Diff'),
-      //        ],
-      //        '#attached' => [
-      //          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
-      //        ],
-      //        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
-      //      ];
+      $element['top']['actions']['actions']['diff_button'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('See differences '),
+        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+        '#weight' => 2,
+        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+        '#ajax' => [
+          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
+          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+        ],
+        '#access' => $paragraphs_entity->access('update'),
+        '#paragraphs_mode' => 'diff',
+        '#attributes' => [
+          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+          'title' => $this->t('See differences'),
+        ],
+        '#attached' => [
+          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form'],
+        ],
+        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button',
+      ];
     }
 
     // Make the edit button open a modal.
@@ -229,7 +243,15 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * {@inheritdoc}
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
+    $this->parentNode = $form_state->getFormObject()->getEntity();
+    $settings = json_decode($this->parentNode->field_settings->value, TRUE);
+    $this->diff = !empty($settings['diff']) ? $settings['diff'] : NULL;
+
     $elements = parent::formMultipleElements($items, $form, $form_state);
+    $field_settings_json = $this->parentNode->field_settings->value;
+    $field_settings = json_decode($field_settings_json, TRUE);
+    $diff = $field_settings['diff'];
+
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
