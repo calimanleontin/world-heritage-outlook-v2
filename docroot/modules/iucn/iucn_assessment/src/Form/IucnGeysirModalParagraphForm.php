@@ -54,7 +54,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
         $route_match->getParameter('parent_entity_revision');
       $field_name = $route_match->getParameter('field');
       $field_wrapper_id = $route_match->getParameter('field_wrapper_id');
-      $parent_entity_revision = \Drupal::entityManager()
+      $parent_entity_revision = \Drupal::entityTypeManager()
         ->getStorage($parent_entity_type)
         ->loadRevision($parent_entity_revision);
 

@@ -4,6 +4,8 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\FieldConfigStorage;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\geysir\Controller\GeysirModalController;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -37,12 +39,10 @@ class IucnGeysirModalController extends GeysirModalController {
    * {@inheritdoc}
    */
   protected function getParagraphTitle($parent_entity_type, $parent_entity_bundle, $field) {
-    $parent_field_settings = \Drupal::entityTypeManager()
-      ->getStorage('entity_form_display')
-      ->load($parent_entity_type . '.' . $parent_entity_bundle . '.' . 'default')
-      ->getComponent($field);
-
-    $type = ParagraphsType::load($parent_field_settings['settings']['default_paragraph_type']);
+    $target_paragraph = FieldConfig::loadByName($parent_entity_type, $parent_entity_bundle, $field)
+      ->getSetting('handler_settings')['target_bundles'];
+    $target_paragraph = reset($target_paragraph);
+    $type = ParagraphsType::load($target_paragraph);
 
     return $type->label();
   }
