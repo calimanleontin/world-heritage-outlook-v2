@@ -6,6 +6,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Url;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -157,13 +158,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
     // We should show the diff if the paragraph id appears in the diff array
     // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
-    if (!empty($this->diff)) {
-      foreach ($this->diff as $vid => $diff) {
-        if (in_array($paragraphs_entity->id(), array_keys($diff))) {
-          foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
-            if (in_array($diff_field, array_keys($containers))) {
-              $show_diff = TRUE;
-              break;
+    if (in_array($this->parentNode->field_state->value, [
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+    ])) {
+      if (!empty($this->diff)) {
+        foreach ($this->diff as $vid => $diff) {
+          if (in_array($paragraphs_entity->id(), array_keys($diff))) {
+            foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
+              if (in_array($diff_field, array_keys($containers))) {
+                $show_diff = TRUE;
+                break;
+              }
             }
           }
         }
@@ -179,7 +185,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       // @todo
       $element['top']['actions']['actions']['diff_button'] = [
         '#type' => 'submit',
-        '#value' => $this->t('See differences '),
+        '#value' => $this->t('See differences'),
         '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff_' . $paragraphs_entity->id(),
         '#weight' => 2,
         '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
