@@ -326,3 +326,21 @@
 .js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: static;
 }
+
+.paragraph-deleted-row,
+.paragraph-deleted-row:hover {
+    /*background-color: orangered;*/
+    background:
+        linear-gradient(to top right,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) calc(50% - 0.8px),
+        rgba(0,0,0,1) 50%,
+        rgba(0,0,0,0) calc(50% + 0.8px),
+        rgba(0,0,0,0) 100%) !important;
+    background-color: #d76361 !important;
+}
+
+.paragraph-new-row,
+.paragraph-new-row .paragraphs-actions {
+    background-color: #62c958 !important;
+}

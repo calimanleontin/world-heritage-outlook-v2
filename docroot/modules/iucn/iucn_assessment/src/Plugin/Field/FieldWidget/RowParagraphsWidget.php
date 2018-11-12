@@ -7,6 +7,8 @@ use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -238,21 +240,44 @@ class RowParagraphsWidget extends ParagraphsWidget {
     ];
 
     $element['top']['summary'] = $containers;
-    $count = count($containers) + 1;
+    $count = $this->calculateColumnCount($components) + 1;
+
+    $this->colCount = $count;
+
+    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      if ($this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
+        $element['top']['#attributes']['class'][] = "paragraph-new-row";
+      }
+    }
+
+
+    $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $element['#paragraph_id'] = $paragraphs_entity->id();
+    $this->paragraphsEntity = $paragraphs_entity;
+    return $element;
+  }
+
+  public function isNewParagraph(NodeInterface $node, $field_name, $paragraph_id) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $current_revision = $this->parentNode;
+    $under_ev_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    if (empty($under_ev_revision)) {
+      return FALSE;
+    }
+    return !in_array($paragraph_id, array_column($under_ev_revision->get($field_name)->getValue(), 'target_id'));
+  }
+
+  public function calculateColumnCount(array $components) {
+    $count = count($components);
 
     foreach ($components as $key => $component) {
       if (!empty($component['span']) && $component['span'] == 2) {
         $count++;
       }
     }
-
-    $this->colCount = $count;
-
-    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
-    $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $element['#paragraph_id'] = $paragraphs_entity->id();
-    $this->paragraphsEntity = $paragraphs_entity;
-    return $element;
+    return $count;
   }
 
   /**
@@ -338,7 +363,45 @@ class RowParagraphsWidget extends ParagraphsWidget {
     ];
 
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
+
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      $this->appendDeletedParagraphs($elements, $field_name);
+    }
+
     return $elements;
+  }
+
+  public function appendDeletedParagraphs(&$elements, $field_name) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $current_revision = $this->parentNode;
+    $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
+    $under_ev_revision_paragraphs = array_column($under_evaluation_revision->get($field_name)->getValue(), 'target_id');
+    $deleted_paragraphs = array_diff($under_ev_revision_paragraphs, $current_revision_paragraphs);
+    if (!empty($deleted_paragraphs)) {
+      foreach ($deleted_paragraphs as $deleted_paragraph) {
+        $components = $this->getSummaryComponents(Paragraph::load($deleted_paragraph));
+        $containers = $this->getSummaryContainers($components);
+        $column_count = $this->calculateColumnCount($components) + 1;
+        $elements[] = [
+          '#type' => 'container',
+          'top' => ['summmary' => $containers],
+          'actions' => [
+            '#type' => 'container',
+          ],
+          '#attributes' => [
+            'class' => [
+              'paragraph-top',
+              'paragraph-top-add-above',
+              "paragraph-top-col-$column_count",
+              'paragraph-deleted',
+              'paragraph-no-tabledrag',
+            ],
+          ],
+        ];
+      }
+    }
   }
 
   /**
