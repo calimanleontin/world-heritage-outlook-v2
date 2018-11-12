@@ -151,10 +151,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
 
     $show_diff = FALSE;
-    foreach($this->diff as $vid => $diff) {
-      if (array_keys($diff)[0] == $paragraphs_entity->id()) {
-        $show_diff = TRUE;
-        break;
+    if (!empty($this->diff)) {
+      foreach($this->diff as $vid => $diff) {
+        if (array_keys($diff)[0] == $paragraphs_entity->id()) {
+          $show_diff = TRUE;
+          break;
+        }
       }
     }
 
@@ -171,7 +173,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $element['top']['actions']['actions']['diff_button'] = [
         '#type' => 'submit',
         '#value' => $this->t('See differences '),
-        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
+        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff_' . $paragraphs_entity->id(),
         '#weight' => 2,
         '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
         '#ajax' => [
@@ -235,6 +237,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
     $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
     return $element;
   }
@@ -250,7 +253,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $elements = parent::formMultipleElements($items, $form, $form_state);
     $field_settings_json = $this->parentNode->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
-    $diff = $field_settings['diff'];
+    $diff = !empty($field_settings['diff']) ? $field_settings['diff'] : NULL;
 
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
