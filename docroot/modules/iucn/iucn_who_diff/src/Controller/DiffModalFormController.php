@@ -109,6 +109,9 @@ class DiffModalFormController extends ControllerBase {
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
+        if (empty($row['top']['summary'][$diff_field]['data'])) {
+          continue;
+        }
         $diffs = reset(reset($diff[$paragraph_id]['diff'][$diff_field]));
         $diff_rows = [];
         for ($i = 0; $i < count($diffs); $i += 2) {

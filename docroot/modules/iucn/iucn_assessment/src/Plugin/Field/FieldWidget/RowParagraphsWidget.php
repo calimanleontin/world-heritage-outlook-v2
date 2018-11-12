@@ -150,18 +150,25 @@ class RowParagraphsWidget extends ParagraphsWidget {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
 
+    $components = $this->getSummaryComponents($paragraphs_entity);
+    $containers = $this->getSummaryContainers($components);
+
+    // Check if we need to show the diff for a paragraph.
+    // We should show the diff if the paragraph id appears in the diff array
+    // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
     if (!empty($this->diff)) {
-      foreach($this->diff as $vid => $diff) {
-        if (array_keys($diff)[0] == $paragraphs_entity->id()) {
-          $show_diff = TRUE;
-          break;
+      foreach ($this->diff as $vid => $diff) {
+        if (in_array($paragraphs_entity->id(), array_keys($diff))) {
+          foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
+            if (in_array($diff_field, array_keys($containers))) {
+              $show_diff = TRUE;
+              break;
+            }
+          }
         }
       }
     }
-
-    $components = $this->getSummaryComponents($paragraphs_entity);
-    $containers = $this->getSummaryContainers($components);
 
     $element['top']['actions']['#weight'] = 9999;
     $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
