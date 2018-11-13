@@ -18,6 +18,9 @@ function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\C
     return;
   }
   $assessment = $form_state->getFormObject()->getEntity();
+  if (!$assessment instanceof \Drupal\paragraphs\ParagraphInterface) {
+    return;
+  }
   $assessment_year = $assessment->field_as_cycle->value;
   $options = &$element['#options'];
   $removed_tids = [];

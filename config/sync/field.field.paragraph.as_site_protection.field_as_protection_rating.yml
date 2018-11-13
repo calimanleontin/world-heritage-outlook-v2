@@ -6,13 +6,21 @@ dependencies:
     - field.storage.paragraph.field_as_protection_rating
     - paragraphs.paragraphs_type.as_site_protection
     - taxonomy.vocabulary.assessment_protection_rating
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_protection.field_as_protection_rating
 field_name: field_as_protection_rating
 entity_type: paragraph
 bundle: as_site_protection
 label: Rating
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
