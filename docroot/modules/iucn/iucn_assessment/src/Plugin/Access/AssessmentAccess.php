@@ -6,6 +6,7 @@ use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -34,6 +35,14 @@ class AssessmentAccess implements ContainerInjectionInterface {
       $node = $this->nodeStorage->loadRevision($node_revision);
     }
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
+  }
+
+  public function assessmentParagraphEditAccess(AccountInterface $account, $parent_entity_revision) {
+    $node_revision = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadRevision($parent_entity_revision);
+    $node = Node::load($node_revision->id());
+    return $this->assessmentEditAccess($account, $node, $parent_entity_revision);
   }
 
   public function assessmentStateChangeAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {

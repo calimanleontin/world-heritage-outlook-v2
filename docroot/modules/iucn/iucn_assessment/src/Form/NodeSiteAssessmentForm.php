@@ -232,11 +232,24 @@ class NodeSiteAssessmentForm {
   public static function hideParagraphsActions(array &$form) {
     $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
     foreach ($read_only_paragraph_fields as $field) {
-      $form[$field]['widget']['add_more']['#access'] = FALSE;
-      $paragraphs = &$form[$field]['widget'];
-      if (!empty($paragraphs['header']['data']['actions'])) {
-        $paragraphs['header']['data']['actions']['#access'] = FALSE;
-        $classes = &$paragraphs['header']['#attributes']['class'];
+      self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+    }
+  }
+
+  /**
+   * Hide all paragraphs actions from a widget.
+   *
+   * @param array $widget
+   *   The widget.
+   * @param bool $alter_colspan
+   *   Is the colspan of the table altered.
+   */
+  public static function hideParagraphsActionsFromWidget(array &$widget, $alter_colspan = TRUE) {
+    $widget['add_more']['#access'] = FALSE;
+    if (!empty($widget['header']['data']['actions'])) {
+      $widget['header']['data']['actions']['#access'] = FALSE;
+      if ($alter_colspan) {
+        $classes = &$widget['header']['#attributes']['class'];
         foreach ($classes as &$class) {
           if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
             $col_number = $matches[1];
@@ -247,11 +260,13 @@ class NodeSiteAssessmentForm {
           }
         }
       }
-      foreach ($paragraphs as $key => &$paragraph) {
-        if (!is_int($key)) {
-          continue;
-        }
-        $paragraph['top']['actions']['#access'] = FALSE;
+    }
+    foreach ($widget as $key => &$paragraph) {
+      if (!is_int($key)) {
+        continue;
+      }
+      $paragraph['top']['actions']['#access'] = FALSE;
+      if ($alter_colspan) {
         $classes = &$paragraph['top']['#attributes']['class'];
         if (!empty($new_col_class)) {
           foreach ($classes as &$class) {

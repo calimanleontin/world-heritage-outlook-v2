@@ -51,17 +51,19 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
       && $field_entity->getSetting('handler') == 'default:paragraph') {
 
       if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE
-        && NodeSiteAssessmentForm::isValuesTab()) {
+        && NodeSiteAssessmentForm::isValuesTab() || !empty($variables['element']['#hide_draggable'])) {
         _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
       }
 
       $title = $variables['element']['#title'];
       unset($variables['table']['#header'][1]);
-      $variables['paragraph_header'] = [
-        '#type' => 'table',
-        '#header' => $variables['table']['#header'],
-        '#rows' => [],
-      ];
+      if (empty($variables['element']['#is_diff_form'])) {
+        $variables['paragraph_header'] = [
+          '#type' => 'table',
+          '#header' => $variables['table']['#header'],
+          '#rows' => [],
+        ];
+      }
       unset($variables['table']['#header']);
     }
   }

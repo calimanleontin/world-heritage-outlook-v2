@@ -2,6 +2,11 @@
 
 namespace Drupal\iucn_who_diff\Controller;
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
@@ -47,15 +52,100 @@ class DiffModalFormController extends ControllerBase {
   /**
    * Callback for opening the modal form.
    */
-  public function openModalForm() {
+  public function openModalForm(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
+    $triggering_element = $form_state->getTriggeringElement();
 
-    // Get the modal form using the form builder.
-    $modal_form = \Drupal::formBuilder()->getForm('Drupal\iucn_who_diff\Form\IucnDiffModalForm');
+    preg_match('/(.*)_(\d+)_diff_(\d+)/', $triggering_element['#name'], $matches);
+    $field_name = $matches[1];
+    $delta = $matches[2];
+    $paragraph_id = $matches[3];
+
+    /** @var NodeInterface $assessment */
+    $assessment = $form_state->getFormObject()->getEntity();
+
+    // Get the rendered field from the entity form.
+    $form = \Drupal::service('entity.form_builder')->getForm($assessment, 'default')[$field_name];
+    // Remove unnecessary data from the table.
+    NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($form['widget'], FALSE);
+    unset($form['widget']['#title']);
+    unset($form['widget']['#description']);
+
+    $form['widget']['#hide_draggable'] = TRUE;
+    $paragraph_key = 0;
+    foreach ($form['widget'] as $key => &$item) {
+      if (!is_int($key)) {
+        continue;
+      }
+      if ($item['#paragraph_id'] != $paragraph_id) {
+        unset($form['widget'][$key]);
+      }
+      else {
+        $paragraph_key = $key;
+      }
+    }
+
+    // Add the author table cell.
+    $author = $assessment->field_coordinator->entity->getDisplayName();
+    $author_header = self::getTableCellMarkup(t('Author'), 'author');
+    $author_container = self::getTableCellMarkup($author, 'author');
+    $form['widget'][$paragraph_key]['top']['summary'] = ['author' => $author_container] + $form['widget'][$paragraph_key]['top']['summary'];
+    $form['widget']['header']['data'] = ['author' => $author_header] + $form['widget']['header']['data'];
+
+    $settings = json_decode($assessment->field_settings->value, TRUE);
+    $diff = $settings['diff'];
+    foreach ($settings['diff'] as $assessment_vid => $diff) {
+      // For each revision that changed this paragraph.
+      if (empty($diff[$paragraph_id])) {
+        continue;
+      }
+      /** @var NodeInterface $assessment_revision */
+      $assessment_revision = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($assessment_vid);
+      $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+
+      // Copy the initial row.
+      $row = $form['widget'][$paragraph_key];
+      $diff_fields = array_keys($diff[$paragraph_id]['diff']);
+
+      // Alter fields that have differences.
+      foreach ($diff_fields as $diff_field) {
+        if (empty($row['top']['summary'][$diff_field]['data'])) {
+          continue;
+        }
+        $diffs = reset(reset($diff[$paragraph_id]['diff'][$diff_field]));
+        $diff_rows = [];
+        for ($i = 0; $i < count($diffs); $i += 2) {
+          $diff_rows[] = [$diffs[$i], $diffs[$i + 1]];
+        }
+        $row['top']['summary'][$diff_field]['data'] = [
+          '#type' => 'table',
+          '#rows' => $diff_rows,
+          '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+        ];
+      }
+      $row['top']['summary']['author']['data']['#markup'] = $author;
+      $form['widget'][] = $row;
+    }
+    $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['widget']['#is_diff_form'] = TRUE;
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand('Diff Modal Form', $modal_form, ['width' => '1200']));
+    $response->addCommand(new OpenModalDialogCommand('See differences', $form, ['width' => '80%']));
     return $response;
+  }
+
+  public static function getTableCellMarkup($markup, $class, $span = 1) {
+    return [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'paragraph-summary-component',
+          "paragraph-summary-component-$class",
+          "paragraph-summary-component-span-$span",
+        ],
+      ],
+      'data' => ['#markup' => $markup],
+    ];
   }
 
   /**
