@@ -16,7 +16,7 @@ use Drupal\node\NodeInterface;
  * Implements hook_ENTITY_TYPE_create().
  */
 function iucn_assessment_node_create(NodeInterface $node) {
-  if ($node->getType() == 'site_assessment') {
+  if ($node->getType() == 'site_assessment' && empty($node->field_as_protection->getValue())) {
     $query = \Drupal::entityQuery('taxonomy_term');
     $query->condition('vid', "assessment_protection_topic");
     $tids = $query->execute();
