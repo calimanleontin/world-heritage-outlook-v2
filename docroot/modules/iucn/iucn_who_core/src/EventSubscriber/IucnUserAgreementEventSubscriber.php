@@ -99,13 +99,6 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
    */
   protected function routeIsAllowed() {
     $route_name = $this->routeMatch->getRouteName();
-    if ($route_name == 'entity.node.canonical') {
-      $node = $this->routeMatch->getParameter('node');
-      $nid = $this->config->get('user_agreement_node');
-      if ($node instanceof NodeInterface && $node->id() == $nid) {
-        return TRUE;
-      }
-    }
     return in_array($route_name, $this->getAllowedRoutes());
   }
 

@@ -326,3 +326,13 @@
 .js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: static;
 }
+
+.paragraph-deleted-row,
+.paragraph-deleted-row:hover {
+    background-color: #faa !important;
+}
+
+.paragraph-new-row,
+.paragraph-new-row .paragraphs-actions {
+    background-color: #77f177 !important;
+}
