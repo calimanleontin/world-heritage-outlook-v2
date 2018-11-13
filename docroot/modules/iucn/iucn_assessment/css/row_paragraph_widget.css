@@ -328,7 +328,7 @@
 }
 
 .paragraph-deleted-row,
-.paragraph-deleted-row:hover {
+.paragraph-deleted-row .paragraphs-actions {
     background-color: #faa !important;
 }
 

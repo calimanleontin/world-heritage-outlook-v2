@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
@@ -12,6 +13,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -91,9 +93,24 @@ class IucnNodeController extends NodeController {
     return $build;
   }
 
-  public function revertParagraph(NodeInterface $node, $field, $field_wrapper_id, $paragraph) {
+  public function revertParagraph(NodeInterface $node, $field, $field_wrapper_id, ParagraphInterface $paragraph) {
     $node->get($field)->appendItem(['entity' => $paragraph]);
-//    dpm($node_revision->get($field)->getValue());
+    $settings = $node->field_settings->value;
+    $changed_settings = FALSE;
+    if (!empty($settings)) {
+      $settings = json_decode($settings, TRUE);
+      if (!empty($settings['diff'])) {
+        foreach (array_keys($settings['diff']) as $vid) {
+          if (!empty($settings['diff'][$vid][$paragraph->id()])) {
+            unset($settings['diff'][$vid][$paragraph->id()]);
+            $changed_settings = TRUE;
+          }
+        }
+      }
+    }
+    if ($changed_settings) {
+      $node->field_settings->value = json_encode($settings);
+    }
     $node->save();
     $response = new AjaxResponse();
     $response->addCommand(
