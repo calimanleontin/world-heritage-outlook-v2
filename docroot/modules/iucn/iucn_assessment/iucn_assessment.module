@@ -10,6 +10,26 @@ use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_create().
+ */
+function iucn_assessment_node_create(NodeInterface $node) {
+  if ($node->getType() == 'site_assessment') {
+    $query = \Drupal::entityQuery('taxonomy_term');
+    $query->condition('vid', "assessment_protection_topic");
+    $tids = $query->execute();
+    $terms = \Drupal\taxonomy\Entity\Term::loadMultiple($tids);
+    foreach ($terms as $term) {
+      $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->create([
+        'type' => 'as_site_protection',
+        'field_as_protection_topic' => [$term->id()],
+      ]);
+      $node->field_as_protection[] = $paragraph;
+    }
+  }
+}
 
 function iucn_assessment_theme() {
   return [
