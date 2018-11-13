@@ -184,7 +184,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#url' => Url::fromRoute('geysir.modal.edit_form', [
         'parent_entity_type' => 'node',
         'parent_entity_bundle' => 'site_assessment',
-        'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'parent_entity_revision' => !empty($this->parentNode) ? $this->parentNode->getRevisionId() : NULL,
         'field' => $field_name,
         'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
         'delta' => $delta,
@@ -275,7 +275,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#url' => Url::fromRoute('geysir.modal.add_form_first', [
         'parent_entity_type' => 'node',
         'parent_entity_bundle' => 'site_assessment',
-        'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'parent_entity_revision' => !empty($this->parentNode) ? $this->parentNode->getRevisionId() : NULL,
         'field' => $field_name,
         'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
         'delta' => 0,
