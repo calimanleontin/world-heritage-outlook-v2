@@ -383,7 +383,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
               '#attributes' => ['class' => ['paragraphs-actions']],
               'revert' => [
                 '#type' => 'submit',
-                '#value' => $this->t('See differences'),
+                '#value' => $this->t('Revert'),
                 '#ajax' => [
                   'event' => 'click',
                   'url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
