@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowManager;
 use Drupal\workflow\Entity\WorkflowTransition;
@@ -73,12 +74,16 @@ class AssessmentWorkflow {
   /** @var \Drupal\node\NodeStorageInterface */
   protected $nodeStorage;
 
+  /** @var \Drupal\taxonomy\TermStorageInterface */
+  protected $termStorage;
+
   /** @var \Drupal\iucn_assessment\Controller\DiffController */
   protected $diffController;
 
   public function __construct(AccountProxyInterface $currentUser, EntityTypeManagerInterface $entityTypeManager, DiffController $diffController) {
     $this->currentUser = $currentUser;
     $this->nodeStorage = $entityTypeManager->getStorage('node');
+    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
     $this->diffController = $diffController;
   }
 
@@ -170,6 +175,21 @@ class AssessmentWorkflow {
   public function assessmentPreSave(NodeInterface $node) {
     // Ignore new assessments.
     if ($node->isNew() || $this->assessmentHasNoState($node)) {
+      if (empty($node->field_as_protection->getValue())) {
+        $terms = $this->termStorage->loadByProperties([
+          'vid' => 'assessment_protection_topic',
+        ]);
+        $protectionParagraphs = [];
+        foreach ($terms as $term) {
+          $paragraph = Paragraph::create([
+            'type' => 'as_site_protection',
+            'field_as_protection_topic' => [$term->id()],
+          ]);
+          $paragraph->save();
+          $protectionParagraphs[] = $paragraph;
+        }
+        $node->set('field_as_protection', $protectionParagraphs);
+      }
       $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
     }
