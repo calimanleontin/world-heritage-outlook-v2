@@ -109,11 +109,9 @@ third_party_settings:
     group_as_protection_management:
       children:
         - field_as_protection
-        - field_as_protection_ov_text
-        - field_as_protection_ov_rating
-        - field_as_protection_ov_out_text
-        - field_as_protection_ov_out_rate
-        - field_as_protection_ov_practices
+        - group_protection_row_1
+        - group_protection_row_2
+        - group_protection_row_3
       parent_name: group_as_tabs
       weight: 23
       format_type: assessment_tab
@@ -235,6 +233,44 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
+    group_protection_row_1:
+      children:
+        - field_as_protection_ov_text
+        - field_as_protection_ov_rating
+      parent_name: group_as_protection_management
+      weight: 23
+      format_type: assessment_table
+      format_settings:
+        label: ''
+        wrapper: '0'
+        id: ''
+        classes: ''
+      label: ''
+    group_protection_row_2:
+      children:
+        - field_as_protection_ov_out_text
+        - field_as_protection_ov_out_rate
+      parent_name: group_as_protection_management
+      weight: 24
+      format_type: assessment_table
+      format_settings:
+        label: ''
+        wrapper: '0'
+        id: ''
+        classes: ''
+      label: ''
+    group_protection_row_3:
+      children:
+        - field_as_protection_ov_practices
+      parent_name: group_as_protection_management
+      weight: 25
+      format_type: assessment_table
+      format_settings:
+        label: ''
+        wrapper: '0'
+        id: ''
+        classes: ''
+      label: ''
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -356,7 +392,7 @@ content:
     region: content
   field_as_protection:
     type: row_entity_reference_paragraphs
-    weight: 33
+    weight: 22
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -375,13 +411,13 @@ content:
     third_party_settings: {  }
     region: content
   field_as_protection_ov_out_rate:
-    weight: 37
+    weight: 26
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_protection_ov_out_text:
-    weight: 36
+    weight: 25
     settings:
       rows: 5
       placeholder: ''
@@ -389,7 +425,7 @@ content:
     type: string_textarea
     region: content
   field_as_protection_ov_practices:
-    weight: 38
+    weight: 26
     settings:
       rows: 5
       placeholder: ''
@@ -397,13 +433,13 @@ content:
     type: string_textarea
     region: content
   field_as_protection_ov_rating:
-    weight: 35
+    weight: 25
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_protection_ov_text:
-    weight: 34
+    weight: 24
     settings:
       rows: 5
       placeholder: ''

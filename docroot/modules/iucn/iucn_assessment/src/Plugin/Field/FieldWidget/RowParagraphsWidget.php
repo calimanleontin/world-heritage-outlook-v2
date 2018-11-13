@@ -215,13 +215,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    // Make the edit button open a modal.
-    $element['top']['actions']['actions']['edit_button'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Edit'),
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('geysir.modal.edit_form', [
+    if (!empty($this->parentNode->id())) {
+      // Make the edit button open a modal.
+      $element['top']['actions']['actions']['edit_button'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Edit'),
+        '#url' => Url::fromRoute('geysir.modal.edit_form', [
           'parent_entity_type' => 'node',
           'parent_entity_bundle' => 'site_assessment',
           'parent_entity_revision' => $this->parentNode->getRevisionId(),
@@ -232,8 +231,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
           'js' => 'ajax',
         ]),
-      ],
-    ];
+        '#attributes' => [
+          'class' => ['use-ajax', 'button'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => Json::encode([
+            'height' => '100%',
+            'width' => '80%',
+            'title' => $this->t('Edit modal'),
+          ]),
+        ],
+        '#attached' => [
+          'library' => [
+            'core/drupal.dialog.ajax',
+          ],
+        ],
+      ];
+    }
 
     $element['top']['summary'] = $containers;
     $count = $this->calculateColumnCount($components) + 1;
@@ -332,12 +345,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
       ->getSetting('handler_settings')['target_bundles'];
     $bundle = reset($target_paragraph);
-    $elements['add_more'][$add_more_button] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Add more'),
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('geysir.modal.add_form_first', [
+    if (!empty($this->parentNode->id())) {
+      $elements['add_more'][$add_more_button] = [
+        '#type' => 'link',
+        '#title' => $label,
+        '#url' => Url::fromRoute('geysir.modal.add_form_first', [
           'parent_entity_type' => 'node',
           'parent_entity_bundle' => 'site_assessment',
           'parent_entity_revision' => $this->parentNode->getRevisionId(),
@@ -348,8 +360,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'position' => 0,
           'bundle' => $bundle,
         ]),
-      ],
-    ];
+        '#attributes' => [
+          'class' => ['use-ajax', 'button'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => Json::encode([
+            'height' => '100%',
+            'width' => '80%',
+            'title' => $this->t('Edit modal'),
+          ]),
+        ],
+        '#attached' => [
+          'library' => [
+            'core/drupal.dialog.ajax',
+          ],
+        ],
+      ];
+    }
 
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
 
