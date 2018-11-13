@@ -1,0 +1,64 @@
+.vertical-table .column-table {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.vertical-table caption {
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+    font-weight: bold;
+    border-bottom: 1px solid #e6e4df;
+}
+
+.vertical-table table table {
+    table-layout: fixed;
+}
+
+.vertical-table table table thead th {
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+}
+
+.vertical-table table table thead tr,
+.vertical-table table table thead th {
+    background: none;
+    border: none;
+    text-transform: none;
+}
+
+.field--widget-row-entity-reference-paragraphs .vertical-table th {
+    padding: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs .vertical-table table tbody tr:first-child,
+.field--widget-row-entity-reference-paragraphs .vertical-table table tbody tr:first-child:hover {
+    background: none;
+    border-bottom: 1px solid #e6e4df;
+}
+
+.field--widget-row-entity-reference-paragraphs .vertical-table table tbody tr:first-child td .form-wrapper {
+    background: none !important;
+}
+
+.vertical-table .description-row {
+    width: 250px;
+}
+
+.vertical-table table td > div > .form-item > label,
+.vertical-table table legend {
+    float: left;
+    width: 250px;
+}
+
+.vertical-table table  div.label {
+    font-weight: bold;
+    float: left;
+    width: 250px;
+    clear: left;
+}
+
+.vertical-table table td > div > .form-item > div,
+.vertical-table table .form-data {
+    float: left;
+}
