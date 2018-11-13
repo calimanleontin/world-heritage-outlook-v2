@@ -393,6 +393,20 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'top' => ['summmary' => $containers],
           'actions' => [
             '#type' => 'container',
+            'revert' => [
+              '#type' => 'link',
+              '#title' => $this->t('Revert'),
+              '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
+                'node' => $current_revision->id(),
+                'node_revision' => $current_revision->getRevisionId(),
+                'field' => $field_name,
+                'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+                'paragraph' => $deleted_paragraph,
+              ]),
+              '#attributes' => [
+                'class' => ['use-ajax', 'button'],
+              ],
+            ],
           ],
           '#attributes' => [
             'class' => [
