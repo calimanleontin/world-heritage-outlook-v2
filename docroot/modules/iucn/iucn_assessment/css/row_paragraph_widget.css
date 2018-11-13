@@ -339,3 +339,12 @@
 .raw-paragraphs-tabs-wrapper table {
     margin-bottom: 0;
 }
+.paragraph-deleted-row,
+.paragraph-deleted-row:hover {
+    background-color: #faa !important;
+}
+
+.paragraph-new-row,
+.paragraph-new-row .paragraphs-actions {
+    background-color: #77f177 !important;
+}

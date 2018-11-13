@@ -2,8 +2,14 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -46,6 +52,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @var \Drupal\Node\NodeInterface
    */
   protected $parentNode;
+
+  /**
+   * The diff array.
+   *
+   * @var array
+   */
+  protected $diff;
 
   /**
    * {@inheritdoc}
@@ -128,7 +141,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
-    $this->parentNode = $form_state->getFormObject()->getEntity();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -137,66 +149,151 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_name = $this->fieldDefinition->getName();
     $parents = $element['#field_parents'];
 
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
-    $paragraphs_entity = NULL;
     $widget_state = static::getWidgetState($parents, $field_name, $form_state);
 
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
+
     $components = $this->getSummaryComponents($paragraphs_entity);
     $containers = $this->getSummaryContainers($components);
+
+    // Check if we need to show the diff for a paragraph.
+    // We should show the diff if the paragraph id appears in the diff array
+    // and at least one field that is visible in this row was changed.
+    $show_diff = FALSE;
+    if (in_array($this->parentNode->field_state->value, [
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+    ])) {
+      if (!empty($this->diff)) {
+        foreach ($this->diff as $vid => $diff) {
+          if (in_array($paragraphs_entity->id(), array_keys($diff))) {
+            foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
+              if (in_array($diff_field, array_keys($containers))) {
+                $show_diff = TRUE;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
 
     $element['top']['actions']['#weight'] = 9999;
     $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
     $element['top']['actions']['#suffix'] = '</div>';
 
-    if (!empty($element['top']['actions']['actions']['edit_button'])) {
+    if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
       // Create the custom 'Diff' button
       // @todo
-      //      $element['top']['actions']['actions']['diff_button'] = [
-      //        '#type' => 'submit',
-      //        '#value' => $this->t('Diff'),
-      //        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff',
-      //        '#weight' => 2,
-      //        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
-      //        '#ajax' => [
-      //          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
-      //          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
-      //        ],
-      //        '#access' => $paragraphs_entity->access('update'),
-      //        '#paragraphs_mode' => 'diff',
-      //        '#attributes' => [
-      //          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
-      //          'title' => $this->t('Diff'),
-      //        ],
-      //        '#attached' => [
-      //          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form']
-      //        ],
-      //        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button'
-      //      ];
+      $element['top']['actions']['actions']['diff_button'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('See differences'),
+        '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0 , -4) . 'diff_' . $paragraphs_entity->id(),
+        '#weight' => 2,
+        '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
+        '#ajax' => [
+          'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
+          'wrapper' => $element['top']['actions']['actions']['edit_button']['#ajax']['wrapper'],
+        ],
+        '#access' => $paragraphs_entity->access('update'),
+        '#paragraphs_mode' => 'diff',
+        '#attributes' => [
+          'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit', 'use-ajax'],
+          'title' => $this->t('See differences'),
+        ],
+        '#attached' => [
+          'library' => ['core/drupal.dialog.ajax', 'core/jquery.form'],
+        ],
+        '#id' => substr($element['top']['actions']['actions']['edit_button']['#id'], 0, -7) . 'diff-button',
+      ];
     }
 
+    // Make the edit button open a modal.
+    $element['top']['actions']['actions']['edit_button'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Edit'),
+      '#url' => Url::fromRoute('geysir.modal.edit_form', [
+        'parent_entity_type' => 'node',
+        'parent_entity_bundle' => 'site_assessment',
+        'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+        'delta' => $delta,
+        'paragraph' => $paragraphs_entity->id(),
+        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        'js' => 'ajax',
+      ]),
+      '#attributes' => [
+        'class' => ['use-ajax', 'button'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'height' => '100%',
+          'width' => '80%',
+          'title' => $this->t('Edit modal'),
+        ]),
+      ],
+      '#attached' => [
+        'library' => [
+          'core/drupal.dialog.ajax',
+        ],
+      ],
+    ];
+
     $element['top']['summary'] = $containers;
-    $count = count($containers) + 1;
+    $count = $this->calculateColumnCount($components) + 1;
+
+    $this->colCount = $count;
+
+    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      if ($this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
+        $element['top']['#attributes']['class'][] = "paragraph-new-row";
+      }
+    }
+
+
+    $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $element['#paragraph_id'] = $paragraphs_entity->id();
+    $this->paragraphsEntity = $paragraphs_entity;
+    return $element;
+  }
+
+  public function isNewParagraph(NodeInterface $node, $field_name, $paragraph_id) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $current_revision = $this->parentNode;
+    $under_ev_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    if (empty($under_ev_revision)) {
+      return FALSE;
+    }
+    return !in_array($paragraph_id, array_column($under_ev_revision->get($field_name)->getValue(), 'target_id'));
+  }
+
+  public function calculateColumnCount(array $components) {
+    $count = count($components);
 
     foreach ($components as $key => $component) {
       if (!empty($component['span']) && $component['span'] == 2) {
         $count++;
       }
     }
-
-    $this->colCount = $count;
-
-    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
-
-    $this->paragraphsEntity = $paragraphs_entity;
-    return $element;
+    return $count;
   }
 
   /**
    * {@inheritdoc}
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
+    $this->parentNode = $form_state->getFormObject()->getEntity();
+    $settings = json_decode($this->parentNode->field_settings->value, TRUE);
+    $this->diff = !empty($settings['diff']) ? $settings['diff'] : NULL;
+
     $elements = parent::formMultipleElements($items, $form, $form_state);
+    $field_settings_json = $this->parentNode->field_settings->value;
+    $field_settings = json_decode($field_settings_json, TRUE);
+    $diff = !empty($field_settings['diff']) ? $field_settings['diff'] : NULL;
+
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
@@ -231,9 +328,99 @@ class RowParagraphsWidget extends ParagraphsWidget {
         ];
       }
     }
+
+    // Make the add more button open a modal.
+    $field_name = $this->fieldDefinition->getName();
+    $add_more_button = array_keys($elements['add_more'])[0];
+    $label = $elements['add_more'][$add_more_button]['#value'];
+    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
+      ->getSetting('handler_settings')['target_bundles'];
+    $bundle = reset($target_paragraph);
+    $elements['add_more'][$add_more_button] = [
+      '#type' => 'link',
+      '#title' => $label,
+      '#url' => Url::fromRoute('geysir.modal.add_form_first', [
+        'parent_entity_type' => 'node',
+        'parent_entity_bundle' => 'site_assessment',
+        'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+        'delta' => 0,
+        'js' => 'ajax',
+        'position' => 0,
+        'bundle' => $bundle,
+      ]),
+      '#attributes' => [
+        'class' => ['use-ajax', 'button'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'height' => '100%',
+          'width' => '80%',
+          'title' => $this->t('Edit modal'),
+        ]),
+      ],
+      '#attached' => [
+        'library' => [
+          'core/drupal.dialog.ajax',
+        ],
+      ],
+    ];
+
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
+
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      $this->appendDeletedParagraphs($elements, $field_name);
+    }
+
     return $elements;
+  }
+
+  public function appendDeletedParagraphs(&$elements, $field_name) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $current_revision = $this->parentNode;
+    $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
+    $under_ev_revision_paragraphs = array_column($under_evaluation_revision->get($field_name)->getValue(), 'target_id');
+    $deleted_paragraphs = array_diff($under_ev_revision_paragraphs, $current_revision_paragraphs);
+    if (!empty($deleted_paragraphs)) {
+      foreach ($deleted_paragraphs as $deleted_paragraph) {
+        $components = $this->getSummaryComponents(Paragraph::load($deleted_paragraph));
+        $containers = $this->getSummaryContainers($components);
+        $column_count = $this->calculateColumnCount($components) + 1;
+        $elements[] = [
+          '#type' => 'container',
+          'top' => ['summmary' => $containers],
+          'actions' => [
+            '#type' => 'container',
+            'revert' => [
+              '#type' => 'link',
+              '#title' => $this->t('Revert'),
+              '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
+                'node' => $current_revision->id(),
+                'node_revision' => $current_revision->getRevisionId(),
+                'field' => $field_name,
+                'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+                'paragraph' => $deleted_paragraph,
+              ]),
+              '#attributes' => [
+                'class' => ['use-ajax', 'button'],
+              ],
+            ],
+          ],
+          '#attributes' => [
+            'class' => [
+              'paragraph-top',
+              'paragraph-top-add-above',
+              "paragraph-top-col-$column_count",
+              'paragraph-deleted',
+              'paragraph-no-tabledrag',
+            ],
+          ],
+        ];
+      }
+    }
   }
 
   /**

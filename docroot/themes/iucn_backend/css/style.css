@@ -108,7 +108,7 @@
     position: absolute;
     right: -22px;
     top: -30px;
-    z-index: 9999;
+    z-index: 200;
 }
 
 

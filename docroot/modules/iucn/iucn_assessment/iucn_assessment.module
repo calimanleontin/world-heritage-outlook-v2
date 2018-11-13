@@ -517,6 +517,8 @@ function iucn_assessment_entity_type_alter(array &$entity_types) {
     unset($constraints['EntityUntranslatableFields']);
     $entity_type->setConstraints($constraints);
   }
+  $entity_types['paragraph']->setFormClass('geysir_modal_edit', '\Drupal\iucn_assessment\Form\IucnGeysirModalParagraphForm');
+  $entity_types['paragraph']->setFormClass('geysir_modal_add', '\Drupal\iucn_assessment\Form\IucnGeysirModalParagraphAddForm');
 }
 
 /**
@@ -533,6 +535,7 @@ function iucn_assessment_validation_constraint_alter(array &$definitions) {
  */
 function iucn_assessment_entity_type_build(array &$entity_types) {
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
 }
 

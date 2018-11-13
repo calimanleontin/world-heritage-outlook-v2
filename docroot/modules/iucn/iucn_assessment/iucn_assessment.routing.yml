@@ -64,3 +64,17 @@ iucn_assessment.user_assign:
     parameters:
       user:
         type: entity:user
+
+
+iucn_assessment.revert_paragraph:
+  path: 'revert_paragraph/{node}/{field}/{field_wrapper_id}/{paragraph}'
+  defaults:
+    _title: 'Revert paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::revertParagraph'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      paragraph:
+        type: 'entity:paragraph'
