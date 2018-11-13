@@ -2,12 +2,16 @@
 
 namespace Drupal\iucn_assessment\Controller;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -85,6 +89,20 @@ class IucnNodeController extends NodeController {
       ];
     }
     return $build;
+  }
+
+  public function revertParagraph(NodeInterface $node, $field, $field_wrapper_id, $paragraph) {
+    $node->get($field)->appendItem(['entity' => $paragraph]);
+//    dpm($node_revision->get($field)->getValue());
+    $node->save();
+    $response = new AjaxResponse();
+    $response->addCommand(
+      new HtmlCommand(
+        $field_wrapper_id,
+        \Drupal::service('entity.form_builder')->getForm($node, 'default')[$field]
+      )
+    );
+    return $response;
   }
 
 }

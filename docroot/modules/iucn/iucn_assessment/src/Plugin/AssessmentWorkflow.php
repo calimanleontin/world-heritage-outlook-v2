@@ -204,10 +204,9 @@ class AssessmentWorkflow {
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
           $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
           $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
-          $default_revision->save();
         }
         // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($node, $default_revision, FALSE);
+        $this->appendDiffToFieldSettings($default_revision, $node, TRUE, TRUE);
       }
       // When the draft revision is published,
       // create a new default revision with the published state.
@@ -248,6 +247,11 @@ class AssessmentWorkflow {
       $this->appendDiffToFieldSettings($node, $under_evaluation_revision, FALSE);
     }
 
+    // After leaving the ready for review state, we no longer need the diff.
+    if ($state != $original_state && $original_state == self::STATUS_READY_FOR_REVIEW) {
+      $this->clearKeyFromFieldSettings($node, 'diff', FALSE);
+    }
+
     // Check if the state was changed.
     if ($original_state != $state) {
       // When using $node->setNewRevision(), editing paragraphs makes
@@ -281,17 +285,24 @@ class AssessmentWorkflow {
    * appends it to the field settings of the first node.
    *
    * @param \Drupal\node\NodeInterface $node
-   *   The modified node.
+   *   The node that will store the json.
    * @param \Drupal\node\NodeInterface $compare
-   *   The older revision.
+   *   The node to compare
    * @param bool $save
    *   Is node->save called.
+   * @param bool $reverse_comparison
+   *   Reverse comparison.
    */
-  public function appendDiffToFieldSettings(NodeInterface $node, NodeInterface $compare, $save = TRUE) {
-    $diff = $this->diffController->compareRevisions($compare->getRevisionId(), $node->getRevisionId());
+  public function appendDiffToFieldSettings(NodeInterface $node, NodeInterface $compare, $save = TRUE, $reverse_comparison = FALSE) {
+    $diff = empty($reverse_comparison)
+      ? $this->diffController->compareRevisions($compare->getRevisionId(), $node->getRevisionId())
+      : $this->diffController->compareRevisions($node->getRevisionId(), $compare->getRevisionId());
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
-    $field_settings['diff'] = $diff;
+    if (empty($field_settings['diff'])) {
+      $field_settings['diff'] = [];
+    }
+    $field_settings['diff'][$compare->getRevisionId()] = $diff;
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
     if ($save) {
@@ -665,6 +676,28 @@ class AssessmentWorkflow {
    */
   public function getAssessmentRevision($vid) {
     return $this->nodeStorage->loadRevision($vid);
+  }
+
+  /**
+   * Clear a key from an assessment's field settings.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @param string $key
+   *   The key to be deleted.
+   * @param bool $save
+   *   Save the node or not.
+   */
+  public function clearKeyFromFieldSettings(NodeInterface $node, $key, $save = TRUE) {
+    $settings = $node->field_settings->value;
+    $settings = json_decode($settings, TRUE);
+    if (!empty($settings[$key])) {
+      unset($settings[$key]);
+    }
+    $node->field_settings->value = json_encode($settings);
+    if ($save) {
+      $node->save();
+    }
   }
 
 }
