@@ -79,3 +79,148 @@ who.main_menu:
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
   weight: 60
+
+# Tools
+iucn_who_core.dashboard.cm:
+  title: 'Content Management'
+  description: 'Content management tasks'
+  route_name: system.admin_content
+  menu_name: tools
+  weight: -50
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-inbox
+
+iucn_who_core.dashboard.cm.all_content:
+  title: 'All content'
+  description: 'View all content from your website'
+  parent: iucn_who_core.dashboard.cm
+  route_name: system.admin_content
+  menu_name: tools
+  weight: -45
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
+iucn_who_core.dashboard.cm.create_content:
+  title: 'Create new content'
+  description: 'Add new content in Bioland'
+  parent: iucn_who_core.dashboard.cm
+  route_name: node.add_page
+  menu_name: tools
+  weight: -40
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-plus-circle
+
+iucn_who_core.dashboard.cm.blocks:
+  title: 'Manage blocks'
+  description: 'Manage the block arrangement within the pages'
+  parent: iucn_who_core.dashboard.cm
+  route_name: block.admin_display
+  menu_name: tools
+  weight: -30
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-th
+
+iucn_who_core.dashboard.cm.trans_ui:
+  title: 'Translate user interface'
+  description: 'Translate strings (NOT content) that appears in various parts of your website'
+  parent: iucn_who_core.dashboard.cm
+  route_name: locale.translate_page
+  menu_name: tools
+  weight: -20
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-sign-language
+
+iucn_who_core.dashboard.config:
+  title: 'Website configuration'
+  description: 'Configure website functionality'
+  route_name: system.admin_config
+  menu_name: tools
+  weight: 70
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-cogs
+
+iucn_who_core.dashboard.config.site:
+  title: 'Basic site configuration'
+  description: 'Configure settings like website title, slogan and email addresses'
+  parent: iucn_who_core.dashboard.config
+  route_name: system.site_information_settings
+  menu_name: tools
+  weight: 75
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-cog
+
+iucn_who_core.dashboard.config.logo_ui:
+  title: 'Website logo & UI'
+  description: 'Change theme settings: logo, add custom CSS etc.'
+  parent: iucn_who_core.dashboard.config
+  route_name: system.theme_settings_theme
+  route_parameters: { theme : 'iucn_who' }
+  menu_name: tools
+  weight: 80
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-television
+
+iucn_who_core.dashboard.config.caches:
+  title: 'Clear the caches'
+  description: 'When everything fails, push the holy button'
+  parent: iucn_who_core.dashboard.config
+  route_name: system.performance_settings
+  menu_name: tools
+  weight: 85
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-ambulance
+
+
+iucn_who_core.dashboard.config.cron:
+  title: 'Check CRON'
+  description: 'Review and check the background task scheduler. You can force it run if it becomes stuck. Background task schedules cleans temporary files, sends scheduled emails etc.'
+  parent: iucn_who_core.dashboard.config
+  route_name: system.cron_settings
+  menu_name: tools
+  weight: 105
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-clock-o
+
+iucn_who_core.dashboard.config.stop:
+  title: 'Emergency STOP'
+  description: 'Put your website in maintenance mode, your visitors will see only a custom message instead of regular page content. Visitors cannot access any pages. Use with care in case of emergency!'
+  parent: iucn_who_core.dashboard.config
+  route_name: system.site_maintenance_mode
+  menu_name: tools
+  weight: 110
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-exclamation-triangle
+
