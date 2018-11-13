@@ -161,17 +161,23 @@ class RowParagraphsWidget extends ParagraphsWidget {
     // We should show the diff if the paragraph id appears in the diff array
     // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
-    if (in_array($this->parentNode->field_state->value, [
-      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
-      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
-    ])) {
-      if (!empty($this->diff)) {
-        foreach ($this->diff as $vid => $diff) {
-          if (in_array($paragraphs_entity->id(), array_keys($diff))) {
-            foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
-              if (in_array($diff_field, array_keys($containers))) {
-                $show_diff = TRUE;
-                break;
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
+     && $this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
+      $element['top']['#attributes']['class'][] = "paragraph-new-row";
+    }
+    else {
+      if (in_array($this->parentNode->field_state->value, [
+        AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+        AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      ])) {
+        if (!empty($this->diff)) {
+          foreach ($this->diff as $vid => $diff) {
+            if (in_array($paragraphs_entity->id(), array_keys($diff))) {
+              foreach (array_keys($diff[$paragraphs_entity->id()]['diff']) as $diff_field) {
+                if (in_array($diff_field, array_keys($containers))) {
+                  $show_diff = TRUE;
+                  break;
+                }
               }
             }
           }
@@ -235,12 +241,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $this->colCount = $count;
 
     $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
-    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-      if ($this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
-        $element['top']['#attributes']['class'][] = "paragraph-new-row";
-      }
-    }
-
 
     $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $element['#paragraph_id'] = $paragraphs_entity->id();
