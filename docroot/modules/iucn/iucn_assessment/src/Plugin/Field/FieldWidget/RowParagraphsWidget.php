@@ -6,6 +6,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -332,6 +333,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_name = $this->fieldDefinition->getName();
     $add_more_button = array_keys($elements['add_more'])[0];
     $label = $elements['add_more'][$add_more_button]['#value'];
+    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
+      ->getSetting('handler_settings')['target_bundles'];
+    $bundle = reset($target_paragraph);
     $elements['add_more'][$add_more_button] = [
       '#type' => 'link',
       '#title' => $label,
@@ -344,7 +348,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'delta' => 0,
         'js' => 'ajax',
         'position' => 0,
-        'bundle' => 'as_site_value_wh',
+        'bundle' => $bundle,
       ]),
       '#attributes' => [
         'class' => ['use-ajax', 'button'],
