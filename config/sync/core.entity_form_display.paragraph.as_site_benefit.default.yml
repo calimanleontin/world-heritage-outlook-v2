@@ -21,104 +21,123 @@ dependencies:
     - field.field.paragraph.as_site_benefit.field_as_comment
     - field.field.paragraph.as_site_benefit.field_as_description
     - paragraphs.paragraphs_type.as_site_benefit
+  module:
+    - field_group
+    - iucn_assessment
+third_party_settings:
+  field_group:
+    group_columns:
+      children:
+        - field_as_benefits_category
+        - field_as_description
+        - field_as_benefits_datadeficient
+        - field_as_benefits_hab_level
+        - field_as_benefits_hab_trend
+        - field_as_benefits_pollut_level
+        - field_as_benefits_pollut_trend
+        - field_as_benefits_oex_level
+        - field_as_benefits_oex_trend
+        - field_as_benefits_climate_level
+        - field_as_benefits_climate_trend
+        - field_as_benefits_invassp_level
+        - field_as_benefits_invassp_trend
+        - field_as_comment
+        - translation
+      parent_name: ''
+      weight: 0
+      format_type: assessment_column_table
+      format_settings:
+        label: columns
+        captions: 'Factors negatively affecting provision of selected benefit:'
+        start_fields: field_as_benefits_hab_level
+        columns: 'Level of impact|Trend'
+        rows: 'Habitat change (land use change)|Pollution|Over exploitation|Climate change|Invasive species'
+        id: ''
+        classes: ''
+      label: columns
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit
 mode: default
 content:
   field_as_benefits_category:
-    weight: 1
-    settings: {  }
+    weight: 2
+    settings:
+      select_title: 'Select Benefit type'
+      select_label: 'Select Benefit type'
+      checkboxes_label: 'Select specific benefits'
     third_party_settings: {  }
-    type: options_select
+    type: assessment_options_buttons
     region: content
   field_as_benefits_climate_level:
-    weight: 13
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_climate_trend:
-    weight: 14
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_as_benefits_commun_in:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_as_benefits_commun_out:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_as_benefits_commun_wide:
-    weight: 6
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_datadeficient:
-    weight: 3
+    weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_as_benefits_hab_level:
-    weight: 7
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_hab_trend:
-    weight: 8
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_invassp_level:
-    weight: 15
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_invassp_trend:
-    weight: 16
+    weight: 14
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_benefits_oex_level:
-    weight: 11
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_as_benefits_oex_trend:
-    weight: 12
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_as_benefits_pollut_level:
     weight: 9
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
-  field_as_benefits_pollut_trend:
+  field_as_benefits_oex_trend:
     weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
+  field_as_benefits_pollut_level:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_as_benefits_pollut_trend:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_as_comment:
-    weight: 17
+    weight: 15
     settings:
       rows: 5
       placeholder: ''
@@ -126,7 +145,7 @@ content:
     type: string_textarea
     region: content
   field_as_description:
-    weight: 2
+    weight: 3
     settings:
       rows: 5
       placeholder: ''
@@ -134,11 +153,14 @@ content:
     type: string_textarea
     region: content
   translation:
-    weight: 0
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_as_benefits_commun_in: true
+  field_as_benefits_commun_out: true
+  field_as_benefits_commun_wide: true
   status: true
   uid: true
