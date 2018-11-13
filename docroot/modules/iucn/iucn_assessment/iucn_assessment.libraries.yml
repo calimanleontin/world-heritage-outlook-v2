@@ -23,3 +23,11 @@ paragraph_comments:
   version: VERSION
   js:
     js/paragraph_comments.js: {}
+
+iucn_assessment.table_field_group:
+  version: 1.x
+  css:
+    theme:
+      css/table_field_group.css: {}
+  js:
+    js/tmp.js: {}

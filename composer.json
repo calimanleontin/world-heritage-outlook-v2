@@ -154,6 +154,7 @@
     "drupal/file_browser": "^1.1",
     "drupal/geofield": "^1.0@alpha",
     "drupal/geofield_map": "*",
+    "drupal/geysir": "^1.1",
     "drupal/google_analytics": "^2.3",
     "drupal/honeypot": "^1.27",
     "drupal/ief_table_view_mode": "^2.0@beta",

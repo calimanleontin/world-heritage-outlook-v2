@@ -12,6 +12,16 @@
       $('.field--widget-row-entity-reference-paragraphs table tbody tr:first-child', context)
         .removeClass('draggable')
         .find('.field-multiple-drag').html('');
+      $('tr.draggable', context).once('removeDraggable').each(function () {
+        if ($(this).find('.paragraph-no-tabledrag').length !== 0) {
+          $(this).removeClass('draggable').addClass('paragraph-deleted-row').find('.field-multiple-drag').html('');
+        }
+      });
+      $('tr.draggable', context).once('newParagraph').each(function () {
+        if ($(this).find('.paragraph-new-row').length !== 0) {
+          $(this).addClass('paragraph-new-row');
+        }
+      });
     }
   };
 

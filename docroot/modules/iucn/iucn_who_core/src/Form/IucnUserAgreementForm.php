@@ -150,7 +150,7 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
       $user->set('field_accepted_agreement', date('Y-m-d\TH:i:s', time()));
       $user->save();
     }
-    $form_state->setRedirect('<front>');
+    $form_state->setRedirect('who.user-dashboard');
   }
 
 }
