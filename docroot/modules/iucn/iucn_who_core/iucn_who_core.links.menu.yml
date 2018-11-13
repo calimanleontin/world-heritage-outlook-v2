@@ -79,8 +79,3 @@ who.main_menu:
   parent: who.admin_config_who
   class: Drupal\Core\Menu\MenuLinkDefault
   weight: 60
-
-who.user_agreement_form:
-  route_name: who.user_agreement_form
-  title: 'User Agreement'
-  base_route: who.user_agreement_form
