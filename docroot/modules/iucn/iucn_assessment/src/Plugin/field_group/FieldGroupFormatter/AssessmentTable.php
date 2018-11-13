@@ -87,10 +87,16 @@ class AssessmentTable extends FieldGroupFormatterBase {
     $header = [];
     foreach ($fields as $key) {
       $header[] = render($element[$key]['#title']);
-      $element[$key]['#title'] ='';
+      if (!empty($element[$key]['widget'][0]['value']['#title'])) {
+        $element[$key]['widget'][0]['value']['#title'] = '';
+      }
+      if (!empty($element[$key]['widget']['#title'])) {
+        $element[$key]['widget']['#title'] = '';
+      }
       $rows['#cells'][] = render($element[$key]);
       unset($element[$key]);
     }
+    $table['#header'] = $header;
     $table['#rows'] = $rows;
 
     $element['fields_in_table'] = $table;
