@@ -90,12 +90,7 @@ third_party_settings:
       children:
         - field_as_threats_current
         - field_as_threats_potential
-        - field_as_threats_potent_text
-        - field_as_threats_potent_rating
-        - field_as_threats_current_text
-        - field_as_threats_current_rating
-        - field_as_threats_text
-        - field_as_threats_rating
+        - group_threats_overall_container
       parent_name: group_as_tabs
       weight: 21
       format_type: assessment_tab
@@ -271,6 +266,78 @@ third_party_settings:
         id: ''
         classes: ''
       label: ''
+    group_threats_overall_current:
+      children:
+        - field_as_threats_current_text
+        - field_as_threats_current_rating
+      parent_name: group_threats_overall_container
+      weight: 25
+      format_type: html_element
+      format_settings:
+        label: 'Threats overall current'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row
+        required_fields: false
+      label: 'Threats overall current'
+    group_threats_overall_potential:
+      children:
+        - field_as_threats_potent_text
+        - field_as_threats_potent_rating
+      parent_name: group_threats_overall_container
+      weight: 26
+      format_type: html_element
+      format_settings:
+        label: 'Threats overall potential'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row
+        required_fields: false
+      label: 'Threats overall potential'
+    group_threats_overall_all:
+      children:
+        - field_as_threats_text
+        - field_as_threats_rating
+      parent_name: group_threats_overall_container
+      weight: 27
+      format_type: html_element
+      format_settings:
+        label: 'Threats overall all'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row
+        required_fields: false
+      label: 'Threats overall all'
+    group_threats_overall_container:
+      children:
+        - group_threats_overall_current
+        - group_threats_overall_potential
+        - group_threats_overall_all
+        - group_threats_overall
+      parent_name: group_as_threats
+      weight: 24
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: overall-container
+        description: ''
+        required_fields: false
+      label: 'Overall Assessment of Threats'
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -487,13 +554,13 @@ content:
     third_party_settings: {  }
     region: content
   field_as_threats_current_rating:
-    weight: 27
+    weight: 31
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_current_text:
-    weight: 26
+    weight: 30
     settings:
       rows: 5
       placeholder: ''
@@ -501,13 +568,13 @@ content:
     type: string_textarea
     region: content
   field_as_threats_potent_rating:
-    weight: 25
+    weight: 30
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_potent_text:
-    weight: 24
+    weight: 28
     settings:
       rows: 5
       placeholder: ''
@@ -535,13 +602,13 @@ content:
     third_party_settings: {  }
     region: content
   field_as_threats_rating:
-    weight: 29
+    weight: 33
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_text:
-    weight: 28
+    weight: 32
     settings:
       rows: 5
       placeholder: ''
@@ -589,7 +656,7 @@ content:
     third_party_settings: {  }
     region: content
   field_as_vass_bio_state:
-    weight: 24
+    weight: 23
     settings: {  }
     third_party_settings: {  }
     type: options_select

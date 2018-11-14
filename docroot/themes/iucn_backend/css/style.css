@@ -1,3 +1,55 @@
+.node-site-assessment-edit-form fieldset.overall-container {
+  margin: 0!important;
+  padding: 0!important;
+  border: none!important;
+}
+.node-site-assessment-edit-form fieldset.overall-container legend {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background: #f5f5f2;
+  border: solid #bfbfba;
+  border-width: 1px 0;
+  color: #333;
+  text-transform: uppercase;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper {
+  display: table;
+  width: calc(100% - 1px);
+  border-top: 1px solid #e6e4df;
+  border-left: 1px solid #e6e4df;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
+  display: table-row;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"] {
+  display: table-cell;
+  width: 30%;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label.form-textarea-wrapper,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper.form-textarea-wrapper,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"].form-textarea-wrapper {
+  width: 50%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label[class*="-rating"],
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper[class*="-rating"],
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"][class*="-rating"] {
+  width: 20%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"] label {
+  display: none;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }

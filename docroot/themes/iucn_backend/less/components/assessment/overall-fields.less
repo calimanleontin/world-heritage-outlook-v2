@@ -1,0 +1,48 @@
+.node-site-assessment-edit-form {
+  fieldset.overall-container {
+    margin: 0!important;
+    padding: 0!important;
+    border: none!important;
+    legend {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      background: #f5f5f2;
+      border: solid #bfbfba;
+      border-width: 1px 0;
+      color: #333;
+      text-transform: uppercase;
+    }
+    .fieldset-wrapper {
+      display: table;
+      width: calc(~'100% - 1px');
+      border-top: 1px solid @table-border-color;
+      border-left: 1px solid @table-border-color;
+      .overall-row {
+        display: table-row;
+        .form-item {
+          margin: 0;
+        }
+        > div[class*="-text"] > .form-item > label,
+        > div[class*="-text"] > .form-item > .form-textarea-wrapper,
+        > div[class*="-rating"] {
+          display: table-cell;
+          width: 30%;
+          padding: 10px 12px;
+          border-bottom: 1px solid @table-border-color;
+          border-right: 1px solid @table-border-color;
+          font-weight: normal;
+          &.form-textarea-wrapper {
+            width: 50%;
+          }
+          &[class*="-rating"] {
+            width: 20%;
+          }
+          label {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
