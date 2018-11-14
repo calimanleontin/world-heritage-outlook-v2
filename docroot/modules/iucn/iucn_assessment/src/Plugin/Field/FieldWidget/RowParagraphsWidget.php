@@ -163,13 +163,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
    *
    * @param array $element
    * @param ParagraphInterface $paragraphs_entity
-   * @param $field_wrapper
+   * @param string $field_wrapper
+   * @param string $field_name
    */
-  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper) {
+  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
-      '#value' => $this->t('See differences'),
-      '#name' => substr($element['top']['actions']['actions']['edit_button']['#name'], 0, -4) . 'diff_' . $paragraphs_entity->id(),
+      '#value' => 'See differences',
       '#weight' => 2,
       '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
       '#ajax' => [
@@ -186,6 +186,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
         ],
         'title' => $this->t('See differences'),
       ],
+      '#field_name' => $field_name,
+      '#paragraph_id' => $paragraphs_entity->id(),
+      '#paragraph_vid' => $paragraphs_entity->getRevisionId(),
     ];
   }
 
