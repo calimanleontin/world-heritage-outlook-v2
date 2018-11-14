@@ -327,6 +327,10 @@
     position: static;
 }
 
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+    margin: 10px;
+}
+
 .paragraph-deleted-row,
 .paragraph-deleted-row .paragraphs-actions {
     background-color: #faa !important;
