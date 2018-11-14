@@ -166,18 +166,26 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param string $field_wrapper
    * @param string $field_name
    */
-  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
       '#value' => 'See differences',
       '#weight' => 2,
-      '#delta' => $element['top']['actions']['actions']['edit_button']['#delta'],
       '#ajax' => [
-        'callback' => 'Drupal\iucn_who_diff\Controller\DiffModalFormController::openModalForm',
-        'wrapper' => $field_wrapper,
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.diff_form', [
+          'parent_entity_type' => 'node',
+          'parent_entity_bundle' => 'site_assessment',
+          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => "#$field_wrapper",
+          'delta' => $delta,
+          'paragraph' => $paragraphs_entity->id(),
+          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'js' => 'ajax',
+        ]),
       ],
       '#access' => $paragraphs_entity->access('update'),
-      '#paragraphs_mode' => 'diff',
       '#attributes' => [
         'class' => [
           'paragraphs-icon-button',
@@ -186,9 +194,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         ],
         'title' => $this->t('See differences'),
       ],
-      '#field_name' => $field_name,
-      '#paragraph_id' => $paragraphs_entity->id(),
-      '#paragraph_vid' => $paragraphs_entity->getRevisionId(),
     ];
   }
 
@@ -277,7 +282,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
     if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
-      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
+      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
     }
 
     $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);

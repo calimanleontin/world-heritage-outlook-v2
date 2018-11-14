@@ -6,6 +6,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_who_diff\Controller\DiffModalFormController;
 use Drupal\node\NodeInterface;
@@ -14,65 +15,12 @@ use Drupal\user\Entity\User;
 /**
  * Revision comparison service that prepares a diff of a pair of revisions.
  */
-class DiffController extends ControllerBase {
-
-  /** @var \Drupal\Core\Entity\EntityStorageInterface */
-  protected $nodeStorage;
-
-  /** @var \Drupal\diff\DiffEntityComparison */
-  protected $entityComparison;
-
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    $this->nodeStorage = $entityTypeManager->getStorage('node');
-    // Can't add it to arguments list in services.yml because of the following error:
-    // The service "iucn_assessment.diff_controller" has a dependency on a non-existent service "diff.entity_comparison".
-    $this->entityComparison = \Drupal::service('diff.entity_comparison');
-  }
-
-  public function compareRevisions($vid1, $vid2) {
-    $revision1 = $this->nodeStorage->loadRevision($vid1);
-    $revision2 = $this->nodeStorage->loadRevision($vid2);
-
-    if (!$revision1 instanceof NodeInterface || !$revision2 instanceof NodeInterface) {
-      throw new \InvalidArgumentException('Invalid revisions ids.');
-    }
-    if ($revision1->id() != $revision2->id()) {
-      throw new \InvalidArgumentException('Can only compare 2 revisions of same node.');
-    }
-
-    $fields = $this->entityComparison->compareRevisions($revision1, $revision2);
-
-    $diff = [];
-    foreach ($fields as $key => $field) {
-      if (preg_match('/(\d+)\:(.+)\.(.+)/', $key, $matches)) {
-        $this->entityComparison->processStateLine($field);
-        $field_diff_rows = $this->entityComparison->getRows(
-          $field['#data']['#left'],
-          $field['#data']['#right']
-        );
-        if (!empty($field_diff_rows)) {
-          $entityId = $matches[1];
-          $entityType = $matches[2];
-          $fieldName = $matches[3];
-          if (empty($diff[$entityId])) {
-            $diff[$entityId] = [
-              'entity_id' => $entityId,
-              'entity_type' => $entityType,
-              'diff' => [],
-            ];
-          }
-          $diff[$entityId]['diff'][$fieldName][] = $field_diff_rows;
-        }
-      }
-      else {
-        $this->getLogger('iucn_diff')->error('Invalid field diff key.');
-      }
-    }
-    return $diff;
-  }
+class ModalDiffController extends ControllerBase {
 
   public function diffForm($parent_entity_type, $parent_entity_bundle, $parent_entity_revision, $field, $field_wrapper_id, $delta, $paragraph, $paragraph_revision, $js = 'nojs') {
     $response = new AjaxResponse();
+
+    $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision);
 
     // Get the rendered field from the entity form.
     $form = \Drupal::service('entity.form_builder')->getForm($parent_entity_revision, 'default')[$field];
@@ -97,8 +45,8 @@ class DiffController extends ControllerBase {
 
     // Add the author table cell.
     $author = $parent_entity_revision->field_coordinator->entity->getDisplayName();
-    $author_header = DiffModalFormController::getTableCellMarkup(t('Author'), 'author');
-    $author_container = DiffModalFormController::getTableCellMarkup($author, 'author');
+    $author_header = $this->getTableCellMarkup(t('Author'), 'author');
+    $author_container = $this->getTableCellMarkup($author, 'author');
     $form['widget'][$paragraph_key]['top']['summary'] = ['author' => $author_container] + $form['widget'][$paragraph_key]['top']['summary'];
     $form['widget']['header']['data'] = ['author' => $author_header] + $form['widget']['header']['data'];
 
@@ -138,13 +86,45 @@ class DiffController extends ControllerBase {
     }
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['widget']['#is_diff_form'] = TRUE;
+    $form['widget']['edit'] = $form['widget'][$paragraph_key];
 
+    $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
+    $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
     $assessment_edit_form = \Drupal::service('entity.form_builder')->getForm($paragraph_revision, 'geysir_modal_edit', []);
+    foreach ($form['widget']['edit']['top']['summary'] as $field => $data) {
+      if (in_array($field, array_keys($assessment_edit_form))) {
+        if (!empty($assessment_edit_form[$field]['widget']['#title_display'])) {
+          $assessment_edit_form[$field]['widget']['#title_display'] = 'invisible';
+        }
+        if (!empty($assessment_edit_form[$field]['widget'][0]['value']['#title_display'])) {
+          $assessment_edit_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
+        }
+        $form['widget']['edit']['top']['summary'][$field]['data'] = $assessment_edit_form[$field];
+        unset($assessment_edit_form[$field]);
+      }
+    }
+
+    $assessment_edit_form['diff'] = $form;
+    $assessment_edit_form['diff']['#weight'] = 0;
     $form['edit'] = $assessment_edit_form;
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand('See differences', $form, ['width' => '80%']));
+    $response->addCommand(new GeysirOpenModalDialogCommand('See differences', $assessment_edit_form, ['width' => '80%']));
     return $response;
+  }
+
+  public function getTableCellMarkup($markup, $class, $span = 1) {
+    return [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'paragraph-summary-component',
+          "paragraph-summary-component-$class",
+          "paragraph-summary-component-span-$span",
+        ],
+      ],
+      'data' => ['#markup' => $markup],
+    ];
   }
 
 }

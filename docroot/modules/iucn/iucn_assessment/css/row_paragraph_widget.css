@@ -348,3 +348,7 @@
         background-image: url(../images/compare.svg);
     }
 }
+
+.paragraph-diff-final {
+    border-top: 3px solid black;
+}

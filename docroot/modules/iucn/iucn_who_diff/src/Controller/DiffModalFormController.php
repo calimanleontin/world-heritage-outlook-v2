@@ -129,8 +129,12 @@ class DiffModalFormController extends ControllerBase {
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['widget']['#is_diff_form'] = TRUE;
 
+    $paragraph = $node_revision = \Drupal::entityTypeManager()
+      ->getStorage('paragraph')
+      ->loadRevision($paragraph_vid);
 
-//    $assessment_edit_form = $form = $this->entityFormBuilder()->getForm($paragraph_id, 'geysir_modal_edit', []);
+    $assessment_edit_form = \Drupal::service('entity.form_builder')->getForm($paragraph, 'geysir_modal_edit', []);
+    $form['edit'] = $assessment_edit_form;
 
     // Add an AJAX command to open a modal dialog with the form as the content.
     $response->addCommand(new OpenModalDialogCommand('See differences', $form, ['width' => '80%']));
