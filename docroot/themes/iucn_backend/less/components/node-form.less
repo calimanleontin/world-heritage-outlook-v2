@@ -1,0 +1,49 @@
+.layout-node-form {
+  .layout-region {
+    width: 100%;
+  }
+  .layout-region-node-footer__content {
+    border-top: none;
+  }
+  .horizontal-tabs-panes {
+    details {
+      >.details-wrapper {
+        padding: 0;
+      }
+    }
+    .horizontal-tabs-pane {
+      padding: 0;
+    }
+    .horizontal-tabs-pane.field-group-assessment-tab {
+      margin-top: 0;
+      margin-bottom: 0;
+      border-radius: 0;
+      .tabledrag-toggle-weight-wrapper {
+        padding: 5px 10px 5px 0;
+      }
+    }
+  }
+  #edit-group-as-key-cons {
+    .details-wrapper {
+      padding: 0;
+    }
+  }
+  .horizontal-tabs-pane.field-group-assessment-tab {
+    .details-wrapper {
+      >.form-wrapper {
+        &:not(.field--widget-row-entity-reference-paragraphs) {
+          padding: 0 10px;
+        }
+      }
+    }
+    fieldset {
+      &:not(.fieldgroup) {
+        margin: 10px;
+        >legend {
+          position: relative;
+          top: 0;
+        }
+      }
+    }
+  }
+}

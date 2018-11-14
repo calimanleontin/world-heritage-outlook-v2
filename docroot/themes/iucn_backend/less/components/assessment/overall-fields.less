@@ -1,0 +1,80 @@
+.node-site-assessment-edit-form {
+  fieldset.overall-container {
+    margin: 0!important;
+    padding: 0!important;
+    border: none!important;
+    legend {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      background: @background_color_3;
+      border: solid #bfbfba;
+      border-width: 1px 0;
+      color: #333;
+      text-transform: uppercase;
+    }
+    .fieldset-wrapper {
+      display: table;
+      width: calc(~'100% - 1px');
+      border-top: 1px solid @table-border-color;
+      border-left: 1px solid @table-border-color;
+      .overall-row {
+        display: table-row;
+        &.overall-thead-row {
+          .overall-cell {
+            font-weight: bold;
+            background: @background_color_2;
+            border-bottom: 1px solid #bfbfba!important;
+            height: 38px;
+            box-sizing: border-box;
+            label {
+              font-weight: bold;
+            }
+          }
+        }
+        .form-item {
+          margin: 0;
+        }
+        > div {
+          display: table-cell;
+          padding: 10px 12px;
+          border-right: 1px solid @table-border-color;
+          border-bottom: 1px solid @table-border-color;
+          font-weight: normal;
+          .form-item {
+            width: 100%;
+            display: table-row;
+          }
+          &:last-child {
+            width: 150px;
+          }
+          &[class*="-textarea"] {
+            display: table;
+            width: 100%;
+            padding: 0;
+            border-right: none;
+            border-bottom: none;
+            label,
+            .form-textarea-wrapper {
+              display: table-cell;
+              box-sizing: border-box;
+              padding: 10px 12px;
+              border-bottom: 1px solid @table-border-color;
+              border-right: 1px solid @table-border-color;
+            }
+            label {
+              font-weight: normal;
+              width: 300px;
+              @media screen and (max-width: 1024px) {
+                width: 150px;
+              }
+            }
+          }
+          label {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

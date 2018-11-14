@@ -12,7 +12,7 @@ dependencies:
 id: views_block__account_assignments_block_5_2
 theme: iucn_backend
 region: content
-weight: 2
+weight: 1
 provider: null
 plugin: 'views_block:account_assignments-block_5'
 settings:
