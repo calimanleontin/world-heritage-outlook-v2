@@ -119,8 +119,6 @@ third_party_settings:
     group_as_assessing_values:
       children:
         - group_summary_of_the_values
-        - group_as_values_wh
-        - group_as_values_bio
       parent_name: group_as_tabs
       weight: 24
       format_type: assessment_tab
@@ -133,8 +131,7 @@ third_party_settings:
       label: 'Assessing values'
     group_as_conservation_outlook:
       children:
-        - field_as_global_assessment_text
-        - field_as_global_assessment_level
+        - group_conservation_overall_container
       parent_name: group_as_tabs
       weight: 25
       format_type: assessment_tab
@@ -388,6 +385,37 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessing values other'
+    group_assessment_of_conservation:
+      children:
+        - field_as_global_assessment_text
+        - field_as_global_assessment_level
+      parent_name: group_conservation_overall_container
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Assessment of Conservation Outlook'
+    group_conservation_overall_container:
+      children:
+        - group_assessment_of_conservation
+      parent_name: group_as_conservation_outlook
+      weight: 20
+      format_type: fieldset
+      format_settings:
+        label: 'Assessment of Conservation Outlook'
+        description: ''
+        id: ''
+        classes: overall-container
+        required_fields: false
+      label: 'Assessment of Conservation Outlook'
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -434,13 +462,13 @@ content:
     type: datetime_default
     region: content
   field_as_global_assessment_level:
-    weight: 14
+    weight: 22
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_global_assessment_text:
-    weight: 12
+    weight: 21
     settings:
       rows: 5
       placeholder: ''
