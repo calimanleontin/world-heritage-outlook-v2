@@ -60,7 +60,7 @@ class NodeSiteAssessmentForm {
 
     // On the values tab, only coordinators and above can edit the values.
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if (self::isValuesTab()) {
+      if ($tab == 'values') {
         self::hideParagraphsActions($form);
       }
       $form['title']['#disabled'] = TRUE;
@@ -124,6 +124,43 @@ class NodeSiteAssessmentForm {
         $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
         $form['#attached']['library'][] = 'iucn_backend/font-awesome';
       }
+    }
+
+    if ($tab == 'threats') {
+      $form['overall_table_thead'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['overall-row', 'overall-thead-row']],
+        '#weight' => -100,
+        'topic_justification' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['overall-cell', 'overall-textarea']],
+          'topic' => [
+            '#type' => 'html_tag',
+            '#tag' => 'label',
+            '#value' => t('Topic'),
+          ],
+          'justification' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => ['class' => ['form-textarea-wrapper']],
+            'title' => [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => t('Justification'),
+            ],
+          ],
+        ],
+        'assessment' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['overall-cell', 'overall-cell-rating']],
+          '#value' => t('Assessment'),
+        ],
+      ];
+      $form['#fieldgroups']['group_threats_overall_container']->children[] = 'overall_table_thead';
+      $form['#group_children']['overall_table_thead'] = 'group_threats_overall_container';
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
@@ -277,14 +314,6 @@ class NodeSiteAssessmentForm {
         }
       }
     }
-  }
-
-  /**
-   * Check if we are on the values tab.
-   */
-  public static function isValuesTab() {
-    $tab = \Drupal::request()->query->get('tab');
-    return empty($tab) || $tab == 'values';
   }
 
 }

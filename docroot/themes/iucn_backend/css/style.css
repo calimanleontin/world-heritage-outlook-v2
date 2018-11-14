@@ -22,32 +22,55 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
   display: table-row;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
+  font-weight: bold;
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba!important;
+  height: 38px;
+  box-sizing: border-box;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label {
+  font-weight: bold;
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
   margin: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"] {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
   display: table-cell;
-  width: 30%;
+  padding: 10px 12px;
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
+  display: flex;
+  width: 100%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:last-child {
+  width: 20%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
+  display: flex;
+  padding: 0;
+  border-right: none;
+  border-bottom: none;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+  display: flex;
   padding: 10px 12px;
   border-bottom: 1px solid #e6e4df;
   border-right: 1px solid #e6e4df;
+  box-sizing: border-box;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
+  width: 30%;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label.form-textarea-wrapper,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper.form-textarea-wrapper,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"].form-textarea-wrapper {
-  width: 50%;
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+  width: 70%;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label[class*="-rating"],
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper[class*="-rating"],
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"][class*="-rating"] {
-  width: 20%;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > label label,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-text"] > .form-item > .form-textarea-wrapper label,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-rating"] label {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
 }
 .path-admin div[class*="block-views-"] {
