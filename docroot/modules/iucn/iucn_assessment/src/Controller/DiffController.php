@@ -61,7 +61,7 @@ class DiffController extends ControllerBase {
               'diff' => [],
             ];
           }
-          $diff[$entityId]['diff'][$fieldName][] = $field_diff_rows;
+          $diff[$entityId]['diff'][$fieldName] = $field_diff_rows;
         }
       }
       else {
