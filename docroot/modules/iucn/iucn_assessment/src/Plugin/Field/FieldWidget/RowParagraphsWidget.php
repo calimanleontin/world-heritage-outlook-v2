@@ -184,6 +184,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
           'js' => 'ajax',
         ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
       ],
       '#access' => $paragraphs_entity->access('update'),
       '#attributes' => [
@@ -223,6 +227,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
           'js' => 'ajax',
         ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
       ],
       '#attributes' => [
         'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit'],
@@ -486,6 +494,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
                     'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
                     'paragraph' => $deleted_paragraph,
                   ]),
+                  'progress' => [
+                    'type' => 'fullscreen',
+                    'message' => NULL,
+                  ],
                 ],
                 '#attributes' => [
                   'class' => [
