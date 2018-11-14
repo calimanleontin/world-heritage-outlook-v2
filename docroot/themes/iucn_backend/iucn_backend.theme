@@ -50,8 +50,9 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
     if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
       && $field_entity->getSetting('handler') == 'default:paragraph') {
 
+      $tab = \Drupal::request()->get('tab') ?: 'values';
       if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE
-        && NodeSiteAssessmentForm::isValuesTab() || !empty($variables['element']['#hide_draggable'])) {
+        && $tab == 'values' || !empty($variables['element']['#hide_draggable'])) {
         _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
       }
 
