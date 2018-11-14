@@ -298,6 +298,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       : Url::fromRoute('node.revision_edit', ['node' => $this->parentNode->id(), 'node_revision' => $this->parentNode->getRevisionId()]);
     $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['options'] = ['query' => ['ajax_form' => 1]];
     $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['url'] = $url;
+    $element['top']['actions']['actions']['remove_button'] = $element['top']['actions']['dropdown_actions']['remove_button'];
+    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-delete';
+    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-button';
+    $element['top']['actions']['actions']['remove_button']['#attributes']['title'] = 'Remove';
+    unset($element['top']['actions']['dropdown_actions']);
 
     return $element;
   }

@@ -338,7 +338,6 @@
 }
 
 .button.paragraphs-icon-button.paragraphs-icon-button-compare {
-    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -351,4 +350,30 @@
 
 .paragraph-diff-final {
     border-top: 3px solid black;
+}
+
+.button.paragraphs-icon-button.paragraphs-icon-button-compare {
+    background-image: url(../images/compare.svg);
+}
+
+.button.paragraphs-icon-button {
+    padding: 0;
+    width: 36px !important;
+    height: 36px;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: 24px 24px;
+    border-radius: 4px;
+    text-indent: -9999em;
+}
+.button.paragraphs-icon-button-edit, .button.paragraphs-icon-button-edit:active, .button.paragraphs-icon-button-edit:hover, .button.paragraphs-icon-button-edit:focus {
+    background-image: url("../images/icon-edit.svg");
+}
+
+.paragraphs-icon-delete {
+    background-image: url("../images/icon-delete.svg") !important;
+}
+
+.paragraphs-icon-button-revert {
+    background-image: url("../images/icon-revert.svg") !important;
 }
