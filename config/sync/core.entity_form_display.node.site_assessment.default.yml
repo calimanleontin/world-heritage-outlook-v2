@@ -118,6 +118,7 @@ third_party_settings:
       label: 'Protection and management'
     group_as_assessing_values:
       children:
+        - group_summary_of_the_values
         - group_as_values_wh
         - group_as_values_bio
       parent_name: group_as_tabs
@@ -185,34 +186,6 @@ third_party_settings:
         description: ''
         required_fields: true
       label: References
-    group_as_values_wh:
-      children:
-        - field_as_vass_wh_text
-        - field_as_vass_wh_state
-        - field_as_vass_wh_trend
-      parent_name: group_as_assessing_values
-      weight: 20
-      format_type: fieldset
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: 'Assessment of the current state and trend of World Heritage values'
-    group_as_values_bio:
-      children:
-        - field_as_vass_bio_text
-        - field_as_vass_bio_state
-        - field_as_vass_bio_trend
-      parent_name: group_as_assessing_values
-      weight: 21
-      format_type: fieldset
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
     group_as_key_cons:
       children:
         - field_as_key_cons
@@ -364,6 +337,57 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Protection Best Practice'
+    group_summary_of_the_values:
+      children:
+        - group_assessing_values_current_o
+        - group_assessing_values_other
+      parent_name: group_as_assessing_values
+      weight: 20
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: 'Summary of the Values'
+    group_assessing_values_current_o:
+      children:
+        - field_as_vass_wh_text
+        - field_as_vass_wh_state
+        - field_as_vass_wh_trend
+      parent_name: group_summary_of_the_values
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Assessing values current overall'
+    group_assessing_values_other:
+      children:
+        - field_as_vass_bio_text
+        - field_as_vass_bio_state
+        - field_as_vass_bio_trend
+      parent_name: group_summary_of_the_values
+      weight: 21
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Assessing values other'
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -682,13 +706,13 @@ content:
     third_party_settings: {  }
     region: content
   field_as_vass_bio_state:
-    weight: 23
+    weight: 25
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_vass_bio_text:
-    weight: 22
+    weight: 24
     settings:
       rows: 5
       placeholder: ''
@@ -697,7 +721,7 @@ content:
     region: content
   field_as_vass_bio_trend:
     type: options_select
-    weight: 25
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }

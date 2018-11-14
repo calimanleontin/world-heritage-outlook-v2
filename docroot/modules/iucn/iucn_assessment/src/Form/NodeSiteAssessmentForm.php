@@ -126,7 +126,7 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    if (in_array($tab, ['threats', 'protection-management'])) {
+    if (in_array($tab, ['threats', 'protection-management', 'assessing-values'])) {
       $form['overall_table_thead'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
@@ -159,6 +159,18 @@ class NodeSiteAssessmentForm {
           '#value' => t('Assessment'),
         ],
       ];
+      if ($tab == 'assessing-values') {
+        $form['overall_table_thead']['topic_justification']['topic']['#value'] = t('Value');
+        $form['overall_table_thead']['trend'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['overall-cell', 'overall-cell-trend']],
+          '#value' => t('Trend'),
+        ];
+      }
+    }
+
+    if (!empty($form['overall_table_thead'])) {
       $container_group = 'group_' . substr($tab, 0, strpos($tab, '-') ?: 1000) . '_overall_container';
       $form['#fieldgroups'][$container_group]->children[] = 'overall_table_thead';
       $form['#group_children']['overall_table_thead'] = $container_group;

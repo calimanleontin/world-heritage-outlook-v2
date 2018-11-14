@@ -128,6 +128,7 @@ third_party_settings:
     group_as_assessing_values:
       children:
         - field_as_values_wh
+        - group_assessing_overall_container
         - group_as_values_wh
         - group_as_values_bio
       parent_name: group_as_tabs
@@ -195,34 +196,6 @@ third_party_settings:
         description: ''
         required_fields: true
       label: References
-    group_as_values_wh:
-      children:
-        - field_as_vass_wh_text
-        - field_as_vass_wh_state
-        - field_as_vass_wh_trend
-      parent_name: group_as_assessing_values
-      weight: 15
-      format_type: assessment_table
-      format_settings:
-        label: 'Assessment of the current state and trend of World Heritage values'
-        wrapper: '0'
-        id: ''
-        classes: ''
-      label: 'Assessment of the current state and trend of World Heritage values'
-    group_as_values_bio:
-      children:
-        - field_as_vass_bio_text
-        - field_as_vass_bio_state
-        - field_as_vass_bio_trend
-      parent_name: group_as_assessing_values
-      weight: 16
-      format_type: assessment_table
-      format_settings:
-        label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
-        wrapper: '0'
-        id: ''
-        classes: ''
-      label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
     group_as_key_cons:
       children:
         - field_as_key_cons
@@ -236,6 +209,57 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
+    group_assessing_overall_container:
+      children:
+        - group_assessing_values_current_o
+        - group_assessing_values_other
+      parent_name: group_as_assessing_values
+      weight: 15
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: overall-container
+        description: ''
+        required_fields: false
+      label: 'Summary of the Values'
+    group_assessing_values_current_o:
+      children:
+        - field_as_vass_wh_text
+        - field_as_vass_wh_state
+        - field_as_vass_wh_trend
+      parent_name: group_assessing_overall_container
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Assessing values current overall'
+    group_assessing_values_other:
+      children:
+        - field_as_vass_bio_text
+        - field_as_vass_bio_state
+        - field_as_vass_bio_trend
+      parent_name: group_assessing_overall_container
+      weight: 21
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Assessing values other'
 id: node.site_assessment.assessing_values
 targetEntityType: node
 bundle: site_assessment
@@ -258,6 +282,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_benefits_summary:
@@ -311,6 +336,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_projects:
@@ -330,6 +356,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_projects_needs:
@@ -349,6 +376,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_protection:
@@ -368,6 +396,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_protection_ov_out_rate:
@@ -443,6 +472,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_threats_current_rating:
@@ -490,6 +520,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_threats_rating:
@@ -523,6 +554,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       show_numbers: 'no'
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_values_wh:
@@ -542,10 +574,11 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      empty_message: ''
     third_party_settings: {  }
     region: content
   field_as_vass_bio_state:
-    weight: 24
+    weight: 23
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -560,7 +593,7 @@ content:
     region: content
   field_as_vass_bio_trend:
     type: options_select
-    weight: 25
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
