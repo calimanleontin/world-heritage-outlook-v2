@@ -450,6 +450,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
     $current_revision = $this->parentNode;
     $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    if (empty($under_evaluation_revision)) {
+      return;
+    }
     $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
     $under_ev_revision_paragraphs = array_column($under_evaluation_revision->get($field_name)->getValue(), 'target_id');
     $deleted_paragraphs = array_diff($under_ev_revision_paragraphs, $current_revision_paragraphs);
