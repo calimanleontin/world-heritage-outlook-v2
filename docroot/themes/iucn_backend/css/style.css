@@ -43,32 +43,35 @@
   font-weight: normal;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
-  display: flex;
   width: 100%;
+  display: table-row;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:last-child {
-  width: 20%;
+  width: 150px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
-  display: flex;
+  display: table;
+  width: 100%;
   padding: 0;
   border-right: none;
   border-bottom: none;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
-  display: flex;
+  display: table-cell;
+  box-sizing: border-box;
   padding: 10px 12px;
   border-bottom: 1px solid #e6e4df;
   border-right: 1px solid #e6e4df;
-  box-sizing: border-box;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
-  width: 30%;
+  width: 300px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
-  width: 70%;
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
+    width: 150px;
+  }
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
