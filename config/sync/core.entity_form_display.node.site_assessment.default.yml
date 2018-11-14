@@ -104,9 +104,7 @@ third_party_settings:
     group_as_protection_management:
       children:
         - field_as_protection
-        - group_protection_row_1
-        - group_protection_row_2
-        - group_protection_row_3
+        - group_protection_overall_container
       parent_name: group_as_tabs
       weight: 23
       format_type: assessment_tab
@@ -228,44 +226,6 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
-    group_protection_row_1:
-      children:
-        - field_as_protection_ov_text
-        - field_as_protection_ov_rating
-      parent_name: group_as_protection_management
-      weight: 23
-      format_type: assessment_table
-      format_settings:
-        label: ''
-        wrapper: '0'
-        id: ''
-        classes: ''
-      label: ''
-    group_protection_row_2:
-      children:
-        - field_as_protection_ov_out_text
-        - field_as_protection_ov_out_rate
-      parent_name: group_as_protection_management
-      weight: 24
-      format_type: assessment_table
-      format_settings:
-        label: ''
-        wrapper: '0'
-        id: ''
-        classes: ''
-      label: ''
-    group_protection_row_3:
-      children:
-        - field_as_protection_ov_practices
-      parent_name: group_as_protection_management
-      weight: 25
-      format_type: assessment_table
-      format_settings:
-        label: ''
-        wrapper: '0'
-        id: ''
-        classes: ''
-      label: ''
     group_threats_overall_current:
       children:
         - field_as_threats_current_text
@@ -328,7 +288,6 @@ third_party_settings:
         - group_threats_overall_current
         - group_threats_overall_potential
         - group_threats_overall_all
-        - group_threats_overall
       parent_name: group_as_threats
       weight: 24
       format_type: fieldset
@@ -338,6 +297,73 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Overall Assessment of Threats'
+    group_protection_overall_container:
+      children:
+        - group_protection_overall_effecti
+        - group_protection_overall_assessm
+        - group_protection_best_practice
+      parent_name: group_as_protection_management
+      weight: 23
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: overall-container
+        description: ''
+        required_fields: false
+      label: 'Overall assessment of protection and management'
+    group_protection_overall_effecti:
+      children:
+        - field_as_protection_ov_text
+        - field_as_protection_ov_rating
+      parent_name: group_protection_overall_container
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Protection overall effectiveness'
+    group_protection_overall_assessm:
+      children:
+        - field_as_protection_ov_out_text
+        - field_as_protection_ov_out_rate
+      parent_name: group_protection_overall_container
+      weight: 21
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Protection overall assessment'
+    group_protection_best_practice:
+      children:
+        - field_as_protection_ov_practices
+      parent_name: group_protection_overall_container
+      weight: 22
+      format_type: html_element
+      format_settings:
+        id: ''
+        classes: overall-row
+        element: div
+        show_label: false
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Protection Best Practice'
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -345,7 +371,7 @@ mode: default
 content:
   field_as_benefits:
     type: row_entity_reference_paragraphs
-    weight: 8
+    weight: 21
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -364,7 +390,7 @@ content:
     third_party_settings: {  }
     region: content
   field_as_benefits_summary:
-    weight: 9
+    weight: 22
     settings:
       rows: 5
       placeholder: ''

@@ -126,7 +126,7 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    if ($tab == 'threats') {
+    if (in_array($tab, ['threats', 'protection-management'])) {
       $form['overall_table_thead'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
@@ -159,8 +159,9 @@ class NodeSiteAssessmentForm {
           '#value' => t('Assessment'),
         ],
       ];
-      $form['#fieldgroups']['group_threats_overall_container']->children[] = 'overall_table_thead';
-      $form['#group_children']['overall_table_thead'] = 'group_threats_overall_container';
+      $container_group = 'group_' . substr($tab, 0, strpos($tab, '-') ?: 1000) . '_overall_container';
+      $form['#fieldgroups'][$container_group]->children[] = 'overall_table_thead';
+      $form['#group_children']['overall_table_thead'] = $container_group;
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
