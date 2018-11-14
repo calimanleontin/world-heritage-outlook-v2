@@ -70,10 +70,12 @@ class ModalDiffController extends ControllerBase {
         if (empty($row['top']['summary'][$diff_field]['data'])) {
           continue;
         }
-        $diffs = reset(reset($diff[$paragraph_revision->id()]['diff'][$diff_field]));
+        $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
         $diff_rows = [];
-        for ($i = 0; $i < count($diffs); $i += 2) {
-          $diff_rows[] = [$diffs[$i], $diffs[$i + 1]];
+        foreach ($diffs as $diff_group) {
+          for ($i = 0; $i < count($diff_group); $i += 2) {
+            $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
+          }
         }
         $row['top']['summary'][$diff_field]['data'] = [
           '#type' => 'table',
