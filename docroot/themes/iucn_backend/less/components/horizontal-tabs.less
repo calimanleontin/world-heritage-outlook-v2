@@ -1,0 +1,59 @@
+
+.horizontal-tab-button {
+  .fa {
+    font-size: 1em;
+    margin: 0 2.1em 0 1em;
+    position: relative;
+    color: @color_1;
+    -webkit-text-stroke: 1px #0074bd;
+    transition: color .1s;
+    &:hover {
+      color: @color_2;
+      cursor: pointer;
+      -webkit-text-stroke: initial;
+    }
+    &:before {
+      font-size: 2em;
+      position: absolute;
+      right: -22px;
+      top: -30px;
+      z-index: 200;
+    }
+  }
+}
+
+.horizontal-tabs {
+  ul.horizontal-tabs-list {
+    li.selected {
+      display: flex;
+      align-items: center;
+      a {
+        padding-left: 1em;
+        &:hover {
+          background-color: initial;
+        }
+      }
+    }
+  }
+}
+
+.horizontal-tabs-panes {
+  .description {
+    position: relative;
+    margin: 0;
+    padding: 5px 5px 5px 24px;
+    border: none;
+    background-image: linear-gradient(to bottom, white, #ffffbe);
+    font-style: italic;
+    &:before {
+      display: block;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 14px;
+      height: 16px;
+      content: ' ';
+      background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+    }
+  }
+}

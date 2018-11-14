@@ -1,0 +1,76 @@
+@color_1: #fafafa;
+@color_2: #0074bd;
+@background_color_1: #ffffff;
+@background_color_2: #ececec;
+
+@import "components/blocks";
+@import "components/horizontal-tabs";
+@import "components/node-form";
+
+@media all and (min-width: 851px) {
+  .sidebar {
+    float: left;
+    width: 25%;
+    &+.page-content {
+      float: left;
+      width: 75%;
+    }
+  }
+}
+
+.js {
+  td {
+    .dropbutton-wrapper {
+      width: 157px;
+    }
+  }
+  .dropbutton-widget {
+    .dropbutton-action {
+      a {
+        max-width: 140px;
+        padding: 4px 8px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  .field--widget-row-entity-reference-paragraphs {
+    .paragraph-header {
+      .paragraph-summary-component.processed {
+        .paragraphs-actions {
+          background-color: @background_color_2;
+        }
+      }
+    }
+  }
+}
+
+.views-field-operations {
+  .dropbutton {
+    a {
+      max-width: 140px;
+      padding: 4px 8px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+.user-assign-form {
+  .form-submit {
+    margin-left: 0;
+  }
+}
+
+#autosave-notification {
+  z-index: 9999;
+}
+
+.paragraph-comments-textarea {
+  z-index: 50;
+  position: absolute;
+  background-color: @background_color_1;
+  padding: 25px;
+  border: 1px solid black;
+  width: 40%;
+  display: none;
+}
