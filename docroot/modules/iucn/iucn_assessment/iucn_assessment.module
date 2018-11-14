@@ -10,6 +10,7 @@ use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
 
 function iucn_assessment_theme() {
   return [

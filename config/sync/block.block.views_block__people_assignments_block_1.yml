@@ -12,7 +12,7 @@ dependencies:
 id: views_block__people_assignments_block_1
 theme: iucn_backend
 region: content
-weight: 3
+weight: 2
 provider: null
 plugin: 'views_block:people_assignments-block_1'
 settings:
