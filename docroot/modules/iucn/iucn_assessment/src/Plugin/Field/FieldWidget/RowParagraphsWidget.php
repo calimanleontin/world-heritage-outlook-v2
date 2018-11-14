@@ -181,7 +181,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#attributes' => [
         'class' => [
           'paragraphs-icon-button',
-          'paragraphs-icon-button-edit',
+          'paragraphs-icon-button-compare',
           'use-ajax',
         ],
         'title' => $this->t('See differences'),
@@ -200,28 +200,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
     $element['top']['actions']['actions']['edit_button'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Edit'),
-      '#url' => Url::fromRoute('geysir.modal.edit_form', [
-        'parent_entity_type' => 'node',
-        'parent_entity_bundle' => 'site_assessment',
-        'parent_entity_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => "#$field_wrapper",
-        'delta' => $delta,
-        'paragraph' => $paragraphs_entity->id(),
-        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-        'js' => 'ajax',
-      ]),
-      '#attributes' => [
-        'class' => ['use-ajax', 'button'],
-        'data-dialog-type' => 'modal',
-        'data-dialog-options' => Json::encode([
-          'height' => '100%',
-          'width' => '80%',
-          'title' => $this->t('Edit modal'),
+      '#type' => 'submit',
+      '#value' => $this->t('Edit'),
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('geysir.modal.edit_form', [
+          'parent_entity_type' => 'node',
+          'parent_entity_bundle' => 'site_assessment',
+          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => "#$field_wrapper",
+          'delta' => $delta,
+          'paragraph' => $paragraphs_entity->id(),
+          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'js' => 'ajax',
         ]),
       ],
+      '#attributes' => [
+        'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit'],
+        'title' => $this->t('Edit'),
+      ],
+      '#attached' => ['library' => ['iucn_backend/font-awesome']],
     ];
   }
 
@@ -471,6 +470,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
                     'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
                     'paragraph' => $deleted_paragraph,
                   ]),
+                ],
+                '#attributes' => [
+                  'class' => [
+                    'paragraphs-icon-button',
+                    'paragraphs-icon-button-revert',
+                  ],
+                  'title' => $this->t('Revert'),
                 ],
               ],
             ],

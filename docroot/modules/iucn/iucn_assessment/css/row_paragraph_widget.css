@@ -336,3 +336,15 @@
 .paragraph-new-row .paragraphs-actions {
     background-color: #77f177 !important;
 }
+
+.button.paragraphs-icon-button.paragraphs-icon-button-compare {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .button.paragraphs-icon-button.paragraphs-icon-button-compare {
+        background-image: url(../images/compare.svg);
+    }
+}
