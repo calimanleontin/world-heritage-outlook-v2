@@ -480,13 +480,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $field_name, 'paragraph-new-row');
     if (!empty($reviewer_paragraphs_rows)) {
       foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
-        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, $this->t('Accept'), 'paragraphs-icon-button-accept');
+        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, 'accept');
       }
       $elements += $reviewer_paragraphs_rows;
     }
   }
 
-  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, TranslatableMarkup $title, $icon = 'paragraphs-icon-button-revert') {
+  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
+    $title = $type == 'accept'
+      ? $this->t('Accept')
+      : $this->t('Revert');
+
+    $icon = $type == 'accept'
+      ? 'paragraphs-icon-button-accept'
+      : 'paragraphs-icon-button-revert';
+
+
     $paragraph_row['actions']['actions']['revert'] = [
       '#type' => 'submit',
       '#value' => $title,
@@ -577,7 +586,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $deleted_paragraphs_rows = $this->getParagraphsRows($deleted_paragraphs, $field_name, 'paragraph-deleted-row');
     if (!empty($deleted_paragraphs_rows)) {
       foreach ($deleted_paragraphs_rows as $paragraph_id => &$deleted_paragraph_row) {
-        $this->appendRevertParagraphAction($deleted_paragraph_row, $paragraph_id, $field_name, $this->t('Revert'));
+        $this->appendRevertParagraphAction($deleted_paragraph_row, $paragraph_id, $field_name, 'revert');
       }
       $elements += $deleted_paragraphs_rows;
     }
