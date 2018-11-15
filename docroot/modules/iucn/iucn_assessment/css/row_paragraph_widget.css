@@ -381,3 +381,7 @@
 .paragraphs-icon-button-accept {
     background-image: url("../images/icon-accept.svg") !important;
 }
+
+.paragraph-author {
+    margin-right: 10px;
+}

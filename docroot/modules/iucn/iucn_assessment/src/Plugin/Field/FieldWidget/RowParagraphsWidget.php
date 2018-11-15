@@ -18,6 +18,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
+use Drupal\user\Entity\User;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -487,14 +488,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
-    $title = $type == 'accept'
-      ? $this->t('Accept')
-      : $this->t('Revert');
-
-    $icon = $type == 'accept'
-      ? 'paragraphs-icon-button-accept'
-      : 'paragraphs-icon-button-revert';
-
+    if ($type == 'accept') {
+      $icon = 'paragraphs-icon-button-accept';
+      $title = $this->t('Accept');
+      $paragraph = Paragraph::load($paragraph_id);
+      /** @var User $author */
+      $author = $paragraph->getRevisionAuthor();
+      $author = $author->getDisplayName();
+    }
+    else {
+      $icon = 'paragraphs-icon-button-revert';
+      $title = $this->t('Revert');
+    }
 
     $paragraph_row['actions']['actions']['revert'] = [
       '#type' => 'submit',
@@ -521,6 +526,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'title' => $title,
       ],
     ];
+    if (!empty($author)) {
+      $tooltip = $this->t('Added by: @author', ['@author' => $author]);
+      $paragraph_row['actions']['actions']['revert']['#prefix'] = '<div class="paragraph-author">' . $tooltip . '</div>';
+    }
 
   }
 
