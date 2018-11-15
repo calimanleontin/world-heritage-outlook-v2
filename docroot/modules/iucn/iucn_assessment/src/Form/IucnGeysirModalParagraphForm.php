@@ -41,7 +41,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
         '#type' => 'status_messages',
         '#weight' => -10,
       ];
-      $response->addCommand(new HtmlCommand('.node-site-assessment-edit-form', $form));
+      $response->addCommand(new HtmlCommand('#geysir-modal-form', $form));
     }
     else {
       // Get all necessary data to be able to correctly update the correct
