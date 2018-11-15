@@ -60,7 +60,7 @@ class NodeSiteAssessmentForm {
 
     // On the values tab, only coordinators and above can edit the values.
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values') {
+      if ($tab == 'values' || $tab == 'assessing-values') {
         self::hideParagraphsActions($form);
       }
       $form['title']['#disabled'] = TRUE;
