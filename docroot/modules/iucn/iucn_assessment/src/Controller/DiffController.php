@@ -2,9 +2,14 @@
 
 namespace Drupal\iucn_assessment\Controller;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
+use Drupal\iucn_who_diff\Controller\DiffModalFormController;
 use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Revision comparison service that prepares a diff of a pair of revisions.
@@ -56,7 +61,7 @@ class DiffController extends ControllerBase {
               'diff' => [],
             ];
           }
-          $diff[$entityId]['diff'][$fieldName][] = $field_diff_rows;
+          $diff[$entityId]['diff'][$fieldName] = $field_diff_rows;
         }
       }
       else {
