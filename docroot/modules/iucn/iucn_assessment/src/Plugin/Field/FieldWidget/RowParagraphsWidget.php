@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -449,32 +450,93 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $this->appendDeletedParagraphs($elements, $field_name);
     }
 
+    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
+      $this->appendReviewerParagraphs($elements, $field_name);
+    }
+
     return $elements;
   }
 
-  /**
-   * Show the paragraphs deleted by the assessor.
-   *
-   * @param $elements
-   * @param $field_name
-   */
-  public function appendDeletedParagraphs(&$elements, $field_name) {
+  public function getReviewerParagraphs($field_name) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $current_revision = $this->parentNode;
+    $reviewer_revisions = $assessment_workflow->getReviewerRevisions($current_revision);
+    if (empty($reviewer_revisions)) {
+      return NULL;
+    }
+    $reviewer_added_paragraphs = [];
+    foreach ($reviewer_revisions as $reviewer_revision) {
+      $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
+      $reviewer_revision_paragraphs = array_column($reviewer_revision->get($field_name)->getValue(), 'target_id');
+      $added_paragraphs = array_diff($reviewer_revision_paragraphs, $current_revision_paragraphs);
+      $reviewer_added_paragraphs = array_merge($reviewer_added_paragraphs, $added_paragraphs);
+    }
+    return $reviewer_added_paragraphs;
+  }
+
+  public function appendReviewerParagraphs(&$elements, $field_name) {
+    $reviewer_paragraphs = $this->getReviewerParagraphs($field_name);
+    $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $field_name, 'paragraph-new-row');
+    if (!empty($reviewer_paragraphs_rows)) {
+      foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
+        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, $this->t('Accept'), 'paragraphs-icon-button-accept');
+      }
+      $elements += $reviewer_paragraphs_rows;
+    }
+  }
+
+  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, TranslatableMarkup $title, $icon = 'paragraphs-icon-button-revert') {
+    $paragraph_row['actions']['actions']['revert'] = [
+      '#type' => 'submit',
+      '#value' => $title,
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+          'paragraph' => $paragraph_id,
+        ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
+      ],
+      '#attributes' => [
+        'class' => [
+          'paragraphs-icon-button',
+          $icon,
+        ],
+        'title' => $title,
+      ],
+    ];
+
+  }
+
+  public function getAssessorDeletedParagraphs($field_name) {
     /** @var AssessmentWorkflow $assessment_workflow */
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
     $current_revision = $this->parentNode;
     $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     if (empty($under_evaluation_revision)) {
-      return;
+      return NULL;
     }
     $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
     $under_ev_revision_paragraphs = array_column($under_evaluation_revision->get($field_name)->getValue(), 'target_id');
     $deleted_paragraphs = array_diff($under_ev_revision_paragraphs, $current_revision_paragraphs);
-    if (!empty($deleted_paragraphs)) {
-      foreach ($deleted_paragraphs as $deleted_paragraph) {
-        $components = $this->getSummaryComponents(Paragraph::load($deleted_paragraph));
+    return $deleted_paragraphs;
+  }
+
+  public function getParagraphsRows($paragraphs, $field_name, $row_class = '') {
+    $elements = [];
+    if (!empty($paragraphs)) {
+      foreach ($paragraphs as $paragraph) {
+        $components = $this->getSummaryComponents(Paragraph::load($paragraph));
         $containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
-        $elements[] = [
+        $elements[$paragraph] = [
           '#type' => 'container',
           'top' => ['summmary' => $containers],
           'actions' => [
@@ -482,31 +544,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
             'actions' => [
               '#type' => 'container',
               '#attributes' => ['class' => ['paragraphs-actions']],
-              'revert' => [
-                '#type' => 'submit',
-                '#value' => $this->t('Revert'),
-                '#ajax' => [
-                  'event' => 'click',
-                  'url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
-                    'node' => $current_revision->id(),
-                    'node_revision' => $current_revision->getRevisionId(),
-                    'field' => $field_name,
-                    'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-                    'paragraph' => $deleted_paragraph,
-                  ]),
-                  'progress' => [
-                    'type' => 'fullscreen',
-                    'message' => NULL,
-                  ],
-                ],
-                '#attributes' => [
-                  'class' => [
-                    'paragraphs-icon-button',
-                    'paragraphs-icon-button-revert',
-                  ],
-                  'title' => $this->t('Revert'),
-                ],
-              ],
             ],
             '#attributes' => [
               'class' => [
@@ -519,12 +556,30 @@ class RowParagraphsWidget extends ParagraphsWidget {
               'paragraph-top',
               'paragraph-top-add-above',
               "paragraph-top-col-$column_count",
-              'paragraph-deleted',
               'paragraph-no-tabledrag',
+              $row_class,
             ],
           ],
         ];
       }
+    }
+    return $elements;
+  }
+
+  /**
+   * Show the paragraphs deleted by the assessor.
+   *
+   * @param $elements
+   * @param $field_name
+   */
+  public function appendDeletedParagraphs(&$elements, $field_name) {
+    $deleted_paragraphs = $this->getAssessorDeletedParagraphs($field_name);
+    $deleted_paragraphs_rows = $this->getParagraphsRows($deleted_paragraphs, $field_name, 'paragraph-deleted-row');
+    if (!empty($deleted_paragraphs_rows)) {
+      foreach ($deleted_paragraphs_rows as $paragraph_id => &$deleted_paragraph_row) {
+        $this->appendRevertParagraphAction($deleted_paragraph_row, $paragraph_id, $field_name, $this->t('Revert'));
+      }
+      $elements += $deleted_paragraphs_rows;
     }
   }
 

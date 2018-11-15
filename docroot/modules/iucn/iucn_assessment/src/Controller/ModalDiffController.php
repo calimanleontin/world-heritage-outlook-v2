@@ -59,27 +59,15 @@ class ModalDiffController extends ControllerBase {
       }
       /** @var NodeInterface $assessment_revision */
       $assessment_revision = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($assessment_vid);
-
       $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
 
       // Copy the initial row.
       $row = $form['widget'][$paragraph_key];
       $diff_fields = array_keys($diff[$paragraph_revision->id()]['diff']);
 
-      // If the row is actually deleted, only apply a different class.
-      $deleted = FALSE;
-      if (!in_array($paragraph->id(), array_column($assessment_revision->get($field)->getValue(), 'target_id'))) {
-        $row['top']['#attributes']['class'][] = 'paragraph-deleted-row';
-        $deleted = TRUE;
-      }
-
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
         if (empty($row['top']['summary'][$diff_field]['data'])) {
-          continue;
-        }
-        if ($deleted) {
-          $row['top']['summary'][$diff_field]['data']['#markup'] = $this->t('Deleted');
           continue;
         }
         $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
@@ -89,14 +77,12 @@ class ModalDiffController extends ControllerBase {
             $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
           }
         }
-
         $row['top']['summary'][$diff_field]['data'] = [
           '#type' => 'table',
           '#rows' => $diff_rows,
           '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
         ];
       }
-
       $row['top']['summary']['author']['data']['#markup'] = $author;
       $form['widget'][] = $row;
     }

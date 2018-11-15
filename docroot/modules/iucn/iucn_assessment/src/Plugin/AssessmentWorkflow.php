@@ -551,14 +551,8 @@ class AssessmentWorkflow {
    *
    * @return array
    *   The revisions.
-   *
-   * @throws \Exception
-   *   Use this function when the default revision is under review.
    */
   public function getReviewerRevisions(NodeInterface $node) {
-    if ($node->field_state->value != self::STATUS_UNDER_REVIEW) {
-      throw new \Exception('Default revision is not under review.');
-    }
     $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
     $revisions = [];
     foreach ($assessment_revisions_ids as $rid) {

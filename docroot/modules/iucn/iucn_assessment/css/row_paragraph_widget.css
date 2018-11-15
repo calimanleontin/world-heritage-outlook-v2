@@ -377,3 +377,7 @@
 .paragraphs-icon-button-revert {
     background-image: url("../images/icon-revert.svg") !important;
 }
+
+.paragraphs-icon-button-accept {
+    background-image: url("../images/icon-accept.svg") !important;
+}
