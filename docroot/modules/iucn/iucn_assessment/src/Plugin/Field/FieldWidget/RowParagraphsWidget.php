@@ -238,7 +238,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit'],
         'title' => $this->t('Edit'),
       ],
-      '#attached' => ['library' => ['iucn_backend/font-awesome']],
     ];
   }
 
@@ -297,7 +296,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
 
-    $element['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
 
@@ -444,7 +442,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_name = $this->fieldDefinition->getName();
     $this->buildAddMoreAjaxButton($elements, $field_name);
 
+    $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
+    $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
 
     // Show deleted paragraphs.
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
