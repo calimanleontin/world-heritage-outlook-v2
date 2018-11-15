@@ -3,19 +3,44 @@
 namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityFormBuilder;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
-use Drupal\iucn_who_diff\Controller\DiffModalFormController;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Revision comparison service that prepares a diff of a pair of revisions.
+ * Controller for the diff modal.
  */
 class ModalDiffController extends ControllerBase {
+
+  /**
+   * @var AssessmentWorkflow
+   */
+  public $assessmentWorkflow;
+
+  /**
+   * @var EntityFormBuilder
+   */
+  public $formBuilder;
+
+  public function __construct(EntityFormBuilder $formBuilderService, AssessmentWorkflow $assessmentWorkflowService) {
+    $this->formBuilder = $formBuilderService;
+    $this->assessmentWorkflow = $assessmentWorkflowService;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity.form_builder'),
+      $container->get('iucn_assessment.workflow')
+    );
+  }
 
   public function diffForm($parent_entity_type, $parent_entity_bundle, $parent_entity_revision, $field, $field_wrapper_id, $delta, $paragraph, $paragraph_revision, $js = 'nojs') {
     $response = new AjaxResponse();
@@ -23,7 +48,7 @@ class ModalDiffController extends ControllerBase {
     $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision);
 
     // Get the rendered field from the entity form.
-    $form = \Drupal::service('entity.form_builder')->getForm($parent_entity_revision, 'default')[$field];
+    $form = $this->formBuilder->getForm($parent_entity_revision, 'default')[$field];
     // Remove unnecessary data from the table.
     NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($form['widget'], FALSE);
     unset($form['widget']['#title']);
@@ -58,7 +83,7 @@ class ModalDiffController extends ControllerBase {
         continue;
       }
       /** @var NodeInterface $assessment_revision */
-      $assessment_revision = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($assessment_vid);
+      $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
       $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
 
@@ -106,7 +131,7 @@ class ModalDiffController extends ControllerBase {
 
     $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
     $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
-    $assessment_edit_form = \Drupal::service('entity.form_builder')->getForm($paragraph_revision, 'geysir_modal_edit', []);
+    $assessment_edit_form = $this->formBuilder->getForm($paragraph_revision, 'geysir_modal_edit', []);
     foreach ($form['widget']['edit']['top']['summary'] as $field => $data) {
       if (in_array($field, array_keys($assessment_edit_form))) {
         if (!empty($assessment_edit_form[$field]['widget']['#title_display'])) {
