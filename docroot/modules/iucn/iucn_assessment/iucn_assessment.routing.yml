@@ -37,7 +37,7 @@ iucn_assessment.node_revision.state_change:
     _admin_route: TRUE
     parameters:
       node:
-        node: entity:node
+        type: entity:node
 
 iucn_assessment.node.assign_users:
   path: '/node/{node}/assign_users'
@@ -79,7 +79,7 @@ iucn_assessment.revert_paragraph:
       paragraph:
         type: 'entity:paragraph'
 
-iucn_assessment.diff_form:
+iucn_assessment.paragraph_diff_form:
   path: 'assessment/diff/{parent_entity_type}/{parent_entity_bundle}/{parent_entity_revision}/{field}/{field_wrapper_id}/{delta}/{paragraph}/{paragraph_revision}/{js}'
   defaults:
     _title: 'See differences'
@@ -94,3 +94,18 @@ iucn_assessment.diff_form:
         type: 'entity:paragraph'
       paragraph_revision:
         type: 'entity_revision:paragraph'
+
+iucn_assessment.field_diff_form:
+  path: 'node/diff/{node}/{field}/{field_wrapper_id}'
+  defaults:
+    _title: 'See differences'
+    _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::fieldDiffForm'
+  requirements:
+      access: 'update'
+      node: \d+
+      _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node

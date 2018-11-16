@@ -178,7 +178,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#weight' => 2,
       '#ajax' => [
         'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.diff_form', [
+        'url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
           'parent_entity_type' => 'node',
           'parent_entity_bundle' => 'site_assessment',
           'parent_entity_revision' => $this->parentNode->getRevisionId(),

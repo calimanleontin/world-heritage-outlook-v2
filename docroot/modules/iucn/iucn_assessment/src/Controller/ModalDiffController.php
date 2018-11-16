@@ -3,14 +3,18 @@
 namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityFormBuilder;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\geysir\Ajax\GeysirCloseModalDialogCommand;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Controller for the diff modal.
@@ -45,7 +49,7 @@ class ModalDiffController extends ControllerBase {
   public function diffForm($parent_entity_type, $parent_entity_bundle, $parent_entity_revision, $field, $field_wrapper_id, $delta, $paragraph, $paragraph_revision, $js = 'nojs') {
     $response = new AjaxResponse();
 
-    $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision);
+    $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($parent_entity_revision);
 
     // Get the rendered field from the entity form.
     $form = $this->formBuilder->getForm($parent_entity_revision, 'default')[$field];
@@ -150,7 +154,7 @@ class ModalDiffController extends ControllerBase {
     $form['edit'] = $assessment_edit_form;
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new GeysirOpenModalDialogCommand('See differences', $assessment_edit_form, ['width' => '80%']));
+    $response->addCommand(new GeysirOpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
     return $response;
   }
 
@@ -166,6 +170,16 @@ class ModalDiffController extends ControllerBase {
       ],
       'data' => ['#markup' => $markup],
     ];
+  }
+
+  public function fieldDiffForm(NodeInterface $node, $field, $field_wrapper_id) {
+    $response = new AjaxResponse();
+    $form = \Drupal::formBuilder()->getForm('\Drupal\iucn_assessment\Form\NodeFieldDiffForm', [
+      'node' => $node,
+      'field' => $field,
+    ]);
+    $response->addCommand(new GeysirOpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
+    return $response;
   }
 
 }
