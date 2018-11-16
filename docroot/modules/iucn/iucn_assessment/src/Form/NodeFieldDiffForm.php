@@ -33,8 +33,11 @@ class NodeFieldDiffForm extends FormBase {
     $field = $route_params['field'];
     $node_form = \Drupal::service('entity.form_builder')->getForm($node, 'default', []);
     $form = [];
-    $form[$field] = $node_form[$field];
+    $form[$field] = $node_form[$field]['widget'];
+    $form[$field] = !empty($node_form[$field]['widget'][0]['value']) ? $node_form[$field]['widget'][0]['value'] : $node_form[$field]['widget'];
     unset($form[$field]['diff']);
+    unset($form[$field]['#value']);
+
     $settings = $node->field_settings->value;
     $settings = json_decode($settings, TRUE);
     $diff_table = [
@@ -86,22 +89,35 @@ class NodeFieldDiffForm extends FormBase {
   }
 
   public function ajaxSave(&$form, FormStateInterface $form_state) {
-    $route_match = \Drupal::routeMatch();
-    /** @var NodeInterface $node */
-    $node = $route_match->getParameter('node');
-    $field = $route_match->getParameter('field');
-    $wrapper = $route_match->getParameter('field_wrapper_id');
-    $node->get($field)->setValue($form_state->getValue($field));
-    $node->save();
-
     $response = new AjaxResponse();
-    $response->addCommand(
-      new HtmlCommand(
-        $wrapper,
-        \Drupal::service('entity.form_builder')->getForm($node, 'default')[$field]
-      )
-    );
-    $response->addCommand(new GeysirCloseModalDialogCommand());
+
+    // When errors occur during form validation, show them to the user.
+    if ($form_state->getErrors()) {
+      unset($form['#prefix']);
+      unset($form['#suffix']);
+      $form['status_messages'] = [
+        '#type' => 'status_messages',
+        '#weight' => -10,
+      ];
+      $response->addCommand(new HtmlCommand('#geysir-modal-form', $form));
+    }
+    else {
+      $route_match = \Drupal::routeMatch();
+      /** @var NodeInterface $node */
+      $node = $route_match->getParameter('node');
+      $field = $route_match->getParameter('field');
+      $wrapper = $route_match->getParameter('field_wrapper_id');
+      $node->get($field)->setValue($form_state->getValue($field));
+      $node->save();
+
+      $response->addCommand(
+        new HtmlCommand(
+          $wrapper,
+          \Drupal::service('entity.form_builder')->getForm($node, 'default')[$field]
+        )
+      );
+      $response->addCommand(new GeysirCloseModalDialogCommand());
+    }
     return $response;
   }
 
@@ -109,7 +125,6 @@ class NodeFieldDiffForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRebuild();
     return [];
   }
 

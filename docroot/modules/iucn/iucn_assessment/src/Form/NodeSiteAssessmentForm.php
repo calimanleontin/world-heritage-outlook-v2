@@ -383,7 +383,7 @@ class NodeSiteAssessmentForm {
         'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
           'node' => $node->id(),
           'field' => $field,
-          'field_wrapper_id' => 'edit-' . str_replace('_', '-', $field) . '-wrapper',
+          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
         ]),
         'progress' => [
           'type' => 'fullscreen',
