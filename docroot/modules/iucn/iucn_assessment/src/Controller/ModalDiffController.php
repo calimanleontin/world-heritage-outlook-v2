@@ -79,7 +79,7 @@ class ModalDiffController extends ControllerBase {
     $diff = $settings['diff'];
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
-      if (empty($diff[$paragraph_revision->id()])) {
+      if (empty($diff[$paragraph_revision->id()] || $diff[$paragraph_revision->id()]['entity_type'] != 'paragraph')) {
         continue;
       }
       /** @var NodeInterface $assessment_revision */
