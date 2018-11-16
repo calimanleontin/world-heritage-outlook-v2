@@ -16,6 +16,7 @@ class IucnGeysirModalParagraphAddForm extends GeysirModalParagraphAddForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
     $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
+    IucnGeysirModalParagraphForm::buildCancelButton($form);
 
     return $form;
   }
