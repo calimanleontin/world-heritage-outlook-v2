@@ -17,6 +17,10 @@
     padding-right: 40px !important;
 }
 
+.field-with-diff {
+    position: relative;
+}
+
 .field-with-diff > div > select {
     margin-right: 30px;
 }
