@@ -428,12 +428,12 @@ function iucn_assessment_add_states(&$form, $pagegraph_name, $visibility_field_n
       !empty($field['#paragraph_type'])
     ) {
       $selector = 'edit-' . $pagegraph_name . '-' . $key . '-subform-' . $conditon_field_name;
-      $selector = str_replace('_', '-', $selector);
+    $selector = str_replace('_', '-', $selector);
       $form[$pagegraph_name]['widget'][$key]['subform'][$visibility_field_name]['#states'] = array(
-        'visible' => array(
-          ':input[data-drupal-selector="' . $selector . '"]' => array('checked' => TRUE),
-        ),
-      );
+      'visible' => array(
+        ':input[data-drupal-selector="' . $selector . '"]' => array('checked' => TRUE),
+      ),
+    );
 
     }
   }
@@ -443,6 +443,14 @@ function iucn_assessment_add_states(&$form, $pagegraph_name, $visibility_field_n
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'paragraph_as_site_threat_geysir_modal_edit_form') {
+    $form['field_as_threats_extent']['#states'] = array(
+      'visible' => array(
+        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => array('checked' => TRUE),
+      ),
+    );
+  }
+
   if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
     $visibility_field_name = 'field_as_threats_extent';
     $conditon_field_name = 'field_as_threats_in_value';
