@@ -56,10 +56,10 @@ class DiffModalFormController extends ControllerBase {
     $response = new AjaxResponse();
     $triggering_element = $form_state->getTriggeringElement();
 
-    preg_match('/(.*)_(\d+)_diff_(\d+)/', $triggering_element['#name'], $matches);
-    $field_name = $matches[1];
-    $delta = $matches[2];
-    $paragraph_id = $matches[3];
+    $field_name = $triggering_element['#field_name'];
+    $paragraph_id = $triggering_element['#paragraph_id'];
+    $paragraph_vid = $triggering_element['#paragraph_vid'];
+
 
     /** @var NodeInterface $assessment */
     $assessment = $form_state->getFormObject()->getEntity();
@@ -128,6 +128,13 @@ class DiffModalFormController extends ControllerBase {
     }
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['widget']['#is_diff_form'] = TRUE;
+
+    $paragraph = $node_revision = \Drupal::entityTypeManager()
+      ->getStorage('paragraph')
+      ->loadRevision($paragraph_vid);
+
+    $assessment_edit_form = \Drupal::service('entity.form_builder')->getForm($paragraph, 'geysir_modal_edit', []);
+    $form['edit'] = $assessment_edit_form;
 
     // Add an AJAX command to open a modal dialog with the form as the content.
     $response->addCommand(new OpenModalDialogCommand('See differences', $form, ['width' => '80%']));

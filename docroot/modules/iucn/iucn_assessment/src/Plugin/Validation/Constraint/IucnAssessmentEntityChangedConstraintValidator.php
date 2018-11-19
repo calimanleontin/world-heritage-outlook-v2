@@ -19,7 +19,7 @@ class IucnAssessmentEntityChangedConstraintValidator extends ConstraintValidator
     if (isset($entity)) {
       /** @var \Drupal\Core\Entity\EntityInterface $entity */
       if (!$entity->isNew()) {
-        if ($entity->bundle() == 'site_assessment' && !$entity->isDefaultRevision()) {
+        if ($entity->bundle() == 'site_assessment') {
           return;
         }
 

@@ -19,6 +19,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
     $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
+    self::buildCancelButton($form);
 
     return $form;
   }
@@ -28,6 +29,24 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
    */
   public function ajaxSave(array $form, FormStateInterface $form_state) {
     return self::assessmentAjaxSave($form, $form_state);
+  }
+
+  public static function buildCancelButton(&$form) {
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => [
+        'class' => [
+          'use-ajax',
+          'modal-cancel-button',
+        ],
+      ],
+      '#ajax' => [
+        'callback' => [self::class, 'closeModalForm'],
+        'event' => 'click',
+      ],
+      '#weight' => 10,
+    ];
   }
 
   public static function assessmentAjaxSave($form, FormStateInterface $form_state) {
@@ -41,7 +60,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
         '#type' => 'status_messages',
         '#weight' => -10,
       ];
-      $response->addCommand(new HtmlCommand('.node-site-assessment-edit-form', $form));
+      $response->addCommand(new HtmlCommand('#geysir-modal-form', $form));
     }
     else {
       // Get all necessary data to be able to correctly update the correct
@@ -69,6 +88,16 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
       $response->addCommand(new GeysirCloseModalDialogCommand());
     }
 
+    return $response;
+  }
+
+  /**
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   */
+  public function closeModalForm() {
+    $command = new GeysirCloseModalDialogCommand();
+    $response = new AjaxResponse();
+    $response->addCommand($command);
     return $response;
   }
 

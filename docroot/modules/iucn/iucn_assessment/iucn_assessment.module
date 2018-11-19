@@ -546,6 +546,7 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
+  $entity_types['paragraph']->setFormClass('iucn_paragraph_diff', '\Drupal\iucn_assessment\Form\IucnParagraphDiffForm');
 }
 
 /**

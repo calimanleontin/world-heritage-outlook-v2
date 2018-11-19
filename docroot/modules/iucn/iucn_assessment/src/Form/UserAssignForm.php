@@ -147,6 +147,14 @@ class UserAssignForm extends FormBase {
         throw new \Exception('Field is not empty');
       }
       $assessment->set($fieldName, $user->id());
+      $state = $assessment->field_state->value;
+      if (in_array($state, [
+          AssessmentWorkflow::STATUS_CREATION,
+          AssessmentWorkflow::STATUS_NEW,
+        ]) && !empty($assessment->field_coordinator->getValue())) {
+        // If the coordinator was set, set assessment status to UNDER EVALUATION.
+        \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+      }
       $assessment->save();
       $context['results']['count']++;
     }

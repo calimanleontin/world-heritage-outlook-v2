@@ -31,3 +31,9 @@ iucn_assessment.table_field_group:
       css/table_field_group.css: {}
   js:
     js/tmp.js: {}
+
+iucn_assessment.field_diff:
+  version: 1.x
+  css:
+    theme:
+      css/field_diff.css: {}

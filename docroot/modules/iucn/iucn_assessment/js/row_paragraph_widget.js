@@ -12,9 +12,9 @@
       $('.field--widget-row-entity-reference-paragraphs table tbody tr:first-child', context)
         .removeClass('draggable')
         .find('.field-multiple-drag').html('');
-      $('tr.draggable', context).once('removeDraggable').each(function () {
-        if ($(this).find('.paragraph-no-tabledrag').length !== 0) {
-          $(this).removeClass('draggable').addClass('paragraph-deleted-row').find('.field-multiple-drag').html('');
+      $('tr.draggable', context).once('deletedParagraph').each(function () {
+        if ($(this).find('.paragraph-deleted-row').length !== 0) {
+          $(this).addClass('paragraph-deleted-row');
         }
       });
       $('tr.draggable', context).once('newParagraph').each(function () {
@@ -22,8 +22,13 @@
           $(this).addClass('paragraph-new-row');
         }
       });
-    }
-  };
+      $('tr.draggable', context).once('removeDraggable').each(function () {
+        if ($(this).find('.paragraph-no-tabledrag').length !== 0) {
+          $(this).removeClass('draggable').find('.field-multiple-drag').html('');
+        }
+      });
+    },
+};
 
   Drupal.behaviors.rowParagraphFixedActions = {
     attach: function(context, settings) {

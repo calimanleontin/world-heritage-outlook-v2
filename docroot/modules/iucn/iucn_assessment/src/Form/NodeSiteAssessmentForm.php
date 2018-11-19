@@ -60,7 +60,7 @@ class NodeSiteAssessmentForm {
 
     // On the values tab, only coordinators and above can edit the values.
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values') {
+      if ($tab == 'values' || $tab == 'assessing-values') {
         self::hideParagraphsActions($form);
       }
       $form['title']['#disabled'] = TRUE;
@@ -179,6 +179,8 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+
+    self::buildDiffButtons($form, $node);
   }
 
   /*
@@ -329,6 +331,75 @@ class NodeSiteAssessmentForm {
         }
       }
     }
+  }
+
+  public static function buildDiffButtons(&$form, $node) {
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.field_diff';
+    $diff = self::getNodeDiff($node);
+    if (empty($diff)) {
+      return;
+    }
+    foreach ($form as $field => &$form_item) {
+      if (!self::isFieldWithDiff($node, $field, $diff)) {
+        continue;
+      }
+      $diff_button = self::getFieldDiffButton($node, $field);
+      $form[$field]['diff'] = $diff_button;
+      $form[$field]['#attributes']['class'][] = 'field-with-diff';
+    }
+  }
+
+  public static function getNodeDiff($node) {
+    $settings = $node->field_settings->value;
+    if (empty($settings)) {
+      return NULL;
+    }
+    $settings = json_decode($settings, TRUE);
+    if (empty($settings['diff'])) {
+      return NULL;
+    }
+    return $settings['diff'];
+  }
+
+  public static function isFieldWithDiff($node, $field, $diff) {
+    if (substr($field, 0, 6) !== 'field_') {
+      return FALSE;
+    }
+    foreach (array_keys($diff) as $vid) {
+      if (!empty($diff[$vid][$node->id()]['diff'][$field])) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  public static function getFieldDiffButton($node, $field) {
+    return [
+      '#type' => 'submit',
+      '#value' => 'See differences',
+      '#weight' => 2,
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
+          'node' => $node->id(),
+          'field' => $field,
+          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
+        ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
+      ],
+      '#attributes' => [
+        'class' => [
+          'paragraphs-icon-button',
+          'paragraphs-icon-button-compare',
+          'use-ajax',
+          'field-diff',
+        ],
+        'title' => t('See differences'),
+      ],
+    ];
   }
 
 }
