@@ -410,15 +410,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
         '#value' => $this->t('Add more'),
         '#ajax' => [
           'event' => 'click',
-          'url' => Url::fromRoute('geysir.modal.add_form_first', [
-            'parent_entity_type' => 'node',
-            'parent_entity_bundle' => 'site_assessment',
-            'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+            'node' => $this->parentNode->id(),
+            'node_revision' => $this->parentNode->getRevisionId(),
             'field' => $field_name,
             'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-            'delta' => 0,
-            'js' => 'ajax',
-            'position' => 0,
             'bundle' => $bundle,
           ]),
         ],

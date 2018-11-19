@@ -109,3 +109,19 @@ iucn_assessment.field_diff_form:
     parameters:
       node:
         type: entity:node
+
+iucn_assessment.modal_paragraph_add:
+  path: 'assessment/add/{node}/{node_revision}/{field}/{field_wrapper_id}/{bundle}'
+  defaults:
+    _title: 'Add paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::addFirst'
+  requirements:
+    access: 'update'
+    node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
