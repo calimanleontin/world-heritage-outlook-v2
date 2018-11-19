@@ -6,15 +6,12 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityFormBuilder;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\geysir\Ajax\GeysirCloseModalDialogCommand;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Controller for the diff modal.
@@ -172,13 +169,13 @@ class ModalDiffController extends ControllerBase {
     ];
   }
 
-  public function fieldDiffForm(NodeInterface $node, $field, $field_wrapper_id) {
+  public function fieldDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id) {
     $response = new AjaxResponse();
-    $form = \Drupal::formBuilder()->getForm('\Drupal\iucn_assessment\Form\NodeFieldDiffForm', [
-      'node' => $node,
-      'field' => $field,
-    ]);
-    $response->addCommand(new GeysirOpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
+    $node_revision = $this->entityTypeManager()
+      ->getStorage('node')
+      ->loadRevision($node_revision);
+    $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_field_diff');
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
     return $response;
   }
 

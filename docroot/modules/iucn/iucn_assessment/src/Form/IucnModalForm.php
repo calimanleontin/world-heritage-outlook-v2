@@ -8,7 +8,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 
-abstract class IucnModalParagraphForm extends ContentEntityForm {
+abstract class IucnModalForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
@@ -110,19 +110,6 @@ abstract class IucnModalParagraphForm extends ContentEntityForm {
     $response = new AjaxResponse();
     $response->addCommand($command);
     return $response;
-  }
-
-  /**
-   * Insert the value into the ItemList either before or after.
-   */
-  protected function insertParagraph($parent_entity) {
-    $route_match = $this->getRouteMatch();
-    $field = $route_match->getParameter('field');
-    $value = [
-      'target_id' => $this->entity->id(),
-      'target_revision_id' => $this->entity->getRevisionId(),
-    ];
-    $parent_entity->get($field)->appendItem($value);
   }
 
 }

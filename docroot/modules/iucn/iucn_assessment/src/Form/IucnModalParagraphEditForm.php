@@ -2,6 +2,6 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-class IucnModalParagraphEditForm extends IucnModalParagraphForm {
+class IucnModalParagraphEditForm extends IucnModalForm {
 
 }

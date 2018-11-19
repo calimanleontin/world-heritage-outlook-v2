@@ -460,6 +460,11 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
     $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
   }
+  elseif ($form_id == 'node_site_assessment_iucn_field_diff_form') {
+    unset($form['url_redirects']);
+    unset($form['#fieldgroups']);
+    unset($form['#group_children']);
+  }
 }
 
 /**
@@ -493,6 +498,7 @@ function iucn_assessment_entity_type_alter(array &$entity_types) {
   }
   $entity_types['paragraph']->setFormClass('iucn_modal_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphEditForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_add', '\Drupal\iucn_assessment\Form\IucnModalParagraphAddForm');
+  $entity_types['node']->setFormClass('iucn_field_diff', '\Drupal\iucn_assessment\Form\IucnModalFieldDiffForm');
 }
 
 /**

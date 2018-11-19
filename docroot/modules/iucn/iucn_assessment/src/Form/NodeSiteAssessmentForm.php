@@ -373,7 +373,7 @@ class NodeSiteAssessmentForm {
     return FALSE;
   }
 
-  public static function getFieldDiffButton($node, $field) {
+  public static function getFieldDiffButton(NodeInterface $node, $field) {
     return [
       '#type' => 'submit',
       '#value' => 'See differences',
@@ -382,6 +382,7 @@ class NodeSiteAssessmentForm {
         'event' => 'click',
         'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
           'node' => $node->id(),
+          'node_revision' => $node->getRevisionId(),
           'field' => $field,
           'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
         ]),

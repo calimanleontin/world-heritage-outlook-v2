@@ -96,7 +96,7 @@ iucn_assessment.paragraph_diff_form:
         type: 'entity_revision:paragraph'
 
 iucn_assessment.field_diff_form:
-  path: 'node/diff/{node}/{field}/{field_wrapper_id}'
+  path: 'node/diff/{node}/{node_revision}/{field}/{field_wrapper_id}'
   defaults:
     _title: 'See differences'
     _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::fieldDiffForm'

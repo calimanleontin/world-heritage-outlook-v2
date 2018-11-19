@@ -4,7 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-class IucnModalParagraphAddForm extends IucnModalParagraphForm {
+class IucnModalParagraphAddForm extends IucnModalForm {
 
   /**
    * {@inheritdoc}
