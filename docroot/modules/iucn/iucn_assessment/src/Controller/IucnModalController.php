@@ -14,14 +14,26 @@ class IucnModalController extends ControllerBase {
   /**
    * Create a modal dialog to add the first paragraph.
    */
-  public function addFirst($node_revision, $field, $field_wrapper_id, $bundle) {
+  public function addParagraph($node_revision, $field, $field_wrapper_id, $bundle) {
     $response = new AjaxResponse();
     $paragraph_title = $this->getParagraphTitle($field);
 
     $new_paragraph = Paragraph::create(['type' => $bundle]);
     $form = $this->entityFormBuilder()->getForm($new_paragraph, 'iucn_modal_add', []);
 
-    $response->addCommand(new OpenModalDialogCommand($this->t('Add @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form));
+    $response->addCommand(new OpenModalDialogCommand($this->t('Add @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%']));
+    return $response;
+  }
+
+  /**
+   * Create a modal dialog to edit a single paragraph.
+   */
+  public function editParagraph($node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
+    $response = new AjaxResponse();
+    $form = $this->entityFormBuilder()->getForm($paragraph_revision, 'iucn_modal_edit', []);
+    $paragraph_title = $this->getParagraphTitle($field);
+    $response->addCommand(new OpenModalDialogCommand($this->t('Edit @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%']));
+
     return $response;
   }
 

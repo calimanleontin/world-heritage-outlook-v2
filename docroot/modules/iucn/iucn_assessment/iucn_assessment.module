@@ -491,7 +491,7 @@ function iucn_assessment_entity_type_alter(array &$entity_types) {
     unset($constraints['EntityUntranslatableFields']);
     $entity_type->setConstraints($constraints);
   }
-  $entity_types['paragraph']->setFormClass('geysir_modal_edit', '\Drupal\iucn_assessment\Form\IucnGeysirModalParagraphForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphEditForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_add', '\Drupal\iucn_assessment\Form\IucnModalParagraphAddForm');
 }
 

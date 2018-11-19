@@ -221,16 +221,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#value' => $this->t('Edit'),
       '#ajax' => [
         'event' => 'click',
-        'url' => Url::fromRoute('geysir.modal.edit_form', [
-          'parent_entity_type' => 'node',
-          'parent_entity_bundle' => 'site_assessment',
-          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
-          'delta' => $delta,
-          'paragraph' => $paragraphs_entity->id(),
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'js' => 'ajax',
         ]),
         'progress' => [
           'type' => 'fullscreen',
