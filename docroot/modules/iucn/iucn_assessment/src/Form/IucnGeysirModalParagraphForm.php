@@ -32,12 +32,12 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
   }
 
   public static function buildCancelButton(&$form) {
+    // Adding 'use-ajax' class will crash js.
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => t('Cancel'),
       '#attributes' => [
         'class' => [
-          'use-ajax',
           'modal-cancel-button',
         ],
       ],
