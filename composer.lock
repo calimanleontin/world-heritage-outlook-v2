@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8db9220309ff976258859b2b1696f06a",
+    "content-hash": "c38e86ffbfeb7f5295b9c90db595d29f",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -8657,6 +8657,17 @@
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
+            "name": "jquery-limit",
+            "version": "dev-master",
+            "dist": {
+                "type": "file",
+                "url": "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jquery-limit/jquery.limit-1.3.js",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "drupal-library"
+        },
+        {
             "name": "kenwheeler/slick",
             "version": "1.6.0",
             "dist": {
@@ -11737,54 +11748,6 @@
             "time": "2017-07-22T11:58:36+00:00"
         },
         {
-            "name": "drupal/paragraphs_edit",
-            "version": "2.0.0-alpha6",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/paragraphs_edit",
-                "reference": "8.x-2.0-alpha6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/paragraphs_edit-8.x-2.0-alpha6.zip",
-                "reference": "8.x-2.0-alpha6",
-                "shasum": "30ffe95b9160eedfa5aafc1e7a65e252d67d8b4e"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/paragraphs": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-2.0-alpha6",
-                    "datestamp": "1509009544",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "casey",
-                    "homepage": "https://www.drupal.org/user/32403"
-                }
-            ],
-            "description": "Allows users to edit/clone and delete paragraphs.",
-            "homepage": "https://www.drupal.org/project/paragraphs_edit",
-            "support": {
-                "source": "http://cgit.drupalcode.org/paragraphs_edit"
-            }
-        },
-        {
             "name": "myclabs/deep-copy",
             "version": "1.8.1",
             "source": {
@@ -13160,7 +13123,8 @@
         "drupal/stage_file_proxy": 15,
         "drupal/string_field_formatter": 20,
         "drupal/webform": 5,
-        "drupal/xmlsitemap": 15
+        "drupal/xmlsitemap": 15,
+        "jquery-limit": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -27,6 +27,12 @@ function iucn_assessment_theme() {
       'render element' => 'element',
       'template' => 'rating-image-switcher',
     ],
+    'textarea_limit' => [
+      'variables' => [
+        'limit' => '',
+        'id' => '',
+      ],
+    ],
   ];
 
 }
@@ -459,6 +465,20 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   }
   elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
     $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+  }
+  elseif ($form_id == 'paragraph_as_site_value_wh_geysir_modal_edit_form') {
+    // @todo apply for all paragraphs
+//    $form['#attached']['library'][] = 'iucn_assessment/textarea_limit';
+    $limit_render_array = [
+      '#limit' => 1000,
+      '#id' => 'limit-count-number-field-as-description',
+      '#theme' => 'textarea_limit_remaining',
+    ];
+
+    $limit_rendered = \Drupal::service('renderer')->renderPlain($limit_render_array);
+
+//    $form['field_as_description']['widget'][0]['#suffix'] = $limit_rendered;
+    dpm($form['field_as_description']);
   }
 }
 

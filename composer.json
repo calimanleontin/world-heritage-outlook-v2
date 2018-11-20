@@ -112,6 +112,18 @@
           "type" : "zip"
         }
       }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "jquery-limit",
+        "type": "drupal-library",
+        "dist": {
+          "url": "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jquery-limit/jquery.limit-1.3.js",
+          "type": "file"
+        }
+      }
     }
   ],
   "require": {
@@ -206,6 +218,7 @@
     "enyoo/dropzone": "^4.3",
     "harvesthq/chosen": "^1.6",
     "jackmoore/colorbox": "^1.6",
+    "jquery-limit": "dev-master",
     "kenwheeler/slick": "^1.6",
     "webflo/drupal-finder": "^1.1",
     "webmozart/path-util": "^2.3"
