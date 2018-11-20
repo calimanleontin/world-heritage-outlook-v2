@@ -773,6 +773,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $value = $this->getNestedSummary($paragraph, $field_name);
       }
 
+      if ($field_definition->getType() == 'boolean') {
+        $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
+        $value = !empty($paragraph->{$field_name}->value)
+          ? $config->getSetting('on_label')
+          : $config->getSetting('off_label');
+      }
+
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
           $entities = $paragraph->get($field_name)->getValue();
