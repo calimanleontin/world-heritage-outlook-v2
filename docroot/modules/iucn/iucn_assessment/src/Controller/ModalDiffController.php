@@ -9,6 +9,8 @@ use Drupal\Core\Entity\EntityFormBuilder;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
+use Drupal\migrate\Row;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
@@ -133,8 +135,11 @@ class ModalDiffController extends ControllerBase {
 
     $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
     $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
+
+    $grouped_fields = RowParagraphsWidget::getGroupedFields();
     $assessment_edit_form = $this->formBuilder->getForm($paragraph_revision, 'iucn_modal_paragraph_edit', []);
-    foreach ($form['widget']['edit']['top']['summary'] as $field => $data) {
+    foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision) as $field => $data) {
+      $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
       if (in_array($field, array_keys($assessment_edit_form))) {
         if (!empty($assessment_edit_form[$field]['widget']['#title_display'])) {
           $assessment_edit_form[$field]['widget']['#title_display'] = 'invisible';
@@ -142,7 +147,14 @@ class ModalDiffController extends ControllerBase {
         if (!empty($assessment_edit_form[$field]['widget'][0]['value']['#title_display'])) {
           $assessment_edit_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
         }
-        $form['widget']['edit']['top']['summary'][$field]['data'] = $assessment_edit_form[$field];
+        unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
+        $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field];
+        if ($field != $grouped_with) {
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#prefix'] =
+            '<b>' . RowParagraphsWidget::getSummaryPrefix($field) . '</b>';
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
+            '<b>' . RowParagraphsWidget::getSummaryPrefix($grouped_with) . '</b>';
+        }
         unset($assessment_edit_form[$field]);
       }
     }

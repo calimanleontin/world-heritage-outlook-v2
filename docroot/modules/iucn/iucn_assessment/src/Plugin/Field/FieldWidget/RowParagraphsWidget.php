@@ -611,7 +611,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -711,17 +711,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public function getFieldComponents(ParagraphInterface $paragraph) {
+  public static function getFieldComponents(ParagraphInterface $paragraph) {
     $bundle = $paragraph->getType();
-    $form_display_mode = $this->getSetting('form_display_mode');
-    if (empty($form_display_mode)) {
-      $form_display_mode = 'default';
-    }
+    $form_display_mode = 'default';
     $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
       ->getComponents();
-    if (array_key_exists('moderation_state', $components)) {
-      unset($components['moderation_state']);
-    }
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }
@@ -744,7 +738,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $summary['num']['value'] = $num;
     }
 
-    $components = $this->getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
