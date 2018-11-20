@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityFormBuilder;
 use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -43,10 +44,10 @@ class ModalDiffController extends ControllerBase {
     );
   }
 
-  public function diffForm($parent_entity_type, $parent_entity_bundle, $parent_entity_revision, $field, $field_wrapper_id, $delta, $paragraph, $paragraph_revision, $js = 'nojs') {
+  public function paragraphDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
     $response = new AjaxResponse();
 
-    $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($parent_entity_revision);
+    $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($node_revision);
 
     // Get the rendered field from the entity form.
     $form = $this->formBuilder->getForm($parent_entity_revision, 'default')[$field];
@@ -61,7 +62,7 @@ class ModalDiffController extends ControllerBase {
       if (!is_int($key)) {
         continue;
       }
-      if ($item['#paragraph_id'] != $paragraph->id()) {
+      if ($item['#paragraph_id'] != $paragraph_revision->id()) {
         unset($form['widget'][$key]);
       }
       else {
@@ -94,7 +95,7 @@ class ModalDiffController extends ControllerBase {
 
       // If the row is actually deleted, only apply a different class.
       $deleted = FALSE;
-      if (!in_array($paragraph->id(), array_column($assessment_revision->get($field)->getValue(), 'target_id'))) {
+      if (!in_array($paragraph_revision->id(), array_column($assessment_revision->get($field)->getValue(), 'target_id'))) {
         $row['top']['#attributes']['class'][] = 'paragraph-deleted-row';
         $deleted = TRUE;
       }
@@ -132,7 +133,7 @@ class ModalDiffController extends ControllerBase {
 
     $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
     $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
-    $assessment_edit_form = $this->formBuilder->getForm($paragraph_revision, 'geysir_modal_edit', []);
+    $assessment_edit_form = $this->formBuilder->getForm($paragraph_revision, 'iucn_modal_paragraph_edit', []);
     foreach ($form['widget']['edit']['top']['summary'] as $field => $data) {
       if (in_array($field, array_keys($assessment_edit_form))) {
         if (!empty($assessment_edit_form[$field]['widget']['#title_display'])) {
@@ -148,10 +149,10 @@ class ModalDiffController extends ControllerBase {
 
     $assessment_edit_form['diff'] = $form;
     $assessment_edit_form['diff']['#weight'] = 0;
-    $form['edit'] = $assessment_edit_form;
+    unset($assessment_edit_form['#fieldgroups']);
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new GeysirOpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
     return $response;
   }
 
@@ -174,7 +175,7 @@ class ModalDiffController extends ControllerBase {
     $node_revision = $this->entityTypeManager()
       ->getStorage('node')
       ->loadRevision($node_revision);
-    $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_field_diff');
+    $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_modal_field_diff');
     $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
     return $response;
   }

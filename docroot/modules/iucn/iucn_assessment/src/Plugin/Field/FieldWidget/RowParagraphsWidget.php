@@ -171,7 +171,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param string $field_wrapper
    * @param string $field_name
    */
-  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
+  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
       '#value' => 'See differences',
@@ -179,15 +179,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#ajax' => [
         'event' => 'click',
         'url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
-          'parent_entity_type' => 'node',
-          'parent_entity_bundle' => 'site_assessment',
-          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
-          'delta' => $delta,
-          'paragraph' => $paragraphs_entity->id(),
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'js' => 'ajax',
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -215,7 +211,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param $field_name
    * @param $delta
    */
-  public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
+  public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $element['top']['actions']['actions']['edit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Edit'),
@@ -290,10 +286,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
     if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
-      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
+      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
     }
 
-    $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
+    $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name);
 
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
