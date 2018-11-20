@@ -78,7 +78,7 @@ function iucn_assessment_theme_suggestions_alter(array &$suggestions, array $var
  */
 function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
   $id = $context['entity_type'] . '.' . $context['bundle'];
-  if (($id == 'node.site_assessment') || ($id == 'paragraph.as_site_value_wh')) {
+  if (($id == 'node.site_assessment') || ($context['entity_type'] == 'paragraph')) {
     $form_modes = \Drupal::entityManager()->getFormModeOptionsByBundle($context['entity_type'], $context['bundle']);
     $tab = \Drupal::request()->query->get('tab');
     $tab = str_replace('-', '_', $tab);
@@ -423,6 +423,14 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form') {
+    $form['field_as_threats_extent']['#states'] = [
+      'visible' => [
+        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
+      ],
+    ];
+  }
+
   if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
     NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
   }

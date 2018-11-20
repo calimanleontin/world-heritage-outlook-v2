@@ -436,6 +436,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
+    $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
 
     // Show deleted paragraphs.
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {

@@ -241,7 +241,21 @@
     position: static;
 }
 
-.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+.raw-paragraphs-tabs-wrapper .paragraphs-tabs {
+    display: none;
+}
+
+.raw-paragraphs-tabs-wrapper > .form-item {
+    position: relative;
+    margin-top: 0;
+}
+
+.raw-paragraphs-tabs-wrapper table {
+    margin-bottom: 0;
+}
+
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"],
+.field--widget-row-entity-reference-paragraphs > .raw-paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
     margin: 10px;
 }
 
