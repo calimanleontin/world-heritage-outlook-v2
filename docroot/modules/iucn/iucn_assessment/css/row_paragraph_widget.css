@@ -390,6 +390,11 @@
     margin-right: 10px;
 }
 
-.paragraphs-actions {
-    width: 110px !important;
+.paragraphs-actions,
+.paragraph-summary-component-actions {
+    /*width: 110px !important;*/
+}
+
+.paragraph-top:last-child {
+    /*width: 110px !important;*/
 }
