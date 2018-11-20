@@ -102,13 +102,16 @@ class ModalDiffController extends ControllerBase {
         $deleted = TRUE;
       }
 
+      $grouped_fields = RowParagraphsWidget::getGroupedFields();
+
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
-        if (empty($row['top']['summary'][$diff_field]['data'])) {
+        $grouped_with = !empty($grouped_fields[$diff_field]) ? $grouped_fields[$diff_field]['grouped_with'] : $diff_field;
+        if (empty($row['top']['summary'][$diff_field]['data']) && empty($row['top']['summary'][$grouped_with]['data'])) {
           continue;
         }
         if ($deleted) {
-          $row['top']['summary'][$diff_field]['data']['#markup'] = $this->t('Deleted');
+          $row['top']['summary'][$grouped_with]['data']['#markup'] = $this->t('Deleted');
           continue;
         }
         $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
@@ -119,11 +122,20 @@ class ModalDiffController extends ControllerBase {
           }
         }
 
-        $row['top']['summary'][$diff_field]['data'] = [
+        if (!empty($row['top']['summary'][$grouped_with]['data'][$diff_field])) {
+          $row['top']['summary'][$grouped_with]['data'][$diff_field] = [];
+        }
+        $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
           '#rows' => $diff_rows,
           '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
         ];
+        if (!empty($row['top']['summary'][$grouped_with]['data']['#markup'])) {
+          unset($row['top']['summary'][$grouped_with]['data']['#markup']);
+        }
+        if (!empty($prefix = RowParagraphsWidget::getSummaryPrefix($diff_field))) {
+          $row['top']['summary'][$grouped_with]['data'][$diff_field]['#prefix'] = $prefix;
+        }
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
@@ -136,7 +148,6 @@ class ModalDiffController extends ControllerBase {
     $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
     $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
 
-    $grouped_fields = RowParagraphsWidget::getGroupedFields();
     $assessment_edit_form = $this->formBuilder->getForm($paragraph_revision, 'iucn_modal_paragraph_edit', []);
     foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision) as $field => $data) {
       $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
