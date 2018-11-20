@@ -389,3 +389,7 @@
 .paragraph-author {
     margin-right: 10px;
 }
+
+.paragraphs-actions {
+    width: 110px !important;
+}
