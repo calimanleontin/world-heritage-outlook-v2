@@ -49,6 +49,7 @@
 .vertical-table table legend {
     float: left;
     width: 250px;
+    font-weight: bold;
 }
 
 .vertical-table table  div.label {
