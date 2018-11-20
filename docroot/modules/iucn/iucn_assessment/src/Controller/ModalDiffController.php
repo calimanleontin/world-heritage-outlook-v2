@@ -6,7 +6,6 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityFormBuilder;
-use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
@@ -53,7 +52,7 @@ class ModalDiffController extends ControllerBase {
     if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
       $form_revision = $this->assessmentWorkflow->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     }
-  else {
+    else {
       $form_revision = $parent_entity_revision;
     }
 
