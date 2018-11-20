@@ -97,7 +97,7 @@ class ModalDiffController extends ControllerBase {
       $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
       if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        $node->field_assessor->entity->getDisplayName();
+        $author = $node->field_assessor->entity->getDisplayName();
       }
       else {
         $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
