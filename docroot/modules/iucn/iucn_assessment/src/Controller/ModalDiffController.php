@@ -146,6 +146,9 @@ class ModalDiffController extends ControllerBase {
         $diff_rows = [];
         foreach ($diffs as $diff_group) {
           for ($i = 0; $i < count($diff_group); $i += 2) {
+            if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+              continue;
+            }
             $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
           }
         }
