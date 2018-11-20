@@ -50,9 +50,15 @@ class ModalDiffController extends ControllerBase {
     $response = new AjaxResponse();
 
     $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($node_revision);
+    if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      $form_revision = $this->assessmentWorkflow->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    }
+  else {
+      $form_revision = $parent_entity_revision;
+    }
 
     // Get the rendered field from the entity form.
-    $form = $this->formBuilder->getForm($parent_entity_revision, 'default')[$field];
+    $form = $this->formBuilder->getForm($form_revision, 'default')[$field];
     // Remove unnecessary data from the table.
     NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($form['widget'], FALSE);
     unset($form['widget']['#title']);
