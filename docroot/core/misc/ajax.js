@@ -187,6 +187,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     }
 
     if (!this.url) {
+      this.url = '';
       var $element = $(this.element);
       if ($element.is('a')) {
         this.url = $element.attr('href');

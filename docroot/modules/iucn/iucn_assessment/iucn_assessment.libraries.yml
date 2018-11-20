@@ -6,7 +6,6 @@ iucn_assessment.row_paragraph:
   js:
     js/row_paragraph_widget.js: {}
     js/paragraph_comments.js: {}
-    js/row_paragraph_widget.js: {}
 
 iucn_assessment.option_buttons:
   version: VERSION
@@ -34,8 +33,6 @@ iucn_assessment.table_field_group:
   css:
     theme:
       css/table_field_group.css: {}
-  js:
-    js/tmp.js: {}
 
 iucn_assessment.field_diff:
   version: 1.x

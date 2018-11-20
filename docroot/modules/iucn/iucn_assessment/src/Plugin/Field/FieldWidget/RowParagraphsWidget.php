@@ -436,6 +436,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
+    $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
 
     // Show deleted paragraphs.
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
@@ -770,6 +771,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
         $value = $this->getNestedSummary($paragraph, $field_name);
+      }
+
+      if ($field_definition->getType() == 'boolean') {
+        $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
+        $value = !empty($paragraph->{$field_name}->value)
+          ? $config->getSetting('on_label')
+          : $config->getSetting('off_label');
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {

@@ -16,9 +16,6 @@ abstract class IucnModalForm extends ContentEntityForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    $form['#prefix'] = '<div id="drupal-modal">';
-    $form['#suffix'] = '</div>';
-
     // @TODO: fix problem with form is outdated.
     $form['#token'] = FALSE;
 

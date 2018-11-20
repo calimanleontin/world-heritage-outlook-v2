@@ -6,13 +6,14 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityFormBuilder;
-use Drupal\geysir\Ajax\GeysirOpenModalDialogCommand;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\migrate\Row;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -46,14 +47,14 @@ class ModalDiffController extends ControllerBase {
     );
   }
 
-  public function paragraphDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
+  public function paragraphDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id, ParagraphInterface $paragraph_revision) {
     $response = new AjaxResponse();
 
     $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($node_revision);
     if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
       $form_revision = $this->assessmentWorkflow->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     }
-  else {
+    else {
       $form_revision = $parent_entity_revision;
     }
 
@@ -95,7 +96,12 @@ class ModalDiffController extends ControllerBase {
       /** @var NodeInterface $assessment_revision */
       $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
-      $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        $author = $node->field_assessor->entity->getDisplayName();
+      }
+      else {
+        $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      }
 
       // Copy the initial row.
       $row = $form['widget'][$paragraph_key];
@@ -109,6 +115,22 @@ class ModalDiffController extends ControllerBase {
       }
 
       $grouped_fields = RowParagraphsWidget::getGroupedFields();
+      foreach ($grouped_fields as $grouped_field => $group_settings) {
+        $grouped_with = $group_settings['grouped_with'];
+
+        if ($paragraph_revision->hasField($grouped_field)) {
+          $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
+          $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
+        }
+
+        if ($paragraph_revision->hasField($grouped_with)) {
+          $value2 = $paragraph_revision->get($grouped_with)->view(['settings' => ['link' => 0]]);
+          $value2['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_with);
+        }
+
+        $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_with] = $value2;
+        $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_field] = $value1;
+      }
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
@@ -124,24 +146,25 @@ class ModalDiffController extends ControllerBase {
         $diff_rows = [];
         foreach ($diffs as $diff_group) {
           for ($i = 0; $i < count($diff_group); $i += 2) {
+            if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+              continue;
+            }
             $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
           }
         }
 
-        if (!empty($row['top']['summary'][$grouped_with]['data'][$diff_field])) {
-          $row['top']['summary'][$grouped_with]['data'][$diff_field] = [];
-        }
+        $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
+          ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
+          : NULL;
+
+        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
+
         $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
           '#rows' => $diff_rows,
           '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+          '#prefix' => '<b>' . $prefix . '</b>',
         ];
-        if (!empty($row['top']['summary'][$grouped_with]['data']['#markup'])) {
-          unset($row['top']['summary'][$grouped_with]['data']['#markup']);
-        }
-        if (!empty($prefix = RowParagraphsWidget::getSummaryPrefix($diff_field))) {
-          $row['top']['summary'][$grouped_with]['data'][$diff_field]['#prefix'] = $prefix;
-        }
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
@@ -180,8 +203,11 @@ class ModalDiffController extends ControllerBase {
     $assessment_edit_form['diff']['#weight'] = 0;
     unset($assessment_edit_form['#fieldgroups']);
 
+    $assessment_edit_form['#prefix'] = '<div class="diff-modal">';
+    $assessment_edit_form['#suffix'] = '</div>';
+
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '90%']));
     return $response;
   }
 

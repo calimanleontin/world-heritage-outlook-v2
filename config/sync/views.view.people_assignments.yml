@@ -2364,6 +2364,7 @@ display:
         fields: false
         relationships: false
         pager: false
+        query: false
       filter_groups:
         operator: AND
         groups:
@@ -2778,6 +2779,14 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_comment: ''
+          query_tags: null
     cache_metadata:
       max-age: -1
       contexts:
