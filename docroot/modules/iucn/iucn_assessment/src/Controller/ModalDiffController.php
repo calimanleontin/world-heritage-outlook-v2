@@ -96,7 +96,12 @@ class ModalDiffController extends ControllerBase {
       /** @var NodeInterface $assessment_revision */
       $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
-      $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        $author = $node->field_assessor->entity->getDisplayName();
+      }
+      else {
+        $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      }
 
       // Copy the initial row.
       $row = $form['widget'][$paragraph_key];
@@ -125,7 +130,6 @@ class ModalDiffController extends ControllerBase {
 
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_with] = $value2;
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_field] = $value1;
-        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
       }
 
       // Alter fields that have differences.
@@ -142,6 +146,9 @@ class ModalDiffController extends ControllerBase {
         $diff_rows = [];
         foreach ($diffs as $diff_group) {
           for ($i = 0; $i < count($diff_group); $i += 2) {
+            if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+              continue;
+            }
             $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
           }
         }
@@ -149,6 +156,8 @@ class ModalDiffController extends ControllerBase {
         $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
           ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
           : NULL;
+
+        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
         $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
@@ -198,7 +207,7 @@ class ModalDiffController extends ControllerBase {
     $assessment_edit_form['#suffix'] = '</div>';
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '90%']));
     return $response;
   }
 
