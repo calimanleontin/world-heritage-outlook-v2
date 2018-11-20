@@ -1,0 +1,29 @@
+.path-admin {
+  div[class*="block-views-"] {
+    margin-bottom: 40px;
+    table {
+      .views-field {
+        &:not(.views-field-operations) {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .path-admin {
+    div[class*="block-views-"] {
+      table {
+        table-layout: fixed;
+        .views-field-title {
+          width: 150px;
+        }
+        .views-field-operations {
+          width: 180px;
+        }
+      }
+    }
+  }
+}

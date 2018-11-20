@@ -59,6 +59,23 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
     ]);
+
+    $form['actions']['submit']['#submit'][] = [self::class, 'submitForm'];
+  }
+
+  public static function submitForm(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $formObject->getEntity();
+    $state = $node->field_state->value;
+    if (in_array($state, [
+      AssessmentWorkflow::STATUS_CREATION,
+      AssessmentWorkflow::STATUS_NEW,
+    ]) && !empty($node->field_coordinator->getValue())) {
+      // If the coordinator was set, set assessment status to UNDER EVALUATION.
+      \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    }
   }
 
 }

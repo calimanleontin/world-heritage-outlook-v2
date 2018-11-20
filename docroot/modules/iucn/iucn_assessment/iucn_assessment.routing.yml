@@ -37,7 +37,7 @@ iucn_assessment.node_revision.state_change:
     _admin_route: TRUE
     parameters:
       node:
-        node: entity:node
+        type: entity:node
 
 iucn_assessment.node.assign_users:
   path: '/node/{node}/assign_users'
@@ -78,3 +78,67 @@ iucn_assessment.revert_paragraph:
     parameters:
       paragraph:
         type: 'entity:paragraph'
+
+iucn_assessment.paragraph_diff_form:
+  path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  defaults:
+    _title: 'See differences'
+    _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::paragraphDiffForm'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
+
+iucn_assessment.field_diff_form:
+  path: 'node/field_diff/{node}/{node_revision}/{field}/{field_wrapper_id}'
+  defaults:
+    _title: 'See differences'
+    _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::fieldDiffForm'
+  requirements:
+      access: 'update'
+      node: \d+
+      _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+
+iucn_assessment.modal_paragraph_add:
+  path: 'node/add_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{bundle}'
+  defaults:
+    _title: 'Add paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::addParagraph'
+  requirements:
+    access: 'update'
+    node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+
+iucn_assessment.modal_paragraph_edit:
+  path: 'node/edit_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  defaults:
+    _title: 'Add paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::editParagraph'
+  requirements:
+    access: 'update'
+    node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
