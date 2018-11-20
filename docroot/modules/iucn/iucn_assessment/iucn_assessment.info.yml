@@ -13,7 +13,6 @@ dependencies:
   - diff
   - field
   - field_group
-  - geysir
   - image
   - iucn_site
   - language

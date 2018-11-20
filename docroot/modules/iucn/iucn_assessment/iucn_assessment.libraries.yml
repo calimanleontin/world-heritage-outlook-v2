@@ -29,8 +29,6 @@ iucn_assessment.table_field_group:
   css:
     theme:
       css/table_field_group.css: {}
-  js:
-    js/tmp.js: {}
 
 iucn_assessment.field_diff:
   version: 1.x
