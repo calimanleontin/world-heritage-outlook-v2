@@ -12,6 +12,8 @@ use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\migrate\Row;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -45,7 +47,7 @@ class ModalDiffController extends ControllerBase {
     );
   }
 
-  public function paragraphDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
+  public function paragraphDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id, ParagraphInterface $paragraph_revision) {
     $response = new AjaxResponse();
 
     $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($node_revision);
@@ -111,11 +113,15 @@ class ModalDiffController extends ControllerBase {
       foreach ($grouped_fields as $grouped_field => $group_settings) {
         $grouped_with = $group_settings['grouped_with'];
 
-        $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
-        $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
+        if ($paragraph_revision->hasField($grouped_field)) {
+          $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
+          $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
+        }
 
-        $value2 = $paragraph_revision->get($grouped_with)->view(['settings' => ['link' => 0]]);
-        $value2['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_with);
+        if ($paragraph_revision->hasField($grouped_with)) {
+          $value2 = $paragraph_revision->get($grouped_with)->view(['settings' => ['link' => 0]]);
+          $value2['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_with);
+        }
 
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_with] = $value2;
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_field] = $value1;
