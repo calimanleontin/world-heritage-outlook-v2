@@ -27,9 +27,6 @@
           $(this).removeClass('draggable').find('.field-multiple-drag').html('');
         }
       });
-      $('.diff-modal select', context).once('removeSelect').each(function () {
-        $(this).addClass('chosen-disable');
-      });
     },
 };
 

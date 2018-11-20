@@ -204,7 +204,7 @@ class ModalDiffController extends ControllerBase {
     $assessment_edit_form['#suffix'] = '</div>';
 
     // Add an AJAX command to open a modal dialog with the form as the content.
-    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '80%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $assessment_edit_form, ['width' => '90%']));
     return $response;
   }
 
