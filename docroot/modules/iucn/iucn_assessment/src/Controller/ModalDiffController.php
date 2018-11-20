@@ -108,6 +108,19 @@ class ModalDiffController extends ControllerBase {
       }
 
       $grouped_fields = RowParagraphsWidget::getGroupedFields();
+      foreach ($grouped_fields as $grouped_field => $group_settings) {
+        $grouped_with = $group_settings['grouped_with'];
+
+        $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
+        $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
+
+        $value2 = $paragraph_revision->get($grouped_with)->view(['settings' => ['link' => 0]]);
+        $value2['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_with);
+
+        $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_with] = $value2;
+        $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_field] = $value1;
+        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
+      }
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
@@ -127,20 +140,16 @@ class ModalDiffController extends ControllerBase {
           }
         }
 
-        if (!empty($row['top']['summary'][$grouped_with]['data'][$diff_field])) {
-          $row['top']['summary'][$grouped_with]['data'][$diff_field] = [];
-        }
+        $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
+          ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
+          : NULL;
+
         $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
           '#rows' => $diff_rows,
           '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+          '#prefix' => '<b>' . $prefix . '</b>',
         ];
-        if (!empty($row['top']['summary'][$grouped_with]['data']['#markup'])) {
-          unset($row['top']['summary'][$grouped_with]['data']['#markup']);
-        }
-        if (!empty($prefix = RowParagraphsWidget::getSummaryPrefix($diff_field))) {
-          $row['top']['summary'][$grouped_with]['data'][$diff_field]['#prefix'] = $prefix;
-        }
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
