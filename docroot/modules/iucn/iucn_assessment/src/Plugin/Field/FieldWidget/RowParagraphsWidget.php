@@ -832,7 +832,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
-      $summary[$summary_field_name]['value'] = $value;
+      $summary[$summary_field_name]['value'][] = $value;
       if ($field_definition->getType() == 'string_long') {
         $summary[$summary_field_name]['span'] = 2;
       }
