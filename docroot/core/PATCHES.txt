@@ -9,3 +9,7 @@ Impossible to update an entity revision if the field value you are updating matc
 Source: https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch
 
 
+Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit
+Source: https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch
+
+
