@@ -47,13 +47,13 @@ abstract class IucnModalForm extends ContentEntityForm {
     return self::assessmentAjaxSave($form, $form_state);
   }
 
-  public static function buildCancelButton(&$form) {
-    // Adding 'use-ajax' class will crash js.
+  public function buildCancelButton(&$form) {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => t('Cancel'),
       '#attributes' => [
         'class' => [
+          'use-ajax',
           'modal-cancel-button',
         ],
       ],
@@ -104,24 +104,6 @@ abstract class IucnModalForm extends ContentEntityForm {
     }
 
     return $response;
-  }
-
-  public function buildCancelButton(&$form) {
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#value' => t('Cancel'),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'modal-cancel-button',
-        ],
-      ],
-      '#ajax' => [
-        'callback' => [self::class, 'closeModalForm'],
-        'event' => 'click',
-      ],
-      '#weight' => 10,
-    ];
   }
 
   /**
