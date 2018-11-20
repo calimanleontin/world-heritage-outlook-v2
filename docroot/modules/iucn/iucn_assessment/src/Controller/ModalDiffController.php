@@ -96,7 +96,12 @@ class ModalDiffController extends ControllerBase {
       /** @var NodeInterface $assessment_revision */
       $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
-      $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        $node->field_assessor->entity->getDisplayName();
+      }
+      else {
+        $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
+      }
 
       // Copy the initial row.
       $row = $form['widget'][$paragraph_key];
@@ -125,7 +130,6 @@ class ModalDiffController extends ControllerBase {
 
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_with] = $value2;
         $row['top']['summary'][$group_settings['grouped_with']]['data'][$grouped_field] = $value1;
-        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
       }
 
       // Alter fields that have differences.
@@ -149,6 +153,8 @@ class ModalDiffController extends ControllerBase {
         $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
           ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
           : NULL;
+
+        unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
         $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
