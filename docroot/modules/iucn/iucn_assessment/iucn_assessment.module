@@ -419,46 +419,19 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
   }
 }
 
-function iucn_assessment_add_states(&$form, $pagegraph_name, $visibility_field_name, $conditon_field_name) {
-  foreach ($form[$pagegraph_name]['widget'] as $key => $field) {
-    if (
-      is_array($field) &&
-      !empty($field['#type']) &&
-      $field['#type'] == 'container' &&
-      !empty($field['#paragraph_type'])
-    ) {
-      $selector = 'edit-' . $pagegraph_name . '-' . $key . '-subform-' . $conditon_field_name;
-    $selector = str_replace('_', '-', $selector);
-      $form[$pagegraph_name]['widget'][$key]['subform'][$visibility_field_name]['#states'] = array(
-      'visible' => array(
-        ':input[data-drupal-selector="' . $selector . '"]' => array('checked' => TRUE),
-      ),
-    );
-
-    }
-  }
-}
-
 /**
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'paragraph_as_site_threat_geysir_modal_edit_form') {
-    $form['field_as_threats_extent']['#states'] = array(
-      'visible' => array(
-        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => array('checked' => TRUE),
-      ),
-    );
+  if ($form_id == 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form') {
+    $form['field_as_threats_extent']['#states'] = [
+      'visible' => [
+        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
+      ],
+    ];
   }
 
   if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
-    $visibility_field_name = 'field_as_threats_extent';
-    $conditon_field_name = 'field_as_threats_in_value';
-    $pagegraph_name = 'field_as_threats_current';
-    iucn_assessment_add_states($form, $pagegraph_name, $visibility_field_name, $conditon_field_name);
-    $pagegraph_name = 'field_as_threats_potential';
-    iucn_assessment_add_states($form, $pagegraph_name, $visibility_field_name, $conditon_field_name);
-
     NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
   }
   elseif ($form_id == 'node_site_assessment_state_change_form') {
