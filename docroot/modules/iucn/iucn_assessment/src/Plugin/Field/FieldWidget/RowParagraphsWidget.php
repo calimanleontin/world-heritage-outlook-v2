@@ -603,7 +603,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
-    $grouped_fields = $this->getGroupedFields();
+    $grouped_fields = self::getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
         'value' => $this->t('No.'),
@@ -737,7 +737,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getSummaryComponents(ParagraphInterface $paragraph) {
     $summary = [];
-    $grouped_fields = $this->getGroupedFields();
+    $grouped_fields = self::getGroupedFields();
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
       $num += 1;
@@ -827,7 +827,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $summary[$summary_field_name]['value'] = [];
       }
 
-      $prefix = $this->getSummaryPrefix($field_name);
+      $prefix = self::getSummaryPrefix($field_name);
       if (!empty($prefix) && !empty($value)) {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
@@ -942,27 +942,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The grouped fields.
    */
-  private function getGroupedFields() {
+  public static function getGroupedFields() {
     return [
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
-        'label' => $this->t('Habitat'),
+        'label' => t('Habitat'),
       ],
       'field_as_benefits_pollut_trend' => [
         'grouped_with' => 'field_as_benefits_pollut_level',
-        'label' => $this->t('Pollution'),
+        'label' => t('Pollution'),
       ],
       'field_as_benefits_oex_trend' => [
         'grouped_with' => 'field_as_benefits_oex_level',
-        'label' => $this->t('Overexploatation'),
+        'label' => t('Overexploatation'),
       ],
       'field_as_benefits_climate_trend' => [
         'grouped_with' => 'field_as_benefits_climate_level',
-        'label' => $this->t('Climate change'),
+        'label' => t('Climate change'),
       ],
       'field_as_benefits_invassp_trend' => [
         'grouped_with' => 'field_as_benefits_invassp_level',
-        'label' => $this->t('Invasive species'),
+        'label' => t('Invasive species'),
       ],
 
     ];
@@ -977,18 +977,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return mixed|null
    *   The prefix.
    */
-  private function getSummaryPrefix($field) {
+  public static function getSummaryPrefix($field) {
     $prefixes = [
-      'field_as_benefits_hab_trend' => 'Trend',
-      'field_as_benefits_pollut_trend' => 'Trend',
-      'field_as_benefits_oex_trend' => 'Trend',
-      'field_as_benefits_climate_trend' => 'Trend',
-      'field_as_benefits_invassp_trend' => 'Trend',
-      'field_as_benefits_hab_level' => 'Impact level',
-      'field_as_benefits_pollut_level' => 'Impact level',
-      'field_as_benefits_oex_level' => 'Impact level',
-      'field_as_benefits_climate_level' => 'Impact level',
-      'field_as_benefits_invassp_level' => 'Impact level',
+      'field_as_benefits_hab_trend' => t('Trend'),
+      'field_as_benefits_pollut_trend' => t('Trend'),
+      'field_as_benefits_oex_trend' => t('Trend'),
+      'field_as_benefits_climate_trend' => t('Trend'),
+      'field_as_benefits_invassp_trend' => t('Trend'),
+      'field_as_benefits_hab_level' => t('Impact level'),
+      'field_as_benefits_pollut_level' => t('Impact level'),
+      'field_as_benefits_oex_level' => t('Impact level'),
+      'field_as_benefits_climate_level' => t('Impact level'),
+      'field_as_benefits_invassp_level' => t('Impact level'),
     ];
     return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
   }
