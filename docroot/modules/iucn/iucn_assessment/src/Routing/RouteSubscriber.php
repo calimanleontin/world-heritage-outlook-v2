@@ -31,20 +31,6 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setRequirement('_access', 'FALSE');
     }
-
-    $route = $collection->get('geysir.modal.edit_form');
-    if ($route) {
-      $route->setDefault('_controller', '\Drupal\iucn_assessment\Controller\IucnGeysirModalController::edit');
-      $route->setRequirement('_permission', 'access content');
-      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentParagraphEditAccess');
-    }
-
-    $route = $collection->get('geysir.modal.add_form_first');
-    if ($route) {
-      $route->setDefault('_controller', '\Drupal\iucn_assessment\Controller\IucnGeysirModalController::addFirst');
-      $route->setRequirement('_permission', 'access content');
-      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentParagraphEditAccess');
-    }
   }
 
 }

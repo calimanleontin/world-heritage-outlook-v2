@@ -171,7 +171,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param string $field_wrapper
    * @param string $field_name
    */
-  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
+  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
       '#value' => 'See differences',
@@ -179,15 +179,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#ajax' => [
         'event' => 'click',
         'url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
-          'parent_entity_type' => 'node',
-          'parent_entity_bundle' => 'site_assessment',
-          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
-          'delta' => $delta,
-          'paragraph' => $paragraphs_entity->id(),
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'js' => 'ajax',
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -215,22 +211,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param $field_name
    * @param $delta
    */
-  public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name, $delta) {
+  public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $element['top']['actions']['actions']['edit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Edit'),
       '#ajax' => [
         'event' => 'click',
-        'url' => Url::fromRoute('geysir.modal.edit_form', [
-          'parent_entity_type' => 'node',
-          'parent_entity_bundle' => 'site_assessment',
-          'parent_entity_revision' => $this->parentNode->getRevisionId(),
+        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
-          'delta' => $delta,
-          'paragraph' => $paragraphs_entity->id(),
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'js' => 'ajax',
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -294,10 +286,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
     if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
-      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
+      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
     }
 
-    $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name, $delta);
+    $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name);
 
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
@@ -410,15 +402,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
         '#value' => $this->t('Add more'),
         '#ajax' => [
           'event' => 'click',
-          'url' => Url::fromRoute('geysir.modal.add_form_first', [
-            'parent_entity_type' => 'node',
-            'parent_entity_bundle' => 'site_assessment',
-            'parent_entity_revision' => $this->parentNode->getRevisionId(),
+          'url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+            'node' => $this->parentNode->id(),
+            'node_revision' => $this->parentNode->getRevisionId(),
             'field' => $field_name,
             'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-            'delta' => 0,
-            'js' => 'ajax',
-            'position' => 0,
             'bundle' => $bundle,
           ]),
         ],
@@ -616,7 +604,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
-    $grouped_fields = $this->getGroupedFields();
+    $grouped_fields = self::getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
         'value' => $this->t('No.'),
@@ -624,7 +612,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -724,17 +712,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public function getFieldComponents(ParagraphInterface $paragraph) {
+  public static function getFieldComponents(ParagraphInterface $paragraph) {
     $bundle = $paragraph->getType();
-    $form_display_mode = $this->getSetting('form_display_mode');
-    if (empty($form_display_mode)) {
-      $form_display_mode = 'default';
-    }
+    $form_display_mode = 'default';
     $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
       ->getComponents();
-    if (array_key_exists('moderation_state', $components)) {
-      unset($components['moderation_state']);
-    }
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }
@@ -750,14 +732,14 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function getSummaryComponents(ParagraphInterface $paragraph) {
     $summary = [];
-    $grouped_fields = $this->getGroupedFields();
+    $grouped_fields = self::getGroupedFields();
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
       $num += 1;
       $summary['num']['value'] = $num;
     }
 
-    $components = $this->getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
@@ -789,6 +771,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
         $value = $this->getNestedSummary($paragraph, $field_name);
+      }
+
+      if ($field_definition->getType() == 'boolean') {
+        $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
+        $value = !empty($paragraph->{$field_name}->value)
+          ? $config->getSetting('on_label')
+          : $config->getSetting('off_label');
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
@@ -840,12 +829,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $summary[$summary_field_name]['value'] = [];
       }
 
-      $prefix = $this->getSummaryPrefix($field_name);
+      $prefix = self::getSummaryPrefix($field_name);
       if (!empty($prefix) && !empty($value)) {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
-      $summary[$summary_field_name]['value'] = $value;
+      $summary[$summary_field_name]['value'][] = $value;
       if ($field_definition->getType() == 'string_long') {
         $summary[$summary_field_name]['span'] = 2;
       }
@@ -955,27 +944,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The grouped fields.
    */
-  private function getGroupedFields() {
+  public static function getGroupedFields() {
     return [
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
-        'label' => $this->t('Habitat'),
+        'label' => t('Habitat'),
       ],
       'field_as_benefits_pollut_trend' => [
         'grouped_with' => 'field_as_benefits_pollut_level',
-        'label' => $this->t('Pollution'),
+        'label' => t('Pollution'),
       ],
       'field_as_benefits_oex_trend' => [
         'grouped_with' => 'field_as_benefits_oex_level',
-        'label' => $this->t('Overexploatation'),
+        'label' => t('Overexploatation'),
       ],
       'field_as_benefits_climate_trend' => [
         'grouped_with' => 'field_as_benefits_climate_level',
-        'label' => $this->t('Climate change'),
+        'label' => t('Climate change'),
       ],
       'field_as_benefits_invassp_trend' => [
         'grouped_with' => 'field_as_benefits_invassp_level',
-        'label' => $this->t('Invasive species'),
+        'label' => t('Invasive species'),
       ],
 
     ];
@@ -990,18 +979,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return mixed|null
    *   The prefix.
    */
-  private function getSummaryPrefix($field) {
+  public static function getSummaryPrefix($field) {
     $prefixes = [
-      'field_as_benefits_hab_trend' => 'Trend',
-      'field_as_benefits_pollut_trend' => 'Trend',
-      'field_as_benefits_oex_trend' => 'Trend',
-      'field_as_benefits_climate_trend' => 'Trend',
-      'field_as_benefits_invassp_trend' => 'Trend',
-      'field_as_benefits_hab_level' => 'Impact level',
-      'field_as_benefits_pollut_level' => 'Impact level',
-      'field_as_benefits_oex_level' => 'Impact level',
-      'field_as_benefits_climate_level' => 'Impact level',
-      'field_as_benefits_invassp_level' => 'Impact level',
+      'field_as_benefits_hab_trend' => t('Trend'),
+      'field_as_benefits_pollut_trend' => t('Trend'),
+      'field_as_benefits_oex_trend' => t('Trend'),
+      'field_as_benefits_climate_trend' => t('Trend'),
+      'field_as_benefits_invassp_trend' => t('Trend'),
+      'field_as_benefits_hab_level' => t('Impact level'),
+      'field_as_benefits_pollut_level' => t('Impact level'),
+      'field_as_benefits_oex_level' => t('Impact level'),
+      'field_as_benefits_climate_level' => t('Impact level'),
+      'field_as_benefits_invassp_level' => t('Impact level'),
     ];
     return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
   }

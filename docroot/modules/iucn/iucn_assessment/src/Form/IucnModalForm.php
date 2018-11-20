@@ -2,24 +2,37 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\geysir\Ajax\GeysirCloseModalDialogCommand;
-use Drupal\geysir\Form\GeysirModalParagraphForm;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
 
-/**
- * Functionality to edit a paragraph through a modal.
- */
-class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
+abstract class IucnModalForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+
+    // @TODO: fix problem with form is outdated.
+    $form['#token'] = FALSE;
+
+    // Define alternative submit callbacks using AJAX by copying the default
+    // submit callbacks to the AJAX property.
+    $submit = &$form['actions']['submit'];
+    $submit['#ajax'] = [
+      'callback' => '::ajaxSave',
+      'event' => 'click',
+      'progress' => [
+        'type' => 'throbber',
+        'message' => NULL,
+      ],
+    ];
+
     $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
-    self::buildCancelButton($form);
+    $this->buildCancelButton($form);
 
     return $form;
   }
@@ -31,13 +44,13 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
     return self::assessmentAjaxSave($form, $form_state);
   }
 
-  public static function buildCancelButton(&$form) {
-    // Adding 'use-ajax' class will crash js.
+  public function buildCancelButton(&$form) {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => t('Cancel'),
       '#attributes' => [
         'class' => [
+          'use-ajax',
           'modal-cancel-button',
         ],
       ],
@@ -60,22 +73,21 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
         '#type' => 'status_messages',
         '#weight' => -10,
       ];
-      $response->addCommand(new HtmlCommand('#geysir-modal-form', $form));
+      $response->addCommand(new HtmlCommand('#drupal-modal', $form));
     }
     else {
       // Get all necessary data to be able to correctly update the correct
       // field on the parent node.
       $route_match = \Drupal::routeMatch();
-      $parent_entity_type = $route_match->getParameter('parent_entity_type');
       $temporary_data = $form_state->getTemporary();
-      $parent_entity_revision = isset($temporary_data['parent_entity_revision']) ?
-        $temporary_data['parent_entity_revision'] :
-        $route_match->getParameter('parent_entity_revision');
+      $node_revision = isset($temporary_data['node_revision']) ?
+        $temporary_data['node_revision'] :
+        $route_match->getParameter('node_revision');
       $field_name = $route_match->getParameter('field');
       $field_wrapper_id = $route_match->getParameter('field_wrapper_id');
       $parent_entity_revision = \Drupal::entityTypeManager()
-        ->getStorage($parent_entity_type)
-        ->loadRevision($parent_entity_revision);
+        ->getStorage('node')
+        ->loadRevision($node_revision);
 
       // Refresh the paragraphs field.
       $response->addCommand(
@@ -85,7 +97,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
         )
       );
 
-      $response->addCommand(new GeysirCloseModalDialogCommand());
+      $response->addCommand(new CloseModalDialogCommand());
     }
 
     return $response;
@@ -95,7 +107,7 @@ class IucnGeysirModalParagraphForm extends GeysirModalParagraphForm {
    * @return \Drupal\Core\Ajax\AjaxResponse
    */
   public function closeModalForm() {
-    $command = new GeysirCloseModalDialogCommand();
+    $command = new CloseModalDialogCommand();
     $response = new AjaxResponse();
     $response->addCommand($command);
     return $response;
