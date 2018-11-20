@@ -6,11 +6,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
+use Drupal\iucn_assessment\Form\ParagraphAsSiteThreatForm;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeInterface;
 
 function iucn_assessment_theme() {
   return [
@@ -78,7 +78,7 @@ function iucn_assessment_theme_suggestions_alter(array &$suggestions, array $var
  */
 function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
   $id = $context['entity_type'] . '.' . $context['bundle'];
-  if (($id == 'node.site_assessment') || ($id == 'paragraph.as_site_value_wh')) {
+  if (($id == 'node.site_assessment') || ($context['entity_type'] == 'paragraph')) {
     $form_modes = \Drupal::entityManager()->getFormModeOptionsByBundle($context['entity_type'], $context['bundle']);
     $tab = \Drupal::request()->query->get('tab');
     $tab = str_replace('-', '_', $tab);
@@ -423,42 +423,60 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
-    NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
-  }
-  elseif ($form_id == 'node_site_assessment_state_change_form') {
-    NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
-  }
-  elseif ($form_id == 'node_site_assessment_assign_users_form') {
-    NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
-  }
-  elseif ($form_id == 'revision_overview_form') {
-    // When messing with the revision creation workflow, the position of
-    // the default revision is not always the first on the /revisions page.
-    // This is a workaround to fix this issue.
-    $revisions = $form['node_revisions_table'];
-    $current_revision = NULL;
-    foreach ($revisions as $key => $revision) {
-      if (!is_int($key)) {
-        continue;
+  switch ($form_id) {
+    case 'node_site_assessment_form':
+    case 'node_site_assessment_edit_form':
+      NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
+      break;
+
+    case 'node_site_assessment_state_change_form':
+      NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
+      break;
+
+    case 'node_site_assessment_assign_users_form':
+      NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
+      break;
+
+    case 'node_site_assessment_iucn_modal_field_diff_form':
+      unset($form['url_redirects']);
+      unset($form['#fieldgroups']);
+      unset($form['#group_children']);
+      break;
+
+    case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
+      ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
+      break;
+
+    case 'revision_overview_form':
+      // When messing with the revision creation workflow, the position of
+      // the default revision is not always the first on the /revisions page.
+      // This is a workaround to fix this issue.
+      $revisions = $form['node_revisions_table'];
+      $current_revision = NULL;
+      foreach ($revisions as $key => $revision) {
+        if (!is_int($key)) {
+          continue;
+        }
+        if (empty($revision['#attributes']['class'])) {
+          continue;
+        }
+        $classes = $revision['#attributes']['class'];
+        if (in_array('revision-current', $classes)) {
+          $current_revision = $key;
+          break;
+        }
       }
-      if (empty($revision['#attributes']['class'])) {
-        continue;
+      if (!empty($current_revision)) {
+        $revision = $form['node_revisions_table'][$current_revision];
+        unset($form['node_revisions_table'][$current_revision]);
+        array_unshift($form['node_revisions_table'], $revision);
       }
-      $classes = $revision['#attributes']['class'];
-      if (in_array('revision-current', $classes)) {
-        $current_revision = $key;
-        break;
-      }
-    }
-    if (!empty($current_revision)) {
-      $revision = $form['node_revisions_table'][$current_revision];
-      unset($form['node_revisions_table'][$current_revision]);
-      array_unshift($form['node_revisions_table'], $revision);
-    }
-  }
-  elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
-    $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      break;
+
+    case 'user_form':
+    case 'user_register_form':
+      $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      break;
   }
 }
 
@@ -491,8 +509,6 @@ function iucn_assessment_entity_type_alter(array &$entity_types) {
     unset($constraints['EntityUntranslatableFields']);
     $entity_type->setConstraints($constraints);
   }
-  $entity_types['paragraph']->setFormClass('geysir_modal_edit', '\Drupal\iucn_assessment\Form\IucnGeysirModalParagraphForm');
-  $entity_types['paragraph']->setFormClass('geysir_modal_add', '\Drupal\iucn_assessment\Form\IucnGeysirModalParagraphAddForm');
 }
 
 /**
@@ -511,7 +527,11 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
-  $entity_types['paragraph']->setFormClass('iucn_paragraph_diff', '\Drupal\iucn_assessment\Form\IucnParagraphDiffForm');
+
+  $entity_types['node']->setFormClass('iucn_modal_field_diff', '\Drupal\iucn_assessment\Form\IucnModalFieldDiffForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphEditForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_add', '\Drupal\iucn_assessment\Form\IucnModalParagraphAddForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_diff', '\Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm');
 }
 
 /**
