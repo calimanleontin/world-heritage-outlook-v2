@@ -68,7 +68,6 @@ class DiffController extends ControllerBase {
         $this->getLogger('iucn_diff')->error('Invalid field diff key.');
       }
     }
-    dpm($diff);
     return $diff;
   }
 
