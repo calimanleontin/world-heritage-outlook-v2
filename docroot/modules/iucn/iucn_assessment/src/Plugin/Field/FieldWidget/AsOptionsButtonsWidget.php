@@ -160,6 +160,10 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       '#type' => 'select',
       '#options' => $this->groups,
       '#default_value' => $default_value,
+      '#attributes' => [
+        'class' => ['options-groups'],
+        'data-id' => 'options-groups',
+      ],
       '#states' => $states,
     );
 
@@ -176,6 +180,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       '#markup' => '</div></div>',
     );
     $this->states = $states;
+    $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.option_buttons';
     return $element;
   }
 
