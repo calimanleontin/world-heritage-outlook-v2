@@ -44,6 +44,28 @@ abstract class IucnModalForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function ajaxSave(array $form, FormStateInterface $form_state) {
+    return self::assessmentAjaxSave($form, $form_state);
+  }
+
+  public static function buildCancelButton(&$form) {
+    // Adding 'use-ajax' class will crash js.
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => [
+        'class' => [
+          'modal-cancel-button',
+        ],
+      ],
+      '#ajax' => [
+        'callback' => [self::class, 'closeModalForm'],
+        'event' => 'click',
+      ],
+      '#weight' => 10,
+    ];
+  }
+
+  public static function assessmentAjaxSave($form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
     // When errors occur during form validation, show them to the user.
