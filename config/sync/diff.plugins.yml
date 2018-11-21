@@ -789,12 +789,12 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_values_bio:
-      type: entity_reference_revisions_field_diff_builder
+      type: iucn_threat_values
       settings:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_values_wh:
-      type: entity_reference_revisions_field_diff_builder
+      type: iucn_threat_values
       settings:
         show_header: 1
         markdown: drupal_html_to_text
