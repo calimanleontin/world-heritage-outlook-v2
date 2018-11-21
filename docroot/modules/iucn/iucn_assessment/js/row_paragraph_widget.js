@@ -22,6 +22,11 @@
           $(this).addClass('paragraph-new-row');
         }
       });
+      $('tr.draggable', context).once('diffParagraph').each(function () {
+        if ($(this).find('.paragraph-diff-row').length !== 0) {
+          $(this).addClass('paragraph-diff-row');
+        }
+      });
       $('tr.draggable', context).once('removeDraggable').each(function () {
         if ($(this).find('.paragraph-no-tabledrag').length !== 0) {
           $(this).removeClass('draggable').find('.field-multiple-drag').html('');

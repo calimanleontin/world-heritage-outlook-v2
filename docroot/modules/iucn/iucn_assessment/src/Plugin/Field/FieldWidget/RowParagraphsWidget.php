@@ -287,6 +287,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
     if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
       $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
+      $element['#attributes']['class'][] = 'paragraph-diff-row';
     }
 
     $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name);
