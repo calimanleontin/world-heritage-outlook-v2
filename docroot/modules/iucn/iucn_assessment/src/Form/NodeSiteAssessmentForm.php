@@ -201,7 +201,7 @@ class NodeSiteAssessmentForm {
 
     $settings = json_decode($node->field_settings->value, TRUE);
     foreach ($values as $key => $value) {
-      if (preg_match('/^comment\_(.+)$/', $key, $matches)) {
+      if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
         $commented_tab = $matches[1];
         $settings['comments'][$commented_tab][$current_user->id()] = $value;
       }
