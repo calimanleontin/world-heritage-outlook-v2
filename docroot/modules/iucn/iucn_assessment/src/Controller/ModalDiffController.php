@@ -188,7 +188,14 @@ class ModalDiffController extends ControllerBase {
           $assessment_edit_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
         }
         unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-        $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field];
+        if ($field == 'field_as_threats_values_bio' || $field == 'field_as_threats_values_wh') {
+          unset($assessment_edit_form[$field . '_select']['#title']);
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field . '_select'];
+          unset($assessment_edit_form[$field . '_select']);
+        }
+        else {
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field];
+        }
         if ($field != $grouped_with) {
           $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#prefix'] =
             '<b>' . RowParagraphsWidget::getSummaryPrefix($field) . '</b>';

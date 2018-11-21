@@ -420,3 +420,8 @@
     width: 300px;
     border: 1px solid grey;
 }
+
+.paragraph-diff-row,
+.paragraph-diff-row .paragraphs-actions {
+    background-color: #fcf8e3 !important;
+}
