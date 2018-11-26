@@ -249,3 +249,7 @@ iucn_who_core.dashboard.config.stop:
       - fa
       - fa-exclamation-triangle
 
+iucn_who_core.main_menu.log_out:
+  class: Drupal\user\Plugin\Menu\LoginLogoutMenuLink
+  menu_name: main
+
