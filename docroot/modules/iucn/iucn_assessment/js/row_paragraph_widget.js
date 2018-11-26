@@ -32,6 +32,10 @@
           $(this).removeClass('draggable').find('.field-multiple-drag').html('');
         }
       });
+
+      $('#drupal-modal').once('stickyHeader').on("scroll", function() {
+        $(this).find('table.field-multiple-table > tbody > tr:first-child > td > div').css('top', $(this).scrollTop() + "px");
+      });
     },
 };
 

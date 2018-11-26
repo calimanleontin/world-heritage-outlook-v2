@@ -421,3 +421,9 @@
 .paragraph-diff-row .paragraphs-actions {
     background-color: #fcf8e3 !important;
 }
+
+#drupal-modal table.field-multiple-table > tbody > tr:first-child > td > div {
+    position: relative;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
