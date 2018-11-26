@@ -44,6 +44,35 @@ class HtmlElementAssessment extends HtmlElement {
         }
       }
     }
+    if ($this->getSetting('show_fields_preview')) {
+      $label = '<div>' . $this->label . '</div>';
+      foreach($element as $key => $container) {
+        if (is_array($container) && !empty($container['#type']) && $container['#type'] == 'container') {
+          $markup = '';
+          $widget = $container['widget'];
+          if (!empty($widget[0]['value'])) {
+            $value = $widget[0]['value'];
+            if ($value["#type"] == 'textarea') {
+              $markup = $value['#value'];
+            }
+          }
+          elseif (!empty($widget['#value'])) {
+            if ($widget["#type"] == 'select') {
+              $markup = [];
+              foreach($widget['#value'] as $option) {
+                $markup[] = $widget['#options'][$option];
+              }
+              $markup = implode(', ', $markup);
+            }
+          }
+          $element[$key] = [
+            '#type' => 'markup',
+            '#markup' => $label . '<div>' . $markup . '</div>',
+          ];
+          $label = '';
+        }
+      }
+    }
   }
 
   /**
@@ -60,7 +89,33 @@ class HtmlElementAssessment extends HtmlElement {
       '#default_value' => $this->getSetting('terms'),
     );
 
+    $form['show_fields_preview'] = array(
+      '#title' => $this->t('Show fields preview'),
+      '#type' => 'select',
+      '#options' => array(0 => $this->t('No'), 1 => $this->t('Yes')),
+      '#default_value' => $this->getSetting('show_fields_preview'),
+      '#weight' => 2,
+    );
+
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+
+    $summary = parent::settingsSummary();
+
+    if ($this->getSetting('terms')) {
+      $summary[] = $this->t('Terms') . ' ' . $this->getSetting('terms');
+    }
+
+    if ($this->getSetting('show_fields_preview')) {
+      $summary[] = $this->t('Fields preview mode');
+    }
+
+    return $summary;
   }
 
   /**
@@ -69,6 +124,7 @@ class HtmlElementAssessment extends HtmlElement {
   public static function defaultContextSettings($context) {
     $defaults = array(
       'terms' => '',
+      'show_fields_preview' => 0,
     ) + parent::defaultSettings($context);
 
     return $defaults;
