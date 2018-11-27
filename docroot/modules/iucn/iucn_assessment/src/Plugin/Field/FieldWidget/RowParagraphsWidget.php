@@ -212,6 +212,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param $delta
    */
   public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+    $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['edit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Edit'),
@@ -223,6 +224,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'tab' => $tab,
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -613,7 +615,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $form_display_mode = $this->getSetting('form_display_mode');
+    $components = self::getFieldComponents($paragraph, $form_display_mode);
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -713,11 +716,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public static function getFieldComponents(ParagraphInterface $paragraph) {
+  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode) {
     $bundle = $paragraph->getType();
-    $form_display_mode = 'default';
-    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
-      ->getComponents();
+    $form_display = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
+    if (!$form_display) {
+      $components = EntityFormDisplay::load("paragraph.$bundle.default")
+        ->getComponents();
+    }
+    else{
+      $components = $form_display->getComponents();
+    }
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }
@@ -740,7 +748,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $summary['num']['value'] = $num;
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $form_display_mode = $this->getSetting('form_display_mode');
+    $components = self::getFieldComponents($paragraph, $form_display_mode);
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
