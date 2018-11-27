@@ -423,6 +423,14 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_site_assessment_edit_form') {
+    if ($form['field_as_values_bio']['widget']["#max_delta"] == -1) {
+      hide($form['field_as_vass_bio_state']);
+      hide($form['field_as_vass_bio_text']);
+      hide($form['field_as_vass_bio_trend']);
+    }
+  }
+
   switch ($form_id) {
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':
