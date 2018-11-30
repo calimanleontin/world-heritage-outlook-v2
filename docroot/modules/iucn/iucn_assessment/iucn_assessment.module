@@ -482,6 +482,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   switch ($form_id) {
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':
+      if ($form_id == 'node_site_assessment_edit_form') {
+        $form['title']['#disabled'] = 'disabled';
+      }
       NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
       break;
 
