@@ -9,6 +9,7 @@ use Drupal\Core\Url;
 use Drupal\views\Views;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -49,6 +50,48 @@ function iucn_who_core_toolbar() {
     ->getInstanceFromDefinition(ToolbarHandler::class)
     ->toolbar();
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the artist options on artwork pages.
+ */
+function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // If not the view we are looking, move on
+  if ($form['#id'] != 'views-exposed-form-account-assignments-block-4') {
+    return FALSE;
+  }
+  // Assessor list.
+  $view = \Drupal\views\Views::getView('users_by_roles');
+  $view->setDisplay('entity_reference_2');
+  $view->execute();
+  $options = [];
+  foreach ($view->result as $row) {
+    $options[$row->uid] = $row->_entity->getAccountName();
+  }
+  $assessor_field = 'assessor_id';
+  $form[$assessor_field]['#type'] = 'select';
+  $form[$assessor_field]['#multiple'] = FALSE;
+  $form[$assessor_field]['#empty_option'] = t('- Assessor -');
+  $form[$assessor_field]['#options'] = $options;
+  unset($form[$assessor_field]['#size']);
+
+  // Reviewer list.
+  $view = \Drupal\views\Views::getView('users_by_roles');
+  $view->setDisplay('entity_reference_3');
+  $view->execute();
+  $options = [];
+  foreach ($view->result as $row) {
+    $options[$row->uid] = $row->_entity->getAccountName();
+  }
+  $reviewers_field = 'reviewers_id';
+  $form[$reviewers_field]['#type'] = 'select';
+  $form[$reviewers_field]['#multiple'] = FALSE;
+  $form[$reviewers_field]['#empty_option'] = t('- Reviewers -');
+  $form[$reviewers_field]['#options'] = $options;
+  unset($form[$reviewers_field]['#size']);
+}
+
 
 /**
  * Implements hook_page_attachments_alter().
