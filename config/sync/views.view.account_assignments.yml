@@ -1570,6 +1570,7 @@ display:
         access: false
         pager: false
         title: false
+        use_ajax: false
       access:
         type: role
         options:
@@ -1736,6 +1737,118 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: workflow_state
+        field_assessor_target_id:
+          id: field_assessor_target_id
+          table: node__field_assessor
+          field: field_assessor_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_assessor_target_id_op
+            label: Assessor
+            description: ''
+            use_operator: false
+            operator: field_assessor_target_id_op
+            identifier: assessor_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_reviewers_target_id:
+          id: field_reviewers_target_id
+          table: node__field_reviewers
+          field: field_reviewers_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_reviewers_target_id_op
+            label: Reviewers
+            description: ''
+            use_operator: false
+            operator: field_reviewers_target_id_op
+            identifier: reviewers_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
       filter_groups:
         operator: AND
         groups:
@@ -1762,11 +1875,13 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.roles
