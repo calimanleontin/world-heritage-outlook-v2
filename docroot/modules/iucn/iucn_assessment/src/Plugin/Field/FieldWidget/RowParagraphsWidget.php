@@ -632,7 +632,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -732,9 +732,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public static function getFieldComponents(ParagraphInterface $paragraph) {
+  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
-    $form_display_mode = 'default';
+    if (empty($form_display_mode)) {
+      $form_display_mode = 'default';
+    }
     $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
       ->getComponents();
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
@@ -759,7 +761,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $summary['num']['value'] = $num;
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
