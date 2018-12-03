@@ -19,6 +19,44 @@
   border-top: 1px solid #e6e4df;
   border-left: 1px solid #e6e4df;
 }
+
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .description-wrapper {
+  display: table-caption;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
+  background: #ececec!important;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
+  border-top: 1px solid #e6e4df;
+  font-weight: bold;
+}
+
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view {
+  display: table-row;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item {
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
+  display: table-cell;
+  padding: 10px 12px;
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+  width: 300px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
+  width: 150px;
+}
+
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+    width: 150px;
+  }
+}
+
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
   display: table-row;
 }
