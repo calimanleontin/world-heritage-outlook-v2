@@ -571,7 +571,7 @@ class AssessmentWorkflow {
    * @param \Drupal\node\NodeInterface $node
    *   The assessment.
    *
-   * @return array
+   * @return NodeInterface[]
    *   The unfinished revisions.
    */
   public function getUnfinishedReviewerRevisions(NodeInterface $node) {
