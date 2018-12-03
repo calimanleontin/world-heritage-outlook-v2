@@ -32,7 +32,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     ];
 
     $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
-    $this->buildCancelButton($form);
+    self::buildCancelButton($form);
 
     return $form;
   }
@@ -44,7 +44,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     return self::assessmentAjaxSave($form, $form_state);
   }
 
-  public function buildCancelButton(&$form) {
+  public static function buildCancelButton(&$form) {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => t('Cancel'),
@@ -58,6 +58,8 @@ abstract class IucnModalForm extends ContentEntityForm {
         'callback' => [self::class, 'closeModalForm'],
         'event' => 'click',
       ],
+      '#limit_validation_errors' => [],
+      '#submit' => [],
       '#weight' => 10,
     ];
   }
