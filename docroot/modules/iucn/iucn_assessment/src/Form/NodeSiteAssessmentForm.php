@@ -153,12 +153,10 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    if ($tab == 'assessing-values') {
-      if ($form['field_as_values_bio']['widget']["#max_delta"] == -1) {
-        hide($form['field_as_vass_bio_state']);
-        hide($form['field_as_vass_bio_text']);
-        hide($form['field_as_vass_bio_trend']);
-      }
+    if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
+      hide($form['field_as_vass_bio_state']);
+      hide($form['field_as_vass_bio_text']);
+      hide($form['field_as_vass_bio_trend']);
     }
 
     if (in_array($tab, ['threats', 'protection-management', 'assessing-values', 'conservation-outlook'])) {
