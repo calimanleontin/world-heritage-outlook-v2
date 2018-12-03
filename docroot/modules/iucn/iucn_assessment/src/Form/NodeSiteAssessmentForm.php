@@ -32,10 +32,37 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  /**
+   * Recursive function used to used to unset the fields of a fieldgroup.
+   */
+  public static function removeGroupFields(&$form, $group) {
+    foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
+      if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
+        unset($form[$nested_field]);
+      }
+      elseif (!empty($form['#fieldgroups'][$nested_field])) {
+        self::removeGroupFields($form, $nested_field);
+      }
+    }
+  }
+
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+    $tab = \Drupal::request()->get('tab') ?: 'values';
+    if (empty(\Drupal::request()->get('_wrapper_format'))
+      || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
+      // Unset the fields that are only present on other tabs.
+      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
+      foreach ($group_tabs as $group_tab) {
+        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
+        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
+        if ($tab_id != $tab) {
+          self::removeGroupFields($form, $group_tab);
+        }
+      }
+    }
+
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $tab = \Drupal::request()->get('tab') ?: 'values';
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */

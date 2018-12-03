@@ -60,12 +60,9 @@ class AssessmentTabs extends FieldGroupFormatterBase {
     $element['group']['#groups'][$this->group->group_name] = [0 => []];
     $element['group']['#groups'][$this->group->group_name]['#group_exists'] = TRUE;
 
-    // Search for a tab that was marked as open. First one wins.
+    // Workaround so we can render tabs that don't actually have children.
     foreach (Element::children($element) as $tab_name) {
-      if (!empty($element[$tab_name]['#open'])) {
-        $element[$this->group->group_name . '__active_tab']['#default_value'] = $tab_name;
-        break;
-      }
+      $element[$tab_name][] = ['#type' => 'container'];
     }
   }
 
