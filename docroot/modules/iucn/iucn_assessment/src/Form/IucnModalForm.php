@@ -58,6 +58,8 @@ abstract class IucnModalForm extends ContentEntityForm {
         'callback' => [self::class, 'closeModalForm'],
         'event' => 'click',
       ],
+      '#limit_validation_errors' => [],
+      '#submit' => [],
       '#weight' => 10,
     ];
   }
