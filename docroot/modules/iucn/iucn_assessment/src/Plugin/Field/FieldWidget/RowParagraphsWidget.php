@@ -212,6 +212,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param $delta
    */
   public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+    $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['edit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Edit'),
@@ -223,6 +224,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'tab' => $tab,
         ]),
         'progress' => [
           'type' => 'fullscreen',
