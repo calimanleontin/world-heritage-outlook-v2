@@ -49,4 +49,16 @@ class IucnModalController extends ControllerBase {
     return $type->label();
   }
 
+  /**
+   * Create a modal dialog to delete a single paragraph.
+   */
+  public function deleteParagraph($node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
+    $response = new AjaxResponse();
+    $form = $this->formBuilder()->getForm('\Drupal\iucn_assessment\Form\IucnModalParagraphDeleteForm');
+    $paragraph_title = $this->getParagraphTitle($field);
+    $response->addCommand(new OpenModalDialogCommand($this->t('Edit @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%']));
+
+    return $response;
+  }
+
 }
