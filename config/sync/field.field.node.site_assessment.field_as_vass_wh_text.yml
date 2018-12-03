@@ -19,7 +19,7 @@ entity_type: node
 bundle: site_assessment
 label: 'Assessment of the current state and trend of World Heritage values'
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

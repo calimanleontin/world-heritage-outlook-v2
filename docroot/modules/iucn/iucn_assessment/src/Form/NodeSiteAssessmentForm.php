@@ -215,6 +215,33 @@ class NodeSiteAssessmentForm {
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     self::buildDiffButtons($form, $node);
+
+    // Hide these fields if there are no other biodiversity values.
+    if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
+      $fields = [
+        'field_as_protection_ov_out_rate',
+        'field_as_protection_ov_out_text',
+        'field_as_protection_ov_practices',
+        'field_as_protection_ov_rating',
+        'field_as_protection_ov_text',
+      ];
+      foreach ($fields as $field) {
+        unset($form[$field]);
+      }
+
+      $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
+    }
+
+    if ($tab == 'benefits') {
+      $form['#validate'][] = [self::class, 'benefitsValidation'];
+    }
+  }
+
+  public static function benefitsValidation(array $form, FormStateInterface $form_state) {
+    $node = $form_state->getFormObject()->getEntity();
+    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
+      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits is mandatory'));
+    }
   }
 
   /*

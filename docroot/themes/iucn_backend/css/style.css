@@ -76,6 +76,9 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
 }
+.hidden-container {
+  display: none;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
