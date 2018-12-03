@@ -295,20 +295,39 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
 
-    // Fix ajax core bug.
-    // @see: https://www.drupal.org/project/drupal/issues/2934463#comment-12603251
-    $url = $this->parentNode->isDefaultRevision()
-      ? Url::fromRoute('entity.node.edit_form', ['node' => $this->parentNode->id()])
-      : Url::fromRoute('node.revision_edit', ['node' => $this->parentNode->id(), 'node_revision' => $this->parentNode->getRevisionId()]);
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['options'] = ['query' => ['ajax_form' => 1]];
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['url'] = $url;
-    $element['top']['actions']['actions']['remove_button'] = $element['top']['actions']['dropdown_actions']['remove_button'];
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-delete';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-button';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['title'] = 'Remove';
-    unset($element['top']['actions']['dropdown_actions']);
+    $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
 
     return $element;
+  }
+
+  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
+    unset($element['top']['actions']['dropdown_actions']);
+
+    $element['top']['actions']['actions']['remove_button'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Remove'),
+      '#attributes' => [
+        'title' => $this->t('Remove'),
+        'class' => [
+          'paragraphs-icon-delete',
+          'paragraphs-icon-button',
+        ],
+      ],
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => "#$field_wrapper",
+          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
+      ],
+    ];
   }
 
   /**

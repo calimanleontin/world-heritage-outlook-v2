@@ -705,7 +705,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      title: 'You are assessor of the folloswing assesments'
+      title: 'You are assessor of the following assessments'
       defaults:
         title: false
         relationships: false
