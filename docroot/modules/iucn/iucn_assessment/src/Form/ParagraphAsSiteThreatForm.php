@@ -37,7 +37,6 @@ class ParagraphAsSiteThreatForm {
         }
 
         $formField = &$form[$field];
-        hide($formField['widget']);
         $form["{$field}_select"] = [
           '#type' => 'select',
           '#title' => !empty($formField['widget']['title']['#value'])
@@ -49,6 +48,7 @@ class ParagraphAsSiteThreatForm {
           '#chosen' => FALSE,
           '#weight' => $formField['#weight'],
         ];
+        unset($formField['widget']);
 
       }
     }
