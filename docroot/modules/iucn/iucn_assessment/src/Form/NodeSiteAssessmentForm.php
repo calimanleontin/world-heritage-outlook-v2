@@ -33,21 +33,6 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Unset the fields that are only present on other tabs.
-   */
-  public static function removeFieldsFromOtherTabs(&$form, $current_tab) {
-    $current_tab = \Drupal::request()->get('tab') ?: 'values';
-    $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
-    foreach ($group_tabs as $group_tab) {
-      $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
-      $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
-      if ($tab_id != $current_tab) {
-        self::removeGroupFields($form, $group_tab);
-      }
-    }
-  }
-
-  /**
    * Recursive function used to used to unset the fields of a fieldgroup.
    */
   public static function removeGroupFields(&$form, $group) {
@@ -65,7 +50,15 @@ class NodeSiteAssessmentForm {
     $tab = \Drupal::request()->get('tab') ?: 'values';
     if (empty(\Drupal::request()->get('_wrapper_format'))
       || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
-      self::removeFieldsFromOtherTabs($form, $tab);
+      // Unset the fields that are only present on other tabs.
+      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
+      foreach ($group_tabs as $group_tab) {
+        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
+        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
+        if ($tab_id != $tab) {
+          self::removeGroupFields($form, $group_tab);
+        }
+      }
     }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
