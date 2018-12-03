@@ -29,14 +29,14 @@ function _iucn_assessment_fix_references(\Drupal\paragraphs\ParagraphInterface $
   $referenced_values = $threat->get($field)->getValue();
   if (!empty($referenced_values)) {
     $update = FALSE;
-    foreach ($referenced_values as $referenced_value) {
+    foreach ($referenced_values as &$referenced_value) {
       $referenced_paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($referenced_value['target_revision_id']);
       foreach ($values as $value) {
         $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($value['target_revision_id']);
         if ($referenced_paragraph->field_as_values_value->value == $paragraph->field_as_values_value->value
           && $referenced_paragraph->getRevisionId() != $paragraph->getRevisionId()) {
           $update = TRUE;
-          $referenced_wh_value = $value;
+          $referenced_value = $value;
           break;
         }
       }
