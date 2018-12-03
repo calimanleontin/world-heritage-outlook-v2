@@ -21,7 +21,7 @@ entity_type: node
 bundle: site_assessment
 label: 'Current threats'
 description: 'Identify threats to the World Heritage site and then cross-reference these to the values they affect. Assess threats against five ratings - Very Low Threat, Low Threat, High Threat, Very High Threat, and Data Deficient (please refer to the Guidelines for a detailed definition of each category). The justification for the assessment is also captured in the threat assessment and must be systematically referenced (e.g. SOC report, 2014).'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

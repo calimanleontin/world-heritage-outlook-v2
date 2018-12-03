@@ -21,7 +21,7 @@ entity_type: node
 bundle: site_assessment
 label: 'Identifying and describing values'
 description: 'Define the values of this World Heritage site by clicking on the "Add Values" button on the right hand side. Each value requires a detailed description and cross-reference to the relevant World Heritage criterion/criteria. Each criterion can encompass a number of values and these should be broken down as relevant. The "Description" column must be systematically referenced, e.g. (SoOUV, 2010). Other important biodiversity values are described separately below.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
