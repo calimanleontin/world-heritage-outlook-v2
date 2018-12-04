@@ -179,37 +179,8 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-    if (empty($node->field_coordinator->target_id)
-      && in_array($state, [AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_CREATION])) {
-      array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentCoordinator']);
-    }
 
     self::buildDiffButtons($form, $node);
-  }
-
-  /**
-   * Set the current user as a coordinator if he has the coordinator role.
-   *
-   * Also move the assessment into the under evaluation state.
-   *
-   * @param $form
-   * @param FormStateInterface $form_state
-   */
-  public static function setAssessmentCoordinator(&$form, FormStateInterface $form_state) {
-    $current_user = \Drupal::currentUser();
-    if (!in_array('coordinator', $current_user->getRoles())) {
-      return;
-    }
-
-    /** @var \Drupal\node\NodeForm $nodeForm */
-    $nodeForm = $form_state->getFormObject();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $nodeForm->getEntity();
-    $node->field_coordinator->target_id = $current_user->id();
-
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
   }
 
   /*
