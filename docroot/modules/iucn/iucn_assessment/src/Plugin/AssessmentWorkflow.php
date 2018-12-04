@@ -233,8 +233,14 @@ class AssessmentWorkflow {
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
-      $added_reviewers = $this->getAddedReviewers($node, $original);
-      $removed_reviewers = $this->getRemovedReviewers($node, $original);
+      if ($original_state == self::STATUS_UNDER_REVIEW) {
+        $added_reviewers = $this->getAddedReviewers($node, $original);
+        $removed_reviewers = $this->getRemovedReviewers($node, $original);
+      }
+      else {
+        $added_reviewers = $this->getReviewersArray($node);
+        $removed_reviewers = NULL;
+      }
 
       // Create a revision for each newly added reviewer.
       if (!empty($added_reviewers)) {
