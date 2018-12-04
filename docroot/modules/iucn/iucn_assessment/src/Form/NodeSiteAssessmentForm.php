@@ -319,7 +319,9 @@ class NodeSiteAssessmentForm {
   public static function hideParagraphsActions(array &$form) {
     $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
     foreach ($read_only_paragraph_fields as $field) {
-      self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      if (!empty($form[$field]['widget'])) {
+        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      }
     }
   }
 
