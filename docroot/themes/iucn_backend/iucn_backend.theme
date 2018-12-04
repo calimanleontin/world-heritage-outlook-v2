@@ -122,8 +122,8 @@ function iucn_backend_preprocess_views_view_table(&$variables) {
           $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($entity);
           foreach ($unfinished_reviews as $unfinished_review) {
             $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup'] = str_replace(
-              $unfinished_review->getRevisionUser()->getDisplayName(),
-              '<b>' . $unfinished_review->getRevisionUser()->getDisplayName() . '</b>',
+              '>' . $unfinished_review->getRevisionUser()->getDisplayName() . '<',
+              '><b>' . $unfinished_review->getRevisionUser()->getDisplayName() . '</b><',
               $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup']
             );
           }
