@@ -2,7 +2,7 @@ minimum_single: 10
 minimum_multiple: 3
 disable_search_threshold: 10
 minimum_width: 300
-jquery_selector: 'select:visible:not([id$="weight"])'
+jquery_selector: 'select:not([id$="weight"])'
 search_contains: true
 disable_search: false
 placeholder_text_multiple: 'Choose some options'
