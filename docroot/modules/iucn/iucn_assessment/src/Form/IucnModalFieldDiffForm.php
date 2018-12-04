@@ -61,6 +61,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     $form['#attached']['library'][] = 'diff/diff.colors';
 
     self::buildCancelButton($form);
+    unset($form['actions']['delete']);
     return $form;
   }
 
