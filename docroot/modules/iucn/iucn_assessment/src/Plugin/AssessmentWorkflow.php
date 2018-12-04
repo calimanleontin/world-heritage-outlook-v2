@@ -199,11 +199,6 @@ class AssessmentWorkflow {
     $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
     $original_state = $original->field_state->value;
 
-    // Set the original status to new so a proper revision is created.
-    if ($this->assessmentHasNoState($original)) {
-      $original->get('field_state')->setValue(self::STATUS_NEW);
-    }
-
     // Block only for reviewers' revision:
     // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
     // Creates a new revision.
@@ -278,6 +273,12 @@ class AssessmentWorkflow {
       // the changes visible in all revisions.
       // @todo: check why this is happening.
       $revision_state = $original_state;
+
+      // Set the original status to new so a proper revision is created.
+      if ($this->assessmentHasNoState($original)) {
+        $revision_state = self::STATUS_NEW;
+      }
+
       $is_unpublished = NULL;
       if ($state == self::STATUS_DRAFT && $original_state == self::STATUS_PUBLISHED) {
         $this->forceAssessmentState($node, self::STATUS_PUBLISHED, FALSE);
