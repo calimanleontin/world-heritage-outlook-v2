@@ -32,10 +32,37 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  /**
+   * Recursive function used to used to unset the fields of a fieldgroup.
+   */
+  public static function removeGroupFields(&$form, $group) {
+    foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
+      if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
+        unset($form[$nested_field]);
+      }
+      elseif (!empty($form['#fieldgroups'][$nested_field])) {
+        self::removeGroupFields($form, $nested_field);
+      }
+    }
+  }
+
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+    $tab = \Drupal::request()->get('tab') ?: 'values';
+    if (empty(\Drupal::request()->get('_wrapper_format'))
+      || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
+      // Unset the fields that are only present on other tabs.
+      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
+      foreach ($group_tabs as $group_tab) {
+        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
+        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
+        if ($tab_id != $tab) {
+          self::removeGroupFields($form, $group_tab);
+        }
+      }
+    }
+
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $tab = \Drupal::request()->get('tab') ?: 'values';
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -126,6 +153,12 @@ class NodeSiteAssessmentForm {
       }
     }
 
+    if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
+      hide($form['field_as_vass_bio_state']);
+      hide($form['field_as_vass_bio_text']);
+      hide($form['field_as_vass_bio_trend']);
+    }
+
     if (in_array($tab, ['threats', 'protection-management', 'assessing-values', 'conservation-outlook'])) {
       $form['overall_table_thead'] = [
         '#type' => 'html_tag',
@@ -201,7 +234,7 @@ class NodeSiteAssessmentForm {
 
     $settings = json_decode($node->field_settings->value, TRUE);
     foreach ($values as $key => $value) {
-      if (preg_match('/^comment\_(.+)$/', $key, $matches)) {
+      if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
         $commented_tab = $matches[1];
         $settings['comments'][$commented_tab][$current_user->id()] = $value;
       }
@@ -286,7 +319,9 @@ class NodeSiteAssessmentForm {
   public static function hideParagraphsActions(array &$form) {
     $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
     foreach ($read_only_paragraph_fields as $field) {
-      self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      if (!empty($form[$field]['widget'])) {
+        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      }
     }
   }
 

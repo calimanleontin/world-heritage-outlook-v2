@@ -16,9 +16,6 @@ abstract class IucnModalForm extends ContentEntityForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    $form['#prefix'] = '<div id="drupal-modal">';
-    $form['#suffix'] = '</div>';
-
     // @TODO: fix problem with form is outdated.
     $form['#token'] = FALSE;
 
@@ -35,7 +32,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     ];
 
     $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
-    $this->buildCancelButton($form);
+    self::buildCancelButton($form);
 
     return $form;
   }
@@ -44,6 +41,30 @@ abstract class IucnModalForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function ajaxSave(array $form, FormStateInterface $form_state) {
+    return self::assessmentAjaxSave($form, $form_state);
+  }
+
+  public static function buildCancelButton(&$form) {
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => [
+        'class' => [
+          'use-ajax',
+          'modal-cancel-button',
+        ],
+      ],
+      '#ajax' => [
+        'callback' => [self::class, 'closeModalForm'],
+        'event' => 'click',
+      ],
+      '#limit_validation_errors' => [],
+      '#submit' => [],
+      '#weight' => 10,
+    ];
+  }
+
+  public static function assessmentAjaxSave($form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
     // When errors occur during form validation, show them to the user.
@@ -82,24 +103,6 @@ abstract class IucnModalForm extends ContentEntityForm {
     }
 
     return $response;
-  }
-
-  public function buildCancelButton(&$form) {
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#value' => t('Cancel'),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'modal-cancel-button',
-        ],
-      ],
-      '#ajax' => [
-        'callback' => [self::class, 'closeModalForm'],
-        'event' => 'click',
-      ],
-      '#weight' => 10,
-    ];
   }
 
   /**

@@ -68,7 +68,7 @@ class WorkflowTest extends IucnAssessmentTestBase {
     // Administrators and managers can edit any assessment, regardless of state.
     $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
     $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT || $state == AssessmentWorkflow::STATUS_NEW) {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
     }
     else {
@@ -83,13 +83,9 @@ class WorkflowTest extends IucnAssessmentTestBase {
       $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
     }
 
-    // Coordinator 2 can only edit the assessment when it has no coordinator.
-    if ($state == AssessmentWorkflow::STATUS_NEW || $state == 'assessment_creation') {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 200);
-    }
-    else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
-    }
+    // Coordinator 2 can only never edit.
+    $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
+
 
     // Assessor 2 is never allowed to edit this assessment.
     $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);

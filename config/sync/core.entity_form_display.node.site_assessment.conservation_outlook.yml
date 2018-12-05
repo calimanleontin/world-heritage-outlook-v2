@@ -1,9 +1,9 @@
-uuid: 0fe57321-6d54-4363-9acf-018f14c3a6a8
+uuid: 9e0e0f28-6021-4433-bdd5-4f80ddd8156c
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.node.assessing_values
+    - core.entity_form_mode.node.conservation_outlook
     - field.field.node.site_assessment.field_as_archived
     - field.field.node.site_assessment.field_as_benefits
     - field.field.node.site_assessment.field_as_benefits_summary
@@ -66,7 +66,7 @@ third_party_settings:
         - group_as_projects
         - group_as_references
       parent_name: ''
-      weight: 9
+      weight: 10
       format_type: assessment_tabs
       format_settings:
         id: ''
@@ -75,7 +75,7 @@ third_party_settings:
       label: Tabs
     group_as_values:
       children:
-        - field_as_values_bio
+        - field_as_threats_potential
       parent_name: group_as_tabs
       weight: 20
       format_type: assessment_tab
@@ -89,13 +89,6 @@ third_party_settings:
     group_as_threats:
       children:
         - field_as_threats_current
-        - field_as_threats_potential
-        - field_as_threats_potent_text
-        - field_as_threats_potent_rating
-        - field_as_threats_current_text
-        - field_as_threats_current_rating
-        - field_as_threats_text
-        - field_as_threats_rating
       parent_name: group_as_tabs
       weight: 21
       format_type: assessment_tab
@@ -109,13 +102,8 @@ third_party_settings:
     group_as_protection_management:
       children:
         - field_as_protection
-        - field_as_protection_ov_text
-        - field_as_protection_ov_rating
-        - field_as_protection_ov_out_text
-        - field_as_protection_ov_out_rate
-        - field_as_protection_ov_practices
       parent_name: group_as_tabs
-      weight: 23
+      weight: 22
       format_type: assessment_tab
       format_settings:
         label: 'Protection and management'
@@ -128,9 +116,8 @@ third_party_settings:
     group_as_assessing_values:
       children:
         - field_as_values_wh
-        - group_assessing_overall_container
       parent_name: group_as_tabs
-      weight: 24
+      weight: 23
       format_type: assessment_tab
       format_settings:
         id: assessing_values
@@ -141,10 +128,10 @@ third_party_settings:
       label: 'Assessing values'
     group_as_conservation_outlook:
       children:
-        - field_as_global_assessment_text
-        - field_as_global_assessment_level
+        - group_conservation_summary
+        - group_conservation_overall_container
       parent_name: group_as_tabs
-      weight: 25
+      weight: 24
       format_type: assessment_tab
       format_settings:
         id: conservation_outlook
@@ -155,10 +142,9 @@ third_party_settings:
       label: 'Conservation Outlook'
     group_as_benefits:
       children:
-        - field_as_benefits
-        - field_as_benefits_summary
+        - field_as_vass_wh_trend
       parent_name: group_as_tabs
-      weight: 26
+      weight: 25
       format_type: assessment_tab
       format_settings:
         id: benefits
@@ -169,8 +155,7 @@ third_party_settings:
       label: Benefits
     group_as_projects:
       children:
-        - field_as_projects
-        - field_as_projects_needs
+        - field_as_vass_bio_trend
       parent_name: group_as_tabs
       weight: 27
       format_type: assessment_tab
@@ -198,7 +183,7 @@ third_party_settings:
       children:
         - field_as_key_cons
       parent_name: ''
-      weight: 8
+      weight: 9
       format_type: tab
       format_settings:
         id: ''
@@ -207,25 +192,157 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
-    group_assessing_overall_container:
+    group_threats_overall_current:
       children:
-        - group_assessing_values_current_o
-        - group_assessing_values_other
-      parent_name: group_as_assessing_values
-      weight: 15
-      format_type: fieldset
+        - field_as_threats_current_text
+        - field_as_threats_current_rating
+      parent_name: group_conservation_summary
+      weight: 25
+      format_type: html_element_assessment
       format_settings:
+        label: 'Current threats'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: overall-container
-        description: ''
-        required_fields: false
-      label: 'Summary of the Values'
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Current threats'
+    group_threats_overall_potential:
+      children:
+        - field_as_threats_potent_text
+        - field_as_threats_potent_rating
+      parent_name: group_conservation_summary
+      weight: 26
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Potential threats'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Potential threats'
+    group_threats_overall_all:
+      children:
+        - field_as_threats_text
+        - field_as_threats_rating
+      parent_name: group_conservation_summary
+      weight: 27
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Overall threats'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Overall threats'
+    group_protection_overall_effecti:
+      children:
+        - field_as_protection_ov_text
+        - field_as_protection_ov_rating
+      parent_name: group_conservation_summary
+      weight: 28
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Effectiveness of protection and management in addressing threats outside the site'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Effectiveness of protection and management in addressing threats outside the site'
+    group_protection_overall_assessm:
+      children:
+        - field_as_protection_ov_out_text
+        - field_as_protection_ov_out_rate
+      parent_name: group_conservation_summary
+      weight: 29
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Overall protection and management'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Overall protection and management'
     group_assessing_values_current_o:
       children:
         - field_as_vass_wh_text
         - field_as_vass_wh_state
-        - field_as_vass_wh_trend
-      parent_name: group_assessing_overall_container
+      parent_name: group_conservation_summary
+      weight: 23
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Current State Trend of World Heritage values'
+        terms: ''
+        element: div
+        show_label: '0'
+        show_fields_preview: '1'
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Current State Trend of World Heritage values'
+    group_assessing_values_other:
+      children:
+        - field_as_vass_bio_text
+        - field_as_vass_bio_state
+      parent_name: group_conservation_summary
+      weight: 24
+      format_type: html_element_assessment
+      format_settings:
+        label: 'Current state and trend of other important biodiversity values (if applicable)'
+        id: ''
+        classes: overall-row-view
+        element: div
+        show_label: false
+        show_fields_preview: '1'
+        label_element: h3
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Current state and trend of other important biodiversity values (if applicable)'
+    group_assessment_of_conservation:
+      children:
+        - field_as_global_assessment_text
+        - field_as_global_assessment_level
+      parent_name: group_conservation_overall_container
       weight: 20
       format_type: html_element
       format_settings:
@@ -238,59 +355,45 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-      label: 'Assessing values current overall'
-    group_assessing_values_other:
+      label: 'Assessment of Conservation Outlook'
+    group_conservation_overall_container:
       children:
-        - field_as_vass_bio_text
-        - field_as_vass_bio_state
-        - field_as_vass_bio_trend
-      parent_name: group_assessing_overall_container
-      weight: 21
-      format_type: html_element
+        - group_assessment_of_conservation
+      parent_name: group_as_conservation_outlook
+      weight: 30
+      format_type: fieldset
       format_settings:
+        label: 'Assessment of Conservation Outlook'
+        description: ''
         id: ''
-        classes: overall-row
-        element: div
-        show_label: false
-        label_element: h3
+        classes: overall-container
         required_fields: false
-        attributes: ''
-        effect: none
-        speed: fast
-      label: 'Assessing values other'
-id: node.site_assessment.assessing_values
+      label: 'Assessment of Conservation Outlook'
+    group_conservation_summary:
+      children:
+        - group_assessing_values_current_o
+        - group_assessing_values_other
+        - group_threats_overall_current
+        - group_threats_overall_potential
+        - group_threats_overall_all
+        - group_protection_overall_effecti
+        - group_protection_overall_assessm
+      parent_name: group_as_conservation_outlook
+      weight: 20
+      format_type: assessment_fieldset
+      format_settings:
+        label: 'Summary of Assessments of Values, Threats, and Protection and Management'
+        description: 'Indicate the conservation outlook for the World Heritage site in the table below, based on the assessments of current state and trend of World Heritage values, threats, and protection and management for the site (Steps 1-4). Conservation Outlook is assessed against five ratings: Good, Good with Some Concerns, Significant Concern, Critical, and Data Deficient. The Guidelines provide further details on how each category is defined. Please note, the "Summary of Assessments of Values, Threats, and Protection and Management" table containing the "Justification Of Assessment" and "Assessment" fields has been automatically populated in this table from the previous assessment steps and only the "Assessment of Conservation Outlook" table is new. The assessment summaries and Conservation Outlook should be as detailed and stand-alone as possible.'
+        description_above: '1'
+        required_fields: '1'
+        id: ''
+        classes: overall-container
+      label: 'Summary of Assessments of Values, Threats, and Protection and Management'
+id: node.site_assessment.conservation_outlook
 targetEntityType: node
 bundle: site_assessment
-mode: assessing_values
+mode: conservation_outlook
 content:
-  field_as_benefits:
-    type: row_entity_reference_paragraphs
-    weight: 8
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: closed
-      closed_mode: summary
-      autocollapse: none
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
-      empty_message: ''
-    third_party_settings: {  }
-    region: content
-  field_as_benefits_summary:
-    weight: 9
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_as_end_date:
     weight: 3
     settings: {  }
@@ -298,13 +401,13 @@ content:
     type: datetime_default
     region: content
   field_as_global_assessment_level:
-    weight: 14
+    weight: 22
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_global_assessment_text:
-    weight: 12
+    weight: 21
     settings:
       rows: 5
       placeholder: ''
@@ -331,82 +434,31 @@ content:
       empty_message: ''
     third_party_settings: {  }
     region: content
-  field_as_projects:
-    type: row_entity_reference_paragraphs
-    weight: 16
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      closed_mode: summary
-      autocollapse: none
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
-      empty_message: ''
-    third_party_settings: {  }
-    region: content
-  field_as_projects_needs:
-    type: row_entity_reference_paragraphs
-    weight: 17
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: closed
-      closed_mode: summary
-      autocollapse: none
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
-      empty_message: ''
-    third_party_settings: {  }
-    region: content
   field_as_protection:
     type: row_entity_reference_paragraphs
-    weight: 33
+    weight: 0
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
       closed_mode: summary
       autocollapse: none
+      show_numbers: 'no'
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
+      default_paragraph_type: ''
+      features: {  }
       empty_message: ''
     third_party_settings: {  }
-    region: content
   field_as_protection_ov_out_rate:
-    weight: 37
+    weight: 28
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_protection_ov_out_text:
-    weight: 36
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-    region: content
-  field_as_protection_ov_practices:
-    weight: 38
+    weight: 27
     settings:
       rows: 5
       placeholder: ''
@@ -414,13 +466,13 @@ content:
     type: string_textarea
     region: content
   field_as_protection_ov_rating:
-    weight: 35
+    weight: 25
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_protection_ov_text:
-    weight: 34
+    weight: 24
     settings:
       rows: 5
       placeholder: ''
@@ -428,13 +480,13 @@ content:
     type: string_textarea
     region: content
   field_as_references:
-    weight: 6
+    type: string_textarea
+    weight: 1
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_as_start_date:
     weight: 2
     settings: {  }
@@ -444,31 +496,28 @@ content:
   field_as_threats_current:
     type: row_entity_reference_paragraphs
     weight: 22
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
       closed_mode: summary
       autocollapse: none
+      show_numbers: 'no'
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
+      default_paragraph_type: ''
+      features: {  }
       empty_message: ''
     third_party_settings: {  }
-    region: content
   field_as_threats_current_rating:
-    weight: 27
+    weight: 31
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_current_text:
-    weight: 26
+    weight: 30
     settings:
       rows: 5
       placeholder: ''
@@ -476,13 +525,13 @@ content:
     type: string_textarea
     region: content
   field_as_threats_potent_rating:
-    weight: 25
+    weight: 30
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_potent_text:
-    weight: 24
+    weight: 28
     settings:
       rows: 5
       placeholder: ''
@@ -491,86 +540,60 @@ content:
     region: content
   field_as_threats_potential:
     type: row_entity_reference_paragraphs
-    weight: 23
+    weight: 0
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
       closed_mode: summary
       autocollapse: none
+      show_numbers: 'no'
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
+      default_paragraph_type: ''
+      features: {  }
       empty_message: ''
     third_party_settings: {  }
-    region: content
   field_as_threats_rating:
-    weight: 29
+    weight: 33
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_threats_text:
-    weight: 28
+    weight: 32
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
     region: content
-  field_as_values_bio:
-    type: row_entity_reference_paragraphs
-    weight: 15
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: closed
-      closed_mode: summary
-      autocollapse: none
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
-      empty_message: ''
-    third_party_settings: {  }
-    region: content
   field_as_values_wh:
     type: row_entity_reference_paragraphs
-    weight: 14
+    weight: 21
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
       closed_mode: summary
       autocollapse: none
-      add_mode: dropdown
-      form_display_mode: assessing_values
-      default_paragraph_type: _none
       show_numbers: 'no'
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
       empty_message: ''
     third_party_settings: {  }
-    region: content
   field_as_vass_bio_state:
-    weight: 23
+    weight: 25
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_vass_bio_text:
-    weight: 22
+    weight: 24
     settings:
       rows: 5
       placeholder: ''
@@ -578,13 +601,16 @@ content:
     type: string_textarea
     region: content
   field_as_vass_bio_trend:
-    type: options_select
-    weight: 24
+    type: entity_reference_autocomplete
+    weight: 0
     region: content
-    settings: {  }
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_as_vass_wh_state:
-    weight: 22
+    weight: 23
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -598,13 +624,16 @@ content:
     type: string_textarea
     region: content
   field_as_vass_wh_trend:
-    weight: 23
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
+    type: entity_reference_autocomplete
+    weight: 26
     region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_assessment_file:
-    weight: 7
+    weight: 8
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -646,8 +675,14 @@ content:
 hidden:
   created: true
   field_as_archived: true
+  field_as_benefits: true
+  field_as_benefits_summary: true
   field_as_cycle: true
+  field_as_projects: true
+  field_as_projects_needs: true
+  field_as_protection_ov_practices: true
   field_as_site: true
+  field_as_values_bio: true
   field_as_version: true
   field_assessor: true
   field_coordinator: true

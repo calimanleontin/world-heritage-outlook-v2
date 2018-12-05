@@ -145,6 +145,31 @@ iucn_who_core.dashboard.cm.trans_ui:
       - fa
       - fa-sign-language
 
+
+iucn_who_core.dashboard.um:
+  title: 'Users Management'
+  description: 'Users management tasks'
+  route_name: entity.user.collection
+  menu_name: tools
+  weight: 50
+  options:
+    attributes:
+      class:
+      - fa
+      - fa-inbox
+
+iucn_who_core.dashboard.um.people_assignments:
+  title: 'People Assignments'
+  parent: iucn_who_core.dashboard.um
+  route_name: view.people_assignments.page_1
+  menu_name: tools
+  weight: 0
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
 iucn_who_core.dashboard.config:
   title: 'Website configuration'
   description: 'Configure website functionality'
@@ -223,4 +248,8 @@ iucn_who_core.dashboard.config.stop:
       class:
       - fa
       - fa-exclamation-triangle
+
+iucn_who_core.main_menu.log_out:
+  class: Drupal\user\Plugin\Menu\LoginLogoutMenuLink
+  menu_name: main
 

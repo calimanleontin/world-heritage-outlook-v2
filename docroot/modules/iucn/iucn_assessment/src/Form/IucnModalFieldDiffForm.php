@@ -60,7 +60,8 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     $form['diff'] = $diff_table;
     $form['#attached']['library'][] = 'diff/diff.colors';
 
-    $this->buildCancelButton($form);
+    self::buildCancelButton($form);
+    unset($form['actions']['delete']);
     return $form;
   }
 

@@ -6,11 +6,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
+use Drupal\iucn_assessment\Form\ParagraphAsSiteThreatForm;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Template\Attribute;
 
 function iucn_assessment_theme() {
   return [
@@ -33,8 +36,61 @@ function iucn_assessment_theme() {
         'id' => '',
       ],
     ],
+    'assessment_fieldset' => [
+      'render element' => 'element',
+    ],
   ];
 
+}
+
+/**
+ * Prepares variables for fieldset element templates.
+ *
+ * Default template: fieldset.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ *     Properties used: #attributes, #children, #description, #id, #title,
+ *     #value.
+ */
+function template_preprocess_assessment_fieldset(&$variables) {
+  $element = $variables['element'];
+  Element::setAttributes($element, ['id']);
+  RenderElement::setAttributes($element);
+  $variables['attributes'] = isset($element['#attributes']) ? $element['#attributes'] : [];
+  $variables['fields_titles'] = isset($element['#fields_titles']) ? explode('|', $element['#fields_titles']) : [];
+  $variables['prefix'] = isset($element['#field_prefix']) ? $element['#field_prefix'] : NULL;
+  $variables['suffix'] = isset($element['#field_suffix']) ? $element['#field_suffix'] : NULL;
+  $variables['title_display'] = isset($element['#title_display']) ? $element['#title_display'] : NULL;
+  $variables['children'] = $element['#children'];
+  $variables['required'] = !empty($element['#required']) ? $element['#required'] : NULL;
+
+  if (isset($element['#title']) && $element['#title'] !== '') {
+    $variables['legend']['title'] = ['#markup' => $element['#title']];
+  }
+
+  $variables['legend']['attributes'] = new Attribute();
+  // Add 'visually-hidden' class to legend span.
+  if ($variables['title_display'] == 'invisible') {
+    $variables['legend_span']['attributes'] = new Attribute(['class' => ['visually-hidden']]);
+  }
+  else {
+    $variables['legend_span']['attributes'] = new Attribute();
+  }
+
+  if (!empty($element['#description'])) {
+    $description_id = $element['#attributes']['id'] . '--description';
+    $description_attributes['id'] = $description_id;
+    $variables['description']['attributes'] = new Attribute($description_attributes);
+    $variables['description']['content'] = $element['#description'];
+
+    // Add the description's id to the fieldset aria attributes.
+    $variables['attributes']['aria-describedby'] = $description_id;
+  }
+
+  // Suppress error messages.
+  $variables['errors'] = NULL;
 }
 
 /**
@@ -429,69 +485,78 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form') {
-    $form['field_as_threats_extent']['#states'] = [
-      'visible' => [
-        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
-      ],
-    ];
-  }
+  switch ($form_id) {
+    case 'node_site_assessment_form':
+    case 'node_site_assessment_edit_form':
+      if ($form_id == 'node_site_assessment_edit_form') {
+        $form['title']['#disabled'] = 'disabled';
+      }
+      NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
+      break;
 
-  if ($form_id == 'node_site_assessment_form' || $form_id == 'node_site_assessment_edit_form') {
-    NodeSiteAssessmentForm::alter($form, $form_state, $form_id);
-  }
-  elseif ($form_id == 'node_site_assessment_state_change_form') {
-    NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
-  }
-  elseif ($form_id == 'node_site_assessment_assign_users_form') {
-    NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
-  }
-  elseif ($form_id == 'revision_overview_form') {
-    // When messing with the revision creation workflow, the position of
-    // the default revision is not always the first on the /revisions page.
-    // This is a workaround to fix this issue.
-    $revisions = $form['node_revisions_table'];
-    $current_revision = NULL;
-    foreach ($revisions as $key => $revision) {
-      if (!is_int($key)) {
-        continue;
+    case 'node_site_assessment_state_change_form':
+      NodeSiteAssessmentStateChangeForm::alter($form, $form_state);
+      break;
+
+    case 'node_site_assessment_assign_users_form':
+      NodeSiteAssessmentAssignUsersForm::alter($form, $form_state);
+      break;
+
+    case 'node_site_assessment_iucn_modal_field_diff_form':
+      unset($form['url_redirects']);
+      unset($form['#fieldgroups']);
+      unset($form['#group_children']);
+      break;
+
+    case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
+      ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
+      break;
+
+    case 'revision_overview_form':
+      // When messing with the revision creation workflow, the position of
+      // the default revision is not always the first on the /revisions page.
+      // This is a workaround to fix this issue.
+      $revisions = $form['node_revisions_table'];
+      $current_revision = NULL;
+      foreach ($revisions as $key => $revision) {
+        if (!is_int($key)) {
+          continue;
+        }
+        if (empty($revision['#attributes']['class'])) {
+          continue;
+        }
+        $classes = $revision['#attributes']['class'];
+        if (in_array('revision-current', $classes)) {
+          $current_revision = $key;
+          break;
+        }
       }
-      if (empty($revision['#attributes']['class'])) {
-        continue;
+      if (!empty($current_revision)) {
+        $revision = $form['node_revisions_table'][$current_revision];
+        unset($form['node_revisions_table'][$current_revision]);
+        array_unshift($form['node_revisions_table'], $revision);
       }
-      $classes = $revision['#attributes']['class'];
-      if (in_array('revision-current', $classes)) {
-        $current_revision = $key;
-        break;
-      }
-    }
-    if (!empty($current_revision)) {
-      $revision = $form['node_revisions_table'][$current_revision];
-      unset($form['node_revisions_table'][$current_revision]);
-      array_unshift($form['node_revisions_table'], $revision);
-    }
-  }
-  elseif (in_array($form_id, ['user_form', 'user_register_form'])) {
-    $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
-  }
-  elseif ($form_id == 'paragraph_as_site_value_wh_geysir_modal_edit_form') {
+      break;
+
+    case 'user_form':
+    case 'user_register_form':
+      $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      break;
+
+    case 'paragraph_as_site_value_wh_geysir_modal_edit_form':
     // @todo apply for all paragraphs
     //    $form['#attached']['library'][] = 'iucn_assessment/textarea_limit';
-    $limit_render_array = [
-      '#limit' => 1000,
-      '#id' => 'limit-count-number-field-as-description',
-      '#theme' => 'textarea_limit_remaining',
-    ];
+      $limit_render_array = [
+        '#limit' => 1000,
+        '#id' => 'limit-count-number-field-as-description',
+        '#theme' => 'textarea_limit_remaining',
+      ];
 
-    $limit_rendered = \Drupal::service('renderer')
-      ->renderPlain($limit_render_array);
+        $limit_rendered = \Drupal::service('renderer')
+          ->renderPlain($limit_render_array);
 
-    //    $form['field_as_description']['widget'][0]['#suffix'] = $limit_rendered;
-  }
-  elseif ($form_id == 'node_site_assessment_iucn_modal_field_diff_form') {
-    unset($form['url_redirects']);
-    unset($form['#fieldgroups']);
-    unset($form['#group_children']);
+        //    $form['field_as_description']['widget'][0]['#suffix'] = $limit_rendered;
+      break;
   }
 }
 
@@ -640,5 +705,23 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface $paragraph) {
+  // When a paragraph is edited and the parent node is new, change it to under evaluation
+  // and assign it's coordinator.
+  if ($paragraph->isChanged() && !$paragraph->isNew() && $paragraph->isDefaultRevision()) {
+    /** @var \Drupal\node\NodeInterface $parent_entity */
+    $parent_entity = $paragraph->getParentEntity();
+    if (!$parent_entity instanceof \Drupal\node\NodeInterface || !$parent_entity->isDefaultRevision()) {
+      return;
+    }
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $workflow_service->setCoordinatorAndState($parent_entity, TRUE);
   }
 }

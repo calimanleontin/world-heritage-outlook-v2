@@ -6,7 +6,11 @@ iucn_assessment.row_paragraph:
   js:
     js/row_paragraph_widget.js: {}
     js/paragraph_comments.js: {}
-    js/row_paragraph_widget.js: {}
+
+iucn_assessment.option_buttons:
+  version: VERSION
+  js:
+    js/as_option_buttons.js: {}
 
 element.assessment_horizontal_tabs:
   version: VERSION

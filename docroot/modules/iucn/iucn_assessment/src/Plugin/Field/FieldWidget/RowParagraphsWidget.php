@@ -212,6 +212,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param $delta
    */
   public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+    $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['edit_button'] = [
       '#type' => 'submit',
       '#value' => $this->t('Edit'),
@@ -223,6 +224,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'tab' => $tab,
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -287,6 +289,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
     if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
       $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
+      $element['#attributes']['class'][] = 'paragraph-diff-row';
     }
 
     $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name);
@@ -294,20 +297,39 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
 
-    // Fix ajax core bug.
-    // @see: https://www.drupal.org/project/drupal/issues/2934463#comment-12603251
-    $url = $this->parentNode->isDefaultRevision()
-      ? Url::fromRoute('entity.node.edit_form', ['node' => $this->parentNode->id()])
-      : Url::fromRoute('node.revision_edit', ['node' => $this->parentNode->id(), 'node_revision' => $this->parentNode->getRevisionId()]);
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['options'] = ['query' => ['ajax_form' => 1]];
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['url'] = $url;
-    $element['top']['actions']['actions']['remove_button'] = $element['top']['actions']['dropdown_actions']['remove_button'];
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-delete';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-button';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['title'] = 'Remove';
-    unset($element['top']['actions']['dropdown_actions']);
+    $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
 
     return $element;
+  }
+
+  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
+    unset($element['top']['actions']['dropdown_actions']);
+
+    $element['top']['actions']['actions']['remove_button'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Remove'),
+      '#attributes' => [
+        'title' => $this->t('Remove'),
+        'class' => [
+          'paragraphs-icon-delete',
+          'paragraphs-icon-button',
+        ],
+      ],
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => "#$field_wrapper",
+          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
+      ],
+    ];
   }
 
   /**
@@ -430,8 +452,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $this->buildHeader($elements);
 
     // Make the add more button open a modal.
-    $field_name = $this->fieldDefinition->getName();
-    $this->buildAddMoreAjaxButton($elements, $field_name);
+    if (!empty($elements['add_more'])) {
+      $field_name = $this->fieldDefinition->getName();
+      $this->buildAddMoreAjaxButton($elements, $field_name);
+    }
 
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
@@ -612,7 +636,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -712,9 +736,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public static function getFieldComponents(ParagraphInterface $paragraph) {
+  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
-    $form_display_mode = 'default';
+    if (empty($form_display_mode)) {
+      $form_display_mode = 'default';
+    }
     $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
       ->getComponents();
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
@@ -739,7 +765,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $summary['num']['value'] = $num;
     }
 
-    $components = self::getFieldComponents($paragraph);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
@@ -771,6 +797,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
         $value = $this->getNestedSummary($paragraph, $field_name);
+      }
+
+      if ($field_definition->getType() == 'boolean') {
+        $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
+        $value = !empty($paragraph->{$field_name}->value)
+          ? $config->getSetting('on_label')
+          : $config->getSetting('off_label');
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
@@ -836,16 +869,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
     }
 
-    foreach ($summary as &$component) {
-      if (is_array($component['value'])) {
-        foreach ($component['value'] as &$value) {
-          $value = strip_tags($value);
-        }
-      }
-      else {
-        $component['value'] = strip_tags($component['value']);
-      }
-    }
     return $summary;
   }
 
