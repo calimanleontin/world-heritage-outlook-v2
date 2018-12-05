@@ -35,9 +35,12 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     ];
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
+      if (empty($diff['node'][$node->id()]['diff'][$field])) {
+        continue;
+      }
       /** @var \Drupal\node\NodeInterface $revision */
       $revision = $workflow_service->getAssessmentRevision($assessment_vid);
-      $diff_data = $diff[$node->id()]['diff'][$field];
+      $diff_data = $diff['node'][$node->id()]['diff'][$field];
       $row = [];
       $row['author'] = $revision->getRevisionUser()->getDisplayName();
       $row['diff'] = ['data' => []];

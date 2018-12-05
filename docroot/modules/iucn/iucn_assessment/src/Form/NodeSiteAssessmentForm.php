@@ -401,7 +401,7 @@ class NodeSiteAssessmentForm {
       return FALSE;
     }
     foreach (array_keys($diff) as $vid) {
-      if (!empty($diff[$vid][$node->id()]['diff'][$field])) {
+      if (!empty($diff[$vid]['node'][$node->id()]['diff'][$field])) {
         return TRUE;
       }
     }
