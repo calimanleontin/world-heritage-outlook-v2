@@ -214,6 +214,19 @@ class NodeSiteAssessmentForm {
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     self::buildDiffButtons($form, $node);
+    self::setTabsDrupalSettings($form, $node);
+  }
+
+  public static function setTabsDrupalSettings(&$form, $node) {
+    $diff = self::getNodeDiff($node);
+    $diff_tabs = [];
+    foreach ($diff as $vid => $diff_data) {
+      if (empty($diff_data['fieldgroups'])) {
+        continue;
+      }
+      $diff_tabs += $diff_data['fieldgroups'];
+    }
+    $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
   /*
