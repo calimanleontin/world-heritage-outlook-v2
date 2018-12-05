@@ -52,14 +52,25 @@ class DiffController extends ControllerBase {
           $entityId = $matches[1];
           $entityType = $matches[2];
           $fieldName = $matches[3];
-          if (empty($diff[$entityId])) {
-            $diff[$entityId] = [
-              'entity_id' => $entityId,
-              'entity_type' => $entityType,
+
+          if ($entityType == 'node') {
+            $field_group_id = $this->getFieldGroupIdForNodeField($fieldName);
+          }
+          elseif ($entityType == 'paragraph') {
+            $field_group_id = $this->getFieldGroupIdForParagraphField($entityId, $fieldName);
+          }
+
+          if (!empty($field_group_id) && empty($diff['fieldgroups'][$field_group_id])) {
+            $diff['fieldgroups'][$field_group_id] = $field_group_id;
+          }
+
+          if (empty($diff[$entityType][$entityId])) {
+            $diff[$entityType][$entityId] = [
               'diff' => [],
             ];
           }
-          $diff[$entityId]['diff'][$fieldName] = $field_diff_rows;
+
+          $diff[$entityType][$entityId]['diff'][$fieldName] = $field_diff_rows;
         }
       }
       else {
@@ -67,6 +78,68 @@ class DiffController extends ControllerBase {
       }
     }
     return $diff;
+  }
+
+  /**
+   * Gets the ID of the field_group nesting a field.
+   *
+   * @param $field
+   *   The field.
+   *
+   * @return string|null
+   *   The group id.
+   */
+  public function getFieldGroupIdForNodeField($field) {
+    $form_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_form_display')
+      ->load('node.site_assessment.default');
+    $field_group_settings = $form_display->getThirdPartySettings('field_group');
+    foreach ($field_group_settings as $key => $settings) {
+      if (in_array($field, $settings['children'])) {
+        return $settings['parent_name'] != 'group_as_tabs'
+          ? $this->getFieldGroupIdForNodeField($key)
+          : $settings['format_settings']['id'];
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Get the tab where a paragraph field is found.
+   *
+   * These values need to be hardcoded because the diff module returns
+   * no information regarding the parent field of an entity reference field.
+   *
+   * @param $paragraph_id
+   * @param $field
+   * @return null|string
+   */
+  public function getFieldGroupIdForParagraphField($paragraph_id, $field) {
+    $paragraph = Paragraph::load($paragraph_id);
+    switch ($paragraph->bundle()) {
+      case 'as_site_value_wh':
+      case 'as_site_value_bio':
+        $components = EntityFormDisplay::load("paragraph.{$paragraph->bundle()}.default")->getComponents();
+        if (in_array($field, $components)) {
+          return 'values';
+        }
+        return 'assessing_values';
+
+      case 'as_site_threat':
+        return 'threats';
+
+      case 'as_site_protection':
+        return 'protection_management';
+
+      case 'as_site_benefit':
+        return 'benefits';
+
+      case 'as_site_project':
+        return 'projects';
+
+      default:
+        return NULL;
+    }
   }
 
 }
