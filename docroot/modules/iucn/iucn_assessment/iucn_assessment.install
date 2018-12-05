@@ -111,8 +111,6 @@ function iucn_assessment_update_8003() {
 
     // Fix broken values references.
     if (in_array($node->id(), $assessmentsWithBrokenThreats)) {
-      // @todo Error: Call to a member function get() on null in iucn_assessment_update_8003() (line 114 of /home/tavi/Work/iucn/worldheritageoutlook/docroot/modules/iucn/iucn_assessment/iucn_assessment.install)
-
       $wh_values = $node->get('field_as_values_wh')->getValue();
       $other_values = $node->get('field_as_values_bio')->getValue();
 
