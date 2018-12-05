@@ -4,6 +4,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\ParagraphInterface;
 use Psr\Log\LoggerInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -87,9 +88,18 @@ function iucn_assessment_update_8003() {
   /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
   $nodeStorage = $entityTypeManager->getStorage('node');
   $paragraphStorage = $entityTypeManager->getStorage('paragraph');
-  /** @var \Drupal\node\NodeInterface[] $nodes */
-  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
-  foreach ($nodes as $node) {
+
+  // This update could exit with "Out of memory" error, so when we run it next
+  // time we will load only the nodes with bigger nids than latest updated one.
+  $stateKey = 'iucn_assessment_update_8003_latest_nid';
+  $latestNid = \Drupal::state()->get($stateKey, 0);
+  $nodesIds = $nodeStorage->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('nid', $latestNid, '>')
+    ->execute();
+
+  foreach ($nodesIds as $nid) {
+    $node = Node::load($nid);
     $cycle = $node->field_as_cycle->value;
     if ($cycle != 2020) {
       // Delete all revisions for old assessments.
@@ -123,5 +133,6 @@ function iucn_assessment_update_8003() {
         _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_bio', $other_values, $node->id(), $logger);
       }
     }
+    \Drupal::state()->set($stateKey, $nid);
   }
 }
