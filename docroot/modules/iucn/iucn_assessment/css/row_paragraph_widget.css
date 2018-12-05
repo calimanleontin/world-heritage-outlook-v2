@@ -426,9 +426,18 @@
     background-color: #fcf8e3 !important;
 }
 
-#drupal-modal table.field-multiple-table > tbody > tr:first-child > td > div {
+#drupal-modal table.field-multiple-table {
+    margin-top: -1em;
+    margin-left: -1em;
+}
+
+#drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
     position: relative;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     margin-bottom: -1px;
+}
+
+#drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
+    visibility: hidden;
 }

@@ -297,20 +297,39 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['#paragraph_id'] = $paragraphs_entity->id();
     $this->paragraphsEntity = $paragraphs_entity;
 
-    // Fix ajax core bug.
-    // @see: https://www.drupal.org/project/drupal/issues/2934463#comment-12603251
-    $url = $this->parentNode->isDefaultRevision()
-      ? Url::fromRoute('entity.node.edit_form', ['node' => $this->parentNode->id()])
-      : Url::fromRoute('node.revision_edit', ['node' => $this->parentNode->id(), 'node_revision' => $this->parentNode->getRevisionId()]);
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['options'] = ['query' => ['ajax_form' => 1]];
-    $element['top']['actions']['dropdown_actions']['remove_button']['#ajax']['url'] = $url;
-    $element['top']['actions']['actions']['remove_button'] = $element['top']['actions']['dropdown_actions']['remove_button'];
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-delete';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['class'][] = 'paragraphs-icon-button';
-    $element['top']['actions']['actions']['remove_button']['#attributes']['title'] = 'Remove';
-    unset($element['top']['actions']['dropdown_actions']);
+    $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
 
     return $element;
+  }
+
+  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
+    unset($element['top']['actions']['dropdown_actions']);
+
+    $element['top']['actions']['actions']['remove_button'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Remove'),
+      '#attributes' => [
+        'title' => $this->t('Remove'),
+        'class' => [
+          'paragraphs-icon-delete',
+          'paragraphs-icon-button',
+        ],
+      ],
+      '#ajax' => [
+        'event' => 'click',
+        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => "#$field_wrapper",
+          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        ]),
+        'progress' => [
+          'type' => 'fullscreen',
+          'message' => NULL,
+        ],
+      ],
+    ];
   }
 
   /**
@@ -615,8 +634,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ];
     }
 
-    $form_display_mode = $this->getSetting('form_display_mode');
-    $components = self::getFieldComponents($paragraph, $form_display_mode);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -716,16 +734,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return array
    *   The field components.
    */
-  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode) {
+  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
-    $form_display = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
-    if (!$form_display) {
-      $components = EntityFormDisplay::load("paragraph.$bundle.default")
-        ->getComponents();
+    if (empty($form_display_mode)) {
+      $form_display_mode = 'default';
     }
-    else{
-      $components = $form_display->getComponents();
-    }
+    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
+      ->getComponents();
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }
@@ -748,8 +763,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $summary['num']['value'] = $num;
     }
 
-    $form_display_mode = $this->getSetting('form_display_mode');
-    $components = self::getFieldComponents($paragraph, $form_display_mode);
+    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
@@ -853,16 +867,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
     }
 
-    foreach ($summary as &$component) {
-      if (is_array($component['value'])) {
-        foreach ($component['value'] as &$value) {
-          $value = strip_tags($value);
-        }
-      }
-      else {
-        $component['value'] = strip_tags($component['value']);
-      }
-    }
     return $summary;
   }
 

@@ -125,10 +125,28 @@ iucn_assessment.modal_paragraph_add:
       node:
         type: entity:node
 
+iucn_assessment.modal_paragraph_delete:
+  path: 'node/delete_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  defaults:
+    _title: 'Delete paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::deleteParagraph'
+  requirements:
+    access: 'delete'
+    node: \d+
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
+
 iucn_assessment.modal_paragraph_edit:
   path: 'node/edit_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
   defaults:
-    _title: 'Add paragraph'
+    _title: 'Edit paragraph'
     _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::editParagraph'
   requirements:
     access: 'update'
