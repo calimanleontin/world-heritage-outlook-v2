@@ -6,7 +6,7 @@ dependencies:
     - workflow.state.assessment_ready_for_review
     - workflow.state.assessment_under_review
 id: assessment_ready_for_review_under_review
-label: 'Start reviewing'
+label: 'Send assessment to reviewers'
 module: workflow
 from_sid: assessment_ready_for_review
 to_sid: assessment_under_review
