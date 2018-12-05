@@ -1,0 +1,14 @@
+project:
+  version: "2.1"
+  sites:
+    default:
+      sync:
+        username: username
+        password: password
+        sql:
+          url: https://iucn-who.edw.ro/sync/database.sql.gz
+        files:
+          url: https://iucn-who.edw.ro/sync/files.tar.gz
+      develop:
+        admin_username: iucn
+        config_split: TRUE
