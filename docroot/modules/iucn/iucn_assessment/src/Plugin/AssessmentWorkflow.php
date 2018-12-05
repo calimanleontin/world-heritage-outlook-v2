@@ -68,6 +68,11 @@ class AssessmentWorkflow {
     self::STATUS_UNDER_REVIEW,
   ];
 
+  const DIFF_STATES = [
+    self::STATUS_READY_FOR_REVIEW,
+    self::STATUS_UNDER_COMPARISON,
+  ];
+
   /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
