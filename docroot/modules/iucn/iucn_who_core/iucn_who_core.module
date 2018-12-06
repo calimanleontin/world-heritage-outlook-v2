@@ -52,7 +52,6 @@ function iucn_who_core_toolbar() {
 }
 
 /**
-<<<<<<< HEAD
  * Implements hook_form_FORM_ID_alter().
  *
  * Alters the artist options on artwork pages.
