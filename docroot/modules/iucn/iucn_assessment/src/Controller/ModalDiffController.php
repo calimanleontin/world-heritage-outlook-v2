@@ -143,15 +143,7 @@ class ModalDiffController extends ControllerBase {
           continue;
         }
         $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
-        $diff_rows = [];
-        foreach ($diffs as $diff_group) {
-          for ($i = 0; $i < count($diff_group); $i += 2) {
-            if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
-              continue;
-            }
-            $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
-          }
-        }
+        $diff_rows = self::getDiffMarkup($diffs);
 
         $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
           ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
@@ -240,6 +232,19 @@ class ModalDiffController extends ControllerBase {
     $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_modal_field_diff');
     $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
     return $response;
+  }
+
+  public static function getDiffMarkup($diff) {
+    $diff_rows = [];
+    foreach ($diff as $diff_group) {
+      for ($i = 0; $i < count($diff_group); $i += 2) {
+        if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+          continue;
+        }
+        $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
+      }
+    }
+    return $diff_rows;
   }
 
 }

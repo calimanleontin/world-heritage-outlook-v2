@@ -141,6 +141,10 @@ class ComposerStaticInit0da0cef66e6bdfafcfdb91e0051854e0
         array (
             'FontLib\\' => 8,
         ),
+        'E' => 
+        array (
+            'EauDeWeb\\' => 9,
+        ),
         'D' => 
         array (
             'Drush\\Internal\\' => 15,
@@ -173,6 +177,7 @@ class ComposerStaticInit0da0cef66e6bdfafcfdb91e0051854e0
         ),
         'B' => 
         array (
+            'Boedah\\Robo\\Task\\Drush\\' => 23,
             'Behat\\Mink\\Driver\\' => 18,
             'Behat\\Mink\\' => 11,
         ),
@@ -418,6 +423,10 @@ class ComposerStaticInit0da0cef66e6bdfafcfdb91e0051854e0
         array (
             0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
         ),
+        'EauDeWeb\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/eaudeweb/heavy-lifter/src',
+        ),
         'Drush\\Internal\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/internal-copy',
@@ -516,6 +525,10 @@ class ComposerStaticInit0da0cef66e6bdfafcfdb91e0051854e0
         'Composer\\Installers\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
+        'Boedah\\Robo\\Task\\Drush\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/boedah/robo-drush/src',
         ),
         'Behat\\Mink\\Driver\\' => 
         array (

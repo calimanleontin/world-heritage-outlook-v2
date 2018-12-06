@@ -452,8 +452,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $this->buildHeader($elements);
 
     // Make the add more button open a modal.
-    $field_name = $this->fieldDefinition->getName();
-    $this->buildAddMoreAjaxButton($elements, $field_name);
+    if (!empty($elements['add_more'])) {
+      $field_name = $this->fieldDefinition->getName();
+      $this->buildAddMoreAjaxButton($elements, $field_name);
+    }
 
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
