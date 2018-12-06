@@ -114,6 +114,9 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
 }
+.hidden-container {
+  display: none;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
@@ -255,5 +258,19 @@
   border: 1px solid black;
   width: 40%;
   display: none;
+}
+.field--widget-assessment-options-buttons .form-required:after {
+  display: none;
+}
+.field--widget-assessment-options-buttons .label:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
 }
 /*# sourceMappingURL=style.css.map */

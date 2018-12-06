@@ -37,7 +37,6 @@ class ParagraphAsSiteThreatForm {
         }
 
         $formField = &$form[$field];
-        hide($formField['widget']);
         $form["{$field}_select"] = [
           '#type' => 'select',
           '#title' => !empty($formField['widget']['title']['#value'])
@@ -50,6 +49,11 @@ class ParagraphAsSiteThreatForm {
           '#weight' => $formField['#weight'],
           '#size' => max(count($options), 5),
         ];
+        unset($formField['widget']);
+
+        if (empty($options)) {
+          hide($form["{$field}_select"]);
+        }
 
       }
     }
@@ -60,7 +64,30 @@ class ParagraphAsSiteThreatForm {
       ],
     ];
 
+    $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
+
     $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
+
+    $form['#validate'][] = [self::class, 'validateValues'];
+  }
+
+  public static function validateValues(array &$form, FormStateInterface $form_state) {
+    $values_filled = FALSE;
+    foreach (self::AFFECTED_VALUES_FIELDS as $field) {
+      if (!empty($form_state->getValue("{$field}_select"))) {
+        $values_filled = TRUE;
+        break;
+      }
+    }
+    if (!$values_filled) {
+      $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
+    }
+  }
+
+  public static function validateThreatExtent(array &$element, FormStateInterface $form_state, array &$form) {
+    if (!empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_extent'))) {
+      $form_state->setError($element, t('Threat extent cannot be empty'));
+    }
   }
 
   public static function updateAffectedValues(&$form, FormStateInterface $form_state) {

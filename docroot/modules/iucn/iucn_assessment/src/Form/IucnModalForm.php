@@ -69,8 +69,6 @@ abstract class IucnModalForm extends ContentEntityForm {
 
     // When errors occur during form validation, show them to the user.
     if ($form_state->getErrors()) {
-      unset($form['#prefix']);
-      unset($form['#suffix']);
       $form['status_messages'] = [
         '#type' => 'status_messages',
         '#weight' => -10,
