@@ -97,7 +97,7 @@ function iucn_who_core_entity_operation_alter(array &$operations, EntityInterfac
     return;
   }
   $current_uri = \Drupal::request()->getRequestUri();
-  if (strpos($current_uri, 'admin/dashboard')) {
+  if (!strpos($current_uri, 'admin/dashboard')) {
     return;
   }
   if ($entity->getEntityTypeId() !== 'node') {
