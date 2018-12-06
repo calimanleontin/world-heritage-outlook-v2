@@ -1,6 +1,0 @@
-project:
-  sync:
-    sql:
-      url: https://iucn-who.edw.ro/sync/database.sql.gz
-      username: username
-      password: password

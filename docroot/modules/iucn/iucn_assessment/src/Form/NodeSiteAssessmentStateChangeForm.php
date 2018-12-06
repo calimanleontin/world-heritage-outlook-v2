@@ -13,6 +13,13 @@ use Drupal\workflow\Entity\WorkflowTransition;
 class NodeSiteAssessmentStateChangeForm {
 
   public static function alter(&$form, FormStateInterface $form_state) {
+    $form['warning'] = [
+      '#type' => 'markup',
+      '#markup' => sprintf('<div role="contentinfo" aria-label="Warning message" class="messages messages--warning">%s</div>',
+        t('You may no longer be able to edit the assessment if the state is changed.')),
+      '#weight' => -1000,
+    ];
+
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
