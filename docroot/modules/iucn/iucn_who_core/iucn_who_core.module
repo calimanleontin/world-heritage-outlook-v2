@@ -52,44 +52,47 @@ function iucn_who_core_toolbar() {
 }
 
 /**
+ * Replace user text field with select box.
+ */
+function iucn_who_core_add_users_by_role(&$form, $field_id, $display_id, $empty_option) {
+  if (empty($form[$field_id])) {
+    return;
+  }
+  $view = \Drupal\views\Views::getView('users_by_roles');
+  $view->setDisplay($display_id);
+  $view->execute();
+  $options = [];
+  foreach ($view->result as $row) {
+    $options[$row->uid] = $row->_entity->getAccountName();
+  }
+  $form[$field_id]['#type'] = 'select';
+  $form[$field_id]['#multiple'] = FALSE;
+  $form[$field_id]['#empty_option'] = $empty_option;
+  $form[$field_id]['#options'] = $options;
+  unset($form[$field_id]['#size']);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Alters the artist options on artwork pages.
  */
 function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // If not the view we are looking, move on
-  if ($form['#id'] != 'views-exposed-form-account-assignments-block-4') {
-    return FALSE;
+  if (!in_array($form['#id'], [
+    'views-exposed-form-account-assignments-block-1',
+    'views-exposed-form-account-assignments-block-2',
+    'views-exposed-form-account-assignments-block-3',
+    'views-exposed-form-account-assignments-block-4',
+    'views-exposed-form-account-assignments-block-5',
+  ])) {
+    return;
   }
   // Assessor list.
-  $view = \Drupal\views\Views::getView('users_by_roles');
-  $view->setDisplay('entity_reference_2');
-  $view->execute();
-  $options = [];
-  foreach ($view->result as $row) {
-    $options[$row->uid] = $row->_entity->getAccountName();
-  }
-  $assessor_field = 'assessor_id';
-  $form[$assessor_field]['#type'] = 'select';
-  $form[$assessor_field]['#multiple'] = FALSE;
-  $form[$assessor_field]['#empty_option'] = t('- Assessor -');
-  $form[$assessor_field]['#options'] = $options;
-  unset($form[$assessor_field]['#size']);
-
+  iucn_who_core_add_users_by_role($form, 'assessor_id', 'entity_reference_2', t('- Assessor -'));
   // Reviewer list.
-  $view = \Drupal\views\Views::getView('users_by_roles');
-  $view->setDisplay('entity_reference_3');
-  $view->execute();
-  $options = [];
-  foreach ($view->result as $row) {
-    $options[$row->uid] = $row->_entity->getAccountName();
-  }
-  $reviewers_field = 'reviewers_id';
-  $form[$reviewers_field]['#type'] = 'select';
-  $form[$reviewers_field]['#multiple'] = FALSE;
-  $form[$reviewers_field]['#empty_option'] = t('- Reviewers -');
-  $form[$reviewers_field]['#options'] = $options;
-  unset($form[$reviewers_field]['#size']);
+  iucn_who_core_add_users_by_role($form, 'reviewers_id', 'entity_reference_3', t('- Reviewer -'));
+  // Coordinator list.
+  iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'));
 }
 
 function iucn_who_core_entity_operation_alter(array &$operations, EntityInterface $entity) {

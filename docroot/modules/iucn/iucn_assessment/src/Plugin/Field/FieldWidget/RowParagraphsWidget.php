@@ -557,9 +557,20 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (empty($under_evaluation_revision)) {
       return NULL;
     }
-    $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
-    $under_ev_revision_paragraphs = array_column($under_evaluation_revision->get($field_name)->getValue(), 'target_id');
-    $deleted_paragraphs = array_diff($under_ev_revision_paragraphs, $current_revision_paragraphs);
+    $assessor_deleted_paragraphs = $this->getDeletedParagraphs($current_revision, $under_evaluation_revision, $field_name);
+    $under_as_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
+    if (empty($under_as_revision)) {
+      return $assessor_deleted_paragraphs;
+    }
+
+    $coordinator_deleted_paragraphs = $this->getDeletedParagraphs($current_revision, $under_as_revision, $field_name);
+    return array_diff($assessor_deleted_paragraphs, $coordinator_deleted_paragraphs);
+  }
+
+  public function getDeletedParagraphs(NodeInterface $new_revision, NodeInterface $old_revision, $field_name) {
+    $new_revision_paragraphs = array_column($new_revision->get($field_name)->getValue(), 'target_id');
+    $old_revision_paragraphs = array_column($old_revision->get($field_name)->getValue(), 'target_id');
+    $deleted_paragraphs = array_diff($old_revision_paragraphs, $new_revision_paragraphs);
     return $deleted_paragraphs;
   }
 

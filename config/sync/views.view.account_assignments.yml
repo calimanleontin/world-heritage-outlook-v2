@@ -659,6 +659,227 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: workflow_state
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            description: ''
+            use_operator: false
+            operator: title_op
+            identifier: title
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: title
+          plugin_id: string
+        field_coordinator_target_id:
+          id: field_coordinator_target_id
+          table: node__field_coordinator
+          field: field_coordinator_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_coordinator_target_id_op
+            label: Coordinator
+            description: ''
+            use_operator: false
+            operator: field_coordinator_target_id_op
+            identifier: coordinator_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              coordinator: coordinator
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              authenticated: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_assessor_target_id:
+          id: field_assessor_target_id
+          table: node__field_assessor
+          field: field_assessor_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_assessor_target_id_op
+            label: Assessor
+            description: ''
+            use_operator: false
+            operator: field_assessor_target_id_op
+            identifier: assessor_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_reviewers_target_id:
+          id: field_reviewers_target_id
+          table: node__field_reviewers
+          field: field_reviewers_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_reviewers_target_id_op
+            label: Reviewers
+            description: ''
+            use_operator: false
+            operator: field_reviewers_target_id_op
+            identifier: reviewers_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
       sorts:
         created:
           id: created
@@ -744,6 +965,10 @@ display:
           not: false
           plugin_id: numeric
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       use_ajax: true
     cache_metadata:
       max-age: -1
@@ -1847,7 +2072,6 @@ display:
         access: false
         pager: false
         title: false
-        use_ajax: false
       access:
         type: role
         options:
@@ -2014,118 +2238,6 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: workflow_state
-        field_assessor_target_id:
-          id: field_assessor_target_id
-          table: node__field_assessor
-          field: field_assessor_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_assessor_target_id_op
-            label: Assessor
-            description: ''
-            use_operator: false
-            operator: field_assessor_target_id_op
-            identifier: assessor_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              administrator: '0'
-              iucn_manager: '0'
-              edit_world_heritage_site_assessments: '0'
-              publish_world_heritage_site_assessments: '0'
-              coordinator: '0'
-              assessor: '0'
-              reviewer: '0'
-              anonymous: '0'
-              edit_content_pages: '0'
-              publish_content_pages: '0'
-              menu_editor: '0'
-              edit_world_heritage_site_information: '0'
-              publish_world_heritage_site_information: '0'
-              manage_submissions: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: numeric
-        field_reviewers_target_id:
-          id: field_reviewers_target_id
-          table: node__field_reviewers
-          field: field_reviewers_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_reviewers_target_id_op
-            label: Reviewers
-            description: ''
-            use_operator: false
-            operator: field_reviewers_target_id_op
-            identifier: reviewers_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              administrator: '0'
-              iucn_manager: '0'
-              edit_world_heritage_site_assessments: '0'
-              publish_world_heritage_site_assessments: '0'
-              coordinator: '0'
-              assessor: '0'
-              reviewer: '0'
-              anonymous: '0'
-              edit_content_pages: '0'
-              publish_content_pages: '0'
-              menu_editor: '0'
-              edit_world_heritage_site_information: '0'
-              publish_world_heritage_site_information: '0'
-              manage_submissions: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: numeric
         field_state_value_1:
           id: field_state_value_1
           table: node__field_state
@@ -2321,6 +2433,227 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Title
+            description: ''
+            use_operator: false
+            operator: title_op
+            identifier: title
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: title
+          plugin_id: string
+        field_coordinator_target_id:
+          id: field_coordinator_target_id
+          table: node__field_coordinator
+          field: field_coordinator_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_coordinator_target_id_op
+            label: Coordinator
+            description: ''
+            use_operator: false
+            operator: field_coordinator_target_id_op
+            identifier: coordinator_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_assessor_target_id:
+          id: field_assessor_target_id
+          table: node__field_assessor
+          field: field_assessor_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_assessor_target_id_op
+            label: Assessor
+            description: ''
+            use_operator: false
+            operator: field_assessor_target_id_op
+            identifier: assessor_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_reviewers_target_id:
+          id: field_reviewers_target_id
+          table: node__field_reviewers
+          field: field_reviewers_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_reviewers_target_id_op
+            label: Reviewer
+            description: ''
+            use_operator: false
+            operator: field_reviewers_target_id_op
+            identifier: reviewers_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
       filter_groups:
         operator: AND
         groups:
@@ -2352,6 +2685,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.roles
