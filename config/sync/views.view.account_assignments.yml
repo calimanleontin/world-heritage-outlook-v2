@@ -97,10 +97,11 @@ display:
             field_coordinator: field_coordinator
             field_assessor: field_assessor
             field_reviewers: field_reviewers
+            changed: changed
             operations: operations
           info:
             title:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -132,12 +133,19 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             operations:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: '-1'
+          default: changed
           empty_table: true
       row:
         type: fields
@@ -1652,6 +1660,7 @@ display:
         access: false
         pager: false
         title: false
+        use_ajax: false
       access:
         type: role
         options:
@@ -1896,6 +1905,7 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
