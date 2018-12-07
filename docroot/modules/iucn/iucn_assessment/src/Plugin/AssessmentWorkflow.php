@@ -138,7 +138,7 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_REVIEW:
           // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          $access = AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
@@ -199,11 +199,6 @@ class AssessmentWorkflow {
     $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
     $original_state = $original->field_state->value;
 
-    // Set the original status to new so a proper revision is created.
-    if ($this->assessmentHasNoState($original)) {
-      $original->get('field_state')->setValue(self::STATUS_NEW);
-    }
-
     // Block only for reviewers' revision:
     // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
     // Creates a new revision.
@@ -236,10 +231,18 @@ class AssessmentWorkflow {
       return;
     }
 
+    $this->setCoordinatorAndState($node, FALSE);
+
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
-      $added_reviewers = $this->getAddedReviewers($node, $original);
-      $removed_reviewers = $this->getRemovedReviewers($node, $original);
+      if ($original_state == self::STATUS_UNDER_REVIEW) {
+        $added_reviewers = $this->getAddedReviewers($node, $original);
+        $removed_reviewers = $this->getRemovedReviewers($node, $original);
+      }
+      else {
+        $added_reviewers = $this->getReviewersArray($node);
+        $removed_reviewers = NULL;
+      }
 
       // Create a revision for each newly added reviewer.
       if (!empty($added_reviewers)) {
@@ -278,6 +281,12 @@ class AssessmentWorkflow {
       // the changes visible in all revisions.
       // @todo: check why this is happening.
       $revision_state = $original_state;
+
+      // Set the original status to new so a proper revision is created.
+      if ($this->assessmentHasNoState($original)) {
+        $revision_state = self::STATUS_NEW;
+      }
+
       $is_unpublished = NULL;
       if ($state == self::STATUS_DRAFT && $original_state == self::STATUS_PUBLISHED) {
         $this->forceAssessmentState($node, self::STATUS_PUBLISHED, FALSE);
@@ -712,6 +721,43 @@ class AssessmentWorkflow {
     if ($save) {
       $node->save();
     }
+  }
+
+  /**
+   * Check if an assessment is new (has no state or state = NEW)
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @return bool
+   *   True if the assessment is new.
+   */
+  public function isNewAssessment(NodeInterface $node) {
+    return $this->assessmentHasNoState($node) || $node->field_state->value == self::STATUS_NEW;
+  }
+
+  /**
+   * Sets the current user as a coordinator and updates the state.
+   *
+   * This function should only be used for new assessments. Sets the
+   * current user as a coordinator if he has the coordinator role and
+   * move the node into the under evaluation state.
+   *
+   * @param NodeInterface $node
+   */
+  public function setCoordinatorAndState(NodeInterface $node, $execute = TRUE) {
+    if (!$node->isDefaultRevision()) {
+      return;
+    }
+    if (!empty($node->field_coordinator->target_id) || !$this->isNewAssessment($node)) {
+      return;
+    }
+    $current_user = \Drupal::currentUser();
+    if (!in_array('coordinator', $current_user->getRoles())) {
+      return;
+    }
+
+    $node->field_coordinator->target_id = $current_user->id();
+    $this->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $execute);
   }
 
 }

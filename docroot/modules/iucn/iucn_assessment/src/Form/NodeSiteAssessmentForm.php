@@ -33,27 +33,12 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Unset the fields that are only present on other tabs.
-   */
-  public static function removeFieldsFromOtherTabs(&$form, $current_tab) {
-    $current_tab = \Drupal::request()->get('tab') ?: 'values';
-    $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
-    foreach ($group_tabs as $group_tab) {
-      $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
-      $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
-      if ($tab_id != $current_tab) {
-        self::removeGroupFields($form, $group_tab);
-      }
-    }
-  }
-
-  /**
    * Recursive function used to used to unset the fields of a fieldgroup.
    */
   public static function removeGroupFields(&$form, $group) {
     foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
       if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        unset($form[$nested_field]);
+        $form[$nested_field]['#access'] = FALSE;
       }
       elseif (!empty($form['#fieldgroups'][$nested_field])) {
         self::removeGroupFields($form, $nested_field);
@@ -65,7 +50,15 @@ class NodeSiteAssessmentForm {
     $tab = \Drupal::request()->get('tab') ?: 'values';
     if (empty(\Drupal::request()->get('_wrapper_format'))
       || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
-      self::removeFieldsFromOtherTabs($form, $tab);
+      // Unset the fields that are only present on other tabs.
+      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
+      foreach ($group_tabs as $group_tab) {
+        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
+        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
+        if ($tab_id != $tab) {
+          self::removeGroupFields($form, $group_tab);
+        }
+      }
     }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
@@ -158,6 +151,12 @@ class NodeSiteAssessmentForm {
         $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
         $form['#attached']['library'][] = 'iucn_backend/font-awesome';
       }
+    }
+
+    if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
+      hide($form['field_as_vass_bio_state']);
+      hide($form['field_as_vass_bio_text']);
+      hide($form['field_as_vass_bio_trend']);
     }
 
     if (in_array($tab, ['threats', 'protection-management', 'assessing-values', 'conservation-outlook'])) {
@@ -320,7 +319,9 @@ class NodeSiteAssessmentForm {
   public static function hideParagraphsActions(array &$form) {
     $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
     foreach ($read_only_paragraph_fields as $field) {
-      self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      if (!empty($form[$field]['widget'])) {
+        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+      }
     }
   }
 

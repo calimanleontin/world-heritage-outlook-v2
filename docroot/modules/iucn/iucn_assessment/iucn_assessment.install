@@ -2,6 +2,9 @@
 
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\ParagraphInterface;
+use Psr\Log\LoggerInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -43,31 +46,107 @@ function iucn_assessment_update_8002() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
 }
 
-// @todo
-// Uncomment the following 2 hook_update_N functions.
-// They are commented because it takes too long for them to run.
+function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, array $values, $assessment_id, LoggerInterface $logger) {
+  $referenced_values = $threat->get($field)->getValue();
+  if (!empty($referenced_values)) {
+    $update = FALSE;
+    foreach ($referenced_values as &$referenced_value) {
+      $referenced_paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($referenced_value['target_revision_id']);
+      foreach ($values as $value) {
+        $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($value['target_revision_id']);
+        if ($referenced_paragraph->field_as_values_value->value == $paragraph->field_as_values_value->value
+          && $referenced_paragraph->getRevisionId() != $paragraph->getRevisionId()) {
+          $update = TRUE;
+          $referenced_value = $value;
+          break;
+        }
+      }
+    }
+    if ($update) {
+      $logger->info("Fixed threat '{$threat->field_as_threats_threat->value}' (assessment id = $assessment_id)");
+      $threat->get($field)->setValue($referenced_values);
+      $threat->save();
+    }
+  }
+}
 
 /**
- * Delete old revisions.
- */
-//function iucn_assessment_update_8003() {
-//  drush_invoke_process('@self','iucn_assessment:delete-revisions');
-//}
-
-/**
- * Set "Published" status to all existing assessments.
+ *  Delete all revisions for old assessments.
+ *  Set "Published" status to all existing assessments.Force workflow status for
+ * old assessments.
+ *  Fix broken values references.
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
-//function iucn_assessment_update_8004() {
-//  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-//  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-//  /** @var \Drupal\node\NodeInterface[] $nodes */
-//  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'site_assessment']);
-//  foreach ($nodes as $node) {
-//    if ($node->isPublished()) {
-//      $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
-//    }
-//  }
-//}
+function iucn_assessment_update_8003() {
+  $assessmentsWithBrokenThreats = [1617, 1618, 1619, 1620, 1621, 1622, 1623, 1624, 1625, 1626, 1627, 1628, 1629, 1630, 1631, 1632, 1633, 1634, 1635, 1636, 1637, 1638, 1639, 1640, 1641, 1642, 1643, 1644, 1645, 1646, 1647, 1648, 1649, 1650, 1653, 1654, 1655, 1656, 1657, 1658, 1659, 1660, 1661, 1662, 1663, 1664, 1665, 1666, 1667, 1668, 1669, 1670, 1671, 1672, 1673, 1674, 1675, 1676, 1677, 1678, 1679, 1680, 1681, 1682, 1683, 1684, 1685, 1686, 1687, 1688, 1689, 1690, 1691, 1692, 1693, 1694, 1695, 1696, 1742, 1746, 1763, 1764, 1765, 1766, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1809, 1810, 1811, 1812, 1813, 1814, 1815, 1816, 1817, 1818, 1819, 1820, 1821, 1822, 1823, 1824, 1825, 1826, 1827, 1828, 1829, 1830, 1831, 1832];
+  $logger = \Drupal::logger('iucn_assessment');
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+  $entityTypeManager = \Drupal::entityTypeManager();
+  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+  $nodeStorage = $entityTypeManager->getStorage('node');
+  $paragraphStorage = $entityTypeManager->getStorage('paragraph');
+
+  // This update could exit with "Out of memory" error, so when we run it next
+  // time we will load only the nodes with bigger nids than latest updated one.
+  $stateKey = 'iucn_assessment_update_8003_latest_nid';
+  $latestNid = \Drupal::state()->get($stateKey, 0);
+  $nodesIds = $nodeStorage->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('nid', $latestNid, '>')
+    ->execute();
+
+  foreach ($nodesIds as $nid) {
+    $node = Node::load($nid);
+    $cycle = $node->field_as_cycle->value;
+    if ($cycle != 2020) {
+      // Delete all revisions for old assessments.
+      $defaultVid = $node->getRevisionId();
+      $vids = $nodeStorage->revisionIds($node);
+      foreach ($vids as $vid) {
+        if ($vid != $defaultVid) {
+          $logger->info("Deleting revision vid={$vid} for assessment {$node->getTitle()} ({$node->id()})");
+          $nodeStorage->deleteRevision($vid);
+        }
+      }
+
+      // Force workflow status for old assessments.
+      if ($node->isPublished()) {
+        $logger->info("Force workflow status for assessment {$node->getTitle()} ({$node->id()})");
+        $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+      }
+    }
+
+    // Fix broken values references.
+    if (in_array($node->id(), $assessmentsWithBrokenThreats)) {
+      $wh_values = $node->get('field_as_values_wh')->getValue();
+      $other_values = $node->get('field_as_values_bio')->getValue();
+
+      $threats = array_merge($node->get('field_as_threats_current')->getValue(), $node->get('field_as_threats_potential')->getValue());
+
+      foreach ($threats as $threat) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $threat_paragraph */
+        $threat_paragraph = $paragraphStorage->loadRevision($threat['target_revision_id']);
+        _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_wh', $wh_values, $node->id(), $logger);
+        _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_bio', $other_values, $node->id(), $logger);
+      }
+    }
+    \Drupal::state()->set($stateKey, $nid);
+  }
+}
+
+/**
+ * Delete assessment_child entities.
+ */
+function iucn_assessment_update_8004() {
+  try {
+    $storage = \Drupal::entityTypeManager()->getStorage('assessment_child');
+    $entities = $storage->loadMultiple();
+    $storage->delete($entities);
+  }
+  catch (\Exception $e) {
+    // Entity type has already been deleted. Do nothing.
+  }
+}
