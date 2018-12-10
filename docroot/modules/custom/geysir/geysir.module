@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains geysir.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function geysir_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the geysir module.
+    case 'help.page.geysir':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function geysir_theme() {
+  return [
+    'geysir' => [
+      'render element' => 'children',
+    ],
+  ];
+}
