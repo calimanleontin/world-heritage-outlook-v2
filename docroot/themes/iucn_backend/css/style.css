@@ -201,6 +201,20 @@
   color: #009cf9;
   padding: .25rem .75rem;
 }
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions {
+  float: none;
+  display: inline-block;
+  max-width: 200px;
+}
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item .chosen-container,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions .chosen-container,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item input,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions input,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item button,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button {
+  max-width: 100%;
+}
 .horizontal-tab-button .fa {
   font-size: 1em;
   margin: 0 2.1em 0 1em;
