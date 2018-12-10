@@ -63,6 +63,12 @@ class ParagraphAsSiteThreatForm {
       ],
     ];
 
+    $form['field_as_threats_extent']['widget']['#states'] = [
+      'required' => [
+        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
+      ],
+    ];
+
     $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
 
     $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
