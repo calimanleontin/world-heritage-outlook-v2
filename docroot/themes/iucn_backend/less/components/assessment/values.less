@@ -1,0 +1,20 @@
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  > .form-wrapper {
+    padding-bottom: 20px;
+    .form-item, .fieldgroup {
+      display: table-row;
+      label, legend {
+        display: table-cell;
+        width: 200px;
+      }
+      .form-text, .form-textarea-wrapper, .fieldset-wrapper {
+        display: table-cell;
+        width: calc(~'100% - 0px');
+      }
+    }
+  }
+}

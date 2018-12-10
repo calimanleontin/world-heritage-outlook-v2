@@ -168,6 +168,48 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper {
+  padding-bottom: 20px;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup {
+  display: table-row;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend {
+  display: table-cell;
+  width: 200px;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper {
+  display: table-cell;
+  width: calc(100% - 0px);
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
