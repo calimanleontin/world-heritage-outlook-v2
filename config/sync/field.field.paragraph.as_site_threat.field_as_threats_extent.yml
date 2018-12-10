@@ -6,13 +6,21 @@ dependencies:
     - field.storage.paragraph.field_as_threats_extent
     - paragraphs.paragraphs_type.as_site_threat
     - taxonomy.vocabulary.assessment_threat_extent
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_threat.field_as_threats_extent
 field_name: field_as_threats_extent
 entity_type: paragraph
 bundle: as_site_threat
 label: 'Threat extent'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
