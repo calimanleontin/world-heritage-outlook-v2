@@ -95,7 +95,8 @@ function _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag(&$v
  */
 function iucn_backend_preprocess_views_view_table(&$variables) {
   // Bold the names of the users that need to act on an assessment.
-  if ($variables['view']->storage->id() == 'account_assignments') {
+  if ($variables['view']->storage->id() == 'account_assignments'
+    && $variables['view']->current_display == 'block_1') {
     foreach ($variables['view']->result as $id => $row) {
       /** @var \Drupal\node\Entity\Node $entity */
       $entity = $row->_entity;
