@@ -51,6 +51,25 @@ function iucn_who_core_toolbar() {
 }
 
 /**
+ * Implements hook_entity_operation().
+ */
+function iucn_who_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  if (!(\Drupal::currentUser()->hasPermission('access content'))) {
+    return;
+  }
+  $current_uri = \Drupal::request()->getRequestUri();
+  if (!strpos($current_uri, 'admin/dashboard')) {
+    return;
+  }
+  if ($entity->getEntityTypeId() !== 'node') {
+    return;
+  }
+  if ($entity->getType() === 'site_assessment') {
+    $operations['edit']['url'] = Url::fromRoute('entity.node.edit_form', ['node' => $entity->id()]);
+  }
+}
+
+/**
  * Implements hook_page_attachments_alter().
  */
 function iucn_who_core_page_attachments_alter(array &$attachments) {

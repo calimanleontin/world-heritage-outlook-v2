@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Controller\ModalDiffController;
 
 class IucnModalFieldDiffForm extends IucnModalForm {
 
@@ -41,13 +42,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       $row = [];
       $row['author'] = $revision->getRevisionUser()->getDisplayName();
       $row['diff'] = ['data' => []];
-      $diff_rows = [];
-
-      foreach ($diff_data as $diff_group) {
-        for ($i = 0; $i < count($diff_group); $i += 2) {
-          $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
-        }
-      }
+      $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
 
       $row['diff']['data'] = [
         '#type' => 'table',
@@ -60,7 +55,8 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     $form['diff'] = $diff_table;
     $form['#attached']['library'][] = 'diff/diff.colors';
 
-    $this->buildCancelButton($form);
+    self::buildCancelButton($form);
+    unset($form['actions']['delete']);
     return $form;
   }
 
