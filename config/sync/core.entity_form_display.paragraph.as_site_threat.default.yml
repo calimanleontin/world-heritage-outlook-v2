@@ -14,6 +14,7 @@ dependencies:
     - field.field.paragraph.as_site_threat.field_as_threats_values_wh
     - paragraphs.paragraphs_type.as_site_threat
   module:
+    - iucn_assessment
     - paragraphs
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
@@ -30,9 +31,12 @@ content:
     region: content
   field_as_threats_categories:
     weight: 0
-    settings: {  }
+    settings:
+      select_title: ''
+      select_label: 'Select category'
+      checkboxes_label: 'Select subcategory'
     third_party_settings: {  }
-    type: options_select
+    type: assessment_options_buttons
     region: content
   field_as_threats_extent:
     weight: 4
