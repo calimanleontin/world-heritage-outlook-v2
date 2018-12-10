@@ -138,7 +138,7 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_REVIEW:
           // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          $access = AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
