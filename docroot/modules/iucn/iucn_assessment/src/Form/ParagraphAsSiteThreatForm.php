@@ -42,17 +42,21 @@ class ParagraphAsSiteThreatForm {
 
         $formField = &$form[$field];
         hide($formField['widget']);
-        $form["{$field}_select"] = [
-          '#type' => 'select',
-          '#title' => !empty($formField['widget']['title']['#value'])
-            ? $formField['widget']['title']['#value']
-            : $form[$field]['widget']['#title'],
-          '#multiple' => TRUE,
-          '#options' => $options,
-          '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
-          '#chosen' => FALSE,
+        $form["{$field}_select_wrapper"] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['form-wrapper']],
           '#weight' => $formField['#weight'],
-          '#size' => max(count($options), 5),
+          "{$field}_select" => [
+            '#type' => 'select',
+            '#title' => !empty($formField['widget']['title']['#value'])
+              ? $formField['widget']['title']['#value']
+              : $form[$field]['widget']['#title'],
+            '#multiple' => TRUE,
+            '#options' => $options,
+            '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
+            '#chosen' => FALSE,
+            '#size' => max(count($options), 5),
+          ],
         ];
 
       }
