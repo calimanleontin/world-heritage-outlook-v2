@@ -15,7 +15,7 @@
 }
 
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-    background: #ececec!important;
+    /*background: #ececec!important;*/
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -239,6 +239,10 @@
 
 .js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
     position: static;
+}
+
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+    margin: 10px;
 }
 
 .raw-paragraphs-tabs-wrapper .paragraphs-tabs {

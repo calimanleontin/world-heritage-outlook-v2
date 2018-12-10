@@ -238,7 +238,8 @@ class ModalDiffController extends ControllerBase {
     $diff_rows = [];
     foreach ($diff as $diff_group) {
       for ($i = 0; $i < count($diff_group); $i += 2) {
-        if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+        if (!empty($diff_group[$i + 1]['data']['#markup']) && !empty($diff_group[$i + 3]['data']['#markup'])
+          && $diff_group[$i + 1]['data']['#markup'] == $diff_group[$i + 3]['data']['#markup']) {
           continue;
         }
         $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
