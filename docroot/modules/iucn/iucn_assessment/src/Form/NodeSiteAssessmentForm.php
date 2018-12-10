@@ -213,7 +213,25 @@ class NodeSiteAssessmentForm {
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
-    self::buildDiffButtons($form, $node);
+    if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
+      self::buildDiffButtons($form, $node);
+      self::setTabsDrupalSettings($form, $node);
+    }
+  }
+
+  public static function setTabsDrupalSettings(&$form, $node) {
+    $diff = self::getNodeDiff($node);
+    if (empty($diff)) {
+      return;
+    }
+    $diff_tabs = [];
+    foreach ($diff as $vid => $diff_data) {
+      if (empty($diff_data['fieldgroups'])) {
+        continue;
+      }
+      $diff_tabs += $diff_data['fieldgroups'];
+    }
+    $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
   /*
@@ -402,7 +420,7 @@ class NodeSiteAssessmentForm {
       return FALSE;
     }
     foreach (array_keys($diff) as $vid) {
-      if (!empty($diff[$vid][$node->id()]['diff'][$field])) {
+      if (!empty($diff[$vid]['node'][$node->id()]['diff'][$field])) {
         return TRUE;
       }
     }

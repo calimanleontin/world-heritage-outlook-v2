@@ -5,5 +5,11 @@ definitions:
     parent: ''
     expanded: false
     weight: 0
+  who__admin_people:
+    enabled: false
+    menu_name: who
+    parent: ''
+    weight: 3
+    expanded: false
 _core:
   default_config_hash: jdY7AU0tU-QsjmiOw3W8vwpYMb-By--_MSFgbqKUTYM

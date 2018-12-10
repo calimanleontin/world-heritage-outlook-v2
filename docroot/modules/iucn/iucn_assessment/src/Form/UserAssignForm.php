@@ -67,6 +67,10 @@ class UserAssignForm extends FormBase {
         'wrapper' => 'assessments-container',
       ],
     ];
+    if (count($roles) == 2) {
+      end($roles);
+      $form['role']['#value'] = key($roles);
+    }
     $form['assessments'] = [
       '#type' => 'select',
       '#title' => $this->t('Assessments'),
