@@ -76,6 +76,40 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .description-wrapper {
+  display: table-caption;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
+  background: #ececec!important;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
+  border-top: 1px solid #e6e4df;
+  font-weight: bold;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view {
+  display: table-row;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item {
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
+  display: table-cell;
+  padding: 10px 12px;
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+  width: 300px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
+  width: 150px;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+    width: 150px;
+  }
+}
 .button.paragraphs-icon-button.paragraphs-icon-button-compare {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -211,6 +245,9 @@
 .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
   position: relative;
   top: 0;
+}
+.toolbar-icon-iucn-who-core-administration-dashboard:before {
+  background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);
 }
 @media all and (min-width: 851px) {
   .sidebar {
