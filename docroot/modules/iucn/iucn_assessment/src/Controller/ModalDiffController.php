@@ -90,9 +90,10 @@ class ModalDiffController extends ControllerBase {
     $diff = $settings['diff'];
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
-      if (empty($diff[$paragraph_revision->id()] || $diff[$paragraph_revision->id()]['entity_type'] != 'paragraph')) {
+      if (empty($diff['paragraph'][$paragraph_revision->id()])) {
         continue;
       }
+      $diff = $diff['paragraph'][$paragraph_revision->id()]['diff'];
       /** @var NodeInterface $assessment_revision */
       $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
 
@@ -105,7 +106,7 @@ class ModalDiffController extends ControllerBase {
 
       // Copy the initial row.
       $row = $form['widget'][$paragraph_key];
-      $diff_fields = array_keys($diff[$paragraph_revision->id()]['diff']);
+      $diff_fields = array_keys($diff);
 
       // If the row is actually deleted, only apply a different class.
       $deleted = FALSE;
@@ -142,6 +143,7 @@ class ModalDiffController extends ControllerBase {
           $row['top']['summary'][$grouped_with]['data']['#markup'] = $this->t('Deleted');
           continue;
         }
+
         $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
         $diff_rows = self::getDiffMarkup($diffs);
 
@@ -238,7 +240,8 @@ class ModalDiffController extends ControllerBase {
     $diff_rows = [];
     foreach ($diff as $diff_group) {
       for ($i = 0; $i < count($diff_group); $i += 2) {
-        if ($diff_group[$i]['data']['#markup'] == $diff_group[$i + 2]['data']['#markup']) {
+        if (!empty($diff_group[$i + 1]['data']['#markup']) && !empty($diff_group[$i + 3]['data']['#markup'])
+          && $diff_group[$i + 1]['data']['#markup'] == $diff_group[$i + 3]['data']['#markup']) {
           continue;
         }
         $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];

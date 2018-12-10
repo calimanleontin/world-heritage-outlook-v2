@@ -15,7 +15,7 @@
 }
 
 .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-    background: #ececec!important;
+    /*background: #ececec!important;*/
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -241,6 +241,10 @@
     position: static;
 }
 
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+    margin: 10px;
+}
+
 .raw-paragraphs-tabs-wrapper .paragraphs-tabs {
     display: none;
 }
@@ -269,56 +273,9 @@
     background-color: #77f177 !important;
 }
 
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-@media (max-width: 768px) {
-    .button.paragraphs-icon-button.paragraphs-icon-button-compare {
-        background-image: url(../images/compare.svg);
-    }
-}
-
-.paragraph-diff-final {
-    border-top: 3px solid black;
-}
-
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-    background-image: url(../images/compare.svg);
-}
-
-.button.paragraphs-icon-button {
-    padding: 0;
-    width: 36px !important;
-    height: 36px;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: 24px 24px;
-    border-radius: 4px;
-    text-indent: -9999em;
-}
-.button.paragraphs-icon-button-edit, .button.paragraphs-icon-button-edit:active, .button.paragraphs-icon-button-edit:hover, .button.paragraphs-icon-button-edit:focus {
-    background-image: url("../images/icon-edit.svg");
-}
-
-.paragraphs-icon-delete {
-    background-image: url("../images/icon-delete.svg") !important;
-}
-
-.paragraphs-icon-button-revert {
-    background-image: url("../images/icon-revert.svg") !important;
-}
-
-.paragraphs-icon-button-accept {
-    background-image: url("../images/icon-accept.svg") !important;
-}
-
 .paragraph-author {
     margin-right: 10px;
 }
-
-
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
     grid-template-columns: repeat(22, minmax(9rem, 1fr)) 9rem;
@@ -436,4 +393,8 @@
 
 #drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
     visibility: hidden;
+}
+
+.paragraph-diff-final {
+    border-top: 3px solid black;
 }

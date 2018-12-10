@@ -2338,6 +2338,89 @@
         "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core"
     },
     {
+        "name": "drupal/admin_toolbar",
+        "version": "1.25.0",
+        "version_normalized": "1.25.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/admin_toolbar",
+            "reference": "8.x-1.25"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/admin_toolbar-8.x-1.25.zip",
+            "reference": "8.x-1.25",
+            "shasum": "bc24929d5e49932518797c1228e647e98b03542b"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.25",
+                "datestamp": "1542915180",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Wilfrid Roze (eme)",
+                "homepage": "https://www.drupal.org/u/eme",
+                "role": "Maintainer"
+            },
+            {
+                "name": "Romain Jarraud (romainj)",
+                "homepage": "https://www.drupal.org/u/romainj",
+                "role": "Maintainer"
+            },
+            {
+                "name": "Adrian Cid Almaguer (adriancid)",
+                "homepage": "https://www.drupal.org/u/adriancid",
+                "email": "adriancid@gmail.com",
+                "role": "Maintainer"
+            },
+            {
+                "name": "Mohamed Anis Taktak (matio89)",
+                "homepage": "https://www.drupal.org/u/matio89",
+                "role": "Maintainer"
+            },
+            {
+                "name": "fethi.krout",
+                "homepage": "https://www.drupal.org/user/3206765"
+            },
+            {
+                "name": "matio89",
+                "homepage": "https://www.drupal.org/user/2320090"
+            },
+            {
+                "name": "romainj",
+                "homepage": "https://www.drupal.org/user/370706"
+            }
+        ],
+        "description": "Provides a drop-down menu interface to the core Drupal Toolbar.",
+        "homepage": "http://drupal.org/project/admin_toolbar",
+        "keywords": [
+            "Drupal",
+            "Toolbar"
+        ],
+        "support": {
+            "source": "http://cgit.drupalcode.org/admin_toolbar",
+            "issues": "https://www.drupal.org/project/issues/admin_toolbar"
+        }
+    },
+    {
         "name": "drupal/blazy",
         "version": "1.0.0-rc3",
         "version_normalized": "1.0.0.0-RC3",
@@ -5754,6 +5837,115 @@
         "support": {
             "source": "http://cgit.drupalcode.org/linkit",
             "issues": "http://drupal.org/project/linkit"
+        }
+    },
+    {
+        "name": "drupal/maxlength",
+        "version": "1.0.0-beta2",
+        "version_normalized": "1.0.0.0-beta2",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/maxlength",
+            "reference": "8.x-1.0-beta2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/maxlength-8.x-1.0-beta2.zip",
+            "reference": "8.x-1.0-beta2",
+            "shasum": "27f7374e55ebdcc696d22d98be8cf4cf9bf58204"
+        },
+        "require": {
+            "drupal/core": "~8.0"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0-beta2",
+                "datestamp": "1527856384",
+                "security-coverage": {
+                    "status": "not-covered",
+                    "message": "Beta releases are not covered by Drupal security advisories."
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Aron Novak",
+                "homepage": "https://www.drupal.org/user/61864"
+            },
+            {
+                "name": "Schnitzel",
+                "homepage": "https://www.drupal.org/user/643820"
+            },
+            {
+                "name": "a_c_m",
+                "homepage": "https://www.drupal.org/user/195063"
+            },
+            {
+                "name": "artur.thiessen",
+                "homepage": "https://www.drupal.org/user/2390554"
+            },
+            {
+                "name": "barneytech",
+                "homepage": "https://www.drupal.org/user/669922"
+            },
+            {
+                "name": "claudiu_cristea",
+                "homepage": "https://www.drupal.org/user/2623935"
+            },
+            {
+                "name": "dawehner",
+                "homepage": "https://www.drupal.org/user/99340"
+            },
+            {
+                "name": "derhasi",
+                "homepage": "https://www.drupal.org/user/83474"
+            },
+            {
+                "name": "frjo",
+                "homepage": "https://www.drupal.org/user/5546"
+            },
+            {
+                "name": "hefox",
+                "homepage": "https://www.drupal.org/user/426416"
+            },
+            {
+                "name": "jm.federico",
+                "homepage": "https://www.drupal.org/user/509892"
+            },
+            {
+                "name": "k4v",
+                "homepage": "https://www.drupal.org/user/744246"
+            },
+            {
+                "name": "mariano73",
+                "homepage": "https://www.drupal.org/user/1324866"
+            },
+            {
+                "name": "mariuss",
+                "homepage": "https://www.drupal.org/user/28539"
+            },
+            {
+                "name": "sanduhrs",
+                "homepage": "https://www.drupal.org/user/28074"
+            },
+            {
+                "name": "vasi1186",
+                "homepage": "https://www.drupal.org/user/342104"
+            }
+        ],
+        "description": "Limit the number of characters in textfields and textareas and shows the amount of characters left.",
+        "homepage": "https://www.drupal.org/project/maxlength",
+        "support": {
+            "source": "http://cgit.drupalcode.org/maxlength"
         }
     },
     {

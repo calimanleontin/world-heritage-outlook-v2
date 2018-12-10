@@ -502,6 +502,7 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       unset($form['#group_children']);
       break;
 
+    case 'paragraph_as_site_threat_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
       ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
       break;
@@ -536,6 +537,23 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     case 'user_register_form':
       $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
       break;
+  }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+  $items = $context['items'];
+  if ($items instanceof \Drupal\Core\Field\FieldItemListInterface) {
+    $field_definition = $items->getFieldDefinition();
+    if ($field_definition->getType() == 'string_long') {
+      // https://helpdesk.eaudeweb.ro/issues/5556
+      // All textareas should be limited to a certain number of characters.
+      $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
+      $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
+    }
   }
 }
 

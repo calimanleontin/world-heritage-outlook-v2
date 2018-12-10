@@ -61,54 +61,7 @@ class ToolbarHandler implements ContainerInjectionInterface {
    * @see hook_toolbar()
    */
   public function toolbar() {
-    $items['iucn_who'] = [
-      '#cache' => [
-        'contexts' => ['user.permissions'],
-      ],
-    ];
-
-    if ($this->account->hasPermission('view the administration theme')) {
-      $items['iucn_who'] += [
-        '#type' => 'toolbar_item',
-        '#weight' => 1000,
-        'tab' => [
-          '#type' => 'link',
-          '#title' => $this->t('WHO'),
-          '#url' => Url::fromRoute('system.admin'),
-          '#attributes' => [
-            'title' => $this->t('WHO tasks'),
-            'class' => ['toolbar-icon', 'toolbar-icon-system-admin-config'],
-          ],
-        ],
-        'tray' => [
-          '#heading' => $this->t('WHO menu'),
-          'iucn_who_menu' => [
-            '#lazy_builder' => [ToolbarHandler::class . ':lazyBuilder', []],
-            // Force the creation of the placeholder instead of rely on the
-            // automatical placeholdering or otherwise the page results
-            // uncacheable when max-age 0 is bubbled up.
-            '#create_placeholder' => TRUE,
-          ],
-        ],
-      ];
-    }
-
-    $items['who.user-dashboard']=  [
-      '#type' => 'toolbar_item',
-      '#weight' => 1001,
-      '#cache' => [
-        'contexts' => ['user.permissions'],
-      ],
-      'tab' => [
-        '#type' => 'link',
-        '#title' => $this->t('Dashboard'),
-        '#url' => Url::fromRoute('who.user-dashboard'),
-        '#attributes' => [
-          'class' => ['toolbar-icon', 'toolbar-icon-system-admin-reports'],
-        ],
-      ],
-    ];
-    return $items;
+    return [];
   }
 
 

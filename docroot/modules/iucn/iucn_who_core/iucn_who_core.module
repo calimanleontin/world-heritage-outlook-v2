@@ -95,6 +95,24 @@ function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface 
   iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'));
 }
 
+/**
+ * Implements hook_entity_operation().
+ */
+function iucn_who_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  if (!(\Drupal::currentUser()->hasPermission('access content'))) {
+    return;
+  }
+  $current_uri = \Drupal::request()->getRequestUri();
+  if (!strpos($current_uri, 'admin/dashboard')) {
+    return;
+  }
+  if ($entity->getEntityTypeId() !== 'node') {
+    return;
+  }
+  if ($entity->getType() === 'site_assessment') {
+    $operations['edit']['url'] = Url::fromRoute('entity.node.edit_form', ['node' => $entity->id()]);
+  }
+}
 
 /**
  * Implements hook_page_attachments_alter().
@@ -420,5 +438,50 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
       '#attributes' => ['class' => ['btn', 'btn-primary']],
       '#weight' => '200',
     ];
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_menu().
+ *
+ * Hides links from tools menu, if user doesn't have access rights.
+ */
+function iucn_who_core_preprocess_menu(&$variables) {
+  if (empty($variables['items'])) {
+    return;
+  }
+  if (!empty($variables['menu_name']) && $variables['menu_name'] == 'tools') {
+    if (!admin_toolbar_links_access_filter_user_has_admin_role($variables['user'])) {
+      $items = &$variables['items'];
+      foreach ($variables['items'] as $route => &$item) {
+        $route_name = $route;
+        $route_params = [];
+        if (!empty($item['original_link'])) {
+          /** @var \Drupal\Core\Menu\MenuLinkBase $original_link */
+          $original_link = $item['original_link'];
+          if ($original_link->getUrlObject()->isExternal()) {
+            // Do not filter external URL at all.
+            continue;
+          }
+          $route_name = $original_link->getRouteName();
+          $route_params = $original_link->getRouteParameters();
+        }
+
+        // Check, if user has access rights to the route.
+        if (!\Drupal::accessManager()->checkNamedRoute($route_name, $route_params)) {
+          unset($items[$route]);
+        }
+        else {
+          if (!empty($items[$route]['below'])) {
+            // Recursively call this function for the child items.
+            admin_toolbar_links_access_filter_filter_non_accessible_links($items[$route]['below']);
+          }
+          if (empty($items[$route]['below'])) {
+            unset($items[$route]);
+          }
+        }
+      }
+    }
   }
 }
