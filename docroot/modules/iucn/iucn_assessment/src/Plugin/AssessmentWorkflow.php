@@ -143,7 +143,7 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_REVIEW:
           // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          $access = AccessResult::allowedIf(($node->isDefaultRevision() && $accountIsCoordinator) || $node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
@@ -235,6 +235,8 @@ class AssessmentWorkflow {
       }
       return;
     }
+
+    $this->setCoordinatorAndState($node, FALSE);
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
@@ -724,6 +726,43 @@ class AssessmentWorkflow {
     if ($save) {
       $node->save();
     }
+  }
+
+  /**
+   * Check if an assessment is new (has no state or state = NEW)
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The assessment.
+   * @return bool
+   *   True if the assessment is new.
+   */
+  public function isNewAssessment(NodeInterface $node) {
+    return $this->assessmentHasNoState($node) || $node->field_state->value == self::STATUS_NEW;
+  }
+
+  /**
+   * Sets the current user as a coordinator and updates the state.
+   *
+   * This function should only be used for new assessments. Sets the
+   * current user as a coordinator if he has the coordinator role and
+   * move the node into the under evaluation state.
+   *
+   * @param NodeInterface $node
+   */
+  public function setCoordinatorAndState(NodeInterface $node, $execute = TRUE) {
+    if (!$node->isDefaultRevision()) {
+      return;
+    }
+    if (!empty($node->field_coordinator->target_id) || !$this->isNewAssessment($node)) {
+      return;
+    }
+    $current_user = \Drupal::currentUser();
+    if (!in_array('coordinator', $current_user->getRoles())) {
+      return;
+    }
+
+    $node->field_coordinator->target_id = $current_user->id();
+    $this->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $execute);
   }
 
 }

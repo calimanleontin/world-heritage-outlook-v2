@@ -136,3 +136,17 @@ function iucn_assessment_update_8003() {
     \Drupal::state()->set($stateKey, $nid);
   }
 }
+
+/**
+ * Delete assessment_child entities.
+ */
+function iucn_assessment_update_8004() {
+  try {
+    $storage = \Drupal::entityTypeManager()->getStorage('assessment_child');
+    $entities = $storage->loadMultiple();
+    $storage->delete($entities);
+  }
+  catch (\Exception $e) {
+    // Entity type has already been deleted. Do nothing.
+  }
+}

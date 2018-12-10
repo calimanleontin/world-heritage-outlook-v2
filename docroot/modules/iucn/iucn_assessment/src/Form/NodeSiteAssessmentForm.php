@@ -38,7 +38,7 @@ class NodeSiteAssessmentForm {
   public static function removeGroupFields(&$form, $group) {
     foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
       if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        unset($form[$nested_field]);
+        $form[$nested_field]['#access'] = FALSE;
       }
       elseif (!empty($form['#fieldgroups'][$nested_field])) {
         self::removeGroupFields($form, $nested_field);
@@ -388,6 +388,7 @@ class NodeSiteAssessmentForm {
 
   public static function buildDiffButtons(&$form, $node) {
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.field_diff';
+    $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $diff = self::getNodeDiff($node);
     if (empty($diff)) {
       return;

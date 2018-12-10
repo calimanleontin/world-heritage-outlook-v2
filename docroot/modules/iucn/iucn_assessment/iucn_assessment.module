@@ -540,6 +540,23 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 /**
+ * Implements hook_field_widget_form_alter().
+ */
+function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+  $items = $context['items'];
+  if ($items instanceof \Drupal\Core\Field\FieldItemListInterface) {
+    $field_definition = $items->getFieldDefinition();
+    if ($field_definition->getType() == 'string_long') {
+      // https://helpdesk.eaudeweb.ro/issues/5556
+      // All textareas should be limited to a certain number of characters.
+      $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
+      $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
+    }
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
 function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
@@ -684,5 +701,23 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface $paragraph) {
+  // When a paragraph is edited and the parent node is new, change it to under evaluation
+  // and assign it's coordinator.
+  if ($paragraph->isChanged() && !$paragraph->isNew() && $paragraph->isDefaultRevision()) {
+    /** @var \Drupal\node\NodeInterface $parent_entity */
+    $parent_entity = $paragraph->getParentEntity();
+    if (!$parent_entity instanceof \Drupal\node\NodeInterface || !$parent_entity->isDefaultRevision()) {
+      return;
+    }
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $workflow_service->setCoordinatorAndState($parent_entity, TRUE);
   }
 }
