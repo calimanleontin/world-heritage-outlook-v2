@@ -26,13 +26,9 @@ Workflow is the following:
 
 Running tests from the CLI scenarios:
 
-```bash
-# IUCN specific tests
-php core/scripts/run-tests.sh  --non-html --color --verbose --url http://who.local iucn
-# Run a single class
-php core/scripts/run-tests.sh  --non-html --color --verbose --url http://who.local --class "Drupal\Tests\iucn_who_core\Functional\SiteStatusTest"
-# Run a single method
-php core/scripts/run-tests.sh  --non-html --color --verbose --url http://who.local --class "Drupal\Tests\iucn_who_core\Functional\SiteStatusTest::testMethod"
-# Clean leftover tables
-php core/scripts/run-tests.sh  --clean
+```
+# Run tests
+
+## Run specific test method
+../bin/run-test.sh --class Drupal\\iucn_assessment\\Tests\\WorkflowTest::testAssessmentWorkflowAccess
 ```
