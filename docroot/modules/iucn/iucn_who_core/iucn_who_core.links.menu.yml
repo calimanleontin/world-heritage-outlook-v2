@@ -166,12 +166,24 @@ iucn_who_core.dashboard.um:
       - fa
       - fa-inbox
 
+iucn_who_core.dashboard.um.coordinator_assign_self:
+  title: 'Assign myself to assessments'
+  parent: iucn_who_core.dashboard.um
+  route_name: iucn_assessment.user_self_assign
+  menu_name: tools
+  weight: 0
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
 iucn_who_core.dashboard.um.people_assignments:
   title: 'People Assignments'
   parent: iucn_who_core.dashboard.um
   route_name: view.people_assignments.page_1
   menu_name: tools
-  weight: 0
+  weight: 10
   options:
     attributes:
       class:
