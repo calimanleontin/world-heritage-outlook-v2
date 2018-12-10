@@ -92,22 +92,6 @@ class ToolbarHandler implements ContainerInjectionInterface {
         ],
       ];
     }
-
-    $items['who.user-dashboard']=  [
-      '#type' => 'toolbar_item',
-      '#weight' => 1001,
-      '#cache' => [
-        'contexts' => ['user.permissions'],
-      ],
-      'tab' => [
-        '#type' => 'link',
-        '#title' => $this->t('Dashboard'),
-        '#url' => Url::fromRoute('who.user-dashboard'),
-        '#attributes' => [
-          'class' => ['toolbar-icon', 'toolbar-icon-system-admin-reports'],
-        ],
-      ],
-    ];
     return $items;
   }
 
