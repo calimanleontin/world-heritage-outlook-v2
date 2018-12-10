@@ -28,6 +28,8 @@ blacklist:
   - recaptcha.settings
 graylist:
   - system.site
+  - user.role.anonymous
+  - user.role.authenticated
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0

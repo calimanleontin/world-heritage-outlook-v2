@@ -28,3 +28,15 @@
 .diff-marker {
     width: 1px;
 }
+
+.field-with-diff .form-textarea-wrapper {
+    background-color: #fcf8e3;
+}
+
+.field-with-diff.field--type-entity-reference {
+    background-color: #fcf8e3;
+}
+
+.field-with-diff#edit-field-as-references-wrapper {
+    background-color: #fcf8e3;
+}
