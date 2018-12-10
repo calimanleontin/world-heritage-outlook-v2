@@ -18,6 +18,10 @@ class ParagraphAsSiteThreatForm {
     $entity = $formObject->getEntity();
     $parentEntity = $entity->getParentEntity();
 
+    if (empty($parentEntity)) {
+      $parentEntity = \Drupal::routeMatch()->getParameter('node');
+    }
+
     if ($parentEntity instanceof NodeInterface) {
       foreach (self::AFFECTED_VALUES_FIELDS as $field) {
         $parentFieldName = str_replace('as_threats_values', 'as_values', $field);
