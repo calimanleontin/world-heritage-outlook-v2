@@ -310,4 +310,27 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertEqual(count($under_evaluation_revision->field_as_values_wh->getValue()), 1, 'Paragraph not added to revision.');
   }
 
+  /**
+   * Check that revisions are created correctly.
+   */
+  protected function testValuesTab() {
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
+    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
+
+    drupal_flush_all_caches();
+
+    $this->userLogIn(TestSupport::ASSESSOR1);
+
+    $this->drupalGet($assessment->toUrl('edit-form'));
+
+    $this->assertNoText('Save');
+  }
+
 }
