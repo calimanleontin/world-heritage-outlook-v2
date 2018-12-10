@@ -198,6 +198,7 @@
   margin: 0 0 0 2em;
 }
 #block-tools > ul.menu li.menu-item ul.menu li.menu-item a {
+  color: #009cf9;
   padding: .25rem .75rem;
 }
 .horizontal-tab-button .fa {
