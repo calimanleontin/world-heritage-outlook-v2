@@ -1640,7 +1640,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1822,6 +1822,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          disable_link: 1
           entity_type: user
           plugin_id: iucn_who_core_coordinator
         user_assessor:
@@ -1872,6 +1873,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          disable_link: 1
           entity_type: user
           plugin_id: iucn_who_core_assessor
         user_reviewer:
@@ -1922,6 +1924,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          disable_link: 1
           entity_type: user
           plugin_id: iucn_who_core_reviewer
         operations:
