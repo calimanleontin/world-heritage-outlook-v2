@@ -269,7 +269,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
     // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
-     && $this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
+     && $this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $field_name, $paragraphs_entity->id())
+     && !$this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $field_name, $paragraphs_entity->id())) {
       $element['top']['#attributes']['class'][] = "paragraph-new-row";
     }
     else {
@@ -333,22 +334,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   /**
-   * Check if a paragraph is new compared to previous revisions.
+   * Check if a paragraph is new compared to previous revisions of a certain state.
    *
    * @param NodeInterface $node
    * @param $field_name
    * @param $paragraph_id
    * @return bool
    */
-  public function isNewParagraph(NodeInterface $node, $field_name, $paragraph_id) {
+  public function isNewParagraph(NodeInterface $node, $state, $field_name, $paragraph_id) {
     /** @var AssessmentWorkflow $assessment_workflow */
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $current_revision = $this->parentNode;
-    $under_ev_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-    if (empty($under_ev_revision)) {
+    $revision = $assessment_workflow->getRevisionByState($node, $state);
+    if (empty($revision)) {
       return FALSE;
     }
-    return !in_array($paragraph_id, array_column($under_ev_revision->get($field_name)->getValue(), 'target_id'));
+    return !in_array($paragraph_id, array_column($revision->get($field_name)->getValue(), 'target_id'))
+      && in_array($paragraph_id, array_column($node->get($field_name)->getValue(), 'target_id'));
   }
 
   /**
