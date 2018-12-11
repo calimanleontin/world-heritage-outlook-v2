@@ -150,3 +150,24 @@ function iucn_assessment_update_8004() {
     // Entity type has already been deleted. Do nothing.
   }
 }
+
+/**
+ * Make sure the 8003 update finished successfully.
+ */
+function iucn_assessment_update_8005() {
+  $entityTypeManager = \Drupal::entityTypeManager();
+  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+  $nodeStorage = $entityTypeManager->getStorage('node');
+  // This update could exit with "Out of memory" error, so when we run it next
+  // time we will load only the nodes with bigger nids than latest updated one.
+  $stateKey = 'iucn_assessment_update_8003_latest_nid';
+  $latestNid = \Drupal::state()->get($stateKey, 0);
+  $nodesIds = $nodeStorage->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('nid', $latestNid, '>')
+    ->execute();
+  if (!empty($nodesIds)) {
+    // Run the update again because it failed.
+    drupal_set_installed_schema_version('iucn_assessment', 8002);
+  }
+}

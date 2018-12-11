@@ -95,6 +95,9 @@ function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface 
   iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'));
 }
 
+/**
+ * Implements hook_entity_operation().
+ */
 function iucn_who_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
   if (!(\Drupal::currentUser()->hasPermission('access content'))) {
     return;
