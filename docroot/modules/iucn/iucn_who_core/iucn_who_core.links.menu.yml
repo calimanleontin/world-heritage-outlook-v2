@@ -114,6 +114,18 @@ iucn_who_core.dashboard.cm.all_content:
       - fa
       - fa fa-list
 
+iucn_who_core.dashboard.cm.all_assessments:
+  title: 'All assessments'
+  parent: iucn_who_core.dashboard.cm
+  route_name: view.content.page_2
+  menu_name: tools
+  weight: -40
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
 iucn_who_core.dashboard.cm.create_content:
   title: 'Create new content'
   description: 'Add new content in Bioland'
@@ -166,12 +178,36 @@ iucn_who_core.dashboard.um:
       - fa
       - fa-inbox
 
+iucn_who_core.dashboard.um.coordinator_assign_self:
+  title: 'Assign myself to assessments'
+  parent: iucn_who_core.dashboard.um
+  route_name: iucn_assessment.user_self_assign
+  menu_name: tools
+  weight: 0
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
+iucn_who_core.dashboard.um.add_user:
+  title: 'Add user'
+  parent: iucn_who_core.dashboard.um
+  route_name: user.admin_create
+  menu_name: tools
+  weight: 5
+  options:
+    attributes:
+      class:
+      - fa
+      - fa fa-list
+
 iucn_who_core.dashboard.um.people_assignments:
-  title: 'People Assignments'
+  title: 'People assignments'
   parent: iucn_who_core.dashboard.um
   route_name: view.people_assignments.page_1
   menu_name: tools
-  weight: 0
+  weight: 10
   options:
     attributes:
       class:

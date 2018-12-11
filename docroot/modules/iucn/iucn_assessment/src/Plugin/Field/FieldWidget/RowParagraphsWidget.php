@@ -148,11 +148,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function isParagraphWithDiff($paragraph_id, $rendered_fields) {
     if (!empty($this->diff)) {
       foreach ($this->diff as $vid => $diff) {
-        if (in_array($paragraph_id, array_keys($diff))) {
-          if ($diff[$paragraph_id]['entity_type'] != 'paragraph') {
-            continue;
-          }
-          foreach (array_keys($diff[$paragraph_id]['diff']) as $diff_field) {
+        if (empty($diff['paragraph'])) {
+          continue;
+        }
+        if (in_array($paragraph_id, array_keys($diff['paragraph']))) {
+          foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
             if (in_array($diff_field, $rendered_fields)) {
               return TRUE;
             }

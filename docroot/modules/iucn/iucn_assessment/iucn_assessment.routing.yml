@@ -65,6 +65,12 @@ iucn_assessment.user_assign:
       user:
         type: entity:user
 
+iucn_assessment.user_self_assign:
+  path: '/user/self-assign'
+  defaults:
+    _controller: '\Drupal\iucn_assessment\Controller\UserSelfAssignController::redirectToForm'
+  requirements:
+    _role: 'coordinator'
 
 iucn_assessment.revert_paragraph:
   path: 'revert_paragraph/{node}/{field}/{field_wrapper_id}/{paragraph}'

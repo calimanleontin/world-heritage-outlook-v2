@@ -9,6 +9,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Field\FieldFilteredMarkup;
 
 class NodeSiteAssessmentForm {
 
@@ -153,6 +154,12 @@ class NodeSiteAssessmentForm {
       }
     }
 
+    if ($tab == 'assessing-values') {
+      $form['field_as_values_wh']['widget']['#title'] = FieldFilteredMarkup::create('Assessing The Current State And Trend Of Values');
+      $string = 'Assess the current state and trend of values for the World Heritage site. The current state of values is assessed against five ratings: Good, Low Concern, High Concern, Critical and Data Deficient). The baseline for the assessment should be the condition at the time of inscription, with reference to the best-recorded historical conservation state. Trend is assessed in relation to whether the condition of a value is Improving, Stable, Deteriorating or Data Deficient, and is intended to be a snapshot of recent developments over the last five years. The \'Justification for assessment\' must be systematically referenced, e.g. (SOC report, 2009).';
+      $form['field_as_values_wh']['widget']['#description'] = FieldFilteredMarkup::create($string);
+    }
+
     if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
       hide($form['field_as_vass_bio_state']);
       hide($form['field_as_vass_bio_text']);
@@ -241,6 +248,25 @@ class NodeSiteAssessmentForm {
     if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
       $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits is mandatory'));
     }
+    if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
+      self::buildDiffButtons($form, $node);
+      self::setTabsDrupalSettings($form, $node);
+    }
+  }
+
+  public static function setTabsDrupalSettings(&$form, $node) {
+    $diff = self::getNodeDiff($node);
+    if (empty($diff)) {
+      return;
+    }
+    $diff_tabs = [];
+    foreach ($diff as $vid => $diff_data) {
+      if (empty($diff_data['fieldgroups'])) {
+        continue;
+      }
+      $diff_tabs += $diff_data['fieldgroups'];
+    }
+    $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
   /*
@@ -429,7 +455,7 @@ class NodeSiteAssessmentForm {
       return FALSE;
     }
     foreach (array_keys($diff) as $vid) {
-      if (!empty($diff[$vid][$node->id()]['diff'][$field])) {
+      if (!empty($diff[$vid]['node'][$node->id()]['diff'][$field])) {
         return TRUE;
       }
     }

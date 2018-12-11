@@ -127,3 +127,11 @@ div.field-group-htabs-wrapper .field-group-format-wrapper {
   top: -100000px;
   width: 100%;
 }
+
+.horizontal-tabs .diff-tab {
+  font-style: italic;
+}
+
+.horizontal-tabs .diff-tab:not(.selected) {
+  background-color: #fcf8e3;
+}

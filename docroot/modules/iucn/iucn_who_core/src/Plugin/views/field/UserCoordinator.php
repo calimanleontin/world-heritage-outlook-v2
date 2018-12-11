@@ -36,6 +36,7 @@ class UserCoordinator extends FieldPluginBase {
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
+    $options['disable_link'] = ['default' => FALSE];
     return $options;
   }
 
@@ -44,6 +45,12 @@ class UserCoordinator extends FieldPluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
+    $form['disable_link'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Disable Link'),
+      '#default_value' => $this->options['disable_link'],
+      '#weight' => -101,
+    ];
   }
 
   /**
@@ -70,8 +77,13 @@ class UserCoordinator extends FieldPluginBase {
         if (empty($nodes[$row->uid])) {
           $nodes[$row->uid] = [];
         }
-        $url_object = Url::fromRoute('entity.node.canonical', ['node' => $row->field_coordinator_users_field_data_nid], ['absolute' => FALSE]);
-        $nodes[$row->uid][] = Link::fromTextAndUrl($row->_relationship_entities['reverse__node__field_coordinator']->getTitle(), $url_object)->toString();
+        if ($this->options['disable_link']) {
+          $nodes[$row->uid][] = $row->_relationship_entities['reverse__node__field_coordinator']->getTitle();
+        }
+        else {
+          $url_object = Url::fromRoute('entity.node.canonical', ['node' => $row->field_coordinator_users_field_data_nid], ['absolute' => FALSE]);
+          $nodes[$row->uid][] = Link::fromTextAndUrl($row->_relationship_entities['reverse__node__field_coordinator']->getTitle(), $url_object)->toString();
+        }
       }
     }
     if (!empty($nodes[$user->id()])) {

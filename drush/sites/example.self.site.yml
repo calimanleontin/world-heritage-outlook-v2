@@ -1,7 +1,17 @@
 test:
   host: 159.69.149.22
-  paths:
-    files: sites/default/files
-  root: /var/www/html/iucn-who.edw.ro/docroot/
   uri: iucn-who.edw.ro
+  root: /var/www/html/iucn-who.edw.ro/docroot/
+  paths:
+    drush-script: /var/www/html/iucn-who.edw.ro/docroot/vendor/bin/drush
+    files: /var/www/html/iucn-who.edw.ro/docroot/sites/default/files
+  user: USER
+
+prod:
+  host: 54.246.114.83
+  uri: www.worldheritageoutlook.iucn.org
+  root: /var/www/html/who/prod/docroot
+  paths:
+    drush-script: /var/www/html/who/prod/docroot/vendor/bin/drush
+    files: /var/www/html/who/prod/docroot/sites/default/files
   user: USER
