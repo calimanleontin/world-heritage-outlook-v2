@@ -78,6 +78,7 @@ class ParagraphAsSiteThreatForm {
     ];
 
     $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
+    $form['field_as_threats_categories']['#element_validate'][] = [self::class, 'validateThreatCategories'];
 
     $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
 
@@ -95,11 +96,31 @@ class ParagraphAsSiteThreatForm {
     if (!$values_filled) {
       $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
     }
+
+    if (empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_out')['value'])) {
+      $form_state->setErrorByName('threat_in_out', t('At least one option must be selected for Inside site/Outside site'));
+    }
   }
 
   public static function validateThreatExtent(array &$element, FormStateInterface $form_state, array &$form) {
     if (!empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_extent'))) {
-      $form_state->setError($element, t('Threat extent cannot be empty'));
+      $form_state->setError($element, t('Threat extent field is required'));
+    }
+  }
+
+  public static function validateThreatCategories(array &$element, FormStateInterface $form_state, array &$form) {
+    $values = $form_state->getValue('field_as_threats_categories');
+    if (empty($values) || count($values) == 1 && $values[0]['target_id'] == 0 ) {
+      $form_state->setError($element, t('Category field is required'));
+    }
+    $selected_category = FALSE;
+    foreach ($values as $category) {
+      if (!isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
+        $selected_category = TRUE;
+      }
+    }
+    if (!$selected_category) {
+      $form_state->setError($element, t('Select at least one subcategory'));
     }
   }
 
