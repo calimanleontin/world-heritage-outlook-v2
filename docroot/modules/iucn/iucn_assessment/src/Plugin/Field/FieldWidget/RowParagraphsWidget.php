@@ -500,7 +500,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     /** @var AssessmentWorkflow $assessment_workflow */
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
     $current_revision = $this->parentNode;
-    $reviewer_revisions = $assessment_workflow->getReviewerRevisions($current_revision);
+    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
     if (empty($reviewer_revisions)) {
       return NULL;
     }

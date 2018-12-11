@@ -560,7 +560,7 @@ class AssessmentWorkflow {
    *   The revision.
    */
   public function getReviewerRevision(NodeInterface $node, $uid) {
-    $reviewer_revisions = $this->getReviewerRevisions($node);
+    $reviewer_revisions = $this->getAllReviewersRevisions($node);
     foreach ($reviewer_revisions as $node_revision) {
       /** @var \Drupal\node\Entity\Node $node_revision */
       if ($node_revision->getRevisionUserId() == $uid && !$node_revision->isDefaultRevision()) {
@@ -579,7 +579,7 @@ class AssessmentWorkflow {
    * @return array
    *   The revisions.
    */
-  public function getReviewerRevisions(NodeInterface $node) {
+  public function getAllReviewersRevisions(NodeInterface $node) {
     $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
     $revisions = [];
     foreach ($assessment_revisions_ids as $rid) {
@@ -603,7 +603,7 @@ class AssessmentWorkflow {
    */
   public function getUnfinishedReviewerRevisions(NodeInterface $node) {
     $unfinished = [];
-    $revisions = $this->getReviewerRevisions($node);
+    $revisions = $this->getAllReviewersRevisions($node);
     /** @var \Drupal\node\NodeInterface $revision */
     foreach ($revisions as $revision) {
       if ($revision->field_state->value == self::STATUS_UNDER_REVIEW) {
