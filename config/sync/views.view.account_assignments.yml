@@ -45,7 +45,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: false
-          distinct: false
+          distinct: true
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -607,58 +607,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_state_value:
-          id: field_state_value
-          table: node__field_state
-          field: field_state_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_state_value_op
-            label: State
-            description: ''
-            use_operator: false
-            operator: field_state_value_op
-            identifier: field_state_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              administrator: '0'
-              iucn_manager: '0'
-              edit_world_heritage_site_assessments: '0'
-              publish_world_heritage_site_assessments: '0'
-              coordinator: '0'
-              assessor: '0'
-              reviewer: '0'
-              anonymous: '0'
-              edit_content_pages: '0'
-              publish_content_pages: '0'
-              menu_editor: '0'
-              edit_world_heritage_site_information: '0'
-              publish_world_heritage_site_information: '0'
-              manage_submissions: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          plugin_id: workflow_state
         title:
           id: title
           table: node_field_data
@@ -712,6 +660,58 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
+        field_state_value:
+          id: field_state_value
+          table: node__field_state
+          field: field_state_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_state_value_op
+            label: State
+            description: ''
+            use_operator: false
+            operator: field_state_value_op
+            identifier: field_state_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: workflow_state
         field_coordinator_target_id:
           id: field_coordinator_target_id
           table: node__field_coordinator
@@ -840,7 +840,7 @@ display:
           exposed: true
           expose:
             operator_id: field_reviewers_target_id_op
-            label: Reviewers
+            label: Reviewer
             description: ''
             use_operator: false
             operator: field_reviewers_target_id_op
@@ -1663,58 +1663,6 @@ display:
             iucn_manager: iucn_manager
             coordinator: coordinator
       filters:
-        field_state_value_1:
-          id: field_state_value_1
-          table: node__field_state
-          field: field_state_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_state_value_1_op
-            label: State
-            description: ''
-            use_operator: false
-            operator: field_state_value_1_op
-            identifier: field_state_value_1
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              administrator: '0'
-              iucn_manager: '0'
-              edit_world_heritage_site_assessments: '0'
-              publish_world_heritage_site_assessments: '0'
-              coordinator: '0'
-              assessor: '0'
-              reviewer: '0'
-              anonymous: '0'
-              edit_content_pages: '0'
-              publish_content_pages: '0'
-              menu_editor: '0'
-              edit_world_heritage_site_information: '0'
-              publish_world_heritage_site_information: '0'
-              manage_submissions: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          plugin_id: workflow_state
         title:
           id: title
           table: node_field_data
@@ -1768,6 +1716,58 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
+        field_state_value_1:
+          id: field_state_value_1
+          table: node__field_state
+          field: field_state_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_state_value_1_op
+            label: State
+            description: ''
+            use_operator: false
+            operator: field_state_value_1_op
+            identifier: field_state_value_1
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: workflow_state
         field_coordinator_target_id:
           id: field_coordinator_target_id
           table: node__field_coordinator
@@ -2143,45 +2143,6 @@ display:
             administrator: administrator
             iucn_manager: iucn_manager
       filters:
-        field_state_value:
-          id: field_state_value
-          table: node__field_state
-          field: field_state_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value:
-            assessment_approved: assessment_approved
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          plugin_id: workflow_state
         type:
           id: type
           table: node_field_data
@@ -2275,6 +2236,45 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
+        field_state_value:
+          id: field_state_value
+          table: node__field_state
+          field: field_state_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            assessment_approved: assessment_approved
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: workflow_state
         field_coordinator_target_id:
           id: field_coordinator_target_id
           table: node__field_coordinator
