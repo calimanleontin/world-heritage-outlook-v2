@@ -62,7 +62,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 5
+          items_per_page: 10
           offset: 0
           id: 0
           total_pages: null
@@ -1588,7 +1588,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 5
+          items_per_page: 10
           offset: 0
           id: 1
           total_pages: null
@@ -2078,7 +2078,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 5
+          items_per_page: 10
           offset: 0
           id: 2
           total_pages: null
@@ -3317,7 +3317,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 5
+          items_per_page: 10
           offset: 0
           id: 4
           total_pages: null
