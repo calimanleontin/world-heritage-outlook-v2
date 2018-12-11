@@ -154,10 +154,13 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
+    if ($tab == 'assessing-values') {
       $form['field_as_values_wh']['widget']['#title'] = FieldFilteredMarkup::create('Assessing The Current State And Trend Of Values');
       $string = 'Assess the current state and trend of values for the World Heritage site. The current state of values is assessed against five ratings: Good, Low Concern, High Concern, Critical and Data Deficient). The baseline for the assessment should be the condition at the time of inscription, with reference to the best-recorded historical conservation state. Trend is assessed in relation to whether the condition of a value is Improving, Stable, Deteriorating or Data Deficient, and is intended to be a snapshot of recent developments over the last five years. The \'Justification for assessment\' must be systematically referenced, e.g. (SOC report, 2009).';
       $form['field_as_values_wh']['widget']['#description'] = FieldFilteredMarkup::create($string);
+    }
+
+    if ($tab == 'assessing-values' && !empty($form['field_as_values_bio']['widget']["#max_delta"]) && $form['field_as_values_bio']['widget']["#max_delta"] == -1) {
       hide($form['field_as_vass_bio_state']);
       hide($form['field_as_vass_bio_text']);
       hide($form['field_as_vass_bio_trend']);
