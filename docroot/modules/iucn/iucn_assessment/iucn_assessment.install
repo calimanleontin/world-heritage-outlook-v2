@@ -171,3 +171,10 @@ function iucn_assessment_update_8005() {
     drupal_set_installed_schema_version('iucn_assessment', 8002);
   }
 }
+
+/**
+ * Create 2020 assessments.
+ */
+function iucn_assessment_update_8006() {
+  \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
+}
