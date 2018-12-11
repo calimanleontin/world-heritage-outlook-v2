@@ -226,8 +226,6 @@ class NodeSiteAssessmentForm {
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
-    self::buildDiffButtons($form, $node);
-
     // Hide these fields if there are no other biodiversity values.
     if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
@@ -247,16 +245,17 @@ class NodeSiteAssessmentForm {
     if ($tab == 'benefits') {
       $form['#validate'][] = [self::class, 'benefitsValidation'];
     }
+
+    if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
+      self::buildDiffButtons($form, $node);
+      self::setTabsDrupalSettings($form, $node);
+    }
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
     $node = $form_state->getFormObject()->getEntity();
     if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
-      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits is mandatory'));
-    }
-    if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
-      self::buildDiffButtons($form, $node);
-      self::setTabsDrupalSettings($form, $node);
+      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits field is required'));
     }
   }
 
