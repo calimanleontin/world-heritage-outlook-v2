@@ -9,6 +9,7 @@ use Drupal\Core\Url;
 use Drupal\views\Views;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -48,6 +49,50 @@ function iucn_who_core_toolbar() {
   return \Drupal::service('class_resolver')
     ->getInstanceFromDefinition(ToolbarHandler::class)
     ->toolbar();
+}
+
+/**
+ * Replace user text field with select box.
+ */
+function iucn_who_core_add_users_by_role(&$form, $field_id, $display_id, $empty_option) {
+  if (empty($form[$field_id])) {
+    return;
+  }
+  $view = \Drupal\views\Views::getView('users_by_roles');
+  $view->setDisplay($display_id);
+  $view->execute();
+  $options = [];
+  foreach ($view->result as $row) {
+    $options[$row->uid] = $row->_entity->getAccountName();
+  }
+  $form[$field_id]['#type'] = 'select';
+  $form[$field_id]['#multiple'] = FALSE;
+  $form[$field_id]['#empty_option'] = $empty_option;
+  $form[$field_id]['#options'] = $options;
+  unset($form[$field_id]['#size']);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alters the artist options on artwork pages.
+ */
+function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!in_array($form['#id'], [
+    'views-exposed-form-account-assignments-block-1',
+    'views-exposed-form-account-assignments-block-2',
+    'views-exposed-form-account-assignments-block-3',
+    'views-exposed-form-account-assignments-block-4',
+    'views-exposed-form-account-assignments-block-5',
+  ])) {
+    return;
+  }
+  // Assessor list.
+  iucn_who_core_add_users_by_role($form, 'assessor_id', 'entity_reference_2', t('- Assessor -'));
+  // Reviewer list.
+  iucn_who_core_add_users_by_role($form, 'reviewers_id', 'entity_reference_3', t('- Reviewer -'));
+  // Coordinator list.
+  iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'));
 }
 
 /**
