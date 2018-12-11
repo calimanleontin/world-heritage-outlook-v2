@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -237,6 +238,18 @@ class AssessmentWorkflow {
     }
 
     $this->setCoordinatorAndState($node, FALSE);
+
+    // Programmatically set values on fields
+    // @see: https://helpdesk.eaudeweb.ro/issues/5685
+    if ($this->isNewAssessment($original) && $state == self::STATUS_UNDER_EVALUATION) {
+      $node->field_as_start_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
+    if ($original_state == self::STATUS_REVIEWING_REFERENCES && $state == self::STATUS_APPROVED) {
+      $node->field_as_end_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
+    if (in_array($original_state, [self::STATUS_REVIEWING_REFERENCES, self::STATUS_DRAFT]) && $state == self::STATUS_PUBLISHED) {
+      $node->field_date_published->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
