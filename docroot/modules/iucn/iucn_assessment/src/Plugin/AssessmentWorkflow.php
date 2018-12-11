@@ -679,6 +679,9 @@ class AssessmentWorkflow {
    */
   public function forceAssessmentState(NodeInterface $assessment, $new_state, $execute = TRUE) {
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
+    if ($old_sid == self::STATUS_CREATION) {
+      $old_sid = self::STATUS_NEW;
+    }
     $transition = WorkflowTransition::create([$old_sid, 'field_name' => 'field_state']);
     $transition->setValues($new_state, $this->currentUser->id() ?: 1, time(), '', TRUE);
     $transition->setTargetEntity($assessment);

@@ -77,6 +77,7 @@ function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, arr
  *  Set "Published" status to all existing assessments.Force workflow status for
  * old assessments.
  *  Fix broken values references.
+ *  Delete all protection maangement paragraphs with no values.
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
@@ -132,6 +133,33 @@ function iucn_assessment_update_8003() {
       _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_wh', $wh_values, $node->id(), $logger);
       _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_bio', $other_values, $node->id(), $logger);
     }
+
+    // Delete all protection and management paragraphs with no values.
+    $protection_paragraphs = $node->get('field_as_protection')->getValue();
+    $update_protection = FALSE;
+    foreach ($protection_paragraphs as $idx => &$protection_paragraph) {
+      $paragraph = $paragraphStorage->loadRevision($protection_paragraph['target_revision_id']);
+      $delete = TRUE;
+      if (!empty($paragraph)) {
+        $fields = ['field_as_description', 'field_as_protection_rating', 'field_as_protection_topic'];
+        foreach ($fields as $field) {
+          if (!empty($paragraph->get($field)->getValue())) {
+            $delete = FALSE;
+            break;
+          }
+        }
+      }
+      if ($delete) {
+        unset($protection_paragraphs[$idx]);
+        $update_protection = TRUE;
+      }
+    }
+    if ($update_protection) {
+      $node->get('field_as_protection')->setValue($protection_paragraphs);
+      $node->save();
+      $logger->info("Removed empty protection paragraph for assessment {$node->id()}");
+    }
+
     \Drupal::state()->set($stateKey, $nid);
   }
 }
