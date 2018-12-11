@@ -78,6 +78,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'default_paragraph_type' => '',
       'features' => [],
       'empty_message' => '',
+      'only_editable' => FALSE,
     ];
   }
 
@@ -100,6 +101,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#title' => $this->t('Empty message'),
       '#description' => $this->t('Show a message when there are no paragraphs.'),
       '#default_value' => $this->getSetting('empty_message'),
+    ];
+    $elements['only_editable'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove add/delete buttons.'),
+      '#description' => $this->t('Make it impossible to add or delete paragraphs.'),
+      '#default_value' => $this->getSetting('only_editable'),
     ];
 
     return $elements;
@@ -130,11 +137,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $options = $this->getSettingOptions('show_numbers');
     $show_numbers = $options[$this->getSetting('show_numbers')];
     $empty_message = $this->getSetting('empty_message');
+    $only_editable = $this->getSetting('only_editable');
 
     $summary[] = $this->t('Show numbers: @show_numbers', ['@show_numbers' => $show_numbers]);
     if (!empty($empty_message)) {
       $summary[] = $this->t('Empty message: @empty_message', ['@empty_message' => $empty_message]);
     }
+    if (!empty($only_editable)) {
+      $summary[] = $this->t('Paragraphs cannot be added or deleted');
+    }
+
     return $summary;
   }
 
@@ -298,6 +310,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $this->paragraphsEntity = $paragraphs_entity;
 
     $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
+    if (!empty($this->getSetting('only_editable'))) {
+      $element['top']['actions']['actions']['remove_button']['#access'] = FALSE;
+    }
 
     return $element;
   }
@@ -451,10 +466,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $this->buildHeader($elements);
 
-    // Make the add more button open a modal.
+    $field_name = $this->fieldDefinition->getName();
+
     if (!empty($elements['add_more'])) {
-      $field_name = $this->fieldDefinition->getName();
-      $this->buildAddMoreAjaxButton($elements, $field_name);
+      if (empty($this->getSetting('only_editable'))) {
+        // Make the add more button open a modal.
+        $this->buildAddMoreAjaxButton($elements, $field_name);
+      }
+      else {
+        $elements['add_more']['#access'] = FALSE;
+      }
     }
 
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
