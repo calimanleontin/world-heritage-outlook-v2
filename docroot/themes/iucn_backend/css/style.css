@@ -379,6 +379,9 @@
   height: 6px;
   margin: 0 0.3em;
 }
+.hidden-container {
+  display: none;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
