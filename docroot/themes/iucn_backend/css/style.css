@@ -110,12 +110,12 @@
     width: 150px;
   }
 }
-.node-site-assessment-edit-form #edit-field-as-benefits-summary-wrapper {
-  margin: 0!important;
-  padding: 0!important;
-  border: none!important;
+.node-site-assessment-edit-form #group-summary-of-benefits {
+  border: none;
+  padding: 0;
+  margin: 0;
 }
-.node-site-assessment-edit-form #edit-field-as-benefits-summary-wrapper label {
+.node-site-assessment-edit-form #group-summary-of-benefits > legend {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -125,11 +125,22 @@
   color: #333;
   text-transform: uppercase;
 }
-.node-site-assessment-edit-form #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
+.node-site-assessment-edit-form #group-summary-of-benefits .description-wrapper {
+  border-bottom: 1px solid #e6e4df;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
+  display: none;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
   padding: 10px 12px;
 }
-.node-site-assessment-edit-form #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button {
-  margin-top: 48px!important;
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button {
+  margin-top: 48px !important;
 }
 .button.paragraphs-icon-button.paragraphs-icon-button-compare {
   overflow: hidden;
