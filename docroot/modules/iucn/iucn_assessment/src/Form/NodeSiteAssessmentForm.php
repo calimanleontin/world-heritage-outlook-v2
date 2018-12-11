@@ -242,8 +242,20 @@ class NodeSiteAssessmentForm {
       $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
     }
 
+    // Validation.
     if ($tab == 'benefits') {
       $form['#validate'][] = [self::class, 'benefitsValidation'];
+      if (!empty($node->field_as_benefits->getValue())) {
+        $form['field_as_benefits_summary']['widget'][0]['value']['#required'] = TRUE;
+      }
+    }
+    elseif ($tab == 'assessing-values') {
+      if (!empty($node->field_as_values_bio->getValue())) {
+        $required_fields = ['field_as_vass_bio_text', 'field_as_vass_bio_state', 'field_as_vass_bio_trend'];
+        foreach ($required_fields as $field) {
+          $form[$field]['widget'][0]['value']['#required'] = TRUE;
+        }
+      }
     }
 
     if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
