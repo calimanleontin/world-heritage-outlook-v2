@@ -680,7 +680,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
           'node' => $entity->id(),
           'node_revision' => $reviewer_revision->getRevisionId(),
         ]),
-        'weight' => 10,
+        'weight' => 20,
       ];
     }
   }
