@@ -80,7 +80,7 @@ class ModalDiffController extends ControllerBase {
     }
 
     // Add the author table cell.
-    $author = $parent_entity_revision->field_coordinator->entity->getDisplayName();
+    $author = !empty($parent_entity_revision->field_coordinator->entity) ? $parent_entity_revision->field_coordinator->entity->getDisplayName() : '';
     $author_header = $this->getTableCellMarkup(t('Author'), 'author');
     $author_container = $this->getTableCellMarkup($author, 'author');
     $form['widget'][$paragraph_key]['top']['summary'] = ['author' => $author_container] + $form['widget'][$paragraph_key]['top']['summary'];
