@@ -10,6 +10,7 @@ use Drupal\views\Views;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -54,8 +55,16 @@ function iucn_who_core_toolbar() {
 /**
  * Replace user text field with select box.
  */
-function iucn_who_core_add_users_by_role(&$form, $field_id, $display_id, $empty_option) {
+function iucn_who_core_add_users_by_role(&$form, $field_id, $display_id, $empty_option, $user) {
   if (empty($form[$field_id])) {
+    return;
+  }
+  if (
+    !$user->hasRole('administrator') &&
+    !$user->hasRole('iucn_manager') &&
+    !$user->hasRole('coordinator')
+  ) {
+    hide($form[$field_id]);
     return;
   }
   $view = \Drupal\views\Views::getView('users_by_roles');
@@ -87,12 +96,16 @@ function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface 
   ])) {
     return;
   }
+
+  $uid = \Drupal::currentUser()->id();
+  $user = User::load($uid);
+
   // Assessor list.
-  iucn_who_core_add_users_by_role($form, 'assessor_id', 'entity_reference_2', t('- Assessor -'));
+  iucn_who_core_add_users_by_role($form, 'assessor_id', 'entity_reference_2', t('- Assessor -'), $user);
   // Reviewer list.
-  iucn_who_core_add_users_by_role($form, 'reviewers_id', 'entity_reference_3', t('- Reviewer -'));
+  iucn_who_core_add_users_by_role($form, 'reviewers_id', 'entity_reference_3', t('- Reviewer -'), $user);
   // Coordinator list.
-  iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'));
+  iucn_who_core_add_users_by_role($form, 'coordinator_id', 'entity_reference_1', t('- Coordinator -'), $user);
 }
 
 /**
