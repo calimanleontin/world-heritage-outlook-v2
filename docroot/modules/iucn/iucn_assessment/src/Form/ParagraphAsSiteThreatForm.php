@@ -18,6 +18,10 @@ class ParagraphAsSiteThreatForm {
     $entity = $formObject->getEntity();
     $parentEntity = $entity->getParentEntity();
 
+    if (empty($parentEntity)) {
+      $parentEntity = \Drupal::routeMatch()->getParameter('node');
+    }
+
     if ($parentEntity instanceof NodeInterface) {
       foreach (self::AFFECTED_VALUES_FIELDS as $field) {
         $parentFieldName = str_replace('as_threats_values', 'as_values', $field);
@@ -37,23 +41,23 @@ class ParagraphAsSiteThreatForm {
         }
 
         $formField = &$form[$field];
-        $form["{$field}_select"] = [
-          '#type' => 'select',
-          '#title' => !empty($formField['widget']['title']['#value'])
-            ? $formField['widget']['title']['#value']
-            : $form[$field]['widget']['#title'],
-          '#multiple' => TRUE,
-          '#options' => $options,
-          '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
-          '#chosen' => FALSE,
+        hide($formField['widget']);
+        $form["{$field}_select_wrapper"] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['form-wrapper']],
           '#weight' => $formField['#weight'],
-          '#size' => max(count($options), 5),
+          "{$field}_select" => [
+            '#type' => 'select',
+            '#title' => !empty($formField['widget']['title']['#value'])
+              ? $formField['widget']['title']['#value']
+              : $form[$field]['widget']['#title'],
+            '#multiple' => TRUE,
+            '#options' => $options,
+            '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
+            '#chosen' => FALSE,
+            '#size' => max(count($options), 5),
+          ],
         ];
-        unset($formField['widget']);
-
-        if (empty($options)) {
-          hide($form["{$field}_select"]);
-        }
 
       }
     }
@@ -64,36 +68,7 @@ class ParagraphAsSiteThreatForm {
       ],
     ];
 
-    $form['field_as_threats_extent']['widget']['#states'] = [
-      'required' => [
-        ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
-      ],
-    ];
-
-    $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
-
     $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
-
-    $form['#validate'][] = [self::class, 'validateValues'];
-  }
-
-  public static function validateValues(array &$form, FormStateInterface $form_state) {
-    $values_filled = FALSE;
-    foreach (self::AFFECTED_VALUES_FIELDS as $field) {
-      if (!empty($form_state->getValue("{$field}_select"))) {
-        $values_filled = TRUE;
-        break;
-      }
-    }
-    if (!$values_filled) {
-      $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
-    }
-  }
-
-  public static function validateThreatExtent(array &$element, FormStateInterface $form_state, array &$form) {
-    if (!empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_extent'))) {
-      $form_state->setError($element, t('Threat extent cannot be empty'));
-    }
   }
 
   public static function updateAffectedValues(&$form, FormStateInterface $form_state) {

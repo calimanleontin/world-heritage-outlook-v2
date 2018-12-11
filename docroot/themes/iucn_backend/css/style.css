@@ -168,6 +168,156 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper {
+  padding-bottom: 10px;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup {
+  display: table-row;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend {
+  display: table-cell;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select {
+  display: table-cell;
+  width: calc(100% - 0px);
+}
+.paragraph-as-site-benefit-iucn-modal-paragraph-add-form > fieldset,
+.paragraph-as-site-benefit-iucn-modal-paragraph-edit-form > fieldset {
+  background: none;
+  border: none;
+  padding: 0;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
@@ -362,5 +512,8 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border: 1px solid black;
   width: 40%;
   display: none;
+}
+.bold-cell {
+  font-weight: bold;
 }
 /*# sourceMappingURL=style.css.map */

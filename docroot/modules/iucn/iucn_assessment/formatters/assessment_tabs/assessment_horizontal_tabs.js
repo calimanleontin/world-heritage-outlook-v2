@@ -257,10 +257,17 @@
   Drupal.theme.horizontalTab = function (settings) {
     var tab = {};
     var idAttr = settings.details.attr('id');
+    var iucn_settings = drupalSettings.iucn_assessment || {};
+    var diff_tabs = iucn_settings.diff_tabs || {};
+
     tab.item = $('<li class="horizontal-tab-button" tabindex="-1"></li>')
       .append(tab.link = $('<a href="/' + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>')
         .append(tab.title = $('<strong></strong>').text(settings.title))
       );
+
+    if (diff_tabs !== undefined && idAttr.replace('-', '_') in diff_tabs) {
+      tab.item.addClass('diff-tab');
+    }
 
     // No need to add summary on frontend.
     if (settings.details.drupalGetSummary) {

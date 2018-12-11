@@ -213,34 +213,25 @@ class NodeSiteAssessmentForm {
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
-    self::buildDiffButtons($form, $node);
-
-    // Hide these fields if there are no other biodiversity values.
-    if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
-      $fields = [
-        'field_as_protection_ov_out_rate',
-        'field_as_protection_ov_out_text',
-        'field_as_protection_ov_practices',
-        'field_as_protection_ov_rating',
-        'field_as_protection_ov_text',
-      ];
-      foreach ($fields as $field) {
-        unset($form[$field]);
-      }
-
-      $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
-    }
-
-    if ($tab == 'benefits') {
-      $form['#validate'][] = [self::class, 'benefitsValidation'];
+    if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
+      self::buildDiffButtons($form, $node);
+      self::setTabsDrupalSettings($form, $node);
     }
   }
 
-  public static function benefitsValidation(array $form, FormStateInterface $form_state) {
-    $node = $form_state->getFormObject()->getEntity();
-    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
-      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits is mandatory'));
+  public static function setTabsDrupalSettings(&$form, $node) {
+    $diff = self::getNodeDiff($node);
+    if (empty($diff)) {
+      return;
     }
+    $diff_tabs = [];
+    foreach ($diff as $vid => $diff_data) {
+      if (empty($diff_data['fieldgroups'])) {
+        continue;
+      }
+      $diff_tabs += $diff_data['fieldgroups'];
+    }
+    $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
   /*
@@ -429,7 +420,7 @@ class NodeSiteAssessmentForm {
       return FALSE;
     }
     foreach (array_keys($diff) as $vid) {
-      if (!empty($diff[$vid][$node->id()]['diff'][$field])) {
+      if (!empty($diff[$vid]['node'][$node->id()]['diff'][$field])) {
         return TRUE;
       }
     }
