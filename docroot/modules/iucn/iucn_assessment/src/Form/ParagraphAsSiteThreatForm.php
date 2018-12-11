@@ -17,6 +17,13 @@ class ParagraphAsSiteThreatForm {
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */
     $entity = $formObject->getEntity();
     $parentEntity = $entity->getParentEntity();
+    $route_match = \Drupal::routeMatch();
+
+    // When adding new paragraphs, parent entity is not yet set.
+    if (empty($parentEntity) && $route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
+      $revision_id = $route_match->getParameter('node_revision');
+      $parentEntity = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($revision_id);
+    }
 
     if ($parentEntity instanceof NodeInterface) {
       foreach (self::AFFECTED_VALUES_FIELDS as $field) {
