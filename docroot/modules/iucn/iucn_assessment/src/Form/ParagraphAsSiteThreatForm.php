@@ -53,7 +53,7 @@ class ParagraphAsSiteThreatForm {
           '#options' => $options,
           '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
           '#chosen' => FALSE,
-        hide($formField['widget']);
+        ];
         $form["{$field}_select_wrapper"] = [
           '#type' => 'container',
           '#attributes' => ['class' => ['form-wrapper']],
