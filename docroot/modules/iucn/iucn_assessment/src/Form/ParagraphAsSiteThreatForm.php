@@ -47,6 +47,7 @@ class ParagraphAsSiteThreatForm {
           '#default_value' => array_column($entity->{$field}->getValue(), 'target_id'),
           '#chosen' => FALSE,
           '#weight' => $formField['#weight'],
+          '#size' => max(count($options), 5),
         ];
         unset($formField['widget']);
 

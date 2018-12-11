@@ -5,12 +5,20 @@ dependencies:
   config:
     - field.storage.node.field_coordinator
     - node.type.site_assessment
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_coordinator
 field_name: field_coordinator
 entity_type: node
 bundle: site_assessment
 label: Coordinator
-description: ''
+description: 'This user will be responsible for evaluating the assessment.'
 required: false
 translatable: false
 default_value: {  }
