@@ -29,8 +29,8 @@ class IucnTestDataCommands extends DrushCommands {
     foreach ($roles as $role) {
       for ($i = 1; $i <= $numberOfUsers; $i++) {
         $user = User::create([
-          'name' => "{$role->id()}_{$i}@iucn.local",
-          'mail' =>  "{$role->id()}_{$i}@iucn.local",
+          'name' => "{$role->id()}_{$i}",
+          'mail' =>  "{$role->id()}_{$i}@example.com",
           'pass' => 'password',
           'status' => 1,
           'roles' => [$role->id()],
