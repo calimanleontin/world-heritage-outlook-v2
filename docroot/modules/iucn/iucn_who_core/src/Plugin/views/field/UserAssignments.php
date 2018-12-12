@@ -53,7 +53,7 @@ class UserAssignments extends FieldPluginBase {
     ];
   }
 
-  public function appendAssignments(&$nodes, $display_id, $field) {
+  public function appendAssignments(&$nodes, $display_id, $field, $group_name) {
     $view = Views::getView('people_assignments');
     $view->setDisplay($display_id);
     $view->execute();
@@ -61,22 +61,27 @@ class UserAssignments extends FieldPluginBase {
       if (!$row->uid) {
         continue;
       }
-
       $nid = $row->_relationship_entities[$field]->id();
       if (!$nid) {
         continue;
       }
-      $title = $row->_relationship_entities[$field]->getTitle();
       if (empty($nodes[$row->uid])) {
         $nodes[$row->uid] = [];
       }
-      if ($this->options['disable_link']) {
-        $nodes[$row->uid][$nid] = $title;
+      $node = $row->_relationship_entities[$field];
+      $site = $node->field_as_site->entity;
+      if ($site) {
+        $title = $site->getTitle();
+        $nid = $site->id();
       }
       else {
-        $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
-        $nodes[$row->uid][$nid] = Link::fromTextAndUrl($title, $url_object)->toString();
+        $title = $node->getTitle();
       }
+      $nodes[$row->uid][$nid]['title'] = $title;
+      if (empty($nodes[$row->uid][$nid]['groups'])) {
+        $nodes[$row->uid][$nid]['groups'] = [];
+      }
+      $nodes[$row->uid][$nid]['groups'][] = $group_name;
     }
     return $nodes;
   }
@@ -88,12 +93,19 @@ class UserAssignments extends FieldPluginBase {
     $nodes = &drupal_static(__CLASS__ . __FUNCTION__);
     if (!$nodes) {
       $nodes = [];
-      $this->appendAssignments($nodes, 'assessors', 'reverse__node__field_assessor');
-      $this->appendAssignments($nodes, 'coordinators', 'reverse__node__field_coordinator');
-      $this->appendAssignments($nodes, 'reviewers', 'reverse__node__field_reviewers');
+      $this->appendAssignments($nodes, 'assessors', 'reverse__node__field_assessor', 'Assessor');
+      $this->appendAssignments($nodes, 'coordinators', 'reverse__node__field_coordinator', 'Coordinator');
+      $this->appendAssignments($nodes, 'reviewers', 'reverse__node__field_reviewers', 'Reviewer');
     }
     if (!empty($nodes[$user->id()])) {
       $assignments = $nodes[$user->id()];
+      foreach ($assignments as $nid => $value) {
+        $assignments[$nid] = $value['title'] . ' (' . implode(', ', $value['groups']) . ')';
+        if (!$this->options['disable_link']) {
+          $url_object = Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => FALSE]);
+          $assignments[$nid] = Link::fromTextAndUrl($assignments[$nid], $url_object)->toString();
+        }
+      }
       sort($assignments);
       return  [
         '#items' => $assignments,
