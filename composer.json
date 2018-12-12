@@ -183,6 +183,7 @@
     "drupal/reroute_email": "^1.0",
     "drupal/responsive_favicons": "^1.4",
     "drupal/role_hierarchy": "^1.0",
+    "drupal/rules": "^3.0@alpha",
     "drupal/search_api": "^1.9",
     "drupal/search_api_autocomplete": "^1.0@alpha",
     "drupal/search_api_solr": "^1.2",
