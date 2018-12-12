@@ -508,6 +508,7 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'paragraph_as_site_threat_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
+    case 'paragraph_as_site_threat_iucn_modal_paragraph_diff_form':
       ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
       break;
 

@@ -14,8 +14,8 @@
     border-bottom: 1px solid #bfbfba;
 }
 
-.field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-    /*background: #ececec!important;*/
+.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
+    background: #ececec!important;
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -366,7 +366,7 @@
 }
 
 .diff-modal .chosen-container {
-    width: inherit !important;
+    width: 100% !important;
 }
 
 .diff-modal .chosen-drop {
