@@ -144,7 +144,7 @@ class ModalDiffController extends ControllerBase {
           continue;
         }
 
-        $diffs = $diff[$paragraph_revision->id()]['diff'][$diff_field];
+        $diffs = $diff[$diff_field];
         $diff_rows = self::getDiffMarkup($diffs);
 
         $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
