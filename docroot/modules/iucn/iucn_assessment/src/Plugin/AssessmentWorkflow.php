@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -237,6 +238,18 @@ class AssessmentWorkflow {
     }
 
     $this->setCoordinatorAndState($node, FALSE);
+
+    // Programmatically set values on fields
+    // @see: https://helpdesk.eaudeweb.ro/issues/5685
+    if ($this->isNewAssessment($original) && $state == self::STATUS_UNDER_EVALUATION) {
+      $node->field_as_start_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
+    if ($original_state == self::STATUS_REVIEWING_REFERENCES && $state == self::STATUS_APPROVED) {
+      $node->field_as_end_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
+    if (in_array($original_state, [self::STATUS_REVIEWING_REFERENCES, self::STATUS_DRAFT]) && $state == self::STATUS_PUBLISHED) {
+      $node->field_date_published->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
+    }
 
     // Create or remove reviewer revisions.
     if ($state == self::STATUS_UNDER_REVIEW) {
@@ -547,7 +560,7 @@ class AssessmentWorkflow {
    *   The revision.
    */
   public function getReviewerRevision(NodeInterface $node, $uid) {
-    $reviewer_revisions = $this->getReviewerRevisions($node);
+    $reviewer_revisions = $this->getAllReviewersRevisions($node);
     foreach ($reviewer_revisions as $node_revision) {
       /** @var \Drupal\node\Entity\Node $node_revision */
       if ($node_revision->getRevisionUserId() == $uid && !$node_revision->isDefaultRevision()) {
@@ -566,7 +579,7 @@ class AssessmentWorkflow {
    * @return array
    *   The revisions.
    */
-  public function getReviewerRevisions(NodeInterface $node) {
+  public function getAllReviewersRevisions(NodeInterface $node) {
     $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
     $revisions = [];
     foreach ($assessment_revisions_ids as $rid) {
@@ -590,7 +603,7 @@ class AssessmentWorkflow {
    */
   public function getUnfinishedReviewerRevisions(NodeInterface $node) {
     $unfinished = [];
-    $revisions = $this->getReviewerRevisions($node);
+    $revisions = $this->getAllReviewersRevisions($node);
     /** @var \Drupal\node\NodeInterface $revision */
     foreach ($revisions as $revision) {
       if ($revision->field_state->value == self::STATUS_UNDER_REVIEW) {
@@ -666,6 +679,9 @@ class AssessmentWorkflow {
    */
   public function forceAssessmentState(NodeInterface $assessment, $new_state, $execute = TRUE) {
     $old_sid = WorkflowManager::getPreviousStateId($assessment, 'field_state');
+    if ($old_sid == self::STATUS_CREATION) {
+      $old_sid = self::STATUS_NEW;
+    }
     $transition = WorkflowTransition::create([$old_sid, 'field_name' => 'field_state']);
     $transition->setValues($new_state, $this->currentUser->id() ?: 1, time(), '', TRUE);
     $transition->setTargetEntity($assessment);

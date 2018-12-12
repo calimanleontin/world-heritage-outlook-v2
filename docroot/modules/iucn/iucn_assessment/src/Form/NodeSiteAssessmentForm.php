@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\user\Entity\User;
@@ -39,7 +40,12 @@ class NodeSiteAssessmentForm {
   public static function removeGroupFields(&$form, $group) {
     foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
       if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        $form[$nested_field]['#access'] = FALSE;
+        if (FieldConfig::loadByName('node', 'site_assessment', $nested_field)->getSetting('target_type') == 'paragraph') {
+          unset($form[$nested_field]);
+        }
+        else {
+          $form[$nested_field]['#access'] = FALSE;
+        }
       }
       elseif (!empty($form['#fieldgroups'][$nested_field])) {
         self::removeGroupFields($form, $nested_field);
@@ -220,9 +226,48 @@ class NodeSiteAssessmentForm {
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
+    // Hide these fields if there are no other biodiversity values.
+    if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
+      $fields = [
+        'field_as_protection_ov_out_rate',
+        'field_as_protection_ov_out_text',
+        'field_as_protection_ov_practices',
+        'field_as_protection_ov_rating',
+        'field_as_protection_ov_text',
+      ];
+      foreach ($fields as $field) {
+        unset($form[$field]);
+      }
+
+      $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
+    }
+
+    // Validation.
+    if ($tab == 'benefits') {
+      $form['#validate'][] = [self::class, 'benefitsValidation'];
+      if (!empty($node->field_as_benefits->getValue())) {
+        $form['field_as_benefits_summary']['widget'][0]['value']['#required'] = TRUE;
+      }
+    }
+    elseif ($tab == 'assessing-values') {
+      if (!empty($node->field_as_values_bio->getValue())) {
+        $required_fields = ['field_as_vass_bio_text', 'field_as_vass_bio_state', 'field_as_vass_bio_trend'];
+        foreach ($required_fields as $field) {
+          $form[$field]['widget'][0]['value']['#required'] = TRUE;
+        }
+      }
+    }
+
     if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
       self::buildDiffButtons($form, $node);
       self::setTabsDrupalSettings($form, $node);
+    }
+  }
+
+  public static function benefitsValidation(array $form, FormStateInterface $form_state) {
+    $node = $form_state->getFormObject()->getEntity();
+    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
+      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits field is required'));
     }
   }
 

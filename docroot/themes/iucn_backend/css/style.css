@@ -219,6 +219,22 @@
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup {
   display: table-row;
 }
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
 .paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
@@ -319,7 +335,23 @@
 .paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
 .paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
 .paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select {
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
+.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data {
   display: table-cell;
   width: calc(100% - 0px);
 }
@@ -328,6 +360,27 @@
   background: none;
   border: none;
   padding: 0;
+}
+.field--name-field-as-threats-categories.field--widget-assessment-options-buttons .form-checkboxes > div:first-child {
+  margin-bottom: 10px;
+}
+.field--name-field-as-threats-categories.field--widget-assessment-options-buttons .form-checkboxes label {
+  display: inline;
+  padding-left: 5px;
+}
+.required-fields .fieldset-legend:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.hidden-container {
+  display: none;
 }
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
@@ -523,6 +576,20 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border: 1px solid black;
   width: 40%;
   display: none;
+}
+.field--widget-assessment-options-buttons .form-required:after {
+  display: none;
+}
+.field--widget-assessment-options-buttons .label:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
 }
 .bold-cell {
   font-weight: bold;

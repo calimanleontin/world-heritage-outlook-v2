@@ -120,7 +120,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $all_options = $this->getOptions($items->getEntity());
     $this->groups = [];
     $this->groups[0] = $this->getSetting('select_title');
-    $options = [];
+    $options = [0 => ''];
     $states = [];
     $current_id = NULL;
     foreach ($all_options as $id => $title) {

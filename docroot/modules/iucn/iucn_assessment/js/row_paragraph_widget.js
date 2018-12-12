@@ -34,7 +34,7 @@
       });
 
       $('#drupal-modal').once('stickyHeader').on("scroll", function() {
-        $(this).find('table.field-multiple-table > tbody > tr:first-child > td > div').css('top', $(this).scrollTop() + "px");
+        $(this).find('.diff-modal table.field-multiple-table > tbody > tr:first-child > td > div').css('top', $(this).scrollTop() + "px");
       });
 
       // Fix an issue with chosen elements getting focused on modal open.

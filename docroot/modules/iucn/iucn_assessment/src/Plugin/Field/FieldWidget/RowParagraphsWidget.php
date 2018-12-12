@@ -78,6 +78,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'default_paragraph_type' => '',
       'features' => [],
       'empty_message' => '',
+      'only_editable' => FALSE,
     ];
   }
 
@@ -100,6 +101,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
       '#title' => $this->t('Empty message'),
       '#description' => $this->t('Show a message when there are no paragraphs.'),
       '#default_value' => $this->getSetting('empty_message'),
+    ];
+    $elements['only_editable'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove add/delete buttons.'),
+      '#description' => $this->t('Make it impossible to add or delete paragraphs.'),
+      '#default_value' => $this->getSetting('only_editable'),
     ];
 
     return $elements;
@@ -130,11 +137,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $options = $this->getSettingOptions('show_numbers');
     $show_numbers = $options[$this->getSetting('show_numbers')];
     $empty_message = $this->getSetting('empty_message');
+    $only_editable = $this->getSetting('only_editable');
 
     $summary[] = $this->t('Show numbers: @show_numbers', ['@show_numbers' => $show_numbers]);
     if (!empty($empty_message)) {
       $summary[] = $this->t('Empty message: @empty_message', ['@empty_message' => $empty_message]);
     }
+    if (!empty($only_editable)) {
+      $summary[] = $this->t('Paragraphs cannot be added or deleted');
+    }
+
     return $summary;
   }
 
@@ -269,7 +281,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
     // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
-     && $this->isNewParagraph($this->parentNode, $field_name, $paragraphs_entity->id())) {
+     && $this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $field_name, $paragraphs_entity->id())
+     && !$this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $field_name, $paragraphs_entity->id())) {
       $element['top']['#attributes']['class'][] = "paragraph-new-row";
     }
     else {
@@ -298,6 +311,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $this->paragraphsEntity = $paragraphs_entity;
 
     $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
+    if (!empty($this->getSetting('only_editable'))) {
+      $element['top']['actions']['actions']['remove_button']['#access'] = FALSE;
+    }
 
     return $element;
   }
@@ -333,22 +349,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   /**
-   * Check if a paragraph is new compared to previous revisions.
+   * Check if a paragraph is new compared to previous revisions of a certain state.
    *
    * @param NodeInterface $node
    * @param $field_name
    * @param $paragraph_id
    * @return bool
    */
-  public function isNewParagraph(NodeInterface $node, $field_name, $paragraph_id) {
+  public function isNewParagraph(NodeInterface $node, $state, $field_name, $paragraph_id) {
     /** @var AssessmentWorkflow $assessment_workflow */
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $current_revision = $this->parentNode;
-    $under_ev_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-    if (empty($under_ev_revision)) {
+    $revision = $assessment_workflow->getRevisionByState($node, $state);
+    if (empty($revision)) {
       return FALSE;
     }
-    return !in_array($paragraph_id, array_column($under_ev_revision->get($field_name)->getValue(), 'target_id'));
+    return !in_array($paragraph_id, array_column($revision->get($field_name)->getValue(), 'target_id'))
+      && in_array($paragraph_id, array_column($node->get($field_name)->getValue(), 'target_id'));
   }
 
   /**
@@ -451,10 +467,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $this->buildHeader($elements);
 
-    // Make the add more button open a modal.
+    $field_name = $this->fieldDefinition->getName();
+
     if (!empty($elements['add_more'])) {
-      $field_name = $this->fieldDefinition->getName();
-      $this->buildAddMoreAjaxButton($elements, $field_name);
+      if (empty($this->getSetting('only_editable'))) {
+        // Make the add more button open a modal.
+        $this->buildAddMoreAjaxButton($elements, $field_name);
+      }
+      else {
+        $elements['add_more']['#access'] = FALSE;
+      }
     }
 
     $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
@@ -478,7 +500,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     /** @var AssessmentWorkflow $assessment_workflow */
     $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
     $current_revision = $this->parentNode;
-    $reviewer_revisions = $assessment_workflow->getReviewerRevisions($current_revision);
+    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
     if (empty($reviewer_revisions)) {
       return NULL;
     }

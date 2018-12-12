@@ -1769,19 +1769,19 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: separator
+          type: ul
           separator: ', '
           entity_type: user
           entity_field: roles
           plugin_id: user_roles
-        user_coordinator:
-          id: user_coordinator
+        user_assignments:
+          id: user_assignments
           table: users
-          field: user_coordinator
+          field: user_assignments
           relationship: none
           group_type: group
           admin_label: ''
-          label: Coordinator
+          label: Assignments
           exclude: false
           alter:
             alter_text: false
@@ -1824,109 +1824,7 @@ display:
           hide_alter_empty: true
           disable_link: 1
           entity_type: user
-          plugin_id: iucn_who_core_coordinator
-        user_assessor:
-          id: user_assessor
-          table: users
-          field: user_assessor
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Assessor
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          disable_link: 1
-          entity_type: user
-          plugin_id: iucn_who_core_assessor
-        user_reviewer:
-          id: user_reviewer
-          table: users
-          field: user_reviewer
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Reviewer
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          disable_link: 1
-          entity_type: user
-          plugin_id: iucn_who_core_reviewer
+          plugin_id: iucn_who_core_user_assignments
         operations:
           id: operations
           table: users
@@ -2554,19 +2452,19 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          type: separator
+          type: ul
           separator: ', '
           entity_type: user
           entity_field: roles
           plugin_id: user_roles
-        user_coordinator:
-          id: user_coordinator
+        user_assignments:
+          id: user_assignments
           table: users
-          field: user_coordinator
+          field: user_assignments
           relationship: none
           group_type: group
           admin_label: ''
-          label: Coordinator
+          label: Assignments
           exclude: false
           alter:
             alter_text: false
@@ -2607,108 +2505,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          disable_link: 0
           entity_type: user
-          plugin_id: iucn_who_core_coordinator
-        user_assessor:
-          id: user_assessor
-          table: users
-          field: user_assessor
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Assessor
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: user
-          plugin_id: iucn_who_core_assessor
-        user_reviewer:
-          id: user_reviewer
-          table: users
-          field: user_reviewer
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Reviewer
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: user
-          plugin_id: iucn_who_core_reviewer
+          plugin_id: iucn_who_core_user_assignments
         operations:
           id: operations
           table: users

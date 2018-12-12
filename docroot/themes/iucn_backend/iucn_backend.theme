@@ -107,11 +107,7 @@ function iucn_backend_preprocess_views_view_table(&$variables) {
       elseif ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
         $bold = 'field_reviewers';
       }
-      elseif ($entity->field_state->value != AssessmentWorkflow::STATUS_NEW
-        && $entity->field_state->value != AssessmentWorkflow::STATUS_CREATION) {
-        $bold = 'field_coordinator';
-      }
-      if (!empty($bold)) {
+      if (!empty($bold) && !empty($variables['rows'][$id]['columns'][$bold])) {
         if ($bold != 'field_reviewers') {
           $attributes = new \Drupal\Core\Template\Attribute();
           $attributes->addClass("bold-cell");

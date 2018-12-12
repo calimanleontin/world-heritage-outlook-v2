@@ -14,6 +14,10 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\node\NodeInterface;
+use Drupal\node\Entity\Node;
 
 function iucn_assessment_theme() {
   return [
@@ -676,7 +680,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
           'node' => $entity->id(),
           'node_revision' => $reviewer_revision->getRevisionId(),
         ]),
-        'weight' => 10,
+        'weight' => 20,
       ];
     }
   }
@@ -720,5 +724,40 @@ function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $workflow_service->setCoordinatorAndState($parent_entity, TRUE);
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function iucn_assessment_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() == 'account_assignments' && $view->current_display == 'block_3') {
+    // Reviewers' assessments.
+    /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+    $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow  $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+    $uid = \Drupal::currentUser()->id();
+    foreach ($query->where as &$condition_group) {
+      foreach ($condition_group['conditions'] as &$condition) {
+        if ($condition['field'] == 'node_field_data.nid') {
+          $ids = $nodeStorage->getQuery()
+            ->condition('type', 'site_assessment')
+            ->condition('field_state', AssessmentWorkflow::STATUS_UNDER_REVIEW)
+            ->condition('field_reviewers', $uid)
+            ->execute();
+          $options = [NULL];
+          foreach ($ids as $id) {
+            $node = Node::load($id);
+            $revision = $workflowService->getReviewerRevision($node, $uid);
+            if ($revision instanceof NodeInterface && $revision->field_state->value == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+              $options[] = $node->id();
+            }
+          }
+          $condition['value'] = $options;
+          $condition['operator'] = 'IN';
+        }
+      }
+    }
   }
 }
