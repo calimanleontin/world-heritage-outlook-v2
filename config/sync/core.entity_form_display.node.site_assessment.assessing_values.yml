@@ -183,7 +183,6 @@ third_party_settings:
     group_as_references:
       children:
         - field_as_references_p
-        - field_as_references
       parent_name: group_as_tabs
       weight: 28
       format_type: assessment_tab

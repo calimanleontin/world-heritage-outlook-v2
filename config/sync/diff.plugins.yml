@@ -247,11 +247,6 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
-    field_as_references:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
     field_as_site:
       type: entity_reference_field_diff_builder
       settings:

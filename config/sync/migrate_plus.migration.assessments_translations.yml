@@ -37,12 +37,6 @@ process:
     source: status
     plugin: default_value
     default_value: 0
-  field_as_references:
-    plugin: multiple_extract
-    source: references
-    default: null
-    index:
-      - references
   field_as_global_assessment_text:
     plugin: multiple_extract
     source: conservationOutlooks

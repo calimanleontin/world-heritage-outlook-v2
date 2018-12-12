@@ -148,7 +148,6 @@ third_party_settings:
         - field_as_values_bio
       references:
         - field_as_references_p
-        - field_as_references
     fields:
       'display_field_copy:node-assessment_trend_copy':
         plugin_id: 'display_field_copy:node-assessment_trend_copy'

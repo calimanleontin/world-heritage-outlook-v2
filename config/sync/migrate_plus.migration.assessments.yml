@@ -118,12 +118,6 @@ process:
       plugin: format_date
       from_format: U
       to_format: Y-m-d
-  field_as_references:
-    plugin: multiple_extract
-    source: references
-    default: null
-    index:
-      - references
   field_as_key_cons:
     plugin: migration_lookup_paragraphs
     migration: assessments_paragraphs
