@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -826,6 +827,15 @@ content:
     third_party_settings: {  }
     type: basic_string
     region: references
+  field_as_references_p:
+    type: entity_reference_revisions_entity_view
+    weight: 44
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_as_threats_current:
     type: entity_reference_revisions_entity_view
     weight: 2

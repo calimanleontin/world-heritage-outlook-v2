@@ -1,0 +1,9 @@
+uuid: e342818f-338f-48ff-ae8e-5a2592ddec81
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_reference
+label: 'Assessment reference'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }
