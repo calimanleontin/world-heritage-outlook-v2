@@ -183,9 +183,9 @@ class ModalDiffController extends ControllerBase {
         }
         unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
         if ($field == 'field_as_threats_values_bio' || $field == 'field_as_threats_values_wh') {
-          unset($assessment_edit_form[$field . '_select']['#title']);
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field . '_select'];
-          unset($assessment_edit_form[$field . '_select']);
+          unset($assessment_edit_form[$field . '_select_wrapper'][$field . '_select']['#title']);
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field . '_select_wrapper'];
+          unset($assessment_edit_form[$field . '_select_wrapper']);
         }
         else {
           $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $assessment_edit_form[$field];
