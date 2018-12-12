@@ -20,7 +20,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_practices
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
-    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -89,7 +89,7 @@ hidden:
   field_as_protection_ov_practices: true
   field_as_protection_ov_rating: true
   field_as_protection_ov_text: true
-  field_as_references: true
+  field_as_references_p: true
   field_as_site: true
   field_as_start_date: true
   field_as_threats_current: true
