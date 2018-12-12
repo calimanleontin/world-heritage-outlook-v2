@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -167,6 +168,7 @@ third_party_settings:
       label: Projects
     group_as_references:
       children:
+        - field_as_references_p
         - field_as_references
       parent_name: group_as_tabs
       weight: 28
@@ -425,6 +427,7 @@ content:
         add_above: 0
       show_numbers: 'no'
       empty_message: ''
+      only_editable: false
     third_party_settings: {  }
     region: content
   field_as_protection:
@@ -443,6 +446,7 @@ content:
       default_paragraph_type: ''
       features: {  }
       empty_message: ''
+      only_editable: false
     third_party_settings: {  }
   field_as_protection_ov_out_rate:
     weight: 28
@@ -480,6 +484,27 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_as_references_p:
+    type: row_entity_reference_paragraphs
+    weight: 0
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: as_site_reference
+      show_numbers: 'no'
+      empty_message: 'No references added'
+      features:
+        duplicate: 0
+        collapse_edit_all: 0
+        add_above: 0
+      only_editable: 0
+    third_party_settings: {  }
   field_as_threats_current:
     type: row_entity_reference_paragraphs
     weight: 22
@@ -496,6 +521,7 @@ content:
       default_paragraph_type: ''
       features: {  }
       empty_message: ''
+      only_editable: false
     third_party_settings: {  }
   field_as_threats_current_rating:
     weight: 31
@@ -541,6 +567,7 @@ content:
       default_paragraph_type: ''
       features: {  }
       empty_message: ''
+      only_editable: false
     third_party_settings: {  }
   field_as_threats_rating:
     weight: 33
@@ -572,6 +599,7 @@ content:
       default_paragraph_type: ''
       features: {  }
       empty_message: ''
+      only_editable: false
     third_party_settings: {  }
   field_as_vass_bio_state:
     weight: 25
