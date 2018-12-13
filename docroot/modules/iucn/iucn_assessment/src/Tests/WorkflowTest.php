@@ -328,9 +328,21 @@ class WorkflowTest extends IucnAssessmentTestBase {
 
     $this->userLogIn(TestSupport::ASSESSOR1);
 
+    // Test the the existance of the buttons on the 'Values' tab
     $this->drupalGet($assessment->toUrl('edit-form'));
+    $this->assertNoRaw('tabledrag-handle');
+    $this->assertNoRaw('value="Edit"');
+    $this->assertNoRaw('value="Remove"');
+    $this->assertNoRaw('value="Add more"');
+    $this->assertRaw('Save');
 
-    $this->assertNoText('Save');
+    // Test the the existance of the buttons on the 'Assessing Values' tab
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'assessing-values']]));
+    $this->assertNoRaw('tabledrag-handle');
+    $this->assertNoRaw('value="Edit"');
+    $this->assertNoRaw('value="Remove"');
+    $this->assertNoRaw('value="Add more"');
+    $this->assertRaw('Save');
   }
 
 }
