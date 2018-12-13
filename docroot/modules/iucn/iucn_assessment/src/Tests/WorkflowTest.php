@@ -311,9 +311,9 @@ class WorkflowTest extends IucnAssessmentTestBase {
   }
 
   /**
-   * Check that revisions are created correctly.
+   * Check that assessors cannot edit values.
    */
-  protected function testValuesTab() {
+  protected function testValuesTabAccess() {
     $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
@@ -328,21 +328,14 @@ class WorkflowTest extends IucnAssessmentTestBase {
 
     $this->userLogIn(TestSupport::ASSESSOR1);
 
-    // Test the the existance of the buttons on the 'Values' tab
-    $this->drupalGet($assessment->toUrl('edit-form'));
-    $this->assertNoRaw('tabledrag-handle');
-    $this->assertNoRaw('value="Edit"');
-    $this->assertNoRaw('value="Remove"');
-    $this->assertNoRaw('value="Add more"');
-    $this->assertRaw('Save');
-
-    // Test the the existance of the buttons on the 'Assessing Values' tab
-    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'assessing-values']]));
-    $this->assertNoRaw('tabledrag-handle');
-    $this->assertNoRaw('value="Edit"');
-    $this->assertNoRaw('value="Remove"');
-    $this->assertNoRaw('value="Add more"');
-    $this->assertRaw('Save');
+    foreach (['values', 'assessing-values'] as $tab) {
+      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
+      $this->assertNoRaw('tabledrag-handle');
+      $this->assertNoRaw('value="Edit"');
+      $this->assertNoRaw('value="Remove"');
+      $this->assertNoRaw('value="Add more"');
+      $this->assertRaw('Save');
+    }
   }
 
 }
