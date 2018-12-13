@@ -162,7 +162,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision, $display_mode) as $field => $data) {
       $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
       if (in_array($field, array_keys($paragraph_form))) {
-        dpm($paragraph_form[$field]);
         if (!empty($paragraph_form[$field]['widget']['#title'])) {
           $paragraph_form[$field]['widget']['#title_display'] = 'invisible';
         }
