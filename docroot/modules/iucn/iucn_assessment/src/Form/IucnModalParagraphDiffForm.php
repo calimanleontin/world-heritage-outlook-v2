@@ -162,10 +162,11 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision, $display_mode) as $field => $data) {
       $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
       if (in_array($field, array_keys($paragraph_form))) {
-        if (!empty($paragraph_form[$field]['widget']['#title_display'])) {
+        dpm($paragraph_form[$field]);
+        if (!empty($paragraph_form[$field]['widget']['#title'])) {
           $paragraph_form[$field]['widget']['#title_display'] = 'invisible';
         }
-        if (!empty($paragraph_form[$field]['widget'][0]['value']['#title_display'])) {
+        if (!empty($paragraph_form[$field]['widget'][0]['value']['#title'])) {
           $paragraph_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
         }
         unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
@@ -208,6 +209,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
     $paragraph_form['#prefix'] = '<div class="diff-modal">';
     $paragraph_form['#suffix'] = '</div>';
+
+    dpm($paragraph_form);
 
     return $paragraph_form;
   }
