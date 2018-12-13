@@ -210,8 +210,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $paragraph_form['#prefix'] = '<div class="diff-modal">';
     $paragraph_form['#suffix'] = '</div>';
 
-    dpm($paragraph_form);
-
     return $paragraph_form;
   }
 
