@@ -310,4 +310,32 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertEqual(count($under_evaluation_revision->field_as_values_wh->getValue()), 1, 'Paragraph not added to revision.');
   }
 
+  /**
+   * Check that assessors cannot edit values.
+   */
+  protected function testValuesTabAccess() {
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
+    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
+
+    drupal_flush_all_caches();
+
+    $this->userLogIn(TestSupport::ASSESSOR1);
+
+    foreach (['values', 'assessing-values'] as $tab) {
+      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
+      $this->assertNoRaw('tabledrag-handle');
+      $this->assertNoRaw('value="Edit"');
+      $this->assertNoRaw('value="Remove"');
+      $this->assertNoRaw('value="Add more"');
+      $this->assertRaw('Save');
+    }
+  }
+
 }
