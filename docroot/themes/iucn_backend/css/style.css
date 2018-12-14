@@ -355,6 +355,13 @@
   display: table-cell;
   width: calc(100% - 0px);
 }
+legend {
+  display: contents !important;
+}
+legend .fieldset-legend {
+  display: table-cell;
+  width: 200px;
+}
 .paragraph-as-site-benefit-iucn-modal-paragraph-add-form > fieldset,
 .paragraph-as-site-benefit-iucn-modal-paragraph-edit-form > fieldset {
   background: none;
