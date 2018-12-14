@@ -746,9 +746,9 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
- * Implements hook_ENTITY_TYPE_presave().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface $paragraph) {
+function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface $paragraph) {
   if ($paragraph->isNew() || !$paragraph->isDefaultRevision()) {
     // When a new paragraph is added, node_save is called for parent.
     return;
@@ -763,12 +763,13 @@ function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface
     // the node.
     return;
   }
+
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
   $workflow_service = \Drupal::service('iucn_assessment.workflow');
   // When a paragraph is edited and the parent node is new, change it to under evaluation
   // and assign it's coordinator.
   $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
-  
+
   $parent_entity->setChangedTime(time());
   $parent_entity->save();
 }
