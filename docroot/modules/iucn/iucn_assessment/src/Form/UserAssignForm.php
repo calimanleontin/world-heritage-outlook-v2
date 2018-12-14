@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\user\UserInterface;
@@ -18,16 +19,25 @@ class UserAssignForm extends FormBase {
   /** @var \Drupal\node\NodeStorageInterface */
   protected $nodeStorage;
 
+  /** @var \Drupal\Core\State\StateInterface */
+  protected $state;
+
+  /** @var int */
+  protected $currentWorkflowCycle;
+
   /**
    * Constructs a new UserAssignForm object.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, StateInterface $state) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
+    $this->state = $state;
+    $this->currentWorkflowCycle = $this->state->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
   }
 
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('state')
     );
   }
 
@@ -190,7 +200,7 @@ class UserAssignForm extends FormBase {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
       ->condition('field_state', AssessmentWorkflow::USER_ASSIGNMENT_STATES, 'IN')
-      ->condition('field_as_cycle', \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020))
+      ->condition('field_as_cycle', $this->currentWorkflowCycle)
       ->notExists($this->getFieldName($role));
     $ids = $query->execute();
     if (empty($ids)) {
