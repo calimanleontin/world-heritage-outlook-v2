@@ -18,6 +18,14 @@ define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
  * Implements hook_views_data_alter().
  */
 function iucn_who_core_views_data_alter(array &$data) {
+  $data['users']['user_assignments'] = array(
+    'title' => t('User Assignments'),
+    'field' => array(
+      'title' => t('Assignments'),
+      'help' => t('Assignments.'),
+      'id' => 'iucn_who_core_user_assignments',
+    ),
+  );
   $data['users']['user_assessor'] = array(
     'title' => t('Assessor'),
     'field' => array(

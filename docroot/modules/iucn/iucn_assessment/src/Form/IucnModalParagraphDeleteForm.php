@@ -41,6 +41,7 @@ class IucnModalParagraphDeleteForm extends FormBase {
           'type' => 'throbber',
           'message' => NULL,
         ],
+        'disable-refocus' => TRUE,
       ],
       '#attributes' => ['class' => ['button--primary']],
     ];
