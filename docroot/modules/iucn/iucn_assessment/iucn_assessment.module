@@ -749,20 +749,27 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
  * Implements hook_ENTITY_TYPE_presave().
  */
 function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface $paragraph) {
+  if ($paragraph->isNew() || !$paragraph->isDefaultRevision()) {
+    // When a new paragraph is added, node_save is called for parent.
+    return;
+  }
+  /** @var \Drupal\node\NodeInterface $parent_entity */
+  $parent_entity = $paragraph->getParentEntity();
+  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
+    return;
+  }
+  if (time() - $parent_entity->getChangedTime() <= 1) {
+    // We are here because of parent node save, do we don't need to save again
+    // the node.
+    return;
+  }
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+  $workflow_service = \Drupal::service('iucn_assessment.workflow');
+  $parent_entity->setChangedTime(time());
   // When a paragraph is edited and the parent node is new, change it to under evaluation
   // and assign it's coordinator.
-  if ($paragraph->isChanged() && !$paragraph->isNew() && $paragraph->isDefaultRevision()) {
-    /** @var \Drupal\node\NodeInterface $parent_entity */
-    $parent_entity = $paragraph->getParentEntity();
-    if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
-      return;
-    }
-    $parent_entity->setChangedTime(time());
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
-    $parent_entity->save();
-  }
+  $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
+  $parent_entity->save();
 }
 
 /**
