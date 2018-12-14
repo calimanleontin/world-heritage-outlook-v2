@@ -2,7 +2,7 @@
   margin: 0!important;
   padding: 0!important;
   border: none!important;
-  display: flex;
+  display: grid;
 }
 .node-site-assessment-edit-form fieldset.overall-container > legend .fieldset-legend {
   width: 100%;
@@ -115,7 +115,7 @@
   border: none;
   padding: 0;
   margin: 0;
-  display: flex;
+  display: grid;
 }
 .node-site-assessment-edit-form #group-summary-of-benefits > legend .fieldset-legend {
   width: 100%;
