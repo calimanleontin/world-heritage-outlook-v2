@@ -145,6 +145,7 @@ function iucn_assessment_update_8003() {
 
   foreach ($nodesIds as $nid) {
     $node = Node::load($nid);
+    $update_state = FALSE;
     $cycle = $node->field_as_cycle->value;
     if ($cycle != 2020) {
       // Delete all revisions for old assessments.
@@ -160,7 +161,8 @@ function iucn_assessment_update_8003() {
       // Force workflow status for old assessments.
       if ($node->isPublished()) {
         $logger->info("Force workflow status for assessment {$node->getTitle()} ({$node->id()})");
-        $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+        $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED, FALSE);
+        $update_state = TRUE;
       }
     }
 
@@ -205,7 +207,7 @@ function iucn_assessment_update_8003() {
     // Migrate references from text field to paragraph.
     $update_references = _iucn_assessment_migrate_references($node, $logger);
 
-    if ($update_references || $update_protection) {
+    if ($update_state || $update_references || $update_protection) {
       $node->save();
     }
 
