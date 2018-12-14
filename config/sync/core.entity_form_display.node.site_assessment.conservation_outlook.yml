@@ -169,7 +169,6 @@ third_party_settings:
     group_as_references:
       children:
         - field_as_references_p
-        - field_as_references
       parent_name: group_as_tabs
       weight: 28
       format_type: assessment_tab
@@ -478,7 +477,7 @@ content:
     region: content
   field_as_references:
     type: string_textarea
-    weight: 1
+    weight: 5
     region: content
     settings:
       rows: 5

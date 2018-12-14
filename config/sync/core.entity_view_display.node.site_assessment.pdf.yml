@@ -149,7 +149,6 @@ third_party_settings:
         - field_as_values_bio
       references:
         - field_as_references_p
-        - field_as_references
     fields:
       'display_field_copy:node-assessment_trend_copy':
         plugin_id: 'display_field_copy:node-assessment_trend_copy'
@@ -776,13 +775,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  field_as_references:
-    weight: 11
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: references
   field_as_references_p:
     type: entity_reference_revisions_entity_view
     weight: 10
@@ -916,6 +908,7 @@ hidden:
   entity_print_view_word_docx: true
   field_as_archived: true
   field_as_cycle: true
+  field_as_references: true
   field_as_site: true
   field_as_start_date: true
   field_as_values_wh: true
