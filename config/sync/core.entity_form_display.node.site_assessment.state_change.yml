@@ -97,6 +97,7 @@ hidden:
   field_as_protection_ov_rating: true
   field_as_protection_ov_text: true
   field_as_references: true
+  field_as_references_p: true
   field_as_site: true
   field_as_start_date: true
   field_as_threats_current: true

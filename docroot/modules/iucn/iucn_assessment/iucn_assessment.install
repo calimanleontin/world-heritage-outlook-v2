@@ -72,6 +72,49 @@ function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, arr
   }
 }
 
+function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $logger) {
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+  $languages = \Drupal::languageManager()->getLanguages();
+
+  $references = $node->get('field_as_references')->getValue();
+  if (empty($references)) {
+    return;
+  }
+  foreach ($references as $idx => $reference) {
+    $reference = $reference['value'];
+    if (empty($reference)) {
+      continue;
+    }
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+    $paragraph = \Drupal\paragraphs\Entity\Paragraph::create([
+      'type' => 'as_site_reference',
+      'field_reference' => $reference,
+    ]);
+
+    // Add translation.
+    foreach ($languages as $language) {
+      $lang_id = $language->getId();
+      if ($lang_id == $default_language) {
+        continue;
+      }
+      if ($node->hasTranslation($lang_id)) {
+        $translated_reference = $node->getTranslation($lang_id)->field_as_references->getValue()[$idx]['value'];
+        $paragraph->addTranslation($lang_id, [
+          'field_reference' => $translated_reference,
+        ]);
+      }
+    }
+
+    $paragraph->save();
+    $node->get('field_as_references_p')->appendItem([
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
+    ]);
+  }
+  $node->save();
+  $logger->info("Migrated references for assessment: {$node->getTitle()}");
+}
+
 /**
  *  Delete all revisions for old assessments.
  *  Set "Published" status to all existing assessments.Force workflow status for
@@ -159,6 +202,9 @@ function iucn_assessment_update_8003() {
       $node->save();
       $logger->info("Removed empty protection paragraph for assessment {$node->id()}");
     }
+
+    // Migrate references from text field to paragraph.
+    _iucn_assessment_migrate_references($node, $logger);
 
     \Drupal::state()->set($stateKey, $nid);
   }

@@ -23,7 +23,7 @@ class IucnTestDataCommands extends DrushCommands {
 
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createTestUsers($numberOfUsers = 2) {
+  public function createTestUsers($password = 'password', $numberOfUsers = 2) {
     /** @var \Drupal\user\Entity\Role[] $roles */
     $roles = Role::loadMultiple();
     foreach ($roles as $role) {
@@ -31,7 +31,7 @@ class IucnTestDataCommands extends DrushCommands {
         $user = User::create([
           'name' => "{$role->id()}_{$i}",
           'mail' =>  "{$role->id()}_{$i}@example.com",
-          'pass' => 'password',
+          'pass' => $password,
           'status' => 1,
           'roles' => [$role->id()],
         ]);
