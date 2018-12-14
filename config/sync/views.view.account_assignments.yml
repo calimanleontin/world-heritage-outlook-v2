@@ -39,7 +39,7 @@ display:
           role:
             reviewer: reviewer
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
