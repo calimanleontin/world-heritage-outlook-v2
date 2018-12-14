@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
@@ -31,6 +32,17 @@ class NodeSiteAssessmentForm {
       if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
         $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
       }
+    }
+  }
+
+  public static function setValidationErrors(&$form, $element) {
+    $children = Element::children($element);
+    foreach ($children as $idx => $child) {
+      if (!empty($element[$child]['#type']) && $element[$child]['#type'] != 'hidden') {
+        $form['actions']['submit']['#limit_validation_errors'][] = [$child];
+      }
+
+      self::setValidationErrors($form, $element[$child]);
     }
   }
 
@@ -67,6 +79,8 @@ class NodeSiteAssessmentForm {
         }
       }
     }
+
+    self::setValidationErrors($form, $form);
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
