@@ -184,6 +184,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param string $field_name
    */
   public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+    $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
       '#value' => 'See differences',
@@ -196,6 +197,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'tab' => $tab,
+          'display_mode' => $this->getSetting('form_display_mode'),
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -1088,6 +1091,45 @@ class RowParagraphsWidget extends ParagraphsWidget {
     /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
     $term_alter_service = \Drupal::service('iucn_fields.term_alter');
     return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function elementValidate($element, FormStateInterface $form_state, $form) {
+    $field_name = $this->fieldDefinition->getName();
+    $widget_state = static::getWidgetState($element['#field_parents'], $field_name, $form_state);
+    // Fix some issues with the diff form save. Otherwise this method is copy-pasted.
+    if (empty($widget_state)) {
+      $widget_state = [];
+    }
+    $delta = $element['#delta'];
+
+    if (isset($widget_state['paragraphs'][$delta]['entity'])) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $paragraphs_entity */
+      $entity = $widget_state['paragraphs'][$delta]['entity'];
+
+      /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $display */
+      $display = $widget_state['paragraphs'][$delta]['display'];
+
+      if ($widget_state['paragraphs'][$delta]['mode'] == 'edit') {
+        // Extract the form values on submit for getting the current paragraph.
+        $display->extractFormValues($entity, $element['subform'], $form_state);
+
+        // Validate all enabled behavior plugins.
+        $paragraphs_type = $entity->getParagraphType();
+        if (\Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+          foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin_values) {
+            if (!empty($element['behavior_plugins'][$plugin_id])) {
+              $subform_state = SubformState::createForSubform($element['behavior_plugins'][$plugin_id], $form_state->getCompleteForm(), $form_state);
+              $plugin_values->validateBehaviorForm($entity, $element['behavior_plugins'][$plugin_id], $subform_state);
+            }
+          }
+        }
+      }
+    }
+
+    static::setWidgetState($element['#field_parents'], $field_name, $form_state, $widget_state);
   }
 
 }
