@@ -137,6 +137,9 @@ class DiffController extends ControllerBase {
       case 'as_site_project':
         return 'projects';
 
+      case 'as_site_reference':
+        return 'references';
+
       default:
         return NULL;
     }

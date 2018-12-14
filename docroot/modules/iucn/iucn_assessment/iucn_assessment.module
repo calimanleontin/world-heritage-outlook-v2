@@ -299,8 +299,43 @@ function iucn_assessment_preprocess_field(&$variables) {
       }*/
       break;
 
-    case 'field_as_references':
+    case 'field_reference':
+      // Transform links to url and trim.
+      /** @var \Drupal\filter\FilterPluginManager $filter_manager */
+      $filter_manager = \Drupal::service('plugin.manager.filter');
+      /** @var \Drupal\filter\Plugin\FilterBase $filter */
+      $filter = $filter_manager->createInstance('filter_url');
+      $filter->settings['filter_url_length'] = 60;
+
+      $items = $variables['items'];
+
+      $value = _filter_html_escape($items[0]['content']['#context']['value']);
+      $items[0]['content']['#template'] = '{{ value|raw|nl2br }}';
+      $value = $filter->process($value, 'en');
+      $items[0]['content']['#context']['value'] = $value->__toString();
+
+      $variables['items'] = $items;
+      break;
+
+    case 'field_as_references_p':
       // Sort this field by string alphabetically.
+      if (empty($variables['items'])) {
+        break;
+      }
+      $items = $variables['items'];
+
+      usort($items,
+        function ($a, $b) {
+          $a_string = $a['content']['#paragraph']->field_reference->value;
+          $b_string = $b['content']['#paragraph']->field_reference->value;
+          return (strcmp($a_string, $b_string));
+        }
+      );
+      $variables['items'] = $items;
+      break;
+
+    case 'field_as_references':
+
       if (empty($variables['items'][0]['content']['#context']['value'])) {
         break;
       }
@@ -508,6 +543,7 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'paragraph_as_site_threat_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
+    case 'paragraph_as_site_threat_iucn_modal_paragraph_diff_form':
       ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
       break;
 
@@ -713,18 +749,28 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
  * Implements hook_ENTITY_TYPE_presave().
  */
 function iucn_assessment_paragraph_presave(\Drupal\paragraphs\ParagraphInterface $paragraph) {
+  if ($paragraph->isNew() || !$paragraph->isDefaultRevision()) {
+    // When a new paragraph is added, node_save is called for parent.
+    return;
+  }
+  /** @var \Drupal\node\NodeInterface $parent_entity */
+  $parent_entity = $paragraph->getParentEntity();
+  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
+    return;
+  }
+  if (time() - $parent_entity->getChangedTime() <= 1) {
+    // We are here because of parent node save, do we don't need to save again
+    // the node.
+    return;
+  }
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+  $workflow_service = \Drupal::service('iucn_assessment.workflow');
   // When a paragraph is edited and the parent node is new, change it to under evaluation
   // and assign it's coordinator.
-  if ($paragraph->isChanged() && !$paragraph->isNew() && $paragraph->isDefaultRevision()) {
-    /** @var \Drupal\node\NodeInterface $parent_entity */
-    $parent_entity = $paragraph->getParentEntity();
-    if (!$parent_entity instanceof \Drupal\node\NodeInterface || !$parent_entity->isDefaultRevision()) {
-      return;
-    }
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $workflow_service->setCoordinatorAndState($parent_entity, TRUE);
-  }
+  $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
+  
+  $parent_entity->setChangedTime(time());
+  $parent_entity->save();
 }
 
 /**

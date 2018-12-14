@@ -2,8 +2,9 @@
   margin: 0!important;
   padding: 0!important;
   border: none!important;
+  display: grid;
 }
-.node-site-assessment-edit-form fieldset.overall-container legend {
+.node-site-assessment-edit-form fieldset.overall-container > legend .fieldset-legend {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -114,8 +115,9 @@
   border: none;
   padding: 0;
   margin: 0;
+  display: grid;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits > legend {
+.node-site-assessment-edit-form #group-summary-of-benefits > legend .fieldset-legend {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -355,6 +357,22 @@
   display: table-cell;
   width: calc(100% - 0px);
 }
+.field-group-assessment-fieldset > legend,
+.overall-container > legend {
+  display: block;
+  width: 100%;
+}
+.field-group-assessment-fieldset > legend > .fieldset-legend,
+.overall-container > legend > .fieldset-legend {
+  display: block;
+}
+.field--name-field-as-values-criteria legend {
+  display: contents !important;
+}
+.field--name-field-as-values-criteria legend .fieldset-legend {
+  display: table-cell;
+  width: 200px;
+}
 .paragraph-as-site-benefit-iucn-modal-paragraph-add-form > fieldset,
 .paragraph-as-site-benefit-iucn-modal-paragraph-edit-form > fieldset {
   background: none;
@@ -449,6 +467,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item button,
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button {
   max-width: 100%;
+}
+#block-views-block-people-assignments-block-1 .views-field-user-assignments {
+  width: 40%;
+}
+#block-views-block-people-assignments-block-1 .views-field-user-assignments ol {
+  margin: 0;
 }
 .horizontal-tab-button .fa {
   font-size: 1em;
