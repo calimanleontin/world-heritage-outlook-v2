@@ -107,7 +107,7 @@ class AssessmentWorkflow {
       $account = $this->currentUser;
     }
     if ($node->bundle() != 'site_assessment') {
-      return AccessResult::neutral();
+      return AccessResult::allowed();
     }
     $access = AccessResult::neutral();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
