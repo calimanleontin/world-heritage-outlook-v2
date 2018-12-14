@@ -190,6 +190,7 @@ class UserAssignForm extends FormBase {
     $query = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
       ->condition('field_state', AssessmentWorkflow::USER_ASSIGNMENT_STATES, 'IN')
+      ->condition('field_as_cycle', \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020))
       ->notExists($this->getFieldName($role));
     $ids = $query->execute();
     if (empty($ids)) {
