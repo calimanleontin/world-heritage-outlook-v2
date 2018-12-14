@@ -357,10 +357,10 @@
   display: table-cell;
   width: calc(100% - 0px);
 }
-legend {
+.field--name-field-as-values-criteria legend {
   display: contents !important;
 }
-legend .fieldset-legend {
+.field--name-field-as-values-criteria legend .fieldset-legend {
   display: table-cell;
   width: 200px;
 }
