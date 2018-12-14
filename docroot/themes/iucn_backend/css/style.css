@@ -459,6 +459,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-ite
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button {
   max-width: 100%;
 }
+#block-views-block-people-assignments-block-1 .views-field-user-assignments {
+  width: 40%;
+}
+#block-views-block-people-assignments-block-1 .views-field-user-assignments ol {
+  margin: 0;
+}
 .horizontal-tab-button .fa {
   font-size: 1em;
   margin: 0 2.1em 0 1em;
