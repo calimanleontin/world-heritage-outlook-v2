@@ -78,7 +78,7 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
 
   $references = $node->get('field_as_references')->getValue();
   if (empty($references)) {
-    return;
+    return FALSE;
   }
   foreach ($references as $idx => $reference) {
     $reference = $reference['value'];
@@ -111,8 +111,8 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
       'target_revision_id' => $paragraph->getRevisionId(),
     ]);
   }
-  $node->save();
   $logger->info("Migrated references for assessment: {$node->getTitle()}");
+  return TRUE;
 }
 
 /**
@@ -199,12 +199,15 @@ function iucn_assessment_update_8003() {
     }
     if ($update_protection) {
       $node->get('field_as_protection')->setValue($protection_paragraphs);
-      $node->save();
       $logger->info("Removed empty protection paragraph for assessment {$node->id()}");
     }
 
     // Migrate references from text field to paragraph.
-    _iucn_assessment_migrate_references($node, $logger);
+    $update_references = _iucn_assessment_migrate_references($node, $logger);
+
+    if ($update_references || $update_protection) {
+      $node->save();
+    }
 
     \Drupal::state()->set($stateKey, $nid);
   }
