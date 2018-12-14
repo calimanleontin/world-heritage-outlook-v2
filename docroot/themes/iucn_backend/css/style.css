@@ -357,11 +357,13 @@
   display: table-cell;
   width: calc(100% - 0px);
 }
-.field-group-assessment-fieldset > legend {
+.field-group-assessment-fieldset > legend,
+.overall-container > legend {
   display: block;
   width: 100%;
 }
-.field-group-assessment-fieldset > legend > .fieldset-legend {
+.field-group-assessment-fieldset > legend > .fieldset-legend,
+.overall-container > legend > .fieldset-legend {
   display: block;
 }
 .field--name-field-as-values-criteria legend {
