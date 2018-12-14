@@ -349,6 +349,11 @@ class AssessmentWorkflow {
     if (empty($field_settings['diff'])) {
       $field_settings['diff'] = [];
     }
+    if (!empty($field_settings['comments'])) {
+      foreach (array_keys($field_settings['comments']) as $tab) {
+        $diff['fieldgroups'][$tab] = $tab;
+      }
+    }
     $field_settings['diff'][$compare->getRevisionId()] = $diff;
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
