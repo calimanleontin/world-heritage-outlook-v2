@@ -755,6 +755,10 @@ function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface 
   }
   /** @var \Drupal\node\NodeInterface $parent_entity */
   $parent_entity = $paragraph->getParentEntity();
+  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
+    // Values paragraphs have threat paragraphs as parents.
+    $parent_entity = $parent_entity->getParentEntity();
+  }
   if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
     return;
   }
