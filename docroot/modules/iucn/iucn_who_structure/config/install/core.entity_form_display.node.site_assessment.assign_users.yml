@@ -1,0 +1,125 @@
+uuid: 081c909c-db39-4f17-8249-10cb3065ba1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.assign_users
+    - field.field.node.site_assessment.field_as_archived
+    - field.field.node.site_assessment.field_as_benefits
+    - field.field.node.site_assessment.field_as_benefits_summary
+    - field.field.node.site_assessment.field_as_cycle
+    - field.field.node.site_assessment.field_as_end_date
+    - field.field.node.site_assessment.field_as_global_assessment_level
+    - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_key_cons
+    - field.field.node.site_assessment.field_as_projects
+    - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_protection
+    - field.field.node.site_assessment.field_as_protection_ov_out_rate
+    - field.field.node.site_assessment.field_as_protection_ov_out_text
+    - field.field.node.site_assessment.field_as_protection_ov_practices
+    - field.field.node.site_assessment.field_as_protection_ov_rating
+    - field.field.node.site_assessment.field_as_protection_ov_text
+    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_site
+    - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_threats_current
+    - field.field.node.site_assessment.field_as_threats_current_rating
+    - field.field.node.site_assessment.field_as_threats_current_text
+    - field.field.node.site_assessment.field_as_threats_potent_rating
+    - field.field.node.site_assessment.field_as_threats_potent_text
+    - field.field.node.site_assessment.field_as_threats_potential
+    - field.field.node.site_assessment.field_as_threats_rating
+    - field.field.node.site_assessment.field_as_threats_text
+    - field.field.node.site_assessment.field_as_values_bio
+    - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_vass_bio_state
+    - field.field.node.site_assessment.field_as_vass_bio_text
+    - field.field.node.site_assessment.field_as_vass_bio_trend
+    - field.field.node.site_assessment.field_as_vass_wh_state
+    - field.field.node.site_assessment.field_as_vass_wh_text
+    - field.field.node.site_assessment.field_as_vass_wh_trend
+    - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_assessor
+    - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_settings
+    - field.field.node.site_assessment.field_state
+    - node.type.site_assessment
+id: node.site_assessment.assign_users
+targetEntityType: node
+bundle: site_assessment
+mode: assign_users
+content:
+  field_assessor:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_coordinator:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_reviewers:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_as_archived: true
+  field_as_benefits: true
+  field_as_benefits_summary: true
+  field_as_cycle: true
+  field_as_end_date: true
+  field_as_global_assessment_level: true
+  field_as_global_assessment_text: true
+  field_as_key_cons: true
+  field_as_projects: true
+  field_as_projects_needs: true
+  field_as_protection: true
+  field_as_protection_ov_out_rate: true
+  field_as_protection_ov_out_text: true
+  field_as_protection_ov_practices: true
+  field_as_protection_ov_rating: true
+  field_as_protection_ov_text: true
+  field_as_references: true
+  field_as_references_p: true
+  field_as_site: true
+  field_as_start_date: true
+  field_as_threats_current: true
+  field_as_threats_current_rating: true
+  field_as_threats_current_text: true
+  field_as_threats_potent_rating: true
+  field_as_threats_potent_text: true
+  field_as_threats_potential: true
+  field_as_threats_rating: true
+  field_as_threats_text: true
+  field_as_values_bio: true
+  field_as_values_wh: true
+  field_as_vass_bio_state: true
+  field_as_vass_bio_text: true
+  field_as_vass_bio_trend: true
+  field_as_vass_wh_state: true
+  field_as_vass_wh_text: true
+  field_as_vass_wh_trend: true
+  field_as_version: true
+  field_assessment_file: true
+  field_date_published: true
+  field_settings: true
+  field_state: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  translation: true
+  uid: true
+  url_redirects: true

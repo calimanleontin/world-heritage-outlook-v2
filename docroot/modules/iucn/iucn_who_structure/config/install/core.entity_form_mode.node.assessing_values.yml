@@ -1,0 +1,10 @@
+uuid: 1b83501c-7889-4483-bb65-0372cd53c2c2
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.assessing_values
+label: 'Assessing values'
+targetEntityType: node
+cache: true

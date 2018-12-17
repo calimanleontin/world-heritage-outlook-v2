@@ -63,7 +63,7 @@ content:
   field_as_benefits_category:
     weight: 2
     settings:
-      select_title: 'Select Benefit type'
+      select_title: ''
       select_label: 'Select Benefit type'
       checkboxes_label: 'Select specific benefits'
     third_party_settings: {  }
