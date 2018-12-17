@@ -35,14 +35,16 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  public static function setValidationErrors(&$form, $element) {
+  public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);
     foreach ($children as $idx => $child) {
       if (!empty($element[$child]['#type']) && $element[$child]['#type'] != 'hidden') {
-        $form['actions']['submit']['#limit_validation_errors'][] = [$child];
+        $form['actions']['submit']['#limit_validation_errors'][] = array_merge($parents, [$child]);
       }
 
-      self::setValidationErrors($form, $element[$child]);
+      if (is_array($element[$child])) {
+        self::setValidationErrors($form, $element[$child], array_merge($parents, [$child]));
+      }
     }
   }
 
@@ -79,8 +81,6 @@ class NodeSiteAssessmentForm {
         }
       }
     }
-
-    self::setValidationErrors($form, $form);
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
@@ -276,6 +276,8 @@ class NodeSiteAssessmentForm {
       self::buildDiffButtons($form, $node);
       self::setTabsDrupalSettings($form, $node);
     }
+
+    self::setValidationErrors($form, $form, []);
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
