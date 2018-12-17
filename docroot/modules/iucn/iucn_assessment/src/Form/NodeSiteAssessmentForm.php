@@ -131,14 +131,7 @@ class NodeSiteAssessmentForm {
     $form['revision']['#disabled'] = FALSE;
 
     if (!empty($node->id()) && !empty($state)) {
-      $state_entity = WorkflowState::load($state);
-      $form['current_state'] = [
-        '#weight' => -1000,
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['current-state']],
-        '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_entity->label()]),
-      ];
+      $form['current_state'] = self::getCurrentStateMarkup($node);
 
       $form['main_data_container'] = [
         '#type' => 'container',
@@ -379,7 +372,7 @@ class NodeSiteAssessmentForm {
    * @return array
    *   The renderable array.
    */
-  public static function getCurrentStateMarkup(NodeInterface $node, $weight = -1000) {
+  public static function getCurrentStateMarkup(NodeInterface $node) {
     $current_state = $node->field_state->value;
     if (!empty($current_state)) {
       $state_entity = WorkflowState::load($current_state);
@@ -387,11 +380,16 @@ class NodeSiteAssessmentForm {
     else {
       $state_entity = NULL;
     }
+    if (empty($state_entity)) {
+      return [];
+    }
     $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
     return [
-      '#weight' => $weight,
-      '#type' => 'markup',
-      '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
+      '#weight' => -1000,
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => ['class' => ['current-state']],
+      '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_label]),
     ];
   }
 
