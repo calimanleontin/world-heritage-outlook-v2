@@ -134,8 +134,10 @@ class NodeSiteAssessmentForm {
       $state_entity = WorkflowState::load($state);
       $form['current_state'] = [
         '#weight' => -1000,
-        '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['current-state']],
+        '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
 
       $form['main_data_container'] = [

@@ -33,8 +33,18 @@ who.user_agreement_settings_form:
 who.user-dashboard:
   path: '/admin/dashboard'
   defaults:
-    _controller: '\Drupal\iucn_who_core\Controller\PagesController::dashboard'
+    _controller: '\Drupal\iucn_who_core\Controller\PagesController::emptyPageNoCache'
     _title: 'Dashboard'
+  requirements:
+    _role: 'authenticated'
+  options:
+    _admin_route: TRUE
+
+who.workflow_help:
+  path: 'admin/help/workflow'
+  defaults:
+    _controller: '\Drupal\iucn_who_core\Controller\PagesController::emptyPageNoCache'
+    _title: 'Workflow help'
   requirements:
     _role: 'authenticated'
   options:

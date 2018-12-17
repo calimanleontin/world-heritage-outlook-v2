@@ -181,6 +181,12 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.node-site-assessment-edit-form .current-state {
+  margin: 10px 0;
+}
+.node-site-assessment-edit-form .form-item-title-0-value {
+  margin-top: 0;
+}
 .node-site-assessment-edit-form .main-data-container {
   display: block;
   widows: 100%;
@@ -481,6 +487,10 @@
   color: #495057;
   text-decoration: none;
   background-color: #f8f9fa;
+}
+#block-tools > ul.menu li.menu-item > a.is-active {
+  background: #f5f5f2;
+  color: #000!important;
 }
 #block-tools > ul.menu li.menu-item ul.menu {
   margin: 0 0 0 2em;
