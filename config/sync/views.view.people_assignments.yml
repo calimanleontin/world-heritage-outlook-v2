@@ -1583,6 +1583,7 @@ display:
         fields: false
         relationships: false
         pager: false
+        header: false
       filter_groups:
         operator: AND
         groups:
@@ -1898,6 +1899,20 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'You can assign a user to multiple assessments by pressing the "Assign" button.'
+            format: html
+          plugin_id: text
     cache_metadata:
       max-age: -1
       contexts:
