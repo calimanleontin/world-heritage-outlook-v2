@@ -121,13 +121,14 @@ class ParagraphAsSiteThreatForm {
     if (empty($values) || count($values) == 1 && $values[0]['target_id'] == 0 ) {
       $form_state->setError($element, t('Category field is required'));
     }
-    $selected_category = FALSE;
+    $selected_subcategory = FALSE;
     foreach ($values as $category) {
-      if (!isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
-        $selected_category = TRUE;
+      if (isset($element['widget'][$category['target_id']])) {
+        $selected_subcategory = TRUE;
+        break;
       }
     }
-    if (!$selected_category) {
+    if (!$selected_subcategory) {
       $form_state->setError($element, t('Select at least one subcategory'));
     }
   }

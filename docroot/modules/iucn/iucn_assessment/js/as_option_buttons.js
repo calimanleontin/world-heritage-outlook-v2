@@ -10,7 +10,7 @@
   Drupal.behaviors.AsOptionsButtonsWidget = {
     attach: function (context) {
       $('.options-groups', context).change(function() {
-        var $items = $('.form-checkbox', context);
+        var $items = $('.as-checkboxes .form-checkbox', context);
         $items.each(function() {
           var $parent = $(this).parent();
           if ($parent.is(":hidden")) {
@@ -20,4 +20,37 @@
       })
     },
   };
+
+  Drupal.behaviors.AsOptionsButtonsWidgetHideSubcategory = {
+    attach: function (context) {
+      var updateLabel = function (label) {
+        var $items = $('.as-checkboxes .form-checkbox', context);
+
+        var visible = false;
+        $items.each(function() {
+          if ($(this).is(':visible')) {
+            visible = true;
+          }
+        });
+
+        if (visible === false) {
+          label.hide();
+        }
+        else {
+          label.show();
+        }
+      }
+
+      var label = $('.as-checkboxes-label', context)
+      setTimeout(function () {
+        updateLabel(label);
+      }, 0, context);
+
+      $('.options-groups', context).change(function () {
+        setTimeout(function () {
+          updateLabel(label);
+        }, 0, context);
+      });
+    },
+  }
 })(jQuery, Drupal, _);
