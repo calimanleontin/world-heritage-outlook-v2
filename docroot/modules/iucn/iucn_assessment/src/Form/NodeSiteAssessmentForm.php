@@ -185,6 +185,7 @@ class NodeSiteAssessmentForm {
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
+          '#maxlength' => 255,
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
           $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
@@ -192,7 +193,10 @@ class NodeSiteAssessmentForm {
           $comments = '';
           if (!empty($settings['comments'][$tab])) {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
-              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
+              $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
+              $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
+
+              $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
             $form["comment_$tab"]['#type'] = 'markup';
             $form["comment_$tab"]['#markup'] = $comments;
