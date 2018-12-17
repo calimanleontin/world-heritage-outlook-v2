@@ -1,10 +1,18 @@
-.node-site-assessment-edit-form {
+.node-site-assessment-edit-form,
+.node-site-assessment-state-change-form {
+  .current-state {
+    margin: 10px 0;
+  }
+  .form-item-title-0-value {
+    margin-top: 0;
+  }
   .main-data-container {
     display: block;
     widows: 100%;
     .data-fields,
     .help-text {
       box-sizing: border-box;
+      padding-right: 5px;
       @media screen and (min-width: 980px) {
         float: left;
         width: 50%;
@@ -19,6 +27,9 @@
       padding: 0 5px;
       border-radius: 5px;
     }
+  }
+  .layout-region {
+    padding-right: 0!important;
   }
 }
 
@@ -110,4 +121,18 @@
 
 .hidden-container {
   display: none;
+}
+
+.paragraph-comments-textarea {
+  .comments-container {
+    display: flex;
+    margin-bottom: 10px;
+    .comment-author {
+      min-width: 120px;
+      width: 120px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

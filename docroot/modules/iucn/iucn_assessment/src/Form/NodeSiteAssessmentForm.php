@@ -131,12 +131,7 @@ class NodeSiteAssessmentForm {
     $form['revision']['#disabled'] = FALSE;
 
     if (!empty($node->id()) && !empty($state)) {
-      $state_entity = WorkflowState::load($state);
-      $form['current_state'] = [
-        '#weight' => -1000,
-        '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
-      ];
+      $form['current_state'] = self::getCurrentStateMarkup($node);
 
       $form['main_data_container'] = [
         '#type' => 'container',
@@ -185,6 +180,7 @@ class NodeSiteAssessmentForm {
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
+          '#maxlength' => 255,
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
           $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
@@ -192,7 +188,10 @@ class NodeSiteAssessmentForm {
           $comments = '';
           if (!empty($settings['comments'][$tab])) {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
-              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
+              $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
+              $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
+
+              $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
             $form["comment_$tab"]['#type'] = 'markup';
             $form["comment_$tab"]['#markup'] = $comments;
@@ -373,7 +372,7 @@ class NodeSiteAssessmentForm {
    * @return array
    *   The renderable array.
    */
-  public static function getCurrentStateMarkup(NodeInterface $node, $weight = -1000) {
+  public static function getCurrentStateMarkup(NodeInterface $node) {
     $current_state = $node->field_state->value;
     if (!empty($current_state)) {
       $state_entity = WorkflowState::load($current_state);
@@ -381,11 +380,16 @@ class NodeSiteAssessmentForm {
     else {
       $state_entity = NULL;
     }
+    if (empty($state_entity)) {
+      return [];
+    }
     $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
     return [
-      '#weight' => $weight,
-      '#type' => 'markup',
-      '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
+      '#weight' => -1000,
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => ['class' => ['current-state']],
+      '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_label]),
     ];
   }
 

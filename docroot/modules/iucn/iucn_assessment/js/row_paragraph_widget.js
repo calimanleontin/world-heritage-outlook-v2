@@ -56,6 +56,12 @@
                 var $parent = $(this).parent();
                 var $parentHeight = $parent.height();
                 var $parentWidth = $parent.width();
+                if ($parentWidth === 0) {
+                  $parentWidth = 120;
+                }
+                if ($parentHeight === 0) {
+                  $parentHeight = 60;
+                }
                 $(this).height($parentHeight);
                 $(this).width($parentWidth);
                 $parent.css('min-height', $parentHeight);
@@ -64,6 +70,7 @@
         };
 
         inheritParentDims();
+        $(document).once('upd\ateParagraphActions').on('DOMSubtreeModified', _.debounce(inheritParentDims, 100));
         $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
       });
     }

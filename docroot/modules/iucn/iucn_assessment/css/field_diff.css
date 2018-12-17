@@ -40,3 +40,8 @@
 .field-with-diff#edit-field-as-references-wrapper {
     background-color: #fcf8e3;
 }
+
+.field-with-diff.field--type-string-long,
+.field-with-diff.field--type-entity-reference {
+    display: table-row-group;
+}

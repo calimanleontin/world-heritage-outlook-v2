@@ -181,30 +181,51 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
-.node-site-assessment-edit-form .main-data-container {
+.node-site-assessment-edit-form .current-state,
+.node-site-assessment-state-change-form .current-state {
+  margin: 10px 0;
+}
+.node-site-assessment-edit-form .form-item-title-0-value,
+.node-site-assessment-state-change-form .form-item-title-0-value {
+  margin-top: 0;
+}
+.node-site-assessment-edit-form .main-data-container,
+.node-site-assessment-state-change-form .main-data-container {
   display: block;
   widows: 100%;
 }
 .node-site-assessment-edit-form .main-data-container .data-fields,
-.node-site-assessment-edit-form .main-data-container .help-text {
+.node-site-assessment-state-change-form .main-data-container .data-fields,
+.node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-state-change-form .main-data-container .help-text {
   box-sizing: border-box;
+  padding-right: 5px;
 }
 @media screen and (min-width: 980px) {
   .node-site-assessment-edit-form .main-data-container .data-fields,
-  .node-site-assessment-edit-form .main-data-container .help-text {
+  .node-site-assessment-state-change-form .main-data-container .data-fields,
+  .node-site-assessment-edit-form .main-data-container .help-text,
+  .node-site-assessment-state-change-form .main-data-container .help-text {
     float: left;
     width: 50%;
   }
 }
 .node-site-assessment-edit-form .main-data-container .data-fields img,
-.node-site-assessment-edit-form .main-data-container .help-text img {
+.node-site-assessment-state-change-form .main-data-container .data-fields img,
+.node-site-assessment-edit-form .main-data-container .help-text img,
+.node-site-assessment-state-change-form .main-data-container .help-text img {
   vertical-align: middle;
 }
-.node-site-assessment-edit-form .main-data-container .help-text {
+.node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-state-change-form .main-data-container .help-text {
   background: #f5f5f2;
   border: 1px solid #e6e4df;
   padding: 0 5px;
   border-radius: 5px;
+}
+.node-site-assessment-edit-form .layout-region,
+.node-site-assessment-state-change-form .layout-region {
+  padding-right: 0!important;
 }
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
@@ -425,6 +446,17 @@
 .hidden-container {
   display: none;
 }
+.paragraph-comments-textarea .comments-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.paragraph-comments-textarea .comments-container .comment-author {
+  min-width: 120px;
+  width: 120px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
@@ -471,6 +503,10 @@
   color: #495057;
   text-decoration: none;
   background-color: #f8f9fa;
+}
+#block-tools > ul.menu li.menu-item > a.is-active {
+  background: #f5f5f2;
+  color: #000!important;
 }
 #block-tools > ul.menu li.menu-item ul.menu {
   margin: 0 0 0 2em;

@@ -80,16 +80,6 @@ class IucnNodeController extends NodeController {
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
     $build['current_state'] = NodeSiteAssessmentForm::getCurrentStateMarkup($node);
-
-    $state = $node->field_state->value;
-    if (!empty($state)) {
-      $state_entity = WorkflowState::load($state);
-      $build['current_state'] = [
-        '#weight' => -100,
-        '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' =>  $state_entity->label()]),
-      ];
-    }
     return $build;
   }
 
