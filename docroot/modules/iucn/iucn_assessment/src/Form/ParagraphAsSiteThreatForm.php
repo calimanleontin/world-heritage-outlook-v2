@@ -123,7 +123,8 @@ class ParagraphAsSiteThreatForm {
     }
     $selected_subcategory = FALSE;
     foreach ($values as $category) {
-      if (!isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
+      if (!empty($element['widget']['options_groups']['#empty_groups'][$category['target_id']])
+        || !isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
         $selected_subcategory = TRUE;
         break;
       }

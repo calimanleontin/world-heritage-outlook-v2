@@ -179,6 +179,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
+      '#empty_groups' => $this->empty_groups,
     );
 
     $element['options_groups']['#prefix'] = '<div>'.
