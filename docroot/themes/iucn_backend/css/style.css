@@ -213,8 +213,8 @@
   padding: 0 5px;
   border-radius: 5px;
 }
-.node-site-assessment-edit-form .layout-region-node-footer {
-  padding-right: 0;
+.node-site-assessment-edit-form .layout-region {
+  padding-right: 0!important;
 }
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
