@@ -181,6 +181,9 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.node-site-assessment-edit-form .current-state {
+  margin-top: 10px;
+}
 .node-site-assessment-edit-form .main-data-container {
   display: block;
   widows: 100%;
