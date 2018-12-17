@@ -5,13 +5,21 @@ dependencies:
   config:
     - field.storage.node.field_as_protection_ov_out_text
     - node.type.site_assessment
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_protection_ov_out_text
 field_name: field_as_protection_ov_out_text
 entity_type: node
 bundle: site_assessment
-label: 'Protection overall effectiveness outside factors'
+label: 'Overall assessment of protection and management'
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

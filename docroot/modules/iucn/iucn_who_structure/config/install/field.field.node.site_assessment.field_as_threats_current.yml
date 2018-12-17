@@ -7,20 +7,28 @@ dependencies:
     - node.type.site_assessment
     - paragraphs.paragraphs_type.as_site_threat
   module:
+    - disable_field
     - entity_reference_revisions
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_threats_current
 field_name: field_as_threats_current
 entity_type: node
 bundle: site_assessment
 label: 'Current threats'
-description: ''
-required: false
+description: 'Identify threats to the World Heritage site and then cross-reference these to the values they affect. Assess threats against five ratings - Very Low Threat, Low Threat, High Threat, Very High Threat, and Data Deficient (please refer to the Guidelines for a detailed definition of each category). The justification for the assessment is also captured in the threat assessment and must be systematically referenced (e.g. SOC report, 2014).'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_threat: as_site_threat
     target_bundles_drag_drop:
@@ -30,20 +38,23 @@ settings:
       as_site_benefit:
         weight: 14
         enabled: false
-      as_site_conservation:
-        weight: 15
-        enabled: false
       as_site_project:
         weight: 16
         enabled: false
       as_site_value_bio:
         weight: 17
         enabled: false
+      as_site_key_conservation:
+        weight: 18
+        enabled: false
       as_site_value_wh:
         weight: 18
         enabled: false
       content_html:
         weight: 19
+        enabled: false
+      as_site_protection:
+        weight: 20
         enabled: false
       content_teasers:
         weight: 20
@@ -59,5 +70,14 @@ settings:
         enabled: false
       teaser:
         weight: 24
+        enabled: false
+      decision:
+        weight: 27
+        enabled: false
+      image_grid:
+        weight: 28
+        enabled: false
+      image_link:
+        weight: 29
         enabled: false
 field_type: entity_reference_revisions
