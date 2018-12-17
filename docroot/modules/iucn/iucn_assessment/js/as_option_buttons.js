@@ -10,12 +10,9 @@
   Drupal.behaviors.AsOptionsButtonsWidget = {
     attach: function (context) {
       $('.options-groups', context).change(function() {
-        var $items = $('.as-checkboxes .form-checkbox', context);
+        var $items = $('.form-checkbox', context);
         $items.each(function() {
-          var $parent = $(this).parent();
-          if ($parent.is(":hidden")) {
-            $(this).prop('checked', false);
-          }
+          $(this).prop('checked', false);
         });
       })
     },
