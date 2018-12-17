@@ -188,6 +188,7 @@
 .node-site-assessment-edit-form .main-data-container .data-fields,
 .node-site-assessment-edit-form .main-data-container .help-text {
   box-sizing: border-box;
+  padding-right: 5px;
 }
 @media screen and (min-width: 980px) {
   .node-site-assessment-edit-form .main-data-container .data-fields,
