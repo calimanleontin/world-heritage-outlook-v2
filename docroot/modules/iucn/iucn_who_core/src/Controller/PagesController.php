@@ -6,8 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 
 class PagesController extends ControllerBase {
 
-
-  public function dashboard() {
+  public function emptyPageNoCache() {
     return [
       '#cache' => ['max-age' => 0],
     ];

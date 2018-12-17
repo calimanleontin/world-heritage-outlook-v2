@@ -28,6 +28,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /admin/dashboard
+    pages: "/admin/dashboard\r\n/admin/help/workflow"
     negate: false
     context_mapping: {  }
