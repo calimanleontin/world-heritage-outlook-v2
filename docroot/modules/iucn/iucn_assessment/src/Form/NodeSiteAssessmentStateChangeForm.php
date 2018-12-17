@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
@@ -14,14 +15,14 @@ use Drupal\workflow\Entity\WorkflowTransition;
 class NodeSiteAssessmentStateChangeForm {
 
   public static function alter(&$form, FormStateInterface $form_state) {
-    self::addWarning($form, t('You may no longer be able to edit the assessment if the state is changed.'));
-
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
     $currentUser = \Drupal::currentUser();
+
+    self::addStateChangeWarning($form, $node, $currentUser);
 
     NodeSiteAssessmentForm::hideUnnecessaryFields($form);
     NodeSiteAssessmentForm::addRedirectToAllActions($form);
@@ -95,6 +96,29 @@ class NodeSiteAssessmentStateChangeForm {
         $message),
       '#weight' => -1000,
     ];
+  }
+
+  public static function addStateChangeWarning(&$form, NodeInterface $node, AccountInterface $current_user) {
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $state = $node->field_state->value;
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
+      && $node->field_assessor->target_id == $current_user->id()) {
+      self::addWarning($form, t('You will NO longer be able to edit the assessment after you finish it.'));
+    }
+    elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
+      && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
+      self::addWarning($form, t('You will NO longer be able to edit the assessment after you reviewing it.'));
+    }
+    elseif ($node->field_coordinator->target_id == $current_user->id()) {
+      if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
+        self::addWarning($form, t('You will NO longer be able to edit the assessment until the assessor finishes his work.'));
+      }
+      elseif ($state == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        self::addWarning($form, t('You will NO longer be able to edit the assessment until the reviewers finish their work.'));
+      }
+    }
+
   }
 
 }

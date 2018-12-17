@@ -23,6 +23,7 @@ permissions:
   - 'administer users'
   - 'administer views'
   - 'assign any coordinator to assessment'
+  - 'assign coordinator to assessment'
   - 'assign users to assessments'
   - 'bulk assign users to assessments'
   - 'bypass node access'
