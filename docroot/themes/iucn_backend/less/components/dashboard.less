@@ -42,7 +42,13 @@
 }
 
 
-div[id^="block-views-block-account-assignments-block"] {
+div[id^="block-views-block-account-assignments-block"],
+#block-views-block-people-assignments-block-1 {
+  > h2 {
+    display: inline-block;
+    border-bottom: 2px solid;
+    padding-bottom: 5px;
+  }
   .form--inline {
     > .form-item, > .form-actions {
       float: none;

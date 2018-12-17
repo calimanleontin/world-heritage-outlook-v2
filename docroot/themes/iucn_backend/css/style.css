@@ -454,18 +454,32 @@
   color: #009cf9;
   padding: .25rem .75rem;
 }
+div[id^="block-views-block-account-assignments-block"] > h2,
+#block-views-block-people-assignments-block-1 > h2 {
+  display: inline-block;
+  border-bottom: 2px solid;
+  padding-bottom: 5px;
+}
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item,
-div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions {
+#block-views-block-people-assignments-block-1 .form--inline > .form-item,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions {
   float: none;
   display: inline-block;
   max-width: 200px;
 }
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item .chosen-container,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item .chosen-container,
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions .chosen-container,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions .chosen-container,
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item input,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item input,
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions input,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions input,
 div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item button,
-div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button {
+#block-views-block-people-assignments-block-1 .form--inline > .form-item button,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions button {
   max-width: 100%;
 }
 #block-views-block-people-assignments-block-1 .views-field-user-assignments {
