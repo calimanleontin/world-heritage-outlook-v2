@@ -45,6 +45,7 @@ function iucn_assessment_update_8001() {
  */
 function iucn_assessment_update_8002() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
+  \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
   \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
 }
 
@@ -78,7 +79,7 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
 
   $references = $node->get('field_as_references')->getValue();
   if (empty($references)) {
-    return FALSE;
+    return;
   }
   foreach ($references as $idx => $reference) {
     $reference = $reference['value'];
@@ -112,7 +113,6 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
     ]);
   }
   $logger->info("Migrated references for assessment: {$node->getTitle()}");
-  return TRUE;
 }
 
 /**
@@ -145,7 +145,6 @@ function iucn_assessment_update_8003() {
 
   foreach ($nodesIds as $nid) {
     $node = Node::load($nid);
-    $update_state = FALSE;
     $cycle = $node->field_as_cycle->value;
     if ($cycle != 2020) {
       // Delete all revisions for old assessments.
@@ -159,11 +158,11 @@ function iucn_assessment_update_8003() {
       }
 
       // Force workflow status for old assessments.
-      if ($node->isPublished()) {
-        $logger->info("Force workflow status for assessment {$node->getTitle()} ({$node->id()})");
-        $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED, FALSE);
-        $update_state = TRUE;
-      }
+      $new_state = $node->isPublished()
+        ? AssessmentWorkflow::STATUS_PUBLISHED
+        : AssessmentWorkflow::STATUS_DRAFT;
+      $workflow_service->forceAssessmentState($node, $new_state, FALSE);
+      $logger->info("Force workflow status \"{$new_state}\" for assessment \"{$node->getTitle()} ({$node->id()})\"");
     }
 
     // Fix broken values references.
@@ -205,11 +204,9 @@ function iucn_assessment_update_8003() {
     }
 
     // Migrate references from text field to paragraph.
-    $update_references = _iucn_assessment_migrate_references($node, $logger);
+    _iucn_assessment_migrate_references($node, $logger);
 
-    if ($update_state || $update_references || $update_protection) {
-      $node->save();
-    }
+    $node->save();
 
     \Drupal::state()->set($stateKey, $nid);
   }

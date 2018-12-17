@@ -774,11 +774,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
-    if (empty($form_display_mode)) {
-      $form_display_mode = 'default';
+    $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
+    if (empty($entityFormDisplay)) {
+      $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.default");
     }
-    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
-      ->getComponents();
+    $components = $entityFormDisplay->getComponents();
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }

@@ -74,6 +74,8 @@ class AssessmentWorkflow {
     self::STATUS_UNDER_COMPARISON,
   ];
 
+  const CURRENT_WORKFLOW_CYCLE_STATE_KEY = 'iucn_assessment_current_workflow_cycle_state';
+
   /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
