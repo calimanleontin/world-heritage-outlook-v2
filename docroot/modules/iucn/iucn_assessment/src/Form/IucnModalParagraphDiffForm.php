@@ -9,6 +9,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\user\Entity\User;
 
 class IucnModalParagraphDiffForm extends IucnModalForm {
 
