@@ -421,6 +421,15 @@
 .hidden-container {
   display: none;
 }
+.paragraph-comments-textarea .comments-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.paragraph-comments-textarea .comments-container .comment-author {
+  min-width: 120px;
+  width: 120px;
+  font-weight: bold;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
