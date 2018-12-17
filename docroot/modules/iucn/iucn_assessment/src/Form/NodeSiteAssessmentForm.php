@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -132,10 +133,41 @@ class NodeSiteAssessmentForm {
     if (!empty($node->id()) && !empty($state)) {
       $state_entity = WorkflowState::load($state);
       $form['current_state'] = [
-        '#weight' => -100,
+        '#weight' => -1000,
         '#type' => 'markup',
         '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
       ];
+
+      $form['main_data_container'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['main-data-container']],
+        '#weight' => -999,
+        'data' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['data-fields']],
+          'title' => $form['title'],
+          'langcode' => $form['langcode'],
+          'field_assessment_file' => $form['field_assessment_file'],
+        ],
+      ];
+      unset($form['title']);
+      unset($form['langcode']);
+      unset($form['field_assessment_file']);
+
+      $blockContent = BlockContent::load(8);
+      if (!empty($blockContent)) {
+        $form['main_data_container']['help'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['help-text']],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => t('Help'),
+          ],
+          'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
+        ];
+      }
+
       $settings = json_decode($node->field_settings->value, TRUE);
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
         || !empty($settings['comments'][$tab])) {
