@@ -694,4 +694,11 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .bold-cell {
   font-weight: bold;
 }
+.views-field-field-assessor .item-list ul,
+.views-field-field-assessor .item-list li {
+  list-style-type: none;
+}
+.views-field-field-assessor .item-list li {
+  margin: 0;
+}
 /*# sourceMappingURL=style.css.map */
