@@ -554,6 +554,10 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       ParagraphAsSiteBenefitForm::alter($form, $form_state, $form_id);
       break;
 
+    case 'paragraph_as_site_reference_iucn_modal_paragraph_add_form':
+      $form['field_reference']['widget'][0]['value']['#description'] = t('You can add multiple references at once, one per line.');
+      break;
+
     case 'revision_overview_form':
       // When messing with the revision creation workflow, the position of
       // the default revision is not always the first on the /revisions page.
