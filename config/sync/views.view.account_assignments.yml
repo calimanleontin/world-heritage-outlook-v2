@@ -943,7 +943,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'No assessments'
+            value: 'No assessments.'
             format: html
           plugin_id: text
       relationships: {  }
@@ -1821,7 +1821,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'You can''t edit the assessments during "Under assessment" and "Under review" phases because they are edited by assessor/reviewers.'
+            value: "You can't edit the assessments during \"<b>Under assessment</b>\" and \"<b>Under review</b>\" phases because they are edited by assessor/reviewers.<br/>\r\nAssessments in \"<b>Under review</b>\" phase will be ready for comparison when all reviewers have finished their work. "
             format: html
           plugin_id: text
     cache_metadata:
