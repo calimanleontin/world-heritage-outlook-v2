@@ -1,9 +1,0 @@
-uuid: 87ae5a57-9dcf-4ac8-8b5d-1aed03cc91f0
-langcode: en
-status: true
-dependencies:
-  config:
-    - eck.eck_entity_type.assessment_child
-name: 'World Heritage Site Value'
-type: as_site_value_wh
-description: ''
