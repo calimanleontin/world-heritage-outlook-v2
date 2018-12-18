@@ -108,14 +108,14 @@ class NodeSiteAssessmentStateChangeForm {
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addWarning($form, t('You will NO longer be able to edit the assessment after you reviewing it.'));
+      self::addWarning($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
         self::addWarning($form, t('You will NO longer be able to edit the assessment until the assessor finishes his work.'));
       }
       elseif ($state == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        self::addWarning($form, t('You will NO longer be able to edit the assessment until the reviewers finish their work.'));
+        self::addWarning($form, t('You will NO longer be able to edit the assessment until all reviewers finish their work.'));
       }
     }
 
