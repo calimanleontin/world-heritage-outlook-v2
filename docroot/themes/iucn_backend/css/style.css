@@ -444,7 +444,7 @@
   margin: 0 0.3em;
 }
 .hidden-container {
-  display: none;
+  display: none !important;
 }
 .paragraph-comments-textarea .comments-container {
   display: flex;
