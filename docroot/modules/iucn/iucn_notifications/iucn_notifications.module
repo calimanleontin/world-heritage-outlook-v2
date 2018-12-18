@@ -1,0 +1,191 @@
+<?php
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\workflow\Entity\WorkflowTransitionInterface;
+use Drupal\iucn_notifications\Plugin\NotificationService;
+use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_mail().
+ */
+function iucn_notifications_mail($key, &$message, $params) {
+  $message['from'] = $params['from'];
+  $message['subject'] = $params['subject'];
+  $message['body'][] = $params['message'];
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+}
+
+/**
+ * Implements hook_node_presave().
+ */
+function iucn_notifications_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
+  if ($node->bundle() == 'site_assessment') {
+    $tokens = [];
+
+    $new_assessor = !empty($node->field_assessor->target_id) ? $node->field_assessor->target_id : -1;
+    if (!empty($node->field_assessor->target_id)) {
+      $old_node = Node::load($node->id());
+      $old_assessor = !empty($old_node) ? $old_node->field_assessor->target_id : -1;
+      if ($old_assessor != $new_assessor) {
+        $current_user = User::load($new_assessor);
+        $to = $current_user->getEmail();
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to, ['tokens' => $tokens]);
+      }
+    }
+
+    $new_coordinator = !empty($node->field_coordinator->target_id) ? $node->field_coordinator->target_id : -1;
+    if (!empty($node->field_coordinator->target_id)) {
+      $old_node = Node::load($node->id());
+      $old_coordinator = !empty($old_node->field_coordinator->target_id) ? $old_node->field_coordinator->target_id : -1;
+      if ($old_coordinator != $new_coordinator) {
+        $current_user = User::load($new_coordinator);
+        $to = $current_user->getEmail();
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to, ['tokens' => $tokens]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_mail_alter
+ */
+function iucn_notifications_mail_alter(&$message) {
+  // Overrides default user module notifications
+  drupal_set_message($message['module']  . ' iucn_notifications_mail_alter => ' . $message['key']);
+  if ($message['module'] == 'user') {
+    // Disable original email sending.
+    $message['send'] = false;
+    $tokens = [
+      'site' => [
+        'name' => \Drupal::config('system.site')->get('name'),
+        'login-url' => \Drupal\Core\Url::fromUserInput('/', ['absolute' => true])->toString(),
+      ],
+    ];
+    if (!empty($message['params']['account']) && $message['params']['account'] instanceof \Drupal\user\UserInterface) {
+      $tokens['user'] = $message['params']['account'];
+      $tokens['iucn']['one-time-login-url'] = user_pass_reset_url($message['params']['account'], ['langcode' => 'en']);
+      $tokens['iucn']['one-time-login-url:en'] = user_pass_reset_url($message['params']['account'], ['langcode' => 'en']);
+    }
+
+    switch ($message['key']) {
+      case 'register_admin_created':
+        /**
+         * When admin creates account, status_activated isn't sent even if the new account created as active.
+         * If admin checks notify new user, register_admin_created is sent, but we send the same PET we send for status_activated.
+         */
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
+        break;
+
+      case 'status_activated':
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
+        break;
+
+      case 'password_reset':
+        $success = \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$USER_PASSWORD_RESET, $message['to'], ['tokens' => $tokens]);
+        if ($success) {
+          drupal_set_message(t('Further instructions have been sent to your email address.'));
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ * sending on state change mail.
+ */
+function iucn_notifications_entity_update(EntityInterface $entity) {
+  // Avoid this hook on workflow objects.
+  if (\Drupal\workflow\Entity\WorkflowManager::isWorkflowEntityType($entity->getEntityTypeId())) {
+    return;
+  }
+
+  foreach (_workflow_info_fields($entity) as $field_info) {
+    $field_name = $field_info->getName();
+    /** @var $transition WorkflowTransitionInterface */
+    $transition = $entity->$field_name->__get('workflow_transition');
+    if (empty($transition)) {
+      continue;
+    }
+    $from_sid = $transition->getFromSid();
+    $to_sid = $transition->getToSid();
+
+    $state_changed = ($from_sid != $to_sid);
+    if (!$state_changed) {
+      continue;
+    }
+
+    $tokens = [];
+    switch ($to_sid) {
+      case 'assessment_ready_for_review':
+        /** email sent to the coordinators when state is "Assessment phase done" */
+        $coordinator = _iucn_notifications_get_node_coordinator($entity);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinator, ['tokens' => $tokens]);
+        break;
+
+      case 'assessment_under_review':
+        // Ready for review.
+        /** emails sent to each assigned reviewer when state is "Ready for review" */
+        $reviewers = _iucn_notifications_get_node_reviewers($entity);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_REVIEW_BY_COORDINATOR, $reviewers, ['tokens' => $tokens]);
+        break;
+
+      case 'assessment_finished_reviewing':
+        // Finished reviewing.
+        /** email sent to the coordinator when state is "Review phase finished" */
+        $coordinator = _iucn_notifications_get_node_coordinator($entity);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS, $coordinator, ['tokens' => $tokens]);
+        break;
+
+      case 'assessment_approved':
+        // Approved.
+        /** email sent to administrators when state is "Ready to publish" */
+        $administrators = _iucn_notifications_get_administrators();
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_FINAL_EDITS_BY_COORDINATOR, $administrators, ['tokens' => $tokens]);
+        break;
+    }
+  }
+}
+
+function _iucn_notifications_get_administrators() {
+  $user_storage = \Drupal::service('entity_type.manager')->getStorage('user');
+
+  $ids = $user_storage->getQuery()
+    ->condition('status', 1)
+    ->condition('roles', 'administrator')
+    ->execute();
+  $users = $user_storage->loadMultiple($ids);
+  $emails = [];
+  foreach ($users as $user) {
+    $emails[] = $user->getEmail();
+  }
+  return $emails;
+}
+
+function _iucn_notifications_get_node_assessor($node) {
+  if (!empty($node->field_assessor->target_id)) {
+    $current_user = User::load($node->field_assessor->target_id);
+    return $current_user->getEmail();
+  }
+  return NULL;
+}
+
+function _iucn_notifications_get_node_coordinator($node) {
+  if (!empty($node->field_coordinator->target_id)) {
+    $current_user = User::load($node->field_coordinator->target_id);
+    return $current_user->getEmail();
+  }
+  return NULL;
+}
+
+function _iucn_notifications_get_node_reviewers($node) {
+  $emails = [];
+  $reviewers = $node->get('field_reviewers')->getValue();
+  foreach($reviewers as $reviewer) {
+    $current_user = User::load($reviewer['target_id']);
+    if ($current_user) {
+      $emails[] = $current_user->getEmail();
+    }
+  }
+  return $emails;
+}

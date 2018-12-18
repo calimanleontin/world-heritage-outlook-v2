@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\pet\Entity\Pet;
+
+/**
+ * Create defual pet templates.
+ */
+function iucn_notifications_update_8001() {
+  $map = [
+    'USER_ACCOUNT_ACTIVATED',
+    'USER_PASSWORD_RESET',
+    'SETUP_NEW_ASSESSMENT',
+    'INPUT_ASSESSMENT_DATA_BY_ASSESSORS',
+    'REVIEW_BY_COORDINATOR',
+    'ASSESSMENT_REVIEW_BY_REVIEWERS',
+    'FINAL_EDITS_BY_COORDINATOR'
+  ];
+  foreach ($map as $title) {
+    $pet = Pet::create([
+      'title' => $title,
+    ]);
+    $pet->save();
+  }
+}
