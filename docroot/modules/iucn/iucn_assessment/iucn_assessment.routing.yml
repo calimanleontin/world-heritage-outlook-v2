@@ -97,6 +97,8 @@ iucn_assessment.paragraph_diff_form:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
 
@@ -114,6 +116,8 @@ iucn_assessment.field_diff_form:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.modal_paragraph_add:
   path: 'node/add_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{bundle}'
@@ -130,6 +134,8 @@ iucn_assessment.modal_paragraph_add:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.modal_paragraph_delete:
   path: 'node/delete_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
@@ -146,6 +152,8 @@ iucn_assessment.modal_paragraph_delete:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
 
@@ -164,5 +172,7 @@ iucn_assessment.modal_paragraph_edit:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'

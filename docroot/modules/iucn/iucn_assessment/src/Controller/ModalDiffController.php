@@ -23,9 +23,6 @@ class ModalDiffController extends ControllerBase {
 
   public function fieldDiffForm(NodeInterface $node, $node_revision, $field, $field_wrapper_id) {
     $response = new AjaxResponse();
-    $node_revision = $this->entityTypeManager()
-      ->getStorage('node')
-      ->loadRevision($node_revision);
     $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_modal_field_diff');
     $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
     return $response;

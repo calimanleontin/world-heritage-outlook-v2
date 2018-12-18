@@ -36,7 +36,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $field_wrapper_id = $this->getRouteMatch()->getParameter('field_wrapper_id');
     
     /** @var NodeInterface $parent_entity_revision */
-    $parent_entity_revision = $this->assessmentWorkflow->getAssessmentRevision($this->getRouteMatch()->getParameter('node_revision'));
+    $parent_entity_revision = $this->getRouteMatch()->getParameter('node_revision');
     if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
       $form_revision = $this->assessmentWorkflow->getRevisionByState($parent_entity_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     }

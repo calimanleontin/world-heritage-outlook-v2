@@ -13,10 +13,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $node_revision = $this->getRouteMatch()->getParameter('node_revision');
-    $node = $this->entityTypeManager
-      ->getStorage('node')
-      ->loadRevision($node_revision);
+    $node = $this->getRouteMatch()->getParameter('node_revision');
     $field = $this->getRouteMatch()->getParameter('field');
     $parent_form = parent::buildForm($form, $form_state);
 
