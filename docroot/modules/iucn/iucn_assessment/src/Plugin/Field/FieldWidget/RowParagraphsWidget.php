@@ -523,8 +523,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (!empty($reviewer_paragraphs_rows)) {
       foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
         $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, 'accept');
+        $reviewer_paragraph_row['_weight'] = [
+          '#type' => 'weight',
+          '#delta' => $this->realItemCount + 10,
+          '#default_value' => $this->realItemCount + 10,
+        ];
+        $elements[] = $reviewer_paragraph_row;
       }
-      $elements += $reviewer_paragraphs_rows;
     }
   }
 
