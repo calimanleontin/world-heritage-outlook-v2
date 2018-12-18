@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
 
 class IucnModalParagraphAddForm extends IucnModalForm {
 
@@ -34,10 +35,44 @@ class IucnModalParagraphAddForm extends IucnModalForm {
    * Insert the value into the ItemList either before or after.
    */
   protected function insertParagraph($parent_entity, $field) {
-    $route_match = $this->getRouteMatch();
+    $paragraph = $this->entity;
+    if ($paragraph->bundle() == 'as_site_reference' && $parent_entity instanceof NodeInterface) {
+      $value = $paragraph->field_reference->value;
+      $lines = preg_split('/\r\n|\r|\n/', $value);
+      array_walk($lines, function (&$walkValue) {
+        $walkValue = trim($walkValue);
+      });
+      $lines = array_filter($lines);
+
+      if (count($lines) > 1) {
+        // If user entered multiple references separated by EOL, we create a new
+        // paragraph for each line.
+        $firstValue = array_shift($lines);
+        $paragraph->set('field_reference', $firstValue);
+        $paragraph->save();
+        $parent_entity->get($field)->appendItem([
+          'target_id' => $paragraph->id(),
+          'target_revision_id' => $paragraph->getRevisionId(),
+        ]);
+        foreach ($lines as $line) {
+          $newParagraph = \Drupal\paragraphs\Entity\Paragraph::create([
+            'type' => 'as_site_reference',
+            'field_reference' => $line,
+          ]);
+          $newParagraph->save();
+          $parent_entity->get($field)->appendItem([
+            'target_id' => $newParagraph->id(),
+            'target_revision_id' => $newParagraph->getRevisionId(),
+          ]);
+        }
+        $parent_entity->save();
+        return;
+      }
+    }
+
     $value = [
-      'target_id' => $this->entity->id(),
-      'target_revision_id' => $this->entity->getRevisionId(),
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
     ];
     $parent_entity->get($field)->appendItem($value);
   }
