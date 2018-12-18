@@ -272,19 +272,15 @@ class NodeSiteAssessmentForm {
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     // Hide these fields if there are no other biodiversity values.
-    if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
+    if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
-        'field_as_protection_ov_out_rate',
-        'field_as_protection_ov_out_text',
-        'field_as_protection_ov_practices',
-        'field_as_protection_ov_rating',
-        'field_as_protection_ov_text',
+        'field_as_vass_bio_state',
+        'field_as_vass_bio_text',
+        'field_as_vass_bio_trend',
       ];
       foreach ($fields as $field) {
-        unset($form[$field]);
+        $form[$field]['#access'] = FALSE;
       }
-
-      $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
     }
 
     // Validation.
