@@ -398,3 +398,8 @@
 .paragraph-diff-final {
     border-top: 3px solid black;
 }
+
+.diff-modal .paragraph-diff-row,
+.diff-modal .paragraph-diff-row .paragraphs-actions {
+    background-color: #fcfcfa !important;
+}
