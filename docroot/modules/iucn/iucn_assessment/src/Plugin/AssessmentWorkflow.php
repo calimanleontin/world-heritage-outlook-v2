@@ -115,11 +115,12 @@ class AssessmentWorkflow {
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
-    if ($action == 'edit') {
-      if ($account->hasPermission('edit assessment in any state')) {
-        return AccessResult::allowed();
-      }
 
+    if ($account->hasPermission('edit assessment in any state')) {
+      return AccessResult::allowed();
+    }
+
+    if ($action == 'edit') {
       switch ($state) {
         case self::STATUS_CREATION:
         case self::STATUS_NEW:
