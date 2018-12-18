@@ -356,8 +356,19 @@ class AssessmentWorkflow {
       $field_settings['diff'] = [];
     }
     if (!empty($field_settings['comments'])) {
+      $reviewers = $this->getReviewersArray($node);
       foreach (array_keys($field_settings['comments']) as $tab) {
-        $diff['fieldgroups'][$tab] = $tab;
+        if ($node->field_state->value != self::STATUS_READY_FOR_REVIEW) {
+          // Assessor comments are still stored, but we don't want to highlight tabs
+          // that only have assessor comments. In this state, we are going to
+          // highlight tabs that have at least one reviewer comment.
+          if (!empty(array_intersect(array_keys($field_settings['comments'][$tab]), $reviewers))) {
+            $diff['fieldgroups'][$tab] = $tab;
+          }
+        }
+        else {
+          $diff['fieldgroups'][$tab] = $tab;
+        }
       }
     }
     $field_settings['diff'][$compare->getRevisionId()] = $diff;

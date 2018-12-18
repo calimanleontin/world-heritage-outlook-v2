@@ -98,7 +98,7 @@ class DiffController extends ControllerBase {
       if (in_array($field, $settings['children'])) {
         return $settings['parent_name'] != 'group_as_tabs'
           ? $this->getFieldGroupIdForNodeField($key)
-          : $settings['format_settings']['id'];
+          : str_replace('_', '-', $settings['format_settings']['id']);
       }
     }
     return NULL;
@@ -123,13 +123,13 @@ class DiffController extends ControllerBase {
         if (in_array($field, $components)) {
           return 'values';
         }
-        return 'assessing_values';
+        return 'assessing-values';
 
       case 'as_site_threat':
         return 'threats';
 
       case 'as_site_protection':
-        return 'protection_management';
+        return 'protection-management';
 
       case 'as_site_benefit':
         return 'benefits';

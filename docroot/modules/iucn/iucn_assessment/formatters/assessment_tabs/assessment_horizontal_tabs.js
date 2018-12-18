@@ -265,7 +265,7 @@
         .append(tab.title = $('<strong></strong>').text(settings.title))
       );
 
-    if (diff_tabs !== undefined && idAttr.replace('-', '_') in diff_tabs) {
+    if (diff_tabs !== undefined && idAttr in diff_tabs) {
       tab.item.addClass('diff-tab');
     }
 
