@@ -66,9 +66,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     }
 
     // Add the author table cell.
-    $author = !empty($parent_entity_revision->field_coordinator->entity) ? $parent_entity_revision->field_coordinator->entity->getDisplayName() : '';
     $author_header = $this->getTableCellMarkup(t('Author'), 'author');
-    $author_container = $this->getTableCellMarkup($author, 'author');
+    $author_container = $this->getTableCellMarkup('Initial version', 'author');
     $form['widget'][$paragraph_key]['top']['summary'] = ['author' => $author_container] + $form['widget'][$paragraph_key]['top']['summary'];
     $form['widget']['header']['data'] = ['author' => $author_header] + $form['widget']['header']['data'];
 
@@ -202,6 +201,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     }
 
     unset($form['widget']['#element_validate']);
+
+    $form['widget'][$paragraph_key]['#attributes']['class'][] = 'diff-original-row';
 
     $paragraph_form['diff'] = $form;
     $paragraph_form['diff']['#weight'] = 0;
