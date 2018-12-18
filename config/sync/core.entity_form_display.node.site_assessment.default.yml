@@ -159,7 +159,6 @@ third_party_settings:
     group_as_projects:
       children:
         - field_as_projects
-        - field_as_projects_needs
       parent_name: group_as_tabs
       weight: 27
       format_type: assessment_tab
@@ -519,27 +518,6 @@ content:
       only_editable: false
     third_party_settings: {  }
     region: content
-  field_as_projects_needs:
-    type: row_entity_reference_paragraphs
-    weight: 17
-    settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: closed
-      closed_mode: summary
-      autocollapse: none
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: _none
-      features:
-        duplicate: 0
-        collapse_edit_all: 0
-        add_above: 0
-      show_numbers: 'no'
-      empty_message: ''
-      only_editable: false
-    third_party_settings: {  }
-    region: content
   field_as_protection:
     type: row_entity_reference_paragraphs
     weight: 22
@@ -811,6 +789,7 @@ hidden:
   field_as_archived: true
   field_as_cycle: true
   field_as_end_date: true
+  field_as_projects_needs: true
   field_as_references: true
   field_as_site: true
   field_as_start_date: true
