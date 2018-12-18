@@ -56,7 +56,7 @@ class IucnModalParagraphDeleteForm extends FormBase {
     /** @var ParagraphInterface $paragraph */
     $paragraph = $route_match->getParameter('paragraph_revision');
     $field = $route_match->getParameter('field');
-    $parent_entity = $paragraph->getParentEntity();
+    $parent_entity = $route_match->getParameter('node_revision');
 
     $field_values = $parent_entity->get($field)->getValue();
     $key = array_search($paragraph->id(), array_column($field_values, 'target_id'));

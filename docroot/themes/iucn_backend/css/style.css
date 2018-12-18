@@ -158,6 +158,7 @@
 }
 .button.paragraphs-icon-button {
   padding: 0;
+  min-width: 36px;
   width: 36px !important;
   height: 36px;
   background-position: center !important;

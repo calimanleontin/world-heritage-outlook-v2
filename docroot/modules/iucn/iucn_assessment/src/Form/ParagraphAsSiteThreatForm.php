@@ -25,8 +25,7 @@ class ParagraphAsSiteThreatForm {
 
     // When adding new paragraphs, parent entity is not yet set.
     if (empty($parentEntity) && $route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
-      $revision_id = $route_match->getParameter('node_revision');
-      $parentEntity = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($revision_id);
+      $parentEntity = $route_match->getParameter('node_revision');
     }
 
     if ($parentEntity instanceof NodeInterface) {

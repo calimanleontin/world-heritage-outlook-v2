@@ -15,13 +15,9 @@ class IucnModalParagraphAddForm extends IucnModalForm {
     $temporary_data = $form_state->getTemporary();
     $field = $route_match->getParameter('field');
 
-    $node_revision = isset($temporary_data['node_revision']) ?
+    $parent_entity_revision = isset($temporary_data['node_revision']) ?
       $temporary_data['node_revision'] :
       $route_match->getParameter('node_revision');
-
-    $parent_entity_revision = $this->entityTypeManager
-      ->getStorage('node')
-      ->loadRevision($node_revision);
 
     $this->entity->setParentEntity($parent_entity_revision, $field);
     $this->entity->save();
@@ -30,7 +26,7 @@ class IucnModalParagraphAddForm extends IucnModalForm {
 
     $save_status = $parent_entity_revision->save();
 
-    $form_state->setTemporary(['parent_entity_revision' => $parent_entity_revision->getRevisionId()]);
+    $form_state->setTemporary(['parent_entity_revision' => $parent_entity_revision]);
 
     return $save_status;
   }

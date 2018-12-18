@@ -398,3 +398,16 @@
 .paragraph-diff-final {
     border-top: 3px solid black;
 }
+
+.diff-modal .paragraph-diff-row,
+.diff-modal .paragraph-diff-row .paragraphs-actions {
+    background-color: #fcfcfa !important;
+}
+
+.diff-original-row {
+    border-bottom: 3px solid black;
+}
+
+.diff-original-row .paragraph-summary-component-author {
+    font-weight: bold;
+}

@@ -2,6 +2,7 @@
 
 namespace Drupal\Core\ParamConverter;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\Routing\Route;
@@ -58,7 +59,9 @@ class EntityRevisionParamConverter implements ParamConverterInterface {
   public function convert($value, $definition, $name, array $defaults) {
     list (, $entity_type_id) = explode(':', $definition['type'], 2);
     $entity = $this->entityTypeManager->getStorage($entity_type_id)->loadRevision($value);
-    return $this->entityRepository->getTranslationFromContext($entity);
+    return $entity instanceof EntityInterface
+      ? $this->entityRepository->getTranslationFromContext($entity)
+      : NULL;
   }
 
   /**

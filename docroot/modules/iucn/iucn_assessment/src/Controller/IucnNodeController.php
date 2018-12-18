@@ -65,17 +65,12 @@ class IucnNodeController extends NodeController {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function stateChangeForm(NodeInterface $node, $node_revision = NULL) {
+  public function stateChangeForm(NodeInterface $node, NodeInterface $node_revision = NULL) {
     if ($node->bundle() != 'site_assessment') {
       throw new NotFoundHttpException();
     }
     if (!empty($node_revision)) {
-      $node = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadRevision($node_revision);
-      if (empty($node)) {
-        throw new NotFoundHttpException();
-      }
+      $node = $node_revision;
     }
     $edit_form = \Drupal::entityTypeManager()->getFormObject('node', 'state_change')->setEntity($node);
     $build = \Drupal::formBuilder()->getForm($edit_form);
