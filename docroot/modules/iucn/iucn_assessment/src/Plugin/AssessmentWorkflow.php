@@ -150,9 +150,8 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
-          // Reviewed assessments can only be edited by the coordinator.
-          // Reviewers can no longer edit their respective revisions.
-          $access = AccessResult::allowedIf($node->isDefaultRevision() && $accountIsCoordinator);
+          // Coordinators must move to UNDER_COMPARISON before editing.
+          $access = AccessResult::forbidden();
           break;
 
         default:
