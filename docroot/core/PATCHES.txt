@@ -13,3 +13,7 @@ Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal sub
 Source: https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch
 
 
+EntityRevisionParamConverter doesn't check if the entity revision actually exists
+Source: https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch
+
+
