@@ -165,6 +165,10 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
           break;
 
+        case self::STATUS_FINISHED_REVIEWING:
+          $access = AccessResult::allowedIf($accountIsCoordinator);
+          break;
+
         default:
           return $this->checkAssessmentAccess($node, 'edit', $account);
       }
