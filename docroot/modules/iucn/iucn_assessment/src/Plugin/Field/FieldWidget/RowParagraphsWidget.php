@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
@@ -33,6 +34,11 @@ use Drupal\user\Entity\User;
  * )
  */
 class RowParagraphsWidget extends ParagraphsWidget {
+
+  /**
+   * @var RouteMatchInterface
+   */
+  protected $routeMatch;
 
   /**
    * The last paragraph entity that has been processed.
@@ -258,6 +264,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $this->routeMatch = \Drupal::routeMatch();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -377,11 +384,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return int
    */
   public function calculateColumnCount(array $components) {
-    $count = count($components);
-
+    $count = 0;
     foreach ($components as $key => $component) {
-      if (!empty($component['span']) && $component['span'] == 2) {
-        $count++;
+      if (!empty($component['span'])) {
+        $count += $component['span'];
       }
     }
     return $count;
@@ -691,12 +697,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $label = $field_definition->getLabel();
       }
       $header[$field_name]['value'] = $label;
-      if ($field_definition->getType() == 'string_long') {
-        $header[$field_name]['span'] = 2;
-      }
-      else {
-        $header[$field_name]['span'] = 1;
-      }
+      $header[$field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
     $header += [
@@ -843,8 +844,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($field_definition->getType() == 'boolean') {
         $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
         $value = !empty($paragraph->{$field_name}->value)
-          ? $config->getSetting('on_label')
-          : $config->getSetting('off_label');
+          ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
+          : '';
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
@@ -902,15 +903,31 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       $summary[$summary_field_name]['value'][] = $value;
-      if ($field_definition->getType() == 'string_long') {
-        $summary[$summary_field_name]['span'] = 2;
-      }
-      else {
-        $summary[$summary_field_name]['span'] = 1;
-      }
+      $summary[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
     return $summary;
+  }
+
+  public function getFieldSpan(FieldDefinitionInterface $field_definition) {
+    $field_name = $field_definition->getName();
+    if ($field_definition->getType() == 'string_long') {
+      return 3;
+    }
+    elseif ($this->routeMatch->getRouteName() == 'iucn_assessment.paragraph_diff_form'
+      && in_array($field_name, [
+        'field_as_threats_categories',
+        'field_as_threats_values_wh',
+        'field_as_threats_values_bio',
+        'field_as_benefits_category',
+      ])
+    ) {
+      return 3;
+    }
+    elseif ($field_definition->getType() == 'boolean') {
+      return 1;
+    }
+    return 2;
   }
 
   /**
