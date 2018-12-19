@@ -773,9 +773,8 @@ $settings['install_profile'] = 'minimal';
 // TODO Check how can we use kernel.environment property that you can overwrite in services.yml
 $config['config_split.config_split.development']['status'] = FALSE;
 $config['config_split.config_split.live']['status'] = FALSE;
-$live_env = ['live', 'production'];
 if (!empty($settings['environment'])) {
-  if (in_array($settings['environment'], $live_env)) {
+  if (in_array($settings['environment'], ['live', 'production'])) {
     $config['config_split.config_split.live']['status'] = TRUE;
     $config['config_split.config_split.development']['status'] = FALSE;
   }
