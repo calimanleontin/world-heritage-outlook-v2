@@ -552,6 +552,27 @@
     font-weight: bold;
 }
 
-span.field-boolean-tick {
+span.field-boolean-tick,
+.diff-tick-true,
+.diff-tick-false {
     font-size: 1.6rem;
+}
+
+.diff-context-wrapper td.diff-tick-false span.diffchange {
+    background-color: #fdd;
+}
+
+.diff-context-wrapper td.diff-tick-true span.diffchange {
+    background-color: #dfd;
+}
+
+.diff-context-wrapper td.diff-tick-false,
+.diff-context-wrapper td.diff-tick-true {
+    display: block;
+    background-color: #fcfcfa;
+}
+
+table.diff-context-wrapper,
+.diff-tick-marker {
+    display: block;
 }
