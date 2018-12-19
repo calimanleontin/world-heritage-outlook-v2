@@ -2,23 +2,18 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormBase;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
-use Drupal\linkit\ProfileInterface;
-use Drupal\paragraphs\ParagraphInterface;
 
 class IucnModalParagraphDeleteForm extends FormBase {
 
   /**
-   * @var EntityInterface
+   * @var \Drupal\Core\Entity\EntityInterface
    */
   protected $parent_entity;
 
   /**
-   * @var ParagraphInterface
+   * @var \Drupal\paragraphs\ParagraphInterface
    */
   protected $paragraph;
 
@@ -116,11 +111,37 @@ class IucnModalParagraphDeleteForm extends FormBase {
 
   public function ajaxDelete(&$form, FormStateInterface $form_state) {
     $field = $this->getRouteMatch()->getParameter('field');
+    $paragraph = $this->paragraph;
+    $parent_entity = $this->parent_entity;
 
     $field_values = $this->parent_entity->get($field)->getValue();
     $key = array_search($this->paragraph->id(), array_column($field_values, 'target_id'));
     $this->parent_entity->get($field)->removeItem($key);
     $this->parent_entity->save();
+
+    $affected_value_fields = [
+      'as_site_value_wh' => 'field_as_threats_values_wh',
+      'as_site_value_bio' => 'field_as_threats_values_bio',
+    ];
+
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    if (in_array($paragraph->bundle(), array_keys($affected_value_fields))) {
+      $threats = array_merge($parent_entity->get('field_as_threats_current')->getValue(), $parent_entity->get('field_as_threats_potential')->getValue());
+      foreach ($threats as $threat) {
+        $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
+        $field = $affected_value_fields[$paragraph->bundle()];
+        $affected_values = $threat->get($field)->getValue();
+        foreach ($affected_values as $idx => $affected_value) {
+          if ($affected_value['target_revision_id'] == $paragraph->getRevisionId()) {
+            unset($affected_values[$idx]);
+            $threat->set($field, $affected_values);
+            $threat->save();
+            break;
+          }
+        }
+      }
+    }
+
     return IucnModalForm::assessmentAjaxSave($form, $form_state);
   }
 
