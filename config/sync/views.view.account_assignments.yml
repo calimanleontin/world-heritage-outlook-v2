@@ -4423,7 +4423,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: "The following assessments need to be published.<br/>\r\nYou can publish multiple assessments at once by using the <a href=\"/admin/content/assessments\">assessments listing</a> page."
+            value: "The following assessments need to be published.<br/>\r\nYou can publish multiple assessments at once using the <a href=\"/admin/content/assessments\">assessments listing</a> page."
             format: html
           plugin_id: text
     cache_metadata:
