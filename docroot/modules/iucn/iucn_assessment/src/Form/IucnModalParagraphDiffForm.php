@@ -66,10 +66,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     }
 
     // Add the author table cell.
-    $author_header = $this->getTableCellMarkup(t('Author'), 'author');
-    $author_container = $this->getTableCellMarkup('Initial version', 'author');
-    $form['widget'][$paragraph_key]['top']['summary'] = ['author' => $author_container] + $form['widget'][$paragraph_key]['top']['summary'];
-    $form['widget']['header']['data'] = ['author' => $author_header] + $form['widget']['header']['data'];
+    $this->addAuthorCell($form['widget']['header'], 'data', t('Author'), 'author', 2, -100);
+    $this->addAuthorCell($form['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
 
     $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
     $diff = $settings['diff'];
@@ -162,41 +160,31 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision, $display_mode) as $field => $data) {
       $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
       if (in_array($field, array_keys($paragraph_form))) {
-        if (!empty($paragraph_form[$field]['widget']['#title'])) {
-          $paragraph_form[$field]['widget']['#title_display'] = 'invisible';
-        }
-        if (!empty($paragraph_form[$field]['widget'][0]['value']['#title'])) {
-          $paragraph_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
-        }
-        unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-        $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field];
-        if ($field != $grouped_with) {
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#prefix'] =
-            '<b>' . RowParagraphsWidget::getSummaryPrefix($field) . '</b>';
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
-            '<b>' . RowParagraphsWidget::getSummaryPrefix($grouped_with) . '</b>';
-        }
-
         if (($field == 'field_as_threats_values_bio' || $field == 'field_as_threats_values_wh')
-          && !empty($paragraph_form[$field . '_select_wrapper'])) {
+          && empty($paragraph_form[$field . '_select_wrapper']['#printed'])) {
           unset($paragraph_form[$field . '_select_wrapper'][$field . '_select']['#title']);
           $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field . '_select_wrapper'][$field . '_select'];
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#access'] = TRUE;
           $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#parents'] = [$field . '_select'];
           unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
           unset($paragraph_form[$field . '_select_wrapper']);
         }
-
+        else {
+          if (!empty($paragraph_form[$field]['widget']['#title'])) {
+            $paragraph_form[$field]['widget']['#title_display'] = 'invisible';
+          }
+          if (!empty($paragraph_form[$field]['widget'][0]['value']['#title'])) {
+            $paragraph_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
+          }
+          unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field];
+          if ($field != $grouped_with) {
+            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#prefix'] =
+              '<b>' . RowParagraphsWidget::getSummaryPrefix($field) . '</b>';
+            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
+              '<b>' . RowParagraphsWidget::getSummaryPrefix($grouped_with) . '</b>';
+          }
+        }
         unset($paragraph_form[$field]);
-      }
-      elseif (($field == 'field_as_threats_values_bio' || $field == 'field_as_threats_values_wh')
-        && !empty($paragraph_form[$field . '_select_wrapper'])) {
-        unset($paragraph_form[$field . '_select_wrapper'][$field . '_select']['#title']);
-        $paragraph_form[$field]['#access'] = TRUE;
-        $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field];
-        $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['widget'] = $paragraph_form[$field . '_select_wrapper'][$field . '_select'];
-        unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-        unset($paragraph_form[$field . '_select_wrapper']);
       }
     }
 
@@ -214,7 +202,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     return $paragraph_form;
   }
 
-  public function getTableCellMarkup($markup, $class, $span = 1) {
+  public function getTableCellMarkup($markup, $class, $span = 1, $weight = 0) {
     return [
       '#type' => 'container',
       '#attributes' => [
@@ -225,7 +213,19 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
         ],
       ],
       'data' => ['#markup' => $markup],
+      '#weight' => $weight,
     ];
+  }
+
+  public function addAuthorCell(array &$table, $key, $markup, $class, $span = 1, $weight = 0) {
+    foreach ($table['#attributes']['class'] as &$class) {
+      if (preg_match('/paragraph-top-col-(\d+)/', $class, $matches)) {
+        $col_count = $matches[1] + $span - 1;
+        $class = "paragraph-top-col-$col_count";
+      }
+    }
+
+    $table[$key]['author'] = $this->getTableCellMarkup($markup, $class, $span, $weight);
   }
 
 }
