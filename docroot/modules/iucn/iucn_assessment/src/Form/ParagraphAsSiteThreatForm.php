@@ -141,8 +141,8 @@ class ParagraphAsSiteThreatForm {
 
     foreach (self::AFFECTED_VALUES_FIELDS as $field) {
       $selected = $form_state->getValue("{$field}_select");
+      $values = [];
       if (!empty($selected) && is_array($selected)) {
-        $values = [];
         foreach ($selected as $target_id) {
           $valueParagraph = Paragraph::load($target_id);
           if (empty($valueParagraph->id())) {
@@ -153,8 +153,8 @@ class ParagraphAsSiteThreatForm {
             'target_revision_id' => $valueParagraph->getRevisionId(),
           ];
         }
-        $entity->set($field, $values);
       }
+      $entity->set($field, $values);
     }
 
     $entity->save();

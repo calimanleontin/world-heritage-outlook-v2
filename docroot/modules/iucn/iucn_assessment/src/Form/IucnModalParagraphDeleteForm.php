@@ -86,10 +86,15 @@ class IucnModalParagraphDeleteForm extends FormBase {
     else {
       $warning = $this->t('This value cannot be deleted because it is the only affected value for the some threats. Please edit or delete these threats first:');
       $form['warning'] = [
+        '#type' => 'container',
+        '#prefix' => '<div role="contentinfo" aria-label="Warning message" class="messages messages--warning">',
+        '#suffix' => '</div>',
+      ];
+      $form['warning']['message'] = [
         '#type' => 'markup',
         '#markup' => '<div class="delete-warning">' . $warning . '</div>',
       ];
-      $form['threats'] = [
+      $form['warning']['threats'] = [
         '#items' => $blocking_threats,
         '#theme' => 'item_list',
         '#list_type' => 'ul',
