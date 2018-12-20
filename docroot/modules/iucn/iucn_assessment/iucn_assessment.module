@@ -561,7 +561,9 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     case 'paragraph_as_site_value_wh_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_value_wh_iucn_modal_paragraph_edit_form':
     case 'paragraph_as_site_value_wh_iucn_modal_paragraph_diff_form':
-      $form['field_as_values_value']['#disabled'] = TRUE;
+      if (\Drupal::request()->query->get('tab') == 'assessing-values') {
+        $form['field_as_values_value']['#disabled'] = TRUE;
+      }
       break;
 
     case 'revision_overview_form':
