@@ -318,6 +318,13 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
 
+    $paragraph = Paragraph::create([
+      'type' => 'as_site_value_wh',
+    ]);
+    $paragraph->save();
+    $assessment->field_as_values_wh->appendItem($paragraph);
+    $assessment->save();
+
     $this->userLogIn(TestSupport::COORDINATOR1);
 
     $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
@@ -331,10 +338,15 @@ class WorkflowTest extends IucnAssessmentTestBase {
     foreach (['values', 'assessing-values'] as $tab) {
       $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
       $this->assertNoRaw('tabledrag-handle');
-      $this->assertNoRaw('value="Edit"');
       $this->assertNoRaw('value="Remove"');
       $this->assertNoRaw('value="Add more"');
       $this->assertRaw('Save');
+      if ($tab == 'values') {
+        $this->assertNoRaw('value="Edit"');
+      }
+      else {
+        $this->assertRaw('value="Edit"');
+      }
     }
   }
 
