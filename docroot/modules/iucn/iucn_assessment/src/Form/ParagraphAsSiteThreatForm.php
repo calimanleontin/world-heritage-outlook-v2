@@ -12,10 +12,6 @@ class ParagraphAsSiteThreatForm {
   const AFFECTED_VALUES_FIELDS = ['field_as_threats_values_wh', 'field_as_threats_values_bio'];
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
-    // Form already altered in IucnModalParagraphDiffForm.
-    if (!empty($form['#processed'])) {
-      return;
-    }
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */
