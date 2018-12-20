@@ -11,6 +11,10 @@ class ParagraphAsSiteThreatForm {
 
   const AFFECTED_VALUES_FIELDS = ['field_as_threats_values_wh', 'field_as_threats_values_bio'];
 
+  const DEPENDENT_FIELDS = [
+    'field_as_threats_extent' => 'field_as_threats_in',
+  ];
+
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
@@ -83,9 +87,18 @@ class ParagraphAsSiteThreatForm {
     $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
     $form['field_as_threats_categories']['#element_validate'][] = [self::class, 'validateThreatCategories'];
 
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setDependentFieldValues']);
     $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
 
     $form['#validate'][] = [self::class, 'validateValues'];
+  }
+
+  public static function setDependentFieldValues(array &$form, FormStateInterface $form_state) {
+    foreach (self::DEPENDENT_FIELDS as $field => $depends_on) {
+      if (empty($form_state->getValue($depends_on)['value'])) {
+        $form_state->setValue($field, []);
+      }
+    }
   }
 
   public static function validateValues(array &$form, FormStateInterface $form_state) {
