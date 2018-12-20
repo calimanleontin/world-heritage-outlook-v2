@@ -1,0 +1,10 @@
+uuid: 58f620c8-d140-411e-8ec3-b5823cb2c5c0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.assign_users
+label: 'Assign users'
+targetEntityType: node
+cache: true

@@ -1,0 +1,41 @@
+cdn_provider: ''
+_core:
+  default_config_hash: _5qrDuRmWmRVjW00si3U1s1NrgrocA4N653EYGRfgEE
+favicon:
+  mimetype: image/vnd.microsoft.icon
+  path: ''
+  url: 'http://iucn.local/themes/iucn_who/favicon.ico'
+  use_default: true
+schemas:
+  bootstrap: 8000
+  iucn_who: 8000
+table_responsive: '-1'
+table: ''
+navbar_position: fixed-top
+fluid_container: 1
+breadcrumb_home: 1
+region_wells:
+  navigation: ''
+  navigation_collapsible: ''
+  header: ''
+  search_block: ''
+  above_content: ''
+  highlighted: ''
+  help: ''
+  contained_content: ''
+  content: ''
+  facets: ''
+  sidebar_first: ''
+  sidebar_second: ''
+  footer: ''
+breadcrumb_title: 1
+features:
+  comment_user_picture: true
+  comment_user_verification: true
+  favicon: true
+  node_user_picture: false
+logo:
+  path: ''
+  url: ''
+  use_default: true
+assessment_year: '2017'

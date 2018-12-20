@@ -310,4 +310,85 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->assertEqual(count($under_evaluation_revision->field_as_values_wh->getValue()), 1, 'Paragraph not added to revision.');
   }
 
+  /**
+   * Check that assessors cannot edit values.
+   */
+  protected function testValuesTabAccess() {
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
+    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+
+    $paragraph = Paragraph::create([
+      'type' => 'as_site_value_wh',
+    ]);
+    $paragraph->save();
+    $assessment->field_as_values_wh->appendItem($paragraph);
+    $assessment->save();
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
+
+    drupal_flush_all_caches();
+
+    $this->userLogIn(TestSupport::ASSESSOR1);
+
+    foreach (['values', 'assessing-values'] as $tab) {
+      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
+      $this->assertNoRaw('tabledrag-handle');
+      $this->assertNoRaw('value="Remove"');
+      $this->assertNoRaw('value="Add more"');
+      $this->assertRaw('Save');
+      if ($tab == 'values') {
+        $this->assertNoRaw('value="Edit"');
+      }
+      else {
+        $this->assertRaw('value="Edit"');
+      }
+    }
+  }
+
+  /**
+   * Check that deleted paragraphs are shown in red .
+   */
+  protected function testDeletedParagraphs() {
+    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
+    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
+
+    // Create Paragraph of type 'as_site_value_wh' and add it on assessment1->field_as_values_wh
+    $paragraph1 = Paragraph::create([
+      'type' => 'as_site_value_wh',
+    ]);
+    $paragraph1->save();
+
+    $assessment->field_as_values_wh->appendItem($paragraph1);
+    $assessment->save();
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
+
+    // Delete the paragraph inside field_as_values_wh
+    $assessment->field_as_values_wh->setValue([]);
+    $assessment->save();
+
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+    // Open the assessment page as coordinator and check that there is a deleted paragraph row (css-class: paragraph-deleted-row)
+    // with a revert button (value="Revert")
+    drupal_flush_all_caches();
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalGet($assessment->toUrl('edit-form'));
+
+    $this->assertRaw('paragraph-deleted-row');
+    $this->assertRaw('value="Revert"');
+
+  }
+
 }

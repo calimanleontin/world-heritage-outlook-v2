@@ -45,6 +45,7 @@ function iucn_assessment_update_8001() {
  */
 function iucn_assessment_update_8002() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
+  \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
   \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
 }
 
@@ -70,6 +71,48 @@ function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, arr
       $threat->save();
     }
   }
+}
+
+function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $logger) {
+  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+  $languages = \Drupal::languageManager()->getLanguages();
+
+  $references = $node->get('field_as_references')->getValue();
+  if (empty($references)) {
+    return;
+  }
+  foreach ($references as $idx => $reference) {
+    $reference = $reference['value'];
+    if (empty($reference)) {
+      continue;
+    }
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+    $paragraph = \Drupal\paragraphs\Entity\Paragraph::create([
+      'type' => 'as_site_reference',
+      'field_reference' => $reference,
+    ]);
+
+    // Add translation.
+    foreach ($languages as $language) {
+      $lang_id = $language->getId();
+      if ($lang_id == $default_language) {
+        continue;
+      }
+      if ($node->hasTranslation($lang_id)) {
+        $translated_reference = $node->getTranslation($lang_id)->field_as_references->getValue()[$idx]['value'];
+        $paragraph->addTranslation($lang_id, [
+          'field_reference' => $translated_reference,
+        ]);
+      }
+    }
+
+    $paragraph->save();
+    $node->get('field_as_references_p')->appendItem([
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
+    ]);
+  }
+  $logger->info("Migrated references for assessment: {$node->getTitle()}");
 }
 
 /**
@@ -115,10 +158,11 @@ function iucn_assessment_update_8003() {
       }
 
       // Force workflow status for old assessments.
-      if ($node->isPublished()) {
-        $logger->info("Force workflow status for assessment {$node->getTitle()} ({$node->id()})");
-        $workflow_service->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
-      }
+      $new_state = $node->isPublished()
+        ? AssessmentWorkflow::STATUS_PUBLISHED
+        : AssessmentWorkflow::STATUS_DRAFT;
+      $workflow_service->forceAssessmentState($node, $new_state, FALSE);
+      $logger->info("Force workflow status \"{$new_state}\" for assessment \"{$node->getTitle()} ({$node->id()})\"");
     }
 
     // Fix broken values references.
@@ -156,9 +200,13 @@ function iucn_assessment_update_8003() {
     }
     if ($update_protection) {
       $node->get('field_as_protection')->setValue($protection_paragraphs);
-      $node->save();
       $logger->info("Removed empty protection paragraph for assessment {$node->id()}");
     }
+
+    // Migrate references from text field to paragraph.
+    _iucn_assessment_migrate_references($node, $logger);
+
+    $node->save();
 
     \Drupal::state()->set($stateKey, $nid);
   }

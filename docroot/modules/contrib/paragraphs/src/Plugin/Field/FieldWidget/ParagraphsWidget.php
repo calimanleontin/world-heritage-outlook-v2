@@ -2217,7 +2217,7 @@ class ParagraphsWidget extends WidgetBase {
         // validate even the closed paragraphs. If there are validation errors,
         // add them on the parent level. Validation errors do not rebuild the
         // form so it's not possible to auto-uncollapse the form at this point.
-        elseif ($form_state->getLimitValidationErrors() === NULL) {
+        elseif (!$form_state->isValidationComplete() && $form_state->getLimitValidationErrors() === NULL) {
           $violations = $paragraphs_entity->validate();
           $violations->filterByFieldAccess();
           if (count($violations)) {

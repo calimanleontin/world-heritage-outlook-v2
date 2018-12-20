@@ -30,24 +30,16 @@ class AssessmentAccess implements ContainerInjectionInterface {
     );
   }
 
-  public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
+  public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision = NULL) {
     if (!empty($node_revision)) {
-      $node = $this->nodeStorage->loadRevision($node_revision);
+      $node = $node_revision;
     }
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
   }
 
-  public function assessmentParagraphEditAccess(AccountInterface $account, $parent_entity_revision) {
-    $node_revision = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadRevision($parent_entity_revision);
-    $node = Node::load($node_revision->id());
-    return $this->assessmentEditAccess($account, $node, $parent_entity_revision);
-  }
-
-  public function assessmentStateChangeAccess(AccountInterface $account, NodeInterface $node, $node_revision = NULL) {
+  public function assessmentStateChangeAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision = NULL) {
     if (!empty($node_revision)) {
-      $node = $this->nodeStorage->loadRevision($node_revision);
+      $node = $node_revision;
     }
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'change_state', $account);
   }

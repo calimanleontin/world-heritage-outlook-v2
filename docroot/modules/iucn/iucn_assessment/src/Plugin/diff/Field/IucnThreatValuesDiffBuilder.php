@@ -6,7 +6,7 @@ use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
- * Plugin to diff entity reference fields.
+ * Plugin to diff IUCN referenced values paragraphs.
  *
  * @FieldDiffBuilder(
  *   id = "iucn_threat_values",
@@ -23,11 +23,22 @@ class IucnThreatValuesDiffBuilder extends FieldDiffBuilderBase {
    */
   public function build(FieldItemListInterface $field_items) {
     $result = array();
+
+    // Ignore delta when comparing.
+    $values = $field_items->getValue();
+    uasort($values, function ($a, $b) {
+      if ($a['target_id'] == $b['target_id']) {
+        return 0;
+      }
+      return ($a['target_id'] < $b['target_id']) ? -1 : 1;
+    });
+    $field_items->setValue($values);
+
     // Every item from $field_items is of type FieldItemInterface.
     foreach ($field_items as $field_key => $field_item) {
       if (!$field_item->isEmpty()) {
         $values = $field_item->getValue();
-        // Compare entity ids.
+        // Compare field_as_values_value field.
         if ($field_item->entity) {
           /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
           $entity = $field_item->entity;

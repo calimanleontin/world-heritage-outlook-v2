@@ -80,14 +80,11 @@ abstract class IucnModalForm extends ContentEntityForm {
       // field on the parent node.
       $route_match = \Drupal::routeMatch();
       $temporary_data = $form_state->getTemporary();
-      $node_revision = isset($temporary_data['node_revision']) ?
+      $parent_entity_revision = isset($temporary_data['node_revision']) ?
         $temporary_data['node_revision'] :
         $route_match->getParameter('node_revision');
       $field_name = $route_match->getParameter('field');
       $field_wrapper_id = $route_match->getParameter('field_wrapper_id');
-      $parent_entity_revision = \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->loadRevision($node_revision);
 
       // Refresh the paragraphs field.
       $response->addCommand(

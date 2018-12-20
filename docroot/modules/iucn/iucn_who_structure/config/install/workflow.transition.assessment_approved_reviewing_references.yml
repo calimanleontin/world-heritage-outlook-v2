@@ -11,8 +11,8 @@ module: workflow
 from_sid: assessment_approved
 to_sid: assessment_reviewing_references
 roles:
-  administrator: administrator
   workflow_author: '0'
+  administrator: '0'
   iucn_manager: '0'
   edit_world_heritage_site_assessments: '0'
   publish_world_heritage_site_assessments: '0'

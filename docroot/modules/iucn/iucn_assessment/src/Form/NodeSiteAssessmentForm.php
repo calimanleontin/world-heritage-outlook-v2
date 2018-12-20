@@ -2,7 +2,9 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
@@ -30,6 +32,19 @@ class NodeSiteAssessmentForm {
     foreach ($form['actions'] as $key => &$action) {
       if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
         $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
+      }
+    }
+  }
+
+  public static function setValidationErrors(&$form, $element, $parents) {
+    $children = Element::children($element);
+    foreach ($children as $idx => $child) {
+      if (!empty($element[$child]['#type']) && $element[$child]['#type'] != 'hidden') {
+        $form['actions']['submit']['#limit_validation_errors'][] = array_merge($parents, [$child]);
+      }
+
+      if (is_array($element[$child])) {
+        self::setValidationErrors($form, $element[$child], array_merge($parents, [$child]));
       }
     }
   }
@@ -94,7 +109,7 @@ class NodeSiteAssessmentForm {
 
     // On the values tab, only coordinators and above can edit the values.
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values' || $tab == 'assessing-values') {
+      if ($tab == 'values') {
         self::hideParagraphsActions($form);
       }
       $form['title']['#disabled'] = TRUE;
@@ -116,12 +131,38 @@ class NodeSiteAssessmentForm {
     $form['revision']['#disabled'] = FALSE;
 
     if (!empty($node->id()) && !empty($state)) {
-      $state_entity = WorkflowState::load($state);
-      $form['current_state'] = [
-        '#weight' => -100,
-        '#type' => 'markup',
-        '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_entity->label()]),
+      $form['current_state'] = self::getCurrentStateMarkup($node);
+
+      $form['main_data_container'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['main-data-container']],
+        '#weight' => -999,
+        'data' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['data-fields']],
+          'title' => $form['title'],
+          'langcode' => $form['langcode'],
+          'field_assessment_file' => $form['field_assessment_file'],
+        ],
       ];
+      unset($form['title']);
+      unset($form['langcode']);
+      unset($form['field_assessment_file']);
+
+      $blockContent = BlockContent::load(8);
+      if (!empty($blockContent)) {
+        $form['main_data_container']['help'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['help-text']],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => t('Help'),
+          ],
+          'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
+        ];
+      }
+
       $settings = json_decode($node->field_settings->value, TRUE);
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
         || !empty($settings['comments'][$tab])) {
@@ -139,6 +180,7 @@ class NodeSiteAssessmentForm {
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
           '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
+          '#maxlength' => 255,
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
           $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
@@ -146,7 +188,10 @@ class NodeSiteAssessmentForm {
           $comments = '';
           if (!empty($settings['comments'][$tab])) {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
-              $comments .= '<b>' . User::load($uid)->getDisplayName() . ':</b> ' . $comment . "<br>";
+              $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
+              $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
+
+              $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
             $form["comment_$tab"]['#type'] = 'markup';
             $form["comment_$tab"]['#markup'] = $comments;
@@ -227,19 +272,15 @@ class NodeSiteAssessmentForm {
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     // Hide these fields if there are no other biodiversity values.
-    if ($tab == 'protection-management' && empty($node->field_as_values_bio->getValue())) {
+    if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
-        'field_as_protection_ov_out_rate',
-        'field_as_protection_ov_out_text',
-        'field_as_protection_ov_practices',
-        'field_as_protection_ov_rating',
-        'field_as_protection_ov_text',
+        'field_as_vass_bio_state',
+        'field_as_vass_bio_text',
+        'field_as_vass_bio_trend',
       ];
       foreach ($fields as $field) {
-        unset($form[$field]);
+        $form[$field]['#access'] = FALSE;
       }
-
-      $form['#fieldgroups']['group_protection_overall_container']->format_settings['classes'] = 'hidden-container';
     }
 
     // Validation.
@@ -262,6 +303,8 @@ class NodeSiteAssessmentForm {
       self::buildDiffButtons($form, $node);
       self::setTabsDrupalSettings($form, $node);
     }
+
+    self::setValidationErrors($form, $form, []);
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -325,7 +368,7 @@ class NodeSiteAssessmentForm {
    * @return array
    *   The renderable array.
    */
-  public static function getCurrentStateMarkup(NodeInterface $node, $weight = -1000) {
+  public static function getCurrentStateMarkup(NodeInterface $node) {
     $current_state = $node->field_state->value;
     if (!empty($current_state)) {
       $state_entity = WorkflowState::load($current_state);
@@ -333,11 +376,16 @@ class NodeSiteAssessmentForm {
     else {
       $state_entity = NULL;
     }
+    if (empty($state_entity)) {
+      return [];
+    }
     $state_label = !empty($state_entity) ? $state_entity->label() : 'Creation';
     return [
-      '#weight' => $weight,
-      '#type' => 'markup',
-      '#markup' => t('Current state: <b>@state</b>', ['@state' => $state_label]),
+      '#weight' => -1000,
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => ['class' => ['current-state']],
+      '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_label]),
     ];
   }
 

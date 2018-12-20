@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
@@ -33,6 +34,11 @@ use Drupal\user\Entity\User;
  * )
  */
 class RowParagraphsWidget extends ParagraphsWidget {
+
+  /**
+   * @var RouteMatchInterface
+   */
+  protected $routeMatch;
 
   /**
    * The last paragraph entity that has been processed.
@@ -184,6 +190,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @param string $field_name
    */
   public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
+    $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['diff_button'] = [
       '#type' => 'submit',
       '#value' => 'See differences',
@@ -196,6 +203,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field' => $field_name,
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+          'tab' => $tab,
+          'display_mode' => $this->getSetting('form_display_mode'),
         ]),
         'progress' => [
           'type' => 'fullscreen',
@@ -255,6 +264,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $this->routeMatch = \Drupal::routeMatch();
 
     unset($element['top']['type']);
     unset($element['top']['icons']);
@@ -374,11 +384,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
    * @return int
    */
   public function calculateColumnCount(array $components) {
-    $count = count($components);
-
+    $count = 0;
     foreach ($components as $key => $component) {
-      if (!empty($component['span']) && $component['span'] == 2) {
-        $count++;
+      if (!empty($component['span'])) {
+        $count += $component['span'];
       }
     }
     return $count;
@@ -520,8 +529,13 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (!empty($reviewer_paragraphs_rows)) {
       foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
         $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, 'accept');
+        $reviewer_paragraph_row['_weight'] = [
+          '#type' => 'weight',
+          '#delta' => $this->realItemCount + 10,
+          '#default_value' => $this->realItemCount + 10,
+        ];
+        $elements[] = $reviewer_paragraph_row;
       }
-      $elements += $reviewer_paragraphs_rows;
     }
   }
 
@@ -683,12 +697,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $label = $field_definition->getLabel();
       }
       $header[$field_name]['value'] = $label;
-      if ($field_definition->getType() == 'string_long') {
-        $header[$field_name]['span'] = 2;
-      }
-      else {
-        $header[$field_name]['span'] = 1;
-      }
+      $header[$field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
     $header += [
@@ -771,11 +780,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
-    if (empty($form_display_mode)) {
-      $form_display_mode = 'default';
+    $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
+    if (empty($entityFormDisplay)) {
+      $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.default");
     }
-    $components = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode")
-      ->getComponents();
+    $components = $entityFormDisplay->getComponents();
     uasort($components, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
     return $components;
   }
@@ -835,8 +844,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($field_definition->getType() == 'boolean') {
         $config = FieldConfig::loadByName('paragraph', $paragraph->bundle(), $field_name);
         $value = !empty($paragraph->{$field_name}->value)
-          ? $config->getSetting('on_label')
-          : $config->getSetting('off_label');
+          ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
+          : '';
       }
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
@@ -894,15 +903,31 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       $summary[$summary_field_name]['value'][] = $value;
-      if ($field_definition->getType() == 'string_long') {
-        $summary[$summary_field_name]['span'] = 2;
-      }
-      else {
-        $summary[$summary_field_name]['span'] = 1;
-      }
+      $summary[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
     return $summary;
+  }
+
+  public function getFieldSpan(FieldDefinitionInterface $field_definition) {
+    $field_name = $field_definition->getName();
+    if ($field_definition->getType() == 'string_long') {
+      return 3;
+    }
+    elseif ($this->routeMatch->getRouteName() == 'iucn_assessment.paragraph_diff_form'
+      && in_array($field_name, [
+        'field_as_threats_categories',
+        'field_as_threats_values_wh',
+        'field_as_threats_values_bio',
+        'field_as_benefits_category',
+      ])
+    ) {
+      return 3;
+    }
+    elseif ($field_definition->getType() == 'boolean') {
+      return 1;
+    }
+    return 2;
   }
 
   /**
@@ -1088,6 +1113,45 @@ class RowParagraphsWidget extends ParagraphsWidget {
     /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
     $term_alter_service = \Drupal::service('iucn_fields.term_alter');
     return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function elementValidate($element, FormStateInterface $form_state, $form) {
+    $field_name = $this->fieldDefinition->getName();
+    $widget_state = static::getWidgetState($element['#field_parents'], $field_name, $form_state);
+    // Fix some issues with the diff form save. Otherwise this method is copy-pasted.
+    if (empty($widget_state)) {
+      $widget_state = [];
+    }
+    $delta = $element['#delta'];
+
+    if (isset($widget_state['paragraphs'][$delta]['entity'])) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $paragraphs_entity */
+      $entity = $widget_state['paragraphs'][$delta]['entity'];
+
+      /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $display */
+      $display = $widget_state['paragraphs'][$delta]['display'];
+
+      if ($widget_state['paragraphs'][$delta]['mode'] == 'edit') {
+        // Extract the form values on submit for getting the current paragraph.
+        $display->extractFormValues($entity, $element['subform'], $form_state);
+
+        // Validate all enabled behavior plugins.
+        $paragraphs_type = $entity->getParagraphType();
+        if (\Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+          foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin_values) {
+            if (!empty($element['behavior_plugins'][$plugin_id])) {
+              $subform_state = SubformState::createForSubform($element['behavior_plugins'][$plugin_id], $form_state->getCompleteForm(), $form_state);
+              $plugin_values->validateBehaviorForm($entity, $element['behavior_plugins'][$plugin_id], $subform_state);
+            }
+          }
+        }
+      }
+    }
+
+    static::setWidgetState($element['#field_parents'], $field_name, $form_state, $widget_state);
   }
 
 }

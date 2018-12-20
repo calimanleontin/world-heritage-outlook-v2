@@ -21,8 +21,7 @@ class ParagraphAsSiteThreatForm {
 
     // When adding new paragraphs, parent entity is not yet set.
     if (empty($parentEntity) && $route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
-      $revision_id = $route_match->getParameter('node_revision');
-      $parentEntity = \Drupal::service('iucn_assessment.workflow')->getAssessmentRevision($revision_id);
+      $parentEntity = $route_match->getParameter('node_revision');
     }
 
     if ($parentEntity instanceof NodeInterface) {
@@ -60,10 +59,10 @@ class ParagraphAsSiteThreatForm {
             '#size' => max(count($options), 5),
           ],
         ];
-        unset($formField['widget']);
+        $form[$field]['#access'] = FALSE;
 
         if (empty($options)) {
-          hide($form["{$field}_select"]);
+          hide($form["{$field}_select_wrapper"]);
         }
 
       }
@@ -117,13 +116,15 @@ class ParagraphAsSiteThreatForm {
     if (empty($values) || count($values) == 1 && $values[0]['target_id'] == 0 ) {
       $form_state->setError($element, t('Category field is required'));
     }
-    $selected_category = FALSE;
+    $selected_subcategory = FALSE;
     foreach ($values as $category) {
-      if (!isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
-        $selected_category = TRUE;
+      if (!empty($element['widget']['options_groups']['#empty_groups'][$category['target_id']])
+        || !isset($element['widget']['options_groups']['#options'][$category['target_id']])) {
+        $selected_subcategory = TRUE;
+        break;
       }
     }
-    if (!$selected_category) {
+    if (!$selected_subcategory) {
       $form_state->setError($element, t('Select at least one subcategory'));
     }
   }
@@ -136,8 +137,8 @@ class ParagraphAsSiteThreatForm {
 
     foreach (self::AFFECTED_VALUES_FIELDS as $field) {
       $selected = $form_state->getValue("{$field}_select");
+      $values = [];
       if (!empty($selected) && is_array($selected)) {
-        $values = [];
         foreach ($selected as $target_id) {
           $valueParagraph = Paragraph::load($target_id);
           if (empty($valueParagraph->id())) {
@@ -148,8 +149,8 @@ class ParagraphAsSiteThreatForm {
             'target_revision_id' => $valueParagraph->getRevisionId(),
           ];
         }
-        $entity->set($field, $values);
       }
+      $entity->set($field, $values);
     }
 
     $entity->save();

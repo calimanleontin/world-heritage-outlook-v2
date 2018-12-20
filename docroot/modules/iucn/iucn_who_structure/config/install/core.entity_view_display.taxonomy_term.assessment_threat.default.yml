@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.assessment_threat.field_name_2014
     - taxonomy.vocabulary.assessment_threat
   module:
     - text
@@ -19,14 +18,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_name_2014:
-    weight: 1
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true

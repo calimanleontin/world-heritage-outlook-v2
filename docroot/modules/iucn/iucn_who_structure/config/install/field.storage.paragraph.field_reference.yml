@@ -1,12 +1,12 @@
-uuid: 33ba764e-65e9-419c-b05a-27fdd87b75df
+uuid: 2e803723-5538-4bca-8590-6d62931041aa
 langcode: en
 status: true
 dependencies:
   module:
-    - eck
-id: assessment_child.field_as_values_curr_text
-field_name: field_as_values_curr_text
-entity_type: assessment_child
+    - paragraphs
+id: paragraph.field_reference
+field_name: field_reference
+entity_type: paragraph
 type: string_long
 settings:
   case_sensitive: false

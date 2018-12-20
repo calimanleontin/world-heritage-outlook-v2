@@ -14,8 +14,8 @@
     border-bottom: 1px solid #bfbfba;
 }
 
-.field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-    /*background: #ececec!important;*/
+.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
+    background: #ececec!important;
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -55,8 +55,80 @@
     display: none;
 }
 
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-1 {
+    grid-column-end: span 1;
+}
+
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-2 {
     grid-column-end: span 2;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-3 {
+    grid-column-end: span 3;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
@@ -277,88 +349,156 @@
     margin-right: 10px;
 }
 
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+    grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+    grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+    grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+    grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+    grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+    grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+    grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+    grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+    grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+    grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+    grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+    grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+    grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+    grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+    grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
+}
+
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+    grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
+}
+
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
-    grid-template-columns: repeat(22, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
+}
+
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+    grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
-    grid-template-columns: repeat(21, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(21, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
-    grid-template-columns: repeat(20, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(20, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
-    grid-template-columns: repeat(19, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(19, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
-    grid-template-columns: repeat(18, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(18, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
-    grid-template-columns: repeat(17, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(17, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
-    grid-template-columns: repeat(16, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(16, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
-    grid-template-columns: repeat(15, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(15, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
-    grid-template-columns: repeat(14, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(14, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
-    grid-template-columns: repeat(13, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(13, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
-    grid-template-columns: repeat(12, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(12, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
-    grid-template-columns: repeat(11, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(11, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
-    grid-template-columns: repeat(10, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(10, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
-    grid-template-columns: repeat(9, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(9, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
-    grid-template-columns: repeat(8, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(8, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
-    grid-template-columns: repeat(7, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(7, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
-    grid-template-columns: repeat(6, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(6, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
-    grid-template-columns: repeat(5, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(5, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
-    grid-template-columns: repeat(4, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(4, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
-    grid-template-columns: repeat(3, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(3, minmax(6rem, 1fr)) 9rem;
 }
 
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
-    grid-template-columns: repeat(2, minmax(9rem, 1fr)) 9rem;
+    grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
 }
 
 .paragraph-summary-component {
@@ -366,7 +506,7 @@
 }
 
 .diff-modal .chosen-container {
-    width: inherit !important;
+    width: 100% !important;
 }
 
 .diff-modal .chosen-drop {
@@ -397,4 +537,42 @@
 
 .paragraph-diff-final {
     border-top: 3px solid black;
+}
+
+.diff-modal .paragraph-diff-row,
+.diff-modal .paragraph-diff-row .paragraphs-actions {
+    background-color: #fcfcfa !important;
+}
+
+.diff-original-row {
+    border-bottom: 3px solid black;
+}
+
+.diff-original-row .paragraph-summary-component-author {
+    font-weight: bold;
+}
+
+span.field-boolean-tick,
+.diff-tick-true,
+.diff-tick-false {
+    font-size: 1.6rem;
+}
+
+.diff-context-wrapper td.diff-tick-false span.diffchange {
+    background-color: #fdd;
+}
+
+.diff-context-wrapper td.diff-tick-true span.diffchange {
+    background-color: #dfd;
+}
+
+.diff-context-wrapper td.diff-tick-false,
+.diff-context-wrapper td.diff-tick-true {
+    display: block;
+    background-color: #fcfcfa;
+}
+
+table.diff-context-wrapper,
+.diff-tick-marker {
+    display: block;
 }

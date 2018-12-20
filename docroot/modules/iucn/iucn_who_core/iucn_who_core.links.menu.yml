@@ -95,11 +95,6 @@ iucn_who_core.dashboard.cm:
   route_name: system.admin_content
   menu_name: tools
   weight: -50
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-inbox
 
 iucn_who_core.dashboard.cm.all_content:
   title: 'All content'
@@ -108,11 +103,6 @@ iucn_who_core.dashboard.cm.all_content:
   route_name: system.admin_content
   menu_name: tools
   weight: -45
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-list
 
 iucn_who_core.dashboard.cm.all_assessments:
   title: 'All assessments'
@@ -120,11 +110,6 @@ iucn_who_core.dashboard.cm.all_assessments:
   route_name: view.content.page_2
   menu_name: tools
   weight: -40
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-list
 
 iucn_who_core.dashboard.cm.create_content:
   title: 'Create new content'
@@ -133,11 +118,6 @@ iucn_who_core.dashboard.cm.create_content:
   route_name: node.add_page
   menu_name: tools
   weight: -40
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-plus-circle
 
 iucn_who_core.dashboard.cm.blocks:
   title: 'Manage blocks'
@@ -146,11 +126,6 @@ iucn_who_core.dashboard.cm.blocks:
   route_name: block.admin_display
   menu_name: tools
   weight: -30
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-th
 
 iucn_who_core.dashboard.cm.trans_ui:
   title: 'Translate user interface'
@@ -159,12 +134,13 @@ iucn_who_core.dashboard.cm.trans_ui:
   route_name: locale.translate_page
   menu_name: tools
   weight: -20
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-sign-language
 
+iucn_who_core.dashboard.cm.workflow_help:
+  title: 'Workflow help page'
+  parent: iucn_who_core.dashboard.cm
+  route_name: who.workflow_help
+  menu_name: tools
+  weight: -15
 
 iucn_who_core.dashboard.um:
   title: 'Users Management'
@@ -172,11 +148,6 @@ iucn_who_core.dashboard.um:
   route_name: entity.user.collection
   menu_name: tools
   weight: 50
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-inbox
 
 iucn_who_core.dashboard.um.coordinator_assign_self:
   title: 'Assign myself to assessments'
@@ -184,11 +155,6 @@ iucn_who_core.dashboard.um.coordinator_assign_self:
   route_name: iucn_assessment.user_self_assign
   menu_name: tools
   weight: 0
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-list
 
 iucn_who_core.dashboard.um.add_user:
   title: 'Add user'
@@ -196,11 +162,6 @@ iucn_who_core.dashboard.um.add_user:
   route_name: user.admin_create
   menu_name: tools
   weight: 5
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-list
 
 iucn_who_core.dashboard.um.people_assignments:
   title: 'People assignments'
@@ -208,11 +169,6 @@ iucn_who_core.dashboard.um.people_assignments:
   route_name: view.people_assignments.page_1
   menu_name: tools
   weight: 10
-  options:
-    attributes:
-      class:
-      - fa
-      - fa fa-list
 
 iucn_who_core.dashboard.config:
   title: 'Website configuration'
@@ -220,11 +176,6 @@ iucn_who_core.dashboard.config:
   route_name: system.admin_config
   menu_name: tools
   weight: 70
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-cogs
 
 iucn_who_core.dashboard.config.site:
   title: 'Basic site configuration'
@@ -233,11 +184,6 @@ iucn_who_core.dashboard.config.site:
   route_name: system.site_information_settings
   menu_name: tools
   weight: 75
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-cog
 
 iucn_who_core.dashboard.config.logo_ui:
   title: 'Website logo & UI'
@@ -247,11 +193,6 @@ iucn_who_core.dashboard.config.logo_ui:
   route_parameters: { theme : 'iucn_who' }
   menu_name: tools
   weight: 80
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-television
 
 iucn_who_core.dashboard.config.caches:
   title: 'Clear the caches'
@@ -260,12 +201,6 @@ iucn_who_core.dashboard.config.caches:
   route_name: system.performance_settings
   menu_name: tools
   weight: 85
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-ambulance
-
 
 iucn_who_core.dashboard.config.cron:
   title: 'Check CRON'
@@ -274,11 +209,6 @@ iucn_who_core.dashboard.config.cron:
   route_name: system.cron_settings
   menu_name: tools
   weight: 105
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-clock-o
 
 iucn_who_core.dashboard.config.stop:
   title: 'Emergency STOP'
@@ -287,11 +217,6 @@ iucn_who_core.dashboard.config.stop:
   route_name: system.site_maintenance_mode
   menu_name: tools
   weight: 110
-  options:
-    attributes:
-      class:
-      - fa
-      - fa-exclamation-triangle
 
 iucn_who_core.main_menu.log_out:
   class: Drupal\user\Plugin\Menu\LoginLogoutMenuLink

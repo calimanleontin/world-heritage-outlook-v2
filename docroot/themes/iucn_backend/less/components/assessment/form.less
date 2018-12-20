@@ -1,3 +1,38 @@
+.node-site-assessment-edit-form,
+.node-site-assessment-state-change-form {
+  .current-state {
+    margin: 10px 0;
+  }
+  .form-item-title-0-value {
+    margin-top: 0;
+  }
+  .main-data-container {
+    display: block;
+    widows: 100%;
+    .data-fields,
+    .help-text {
+      box-sizing: border-box;
+      padding-right: 5px;
+      @media screen and (min-width: 980px) {
+        float: left;
+        width: 50%;
+      }
+      img {
+        vertical-align: middle;
+      }
+    }
+    .help-text {
+      background: #f5f5f2;
+      border: 1px solid rgb(230, 228, 223);
+      padding: 0 5px;
+      border-radius: 5px;
+    }
+  }
+  .layout-region {
+    padding-right: 0!important;
+  }
+}
+
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
 .paragraph-as-site-threat-iucn-modal-paragraph-add-form,
@@ -27,6 +62,27 @@
   }
 }
 
+.field-group-assessment-fieldset,
+.overall-container {
+  > legend {
+    display: block;
+    width: 100%;
+    > .fieldset-legend {
+      display: block;
+    }
+  }
+}
+
+.field--name-field-as-values-criteria {
+  legend {
+    display: contents !important;
+    .fieldset-legend {
+      display: table-cell;
+      width: 200px;
+    }
+  }
+}
+
 .paragraph-as-site-benefit-iucn-modal-paragraph-add-form,
 .paragraph-as-site-benefit-iucn-modal-paragraph-edit-form {
   > fieldset {
@@ -35,6 +91,7 @@
     padding: 0;
   }
 }
+
 
 .field--name-field-as-threats-categories.field--widget-assessment-options-buttons {
   .form-checkboxes {
@@ -63,5 +120,19 @@
 }
 
 .hidden-container {
-  display: none;
+  display: none !important;
+}
+
+.paragraph-comments-textarea {
+  .comments-container {
+    display: flex;
+    margin-bottom: 10px;
+    .comment-author {
+      min-width: 120px;
+      width: 120px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

@@ -4,6 +4,8 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Controller\ModalDiffController;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\user\Entity\User;
 
 class IucnModalFieldDiffForm extends IucnModalForm {
 
@@ -11,10 +13,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $node_revision = $this->getRouteMatch()->getParameter('node_revision');
-    $node = $this->entityTypeManager
-      ->getStorage('node')
-      ->loadRevision($node_revision);
+    $node = $this->getRouteMatch()->getParameter('node_revision');
     $field = $this->getRouteMatch()->getParameter('field');
     $parent_form = parent::buildForm($form, $form_state);
 
@@ -43,7 +42,9 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       $revision = $workflow_service->getAssessmentRevision($assessment_vid);
       $diff_data = $diff['node'][$node->id()]['diff'][$field];
       $row = [];
-      $row['author'] = $revision->getRevisionUser()->getDisplayName();
+      $row['author'] = $node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
+        ? $node->field_assessor->entity->getDisplayName()
+        : $revision->getRevisionUser()->getDisplayName();
       $row['diff'] = ['data' => []];
       $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
 

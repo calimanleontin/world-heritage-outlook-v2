@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -80,79 +81,80 @@ third_party_settings:
       summary:
         - group_conservation_outlook
         - field_as_threats_rating
-        - field_as_vass_wh_state
         - field_as_global_assessment_text
         - field_as_protection_ov_rating
+        - field_as_vass_wh_state
         - field_as_threats_text
-        - 'display_field_copy:node-assessment_trend_copy'
         - group_current_state_trend_values
+        - 'display_field_copy:node-assessment_trend_copy'
         - field_as_protection_ov_text
-        - group_overall_threats
         - field_as_vass_wh_text
+        - group_overall_threats
         - group_overall_prot_man
         - field_assessment_file
+        - field_state
         - field_as_end_date
         - field_as_global_assessment_level
       full_assessment_values:
-        - field_as_benefits_summary
-        - field_as_benefits
         - field_as_protection_ov_out_rate
         - 'display_field_copy:node-copy_as_threats_rating'
         - field_as_threats_potent_rating
         - field_as_threats_current_rating
+        - field_as_benefits
+        - field_as_benefits_summary
         - 'display_field_copy:node-protection_overall_rating'
+        - 'display_field_copy:node-copy_as_threats_text'
         - field_as_protection_ov_out_text
         - field_as_threats_potent_text
         - field_as_threats_current_text
         - 'display_field_copy:node-protection_overall_effectiveness'
-        - 'display_field_copy:node-copy_as_threats_text'
         - field_as_threats_potential
-        - group_ass_pm_outside
-        - field_as_values_bio
         - field_as_threats_current
+        - field_as_values_bio
+        - group_ass_pm_outside
         - group_best_practice_examples
         - field_as_projects
-        - group_values
-        - field_as_projects_needs
         - field_as_key_cons
         - group_key_conservation_issues
-        - group_benefits
+        - field_as_projects_needs
+        - group_values
         - group_ass_protection_manag
         - field_as_vass_bio_state
-        - 'display_field_copy:node-finalised_on'
-        - field_as_vass_bio_trend
-        - group_description_of_values
+        - group_benefits
         - 'display_field_copy:node-copy_assessment_values'
-        - field_as_protection
+        - field_as_vass_bio_trend
         - group_overall_ass_prot
+        - field_as_protection
         - group_threats
+        - 'display_field_copy:node-finalised_on'
+        - group_description_of_values
         - field_as_vass_wh_trend
-        - field_as_vass_bio_text
         - group_protection_and_management
-        - group_assessment_information
-        - 'display_field_copy:node-justification_of_assessment_valu'
+        - field_as_vass_bio_text
         - field_as_protection_ov_practices
         - group_state_and_trend_of_values
-        - group_additional_information
+        - group_assessment_information
+        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_understanding_benefits
+        - group_additional_information
         - group_projects
         - group_summary_of_benefits
         - group_current_threats
-        - group_active_projects
         - group_world_heritage_values
+        - group_active_projects
         - group_assessing_current_state
-        - group_projects_needs
+        - 'display_field_copy:node-world_heritage_values'
         - group_potential_threats
         - group_ass_state_wh
         - group_summary_values
+        - group_projects_needs
         - 'display_field_copy:node-identifying_and_describing_value'
-        - 'display_field_copy:node-world_heritage_values'
         - 'display_field_copy:node-other_biodiv_values'
         - group_ass_state_bv
         - group_overall_as_threats
         - group_other_important_biodiversi
       references:
-        - field_as_references
+        - field_as_references_p
     fields:
       'display_field_copy:node-assessment_trend_copy':
         plugin_id: 'display_field_copy:node-assessment_trend_copy'
@@ -819,12 +821,14 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  field_as_references:
+  field_as_references_p:
+    type: entity_reference_revisions_entity_view
     weight: 12
     label: hidden
-    settings: {  }
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: basic_string
     region: references
   field_as_threats_current:
     type: entity_reference_revisions_entity_view
@@ -958,7 +962,7 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
-    region: content
+    region: summary
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true
@@ -966,6 +970,7 @@ hidden:
   entity_print_view_word_docx: true
   field_as_archived: true
   field_as_cycle: true
+  field_as_references: true
   field_as_site: true
   field_as_start_date: true
   field_as_values_wh: true

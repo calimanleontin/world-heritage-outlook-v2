@@ -5,10 +5,14 @@ node.revision_edit:
     _title: 'Edit revision'
   requirements:
     access: 'update'
-    node: \d+
     _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
     _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.node.state_change:
   path: '/node/{node}/state_change'
@@ -30,7 +34,6 @@ iucn_assessment.node_revision.state_change:
     _title: 'State change'
     _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::stateChangeForm'
   requirements:
-    node_revision: \d+
     _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentStateChangeAccess'
   options:
     _node_operation_route: TRUE
@@ -38,6 +41,8 @@ iucn_assessment.node_revision.state_change:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.node.assign_users:
   path: '/node/{node}/assign_users'
@@ -97,6 +102,8 @@ iucn_assessment.paragraph_diff_form:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
 
@@ -114,6 +121,8 @@ iucn_assessment.field_diff_form:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.modal_paragraph_add:
   path: 'node/add_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{bundle}'
@@ -130,6 +139,8 @@ iucn_assessment.modal_paragraph_add:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
 
 iucn_assessment.modal_paragraph_delete:
   path: 'node/delete_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
@@ -146,6 +157,8 @@ iucn_assessment.modal_paragraph_delete:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
 
@@ -164,5 +177,7 @@ iucn_assessment.modal_paragraph_edit:
     parameters:
       node:
         type: entity:node
+      node_revision:
+        type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'

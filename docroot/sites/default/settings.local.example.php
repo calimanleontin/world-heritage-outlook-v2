@@ -18,3 +18,4 @@ $settings['trusted_host_patterns'] = [
 $settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
 /** The encryption key must be a base 64 encoded 256 bit (32 byte) value. */
 $settings['encryption_key'] = 'dmVyeS1zZWNyZXQta2V5LXRoYXQtYmFzZTY0LWVuYwo=';
+$settings['environment'] = 'dev';

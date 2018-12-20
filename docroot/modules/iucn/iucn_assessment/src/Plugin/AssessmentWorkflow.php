@@ -74,6 +74,8 @@ class AssessmentWorkflow {
     self::STATUS_UNDER_COMPARISON,
   ];
 
+  const CURRENT_WORKFLOW_CYCLE_STATE_KEY = 'iucn_assessment_current_workflow_cycle_state';
+
   /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
@@ -107,17 +109,18 @@ class AssessmentWorkflow {
       $account = $this->currentUser;
     }
     if ($node->bundle() != 'site_assessment') {
-      return AccessResult::neutral();
+      return AccessResult::allowed();
     }
     $access = AccessResult::neutral();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
-    if ($action == 'edit') {
-      if ($account->hasPermission('edit assessment in any state')) {
-        return AccessResult::allowed();
-      }
 
+    if ($account->hasPermission('edit assessment in any state')) {
+      return AccessResult::allowed();
+    }
+
+    if ($action == 'edit') {
       switch ($state) {
         case self::STATUS_CREATION:
         case self::STATUS_NEW:
@@ -148,9 +151,8 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
-          // Reviewed assessments can only be edited by the coordinator.
-          // Reviewers can no longer edit their respective revisions.
-          $access = AccessResult::allowedIf($node->isDefaultRevision() && $accountIsCoordinator);
+          // Coordinators must move to UNDER_COMPARISON before editing.
+          $access = AccessResult::forbidden();
           break;
 
         default:
@@ -162,6 +164,10 @@ class AssessmentWorkflow {
         case self::STATUS_CREATION:
         case self::STATUS_NEW:
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
+          break;
+
+        case self::STATUS_FINISHED_REVIEWING:
+          $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
 
         default:
@@ -222,8 +228,8 @@ class AssessmentWorkflow {
       // If so, mark the default revision as done.
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
         $default_revision = Node::load($node->id());
+        $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
         if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
           $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
         }
         // Save the differences on the revision.
@@ -348,6 +354,22 @@ class AssessmentWorkflow {
     $field_settings = json_decode($field_settings_json, TRUE);
     if (empty($field_settings['diff'])) {
       $field_settings['diff'] = [];
+    }
+    if (!empty($field_settings['comments'])) {
+      $reviewers = $this->getReviewersArray($node);
+      foreach (array_keys($field_settings['comments']) as $tab) {
+        if ($node->field_state->value != self::STATUS_READY_FOR_REVIEW) {
+          // Assessor comments are still stored, but we don't want to highlight tabs
+          // that only have assessor comments. In this state, we are going to
+          // highlight tabs that have at least one reviewer comment.
+          if (!empty(array_intersect(array_keys($field_settings['comments'][$tab]), $reviewers))) {
+            $diff['fieldgroups'][$tab] = $tab;
+          }
+        }
+        else {
+          $diff['fieldgroups'][$tab] = $tab;
+        }
+      }
     }
     $field_settings['diff'][$compare->getRevisionId()] = $diff;
     $field_settings_json = json_encode($field_settings);

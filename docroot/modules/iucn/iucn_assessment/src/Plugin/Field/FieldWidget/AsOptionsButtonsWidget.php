@@ -28,6 +28,13 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   protected $groups;
 
   /**
+   * Groups with no children.
+   *
+   * @var array
+   */
+  protected $empty_groups;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -123,14 +130,17 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $options = [0 => ''];
     $states = [];
     $current_id = NULL;
+    $this->empty_groups = [];
     foreach ($all_options as $id => $title) {
       $options[$id] = $title;
       if (strpos($title, '-') === FALSE) {
         $current_id = $id;
         $this->groups[$id] = $title;
+        $this->empty_groups[$id] = $id;
       }
       else {
         $states[$id] = $current_id;
+        unset($this->empty_groups[$current_id]);
       }
     }
 
@@ -155,6 +165,10 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         break;
       }
     }
+
+    if (empty($default_value) && !empty($selected)) {
+      $default_value = reset($selected);
+    }
     $element['#title'] = '';
     $element['options_groups'] = array(
       '#type' => 'select',
@@ -165,6 +179,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
+      '#empty_groups' => $this->empty_groups,
     );
 
     $element['options_groups']['#prefix'] = '<div>'.
@@ -173,13 +188,16 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $element['options_groups']['#suffix'] = '</div>'.
       '</div>'.
       '<div>'.
-      '<div class="label">' . $this->getSetting('checkboxes_label') . '</div>'.
+      '<div class="label as-checkboxes-label">' . $this->getSetting('checkboxes_label') . '</div>'.
       '<div class="form-data">';
     $element['checkboxes_group_close'] = array(
       '#weight' => 99,
       '#markup' => '</div></div>',
     );
     $this->states = $states;
+
+    $element['#prefix'] = '<div class="as-checkboxes">';
+    $element['#suffix'] = '</div>';
     $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.option_buttons';
     return $element;
   }
@@ -189,7 +207,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $key => $value) {
-      if (isset($this->groups[$value['target_id']])) {
+      if (isset($this->groups[$value['target_id']]) && empty($this->empty_groups[$value['target_id']])) {
         unset($values[$key]);
       }
     }

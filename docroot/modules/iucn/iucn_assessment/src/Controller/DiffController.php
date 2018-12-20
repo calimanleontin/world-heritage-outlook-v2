@@ -4,7 +4,9 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -53,6 +55,22 @@ class DiffController extends ControllerBase {
           $entityType = $matches[2];
           $fieldName = $matches[3];
 
+          $entity = $this->entityTypeManager()->getStorage($entityType)->load($entityId);
+          if ($this->isBooleanField($entity, $fieldName)) {
+            $field_diff_rows[0][0] = $field_diff_rows[0][2];
+            $field_diff_rows[0][0]['data'] = '';
+            $field_diff_rows[0][0]['class'] .= ' diff-tick-marker';
+            $field_diff_rows[0][1] = $field_diff_rows[0][3];
+            if ($entity->get($fieldName)->value) {
+              $field_diff_rows[0][1]['class'] .= ' diff-tick-true';
+            }
+            else {
+              $field_diff_rows[0][1]['class'] .= ' diff-tick-false';
+            }
+            unset($field_diff_rows[0][2]);
+            unset($field_diff_rows[0][3]);
+          }
+
           if ($entityType == 'node') {
             $field_group_id = $this->getFieldGroupIdForNodeField($fieldName);
           }
@@ -62,12 +80,6 @@ class DiffController extends ControllerBase {
 
           if (!empty($field_group_id) && empty($diff['fieldgroups'][$field_group_id])) {
             $diff['fieldgroups'][$field_group_id] = $field_group_id;
-          }
-
-          if (empty($diff[$entityType][$entityId])) {
-            $diff[$entityType][$entityId] = [
-              'diff' => [],
-            ];
           }
 
           $diff[$entityType][$entityId]['diff'][$fieldName] = $field_diff_rows;
@@ -98,7 +110,7 @@ class DiffController extends ControllerBase {
       if (in_array($field, $settings['children'])) {
         return $settings['parent_name'] != 'group_as_tabs'
           ? $this->getFieldGroupIdForNodeField($key)
-          : $settings['format_settings']['id'];
+          : str_replace('_', '-', $settings['format_settings']['id']);
       }
     }
     return NULL;
@@ -123,13 +135,13 @@ class DiffController extends ControllerBase {
         if (in_array($field, $components)) {
           return 'values';
         }
-        return 'assessing_values';
+        return 'assessing-values';
 
       case 'as_site_threat':
         return 'threats';
 
       case 'as_site_protection':
-        return 'protection_management';
+        return 'protection-management';
 
       case 'as_site_benefit':
         return 'benefits';
@@ -137,9 +149,18 @@ class DiffController extends ControllerBase {
       case 'as_site_project':
         return 'projects';
 
+      case 'as_site_reference':
+        return 'references';
+
       default:
         return NULL;
     }
+  }
+
+  public function isBooleanField(EntityInterface $entity, $field_name) {
+    $bundle = $entity->bundle();
+    $field_config = FieldConfig::loadByName($entity->getEntityTypeId(), $bundle, $field_name);
+    return $field_config->getType() == 'boolean';
   }
 
 }

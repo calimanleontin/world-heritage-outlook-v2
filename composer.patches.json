@@ -3,7 +3,8 @@
     "drupal/core": {
       "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
       "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
-      "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch"
+      "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
+      "EntityRevisionParamConverter doesn't check if the entity revision actually exists": "https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch"
     },
     "drupal/display_field_copy": {
       "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
@@ -14,6 +15,9 @@
     },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
+    },
+    "drupal/paragraphs": {
+      "LogicException Form errors cannot be set after form validation has finished": "https://www.drupal.org/files/issues/2018-11-13/3013171-5.patch"
     },
     "drupal/role_hierarchy": {
       "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
