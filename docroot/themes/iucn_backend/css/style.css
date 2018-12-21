@@ -316,6 +316,7 @@
 .paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
 .paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend {
+  vertical-align: top;
   display: table-cell;
   width: 200px;
   min-width: 200px;
