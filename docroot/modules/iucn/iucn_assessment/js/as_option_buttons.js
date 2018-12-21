@@ -9,6 +9,7 @@
 
   Drupal.behaviors.AsOptionsButtonsWidget = {
     attach: function (context) {
+      // Make sure this is done at the end so that proper visibility checking is done.
       setTimeout(function () {
         var $items = $('.as-checkboxes .form-checkbox', context);
         $items.each(function () {
