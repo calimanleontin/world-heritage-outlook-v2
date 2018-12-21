@@ -20,8 +20,8 @@ dependencies:
   module:
     - ds
     - field_group
+    - iucn_assessment
     - iucn_site
-    - options
 third_party_settings:
   ds:
     layout:
@@ -67,42 +67,12 @@ bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 6
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: description
-  field_as_legality:
-    weight: 7
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_as_resource_use_type:
-    weight: 8
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_as_species_name:
-    weight: 9
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_as_targeted_species:
-    weight: 10
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_as_threats_categories:
     type: entity_reference_list
     weight: 0
@@ -148,15 +118,18 @@ content:
   field_as_threats_rating:
     weight: 1
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: parent_category
     region: terms
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_as_legality: true
+  field_as_resource_use_type: true
+  field_as_species_name: true
+  field_as_targeted_species: true
   field_as_threats_threat: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true
