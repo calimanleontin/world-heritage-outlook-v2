@@ -821,7 +821,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         continue;
       }
 
-
       if (!empty($grouped_fields[$field_name])) {
         $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
       }
@@ -948,7 +947,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'text_with_summary',
       'text',
       'text_long',
-      'list_string',
       'string',
       'string_long',
     ];
@@ -958,6 +956,14 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'parent_type',
       'parent_field_name',
     ];
+
+    if ($field_definition->getType() == 'list_string') {
+      $allowed_values = $field_definition->getFieldStorageDefinition()->getSetting('allowed_values');
+      $state_value = $paragraph->get($field_name)->value;
+      if (!empty($allowed_values[$state_value])) {
+        return $allowed_values[$state_value];
+      }
+    }
 
     $summary = '';
     if (in_array($field_definition->getType(), $text_types)) {
