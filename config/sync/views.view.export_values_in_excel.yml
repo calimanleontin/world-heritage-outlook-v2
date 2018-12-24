@@ -520,7 +520,7 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: standard
-      title: 'Export values in excel'
+      title: 'Export 2017 values in excel'
       header:
         result:
           id: result
@@ -591,7 +591,7 @@ display:
     position: 2
     display_options:
       display_extenders: {  }
-      path: admin/reports/export-values/xls
+      path: admin/reports/export-values/xlsx
       displays:
         page_1: page_1
         default: '0'
@@ -611,7 +611,6 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
           xls_settings:
             xls_format: Excel2007
             metadata:
@@ -624,7 +623,7 @@ display:
               category: ''
               manager: ''
               company: ''
-      filename: ''
+      filename: 2017-values.xlsx
     cache_metadata:
       max-age: -1
       contexts:
