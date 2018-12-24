@@ -36,7 +36,7 @@ class NodeSiteAssessmentStateChangeForm {
             $paragraph = Paragraph::load($target['target_id']);
             $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
             foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
-              if ($fieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
+              if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
                 $found_errors = TRUE;
                 \Drupal::messenger()->addError(t('"@label" is missing "@field" field', [
                     '@label' => $fieldSettings->getLabel(),
