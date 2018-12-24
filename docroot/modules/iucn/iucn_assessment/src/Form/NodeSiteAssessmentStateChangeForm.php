@@ -11,6 +11,7 @@ use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\workflow\Entity\WorkflowTransition;
+use Drupal\paragraphs\Entity\Paragraph;
 
 class NodeSiteAssessmentStateChangeForm {
 
@@ -21,6 +22,41 @@ class NodeSiteAssessmentStateChangeForm {
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
     $currentUser = \Drupal::currentUser();
+
+    $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
+      if (!$fieldSettings->isRequired()) {
+        continue;
+      }
+      if (!empty($node->{$fieldName}->getValue())) {
+        if ($fieldSettings->getType() == 'entity_reference_revisions') {
+          $found_errors = FALSE;
+          foreach ($node->{$fieldName} as &$value) {
+            $target = $value->getValue();
+            $paragraph = Paragraph::load($target['target_id']);
+            $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
+            foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
+              if ($fieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
+                $found_errors = TRUE;
+                \Drupal::messenger()->addError(t('"@label" is missing "@field" field', [
+                    '@label' => $fieldSettings->getLabel(),
+                    '@field' => $paragraphFieldSettings->getLabel()
+                  ]));
+              }
+            }
+            // Show errors only in 1 paragraph row.
+            if ($found_errors) {
+              break;
+            }
+          }
+        }
+      }
+      else {
+        \Drupal::messenger()->addError(
+          t('@label is missing', ['@label' => $fieldSettings->getLabel()])
+        );
+      }
+    }
 
     self::addStateChangeWarning($form, $node, $currentUser);
 
