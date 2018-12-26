@@ -246,3 +246,24 @@ function iucn_assessment_update_8005() {
     drupal_set_installed_schema_version('iucn_assessment', 8002);
   }
 }
+
+/**
+ * 5734 Delete projects ending before 2020.
+ */
+function iucn_assessment_update_8006() {
+  $cycle = 2020;
+  $entityTypeManager = \Drupal::entityTypeManager();
+  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+  $nodeStorage = $entityTypeManager->getStorage('node');
+  $nodesIds = $nodeStorage->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('field_as_cycle', $cycle)
+    ->condition('field_as_end_date.value', $cycle, '<=')
+    ->condition('field_as_end_date.value', NULL, 'IS NOT NULL')
+    ->execute();
+  foreach ($nodesIds as $nid) {
+    $originalNode = Node::load($nid);
+    \Drupal::logger('iucn_assessment')->notice("Deleting \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
+    $originalNode->delete();
+  }
+}
