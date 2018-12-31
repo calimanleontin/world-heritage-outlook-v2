@@ -48,16 +48,21 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       $row['diff'] = ['data' => []];
       $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
 
+      $data_value = $revision->get($field)->getValue();//[$paragraph_key];
+      $type = $this->get_diff_field_type($form, $field);
       $row['diff']['data'] = [
         '#type' => 'table',
         '#rows' => $diff_rows,
         '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+        '#prefix' => '<div class="field-diff">',
+        '#suffix' => $this->get_copy_value_button($form, $type, $data_value, $field, $assessment_vid).'</div>',
       ];
 
       $diff_table['#rows'][] = $row;
     }
     $form['diff'] = $diff_table;
     $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
 
     self::buildCancelButton($form);
     unset($form['actions']['delete']);

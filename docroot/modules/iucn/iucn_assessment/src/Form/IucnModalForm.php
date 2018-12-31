@@ -10,6 +10,77 @@ use Drupal\Core\Ajax\CloseModalDialogCommand;
 
 abstract class IucnModalForm extends ContentEntityForm {
 
+  public function get_diff_field_type($paragraph_form, $diff_field) {
+    $type = '';
+    if (!empty($paragraph_form[$diff_field]['widget']['#type'])) {
+      $type = $paragraph_form[$diff_field]['widget']['#type'];
+    }
+    else if (!empty($paragraph_form[$diff_field]['widget']['value']['#type'])) {
+      $type = $paragraph_form[$diff_field]['widget']['value']['#type'];
+    }
+    else if (!empty($paragraph_form[$diff_field]['widget'][0]['value']['#type'])) {
+      $type = $paragraph_form[$diff_field]['widget'][0]['value']['#type'];
+    }
+    else if (!empty($paragraph_form[$diff_field]['widget'][0]['#entity_type'])) {
+      $type = $paragraph_form[$diff_field]['widget'][0]['#entity_type'];
+    }
+    return $type;
+  }
+
+  public function get_copy_value_button(&$form, $type, $data_value, $diff_field, $assessment_vid) {
+    if (count($data_value) == 1) {
+      if (!empty($data_value[0]['value'])) {
+        $value = $data_value[0]['value'];
+      } elseif(!empty($data_value[0]['target_id'])) {
+        $value = $data_value[0]['target_id'];
+        // todo check target_revision_id
+      }
+    } else {
+      $value = [];
+      foreach($data_value as $data) {
+        $value[] = $data['target_id'];
+      }
+    }
+
+    $form['#attached']['drupalSettings']['diff'][$diff_field . '_' . $assessment_vid] = $value;
+
+    $selector = 'edit-' . str_replace('_', '-', $diff_field);
+    switch ($type) {
+
+      case "textarea":
+        $selector .= '-0-value';
+        break;
+
+      case "textfield":
+        $selector .= '-0-value';
+        break;
+
+      case "checkboxes":
+        break;
+
+      case "checkbox":
+        $selector .= '-value';
+        break;
+
+      case "select":
+        break;
+
+      case "paragraph":
+          $selector .= '-select';
+        break;
+    }
+
+    // todo check why id changed...
+    if ($selector == 'edit-field-as-threats-rating') {
+      $selector .= '--2, #edit-field-as-threats-rating';
+    }
+    // todo copy image locally?
+    return '
+        <a class="diff-button" data-type="' . $type . '" data-selector="' . $selector . '" data-key="' . $diff_field . '_' . $assessment_vid . '">
+          <img src="https://image.flaticon.com/icons/png/128/130/130992.png"><p>'.t('Copy value').'</p>
+        </a>
+        ';
+  }
   /**
    * {@inheritdoc}
    */

@@ -71,6 +71,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
     $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
     $diff = $settings['diff'];
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
       if (empty($diff['paragraph'][$paragraph_revision->id()])) {
@@ -120,6 +121,15 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
+        if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+          $data_value = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+        }
+        else {
+          $data_value = $assessment_revision->get($field)->getValue()[$paragraph_key];
+        }
+        $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
+        $data_value = $paragraph->$diff_field->getValue();
+
         $grouped_with = !empty($grouped_fields[$diff_field]) ? $grouped_fields[$diff_field]['grouped_with'] : $diff_field;
         if (empty($row['top']['summary'][$diff_field]['data']) && empty($row['top']['summary'][$grouped_with]['data'])) {
           continue;
@@ -138,11 +148,13 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
+        $type = $this->get_diff_field_type($paragraph_form, $diff_field);
         $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
           '#type' => 'table',
           '#rows' => $diff_rows,
           '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
-          '#prefix' => '<b>' . $prefix . '</b>',
+          '#prefix' => '<b>' . $prefix . '</b><div class="field-diff">',
+          '#suffix' => $this->get_copy_value_button($form, $type, $data_value, $diff_field, $assessment_vid) . '</div>',
         ];
       }
 
@@ -150,6 +162,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       $form['widget'][] = $row;
     }
     $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     $form['widget']['#is_diff_form'] = TRUE;
     $form['widget']['edit'] = $form['widget'][$paragraph_key];
 
