@@ -27,23 +27,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     return $type;
   }
 
-  public function get_copy_value_button(&$form, $type, $data_value, $diff_field, $assessment_vid) {
-    if (count($data_value) == 1) {
-      if (!empty($data_value[0]['value'])) {
-        $value = $data_value[0]['value'];
-      } elseif(!empty($data_value[0]['target_id'])) {
-        $value = $data_value[0]['target_id'];
-        // todo check target_revision_id
-      }
-    } else {
-      $value = [];
-      foreach($data_value as $data) {
-        $value[] = $data['target_id'];
-      }
-    }
-
-    $form['#attached']['drupalSettings']['diff'][$diff_field . '_' . $assessment_vid] = $value;
-
+  public function get_selector($diff_field, $type) {
     $selector = 'edit-' . str_replace('_', '-', $diff_field);
     switch ($type) {
 
@@ -66,7 +50,7 @@ abstract class IucnModalForm extends ContentEntityForm {
         break;
 
       case "paragraph":
-          $selector .= '-select';
+        $selector .= '-select';
         break;
     }
 
@@ -74,9 +58,39 @@ abstract class IucnModalForm extends ContentEntityForm {
     if ($selector == 'edit-field-as-threats-rating') {
       $selector .= '--2, #edit-field-as-threats-rating';
     }
+
+    return $selector;
+  }
+
+  public function get_copy_value_button(&$form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
+    if ((count($data_value) == 1) && ($type != 'checkboxes')) {
+      if (!empty($data_value[0]['value'])) {
+        $value = $data_value[0]['value'];
+      } elseif(!empty($data_value[0]['target_id'])) {
+        $value = $data_value[0]['target_id'];
+        // todo check target_revision_id
+      }
+    } else {
+      $value = [];
+      foreach($data_value as $data) {
+        $value[] = $data['target_id'];
+      }
+    }
+    $form['#attached']['drupalSettings']['diff'][$diff_field . '_' . $assessment_vid] = $value;
+
+    $selector = $this->get_selector($diff_field, $type);
+
+    $key2 = "";
+    $selector2 = "";
+    if ($grouped_with != $diff_field) {
+      $key2 = $grouped_with . '_' . $assessment_vid;
+      $selector2 = $this->get_selector($grouped_with, $type);
+    }
     // todo copy image locally?
     return '
-        <a class="diff-button" data-type="' . $type . '" data-selector="' . $selector . '" data-key="' . $diff_field . '_' . $assessment_vid . '">
+        <a class="diff-button" data-type="' . $type . '" 
+        data-selector="' . $selector . '" data-key="' . $diff_field . '_' . $assessment_vid . '" 
+        data-selector2="' . $selector2 . '" data-key2="' . $key2 . '">
           <img src="https://image.flaticon.com/icons/png/128/130/130992.png"><p>'.t('Copy value').'</p>
         </a>
         ';

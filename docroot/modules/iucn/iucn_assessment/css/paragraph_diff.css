@@ -20,7 +20,7 @@ a.diff-button p {
     font-size: 0.8em;
 }
 
-.field-diff {
+.diff-wrapper {
     position: relative;
     padding-bottom: 52px;
 }

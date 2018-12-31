@@ -54,7 +54,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         '#type' => 'table',
         '#rows' => $diff_rows,
         '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
-        '#prefix' => '<div class="field-diff">',
+        '#prefix' => '<div class="diff-wrapper">',
         '#suffix' => $this->get_copy_value_button($form, $type, $data_value, $field, $assessment_vid).'</div>',
       ];
 

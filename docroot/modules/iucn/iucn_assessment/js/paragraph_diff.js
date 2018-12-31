@@ -10,33 +10,48 @@
         attach: function (context) {
             $('a.diff-button').on('click', function() {
                 var key = $(this).data('key');
-                var selector = '#' + $(this).data('selector');
+                var data_selector = '[data-drupal-selector="' + $(this).data('selector') + '"]';
                 var type = $(this).data('type');
+                update(key, data_selector, type);
+                var key2 = $(this).data('key2');
+                if (key2) {
+                    var data_selector2 = '[data-drupal-selector="' + $(this).data('selector2') + '"]';
+                    update(key2, data_selector2, type);
+                }
+            });
 
+            function update(key, data_selector, type) {
                 if (type == 'checkboxes') {
 
                     var values = drupalSettings.diff[key];
-                    $(selector + ' input.form-checkbox').prop('checked', false);
+                    $(data_selector + ' input.form-checkbox').prop('checked', false);
                     for (var i = 0; i < values.length; i++) {
-                        $(selector + '-' + values[i]).prop('checked', true);
+                        $('[data-drupal-selector="' + $(this).data('selector') + '-' + values[i] + '"]').prop('checked', true);
                     }
 
                 } else if (type == 'checkbox') {
 
                     if (drupalSettings.diff[key]) {
-                        $(selector).prop('checked', true);
+                        $(data_selector).prop('checked', true);
                     }
                     else {
-                        $(selector).prop('checked', false);
+                        $(data_selector).prop('checked', false);
+                    }
+
+                } else if (type == 'select') {
+                    if (drupalSettings.diff[key].length) {
+                        $(data_selector).val(drupalSettings.diff[key]);
+                    } else {
+                        $(data_selector).val(['_none']);
                     }
 
                 } else {
 
-                    $(selector).val(drupalSettings.diff[key]);
+                    $(data_selector).val(drupalSettings.diff[key]);
 
                 }
 
-            });
+            }
         }
     };
 
