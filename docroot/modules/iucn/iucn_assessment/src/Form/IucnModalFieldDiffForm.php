@@ -27,7 +27,6 @@ class IucnModalFieldDiffForm extends IucnModalForm {
 
     $form = [];
     unset($parent_form[$field]['diff']);
-    $form[$field] = $parent_form[$field];
 
     $row = [];
     $row['author']['data']['#markup'] = '<b>' . $this->t('Initial version') . '</b>';
@@ -70,7 +69,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       if ($value_0) {
         unset($value_0['#title']);
       }
-      $type = $this->get_diff_field_type($form, $field);
+      $type = $this->get_diff_field_type($parent_form, $field);
       $row['diff']['data'] = [
         '#type' => 'table',
         '#rows' => $diff_rows,
@@ -84,6 +83,8 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       $diff_table['#rows'][0]['diff']['data']['#prefix'] = '<div class="diff-wrapper">';
       $diff_table['#rows'][0]['diff']['data']['#suffix'] = $init_button . '</div>';
     }
+    $diff_table['rows'][] = ['#markup' => '<b>' . $this->t('Final version') . '</b>'];
+    $diff_table['rows'][] = $parent_form[$field];
 
     $form['diff'] = $diff_table;
     $form['#attached']['library'][] = 'diff/diff.colors';
