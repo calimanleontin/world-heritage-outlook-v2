@@ -54,11 +54,6 @@ abstract class IucnModalForm extends ContentEntityForm {
         break;
     }
 
-    // todo check why id changed...
-    if ($selector == 'edit-field-as-threats-rating') {
-      $selector .= '--2, #edit-field-as-threats-rating';
-    }
-
     return $selector;
   }
 

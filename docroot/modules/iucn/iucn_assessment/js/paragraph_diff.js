@@ -24,7 +24,7 @@
             });
 
             function get_data_selector(selector) {
-                return '[data-drupal-selector="' + selector + '"]';
+                return '.diff-modal [data-drupal-selector="' + selector + '"]';
             }
 
             function update(values, selector, type) {
@@ -34,6 +34,18 @@
                     $(get_data_selector(selector) + ' input.form-checkbox').prop('checked', false);
                     for (var i = 0; i < values.length; i++) {
                         var sel = '[data-drupal-selector="' + selector + '-' + values[i] + '"]';
+                        var related_selectbox = jQuery(sel).data('drupal-states');
+                        if (related_selectbox) {
+                            var visible_keys = Object.keys(related_selectbox.visible);
+                            for (var j = 0; j < visible_keys.length; j++) {
+                                var visible_value = related_selectbox['visible'][visible_keys[j]];
+                                if (visible_value.value != jQuery(visible_keys[j]).val()) {
+                                    jQuery(visible_keys[j]).val(visible_value.value);
+                                    jQuery(visible_keys[j]).trigger("chosen:updated");
+                                    jQuery(visible_keys[j]).trigger('change');
+                                }
+                            }
+                        }
                         $(sel).prop('checked', true);
                     }
 

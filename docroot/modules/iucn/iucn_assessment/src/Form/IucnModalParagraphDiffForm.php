@@ -133,7 +133,10 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
           $data_value = $assessment_revision->get($field)->getValue()[$paragraph_key];
         }
         $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
-        $data_value = $paragraph->$diff_field->getValue();
+        $data_value = [];
+        if (!empty($paragraph->$diff_field)) {
+          $data_value = $paragraph->$diff_field->getValue();
+        }
 
         $grouped_with = !empty($grouped_fields[$diff_field]) ? $grouped_fields[$diff_field]['grouped_with'] : $diff_field;
         if (empty($row['top']['summary'][$diff_field]['data']) && empty($row['top']['summary'][$grouped_with]['data'])) {
@@ -144,7 +147,10 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
           continue;
         }
         $paragraph_0 = $paragraph_storage->loadRevision($data_value_0['target_revision_id']);
-        $data_value_0 = $paragraph_0->$diff_field->getValue();
+        $data_value_0 = [];
+        if (!empty($paragraph_0->$diff_field)) {
+          $data_value_0 = $paragraph_0->$diff_field->getValue();
+        }
 
         $diffs = $diff[$diff_field];
         $diff_rows = ModalDiffController::getDiffMarkup($diffs);
@@ -227,8 +233,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       unset($data['#attributes']);
       unset($data['#id']);
       $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data'] = $data;
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] .= '<div class="diff-wrapper">';
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] .= $button . '</div>';
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] = '<div class="diff-wrapper">';
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] = $button . '</div>';
     }
 
     $paragraph_form['diff'] = $form;
