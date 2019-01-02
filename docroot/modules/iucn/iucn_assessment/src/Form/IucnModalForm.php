@@ -58,7 +58,7 @@ abstract class IucnModalForm extends ContentEntityForm {
   }
 
   public function get_copy_value_button(&$form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
-    if ((count($data_value) == 1) && ($type != 'checkboxes')) {
+    if ((count($data_value) == 1) && ($type != 'checkboxes') && ($type != 'select')) {
       if (!empty($data_value[0]['value'])) {
         $value = $data_value[0]['value'];
       } elseif(!empty($data_value[0]['target_id'])) {
