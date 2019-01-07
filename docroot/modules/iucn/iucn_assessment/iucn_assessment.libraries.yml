@@ -39,3 +39,11 @@ iucn_assessment.field_diff:
   css:
     theme:
       css/field_diff.css: {}
+
+iucn_assessment.paragraph_diff:
+  version: 1.x
+  js:
+    js/paragraph_diff.js: {}
+  css:
+    theme:
+      css/paragraph_diff.css: {}

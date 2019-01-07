@@ -1,0 +1,26 @@
+a.diff-button {
+    cursor: pointer;
+    text-align: center;
+    line-height: 12px;
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid #dedede;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+a.diff-button img {
+    max-width: 20px;
+}
+
+a.diff-button p {
+    margin: 0;
+    font-size: 0.8em;
+}
+
+.diff-wrapper {
+    position: relative;
+    padding-bottom: 52px;
+}

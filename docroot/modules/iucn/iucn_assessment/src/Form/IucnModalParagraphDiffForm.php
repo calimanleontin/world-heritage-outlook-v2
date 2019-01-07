@@ -69,8 +69,10 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $this->addAuthorCell($form['widget']['header'], 'data', t('Author'), 'author', 2, -100);
     $this->addAuthorCell($form['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
 
+    $initial_copy_value_buttons = [];
     $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
     $diff = $settings['diff'];
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
       if (empty($diff['paragraph'][$paragraph_revision->id()])) {
@@ -99,9 +101,11 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       }
 
       $grouped_fields = RowParagraphsWidget::getGroupedFields();
+      $grouped_with_fields = [];
       foreach ($grouped_fields as $grouped_field => $group_settings) {
         $grouped_with = $group_settings['grouped_with'];
 
+        $grouped_with_fields[] = $grouped_with;
         if ($paragraph_revision->hasField($grouped_field)) {
           $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
           $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
@@ -120,6 +124,20 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
+        if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+          $data_value_0 = $assessment_revision->get($field)->getValue()[$paragraph_key];
+          $data_value = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+        }
+        else {
+          $data_value_0 = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+          $data_value = $assessment_revision->get($field)->getValue()[$paragraph_key];
+        }
+        $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
+        $data_value = [];
+        if (!empty($paragraph->$diff_field)) {
+          $data_value = $paragraph->$diff_field->getValue();
+        }
+
         $grouped_with = !empty($grouped_fields[$diff_field]) ? $grouped_fields[$diff_field]['grouped_with'] : $diff_field;
         if (empty($row['top']['summary'][$diff_field]['data']) && empty($row['top']['summary'][$grouped_with]['data'])) {
           continue;
@@ -127,6 +145,11 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
         if ($deleted) {
           $row['top']['summary'][$grouped_with]['data']['#markup'] = $this->t('Deleted');
           continue;
+        }
+        $paragraph_0 = $paragraph_storage->loadRevision($data_value_0['target_revision_id']);
+        $data_value_0 = [];
+        if (!empty($paragraph_0->$diff_field)) {
+          $data_value_0 = $paragraph_0->$diff_field->getValue();
         }
 
         $diffs = $diff[$diff_field];
@@ -138,18 +161,26 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
-        $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
-          '#type' => 'table',
-          '#rows' => $diff_rows,
-          '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
-          '#prefix' => '<b>' . $prefix . '</b>',
-        ];
+        $type = $this->get_diff_field_type($paragraph_form, $diff_field);
+        $copy_value_button = $this->get_copy_value_button($form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with);
+        $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $diff_field, 0, $grouped_with);
+        if (!in_array($diff_field, $grouped_with_fields)) {
+          $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
+              '#type' => 'table',
+              '#rows' => $diff_rows,
+              '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+              '#prefix' => '<b>' . $prefix . '</b><div class="diff-wrapper">',
+              '#suffix' => $copy_value_button . '</div>',
+          ];
+          $initial_copy_value_buttons[$grouped_with] = $init_button;
+        }
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
       $form['widget'][] = $row;
     }
     $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     $form['widget']['#is_diff_form'] = TRUE;
     $form['widget']['edit'] = $form['widget'][$paragraph_key];
 
@@ -191,6 +222,20 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     unset($form['widget']['#element_validate']);
 
     $form['widget'][$paragraph_key]['#attributes']['class'][] = 'diff-original-row';
+    foreach ($initial_copy_value_buttons as $grouped_with=> $button) {
+      $data = $form['widget'][$paragraph_key]['top']['summary'][$grouped_with];
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with] = [
+        "#type" => $data['#type'],
+        "#attributes" => $data['#attributes'],
+        "#id" => $data['#id'],
+      ];
+      unset($data['#type']);
+      unset($data['#attributes']);
+      unset($data['#id']);
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data'] = $data;
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] = '<div class="diff-wrapper">';
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] = $button . '</div>';
+    }
 
     $paragraph_form['diff'] = $form;
     $paragraph_form['diff']['#weight'] = 0;
