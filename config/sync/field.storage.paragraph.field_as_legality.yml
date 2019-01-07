@@ -1,0 +1,33 @@
+uuid: bc97ac0b-0952-43d2-8b73-8c65666e6b7f
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_as_legality
+field_name: field_as_legality
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: unknown
+      label: Unknown
+    -
+      value: legal
+      label: Legal
+    -
+      value: illegal
+      label: Illegal
+    -
+      value: legal_and_illegal
+      label: 'Legal and illegal'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

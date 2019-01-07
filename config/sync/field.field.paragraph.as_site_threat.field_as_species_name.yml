@@ -1,0 +1,27 @@
+uuid: 9de4d722-35e1-40e7-8a60-4c493a23d2a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_species_name
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
+id: paragraph.as_site_threat.field_as_species_name
+field_name: field_as_species_name
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Species name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

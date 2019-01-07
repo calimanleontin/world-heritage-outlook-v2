@@ -9,10 +9,23 @@
 
   Drupal.behaviors.AsOptionsButtonsWidget = {
     attach: function (context) {
+      // Make sure this is done at the end so that proper visibility checking is done.
+      setTimeout(function () {
+        var $items = $('.as-checkboxes .form-checkbox', context);
+        $items.each(function () {
+          var $parent = $(this).parent();
+          if ($parent.is(":hidden")) {
+            $(this).prop('checked', false);
+            $(this).trigger('change');
+          }
+        });
+      });
+
       $('.options-groups', context).change(function() {
         var $items = $('.as-checkboxes .form-checkbox', context);
         $items.each(function() {
           $(this).prop('checked', false);
+          $(this).trigger('change');
         });
       })
     },

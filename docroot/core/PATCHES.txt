@@ -17,3 +17,7 @@ EntityRevisionParamConverter doesn't check if the entity revision actually exist
 Source: https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch
 
 
+Fix states api or condition
+Source: patches/core/states-api-or.patch
+
+

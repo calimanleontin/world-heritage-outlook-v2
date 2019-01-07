@@ -11,8 +11,31 @@ class ParagraphAsSiteThreatForm {
 
   const AFFECTED_VALUES_FIELDS = ['field_as_threats_values_wh', 'field_as_threats_values_bio'];
 
-  const DEPENDENT_FIELDS = [
+  const FIELD_DEPENDENT_FIELDS = [
     'field_as_threats_extent' => 'field_as_threats_in',
+  ];
+
+  const SUBCATEGORY_DEPENDENT_FIELDS = [
+    'field_as_legality' => [
+      1384, // Hunting and trapping
+      1386, // Logging/ Wood harvesting
+      1387, // Fishing/ Harvesting aquatic resources
+      1388, // Other biological resource use
+      1433, // Non-timber forest products (NTFPs)
+    ],
+    'field_as_targeted_species' => [
+      1384, // Hunting and trapping
+    ],
+    'field_as_species_name' => [
+      1358, // Invasive Non-Native/ Alien Species
+    ],
+    'field_as_resource_use_type' => [
+      1384, // Hunting and trapping
+      1386, // Logging/ Wood harvesting
+      1387, // Fishing/ Harvesting aquatic resources
+      1388, // Other biological resource use
+      1433, // Non-timber forest products (NTFPs)
+    ],
   ];
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
@@ -84,6 +107,18 @@ class ParagraphAsSiteThreatForm {
       ],
     ];
 
+    foreach (self::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
+      $generic_selector = ':input[data-drupal-selector="edit-field-as-threats-categories-%tid"]';
+      foreach ($tids as $idx => $tid) {
+        $selector = str_replace('%tid', $tid, $generic_selector);
+        $form[$field]['#states']['visible'][0][] = [$selector => ['checked' => TRUE]];
+        $form[$field]['widget']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+        $form[$field]['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+      }
+      // Required states API is bugged. It only shows the asterisk.
+      $form[$field]['#element_validate'][] = [self::class, 'validateSubcategoryDependentField'];
+    }
+
     $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
     $form['field_as_threats_categories']['#element_validate'][] = [self::class, 'validateThreatCategories'];
 
@@ -93,9 +128,27 @@ class ParagraphAsSiteThreatForm {
     $form['#validate'][] = [self::class, 'validateValues'];
   }
 
+  public static function validateSubcategoryDependentField(array &$element, FormStateInterface $form_state, array &$form) {
+    $field = $element['widget']['#field_name'];
+    $title = $element['widget']['#title'];
+    $selected_subcategories = $form_state->getValue('field_as_threats_categories');
+    $selected_subcategories = array_column($selected_subcategories, 'target_id');
+    if (empty($form_state->getValue($field)[0]['value']) && !empty(array_intersect(self::SUBCATEGORY_DEPENDENT_FIELDS[$field], $selected_subcategories))) {
+      $form_state->setError($element, t('@field field is required', ['@field' => $title]));
+    }
+  }
+
   public static function setDependentFieldValues(array &$form, FormStateInterface $form_state) {
-    foreach (self::DEPENDENT_FIELDS as $field => $depends_on) {
+    foreach (self::FIELD_DEPENDENT_FIELDS as $field => $depends_on) {
       if (empty($form_state->getValue($depends_on)['value'])) {
+        $form_state->setValue($field, []);
+      }
+    }
+
+    $selected_subcategories = $form_state->getValue('field_as_threats_categories');
+    $selected_subcategories = array_column($selected_subcategories, 'target_id');
+    foreach (self::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
+      if (empty(array_intersect($tids, $selected_subcategories))) {
         $form_state->setValue($field, []);
       }
     }
