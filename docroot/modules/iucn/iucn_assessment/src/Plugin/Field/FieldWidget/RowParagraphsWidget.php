@@ -19,6 +19,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
+use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -855,10 +856,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
           $labels = [];
           foreach ($ids as $id) {
             $entity = \Drupal::entityTypeManager()->getStorage($target_type)->load($id);
-            if ($target_type == 'taxonomy_term') {
-              if (!$this->isHiddenTerm($entity)) {
-                $label = $this->getEntityLabel($entity);
-              }
+            if ($target_type == 'taxonomy_term' && $entity instanceof TermInterface && !$this->isHiddenTerm($entity)) {
+              $label = $this->getEntityLabel($entity);
             }
             else {
               $label = $entity->label();
