@@ -7,7 +7,6 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldConfig;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -54,6 +53,7 @@ class DiffController extends ControllerBase {
           $entityId = $matches[1];
           $entityType = $matches[2];
           $fieldName = $matches[3];
+          $diff[$entityType][$entityId]['initial_revision_id'] = $vid1;
 
           $entity = $this->entityTypeManager()->getStorage($entityType)->load($entityId);
           if ($this->isBooleanField($entity, $fieldName)) {
