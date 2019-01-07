@@ -81,14 +81,11 @@ abstract class IucnModalForm extends ContentEntityForm {
       $key2 = $grouped_with . '_' . $assessment_vid;
       $selector2 = $this->get_selector($grouped_with, $type);
     }
-    $copy_value_url = sprintf('/%s/images/copy-value.png',
-      drupal_get_path('module', 'iucn_assessment')
-    );
     return '
         <a class="diff-button" data-type="' . $type . '" 
         data-selector="' . $selector . '" data-key="' . $diff_field . '_' . $assessment_vid . '" 
         data-selector2="' . $selector2 . '" data-key2="' . $key2 . '">
-          <img src="' . $copy_value_url . '"><p>' . t('Copy value') . '</p>
+          <i class="far fa-copy"></i><p>' . t('Copy') . '</p>
         </a>
         ';
   }
