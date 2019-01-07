@@ -13,6 +13,8 @@ use Drupal\user\Entity\User;
 
 class IucnModalParagraphDiffForm extends IucnModalForm {
 
+  use DiffModalTrait;
+
   /**
    * @var AssessmentWorkflow;
    */
@@ -33,8 +35,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $field = $this->getRouteMatch()->getParameter('field');
     /** @var ParagraphInterface $paragraph_revision */
     $paragraph_revision = $this->getRouteMatch()->getParameter('paragraph_revision');
-    $field_wrapper_id = $this->getRouteMatch()->getParameter('field_wrapper_id');
-    
+
     /** @var NodeInterface $parent_entity_revision */
     $parent_entity_revision = $this->getRouteMatch()->getParameter('node_revision');
     if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
@@ -71,7 +72,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
     $initial_copy_value_buttons = [];
     $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
-    $diff = $settings['diff'];
     $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
@@ -245,32 +245,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $paragraph_form['#suffix'] = '</div>';
 
     return $paragraph_form;
-  }
-
-  public function getTableCellMarkup($markup, $class, $span = 1, $weight = 0) {
-    return [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'paragraph-summary-component',
-          "paragraph-summary-component-$class",
-          "paragraph-summary-component-span-$span",
-        ],
-      ],
-      'data' => ['#markup' => $markup],
-      '#weight' => $weight,
-    ];
-  }
-
-  public function addAuthorCell(array &$table, $key, $markup, $class, $span = 1, $weight = 0) {
-    foreach ($table['#attributes']['class'] as &$class) {
-      if (preg_match('/paragraph-top-col-(\d+)/', $class, $matches)) {
-        $col_count = $matches[1] + $span - 1;
-        $class = "paragraph-top-col-$col_count";
-      }
-    }
-
-    $table[$key]['author'] = $this->getTableCellMarkup($markup, $class, $span, $weight);
   }
 
 }
