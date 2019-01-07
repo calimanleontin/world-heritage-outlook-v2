@@ -3346,6 +3346,253 @@
         "description": "Drupal Console Extend Plugin"
     },
     {
+        "name": "drupal/core",
+        "version": "8.6.2",
+        "version_normalized": "8.6.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/drupal/core.git",
+            "reference": "356292934802bb1aecc478e88a3cba77442d7c62"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/drupal/core/zipball/356292934802bb1aecc478e88a3cba77442d7c62",
+            "reference": "356292934802bb1aecc478e88a3cba77442d7c62",
+            "shasum": ""
+        },
+        "require": {
+            "asm89/stack-cors": "^1.1",
+            "composer/semver": "^1.0",
+            "doctrine/annotations": "^1.2",
+            "doctrine/common": "^2.5",
+            "easyrdf/easyrdf": "^0.9",
+            "egulias/email-validator": "^1.2",
+            "ext-date": "*",
+            "ext-dom": "*",
+            "ext-filter": "*",
+            "ext-gd": "*",
+            "ext-hash": "*",
+            "ext-json": "*",
+            "ext-pcre": "*",
+            "ext-pdo": "*",
+            "ext-session": "*",
+            "ext-simplexml": "*",
+            "ext-spl": "*",
+            "ext-tokenizer": "*",
+            "ext-xml": "*",
+            "guzzlehttp/guzzle": "^6.2.1",
+            "masterminds/html5": "^2.1",
+            "paragonie/random_compat": "^1.0|^2.0",
+            "php": "^5.5.9|>=7.0.8",
+            "stack/builder": "^1.0",
+            "symfony-cmf/routing": "^1.4",
+            "symfony/class-loader": "~3.4.0",
+            "symfony/console": "~3.4.0",
+            "symfony/dependency-injection": "~3.4.0",
+            "symfony/event-dispatcher": "~3.4.0",
+            "symfony/http-foundation": "~3.4.14",
+            "symfony/http-kernel": "~3.4.14",
+            "symfony/polyfill-iconv": "^1.0",
+            "symfony/process": "~3.4.0",
+            "symfony/psr-http-message-bridge": "^1.0",
+            "symfony/routing": "~3.4.0",
+            "symfony/serializer": "~3.4.0",
+            "symfony/translation": "~3.4.0",
+            "symfony/validator": "~3.4.0",
+            "symfony/yaml": "~3.4.5",
+            "twig/twig": "^1.35.0",
+            "zendframework/zend-diactoros": "^1.1",
+            "zendframework/zend-feed": "^2.4"
+        },
+        "conflict": {
+            "drush/drush": "<8.1.10"
+        },
+        "replace": {
+            "drupal/action": "self.version",
+            "drupal/aggregator": "self.version",
+            "drupal/automated_cron": "self.version",
+            "drupal/ban": "self.version",
+            "drupal/bartik": "self.version",
+            "drupal/basic_auth": "self.version",
+            "drupal/big_pipe": "self.version",
+            "drupal/block": "self.version",
+            "drupal/block_content": "self.version",
+            "drupal/block_place": "self.version",
+            "drupal/book": "self.version",
+            "drupal/breakpoint": "self.version",
+            "drupal/ckeditor": "self.version",
+            "drupal/classy": "self.version",
+            "drupal/color": "self.version",
+            "drupal/comment": "self.version",
+            "drupal/config": "self.version",
+            "drupal/config_translation": "self.version",
+            "drupal/contact": "self.version",
+            "drupal/content_moderation": "self.version",
+            "drupal/content_translation": "self.version",
+            "drupal/contextual": "self.version",
+            "drupal/core-annotation": "self.version",
+            "drupal/core-assertion": "self.version",
+            "drupal/core-bridge": "self.version",
+            "drupal/core-class-finder": "self.version",
+            "drupal/core-datetime": "self.version",
+            "drupal/core-dependency-injection": "self.version",
+            "drupal/core-diff": "self.version",
+            "drupal/core-discovery": "self.version",
+            "drupal/core-event-dispatcher": "self.version",
+            "drupal/core-file-cache": "self.version",
+            "drupal/core-filesystem": "self.version",
+            "drupal/core-gettext": "self.version",
+            "drupal/core-graph": "self.version",
+            "drupal/core-http-foundation": "self.version",
+            "drupal/core-php-storage": "self.version",
+            "drupal/core-plugin": "self.version",
+            "drupal/core-proxy-builder": "self.version",
+            "drupal/core-render": "self.version",
+            "drupal/core-serialization": "self.version",
+            "drupal/core-transliteration": "self.version",
+            "drupal/core-utility": "self.version",
+            "drupal/core-uuid": "self.version",
+            "drupal/datetime": "self.version",
+            "drupal/datetime_range": "self.version",
+            "drupal/dblog": "self.version",
+            "drupal/dynamic_page_cache": "self.version",
+            "drupal/editor": "self.version",
+            "drupal/entity_reference": "self.version",
+            "drupal/field": "self.version",
+            "drupal/field_layout": "self.version",
+            "drupal/field_ui": "self.version",
+            "drupal/file": "self.version",
+            "drupal/filter": "self.version",
+            "drupal/forum": "self.version",
+            "drupal/hal": "self.version",
+            "drupal/help": "self.version",
+            "drupal/history": "self.version",
+            "drupal/image": "self.version",
+            "drupal/inline_form_errors": "self.version",
+            "drupal/language": "self.version",
+            "drupal/layout_builder": "self.version",
+            "drupal/layout_discovery": "self.version",
+            "drupal/link": "self.version",
+            "drupal/locale": "self.version",
+            "drupal/media": "self.version",
+            "drupal/media_library": "self.version",
+            "drupal/menu_link_content": "self.version",
+            "drupal/menu_ui": "self.version",
+            "drupal/migrate": "self.version",
+            "drupal/migrate_drupal": "self.version",
+            "drupal/migrate_drupal_multilingual": "self.version",
+            "drupal/migrate_drupal_ui": "self.version",
+            "drupal/minimal": "self.version",
+            "drupal/node": "self.version",
+            "drupal/options": "self.version",
+            "drupal/page_cache": "self.version",
+            "drupal/path": "self.version",
+            "drupal/quickedit": "self.version",
+            "drupal/rdf": "self.version",
+            "drupal/responsive_image": "self.version",
+            "drupal/rest": "self.version",
+            "drupal/search": "self.version",
+            "drupal/serialization": "self.version",
+            "drupal/settings_tray": "self.version",
+            "drupal/seven": "self.version",
+            "drupal/shortcut": "self.version",
+            "drupal/simpletest": "self.version",
+            "drupal/standard": "self.version",
+            "drupal/stark": "self.version",
+            "drupal/statistics": "self.version",
+            "drupal/syslog": "self.version",
+            "drupal/system": "self.version",
+            "drupal/taxonomy": "self.version",
+            "drupal/telephone": "self.version",
+            "drupal/text": "self.version",
+            "drupal/toolbar": "self.version",
+            "drupal/tour": "self.version",
+            "drupal/tracker": "self.version",
+            "drupal/update": "self.version",
+            "drupal/user": "self.version",
+            "drupal/views": "self.version",
+            "drupal/views_ui": "self.version",
+            "drupal/workflows": "self.version",
+            "drupal/workspaces": "self.version"
+        },
+        "require-dev": {
+            "behat/mink": "1.7.x-dev",
+            "behat/mink-goutte-driver": "^1.2",
+            "behat/mink-selenium2-driver": "1.3.x-dev",
+            "drupal/coder": "^8.2.12",
+            "jcalderonzumba/gastonjs": "^1.0.2",
+            "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
+            "mikey179/vfsstream": "^1.2",
+            "phpspec/prophecy": "^1.4",
+            "phpunit/phpunit": "^4.8.35 || ^6.5",
+            "symfony/css-selector": "^3.4.0",
+            "symfony/debug": "^3.4.0",
+            "symfony/phpunit-bridge": "^3.4.3"
+        },
+        "time": "2018-10-17T22:19:50+00:00",
+        "type": "drupal-core",
+        "extra": {
+            "merge-plugin": {
+                "require": [
+                    "core/lib/Drupal/Component/Annotation/composer.json",
+                    "core/lib/Drupal/Component/Assertion/composer.json",
+                    "core/lib/Drupal/Component/Bridge/composer.json",
+                    "core/lib/Drupal/Component/ClassFinder/composer.json",
+                    "core/lib/Drupal/Component/Datetime/composer.json",
+                    "core/lib/Drupal/Component/DependencyInjection/composer.json",
+                    "core/lib/Drupal/Component/Diff/composer.json",
+                    "core/lib/Drupal/Component/Discovery/composer.json",
+                    "core/lib/Drupal/Component/EventDispatcher/composer.json",
+                    "core/lib/Drupal/Component/FileCache/composer.json",
+                    "core/lib/Drupal/Component/FileSystem/composer.json",
+                    "core/lib/Drupal/Component/Gettext/composer.json",
+                    "core/lib/Drupal/Component/Graph/composer.json",
+                    "core/lib/Drupal/Component/HttpFoundation/composer.json",
+                    "core/lib/Drupal/Component/PhpStorage/composer.json",
+                    "core/lib/Drupal/Component/Plugin/composer.json",
+                    "core/lib/Drupal/Component/ProxyBuilder/composer.json",
+                    "core/lib/Drupal/Component/Render/composer.json",
+                    "core/lib/Drupal/Component/Serialization/composer.json",
+                    "core/lib/Drupal/Component/Transliteration/composer.json",
+                    "core/lib/Drupal/Component/Utility/composer.json",
+                    "core/lib/Drupal/Component/Uuid/composer.json"
+                ],
+                "recurse": false,
+                "replace": false,
+                "merge-extra": false
+            },
+            "patches_applied": {
+                "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
+                "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
+                "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
+                "EntityRevisionParamConverter doesn't check if the entity revision actually exists": "https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch",
+                "Fix states api or condition": "patches/core/states-api-or.patch"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Drupal\\Core\\": "lib/Drupal/Core",
+                "Drupal\\Component\\": "lib/Drupal/Component",
+                "Drupal\\Driver\\": "../drivers/lib/Drupal/Driver"
+            },
+            "classmap": [
+                "lib/Drupal.php",
+                "lib/Drupal/Component/Utility/Timer.php",
+                "lib/Drupal/Component/Utility/Unicode.php",
+                "lib/Drupal/Core/Database/Database.php",
+                "lib/Drupal/Core/DrupalKernel.php",
+                "lib/Drupal/Core/DrupalKernelInterface.php",
+                "lib/Drupal/Core/Site/Settings.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "description": "Drupal is an open source content management platform powering millions of websites and applications."
+    },
+    {
         "name": "drupal/crop",
         "version": "1.5.0",
         "version_normalized": "1.5.0.0",
@@ -3401,6 +3648,56 @@
         "support": {
             "source": "http://cgit.drupalcode.org/crop",
             "issues": "https://www.drupal.org/project/issues/crop"
+        }
+    },
+    {
+        "name": "drupal/csv_serialization",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/csv_serialization",
+            "reference": "8.x-1.4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/csv_serialization-8.x-1.4.zip",
+            "reference": "8.x-1.4",
+            "shasum": "74cfc47c5c8a907f40112ec4819fe108f2775ef1"
+        },
+        "require": {
+            "drupal/core": "^8.0.4",
+            "league/csv": "^8.0"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.4",
+                "datestamp": "1531841921",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "grasmash",
+                "homepage": "https://www.drupal.org/user/455714"
+            }
+        ],
+        "description": "Provides CSV as a serialization format.",
+        "homepage": "https://www.drupal.org/project/csv_serialization",
+        "support": {
+            "source": "http://cgit.drupalcode.org/csv_serialization"
         }
     },
     {
@@ -6131,6 +6428,91 @@
         }
     },
     {
+        "name": "drupal/paragraphs",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/paragraphs",
+            "reference": "8.x-1.5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.5.zip",
+            "reference": "8.x-1.5",
+            "shasum": "85ba97dd1c602d33fc5904b6e1df5973312afa94"
+        },
+        "require": {
+            "drupal/core": "~8",
+            "drupal/entity_reference_revisions": "~1.3"
+        },
+        "require-dev": {
+            "drupal/block_field": "~1.0",
+            "drupal/ctools": "3.x-dev",
+            "drupal/diff": "~1.0",
+            "drupal/entity_browser": "1.x-dev",
+            "drupal/entity_usage": "2.x-dev",
+            "drupal/field_group": "~1.0",
+            "drupal/inline_entity_form": "~1.0",
+            "drupal/paragraphs-paragraphs_library": "*",
+            "drupal/replicate": "~1.0",
+            "drupal/search_api": "~1.0",
+            "drupal/search_api_db": "*"
+        },
+        "suggest": {
+            "drupal/entity_browser": "Recommended for an improved user experience when using the Paragraphs library module"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.5",
+                "datestamp": "1541009695",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            },
+            "patches_applied": {
+                "LogicException Form errors cannot be set after form validation has finished": "https://www.drupal.org/files/issues/2018-11-13/3013171-5.patch"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Berdir",
+                "homepage": "https://www.drupal.org/user/214652"
+            },
+            {
+                "name": "Frans",
+                "homepage": "https://www.drupal.org/user/514222"
+            },
+            {
+                "name": "Primsi",
+                "homepage": "https://www.drupal.org/user/282629"
+            },
+            {
+                "name": "jeroen.b",
+                "homepage": "https://www.drupal.org/user/1853532"
+            },
+            {
+                "name": "miro_dietiker",
+                "homepage": "https://www.drupal.org/user/227761"
+            }
+        ],
+        "description": "Enables the creation of Paragraphs entities.",
+        "homepage": "https://www.drupal.org/project/paragraphs",
+        "support": {
+            "source": "http://cgit.drupalcode.org/paragraphs"
+        }
+    },
+    {
         "name": "drupal/pathauto",
         "version": "1.3.0",
         "version_normalized": "1.3.0.0",
@@ -7720,6 +8102,76 @@
         }
     },
     {
+        "name": "drupal/views_data_export",
+        "version": "1.0.0-beta1",
+        "version_normalized": "1.0.0.0-beta1",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/views_data_export",
+            "reference": "8.x-1.0-beta1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0-beta1.zip",
+            "reference": "8.x-1.0-beta1",
+            "shasum": "f698c1072169017f28e58a4b026d3f3cff904c96"
+        },
+        "require": {
+            "drupal/core": "*",
+            "drupal/csv_serialization": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0-beta1",
+                "datestamp": "1525280285",
+                "security-coverage": {
+                    "status": "not-covered",
+                    "message": "Beta releases are not covered by Drupal security advisories."
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Steven Jones",
+                "homepage": "https://www.drupal.org/user/99644"
+            },
+            {
+                "name": "amoebanath",
+                "homepage": "https://www.drupal.org/user/2810799"
+            },
+            {
+                "name": "james.williams",
+                "homepage": "https://www.drupal.org/user/592268"
+            },
+            {
+                "name": "jamsilver",
+                "homepage": "https://www.drupal.org/user/476732"
+            },
+            {
+                "name": "jhedstrom",
+                "homepage": "https://www.drupal.org/user/208732"
+            },
+            {
+                "name": "nerdstein",
+                "homepage": "https://www.drupal.org/user/1557710"
+            }
+        ],
+        "description": "Plugin to export views data into various file formats.",
+        "homepage": "https://www.drupal.org/project/views_data_export",
+        "support": {
+            "source": "http://cgit.drupalcode.org/views_data_export"
+        }
+    },
+    {
         "name": "drupal/webform",
         "version": "5.0.0-rc22",
         "version_normalized": "5.0.0.0-RC22",
@@ -7906,6 +8358,61 @@
         "homepage": "https://www.drupal.org/project/workflow",
         "support": {
             "source": "http://cgit.drupalcode.org/workflow"
+        }
+    },
+    {
+        "name": "drupal/xls_serialization",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/xls_serialization",
+            "reference": "8.x-1.0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/xls_serialization-8.x-1.0.zip",
+            "reference": "8.x-1.0",
+            "shasum": "d660283e3c65e0ba9a5581b4be216a57f1cc48a9"
+        },
+        "require": {
+            "drupal/core": "*",
+            "ext-zip": "*",
+            "phpoffice/phpspreadsheet": "^1.0"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0",
+                "datestamp": "1537224780",
+                "security-coverage": {
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "jhedstrom",
+                "homepage": "https://www.drupal.org/user/208732"
+            },
+            {
+                "name": "theemstra",
+                "homepage": "https://www.drupal.org/user/212681"
+            }
+        ],
+        "description": "Provides Excel as a serialization format.",
+        "homepage": "https://www.drupal.org/project/xls_serialization",
+        "support": {
+            "source": "http://cgit.drupalcode.org/xls_serialization"
         }
     },
     {
@@ -8967,6 +9474,162 @@
         ]
     },
     {
+        "name": "league/csv",
+        "version": "8.2.3",
+        "version_normalized": "8.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/csv.git",
+            "reference": "d2aab1e7bde802582c3879acf03d92716577c76d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/csv/zipball/d2aab1e7bde802582c3879acf03d92716577c76d",
+            "reference": "d2aab1e7bde802582c3879acf03d92716577c76d",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^1.9",
+            "phpunit/phpunit": "^4.0"
+        },
+        "time": "2018-02-06T08:27:03+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "8.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\Csv\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ignace Nyamagana Butera",
+                "email": "nyamsprod@gmail.com",
+                "homepage": "https://github.com/nyamsprod/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Csv data manipulation made easy in PHP",
+        "homepage": "http://csv.thephpleague.com",
+        "keywords": [
+            "csv",
+            "export",
+            "filter",
+            "import",
+            "read",
+            "write"
+        ]
+    },
+    {
+        "name": "markbaker/complex",
+        "version": "1.4.7",
+        "version_normalized": "1.4.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/MarkBaker/PHPComplex.git",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/MarkBaker/PHPComplex/zipball/1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "reference": "1ea674a8308baf547cbcbd30c5fcd6d301b7c000",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6.0|^7.0.0"
+        },
+        "require-dev": {
+            "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "phploc/phploc": "2.*",
+            "phpmd/phpmd": "2.*",
+            "phpunit/phpunit": "^4.8.35|^5.4.0",
+            "sebastian/phpcpd": "2.*",
+            "squizlabs/php_codesniffer": "^3.3.0"
+        },
+        "time": "2018-10-13T23:28:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Complex\\": "classes/src/"
+            },
+            "files": [
+                "classes/src/functions/abs.php",
+                "classes/src/functions/acos.php",
+                "classes/src/functions/acosh.php",
+                "classes/src/functions/acot.php",
+                "classes/src/functions/acoth.php",
+                "classes/src/functions/acsc.php",
+                "classes/src/functions/acsch.php",
+                "classes/src/functions/argument.php",
+                "classes/src/functions/asec.php",
+                "classes/src/functions/asech.php",
+                "classes/src/functions/asin.php",
+                "classes/src/functions/asinh.php",
+                "classes/src/functions/atan.php",
+                "classes/src/functions/atanh.php",
+                "classes/src/functions/conjugate.php",
+                "classes/src/functions/cos.php",
+                "classes/src/functions/cosh.php",
+                "classes/src/functions/cot.php",
+                "classes/src/functions/coth.php",
+                "classes/src/functions/csc.php",
+                "classes/src/functions/csch.php",
+                "classes/src/functions/exp.php",
+                "classes/src/functions/inverse.php",
+                "classes/src/functions/ln.php",
+                "classes/src/functions/log2.php",
+                "classes/src/functions/log10.php",
+                "classes/src/functions/negative.php",
+                "classes/src/functions/pow.php",
+                "classes/src/functions/rho.php",
+                "classes/src/functions/sec.php",
+                "classes/src/functions/sech.php",
+                "classes/src/functions/sin.php",
+                "classes/src/functions/sinh.php",
+                "classes/src/functions/sqrt.php",
+                "classes/src/functions/tan.php",
+                "classes/src/functions/tanh.php",
+                "classes/src/functions/theta.php",
+                "classes/src/operations/add.php",
+                "classes/src/operations/subtract.php",
+                "classes/src/operations/multiply.php",
+                "classes/src/operations/divideby.php",
+                "classes/src/operations/divideinto.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mark Baker",
+                "email": "mark@lange.demon.co.uk"
+            }
+        ],
+        "description": "PHP Class for working with complex numbers",
+        "homepage": "https://github.com/MarkBaker/PHPComplex",
+        "keywords": [
+            "complex",
+            "mathematics"
+        ]
+    },
+    {
         "name": "masterminds/html5",
         "version": "2.3.0",
         "version_normalized": "2.3.0.0",
@@ -9610,6 +10273,99 @@
         ]
     },
     {
+        "name": "phpoffice/phpspreadsheet",
+        "version": "1.5.2",
+        "version_normalized": "1.5.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+            "reference": "cd60531c44f580fbdfbd55dfb935af791f09be5d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/cd60531c44f580fbdfbd55dfb935af791f09be5d",
+            "reference": "cd60531c44f580fbdfbd55dfb935af791f09be5d",
+            "shasum": ""
+        },
+        "require": {
+            "ext-ctype": "*",
+            "ext-dom": "*",
+            "ext-gd": "*",
+            "ext-iconv": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
+            "ext-simplexml": "*",
+            "ext-xml": "*",
+            "ext-xmlreader": "*",
+            "ext-xmlwriter": "*",
+            "ext-zip": "*",
+            "ext-zlib": "*",
+            "markbaker/complex": "^1.4.1",
+            "php": "^5.6|^7.0",
+            "psr/simple-cache": "^1.0"
+        },
+        "require-dev": {
+            "dompdf/dompdf": "^0.8.0",
+            "friendsofphp/php-cs-fixer": "@stable",
+            "jpgraph/jpgraph": "^4.0",
+            "mpdf/mpdf": "^7.0.0",
+            "phpcompatibility/php-compatibility": "^8.0",
+            "phpunit/phpunit": "^5.7",
+            "squizlabs/php_codesniffer": "^3.3",
+            "tecnickcom/tcpdf": "^6.2"
+        },
+        "suggest": {
+            "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
+            "jpgraph/jpgraph": "Option for rendering charts, or including charts with PDF or HTML Writers",
+            "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
+            "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
+        },
+        "time": "2018-11-25T17:40:15+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Erik Tilt"
+            },
+            {
+                "name": "Adrien Crivelli"
+            },
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "https://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Mark Baker",
+                "homepage": "https://markbakeruk.net"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "https://rootslabs.net"
+            }
+        ],
+        "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "https://github.com/PHPOffice/PhpSpreadsheet",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "gnumeric",
+            "ods",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ]
+    },
+    {
         "name": "phpspec/prophecy",
         "version": "1.8.0",
         "version_normalized": "1.8.0.0",
@@ -10230,6 +10986,56 @@
             "log",
             "psr",
             "psr-3"
+        ]
+    },
+    {
+        "name": "psr/simple-cache",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/simple-cache.git",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-10-23T01:57:42+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\SimpleCache\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interfaces for simple caching",
+        "keywords": [
+            "cache",
+            "caching",
+            "psr",
+            "psr-16",
+            "simple-cache"
         ]
     },
     {
@@ -13425,336 +14231,5 @@
             "stdlib",
             "zf"
         ]
-    },
-    {
-        "name": "drupal/core",
-        "version": "8.6.2",
-        "version_normalized": "8.6.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/drupal/core.git",
-            "reference": "356292934802bb1aecc478e88a3cba77442d7c62"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core/zipball/356292934802bb1aecc478e88a3cba77442d7c62",
-            "reference": "356292934802bb1aecc478e88a3cba77442d7c62",
-            "shasum": ""
-        },
-        "require": {
-            "asm89/stack-cors": "^1.1",
-            "composer/semver": "^1.0",
-            "doctrine/annotations": "^1.2",
-            "doctrine/common": "^2.5",
-            "easyrdf/easyrdf": "^0.9",
-            "egulias/email-validator": "^1.2",
-            "ext-date": "*",
-            "ext-dom": "*",
-            "ext-filter": "*",
-            "ext-gd": "*",
-            "ext-hash": "*",
-            "ext-json": "*",
-            "ext-pcre": "*",
-            "ext-pdo": "*",
-            "ext-session": "*",
-            "ext-simplexml": "*",
-            "ext-spl": "*",
-            "ext-tokenizer": "*",
-            "ext-xml": "*",
-            "guzzlehttp/guzzle": "^6.2.1",
-            "masterminds/html5": "^2.1",
-            "paragonie/random_compat": "^1.0|^2.0",
-            "php": "^5.5.9|>=7.0.8",
-            "stack/builder": "^1.0",
-            "symfony-cmf/routing": "^1.4",
-            "symfony/class-loader": "~3.4.0",
-            "symfony/console": "~3.4.0",
-            "symfony/dependency-injection": "~3.4.0",
-            "symfony/event-dispatcher": "~3.4.0",
-            "symfony/http-foundation": "~3.4.14",
-            "symfony/http-kernel": "~3.4.14",
-            "symfony/polyfill-iconv": "^1.0",
-            "symfony/process": "~3.4.0",
-            "symfony/psr-http-message-bridge": "^1.0",
-            "symfony/routing": "~3.4.0",
-            "symfony/serializer": "~3.4.0",
-            "symfony/translation": "~3.4.0",
-            "symfony/validator": "~3.4.0",
-            "symfony/yaml": "~3.4.5",
-            "twig/twig": "^1.35.0",
-            "zendframework/zend-diactoros": "^1.1",
-            "zendframework/zend-feed": "^2.4"
-        },
-        "conflict": {
-            "drush/drush": "<8.1.10"
-        },
-        "replace": {
-            "drupal/action": "self.version",
-            "drupal/aggregator": "self.version",
-            "drupal/automated_cron": "self.version",
-            "drupal/ban": "self.version",
-            "drupal/bartik": "self.version",
-            "drupal/basic_auth": "self.version",
-            "drupal/big_pipe": "self.version",
-            "drupal/block": "self.version",
-            "drupal/block_content": "self.version",
-            "drupal/block_place": "self.version",
-            "drupal/book": "self.version",
-            "drupal/breakpoint": "self.version",
-            "drupal/ckeditor": "self.version",
-            "drupal/classy": "self.version",
-            "drupal/color": "self.version",
-            "drupal/comment": "self.version",
-            "drupal/config": "self.version",
-            "drupal/config_translation": "self.version",
-            "drupal/contact": "self.version",
-            "drupal/content_moderation": "self.version",
-            "drupal/content_translation": "self.version",
-            "drupal/contextual": "self.version",
-            "drupal/core-annotation": "self.version",
-            "drupal/core-assertion": "self.version",
-            "drupal/core-bridge": "self.version",
-            "drupal/core-class-finder": "self.version",
-            "drupal/core-datetime": "self.version",
-            "drupal/core-dependency-injection": "self.version",
-            "drupal/core-diff": "self.version",
-            "drupal/core-discovery": "self.version",
-            "drupal/core-event-dispatcher": "self.version",
-            "drupal/core-file-cache": "self.version",
-            "drupal/core-filesystem": "self.version",
-            "drupal/core-gettext": "self.version",
-            "drupal/core-graph": "self.version",
-            "drupal/core-http-foundation": "self.version",
-            "drupal/core-php-storage": "self.version",
-            "drupal/core-plugin": "self.version",
-            "drupal/core-proxy-builder": "self.version",
-            "drupal/core-render": "self.version",
-            "drupal/core-serialization": "self.version",
-            "drupal/core-transliteration": "self.version",
-            "drupal/core-utility": "self.version",
-            "drupal/core-uuid": "self.version",
-            "drupal/datetime": "self.version",
-            "drupal/datetime_range": "self.version",
-            "drupal/dblog": "self.version",
-            "drupal/dynamic_page_cache": "self.version",
-            "drupal/editor": "self.version",
-            "drupal/entity_reference": "self.version",
-            "drupal/field": "self.version",
-            "drupal/field_layout": "self.version",
-            "drupal/field_ui": "self.version",
-            "drupal/file": "self.version",
-            "drupal/filter": "self.version",
-            "drupal/forum": "self.version",
-            "drupal/hal": "self.version",
-            "drupal/help": "self.version",
-            "drupal/history": "self.version",
-            "drupal/image": "self.version",
-            "drupal/inline_form_errors": "self.version",
-            "drupal/language": "self.version",
-            "drupal/layout_builder": "self.version",
-            "drupal/layout_discovery": "self.version",
-            "drupal/link": "self.version",
-            "drupal/locale": "self.version",
-            "drupal/media": "self.version",
-            "drupal/media_library": "self.version",
-            "drupal/menu_link_content": "self.version",
-            "drupal/menu_ui": "self.version",
-            "drupal/migrate": "self.version",
-            "drupal/migrate_drupal": "self.version",
-            "drupal/migrate_drupal_multilingual": "self.version",
-            "drupal/migrate_drupal_ui": "self.version",
-            "drupal/minimal": "self.version",
-            "drupal/node": "self.version",
-            "drupal/options": "self.version",
-            "drupal/page_cache": "self.version",
-            "drupal/path": "self.version",
-            "drupal/quickedit": "self.version",
-            "drupal/rdf": "self.version",
-            "drupal/responsive_image": "self.version",
-            "drupal/rest": "self.version",
-            "drupal/search": "self.version",
-            "drupal/serialization": "self.version",
-            "drupal/settings_tray": "self.version",
-            "drupal/seven": "self.version",
-            "drupal/shortcut": "self.version",
-            "drupal/simpletest": "self.version",
-            "drupal/standard": "self.version",
-            "drupal/stark": "self.version",
-            "drupal/statistics": "self.version",
-            "drupal/syslog": "self.version",
-            "drupal/system": "self.version",
-            "drupal/taxonomy": "self.version",
-            "drupal/telephone": "self.version",
-            "drupal/text": "self.version",
-            "drupal/toolbar": "self.version",
-            "drupal/tour": "self.version",
-            "drupal/tracker": "self.version",
-            "drupal/update": "self.version",
-            "drupal/user": "self.version",
-            "drupal/views": "self.version",
-            "drupal/views_ui": "self.version",
-            "drupal/workflows": "self.version",
-            "drupal/workspaces": "self.version"
-        },
-        "require-dev": {
-            "behat/mink": "1.7.x-dev",
-            "behat/mink-goutte-driver": "^1.2",
-            "behat/mink-selenium2-driver": "1.3.x-dev",
-            "drupal/coder": "^8.2.12",
-            "jcalderonzumba/gastonjs": "^1.0.2",
-            "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
-            "mikey179/vfsstream": "^1.2",
-            "phpspec/prophecy": "^1.4",
-            "phpunit/phpunit": "^4.8.35 || ^6.5",
-            "symfony/css-selector": "^3.4.0",
-            "symfony/debug": "^3.4.0",
-            "symfony/phpunit-bridge": "^3.4.3"
-        },
-        "time": "2018-10-17T22:19:50+00:00",
-        "type": "drupal-core",
-        "extra": {
-            "merge-plugin": {
-                "require": [
-                    "core/lib/Drupal/Component/Annotation/composer.json",
-                    "core/lib/Drupal/Component/Assertion/composer.json",
-                    "core/lib/Drupal/Component/Bridge/composer.json",
-                    "core/lib/Drupal/Component/ClassFinder/composer.json",
-                    "core/lib/Drupal/Component/Datetime/composer.json",
-                    "core/lib/Drupal/Component/DependencyInjection/composer.json",
-                    "core/lib/Drupal/Component/Diff/composer.json",
-                    "core/lib/Drupal/Component/Discovery/composer.json",
-                    "core/lib/Drupal/Component/EventDispatcher/composer.json",
-                    "core/lib/Drupal/Component/FileCache/composer.json",
-                    "core/lib/Drupal/Component/FileSystem/composer.json",
-                    "core/lib/Drupal/Component/Gettext/composer.json",
-                    "core/lib/Drupal/Component/Graph/composer.json",
-                    "core/lib/Drupal/Component/HttpFoundation/composer.json",
-                    "core/lib/Drupal/Component/PhpStorage/composer.json",
-                    "core/lib/Drupal/Component/Plugin/composer.json",
-                    "core/lib/Drupal/Component/ProxyBuilder/composer.json",
-                    "core/lib/Drupal/Component/Render/composer.json",
-                    "core/lib/Drupal/Component/Serialization/composer.json",
-                    "core/lib/Drupal/Component/Transliteration/composer.json",
-                    "core/lib/Drupal/Component/Utility/composer.json",
-                    "core/lib/Drupal/Component/Uuid/composer.json"
-                ],
-                "recurse": false,
-                "replace": false,
-                "merge-extra": false
-            },
-            "patches_applied": {
-                "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
-                "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
-                "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
-                "EntityRevisionParamConverter doesn't check if the entity revision actually exists": "https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Drupal\\Core\\": "lib/Drupal/Core",
-                "Drupal\\Component\\": "lib/Drupal/Component",
-                "Drupal\\Driver\\": "../drivers/lib/Drupal/Driver"
-            },
-            "classmap": [
-                "lib/Drupal.php",
-                "lib/Drupal/Component/Utility/Timer.php",
-                "lib/Drupal/Component/Utility/Unicode.php",
-                "lib/Drupal/Core/Database/Database.php",
-                "lib/Drupal/Core/DrupalKernel.php",
-                "lib/Drupal/Core/DrupalKernelInterface.php",
-                "lib/Drupal/Core/Site/Settings.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0-or-later"
-        ],
-        "description": "Drupal is an open source content management platform powering millions of websites and applications."
-    },
-    {
-        "name": "drupal/paragraphs",
-        "version": "1.5.0",
-        "version_normalized": "1.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupal.org/project/paragraphs",
-            "reference": "8.x-1.5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.5.zip",
-            "reference": "8.x-1.5",
-            "shasum": "85ba97dd1c602d33fc5904b6e1df5973312afa94"
-        },
-        "require": {
-            "drupal/core": "~8",
-            "drupal/entity_reference_revisions": "~1.3"
-        },
-        "require-dev": {
-            "drupal/block_field": "~1.0",
-            "drupal/ctools": "3.x-dev",
-            "drupal/diff": "~1.0",
-            "drupal/entity_browser": "1.x-dev",
-            "drupal/entity_usage": "2.x-dev",
-            "drupal/field_group": "~1.0",
-            "drupal/inline_entity_form": "~1.0",
-            "drupal/paragraphs-paragraphs_library": "*",
-            "drupal/replicate": "~1.0",
-            "drupal/search_api": "~1.0",
-            "drupal/search_api_db": "*"
-        },
-        "suggest": {
-            "drupal/entity_browser": "Recommended for an improved user experience when using the Paragraphs library module"
-        },
-        "type": "drupal-module",
-        "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-1.5",
-                "datestamp": "1541009695",
-                "security-coverage": {
-                    "status": "covered",
-                    "message": "Covered by Drupal's security advisory policy"
-                }
-            },
-            "patches_applied": {
-                "LogicException Form errors cannot be set after form validation has finished": "https://www.drupal.org/files/issues/2018-11-13/3013171-5.patch"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Berdir",
-                "homepage": "https://www.drupal.org/user/214652"
-            },
-            {
-                "name": "Frans",
-                "homepage": "https://www.drupal.org/user/514222"
-            },
-            {
-                "name": "Primsi",
-                "homepage": "https://www.drupal.org/user/282629"
-            },
-            {
-                "name": "jeroen.b",
-                "homepage": "https://www.drupal.org/user/1853532"
-            },
-            {
-                "name": "miro_dietiker",
-                "homepage": "https://www.drupal.org/user/227761"
-            }
-        ],
-        "description": "Enables the creation of Paragraphs entities.",
-        "homepage": "https://www.drupal.org/project/paragraphs",
-        "support": {
-            "source": "http://cgit.drupalcode.org/paragraphs"
-        }
     }
 ]
