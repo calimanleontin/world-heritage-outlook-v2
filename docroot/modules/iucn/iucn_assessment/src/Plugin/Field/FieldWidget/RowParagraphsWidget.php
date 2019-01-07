@@ -862,7 +862,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
             else {
               $label = $entity->label();
             }
-            $labels[] = $label;
+
+            if (!empty($label)) {
+              $labels[] = $label;
+            }
           }
           $value = !empty($labels) ? implode(', ', $labels) : NULL;
         }
