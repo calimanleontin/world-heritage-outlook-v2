@@ -9,38 +9,42 @@ use Drupal\user\Entity\User;
 
 class IucnModalFieldDiffForm extends IucnModalForm {
 
+  use DiffModalTrait;
+
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $node = $this->getRouteMatch()->getParameter('node_revision');
+    $settings = json_decode($node->field_settings->value, TRUE);
     $field = $this->getRouteMatch()->getParameter('field');
+    /** @var \Drupal\field\FieldConfigInterface $fieldConfig */
+    $fieldConfig = $node->get($field)->getFieldDefinition();
     $parent_form = parent::buildForm($form, $form_state);
 
     $diff_table = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $this->t('Difference')],
-      '#rows' => [],
+      '#header' => [$this->t('Author'), $fieldConfig->label()],
+      '#rows' => [
+        [
+          'author' => $this->getTableCellMarkup($this->t('Initial version'), 'author', 2, -100),
+        ]
+      ],
       '#weight' => -10,
       '#attributes' => ['class' => ['field-diff-table']],
     ];
 
-    $form = [];
+    unset($parent_form[$field]['widget'][0]['value']['#title']);
     unset($parent_form[$field]['diff']);
 
-    $row = [];
-    $row['author']['data']['#markup'] = '<b>' . $this->t('Initial version') . '</b>';
-    $diff_table['#rows'][] = $row;
+    $form = [
+      'actions' => $parent_form['actions'],
+      '#prefix' => '<div id="drupal-modal" class="diff-modal">',
+      '#suffix' => '</div>',
+    ];
 
 
-    $form['actions'] = $parent_form['actions'];
-    $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
-    $form['#suffix'] = '</div>';
-
-    $settings = $node->field_settings->value;
-    $settings = json_decode($settings, TRUE);
-
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       if (empty($diff['node'][$node->id()]['diff'][$field])) {
         continue;

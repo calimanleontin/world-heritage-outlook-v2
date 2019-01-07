@@ -1,6 +1,7 @@
 .diff-wrapper {
   position: relative;
   height: 100%;
+  min-height: 42px;
 }
 
 .diff-wrapper a.diff-button {
