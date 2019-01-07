@@ -82,9 +82,12 @@ abstract class IucnModalForm extends ContentEntityForm {
       $selector2 = $this->get_selector($grouped_with, $type);
     }
     return '
-        <a class="diff-button" data-type="' . $type . '" 
-        data-selector="' . $selector . '" data-key="' . $diff_field . '_' . $assessment_vid . '" 
-        data-selector2="' . $selector2 . '" data-key2="' . $key2 . '">
+        <a class="diff-button" title="' . t('Click to copy this value to the final version') . '"
+        data-type="' . $type . '" 
+        data-selector="' . $selector . '"
+        data-key="' . $diff_field . '_' . $assessment_vid . '" 
+        data-selector2="' . $selector2 . '"
+        data-key2="' . $key2 . '">
           <i class="far fa-copy"></i><p>' . t('Copy') . '</p>
         </a>
         ';

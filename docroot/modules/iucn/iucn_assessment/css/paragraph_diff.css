@@ -1,6 +1,6 @@
 .diff-wrapper {
   position: relative;
-  padding-bottom: 52px;
+  height: 100%;
 }
 
 .diff-wrapper a.diff-button {
@@ -9,8 +9,8 @@
   line-height: 12px;
   display: inline-block;
   position: absolute;
-  right: 5px;
-  bottom: 5px;
+  right: 0;
+  bottom: 0;
   border: 1px solid #dedede;
   padding: 3px;
   border-radius: 2px;
