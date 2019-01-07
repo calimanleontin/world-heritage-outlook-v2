@@ -1,0 +1,37 @@
+.diff-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.diff-wrapper a.diff-button {
+  cursor: pointer;
+  text-align: center;
+  line-height: 12px;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #dedede;
+  padding: 3px;
+  border-radius: 2px;
+  color: #333;
+  min-width: 32px;
+}
+
+.diff-wrapper a.diff-button:hover,
+.diff-wrapper a.diff-button:active {
+  color: #0074bd;
+  border-color: #0074bd;
+  text-decoration: none;
+}
+
+.diff-wrapper a.diff-button i {
+  font-size: 1.5em;
+  margin-bottom: 3px;
+}
+
+.diff-wrapper a.diff-button p {
+  margin: 0;
+  font-size: 0.8em;
+}
+
