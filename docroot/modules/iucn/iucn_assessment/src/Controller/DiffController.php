@@ -61,7 +61,7 @@ class DiffController extends ControllerBase {
             $field_diff_rows[0][0]['data'] = '';
             $field_diff_rows[0][0]['class'] .= ' diff-tick-marker';
             $field_diff_rows[0][1] = $field_diff_rows[0][3];
-            if ($entity->get($fieldName)->value) {
+            if ($this->isBooleanFieldTrue($entity, $fieldName, $field['#data']['#right'][0])) {
               $field_diff_rows[0][1]['class'] .= ' diff-tick-true';
             }
             else {
@@ -161,6 +161,12 @@ class DiffController extends ControllerBase {
     $bundle = $entity->bundle();
     $field_config = FieldConfig::loadByName($entity->getEntityTypeId(), $bundle, $field_name);
     return $field_config->getType() == 'boolean';
+  }
+
+  public function isBooleanFieldTrue(EntityInterface $entity, $field_name, $compare_value) {
+    $bundle = $entity->bundle();
+    $on_label = FieldConfig::loadByName($entity->getEntityTypeId(), $bundle, $field_name)->getSetting('on_label');
+    return $compare_value == $on_label;
   }
 
 }
