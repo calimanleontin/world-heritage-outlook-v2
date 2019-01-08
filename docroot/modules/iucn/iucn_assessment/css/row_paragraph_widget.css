@@ -563,7 +563,7 @@
 .diff-modal table.field-diff-table > tbody > tr:last-child > td {
   border-top: 3px solid black;
 }
-.diff-modal table.field-diff-table > tbody > tr:last-child td {
+.diff-modal table.field-diff-table > tbody > tr td {
   border-bottom: 1px solid rgb(230, 228, 223);
 }
 .diff-modal table.field-diff-table > tbody > tr:last-child td:first-child {
