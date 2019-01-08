@@ -1,7 +1,7 @@
-diff --git a/core/misc/states.es6.js b/core/misc/states.es6.js
-index dd2c315..f5069c9 100644
---- a/core/misc/states.es6.js
-+++ b/core/misc/states.es6.js
+diff --git a/docroot/core/misc/states.es6.js b/docroot/core/misc/states.es6.js
+index dd2c315..3be0380 100644
+--- a/docroot/core/misc/states.es6.js
++++ b/docroot/core/misc/states.es6.js
 @@ -202,6 +202,10 @@
       *   true or false.
       */
@@ -13,10 +13,30 @@ index dd2c315..f5069c9 100644
        const value = this.values[selector][state.name];
        if (reference.constructor.name in states.Dependent.comparisons) {
          // Use a custom compare function for certain reference value types.
-diff --git a/core/misc/states.js b/core/misc/states.js
-index fcdc37a..5b0eed4 100644
---- a/core/misc/states.js
-+++ b/core/misc/states.js
+@@ -282,7 +286,7 @@
+       let result;
+       if ($.isArray(constraints)) {
+         // This constraint is an array (OR or XOR).
+-        const hasXor = $.inArray('xor', constraints) === -1;
++        const hasXor = $.inArray('xor', constraints) !== -1;
+         const len = constraints.length;
+         for (let i = 0; i < len; i++) {
+           if (constraints[i] !== 'xor') {
+@@ -293,8 +297,8 @@
+             );
+             // Return if this is OR and we have a satisfied constraint or if
+             // this is XOR and we have a second satisfied constraint.
+-            if (constraint && (hasXor || result)) {
+-              return hasXor;
++            if (hasXor && constraint && result) {
++              return false;
+             }
+             result = result || constraint;
+           }
+diff --git a/docroot/core/misc/states.js b/docroot/core/misc/states.js
+index fcdc37a..ac931c3 100644
+--- a/docroot/core/misc/states.js
++++ b/docroot/core/misc/states.js
 @@ -98,6 +98,10 @@
        });
      },
@@ -28,3 +48,56 @@ index fcdc37a..5b0eed4 100644
        var value = this.values[selector][state.name];
        if (reference.constructor.name in states.Dependent.comparisons) {
          return states.Dependent.comparisons[reference.constructor.name](reference, value);
+@@ -131,14 +135,14 @@
+ 
+       var result = void 0;
+       if ($.isArray(constraints)) {
+-        var hasXor = $.inArray('xor', constraints) === -1;
++        var hasXor = $.inArray('xor', constraints) !== -1;
+         var len = constraints.length;
+         for (var i = 0; i < len; i++) {
+           if (constraints[i] !== 'xor') {
+             var constraint = this.checkConstraints(constraints[i], selector, i);
+ 
+-            if (constraint && (hasXor || result)) {
+-              return hasXor;
++            if (hasXor && constraint && result) {
++              return false;
+             }
+             result = result || constraint;
+           }
+diff --git a/patches/core/states-api-or.patch b/patches/core/states-api-or.patch
+index a4b394d..e69de29 100644
+--- a/patches/core/states-api-or.patch
++++ b/patches/core/states-api-or.patch
+@@ -1,30 +0,0 @@
+-diff --git a/core/misc/states.es6.js b/core/misc/states.es6.js
+-index dd2c315..f5069c9 100644
+---- a/core/misc/states.es6.js
+-+++ b/core/misc/states.es6.js
+-@@ -202,6 +202,10 @@
+-      *   true or false.
+-      */
+-     compare(reference, selector, state) {
+-+      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
+-+        return false;
+-+      }
+-+
+-       const value = this.values[selector][state.name];
+-       if (reference.constructor.name in states.Dependent.comparisons) {
+-         // Use a custom compare function for certain reference value types.
+-diff --git a/core/misc/states.js b/core/misc/states.js
+-index fcdc37a..5b0eed4 100644
+---- a/core/misc/states.js
+-+++ b/core/misc/states.js
+-@@ -98,6 +98,10 @@
+-       });
+-     },
+-     compare: function compare(reference, selector, state) {
+-+      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
+-+        return false;
+-+      }
+-+
+-       var value = this.values[selector][state.name];
+-       if (reference.constructor.name in states.Dependent.comparisons) {
+-         return states.Dependent.comparisons[reference.constructor.name](reference, value);
