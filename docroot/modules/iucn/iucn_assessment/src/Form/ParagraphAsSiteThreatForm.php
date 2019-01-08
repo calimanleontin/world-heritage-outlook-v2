@@ -27,7 +27,7 @@ class ParagraphAsSiteThreatForm {
       1384, // Hunting and trapping
     ],
     'field_as_species_name' => [
-      1358, // Invasive Non-Native/ Alien Species
+      1395, // Invasive Non-Native/ Alien Species
     ],
     'field_as_resource_use_type' => [
       1384, // Hunting and trapping
