@@ -73,10 +73,16 @@ function _iucn_fields_get_assessment(\Drupal\Core\Form\FormStateInterface $form_
     $assessment = $assessment->getParentEntity();
   }
 
-  if (!$assessment instanceof \Drupal\node\NodeInterface || $assessment->bundle() != 'site_assessment') {
-    return NULL;
+  if ($assessment instanceof \Drupal\node\NodeInterface && $assessment->bundle() == 'site_assessment') {
+    return $assessment;
   }
-  return $assessment;
+
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
+    return $route_match->getParameter('node_revision');
+  }
+
+  return NULL;
 }
 
 function _iucn_fields_is_altered_element($element, $context) {
