@@ -12,9 +12,6 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: unknown
-      label: Unknown
-    -
       value: legal
       label: Legal
     -
@@ -23,6 +20,9 @@ settings:
     -
       value: legal_and_illegal
       label: 'Legal and illegal'
+    -
+      value: unknown
+      label: Unknown
   allowed_values_function: ''
 module: options
 locked: false
