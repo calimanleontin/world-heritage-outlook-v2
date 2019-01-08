@@ -392,15 +392,14 @@ class AssessmentWorkflow {
   public function appendCommentsToFieldSettings(NodeInterface $node, NodeInterface $revision, $save = TRUE) {
     $revision_field_settings_json = $revision->field_settings->value;
     $revision_field_settings = json_decode($revision_field_settings_json, TRUE);
-    $revision_comments = $revision_field_settings['comments'];
-    if (empty($revision_comments)) {
+    if (empty($revision_field_settings['comments'])) {
       return;
     }
 
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
 
-    foreach ($revision_comments as $tab => $revision_comment) {
+    foreach ($revision_field_settings['comments'] as $tab => $revision_comment) {
       if (!empty($revision_comment[$revision->getRevisionUserId()])) {
         $field_settings['comments'][$tab][$revision->getRevisionUserId()] = $revision_comment[$revision->getRevisionUserId()];
       }
