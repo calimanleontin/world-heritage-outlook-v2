@@ -10,9 +10,10 @@
   line-height: 12px;
   display: inline-block;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: -5px;
+  bottom: -5px;
   border: 1px solid #dedede;
+  background-color: rgba(255, 255, 255, .2);
   padding: 3px;
   border-radius: 2px;
   color: #333;
@@ -24,6 +25,7 @@
   color: #0074bd;
   border-color: #0074bd;
   text-decoration: none;
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .diff-wrapper a.diff-button i {
