@@ -266,7 +266,7 @@
     }
     var tag = '<a href="/' + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>';
     if (curr_tab == idAttr) {
-      tag = '<a href="#" onclick="return false;"></a>';
+      tag = '<a href="#" disabled="disabled" onclick="return false;"></a>';
     }
     tab.item = $('<li class="horizontal-tab-button" tabindex="-1"></li>')
       .append(tab.link = $(tag)
