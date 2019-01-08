@@ -260,8 +260,16 @@
     var iucn_settings = drupalSettings.iucn_assessment || {};
     var diff_tabs = iucn_settings.diff_tabs || {};
 
+    var curr_tab = 'values';
+    if (drupalSettings.path.currentQuery !== undefined && drupalSettings.path.currentQuery.tab !== undefined) {
+      curr_tab = drupalSettings.path.currentQuery.tab
+    }
+    var tag = '<a href="/' + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>';
+    if (curr_tab == idAttr) {
+      tag = '<a href="#" onclick="return false;"></a>';
+    }
     tab.item = $('<li class="horizontal-tab-button" tabindex="-1"></li>')
-      .append(tab.link = $('<a href="/' + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>')
+      .append(tab.link = $(tag)
         .append(tab.title = $('<strong></strong>').text(settings.title))
       );
 
