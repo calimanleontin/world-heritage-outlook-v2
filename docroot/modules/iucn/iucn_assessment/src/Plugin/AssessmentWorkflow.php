@@ -317,8 +317,7 @@ class AssessmentWorkflow {
         $revision_state = self::STATUS_DRAFT;
       }
       $this->createRevision($node, NULL, NULL, $revision_state);
-      $revision_message = 'State: ' . $node->field_state->value;
-      $node->setRevisionLogMessage($revision_message);
+      $node->setRevisionLogMessage("{$original_state} => {$state}");
     }
 
     if ($state == self::STATUS_PUBLISHED) {
@@ -736,7 +735,7 @@ class AssessmentWorkflow {
    * @param int $vid
    *   The revision id.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   The revision.
    */
   public function getAssessmentRevision($vid) {
