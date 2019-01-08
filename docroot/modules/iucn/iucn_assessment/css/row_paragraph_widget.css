@@ -14,8 +14,22 @@
     border-bottom: 1px solid #bfbfba;
 }
 
-.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-    background: #ececec!important;
+.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper,
+.diff-modal table.field-diff-table thead tr th {
+  background: #ececec!important;
+  font-size: .9em;
+  text-transform: none;
+}
+.diff-modal table.field-diff-table > thead > tr > th,
+.diff-modal table.field-diff-table > tbody > tr > td {
+  border-right: 1px solid rgb(230, 228, 223);
+  padding: 10px 12px;
+}
+
+.field-diff-table {
+  font-size: .9em;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
@@ -39,7 +53,8 @@
   z-index: 10000;
 }
 
-.field--widget-row-entity-reference-paragraphs td {
+.field--widget-row-entity-reference-paragraphs td,
+.field-diff-table .diff-context-wrapper td {
     padding: 0;
 }
 
@@ -520,12 +535,16 @@
     background-color: #fcf8e3 !important;
 }
 
-#drupal-modal table.field-multiple-table {
-    margin-top: -1em;
-    margin-left: -1em;
+#drupal-modal {
+  padding: 0;
 }
 
-#drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
+#drupal-modal .layout-node-form .layout-region {
+  padding-right: 0;
+}
+
+#drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div,
+#drupal-modal .diff-modal table.field-diff-table > thead > tr > th {
     position: relative;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -536,8 +555,15 @@
     visibility: hidden;
 }
 
-.paragraph-diff-final {
-    border-top: 3px solid black;
+.paragraph-diff-final,
+.diff-modal table.field-diff-table > tbody > tr:last-child > td {
+  border-top: 3px solid black;
+}
+.diff-modal table.field-diff-table > tbody > tr:last-child td {
+  border-bottom: 1px solid rgb(230, 228, 223);
+}
+.diff-modal table.field-diff-table > tbody > tr:last-child td:first-child {
+  font-weight: bold;
 }
 
 .diff-modal .paragraph-diff-row,
@@ -545,7 +571,8 @@
     background-color: #fcfcfa !important;
 }
 
-.diff-original-row {
+.diff-original-row,
+.diff-modal table.field-diff-table > tbody > tr:first-child > td {
     border-bottom: 3px solid black;
 }
 
