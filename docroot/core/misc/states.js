@@ -98,10 +98,6 @@
       });
     },
     compare: function compare(reference, selector, state) {
-      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
-        return false;
-      }
-
       var value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         return states.Dependent.comparisons[reference.constructor.name](reference, value);

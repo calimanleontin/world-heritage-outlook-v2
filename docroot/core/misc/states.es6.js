@@ -202,10 +202,6 @@
      *   true or false.
      */
     compare(reference, selector, state) {
-      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
-        return false;
-      }
-
       const value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         // Use a custom compare function for certain reference value types.
