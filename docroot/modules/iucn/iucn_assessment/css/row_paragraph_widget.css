@@ -538,6 +538,10 @@
 #drupal-modal {
   padding: 0;
 }
+#drupal-modal > .paragraph-form {
+  padding: 1em;
+  box-sizing: border-box;
+}
 
 #drupal-modal .layout-node-form .layout-region {
   padding-right: 0;
