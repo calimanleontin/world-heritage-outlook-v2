@@ -19,6 +19,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
+use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -821,7 +822,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         continue;
       }
 
-
       if (!empty($grouped_fields[$field_name])) {
         $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
       }
@@ -856,15 +856,16 @@ class RowParagraphsWidget extends ParagraphsWidget {
           $labels = [];
           foreach ($ids as $id) {
             $entity = \Drupal::entityTypeManager()->getStorage($target_type)->load($id);
-            if ($target_type == 'taxonomy_term') {
-              if (!$this->isHiddenTerm($entity)) {
-                $label = $this->getEntityLabel($entity);
-              }
+            if ($target_type == 'taxonomy_term' && $entity instanceof TermInterface && !$this->isHiddenTerm($entity)) {
+              $label = $this->getEntityLabel($entity);
             }
             else {
               $label = $entity->label();
             }
-            $labels[] = $label;
+
+            if (!empty($label)) {
+              $labels[] = $label;
+            }
           }
           $value = !empty($labels) ? implode(', ', $labels) : NULL;
         }
@@ -948,7 +949,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'text_with_summary',
       'text',
       'text_long',
-      'list_string',
       'string',
       'string_long',
     ];
@@ -958,6 +958,14 @@ class RowParagraphsWidget extends ParagraphsWidget {
       'parent_type',
       'parent_field_name',
     ];
+
+    if ($field_definition->getType() == 'list_string') {
+      $allowed_values = $field_definition->getFieldStorageDefinition()->getSetting('allowed_values');
+      $state_value = $paragraph->get($field_name)->value;
+      if (!empty($allowed_values[$state_value])) {
+        return $allowed_values[$state_value];
+      }
+    }
 
     $summary = '';
     if (in_array($field_definition->getType(), $text_types)) {

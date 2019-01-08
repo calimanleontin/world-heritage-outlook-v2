@@ -5,6 +5,7 @@
 @background_color_3: #f5f5f2;
 @table-border-color: rgb(230, 228, 223);
 
+@import "mixins";
 @import "components/assessment";
 @import "components/blocks";
 @import "components/dashboard";
@@ -85,19 +86,7 @@
     display: none;
   }
   .label:after {
-    content: '';
-    vertical-align: super;
-    display: inline-block;
-    background-image: url(../../../core/misc/icons/ee0000/required.svg);
-    background-repeat: no-repeat;
-    background-size: 6px 6px;
-    width: 6px;
-    height: 6px;
-    margin: 0 0.3em;
-  }
-
-  .form-required:after {
-
+    .form-required();
   }
 }
 

@@ -4,6 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.as_site_threat.field_as_description
+    - field.field.paragraph.as_site_threat.field_as_legality
+    - field.field.paragraph.as_site_threat.field_as_resource_use_type
+    - field.field.paragraph.as_site_threat.field_as_species_name
+    - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
     - field.field.paragraph.as_site_threat.field_as_threats_extent
     - field.field.paragraph.as_site_threat.field_as_threats_in
@@ -16,6 +20,7 @@ dependencies:
   module:
     - ds
     - field_group
+    - iucn_assessment
     - iucn_site
 third_party_settings:
   ds:
@@ -62,7 +67,7 @@ bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 6
+    weight: 4
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -113,15 +118,18 @@ content:
   field_as_threats_rating:
     weight: 1
     label: hidden
-    settings:
-      link: false
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: parent_category
     region: terms
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_as_legality: true
+  field_as_resource_use_type: true
+  field_as_species_name: true
+  field_as_targeted_species: true
   field_as_threats_threat: true
   field_as_threats_values_bio: true
   field_as_threats_values_wh: true

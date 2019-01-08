@@ -33,9 +33,10 @@
 }
 
 .field--widget-row-entity-reference-paragraphs .paragraph-top {
-    display: grid;
-    grid-gap: 0;
-    align-items: stretch;
+  display: grid;
+  grid-gap: 0;
+  align-items: stretch;
+  z-index: 10000;
 }
 
 .field--widget-row-entity-reference-paragraphs td {

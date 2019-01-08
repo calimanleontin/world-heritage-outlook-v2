@@ -11,6 +11,7 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -58,6 +59,21 @@ function iucn_who_core_toolbar() {
   return \Drupal::service('class_resolver')
     ->getInstanceFromDefinition(ToolbarHandler::class)
     ->toolbar();
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function iucn_who_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() == 'content' && $display_id == 'page_2') {
+    $account = \Drupal::currentUser();
+    $is_iucn_manager = in_array('iucn_manager', $account->getRoles());
+    $is_administrator = in_array('administrator', $account->getRoles());
+    if ($is_iucn_manager || $is_administrator) {
+      return;
+    }
+    $view->removeHandler($view->current_display, 'field', 'views_bulk_operations_bulk_form');
+  }
 }
 
 /**
