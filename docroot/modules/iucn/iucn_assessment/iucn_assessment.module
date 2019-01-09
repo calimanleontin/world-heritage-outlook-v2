@@ -516,6 +516,13 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function iucn_assessment_views_pre_render(ViewExecutable $view) {
+  $view->feedIcons[0]['#title'] = t('Export values in excel');
+}
+
+/**
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
