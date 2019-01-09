@@ -15,7 +15,9 @@ class IucnModalFieldDiffForm extends IucnModalForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getRouteMatch()->getParameter('node_revision');
     $settings = json_decode($node->field_settings->value, TRUE);
     $field = $this->getRouteMatch()->getParameter('field');

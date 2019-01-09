@@ -227,13 +227,13 @@ class AssessmentWorkflow {
       // have marked their revision is done.
       // If so, mark the default revision as done.
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
-        $default_revision = Node::load($node->id());
-        $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
-        if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
+        $comparing_revision = self::getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
+        $this->appendCommentsToFieldSettings($comparing_revision, $node, FALSE);
+        if ($this->isAssessmentReviewed($comparing_revision, $node->getRevisionId())) {
+          $this->forceAssessmentState($comparing_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
         }
         // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($default_revision, $node, TRUE, TRUE);
+        $this->appendDiffToFieldSettings($comparing_revision, $node, TRUE, TRUE);
       }
       // When the draft revision is published,
       // create a new default revision with the published state.
