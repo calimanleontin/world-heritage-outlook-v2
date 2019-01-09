@@ -24,37 +24,37 @@ class NodeSiteAssessmentStateChangeForm {
     $currentUser = \Drupal::currentUser();
 
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    $validation_error = FALSE;
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
+      $tab_has_errors = FALSE;
       if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
       if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
         if ($fieldSettings->getType() == 'entity_reference_revisions') {
-          $found_errors = FALSE;
           foreach ($node->{$fieldName} as &$value) {
             $target = $value->getValue();
             $paragraph = Paragraph::load($target['target_id']);
             $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
             foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
               if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $found_errors = TRUE;
-                \Drupal::messenger()->addError(t('"@label" is missing "@field" field', [
-                    '@label' => $fieldSettings->getLabel(),
-                    '@field' => $paragraphFieldSettings->getLabel()
-                  ]));
+                $tab_has_errors = $validation_error = TRUE;
+                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in "@label" table. Please fill it.', [
+                  '@field' => $paragraphFieldSettings->getLabel(),
+                  '@label' => $fieldSettings->getLabel(),
+                ]), 'error');
               }
             }
             // Show errors only in 1 paragraph row.
-            if ($found_errors) {
+            if (!empty($tab_has_errors)) {
               break;
             }
           }
         }
       }
       else {
-        \Drupal::messenger()->addError(
-          t('@label is missing', ['@label' => $fieldSettings->getLabel()])
-        );
+        $validation_error = TRUE;
+        self::addStatusMessage($form, t('<b>@label</b> field is required. Please fill it.', ['@label' => $fieldSettings->getLabel()]), 'error');
       }
     }
 
@@ -100,7 +100,16 @@ class NodeSiteAssessmentStateChangeForm {
       && $node->field_assessor->target_id == $currentUser->id()
       && !self::assessmentHasNewReferences($node)) {
 
-      self::addWarning($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+      self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+    }
+
+
+    if (!empty($validation_error)) {
+      unset($form['field_coordinator']);
+      unset($form['field_assessor']);
+      unset($form['field_reviewers']);
+      unset($form['warning']);
+      unset($form['actions']);
     }
   }
 
@@ -122,14 +131,14 @@ class NodeSiteAssessmentStateChangeForm {
     return TRUE;
   }
 
-  public static function addWarning(&$form, $message) {
-    if (empty($form['warning'])) {
-      $form['warning'] = [];
+  public static function addStatusMessage(&$form, $message, $type = 'warning') {
+    if (empty($form[$type])) {
+      $form[$type] = [];
     }
-    $form['warning'][] = [
+    $form[$type][] = [
       '#type' => 'markup',
-      '#markup' => sprintf('<div role="contentinfo" aria-label="Warning message" class="messages messages--warning">%s</div>',
-        $message),
+      '#markup' => sprintf('<div role="contentinfo" aria-label="%s message" class="messages messages--%s">%s</div>',
+        $type, $type, $message),
       '#weight' => -1000,
     ];
   }
@@ -140,18 +149,18 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
-      self::addWarning($form, t('You will NO longer be able to edit the assessment after you finish it.'));
+      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish it.'));
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addWarning($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
+      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
-        self::addWarning($form, t('You will NO longer be able to edit the assessment until the assessor finishes his work.'));
+        self::addStatusMessage($form, t('You will NO longer be able to edit the assessment until the assessor finishes his work.'));
       }
       elseif ($state == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        self::addWarning($form, t('You will NO longer be able to edit the assessment until all reviewers finish their work.'));
+        self::addStatusMessage($form, t('You will NO longer be able to edit the assessment until all reviewers finish their work.'));
       }
     }
 
