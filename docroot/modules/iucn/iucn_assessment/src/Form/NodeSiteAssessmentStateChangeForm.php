@@ -25,10 +25,10 @@ class NodeSiteAssessmentStateChangeForm {
 
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
-      if (!$fieldSettings->isRequired()) {
+      if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
-      if (!empty($node->{$fieldName}->getValue())) {
+      if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
         if ($fieldSettings->getType() == 'entity_reference_revisions') {
           $found_errors = FALSE;
           foreach ($node->{$fieldName} as &$value) {
