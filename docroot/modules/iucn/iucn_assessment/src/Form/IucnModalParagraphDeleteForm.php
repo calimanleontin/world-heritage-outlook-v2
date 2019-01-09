@@ -31,6 +31,7 @@ class IucnModalParagraphDeleteForm extends FormBase {
     $form = [];
 
     $form['actions'] = ['#type' => 'actions'];
+    $form['#attributes']['class'][] = 'paragraph-form';
 
     $this->paragraph = $this->getRouteMatch()->getParameter('paragraph_revision');
     $this->parent_entity = $this->getRouteMatch()->getParameter('node_revision');

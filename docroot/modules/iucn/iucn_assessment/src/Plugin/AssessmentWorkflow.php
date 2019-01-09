@@ -227,13 +227,13 @@ class AssessmentWorkflow {
       // have marked their revision is done.
       // If so, mark the default revision as done.
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
-        $default_revision = Node::load($node->id());
-        $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
-        if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
+        $comparing_revision = self::getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
+        $this->appendCommentsToFieldSettings($comparing_revision, $node, FALSE);
+        if ($this->isAssessmentReviewed($comparing_revision, $node->getRevisionId())) {
+          $this->forceAssessmentState($comparing_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
         }
         // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($default_revision, $node, TRUE, TRUE);
+        $this->appendDiffToFieldSettings($comparing_revision, $node, TRUE, TRUE);
       }
       // When the draft revision is published,
       // create a new default revision with the published state.
@@ -317,8 +317,7 @@ class AssessmentWorkflow {
         $revision_state = self::STATUS_DRAFT;
       }
       $this->createRevision($node, NULL, NULL, $revision_state);
-      $revision_message = 'State: ' . $node->field_state->value;
-      $node->setRevisionLogMessage($revision_message);
+      $node->setRevisionLogMessage("{$original_state} => {$state}");
     }
 
     if ($state == self::STATUS_PUBLISHED) {
@@ -392,15 +391,14 @@ class AssessmentWorkflow {
   public function appendCommentsToFieldSettings(NodeInterface $node, NodeInterface $revision, $save = TRUE) {
     $revision_field_settings_json = $revision->field_settings->value;
     $revision_field_settings = json_decode($revision_field_settings_json, TRUE);
-    $revision_comments = $revision_field_settings['comments'];
-    if (empty($revision_comments)) {
+    if (empty($revision_field_settings['comments'])) {
       return;
     }
 
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
 
-    foreach ($revision_comments as $tab => $revision_comment) {
+    foreach ($revision_field_settings['comments'] as $tab => $revision_comment) {
       if (!empty($revision_comment[$revision->getRevisionUserId()])) {
         $field_settings['comments'][$tab][$revision->getRevisionUserId()] = $revision_comment[$revision->getRevisionUserId()];
       }
@@ -737,7 +735,7 @@ class AssessmentWorkflow {
    * @param int $vid
    *   The revision id.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   The revision.
    */
   public function getAssessmentRevision($vid) {
