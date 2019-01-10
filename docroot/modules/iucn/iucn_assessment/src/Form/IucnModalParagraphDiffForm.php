@@ -52,6 +52,13 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       $form_revision = $parent_entity_revision;
     }
 
+    foreach ($form_revision->{$field}->getValue() as $value) {
+      if (!empty($value['target_id']) && $value['target_id'] == $paragraph_revision->id()) {
+        $form_revision->{$field}->setValue([0 => $value]);
+        break;
+      }
+    }
+
     // Get the rendered field from the entity form.
     $form = $this->formBuilder->getForm($form_revision, 'default')[$field];
     // Remove unnecessary data from the table.
@@ -61,17 +68,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
     $form['widget']['#hide_draggable'] = TRUE;
     $paragraph_key = 0;
-    foreach ($form['widget'] as $key => &$item) {
-      if (!is_int($key)) {
-        continue;
-      }
-      if ($item['#paragraph_id'] != $paragraph_revision->id()) {
-        unset($form['widget'][$key]);
-      }
-      else {
-        $paragraph_key = $key;
-      }
-    }
 
     // Add the author table cell.
     $this->addAuthorCell($form['widget']['header'], 'data', t('Author'), 'author', 2, -100);
