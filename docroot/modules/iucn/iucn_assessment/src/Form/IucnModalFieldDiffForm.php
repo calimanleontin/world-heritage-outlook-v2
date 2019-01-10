@@ -86,9 +86,6 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       '#attributes' => ['class' => ['field-diff-table']],
     ];
 
-//    unset($form[$this->field]['widget'][0]['value']['#title']);
-//    unset($form[$this->field]['diff']);
-
 
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       if (empty($diff['node'][$this->nodeRevision->id()]['diff'][$this->field])) {
