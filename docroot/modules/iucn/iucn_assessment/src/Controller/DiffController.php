@@ -53,19 +53,24 @@ class DiffController extends ControllerBase {
           $entityId = $matches[1];
           $entityType = $matches[2];
           $fieldName = $matches[3];
-          $diff[$entityType][$entityId]['initial_revision_id'] = $vid1;
 
+          /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
           $entity = $this->entityTypeManager()->getStorage($entityType)->load($entityId);
           if ($this->isBooleanField($entity, $fieldName)) {
-            $field_diff_rows[0][0] = $field_diff_rows[0][2];
-            $field_diff_rows[0][0]['data'] = '';
-            $field_diff_rows[0][0]['class'] .= ' diff-tick-marker';
-            $field_diff_rows[0][1] = $field_diff_rows[0][3];
-            if ($this->isBooleanFieldTrue($entity, $fieldName, $field['#data']['#right'][0])) {
-              $field_diff_rows[0][1]['class'] .= ' diff-tick-true';
+            if (empty($field_diff_rows[0][2]['data'])) {
+              $field_diff_rows[0][0] = $field_diff_rows[0][1];
+              $field_diff_rows[0][2] = [
+                'data' => '',
+                'class' => 'diff-tick-marker diff-tick-false',
+              ];
             }
             else {
-              $field_diff_rows[0][1]['class'] .= ' diff-tick-false';
+              $field_diff_rows[0][0] = $field_diff_rows[0][2];
+              $field_diff_rows[0][0]['data'] = '';
+              $field_diff_rows[0][0]['class'] .= ' diff-tick-marker';
+              $field_diff_rows[0][1] = $field_diff_rows[0][3];
+              $is_true = $this->isBooleanFieldTrue($entity, $fieldName, $field['#data']['#right'][0]);
+              $field_diff_rows[0][1]['class'] .=  ' diff-tick-' . ($is_true ? 'true' : 'false');
             }
             unset($field_diff_rows[0][2]);
             unset($field_diff_rows[0][3]);
@@ -73,9 +78,11 @@ class DiffController extends ControllerBase {
 
           if ($entityType == 'node') {
             $field_group_id = $this->getFieldGroupIdForNodeField($fieldName);
+            $diff[$entityType][$entityId]['initial_revision_id'] = $vid1;
           }
           elseif ($entityType == 'paragraph') {
             $field_group_id = $this->getFieldGroupIdForParagraphField($entityId, $fieldName);
+            $diff[$entityType][$entityId]['initial_revision_id'] = $entity->getRevisionId();
           }
 
           if (!empty($field_group_id) && empty($diff['fieldgroups'][$field_group_id])) {
