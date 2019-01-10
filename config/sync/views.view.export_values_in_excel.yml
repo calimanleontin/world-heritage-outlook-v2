@@ -8,7 +8,6 @@ dependencies:
     - field.storage.paragraph.field_as_values_value
     - field.storage.taxonomy_term.field_iucn_region
     - node.type.site_assessment
-    - system.menu.admin
     - user.role.administrator
     - user.role.iucn_manager
   module:
@@ -508,6 +507,46 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
+        langcode:
+          id: langcode
+          table: node_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: langcode
+          plugin_id: language
       sorts:
         title:
           id: title
@@ -594,7 +633,7 @@ display:
     position: 2
     display_options:
       display_extenders: {  }
-      path: admin/reports/export-values/xlsx
+      path: admin/content/export-values/xlsx
       displays:
         page_1: page_1
         default: '0'
@@ -647,16 +686,16 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/reports/export-values
+      path: admin/content/export-values
       menu:
-        type: normal
+        type: tab
         title: 'Export values in excel'
         description: ''
         expanded: false
-        parent: system.admin_reports
+        parent: ''
         weight: 0
         context: '0'
-        menu_name: admin
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
