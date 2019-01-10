@@ -227,13 +227,15 @@ class AssessmentWorkflow {
       // have marked their revision is done.
       // If so, mark the default revision as done.
       if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
-        $comparing_revision = self::getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
-        $this->appendCommentsToFieldSettings($comparing_revision, $node, FALSE);
-        if ($this->isAssessmentReviewed($comparing_revision, $node->getRevisionId())) {
-          $this->forceAssessmentState($comparing_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
+        $default_revision = Node::load($node->id());
+        $original_revision = self::getRevisionByState($node, self::STATUS_READY_FOR_REVIEW);
+        $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
+        if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
+          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
+          $default_revision->isDefaultRevision(TRUE);
         }
         // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($comparing_revision, $node, TRUE, TRUE);
+        $this->appendDiffToFieldSettings($default_revision, $original_revision->getRevisionId(), $node->getRevisionId(), TRUE, TRUE);
       }
       // When the draft revision is published,
       // create a new default revision with the published state.
@@ -291,7 +293,7 @@ class AssessmentWorkflow {
     // When an assessor finishes, get the diff and save it.
     if ($state == self::STATUS_READY_FOR_REVIEW && $original_state == self::STATUS_UNDER_ASSESSMENT) {
       $under_evaluation_revision = self::getRevisionByState($node, self::STATUS_UNDER_EVALUATION);
-      $this->appendDiffToFieldSettings($node, $under_evaluation_revision, FALSE);
+      $this->appendDiffToFieldSettings($node, $node->getRevisionId(), $under_evaluation_revision->getRevisionId(), FALSE);
     }
 
     // After leaving the ready for review state, we no longer need the diff.
@@ -345,10 +347,10 @@ class AssessmentWorkflow {
    * @param bool $reverse_comparison
    *   Reverse comparison.
    */
-  public function appendDiffToFieldSettings(NodeInterface $node, NodeInterface $compare, $save = TRUE, $reverse_comparison = FALSE) {
+  public function appendDiffToFieldSettings(NodeInterface $node, $original_vid, $comparing_vid, $save = TRUE, $reverse_comparison = FALSE) {
     $diff = empty($reverse_comparison)
-      ? $this->diffController->compareRevisions($compare->getRevisionId(), $node->getRevisionId())
-      : $this->diffController->compareRevisions($node->getRevisionId(), $compare->getRevisionId());
+      ? $this->diffController->compareRevisions($comparing_vid, $original_vid)
+      : $this->diffController->compareRevisions($original_vid, $comparing_vid);
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
     if (empty($field_settings['diff'])) {
@@ -370,7 +372,7 @@ class AssessmentWorkflow {
         }
       }
     }
-    $field_settings['diff'][$compare->getRevisionId()] = $diff;
+    $field_settings['diff'][$comparing_vid] = $diff;
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
     if ($save) {
