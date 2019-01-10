@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class IucnModalFieldDiffForm extends IucnModalForm {
 
   use DiffModalTrait;
+  use AssessmentEntityFormTrait;
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
   protected $entityFormDisplay;
@@ -27,6 +28,9 @@ class IucnModalFieldDiffForm extends IucnModalForm {
   /** @var string|null  */
   protected $field;
 
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
+  protected $nodeFormDisplay;
+
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
@@ -36,6 +40,14 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     $routeMatch = $this->getRouteMatch();
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
     $this->field = $routeMatch->getParameter('field');
+
+    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
+    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
+      // Remove all other fields except the selected one.
+      if ($name != $this->field) {
+        $this->nodeFormDisplay->removeComponent($name);
+      }
+    }
   }
 
   public static function create(ContainerInterface $container) {
@@ -52,14 +64,19 @@ class IucnModalFieldDiffForm extends IucnModalForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $this->init($form_state);
+    $this->setFormDisplay($this->nodeFormDisplay, $form_state);
+    $form = parent::buildForm($form, $form_state);
+    $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
+    $form['#suffix'] = '</div>';
+    $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
+
     $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
-    /** @var \Drupal\field\FieldConfigInterface $fieldConfig */
-    $fieldConfig = $this->nodeRevision->get($this->field)->getFieldDefinition();
-    $parent_form = parent::buildForm($form, $form_state);
 
     $diff_table = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $fieldConfig->label()],
+      '#header' => [$this->t('Author'), $form[$this->field]['widget'][0]['value']['#title']],
       '#rows' => [
         [
           'author' => $this->getTableCellMarkup($this->t('Initial version'), 'author', 2, -100),
@@ -69,14 +86,8 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       '#attributes' => ['class' => ['field-diff-table']],
     ];
 
-    unset($parent_form[$this->field]['widget'][0]['value']['#title']);
-    unset($parent_form[$this->field]['diff']);
-
-    $form = [
-      'actions' => $parent_form['actions'],
-      '#prefix' => '<div id="drupal-modal" class="diff-modal">',
-      '#suffix' => '</div>',
-    ];
+//    unset($form[$this->field]['widget'][0]['value']['#title']);
+//    unset($form[$this->field]['diff']);
 
 
     foreach ($settings['diff'] as $assessment_vid => $diff) {
@@ -111,7 +122,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         $data_value = $revision->get($this->field)->getValue();
       }
       unset($value_0['#title']);
-      $type = $this->get_diff_field_type($parent_form, $this->field);
+      $type = $this->get_diff_field_type($form, $this->field);
       $row['diff']['data'] = [
         '#type' => 'table',
         '#rows' => $diff_rows,
@@ -130,15 +141,13 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     }
     $diff_table[] = [
       'author' => $this->getTableCellMarkup($this->t('Final version'), 'author', 2, -100),
-      'diff' => $parent_form[$this->field],
+      'diff' => $form[$this->field],
     ];
 
     $form['diff'] = $diff_table;
-    $form['#attached']['library'][] = 'diff/diff.colors';
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
-
+    unset($form[$this->field]);
+    self::hideUnnecessaryFields($form);
     self::buildCancelButton($form);
-    unset($form['actions']['delete']);
     return $form;
   }
 

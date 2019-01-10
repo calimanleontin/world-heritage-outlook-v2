@@ -15,6 +15,8 @@ use Drupal\paragraphs\Entity\Paragraph;
 
 class NodeSiteAssessmentStateChangeForm {
 
+  use AssessmentEntityFormTrait;
+
   public static function alter(&$form, FormStateInterface $form_state) {
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -60,8 +62,8 @@ class NodeSiteAssessmentStateChangeForm {
 
     self::addStateChangeWarning($form, $node, $currentUser);
 
-    NodeSiteAssessmentForm::hideUnnecessaryFields($form);
-    NodeSiteAssessmentForm::addRedirectToAllActions($form);
+    self::hideUnnecessaryFields($form);
+    self::addRedirectToAllActions($form);
 
     // Hide state change scheduling.
     if (!empty($form['field_state']['widget'][0]['workflow_scheduling'])) {
