@@ -2,21 +2,46 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Controller\ModalDiffController;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalFieldDiffForm extends IucnModalForm {
 
   use DiffModalTrait;
 
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
+  protected $entityFormDisplay;
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+    $this->setEntityTypeManager($entityTypeManager);
+    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
+    $this->workflowService = $assessmentWorkflow;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity.repository'),
+      $container->get('entity_type.bundle.info'),
+      $container->get('datetime.time'),
+      $container->get('entity_type.manager'),
+      $container->get('iucn_assessment.workflow')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getRouteMatch()->getParameter('node_revision');
     $settings = json_decode($node->field_settings->value, TRUE);
@@ -52,7 +77,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         continue;
       }
       /** @var \Drupal\node\NodeInterface $revision */
-      $revision = $workflow_service->getAssessmentRevision($assessment_vid);
+      $revision = $this->workflowService->getAssessmentRevision($assessment_vid);
       $diff_data = $diff['node'][$node->id()]['diff'][$field];
       $row = [];
       $row['author'] = $node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
@@ -63,7 +88,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
 
       if (!empty($diff['node'][$node->id()]['initial_revision_id'])) {
-        $initial_revision = $workflow_service->getAssessmentRevision($diff['node'][$node->id()]['initial_revision_id']);
+        $initial_revision = $this->workflowService->getAssessmentRevision($diff['node'][$node->id()]['initial_revision_id']);
         $data_value = $node->get($field)->getValue();
         $data_value_0 = $initial_revision->get($field)->getValue();
         $value_0 = $initial_revision->get($field)->view(['settings' => ['link' => 0]]);
