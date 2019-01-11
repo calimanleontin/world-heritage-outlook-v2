@@ -1,0 +1,25 @@
+iucn_notifications.settings:
+  type: config_object
+  label: 'iucn notification email settings'
+  mapping:
+    user_account_activated:
+      type: mail
+      label: 'Account activated'
+    user_password_reset:
+      type: mail
+      label: 'User password reset'
+    setup_new_assessment:
+      type: mail
+      label: 'setup new assessment'
+    input_assessment_data_by_assessors:
+      type: mail
+      label: 'data_by_assessors'
+    review_by_coordinator:
+      type: mail
+      label: 'review by coordinator'
+    assessment_review_by_reviewers:
+      type: mail
+      label: 'assessment review by reviewers'
+    final_edits_by_coordinator:
+      type: mail
+      label: 'final edits by coordinator'

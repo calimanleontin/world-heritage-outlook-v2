@@ -3,9 +3,11 @@
 use Drupal\pet\Entity\Pet;
 
 /**
- * Create defual pet templates.
+ * Install defualt pet templates.
  */
-function iucn_notifications_update_8001() {
+function iucn_notifications_install() {
+  $mail_config = \Drupal::config('iucn_notifications.settings');
+
   $map = [
     'USER_ACCOUNT_ACTIVATED',
     'USER_PASSWORD_RESET',
@@ -13,12 +15,21 @@ function iucn_notifications_update_8001() {
     'INPUT_ASSESSMENT_DATA_BY_ASSESSORS',
     'REVIEW_BY_COORDINATOR',
     'ASSESSMENT_REVIEW_BY_REVIEWERS',
-    'FINAL_EDITS_BY_COORDINATOR'
+    'FINAL_EDITS_BY_COORDINATOR',
   ];
   foreach ($map as $title) {
+    $key = strtolower($title);
+    $subject = $mail_config->get($key . '.subject');
+    $mail_body = $mail_config->get($key . '.body');
     $pet = Pet::create([
       'title' => $title,
+      'subject' => $subject,
+      'mail_body' => $mail_body,
     ]);
     $pet->save();
   }
+}
+
+function iucn_notifications_uninstall() {
+  \Drupal::getContainer()->get('config.manager')->uninstall('module', 'iucn_notifications');
 }
