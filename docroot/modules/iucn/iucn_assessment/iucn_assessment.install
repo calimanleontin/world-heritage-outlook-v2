@@ -270,7 +270,7 @@ function iucn_assessment_update_8007() {
       foreach ($projects as $project) {
         $paragraph = Paragraph::load($project['target_id']);
         if (!empty($paragraph->field_as_projects_to) && $paragraph->field_as_projects_to->value) {
-          if ($paragraph->field_as_projects_to->value < $cycle) {
+          if ($paragraph->field_as_projects_to->value < "{$cycle}-01-01") {
             // todo remove 0001-01-01 in needed
             if ($paragraph->field_as_projects_to->value != '0001-01-01') {
               continue;
