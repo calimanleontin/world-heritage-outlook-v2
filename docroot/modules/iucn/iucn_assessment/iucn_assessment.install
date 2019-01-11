@@ -247,10 +247,13 @@ function iucn_assessment_update_8005() {
   }
 }
 
+function iucn_assessment_update_8006() {
+}
+
 /**
  * 5734 Delete projects ending before 2020.
  */
-function iucn_assessment_update_8006() {
+function iucn_assessment_update_8007() {
   $cycle = 2020;
   $entityTypeManager = \Drupal::entityTypeManager();
   /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
@@ -258,12 +261,28 @@ function iucn_assessment_update_8006() {
   $nodesIds = $nodeStorage->getQuery()
     ->condition('type', 'site_assessment')
     ->condition('field_as_cycle', $cycle)
-    ->condition('field_as_end_date.value', $cycle . '-01-01', '<')
-    ->condition('field_as_end_date.value', NULL, 'IS NOT NULL')
     ->execute();
   foreach ($nodesIds as $nid) {
     $originalNode = Node::load($nid);
-    \Drupal::logger('iucn_assessment')->notice("Deleting \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
-    $originalNode->delete();
+    if ($projects = $originalNode->get('field_as_projects')->getValue()) {
+      $projects_db = [];
+      foreach ($projects as $project) {
+        $paragraph = Paragraph::load($project['target_id']);
+        if (!empty($paragraph->field_as_projects_to) && $paragraph->field_as_projects_to->value) {
+          if ($paragraph->field_as_projects_to->value < $cycle) {
+            // todo remove 0001-01-01 in needed
+            if ($paragraph->field_as_projects_to->value != '0001-01-01') {
+              continue;
+            }
+          }
+        }
+        $projects_db[] = $project;
+      }
+      if (count($projects_db) != count($projects)) {
+        \Drupal::logger('iucn_assessment')->notice("Updated \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
+        $originalNode->field_as_projects = $projects_db;
+        $originalNode->save();
+      }
+    }
   }
 }
