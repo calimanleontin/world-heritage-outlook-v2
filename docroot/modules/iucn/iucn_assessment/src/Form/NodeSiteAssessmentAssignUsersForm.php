@@ -10,6 +10,8 @@ use Drupal\node\NodeInterface;
 
 class NodeSiteAssessmentAssignUsersForm {
 
+  use AssessmentEntityFormTrait;
+
   public static function access(AccountInterface $account, NodeInterface $node) {
     if ($node->bundle() != 'site_assessment') {
       $access = AccessResult::forbidden();
@@ -39,8 +41,8 @@ class NodeSiteAssessmentAssignUsersForm {
     $node = $formObject->getEntity();
     $state = $node->field_state->value;
 
-    NodeSiteAssessmentForm::hideUnnecessaryFields($form);
-    NodeSiteAssessmentForm::addRedirectToAllActions($form);
+    self::hideUnnecessaryFields($form);
+    self::addRedirectToAllActions($form);
 
     $form['field_coordinator']['widget']['#disabled'] = !in_array($state, [
       AssessmentWorkflow::STATUS_CREATION,

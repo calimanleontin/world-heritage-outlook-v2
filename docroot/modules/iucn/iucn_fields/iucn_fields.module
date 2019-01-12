@@ -3,52 +3,26 @@
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_form_alter().
  */
-function iucn_fields_field_widget_options_select_form_alter(&$element, \Drupal\Core\Form\FormStateInterface &$form_state, $context) {
-  if ($element['#entity_type'] != 'paragraph') {
-    return;
-  }
-  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
-  $items = $context['items'];
-  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-  $field_definition = $items->getFieldDefinition();
-  $target_type = $field_definition->getSetting('target_type');
-  if ($target_type != 'taxonomy_term') {
-    return;
-  }
-  $assessment = $form_state->getFormObject()->getEntity();
-  if (!$assessment instanceof \Drupal\node\NodeInterface || $assessment->bundle() != 'site_assessment') {
-    return;
-  }
-  $assessment_year = $assessment->field_as_cycle->value;
-  $options = &$element['#options'];
-  $removed_tids = [];
-  foreach ($options as $tid => &$label) {
-    $term = Term::load($tid);
-    if (empty($term)) {
-      continue;
+function iucn_fields_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\WidgetInterface $widget */
+  $widget = $context['widget'];
+  $plugin_id = $widget->getPluginId();
+  if ($plugin_id == 'options_select' || $plugin_id == 'assessment_options_buttons') {
+    if (!_iucn_fields_is_altered_element($element, $context)) {
+      return;
     }
-    $term_name = $term->getName();
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
-      $removed_tids[] = $tid;
-      unset($options[$tid]);
-      continue;
+    if (empty($assessment = _iucn_fields_get_assessment($form_state))) {
+      return;
     }
-    $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
-    if (!empty($term_new_name)) {
-      $label = str_replace($term_name, $term_new_name, $label);
-    }
-  }
+    $assessment_year = $assessment->field_as_cycle->value;
+    _iucn_fields_alter_element_options($element, $assessment_year);
 
-  foreach ($element['#default_value'] as $idx => $value) {
-    if (in_array($value, $removed_tids)) {
-      unset($element['#default_value'][$idx]);
+    if ($plugin_id == 'assessment_options_buttons') {
+      _iucn_fields_alter_element_options($element['options_groups'], $assessment_year);
     }
   }
-
 }
 
 /**
@@ -88,6 +62,69 @@ function iucn_fields_preprocess_field(&$variables) {
     $term_label = $term_alter_service->getTermLabelForYear($term->id(), $assessment_year);
     if (!empty($term_label)) {
       $term->name->value = $term_label;
+    }
+  }
+}
+
+function _iucn_fields_get_assessment(\Drupal\Core\Form\FormStateInterface $form_state) {
+  $assessment = $form_state->getFormObject()->getEntity();
+  while ($assessment instanceof \Drupal\paragraphs\ParagraphInterface) {
+    // Values paragraphs have threat paragraphs as parents.
+    $assessment = $assessment->getParentEntity();
+  }
+
+  if ($assessment instanceof \Drupal\node\NodeInterface && $assessment->bundle() == 'site_assessment') {
+    return $assessment;
+  }
+
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
+    return $route_match->getParameter('node_revision');
+  }
+
+  return NULL;
+}
+
+function _iucn_fields_is_altered_element($element, $context) {
+  if ($element['#entity_type'] != 'paragraph') {
+    return FALSE;
+  }
+  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
+  $items = $context['items'];
+  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
+  $field_definition = $items->getFieldDefinition();
+  $target_type = $field_definition->getSetting('target_type');
+  if ($target_type != 'taxonomy_term') {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+function _iucn_fields_alter_element_options(array &$element, $assessment_year) {
+  $options = &$element['#options'];
+  $removed_tids = [];
+  foreach ($options as $tid => &$label) {
+    $term = Term::load($tid);
+    if (empty($term)) {
+      continue;
+    }
+    $term_name = $term->getName();
+    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+    if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
+      $removed_tids[] = $tid;
+      unset($options[$tid]);
+      continue;
+    }
+    $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
+    if (!empty($term_new_name)) {
+      $label = str_replace($term_name, $term_new_name, $label);
+    }
+  }
+
+  foreach ($element['#default_value'] as $idx => $value) {
+    if (in_array($value, $removed_tids)) {
+      unset($element['#default_value'][$idx]);
     }
   }
 }

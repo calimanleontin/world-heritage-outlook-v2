@@ -13,6 +13,8 @@ use Drupal\user\Entity\User;
 
 class IucnModalParagraphDiffForm extends IucnModalForm {
 
+  use DiffModalTrait;
+
   /**
    * @var AssessmentWorkflow;
    */
@@ -33,15 +35,28 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $field = $this->getRouteMatch()->getParameter('field');
     /** @var ParagraphInterface $paragraph_revision */
     $paragraph_revision = $this->getRouteMatch()->getParameter('paragraph_revision');
-    $field_wrapper_id = $this->getRouteMatch()->getParameter('field_wrapper_id');
-    
+
     /** @var NodeInterface $parent_entity_revision */
     $parent_entity_revision = $this->getRouteMatch()->getParameter('node_revision');
-    if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+    $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
+    if (!empty($settings['diff'])) {
+      $first_diff = reset($settings['diff']);
+      if (!empty($first_diff['node'][$parent_entity_revision->id()]['initial_revision_id'])) {
+        $form_revision = $this->assessmentWorkflow->getAssessmentRevision($first_diff['node'][$parent_entity_revision->id()]['initial_revision_id']);
+      }
+    }
+    elseif ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
       $form_revision = $this->assessmentWorkflow->getRevisionByState($parent_entity_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     }
     else {
       $form_revision = $parent_entity_revision;
+    }
+
+    foreach ($form_revision->{$field}->getValue() as $value) {
+      if (!empty($value['target_id']) && $value['target_id'] == $paragraph_revision->id()) {
+        $form_revision->{$field}->setValue([0 => $value]);
+        break;
+      }
     }
 
     // Get the rendered field from the entity form.
@@ -53,24 +68,13 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
     $form['widget']['#hide_draggable'] = TRUE;
     $paragraph_key = 0;
-    foreach ($form['widget'] as $key => &$item) {
-      if (!is_int($key)) {
-        continue;
-      }
-      if ($item['#paragraph_id'] != $paragraph_revision->id()) {
-        unset($form['widget'][$key]);
-      }
-      else {
-        $paragraph_key = $key;
-      }
-    }
 
     // Add the author table cell.
     $this->addAuthorCell($form['widget']['header'], 'data', t('Author'), 'author', 2, -100);
     $this->addAuthorCell($form['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
 
-    $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
-    $diff = $settings['diff'];
+    $initial_copy_value_buttons = [];
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
       if (empty($diff['paragraph'][$paragraph_revision->id()])) {
@@ -99,9 +103,11 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       }
 
       $grouped_fields = RowParagraphsWidget::getGroupedFields();
+      $grouped_with_fields = [];
       foreach ($grouped_fields as $grouped_field => $group_settings) {
         $grouped_with = $group_settings['grouped_with'];
 
+        $grouped_with_fields[] = $grouped_with;
         if ($paragraph_revision->hasField($grouped_field)) {
           $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
           $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
@@ -120,6 +126,25 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
+        if (!empty($settings['diff'][$assessment_revision->getRevisionId()]['node'][$assessment_revision->id()]['initial_revision_id'])) {
+          $initial_revision = $this->assessmentWorkflow->getAssessmentRevision($settings['diff'][$assessment_revision->getRevisionId()]['node'][$assessment_revision->id()]['initial_revision_id']);
+          $data_value_0  = $initial_revision->get($field)->getValue()[$paragraph_key];
+          $data_value= $assessment_revision->get($field)->getValue()[$paragraph_key];
+        }
+        elseif ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+          $data_value_0 = $assessment_revision->get($field)->getValue()[$paragraph_key];
+          $data_value = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+        }
+        else {
+          $data_value_0 = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+          $data_value = $assessment_revision->get($field)->getValue()[$paragraph_key];
+        }
+        $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
+        $data_value = [];
+        if (!empty($paragraph->{$diff_field})) {
+          $data_value = $paragraph->{$diff_field}->getValue();
+        }
+
         $grouped_with = !empty($grouped_fields[$diff_field]) ? $grouped_fields[$diff_field]['grouped_with'] : $diff_field;
         if (empty($row['top']['summary'][$diff_field]['data']) && empty($row['top']['summary'][$grouped_with]['data'])) {
           continue;
@@ -127,6 +152,11 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
         if ($deleted) {
           $row['top']['summary'][$grouped_with]['data']['#markup'] = $this->t('Deleted');
           continue;
+        }
+        $paragraph_0 = $paragraph_storage->loadRevision($data_value_0['target_revision_id']);
+        $data_value_0 = [];
+        if (!empty($paragraph_0->{$diff_field})) {
+          $data_value_0 = $paragraph_0->{$diff_field}->getValue();
         }
 
         $diffs = $diff[$diff_field];
@@ -138,18 +168,26 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
-        $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
-          '#type' => 'table',
-          '#rows' => $diff_rows,
-          '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
-          '#prefix' => '<b>' . $prefix . '</b>',
-        ];
+        $type = $this->get_diff_field_type($paragraph_form, $diff_field);
+        $copy_value_button = $this->get_copy_value_button($form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with);
+        $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $diff_field, 0, $grouped_with);
+        if (!in_array($diff_field, $grouped_with_fields)) {
+          $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
+              '#type' => 'table',
+              '#rows' => $diff_rows,
+              '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+              '#prefix' => '<b>' . $prefix . '</b><div class="diff-wrapper">',
+              '#suffix' => $copy_value_button . '</div>',
+          ];
+          $initial_copy_value_buttons[$grouped_with] = $init_button;
+        }
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
       $form['widget'][] = $row;
     }
     $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     $form['widget']['#is_diff_form'] = TRUE;
     $form['widget']['edit'] = $form['widget'][$paragraph_key];
 
@@ -191,6 +229,20 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     unset($form['widget']['#element_validate']);
 
     $form['widget'][$paragraph_key]['#attributes']['class'][] = 'diff-original-row';
+    foreach ($initial_copy_value_buttons as $grouped_with => $button) {
+      $data = $form['widget'][$paragraph_key]['top']['summary'][$grouped_with];
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with] = [
+        "#type" => $data['#type'],
+        "#attributes" => $data['#attributes'],
+        "#id" => $data['#id'],
+      ];
+      unset($data['#type']);
+      unset($data['#attributes']);
+      unset($data['#id']);
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data'] = $data;
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] = '<div class="diff-wrapper">';
+      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] = $button . '</div>';
+    }
 
     $paragraph_form['diff'] = $form;
     $paragraph_form['diff']['#weight'] = 0;
@@ -200,32 +252,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $paragraph_form['#suffix'] = '</div>';
 
     return $paragraph_form;
-  }
-
-  public function getTableCellMarkup($markup, $class, $span = 1, $weight = 0) {
-    return [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'paragraph-summary-component',
-          "paragraph-summary-component-$class",
-          "paragraph-summary-component-span-$span",
-        ],
-      ],
-      'data' => ['#markup' => $markup],
-      '#weight' => $weight,
-    ];
-  }
-
-  public function addAuthorCell(array &$table, $key, $markup, $class, $span = 1, $weight = 0) {
-    foreach ($table['#attributes']['class'] as &$class) {
-      if (preg_match('/paragraph-top-col-(\d+)/', $class, $matches)) {
-        $col_count = $matches[1] + $span - 1;
-        $class = "paragraph-top-col-$col_count";
-      }
-    }
-
-    $table[$key]['author'] = $this->getTableCellMarkup($markup, $class, $span, $weight);
   }
 
 }

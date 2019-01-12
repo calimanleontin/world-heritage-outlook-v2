@@ -316,6 +316,7 @@
 .paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
 .paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend {
+  vertical-align: top;
   display: table-cell;
   width: 200px;
   min-width: 200px;
@@ -437,7 +438,7 @@
   content: '';
   vertical-align: super;
   display: inline-block;
-  background-image: url(../../../../../core/misc/icons/ee0000/required.svg);
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
   background-repeat: no-repeat;
   background-size: 6px 6px;
   width: 6px;
@@ -457,6 +458,17 @@
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+div[aria-required="aria-required"] label:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
 }
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;

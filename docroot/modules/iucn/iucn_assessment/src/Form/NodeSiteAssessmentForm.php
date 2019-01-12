@@ -16,25 +16,7 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 
 class NodeSiteAssessmentForm {
 
-  public static function hideUnnecessaryFields(array &$form) {
-    // Hide unnecessary fields.
-    unset($form['actions']['delete']);
-    unset($form['advanced']);
-    unset($form['revision']);
-    unset($form['revision_log']);
-    unset($form['author']);
-    unset($form['meta']);
-    $form['field_state']['#access'] = FALSE;
-  }
-
-  public static function addRedirectToAllActions(array &$form) {
-    // Redirect to node edit on form submit.
-    foreach ($form['actions'] as $key => &$action) {
-      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
-        $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
-      }
-    }
-  }
+  use AssessmentEntityFormTrait;
 
   public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);

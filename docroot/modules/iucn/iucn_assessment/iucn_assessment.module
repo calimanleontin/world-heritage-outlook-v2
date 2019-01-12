@@ -836,3 +836,13 @@ function iucn_assessment_views_query_alter(ViewExecutable $view, QueryPluginBase
     }
   }
 }
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function iucn_assessment_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() == 'account_assignments' && $display_id == 'block_4' && !in_array('coordinator', \Drupal::currentUser()->getRoles())) {
+    // #5784 - remove the help text for managers
+    $view->removeHandler($display_id, 'header', 'area');
+  }
+}
