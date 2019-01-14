@@ -4,6 +4,9 @@ namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Class TestSupport populates database with test data for various scenarios.
@@ -35,6 +38,59 @@ class TestSupport {
   const ASSESSMENT3 = 'assessment3';
   const ASSESSMENT4 = 'assessment4';
 
+  // Hidden fields from the site assessment paragraphs
+  const HIDDEN_PARAGRAPH_FIELDS = [
+    'field_as_benefits_climate_trend',
+    'field_as_benefits_commun_in',
+    'field_as_benefits_commun_out',
+    'field_as_benefits_commun_wide',
+    'field_as_benefits_hab_trend',
+    'field_as_benefits_invassp_trend',
+    'field_as_benefits_oex_trend',
+    'field_as_benefits_pollut_trend',
+    'field_as_projects_from',
+    'field_as_projects_to'
+  ];
+
+  const TABS_WITH_FIELD_AND_PARAGRAPH_TYPES = [
+    'threats' => [
+      'as_site_threat',
+      'field_as_threats_current_text',
+      'field_as_threats_current_rating',
+      'field_as_threats_potent_text',
+      'field_as_threats_potent_rating',
+      'field_as_threats_text',
+      'field_as_threats_rating'
+    ],
+    'protection-management' => [
+      'as_site_protection',
+      'field_as_protection_ov_text',
+      'field_as_protection_ov_rating',
+      'field_as_protection_ov_out_text',
+      'field_as_protection_ov_out_rate',
+      'field_as_protection_ov_practices'
+    ],
+    'assessing-values' => [
+      'as_site_value_wh',
+      'field_as_vass_wh_text',
+      'field_as_vass_wh_state',
+      'field_as_vass_wh_trend'
+    ],
+    'conservation-outlook' => [
+      'field_as_global_assessment_text',
+      'field_as_global_assessment_level'
+    ],
+    'benefits' => [
+      'as_site_benefit',
+      'field_as_benefits_summary'
+    ],
+    'projects' => [
+      'as_site_project'
+    ],
+    'references' => [
+      'as_site_reference',
+    ]
+  ];
 
   /**
    * Create all the test data.
@@ -42,6 +98,10 @@ class TestSupport {
   public static function createAllTestData() {
     self::createUsers();
     self::createAssessments();
+    foreach (self::getVocabularies() as $vocabulary) {
+      self::createTerm($vocabulary, $vocabulary->get('vid') . '_term1');
+      self::createTerm($vocabulary, $vocabulary->get('vid') . '_term2');
+    }
   }
 
   /**
@@ -65,6 +125,17 @@ class TestSupport {
       self::REVIEWER2 => ['reviewer'],
       self::REVIEWER3 => ['reviewer'],
     ];
+  }
+
+  /**
+   * An array containing all the vocabularies necessary for unit tests.
+   *
+   * @return array
+   *   The vocabularies.
+   */
+  public static function getVocabularies() {
+    $vocabularies = Vocabulary::loadMultiple();
+    return $vocabularies;
   }
 
   /**
@@ -114,6 +185,37 @@ class TestSupport {
     }
     $ob->save();
     return $ob->id();
+  }
+
+  /**
+   * Returns a new term with random properties in vocabulary $vid.
+   *
+   * @param \Drupal\taxonomy\Entity\Vocabulary $vocabulary
+   *   The vocabulary object
+   * @param string $name
+   *   The name given to the taxonomy term.
+   * @param array $values
+   *   (optional) An array of values to set, keyed by property name. If the
+   *   entity type has bundles, the bundle key has to be specified.
+   *
+   * @return \Drupal\taxonomy\Entity\Term
+   *   The new taxonomy term object.
+   */
+  public static function createTerm(\Drupal\taxonomy\Entity\Vocabulary $vocabulary, $name, $values = []) {
+    $filter_formats = filter_formats();
+    $format = array_pop($filter_formats);
+    $term = Term::create($values + [
+        'name' => $name,
+        'description' => [
+          'value' => 'Test description.',
+          // Use the first available text format.
+          'format' => $format->id(),
+        ],
+        'vid' => $vocabulary->id(),
+        'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      ]);
+    $term->save();
+    return $term;
   }
 
   /**
@@ -177,6 +279,30 @@ class TestSupport {
       return Node::load(current($nids));
     }
     return NULL;
+  }
+
+  /**
+   * Utility: find term by name and vid.
+   * @param null $name
+   *  Term name
+   * @param null $vid
+   *  Term vid
+   * @return int
+   *  Term id or 0 if none.
+   */
+  public static function getTidByName($name = NULL, $vid = NULL) {
+    $properties = [];
+    if (!empty($name)) {
+      $properties['name'] = $name;
+    }
+    if (!empty($vid)) {
+      $properties['vid'] = $vid;
+    }
+    $entityManager = \Drupal::service('entity.manager');
+    $terms = $entityManager->getStorage('taxonomy_term')->loadByProperties($properties);
+    $term = reset($terms);
+
+    return !empty($term) ? $term->id() : 0;
   }
 
 }
