@@ -226,6 +226,9 @@
      *   true or false.
      */
     compare(reference, selector, state) {
+      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
+        return false;
+      }
       const value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         // Use a custom compare function for certain reference value types.
@@ -306,7 +309,7 @@
       let result;
       if ($.isArray(constraints)) {
         // This constraint is an array (OR or XOR).
-        const hasXor = $.inArray('xor', constraints) === -1;
+        const hasXor = $.inArray('xor', constraints) !== -1;
         const len = constraints.length;
         for (let i = 0; i < len; i++) {
           if (constraints[i] !== 'xor') {
@@ -317,8 +320,8 @@
             );
             // Return if this is OR and we have a satisfied constraint or if
             // this is XOR and we have a second satisfied constraint.
-            if (constraint && (hasXor || result)) {
-              return hasXor;
+            if (hasXor && constraint && result) {
+              return false;
             }
             result = result || constraint;
           }

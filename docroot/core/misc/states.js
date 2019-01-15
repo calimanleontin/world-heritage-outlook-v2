@@ -109,6 +109,9 @@
       });
     },
     compare: function compare(reference, selector, state) {
+      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
+        return false;
+      }
       var value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         return states.Dependent.comparisons[reference.constructor.name](reference, value);
@@ -140,14 +143,14 @@
     verifyConstraints: function verifyConstraints(constraints, selector) {
       var result = void 0;
       if ($.isArray(constraints)) {
-        var hasXor = $.inArray('xor', constraints) === -1;
+        var hasXor = $.inArray('xor', constraints) !== -1;
         var len = constraints.length;
         for (var i = 0; i < len; i++) {
           if (constraints[i] !== 'xor') {
             var constraint = this.checkConstraints(constraints[i], selector, i);
 
-            if (constraint && (hasXor || result)) {
-              return hasXor;
+            if (hasXor && constraint && result) {
+              return hasXor;  return false;
             }
             result = result || constraint;
           }
