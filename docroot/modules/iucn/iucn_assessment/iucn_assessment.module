@@ -612,8 +612,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'views_exposed_form':
-      if (strpos($form['#id'], 'views-exposed-form-account-assignments-block') == 0) {
-        $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
+      if (preg_match('/^views\-exposed\-form\-account\-assignments\-block/', $form['#id']) == TRUE) {
+        $form['actions']['submit']['#attributes']['data-disable-refocus'] = "true";
       }
       break;
   }
