@@ -519,7 +519,9 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_views_pre_render().
  */
 function iucn_assessment_views_pre_render(ViewExecutable $view) {
-  $view->feedIcons[0]['#title'] = t('Export values in excel');
+  if ($view->id() == 'export_values_in_excel') {
+    $view->feedIcons[0]['#title'] = t('Export values in excel');
+  }
 }
 
 /**
