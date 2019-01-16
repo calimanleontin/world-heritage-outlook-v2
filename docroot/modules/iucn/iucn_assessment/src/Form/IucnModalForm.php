@@ -30,7 +30,6 @@ abstract class IucnModalForm extends ContentEntityForm {
   public function getJsSelector($diff_field, $type) {
     $selector = 'edit-' . str_replace('_', '-', $diff_field);
     switch ($type) {
-
       case "textarea":
         $selector .= '-0-value';
         break;
@@ -58,18 +57,13 @@ abstract class IucnModalForm extends ContentEntityForm {
   }
 
   public function getCopyValueButton($type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
-    if ((count($data_value) == 1) && ($type != 'checkboxes') && ($type != 'select')) {
-      if (!empty($data_value[0]['value'])) {
-        $value = $data_value[0]['value'];
-      } elseif(!empty($data_value[0]['target_id'])) {
-        $value = $data_value[0]['target_id'];
-        // todo check target_revision_id
-      }
-    } else {
-      $value = [];
-      foreach($data_value as $data) {
-        $value[] = $data['target_id'];
-      }
+    $value = [];
+    foreach ($data_value as $data) {
+      // todo check target_revision_id
+      $value[] = !empty($data['value']) ? $data['value'] : $data['target_id'];
+    }
+    if (count($value) == 1) {
+      $value = reset($value);
     }
 
 
@@ -82,7 +76,7 @@ abstract class IucnModalForm extends ContentEntityForm {
       $key2 = $grouped_with . '_' . $assessment_vid;
       $selector2 = $this->getJsSelector($grouped_with, $type);
     }
-    
+
     $element = [
       '#theme' => 'assessment_diff_copy_button',
       '#type' => $type,
@@ -100,6 +94,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     ];
     return render($element);
   }
+
   /**
    * {@inheritdoc}
    */
@@ -180,7 +175,8 @@ abstract class IucnModalForm extends ContentEntityForm {
       $response->addCommand(
         new HtmlCommand(
           $field_wrapper_id,
-          \Drupal::service('entity.form_builder')->getForm($parent_entity_revision, 'default')[$field_name]
+          \Drupal::service('entity.form_builder')
+            ->getForm($parent_entity_revision, 'default')[$field_name]
         )
       );
 
