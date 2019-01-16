@@ -10,24 +10,24 @@ use Drupal\Core\Ajax\CloseModalDialogCommand;
 
 abstract class IucnModalForm extends ContentEntityForm {
 
-  public function get_diff_field_type($paragraph_form, $diff_field) {
+  public function getDiffFieldType($widget) {
     $type = '';
-    if (!empty($paragraph_form[$diff_field]['widget']['#type'])) {
-      $type = $paragraph_form[$diff_field]['widget']['#type'];
+    if (!empty($widget['#type'])) {
+      $type = $widget['#type'];
     }
-    else if (!empty($paragraph_form[$diff_field]['widget']['value']['#type'])) {
-      $type = $paragraph_form[$diff_field]['widget']['value']['#type'];
+    elseif (!empty($widget['value']['#type'])) {
+      $type = $widget['value']['#type'];
     }
-    else if (!empty($paragraph_form[$diff_field]['widget'][0]['value']['#type'])) {
-      $type = $paragraph_form[$diff_field]['widget'][0]['value']['#type'];
+    elseif (!empty($widget[0]['value']['#type'])) {
+      $type = $widget[0]['value']['#type'];
     }
-    else if (!empty($paragraph_form[$diff_field]['widget'][0]['#entity_type'])) {
-      $type = $paragraph_form[$diff_field]['widget'][0]['#entity_type'];
+    elseif (!empty($widget[0]['#entity_type'])) {
+      $type = $widget[0]['#entity_type'];
     }
     return $type;
   }
 
-  public function get_selector($diff_field, $type) {
+  public function getJsSelector($diff_field, $type) {
     $selector = 'edit-' . str_replace('_', '-', $diff_field);
     switch ($type) {
 
@@ -73,13 +73,13 @@ abstract class IucnModalForm extends ContentEntityForm {
     }
     $form['#attached']['drupalSettings']['diff'][$diff_field . '_' . $assessment_vid] = $value;
 
-    $selector = $this->get_selector($diff_field, $type);
+    $selector = $this->getJsSelector($diff_field, $type);
 
     $key2 = "";
     $selector2 = "";
     if ($grouped_with != $diff_field) {
       $key2 = $grouped_with . '_' . $assessment_vid;
-      $selector2 = $this->get_selector($grouped_with, $type);
+      $selector2 = $this->getJsSelector($grouped_with, $type);
     }
     return '
         <a class="diff-button" title="' . t('Click to copy this value to the final version') . '"

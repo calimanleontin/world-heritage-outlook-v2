@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_assessment\Controller\ModalDiffController;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalFieldDiffForm extends IucnModalForm {
@@ -60,6 +60,60 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     );
   }
 
+  public function getNodeFieldDiff(NodeInterface $node, $fieldName, $fieldType) {
+    $fieldDiff = [];
+    $settings = json_decode($node->field_settings->value, TRUE);
+
+    foreach ($settings['diff'] as $vid => $diff) {
+      if (empty($diff['node'][$node->id()]['diff'][$fieldName])) {
+        continue;
+      }
+      $row = [];
+      $rowDiff = $diff['node'][$node->id()];
+      /** @var \Drupal\node\NodeInterface $revision */
+      $revision = $this->workflowService->getAssessmentRevision($vid);
+      $row['author'] = $node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
+        ? $node->field_assessor->entity->getDisplayName()
+        : $revision->getRevisionUser()->getDisplayName();
+
+      $row['diff'] = ['data' => []];
+
+      if (!empty($rowDiff['initial_revision_id'])) {
+        $initial_revision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
+        $data_value = $node->get($fieldName)->getValue();
+        $data_value_0 = $initial_revision->get($fieldName)->getValue();
+        $value_0 = $initial_revision->get($fieldName)->view(['settings' => ['link' => 0]]);
+      }
+      elseif ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        $data_value = $node->get($fieldName)->getValue();
+        $data_value_0 = $revision->get($fieldName)->getValue();
+        $value_0 = $revision->get($fieldName)->view(['settings' => ['link' => 0]]);
+      }
+      else {
+        $data_value_0 = $node->get($fieldName)->getValue();
+        $value_0 = $node->get($fieldName)->view(['settings' => ['link' => 0]]);
+        $data_value = $revision->get($fieldName)->getValue();
+      }
+      unset($value_0['#title']);
+      $row['diff']['data'] = [
+        '#type' => 'table',
+        '#rows' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
+        '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+        '#prefix' => '<div class="diff-wrapper">',
+        '#suffix' => $this->get_copy_value_button($form, $fieldType, $data_value, $fieldName, $vid, $fieldName) . '</div>',
+      ];
+      $diff_table['#rows'][] = $row;
+
+      if (empty($diff_table['#rows'][0]['diff']['data'])) {
+        $init_button = $this->get_copy_value_button($form, $fieldType, $data_value_0, $fieldName, 0, $fieldName);
+        $diff_table['#rows'][0]['diff']['data'] = $value_0;
+        $diff_table['#rows'][0]['diff']['data']['#prefix'] = '<div class="diff-wrapper">';
+        $diff_table['#rows'][0]['diff']['data']['#suffix'] = $init_button . '</div>';
+      }
+    }
+    return $fieldDiff;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -86,6 +140,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
       '#attributes' => ['class' => ['field-diff-table']],
     ];
 
+    $fieldDiff = $this->getNodeFieldDiff($this->nodeRevision, $this->field, $this->getDiffFieldType($form[$this->field]['widget']));
 
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       if (empty($diff['node'][$this->nodeRevision->id()]['diff'][$this->field])) {
@@ -100,7 +155,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         : $revision->getRevisionUser()->getDisplayName();
 
       $row['diff'] = ['data' => []];
-      $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
+      $diff_rows = $this->getDiffMarkup($diff_data);
 
       if (!empty($diff['node'][$this->nodeRevision->id()]['initial_revision_id'])) {
         $initial_revision = $this->workflowService->getAssessmentRevision($diff['node'][$this->nodeRevision->id()]['initial_revision_id']);
@@ -119,7 +174,7 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         $data_value = $revision->get($this->field)->getValue();
       }
       unset($value_0['#title']);
-      $type = $this->get_diff_field_type($form, $this->field);
+      $type = $this->getDiffFieldType($form, $this->field);
       $row['diff']['data'] = [
         '#type' => 'table',
         '#rows' => $diff_rows,

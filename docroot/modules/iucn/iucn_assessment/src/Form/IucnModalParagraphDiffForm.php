@@ -160,7 +160,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
         }
 
         $diffs = $diff[$diff_field];
-        $diff_rows = ModalDiffController::getDiffMarkup($diffs);
+        $diff_rows = $this->getDiffMarkup($diffs);
 
         $prefix = !empty($row['top']['summary'][$grouped_with]['data'][$diff_field]['#title'])
           ? $row['top']['summary'][$grouped_with]['data'][$diff_field]['#title']
@@ -168,7 +168,7 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
 
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
-        $type = $this->get_diff_field_type($paragraph_form, $diff_field);
+        $type = $this->getDiffFieldType($paragraph_form[$diff_field]['widget']);
         $copy_value_button = $this->get_copy_value_button($form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with);
         $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $diff_field, 0, $grouped_with);
         if (!in_array($diff_field, $grouped_with_fields)) {
