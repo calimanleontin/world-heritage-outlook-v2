@@ -57,7 +57,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     return $selector;
   }
 
-  public function getCopyValueButton(&$form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
+  public function getCopyValueButton($type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
     if ((count($data_value) == 1) && ($type != 'checkboxes') && ($type != 'select')) {
       if (!empty($data_value[0]['value'])) {
         $value = $data_value[0]['value'];
@@ -71,8 +71,9 @@ abstract class IucnModalForm extends ContentEntityForm {
         $value[] = $data['target_id'];
       }
     }
-    $form['#attached']['drupalSettings']['diff'][$diff_field . '_' . $assessment_vid] = $value;
 
+
+    $key = "{$diff_field}_{$assessment_vid}";
     $selector = $this->getJsSelector($diff_field, $type);
 
     $key2 = "";
@@ -81,13 +82,21 @@ abstract class IucnModalForm extends ContentEntityForm {
       $key2 = $grouped_with . '_' . $assessment_vid;
       $selector2 = $this->getJsSelector($grouped_with, $type);
     }
+    
     $element = [
       '#theme' => 'assessment_diff_copy_button',
       '#type' => $type,
-      '#key' => "{$diff_field}_{$assessment_vid}",
+      '#key' => $key,
       '#selector' => $selector,
       '#key2' => $key2,
       '#selector2' => $selector2,
+      '#attached' => [
+        'drupalSettings' => [
+          'diff' => [
+            $key => $value,
+          ],
+        ],
+      ],
     ];
     return render($element);
   }
