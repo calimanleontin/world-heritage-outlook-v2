@@ -27,8 +27,8 @@ abstract class IucnModalForm extends ContentEntityForm {
     return $type;
   }
 
-  public function getJsSelector($diff_field, $type) {
-    $selector = 'edit-' . str_replace('_', '-', $diff_field);
+  public function getJsSelector($fieldName, $type) {
+    $selector = 'edit-' . str_replace('_', '-', $fieldName);
     switch ($type) {
       case "textarea":
         $selector .= '-0-value';
@@ -56,42 +56,62 @@ abstract class IucnModalForm extends ContentEntityForm {
     return $selector;
   }
 
-  public function getCopyValueButton($type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
+  public function getCopyFieldValue($fieldValue) {
     $value = [];
-    foreach ($data_value as $data) {
+    foreach ($fieldValue as $value) {
       // todo check target_revision_id
-      $value[] = !empty($data['value']) ? $data['value'] : $data['target_id'];
+      $value[] = !empty($value['value']) ? $value['value'] : $value['target_id'];
     }
     if (count($value) == 1) {
       $value = reset($value);
     }
+    return $value;
+  }
 
-
-    $key = "{$diff_field}_{$assessment_vid}";
-    $selector = $this->getJsSelector($diff_field, $type);
-
-    $key2 = "";
-    $selector2 = "";
-    if ($grouped_with != $diff_field) {
-      $key2 = $grouped_with . '_' . $assessment_vid;
-      $selector2 = $this->getJsSelector($grouped_with, $type);
-    }
+  /**
+   * @param $vid
+   *  Assessment node revision id.
+   * @param $fieldType
+   *  Type of field (select, checkboxes, etc).
+   * @param $fieldName
+   *  The machine name of the field.
+   * @param $fieldValue
+   *  The field value which will be copied to the final version.
+   * @param $extraFieldName
+   *  The machine name of the extra field. Some field can be grouped and should use
+   * the same copy button.
+   * @param $extraFieldValue
+   *  The value of the extra field which will be copied to the final version.
+   *
+   * @return
+   *  The rendered element.
+   */
+  public function getCopyValueButton($vid, $fieldType, $fieldName, $fieldValue, $extraFieldName = NULL, $extraFieldValue = NULL) {
+    $key = "{$fieldName}_{$vid}";
 
     $element = [
       '#theme' => 'assessment_diff_copy_button',
-      '#type' => $type,
+      '#type' => $fieldType,
       '#key' => $key,
-      '#selector' => $selector,
-      '#key2' => $key2,
-      '#selector2' => $selector2,
+      '#selector' => $this->getJsSelector($fieldName, $fieldType),
       '#attached' => [
         'drupalSettings' => [
           'diff' => [
-            $key => $value,
+            $key => $this->getCopyFieldValue($fieldValue),
           ],
         ],
       ],
     ];
+
+    if (!empty($extraFieldName)) {
+      $key2 = "{$extraFieldName}_{$vid}";
+      $element['#key2'] = $key2;
+      $element['#selector2'] = $this->getJsSelector($extraFieldName, $fieldType);
+      if (!empty($extraFieldValue)) {
+        $element['#attached']['drupalSettings']['diff'][$key2] = $this->getCopyFieldValue($extraFieldValue);
+      }
+    }
+
     return render($element);
   }
 
