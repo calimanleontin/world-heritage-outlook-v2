@@ -169,8 +169,8 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
         $type = $this->getDiffFieldType($paragraph_form[$diff_field]['widget']);
-        $copy_value_button = $this->get_copy_value_button($form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with);
-        $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $diff_field, 0, $grouped_with);
+        $copy_value_button = $this->getCopyValueButton($form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with);
+        $init_button = $this->getCopyValueButton($form, $type, $data_value_0, $diff_field, 0, $grouped_with);
         if (!in_array($diff_field, $grouped_with_fields)) {
           $row['top']['summary'][$grouped_with]['data'][$diff_field] = [
               '#type' => 'table',

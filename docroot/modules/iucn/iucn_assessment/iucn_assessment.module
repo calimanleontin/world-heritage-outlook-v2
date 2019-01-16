@@ -37,6 +37,16 @@ function iucn_assessment_theme() {
     'assessment_fieldset' => [
       'render element' => 'element',
     ],
+    'assessment_diff_copy_button' => [
+      'template' => 'assessment-diff-copy-button',
+      'variables' => [
+        'type' => NULL,
+        'key' => NULL,
+        'selector' => NULL,
+        'key2' => NULL,
+        'selector2' => NULL,
+      ],
+    ],
   ];
 
 }

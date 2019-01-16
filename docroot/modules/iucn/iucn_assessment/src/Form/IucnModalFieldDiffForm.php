@@ -100,12 +100,12 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         '#rows' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
         '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
         '#prefix' => '<div class="diff-wrapper">',
-        '#suffix' => $this->get_copy_value_button($form, $fieldType, $data_value, $fieldName, $vid, $fieldName) . '</div>',
+        '#suffix' => $this->getCopyValueButton($form, $fieldType, $data_value, $fieldName, $vid, $fieldName) . '</div>',
       ];
       $diff_table['#rows'][] = $row;
 
       if (empty($diff_table['#rows'][0]['diff']['data'])) {
-        $init_button = $this->get_copy_value_button($form, $fieldType, $data_value_0, $fieldName, 0, $fieldName);
+        $init_button = $this->getCopyValueButton($form, $fieldType, $data_value_0, $fieldName, 0, $fieldName);
         $diff_table['#rows'][0]['diff']['data'] = $value_0;
         $diff_table['#rows'][0]['diff']['data']['#prefix'] = '<div class="diff-wrapper">';
         $diff_table['#rows'][0]['diff']['data']['#suffix'] = $init_button . '</div>';
@@ -180,12 +180,12 @@ class IucnModalFieldDiffForm extends IucnModalForm {
         '#rows' => $diff_rows,
         '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
         '#prefix' => '<div class="diff-wrapper">',
-        '#suffix' => $this->get_copy_value_button($form, $type, $data_value, $this->field, $assessment_vid, $this->field) . '</div>',
+        '#suffix' => $this->getCopyValueButton($form, $type, $data_value, $this->field, $assessment_vid, $this->field) . '</div>',
       ];
       $diff_table['#rows'][] = $row;
 
       if (empty($diff_table['#rows'][0]['diff']['data'])) {
-        $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $this->field, 0, $this->field);
+        $init_button = $this->getCopyValueButton($form, $type, $data_value_0, $this->field, 0, $this->field);
         $diff_table['#rows'][0]['diff']['data'] = $value_0;
         $diff_table['#rows'][0]['diff']['data']['#prefix'] = '<div class="diff-wrapper">';
         $diff_table['#rows'][0]['diff']['data']['#suffix'] = $init_button . '</div>';

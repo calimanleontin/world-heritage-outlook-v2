@@ -57,7 +57,7 @@ abstract class IucnModalForm extends ContentEntityForm {
     return $selector;
   }
 
-  public function get_copy_value_button(&$form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
+  public function getCopyValueButton(&$form, $type, $data_value, $diff_field, $assessment_vid, $grouped_with = NULL) {
     if ((count($data_value) == 1) && ($type != 'checkboxes') && ($type != 'select')) {
       if (!empty($data_value[0]['value'])) {
         $value = $data_value[0]['value'];
@@ -81,16 +81,15 @@ abstract class IucnModalForm extends ContentEntityForm {
       $key2 = $grouped_with . '_' . $assessment_vid;
       $selector2 = $this->getJsSelector($grouped_with, $type);
     }
-    return '
-        <a class="diff-button" title="' . t('Click to copy this value to the final version') . '"
-        data-type="' . $type . '" 
-        data-selector="' . $selector . '"
-        data-key="' . $diff_field . '_' . $assessment_vid . '" 
-        data-selector2="' . $selector2 . '"
-        data-key2="' . $key2 . '">
-          <i class="far fa-copy"></i><p>' . t('Copy') . '</p>
-        </a>
-        ';
+    $element = [
+      '#theme' => 'assessment_diff_copy_button',
+      '#type' => $type,
+      '#key' => "{$diff_field}_{$assessment_vid}",
+      '#selector' => $selector,
+      '#key2' => $key2,
+      '#selector2' => $selector2,
+    ];
+    return render($element);
   }
   /**
    * {@inheritdoc}
