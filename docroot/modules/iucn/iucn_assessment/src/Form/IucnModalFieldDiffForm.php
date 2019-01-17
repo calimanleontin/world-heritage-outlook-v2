@@ -61,12 +61,16 @@ class IucnModalFieldDiffForm extends IucnModalForm {
   }
 
   public function getNodeFieldDiff(NodeInterface $node, $fieldName, $fieldType) {
+    $settings = json_decode($node->field_settings->value, TRUE);
+    if (empty($settings['diff'])) {
+      return [];
+    }
+
     $fieldDiff = [
       0 => [
         'author' => $this->t('Initial version'),
       ],
     ];
-    $settings = json_decode($node->field_settings->value, TRUE);
 
     foreach ($settings['diff'] as $vid => $diff) {
       if (empty($diff['node'][$node->id()]['diff'][$fieldName])) {
