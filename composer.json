@@ -127,6 +127,7 @@
     "desandro/masonry": "^4.2",
     "dinbror/blazy": "^1.8",
     "drupal-composer/drupal-scaffold": "^2.2",
+    "drupal/bootstrap": "^3.16",
     "drupal/captcha": "^1.0@beta",
     "drupal/chosen": "^2.3",
     "drupal/colorbox": "^1.4",
@@ -238,7 +239,7 @@
       "docroot/libraries/{$name}": ["type:drupal-library"],
       "docroot/modules/contrib/{$name}": ["type:drupal-module"],
       "docroot/profiles/contrib/{$name}": ["type:drupal-profile"],
-      "docroot/themes/contrib/{$name}": ["type:drupal-theme"]
+      "docroot/themes/{$name}": ["type:drupal-theme"]
     },
     "patches-file": "composer.patches.json",
     "enable-patching": true
