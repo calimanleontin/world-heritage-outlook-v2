@@ -72,8 +72,6 @@ module:
   menu_link_attributes: 0
   menu_ui: 0
   metatag: 0
-  migrate: 0
-  migrate_api: 0
   node: 0
   options: 0
   page_cache: 0
