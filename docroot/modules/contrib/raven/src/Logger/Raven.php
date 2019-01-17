@@ -2,6 +2,8 @@
 
 namespace Drupal\raven\Logger;
 
+use Drupal\Component\ClassFinder\ClassFinder;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LogMessageParserInterface;
@@ -11,11 +13,13 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Raven_Client;
 use Raven_ErrorHandler;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Logs events to Sentry.
  */
 class Raven implements LoggerInterface {
+
   use RfcLoggerTrait;
 
   /**
@@ -76,6 +80,7 @@ class Raven implements LoggerInterface {
       'environment' => $environment,
       'processors' => ['Drupal\raven\Processor\SanitizeDataProcessor'],
       'timeout' => $this->config->get('timeout'),
+      'message_limit' => $this->config->get('message_limit'),
       'trace' => $this->config->get('trace'),
       'verify_ssl' => TRUE,
     ];
@@ -93,6 +98,11 @@ class Raven implements LoggerInterface {
     if (!empty($this->config->get('release'))) {
       $options['release'] = $this->config->get('release');
     }
+
+    // Disable the default breadcrumb handler because Drupal error handler
+    // mistakes it for the calling code when errors are thrown.
+    $options['install_default_breadcrumb_handlers'] = FALSE;
+
     $this->moduleHandler->alter('raven_options', $options);
     try {
       $this->client = new Raven_Client($options);
@@ -103,9 +113,27 @@ class Raven implements LoggerInterface {
     }
     // Raven can catch fatal errors which are not caught by the Drupal logger.
     if ($this->config->get('fatal_error_handler')) {
+      // Set default user context to avoid sending session ID to Sentry.
+      $this->client->user_context(['id' => 0, 'ip_address' => '']);
       $error_handler = new Raven_ErrorHandler($this->client);
       $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
       register_shutdown_function([$this->client, 'onShutdown']);
+    }
+  }
+
+  /**
+   * Set user context before capturing fatal error.
+   */
+  public function setContainer(ContainerInterface $container = NULL) {
+    if ($container && $this->client) {
+      if ($current_user = $container->get('current_user')) {
+        $this->client->user_context(['id' => $current_user->id()]);
+      }
+      if ($request_stack = $container->get('request_stack')) {
+        if ($request = $request_stack->getCurrentRequest()) {
+          $this->client->user_context(['ip_address' => $request->getClientIp()]);
+        }
+      }
     }
   }
 
@@ -115,9 +143,6 @@ class Raven implements LoggerInterface {
   public function log($level, $message, array $context = []) {
     if (!$this->client) {
       // Sad raven.
-      return;
-    }
-    if (empty($this->config->get('log_levels')[$level + 1])) {
       return;
     }
     $levels = [
@@ -132,15 +157,40 @@ class Raven implements LoggerInterface {
     ];
     $data['level'] = $levels[$level];
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
-    $data['message'] = empty($message_placeholders) ? $message : strtr($message, $message_placeholders);
+    $formatted_message = empty($message_placeholders) ? $message : strtr($message, $message_placeholders);
+    if ($message_limit = $this->config->get('message_limit')) {
+      $formatted_message = Unicode::truncate($formatted_message, $message_limit, FALSE, TRUE);
+    }
+    $data['sentry.interfaces.Message'] = [
+      'message' => $message,
+      'params' => $message_placeholders,
+      'formatted' => $formatted_message,
+    ];
     $data['timestamp'] = gmdate('Y-m-d\TH:i:s\Z', $context['timestamp']);
+    $data['logger'] = $context['channel'];
     $data['tags']['channel'] = $context['channel'];
     $data['extra']['link'] = $context['link'];
     $data['extra']['referer'] = $context['referer'];
     $data['extra']['request_uri'] = $context['request_uri'];
     $data['user']['id'] = $context['uid'];
     $data['user']['ip_address'] = $context['ip'];
-    $stack = isset($context['backtrace']) ? $context['backtrace'] : NULL;
+    if (!$this->client->auto_log_stacks) {
+      $stack = FALSE;
+    }
+    elseif (isset($context['backtrace'])) {
+      $stack = $context['backtrace'];
+    }
+    else {
+      // Remove any logger stack frames.
+      $stack = debug_backtrace($this->client->trace ? 0 : DEBUG_BACKTRACE_IGNORE_ARGS);
+      $finder = new ClassFinder();
+      if ($stack[0]['file'] === realpath($finder->findFile('Drupal\Core\Logger\LoggerChannel'))) {
+        array_shift($stack);
+        if ($stack[0]['file'] === realpath($finder->findFile('Psr\Log\LoggerTrait'))) {
+          array_shift($stack);
+        }
+      }
+    }
 
     // Allow modules to alter or ignore this message.
     $filter = [
@@ -150,14 +200,37 @@ class Raven implements LoggerInterface {
       'data' => &$data,
       'stack' => &$stack,
       'client' => $this->client,
-      'process' => TRUE,
+      'process' => !empty($this->config->get('log_levels')[$level + 1]),
     ];
+    if (in_array($context['channel'], $this->config->get('ignored_channels') ?: [])) {
+      $filter['process'] = FALSE;
+    }
     $this->moduleHandler->alter('raven_filter', $filter);
-    if (!$filter['process']) {
-      return;
+    if (!empty($filter['process'])) {
+      $this->client->capture($data, $stack);
     }
 
-    $this->client->capture($data, $stack);
+    // Record a breadcrumb.
+    $breadcrumb = [
+      'level' => $level,
+      'message' => $message,
+      'context' => $context,
+      'process' => TRUE,
+      'breadcrumb' => [
+        'category' => $context['channel'],
+        'message' => $formatted_message,
+        'level' => $levels[$level],
+      ],
+    ];
+    foreach (['%line', '%file', '%type', '%function'] as $key) {
+      if (isset($context[$key])) {
+        $breadcrumb['breadcrumb']['data'][substr($key, 1)] = $context[$key];
+      }
+    }
+    $this->moduleHandler->alter('raven_breadcrumb', $breadcrumb);
+    if (!empty($breadcrumb['process'])) {
+      $this->client->breadcrumbs->record($breadcrumb['breadcrumb']);
+    }
   }
 
 }

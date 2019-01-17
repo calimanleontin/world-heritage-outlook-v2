@@ -23,7 +23,7 @@ elements: |
       '#title': 'Text field'
       '#type': textfield
     textarea:
-      '#title': 'Textarea'
+      '#title': Textarea
       '#type': textarea
   option_elements:
     '#type': details
@@ -33,31 +33,31 @@ elements: |
       '#title': 'Select one'
       '#type': select
       '#options':
-        'option_1': 'Option 1'
-        'option_2': 'Option 2'
-        'option_3': 'Option 3'
+        option_1: 'Option 1'
+        option_2: 'Option 2'
+        option_3: 'Option 3'
     select_multiple:
       '#title': 'Select multiple'
       '#type': select
       '#multiple': true
       '#options':
-        'option_1': 'Option 1'
-        'option_2': 'Option 2'
-        'option_3': 'Option 3'
+        option_1: 'Option 1'
+        option_2: 'Option 2'
+        option_3: 'Option 3'
     radios:
-      '#title': 'Radios'
+      '#title': Radios
       '#type': radios
       '#options':
-        'option_1': 'Option 1'
-        'option_2': 'Option 2'
-        'option_3': 'Option 3'
+        option_1: 'Option 1'
+        option_2: 'Option 2'
+        option_3: 'Option 3'
     checkboxes:
-      '#title': 'Checkboxes'
+      '#title': Checkboxes
       '#type': checkboxes
       '#options':
-        'option_1': 'Option 1'
-        'option_2': 'Option 2'
-        'option_3': 'Option 3'
+        option_1: 'Option 1'
+        option_2: 'Option 2'
+        option_3: 'Option 3'
     checkbox:
       '#type': checkbox
       '#title': Checkbox
@@ -125,9 +125,6 @@ elements: |
       '#output': right
       '#output__field_prefix': $
       '#output__field_suffix': '.00'
-    color:
-      '#type': color
-      '#title': Color
   
 css: ''
 javascript: ''
@@ -137,6 +134,7 @@ settings:
   page: true
   page_submit_path: ''
   page_confirm_path: ''
+  form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -144,6 +142,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -176,6 +175,9 @@ settings:
   submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -216,9 +218,11 @@ settings:
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: null
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: null
   entity_limit_total_interval: null
   entity_limit_user: null
@@ -268,6 +272,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }

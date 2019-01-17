@@ -3,11 +3,10 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Utility\SortArray;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\webform\Access\WebformAccessResult;
 
 /**
  * The webform access rules manager service.
@@ -38,9 +37,10 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
    */
   public function checkWebformAccess($operation, AccountInterface $account, WebformInterface $webform) {
     $access_rules = $this->getAccessRules($webform);
+    $cache_per_user = $this->cachePerUser($access_rules);
 
-    return $this->checkAccessRules($operation, $account, $access_rules)
-      ->addCacheableDependency($webform);
+    $condition = $this->checkAccessRules($operation, $account, $access_rules);
+    return WebformAccessResult::allowedIf($condition, $webform, $cache_per_user);
   }
 
   /**
@@ -50,20 +50,27 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
     $webform = $webform_submission->getWebform();
 
     $access_rules = $this->getAccessRules($webform);
+    $cache_per_user = $this->cachePerUser($access_rules);
 
-    $access = $this->checkAccessRules($operation, $account, $access_rules);
-    $access->addCacheableDependency($webform);
-    $access->addCacheableDependency($webform_submission);
-
-    if ($access->isAllowed()) {
-      return $access;
+    // Check operation.
+    if ($this->checkAccessRules($operation, $account, $access_rules)) {
+      return WebformAccessResult::allowed($webform_submission, $cache_per_user);
     }
 
-    if ($webform_submission->isOwner($account) && isset($access_rules[$operation . '_own']) && $this->checkAccessRule($access_rules[$operation . '_own'], $account)) {
-      return AccessResult::allowed()->cachePerUser()->addCacheableDependency($access);
+    // Check *_own operation.
+    if ($webform_submission->isOwner($account)
+      && isset($access_rules[$operation . '_own'])
+      && $this->checkAccessRule($access_rules[$operation . '_own'], $account)) {
+      return WebformAccessResult::allowed($webform_submission, $cache_per_user);
     }
 
-    return AccessResult::forbidden()->addCacheableDependency($access);
+    // Check *_any operation.
+    if (isset($access_rules[$operation . '_any'])
+      && $this->checkAccessRule($access_rules[$operation . '_any'], $account)) {
+      return WebformAccessResult::allowed($webform_submission, $cache_per_user);
+    }
+
+    return WebformAccessResult::neutral($webform_submission, $cache_per_user);
   }
 
   /****************************************************************************/
@@ -112,21 +119,9 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
   }
 
   /**
-   * Retrieve a list of access rules from a webform.
-   *
-   * @param \Drupal\webform\WebformInterface $webform
-   *   Webform whose access rules to retrieve.
-   *
-   * @return array
-   *   Associative array of access rules contained in the provided webform. Keys
-   *   are operation names whereas values are sub arrays with the following
-   *   structure:
-   *   - roles: (array) Array of roles that should have access to this operation
-   *   - users: (array) Array of UIDs that should have access to this operation
-   *   - permissions: (array) Array of permissions that should grant access to
-   *     this operation
+   * {@inheritdoc}
    */
-  protected function getAccessRules(WebformInterface $webform) {
+  public function getAccessRules(WebformInterface $webform) {
     return $webform->getAccessRules() + $this->getDefaultAccessRules();
   }
 
@@ -135,45 +130,21 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
   /****************************************************************************/
 
   /**
-   * Check access for a given operation and set of access rules.
-   *
-   * @param string $operation
-   *   Operation that is being requested.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   Account that is requesting access to the operation.
-   * @param array $access_rules
-   *   A set of access rules to check against.
-   *
-   * @return \Drupal\Core\Access\AccessResult
-   *   Access result.
+   * {@inheritdoc}
    */
-  protected function checkAccessRules($operation, AccountInterface $account, array $access_rules) {
-    $cacheability = new CacheableMetadata();
-    $cacheability->addCacheContexts(['user.permissions']);
-    foreach ($access_rules as $access_rule) {
-      // If there is some per-user access logic, our response must be cacheable
-      // accordingly.
-      if (!empty($access_rule['users'])) {
-        $cacheability->addCacheContexts(['user']);
-      }
-    }
-
+  public function checkAccessRules($operation, AccountInterface $account, array $access_rules) {
     // Check administer access rule and grant full access to user.
     if ($this->checkAccessRule($access_rules['administer'], $account)) {
-      return AccessResult::allowed()->addCacheableDependency($cacheability);
+      return TRUE;
     }
 
-    // Check operation specific access rules.
+    // Check operation.
     if (isset($access_rules[$operation])
       && $this->checkAccessRule($access_rules[$operation], $account)) {
-      return AccessResult::allowed()->addCacheableDependency($cacheability);
-    }
-    if (isset($access_rules[$operation . '_any'])
-      && $this->checkAccessRule($access_rules[$operation . '_any'], $account)) {
-      return AccessResult::allowed()->addCacheableDependency($cacheability);
+      return TRUE;
     }
 
-    return AccessResult::forbidden()->addCacheableDependency($cacheability);
+    return FALSE;
   }
 
   /**
@@ -185,7 +156,7 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
    *   The user session for which to check access.
    *
    * @return bool
-   *   The access result. Returns a TRUE if access is allowed.
+   *   Returns a TRUE if access is allowed.
    *
    * @see \Drupal\webform\Plugin\WebformElementBase::checkAccessRule
    */
@@ -204,6 +175,18 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
       }
     }
 
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function cachePerUser(array $access_rules) {
+    foreach ($access_rules as $access_rule) {
+      if (!empty($access_rule['users'])) {
+        return TRUE;
+      }
+    }
     return FALSE;
   }
 

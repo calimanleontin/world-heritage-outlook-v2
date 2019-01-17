@@ -1,5 +1,0 @@
-services:
-  iucn_migrate_subscriber:
-    class: '\Drupal\iucn_migrate\EventSubscriber\MigrateSubscriber'
-    tags:
-      - { name: 'event_subscriber' }

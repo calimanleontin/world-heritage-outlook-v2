@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\webform\Plugin\WebformElementBase;
@@ -31,6 +30,7 @@ abstract class ContainerBase extends WebformElementBase {
       'format' => $this->getItemDefaultFormat(),
       'format_html' => '',
       'format_text' => '',
+      'format_attributes' => [],
     ] + $this->getDefaultBaseProperties();
   }
 
@@ -129,35 +129,34 @@ abstract class ContainerBase extends WebformElementBase {
       $format = 'header';
     }
 
+    // Build format attributes.
+    $attributes = (isset($element['#format_attributes'])) ? $element['#format_attributes'] : [];
+    $attributes += ['class' => []];
+
     switch ($format) {
       case 'details':
       case 'details-closed':
+        $attributes['data-webform-element-id'] = $element['#webform_id'];
+        $attributes['class'][] = 'webform-container';
+        $attributes['class'][] = 'webform-container-type-details';
         return [
           '#type' => 'details',
           '#title' => $element['#title'],
           '#id' => $element['#webform_id'],
           '#open' => ($format === 'details-closed') ? FALSE : TRUE,
-          '#attributes' => [
-            'data-webform-element-id' => $element['#webform_id'],
-            'class' => [
-              'webform-container',
-              'webform-container-type-details',
-            ],
-          ],
+          '#attributes' => $attributes,
           '#children' => $children,
         ];
 
       case 'fieldset':
+        $attributes['class'][] = 'webform-container';
+        $attributes['class'][] = 'webform-container-type-fieldset';
+
         return [
           '#type' => 'fieldset',
           '#title' => $element['#title'],
           '#id' => $element['#webform_id'],
-          '#attributes' => [
-            'class' => [
-              'webform-container',
-              'webform-container-type-fieldset',
-            ],
-          ],
+          '#attributes' => $attributes,
           '#children' => $children,
         ];
 
@@ -168,6 +167,7 @@ abstract class ContainerBase extends WebformElementBase {
           '#id' => $element['#webform_id'],
           '#title' => $element['#title'],
           '#title_tag' => \Drupal::config('webform.settings')->get('element.default_section_title_tag'),
+          '#attributes' => $attributes,
         ] + $children;
     }
   }
@@ -190,7 +190,7 @@ abstract class ContainerBase extends WebformElementBase {
         '#suffix' => PHP_EOL,
       ];
       $build['divider'] = [
-        '#markup' => str_repeat('-', Unicode::strlen($element['#title'])),
+        '#markup' => str_repeat('-', mb_strlen($element['#title'])),
         '#suffix' => PHP_EOL,
       ];
     }

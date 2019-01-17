@@ -5,9 +5,10 @@ package: 'Input filters'
 # core: 8.x
 configure: filter.admin_overview
 dependencies:
-  - filter
-# Information added by Drupal.org packaging script on 2017-05-04
-version: '8.x-1.0-alpha1'
+  - drupal:filter
+
+# Information added by Drupal.org packaging script on 2019-01-08
+version: '8.x-1.0-rc1'
 core: '8.x'
 project: 'spamspan'
-datestamp: 1493887088
+datestamp: 1546961584

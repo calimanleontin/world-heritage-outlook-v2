@@ -142,16 +142,16 @@ class FilterSpamspan extends FilterBase {
     // encoded images slowing down the email regex function.
     // Therefore, remove all image contents and add them back later.
     // See https://drupal.org/node/1243042 for details.
-    $images = array(array());
+    $images = [[]];
     preg_match_all(self::PATTERN_IMG_INLINE, $text, $images);
     $text = preg_replace(self::PATTERN_IMG_INLINE, self::PATTERN_IMG_PLACEHOLDER, $text);
 
     // Now we can convert all mailto URLs
-    $text = preg_replace_callback(self::PATTERN_MAILTO, array($this, 'callbackMailto'), $text);
+    $text = preg_replace_callback(self::PATTERN_MAILTO, [$this, 'callbackMailto'], $text);
     // all bare email addresses with optional formatting information
-    $text = preg_replace_callback(self::PATTERN_EMAIL_WITH_OPTIONS, array($this, 'callbackEmailAddressesWithOptions'), $text);
+    $text = preg_replace_callback(self::PATTERN_EMAIL_WITH_OPTIONS, [$this, 'callbackEmailAddressesWithOptions'], $text);
     // and finally, all bare email addresses
-    $text = preg_replace_callback(self::PATTERN_EMAIL_BARE, array($this, 'callbackBareEmailAddresses'), $text);
+    $text = preg_replace_callback(self::PATTERN_EMAIL_BARE, [$this, 'callbackBareEmailAddresses'], $text);
 
     // Revert back to the original image contents.
     foreach ($images[0] as $image) {
@@ -161,18 +161,18 @@ class FilterSpamspan extends FilterBase {
     $result = new FilterProcessResult($text);
 
     if ($this->textAltered) {
-      $result->addAttachments(array(
-        'library' => array(
+      $result->addAttachments([
+        'library' => [
           'spamspan/obfuscate',
-        ),
-      ));
+        ],
+      ]);
 
       if ($this->settings['spamspan_use_graphic']) {
-        $result->addAttachments(array(
-          'library' => array(
+        $result->addAttachments([
+          'library' => [
             'spamspan/atsign',
-          ),
-        ));
+          ],
+        ]);
       }
     }
 
@@ -204,11 +204,11 @@ class FilterSpamspan extends FilterBase {
     $headers = preg_split('/[&;]/', $query);
     // if no matches, $headers[0] will be set to '' so $headers must be reset
     if ($headers[0] == '') {
-      $headers = array();
+      $headers = [];
     }
 
     // take all <a> attributes except the href and put them into custom $vars
-    $vars = $attributes = array();
+    $vars = $attributes = [];
     // before href
     if (!empty($matches[1])) {
       $matches[1] = trim($matches[1]);
@@ -228,7 +228,7 @@ class FilterSpamspan extends FilterBase {
   }
 
   public function callbackEmailAddressesWithOptions($matches) {
-    $vars = array();
+    $vars = [];
     if (!empty($matches[3])) {
       $options = explode('|', $matches[3]);
       if (!empty($options[0])) {
@@ -270,7 +270,7 @@ class FilterSpamspan extends FilterBase {
    * @return
    *  The span with which to replace the email address
    */
-  private function output($name, $domain, $contents = '', $headers = array(), $vars = array()) {
+  private function output($name, $domain, $contents = '', $headers = [], $vars = []) {
     // processing for forms
     if (!empty($this->settings['spamspan_use_form'])) {
       $email = urlencode(base64_encode($name . '@' . $domain));
@@ -301,8 +301,10 @@ class FilterSpamspan extends FilterBase {
 
     $at = $this->settings['spamspan_at'];
     if ($this->settings['spamspan_use_graphic']) {
-      $render_at = array('#theme' => 'spamspan_at_sign', '#settings' => $this->settings);
-      $at = \Drupal::service('renderer')->renderRoot($render_at);
+      $render_at = ['#theme' => 'spamspan_at_sign', '#settings' => $this->settings];
+      /** @var \Drupal\Core\Render\RendererInterface $renderer */
+      $renderer = \Drupal::service('renderer');
+      $at = $renderer->renderPlain($render_at);
     }
 
     if ($this->settings['spamspan_dot_enable']) {
@@ -339,7 +341,7 @@ class FilterSpamspan extends FilterBase {
       // remove anything except certain inline elements, just in case.  NB nested
       // <a> elements are illegal. <img> needs to be here to allow for graphic @
       // !-- is allowed because of _filter_spamspan_escape_images
-      $contents = Xss::filter($contents, ['em', 'strong', 'cite', 'b', 'i', 'code', 'span', 'img', '!--']);
+      $contents = Xss::filter($contents, ['em', 'strong', 'cite', 'b', 'i', 'code', 'span', 'img', '!--', 'br']);
 
       if (!empty($contents)) {
         $output .= '<span class="t"> (' . $contents . ')</span>';

@@ -5,7 +5,6 @@ namespace Drupal\bootstrap\Plugin\Preprocess;
 use Drupal\bootstrap\Utility\Variables;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
 
 /**
  * Pre-processes variables for the "breadcrumb" theme hook.
@@ -41,34 +40,9 @@ class Breadcrumb extends PreprocessBase implements PreprocessInterface {
     }
 
     if ($this->theme->getSetting('breadcrumb_title') && !empty($breadcrumb)) {
-
-      $menu_items = iucn_who_get_all_menu('main');
-
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
-
-      $parameters = $route_match->getParameters()->all();
-      if (!empty($parameters['node']) && ($parameters['node'] instanceof NodeInterface)) {
-        $node = $parameters['node'];
-        /** @var \Drupal\node\Entity\Node $node */
-        $current_path = $node->url();
-        if (array_key_exists($current_path, $menu_items)) {
-          $page_title = $menu_items[$current_path];
-        }
-        else {
-          $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-        }
-      }
-      else {
-        $current_path = $route_match->getRouteObject()->getPath();
-        if (array_key_exists($current_path, $menu_items)) {
-          $page_title = $menu_items[$current_path];
-        }
-        else {
-          $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-        }
-      }
-
+      $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
       if (!empty($page_title)) {
         $breadcrumb[] = [
           'text' => $page_title,

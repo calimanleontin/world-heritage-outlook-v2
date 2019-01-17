@@ -2,13 +2,14 @@
 
 namespace Drupal\webform;
 
-use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\webform\Access\WebformAccessResult;
 use Drupal\webform\Plugin\WebformSourceEntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -88,11 +89,15 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    if ($account->hasPermission('create webform')) {
-      return AccessResult::allowed()->cachePerPermissions();
+    // Check 'administer webform' and 'create webform' permissions.
+    if ($account->hasPermission('administer webform')) {
+      return WebformAccessResult::allowed();
+    }
+    elseif ($account->hasPermission('create webform')) {
+      return WebformAccessResult::allowed();
     }
     else {
-      return parent::checkCreateAccess($account, $context, $entity_bundle);
+      return WebformAccessResult::neutral();
     }
   }
 
@@ -102,60 +107,77 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
   public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     /** @var \Drupal\webform\WebformInterface $entity */
 
+    // Check 'administer webform' permission.
     if ($account->hasPermission('administer webform')) {
-      return AccessResult::allowed()->cachePerPermissions();
+      return WebformAccessResult::allowed();
     }
 
-    $uid = $entity->getOwnerId();
-    $is_owner = ($account->isAuthenticated() && $account->id() == $uid);
-    // Check if 'view' (aka 'access configuration'), 'update', or 'delete'
-    // of 'own' or 'any' webform is allowed.
+    // Check 'administer' access rule.
     if ($account->isAuthenticated()) {
-      $has_administer = $this->accessRulesManager->checkWebformAccess('administer', $account, $entity);
-      switch ($operation) {
-        case 'view':
-          // The 'view' operation is reserved for accessing a
-          // webform's configuration via the REST API.
-          if ($has_administer->isAllowed() || $account->hasPermission('access any webform configuration') || ($account->hasPermission('access own webform configuration') && $is_owner)) {
-            return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity)->addCacheableDependency($has_administer);
-          }
-          break;
+      $administer_access_result = $this->accessRulesManager->checkWebformAccess('administer', $account, $entity);
+      if ($administer_access_result->isAllowed()) {
+        return $administer_access_result;
+      }
+    }
 
+    $is_owner = ($account->id() == $entity->getOwnerId());
+
+    // Check 'view' operation use 'submission_create' when viewing rendered
+    // HTML webform or use access 'configuration' when requesting a
+    // webform's configuration via REST or JSON API.
+    // @see https://www.drupal.org/project/webform/issues/2956771
+    if ($operation === 'view') {
+      // Check is current request if for HTML.
+      $is_html = ($this->requestStack->getCurrentRequest()->getRequestFormat() === 'html');
+      // Make sure JSON API 1.x requests format which is 'html' is
+      // detected properly.
+      // @see https://www.drupal.org/project/jsonapi/issues/2877584
+      $is_jsonapi = (strpos($this->requestStack->getCurrentRequest()->getPathInfo(), '/jsonapi/') === 0) ? TRUE : FALSE;
+      if ($is_html && !$is_jsonapi) {
+        $access_result = $this->accessRulesManager->checkWebformAccess('create', $account, $entity);
+      }
+      else {
+        if ($account->hasPermission('access any webform configuration') || ($account->hasPermission('access own webform configuration') && $is_owner)) {
+          $access_result = WebformAccessResult::allowed($entity, TRUE);
+        }
+        else {
+          $access_result = $this->accessRulesManager->checkWebformAccess('configuration', $account, $entity);
+        }
+      }
+      if ($access_result instanceof AccessResultReasonInterface) {
+        $access_result->setReason('Access to webform configuration is required.');
+      }
+      return $access_result->addCacheContexts(['url.path', 'request_format']);
+    }
+
+    // Check if 'update', or 'delete' of 'own' or 'any' webform is allowed.
+    if ($account->isAuthenticated()) {
+      switch ($operation) {
         case 'test':
         case 'update':
-          if ($has_administer->isAllowed() || $account->hasPermission('edit any webform') || ($account->hasPermission('edit own webform') && $is_owner)) {
-            return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity)->addCacheableDependency($has_administer);
+          if ($account->hasPermission('edit any webform') || ($account->hasPermission('edit own webform') && $is_owner)) {
+            return WebformAccessResult::allowed($entity, TRUE);
           }
           break;
 
         case 'duplicate':
-          if ($has_administer->isAllowed() || $account->hasPermission('create webform') && ($entity->isTemplate() || ($account->hasPermission('edit any webform') || ($account->hasPermission('edit own webform') && $is_owner)))) {
-            return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity)->addCacheableDependency($has_administer);
+          if ($account->hasPermission('create webform') && ($entity->isTemplate() || ($account->hasPermission('edit any webform') || ($account->hasPermission('edit own webform') && $is_owner)))) {
+            return WebformAccessResult::allowed($entity, TRUE);
           }
           break;
 
         case 'delete':
-          if ($has_administer->isAllowed() || $account->hasPermission('delete any webform') || ($account->hasPermission('delete own webform') && $is_owner)) {
-            return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity)->addCacheableDependency($has_administer);
+          if ($account->hasPermission('delete any webform') || ($account->hasPermission('delete own webform') && $is_owner)) {
+            return WebformAccessResult::allowed($entity, TRUE);
           }
           break;
       }
     }
 
-    // Convert 'render' operation to 'submission_create' operation.
-    // @see https://www.drupal.org/project/drupal/issues/2820315
-    // @see https://www.drupal.org/project/webform/issues/2956771
-    if ($operation === 'render') {
-      $operation = 'submission_create';
-    }
-
-    // Check if access rules has anything to say about this operation.
-    $access_rules = array_keys($this->accessRulesManager->getAccessRulesInfo());
-    if ($operation == 'page' || in_array($operation, $access_rules) || in_array($operation . '_any', $access_rules) || in_array($operation . '_own', $access_rules)) {
-      $access_rules = $this->accessRulesManager->checkWebformAccess($operation, $account, $entity);
-      if ($access_rules->isAllowed()) {
-        return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($access_rules);
-      }
+    // Check webform access rules.
+    $rules_access_result = $this->accessRulesManager->checkWebformAccess($operation, $account, $entity);
+    if ($rules_access_result->isAllowed()) {
+      return $rules_access_result;
     }
 
     // Check submission_* operation.
@@ -163,35 +185,55 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       // Grant user with administer webform submission access to do whatever he
       // likes on the submission operations.
       if ($account->hasPermission('administer webform submission')) {
-        return AccessResult::allowed()->cachePerPermissions();
+        return WebformAccessResult::allowed();
       }
 
       // Allow users with 'view any webform submission' or
       // 'administer webform submission' to view all submissions.
-      if ($operation == 'submission_view_any' && ($account->hasPermission('view any webform submission') || $account->hasPermission('administer webform submission'))) {
-        return AccessResult::allowed()->cachePerPermissions();
+      if ($operation === 'submission_view_any' && ($account->hasPermission('view any webform submission') || $account->hasPermission('administer webform submission'))) {
+        return WebformAccessResult::allowed();
       }
 
       // Allow users with 'view own webform submission' to view own submissions.
-      if ($account->hasPermission('view own webform submission') && $is_owner) {
-        return AccessResult::allowed()->cachePerUser()->addCacheableDependency($entity);
+      if ($operation === 'submission_view_own' && $account->hasPermission('view own webform submission')) {
+        return WebformAccessResult::allowed();
       }
 
-      // Allow users with 'view own webform submission' to view own submissions.
-      if ($operation == 'submission_view_own' && $account->hasPermission('view own webform submission')) {
-        return AccessResult::allowed()->cachePerPermissions();
-      }
-
-      // Allow (secure) token to bypass submission page and create access controls.
       if (in_array($operation, ['submission_page', 'submission_create'])) {
+        /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
+        $submission_storage = $this->entityTypeManager->getStorage('webform_submission');
+
+        // Check limit total unique access.
+        // @see \Drupal\webform\WebformSubmissionForm::setEntity
+        if ($entity->getSetting('limit_total_unique')) {
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
+          $last_submission = $submission_storage->getLastSubmission($entity, $source_entity, NULL, ['in_draft' => FALSE]);
+          if ($last_submission && $last_submission->access('update')) {
+            return WebformAccessResult::allowed($last_submission);
+          }
+        }
+
+        // Check limit user unique access.
+        // @see \Drupal\webform\WebformSubmissionForm::setEntity
+        if ($entity->getSetting('limit_user_unique')) {
+          // Require user to be authenticated to access a unique submission.
+          if (!$account->isAuthenticated()) {
+            return WebformAccessResult::forbidden($entity);
+          }
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
+          $last_submission = $submission_storage->getLastSubmission($entity, $source_entity, $account, ['in_draft' => FALSE]);
+          if ($last_submission && $last_submission->access('update')) {
+            return WebformAccessResult::allowed($last_submission);
+          }
+        }
+
+        // Allow (secure) token to bypass submission page and create access controls.
         $token = $this->requestStack->getCurrentRequest()->query->get('token');
         if ($token && $entity->isOpen()) {
-          /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
-          $submission_storage = $this->entityTypeManager->getStorage('webform_submission');
-
-          $source_entity = $this->webformSourceEntityManager->getSourceEntity(['webform']);
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
           if ($submission = $submission_storage->loadFromToken($token, $entity, $source_entity)) {
-            return AccessResult::allowed()->addCacheableDependency($submission)->addCacheableDependency($entity)->addCacheContexts(['url']);
+            return WebformAccessResult::allowed($submission)
+              ->addCacheContexts(['url']);
           }
         }
       }
@@ -199,44 +241,50 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       // The "page" operation is the same as "create" but requires that the
       // Webform is allowed to be displayed as dedicated page.
       // Used by the 'entity.webform.canonical' route.
-      if ($operation == 'submission_page') {
+      if ($operation === 'submission_page') {
         // Completely block access to a template if the user can't create new
         // Webforms.
         $create_access = $entity->access('create', $account, TRUE);
         if ($entity->isTemplate() && !$create_access->isAllowed()) {
-          return AccessResult::forbidden()->addCacheableDependency($entity)->addCacheableDependency($create_access);
+          return WebformAccessResult::forbidden($entity)
+            ->addCacheableDependency($create_access);
         }
 
+        // Block access if the webform does not have a page URL.
         if (!$entity->getSetting('page')) {
-          return AccessResult::forbidden()->addCacheableDependency($entity);
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
+          if (!$source_entity) {
+            return WebformAccessResult::forbidden($entity);
+          }
         }
-
-        $operation = 'submission_create';
       }
 
-      // Check custom webform submission access rules.
-      $update_access = $this->checkAccess($entity, 'update', $account);
-      $access_rules = $this->accessRulesManager->checkWebformAccess(str_replace('submission_', '', $operation), $account, $entity);
-      if ($update_access->isAllowed() || $access_rules->isAllowed()) {
-        return AccessResult::allowed()->addCacheableDependency($update_access)->addCacheableDependency($access_rules);
+      // Convert submission 'page' to corresponding 'create' access rule.
+      $submission_operation = str_replace('submission_page', 'submission_create', $operation);
+      // Remove 'submission_*' prefix.
+      $submission_operation = str_replace('submission_', '', $submission_operation);
+
+      // Check webform submission access rules.
+      $submission_access_result = $this->accessRulesManager->checkWebformAccess($submission_operation, $account, $entity);
+      if ($submission_access_result->isAllowed()) {
+        return $submission_access_result;
+      }
+
+      // Check webform 'update' access.
+      $update_access_result = $this->checkAccess($entity, 'update', $account);
+      if ($update_access_result->isAllowed()) {
+        return $update_access_result;
       }
     }
 
-    $access_result = parent::checkAccess($entity, $operation, $account);
-
-    // Return forbidden access result with a reason for 'view' operation
-    // so that blocked REST API requests can better understand
-    // why access was denied.
-    if ($access_result->isNeutral() && $operation === 'view') {
-      $access_result = AccessResult::neutral("The 'administer webform' or 'access own or any webform configuration' permission is required.");
-      $access_result->cachePerPermissions()->cachePerUser();
+    // NOTE: Not calling parent::checkAccess().
+    // @see \Drupal\Core\Entity\EntityAccessControlHandler::checkAccess
+    if ($operation === 'delete' && $entity->isNew()) {
+      return WebformAccessResult::forbidden($entity);
     }
-
-    // Make sure the permission, user, and webform is added as
-    // a cache dependency.
-    $access_result->addCacheableDependency($entity);
-
-    return $access_result;
+    else {
+      return WebformAccessResult::neutral($entity);
+    }
   }
 
 }
