@@ -4,6 +4,7 @@ namespace Drupal\webform\EntitySettings;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -80,6 +81,21 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
         ],
       ],
     ];
+    $t_args = [
+      ':page_cache_href' => 'https://www.drupal.org/docs/8/administering-a-drupal-8-site/internal-page-cache',
+      ':issue_href' => 'https://www.drupal.org/node/2352009',
+      ':cache_control_override_href' => 'https://www.drupal.org/project/cache_control_override',
+    ];
+    if ($this->moduleHandler->moduleExists('page_cache') && !$this->moduleHandler->moduleExists('cache_control_override')) {
+      $form['form_settings']['scheduled']['page_cache'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+        '#message_message' => $this->t('Scheduled forms do not work as expected for anonymous users when Drupal\'s <a href=":page_cache_href">Internal Page Cache</a> module is enabled. This is a <a href=":issue_href">known issue</a>.', $t_args) . '<br/><br/>' .
+          '<strong>' . $this->t('It is strongly recommended that you install the <a href=":cache_control_override_href">Cache Control Override</a> module.', $t_args) . '</strong>',
+      ];
+    }
     $form['form_settings']['scheduled']['open'] = [
       '#type' => 'datetime',
       '#title' => $this->t('Open'),
@@ -112,6 +128,19 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       $form['form_settings']['status']['#access'] = FALSE;
       $form['form_settings']['scheduled']['#access'] = FALSE;
     }
+    $form['form_settings']['form_title'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Form title display'),
+      '#description' => $this->t("Select how the form's title is displayed when this webform is attached to a source entity. This title is only displayed when a webform is linked to from a source entity or opened in dialog."),
+      '#options' => [
+        WebformInterface::TITLE_SOURCE_ENTITY_WEBFORM => $this->t('Source entity: Webform'),
+        WebformInterface::TITLE_WEBFORM_SOURCE_ENTITY => $this->t('Webform: Source entity'),
+        WebformInterface::TITLE_WEBFORM => $this->t('Webform'),
+        WebformInterface::TITLE_SOURCE_ENTITY => $this->t('Source entity'),
+      ],
+      '#required' => TRUE,
+      '#default_value' => $settings['form_title'],
+    ];
     $form['form_settings']['form_open_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Form open message'),

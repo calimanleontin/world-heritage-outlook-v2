@@ -2,8 +2,8 @@
                                       INSTALLATION
   ------------------------------------------------------------------------------------
 
-  This module requires optional core modules: "Locale" and "Content translation".
-  The module will populate a new block named "Language switcher dropdown" under "{host}/admin/structure/block".
+  This module requires optional core module: "Language".
+  The module will populate a new block named "Language dropdown switcher" under "/admin/structure/block".
   
   Please see the below instructions to configure the block.
 
@@ -11,10 +11,8 @@
                                       CONFIGURATION
   ------------------------------------------------------------------------------------
 
-  1) Configure the "Language negotiation" at "{host}/admin/config/regional/language/configure".
+  1) Configure the "Language negotiation" at "/admin/config/regional/language/detection".
      
-  2) Enable the "Language switcher dropdown" block at "{host}/admin/structure/block".
+  2) Place the "Language dropdown switcher" block at "/admin/structure/block".
   
-  3) Configure the "Language switcher dropdown" block settings as follows:
-     - "Output as HTML and JavaScript widget instead of HTML select element"
-        The option will allow you to display the widget using themable HTML and JavaScript widget instead of the default select element.
+  3) Configure the "Language dropdown switcher" block settings as follows.

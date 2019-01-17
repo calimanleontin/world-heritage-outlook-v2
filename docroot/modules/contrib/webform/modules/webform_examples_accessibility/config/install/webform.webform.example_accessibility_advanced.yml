@@ -34,7 +34,7 @@ elements: |
     '#open': true
     select_select2:
       '#type': select
-      '#title': 'Select2'
+      '#title': Select2
       '#options':
         one: One
         two: Two
@@ -133,14 +133,14 @@ elements: |
     '#open': true
     textfield_input_hide:
       '#type': textfield
-      '#title': "Textfield with input hiding"
+      '#title': 'Textfield with input hiding'
       '#input_hide': true
       '#default_value': '{value}'
     email_input_hide:
       '#type': email
-      '#title': "Email with input hiding"
+      '#title': 'Email with input hiding'
       '#input_hide': true
-      '#default_value': 'example@example.com'
+      '#default_value': example@example.com
   widget_elements:
     '#type': details
     '#title': 'Widget elements'
@@ -192,7 +192,7 @@ elements: |
     '#title': 'Composite elements'
     '#open': true
     address:
-      '#title': 'Address'
+      '#title': Address
       '#type': webform_address
   multiple_elements:
     '#type': details
@@ -221,6 +221,7 @@ settings:
   page: true
   page_submit_path: ''
   page_confirm_path: ''
+  form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -228,6 +229,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -260,6 +262,9 @@ settings:
   submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -300,9 +305,11 @@ settings:
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: null
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: null
   entity_limit_total_interval: null
   entity_limit_user: null
@@ -352,6 +359,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }

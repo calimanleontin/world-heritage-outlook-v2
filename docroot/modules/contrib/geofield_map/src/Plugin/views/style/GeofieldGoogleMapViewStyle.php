@@ -5,6 +5,7 @@ namespace Drupal\geofield_map\Plugin\views\style;
 use Drupal\geofield_map\GeofieldMapFieldTrait;
 use Drupal\geofield_map\GeofieldMapFormElementsValidationTrait;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\style\DefaultStyle;
@@ -23,6 +24,10 @@ use Drupal\geofield_map\Services\GoogleMapsService;
 use Drupal\geofield_map\MapThemerPluginManager;
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\views\Plugin\views\PluginBase;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 
 /**
  * Style plugin to render a View output as a Leaflet map.
@@ -125,6 +130,13 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
   protected $renderer;
 
   /**
+   * The module handler to invoke the alter hook.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * The geofieldMapGoogleMaps service.
    *
    * @var \Drupal\geofield_map\Services\GoogleMapsService
@@ -177,6 +189,8 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
    *   Current user service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The Renderer service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
    * @param \Drupal\geofield_map\Services\GoogleMapsService $google_maps_service
    *   The Google Maps service.
    * @param \Drupal\geofield_map\MapThemerPluginManager $map_themer_manager
@@ -194,6 +208,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     GeoPHPInterface $geophp_wrapper,
     AccountInterface $current_user,
     RendererInterface $renderer,
+    ModuleHandlerInterface $module_handler,
     GoogleMapsService $google_maps_service,
     MapThemerPluginManager $map_themer_manager
   ) {
@@ -207,6 +222,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     $this->geoPhpWrapper = $geophp_wrapper;
     $this->currentUser = $current_user;
     $this->renderer = $renderer;
+    $this->moduleHandler = $module_handler;
     $this->googleMapsService = $google_maps_service;
     $this->mapThemerManager = $map_themer_manager;
   }
@@ -227,6 +243,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
       $container->get('geofield.geophp'),
       $container->get('current_user'),
       $container->get('renderer'),
+      $container->get('module_handler'),
       $container->get('geofield_map.google_maps'),
       $container->get('plugin.manager.geofield_map.themer')
     );
@@ -374,6 +391,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     if ($this->entityType) {
       $desc_options += [
         '#rendered_entity' => $this->t('- Rendered @entity entity -', ['@entity' => $this->entityType]),
+        '#rendered_entity_ajax' => $this->t('- Rendered @entity entity via Ajax (Quicker Map start / Slower Infowindow show) -', ['@entity' => $this->entityType]),
       ];
     }
 
@@ -398,7 +416,8 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
         '#states' => [
           'visible' => [
             ':input[name="style_options[map_marker_and_infowindow][infowindow_field]"]' => [
-              'value' => '#rendered_entity',
+              ['value' => '#rendered_entity'],
+              ['value' => '#rendered_entity_ajax'],
             ],
           ],
         ],
@@ -406,6 +425,10 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     }
 
     $form = $form + $this->generateGmapSettingsForm($form, $form_state, $this->options, $default_settings);
+
+    $form['map_marker_and_infowindow']['infowindow_field']['#description'] .= $this->t("<br>'Rendered @entity entity' option: quick infowindow, but slower map start in case of many map features (> 50 / 100) and large infowindows content.<br>'Rendered @entity entity via ajax' option: quicker map start in case of many map features and large infowindows content.", [
+      '@entity' => $this->entityType,
+    ]);
 
     // Implement Map Theming based on available GeofieldMapThemers.
     $form['map_marker_and_infowindow']['theming'] = [
@@ -430,11 +453,16 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
       '#title' => $this->t('Map Theming'),
       '#default_value' => $selected_map_themer,
       '#options' => $map_themers_options,
+      '#ajax' => [
+        'callback' => [static::class, 'mapThemingOptionsUpdate'],
+        'effect' => 'fade',
+      ],
     ];
 
     foreach ($this->mapThemerManager->getMapThemersList() as $plugin_id => $map_themer) {
       try {
         $this->mapThemerPlugin = $this->mapThemerManager->createInstance($plugin_id);
+
         $form['map_marker_and_infowindow']['theming'][$this->mapThemerPlugin->pluginId] = [
           '#type' => 'container',
           'id' => [
@@ -446,12 +474,10 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
             '#type' => 'value',
             '#value' => $this->mapThemerPlugin->getDescription(),
           ],
-          '#states' => [
-            'visible' => [
-              'select[name="style_options[map_marker_and_infowindow][theming][plugin_id]"]' => ['value' => $plugin_id],
-            ],
-          ],
         ];
+        if ($plugin_id != $selected_map_themer) {
+          $form['map_marker_and_infowindow']['theming'][$this->mapThemerPlugin->pluginId]['#attributes']['class'] = ['hidden'];
+        }
       }
       catch (PluginException $e) {
         $form['map_marker_and_infowindow']['theming']['plugin_id']['#default_value'] = $map_themers_options['none'];
@@ -464,12 +490,8 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
         '#type' => 'table',
         '#caption' => $this->t('Available Map Themers & Descriptions:'),
       ],
-      '#states' => [
-        'visible' => [
-          'select[name="style_options[map_marker_and_infowindow][theming][plugin_id]"]' => ['value' => 'none'],
-        ],
-      ],
     ];
+
     foreach ($map_themers_definitions as $k => $map_themer) {
       $form['map_marker_and_infowindow']['theming']['plugins_descriptions']['table'][$k] = [
         'label' => [
@@ -481,12 +503,37 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
       ];
     }
 
-    $form['map_marker_and_infowindow']['icon_image_path']['#states'] = [
-      'visible' => [
-        'select[name="style_options[map_marker_and_infowindow][theming][plugin_id]"]' => ['value' => 'none'],
-      ],
-    ];
+    // Hide fall-backs in case the user choose a map themer.
+    if ('none' != $selected_map_themer) {
+      // Hide the Map Themers Plugins Descriptions.
+      $form['map_marker_and_infowindow']['theming']['plugins_descriptions']['#attributes']['class'] = ['hidden'];
 
+      // Hide the icon_image_path element, with prefix/suffix (as hidden would
+      // hide just the textfield and not label/title and description wrappers).
+      $form['map_marker_and_infowindow']['icon_image_path']['#prefix'] = '<div id="icon-image-path" class="hidden">';
+      $form['map_marker_and_infowindow']['icon_image_path']['#suffix'] = '</div>';
+    }
+
+  }
+
+  /**
+   * Ajax callback triggered Map Theming Option Selection.
+   *
+   * @param array $form
+   *   The build form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Ajax response with updated form element.
+   */
+  public static function mapThemingOptionsUpdate(array $form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $response->addCommand(new ReplaceCommand(
+      '#map-marker-and-infowindow-wrapper',
+      $form['options']['style_options']['map_marker_and_infowindow']
+    ));
+    return $response;
   }
 
   /**
@@ -526,29 +573,40 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     // empty behaviour has been set, render the results.
     if (!empty($geofield_name) && (!empty($this->view->result) || $map_settings['map_empty']['empty_behaviour'] == '1')) {
       $this->renderFields($this->view->result);
+
       /* @var \Drupal\views\ResultRow  $result */
       foreach ($this->view->result as $id => $result) {
 
-        $geofield_value = $this->getFieldValue($id, $geofield_name);
+        // For proper processing make sure the geofield_value is created as an
+        // array, also if single value.
+        $geofield_value = (array) $this->getFieldValue($id, $geofield_name);
 
         // In case the result is not null.
         if (!empty($geofield_value)) {
 
-          // In case _entity is null, it might probably be the search_api case.
-          // @see https://www.drupal.org/project/geofield_map/issues/2994026
-          // @TODO better verify and face this cases duality.
-          $entity = $result->_entity ?: $result->_object->getValue();
-
-          // If it is a single value field, transform into an array.
-          $geofield_value = is_array($geofield_value) ? $geofield_value : [$geofield_value];
+          if (!empty($result->_entity)) {
+            // Entity API provides a plain entity object.
+            $entity = $result->_entity;
+          }
+          elseif (isset($result->_object)) {
+            // Search API provides a TypedData EntityAdapter.
+            $entity_adapter = $result->_object;
+            if ($entity_adapter instanceof EntityAdapter) {
+              $entity = $entity_adapter->getValue();
+            }
+          }
 
           $description = [];
           $description_field = isset($map_settings['map_marker_and_infowindow']['infowindow_field']) ? $map_settings['map_marker_and_infowindow']['infowindow_field'] : NULL;
-          /* @var \Drupal\Core\Field\FieldItemList $description_field_entity */
-          $description_field_entity = $entity->$description_field;
 
           // Render the entity with the selected view mode.
-          if (isset($description_field) && $description_field === '#rendered_entity' && is_object($result)) {
+          if (isset($entity) && isset($description_field)) {
+
+            /* @var \Drupal\Core\Field\FieldItemList $description_field_entity */
+            $description_field_entity = $entity->$description_field;
+
+            $entity_type = $entity->getEntityTypeId();
+            $entity_type_langcode_attribute = $entity_type . '_field_data_langcode';
 
             $view = $this->view;
 
@@ -560,7 +618,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
             ];
             if (isset($dynamic_renderers[$rendering_language])) {
               /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-              $langcode = $entity->language()->getId();
+              $langcode = isset($result->$entity_type_langcode_attribute) ? $result->$entity_type_langcode_attribute : $entity->language()->getId();
             }
             else {
               if (strpos($rendering_language, '***LANGUAGE_') !== FALSE) {
@@ -572,25 +630,48 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
               }
             }
 
-            $build = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($entity, $map_settings['view_mode'], $langcode);
-            $description[] = $this->renderer->renderPlain($build);
-          }
-          // Normal rendering via fields.
-          elseif (isset($description_field)) {
-            // Check if the entity has a $description_field field.
-            if (isset($description_field_entity)) {
-              $description_field_cardinality = $description_field_entity->getFieldDefinition()->getFieldStorageDefinition()->getCardinality();
-              foreach ($description_field_entity->getValue() as $value) {
-                if ($description_field_cardinality == 1 || $map_settings['map_marker_and_infowindow']['multivalue_split'] == FALSE) {
-                  $description[] = $this->rendered_fields[$id][$description_field];
-                  break;
+            switch ($description_field) {
+              case '#rendered_entity':
+                $build = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($entity, $this->options['view_mode'], $langcode);
+                $description[] = $this->renderer->renderPlain($build);
+                break;
+
+              case '#rendered_entity_ajax':
+                $parameters = [
+                  'entity_type' => $entity->getEntityTypeId(),
+                  'entity' => $entity->id(),
+                  'view_mode' => $this->options['view_mode'],
+                  'langcode' => $langcode,
+                ];
+                $url = Url::fromRoute('geofield_map.ajax_popup', $parameters, ['absolute' => TRUE]);
+                $build = [
+                  '#type' => 'html_tag',
+                  '#tag' => 'div',
+                  '#value' => '',
+                  '#attributes' => [
+                    'class' => ['geofield-google-map-ajax-popup'],
+                    'data-geofield-google-map-ajax-popup' => $url->toString(),
+                  ],
+                ];
+                $description[] = $this->renderer->renderRoot($build);
+                break;
+
+              default:
+                // Check if the entity has a $description_field field.
+                if (isset($description_field_entity)) {
+                  $description_field_cardinality = $description_field_entity->getFieldDefinition()->getFieldStorageDefinition()->getCardinality();
+                  foreach ($description_field_entity->getValue() as $value) {
+                    if ($description_field_cardinality == 1 || $map_settings['map_marker_and_infowindow']['multivalue_split'] == FALSE) {
+                      $description[] = $this->rendered_fields[$id][$description_field];
+                      break;
+                    }
+                    $description[] = isset($value['value']) ? $value['value'] : NULL;
+                  }
                 }
-                $description[] = isset($value['value']) ? $value['value'] : NULL;
-              }
-            }
-            // Else get the views field value.
-            elseif (isset($this->rendered_fields[$id][$description_field])) {
-              $description[] = $this->rendered_fields[$id][$description_field];
+                // Else get the views field value.
+                elseif (isset($this->rendered_fields[$id][$description_field])) {
+                  $description[] = $this->rendered_fields[$id][$description_field];
+                }
             }
           }
 
@@ -633,6 +714,9 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
         'type' => 'FeatureCollection',
         'features' => $data,
       ];
+
+      // Allow other modules to add/alter the map js settings.
+      $this->moduleHandler->alter('geofield_map_googlemap_view_style', $js_settings, $this);
 
       $element = geofield_map_googlemap_render($js_settings);
 

@@ -32,6 +32,8 @@ class Checkboxes extends OptionsBase {
       'options_description_display' => 'description',
       // iCheck settings.
       'icheck' => '',
+      // Wrapper.
+      'wrapper_type' => 'fieldset',
     ] + parent::getDefaultProperties();
   }
 
@@ -85,6 +87,13 @@ class Checkboxes extends OptionsBase {
     else {
       return (in_array($trigger, ['checked', 'unchecked'])) ? FALSE : NULL;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getElementSelectorSourceValues(array $element) {
+    return [];
   }
 
   /**

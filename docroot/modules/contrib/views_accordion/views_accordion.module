@@ -39,5 +39,6 @@ function views_accordion_help($route_name, RouteMatchInterface $route_match) {
  * @see template_preprocess_views_view_unformatted()
  */
 function template_preprocess_views_accordion_view(&$variables) {
+  \Drupal::moduleHandler()->loadInclude('views', 'inc', 'views.theme');
   template_preprocess_views_view_unformatted($variables);
 }
