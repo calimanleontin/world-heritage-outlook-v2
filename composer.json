@@ -192,6 +192,7 @@
     "drupal/webform": "^5.0@RC",
     "drupal/xmlsitemap": "^1.0@alpha",
     "drush/drush": "^9.4.0",
+    "eaudeweb/heavy-lifter": "^1.0",
     "enyoo/dropzone": "^4.3",
     "harvesthq/chosen": "^1.6",
     "jackmoore/colorbox": "^1.6",
