@@ -167,9 +167,9 @@ trait DiffModalTrait {
    */
   public function getCopyFieldValue($fieldValue) {
     $value = [];
-    foreach ($fieldValue as $value) {
+    foreach ($fieldValue as $fv) {
       // todo check target_revision_id
-      $value[] = !empty($value['value']) ? $value['value'] : $value['target_id'];
+      $value[] = !empty($fv['value']) ? $fv['value'] : $fv['target_id'];
     }
     if (count($value) == 1) {
       $value = reset($value);
