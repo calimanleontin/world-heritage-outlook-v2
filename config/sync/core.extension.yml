@@ -54,7 +54,6 @@ module:
   iucn_config_ignore: 0
   iucn_decision_tree: 0
   iucn_fields: 0
-  iucn_migrate: 0
   iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
@@ -75,8 +74,6 @@ module:
   metatag: 0
   migrate: 0
   migrate_api: 0
-  migrate_plus: 0
-  migrate_tools: 0
   node: 0
   options: 0
   page_cache: 0
