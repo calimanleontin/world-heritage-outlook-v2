@@ -11,10 +11,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class IucnModalFieldDiffForm extends IucnModalForm {
-
-  use DiffModalTrait;
-  use AssessmentEntityFormTrait;
+class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
   protected $entityFormDisplay;
@@ -107,10 +104,6 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     $this->setFormDisplay($this->nodeFormDisplay, $form_state);
 
     $form = parent::buildForm($form, $form_state);
-    $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
-    $form['#suffix'] = '</div>';
-    $form['#attached']['library'][] = 'diff/diff.colors';
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
 
     $diffTable = [
       '#type' => 'table',
@@ -142,8 +135,6 @@ class IucnModalFieldDiffForm extends IucnModalForm {
     ];
 
     $form[$this->field] = $diffTable;
-    self::hideUnnecessaryFields($form);
-    self::buildCancelButton($form);
     return $form;
   }
 

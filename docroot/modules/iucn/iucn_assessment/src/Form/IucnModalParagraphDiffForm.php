@@ -10,9 +10,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 
-class IucnModalParagraphDiffForm extends IucnModalForm {
-
-  use DiffModalTrait;
+class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   /**
    * @var AssessmentWorkflow;
@@ -182,8 +180,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
       $row['top']['summary']['author']['data']['#markup'] = $author;
       $form['widget'][] = $row;
     }
-    $form['#attached']['library'][] = 'diff/diff.colors';
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     $form['widget']['#is_diff_form'] = TRUE;
     $form['widget']['edit'] = $form['widget'][$paragraph_key];
 
@@ -243,9 +239,6 @@ class IucnModalParagraphDiffForm extends IucnModalForm {
     $paragraph_form['diff'] = $form;
     $paragraph_form['diff']['#weight'] = 0;
     unset($paragraph_form['#fieldgroups']);
-
-    $paragraph_form['#prefix'] = '<div class="diff-modal">';
-    $paragraph_form['#suffix'] = '</div>';
 
     return $paragraph_form;
   }

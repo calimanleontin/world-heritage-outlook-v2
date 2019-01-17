@@ -2,7 +2,20 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-trait DiffModalTrait {
+use Drupal\Core\Form\FormStateInterface;
+
+abstract class IucnModalDiffForm extends IucnModalForm {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form = parent::buildForm($form, $form_state);
+    $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
+    $form['#attached']['library'][] = 'diff/diff.colors';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
+    return $form;
+  }
 
   public function getTableCellMarkup($markup, $class, $span = 1, $weight = 0) {
     return [
@@ -176,5 +189,4 @@ trait DiffModalTrait {
     }
     return $value;
   }
-
 }

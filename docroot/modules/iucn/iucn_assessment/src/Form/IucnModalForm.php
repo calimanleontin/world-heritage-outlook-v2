@@ -10,29 +10,33 @@ use Drupal\Core\Ajax\CloseModalDialogCommand;
 
 abstract class IucnModalForm extends ContentEntityForm {
 
+  use AssessmentEntityFormTrait;
+
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+    $form['#prefix'] = '<div id="drupal-modal">';
+    $form['#suffix'] = '</div>';
 
     // @TODO: fix problem with form is outdated.
     $form['#token'] = FALSE;
 
     // Define alternative submit callbacks using AJAX by copying the default
     // submit callbacks to the AJAX property.
-    $submit = &$form['actions']['submit'];
-    $submit['#ajax'] = [
+    $form['actions']['submit']['#ajax'] = [
       'callback' => '::ajaxSave',
       'event' => 'click',
       'progress' => [
         'type' => 'throbber',
         'message' => NULL,
       ],
+      'disable-refocus' => TRUE,
     ];
 
-    $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
     self::buildCancelButton($form);
+    self::hideUnnecessaryFields($form);
 
     return $form;
   }
