@@ -145,7 +145,6 @@
     "drupal/disable_field": "^1.8",
     "drupal/display_field_copy": "^1.0",
     "drupal/ds": "^3.1",
-    "drupal/eck": "1.x-dev",
     "drupal/editor_advanced_link": "^1.4",
     "drupal/editor_file": "^1.2",
     "drupal/entity_print": "^2.1",
