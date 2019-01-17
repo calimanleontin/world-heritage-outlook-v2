@@ -8,8 +8,8 @@ dependencies:
 type: module
 configure: geofield_map.settings
 
-# Information added by Drupal.org packaging script on 2018-10-12
-version: '8.x-2.15'
+# Information added by Drupal.org packaging script on 2018-12-27
+version: '8.x-2.23'
 core: '8.x'
 project: 'geofield_map'
-datestamp: 1539318488
+datestamp: 1545896305

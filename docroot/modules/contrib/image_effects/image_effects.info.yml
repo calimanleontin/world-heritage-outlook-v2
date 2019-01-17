@@ -11,8 +11,8 @@ test_dependencies:
   - imagemagick:imagemagick
   - jquery_colorpicker:jquery_colorpicker
 
-# Information added by Drupal.org packaging script on 2018-04-21
-version: '8.x-1.1'
+# Information added by Drupal.org packaging script on 2018-11-27
+version: '8.x-1.2'
 core: '8.x'
 project: 'image_effects'
-datestamp: 1524304389
+datestamp: 1543322285

@@ -79,19 +79,6 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
   protected $roleStorage;
 
   /**
-   * {@inheritdoc}
-   */
-  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
-    return new static(
-      $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
-      $container->get('request_stack'),
-      $container->get('current_user'),
-      $container->get('entity_type.manager')
-    );
-  }
-
-  /**
    * Constructs a new WebformListBuilder object.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -116,6 +103,19 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
     $this->submissionStorage = $entity_type_manager->getStorage('webform_submission');
     $this->userStorage = $entity_type_manager->getStorage('user');
     $this->roleStorage = $entity_type_manager->getStorage('user_role');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+    return new static(
+      $entity_type,
+      $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('request_stack'),
+      $container->get('current_user'),
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
@@ -309,7 +309,7 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
 
       if ($entity->access('update')) {
         $row['status']['data'] = $entity->toLink($status, 'settings-form', ['query' => $this->getDestinationArray()])->toRenderable() + [
-          '#attributes' => ['aria-label' => $aria_label]
+          '#attributes' => ['aria-label' => $aria_label],
         ];
       }
       else {
@@ -338,7 +338,7 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
           '#type' => 'link',
           '#title' => $result_total,
           '#attributes' => [
-            'aria-label' => $this->formatPlural($result_total, '@count result for @label', '@count results for @label', ['@label' => $entity->label()])
+            'aria-label' => $this->formatPlural($result_total, '@count result for @label', '@count results for @label', ['@label' => $entity->label()]),
           ],
           '#url' => $entity->toUrl('results-submissions'),
           '#suffix' => ($entity->isResultsDisabled() ? ' ' . $this->t('(Disabled)') : ''),
@@ -592,7 +592,6 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
     $account = $this->currentUser;
     return ($account->hasPermission('administer webform') || $account->hasPermission('edit any webform') || $account->hasPermission('view any webform submission'));
   }
-
 
   /**
    * {@inheritdoc}

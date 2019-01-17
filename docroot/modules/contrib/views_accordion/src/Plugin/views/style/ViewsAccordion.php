@@ -38,6 +38,7 @@ class ViewsAccordion extends StylePluginBase {
     $options['collapsible'] = ['default' => 0];
     $options['row-start-open'] = ['default' => 0];
     $options['animated'] = ['default' => 'slide'];
+    $options['animation_time'] = ['default' => 300];
     $options['heightStyle'] = ['default' => 'auto'];
     $options['event'] = ['default' => 'click'];
     $options['disableifone'] = ['default' => 0];
@@ -159,7 +160,7 @@ class ViewsAccordion extends StylePluginBase {
     $form['animation_time'] = [
       '#type' => 'number',
       '#title' => $this->t('Animation time'),
-      '#default_value' => empty($this->options['animation_time']) ? 300 : $this->options['animation_time'],
+      '#default_value' => $this->options['animation_time'],
       '#min' => 0,
       '#step' => 1,
       '#description' => $this->t('The animation duration in milliseconds'),
