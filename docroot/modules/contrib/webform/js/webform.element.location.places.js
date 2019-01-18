@@ -14,17 +14,17 @@
   Drupal.webform.locationPlaces.options = Drupal.webform.locationPlaces.options || {};
 
   var mapping = {
-    'lat': 'lat',
-    'lng':'lng',
-    'name': 'name',
-    'postcode': 'postcode',
-    'locality': 'locality',
-    'city': 'city',
-    'administrative': 'administrative',
-    'country': 'country',
-    'countryCode': 'country_code',
-    'county': 'county',
-    'suburb': 'suburb'
+    lat: 'lat',
+    lng: 'lng',
+    name: 'name',
+    postcode: 'postcode',
+    locality: 'locality',
+    city: 'city',
+    administrative: 'administrative',
+    country: 'country',
+    countryCode: 'country_code',
+    county: 'county',
+    suburb: 'suburb'
   };
 
   /**
@@ -41,11 +41,10 @@
       $(context).find('.js-webform-type-webform-location-places').once('webform-location-places').each(function () {
         var $element = $(this);
         var $input = $element.find('.webform-location-places');
-        var name = $input.attr('name');
 
         // Prevent the 'Enter' key from submitting the form.
-        $input.keydown(function(event){
-          if(event.keyCode === 13) {
+        $input.keydown(function (event) {
+          if (event.keyCode === 13) {
             event.preventDefault();
           }
         });
@@ -67,16 +66,16 @@
         // Disable autocomplete.
         // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
         var isChrome = /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor);
-        $input.attr('autocomplete', (isChrome) ? 'disabled' : 'false');
+        $input.attr('autocomplete', (isChrome) ? 'off' : 'false');
 
         // Sync values on change and clear events.
-        placesAutocomplete.on('change', function(e) {
+        placesAutocomplete.on('change', function (e) {
           $.each(mapping, function (source, destination) {
             var value = (source === 'lat' || source === 'lng' ? e.suggestion.latlng[source] : e.suggestion[source]) || '';
             setValue(destination, value);
           });
         });
-        placesAutocomplete.on('clear', function(e) {
+        placesAutocomplete.on('clear', function (e) {
           $.each(mapping, function (source, destination) {
             setValue(destination, '');
           });

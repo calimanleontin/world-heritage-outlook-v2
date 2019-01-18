@@ -646,6 +646,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .toolbar-icon-iucn-who-core-administration-dashboard:before {
   background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);
 }
+.feed-icons {
+  margin: 10px 0;
+}
 @media all and (min-width: 851px) {
   .sidebar {
     float: left;

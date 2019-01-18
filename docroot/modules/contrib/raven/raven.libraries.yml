@@ -1,17 +1,29 @@
 raven:
-  version: 2.x
+  version: '2.10'
   js:
-    js/raven.js: {}
+    js/raven.js: {  }
   dependencies:
-    - raven/raven-js
+    - raven/sentry-browser
     - core/drupalSettings
-
-raven-js:
-  remote: https://github.com/getsentry/raven-js
-  version: 3.x
+sentry-browser:
+  remote: 'https://github.com/getsentry/sentry-javascript'
+  version: 4.5.0
   license:
-    name: BSD-2-Clause
-    url: https://github.com/getsentry/raven-js/blob/master/LICENSE
+    name: BSD-3-Clause
+    url: 'https://github.com/getsentry/sentry-javascript/blob/master/LICENSE'
     gpl-compatible: true
   js:
-    js/raven-js/raven.min.js: { minified: true }
+    js/sentry-browser/bundle.min.js:
+      minified: true
+polyfill-promise:
+  remote: 'https://github.com/Financial-Times/polyfill-library'
+  version: 3.27.0
+  license:
+    gpl-compatible: true
+    name: MIT
+    url: 'https://github.com/Financial-Times/polyfill-library/blob/master/LICENSE.md'
+  header: true
+  js:
+    'https://cdn.polyfill.io/v3/polyfill.min.js?features=Promise':
+      minified: true
+      type: external

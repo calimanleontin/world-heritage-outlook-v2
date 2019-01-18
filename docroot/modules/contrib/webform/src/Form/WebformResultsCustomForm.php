@@ -157,8 +157,6 @@ class WebformResultsCustomForm extends FormBase {
         '100' => '100',
         '200' => '200',
         '500' => '500',
-        '1000' => '1000',
-        '0' => $this->t('All'),
       ],
       '#default_value' => ($limit !== NULL) ? $limit : 20,
     ];
@@ -216,8 +214,8 @@ class WebformResultsCustomForm extends FormBase {
     // Get link types.
     // @see entity.webform_submission.* route names.
     $link_type_options = [
-      'canonical' => t('View'),
-      'table' => t('Table'),
+      'canonical' => $this->t('View'),
+      'table' => $this->t('Table'),
     ];
     $form['submission']['link_type'] = [
       '#type' => 'select',

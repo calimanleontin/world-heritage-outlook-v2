@@ -1,5 +1,0 @@
-raven.admin:
-  title: 'Raven'
-  parent: system.admin_config_development
-  description: 'Configure Raven settings.'
-  route_name: raven.admin
