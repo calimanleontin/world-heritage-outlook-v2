@@ -203,7 +203,17 @@ class AssessmentWorkflow {
     $currentState = !empty($revision->field_state->value)
       ? $revision->field_state->value
       : self::STATUS_NEW;
-    $previousStateKey = array_search($currentState, $workflow) - 1;
+
+    if (in_array($currentState, [self::STATUS_FINISHED_REVIEWING, self::STATUS_UNDER_COMPARISON])) {
+      // Except the default revisions, there are multiple revisions with
+      // "Under review" and "Finished reviewing" status (one for each reviewer),
+      // so we compare the "Finished reviewing" and "Under comparison" revisions
+      // with the only "Ready for review" one.
+      $previousStateKey = array_search(self::STATUS_READY_FOR_REVIEW, $workflow);
+    }
+    else {
+      $previousStateKey = array_search($currentState, $workflow) - 1;
+    }
     $previousState = !empty($workflow[$previousStateKey]) ? $workflow[$previousStateKey] : NULL;
     return !empty($previousState) ? $this->getRevisionByState($revision, $previousState) : NULL;
   }
