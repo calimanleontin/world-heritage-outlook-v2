@@ -179,6 +179,36 @@ class AssessmentWorkflow {
   }
 
   /**
+   * Gets the previous revision from the workflow - the revision from witch the
+   * actual one started.
+   *
+   * @param \Drupal\node\NodeInterface $revision
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  public function getPreviousWorkflowRevision(NodeInterface $revision) {
+    $workflow = [
+      self::STATUS_CREATION,
+      self::STATUS_NEW,
+      self::STATUS_UNDER_EVALUATION,
+      self::STATUS_UNDER_ASSESSMENT,
+      self::STATUS_READY_FOR_REVIEW,
+      self::STATUS_UNDER_REVIEW,
+      self::STATUS_FINISHED_REVIEWING,
+      self::STATUS_UNDER_COMPARISON,
+      self::STATUS_REVIEWING_REFERENCES,
+      self::STATUS_APPROVED,
+      self::STATUS_PUBLISHED,
+    ];
+    $currentState = !empty($revision->field_state->value)
+      ? $revision->field_state->value
+      : self::STATUS_NEW;
+    $previousStateKey = array_search($currentState, $workflow) - 1;
+    $previousState = !empty($workflow[$previousStateKey]) ? $workflow[$previousStateKey] : NULL;
+    return !empty($previousState) ? $this->getRevisionByState($revision, $previousState) : NULL;
+  }
+
+  /**
    * All the functions that need to be called when an assessment is saved.
    *
    * @param \Drupal\node\NodeInterface $node
@@ -294,7 +324,7 @@ class AssessmentWorkflow {
     // When an assessor finishes, get the diff and save it.
     if ($state == self::STATUS_READY_FOR_REVIEW && $original_state == self::STATUS_UNDER_ASSESSMENT) {
       $under_evaluation_revision = self::getRevisionByState($node, self::STATUS_UNDER_EVALUATION);
-      $this->appendDiffToFieldSettings($node, $under_evaluation_revision->getRevisionId(), $node->getRevisionId());
+      $this->appendDiffToFieldSettings($node, $under_evaluation_revision->getRevisionId(), $original->getRevisionId());
     }
 
     // After leaving the ready for review state, we no longer need the diff.
@@ -662,8 +692,7 @@ class AssessmentWorkflow {
    *   A revision or null.
    */
   public function getRevisionByState(NodeInterface $node, $state) {
-    $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
-    $assessment_revisions_ids = array_reverse($assessment_revisions_ids);
+    $assessment_revisions_ids = array_reverse($this->nodeStorage->revisionIds($node));
     $reviewers = $this->getReviewersArray($node);
     foreach ($assessment_revisions_ids as $rid) {
       /** @var \Drupal\node\Entity\Node $node_revision */

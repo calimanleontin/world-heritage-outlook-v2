@@ -115,22 +115,24 @@ class NodeSiteAssessmentStateChangeForm {
     }
   }
 
+  /**
+   * Checks if any references were added by the user to the current revision.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @return bool
+   */
   public static function assessmentHasNewReferences(NodeInterface $node) {
-    $old_assessment = \Drupal::service('iucn_assessment.workflow')->getRevisionByState($node, AssessmentWorkflow::STATUS_NEW);
-    $old_references = $old_assessment->field_as_references_p->getValue();
-    $new_references = $node->field_as_references_p->getValue();
-    if (empty($new_references)) {
-      return FALSE;
-    }
-    else {
-      $old_references = !empty($old_references) ? array_column($old_references, 'target_id') : [];
-      $new_references = array_column($new_references, 'target_id');
-      $added_references = array_diff($new_references, $old_references);
-      if (empty($added_references)) {
-        return FALSE;
-      }
-    }
-    return TRUE;
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+    $originalRevision = $workflowService->getPreviousWorkflowRevision($node);
+    $originalValue = !empty($originalRevision->field_as_references_p)
+      ? array_column($originalRevision->field_as_references_p->getValue(), 'target_id')
+      : [];
+    $newValue = !empty($node->field_as_references_p)
+      ? array_column($node->field_as_references_p->getValue(), 'target_id')
+      : [];
+    return !empty(array_diff($newValue, $originalValue));
   }
 
   public static function addStatusMessage(&$form, $message, $type = 'warning') {
