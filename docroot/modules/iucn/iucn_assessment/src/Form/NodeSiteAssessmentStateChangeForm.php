@@ -6,9 +6,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\role_hierarchy\RoleHierarchyHelper;
 use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\workflow\Entity\WorkflowTransition;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -25,44 +27,18 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     $currentUser = \Drupal::currentUser();
 
-    $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
-    $validation_error = FALSE;
-    foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
-      $tab_has_errors = FALSE;
-      if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
-        continue;
-      }
-      if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
-        if ($fieldSettings->getType() == 'entity_reference_revisions') {
-          foreach ($node->{$fieldName} as &$value) {
-            $target = $value->getValue();
-            $paragraph = Paragraph::load($target['target_id']);
-            $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
-            foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
-              if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $tab_has_errors = $validation_error = TRUE;
-                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in "@label" table. Please fill it.', [
-                  '@field' => $paragraphFieldSettings->getLabel(),
-                  '@label' => $fieldSettings->getLabel(),
-                ]), 'error');
-              }
-            }
-            // Show errors only in 1 paragraph row.
-            if (!empty($tab_has_errors)) {
-              break;
-            }
-          }
-        }
-      }
-      else {
-        $validation_error = TRUE;
-        self::addStatusMessage($form, t('<b>@label</b> field is required. Please fill it.', ['@label' => $fieldSettings->getLabel()]), 'error');
+    self::validateNode($form, $node);
+    self::addStateChangeWarning($form, $node, $currentUser);
+    self::hideUnnecessaryFields($form);
+
+    // We want to replace the core submitForm method so the node won't get saved
+    // twice.
+    $form['#submit'] = [[self::class, 'submitForm']];
+    foreach ($form['actions'] as $key => &$action) {
+      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
+        $action['#submit'] = [[self::class, 'submitForm']];
       }
     }
-
-    self::addStateChangeWarning($form, $node, $currentUser);
-
-    self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
     // Hide state change scheduling.
@@ -104,7 +80,43 @@ class NodeSiteAssessmentStateChangeForm {
 
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
+  }
 
+  public static function validateNode($form, NodeInterface $node) {
+    $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    $validation_error = FALSE;
+    foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
+      $tab_has_errors = FALSE;
+      if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
+        continue;
+      }
+      if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
+        if ($fieldSettings->getType() == 'entity_reference_revisions') {
+          foreach ($node->{$fieldName} as &$value) {
+            $target = $value->getValue();
+            $paragraph = Paragraph::load($target['target_id']);
+            $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
+            foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
+              if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
+                $tab_has_errors = $validation_error = TRUE;
+                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in "@label" table. Please fill it.', [
+                  '@field' => $paragraphFieldSettings->getLabel(),
+                  '@label' => $fieldSettings->getLabel(),
+                ]), 'error');
+              }
+            }
+            // Show errors only in 1 paragraph row.
+            if (!empty($tab_has_errors)) {
+              break;
+            }
+          }
+        }
+      }
+      else {
+        $validation_error = TRUE;
+        self::addStatusMessage($form, t('<b>@label</b> field is required. Please fill it.', ['@label' => $fieldSettings->getLabel()]), 'error');
+      }
+    }
 
     if (!empty($validation_error)) {
       unset($form['field_coordinator']);
@@ -167,7 +179,114 @@ class NodeSiteAssessmentStateChangeForm {
         self::addStatusMessage($form, t('You will NO longer be able to edit the assessment until all reviewers finish their work.'));
       }
     }
-
   }
 
+  /**
+   * Handles /node/xxx/state_change form submit. This method replaces the core
+   * method ContentEntityForm::submitForm.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   */
+  public static function submitForm(&$form, FormStateInterface $form_state) {
+    $triggeringAction = $form_state->getTriggeringElement();
+    if (empty($triggeringAction['#workflow']['to_sid'])) {
+      return;
+    }
+
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+    /** @var \Drupal\node\NodeInterface $original */
+    $original = clone($node);
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+    $oldState = $node->field_state->value;
+    $newState = $triggeringAction['#workflow']['to_sid'];
+
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+      $node->set($field, $form_state->getValue($field));
+    }
+
+    // If we don't save the node here, it will be saved later by some hook and
+    // I don't know why. //@todo find why and remove the next 2 lines.
+    // It would be more performant if we can get rid of a node save.
+    $node->setNewRevision(FALSE);
+    $node->save();
+
+    if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      // Handle reviewers revisions.
+      $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
+        ? $workflowService->getReviewersArray($original)
+        : [];
+      $newReviewers = $workflowService->getReviewersArray($node);
+
+      $addedReviewers = array_diff($newReviewers, $originalReviewers);
+      $removedReviewers = array_diff($originalReviewers, $newReviewers);
+
+      if (!empty($addedReviewers)) {
+        // Create a revision for each newly added reviewer.
+        foreach ($addedReviewers as $reviewer) {
+          if (empty($workflowService->getReviewerRevision($node, $reviewer))) {
+            $message = "Revision created for reviewer {$reviewer}";
+            $workflowService->createRevision($node, $newState, $uid, $message);
+          }
+        }
+      }
+
+      if (!empty($removedReviewers)) {
+        // Delete revisions of reviewers no longer assigned on this assessment.
+        foreach ($removedReviewers as $reviewer) {
+          $workflowService->deleteReviewerRevisions($node, $reviewer);
+        }
+      }
+
+      if (empty($workflowService->getUnfinishedReviewerRevisions($node))) {
+        // When all reviewers finished their work, we send the assessment back
+        // to the coordinator.
+        $newState = AssessmentWorkflow::STATUS_FINISHED_REVIEWING;
+      }
+    }
+
+    if ($oldState == $newState) {
+      // The state hasn't changed. No further actions needed.
+      return;
+    }
+
+    $default = $node->isDefaultRevision();
+    $workflowService->clearKeyFromFieldSettings($node, 'diff');
+
+    switch ($oldState . '>' . $newState) {
+      case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
+        $underEvaluationRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+        $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
+        break;
+
+      case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        $defaultUnderReviewRevision = Node::load($node->id());
+        $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+        // Save the differences on the revision "under review" revision.
+        $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
+        $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
+        $defaultUnderReviewRevision->save();
+
+        if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
+          // If all other reviewers finished their work, send the assessment
+          // back to the coordinator.
+          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} => {$newState}", TRUE);
+        }
+        break;
+
+      case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
+        $default = FALSE;
+        break;
+    }
+
+    $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+  }
 }
