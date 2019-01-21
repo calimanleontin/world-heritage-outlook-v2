@@ -339,7 +339,8 @@ class AssessmentWorkflow {
 
     // After leaving the ready for review state, we no longer need the diff.
     if ($state != $original_state && $original_state == self::STATUS_READY_FOR_REVIEW) {
-      $this->clearKeyFromFieldSettings($node, 'diff', FALSE);
+      $this->clearKeyFromFieldSettings($node, 'diff');
+      $node->save();
     }
 
     // Check if the state was changed.
@@ -477,9 +478,7 @@ class AssessmentWorkflow {
     $new_revision->setRevisionCreationTime(time());
     $new_revision->setRevisionLogMessage($message);
     $new_revision->setRevisionUserId($uid);
-    if (empty($is_published)) {
-      $new_revision->setPublished(FALSE);
-    }
+    $new_revision->setPublished(FALSE);
     $this->forceAssessmentState($new_revision, $state, FALSE);
     $new_revision->save();
   }
@@ -786,19 +785,14 @@ class AssessmentWorkflow {
    *   The assessment.
    * @param string $key
    *   The key to be deleted.
-   * @param bool $save
-   *   Save the node or not.
    */
-  public function clearKeyFromFieldSettings(NodeInterface $node, $key, $save = TRUE) {
+  public function clearKeyFromFieldSettings(NodeInterface $node, $key) {
     $settings = $node->field_settings->value;
     $settings = json_decode($settings, TRUE);
     if (!empty($settings[$key])) {
       unset($settings[$key]);
     }
     $node->field_settings->value = json_encode($settings);
-    if ($save) {
-      $node->save();
-    }
   }
 
   /**
