@@ -273,6 +273,7 @@ class NodeSiteAssessmentStateChangeForm {
         // Save the differences on the revision "under review" revision.
         $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
         $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
+        $defaultUnderReviewRevision->setNewRevision(FALSE);
         $defaultUnderReviewRevision->save();
 
         if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
@@ -287,6 +288,9 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+    $newRevision = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+    $nodeForm->setEntity($newRevision);
+    $form_state->setFormObject($nodeForm);
+    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $newRevision->getTitle()]));
   }
 }

@@ -388,6 +388,7 @@ class AssessmentWorkflow {
     $new_revision->setPublished(FALSE);
     $this->forceAssessmentState($new_revision, $state, FALSE);
     $new_revision->save();
+    return $new_revision;
   }
 
   /**
