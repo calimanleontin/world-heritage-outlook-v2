@@ -79,6 +79,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
         $initialValue = $initialRevision->get($fieldName)->getValue();
         $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
+        unset($renderedInitialValue['#title']);
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
         $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldType, $fieldName, $initialValue);
       }
