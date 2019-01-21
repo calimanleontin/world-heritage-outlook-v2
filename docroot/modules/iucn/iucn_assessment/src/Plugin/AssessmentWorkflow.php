@@ -225,23 +225,9 @@ class AssessmentWorkflow {
    *   The assessment.
    */
   public function assessmentPreSave(NodeInterface $node) {
-    // Ignore new assessments.
     if ($node->isNew() || $this->assessmentHasNoState($node)) {
-      if (empty($node->field_as_protection->getValue())) {
-        $terms = $this->termStorage->loadByProperties([
-          'vid' => 'assessment_protection_topic',
-        ]);
-        $protectionParagraphs = [];
-        foreach ($terms as $term) {
-          $paragraph = Paragraph::create([
-            'type' => 'as_site_protection',
-            'field_as_protection_topic' => [$term->id()],
-          ]);
-          $paragraph->save();
-          $protectionParagraphs[] = $paragraph;
-        }
-        $node->set('field_as_protection', $protectionParagraphs);
-      }
+      // Ignore new assessments.
+      $this->createSiteProtectionParagraphs($node);
       $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
     }
@@ -830,6 +816,33 @@ class AssessmentWorkflow {
 
     $node->field_coordinator->target_id = $current_user->id();
     $this->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $execute);
+  }
+
+  /**
+   * Create a site_protection paragraph for each existing term in
+   * "assessment_protection_topic" vocabulary if the node field field_as_protection
+   * is empty.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createSiteProtectionParagraphs(NodeInterface $node) {
+    if (empty($node->field_as_protection->getValue())) {
+      $terms = $this->termStorage->loadByProperties([
+        'vid' => 'assessment_protection_topic',
+      ]);
+      $protectionParagraphs = [];
+      foreach ($terms as $term) {
+        $paragraph = Paragraph::create([
+          'type' => 'as_site_protection',
+          'field_as_protection_topic' => [$term->id()],
+        ]);
+        $paragraph->save();
+        $protectionParagraphs[] = $paragraph;
+      }
+      $node->set('field_as_protection', $protectionParagraphs);
+    }
   }
 
 }
