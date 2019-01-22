@@ -9,52 +9,96 @@ use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
-  /**
-   * @var AssessmentWorkflow;
-   */
-  protected $assessmentWorkflow;
-
-  /**
-   * @var EntityFormBuilderInterface;
-   */
+  /** @var \Drupal\Core\Entity\EntityFormBuilderInterface */
   protected $formBuilder;
+
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
+  protected $entityFormDisplay;
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
+  /** @var \Drupal\node\NodeInterface|null */
+  protected $nodeRevision;
+
+  /** @var \Drupal\paragraphs\ParagraphInterface */
+  protected $paragraphRevision;
+
+  /** @var string|null  */
+  protected $field;
+
+  /** @var string|null  */
+  protected $displayMode;
+
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
+  protected $nodeFormDisplay;
+
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, EntityFormBuilderInterface $entityFormBuilder = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+    $this->setEntityTypeManager($entityTypeManager);
+    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
+    $this->formBuilder = $entityFormBuilder;
+    $this->workflowService = $assessmentWorkflow;
+
+    $routeMatch = $this->getRouteMatch();
+    $this->field = $routeMatch->getParameter('field');
+    $this->displayMode = $routeMatch->getParameter('display_mode');
+    $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
+    $this->nodeRevision = $routeMatch->getParameter('node_revision');
+
+//    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
+//    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
+//      // Remove all other fields except the selected one.
+//      if ($name != $this->field) {
+//        $this->nodeFormDisplay->removeComponent($name);
+//      }
+//    }
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity.repository'),
+      $container->get('entity_type.bundle.info'),
+      $container->get('datetime.time'),
+      $container->get('entity_type.manager'),
+      $container->get('entity.form_builder'),
+      $container->get('iucn_assessment.workflow')
+    );
+  }
 
   public function buildForm(array $form, FormStateInterface $form_state) {
     $paragraph_form = parent::buildForm($form, $form_state);
     iucn_assessment_form_alter($paragraph_form, $form_state, self::getFormId());
     $paragraph_form['#processed'] = TRUE;
-    $this->assessmentWorkflow = \Drupal::service('iucn_assessment.workflow');
-    $this->formBuilder = \Drupal::service('entity.form_builder');
 
-    $field = $this->getRouteMatch()->getParameter('field');
-    /** @var ParagraphInterface $paragraph_revision */
-    $paragraph_revision = $this->getRouteMatch()->getParameter('paragraph_revision');
-
-    /** @var NodeInterface $parent_entity_revision */
-    $parent_entity_revision = $this->getRouteMatch()->getParameter('node_revision');
-    $settings = json_decode($parent_entity_revision->field_settings->value, TRUE);
-    if (!empty($settings['diff']) && ($firstKey = key($settings['diff'])) && !empty($settings['diff'][$firstKey]['node'][$parent_entity_revision->id()]['initial_revision_id'])) {
-      $form_revision = $this->assessmentWorkflow->getAssessmentRevision($settings['diff'][$firstKey]['node'][$parent_entity_revision->id()]['initial_revision_id']);
+    $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
+    if (!empty($settings['diff']) && ($firstKey = key($settings['diff'])) && !empty($settings['diff'][$firstKey]['node'][$this->nodeRevision->id()]['initial_revision_id'])) {
+      $form_revision = $this->workflowService->getAssessmentRevision($settings['diff'][$firstKey]['node'][$this->nodeRevision->id()]['initial_revision_id']);
     }
-    elseif ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-      $form_revision = $this->assessmentWorkflow->getRevisionByState($parent_entity_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    elseif ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      $form_revision = $this->workflowService->getRevisionByState($this->nodeRevision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     }
     else {
-      $form_revision = $parent_entity_revision;
+      $form_revision = $this->nodeRevision;
     }
 
-    foreach ($form_revision->{$field}->getValue() as $value) {
-      if (!empty($value['target_id']) && $value['target_id'] == $paragraph_revision->id()) {
-        $form_revision->{$field}->setValue([0 => $value]);
+    foreach ($form_revision->{$this->field}->getValue() as $value) {
+      if (!empty($value['target_id']) && $value['target_id'] == $this->paragraphRevision->id()) {
+        $form_revision->{$this->field}->setValue([0 => $value]);
         break;
       }
     }
 
     // Get the rendered field from the entity form.
-    $form = $this->formBuilder->getForm($form_revision, 'default')[$field];
+    $form = $this->formBuilder->getForm($form_revision, 'default')[$this->field];
     // Remove unnecessary data from the table.
     NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($form['widget'], FALSE);
     unset($form['widget']['#title']);
@@ -71,15 +115,15 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
-      if (empty($diff['paragraph'][$paragraph_revision->id()])) {
+      if (empty($diff['paragraph'][$this->paragraphRevision->id()])) {
         continue;
       }
-      $diff = $diff['paragraph'][$paragraph_revision->id()]['diff'];
+      $diff = $diff['paragraph'][$this->paragraphRevision->id()]['diff'];
       /** @var NodeInterface $assessment_revision */
-      $assessment_revision = $this->assessmentWorkflow->getAssessmentRevision($assessment_vid);
+      $assessment_revision = $this->workflowService->getAssessmentRevision($assessment_vid);
 
-      if ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        $author = $parent_entity_revision->field_assessor->entity->getDisplayName();
+      if ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+        $author = $this->nodeRevision->field_assessor->entity->getDisplayName();
       }
       else {
         $author = User::load($assessment_revision->getRevisionUserId())->getDisplayName();
@@ -91,7 +135,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
       // If the row is actually deleted, only apply a different class.
       $deleted = FALSE;
-      if (!in_array($paragraph_revision->id(), array_column($assessment_revision->get($field)->getValue(), 'target_id'))) {
+      if (!in_array($this->paragraphRevision->id(), array_column($assessment_revision->get($this->field)->getValue(), 'target_id'))) {
         $row['top']['#attributes']['class'][] = 'paragraph-deleted-row';
         $deleted = TRUE;
       }
@@ -102,13 +146,13 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         $grouped_with = $group_settings['grouped_with'];
 
         $grouped_with_fields[] = $grouped_with;
-        if ($paragraph_revision->hasField($grouped_field)) {
-          $value1 = $paragraph_revision->get($grouped_field)->view(['settings' => ['link' => 0]]);
+        if ($this->paragraphRevision->hasField($grouped_field)) {
+          $value1 = $this->paragraphRevision->get($grouped_field)->view(['settings' => ['link' => 0]]);
           $value1['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_field);
         }
 
-        if ($paragraph_revision->hasField($grouped_with)) {
-          $value2 = $paragraph_revision->get($grouped_with)->view(['settings' => ['link' => 0]]);
+        if ($this->paragraphRevision->hasField($grouped_with)) {
+          $value2 = $this->paragraphRevision->get($grouped_with)->view(['settings' => ['link' => 0]]);
           $value2['#title'] = RowParagraphsWidget::getSummaryPrefix($grouped_with);
         }
 
@@ -121,17 +165,17 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       // Alter fields that have differences.
       foreach ($diff_fields as $diff_field) {
         if (!empty($settings['diff'][$assessment_revision->getRevisionId()]['node'][$assessment_revision->id()]['initial_revision_id'])) {
-          $initial_revision = $this->assessmentWorkflow->getAssessmentRevision($settings['diff'][$assessment_revision->getRevisionId()]['node'][$assessment_revision->id()]['initial_revision_id']);
-          $data_value_0  = $initial_revision->get($field)->getValue()[$paragraph_key];
-          $data_value= $assessment_revision->get($field)->getValue()[$paragraph_key];
+          $initial_revision = $this->workflowService->getAssessmentRevision($settings['diff'][$assessment_revision->getRevisionId()]['node'][$assessment_revision->id()]['initial_revision_id']);
+          $data_value_0  = $initial_revision->get($this->field)->getValue()[$paragraph_key];
+          $data_value= $assessment_revision->get($this->field)->getValue()[$paragraph_key];
         }
-        elseif ($parent_entity_revision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-          $data_value_0 = $assessment_revision->get($field)->getValue()[$paragraph_key];
-          $data_value = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
+        elseif ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+          $data_value_0 = $assessment_revision->get($this->field)->getValue()[$paragraph_key];
+          $data_value = $this->nodeRevision->get($this->field)->getValue()[$paragraph_key];
         }
         else {
-          $data_value_0 = $parent_entity_revision->get($field)->getValue()[$paragraph_key];
-          $data_value = $assessment_revision->get($field)->getValue()[$paragraph_key];
+          $data_value_0 = $this->nodeRevision->get($this->field)->getValue()[$paragraph_key];
+          $data_value = $assessment_revision->get($this->field)->getValue()[$paragraph_key];
         }
         $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
         $data_value = [];
@@ -186,35 +230,34 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
     $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
 
-    $display_mode = \Drupal::request()->query->get('display_mode');
-    foreach (RowParagraphsWidget::getFieldComponents($paragraph_revision, $display_mode) as $field => $data) {
-      $grouped_with = !empty($grouped_fields[$field]) ? $grouped_fields[$field]['grouped_with'] : $field;
-      if (in_array($field, array_keys($paragraph_form))) {
-        if (($field == 'field_as_threats_values_bio' || $field == 'field_as_threats_values_wh')
-          && empty($paragraph_form[$field . '_select_wrapper']['#printed'])) {
-          unset($paragraph_form[$field . '_select_wrapper'][$field . '_select']['#title']);
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field . '_select_wrapper'][$field . '_select'];
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#parents'] = [$field . '_select'];
+    foreach (RowParagraphsWidget::getFieldComponents($this->paragraphRevision, $this->displayMode) as $this->field => $data) {
+      $grouped_with = !empty($grouped_fields[$this->field]) ? $grouped_fields[$this->field]['grouped_with'] : $this->field;
+      if (in_array($this->field, array_keys($paragraph_form))) {
+        if (($this->field == 'field_as_threats_values_bio' || $this->field == 'field_as_threats_values_wh')
+          && empty($paragraph_form[$this->field . '_select_wrapper']['#printed'])) {
+          unset($paragraph_form[$this->field . '_select_wrapper'][$this->field . '_select']['#title']);
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $paragraph_form[$this->field . '_select_wrapper'][$this->field . '_select'];
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#parents'] = [$this->field . '_select'];
           unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-          unset($paragraph_form[$field . '_select_wrapper']);
+          unset($paragraph_form[$this->field . '_select_wrapper']);
         }
         else {
-          if (!empty($paragraph_form[$field]['widget']['#title'])) {
-            $paragraph_form[$field]['widget']['#title_display'] = 'invisible';
+          if (!empty($paragraph_form[$this->field]['widget']['#title'])) {
+            $paragraph_form[$this->field]['widget']['#title_display'] = 'invisible';
           }
-          if (!empty($paragraph_form[$field]['widget'][0]['value']['#title'])) {
-            $paragraph_form[$field]['widget'][0]['value']['#title_display'] = 'invisible';
+          if (!empty($paragraph_form[$this->field]['widget'][0]['value']['#title'])) {
+            $paragraph_form[$this->field]['widget'][0]['value']['#title_display'] = 'invisible';
           }
           unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field] = $paragraph_form[$field];
-          if ($field != $grouped_with) {
-            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$field]['#prefix'] =
-              '<b>' . RowParagraphsWidget::getSummaryPrefix($field) . '</b>';
+          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $paragraph_form[$this->field];
+          if ($this->field != $grouped_with) {
+            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#prefix'] =
+              '<b>' . RowParagraphsWidget::getSummaryPrefix($this->field) . '</b>';
             $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
               '<b>' . RowParagraphsWidget::getSummaryPrefix($grouped_with) . '</b>';
           }
         }
-        unset($paragraph_form[$field]);
+        unset($paragraph_form[$this->field]);
       }
     }
 
