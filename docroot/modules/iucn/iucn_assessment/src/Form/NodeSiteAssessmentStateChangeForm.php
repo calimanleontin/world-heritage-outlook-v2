@@ -212,12 +212,6 @@ class NodeSiteAssessmentStateChangeForm {
       $node->set($field, $form_state->getValue($field));
     }
 
-    // If we don't save the node here, it will be saved later by some hook and
-    // I don't know why. //@todo find why and remove the next 2 lines.
-    // It would be more performant if we can get rid of a node save.
-    $node->setNewRevision(FALSE);
-    $node->save();
-
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
       // Handle reviewers revisions.
       $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
