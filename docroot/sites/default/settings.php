@@ -775,7 +775,7 @@ $settings['install_profile'] = 'minimal';
 // Assume that is always test/development env.
 $config['config_split.config_split.development']['status'] = TRUE;
 $config['config_split.config_split.live']['status'] = FALSE;
-$live_env = ['live', 'production', 'staging'];
+$live_env = ['live', 'prod', 'production'];
 if (!empty($settings['environment']) && in_array($settings['environment'], $live_env)) {
   $config['config_split.config_split.live']['status'] = TRUE;
   $config['config_split.config_split.development']['status'] = FALSE;
