@@ -1,4 +1,4 @@
-client_key: 'https://d1627989f8c040a08a69b16b5623cb03:6e3274e1f64f4dec84a25f1fee0e826d@sentry.io/209261'
+client_key: ''
 fatal_error_handler: true
 fatal_error_handler_memory: 2560
 log_levels:
@@ -14,6 +14,10 @@ stack: true
 timeout: !!float 2
 trace: false
 javascript_error_handler: false
-public_dsn: 'https://d1627989f8c040a08a69b16b5623cb03@sentry.io/209261'
+public_dsn: ''
 _core:
   default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg
+environment: ''
+release: ''
+ssl: null
+ca_cert: ''
