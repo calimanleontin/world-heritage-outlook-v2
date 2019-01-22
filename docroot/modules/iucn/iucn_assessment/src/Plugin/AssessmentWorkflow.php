@@ -274,20 +274,6 @@ class AssessmentWorkflow {
         $site->save();
       }
     }
-
-    if ($node->isDefaultRevision()
-      && $this->isNewAssessment($node)
-      && empty($node->field_coordinator->target_id)
-      && in_array('coordinator', $this->currentUser->getRoles())) {
-      // Sets the current user as a coordinator if he has the coordinator role
-      // and edits the assessment.
-      //@todo this code crashes the node save - find why and fix it
-
-//      $newState = self::STATUS_UNDER_EVALUATION;
-//      $node->set('field_coordinator', ['target_id' => $this->currentUser->id()]);
-//      $this->createRevision($node, $newState, $this->currentUser->id(), "{$oldState} => {$newState}", TRUE);
-
-    }
   }
 
   /**
