@@ -792,23 +792,26 @@ function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface 
     // When a new paragraph is added, node_save is called for parent.
     return;
   }
-  /** @var \Drupal\node\NodeInterface $parent_entity */
-  $parent_entity = $paragraph->getParentEntity();
-  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
-    // Values paragraphs have threat paragraphs as parents.
-    $parent_entity = $parent_entity->getParentEntity();
-  }
-  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
-    return;
-  }
-  if (time() - $parent_entity->getChangedTime() <= 1) {
-    // We are here because of parent node save, do we don't need to save again
-    // the node.
-    return;
-  }
 
-  $parent_entity->setChangedTime(time());
-  $parent_entity->save();
+  // @todo move the following code block to Paragraph Modal add/edit/deleteForm ajax submit.
+  // because here it gets triggered when the parent entity is saved.
+//  /** @var \Drupal\node\NodeInterface $parent_entity */
+//  $parent_entity = $paragraph->getParentEntity();
+//  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
+//    // Values paragraphs have threat paragraphs as parents.
+//    $parent_entity = $parent_entity->getParentEntity();
+//  }
+//  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
+//    return;
+//  }
+//  if (time() - $parent_entity->getChangedTime() <= 1) {
+//    // We are here because of parent node save, do we don't need to save again
+//    // the node.
+//    return;
+//  }
+//
+//  $parent_entity->setChangedTime(time());
+//  $parent_entity->save();
 }
 
 /**
