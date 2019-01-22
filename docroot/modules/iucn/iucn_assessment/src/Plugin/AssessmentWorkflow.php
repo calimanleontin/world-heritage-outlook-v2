@@ -262,7 +262,7 @@ class AssessmentWorkflow {
     }
 
     $node->setPublished($newState == self::STATUS_PUBLISHED);
-    $node->setRevisionCreationTime(time());
+    $node->setChangedTime(time());
   }
 
   public function assessmentUpdate(NodeInterface $node) {
