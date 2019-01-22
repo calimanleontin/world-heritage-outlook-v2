@@ -41,7 +41,13 @@ class DiffController extends ControllerBase {
 
     $fields = $this->entityComparison->compareRevisions($revision1, $revision2);
 
-    $diff = [];
+    $diff = [
+      'node' => [
+        $revision1->id() => [
+          'initial_revision_id' => $vid1,
+        ],
+      ],
+    ];
     foreach ($fields as $key => $field) {
       if (preg_match('/(\d+)\:(.+)\.(.+)/', $key, $matches)) {
         $this->entityComparison->processStateLine($field);
@@ -78,9 +84,8 @@ class DiffController extends ControllerBase {
 
           if ($entityType == 'node') {
             $field_group_id = $this->getFieldGroupIdForNodeField($fieldName);
-            $diff[$entityType][$entityId]['initial_revision_id'] = $vid1;
           }
-          elseif ($entityType == 'paragraph') {
+          else {
             $field_group_id = $this->getFieldGroupIdForParagraphField($entityId, $fieldName);
             $diff[$entityType][$entityId]['initial_revision_id'] = $entity->getRevisionId();
           }

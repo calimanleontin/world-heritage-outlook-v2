@@ -251,8 +251,6 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-
     // Hide these fields if there are no other biodiversity values.
     if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
@@ -287,6 +285,8 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -311,15 +311,18 @@ class NodeSiteAssessmentForm {
     $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
-  /*
-   *
-   * Store comments on node.
+  /**
+   * Store comments on node and set the current user as coordinator for NEW assessments.
    *
    * @param $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
-    $current_user = \Drupal::currentUser();
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -327,11 +330,23 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $values = $form_state->getValues();
 
+    if ($node->isDefaultRevision()
+      && $workflowService->isNewAssessment($node)
+      && empty($node->field_coordinator->target_id)
+      && in_array('coordinator', $currentUser->getRoles())) {
+      // Sets the current user as a coordinator if he has the coordinator role
+      // and edits the assessment.
+      $oldState = $node->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} => {$newState}", TRUE);
+    }
+
     $settings = json_decode($node->field_settings->value, TRUE);
     foreach ($values as $key => $value) {
       if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
         $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab][$current_user->id()] = $value;
+        $settings['comments'][$commented_tab][$currentUser->id()] = $value;
       }
     }
     $node->field_settings->setValue(json_encode($settings));

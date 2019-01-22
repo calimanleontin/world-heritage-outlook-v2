@@ -2,7 +2,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
@@ -37,6 +36,16 @@ function iucn_assessment_theme() {
     ],
     'assessment_fieldset' => [
       'render element' => 'element',
+    ],
+    'assessment_diff_copy_button' => [
+      'template' => 'assessment-diff-copy-button',
+      'variables' => [
+        'type' => NULL,
+        'key' => NULL,
+        'selector' => NULL,
+        'key2' => NULL,
+        'selector2' => NULL,
+      ],
     ],
   ];
 
@@ -198,13 +207,10 @@ function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
  * Implements hook_node_update().
  */
 function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
-  if ($node->bundle() == 'site_assessment' && !empty($node->field_as_site->entity)) {
-    $site = $node->field_as_site->entity;
-    if (!empty($site)) {
-      // Reset site assessments for this site.
-      _iucn_assessment_set_site_assessments($site);
-      $site->save();
-    }
+  if ($node->bundle() == 'site_assessment') {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $workflow_service->assessmentUpdate($node);
   }
 }
 
@@ -786,29 +792,26 @@ function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface 
     // When a new paragraph is added, node_save is called for parent.
     return;
   }
-  /** @var \Drupal\node\NodeInterface $parent_entity */
-  $parent_entity = $paragraph->getParentEntity();
-  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
-    // Values paragraphs have threat paragraphs as parents.
-    $parent_entity = $parent_entity->getParentEntity();
-  }
-  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
-    return;
-  }
-  if (time() - $parent_entity->getChangedTime() <= 1) {
-    // We are here because of parent node save, do we don't need to save again
-    // the node.
-    return;
-  }
 
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  // When a paragraph is edited and the parent node is new, change it to under evaluation
-  // and assign it's coordinator.
-  $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
-
-  $parent_entity->setChangedTime(time());
-  $parent_entity->save();
+  // @todo move the following code block to Paragraph Modal add/edit/deleteForm ajax submit.
+  // because here it gets triggered when the parent entity is saved.
+//  /** @var \Drupal\node\NodeInterface $parent_entity */
+//  $parent_entity = $paragraph->getParentEntity();
+//  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
+//    // Values paragraphs have threat paragraphs as parents.
+//    $parent_entity = $parent_entity->getParentEntity();
+//  }
+//  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
+//    return;
+//  }
+//  if (time() - $parent_entity->getChangedTime() <= 1) {
+//    // We are here because of parent node save, do we don't need to save again
+//    // the node.
+//    return;
+//  }
+//
+//  $parent_entity->setChangedTime(time());
+//  $parent_entity->save();
 }
 
 /**
