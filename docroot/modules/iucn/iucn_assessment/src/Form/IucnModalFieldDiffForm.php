@@ -76,6 +76,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
       $rowDiff = $diff['node'][$node->id()];
       if (empty($initialValue)) {
+        // All revisions have the same initial version.
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
         $initialValue = $initialRevision->get($fieldName)->getValue();
         $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
