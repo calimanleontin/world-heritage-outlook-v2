@@ -87,6 +87,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+    // @todo remove the next 2 lines
     iucn_assessment_form_alter($form, $form_state, $this->getFormId());
     $form['#processed'] = TRUE;
 
