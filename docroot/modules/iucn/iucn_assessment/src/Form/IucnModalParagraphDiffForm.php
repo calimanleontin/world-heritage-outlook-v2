@@ -7,7 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   /** @var \Drupal\Core\Entity\EntityFormBuilderInterface */
-  protected $formBuilder;
+  protected $entityFormBuilder;
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
   protected $entityFormDisplay;
@@ -28,6 +27,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   /** @var \Drupal\node\NodeInterface|null */
   protected $nodeRevision;
+
+  /** @var \Drupal\node\NodeInterface|null */
+  protected $formNodeRevision;
 
   /** @var \Drupal\paragraphs\ParagraphInterface */
   protected $paragraphRevision;
@@ -45,7 +47,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
     $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
-    $this->formBuilder = $entityFormBuilder;
+    $this->entityFormBuilder = $entityFormBuilder;
     $this->workflowService = $assessmentWorkflow;
 
     $routeMatch = $this->getRouteMatch();
@@ -53,14 +55,23 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $this->displayMode = $routeMatch->getParameter('display_mode');
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
+    $this->formNodeRevision = $this->workflowService->getPreviousWorkflowRevision($this->nodeRevision);
 
-//    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
-//    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
-//      // Remove all other fields except the selected one.
-//      if ($name != $this->field) {
-//        $this->nodeFormDisplay->removeComponent($name);
-//      }
-//    }
+    foreach ($this->formNodeRevision->{$this->field}->getValue() as $value) {
+      // Avoid loading all paragraphs for that field.
+      if (!empty($value['target_id']) && $value['target_id'] == $this->paragraphRevision->id()) {
+        $this->formNodeRevision->{$this->field}->setValue([0 => $value]);
+        break;
+      }
+    }
+
+    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
+    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
+      // Remove all other fields except the selected one.
+      if ($name != $this->field) {
+        $this->nodeFormDisplay->removeComponent($name);
+      }
+    }
   }
 
   public static function create(ContainerInterface $container) {
@@ -75,41 +86,26 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   }
 
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $paragraph_form = parent::buildForm($form, $form_state);
-    iucn_assessment_form_alter($paragraph_form, $form_state, self::getFormId());
-    $paragraph_form['#processed'] = TRUE;
+    $form = parent::buildForm($form, $form_state);
+    iucn_assessment_form_alter($form, $form_state, $this->getFormId());
+    $form['#processed'] = TRUE;
 
     $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
-    if (!empty($settings['diff']) && ($firstKey = key($settings['diff'])) && !empty($settings['diff'][$firstKey]['node'][$this->nodeRevision->id()]['initial_revision_id'])) {
-      $form_revision = $this->workflowService->getAssessmentRevision($settings['diff'][$firstKey]['node'][$this->nodeRevision->id()]['initial_revision_id']);
-    }
-    elseif ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-      $form_revision = $this->workflowService->getRevisionByState($this->nodeRevision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-    }
-    else {
-      $form_revision = $this->nodeRevision;
-    }
-
-    foreach ($form_revision->{$this->field}->getValue() as $value) {
-      if (!empty($value['target_id']) && $value['target_id'] == $this->paragraphRevision->id()) {
-        $form_revision->{$this->field}->setValue([0 => $value]);
-        break;
-      }
-    }
 
     // Get the rendered field from the entity form.
-    $form = $this->formBuilder->getForm($form_revision, 'default')[$this->field];
+    $nodeForm = $this->entityFormBuilder->getForm($this->formNodeRevision, 'default', ['form_display' => $this->nodeFormDisplay]);
+    $nodeForm = $nodeForm[$this->field];
     // Remove unnecessary data from the table.
-    NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($form['widget'], FALSE);
-    unset($form['widget']['#title']);
-    unset($form['widget']['#description']);
+    NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($nodeForm['widget'], FALSE);
+    unset($nodeForm['widget']['#title']);
+    unset($nodeForm['widget']['#description']);
 
-    $form['widget']['#hide_draggable'] = TRUE;
+    $nodeForm['widget']['#hide_draggable'] = TRUE;
     $paragraph_key = 0;
 
     // Add the author table cell.
-    $this->addAuthorCell($form['widget']['header'], 'data', t('Author'), 'author', 2, -100);
-    $this->addAuthorCell($form['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
+    $this->addAuthorCell($nodeForm['widget']['header'], 'data', t('Author'), 'author', 2, -100);
+    $this->addAuthorCell($nodeForm['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
 
     $initial_copy_value_buttons = [];
     $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
@@ -130,7 +126,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       }
 
       // Copy the initial row.
-      $row = $form['widget'][$paragraph_key];
+      $row = $nodeForm['widget'][$paragraph_key];
       $diff_fields = array_keys($diff);
 
       // If the row is actually deleted, only apply a different class.
@@ -206,7 +202,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
         unset($row['top']['summary'][$grouped_with]['data']['#markup']);
 
-        $type = $this->getDiffFieldType($paragraph_form[$diff_field]['widget']);
+        $type = $this->getDiffFieldType($form[$diff_field]['widget']);
         $copy_value_button = $this->getCopyValueButton($assessment_vid, $type, $diff_field, $data_value, $grouped_with);
         $init_button = $this->getCopyValueButton(0, $type, $diff_field, $data_value_0, $grouped_with);
         if (!in_array($diff_field, $grouped_with_fields)) {
@@ -222,51 +218,51 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       }
 
       $row['top']['summary']['author']['data']['#markup'] = $author;
-      $form['widget'][] = $row;
+      $nodeForm['widget'][] = $row;
     }
-    $form['widget']['#is_diff_form'] = TRUE;
-    $form['widget']['edit'] = $form['widget'][$paragraph_key];
+    $nodeForm['widget']['#is_diff_form'] = TRUE;
+    $nodeForm['widget']['edit'] = $nodeForm['widget'][$paragraph_key];
 
-    $form['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
-    $form['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
+    $nodeForm['widget']['edit']['top']['summary']['author']['data']['#markup'] = '<b>' . t('Final version') . '</b>';
+    $nodeForm['widget']['edit']['top']['#attributes']['class'][] = 'paragraph-diff-final';
 
     foreach (RowParagraphsWidget::getFieldComponents($this->paragraphRevision, $this->displayMode) as $this->field => $data) {
       $grouped_with = !empty($grouped_fields[$this->field]) ? $grouped_fields[$this->field]['grouped_with'] : $this->field;
-      if (in_array($this->field, array_keys($paragraph_form))) {
+      if (in_array($this->field, array_keys($form))) {
         if (($this->field == 'field_as_threats_values_bio' || $this->field == 'field_as_threats_values_wh')
-          && empty($paragraph_form[$this->field . '_select_wrapper']['#printed'])) {
-          unset($paragraph_form[$this->field . '_select_wrapper'][$this->field . '_select']['#title']);
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $paragraph_form[$this->field . '_select_wrapper'][$this->field . '_select'];
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#parents'] = [$this->field . '_select'];
-          unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-          unset($paragraph_form[$this->field . '_select_wrapper']);
+          && empty($form[$this->field . '_select_wrapper']['#printed'])) {
+          unset($form[$this->field . '_select_wrapper'][$this->field . '_select']['#title']);
+          $nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $form[$this->field . '_select_wrapper'][$this->field . '_select'];
+          $nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#parents'] = [$this->field . '_select'];
+          unset($nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
+          unset($form[$this->field . '_select_wrapper']);
         }
         else {
-          if (!empty($paragraph_form[$this->field]['widget']['#title'])) {
-            $paragraph_form[$this->field]['widget']['#title_display'] = 'invisible';
+          if (!empty($form[$this->field]['widget']['#title'])) {
+            $form[$this->field]['widget']['#title_display'] = 'invisible';
           }
-          if (!empty($paragraph_form[$this->field]['widget'][0]['value']['#title'])) {
-            $paragraph_form[$this->field]['widget'][0]['value']['#title_display'] = 'invisible';
+          if (!empty($form[$this->field]['widget'][0]['value']['#title'])) {
+            $form[$this->field]['widget'][0]['value']['#title_display'] = 'invisible';
           }
-          unset($form['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
-          $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $paragraph_form[$this->field];
+          unset($nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data']['#markup']);
+          $nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field] = $form[$this->field];
           if ($this->field != $grouped_with) {
-            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#prefix'] =
+            $nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data'][$this->field]['#prefix'] =
               '<b>' . RowParagraphsWidget::getSummaryPrefix($this->field) . '</b>';
-            $form['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
+            $nodeForm['widget']['edit']['top']['summary'][$grouped_with]['data'][$grouped_with]['#prefix'] =
               '<b>' . RowParagraphsWidget::getSummaryPrefix($grouped_with) . '</b>';
           }
         }
-        unset($paragraph_form[$this->field]);
+        unset($form[$this->field]);
       }
     }
 
-    unset($form['widget']['#element_validate']);
+    unset($nodeForm['widget']['#element_validate']);
 
-    $form['widget'][$paragraph_key]['#attributes']['class'][] = 'diff-original-row';
+    $nodeForm['widget'][$paragraph_key]['#attributes']['class'][] = 'diff-original-row';
     foreach ($initial_copy_value_buttons as $grouped_with => $button) {
-      $data = $form['widget'][$paragraph_key]['top']['summary'][$grouped_with];
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with] = [
+      $data = $nodeForm['widget'][$paragraph_key]['top']['summary'][$grouped_with];
+      $nodeForm['widget'][$paragraph_key]['top']['summary'][$grouped_with] = [
         "#type" => $data['#type'],
         "#attributes" => $data['#attributes'],
         "#id" => $data['#id'],
@@ -274,16 +270,16 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       unset($data['#type']);
       unset($data['#attributes']);
       unset($data['#id']);
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data'] = $data;
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] = '<div class="diff-wrapper">';
-      $form['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] = $button . '</div>';
+      $nodeForm['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data'] = $data;
+      $nodeForm['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#prefix'] = '<div class="diff-wrapper">';
+      $nodeForm['widget'][$paragraph_key]['top']['summary'][$grouped_with]['data']['#suffix'] = $button . '</div>';
     }
 
-    $paragraph_form['diff'] = $form;
-    $paragraph_form['diff']['#weight'] = 0;
-    unset($paragraph_form['#fieldgroups']);
+    $form['diff'] = $nodeForm;
+    $form['diff']['#weight'] = 0;
+    unset($form['#fieldgroups']);
 
-    return $paragraph_form;
+    return $form;
   }
 
 }
