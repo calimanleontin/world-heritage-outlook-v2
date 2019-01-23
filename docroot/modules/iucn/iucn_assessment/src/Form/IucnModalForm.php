@@ -37,7 +37,7 @@ abstract class IucnModalForm extends ContentEntityForm {
    */
   protected $fieldWrapperId;
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->entityFormBuilder = $entity_form_builder;
 
