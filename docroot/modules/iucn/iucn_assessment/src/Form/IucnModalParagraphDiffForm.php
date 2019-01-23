@@ -43,11 +43,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
   protected $nodeFormDisplay;
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, EntityFormBuilderInterface $entityFormBuilder = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
-    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entityFormBuilder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entityFormBuilder);
     $this->setEntityTypeManager($entityTypeManager);
     $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
-    $this->entityFormBuilder = $entityFormBuilder;
     $this->workflowService = $assessmentWorkflow;
 
     $routeMatch = $this->getRouteMatch();
@@ -79,8 +78,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $container->get('entity.repository'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('entity_type.manager'),
       $container->get('entity.form_builder'),
+      $container->get('entity_type.manager'),
       $container->get('iucn_assessment.workflow')
     );
   }
