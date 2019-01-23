@@ -2,15 +2,59 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityFormBuilderInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class IucnModalForm extends ContentEntityForm {
 
   use AssessmentEntityFormTrait;
+
+  /**
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $entityFormBuilder;
+
+  /**
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $nodeRevision;
+
+  /**
+   * @var string
+   */
+  protected $fieldName;
+
+  /**
+   * @var string
+   */
+  protected $fieldWrapperId;
+
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+    $this->entityFormBuilder = $entity_form_builder;
+
+    $routeMatch = $this->getRouteMatch();
+    $this->nodeRevision = $routeMatch->getParameter('node_revision');
+    $this->fieldName = $routeMatch->getParameter('field');
+    $this->fieldWrapperId = $routeMatch->getParameter('field_wrapper_id');
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity.repository'),
+      $container->get('entity_type.bundle.info'),
+      $container->get('datetime.time'),
+      $container->get('entity.form_builder')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -35,8 +79,8 @@ abstract class IucnModalForm extends ContentEntityForm {
       'disable-refocus' => TRUE,
     ];
 
-    self::buildCancelButton($form);
-    self::hideUnnecessaryFields($form);
+    $this->buildCancelButton($form);
+    $this->hideUnnecessaryFields($form);
 
     return $form;
   }
@@ -45,30 +89,10 @@ abstract class IucnModalForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function ajaxSave(array $form, FormStateInterface $form_state) {
-    return self::assessmentAjaxSave($form, $form_state);
-  }
+    // Update parent node change date.
+    $this->nodeRevision->setChangedTime(time());
+    $this->nodeRevision->save();
 
-  public static function buildCancelButton(&$form) {
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#value' => t('Cancel'),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'modal-cancel-button',
-        ],
-      ],
-      '#ajax' => [
-        'callback' => [self::class, 'closeModalForm'],
-        'event' => 'click',
-      ],
-      '#limit_validation_errors' => [],
-      '#submit' => [],
-      '#weight' => 10,
-    ];
-  }
-
-  public static function assessmentAjaxSave($form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
 
     // When errors occur during form validation, show them to the user.
@@ -82,20 +106,16 @@ abstract class IucnModalForm extends ContentEntityForm {
     else {
       // Get all necessary data to be able to correctly update the correct
       // field on the parent node.
-      $route_match = \Drupal::routeMatch();
       $temporary_data = $form_state->getTemporary();
       $parent_entity_revision = isset($temporary_data['node_revision']) ?
         $temporary_data['node_revision'] :
-        $route_match->getParameter('node_revision');
-      $field_name = $route_match->getParameter('field');
-      $field_wrapper_id = $route_match->getParameter('field_wrapper_id');
+        $this->nodeRevision;
 
       // Refresh the paragraphs field.
       $response->addCommand(
         new HtmlCommand(
-          $field_wrapper_id,
-          \Drupal::service('entity.form_builder')
-            ->getForm($parent_entity_revision, 'default')[$field_name]
+          $this->fieldWrapperId,
+          $this->entityFormBuilder->getForm($parent_entity_revision, 'default')[$this->fieldName]
         )
       );
 
@@ -106,7 +126,32 @@ abstract class IucnModalForm extends ContentEntityForm {
   }
 
   /**
-   * @return \Drupal\Core\Ajax\AjaxResponse
+   * Build the cancel button.
+   *
+   * @param $form
+   */
+  public function buildCancelButton(&$form) {
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => [
+        'class' => [
+          'use-ajax',
+          'modal-cancel-button',
+        ],
+      ],
+      '#ajax' => [
+        'callback' => '::closeModalForm',
+        'event' => 'click',
+      ],
+      '#limit_validation_errors' => [],
+      '#submit' => [],
+      '#weight' => 10,
+    ];
+  }
+
+  /**
+   * Ajax callback for the cancel button.
    */
   public function closeModalForm() {
     $command = new CloseModalDialogCommand();

@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 class IucnModalParagraphAddForm extends IucnModalForm {
 
@@ -11,18 +12,16 @@ class IucnModalParagraphAddForm extends IucnModalForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
-    $route_match = $this->getRouteMatch();
     $temporary_data = $form_state->getTemporary();
-    $field = $route_match->getParameter('field');
 
     $parent_entity_revision = isset($temporary_data['node_revision']) ?
       $temporary_data['node_revision'] :
-      $route_match->getParameter('node_revision');
+      $this->nodeRevision;
 
-    $this->entity->setParentEntity($parent_entity_revision, $field);
+    $this->entity->setParentEntity($parent_entity_revision, $this->fieldName);
     $this->entity->save();
 
-    $this->insertParagraph($parent_entity_revision, $field);
+    $this->insertParagraph($parent_entity_revision, $this->fieldName);
 
     $save_status = $parent_entity_revision->save();
 
@@ -55,7 +54,7 @@ class IucnModalParagraphAddForm extends IucnModalForm {
           'target_revision_id' => $paragraph->getRevisionId(),
         ]);
         foreach ($lines as $line) {
-          $newParagraph = \Drupal\paragraphs\Entity\Paragraph::create([
+          $newParagraph = Paragraph::create([
             'type' => 'as_site_reference',
             'field_reference' => $line,
           ]);
