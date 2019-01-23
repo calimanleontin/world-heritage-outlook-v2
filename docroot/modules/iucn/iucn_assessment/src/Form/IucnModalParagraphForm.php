@@ -13,7 +13,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class IucnModalForm extends ContentEntityForm {
+class IucnModalParagraphForm extends ContentEntityForm {
 
   use AssessmentEntityFormTrait;
 

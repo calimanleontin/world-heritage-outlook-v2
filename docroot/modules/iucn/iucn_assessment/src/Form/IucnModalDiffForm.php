@@ -4,7 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-abstract class IucnModalDiffForm extends IucnModalForm {
+abstract class IucnModalDiffForm extends IucnModalParagraphForm {
 
   /**
    * {@inheritdoc}

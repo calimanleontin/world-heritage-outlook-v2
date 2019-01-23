@@ -4,7 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-class IucnModalParagraphDeleteForm extends IucnModalForm {
+class IucnModalParagraphDeleteForm extends IucnModalParagraphForm {
 
   /**
    * @var \Drupal\node\NodeInterface

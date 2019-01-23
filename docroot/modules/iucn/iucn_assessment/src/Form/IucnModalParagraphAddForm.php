@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 
-class IucnModalParagraphAddForm extends IucnModalForm {
+class IucnModalParagraphAddForm extends IucnModalParagraphForm {
 
   /**
    * {@inheritdoc}
