@@ -89,10 +89,6 @@ abstract class IucnModalForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function ajaxSave(array $form, FormStateInterface $form_state) {
-    // Update parent node change date.
-    $this->nodeRevision->setChangedTime(time());
-    $this->nodeRevision->save();
-
     $response = new AjaxResponse();
 
     // When errors occur during form validation, show them to the user.
@@ -104,6 +100,10 @@ abstract class IucnModalForm extends ContentEntityForm {
       $response->addCommand(new HtmlCommand('#drupal-modal', $form));
     }
     else {
+      // Update parent node change date.
+      $this->nodeRevision->setChangedTime(time());
+      $this->nodeRevision->save();
+
       // Get all necessary data to be able to correctly update the correct
       // field on the parent node.
       $temporary_data = $form_state->getTemporary();
