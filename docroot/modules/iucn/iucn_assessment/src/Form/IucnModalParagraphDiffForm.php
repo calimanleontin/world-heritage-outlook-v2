@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Plugin\Field\FieldWidget\RowParagraphsWidget;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -21,6 +22,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
   protected $entityFormDisplay;
+
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface */
+  protected $paragraphStorage;
 
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
@@ -46,6 +50,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entityFormBuilder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entityFormBuilder);
     $this->setEntityTypeManager($entityTypeManager);
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
     $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
     $this->workflowService = $assessmentWorkflow;
 
@@ -93,7 +98,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
 
     // Get the rendered field from the entity form.
-    $nodeForm = $this->entityFormBuilder->getForm($this->formNodeRevision, 'default', ['form_display' => $this->nodeFormDisplay]);
+    $nodeForm = $this->entityFormBuilder->getForm($this->formNodeRevision, 'default', [
+      'form_display' => $this->nodeFormDisplay,
+      'entity_form_initialized' => TRUE,
+    ]);
     $nodeForm = $nodeForm[$this->field];
     // Remove unnecessary data from the table.
     NodeSiteAssessmentForm::hideParagraphsActionsFromWidget($nodeForm['widget'], FALSE);
@@ -108,7 +116,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $this->addAuthorCell($nodeForm['widget'][$paragraph_key]['top'], 'summary', t('Initial version'), 'author', 2, -100);
 
     $initial_copy_value_buttons = [];
-    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    $this->paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
     foreach ($settings['diff'] as $assessment_vid => $diff) {
       // For each revision that changed this paragraph.
       if (empty($diff['paragraph'][$this->paragraphRevision->id()])) {
@@ -173,7 +181,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           $data_value_0 = $this->nodeRevision->get($this->field)->getValue()[$paragraph_key];
           $data_value = $assessment_revision->get($this->field)->getValue()[$paragraph_key];
         }
-        $paragraph = $paragraph_storage->loadRevision($data_value['target_revision_id']);
+        $paragraph = $this->paragraphStorage->loadRevision($data_value['target_revision_id']);
         $data_value = [];
         if (!empty($paragraph->{$diff_field})) {
           $data_value = $paragraph->{$diff_field}->getValue();
@@ -187,7 +195,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           $row['top']['summary'][$grouped_with]['data']['#markup'] = $this->t('Deleted');
           continue;
         }
-        $paragraph_0 = $paragraph_storage->loadRevision($data_value_0['target_revision_id']);
+        $paragraph_0 = $this->paragraphStorage->loadRevision($data_value_0['target_revision_id']);
         $data_value_0 = [];
         if (!empty($paragraph_0->{$diff_field})) {
           $data_value_0 = $paragraph_0->{$diff_field}->getValue();
