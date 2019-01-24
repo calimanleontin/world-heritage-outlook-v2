@@ -129,6 +129,10 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
       ];
     }
 
+    unset($form[$this->field]['#title']);
+    unset($form[$this->field]['widget']['#title']);
+    unset($form[$this->field]['widget'][0]['#title']);
+    unset($form[$this->field]['widget'][0]['value']['#title']);
     $diffTable[] = [
       'author' => ['data' => ['#markup' => $this->t('Final version')]],
       'diff' => $form[$this->field],

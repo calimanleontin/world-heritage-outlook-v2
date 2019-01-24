@@ -11,7 +11,9 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+    $form['#attributes']['class'][] = 'diff-form';
     $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
+    $form['#suffix'] = '</div>';
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     return $form;
