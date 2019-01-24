@@ -2,10 +2,7 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Entity\EntityFormBuilderInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
@@ -32,34 +29,16 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   /** @var \Drupal\node\NodeInterface|null */
   protected $nodeRevision;
 
-  /** @var \Drupal\node\NodeInterface|null */
-  protected $formNodeRevision;
-
   /** @var \Drupal\paragraphs\ParagraphInterface */
   protected $paragraphRevision;
 
   /** @var string|null  */
   protected $field;
 
-  /** @var string|null  */
-  protected $displayMode;
-
-  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
-  protected $nodeFormDisplay;
-
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
   protected $paragraphFormDisplay;
 
-  /** @var array */
-  protected $parentForm;
-
-  /** @var \Drupal\node\NodeForm */
-  protected $parentFormObject;
-
-  /** @var \Drupal\Core\Form\FormState */
-  protected $parentFormState;
-
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, EntityFormBuilderInterface $entityFormBuilder = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, PrivateTempStoreFactory $temp_store_factory = NULL) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
     $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
@@ -68,36 +47,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     $routeMatch = $this->getRouteMatch();
     $this->field = $routeMatch->getParameter('field');
-    $this->displayMode = $routeMatch->getParameter('display_mode');
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
-    $this->formNodeRevision = $this->workflowService->getPreviousWorkflowRevision($this->nodeRevision);
-
-    foreach ($this->formNodeRevision->{$this->field}->getValue() as $value) {
-      // Avoid loading all paragraphs for that field.
-      if (!empty($value['target_id']) && $value['target_id'] == $this->paragraphRevision->id()) {
-        $this->formNodeRevision->{$this->field}->setValue([0 => $value]);
-        break;
-      }
-    }
-
-    // We want to render the diff forms using the form widget configured for the
-    // parent entity.
-    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
-    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
-      // Remove all other fields except the selected one.
-      if ($name != $this->field) {
-        $this->nodeFormDisplay->removeComponent($name);
-      }
-    }
-
-    $this->parentForm = ['#parents' => []];
-    $this->parentFormObject = $this->entityTypeManager->getFormObject($this->formNodeRevision->getEntityTypeId(), 'default');
-    $this->parentFormObject->setEntity($this->formNodeRevision);
-    $this->parentFormState = new FormState();
-    $this->parentFormState->setFormObject($this->parentFormObject);
-
-
 
     // We want to render the diff forms using the form widget configured for the
     // parent entity.
@@ -110,9 +61,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
       $container->get('entity_type.manager'),
-      $container->get('entity.form_builder'),
-      $container->get('iucn_assessment.workflow'),
-      $container->get('tempstore.private')
+      $container->get('iucn_assessment.workflow')
     );
   }
 
