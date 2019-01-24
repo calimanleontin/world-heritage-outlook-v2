@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalFieldDiffForm extends IucnModalDiffForm {
@@ -57,8 +56,8 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     );
   }
 
-  public function getNodeFieldDiff(NodeInterface $node, $fieldName, $fieldType) {
-    $settings = json_decode($node->field_settings->value, TRUE);
+  public function getNodeFieldDiff($fieldWidgetType) {
+    $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
     if (empty($settings['diff'])) {
       return [];
     }
@@ -70,28 +69,28 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     ];
 
     foreach ($settings['diff'] as $vid => $diff) {
-      if (empty($diff['node'][$node->id()]['diff'][$fieldName])) {
+      if (empty($diff['node'][$this->nodeRevision->id()]['diff'][$this->field])) {
         continue;
       }
 
-      $rowDiff = $diff['node'][$node->id()];
+      $rowDiff = $diff['node'][$this->nodeRevision->id()];
       $revision = $this->workflowService->getAssessmentRevision($vid);
       $fieldDiff[] = [
-        'author' => ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
-          ? $node->field_assessor->entity->getDisplayName()
+        'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
+          ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $revision->getRevisionUser()->getDisplayName(),
-        'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-        'copy' => $this->getCopyValueButton($vid, $fieldType, $fieldName, $revision->get($fieldName)->getValue()),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->field]),
+        'copy' => $this->getCopyValueButton($vid, $fieldWidgetType, $this->field, $revision->get($this->field)->getValue()),
       ];
 
       if (empty($initialValue)) {
         // All revisions have the same initial version.
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
-        $initialValue = $initialRevision->get($fieldName)->getValue();
-        $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
+        $initialValue = $initialRevision->get($this->field)->getValue();
+        $renderedInitialValue = $initialRevision->get($this->field)->view(['settings' => ['link' => 0]]);
         unset($renderedInitialValue['#title']);
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
-        $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldType, $fieldName, $initialValue);
+        $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldWidgetType, $this->field, $initialValue);
       }
     }
     return $fieldDiff;
@@ -114,10 +113,10 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
       '#attributes' => ['class' => ['field-diff-table']],
     ];
 
-    $fieldDiff = $this->getNodeFieldDiff($this->nodeRevision, $this->field, $this->getDiffFieldType($form[$this->field]['widget']));
+    $fieldDiff = $this->getNodeFieldDiff($this->getDiffFieldWidgetType($form[$this->field]['widget']));
     foreach ($fieldDiff as $diff) {
       $diffTable['#rows'][] = [
-        'author' => $this->getTableCellMarkup($diff['author'], 'author', 2, -100),
+        'author' => ['data' => ['#markup' => $diff['author']]],
         'diff' => [
           'data' => [
             '#type' => 'table',
@@ -131,7 +130,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     }
 
     $diffTable[] = [
-      'author' => $this->getTableCellMarkup($this->t('Final version'), 'author', 2, -100),
+      'author' => ['data' => ['#markup' => $this->t('Final version')]],
       'diff' => $form[$this->field],
     ];
 
