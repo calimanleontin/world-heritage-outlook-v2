@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Datetime\TimeInterface;
@@ -100,8 +101,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
       $row = [
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
-            ? $this->nodeRevision->field_assessor->entity->getDisplayName()
-            : $revision->getRevisionUser()->getDisplayName()
+          ? $this->nodeRevision->field_assessor->entity->getDisplayName()
+          : $revision->getRevisionUser()->getDisplayName()
       ];
       foreach ($this->paragraphFormDisplay->getComponents() as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
@@ -114,7 +115,6 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         ];
       }
       $paragraphDiff[] = $row;
-
 
       if (empty($initialRevision)) {
         $initialAssessmentRevision = $this->workflowService->getPreviousWorkflowRevision($assessmentRevision);
@@ -155,7 +155,6 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
       $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel();
       $finalRow[$fieldName]['input'] = $form[$fieldName];
-      unset($form[$fieldName]);
     }
 
     $paragraphDiff = $this->getParagraphDiff();
@@ -194,6 +193,33 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     $form['diff'] = $diffTable;
     return $form;
+  }
+
+  public static function alter(array &$form, FormStateInterface $form_state) {
+    // We need to move form field to the last row of the table after the form
+    // has been altered by other modules / classes (e.g. ParagraphAsSiteThreatForm::alter)
+    foreach (Element::children($form) as $field) {
+      $originalField = $field;
+      if (!preg_match('/^field\_/', $field) || empty($form[$field])) {
+        continue;
+      }
+      elseif (preg_match('/(field\_.+)\_select\_wrapper/', $field, $matches)) {
+        // See ParagraphAsSiteThreatForm::alter to understand this code block.
+        $originalField = $matches[1];
+        $form['diff']['edit'][$originalField] = $form[$field];
+        unset($form[$field]);
+        unset($form[$originalField]);
+      }
+      else {
+        $form['diff']['edit'][$field] = $form[$field];
+        unset($form[$field]);
+      }
+      unset($form['diff']['edit'][$originalField]['#title']);
+      unset($form['diff']['edit'][$originalField]["{$originalField}_select"]['#title']);
+      unset($form['diff']['edit'][$originalField]['widget']['#title']);
+      unset($form['diff']['edit'][$originalField]['widget'][0]['#title']);
+      unset($form['diff']['edit'][$originalField]['widget'][0]['value']['#title']);
+    }
   }
 
 }

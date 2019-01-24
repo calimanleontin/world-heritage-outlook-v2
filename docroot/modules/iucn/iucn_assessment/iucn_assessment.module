@@ -18,6 +18,7 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\iucn_assessment\Form\ParagraphAsSiteBenefitForm;
+use Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm;
 
 function iucn_assessment_theme() {
   return [
@@ -560,13 +561,13 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     case 'paragraph_as_site_threat_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_diff_form':
-      ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
+      ParagraphAsSiteThreatForm::alter($form, $form_state);
       break;
 
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_edit_form':
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_diff_form':
-      ParagraphAsSiteBenefitForm::alter($form, $form_state, $form_id);
+      ParagraphAsSiteBenefitForm::alter($form, $form_state);
       break;
 
     case 'paragraph_as_site_reference_iucn_modal_paragraph_add_form':
@@ -617,6 +618,12 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
         $form['actions']['submit']['#attributes']['data-disable-refocus'] = "true";
       }
       break;
+  }
+
+  if (preg_match('/modal\_paragraph\_diff\_form$/', $form_id)) {
+    // Call the alter method after all other methods above have already altered
+    // the form.
+    IucnModalParagraphDiffForm::alter($form, $form_state);
   }
 }
 
