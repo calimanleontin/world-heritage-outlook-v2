@@ -117,9 +117,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
 
       if (empty($initialRevision)) {
+        $initialAssessmentRevision = $this->workflowService->getPreviousWorkflowRevision($assessmentRevision);
         // All revisions have the same initial version.
         /** @var \Drupal\paragraphs\ParagraphInterface $initialRevision */
-        $initialRevision = $this->paragraphStorage->loadRevision($rowDiff['initial_revision_id']);
+        $initialRevision = $this->getParagraphRevisionFromParentEntity($initialAssessmentRevision);
 
         foreach ($this->paragraphFormDisplay->getComponents() as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
