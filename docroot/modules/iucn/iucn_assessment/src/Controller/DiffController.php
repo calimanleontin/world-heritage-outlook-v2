@@ -45,6 +45,7 @@ class DiffController extends ControllerBase {
       'node' => [
         $revision1->id() => [
           'initial_revision_id' => $vid1,
+          'compared_revision_id' => $vid2,
         ],
       ],
     ];

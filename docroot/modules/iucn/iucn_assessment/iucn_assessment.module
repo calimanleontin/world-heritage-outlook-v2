@@ -534,11 +534,6 @@ function iucn_assessment_views_pre_render(ViewExecutable $view) {
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Form already altered in IucnModalParagraphDiffForm.
-  if (!empty($form['#processed'])) {
-    return;
-  }
-
   switch ($form_id) {
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':

@@ -75,6 +75,15 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
       }
 
       $rowDiff = $diff['node'][$node->id()];
+      $revision = $this->workflowService->getAssessmentRevision($vid);
+      $fieldDiff[] = [
+        'author' => ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
+          ? $node->field_assessor->entity->getDisplayName()
+          : $revision->getRevisionUser()->getDisplayName(),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
+        'copy' => $this->getCopyValueButton($vid, $fieldType, $fieldName, $revision->get($fieldName)->getValue()),
+      ];
+
       if (empty($initialValue)) {
         // All revisions have the same initial version.
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
@@ -84,16 +93,6 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
         $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldType, $fieldName, $initialValue);
       }
-
-      /** @var \Drupal\node\NodeInterface $revision */
-      $revision = $this->workflowService->getAssessmentRevision($vid);
-      $fieldDiff[] = [
-        'author' => ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
-          ? $node->field_assessor->entity->getDisplayName()
-          : $revision->getRevisionUser()->getDisplayName(),
-        'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-        'copy' => $this->getCopyValueButton($vid, $fieldType, $fieldName, $revision->get($fieldName)->getValue()),
-      ];
     }
     return $fieldDiff;
   }
