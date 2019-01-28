@@ -2,10 +2,6 @@
 
   Drupal.behaviors.geofieldGoogleMap = {
     attach: function (context, settings) {
-      Drupal.geoField = Drupal.geoField || {};
-      Drupal.geoField.maps = Drupal.geoField.maps || {};
-
-
       if (drupalSettings['geofield_google_map']) {
         $(context).find('.geofield-google-map').once('geofield-processed').each(function (index, element) {
           var mapid = $(element).attr('id');
@@ -50,10 +46,10 @@
     googleMapsLanguage: function (html_language) {
       switch (html_language) {
         case 'zh-hans':
-          html_language = 'zh-CN'
+          html_language = 'zh-CN';
           break;
         case 'zh-hant':
-          html_language = 'zh-TW'
+          html_language = 'zh-TW';
           break;
       }
       return html_language;
@@ -86,7 +82,7 @@
     // Lead Google Maps library.
     loadGoogle: function (mapid, gmap_api_key, callback) {
       var self = this;
-      var html_language = $('html').attr("lang") ? $('html').attr("lang") : 'en'
+      var html_language = $('html').attr("lang") ? $('html').attr("lang") : 'en';
 
       // Add the callback.
       self.addCallback(callback);
@@ -345,7 +341,6 @@
 
           // Define the icon_image, if set.
           var icon_image = map_settings.map_marker_and_infowindow.icon_image_path.length > 0 ? map_settings.map_marker_and_infowindow.icon_image_path : null;
-
 
           if (features.setMap) {
             self.place_feature(features, icon_image, mapid);

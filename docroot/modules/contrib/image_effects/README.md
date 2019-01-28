@@ -36,8 +36,10 @@ Mask                     | Apply a mask to the image.                           
 Mirror                   | Mirror the image horizontally and/or vertically.                                             | X          | X                   |
 Opacity                  | Change overall image transparency level.                                                     | X          | IM only             |
 Resize percentage        | Resize the image by percentage of its width/height.                                          | X          | X                   |
+Scale and Smart Crop     | Similar to Scale and Crop, but preserves the portion of the image with the most entropy.     | X          | X                |
 Set canvas               | Places the source image over a colored or a transparent background of a defined size.        | X          | IM only             |
 Set transparent color    | Defines the color to be used for transparency in GIF images.                                 | X          | IM only             |
+Smart Crop               | Similar to Crop, but preserves the portion of the image with the most entropy.               | X          | X                |
 Sharpen                  | Sharpens an image (using convolution).                                                       | X          | IM only             |
 Strip metadata           | Strips all EXIF metadata from image.                                                         | X          | X                   |
 Text overlay<sup>2</sup> | Overlays text on an image, defining text font, size and positioning.                         | X          | IM only<sup>3</sup> |
@@ -126,7 +128,7 @@ of this project](https://www.drupal.org/project/issues/image_effects).
 
 This module is the Drupal 8 successor of the [ImageCache Actions](https://www.drupal.org/project/imagecache_actions) module.
 It also incorporates image effects that were part of the Drupal 7 versions of the
-[ImageMagick](https://drupal.org/project/imagemagick), [Textimage](https://drupal.org/project/textimage), [FiltersIE](https://www.drupal.org/project/filtersie)
+[ImageMagick](https://drupal.org/project/imagemagick), [Textimage](https://drupal.org/project/textimage), [FiltersIE](https://www.drupal.org/project/filtersie), [Smart Crop](https://www.drupal.org/project/smartcrop)
 and [ImageMagick Raw Effect](https://www.drupal.org/project/im_raw) modules.
 
 

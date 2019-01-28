@@ -542,6 +542,9 @@
   padding: 1em;
   box-sizing: border-box;
 }
+#drupal-modal > .diff-form {
+  padding: 0;
+}
 
 #drupal-modal .layout-node-form .layout-region {
   padding-right: 0;
@@ -566,7 +569,8 @@
 .diff-modal table.field-diff-table > tbody > tr td {
   border-bottom: 1px solid rgb(230, 228, 223);
 }
-.diff-modal table.field-diff-table > tbody > tr:last-child td:first-child {
+.diff-modal table.field-diff-table > tbody > tr:first-child > td:first-child,
+.diff-modal table.field-diff-table > tbody > tr:last-child > td:first-child {
   font-weight: bold;
 }
 

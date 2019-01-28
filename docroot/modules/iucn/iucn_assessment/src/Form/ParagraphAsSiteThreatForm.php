@@ -38,7 +38,7 @@ class ParagraphAsSiteThreatForm {
     ],
   ];
 
-  public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+  public static function alter(array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */

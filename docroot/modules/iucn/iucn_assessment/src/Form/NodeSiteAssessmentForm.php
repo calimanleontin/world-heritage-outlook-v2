@@ -251,8 +251,6 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-
     // Hide these fields if there are no other biodiversity values.
     if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
@@ -287,6 +285,8 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -311,15 +311,18 @@ class NodeSiteAssessmentForm {
     $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
-  /*
-   *
-   * Store comments on node.
+  /**
+   * Store comments on node and set the current user as coordinator for NEW assessments.
    *
    * @param $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
-    $current_user = \Drupal::currentUser();
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -327,11 +330,23 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $values = $form_state->getValues();
 
+    if ($node->isDefaultRevision()
+      && $workflowService->isNewAssessment($node)
+      && empty($node->field_coordinator->target_id)
+      && in_array('coordinator', $currentUser->getRoles())) {
+      // Sets the current user as a coordinator if he has the coordinator role
+      // and edits the assessment.
+      $oldState = $node->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} => {$newState}", TRUE);
+    }
+
     $settings = json_decode($node->field_settings->value, TRUE);
     foreach ($values as $key => $value) {
       if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
         $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab][$current_user->id()] = $value;
+        $settings['comments'][$commented_tab][$currentUser->id()] = $value;
       }
     }
     $node->field_settings->setValue(json_encode($settings));
@@ -369,45 +384,6 @@ class NodeSiteAssessmentForm {
       '#attributes' => ['class' => ['current-state']],
       '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_label]),
     ];
-  }
-
-  /**
-   * Submit callback for the state change form.
-   *
-   * Redirects the user to the assessment edit page if he can access it.
-   * Otherwise, this will redirect the user to /user.
-   *
-   * @param $form
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public static function assessmentSubmitRedirect(&$form, FormStateInterface $form_state) {
-    /** @var \Drupal\node\NodeForm $nodeForm */
-    $nodeForm = $form_state->getFormObject();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $nodeForm->getEntity();
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $tab = \Drupal::request()->query->get('tab');
-    $options = [];
-    if (!empty($tab)) {
-      $options = ['query' => ['tab' => $tab]];
-    }
-    if ($workflow_service->checkAssessmentAccess($node, 'edit')->isAllowed()) {
-      if (!$node->isDefaultRevision()) {
-        $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
-      }
-      else {
-        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
-      }
-    }
-    elseif ($workflow_service->checkAssessmentAccess($node, 'change_state')->isAllowed()) {
-      $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
-    }
-    else {
-      $form_state->setRedirect('who.user-dashboard');
-    }
   }
 
   /**
