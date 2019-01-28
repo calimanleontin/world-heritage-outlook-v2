@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -38,6 +39,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
   protected $paragraphFormDisplay;
 
+  /** @var array */
+  protected $paragraphFormComponents = [];
+
   /** @var string[] */
   protected $fieldWidgetTypes = [];
 
@@ -56,6 +60,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     // We want to render the diff forms using the form widget configured for the
     // parent entity.
     $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.default");
+    $this->paragraphFormComponents = $this->paragraphFormDisplay->getComponents();
+    uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightProperty');
   }
 
   public static function create(ContainerInterface $container) {
@@ -104,7 +110,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $revision->getRevisionUser()->getDisplayName()
       ];
-      foreach ($this->paragraphFormDisplay->getComponents() as $fieldName => $widgetSettings) {
+      foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
           $row[$fieldName] = [];
           continue;
@@ -122,7 +128,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         /** @var \Drupal\paragraphs\ParagraphInterface $initialRevision */
         $initialRevision = $this->getParagraphRevisionFromParentEntity($initialAssessmentRevision);
 
-        foreach ($this->paragraphFormDisplay->getComponents() as $fieldName => $widgetSettings) {
+        foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
           $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
           unset($renderedInitialValue['#title']);
@@ -151,7 +157,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $finalRow = [
       'author' => $this->t('Final version'),
     ];
-    foreach ($this->paragraphFormDisplay->getComponents() as $fieldName => $widgetSettings) {
+    foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
       $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel();
       $finalRow[$fieldName]['input'] = $form[$fieldName];
