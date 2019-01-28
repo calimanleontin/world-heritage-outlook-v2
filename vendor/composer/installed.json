@@ -6524,6 +6524,63 @@
         }
     },
     {
+        "name": "drupal/pet",
+        "version": "1.0.0-beta1",
+        "version_normalized": "1.0.0.0-beta1",
+        "source": {
+            "type": "git",
+            "url": "https://git.drupal.org/project/pet",
+            "reference": "8.x-1.0-beta1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/pet-8.x-1.0-beta1.zip",
+            "reference": "8.x-1.0-beta1",
+            "shasum": "6279492c0f24c1115276db644a88743d1bb448f3"
+        },
+        "require": {
+            "drupal/core": "*"
+        },
+        "type": "drupal-module",
+        "extra": {
+            "branch-alias": {
+                "dev-1.x": "1.x-dev"
+            },
+            "drupal": {
+                "version": "8.x-1.0-beta1",
+                "datestamp": "1507706645",
+                "security-coverage": {
+                    "status": "not-covered",
+                    "message": "Beta releases are not covered by Drupal security advisories."
+                }
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packages.drupal.org/8/downloads",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "Sharique",
+                "homepage": "https://www.drupal.org/user/73545"
+            },
+            {
+                "name": "ayalon",
+                "homepage": "https://www.drupal.org/user/419226"
+            },
+            {
+                "name": "dwightaspinwall",
+                "homepage": "https://www.drupal.org/user/325832"
+            }
+        ],
+        "description": "Create previewable email templates with token and rules support.",
+        "homepage": "https://www.drupal.org/project/pet",
+        "support": {
+            "source": "http://cgit.drupalcode.org/pet"
+        }
+    },
+    {
         "name": "drupal/purge",
         "version": "3.0.0-beta8",
         "version_normalized": "3.0.0.0-beta8",
@@ -7845,6 +7902,7 @@
         "require": {
             "drupal/core": "*"
         },
+        "time": "2019-01-26T15:32:39+00:00",
         "type": "drupal-module",
         "extra": {
             "branch-alias": {

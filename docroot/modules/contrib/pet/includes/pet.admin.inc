@@ -5,7 +5,7 @@
  * Contains pages for creating, editing, and deleting previewable email templates (PETs).
  */
 
-use Drupal\user\Entity\User;
+use Drupal\user\Entity\User.
 
 /**
  * Generate the PET editing form.

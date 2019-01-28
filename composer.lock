@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "309eeaa8e86c0872369f2e35a077d759",
+    "content-hash": "9cb3d42cbc78acf4fffbc9660ad3ff55",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -6278,6 +6278,61 @@
             "homepage": "https://www.drupal.org/project/pathauto",
             "support": {
                 "source": "http://cgit.drupalcode.org/pathauto"
+            }
+        },
+        {
+            "name": "drupal/pet",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/pet",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/pet-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "6279492c0f24c1115276db644a88743d1bb448f3"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1507706645",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Sharique",
+                    "homepage": "https://www.drupal.org/user/73545"
+                },
+                {
+                    "name": "ayalon",
+                    "homepage": "https://www.drupal.org/user/419226"
+                },
+                {
+                    "name": "dwightaspinwall",
+                    "homepage": "https://www.drupal.org/user/325832"
+                }
+            ],
+            "description": "Create previewable email templates with token and rules support.",
+            "homepage": "https://www.drupal.org/project/pet",
+            "support": {
+                "source": "http://cgit.drupalcode.org/pet"
             }
         },
         {
@@ -13969,6 +14024,7 @@
         "drupal/ief_table_view_mode": 10,
         "drupal/inline_entity_form": 5,
         "drupal/maxlength": 10,
+        "drupal/pet": 10,
         "drupal/purge": 10,
         "drupal/rules": 15,
         "drupal/search_api_autocomplete": 15,
