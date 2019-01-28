@@ -445,7 +445,6 @@ class NodeSiteAssessmentForm {
   }
 
   public static function buildDiffButtons(&$form, $node) {
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.field_diff';
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $diff = self::getNodeDiff($node);
     if (empty($diff)) {
