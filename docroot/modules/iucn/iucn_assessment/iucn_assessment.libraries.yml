@@ -1,8 +1,5 @@
 iucn_assessment.row_paragraph:
   version: VERSION
-  css:
-    theme:
-      css/row_paragraph_widget.css: {}
   js:
     js/row_paragraph_widget.js: {}
     js/paragraph_comments.js: {}
