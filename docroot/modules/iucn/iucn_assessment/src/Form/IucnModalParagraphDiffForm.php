@@ -33,10 +33,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   /** @var \Drupal\paragraphs\ParagraphInterface */
   protected $paragraphRevision;
 
-  /** @var string|null  */
+  /** @var string|null */
   protected $field;
 
-  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null */
   protected $paragraphFormDisplay;
 
   /** @var array */
@@ -108,7 +108,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $row = [
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
-          : $revision->getRevisionUser()->getDisplayName()
+          : $revision->getRevisionUser()->getDisplayName(),
       ];
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
@@ -117,7 +117,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         }
         $row[$fieldName] = [
           'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $revision->get($fieldName)->getValue()),
+          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $revision->get($fieldName)
+            ->getValue()),
+          'widget_type' => $this->fieldWidgetTypes[$fieldName],
         ];
       }
       $paragraphDiff[] = $row;
@@ -130,13 +132,15 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
-          $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
+          $renderedInitialValue = $initialRevision->get($fieldName)
+            ->view(['settings' => ['link' => 0]]);
           unset($renderedInitialValue['#title']);
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
             'copy' => !empty($initialValue)
               ? $this->getCopyValueButton(0, $this->fieldWidgetTypes[$fieldName], $fieldName, $initialValue)
               : NULL,
+            'widget_type' => $this->fieldWidgetTypes[$fieldName],
           ];
         }
       }
@@ -159,7 +163,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     ];
     foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
-      $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel();
+      $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
+        ->getLabel();
       $finalRow[$fieldName]['input'] = $form[$fieldName];
     }
 
@@ -175,13 +180,20 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         }
         elseif (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
+          $row[$field]['#attributes']['class'][] = 'widget-type--' . $diffData['widget_type'];
         }
         elseif (!empty($diffData['markup'])) {
           $row[$field] = [
             'data' => [
               '#type' => 'table',
               '#rows' => $diffData['markup'],
-              '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+              '#attributes' => [
+                'class' => [
+                  'relative',
+                  'diff-context-wrapper',
+                  'widget-type--' . $diffData['widget_type'],
+                ],
+              ],
             ],
           ];
         }
