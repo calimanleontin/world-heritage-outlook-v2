@@ -7,6 +7,8 @@ use Drupal\geofield_map\GeofieldMapFormElementsValidationTrait;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\search_api\Datasource\DatasourceInterface;
+use Drupal\search_api\Entity\Index;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\style\DefaultStyle;
 use Drupal\views\ViewExecutable;
@@ -265,6 +267,22 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
         return;
       }
     }
+    // Set entity info for Search API views.
+    if ($this->moduleHandler->moduleExists('search_api') && substr($base_table, 0, 17) === 'search_api_index_') {
+      $index_id = substr($base_table, 17);
+      $index = Index::load($index_id);
+      foreach ($index->getDatasources() as $datasource) {
+        if ($datasource instanceof DatasourceInterface) {
+          $this->entityType = $datasource->getEntityTypeId();
+          try {
+            $this->entityInfo = $this->entityManager->getDefinition($this->entityType);
+          }
+          catch (\Exception $e) {
+            watchdog_exception('geofield_map', $e);
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -510,7 +528,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
 
       // Hide the icon_image_path element, with prefix/suffix (as hidden would
       // hide just the textfield and not label/title and description wrappers).
-      $form['map_marker_and_infowindow']['icon_image_path']['#prefix'] = '<div id="icon-image-path" class="hidden">';
+      $form['map_marker_and_infowindow']['icon_image_path']['#prefix'] = '<div id="icon-image-path" class="visually-hidden">';
       $form['map_marker_and_infowindow']['icon_image_path']['#suffix'] = '</div>';
     }
 
