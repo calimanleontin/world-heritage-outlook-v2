@@ -61,7 +61,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     // parent entity.
     $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.default");
     $this->paragraphFormComponents = $this->paragraphFormDisplay->getComponents();
-    uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightProperty');
+    uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
   }
 
   public static function create(ContainerInterface $container) {
