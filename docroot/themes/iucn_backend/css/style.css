@@ -661,13 +661,13 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border-bottom: 1px solid #bfbfba;
 }
 .field--widget-row-entity-reference-paragraphs tbody tr {
-  background-color: #0074bd;
+  background-color: #fcfcfa;
 }
 .field--widget-row-entity-reference-paragraphs tbody tr:hover {
-  background-color: #0074bd;
+  background-color: #fcfcfa;
 }
 .field--widget-row-entity-reference-paragraphs tbody tr:focus {
-  background-color: #0074bd;
+  background-color: #fcfcfa;
 }
 .field--widget-row-entity-reference-paragraphs .details-wrapper {
   overflow-x: scroll;
@@ -712,51 +712,67 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   grid-column-end: span 3;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+  grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+  grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+  grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+  grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+  grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+  grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+  grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+  grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+  grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+  grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+  grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+  grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+  grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+  grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+  grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+  grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
@@ -852,7 +868,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   pointer-events: none;
 }
 .diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-  background: #ececec !important;
+  background: #ececec!important;
   font-size: .9em;
   text-transform: none;
 }
@@ -920,7 +936,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
 }
 .diff-modal table.field-diff-table thead tr th {
-  background: #ececec !important;
+  background: #ececec!important;
   font-size: .9em;
   text-transform: none;
 }
@@ -955,10 +971,10 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   font-weight: bold;
 }
 .diff-modal .paragraph-diff-row {
-  background-color: #0074bd !important;
+  background-color: #fcfcfa !important;
 }
 .diff-modal .paragraph-diff-row .paragraphs-actions {
-  background-color: #0074bd !important;
+  background-color: #fcfcfa !important;
 }
 .field-diff-table {
   border-collapse: separate;
@@ -980,7 +996,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 }
 .js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
   align-items: flex-start;
-  background: #0074bd;
+  background: #fcfcfa;
   border-left: 1px solid #dddddd;
   display: flex;
   flex-wrap: nowrap;
@@ -1110,14 +1126,14 @@ span.field-boolean-tick {
   font-size: 1.6rem;
 }
 .diff-context-wrapper td.diff-tick-false {
-  background-color: #0074bd;
+  background-color: #fcfcfa;
   display: block;
 }
 .diff-context-wrapper td.diff-tick-false span.diffchange {
   background-color: #ffdddd;
 }
 .diff-context-wrapper td.diff-tick-true {
-  background-color: #0074bd;
+  background-color: #fcfcfa;
   display: block;
 }
 .diff-context-wrapper td.diff-tick-true span.diffchange {
@@ -1148,7 +1164,7 @@ table.diff-context-wrapper {
   position: relative;
 }
 .field-with-diff .form-textarea-wrapper {
-  background-color: #0074bd;
+  background-color: #fcf8e3;
 }
 .field-with-diff > div > select {
   margin-right: 30px;
@@ -1157,11 +1173,11 @@ table.diff-context-wrapper {
   width: 1px;
 }
 .field-with-diff.field--type-entity-reference {
-  background-color: #0074bd;
+  background-color: #fcf8e3;
   display: table-row-group;
 }
 .field-with-diff#edit-field-as-references-wrapper {
-  background-color: #0074bd;
+  background-color: #fcf8e3;
 }
 .field-with-diff.field--type-string-long {
   display: table-row-group;

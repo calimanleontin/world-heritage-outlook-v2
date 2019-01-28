@@ -1,26 +1,14 @@
-// Color variables (appears count calculates by raw css)
-@color0: #fcfcfa; // Appears 8 times
-@color1: #ececec; // Appears 6 times
-@color2: #bfbfba; // Appears 3 times
-@color3: #ffaaaa; // Appears 2 times
-@color4: #77f177; // Appears 2 times
-@color5: #fcf8e3; // Appears 2 times
-
-
-// Height variables (appears count calculates by raw css)
-@height1: 14px; // Appears 2 times
-
 .field--widget-row-entity-reference-paragraphs {
   table {
     margin-bottom: 0;
     tbody {
       tr {
         &:first-child {
-          background: @color1;
-          border-bottom: 1px solid @color2;
+          background: #ececec;
+          border-bottom: 1px solid #bfbfba;
           &:hover {
-            background: @color1;
-            border-bottom: 1px solid @color2;
+            background: #ececec;
+            border-bottom: 1px solid #bfbfba;
           }
         }
       }
@@ -28,12 +16,12 @@
   }
   tbody {
     tr {
-      background-color: @color0;
+      background-color: #fcfcfa;
       &:hover {
-        background-color: @color0;
+        background-color: #fcfcfa;
       }
       &:focus {
-        background-color: @color0;
+        background-color: #fcfcfa;
       }
     }
   }
@@ -84,51 +72,67 @@
     grid-column-end: span 3;
   }
   .paragraph-top-col-39 {
+    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-38 {
+    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-37 {
+    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-36 {
+    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-35 {
+    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-34 {
+    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-33 {
+    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-32 {
+    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-31 {
+    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-30 {
+    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-29 {
+    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-28 {
+    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-27 {
+    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-26 {
+    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-25 {
+    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-24 {
+    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-23 {
@@ -221,14 +225,11 @@
   .paragraphs-dropdown-toggle {
     float: right;
   }
-  .paragraphs-dropdown-toggle {
-    &[disabled] {
-      opacity: .5;
-      pointer-events: none;
-    }
+  .paragraphs-dropdown-toggle[disabled] {
+    opacity: .5;
+    pointer-events: none;
   }
 }
-
 .diff-modal {
   .field--widget-row-entity-reference-paragraphs {
     table {
@@ -237,7 +238,7 @@
           &:first-child {
             td {
               .form-wrapper {
-                background: @color1!important;
+                background: #ececec!important;
                 font-size: .9em;
                 text-transform: none;
               }
@@ -314,7 +315,7 @@
     thead {
       tr {
         th {
-          background: @color1!important;
+          background: #ececec!important;
           font-size: .9em;
           text-transform: none;
         }
@@ -354,9 +355,9 @@
     }
   }
   .paragraph-diff-row {
-    background-color: @color0 !important;
+    background-color: #fcfcfa !important;
     .paragraphs-actions {
-      background-color: @color0 !important;
+      background-color: #fcfcfa !important;
     }
   }
 }
@@ -383,7 +384,7 @@
     .paragraph-summary-component.processed {
       .paragraphs-actions {
         align-items: flex-start;
-        background: @color0;
+        background: #fcfcfa;
         border-left: 1px solid #dddddd;
         display: flex;
         flex-wrap: nowrap;
@@ -404,7 +405,7 @@
     .paragraph-header {
       .paragraph-summary-component.processed {
         .paragraphs-actions {
-          border-top-color: @color2;
+          border-top-color: #bfbfba;
           justify-content: center;
           right: 0;
           text-align: center;
@@ -415,15 +416,15 @@
       overflow: auto;
     }
     .double-scrollbar-helper {
-      background: @color1;
+      background: #ececec;
       border-bottom: 1px solid rgb(230, 228, 223);
-      height: @height1;
+      height: 14px;
       overflow-y: hidden;
       overflow: auto;
       .inner {
-        background: @color1;
+        background: #ececec;
         border-bottom: 1px solid rgb(230, 228, 223);
-        height: @height1;
+        height: 14px;
         overflow-y: hidden;
       }
     }
@@ -454,15 +455,15 @@
   margin: 10px;
 }
 .paragraph-deleted-row {
-  background-color: @color3 !important;
+  background-color: #ffaaaa !important;
   .paragraphs-actions {
-    background-color: @color3 !important;
+    background-color: #ffaaaa !important;
   }
 }
 .paragraph-new-row {
-  background-color: @color4 !important;
+  background-color: #77f177 !important;
   .paragraphs-actions {
-    background-color: @color4 !important;
+    background-color: #77f177 !important;
   }
 }
 .paragraph-author {
@@ -472,9 +473,9 @@
   word-wrap: break-word;
 }
 .paragraph-diff-row {
-  background-color: @color5 !important;
+  background-color: #fcf8e3 !important;
   .paragraphs-actions {
-    background-color: @color5 !important;
+    background-color: #fcf8e3 !important;
   }
 }
 #drupal-modal {
@@ -531,14 +532,14 @@ span.field-boolean-tick {
 }
 .diff-context-wrapper {
   td.diff-tick-false {
-    background-color: @color0;
+    background-color: #fcfcfa;
     display: block;
     span.diffchange {
       background-color: #ffdddd;
     }
   }
   td.diff-tick-true {
-    background-color: @color0;
+    background-color: #fcfcfa;
     display: block;
     span.diffchange {
       background-color: #ddffdd;
