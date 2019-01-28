@@ -110,6 +110,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $parent_entity_revision = isset($temporary_data['node_revision']) ?
         $temporary_data['node_revision'] :
         $this->nodeRevision;
+      $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision->getRevisionId());
 
       // Refresh the paragraphs field.
       $response->addCommand(
