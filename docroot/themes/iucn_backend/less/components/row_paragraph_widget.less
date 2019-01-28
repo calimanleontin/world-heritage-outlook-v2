@@ -18,7 +18,7 @@
         &:first-child {
           background: @color1;
           border-bottom: 1px solid @color2;
-          hover {
+          &:hover {
             background: @color1;
             border-bottom: 1px solid @color2;
           }
@@ -44,11 +44,9 @@
     font-size: .9em;
     grid-row: 1 / span 1;
     padding: 10px 12px;
-    &:not( {
-			last-child) {
+    &:not(:last-child) {
       border-right: 1px solid rgb(230, 228, 223);
     }
-  }
   }
   .field-multiple-drag {
     border-right: 1px solid rgb(230, 228, 223);
@@ -223,11 +221,14 @@
   .paragraphs-dropdown-toggle {
     float: right;
   }
-  .paragraphs-dropdown-toggle[disabled] {
-    opacity: .5;
-    pointer-events: none;
+  .paragraphs-dropdown-toggle {
+    &[disabled] {
+      opacity: .5;
+      pointer-events: none;
+    }
   }
 }
+
 .diff-modal {
   .field--widget-row-entity-reference-paragraphs {
     table {
@@ -246,7 +247,6 @@
       }
     }
     .paragraph-top-col-23 {
-      grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
       grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
     }
     .paragraph-top-col-22 {

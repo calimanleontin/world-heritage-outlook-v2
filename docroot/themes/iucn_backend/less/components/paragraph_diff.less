@@ -1,0 +1,43 @@
+// Color variables (appears count calculates by raw css)
+@color0: #0074bd; // Appears 4 times
+
+.diff-wrapper {
+  height: 100%;
+  min-height: 42px;
+  position: relative;
+  a.diff-button {
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 2px;
+    border: 1px solid #dedede;
+    bottom: -5px;
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 12px;
+    min-width: 32px;
+    padding: 3px;
+    position: absolute;
+    right: -5px;
+    text-align: center;
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+      border-color: @color0;
+      color: @color0;
+      text-decoration: none;
+    }
+    &:active {
+      background-color: rgba(255, 255, 255, 1);
+      border-color: @color0;
+      color: @color0;
+      text-decoration: none;
+    }
+    i {
+      font-size: 1.5em;
+      margin-bottom: 3px;
+    }
+    p {
+      font-size: 0.8em;
+      margin: 0;
+    }
+  }
+}
