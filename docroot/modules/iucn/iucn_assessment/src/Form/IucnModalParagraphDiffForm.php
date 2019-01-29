@@ -169,7 +169,11 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     foreach ($paragraphDiff as $key => $diff) {
       $row = [];
-      foreach ($this->fieldWithDifferences as $field) {
+      foreach (array_merge(['author' => []], $this->paragraphFormComponents) as $field => $widgetSettings) {
+        if (!in_array($field, $this->fieldWithDifferences)) {
+          continue;
+        }
+
         if (empty($diff[$field])) {
           $row[$field] = [
             'data' => ['#markup' => ''],
