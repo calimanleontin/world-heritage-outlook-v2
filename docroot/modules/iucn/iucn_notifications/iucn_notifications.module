@@ -51,7 +51,6 @@ function iucn_notifications_node_presave(\Drupal\Core\Entity\EntityInterface $no
  */
 function iucn_notifications_mail_alter(&$message) {
   // Overrides default user module notifications
-  drupal_set_message($message['module']  . ' iucn_notifications_mail_alter => ' . $message['key']);
   if ($message['module'] == 'user') {
     // Disable original email sending.
     $message['send'] = false;
