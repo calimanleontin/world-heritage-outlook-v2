@@ -3,7 +3,6 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Ajax\InsertCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
