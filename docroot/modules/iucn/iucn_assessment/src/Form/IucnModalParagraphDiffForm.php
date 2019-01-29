@@ -77,7 +77,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $row = [
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
-          : $revision->getRevisionUser()->getDisplayName(),
+          : $assessmentRevision->getRevisionUser()->getDisplayName(),
       ];
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
