@@ -20,8 +20,6 @@ function iucn_notifications_mail($key, &$message, $params) {
  */
 function iucn_notifications_node_presave(\Drupal\Core\Entity\EntityInterface $node) {
   if ($node->bundle() == 'site_assessment') {
-    $tokens = [];
-
     $new_assessor = !empty($node->field_assessor->target_id) ? $node->field_assessor->target_id : -1;
     if (!empty($node->field_assessor->target_id)) {
       $old_node = Node::load($node->id());
@@ -29,7 +27,7 @@ function iucn_notifications_node_presave(\Drupal\Core\Entity\EntityInterface $no
       if ($old_assessor != $new_assessor) {
         $current_user = User::load($new_assessor);
         $to = $current_user->getEmail();
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to);
       }
     }
 
@@ -40,7 +38,7 @@ function iucn_notifications_node_presave(\Drupal\Core\Entity\EntityInterface $no
       if ($old_coordinator != $new_coordinator) {
         $current_user = User::load($new_coordinator);
         $to = $current_user->getEmail();
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $to);
       }
     }
   }
@@ -114,33 +112,32 @@ function iucn_notifications_entity_update(EntityInterface $entity) {
       continue;
     }
 
-    $tokens = [];
     switch ($to_sid) {
       case 'assessment_ready_for_review':
         /** email sent to the coordinators when state is "Assessment phase done" */
         $coordinator = _iucn_notifications_get_node_coordinator($entity);
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinator, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinator);
         break;
 
       case 'assessment_under_review':
         // Ready for review.
         /** emails sent to each assigned reviewer when state is "Ready for review" */
         $reviewers = _iucn_notifications_get_node_reviewers($entity);
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_REVIEW_BY_COORDINATOR, $reviewers, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_REVIEW_BY_COORDINATOR, $reviewers);
         break;
 
       case 'assessment_finished_reviewing':
         // Finished reviewing.
         /** email sent to the coordinator when state is "Review phase finished" */
         $coordinator = _iucn_notifications_get_node_coordinator($entity);
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS, $coordinator, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS, $coordinator);
         break;
 
       case 'assessment_approved':
         // Approved.
         /** email sent to administrators when state is "Ready to publish" */
         $administrators = _iucn_notifications_get_administrators();
-        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_FINAL_EDITS_BY_COORDINATOR, $administrators, ['tokens' => $tokens]);
+        \Drupal::service('iucn.notifications')->sendNotification(NotificationService::$WORKFLOW_FINAL_EDITS_BY_COORDINATOR, $administrators);
         break;
     }
   }
