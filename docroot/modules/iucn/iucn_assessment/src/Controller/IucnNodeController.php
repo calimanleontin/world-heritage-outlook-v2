@@ -4,18 +4,13 @@ namespace Drupal\iucn_assessment\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\Core\Ajax\RedirectCommand;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Form\FormState;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Controller\NodeController;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
-use Drupal\user\Entity\User;
-use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class IucnNodeController extends NodeController {
@@ -98,10 +93,24 @@ class IucnNodeController extends NodeController {
     }
     $node->save();
     $response = new AjaxResponse();
+
+    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $nodeFormDisplay */
+    $nodeFormDisplay = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load("{$node->getEntityTypeId()}.{$node->bundle()}.default");
+    foreach ($nodeFormDisplay->getComponents() as $name => $component) {
+      // Remove all other fields except the selected one.
+      if ($name != $field) {
+        $nodeFormDisplay->removeComponent($name);
+      }
+    }
+    $nodeForm = \Drupal::service('entity.form_builder')->getForm($node, 'default', [
+      'form_display' => $nodeFormDisplay,
+      'entity_form_initialized' => TRUE,
+    ]);
+
     $response->addCommand(
-      new HtmlCommand(
-        $field_wrapper_id,
-        \Drupal::service('entity.form_builder')->getForm($node, 'default')[$field]
+      new ReplaceCommand(
+        "{$field_wrapper_id} .js-form-item",
+        $nodeForm[$field]['widget']
       )
     );
     return $response;
