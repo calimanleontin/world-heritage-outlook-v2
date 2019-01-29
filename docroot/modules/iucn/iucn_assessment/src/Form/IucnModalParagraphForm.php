@@ -7,42 +7,49 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalParagraphForm extends ContentEntityForm {
 
   use AssessmentEntityFormTrait;
 
-  /**
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
+  /** @var \Drupal\Core\Form\FormBuilderInterface */
   protected $entityFormBuilder;
 
-  /**
-   * @var \Drupal\node\NodeInterface
-   */
+  /** @var \Drupal\node\NodeInterface */
   protected $nodeRevision;
 
-  /**
-   * @var string
-   */
+  /** @var \Drupal\paragraphs\ParagraphInterface */
+  protected $paragraphRevision;
+
+  /** @var string */
   protected $fieldName;
 
-  /**
-   * @var string
-   */
+  /** @var string */
   protected $fieldWrapperId;
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL) {
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
+  protected $entityFormDisplay;
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+    $this->setEntityTypeManager($entityTypeManager);
     $this->entityFormBuilder = $entity_form_builder;
+    $this->workflowService = $assessmentWorkflow;
+    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
 
     $routeMatch = $this->getRouteMatch();
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
+    $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
     $this->fieldName = $routeMatch->getParameter('field');
     $this->fieldWrapperId = $routeMatch->getParameter('field_wrapper_id');
   }
@@ -52,7 +59,9 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $container->get('entity.repository'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('entity.form_builder')
+      $container->get('entity.form_builder'),
+      $container->get('entity_type.manager'),
+      $container->get('iucn_assessment.workflow')
     );
   }
 
@@ -110,7 +119,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $parent_entity_revision = isset($temporary_data['node_revision']) ?
         $temporary_data['node_revision'] :
         $this->nodeRevision;
-      $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision->getRevisionId());
+      $parent_entity_revision = $this->workflowService->getAssessmentRevision($parent_entity_revision->getRevisionId());
 
       // Refresh the paragraphs field.
       $response->addCommand(
