@@ -9,14 +9,12 @@ use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalParagraphForm extends ContentEntityForm {
@@ -149,7 +147,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
           $nodeForm[$this->fieldName]['widget']
         )
       );
-
       $response->addCommand(new CloseModalDialogCommand());
     }
 
