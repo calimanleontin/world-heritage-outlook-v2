@@ -1171,6 +1171,9 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td table tr td {
   padding: 3px;
 }
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
+  min-height: 34px;
+}
 .diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
