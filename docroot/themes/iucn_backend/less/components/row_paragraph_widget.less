@@ -72,67 +72,51 @@
     grid-column-end: span 3;
   }
   .paragraph-top-col-39 {
-    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-38 {
-    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-37 {
-    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-36 {
-    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-35 {
-    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-34 {
-    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-33 {
-    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-32 {
-    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-31 {
-    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-30 {
-    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-29 {
-    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-28 {
-    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-27 {
-    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-26 {
-    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-25 {
-    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-24 {
-    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
     grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
   }
   .paragraph-top-col-23 {
@@ -230,6 +214,7 @@
     pointer-events: none;
   }
 }
+
 .diff-modal {
   .field--widget-row-entity-reference-paragraphs {
     table {
@@ -311,25 +296,6 @@
       grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
     }
   }
-  table.field-diff-table {
-    thead {
-      tr {
-        th {
-          background: #ececec!important;
-          font-size: .9em;
-          text-transform: none;
-        }
-      }
-    }
-  }
-  table.field-diff-table>thead>tr>th {
-    border-right: 1px solid rgb(230, 228, 223);
-    padding: 10px 12px;
-  }
-  table.field-diff-table>tbody>tr>td {
-    border-right: 1px solid rgb(230, 228, 223);
-    padding: 10px 12px;
-  }
   .chosen-container {
     width: 100% !important;
   }
@@ -337,37 +303,10 @@
     border: 1px solid grey;
     width: 300px;
   }
-  table.field-diff-table>tbody>tr {
-    &:last-child>td {
-      border-top: 3px solid black;
-      first-child {
-        font-weight: bold;
-      }
-    }
-    td {
-      border-bottom: 1px solid rgb(230, 228, 223);
-    }
-    &:first-child>td {
-      border-bottom: 3px solid black;
-      first-child {
-        font-weight: bold;
-      }
-    }
-  }
   .paragraph-diff-row {
     background-color: #fcfcfa !important;
     .paragraphs-actions {
       background-color: #fcfcfa !important;
-    }
-  }
-}
-.field-diff-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: .9em;
-  .diff-context-wrapper {
-    td {
-      padding: 0;
     }
   }
 }
@@ -419,7 +358,6 @@
       background: #ececec;
       border-bottom: 1px solid rgb(230, 228, 223);
       height: 14px;
-      overflow-y: hidden;
       overflow: auto;
       .inner {
         background: #ececec;
@@ -494,7 +432,7 @@
         position: relative;
       }
     }
-    table.field-diff-table>thead>tr>th {
+    table.diff-table>thead>tr>th {
       border-bottom: 1px solid black;
       border-top: 1px solid black;
       margin-bottom: -1px;

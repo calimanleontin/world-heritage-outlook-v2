@@ -1,0 +1,185 @@
+.diff-modal {
+  table.diff-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: .9em;
+
+    .diff-context-wrapper {
+      td {
+        padding: 0;
+      }
+    }
+
+    > thead {
+      > tr {
+        > th {
+          background: #ececec !important;
+          font-size: .9em;
+          text-transform: none;
+          border-right: 1px solid rgb(230, 228, 223);
+          padding: 10px 12px;
+
+          &:nth-child(2) {
+            padding-left: 45px;
+          }
+        }
+      }
+    }
+
+    > tbody {
+      > tr {
+        &:last-child > td {
+          border-top: 3px solid black;
+
+          &:first-child {
+            font-weight: bold;
+          }
+        }
+
+        &:first-child > td {
+          border-bottom: 3px solid black;
+
+          &:first-child {
+            font-weight: bold;
+          }
+        }
+
+        > td {
+          border-right: 1px solid rgb(230, 228, 223);
+          border-bottom: 1px solid rgb(230, 228, 223);
+          padding: 3px 5px;
+          vertical-align: top;
+          position: relative;
+
+          &.widget-type--checkboxes,
+          &.widget-type--select {
+            min-width: 150px;
+            max-width: 150px;
+          }
+
+          &.widget-type--checkbox {
+            min-width: 50px;
+            max-width: 50px;
+          }
+
+          &.widget-type--textarea {
+            min-width: 500px;
+            max-width: 500px;
+          }
+
+          &.field-name--author {
+            min-width: 100px;
+            max-width: 100px;
+          }
+
+          &.widget-type--textfield,
+          &.field-name--field_as_threats_categories,
+          &.field-name--field_as_threats_threat,
+          &.widget-type--paragraph {
+            min-width: 250px;
+            max-width: 250px;
+          }
+
+          input[type="text"],
+          textarea,
+          select {
+            width: 100%;
+          }
+
+          table {
+            tr {
+              border-bottom: none;
+              td {
+                padding: 3px;
+              }
+            }
+          }
+
+          .diff-wrapper {
+            a.diff-button {
+              background-color: rgba(255, 255, 255, .2);
+              border-radius: 2px;
+              border: 1px solid #dedede;
+              color: #333333;
+              cursor: pointer;
+              display: inline-block;
+              line-height: 12px;
+              min-width: 32px;
+              padding: 3px;
+              position: absolute;
+              right: 5px;
+              bottom: 5px;
+              text-align: center;
+              &:hover {
+                background-color: rgba(255, 255, 255, 1);
+                border-color: #0074bd;
+                color: #0074bd;
+                text-decoration: none;
+              }
+              &:active {
+                background-color: rgba(255, 255, 255, 1);
+                border-color: #0074bd;
+                color: #0074bd;
+                text-decoration: none;
+              }
+              i {
+                font-size: 1.5em;
+                margin-bottom: 3px;
+              }
+              p {
+                font-size: 0.8em;
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.field-diff-button {
+  margin: 10px 3px !important;
+  position: absolute !important;
+  right: 0;
+  top: 0;
+}
+
+.overall-row > div {
+  position: relative;
+}
+
+.field-with-diff {
+  position: relative;
+
+  .form-textarea-wrapper {
+    background-color: #fcf8e3;
+  }
+
+  > div {
+    > div {
+      padding-right: 40px !important;
+    }
+
+    > select {
+      margin-right: 30px;
+    }
+  }
+}
+
+.diff-marker {
+  width: 1px;
+}
+
+.field-with-diff.field--type-entity-reference {
+  background-color: #fcf8e3;
+  display: tabl e-row-group;
+}
+
+.field-with-diff#edit-field-as-references-wrapper {
+  background-color: #fcf8e3;
+}
+
+.field-with-diff.field--type-string-long {
+  display: table-row-group;
+}

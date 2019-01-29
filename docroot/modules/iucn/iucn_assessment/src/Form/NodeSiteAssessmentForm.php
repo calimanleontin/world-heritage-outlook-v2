@@ -507,7 +507,7 @@ class NodeSiteAssessmentForm {
           'paragraphs-icon-button',
           'paragraphs-icon-button-compare',
           'use-ajax',
-          'field-diff',
+          'field-diff-button',
         ],
         'title' => t('See differences'),
       ],

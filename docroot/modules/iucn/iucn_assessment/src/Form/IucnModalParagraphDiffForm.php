@@ -120,7 +120,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#header' => ['author' => $this->t('Author')],
       '#rows' => [],
       '#weight' => -10,
-      '#attributes' => ['class' => ['field-diff-table']],
+      '#attributes' => ['class' => ['diff-table']],
       '#tree' => FALSE,
     ];
     $finalRow = [
@@ -140,12 +140,17 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $row = [];
       foreach ($diff as $field => $diffData) {
         if (!is_array($diffData)) {
-          $row[$field] = ['data' => ['#markup' => $diffData]];
+          $row[$field] = [
+            'data' => ['#markup' => $diffData],
+            '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+          ];
           continue;
         }
-        elseif (!empty($diffData['input'])) {
+
+        $cssClass = 'widget-type--' . $diffData['widget_type'] . ' field-name--' . $field;
+        if (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
-          $row[$field]['#attributes']['class'][] = 'widget-type--' . $diffData['widget_type'];
+          $row[$field]['#wrapper_attributes']['class'][] = $cssClass;
         }
         elseif (!empty($diffData['markup'])) {
           $row[$field] = [
@@ -153,14 +158,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
               '#type' => 'table',
               '#rows' => $diffData['markup'],
               '#tree' => FALSE,
-              '#attributes' => [
-                'class' => [
-                  'relative',
-                  'diff-context-wrapper',
-                  'widget-type--' . $diffData['widget_type'],
-                ],
-              ],
             ],
+            '#wrapper_attributes' => ['class' => [$cssClass]],
           ];
         }
         else {
