@@ -275,6 +275,7 @@ class NodeSiteAssessmentStateChangeForm {
           // back to the coordinator.
           $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} => {$newState}", TRUE);
         }
+        $node->setRevisionLogMessage("{$oldState} => {$newState}");
         $createNewRevision = FALSE;
         break;
 
