@@ -38,7 +38,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
         // All revisions have the same initial version.
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
         $initialValue = $initialRevision->get($this->fieldName)->getValue();
-        $renderedInitialValue = $initialRevision->get($this->fieldName)->view(['settings' => ['link' => 0]]);
+        $renderedInitialValue = $initialRevision->get($this->fieldName)->view('diff');
         unset($renderedInitialValue['#title']);
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
         $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldWidgetType, $this->fieldName, $initialValue);

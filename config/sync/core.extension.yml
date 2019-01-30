@@ -32,6 +32,7 @@ module:
   editor_advanced_link: 0
   editor_file: 0
   entity_print: 0
+  entity_reference: 0
   entity_reference_revisions: 0
   facets: 0
   facets_pretty_paths: 0
@@ -75,6 +76,7 @@ module:
   options: 0
   page_cache: 0
   path: 0
+  pet: 0
   purge: 0
   purge_drush: 0
   purge_processor_cron: 0

@@ -98,11 +98,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         // All revisions have the same initial version.
         /** @var \Drupal\paragraphs\ParagraphInterface $initialRevision */
         $initialRevision = $this->getParagraphRevisionFromParentEntity($initialAssessmentRevision);
-
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
-          $renderedInitialValue = $initialRevision->get($fieldName)
-            ->view(['settings' => ['link' => 0]]);
+          $renderedInitialValue = $initialRevision->get($fieldName)->view('diff');
           unset($renderedInitialValue['#title']);
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
