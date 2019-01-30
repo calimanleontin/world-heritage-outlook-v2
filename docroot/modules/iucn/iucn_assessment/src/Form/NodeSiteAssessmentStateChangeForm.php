@@ -192,11 +192,6 @@ class NodeSiteAssessmentStateChangeForm {
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   public static function submitForm(&$form, FormStateInterface $form_state) {
-    $triggeringAction = $form_state->getTriggeringElement();
-    if (empty($triggeringAction['#workflow']['to_sid'])) {
-      return;
-    }
-
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -205,11 +200,16 @@ class NodeSiteAssessmentStateChangeForm {
     $original = clone($node);
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
     $workflowService = \Drupal::service('iucn_assessment.workflow');
-    $oldState = $node->field_state->value;
-    $newState = $triggeringAction['#workflow']['to_sid'];
+    $oldState = $newState = $node->field_state->value;
+    $createNewRevision = TRUE;
 
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       $node->set($field, $form_state->getValue($field));
+    }
+
+    $triggeringAction = $form_state->getTriggeringElement();
+    if (!empty($triggeringAction['#workflow']['to_sid'])) {
+      $newState = $triggeringAction['#workflow']['to_sid'];
     }
 
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
@@ -224,18 +224,18 @@ class NodeSiteAssessmentStateChangeForm {
 
       if (!empty($addedReviewers)) {
         // Create a revision for each newly added reviewer.
-        foreach ($addedReviewers as $reviewer) {
-          if (empty($workflowService->getReviewerRevision($node, $reviewer))) {
-            $message = "Revision created for reviewer {$reviewer}";
-            $workflowService->createRevision($node, $newState, $uid, $message);
+        foreach ($addedReviewers as $reviewerId) {
+          if (empty($workflowService->getReviewerRevision($node, $reviewerId))) {
+            $message = "Revision created for reviewer {$reviewerId}";
+            $workflowService->createRevision($node, $newState, $reviewerId, $message);
           }
         }
       }
 
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
-        foreach ($removedReviewers as $reviewer) {
-          $workflowService->deleteReviewerRevisions($node, $reviewer);
+        foreach ($removedReviewers as $reviewerId) {
+          $workflowService->deleteReviewerRevisions($node, $reviewerId);
         }
       }
 
@@ -248,7 +248,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($oldState == $newState) {
       // The state hasn't changed. No further actions needed.
-      return;
+      $createNewRevision = FALSE;
     }
 
     $default = $node->isDefaultRevision();
@@ -275,6 +275,7 @@ class NodeSiteAssessmentStateChangeForm {
           // back to the coordinator.
           $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} => {$newState}", TRUE);
         }
+        $createNewRevision = FALSE;
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
@@ -282,9 +283,16 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    $newRevision = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
-    $nodeForm->setEntity($newRevision);
+    if ($createNewRevision === TRUE) {
+      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+    }
+    else {
+      $workflowService->forceAssessmentState($node, $newState);
+      $entity = $node;
+    }
+
+    $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $newRevision->getTitle()]));
+    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
   }
 }
