@@ -353,7 +353,7 @@ class NodeSiteAssessmentForm {
       $oldState = $node->field_state->value;
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
-      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} => {$newState}", TRUE);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
 
     $settings = json_decode($node->field_settings->value, TRUE);
