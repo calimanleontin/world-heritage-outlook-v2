@@ -650,14 +650,9 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
 /**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
-function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
-  // The revision edit page is actually the node edit page.
-  // We need to change the form entity to the selected revision.
-  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
-    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
-    if (!empty($node_revision)) {
-      $form_state->getFormObject()->setEntity($node_revision);
-    }
+function iucn_assessment_node_prepare_form(NodeInterface $node, $operation, FormStateInterface $form_state) {
+  if ($node->bundle() == 'site_assessment' && $operation == 'edit') {
+    NodeSiteAssessmentForm::prepareForm($node, $operation, $form_state);
   }
 }
 
