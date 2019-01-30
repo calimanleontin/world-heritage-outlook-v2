@@ -128,22 +128,23 @@ class NodeSiteAssessmentForm {
 
     if (!empty($node->id()) && !empty($state)) {
       $form['current_state'] = self::getCurrentStateMarkup($node);
-
-      $form['main_data_container'] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['main-data-container']],
-        '#weight' => -999,
-        'data' => [
+      if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
+        $form['main_data_container'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['data-fields']],
-          'title' => $form['title'],
-          'langcode' => $form['langcode'],
-          'field_assessment_file' => $form['field_assessment_file'],
-        ],
-      ];
-      unset($form['title']);
-      unset($form['langcode']);
-      unset($form['field_assessment_file']);
+          '#attributes' => ['class' => ['main-data-container']],
+          '#weight' => -999,
+          'data' => [
+            '#type' => 'container',
+            '#attributes' => ['class' => ['data-fields']],
+            'title' => $form['title'],
+            'langcode' => $form['langcode'],
+            'field_assessment_file' => $form['field_assessment_file'],
+          ],
+        ];
+        unset($form['title']);
+        unset($form['langcode']);
+        unset($form['field_assessment_file']);
+      }
 
       $blockContent = BlockContent::load(8);
       if (!empty($blockContent)) {
@@ -353,7 +354,7 @@ class NodeSiteAssessmentForm {
       $oldState = $node->field_state->value;
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
-      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} => {$newState}", TRUE);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
 
     $settings = json_decode($node->field_settings->value, TRUE);

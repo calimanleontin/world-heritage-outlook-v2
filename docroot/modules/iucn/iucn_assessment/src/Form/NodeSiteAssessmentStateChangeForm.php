@@ -252,6 +252,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $default = $node->isDefaultRevision();
+    $settingsWithDifferences = $node->field_settings->value;
     $workflowService->clearKeyFromFieldSettings($node, 'diff');
 
     switch ($oldState . '>' . $newState) {
@@ -273,9 +274,14 @@ class NodeSiteAssessmentStateChangeForm {
         if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
           // If all other reviewers finished their work, send the assessment
           // back to the coordinator.
-          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} => {$newState}", TRUE);
+          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
         }
+        $node->setRevisionLogMessage("{$oldState} => {$newState}");
         $createNewRevision = FALSE;
+        break;
+
+      case AssessmentWorkflow::STATUS_FINISHED_REVIEWING . '>' . AssessmentWorkflow::STATUS_UNDER_COMPARISON:
+        $node->set('field_settings', $settingsWithDifferences);
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
@@ -284,7 +290,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if ($createNewRevision === TRUE) {
-      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
     }
     else {
       $workflowService->forceAssessmentState($node, $newState);
