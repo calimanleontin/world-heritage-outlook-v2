@@ -9,14 +9,12 @@ use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalParagraphForm extends ContentEntityForm {
@@ -47,15 +45,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
 
-  /** @var array */
-  protected $parentForm;
-
-  /** @var \Drupal\node\NodeForm */
-  protected $parentFormObject;
-
-  /** @var \Drupal\Core\Form\FormState */
-  protected $parentFormState;
-
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
@@ -76,12 +65,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
         $this->nodeFormDisplay->removeComponent($name);
       }
     }
-
-    $this->parentForm = ['#parents' => []];
-    $this->parentFormObject = new NodeForm($entity_repository, $temp_store_factory, $entity_type_bundle_info, $time, $this->currentUser());
-    $this->parentFormObject->setEntity($this->nodeRevision);
-    $this->parentFormState = new FormState();
-    $this->parentFormState->setFormObject($this->parentFormObject);
   }
 
   public static function create(ContainerInterface $container) {
@@ -160,11 +143,10 @@ class IucnModalParagraphForm extends ContentEntityForm {
       // Refresh the paragraphs field.
       $response->addCommand(
         new ReplaceCommand(
-          $this->fieldWrapperId,
-          $nodeForm[$this->fieldName]
+          "{$this->fieldWrapperId} .js-form-item",
+          $nodeForm[$this->fieldName]['widget']
         )
       );
-
       $response->addCommand(new CloseModalDialogCommand());
     }
 

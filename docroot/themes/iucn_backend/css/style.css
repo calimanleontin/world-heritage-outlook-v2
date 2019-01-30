@@ -712,67 +712,51 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   grid-column-end: span 3;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
-  grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
-  grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
-  grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
-  grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
-  grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
-  grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
-  grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
-  grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
-  grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
-  grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
-  grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
-  grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
-  grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
-  grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
-  grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
-  grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
   grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
@@ -935,19 +919,6 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
   grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
 }
-.diff-modal table.field-diff-table thead tr th {
-  background: #ececec!important;
-  font-size: .9em;
-  text-transform: none;
-}
-.diff-modal table.field-diff-table > thead > tr > th {
-  border-right: 1px solid #e6e4df;
-  padding: 10px 12px;
-}
-.diff-modal table.field-diff-table > tbody > tr > td {
-  border-right: 1px solid #e6e4df;
-  padding: 10px 12px;
-}
 .diff-modal .chosen-container {
   width: 100% !important;
 }
@@ -955,34 +926,11 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border: 1px solid grey;
   width: 300px;
 }
-.diff-modal table.field-diff-table > tbody > tr:last-child > td {
-  border-top: 3px solid black;
-}
-.diff-modal table.field-diff-table > tbody > tr:last-child > td first-child {
-  font-weight: bold;
-}
-.diff-modal table.field-diff-table > tbody > tr td {
-  border-bottom: 1px solid #e6e4df;
-}
-.diff-modal table.field-diff-table > tbody > tr:first-child > td {
-  border-bottom: 3px solid black;
-}
-.diff-modal table.field-diff-table > tbody > tr:first-child > td first-child {
-  font-weight: bold;
-}
 .diff-modal .paragraph-diff-row {
   background-color: #fcfcfa !important;
 }
 .diff-modal .paragraph-diff-row .paragraphs-actions {
   background-color: #fcfcfa !important;
-}
-.field-diff-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: .9em;
-}
-.field-diff-table .diff-context-wrapper td {
-  padding: 0;
 }
 .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
   margin-top: 0;
@@ -1024,7 +972,6 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   background: #ececec;
   border-bottom: 1px solid #e6e4df;
   height: 14px;
-  overflow-y: hidden;
   overflow: auto;
 }
 .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
@@ -1091,7 +1038,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   margin-bottom: -1px;
   position: relative;
 }
-#drupal-modal .diff-modal table.field-diff-table > thead > tr > th {
+#drupal-modal .diff-modal table.diff-table > thead > tr > th {
   border-bottom: 1px solid black;
   border-top: 1px solid black;
   margin-bottom: -1px;
@@ -1145,7 +1092,124 @@ table.diff-context-wrapper {
 .diff-tick-marker {
   display: block;
 }
-.field-diff {
+.diff-modal .messages--info {
+  display: inline-block;
+  margin: 0;
+  padding: 5px;
+  border: none;
+  font-size: 0.8em;
+}
+.diff-modal table.diff-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .9em;
+}
+.diff-modal table.diff-table .diff-context-wrapper td {
+  padding: 0;
+}
+.diff-modal table.diff-table > thead > tr > th {
+  background: #ececec !important;
+  font-size: .9em;
+  text-transform: none;
+  border-right: 1px solid #e6e4df;
+  padding: 10px 12px;
+}
+.diff-modal table.diff-table > thead > tr > th:nth-child(2) {
+  padding-left: 45px;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td {
+  border-top: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td {
+  border-bottom: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr > td {
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  padding: 3px 5px;
+  vertical-align: top;
+  position: relative;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--checkboxes,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--select {
+  min-width: 150px;
+  max-width: 150px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--checkbox {
+  min-width: 50px;
+  max-width: 50px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea {
+  min-width: 500px;
+  max-width: 500px;
+}
+.diff-modal table.diff-table > tbody > tr > td.field-name--author {
+  min-width: 100px;
+  max-width: 100px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield,
+.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories,
+.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_threat,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--paragraph {
+  min-width: 250px;
+  max-width: 250px;
+}
+.diff-modal table.diff-table > tbody > tr > td input[type="text"],
+.diff-modal table.diff-table > tbody > tr > td textarea,
+.diff-modal table.diff-table > tbody > tr > td select {
+  width: 100%;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr {
+  border-bottom: none;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr td {
+  padding: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
+  min-height: 34px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  border: 1px solid #dedede;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 12px;
+  min-width: 32px;
+  padding: 3px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  text-align: center;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:hover {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:active {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button i {
+  font-size: 1.5em;
+  margin-bottom: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button p {
+  font-size: 0.8em;
+  margin: 0;
+}
+.field-diff-button {
   margin: 10px 3px !important;
   position: absolute !important;
   right: 0;
@@ -1154,17 +1218,14 @@ table.diff-context-wrapper {
 .overall-row > div {
   position: relative;
 }
-.field-diff-table th:nth-child(2) {
-  padding-left: 45px;
-}
-.field-with-diff > div > div {
-  padding-right: 40px !important;
-}
 .field-with-diff {
   position: relative;
 }
 .field-with-diff .form-textarea-wrapper {
   background-color: #fcf8e3;
+}
+.field-with-diff > div > div {
+  padding-right: 40px !important;
 }
 .field-with-diff > div > select {
   margin-right: 30px;
@@ -1174,53 +1235,13 @@ table.diff-context-wrapper {
 }
 .field-with-diff.field--type-entity-reference {
   background-color: #fcf8e3;
-  display: table-row-group;
+  display: tabl e-row-group;
 }
 .field-with-diff#edit-field-as-references-wrapper {
   background-color: #fcf8e3;
 }
 .field-with-diff.field--type-string-long {
   display: table-row-group;
-}
-.diff-wrapper {
-  height: 100%;
-  min-height: 42px;
-  position: relative;
-}
-.diff-wrapper a.diff-button {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  border: 1px solid #dedede;
-  bottom: -5px;
-  color: #333333;
-  cursor: pointer;
-  display: inline-block;
-  line-height: 12px;
-  min-width: 32px;
-  padding: 3px;
-  position: absolute;
-  right: -5px;
-  text-align: center;
-}
-.diff-wrapper a.diff-button:hover {
-  background-color: #ffffff;
-  border-color: #0074bd;
-  color: #0074bd;
-  text-decoration: none;
-}
-.diff-wrapper a.diff-button:active {
-  background-color: #ffffff;
-  border-color: #0074bd;
-  color: #0074bd;
-  text-decoration: none;
-}
-.diff-wrapper a.diff-button i {
-  font-size: 1.5em;
-  margin-bottom: 3px;
-}
-.diff-wrapper a.diff-button p {
-  font-size: 0.8em;
-  margin: 0;
 }
 @media all and (min-width: 851px) {
   .sidebar {
