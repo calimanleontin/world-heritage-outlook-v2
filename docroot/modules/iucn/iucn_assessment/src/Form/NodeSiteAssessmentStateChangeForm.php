@@ -201,6 +201,7 @@ class NodeSiteAssessmentStateChangeForm {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
     $workflowService = \Drupal::service('iucn_assessment.workflow');
     $oldState = $newState = $node->field_state->value;
+    $createNewRevision = TRUE;
 
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       $node->set($field, $form_state->getValue($field));
@@ -247,9 +248,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($oldState == $newState) {
       // The state hasn't changed. No further actions needed.
-      $node->save();
-      \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $node->getTitle()]));
-      return;
+      $createNewRevision = FALSE;
     }
 
     $default = $node->isDefaultRevision();
@@ -276,6 +275,7 @@ class NodeSiteAssessmentStateChangeForm {
           // back to the coordinator.
           $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} => {$newState}", TRUE);
         }
+        $createNewRevision = FALSE;
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
@@ -283,9 +283,16 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    $newRevision = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
-    $nodeForm->setEntity($newRevision);
+    if ($createNewRevision === TRUE) {
+      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} => {$newState}", $default);
+    }
+    else {
+      $workflowService->forceAssessmentState($node, $newState);
+      $entity = $node;
+    }
+
+    $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $newRevision->getTitle()]));
+    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
   }
 }
