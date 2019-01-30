@@ -224,18 +224,18 @@ class NodeSiteAssessmentStateChangeForm {
 
       if (!empty($addedReviewers)) {
         // Create a revision for each newly added reviewer.
-        foreach ($addedReviewers as $reviewer) {
-          if (empty($workflowService->getReviewerRevision($node, $reviewer))) {
-            $message = "Revision created for reviewer {$reviewer}";
-            $workflowService->createRevision($node, $newState, $uid, $message);
+        foreach ($addedReviewers as $reviewerId) {
+          if (empty($workflowService->getReviewerRevision($node, $reviewerId))) {
+            $message = "Revision created for reviewer {$reviewerId}";
+            $workflowService->createRevision($node, $newState, $reviewerId, $message);
           }
         }
       }
 
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
-        foreach ($removedReviewers as $reviewer) {
-          $workflowService->deleteReviewerRevisions($node, $reviewer);
+        foreach ($removedReviewers as $reviewerId) {
+          $workflowService->deleteReviewerRevisions($node, $reviewerId);
         }
       }
 
