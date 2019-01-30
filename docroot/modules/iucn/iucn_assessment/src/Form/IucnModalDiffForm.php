@@ -16,6 +16,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     $form['#suffix'] = '</div>';
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
+    $form['#attached']['library'][] = 'iucn_backend/font-awesome';
     return $form;
   }
 

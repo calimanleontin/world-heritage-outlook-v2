@@ -1,33 +1,19 @@
-uuid: 45b0c715-f155-4f4e-9a69-f1aea4739169
+uuid: de4272a6-4c03-4d8d-8442-9e09ec7aee47
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.diff
     - field.field.paragraph.as_site_value_bio.field_as_description
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_bio.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_bio
-  module:
-    - ds
-third_party_settings:
-  ds:
-    layout:
-      id: iucn_who_assessment_value
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings: {  }
-    regions:
-      title:
-        - field_as_values_value
-      description:
-        - field_as_description
-id: paragraph.as_site_value_bio.default
+id: paragraph.as_site_value_bio.diff
 targetEntityType: paragraph
 bundle: as_site_value_bio
-mode: default
+mode: diff
 content:
   field_as_description:
     weight: 1
@@ -35,7 +21,30 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: description
+    region: content
+  field_as_values_curr_state:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    type: basic_string
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_curr_trend:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
   field_as_values_value:
     weight: 0
     label: hidden
@@ -43,11 +52,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: title
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_as_values_curr_state: true
-  field_as_values_curr_text: true
-  field_as_values_curr_trend: true

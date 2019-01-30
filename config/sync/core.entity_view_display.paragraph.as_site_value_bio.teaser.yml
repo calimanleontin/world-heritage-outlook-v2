@@ -1,41 +1,20 @@
-uuid: 45b0c715-f155-4f4e-9a69-f1aea4739169
+uuid: e957c2d9-91cf-4545-8ffd-a2d866ded548
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.teaser
     - field.field.paragraph.as_site_value_bio.field_as_description
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_bio.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_bio
-  module:
-    - ds
-third_party_settings:
-  ds:
-    layout:
-      id: iucn_who_assessment_value
-      library: null
-      disable_css: false
-      entity_classes: all_classes
-      settings: {  }
-    regions:
-      title:
-        - field_as_values_value
-      description:
-        - field_as_description
-id: paragraph.as_site_value_bio.default
+id: paragraph.as_site_value_bio.teaser
 targetEntityType: paragraph
 bundle: as_site_value_bio
-mode: default
+mode: teaser
 content:
-  field_as_description:
-    weight: 1
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: description
   field_as_values_value:
     weight: 0
     label: hidden
@@ -43,11 +22,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: title
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_as_description: true
   field_as_values_curr_state: true
   field_as_values_curr_text: true
   field_as_values_curr_trend: true

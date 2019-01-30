@@ -38,7 +38,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     // We want to render the diff forms using the form widget configured for the
     // parent entity.
-    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.default");
+    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.{$this->formDisplayMode}");
     $this->paragraphFormComponents = $this->paragraphFormDisplay->getComponents();
     uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
   }
@@ -98,11 +98,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         // All revisions have the same initial version.
         /** @var \Drupal\paragraphs\ParagraphInterface $initialRevision */
         $initialRevision = $this->getParagraphRevisionFromParentEntity($initialAssessmentRevision);
-
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
-          $renderedInitialValue = $initialRevision->get($fieldName)
-            ->view(['settings' => ['link' => 0]]);
+          $renderedInitialValue = $initialRevision->get($fieldName)->view('diff');
           unset($renderedInitialValue['#title']);
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
@@ -119,12 +117,6 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $form['info'] = [
-      '#type' => 'markup',
-      '#markup' => sprintf('<div class="messages messages--info">%s</div>',
-        $this->t('The table below contains only fields which were modified by other user(s). For editing other fields, use the default row edit popup.')),
-      '#weight' => -100,
-    ];
 
     $diffTable = [
       '#type' => 'table',
@@ -138,6 +130,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       'author' => $this->t('Final version'),
     ];
     foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
+      if (empty($this->paragraphRevision->{$fieldName})) {
+        unset($this->paragraphFormComponents[$fieldName]);
+        continue;
+      }
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
       $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
         ->getLabel();
@@ -154,7 +150,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       if (!empty(array_intersect($this->fieldWithDifferences, $dependentFields))) {
         // These fields need to be rendered together. So, if at least one of them
         // was modified, we render both of them.
-        $this->fieldWithDifferences = array_merge($this->fieldWithDifferences, $dependentFields);
+        $this->fieldWithDifferences = array_unique(array_merge($this->fieldWithDifferences, $dependentFields));
       }
     }
 
@@ -163,6 +159,15 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         unset($diffTable['#header'][$fieldName]);
         unset($finalRow[$fieldName]);
       }
+    }
+
+    if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
+      $form['info'] = [
+        '#type' => 'markup',
+        '#markup' => sprintf('<div class="messages messages--info">%s</div>',
+          $this->t('The table below contains only fields which were modified by other user(s). For editing other fields, use the default row edit popup.')),
+        '#weight' => -100,
+      ];
     }
 
     $paragraphDiff['edit'] = $finalRow;

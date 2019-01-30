@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -31,39 +32,52 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  public static function prepareForm(NodeInterface $node, $operation, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+
+    // The revision edit page is actually the node edit page.
+    // We need to change the form entity to the selected revision.
+    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
+    if (!empty($node_revision)) {
+      $node = $node_revision;
+    }
+
+    $formDisplay = $formObject->getFormDisplay($form_state);
+
+    $group_as_tabs = $formDisplay->getThirdPartySetting('field_group', 'group_as_tabs');
+    if (!empty($group_as_tabs['children'])) {
+      $tab = \Drupal::request()->get('tab') ?: 'values';
+      foreach ($group_as_tabs['children'] as $group_tab) {
+        $fieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $group_tab);
+        $tab_id = str_replace('_', '-', $fieldGroupTab['format_settings']['id']);
+        if ($tab_id == $tab) {
+          continue;
+        }
+        self::removeGroupFields($formDisplay, $fieldGroupTab);
+      }
+    }
+    $formObject->setFormDisplay($formDisplay, $form_state);
+    $formObject->setEntity($node);
+    $form_state->setFormObject($formObject);
+  }
+
   /**
    * Recursive function used to used to unset the fields of a fieldgroup.
    */
-  public static function removeGroupFields(&$form, $group) {
-    foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
-      if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        if (FieldConfig::loadByName('node', 'site_assessment', $nested_field)->getSetting('target_type') == 'paragraph') {
-          unset($form[$nested_field]);
-        }
-        else {
-          $form[$nested_field]['#access'] = FALSE;
-        }
-      }
-      elseif (!empty($form['#fieldgroups'][$nested_field])) {
-        self::removeGroupFields($form, $nested_field);
+  public static function removeGroupFields(EntityFormDisplayInterface $formDisplay, $fieldGroupTab) {
+    foreach ($fieldGroupTab['children'] as $child) {
+      $formDisplay->removeComponent($child);
+
+      $childFieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $child);
+      if (!empty($childFieldGroupTab)) {
+        self::removeGroupFields($formDisplay, $childFieldGroupTab);
       }
     }
   }
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
     $tab = \Drupal::request()->get('tab') ?: 'values';
-    if (empty(\Drupal::request()->get('_wrapper_format'))
-      || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
-      // Unset the fields that are only present on other tabs.
-      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
-      foreach ($group_tabs as $group_tab) {
-        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
-        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
-        if ($tab_id != $tab) {
-          self::removeGroupFields($form, $group_tab);
-        }
-      }
-    }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
