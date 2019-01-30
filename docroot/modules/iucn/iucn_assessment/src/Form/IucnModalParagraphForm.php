@@ -45,6 +45,9 @@ class IucnModalParagraphForm extends ContentEntityForm {
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
 
+  /** @var string */
+  protected $formDisplayMode;
+
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
@@ -57,6 +60,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
     $this->fieldName = $routeMatch->getParameter('field');
     $this->fieldWrapperId = $routeMatch->getParameter('field_wrapper_id');
+    $this->formDisplayMode = $routeMatch->getParameter('form_display_mode');
 
     $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
     foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {

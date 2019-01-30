@@ -38,7 +38,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     // We want to render the diff forms using the form widget configured for the
     // parent entity.
-    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.default");
+    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.{$this->formDisplayMode}");
     $this->paragraphFormComponents = $this->paragraphFormDisplay->getComponents();
     uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
   }
