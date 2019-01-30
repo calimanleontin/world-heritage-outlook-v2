@@ -192,11 +192,6 @@ class NodeSiteAssessmentStateChangeForm {
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   public static function submitForm(&$form, FormStateInterface $form_state) {
-    $triggeringAction = $form_state->getTriggeringElement();
-    if (empty($triggeringAction['#workflow']['to_sid'])) {
-      return;
-    }
-
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -205,11 +200,15 @@ class NodeSiteAssessmentStateChangeForm {
     $original = clone($node);
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
     $workflowService = \Drupal::service('iucn_assessment.workflow');
-    $oldState = $node->field_state->value;
-    $newState = $triggeringAction['#workflow']['to_sid'];
+    $oldState = $newState = $node->field_state->value;
 
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
       $node->set($field, $form_state->getValue($field));
+    }
+
+    $triggeringAction = $form_state->getTriggeringElement();
+    if (!empty($triggeringAction['#workflow']['to_sid'])) {
+      $newState = $triggeringAction['#workflow']['to_sid'];
     }
 
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
@@ -248,6 +247,8 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($oldState == $newState) {
       // The state hasn't changed. No further actions needed.
+      $node->save();
+      \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $node->getTitle()]));
       return;
     }
 
