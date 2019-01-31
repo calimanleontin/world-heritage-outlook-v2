@@ -2,10 +2,12 @@
 
 namespace Drupal\iucn_notifications\Plugin;
 
-use Drupal\iucn_base\CssToInlineStyles\CssToInlineStyles;
-use Drupal\pet\Entity\Pet;
-use Drupal\pet\PetInterface;
-use Drupal\swiftmailer\Plugin\Mail\SwiftMailer;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Utility\Token;
 use Drupal\user\Entity\User;
 
 /**
@@ -32,14 +34,42 @@ class NotificationService {
   /** email sent to administrators when state is "Ready to publish" */
   public static $WORKFLOW_FINAL_EDITS_BY_COORDINATOR = 'FINAL_EDITS_BY_COORDINATOR';
 
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
+  protected $entityTypeManager;
+
+  /** @var \Drupal\Core\Entity\EntityStorageInterface */
+  protected $petStorage;
+
+  /** @var \Drupal\Core\Mail\MailManagerInterface */
+  protected $mailManager;
+
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface */
+  protected $configFactory;
+
+  /** @var \Drupal\Core\Utility\Token */
+  protected $token;
+
+  /** @var \Drupal\Core\Logger\LoggerChannelInterface */
+  protected $logger;
+
+  protected $currentUser;
+
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory, Token $token, LoggerChannelFactoryInterface $loggerFactory, AccountInterface $currentUser) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->petStorage = $this->entityTypeManager->getStorage('pet');
+    $this->mailManager = $mailManager;
+    $this->configFactory = $configFactory;
+    $this->token = $token;
+    $this->logger = $loggerFactory->get('iucn_notifications');
+    $this->currentUser = $currentUser;
+  }
+
   /**
    * @param $notificationType
    * @param $userId
    * @param array $options
    *
-   * @return bool|null
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @return bool
    */
   public function sendNotificationToUser($notificationType, $userId, $options = []) {
     $user = User::load($userId);
@@ -48,59 +78,52 @@ class NotificationService {
 
   /**
    * @param int $notificationType
-   *  The type of the notification (e.g. NotificationEmail::SETUP_NEW_ASSESSMENT)
+   *  The type of the notification (e.g. NotificationService::SETUP_NEW_ASSESSMENT)
    * @param string|array $to
-   *  Email recipient
+   *  Email recipient.
    * @param array $options
    *  An array of options required by pet_send_mail() plus:
    *    tokens - an array of token replacements
    *
-   * @return bool|null
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @return bool
    */
   public function sendNotification($notificationType, $to, $options = []) {
-    $entities = \Drupal::entityTypeManager()->getStorage('pet')->loadByProperties(['title' => $notificationType]);
-    if ($entities) {
-      reset($entities);
-      $entity = current($entities);
-      $pet_id = $entity->id();
+    $pets = $this->petStorage->loadByProperties(['title' => $notificationType]);
+    if (empty($pets)) {
+      throw new \InvalidArgumentException('Invalid notification type');
     }
-    $pet = !empty($pet_id) ? Pet::load($pet_id) : NULL;
-    if (!$pet instanceof PetInterface) {
-      drupal_set_message(t('The email template is not configured for this notification.'), 'error');
-      return NULL;
-    }
+    $pet = reset($pets);
+
     if (!is_array($to)) {
       $to = [$to];
     }
     $success = TRUE;
     foreach ($to as $email) {
-      /** @var PetInterface $pet */
-      $pet = Pet::load($pet_id);
       $content = $pet->getMailbody();
-      $substitutions = [];
+      // include site wide tokens substitutions. Ex. current date
+      $substitutions = [
+        'globals' => NULL,
+      ];
       if (!empty($options['tokens'])) {
         $substitutions = $options['tokens'];
       }
-      // include site wide tokens substitutions. Ex. current date
       $substitutions['globals'] = NULL;
       // if no user is passed, load user if TO email corresponds to a user
       if (!isset($substitutions['user'])) {
-        if ($user = user_load_by_mail($to)) {
+        $user = user_load_by_mail($to);
+        if (!empty($user)) {
           $substitutions['user'] = $user;
         }
       }
-      $subject = \Drupal::token()->replace($pet->getSubject(), $substitutions, ['clear' => TRUE]);
+      $subject = $this->token->replace($pet->getSubject(), $substitutions, ['clear' => TRUE]);
       $subject = htmlspecialchars_decode($subject);
-      $content = \Drupal::token()->replace($content, $substitutions, ['clear' => TRUE]);
+      $content = $this->token->replace($content, $substitutions, ['clear' => TRUE]);
 
       if ($this->send('iucn_notifications_' . $pet->id(), $email, $subject, $content) == FALSE) {
-        \Drupal::logger('iucn_notifications')
-          ->warning(t('@Not to @to could not be sent.', [
-            '@not' => $notificationType,
-            '@to' => $email,
-          ]));
+        $this->logger->warning(t('@not to @to could not be sent.', [
+          '@not' => $notificationType,
+          '@to' => $email,
+        ]));
         $success = FALSE;
       }
     }
@@ -111,29 +134,26 @@ class NotificationService {
    * send mail.
    */
   public function send($key, $to, $subject, $content) {
-    $mailer = \Drupal::service('plugin.manager.mail');
-    $lang_code = \Drupal::currentUser()->getPreferredLangcode();
-    $from = \Drupal::config('system.site')->get('mail');
+    $lang_code = $this->currentUser->getPreferredLangcode();
+    $from = $this->configFactory->get('system.site')->get('mail');
     $params['from'] = $from;
     $params['subject'] = $subject;
     $params['message'] = $content;
-    $success = $mailer->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
+    $success = $this->mailManager->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
     if ($success == TRUE) {
-      \Drupal::logger('mail')
-        ->info('Succesfully sent e-mail from @from to @to with subject "@subject". (@key)', [
-          '@from' => $from,
-          '@to' => $to,
-          '@subject' => $subject,
-          '@key' => $key,
-        ]);
+      $this->logger->info('Succesfully sent e-mail from @from to @to with subject "@subject". (@key)', [
+        '@from' => $from,
+        '@to' => $to,
+        '@subject' => $subject,
+        '@key' => $key,
+      ]);
     }
     else {
-      \Drupal::logger('mail')
-        ->error('Error sending e-mail to @to with subject "@subject". (@key)', [
-          '@to' => $to,
-          '@subject' => $subject,
-          '@key' => $key,
-        ]);
+      $this->logger->error('Error sending e-mail to @to with subject "@subject". (@key)', [
+        '@to' => $to,
+        '@subject' => $subject,
+        '@key' => $key,
+      ]);
     }
     return $success;
   }
