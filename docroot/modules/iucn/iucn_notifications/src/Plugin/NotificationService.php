@@ -6,6 +6,7 @@ use Drupal\iucn_base\CssToInlineStyles\CssToInlineStyles;
 use Drupal\pet\Entity\Pet;
 use Drupal\pet\PetInterface;
 use Drupal\swiftmailer\Plugin\Mail\SwiftMailer;
+use Drupal\user\Entity\User;
 
 /**
  * Class NotificationEmailPlugin.
@@ -16,7 +17,7 @@ class NotificationService {
 
   public static $USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
 
-  /** Coordinator has been assigned to a site */
+  /** Coordinator / assessor has been assigned to a site */
   public static $WORKFLOW_SETUP_NEW_ASSESSMENT = 'SETUP_NEW_ASSESSMENT';
 
   /** email sent to the coordinators when state is "Assessment phase done" */
@@ -32,6 +33,20 @@ class NotificationService {
   public static $WORKFLOW_FINAL_EDITS_BY_COORDINATOR = 'FINAL_EDITS_BY_COORDINATOR';
 
   /**
+   * @param $notificationType
+   * @param $userId
+   * @param array $options
+   *
+   * @return bool|null
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function sendNotificationToUser($notificationType, $userId, $options = []) {
+    $user = User::load($userId);
+    return $this->sendNotification($notificationType, $user->getEmail(), $options);
+  }
+
+  /**
    * @param int $notificationType
    *  The type of the notification (e.g. NotificationEmail::SETUP_NEW_ASSESSMENT)
    * @param string|array $to
@@ -39,6 +54,10 @@ class NotificationService {
    * @param array $options
    *  An array of options required by pet_send_mail() plus:
    *    tokens - an array of token replacements
+   *
+   * @return bool|null
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function sendNotification($notificationType, $to, $options = []) {
     $entities = \Drupal::entityTypeManager()->getStorage('pet')->loadByProperties(['title' => $notificationType]);
