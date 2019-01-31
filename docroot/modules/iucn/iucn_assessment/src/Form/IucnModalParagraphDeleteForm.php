@@ -131,7 +131,6 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphForm {
         }
       }
     }
-    $paragraph->delete();
 
     return $this->ajaxSave($form, $form_state);
   }
