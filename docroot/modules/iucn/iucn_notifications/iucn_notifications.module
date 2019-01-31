@@ -3,6 +3,7 @@
 use Drupal\iucn_notifications\Plugin\NotificationService;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_mail().
@@ -132,5 +133,15 @@ function iucn_notifications_node_update(NodeInterface $node) {
   $notificationService = \Drupal::service('iucn.notifications');
   foreach ($recipients as $recipient) {
     $notificationService->sendNotificationToUser($newState, $recipient);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function iucn_notifications_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'pet_edit_form') {
+    // Don't let users change the title of the pets because it is used by the NotificationService.
+    $form['title']['#disabled'] = TRUE;
   }
 }

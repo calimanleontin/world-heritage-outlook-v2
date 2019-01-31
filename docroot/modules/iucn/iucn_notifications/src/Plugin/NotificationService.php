@@ -15,9 +15,9 @@ use Drupal\user\Entity\User;
  */
 class NotificationService {
 
-  const USER_ACCOUNT_ACTIVATED = 'USER_ACCOUNT_ACTIVATED';
+  const USER_ACCOUNT_ACTIVATED = 'user_account_activated';
 
-  const USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
+  const USER_PASSWORD_RESET = 'user_password_reset';
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
