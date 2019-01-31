@@ -147,8 +147,14 @@ class IucnModalParagraphForm extends ContentEntityForm {
         $oldState = $parent_entity_revision->field_state->value;
         $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
         $parent_entity_revision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
-        $this->workflowService->createRevision($parent_entity_revision, $newState, $this->currentUser()->id(), "{$oldState} ({$parent_entity_revision->getRevisionId()}) => {$newState}", TRUE);
-        // @todo add Ajax replace command for "Current workflow state: New" div
+        $new_revision = $this->workflowService->createRevision($parent_entity_revision, $newState, $this->currentUser()->id(), "{$oldState} ({$parent_entity_revision->getRevisionId()}) => {$newState}", TRUE);
+
+        $response->addCommand(
+          new ReplaceCommand(
+            "#node-site-assessment-edit-form .current-state",
+            NodeSiteAssessmentForm::getCurrentStateMarkup($new_revision)
+          )
+        );
       }
       $parent_entity_revision->save();
 
