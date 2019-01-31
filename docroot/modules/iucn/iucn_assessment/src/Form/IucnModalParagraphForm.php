@@ -137,6 +137,19 @@ class IucnModalParagraphForm extends ContentEntityForm {
 
       // Update parent node change date.
       $parent_entity_revision->setChangedTime(time());
+
+      if ($parent_entity_revision->isDefaultRevision()
+        && $this->workflowService->isNewAssessment($parent_entity_revision)
+        && empty($parent_entity_revision->field_coordinator->target_id)
+        && in_array('coordinator', $this->currentUser()->getRoles())) {
+        // Sets the current user as a coordinator if he has the coordinator role
+        // and edits the assessment.
+        $oldState = $parent_entity_revision->field_state->value;
+        $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+        $parent_entity_revision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
+        $this->workflowService->createRevision($parent_entity_revision, $newState, $this->currentUser()->id(), "{$oldState} ({$parent_entity_revision->getRevisionId()}) => {$newState}", TRUE);
+        // @todo add Ajax replace command for "Current workflow state: New" div
+      }
       $parent_entity_revision->save();
 
       $nodeForm = $this->entityFormBuilder->getForm($parent_entity_revision, 'default', [
