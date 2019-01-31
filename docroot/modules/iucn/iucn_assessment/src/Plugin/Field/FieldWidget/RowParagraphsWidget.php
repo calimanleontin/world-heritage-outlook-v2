@@ -762,6 +762,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
         ],
         'data' => ['#markup' => $data],
       ];
+      if (!empty($component['class'])) {
+        $containers[$key]['#attributes']['class'][] = $component['class'];
+      }
       if ($key === 'actions') {
         $containers[$key]['#attributes']['class'] = 'paragraphs-actions';
       }
@@ -810,6 +813,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
+      $class = NULL;
       // Components can be extra fields, check if the field really exists.
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -850,6 +854,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
+          if (!empty($paragraph->get($field_name)->entity->field_css_identifier)) {
+            $class = _iucn_assessment_level_class($paragraph->get($field_name)->entity->field_css_identifier->value);
+          }
           $entities = $paragraph->get($field_name)->getValue();
           $target_type = $field_definition->getFieldStorageDefinition()->getSetting('target_type');
           $ids = array_column($entities, 'target_id');
@@ -903,6 +910,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $value = $this->t("$prefix - @value", ['@value' => $value]);
       }
 
+      if ($class) {
+        $summary[$summary_field_name]['class'] = $class;
+      }
       $summary[$summary_field_name]['value'][] = $value;
       $summary[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
     }
