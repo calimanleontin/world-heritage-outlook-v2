@@ -130,29 +130,25 @@ class IucnModalParagraphForm extends ContentEntityForm {
       // Get all necessary data to be able to correctly update the correct
       // field on the parent node.
       $temporary_data = $form_state->getTemporary();
-      $parent_entity_revision = isset($temporary_data['node_revision']) ?
-        $temporary_data['node_revision'] :
-        $this->nodeRevision;
-      $parent_entity_revision = $this->workflowService->getAssessmentRevision($parent_entity_revision->getRevisionId());
 
       // Update parent node change date.
-      $parent_entity_revision->setChangedTime(time());
+      $this->nodeRevision->setChangedTime(time());
 
-      if ($parent_entity_revision->isDefaultRevision()
-        && $this->workflowService->isNewAssessment($parent_entity_revision)
-        && empty($parent_entity_revision->field_coordinator->target_id)
+      if ($this->nodeRevision->isDefaultRevision()
+        && $this->workflowService->isNewAssessment($this->nodeRevision)
+        && empty($this->nodeRevision->field_coordinator->target_id)
         && in_array('coordinator', $this->currentUser()->getRoles())) {
         // Sets the current user as a coordinator if he has the coordinator role
         // and edits the assessment.
-        $oldState = $parent_entity_revision->field_state->value;
+        $oldState = $this->nodeRevision->field_state->value;
         $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-        $parent_entity_revision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
-        $this->workflowService->createRevision($parent_entity_revision, $newState, $this->currentUser()->id(), "{$oldState} ({$parent_entity_revision->getRevisionId()}) => {$newState}", TRUE);
+        $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
+        $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
         // @todo add Ajax replace command for "Current workflow state: New" div
       }
-      $parent_entity_revision->save();
+      $this->nodeRevision->save();
 
-      $nodeForm = $this->entityFormBuilder->getForm($parent_entity_revision, 'default', [
+      $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
         'form_display' => $this->nodeFormDisplay,
         'entity_form_initialized' => TRUE,
       ]);
