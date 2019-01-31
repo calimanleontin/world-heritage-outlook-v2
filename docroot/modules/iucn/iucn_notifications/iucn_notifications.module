@@ -46,15 +46,15 @@ function iucn_notifications_mail_alter(&$message) {
        * When admin creates account, status_activated isn't sent even if the new account created as active.
        * If admin checks notify new user, register_admin_created is sent, but we send the same PET we send for status_activated.
        */
-      $notificationService->sendNotification(NotificationService::$USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
+      $notificationService->sendNotification(NotificationService::USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
       break;
 
     case 'status_activated':
-      $notificationService->sendNotification(NotificationService::$USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
+      $notificationService->sendNotification(NotificationService::USER_ACCOUNT_ACTIVATED, $message['to'], ['tokens' => $tokens]);
       break;
 
     case 'password_reset':
-      $success = $notificationService->sendNotification(NotificationService::$USER_PASSWORD_RESET, $message['to'], ['tokens' => $tokens]);
+      $success = $notificationService->sendNotification(NotificationService::USER_PASSWORD_RESET, $message['to'], ['tokens' => $tokens]);
       if ($success) {
         drupal_set_message(t('Further instructions have been sent to your email address.'));
       }
@@ -87,22 +87,22 @@ function iucn_notifications_node_update(NodeInterface $node) {
   switch ($oldState . '>' . $newState) {
     case AssessmentWorkflow::STATUS_CREATION . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
     case AssessmentWorkflow::STATUS_NEW . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
-      $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $coordinatorId);
+      $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_SETUP_NEW_ASSESSMENT, $coordinatorId);
       break;
 
     case AssessmentWorkflow::STATUS_UNDER_EVALUATION . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
-      $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_SETUP_NEW_ASSESSMENT, $assessorId);
+      $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_SETUP_NEW_ASSESSMENT, $assessorId);
       break;
 
     case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
-      $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinatorId);
+      $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinatorId);
       break;
 
     case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
       $reviewerId = $node->getRevisionUserId();
       if ($reviewerId != \Drupal::currentUser()->id()) {
         // Each reviewer has its own revision created.
-        $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $reviewerId);
+        $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_REVIEW_BY_COORDINATOR, $reviewerId);
       }
       break;
 
@@ -110,7 +110,7 @@ function iucn_notifications_node_update(NodeInterface $node) {
       if ($node->isDefaultRevision() === TRUE) {
         // Send this notification only when all reviewers revisions are finished
         // and the main revision is automatically moved to "Finished" state.
-        $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS, $coordinatorId);
+        $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS, $coordinatorId);
       }
       break;
 
@@ -120,7 +120,7 @@ function iucn_notifications_node_update(NodeInterface $node) {
         ->condition('roles', 'iucn_manager')
         ->execute();
       foreach ($managersIds as $managerId) {
-        $notificationService->sendNotificationToUser(NotificationService::$WORKFLOW_FINAL_EDITS_BY_COORDINATOR, $managerId);
+        $notificationService->sendNotificationToUser(NotificationService::WORKFLOW_FINAL_EDITS_BY_COORDINATOR, $managerId);
       }
       break;
   }

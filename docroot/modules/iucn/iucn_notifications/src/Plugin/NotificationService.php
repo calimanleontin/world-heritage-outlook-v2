@@ -15,24 +15,24 @@ use Drupal\user\Entity\User;
  */
 class NotificationService {
 
-  public static $USER_ACCOUNT_ACTIVATED = 'USER_ACCOUNT_ACTIVATED';
+  const USER_ACCOUNT_ACTIVATED = 'USER_ACCOUNT_ACTIVATED';
 
-  public static $USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
+  const USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
 
-  /** Coordinator / assessor has been assigned to a site */
-  public static $WORKFLOW_SETUP_NEW_ASSESSMENT = 'SETUP_NEW_ASSESSMENT';
+  /** Coordinator / assessor has been assigned to work on an assessment. */
+  const WORKFLOW_SETUP_NEW_ASSESSMENT = 'SETUP_NEW_ASSESSMENT';
 
-  /** email sent to the coordinators when state is "Assessment phase done" */
-  public static $WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS = 'INPUT_ASSESSMENT_DATA_BY_ASSESSORS';
+  /** The assessor has finished working on the assessment. */
+  const WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS = 'INPUT_ASSESSMENT_DATA_BY_ASSESSORS';
 
-  /** emails sent to each assigned reviewer when state is "Ready for review" */
-  public static $WORKFLOW_REVIEW_BY_COORDINATOR = 'REVIEW_BY_COORDINATOR';
+  /** A reviewer has been  */
+  const WORKFLOW_REVIEW_BY_COORDINATOR = 'REVIEW_BY_COORDINATOR';
 
   /** email sent to the coordinator when state is "Review phase finished" */
-  public static $WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS = 'ASSESSMENT_REVIEW_BY_REVIEWERS';
+  const WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS = 'ASSESSMENT_REVIEW_BY_REVIEWERS';
 
   /** email sent to administrators when state is "Ready to publish" */
-  public static $WORKFLOW_FINAL_EDITS_BY_COORDINATOR = 'FINAL_EDITS_BY_COORDINATOR';
+  const WORKFLOW_FINAL_EDITS_BY_COORDINATOR = 'FINAL_EDITS_BY_COORDINATOR';
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
@@ -52,6 +52,7 @@ class NotificationService {
   /** @var \Drupal\Core\Logger\LoggerChannelInterface */
   protected $logger;
 
+  /** @var \Drupal\Core\Session\AccountInterface */
   protected $currentUser;
 
   public function __construct(EntityTypeManagerInterface $entityTypeManager, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory, Token $token, LoggerChannelFactoryInterface $loggerFactory, AccountInterface $currentUser) {
