@@ -83,7 +83,7 @@ class NotificationService {
     if (!is_array($to)) {
       $to = [$to];
     }
-    $success = TRUE;
+    $globalSuccess = TRUE;
     foreach ($to as $email) {
       $content = $pet->getMailbody();
       // include site wide tokens substitutions. Ex. current date
@@ -104,16 +104,13 @@ class NotificationService {
       $subject = $this->token->replace($pet->getSubject(), $substitutions, ['clear' => TRUE]);
       $subject = htmlspecialchars_decode($subject);
       $content = $this->token->replace($content, $substitutions, ['clear' => TRUE]);
-
-      if ($this->send('iucn_notifications_' . $pet->id(), $email, $subject, $content) == FALSE) {
-        $this->logger->warning(t('@not to @to could not be sent.', [
-          '@not' => $notificationType,
-          '@to' => $email,
-        ]));
-        $success = FALSE;
+      $success = $this->send('iucn_notifications_' . $notificationType, $email, $subject, $content);
+      if ($success === FALSE) {
+        $globalSuccess = FALSE;
       }
     }
-    return $success;
+
+    return $globalSuccess;
   }
 
   /**
@@ -125,22 +122,23 @@ class NotificationService {
     $params['from'] = $from;
     $params['subject'] = $subject;
     $params['message'] = $content;
-    $success = $this->mailManager->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
-    if ($success == TRUE) {
-      $this->logger->info('Succesfully sent e-mail from @from to @to with subject "@subject". (@key)', [
-        '@from' => $from,
-        '@to' => $to,
-        '@subject' => $subject,
-        '@key' => $key,
-      ]);
-    }
-    else {
+    $mailerResponse = $this->mailManager->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
+
+    if (empty($mailerResponse['result'])) {
       $this->logger->error('Error sending e-mail to @to with subject "@subject". (@key)', [
         '@to' => $to,
         '@subject' => $subject,
         '@key' => $key,
       ]);
+      return FALSE;
     }
-    return $success;
+
+    $this->logger->info('Succesfully sent e-mail from @from to @to with subject "@subject". (@key)', [
+      '@from' => $from,
+      '@to' => $to,
+      '@subject' => $subject,
+      '@key' => $key,
+    ]);
+    return TRUE;
   }
 }
