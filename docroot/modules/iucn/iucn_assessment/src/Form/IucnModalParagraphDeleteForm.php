@@ -107,6 +107,7 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphForm {
     $field_values = $this->nodeRevision->get($this->fieldName)->getValue();
     $key = array_search($this->entity->id(), array_column($field_values, 'target_id'));
     $this->nodeRevision->get($this->fieldName)->removeItem($key);
+    $this->nodeRevision->save();
 
     $affected_value_fields = [
       'as_site_value_wh' => 'field_as_threats_values_wh',
@@ -130,6 +131,7 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphForm {
         }
       }
     }
+    $paragraph->delete();
 
     return $this->ajaxSave($form, $form_state);
   }
