@@ -146,7 +146,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
         $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
         $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
         // @todo add Ajax replace command for "Current workflow state: New" div
-        $parent_entity_revision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
+        $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
         $new_revision = $this->workflowService->createRevision($parent_entity_revision, $newState, $this->currentUser()->id(), "{$oldState} ({$parent_entity_revision->getRevisionId()}) => {$newState}", TRUE);
 
         $response->addCommand(
