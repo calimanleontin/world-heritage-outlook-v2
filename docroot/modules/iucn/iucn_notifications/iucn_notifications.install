@@ -2,6 +2,7 @@
 
 use Drupal\pet\Entity\Pet;
 use Drupal\iucn_notifications\Plugin\NotificationService;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 /**
  * Install defualt pet templates.
@@ -16,25 +17,29 @@ function iucn_notifications_install() {
       'subject' => 'Replacement login information for [user:display-name] at [site:name]',
       'body' => '[user:display-name],\n\nA request to reset the password for your account has been made at [site:name].\n\nYou may now log in by clicking this link or copying and pasting it into your browser:\n\n[user:one-time-login-url]\n\nThis link can only be used once to log in and will lead you to a page where you can set your password. It expires after one day and nothing will happen if it\'s not used.\n\n--  [site:name] team',
     ],
-    NotificationService::WORKFLOW_SETUP_NEW_ASSESSMENT => [
-      'subject' => 'Coordinator has been assigned to a site',
+    AssessmentWorkflow::STATUS_UNDER_EVALUATION => [
+      'subject' => 'Coordinator has been assigned to an assessment',
+      'body' => 'You have been assigned to coordinate the following site assessment [node:edit-link]',
+    ],
+    AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => [
+      'subject' => 'Assessor has been assigned to an assessment',
+      'body' => 'You have been assigned to assess the following site assessment [node:edit-link]',
+    ],
+    AssessmentWorkflow::STATUS_READY_FOR_REVIEW => [
+      'subject' => 'Assessor has finished working on an assessment',
       'body' => 'You have been assigned to review the following site assessment [node:edit-link]',
     ],
-    NotificationService::WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS => [
-      'subject' => 'Assessor has been assigned to a site',
+    AssessmentWorkflow::STATUS_UNDER_REVIEW => [
+      'subject' => 'Reviewer has been assigned to an assessment',
       'body' => 'You have been assigned to review the following site assessment [node:edit-link]',
     ],
-    NotificationService::WORKFLOW_REVIEW_BY_COORDINATOR => [
-      'subject' => 'Assessment phase done',
-      'body' => 'You have been assigned to review the following site assessment [node:edit-link]',
-    ],
-    NotificationService::WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS => [
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => [
       'subject' => 'Review phase finished',
-      'body' => 'You have been assigned to review the following site assessment [node:edit-link]',
+      'body' => 'All reviewers finished their work on the following site assessment [node:edit-link]',
     ],
-    NotificationService::WORKFLOW_FINAL_EDITS_BY_COORDINATOR => [
+    AssessmentWorkflow::STATUS_APPROVED => [
       'subject' => 'Ready to publish',
-      'body' => 'You have been assigned to review the following site assessment [node:edit-link]',
+      'body' => 'The following site assessment [node:edit-link] is ready to be published',
     ],
   ];
   foreach ($petsConfig as $key => $config) {

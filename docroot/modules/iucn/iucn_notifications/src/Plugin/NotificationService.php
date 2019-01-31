@@ -19,21 +19,6 @@ class NotificationService {
 
   const USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
 
-  /** Coordinator / assessor has been assigned to work on an assessment. */
-  const WORKFLOW_SETUP_NEW_ASSESSMENT = 'SETUP_NEW_ASSESSMENT';
-
-  /** The assessor has finished working on the assessment. */
-  const WORKFLOW_INPUT_ASSESSMENT_DATA_BY_ASSESSORS = 'INPUT_ASSESSMENT_DATA_BY_ASSESSORS';
-
-  /** A reviewer has been  */
-  const WORKFLOW_REVIEW_BY_COORDINATOR = 'REVIEW_BY_COORDINATOR';
-
-  /** email sent to the coordinator when state is "Review phase finished" */
-  const WORKFLOW_ASSESSMENT_REVIEW_BY_REVIEWERS = 'ASSESSMENT_REVIEW_BY_REVIEWERS';
-
-  /** email sent to administrators when state is "Ready to publish" */
-  const WORKFLOW_FINAL_EDITS_BY_COORDINATOR = 'FINAL_EDITS_BY_COORDINATOR';
-
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
