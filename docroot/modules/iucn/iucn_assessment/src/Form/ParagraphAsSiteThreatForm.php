@@ -72,10 +72,10 @@ class ParagraphAsSiteThreatForm {
         $formField = &$form[$field];
         $form["{$field}_select_wrapper"] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['form-wrapper']],
+          '#attributes' => ['class' => ['form-wrapper ' . $field . '_checkboxes']],
           '#weight' => $formField['#weight'],
           "{$field}_select" => [
-            '#type' => 'select',
+            '#type' => 'checkboxes',
             '#title' => !empty($formField['widget']['title']['#value'])
               ? $formField['widget']['title']['#value']
               : $form[$field]['widget']['#title'],
