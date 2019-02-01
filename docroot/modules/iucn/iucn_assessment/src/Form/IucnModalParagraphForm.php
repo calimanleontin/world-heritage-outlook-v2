@@ -127,10 +127,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $response->addCommand(new HtmlCommand('#drupal-modal', $form));
     }
     else {
-      // Get all necessary data to be able to correctly update the correct
-      // field on the parent node.
-      $temporary_data = $form_state->getTemporary();
-
       // Update parent node change date.
       $this->nodeRevision->setChangedTime(time());
 
@@ -145,7 +141,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
 
         $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
         $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
-        // @todo add Ajax replace command for "Current workflow state: New" div
         $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
         $new_revision = $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
 
