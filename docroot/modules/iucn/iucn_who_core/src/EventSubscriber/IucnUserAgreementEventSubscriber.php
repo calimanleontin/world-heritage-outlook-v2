@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\iucn_who_core\Form\IucnUserAgreementSettingsForm;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -91,7 +92,8 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
       && $event->isMasterRequest()
       && in_array('text/html', $contentTypes)
       && !$this->routeIsAllowed()
-      && !$this->userAcceptedAgreement();
+      && !$this->userAcceptedAgreement()
+      && !$this->userCanSkipAgreement();
   }
 
   /**
@@ -124,4 +126,23 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
     return $user->field_accepted_agreement->value || $user->hasRole('administrator');
   }
 
+  protected function userCanSkipAgreement() {
+    $uid = $this->currentUser->id();
+    $user = User::load($uid);
+
+    $roles = $user->getRoles(TRUE);
+
+    if (!empty(array_intersect($roles, IucnUserAgreementSettingsForm::IGNORED_ROLES))) {
+      return true;
+    }
+
+    foreach ($roles as $role) {
+      $mustAcceptAgreement = $this->config->get('user_agreement_enabled_' . $role);
+      if (!$mustAcceptAgreement) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

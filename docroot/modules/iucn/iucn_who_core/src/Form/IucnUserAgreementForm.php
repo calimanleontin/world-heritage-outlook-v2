@@ -97,10 +97,16 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     $current_user = \Drupal::currentUser();
     $user = User::load($current_user->id());
     $agreed = !empty($user->field_accepted_agreement->value);
-    $data = $config->get('user_agreement_content');
+
+    $roles = $user->getRoles(TRUE);
+    $firstRole = reset($roles);
+    $data = $config->get('user_agreement_content_' . $firstRole);
     $data = !empty($data['value']) ? $data['value'] : '';
-    $agree_checkbox = $config->get('user_agreement_label_checkbox');
-    $agree_submit = $config->get('user_agreement_label_button');
+
+    if (empty($data)) {
+      $data = $config->get('user_agreement_content_default');
+      $data = !empty($data['value']) ? $data['value'] : '';
+    }
 
     $form['agreement'] = [
       '#type' => 'container',
@@ -115,17 +121,22 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
       ],
       'agree' => [
         '#type' => 'checkbox',
-        '#title' => $this->t('@agree_checkbox', ['@agree_checkbox' => $agree_checkbox]),
+        '#title' => $this->t('@agree_checkbox', ['@agree_checkbox' => $this->t('I agree to this user agreement')]),
         '#default_value' => $agreed,
         '#access' => !$agreed,
         '#required' => TRUE,
+      ],
+      'note' => [
+        '#type' => 'html_tag',
+        '#tag' => 'i',
+        '#value' => $this->t('Note: If you would like more information before agreeing to the user agreement, please email your IUCN coordinator'),
       ],
       'actions' => [
         '#type' => 'actions',
         'submit' => [
           '#type' => 'submit',
           '#name' => 'submit',
-          '#value' => $this->t('@agree_submit', ['@agree_submit' => $agree_submit]),
+          '#value' => $this->t('@agree_submit', ['@agree_submit' => $this->t('Submit')]),
           '#access' => !$agreed,
         ],
       ],
