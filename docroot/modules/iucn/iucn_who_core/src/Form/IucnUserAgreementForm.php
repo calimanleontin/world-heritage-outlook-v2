@@ -99,9 +99,17 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     $agreed = !empty($user->field_accepted_agreement->value);
 
     $roles = $user->getRoles(TRUE);
-    $firstRole = reset($roles);
-    $data = $config->get('user_agreement_content_' . $firstRole);
-    $data = !empty($data['value']) ? $data['value'] : '';
+    foreach ($roles as $role) {
+      $enabled = $config->get('user_agreement_enabled_' . $role);
+      if (!$enabled) {
+        $agreed = true;
+        continue;
+      }
+
+      if (empty($data)) {
+        $data = !empty($data['value']) ? $data['value'] : '';
+      }
+    }
 
     if (empty($data)) {
       $data = $config->get('user_agreement_content_default');
