@@ -142,6 +142,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         $states[$id] = $current_id;
         unset($this->empty_groups[$current_id]);
       }
+      $options[$id] = ltrim($title, '-');
     }
 
     $selected = $this->getSelectedOptions($items);

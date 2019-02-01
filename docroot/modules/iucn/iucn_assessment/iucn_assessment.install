@@ -246,3 +246,29 @@ function iucn_assessment_update_8005() {
     drupal_set_installed_schema_version('iucn_assessment', 8002);
   }
 }
+
+/**
+ * Update threats categories weights.
+ */
+function iucn_assessment_update_8006() {
+  $tids = [
+    1351, // Residential and Commercial Development
+    1352, // Agriculture and Aquaculture
+    1353, // Energy Production and Mining
+    1354, // Transportation and Service Corridors
+    1355, // Biological Resource Use
+    1356, // Human Intrusions & Disturbance
+    1357, // Natural System Modifications
+    1358, // Invasive and Other Problematic Species & Genes
+    1359, // Pollution
+    1360, // Geological Events
+    1361, // Climate Change & Severe Weather
+    1362, // Social/ Cultural Changes
+    1363, // Other
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
