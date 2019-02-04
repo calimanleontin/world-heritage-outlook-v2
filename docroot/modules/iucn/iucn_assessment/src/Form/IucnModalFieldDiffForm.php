@@ -58,7 +58,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
     $diffTable = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget'][0]['value']['#title']],
+      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget']['#title']],
       '#rows' => [],
       '#weight' => -10,
       '#attributes' => ['class' => ['diff-table']],
