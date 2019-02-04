@@ -141,8 +141,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
 
       $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
-      $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
-      $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
       $new_revision = $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
 
       $response->addCommand(
