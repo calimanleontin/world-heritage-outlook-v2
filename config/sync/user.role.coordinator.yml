@@ -12,6 +12,7 @@ permissions:
   - 'assign coordinator to assessment'
   - 'assign users to assessments'
   - 'bulk assign users to assessments'
+  - 'change agreement'
   - 'create assessment workflow_transition'
   - 'create content unpublished'
   - 'edit any site_assessment content'

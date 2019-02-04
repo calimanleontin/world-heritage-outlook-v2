@@ -97,17 +97,18 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     $current_user = \Drupal::currentUser();
     $user = User::load($current_user->id());
     $agreed = !empty($user->field_accepted_agreement->value);
+    $data = null;
 
     $roles = $user->getRoles(TRUE);
     foreach ($roles as $role) {
       $enabled = $config->get('user_agreement_enabled_' . $role);
-      if (!$enabled) {
-        $agreed = true;
-        continue;
+      $content = $config->get('user_agreement_content_' . $role);
+      if ($enabled && empty($data)) {
+        $data = !empty($content['value']) ? $content['value'] : NULL;
       }
 
-      if (empty($data)) {
-        $data = !empty($data['value']) ? $data['value'] : '';
+      if (!$enabled) {
+        $agreed = true;
       }
     }
 

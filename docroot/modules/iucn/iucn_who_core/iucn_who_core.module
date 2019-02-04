@@ -484,18 +484,12 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
     $uid = \Drupal::currentUser()->id();
     $currentUser = User::load($uid);
 
-    $canChangeAgreement = empty(array_intersect($currentUser->getRoles(TRUE), [
-      'coordinator',
-      'administrator',
-      'manager',
-    ]));
-
-    $disabled = $canChangeAgreement || $agreed;
+    $disabled = $currentUser->hasPermission('change agreement') || $agreed;
 
     array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
     $form['user_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('@agree_checkbox', ['@agree_checkbox' => t('User agrees the agreement')]),
+      '#title' => t('@agree_checkbox', ['@agree_checkbox' => t('User agreement accepted')]),
       '#default_value' => $agreed,
       '#disabled' => $disabled,
       '#weight' => 10,
