@@ -863,19 +863,37 @@ function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operat
  * Implements hook_menu_local_tasks_alter().
  */
 function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
-  if (empty($data['tabs'][0]['entity.node.canonical']['#link']['url'])) {
+  if (empty($data['tabs'])) {
     return;
   }
 
-  /** @var Node $node */
-  $node = \Drupal::request()->get('node');
+  foreach ($data['tabs'] as &$tab) {
+    if (empty($tab['entity.node.canonical']['#link']['url'])) {
+      continue;
+    }
 
-  if (empty($node) || $node->getType() != 'site_assessment') {
-    return;
+    $url = $tab['entity.node.canonical']['#link']['url'];
+
+    if (!($url instanceof Url)) {
+      continue;
+    }
+
+    $parameters = $url->getRouteParameters();
+
+    if (empty($parameters['node'])) {
+      continue;
+    }
+
+    /** @var Node $node */
+    $node = Node::load($parameters['node']);
+
+    if (empty($node) || $node->getType() != 'site_assessment') {
+      return;
+    }
+
+    $tab['entity.node.canonical']['#link']['url'] = Url::fromRoute('entity.node.revision', [
+      'node' => $node->id(),
+      'node_revision' => $node->getLoadedRevisionId(),
+    ]);
   }
-
-  $data['tabs'][0]['entity.node.canonical']['#link']['url'] = Url::fromRoute('entity.node.revision', [
-    'node' => $node->id(),
-    'node_revision' => $node->getLoadedRevisionId(),
-  ]);
 }
