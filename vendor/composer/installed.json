@@ -7668,9 +7668,6 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
-            },
-            "patches_applied": {
-                "Error sending mail breaks ajax response. Should apply https://www.drupal.org/project/smtp/issues/2711559 fix after it get approved.": "patches/smtp/error_breaks_ajax_response.patch"
             }
         },
         "installation-source": "dist",

@@ -30,9 +30,6 @@
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"
     },
-    "drupal/smtp": {
-      "Error sending mail breaks ajax response. Should apply https://www.drupal.org/project/smtp/issues/2711559 fix after it get approved.": "patches/smtp/error_breaks_ajax_response.patch"
-    },
     "drupal/social_media": {
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },
