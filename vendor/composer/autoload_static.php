@@ -170,6 +170,7 @@ class ComposerStaticInit87652fc8652eb2b167acc838fa189860
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
@@ -445,6 +446,10 @@ class ComposerStaticInit87652fc8652eb2b167acc838fa189860
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Matrix\\' => 
         array (
