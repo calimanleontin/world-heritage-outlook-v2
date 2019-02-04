@@ -87,7 +87,9 @@ function iucn_notifications_node_update(NodeInterface $node) {
   switch ($oldState . '>' . $newState) {
     case AssessmentWorkflow::STATUS_CREATION . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
     case AssessmentWorkflow::STATUS_NEW . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
-      $recipients[] = $coordinatorId;
+      if ($coordinatorId != \Drupal::currentUser()->id()) {
+        $recipients[] = $coordinatorId;
+      }
       break;
 
     case AssessmentWorkflow::STATUS_UNDER_EVALUATION . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:

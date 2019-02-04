@@ -266,7 +266,6 @@ class NodeSiteAssessmentStateChangeForm {
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
 
         // Save the differences on the revision "under review" revision.
-        $defaultUnderReviewRevision->set('field_settings', $settingsWithDifferences);
         $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
         $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
         $defaultUnderReviewRevision->setNewRevision(FALSE);

@@ -125,53 +125,48 @@ class IucnModalParagraphForm extends ContentEntityForm {
         '#weight' => -10,
       ];
       $response->addCommand(new HtmlCommand('#drupal-modal', $form));
+      return $response;
     }
-    else {
-      // Get all necessary data to be able to correctly update the correct
-      // field on the parent node.
-      $temporary_data = $form_state->getTemporary();
+    
+    // Update parent node change date.
+    $this->nodeRevision->setChangedTime(time());
 
-      // Update parent node change date.
-      $this->nodeRevision->setChangedTime(time());
+    if ($this->nodeRevision->isDefaultRevision()
+      && $this->workflowService->isNewAssessment($this->nodeRevision)
+      && empty($this->nodeRevision->field_coordinator->target_id)
+      && in_array('coordinator', $this->currentUser()->getRoles())) {
+      // Sets the current user as a coordinator if he has the coordinator role
+      // and edits the assessment.
+      $oldState = $this->nodeRevision->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
 
-      if ($this->nodeRevision->isDefaultRevision()
-        && $this->workflowService->isNewAssessment($this->nodeRevision)
-        && empty($this->nodeRevision->field_coordinator->target_id)
-        && in_array('coordinator', $this->currentUser()->getRoles())) {
-        // Sets the current user as a coordinator if he has the coordinator role
-        // and edits the assessment.
-        $oldState = $this->nodeRevision->field_state->value;
-        $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
+      $new_revision = $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
 
-        $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
-        $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
-        // @todo add Ajax replace command for "Current workflow state: New" div
-        $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
-        $new_revision = $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
-
-        $response->addCommand(
-          new ReplaceCommand(
-            "#node-site-assessment-edit-form .current-state",
-            NodeSiteAssessmentForm::getCurrentStateMarkup($new_revision)
-          )
-        );
-      }
-      $this->nodeRevision->save();
-
-      $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
-        'form_display' => $this->nodeFormDisplay,
-        'entity_form_initialized' => TRUE,
-      ]);
-
-      // Refresh the paragraphs field.
       $response->addCommand(
         new ReplaceCommand(
-          "{$this->fieldWrapperId} .js-form-item",
-          $nodeForm[$this->fieldName]['widget']
+          "#node-site-assessment-edit-form .current-state",
+          NodeSiteAssessmentForm::getCurrentStateMarkup($new_revision)
         )
       );
-      $response->addCommand(new CloseModalDialogCommand());
     }
+    else {
+      $this->nodeRevision->save();
+    }
+
+    $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
+      'form_display' => $this->nodeFormDisplay,
+      'entity_form_initialized' => TRUE,
+    ]);
+
+    // Refresh the paragraphs field.
+    $response->addCommand(
+      new ReplaceCommand(
+        "{$this->fieldWrapperId} >:first-child",
+        $nodeForm[$this->fieldName]['widget']
+      )
+    );
+    $response->addCommand(new CloseModalDialogCommand());
 
     return $response;
   }

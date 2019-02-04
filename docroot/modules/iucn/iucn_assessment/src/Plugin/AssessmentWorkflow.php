@@ -105,13 +105,14 @@ class AssessmentWorkflow {
    * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function checkAssessmentAccess(NodeInterface $node, $action = 'edit', AccountInterface $account = NULL) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::allowedIf($action != 'change_state');
+    }
+
     if (empty($account)) {
       $account = $this->currentUser;
     }
-    if ($node->bundle() != 'site_assessment') {
-      return AccessResult::allowed();
-    }
-    $access = AccessResult::neutral();
+    $access = AccessResult::allowed();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();

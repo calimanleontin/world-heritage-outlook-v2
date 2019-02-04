@@ -642,6 +642,7 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
       // All textareas should be limited to a certain number of characters.
       $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
       $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxDisplayLimit'] = $element['value']['#attributes']['maxDisplayLimit'] = 200;
       $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
     }
   }
