@@ -19,17 +19,15 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
   use StringTranslationTrait;
 
   const IGNORED_ROLES = [
-    'administrator',
     'anonymous',
     'authenticated',
-    'menu_editor',
-    'edit_world_heritage_site_assessments',
-    'publish_world_heritage_site_assessments',
-    'edit_content_pages',
-    'publish_content_pages',
-    'edit_world_heritage_site_information',
-    'publish_world_heritage_site_information',
-    'manage_submissions',
+  ];
+
+  const MAIN_ROLES = [
+    'iucn_manager',
+    'assessor',
+    'coordinator',
+    'reviewer',
   ];
 
   /**
@@ -83,7 +81,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('iucn_who_core.settings');
-    $defaultContent = $config->get('user_agreement_content_default');
+    $defaultContent = $config->get('agreement.default.content.value');
 
     $form['user_agreement_tabs'] = [
       '#type' => 'vertical_tabs',
@@ -102,13 +100,13 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
       '#type' => 'text_format',
       '#title' => $this->t('User agreement default content'),
       '#format' => 'html',
-      '#default_value' => !empty($defaultContent['value']) ? $defaultContent['value'] : '',
+      '#default_value' => $defaultContent ?: '',
     ];
 
     $allRoles = array_keys($this->entityTypeManager->getStorage('user_role')->loadMultiple());
 
-    $this->appendRolesToForm($form, array_diff($allRoles, static::IGNORED_ROLES));
-    $this->appendRolesToForm($form, array_diff(static::IGNORED_ROLES, ['anonymous', 'authenticated']));
+    $this->appendRolesToForm($form, static::MAIN_ROLES);
+    $this->appendRolesToForm($form, array_diff($allRoles, static::IGNORED_ROLES, static::MAIN_ROLES));
 
     return parent::buildForm($form, $form_state);
   }
@@ -119,7 +117,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
     $this->config('iucn_who_core.settings')
-      ->set('user_agreement_content_default', $form_state->getValue('user_agreement_content_default'));
+      ->set('agreement.default.content',$form_state->getValue('user_agreement_content_default'));
 
     $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
 
@@ -128,12 +126,9 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
         continue;
       }
 
-      $contentKey = 'user_agreement_content_' . $role->id();
-      $enabledKey = 'user_agreement_enabled_' . $role->id();
-
       $this->config('iucn_who_core.settings')
-        ->set($contentKey, $form_state->getValue($contentKey))
-        ->set($enabledKey, $form_state->getValue($enabledKey));
+        ->set(sprintf('agreement.%s.content', $role->id()), $form_state->getValue('user_agreement_content_' . $role->id()))
+        ->set(sprintf('agreement.%s.enabled', $role->id()), $form_state->getValue('user_agreement_enabled_' . $role->id()));
     }
 
     $this->config('iucn_who_core.settings')->save();
@@ -158,9 +153,6 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
         '#group' => 'user_agreement_tabs',
       ];
 
-      $content = $config->get('user_agreement_content_' . $role->id());
-      $enabled = $config->get('user_agreement_enabled_' . $role->id());
-
       $form['user_agreement'][$role->id()]['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -172,7 +164,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
       $form['user_agreement'][$role->id()]['user_agreement_enabled_' . $role->id()] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Enabled'),
-        '#default_value' => (bool) $enabled,
+        '#default_value' => (bool) $config->get(sprintf('agreement.%s.enabled', $role->id())),
         '#id' => sprintf('enable_user_agreement_%s', $role->id()),
       ];
 
@@ -182,7 +174,7 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
           '#type' => 'text_format',
           '#title' => $this->t('Content'),
           '#format' => 'html',
-          '#default_value' => !empty($content['value']) ? $content['value'] : '',
+          '#default_value' => $config->get(sprintf('agreement.%s.content.value', $role->id())),
           '#description' => $this->t('Leave it blank to display the default user agreement for @role role', [
             '@role' => $role->label(),
           ]),
@@ -195,5 +187,4 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
       ];
     }
   }
-
 }

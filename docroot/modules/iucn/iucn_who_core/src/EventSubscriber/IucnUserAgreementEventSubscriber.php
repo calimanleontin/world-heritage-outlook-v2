@@ -132,12 +132,8 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
 
     $roles = $user->getRoles(TRUE);
 
-    if (!empty(array_intersect($roles, IucnUserAgreementSettingsForm::IGNORED_ROLES))) {
-      return true;
-    }
-
     foreach ($roles as $role) {
-      $mustAcceptAgreement = $this->config->get('user_agreement_enabled_' . $role);
+      $mustAcceptAgreement = $this->config->get(sprintf('agreement.%s.enabled', $role));
       if (!$mustAcceptAgreement) {
         return true;
       }

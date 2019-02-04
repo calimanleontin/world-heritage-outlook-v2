@@ -101,10 +101,10 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
 
     $roles = $user->getRoles(TRUE);
     foreach ($roles as $role) {
-      $enabled = $config->get('user_agreement_enabled_' . $role);
-      $content = $config->get('user_agreement_content_' . $role);
+      $enabled = $config->get(sprintf('agreement.%s.enabled', $role));
+      $content = $config->get(sprintf('agreement.%s.content.value', $role));
       if ($enabled && empty($data)) {
-        $data = !empty($content['value']) ? $content['value'] : NULL;
+        $data = $content;
       }
 
       if (!$enabled) {
@@ -113,8 +113,7 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
     }
 
     if (empty($data)) {
-      $data = $config->get('user_agreement_content_default');
-      $data = !empty($data['value']) ? $data['value'] : '';
+      $data = $config->get('agreement.default.content.value');
     }
 
     $form['agreement'] = [
