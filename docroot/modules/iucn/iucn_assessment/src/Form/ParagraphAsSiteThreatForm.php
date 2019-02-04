@@ -112,7 +112,7 @@ class ParagraphAsSiteThreatForm {
       foreach ($tids as $idx => $tid) {
         $selector = str_replace('%tid', $tid, $generic_selector);
         $form[$field]['#states']['visible'][0][] = [$selector => ['checked' => TRUE]];
-        $form[$field]['widget']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+        $form[$field]['widget'][0]['value']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
         $form[$field]['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
       }
       // Required states API is bugged. It only shows the asterisk.

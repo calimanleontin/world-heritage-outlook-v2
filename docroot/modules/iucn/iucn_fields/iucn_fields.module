@@ -101,9 +101,7 @@ function _iucn_fields_is_altered_element($element, $context) {
 }
 
 function _iucn_fields_alter_element_options(array &$element, $assessment_year) {
-  $options = &$element['#options'];
-  $removed_tids = [];
-  foreach ($options as $tid => &$label) {
+  foreach ($element['#options'] as $tid => &$label) {
     $term = Term::load($tid);
     if (empty($term)) {
       continue;
@@ -112,19 +110,20 @@ function _iucn_fields_alter_element_options(array &$element, $assessment_year) {
     /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
     $term_alter_service = \Drupal::service('iucn_fields.term_alter');
     if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
-      $removed_tids[] = $tid;
-      unset($options[$tid]);
+      unset($element['#options'][$tid]);
+      if (!empty($element['#default_value'])) {
+        if (is_array($element['#default_value'])) {
+          unset($element['#default_value'][$tid]);
+        }
+        elseif ($element['#default_value'] == $tid) {
+          $element['#default_value'] = NULL;
+        }
+      }
       continue;
     }
     $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
     if (!empty($term_new_name)) {
       $label = str_replace($term_name, $term_new_name, $label);
-    }
-  }
-
-  foreach ($element['#default_value'] as $idx => $value) {
-    if (in_array($value, $removed_tids)) {
-      unset($element['#default_value'][$idx]);
     }
   }
 }

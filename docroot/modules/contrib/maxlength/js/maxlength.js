@@ -53,6 +53,14 @@
   ml.calculate = function(obj, options, count, wysiwyg, getter, setter) {
     var counter = $('#' + obj.attr('id') + '-' + options.css);
     var limit = parseInt(obj.attr('maxlength'));
+    var maxDisplayLimit = parseInt(obj.attr('maxDisplayLimit'));
+
+    //Display the number of characters remaining
+    // only when there are less then maxDisplayLimit characters
+    // or maxDisplayLimit is not defined
+    if (isNaN(maxDisplayLimit) || maxDisplayLimit === undefined) {
+        maxDisplayLimit = -1;
+    }
 
     if (count == undefined) {
       if (options.truncateHtml) {
@@ -106,7 +114,11 @@
       counter.removeClass(options.cssExceeded);
     }
 
-    counter.html(options.counterText.replace('@limit', limit).replace('@remaining', available).replace('@count', count));
+    if (maxDisplayLimit === -1 || available <= maxDisplayLimit) {
+        counter.html(options.counterText.replace('@limit', limit).replace('@remaining', available).replace('@count', count));
+    } else {
+        counter.html('</br>');
+    }
   };
 
   /**

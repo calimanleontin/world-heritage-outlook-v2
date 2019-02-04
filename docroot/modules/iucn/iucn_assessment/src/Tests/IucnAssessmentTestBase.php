@@ -43,13 +43,14 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    * @param array $field_changes
    *   An array of field changes.
    */
-  protected function setAssessmentState(NodeInterface $node, $state, $field_changes = NULL) {
+  protected function setAssessmentState(NodeInterface $node, $newState, $field_changes = NULL) {
     if (!empty($field_changes)) {
       foreach ($field_changes as $field => $target_id) {
         $node->{$field}->target_id = $target_id;
       }
     }
-    \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, $state);
+    $state = $node->field_state->value;
+    \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
   }
 
   /**
