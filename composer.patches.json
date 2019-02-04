@@ -30,6 +30,9 @@
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"
     },
+    "drupal/smtp": {
+      "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch"
+    },
     "drupal/social_media": {
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },

@@ -7668,6 +7668,9 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch"
             }
         },
         "installation-source": "dist",
