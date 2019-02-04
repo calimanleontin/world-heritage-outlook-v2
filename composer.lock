@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3aa08adcd16a6a8b99c517fdb8db1309",
+    "content-hash": "2de668cba558bbb052f99385b53eb2b3",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -7084,7 +7084,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.11",
+                    "version": "8.x-1.10",
                     "datestamp": "1542564480",
                     "security-coverage": {
                         "status": "covered",
@@ -7095,6 +7095,9 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Infinite loop inside Highlight.php -> createExcerpt function": "https://www.drupal.org/files/issues/2019-01-04/3022724-10--fix_highlight_excerpt_creation_infinite_loop.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
