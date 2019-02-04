@@ -4,32 +4,20 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-abstract class IucnModalDiffForm extends IucnModalForm {
+abstract class IucnModalDiffForm extends IucnModalParagraphForm {
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
+    $form['#attributes']['class'][] = 'diff-form';
     $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
+    $form['#suffix'] = '</div>';
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
+    $form['#attached']['library'][] = 'iucn_backend/font-awesome';
     return $form;
-  }
-
-  public function getTableCellMarkup($markup, $class, $span = 1, $weight = 0) {
-    return [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'paragraph-summary-component',
-          "paragraph-summary-component-$class",
-          "paragraph-summary-component-span-$span",
-        ],
-      ],
-      'data' => ['#markup' => $markup],
-      '#weight' => $weight,
-    ];
   }
 
   public function getDiffMarkup($diff) {
@@ -44,17 +32,6 @@ abstract class IucnModalDiffForm extends IucnModalForm {
       }
     }
     return $diff_rows;
-  }
-
-  public function addAuthorCell(array &$table, $key, $markup, $class, $span = 1, $weight = 0) {
-    foreach ($table['#attributes']['class'] as &$class) {
-      if (preg_match('/paragraph-top-col-(\d+)/', $class, $matches)) {
-        $col_count = $matches[1] + $span - 1;
-        $class = "paragraph-top-col-$col_count";
-      }
-    }
-
-    $table[$key]['author'] = $this->getTableCellMarkup($markup, $class, $span, $weight);
   }
 
   /**
@@ -75,14 +52,14 @@ abstract class IucnModalDiffForm extends IucnModalForm {
    * @return
    *  The rendered element.
    */
-  public function getCopyValueButton($vid, $fieldType, $fieldName, $fieldValue, $extraFieldName = NULL, $extraFieldValue = NULL) {
+  public function getCopyValueButton($vid, $fieldWidgetType, $fieldName, $fieldValue, $extraFieldName = NULL, $extraFieldValue = NULL) {
     $key = "{$fieldName}_{$vid}";
 
     $element = [
       '#theme' => 'assessment_diff_copy_button',
-      '#type' => $fieldType,
+      '#type' => $fieldWidgetType,
       '#key' => $key,
-      '#selector' => $this->getJsSelector($fieldName, $fieldType),
+      '#selector' => $this->getJsSelector($fieldName, $fieldWidgetType),
       '#attached' => [
         'drupalSettings' => [
           'diff' => [
@@ -95,7 +72,7 @@ abstract class IucnModalDiffForm extends IucnModalForm {
     if (!empty($extraFieldName)) {
       $key2 = "{$extraFieldName}_{$vid}";
       $element['#key2'] = $key2;
-      $element['#selector2'] = $this->getJsSelector($extraFieldName, $fieldType);
+      $element['#selector2'] = $this->getJsSelector($extraFieldName, $fieldWidgetType);
       if (!empty($extraFieldValue)) {
         $element['#attached']['drupalSettings']['diff'][$key2] = $this->getCopyFieldValue($extraFieldValue);
       }
@@ -113,7 +90,7 @@ abstract class IucnModalDiffForm extends IucnModalForm {
    * @return string
    *  The field type.
    */
-  public function getDiffFieldType($widget) {
+  public function getDiffFieldWidgetType($widget) {
     $type = '';
     if (!empty($widget['#type'])) {
       $type = $widget['#type'];
@@ -135,15 +112,15 @@ abstract class IucnModalDiffForm extends IucnModalForm {
    *
    * @param $fieldName
    *  The machine name of the field.
-   * @param $fieldType
+   * @param $fieldWidgetType
    *  Type of field (select, checkboxes, etc).
    *
    * @return string
    *  The JS selector.
    */
-  public function getJsSelector($fieldName, $fieldType) {
+  public function getJsSelector($fieldName, $fieldWidgetType) {
     $selector = 'edit-' . str_replace('_', '-', $fieldName);
-    switch ($fieldType) {
+    switch ($fieldWidgetType) {
       case "textarea":
         $selector .= '-0-value';
         break;

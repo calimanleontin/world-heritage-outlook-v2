@@ -1,6 +1,6 @@
-name: String field formatter
+name: String Field Formatter
 type: module
-description: Adds formatters to plain string type field
+description: Adds formatters to plain string type field.
 core: 8.x
 dependencies:
-  - text
+  - drupal:text

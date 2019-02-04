@@ -1,0 +1,77 @@
+uuid: 350e0994-5d8f-4a3a-a32f-39b98b00c064
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.diff
+    - field.field.paragraph.as_site_value_wh.field_as_description
+    - field.field.paragraph.as_site_value_wh.field_as_values_criteria
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_wh.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_wh
+  module:
+    - ds
+    - iucn_site
+id: paragraph.as_site_value_wh.diff
+targetEntityType: paragraph
+bundle: as_site_value_wh
+mode: diff
+content:
+  field_as_description:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_values_criteria:
+    weight: 1
+    label: hidden
+    settings:
+      separator: ''
+      override_label: '1'
+      singular: Criterion
+      plural: Criteria
+      link: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: entity_reference_list
+    region: content
+  field_as_values_curr_state:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    type: basic_string
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_curr_trend:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_value:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true

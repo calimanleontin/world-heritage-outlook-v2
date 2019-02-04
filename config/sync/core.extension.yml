@@ -32,6 +32,7 @@ module:
   editor_advanced_link: 0
   editor_file: 0
   entity_print: 0
+  entity_reference: 0
   entity_reference_revisions: 0
   facets: 0
   facets_pretty_paths: 0
@@ -54,10 +55,10 @@ module:
   iucn_config_ignore: 0
   iucn_decision_tree: 0
   iucn_fields: 0
+  iucn_notifications: 0
   iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
-  iucn_who_diff: 0
   iucn_who_homepage: 0
   kint: 0
   lang_dropdown: 0
@@ -76,6 +77,7 @@ module:
   options: 0
   page_cache: 0
   path: 0
+  pet: 0
   purge: 0
   purge_drush: 0
   purge_processor_cron: 0

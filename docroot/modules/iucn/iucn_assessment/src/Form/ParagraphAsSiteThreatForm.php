@@ -38,7 +38,7 @@ class ParagraphAsSiteThreatForm {
     ],
   ];
 
-  public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+  public static function alter(array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */
@@ -157,7 +157,8 @@ class ParagraphAsSiteThreatForm {
   public static function validateValues(array &$form, FormStateInterface $form_state) {
     $values_filled = FALSE;
     foreach (self::AFFECTED_VALUES_FIELDS as $field) {
-      if (!empty($form_state->getValue("{$field}_select"))) {
+      if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($form_state->getValue("{$field}_select"))) {
+        // The field is not rendered on diff modal OR a value has been selected.
         $values_filled = TRUE;
         break;
       }
@@ -166,7 +167,9 @@ class ParagraphAsSiteThreatForm {
       $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
     }
 
-    if (empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_out')['value'])) {
+    $fieldThreatsInIsRendered = (!empty($form['field_as_threats_in']) || !empty($form['diff']['edit']['field_as_threats_in']));
+    $fieldThreatsOutIsRendered = (!empty($form['field_as_threats_out']) || !empty($form['diff']['edit']['field_as_threats_out']));
+    if ($fieldThreatsInIsRendered && $fieldThreatsOutIsRendered && empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_out')['value'])) {
       $form_state->setErrorByName('threat_in_out', t('At least one option must be selected for Inside site/Outside site'));
     }
   }

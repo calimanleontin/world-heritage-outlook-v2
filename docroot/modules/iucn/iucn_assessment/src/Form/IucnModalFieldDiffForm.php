@@ -2,63 +2,13 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
-  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
-  protected $entityFormDisplay;
-
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
-  protected $workflowService;
-
-  /** @var \Drupal\node\NodeInterface|null */
-  protected $nodeRevision;
-
-  /** @var string|null  */
-  protected $field;
-
-  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
-  protected $nodeFormDisplay;
-
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
-    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
-    $this->setEntityTypeManager($entityTypeManager);
-    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
-    $this->workflowService = $assessmentWorkflow;
-
-    $routeMatch = $this->getRouteMatch();
-    $this->nodeRevision = $routeMatch->getParameter('node_revision');
-    $this->field = $routeMatch->getParameter('field');
-
-    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
-    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
-      // Remove all other fields except the selected one.
-      if ($name != $this->field) {
-        $this->nodeFormDisplay->removeComponent($name);
-      }
-    }
-  }
-
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity.repository'),
-      $container->get('entity_type.bundle.info'),
-      $container->get('datetime.time'),
-      $container->get('entity_type.manager'),
-      $container->get('iucn_assessment.workflow')
-    );
-  }
-
-  public function getNodeFieldDiff(NodeInterface $node, $fieldName, $fieldType) {
-    $settings = json_decode($node->field_settings->value, TRUE);
+  public function getNodeFieldDiff($fieldWidgetType) {
+    $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
     if (empty($settings['diff'])) {
       return [];
     }
@@ -70,30 +20,29 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     ];
 
     foreach ($settings['diff'] as $vid => $diff) {
-      if (empty($diff['node'][$node->id()]['diff'][$fieldName])) {
+      if (empty($diff['node'][$this->nodeRevision->id()]['diff'][$this->fieldName])) {
         continue;
       }
 
-      $rowDiff = $diff['node'][$node->id()];
+      $rowDiff = $diff['node'][$this->nodeRevision->id()];
+      $revision = $this->workflowService->getAssessmentRevision($vid);
+      $fieldDiff[] = [
+        'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
+          ? $this->nodeRevision->field_assessor->entity->getDisplayName()
+          : $revision->getRevisionUser()->getDisplayName(),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName]),
+        'copy' => $this->getCopyValueButton($vid, $fieldWidgetType, $this->fieldName, $revision->get($this->fieldName)->getValue()),
+      ];
+
       if (empty($initialValue)) {
         // All revisions have the same initial version.
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
-        $initialValue = $initialRevision->get($fieldName)->getValue();
-        $renderedInitialValue = $initialRevision->get($fieldName)->view(['settings' => ['link' => 0]]);
+        $initialValue = $initialRevision->get($this->fieldName)->getValue();
+        $renderedInitialValue = $initialRevision->get($this->fieldName)->view('diff');
         unset($renderedInitialValue['#title']);
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
-        $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldType, $fieldName, $initialValue);
+        $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldWidgetType, $this->fieldName, $initialValue);
       }
-
-      /** @var \Drupal\node\NodeInterface $revision */
-      $revision = $this->workflowService->getAssessmentRevision($vid);
-      $fieldDiff[] = [
-        'author' => ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
-          ? $node->field_assessor->entity->getDisplayName()
-          : $revision->getRevisionUser()->getDisplayName(),
-        'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-        'copy' => $this->getCopyValueButton($vid, $fieldType, $fieldName, $revision->get($fieldName)->getValue()),
-      ];
     }
     return $fieldDiff;
   }
@@ -109,16 +58,16 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
     $diffTable = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $form[$this->field]['widget'][0]['value']['#title']],
+      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget'][0]['value']['#title']],
       '#rows' => [],
       '#weight' => -10,
-      '#attributes' => ['class' => ['field-diff-table']],
+      '#attributes' => ['class' => ['diff-table']],
     ];
 
-    $fieldDiff = $this->getNodeFieldDiff($this->nodeRevision, $this->field, $this->getDiffFieldType($form[$this->field]['widget']));
+    $fieldDiff = $this->getNodeFieldDiff($this->getDiffFieldWidgetType($form[$this->fieldName]['widget']));
     foreach ($fieldDiff as $diff) {
       $diffTable['#rows'][] = [
-        'author' => $this->getTableCellMarkup($diff['author'], 'author', 2, -100),
+        'author' => ['data' => ['#markup' => $diff['author']]],
         'diff' => [
           'data' => [
             '#type' => 'table',
@@ -131,12 +80,16 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
       ];
     }
 
+    unset($form[$this->fieldName]['#title']);
+    unset($form[$this->fieldName]['widget']['#title']);
+    unset($form[$this->fieldName]['widget'][0]['#title']);
+    unset($form[$this->fieldName]['widget'][0]['value']['#title']);
     $diffTable[] = [
-      'author' => $this->getTableCellMarkup($this->t('Final version'), 'author', 2, -100),
-      'diff' => $form[$this->field],
+      'author' => ['data' => ['#markup' => $this->t('Final version')]],
+      'diff' => $form[$this->fieldName],
     ];
 
-    $form[$this->field] = $diffTable;
+    $form[$this->fieldName] = $diffTable;
     return $form;
   }
 
