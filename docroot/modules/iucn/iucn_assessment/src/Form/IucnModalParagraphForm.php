@@ -150,7 +150,9 @@ class IucnModalParagraphForm extends ContentEntityForm {
         )
       );
     }
-    $this->nodeRevision->save();
+    else {
+      $this->nodeRevision->save();
+    }
 
     $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
       'form_display' => $this->nodeFormDisplay,
