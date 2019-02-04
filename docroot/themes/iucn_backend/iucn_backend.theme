@@ -44,21 +44,14 @@ function iucn_backend_theme_suggestions_block_alter(&$suggestions, $variables) {
     $suggestion = str_replace('iucn_backend_', 'seven_', $suggestion);
   }
 }
-
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
  *
  * Changes vertical tabs to container.
  */
 function iucn_backend_theme_suggestions_node_edit_form_alter(&$suggestions, $variables) {
-  if ($variables['form']['#form_id'] == 'node_site_assessment_edit_form') {
+  if (!empty($variables['form']['#form_id']) && $variables['form']['#form_id'] == 'node_site_assessment_edit_form') {
     $suggestions[] = 'site_assessment_edit_form';
-  }
-}
-
-function iucn_backend_form_node_form_alter(&$form, FormStateInterface $form_state) {
-  if($form['#form_id'] == 'site_assessment') {
-    $form['#theme'] = ['site_assessment_edit_form'];
   }
 }
 
