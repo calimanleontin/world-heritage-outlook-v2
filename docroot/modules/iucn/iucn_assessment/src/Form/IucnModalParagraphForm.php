@@ -160,7 +160,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     // Refresh the paragraphs field.
     $response->addCommand(
       new ReplaceCommand(
-        "{$this->fieldWrapperId} .js-form-item",
+        "{$this->fieldWrapperId} >:first-child",
         $nodeForm[$this->fieldName]['widget']
       )
     );
