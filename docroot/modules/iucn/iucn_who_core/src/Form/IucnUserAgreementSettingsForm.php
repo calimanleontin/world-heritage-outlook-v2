@@ -149,21 +149,11 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
         continue;
       }
 
-      $tabTitle = $this->t('Role @role', [
-        '@role' => $role->label(),
-      ]);
-
-      $textTitle = $this->t('User agreement page content for @role', [
-        '@role' => $role->label(),
-      ]);
-
-      $helpText = $this->t('Leave it blank to display the default user agreement for @role role', [
-        '@role' => $role->label()
-      ]);
-
       $form['user_agreement'][$role->id()] = [
         '#type' => 'details',
-        '#title' => $tabTitle,
+        '#title' => $this->t('Role @role', [
+          '@role' => $role->label(),
+        ]),
         '#open' => TRUE,
         '#group' => 'user_agreement_tabs',
       ];
@@ -174,7 +164,9 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
       $form['user_agreement'][$role->id()]['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $textTitle,
+        '#value' => $this->t('User agreement page content for @role', [
+          '@role' => $role->label(),
+        ]),
       ];
 
       $form['user_agreement'][$role->id()]['user_agreement_enabled_' . $role->id()] = [
@@ -191,7 +183,9 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
           '#title' => $this->t('Content'),
           '#format' => 'html',
           '#default_value' => !empty($content['value']) ? $content['value'] : '',
-          '#description' => $helpText,
+          '#description' => $this->t('Leave it blank to display the default user agreement for @role role', [
+            '@role' => $role->label(),
+          ]),
         ],
         '#states' => [
           'invisible' => [

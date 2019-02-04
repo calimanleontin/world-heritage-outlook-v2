@@ -27,7 +27,7 @@ permissions:
   - 'assign users to assessments'
   - 'bulk assign users to assessments'
   - 'bypass node access'
-  - 'change agreement'
+  - 'change other users agreement settings'
   - 'create assessment workflow_transition'
   - 'create url aliases'
   - 'delete all revisions'

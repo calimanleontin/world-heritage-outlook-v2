@@ -3,6 +3,7 @@
 use \Drupal\iucn_who_core\ToolbarHandler;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -478,13 +479,14 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
   }
 
   if ($form_id == 'user_form') {
-    $user = \Drupal::requestStack()->getCurrentRequest()->get('user');
+    $formObject = $form_state->getFormObject();
+    $user= $formObject->getEntity();
+
     $agreed = !empty($user->field_accepted_agreement->value);
 
-    $uid = \Drupal::currentUser()->id();
-    $currentUser = User::load($uid);
+    $currentUser = \Drupal::currentUser();
 
-    $disabled = (!$currentUser->hasPermission('change agreement')) || $agreed;
+    $disabled = (!$currentUser->hasPermission('change other users agreement settings')) || $agreed;
 
     array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
     $form['user_agreement'] = [
@@ -502,12 +504,13 @@ function saveAgreement(array $form, FormStateInterface $form_state) {
     return;
   }
 
-  $user = \Drupal::requestStack()->getCurrentRequest()->get('user');
+  $formObject = $form_state->getFormObject();
+  $user= $formObject->getEntity();
   if (!empty($user->field_accepted_agreement->value)) {
     return;
   }
 
-  $user->set('field_accepted_agreement', date('Y-m-d\TH:i:s', time()));
+  $user->set('field_accepted_agreement', date(DateTimeItemInterface::DATETIME_STORAGE_FORMAT, time()));
   $user->save();
 }
 
