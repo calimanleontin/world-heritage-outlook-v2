@@ -484,7 +484,7 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
     $uid = \Drupal::currentUser()->id();
     $currentUser = User::load($uid);
 
-    $disabled = $currentUser->hasPermission('change agreement') || $agreed;
+    $disabled = (!$currentUser->hasPermission('change agreement')) || $agreed;
 
     array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
     $form['user_agreement'] = [
