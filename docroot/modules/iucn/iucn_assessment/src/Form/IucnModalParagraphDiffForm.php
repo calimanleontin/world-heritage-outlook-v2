@@ -101,7 +101,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
           $renderedInitialValue = $initialRevision->get($fieldName)->view('diff');
-          unset($renderedInitialValue['#title']);
+          $renderedInitialValue['#title'] = NULL;
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
             'copy' => !empty($initialValue)
@@ -196,7 +196,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           continue;
         }
 
-        $cssClass = 'widget-type--' . $diffData['widget_type'] . ' field-name--' . $field;
+        $cssClass = ' field-name--' . $field;
+        if (!empty($diffData['widget_type'])) {
+          $cssClass .= 'widget-type--' . $diffData['widget_type'];
+        }
         if (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
           $row[$field]['#wrapper_attributes']['class'][] = $cssClass;
