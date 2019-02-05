@@ -1208,7 +1208,7 @@ display:
           click_sort_column: value
           type: list_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1397,7 +1397,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3157,9 +3157,9 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        changed:
-          id: changed
-          table: node_field_data
+        changed_1:
+          id: changed_1
+          table: node_field_revision
           field: changed
           relationship: none
           group_type: group
@@ -3601,7 +3601,7 @@ display:
           value:
             min: ''
             max: ''
-            value: '123456789'
+            value: 'do not modify; filter altered in iucn_assessment_views_query_alter'
           group: 1
           exposed: false
           expose:
@@ -3634,6 +3634,63 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: numeric
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
