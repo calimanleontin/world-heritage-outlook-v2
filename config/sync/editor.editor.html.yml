@@ -13,6 +13,7 @@ third_party_settings:
     scheme: public
     directory: files/inline-files
     extensions: 'txt doc docx pdf ppt pptx jpg png'
+    max_size: ''
 format: html
 editor: ckeditor
 settings:
@@ -61,7 +62,6 @@ settings:
             - DrupalFile
             - Blockquote
             - DrupalImage
-            - ImceImage
         -
           name: Tools
           items:
@@ -73,12 +73,13 @@ settings:
             - Maximize
             - Source
             - ShowBlocks
+            - Scayt
   plugins:
+    language:
+      language_list: un
     drupallink:
       linkit_enabled: true
       linkit_profile: default
-    language:
-      language_list: un
     stylescombo:
       styles: "h2.left-border|Bordered subheading\r\nli.iucn-arrow|Arrow list item\r\nh3.iucn-arrow|Arrow h3\r\nstrong.bottom-border|Underlined emphasis\r\np.embed-responsive.embed-responsive-16by9|Embed 16:9\r\np.embed-responsive.embed-responsive-4by3|Embed 4:3"
 image_upload:
