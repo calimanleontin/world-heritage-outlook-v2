@@ -39,6 +39,9 @@ function iucn_who_preprocess_block(&$variables) {
     break;
 
     case 'facet_block':
+      if (empty($variables['content'][0]['#items'])) {
+        break;
+      }
       foreach ($variables['content'][0]['#items'] as $key => $item) {
         if ($variables['elements']['#id'] == 'inscriptioncriteria') {
           $criteria_id = $variables['content'][0]['#items'][$key]['#attributes']['data-drupal-facet-item-value'];
