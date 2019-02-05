@@ -15,5 +15,6 @@ permissions:
   - 'use assessment transition reviewed_reviewed'
   - 'use assessment transition under_review_reviewed'
   - 'use assessment transition under_review_under_review'
+  - 'use text format assessment_text_format'
   - 'view any unpublished content'
   - 'view latest version'

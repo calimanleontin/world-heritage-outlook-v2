@@ -1,0 +1,33 @@
+uuid: 4386917c-dc6d-4515-8168-c7410613acd2
+langcode: en
+status: true
+dependencies:
+  module:
+    - inline_responsive_images
+name: 'Simple text formater with scayt'
+format: simple_text_formater_with_scayt
+weight: -10
+filters:
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: true
+    weight: -10
+    settings: {  }
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: 0
+    settings:
+      image_style_crop_thumbnail: '0'
+      image_style_free_crop_thumbnail: '0'
+      image_style_free_crop_thumbnail_100: '0'
+      image_style_large: '0'
+      image_style_large_image: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_medium: '0'
+      image_style_page_teaser: '0'
+      image_style_sites_thumbnail: '0'
+      image_style_site_map_detail: '0'
+      image_style_thumbnail: '0'
