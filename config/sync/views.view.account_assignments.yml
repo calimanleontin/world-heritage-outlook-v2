@@ -8,6 +8,7 @@ dependencies:
     - field.storage.node.field_reviewers
     - field.storage.node.field_state
     - node.type.site_assessment
+    - taxonomy.vocabulary.iucn_region
     - user.role.administrator
     - user.role.assessor
     - user.role.coordinator
@@ -16,6 +17,7 @@ dependencies:
   module:
     - node
     - options
+    - taxonomy
     - user
     - workflow
 id: account_assignments
@@ -45,7 +47,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: false
-          distinct: false
+          distinct: true
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -202,7 +204,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -266,7 +268,7 @@ display:
           click_sort_column: value
           type: list_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -329,7 +331,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -392,7 +394,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -455,7 +457,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -517,6 +519,73 @@ display:
           destination: false
           entity_type: node
           plugin_id: entity_operations
+        changed_1:
+          id: changed_1
+          table: node_field_data
+          field: changed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Changed
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
       filters:
         type:
           id: type
@@ -863,7 +932,21 @@ display:
             value: 'No assessments.'
             format: html
           plugin_id: text
-      relationships: {  }
+      relationships:
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: false
+          plugin_id: standard
       arguments:
         field_reviewers_target_id:
           id: field_reviewers_target_id
@@ -905,6 +988,7 @@ display:
         groups:
           1: AND
       use_ajax: true
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -948,6 +1032,24 @@ display:
           group_type: group
           admin_label: 'field_coordinator: User'
           required: true
+          plugin_id: standard
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          relationship: none
+          group_type: group
+          admin_label: 'field_as_site: Content'
+          required: true
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: false
           plugin_id: standard
       arguments:
         field_coordinator_target_id:
@@ -1306,73 +1408,6 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-        changed:
-          id: changed
-          table: node_field_revision
-          field: changed
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Last update'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
         operations:
           id: operations
           table: node
@@ -1723,6 +1758,63 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: workflow_state
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -1784,6 +1876,24 @@ display:
           group_type: group
           admin_label: 'field_assessor: User'
           required: true
+          plugin_id: standard
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          relationship: none
+          group_type: group
+          admin_label: 'field_as_site: Content'
+          required: true
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: false
           plugin_id: standard
       arguments:
         field_assessor_target_id:
@@ -2596,6 +2706,63 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: numeric
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -3552,6 +3719,7 @@ display:
         pager: false
         title: false
         header: false
+        relationships: false
       access:
         type: role
         options:
@@ -3924,6 +4092,63 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: workflow_state
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -3965,6 +4190,25 @@ display:
             value: 'If you edit one of the assessments below, you will be automatically assigned to coordinate it.'
             format: html
           plugin_id: text
+      relationships:
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          relationship: none
+          group_type: group
+          admin_label: 'field_as_site: Content'
+          required: true
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -3972,6 +4216,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -3996,6 +4241,7 @@ display:
         pager: false
         title: false
         header: false
+        relationships: false
       access:
         type: role
         options:
@@ -4303,6 +4549,63 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: numeric
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -4343,6 +4646,25 @@ display:
             value: "The following assessments need to be published.<br/>\r\nYou can publish multiple assessments at once using the <a href=\"/admin/content/assessments\">assessments listing</a> page."
             format: html
           plugin_id: text
+      relationships:
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          relationship: none
+          group_type: group
+          admin_label: 'field_as_site: Content'
+          required: true
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -4350,6 +4672,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:

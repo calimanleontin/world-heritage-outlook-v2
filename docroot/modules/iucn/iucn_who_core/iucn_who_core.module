@@ -3,6 +3,7 @@
 use \Drupal\iucn_who_core\ToolbarHandler;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -476,8 +477,43 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
       '#weight' => '200',
     ];
   }
+
+  if ($form_id == 'user_form') {
+    $formObject = $form_state->getFormObject();
+    $user= $formObject->getEntity();
+
+    $agreed = !empty($user->field_accepted_agreement->value);
+
+    $currentUser = \Drupal::currentUser();
+
+    $disabled = (!$currentUser->hasPermission('change other users agreement settings')) || $agreed;
+
+    array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
+    $form['user_agreement'] = [
+      '#type' => 'checkbox',
+      '#title' => t('@agree_checkbox', ['@agree_checkbox' => t('User agreement accepted')]),
+      '#default_value' => $agreed,
+      '#disabled' => $disabled,
+      '#weight' => 10,
+    ];
+  }
 }
 
+function saveAgreement(array $form, FormStateInterface $form_state) {
+  if (empty($form_state->getValue('user_agreement'))) {
+    return;
+  }
+
+  $formObject = $form_state->getFormObject();
+  $user = $formObject->getEntity();
+  if (!empty($user->field_accepted_agreement->value)) {
+    return;
+  }
+
+  $user->set('field_accepted_agreement', date(DateTimeItemInterface::DATETIME_STORAGE_FORMAT, time()));
+  $formObject->setEntity($user);
+  $form_state->setFormObject($formObject);
+}
 
 /**
  * Implements hook_preprocess_menu().
