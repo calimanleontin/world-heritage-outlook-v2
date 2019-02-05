@@ -33,11 +33,6 @@ function iucn_who_theme_suggestions_page_alter(array &$suggestions, array $varia
  */
 function iucn_who_preprocess_block(&$variables) {
   switch ($variables['base_plugin_id']) {
-
-    case 'main_container':
-      var_dump('here');
-    break;
-
     case 'facet_block':
       if (empty($variables['content'][0]['#items'])) {
         break;
