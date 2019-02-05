@@ -12,6 +12,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
@@ -83,10 +84,13 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         if (empty($rowDiff['diff'][$fieldName])) {
           continue;
         }
+        $field = $revision instanceof ParagraphInterface
+          ? $revision->get($fieldName)
+          : NULL;
+        $fieldValue = !empty($field) ? $field->getValue() : [];
         $row[$fieldName] = [
           'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $revision->get($fieldName)
-            ->getValue()),
+          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
           'widget_type' => $this->fieldWidgetTypes[$fieldName],
         ];
         $this->fieldWithDifferences[] = $fieldName;

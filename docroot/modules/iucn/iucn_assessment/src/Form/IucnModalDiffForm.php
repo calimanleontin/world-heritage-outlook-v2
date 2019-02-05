@@ -170,7 +170,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
         }
       }
     }
-    if (count($value) == 1) {
+    if (count($value) <= 1) {
       $value = reset($value);
     }
     return $value;
