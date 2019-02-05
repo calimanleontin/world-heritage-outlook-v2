@@ -39,7 +39,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
         $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
         $initialValue = $initialRevision->get($this->fieldName)->getValue();
         $renderedInitialValue = $initialRevision->get($this->fieldName)->view('diff');
-        unset($renderedInitialValue['#title']);
+        $renderedInitialValue['#title'] = NULL;
         $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
         $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldWidgetType, $this->fieldName, $initialValue);
       }
@@ -58,7 +58,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
     $diffTable = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget'][0]['value']['#title']],
+      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget']['#title']],
       '#rows' => [],
       '#weight' => -10,
       '#attributes' => ['class' => ['diff-table']],
@@ -93,4 +93,13 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function ajaxSave(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+    $this->nodeRevision = $formObject->getEntity();
+    return parent::ajaxSave($form, $form_state);
+  }
 }

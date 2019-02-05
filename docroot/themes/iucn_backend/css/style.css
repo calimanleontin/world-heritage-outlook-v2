@@ -228,6 +228,105 @@
 .node-site-assessment-state-change-form .layout-region {
   padding-right: 0!important;
 }
+.node-site-assessment-edit-form .layout-node-form .layout-region,
+.node-site-assessment-state-change-form .layout-node-form .layout-region {
+  width: 100%;
+}
+.node-site-assessment-edit-form .layout-node-form .layout-region-node-footer__content,
+.node-site-assessment-state-change-form .layout-node-form .layout-region-node-footer__content {
+  border-top: none;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
+  padding: 5px 10px 5px 0;
+}
+.node-site-assessment-edit-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form #edit-group-as-key-cons .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
+  padding: 0 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
+  margin: 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
+  position: relative;
+  top: 0;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa {
+  font-size: 1em;
+  margin: 0 2.1em 0 1em;
+  position: relative;
+  color: #fafafa;
+  -webkit-text-stroke: 1px #0074bd;
+  transition: color .1s;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:hover,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:hover {
+  color: #0074bd;
+  cursor: pointer;
+  -webkit-text-stroke: initial;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:before,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:before {
+  font-size: 2em;
+  position: absolute;
+  right: -22px;
+  top: -30px;
+  z-index: 200;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected {
+  display: flex;
+  align-items: center;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a {
+  padding-left: 1em;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
+  background-color: initial;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description {
+  position: relative;
+  margin: 0;
+  padding: 5px 5px 5px 24px;
+  border: none;
+  background-image: linear-gradient(to bottom, white, #ffffbe);
+  font-style: italic;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description:before,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description:before {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 14px;
+  height: 16px;
+  content: ' ';
+  background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+}
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
 .paragraph-as-site-threat-iucn-modal-paragraph-add-form,
@@ -561,87 +660,6 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 }
 #block-views-block-people-assignments-block-1 .views-field-user-assignments ol {
   margin: 0;
-}
-.horizontal-tab-button .fa {
-  font-size: 1em;
-  margin: 0 2.1em 0 1em;
-  position: relative;
-  color: #fafafa;
-  -webkit-text-stroke: 1px #0074bd;
-  transition: color .1s;
-}
-.horizontal-tab-button .fa:hover {
-  color: #0074bd;
-  cursor: pointer;
-  -webkit-text-stroke: initial;
-}
-.horizontal-tab-button .fa:before {
-  font-size: 2em;
-  position: absolute;
-  right: -22px;
-  top: -30px;
-  z-index: 200;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected {
-  display: flex;
-  align-items: center;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected a {
-  padding-left: 1em;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
-  background-color: initial;
-}
-.horizontal-tabs-panes .description {
-  position: relative;
-  margin: 0;
-  padding: 5px 5px 5px 24px;
-  border: none;
-  background-image: linear-gradient(to bottom, white, #ffffbe);
-  font-style: italic;
-}
-.horizontal-tabs-panes .description:before {
-  display: block;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 14px;
-  height: 16px;
-  content: ' ';
-  background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
-}
-.layout-node-form .layout-region {
-  width: 100%;
-}
-.layout-node-form .layout-region-node-footer__content {
-  border-top: none;
-}
-.layout-node-form .horizontal-tabs-panes details > .details-wrapper {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
-  margin-top: 0;
-  margin-bottom: 0;
-  border-radius: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
-  padding: 5px 10px 5px 0;
-}
-.layout-node-form #edit-group-as-key-cons .details-wrapper {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
-  padding: 0 10px;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
-  margin: 10px;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
-  position: relative;
-  top: 0;
 }
 .toolbar-icon-iucn-who-core-administration-dashboard:before {
   background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);

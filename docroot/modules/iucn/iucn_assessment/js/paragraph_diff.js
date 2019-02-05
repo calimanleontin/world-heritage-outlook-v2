@@ -48,11 +48,7 @@
           }
         }
         else if (type == 'checkbox') {
-          if (values) {
-            $(get_data_selector(selector)).prop('checked', true);
-          } else {
-            $(get_data_selector(selector)).prop('checked', false);
-          }
+          $(get_data_selector(selector)).prop('checked', values == true);
         }
         else if (type == 'select') {
           if (values.length) {

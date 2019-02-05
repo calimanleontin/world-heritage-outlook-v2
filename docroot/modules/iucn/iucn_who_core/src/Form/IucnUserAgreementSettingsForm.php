@@ -18,6 +18,18 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
 
   use StringTranslationTrait;
 
+  const IGNORED_ROLES = [
+    'anonymous',
+    'authenticated',
+  ];
+
+  const MAIN_ROLES = [
+    'iucn_manager',
+    'assessor',
+    'coordinator',
+    'reviewer',
+  ];
+
   /**
    * Holds the entity type manager.
    *
@@ -69,28 +81,33 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('iucn_who_core.settings');
-    $content = $config->get('user_agreement_content');
-    $form['user_agreement'] = [
-      '#type' => 'fieldset',
-      'user_agreement_content' => [
-        '#type' => 'text_format',
-        '#title' => $this->t('User agreement page content'),
-        '#format'=> 'html',
-        '#default_value' => !empty($content['value']) ? $content['value'] : '',
-      ],
-      'user_agreement_label_checkbox' => [
-        '#type' => 'textfield',
-        '#title' => $this->t('Label for the checkbox'),
-        '#description' => $this->t('Type here something like "By clicking Confirm button I agree to User Agreement.".'),
-        '#default_value' => $config->get('user_agreement_label_checkbox'),
-      ],
-      'user_agreement_label_button' => [
-        '#type' => 'textfield',
-        '#title' => $this->t('Label for the submit button'),
-        '#description' => $this->t('Type here the title for submit button.'),
-        '#default_value' => $config->get('user_agreement_label_button'),
-      ],
+    $defaultContent = $config->get('agreement.default.content.value');
+
+    $form['user_agreement_tabs'] = [
+      '#type' => 'vertical_tabs',
+      '#title' => $this->t('User agreements per role'),
     ];
+
+    $form['user_agreement']['default'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Default user agreement settings'),
+      '#open' => TRUE,
+      '#description' => $this->t('Default user agreement text if a specific text is not set on role.'),
+      '#group' => 'user_agreement_tabs',
+    ];
+
+    $form['user_agreement']['default']['user_agreement_content_default'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('User agreement default content'),
+      '#format' => 'html',
+      '#default_value' => $defaultContent ?: '',
+    ];
+
+    $allRoles = array_keys($this->entityTypeManager->getStorage('user_role')->loadMultiple());
+
+    $this->appendRolesToForm($form, static::MAIN_ROLES);
+    $this->appendRolesToForm($form, array_diff($allRoles, static::IGNORED_ROLES, static::MAIN_ROLES));
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -100,10 +117,74 @@ class IucnUserAgreementSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
     $this->config('iucn_who_core.settings')
-      ->set('user_agreement_content', $form_state->getValue('user_agreement_content'))
-      ->set('user_agreement_label_button', $form_state->getValue('user_agreement_label_button'))
-      ->set('user_agreement_label_checkbox', $form_state->getValue('user_agreement_label_checkbox'))
-      ->save();
+      ->set('agreement.default.content',$form_state->getValue('user_agreement_content_default'));
+
+    $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
+
+    foreach ($roles as $role) {
+      if (in_array($role->id(), static::IGNORED_ROLES)) {
+        continue;
+      }
+
+      $this->config('iucn_who_core.settings')
+        ->set(sprintf('agreement.%s.content', $role->id()), $form_state->getValue('user_agreement_content_' . $role->id()))
+        ->set(sprintf('agreement.%s.enabled', $role->id()), $form_state->getValue('user_agreement_enabled_' . $role->id()));
+    }
+
+    $this->config('iucn_who_core.settings')->save();
   }
 
+  private function appendRolesToForm(&$form, $roleIds) {
+    $config = $this->config('iucn_who_core.settings');
+    /** @var \Drupal\user\Entity\Role[] $roles */
+    $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
+
+    foreach ($roles as $role) {
+      if (!in_array($role->id(), $roleIds)) {
+        continue;
+      }
+
+      $form['user_agreement'][$role->id()] = [
+        '#type' => 'details',
+        '#title' => $this->t('Role @role', [
+          '@role' => $role->label(),
+        ]),
+        '#open' => TRUE,
+        '#group' => 'user_agreement_tabs',
+      ];
+
+      $form['user_agreement'][$role->id()]['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('User agreement page content for @role', [
+          '@role' => $role->label(),
+        ]),
+      ];
+
+      $form['user_agreement'][$role->id()]['user_agreement_enabled_' . $role->id()] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Enabled'),
+        '#default_value' => (bool) $config->get(sprintf('agreement.%s.enabled', $role->id())),
+        '#id' => sprintf('enable_user_agreement_%s', $role->id()),
+      ];
+
+      $form['user_agreement'][$role->id()]['content'] = [
+        '#type' => 'container',
+        'user_agreement_content_' . $role->id() => [
+          '#type' => 'text_format',
+          '#title' => $this->t('Content'),
+          '#format' => 'html',
+          '#default_value' => $config->get(sprintf('agreement.%s.content.value', $role->id())),
+          '#description' => $this->t('Leave it blank to display the default user agreement for @role role', [
+            '@role' => $role->label(),
+          ]),
+        ],
+        '#states' => [
+          'invisible' => [
+            'input[name="' . 'user_agreement_enabled_' . $role->id() . '"]' => ['checked' => FALSE],
+          ],
+        ],
+      ];
+    }
+  }
 }
