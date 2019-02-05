@@ -782,6 +782,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     // Remove the edit entity operation when it isn't actually allowed.
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
+    } elseif($entity->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      /** @var User $currentUser */
+      $currentUser = User::load(\Drupal::currentUser()->id());
+      if ($currentUser->hasRole('assessor')) {
+        $operations['edit']['title'] = t('Review');
+      }
     }
   }
 }
