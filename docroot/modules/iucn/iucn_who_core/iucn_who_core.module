@@ -505,13 +505,14 @@ function saveAgreement(array $form, FormStateInterface $form_state) {
   }
 
   $formObject = $form_state->getFormObject();
-  $user= $formObject->getEntity();
+  $user = $formObject->getEntity();
   if (!empty($user->field_accepted_agreement->value)) {
     return;
   }
 
   $user->set('field_accepted_agreement', date(DateTimeItemInterface::DATETIME_STORAGE_FORMAT, time()));
-  $user->save();
+  $formObject->setEntity($user);
+  $form_state->setFormObject($formObject);
 }
 
 /**
