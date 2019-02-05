@@ -93,4 +93,13 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function ajaxSave(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+    $this->nodeRevision = $formObject->getEntity();
+    return parent::ajaxSave($form, $form_state);
+  }
 }

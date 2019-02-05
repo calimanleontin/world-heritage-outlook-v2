@@ -202,7 +202,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
         $cssClass = ' field-name--' . $field;
         if (!empty($diffData['widget_type'])) {
-          $cssClass .= 'widget-type--' . $diffData['widget_type'];
+          $cssClass .= ' widget-type--' . $diffData['widget_type'];
         }
         if (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
