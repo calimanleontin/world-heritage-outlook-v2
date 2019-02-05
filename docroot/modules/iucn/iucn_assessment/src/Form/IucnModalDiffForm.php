@@ -158,8 +158,17 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
   public function getCopyFieldValue($fieldValue) {
     $value = [];
     foreach ($fieldValue as $fv) {
-      // todo check target_revision_id
-      $value[] = !empty($fv['value']) ? $fv['value'] : $fv['target_id'];
+      if (!is_array($fv)) {
+        $value[] = $fv;
+        continue;
+      }
+
+      foreach (['target_revision_id', 'target_id', 'value'] as $key) {
+        if (array_key_exists($key, $fv)) {
+          $value[] = $fv[$key];
+          break;
+        }
+      }
     }
     if (count($value) == 1) {
       $value = reset($value);
