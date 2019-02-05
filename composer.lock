@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6c91ee3dba3db4f6f33ae84f676d463",
+    "content-hash": "5961e21a98ce12c388d589002a2a8705",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -2806,6 +2806,55 @@
             "homepage": "https://www.drupal.org/project/chosen",
             "support": {
                 "source": "http://cgit.drupalcode.org/chosen"
+            }
+        },
+        {
+            "name": "drupal/ckeditor_scayt",
+            "version": "1.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/ckeditor_scayt",
+                "reference": "8.x-1.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditor_scayt-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "673c84b5cbba0e9341457acb695cd4c43c8ecc0f"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1534083480",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Vladimir Roudakov (vladimiraus)",
+                    "homepage": "https://www.drupal.org/u/vladimiraus",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "CKEditor spell checker integration.",
+            "homepage": "https://www.drupal.org/project/ckeditor_scayt",
+            "support": {
+                "source": "http://cgit.drupalcode.org/ckeditor_scayt",
+                "issues": "https://www.drupal.org/project/issues/ckeditor_scayt"
             }
         },
         {
@@ -7390,7 +7439,8 @@
                     }
                 },
                 "patches_applied": {
-                    "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch"
+                    "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch",
+                    "PHPMailer breaks AJAX response": "https://www.drupal.org/files/issues/2019-02-04/phpmailer-breaks-ajax-response.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -14093,6 +14143,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/captcha": 10,
+        "drupal/ckeditor_scayt": 15,
         "drupal/devel": 5,
         "drupal/diff": 5,
         "drupal/geofield": 15,
