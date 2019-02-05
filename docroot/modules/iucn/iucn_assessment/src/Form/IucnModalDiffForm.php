@@ -24,8 +24,10 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     $diff_rows = [];
     foreach ($diff as $diff_group) {
       foreach ([0,2] as $i) {
-        if (!empty($diff_group[$i + 1]['data']['#markup']) && !empty($diff_group[$i + 3]['data']['#markup'])
-          && $diff_group[$i + 1]['data']['#markup'] == $diff_group[$i + 3]['data']['#markup']) {
+        if (empty($diff_group[$i]) || empty($diff_group[$i + 1]) ||
+          (!empty($diff_group[$i + 1]['data']['#markup'])
+          && !empty($diff_group[$i + 3]['data']['#markup'])
+          && $diff_group[$i + 1]['data']['#markup'] == $diff_group[$i + 3]['data']['#markup'])) {
           continue;
         }
         $diff_rows[] = [$diff_group[$i], $diff_group[$i + 1]];
@@ -170,7 +172,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
         }
       }
     }
-    if (count($value) == 1) {
+    if (count($value) <= 1) {
       $value = reset($value);
     }
     return $value;

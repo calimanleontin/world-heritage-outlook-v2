@@ -858,3 +858,42 @@ function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operat
   }
   return AccessResult::neutral();
 }
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+  if (empty($data['tabs'])) {
+    return;
+  }
+
+  foreach ($data['tabs'] as &$tab) {
+    if (empty($tab['entity.node.canonical']['#link']['url'])) {
+      continue;
+    }
+
+    $url = $tab['entity.node.canonical']['#link']['url'];
+
+    if (!($url instanceof Url)) {
+      continue;
+    }
+
+    $parameters = $url->getRouteParameters();
+
+    if (empty($parameters['node'])) {
+      continue;
+    }
+
+    /** @var Node $node */
+    $node = Node::load($parameters['node']);
+
+    if (empty($node) || $node->getType() != 'site_assessment') {
+      return;
+    }
+
+    $tab['entity.node.canonical']['#link']['url'] = Url::fromRoute('entity.node.revision', [
+      'node' => $node->id(),
+      'node_revision' => $node->getLoadedRevisionId(),
+    ]);
+  }
+}
