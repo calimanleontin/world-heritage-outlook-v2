@@ -12,6 +12,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
@@ -83,10 +84,13 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         if (empty($rowDiff['diff'][$fieldName])) {
           continue;
         }
+        $field = $revision instanceof ParagraphInterface
+          ? $revision->get($fieldName)
+          : NULL;
+        $fieldValue = !empty($field) ? $field->getValue() : [];
         $row[$fieldName] = [
           'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $revision->get($fieldName)
-            ->getValue()),
+          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
           'widget_type' => $this->fieldWidgetTypes[$fieldName],
         ];
         $this->fieldWithDifferences[] = $fieldName;
@@ -101,7 +105,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
           $renderedInitialValue = $initialRevision->get($fieldName)->view('diff');
-          unset($renderedInitialValue['#title']);
+          $renderedInitialValue['#title'] = NULL;
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
             'copy' => !empty($initialValue)
@@ -196,7 +200,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           continue;
         }
 
-        $cssClass = 'widget-type--' . $diffData['widget_type'] . ' field-name--' . $field;
+        $cssClass = ' field-name--' . $field;
+        if (!empty($diffData['widget_type'])) {
+          $cssClass .= ' widget-type--' . $diffData['widget_type'];
+        }
         if (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
           $row[$field]['#wrapper_attributes']['class'][] = $cssClass;
