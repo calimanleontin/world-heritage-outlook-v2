@@ -58,6 +58,9 @@
             .form-type-textarea {
               display: grid;
               grid-template-columns: 300px auto;
+              @media screen and (max-width: 1024px) {
+                grid-template-columns: 150px auto;
+              }
             }
             label,
             .form-textarea-wrapper {
