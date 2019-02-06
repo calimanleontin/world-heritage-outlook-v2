@@ -51,6 +51,7 @@
    *    be passed with the number of characters.
    */
   ml.calculate = function(obj, options, count, wysiwyg, getter, setter) {
+    if (jQuery(obj['0']).hasClass('ckeditor-mod') && wysiwyg === undefined) {return;};
     var counter = $('#' + obj.attr('id') + '-' + options.css);
     var limit = parseInt(obj.attr('maxlength'));
     var maxDisplayLimit = parseInt(obj.attr('maxDisplayLimit'));
@@ -128,16 +129,19 @@
    * @see http://www.sitepoint.com/blogs/2004/02/16/line-endings-in-javascript/
    */
   ml.twochar_lineending = function(str) {
-    return str.replace(/(\r\n|\r|\n)/g, "\r\n");
+    return str.replace(/(\r\n|\r|\n)/g, "\n");
   };
 
   ml.strip_tags = function(input, allowed) {
     // Remove all newlines, spaces and tabs from the beginning and end of html.
     input = $.trim(input);
+    input = input.replace(/<[^>]+>/g, '');
+
     // making the lineendings with two chars
     input = ml.twochar_lineending(input);
     // We do want that the space characters to count as 1, not 6...
-    input = input.replace('&nbsp;', ' ');
+    input = input.replace(/\&nbsp;/g, ' ');
+    input = input.replace(/(\n )/g, '\n');
     //input = input.split(' ').join('');
     // Strips HTML and PHP tags from a string
     allowed = (((allowed || "") + "")
@@ -329,7 +333,41 @@
             setTimeout(function(){ml.ckeditorChange(e)}, 100);
           });
           e.editor.on('paste', function(e) {
-            setTimeout(function(){ml.ckeditorChange(e)}, 500);
+            var obj = $('#' + e.editor.element.getId());
+            var blockPaste = parseInt(obj.attr('blockPaste'));
+            var blockPasteLabel = obj.attr('blockPasteLabel');
+            if (isNaN(blockPaste) || blockPaste === undefined) {
+              blockPaste = false;
+            }
+
+            if (isNaN(blockPasteLabel) || blockPasteLabel === undefined) {
+              blockPasteLabel = 'The text cannot be pasted because the characters limit of @limit is exceeded.';
+            }
+
+            if (blockPaste) {
+              var content = ml.ckeditorGetData(e);
+              var limit = parseInt(obj.attr('maxlength'));
+              var options = ml.options[e.editor.element.getId()];
+              var count;
+              if (options.truncateHtml) {
+                count = ml.strip_tags(content).length;
+              }
+              else {
+                count = ml.twochar_lineending(content).length;
+              }
+
+              var available = limit - count;
+              if (available < ml.strip_tags(e.data.dataValue).length) {
+                blockPasteLabel = blockPasteLabel.replace('@limit', limit);
+                e.cancel();
+                e.stop();
+                alert(blockPasteLabel);
+                return false;
+              }
+            }
+
+            setTimeout(function () {
+              ml.ckeditorChange(e)}, 500);
           });
           e.editor.on('elementsPathUpdate', function(e) {
             setTimeout(function(){ml.ckeditorChange(e)}, 100);
