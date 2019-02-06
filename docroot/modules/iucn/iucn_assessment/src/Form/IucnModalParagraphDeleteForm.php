@@ -2,27 +2,14 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-class IucnModalParagraphDeleteForm extends FormBase {
+class IucnModalParagraphDeleteForm extends IucnModalParagraphForm {
 
   /**
-   * @var \Drupal\Core\Entity\EntityInterface
+   * @var \Drupal\node\NodeInterface
    */
-  protected $parent_entity;
-
-  /**
-   * @var \Drupal\paragraphs\ParagraphInterface
-   */
-  protected $paragraph;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'iucn_paragraph_delete_form';
-  }
+  protected $parentEntity;
 
   /**
    * {@inheritdoc}
@@ -33,16 +20,13 @@ class IucnModalParagraphDeleteForm extends FormBase {
     $form['actions'] = ['#type' => 'actions'];
     $form['#attributes']['class'][] = 'paragraph-form';
 
-    $this->paragraph = $this->getRouteMatch()->getParameter('paragraph_revision');
-    $this->parent_entity = $this->getRouteMatch()->getParameter('node_revision');
-
     $can_delete = TRUE;
     $blocking_threats = [];
     // Values cannot be deleted if there is at least one threat
     // with exactly one referenced value - this paragraph.
-    if (in_array($this->paragraph->bundle(), ['as_site_value_wh', 'as_site_value_bio'])) {
-      $threats = array_merge($this->parent_entity->get('field_as_threats_current')->getValue(), $this->parent_entity->get('field_as_threats_potential')->getValue());
-      $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    if (in_array($this->entity->bundle(), ['as_site_value_wh', 'as_site_value_bio'])) {
+      $threats = array_merge($this->nodeRevision->get('field_as_threats_current')->getValue(), $this->nodeRevision->get('field_as_threats_potential')->getValue());
+      $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
       foreach ($threats as $threat) {
         /** @var \Drupal\paragraphs\ParagraphInterface $threat_paragraph */
         $threat_paragraph = $paragraph_storage->loadRevision($threat['target_revision_id']);
@@ -51,7 +35,7 @@ class IucnModalParagraphDeleteForm extends FormBase {
           continue;
         }
         $affected_value = $affected_values[0]['target_revision_id'];
-        if ($affected_value == $this->paragraph->getRevisionId()) {
+        if ($affected_value == $this->entity->getRevisionId()) {
           $blocking_threats[] = $threat_paragraph->field_as_threats_threat->value;
           $can_delete = FALSE;
         }
@@ -98,36 +82,41 @@ class IucnModalParagraphDeleteForm extends FormBase {
       $form['actions']['go_to_threats'] = [
         '#type' => 'link',
         '#title' => $this->t('Go to threats'),
-        '#url' => $this->parent_entity->toUrl('edit-form', ['query' => ['tab' => 'threats']]),
+        '#url' => $this->nodeRevision->toUrl('edit-form', ['query' => ['tab' => 'threats']]),
         '#attributes' => [
           'class' => ['button', 'button--primary'],
         ],
       ];
     }
 
-    IucnModalForm::buildCancelButton($form);
+    $this->buildCancelButton($form);
 
     return $form;
   }
 
+  /**
+   * Ajax callback for the delete button.
+   *
+   * @param $form
+   * @param FormStateInterface $form_state
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   */
   public function ajaxDelete(&$form, FormStateInterface $form_state) {
-    $field = $this->getRouteMatch()->getParameter('field');
-    $paragraph = $this->paragraph;
-    $parent_entity = $this->parent_entity;
+    $paragraph = $this->entity;
 
-    $field_values = $this->parent_entity->get($field)->getValue();
-    $key = array_search($this->paragraph->id(), array_column($field_values, 'target_id'));
-    $this->parent_entity->get($field)->removeItem($key);
-    $this->parent_entity->save();
+    $field_values = $this->nodeRevision->get($this->fieldName)->getValue();
+    $key = array_search($this->entity->id(), array_column($field_values, 'target_id'));
+    $this->nodeRevision->get($this->fieldName)->removeItem($key);
+    $this->nodeRevision->save();
 
     $affected_value_fields = [
       'as_site_value_wh' => 'field_as_threats_values_wh',
       'as_site_value_bio' => 'field_as_threats_values_bio',
     ];
 
-    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
     if (in_array($paragraph->bundle(), array_keys($affected_value_fields))) {
-      $threats = array_merge($parent_entity->get('field_as_threats_current')->getValue(), $parent_entity->get('field_as_threats_potential')->getValue());
+      $threats = array_merge($this->nodeRevision->get('field_as_threats_current')->getValue(), $this->nodeRevision->get('field_as_threats_potential')->getValue());
       foreach ($threats as $threat) {
         $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
         $field = $affected_value_fields[$paragraph->bundle()];
@@ -143,7 +132,7 @@ class IucnModalParagraphDeleteForm extends FormBase {
       }
     }
 
-    return IucnModalForm::assessmentAjaxSave($form, $form_state);
+    return $this->ajaxSave($form, $form_state);
   }
 
   /**
@@ -151,6 +140,36 @@ class IucnModalParagraphDeleteForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * The save() method is not used in ContentEntityConfirmFormBase. This
+   * overrides the default implementation that saves the entity.
+   *
+   * Confirmation forms should override submitForm() instead for their logic.
+   */
+  public function save(array $form, FormStateInterface $form_state) {}
+
+  /**
+   * {@inheritdoc}
+   *
+   * The delete() method is not used in ContentEntityConfirmFormBase. This
+   * overrides the default implementation that redirects to the delete-form
+   * confirmation form.
+   *
+   * Confirmation forms should override submitForm() instead for their logic.
+   */
+  public function delete(array $form, FormStateInterface $form_state) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Override the default validation implementation as it is not necessary
+    // nor possible to validate an entity in a confirmation form.
+    return $this->entity;
   }
 
 }

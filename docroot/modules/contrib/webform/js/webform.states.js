@@ -20,7 +20,7 @@
    * @param {string} data
    *   The data attribute name.
    *
-   * @returns {boolean}
+   * @return {boolean}
    *   TRUE if an element has a specified data attribute.
    */
   $.fn.hasData = function (data) {
@@ -30,7 +30,7 @@
   /**
    * Check if element is within the webform or not.
    *
-   * @returns {boolean}
+   * @return {boolean}
    *   TRUE if element is within the webform.
    */
   $.fn.isWebform = function () {
@@ -123,10 +123,10 @@
       // @see Issue #2977569: Hidden fieldsets that become visible with conditional logic cannot be made required.
       if ($target.is('.js-webform-type-radios, .js-webform-type-checkboxes, fieldset')) {
         if (e.value) {
-          $target.find('legend span:not(.visually-hidden)').addClass('js-form-required form-required');
+          $target.find('legend span.fieldset-legend:not(.visually-hidden)').addClass('js-form-required form-required');
         }
         else {
-          $target.find('legend span:not(.visually-hidden)').removeClass('js-form-required form-required');
+          $target.find('legend span.fieldset-legend:not(.visually-hidden)').removeClass('js-form-required form-required');
         }
       }
 
@@ -212,11 +212,11 @@
       $(e.target)
         .prop('disabled', e.value)
         .closest('.js-form-item, .js-form-submit, .js-form-wrapper').toggleClass('form-disabled', e.value)
-        .find('select, input, textarea').prop('disabled', e.value);
+        .find('select, input, textarea, button').prop('disabled', e.value);
 
       // Trigger webform:disabled.
       $(e.target).trigger('webform:disabled')
-        .find('select, input, textarea').trigger('webform:disabled');
+        .find('select, input, textarea, button').trigger('webform:disabled');
     }
   });
 
@@ -238,7 +238,7 @@
   /**
    * Trigger an input's event handlers.
    *
-   * @param input
+   * @param {element} input
    *   An input.
    */
   function triggerEventHandlers(input) {
@@ -271,7 +271,7 @@
   /**
    * Backup an input's current value and required attribute
    *
-   * @param input
+   * @param {element} input
    *   An input.
    */
   function backupValueAndRequired(input) {
@@ -305,7 +305,7 @@
   /**
    * Restore an input's value and required attribute.
    *
-   * @param input
+   * @param {element} input
    *   An input.
    */
   function restoreValueAndRequired(input) {
@@ -344,7 +344,7 @@
   /**
    * Clear an input's value and required attributes.
    *
-   * @param input
+   * @param {element} input
    *   An input.
    */
   function clearValueAndRequired(input) {

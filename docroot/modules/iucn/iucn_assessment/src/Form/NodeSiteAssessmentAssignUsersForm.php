@@ -10,6 +10,8 @@ use Drupal\node\NodeInterface;
 
 class NodeSiteAssessmentAssignUsersForm {
 
+  use AssessmentEntityFormTrait;
+
   public static function access(AccountInterface $account, NodeInterface $node) {
     if ($node->bundle() != 'site_assessment') {
       $access = AccessResult::forbidden();
@@ -39,8 +41,8 @@ class NodeSiteAssessmentAssignUsersForm {
     $node = $formObject->getEntity();
     $state = $node->field_state->value;
 
-    NodeSiteAssessmentForm::hideUnnecessaryFields($form);
-    NodeSiteAssessmentForm::addRedirectToAllActions($form);
+    self::hideUnnecessaryFields($form);
+    self::addRedirectToAllActions($form);
 
     $form['field_coordinator']['widget']['#disabled'] = !in_array($state, [
       AssessmentWorkflow::STATUS_CREATION,
@@ -60,6 +62,11 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
     ]);
 
+    $form['#title'] = t('Assign users for @type @assessment', [
+      '@type' => $node->type->entity->label(),
+      '@assessment' => $node->getTitle(),
+    ]);
+
     $form['actions']['submit']['#submit'][] = [self::class, 'submitForm'];
   }
 
@@ -74,7 +81,8 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_NEW,
     ]) && !empty($node->field_coordinator->getValue())) {
       // If the coordinator was set, set assessment status to UNDER EVALUATION.
-      \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
   }
 

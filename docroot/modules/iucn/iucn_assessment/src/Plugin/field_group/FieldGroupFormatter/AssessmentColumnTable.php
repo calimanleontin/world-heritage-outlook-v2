@@ -173,8 +173,6 @@ class AssessmentColumnTable extends FieldGroupFormatterBase {
     $table['#header'] = $header;
     $table['#rows'] = $rows;
     $element['label_field_table'] = $table;
-
-    $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.table_field_group';
   }
 
   /**

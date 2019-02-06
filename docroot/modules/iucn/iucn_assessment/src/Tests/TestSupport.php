@@ -6,7 +6,6 @@ use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Class TestSupport populates database with test data for various scenarios.
@@ -97,10 +96,9 @@ class TestSupport {
    */
   public static function createAllTestData() {
     self::createUsers();
-    self::createAssessments();
-    foreach (self::getVocabularies() as $vocabulary) {
-      self::createTerm($vocabulary, $vocabulary->get('vid') . '_term1');
-      self::createTerm($vocabulary, $vocabulary->get('vid') . '_term2');
+    self::createTaxonomyTerms();
+    foreach (self::getAssessments() as $title) {
+      self::createAssessment($title);
     }
   }
 
@@ -128,17 +126,6 @@ class TestSupport {
   }
 
   /**
-   * An array containing all the vocabularies necessary for unit tests.
-   *
-   * @return array
-   *   The vocabularies.
-   */
-  public static function getVocabularies() {
-    $vocabularies = Vocabulary::loadMultiple();
-    return $vocabularies;
-  }
-
-  /**
    * An array containing all the site assessments.
    *
    * @return array
@@ -151,6 +138,22 @@ class TestSupport {
       self::ASSESSMENT3,
       self::ASSESSMENT4,
     ];
+  }
+
+  /**
+   * Generate 5 terms in each important vocabulary.
+   */
+  public static function createTaxonomyTerms() {
+    $vocabularies = Vocabulary::loadMultiple();
+    foreach ($vocabularies as $vocabulary) {
+      for ($i = 1; $i <= 5; $i++) {
+        $term = Term::create([
+          'vid' => $vocabulary->id(),
+          'name' => "{$vocabulary} term {$i}",
+        ]);
+        $term->save();
+      }
+    }
   }
 
   /**
@@ -188,52 +191,16 @@ class TestSupport {
   }
 
   /**
-   * Returns a new term with random properties in vocabulary $vid.
-   *
-   * @param \Drupal\taxonomy\Entity\Vocabulary $vocabulary
-   *   The vocabulary object
-   * @param string $name
-   *   The name given to the taxonomy term.
-   * @param array $values
-   *   (optional) An array of values to set, keyed by property name. If the
-   *   entity type has bundles, the bundle key has to be specified.
-   *
-   * @return \Drupal\taxonomy\Entity\Term
-   *   The new taxonomy term object.
-   */
-  public static function createTerm(\Drupal\taxonomy\Entity\Vocabulary $vocabulary, $name, $values = []) {
-    $filter_formats = filter_formats();
-    $format = array_pop($filter_formats);
-    $term = Term::create($values + [
-        'name' => $name,
-        'description' => [
-          'value' => 'Test description.',
-          // Use the first available text format.
-          'format' => $format->id(),
-        ],
-        'vid' => $vocabulary->id(),
-        'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
-      ]);
-    $term->save();
-    return $term;
-  }
-
-  /**
    * Create an site_assessment node.
    *
-   * @param string $title
-   *   The title.
+   * @param null $title
    *
-   * @return int
-   *   The node id.
+   * @return \Drupal\node\NodeInterface
    */
   public static function createAssessment($title = NULL) {
-    if (empty($title)) {
-      $title = 'test assessment';
-    }
-    $assessment = [
+    $node = Node::create([
       'type' => 'site_assessment',
-      'title' => $title,
+      'title' => $title ?: 'Test assessment',
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
@@ -241,68 +208,32 @@ class TestSupport {
       'status' => 0,
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
-    ];
-    $node = Node::create($assessment);
+    ]);
     $node->save();
-
-    return $node->id();
+    return $node;
   }
 
   /**
-   * Create all the test assessments.
-   */
-  public static function createAssessments() {
-    foreach (self::getAssessments() as $title) {
-      self::createAssessment($title);
-    }
-  }
-
-  /**
-   * Find node by title.
+   * Retrieve a taxonomy term from a specified vocabulary.
    *
-   * @param string $title
-   *   Node title.
-   * @param string $bundle
-   *   Node type.
+   * @param $vid
+   *  Vocabulary id.
+   * @param int|null $termIndex
+   *  If provided, the term with name "$vid term $termIndex" will be loaded.
+   *  See TestSupport::createTaxonomyTerms.
    *
-   * @return \Drupal\node\NodeInterface
-   *   Created node entity
+   * @return \Drupal\taxonomy\Entity\Term|null
    */
-  public static function getNodeByTitle($title, $bundle = NULL) {
-    $query = \Drupal::entityQuery('node');
-    $query->condition('title', $title);
-    if ($bundle) {
-      $query->condition('type', $bundle);
+  public static function getTaxonomyTerm($vid, $termIndex = NULL) {
+    $query = \Drupal::entityQuery('taxonomy_term');
+    $query->condition('vid', $vid);
+    if (!empty($termIndex)) {
+      $query->condition('name', "{$vid} term {$termIndex}");
     }
-    $nids = $query->execute();
-    if (!empty($nids)) {
-      return Node::load(current($nids));
-    }
-    return NULL;
-  }
-
-  /**
-   * Utility: find term by name and vid.
-   * @param null $name
-   *  Term name
-   * @param null $vid
-   *  Term vid
-   * @return int
-   *  Term id or 0 if none.
-   */
-  public static function getTidByName($name = NULL, $vid = NULL) {
-    $properties = [];
-    if (!empty($name)) {
-      $properties['name'] = $name;
-    }
-    if (!empty($vid)) {
-      $properties['vid'] = $vid;
-    }
-    $entityManager = \Drupal::service('entity.manager');
-    $terms = $entityManager->getStorage('taxonomy_term')->loadByProperties($properties);
-    $term = reset($terms);
-
-    return !empty($term) ? $term->id() : 0;
+    $ids = $query->execute();
+    return !empty($ids)
+      ? Term::load(current($ids))
+      : NULL;
   }
 
 }

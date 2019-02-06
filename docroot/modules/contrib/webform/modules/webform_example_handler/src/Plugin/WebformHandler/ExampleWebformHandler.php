@@ -83,7 +83,6 @@ class ExampleWebformHandler extends WebformHandlerBase {
       '#type' => 'textfield',
       '#title' => $this->t('Message to be displayed when form is completed'),
       '#default_value' => $this->configuration['message'],
-      '#parents' => ['settings', 'message'],
       '#required' => TRUE,
     ];
 
@@ -97,11 +96,10 @@ class ExampleWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Enable debugging'),
       '#description' => $this->t('If checked, every handler method invoked will be displayed onscreen to all users.'),
       '#return_value' => TRUE,
-      '#parents' => ['settings', 'debug'],
       '#default_value' => $this->configuration['debug'],
     ];
 
-    return $form;
+    return $this->setSettingsParents($form);
   }
 
   /**
@@ -117,28 +115,28 @@ class ExampleWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function alterElements(array &$elements, WebformInterface $webform) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function overrideSettings(array &$settings, WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
     if ($value = $form_state->getValue('element')) {
       $form_state->setErrorByName('element', $this->t('The element must be empty. You entered %value.', ['%value' => $value]));
     }
@@ -148,7 +146,7 @@ class ExampleWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
@@ -158,105 +156,105 @@ class ExampleWebformHandler extends WebformHandlerBase {
     $message = $this->configuration['message'];
     $message = $this->tokenManager->replace($message, $this->getWebformSubmission());
     $this->messenger()->addStatus(Markup::create($message), FALSE);
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function preCreate(array $values) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function postCreate(WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function postLoad(WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function preDelete(WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function postDelete(WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function preSave(WebformSubmissionInterface $webform_submission) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-    $this->displayMessage(__FUNCTION__, $update ? 'update' : 'insert');
+    $this->debug(__FUNCTION__, $update ? 'update' : 'insert');
   }
 
   /**
    * {@inheritdoc}
    */
   public function preprocessConfirmation(array &$variables) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function createHandler() {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function updateHandler() {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteHandler() {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function createElement($key, array $element) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function updateElement($key, array $element, array $original_element) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deleteElement($key, array $element) {
-    $this->displayMessage(__FUNCTION__);
+    $this->debug(__FUNCTION__);
   }
 
   /**
@@ -267,7 +265,7 @@ class ExampleWebformHandler extends WebformHandlerBase {
    * @param string $context1
    *   Additional parameter passed to the invoked method name.
    */
-  protected function displayMessage($method_name, $context1 = NULL) {
+  protected function debug($method_name, $context1 = NULL) {
     if (!empty($this->configuration['debug'])) {
       $t_args = [
         '@id' => $this->getHandlerId(),

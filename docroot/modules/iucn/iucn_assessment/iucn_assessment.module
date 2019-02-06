@@ -2,7 +2,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
@@ -19,6 +18,10 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\iucn_assessment\Form\ParagraphAsSiteBenefitForm;
+use Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResult;
 
 function iucn_assessment_theme() {
   return [
@@ -37,6 +40,16 @@ function iucn_assessment_theme() {
     ],
     'assessment_fieldset' => [
       'render element' => 'element',
+    ],
+    'assessment_diff_copy_button' => [
+      'template' => 'assessment-diff-copy-button',
+      'variables' => [
+        'type' => NULL,
+        'key' => NULL,
+        'selector' => NULL,
+        'key2' => NULL,
+        'selector2' => NULL,
+      ],
     ],
   ];
 
@@ -198,13 +211,10 @@ function iucn_assessment_node_presave(Drupal\node\Entity\Node $node) {
  * Implements hook_node_update().
  */
 function iucn_assessment_node_update(Drupal\node\Entity\Node $node) {
-  if ($node->bundle() == 'site_assessment' && !empty($node->field_as_site->entity)) {
-    $site = $node->field_as_site->entity;
-    if (!empty($site)) {
-      // Reset site assessments for this site.
-      _iucn_assessment_set_site_assessments($site);
-      $site->save();
-    }
+  if ($node->bundle() == 'site_assessment') {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+    $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    $workflow_service->assessmentUpdate($node);
   }
 }
 
@@ -516,14 +526,18 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function iucn_assessment_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'export_values_in_excel') {
+    $view->feedIcons[0]['#title'] = t('Export values in excel');
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Form already altered in IucnModalParagraphDiffForm.
-  if (!empty($form['#processed'])) {
-    return;
-  }
-
   switch ($form_id) {
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':
@@ -550,13 +564,13 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     case 'paragraph_as_site_threat_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_edit_form':
     case 'paragraph_as_site_threat_iucn_modal_paragraph_diff_form':
-      ParagraphAsSiteThreatForm::alter($form, $form_state, $form_id);
+      ParagraphAsSiteThreatForm::alter($form, $form_state);
       break;
 
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_add_form':
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_edit_form':
     case 'paragraph_as_site_benefit_iucn_modal_paragraph_diff_form':
-      ParagraphAsSiteBenefitForm::alter($form, $form_state, $form_id);
+      ParagraphAsSiteBenefitForm::alter($form, $form_state);
       break;
 
     case 'paragraph_as_site_reference_iucn_modal_paragraph_add_form':
@@ -603,10 +617,16 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'views_exposed_form':
-      if (strpos($form['#id'], 'views-exposed-form-account-assignments-block') == 0) {
-        $form['actions']['submit']['#ajax']['disable-refocus'] = TRUE;
+      if (preg_match('/^views\-exposed\-form\-account\-assignments\-block/', $form['#id']) == TRUE) {
+        $form['actions']['submit']['#attributes']['data-disable-refocus'] = "true";
       }
       break;
+  }
+
+  if (preg_match('/modal\_paragraph\_diff\_form$/', $form_id)) {
+    // Call the alter method after all other methods above have already altered
+    // the form.
+    IucnModalParagraphDiffForm::alter($form, $form_state);
   }
 }
 
@@ -622,6 +642,7 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
       // All textareas should be limited to a certain number of characters.
       $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
       $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxDisplayLimit'] = $element['value']['#attributes']['maxDisplayLimit'] = 200;
       $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
     }
   }
@@ -630,14 +651,9 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
 /**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
-function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
-  // The revision edit page is actually the node edit page.
-  // We need to change the form entity to the selected revision.
-  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
-    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
-    if (!empty($node_revision)) {
-      $form_state->getFormObject()->setEntity($node_revision);
-    }
+function iucn_assessment_node_prepare_form(NodeInterface $node, $operation, FormStateInterface $form_state) {
+  if ($node->bundle() == 'site_assessment' && $operation == 'edit') {
+    NodeSiteAssessmentForm::prepareForm($node, $operation, $form_state);
   }
 }
 
@@ -668,10 +684,11 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
   $entity_types['node']->setFormClass('state_change', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('assign_users', 'Drupal\node\NodeForm');
-
   $entity_types['node']->setFormClass('iucn_modal_field_diff', '\Drupal\iucn_assessment\Form\IucnModalFieldDiffForm');
-  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphEditForm');
+
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_add', '\Drupal\iucn_assessment\Form\IucnModalParagraphAddForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_delete', '\Drupal\iucn_assessment\Form\IucnModalParagraphDeleteForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_diff', '\Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm');
 }
 
@@ -765,6 +782,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     // Remove the edit entity operation when it isn't actually allowed.
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
+    } elseif($entity->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      /** @var User $currentUser */
+      $currentUser = User::load(\Drupal::currentUser()->id());
+      if ($currentUser->hasRole('assessor')) {
+        $operations['edit']['title'] = t('Review');
+      }
     }
   }
 }
@@ -777,29 +800,6 @@ function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface 
     // When a new paragraph is added, node_save is called for parent.
     return;
   }
-  /** @var \Drupal\node\NodeInterface $parent_entity */
-  $parent_entity = $paragraph->getParentEntity();
-  while ($parent_entity instanceof \Drupal\paragraphs\ParagraphInterface) {
-    // Values paragraphs have threat paragraphs as parents.
-    $parent_entity = $parent_entity->getParentEntity();
-  }
-  if (!$parent_entity instanceof \Drupal\node\NodeInterface) {
-    return;
-  }
-  if (time() - $parent_entity->getChangedTime() <= 1) {
-    // We are here because of parent node save, do we don't need to save again
-    // the node.
-    return;
-  }
-
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  // When a paragraph is edited and the parent node is new, change it to under evaluation
-  // and assign it's coordinator.
-  $workflow_service->setCoordinatorAndState($parent_entity, FALSE);
-
-  $parent_entity->setChangedTime(time());
-  $parent_entity->save();
 }
 
 /**
@@ -844,5 +844,62 @@ function iucn_assessment_views_pre_view(ViewExecutable $view, $display_id, array
   if ($view->id() == 'account_assignments' && $display_id == 'block_4' && !in_array('coordinator', \Drupal::currentUser()->getRoles())) {
     // #5784 - remove the help text for managers
     $view->removeHandler($display_id, 'header', 'area');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operation, AccountInterface $account) {
+  if ($operation == 'view') {
+    switch ($paragraph->bundle()) {
+      case 'as_site_value_wh':
+      case 'as_site_value_bio':
+        // Values paragraphs are displayed in the "See differences" popup.
+        return $paragraph->getParentEntity()->access('edit', $account, TRUE)->isForbidden()
+          ? AccessResult::forbidden()
+          : AccessResult::allowed();
+        break;
+    }
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+  if (empty($data['tabs'])) {
+    return;
+  }
+
+  foreach ($data['tabs'] as &$tab) {
+    if (empty($tab['entity.node.canonical']['#link']['url'])) {
+      continue;
+    }
+
+    $url = $tab['entity.node.canonical']['#link']['url'];
+
+    if (!($url instanceof Url)) {
+      continue;
+    }
+
+    $parameters = $url->getRouteParameters();
+
+    if (empty($parameters['node'])) {
+      continue;
+    }
+
+    /** @var Node $node */
+    $node = Node::load($parameters['node']);
+
+    if (empty($node) || $node->getType() != 'site_assessment') {
+      return;
+    }
+
+    $tab['entity.node.canonical']['#link']['url'] = Url::fromRoute('entity.node.revision', [
+      'node' => $node->id(),
+      'node_revision' => $node->getLoadedRevisionId(),
+    ]);
   }
 }

@@ -19,7 +19,7 @@ category: Example
 elements: |
   value:
     '#type': textfield
-    '#title': 'Value'
+    '#title': Value
     '#required': true
     '#description': 'Enter a value to displayed in a custom message.'
   
@@ -31,6 +31,7 @@ settings:
   page: true
   page_submit_path: ''
   page_confirm_path: ''
+  form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -38,6 +39,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -70,6 +72,9 @@ settings:
   submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -110,9 +115,11 @@ settings:
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: null
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: null
   entity_limit_total_interval: null
   entity_limit_user: null
@@ -165,6 +172,10 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
 handlers:
   example:
     id: example
@@ -176,6 +187,3 @@ handlers:
     settings:
       message: 'You entered: <code>[webform_submission:values:value]</code>'
       debug: false
-uuid: ce0077fd-9eb1-4bb9-a270-e82713f8d2d3
-_core:
-  default_config_hash: tdCyBfZG8ZroUObP_Uc4R4mroXfqE2j2rY_pJd7ENT0

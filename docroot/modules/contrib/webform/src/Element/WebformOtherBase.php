@@ -115,6 +115,7 @@ abstract class WebformOtherBase extends FormElement {
     $element[$type]['#pre_render'] = [];
 
     // Build other textfield.
+    $element += ['other' => []];
     foreach ($element as $key => $value) {
       if (strpos($key, '#other__') === 0) {
         $other_key = str_replace('#other__', '#', $key);
@@ -149,6 +150,11 @@ abstract class WebformOtherBase extends FormElement {
       $element[$type]['#parents'] = array_merge($element['#parents'], [$type]);
       $element['other']['#parents'] = array_merge($element['#parents'], ['other']);
     }
+
+    // Initialize the other element to allow for webform enhancements.
+    /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+    $element_manager = \Drupal::service('plugin.manager.webform.element');
+    $element_manager->buildElement($element['other'], $complete_form, $form_state);
 
     // Add attributes to the composite fieldset wrapper.
     // @see \Drupal\webform\Element\WebformCompositeFormElementTrait

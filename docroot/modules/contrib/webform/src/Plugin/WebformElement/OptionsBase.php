@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Render\Markup;
@@ -17,6 +16,8 @@ use Drupal\webform\WebformSubmissionInterface;
  * Provides a base 'options' element.
  */
 abstract class OptionsBase extends WebformElementBase {
+
+  use TextBaseTrait;
 
   /**
    * Export delta for multiple options.
@@ -75,6 +76,14 @@ abstract class OptionsBase extends WebformElementBase {
         'other__min' => '',
         'other__max' => '',
         'other__step' => '',
+        // Counter.
+        'other__counter_type' => '',
+        'other__counter_minimum' => '',
+        'other__counter_minimum_message' => '',
+        'other__counter_maximum' => '',
+        'other__counter_maximum_message' => '',
+        // Wrapper.
+        'wrapper_type' => 'fieldset',
       ];
     }
 
@@ -549,6 +558,28 @@ abstract class OptionsBase extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
+  public function getElementSelectorSourceValues(array $element) {
+    if ($this->hasMultipleValues($element) && $this->hasMultipleWrapper()) {
+      return [];
+    }
+
+    $plugin_id = $this->getPluginId();
+    $name = $element['#webform_key'];
+    $options = OptGroup::flattenOptions($element['#options']);
+    if ($inputs = $this->getElementSelectorInputsOptions($element)) {
+      $other_type = $this->getOptionsOtherType();
+      $multiple = ($this->hasMultipleValues($element) && $other_type === 'select') ? '[]' : '';
+      return [":input[name=\"{$name}[$other_type]$multiple\"]" => $options];
+    }
+    else {
+      $multiple = ($this->hasMultipleValues($element) && strpos($plugin_id, 'select') !== FALSE) ? '[]' : '';
+      return [":input[name=\"$name$multiple\"]" => $options];
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getElementSelectorInputValue($selector, $trigger, array $element, WebformSubmissionInterface $webform_submission) {
     if ($this->isOptionsOther()) {
       $input_name = WebformSubmissionConditionsValidator::getSelectorInputName($selector);
@@ -604,7 +635,7 @@ abstract class OptionsBase extends WebformElementBase {
     // elements, this includes radios, checkboxes, and buttons.
     if (preg_match('/(radios|checkboxes|buttons)/', $this->getPluginId())) {
       $t_args = [
-        '@name' => Unicode::strtolower($this->getPluginLabel()),
+        '@name' => mb_strtolower($this->getPluginLabel()),
         ':href' => 'https://www.drupal.org/node/2836364',
       ];
       $form['element_attributes']['#description'] = $this->t('Please note: That the below custom element attributes will also be applied to the @name fieldset wrapper. (<a href=":href">Issue #2836374</a>)', $t_args);
@@ -655,9 +686,9 @@ abstract class OptionsBase extends WebformElementBase {
     $default_empty_option = $this->configFactory->get('webform.settings')->get('element.default_empty_option');
     if ($default_empty_option) {
       $default_empty_option_required = $this->configFactory->get('webform.settings')->get('element.default_empty_option_required') ?: $this->t('- Select -');
-      $form['options']['empty_option']['#description'] .= '<br />' . $this->t('Required elements default to: %required', ['%required' => $default_empty_option_required]);
+      $form['options']['empty_option']['#description'] .= '<br />' . $this->t('Required elements defaults to: %required', ['%required' => $default_empty_option_required]);
       $default_empty_option_optional = $this->configFactory->get('webform.settings')->get('element.default_empty_option_optional') ?: $this->t('- None -');
-      $form['options']['empty_option']['#description'] .= '<br />' . $this->t('Optional elements default to: %optional', ['%optional' => $default_empty_option_optional]);
+      $form['options']['empty_option']['#description'] .= '<br />' . $this->t('Optional elements defaults to: %optional', ['%optional' => $default_empty_option_optional]);
     }
     $form['options']['empty_value'] = [
       '#type' => 'textfield',
@@ -684,6 +715,13 @@ abstract class OptionsBase extends WebformElementBase {
         [':input[name="properties[other__type]"]' => ['value' => 'textfield']],
         'or',
         [':input[name="properties[other__type]"]' => ['value' => 'number']],
+      ],
+    ];
+    $states_textbase = [
+      'visible' => [
+        [':input[name="properties[other__type]"]' => ['value' => 'textfield']],
+        'or',
+        [':input[name="properties[other__type]"]' => ['value' => 'textarea']],
       ],
     ];
     $states_textarea = [
@@ -770,7 +808,7 @@ abstract class OptionsBase extends WebformElementBase {
     $form['options_other']['other__number_container'] = $this->getFormInlineContainer();
     $form['options_other']['other__number_container']['other__min'] = [
       '#type' => 'number',
-      '#title' => $this->t('Other min'),
+      '#title' => $this->t('Other minimum'),
       '#description' => $this->t('Specifies the minimum value.'),
       '#step' => 'any',
       '#size' => 4,
@@ -778,7 +816,7 @@ abstract class OptionsBase extends WebformElementBase {
     ];
     $form['options_other']['other__number_container']['other__max'] = [
       '#type' => 'number',
-      '#title' => $this->t('Other max'),
+      '#title' => $this->t('Other maximum'),
       '#description' => $this->t('Specifies the maximum value.'),
       '#step' => 'any',
       '#size' => 4,
@@ -792,6 +830,11 @@ abstract class OptionsBase extends WebformElementBase {
       '#size' => 4,
       '#states' => $states_number,
     ];
+
+    $form['options_other']['other__textbase_container'] = [
+      '#type' => 'container',
+      '#states' => $states_textbase,
+    ] + $this->buildCounterForm('other__', 'Other count');
 
     // Add hide/show #format_items based on #multiple.
     if ($this->supportsMultipleValues() && $this->hasProperty('multiple')) {
