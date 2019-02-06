@@ -367,6 +367,7 @@ class AssessmentWorkflow {
    * @param bool $default
    *   Whether or not the created revision is the default one.
    *
+   * @return \Drupal\node\NodeInterface
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function createRevision(NodeInterface $node, $state, $uid = NULL, $message = '', $default = FALSE) {
