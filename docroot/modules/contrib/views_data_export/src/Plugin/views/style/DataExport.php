@@ -4,6 +4,7 @@ namespace Drupal\views_data_export\Plugin\views\style;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RedirectDestinationTrait;
 use Drupal\Core\Url;
 use Drupal\rest\Plugin\views\style\Serializer;
 
@@ -20,6 +21,8 @@ use Drupal\rest\Plugin\views\style\Serializer;
  * )
  */
 class DataExport extends Serializer {
+
+  use RedirectDestinationTrait;
 
   /**
    * {@inheritdoc}
@@ -236,6 +239,7 @@ class DataExport extends Serializer {
     if ($input) {
       $url_options['query'] = $input;
     }
+    $url_options['query']['destination'] = $this->getRedirectDestination()->get();
     $url_options['absolute'] = TRUE;
     if (!empty($this->options['formats'])) {
       $url_options['query']['_format'] = reset($this->options['formats']);
@@ -273,6 +277,32 @@ class DataExport extends Serializer {
       'title' => $title,
       'href' => $url,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function render() {
+    // This is pretty close to the parent implementation.
+    // Difference (noted below) stems from not being able to get anything other
+    // than json rendered even when the display was set to export csv or xml.
+    $rows = [];
+
+    foreach ($this->view->result as $row_index => $row) {
+      $this->view->row_index = $row_index;
+      $rows[] = $this->view->rowPlugin->render($row);
+    }
+    unset($this->view->row_index);
+
+    // Get the format configured in the display or fallback to json.
+    // We intentionally implement this different from the parent method because
+    // $this->displayHandler->getContentType() will always return json due to
+    // the request's header (i.e. "accept:application/json") and
+    // we want to be able to render csv or xml data as well in accordance with
+    // the data export format configured in the display.
+    $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
+
+    return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
   }
 
 }
