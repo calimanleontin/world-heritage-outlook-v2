@@ -60,6 +60,8 @@
         else if (type == 'textarea') {
           $(get_data_selector(selector)).val(values);
           $(get_data_selector(selector)).trigger('change');
+        } else if (type == 'text_format') {
+          CKEDITOR.instances[$(get_data_selector(selector)).attr('id')].setData(values);
         }
         else {
           $(get_data_selector(selector)).val(values);
