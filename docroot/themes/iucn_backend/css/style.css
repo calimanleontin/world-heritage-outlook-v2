@@ -61,6 +61,11 @@
   display: grid;
   grid-template-columns: 300px auto;
 }
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+    grid-template-columns: 150px auto;
+  }
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
   display: table-cell;

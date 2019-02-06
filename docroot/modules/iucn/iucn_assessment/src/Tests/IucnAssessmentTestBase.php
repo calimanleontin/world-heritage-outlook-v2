@@ -11,6 +11,19 @@ use Drupal\views\Tests\ViewTestData;
  */
 abstract class IucnAssessmentTestBase extends WebTestBase {
 
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
+  /** @var \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface */
+  protected $entityDefinitionUpdateManager;
+
+  /**
+   * Disable strict config schema checking.
+   *
+   * @var bool
+   */
+  protected $strictConfigSchema = FALSE;
+
   public static $modules = [
     'iucn_who_structure',
   ];
@@ -23,9 +36,10 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    $this->strictConfigSchema = FALSE;
     parent::setUp();
-    \Drupal::entityDefinitionUpdateManager()->applyUpdates();
+    $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
+    $this->workflowService = $this->container->get('iucn_assessment.workflow');
+    $this->entityDefinitionUpdateManager->applyUpdates();
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createAllTestData();
   }
@@ -42,6 +56,8 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    *   The state.
    * @param array $field_changes
    *   An array of field changes.
+   *
+   * @return \Drupal\node\NodeInterface
    */
   protected function setAssessmentState(NodeInterface $node, $newState, $field_changes = NULL) {
     if (!empty($field_changes)) {
@@ -50,7 +66,7 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
       }
     }
     $state = $node->field_state->value;
-    \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    return $this->workflowService->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
   }
 
   /**
