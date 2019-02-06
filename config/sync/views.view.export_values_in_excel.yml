@@ -666,6 +666,8 @@ display:
               manager: ''
               company: ''
       filename: 2017-values.xlsx
+      export_method: batch
+      export_batch_size: 100
     cache_metadata:
       max-age: -1
       contexts:
