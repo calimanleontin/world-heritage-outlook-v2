@@ -775,5 +775,5 @@ $config['config_split.config_split.development']['status'] = FALSE;
 $config['config_split.config_split.live']['status'] = FALSE;
 if (!empty($settings['environment'])) {
   $config['config_split.config_split.development']['status'] = $settings['environment'] == 'dev';
-  $config['config_split.config_split.live']['status'] = in_array($settings['environment'], ['live', 'production']);
+  $config['config_split.config_split.live']['status'] = in_array($settings['environment'], ['live', 'production', 'prod']);
 }

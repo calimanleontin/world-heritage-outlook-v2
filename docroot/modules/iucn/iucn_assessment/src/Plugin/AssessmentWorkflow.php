@@ -105,13 +105,14 @@ class AssessmentWorkflow {
    * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function checkAssessmentAccess(NodeInterface $node, $action = 'edit', AccountInterface $account = NULL) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::allowedIf($action != 'change_state');
+    }
+
     if (empty($account)) {
       $account = $this->currentUser;
     }
-    if ($node->bundle() != 'site_assessment') {
-      return AccessResult::allowed();
-    }
-    $access = AccessResult::neutral();
+    $access = AccessResult::allowed();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
@@ -145,9 +146,8 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_UNDER_REVIEW:
-          // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf($node->isDefaultRevision() === FALSE && $node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
@@ -166,6 +166,10 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
           break;
 
+        case self::STATUS_UNDER_REVIEW:
+          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
+          break;
+
         case self::STATUS_FINISHED_REVIEWING:
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
@@ -179,41 +183,65 @@ class AssessmentWorkflow {
   }
 
   /**
+   * Gets the previous revision from the workflow - the revision from witch the
+   * actual one started.
+   *
+   * @param \Drupal\node\NodeInterface $revision
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  public function getPreviousWorkflowRevision(NodeInterface $revision) {
+    $workflow = [
+      self::STATUS_CREATION,
+      self::STATUS_NEW,
+      self::STATUS_UNDER_EVALUATION,
+      self::STATUS_UNDER_ASSESSMENT,
+      self::STATUS_READY_FOR_REVIEW,
+      self::STATUS_UNDER_REVIEW,
+      self::STATUS_FINISHED_REVIEWING,
+      self::STATUS_UNDER_COMPARISON,
+      self::STATUS_REVIEWING_REFERENCES,
+      self::STATUS_APPROVED,
+      self::STATUS_PUBLISHED,
+    ];
+    $currentState = !empty($revision->field_state->value)
+      ? $revision->field_state->value
+      : self::STATUS_NEW;
+
+    if (in_array($currentState, [self::STATUS_FINISHED_REVIEWING, self::STATUS_UNDER_COMPARISON])) {
+      // Except the default revisions, there are multiple revisions with
+      // "Under review" and "Finished reviewing" status (one for each reviewer),
+      // so we compare the "Finished reviewing" and "Under comparison" revisions
+      // with the only "Ready for review" one.
+      $previousStateKey = array_search(self::STATUS_READY_FOR_REVIEW, $workflow);
+    }
+    else {
+      $previousStateKey = array_search($currentState, $workflow) - 1;
+    }
+    $previousState = !empty($workflow[$previousStateKey]) ? $workflow[$previousStateKey] : NULL;
+    return !empty($previousState) ? $this->getRevisionByState($revision, $previousState) : NULL;
+  }
+
+  /**
    * All the functions that need to be called when an assessment is saved.
    *
    * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function assessmentPreSave(NodeInterface $node) {
-    // Ignore new assessments.
     if ($node->isNew() || $this->assessmentHasNoState($node)) {
-      if (empty($node->field_as_protection->getValue())) {
-        $terms = $this->termStorage->loadByProperties([
-          'vid' => 'assessment_protection_topic',
-        ]);
-        $protectionParagraphs = [];
-        foreach ($terms as $term) {
-          $paragraph = Paragraph::create([
-            'type' => 'as_site_protection',
-            'field_as_protection_topic' => [$term->id()],
-          ]);
-          $paragraph->save();
-          $protectionParagraphs[] = $paragraph;
-        }
-        $node->set('field_as_protection', $protectionParagraphs);
-      }
+      // Ignore new assessments.
+      $this->createSiteProtectionParagraphs($node);
       $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
     }
 
-    $state = $node->field_state->value;
+    $newState = $node->field_state->value;
     /** @var \Drupal\node\NodeInterface $original */
     $original = $node->isDefaultRevision() ? $node->original : $this->getAssessmentRevision($node->getLoadedRevisionId());
-    $original_state = $original->field_state->value;
+    $oldState = $original->field_state->value;
 
-    // Block only for reviewers' revision:
-    // Sets the node default revision status to STATUS_FINISHED_REVIEWING when the last reviewer marks revision as done.
-    // Creates a new revision.
     if (!$node->isDefaultRevision()) {
       // IMPORTANT: when programatically saving a revision
       // field_state->workflow_transition is empty.
@@ -221,121 +249,40 @@ class AssessmentWorkflow {
       // a transition, but incorrectly calculates the from_state and to_state
       // for revisions.
       // We need to call our function that correctly populates the transition.
-      $this->forceAssessmentState($node, $node->field_state->value, FALSE);
-
-      // When a reviewer finishes his revision, check if all other reviewers
-      // have marked their revision is done.
-      // If so, mark the default revision as done.
-      if ($state == self::STATUS_FINISHED_REVIEWING && $original_state == self::STATUS_UNDER_REVIEW) {
-        $default_revision = Node::load($node->id());
-        $this->appendCommentsToFieldSettings($default_revision, $node, FALSE);
-        if ($this->isAssessmentReviewed($default_revision, $node->getRevisionId())) {
-          $this->forceAssessmentState($default_revision, self::STATUS_FINISHED_REVIEWING, FALSE);
-        }
-        // Save the differences on the revision.
-        $this->appendDiffToFieldSettings($default_revision, $node, TRUE, TRUE);
-      }
-      // When the draft revision is published,
-      // create a new default revision with the published state.
-      elseif ($state == self::STATUS_PUBLISHED && $original_state == self::STATUS_DRAFT) {
-        $this->createRevision($node, NULL, NULL, self::STATUS_PUBLISHED, TRUE);
-      }
+      $this->forceAssessmentState($node, $newState, FALSE);
       return;
     }
 
-    $this->setCoordinatorAndState($node, FALSE);
-
     // Programmatically set values on fields
     // @see: https://helpdesk.eaudeweb.ro/issues/5685
-    if ($this->isNewAssessment($original) && $state == self::STATUS_UNDER_EVALUATION) {
+    if ($this->isNewAssessment($original) && $newState == self::STATUS_UNDER_EVALUATION) {
       $node->field_as_start_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
     }
-    if ($original_state == self::STATUS_REVIEWING_REFERENCES && $state == self::STATUS_APPROVED) {
+    if ($oldState == self::STATUS_REVIEWING_REFERENCES && $newState == self::STATUS_APPROVED) {
       $node->field_as_end_date->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
     }
-    if (in_array($original_state, [self::STATUS_REVIEWING_REFERENCES, self::STATUS_DRAFT]) && $state == self::STATUS_PUBLISHED) {
+    if (in_array($oldState, [self::STATUS_REVIEWING_REFERENCES, self::STATUS_DRAFT]) && $newState == self::STATUS_PUBLISHED) {
       $node->field_date_published->value = date(DateTimeItemInterface::DATE_STORAGE_FORMAT);
     }
 
-    // Create or remove reviewer revisions.
-    if ($state == self::STATUS_UNDER_REVIEW) {
-      if ($original_state == self::STATUS_UNDER_REVIEW) {
-        $added_reviewers = $this->getAddedReviewers($node, $original);
-        $removed_reviewers = $this->getRemovedReviewers($node, $original);
-      }
-      else {
-        $added_reviewers = $this->getReviewersArray($node);
-        $removed_reviewers = NULL;
-      }
+    $node->setPublished($newState == self::STATUS_PUBLISHED);
+    $node->setChangedTime(time());
+  }
 
-      // Create a revision for each newly added reviewer.
-      if (!empty($added_reviewers)) {
-        foreach ($added_reviewers as $added_reviewer) {
-          if (empty($this->getReviewerRevision($node, $added_reviewer))) {
-            $this->createRevisionForReviewer($node, $added_reviewer);
-          }
-        }
-      }
-      // Delete revisions of reviewers no longer assigned on this assessment.
-      if (!empty($removed_reviewers)) {
-        foreach ($removed_reviewers as $removed_reviewer) {
-          $this->deleteReviewerRevisions($node, $removed_reviewer);
-        }
-      }
-      $unfinished_reviews = $this->getUnfinishedReviewerRevisions($node);
-      if (empty($unfinished_reviews)) {
-        $node->field_state->value = self::STATUS_FINISHED_REVIEWING;
+  public function assessmentUpdate(NodeInterface $node) {
+    if (!empty($node->field_as_site->getValue())) {
+      $site = $node->field_as_site->entity;
+      if (!empty($site)) {
+        // Reset site assessments for this site.
+        _iucn_assessment_set_site_assessments($site);
+        $site->save();
       }
     }
-
-    // When an assessor finishes, get the diff and save it.
-    if ($state == self::STATUS_READY_FOR_REVIEW && $original_state == self::STATUS_UNDER_ASSESSMENT) {
-      $under_evaluation_revision = self::getRevisionByState($node, self::STATUS_UNDER_EVALUATION);
-      $this->appendDiffToFieldSettings($node, $under_evaluation_revision, FALSE);
-    }
-
-    // After leaving the ready for review state, we no longer need the diff.
-    if ($state != $original_state && $original_state == self::STATUS_READY_FOR_REVIEW) {
-      $this->clearKeyFromFieldSettings($node, 'diff', FALSE);
-    }
-
-    // Check if the state was changed.
-    if ($original_state != $state) {
-      // When using $node->setNewRevision(), editing paragraphs makes
-      // the changes visible in all revisions.
-      // @todo: check why this is happening.
-      $revision_state = $original_state;
-
-      // Set the original status to new so a proper revision is created.
-      if ($this->assessmentHasNoState($original)) {
-        $revision_state = self::STATUS_NEW;
-      }
-
-      $is_unpublished = NULL;
-      if ($state == self::STATUS_DRAFT && $original_state == self::STATUS_PUBLISHED) {
-        $this->forceAssessmentState($node, self::STATUS_PUBLISHED, FALSE);
-        $revision_state = self::STATUS_DRAFT;
-      }
-      $this->createRevision($node, NULL, NULL, $revision_state);
-      $revision_message = 'State: ' . $node->field_state->value;
-      $node->setRevisionLogMessage($revision_message);
-    }
-
-    if ($state == self::STATUS_PUBLISHED) {
-      $node->setPublished(TRUE);
-    }
-    else {
-      $node->setPublished(FALSE);
-    }
-
-    $node->setRevisionCreationTime(time());
   }
 
   /**
-   * Save the diff between 2 revisions.
-   *
-   * This function gets the differences between two nodes and
-   * appends it to the field settings of the first node.
+   * Gets the differences between two node revisions and appends it to the field
+   * settings of the first node.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The node that will store the json.
@@ -345,11 +292,11 @@ class AssessmentWorkflow {
    *   Is node->save called.
    * @param bool $reverse_comparison
    *   Reverse comparison.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
-  public function appendDiffToFieldSettings(NodeInterface $node, NodeInterface $compare, $save = TRUE, $reverse_comparison = FALSE) {
-    $diff = empty($reverse_comparison)
-      ? $this->diffController->compareRevisions($compare->getRevisionId(), $node->getRevisionId())
-      : $this->diffController->compareRevisions($node->getRevisionId(), $compare->getRevisionId());
+  public function appendDiffToFieldSettings(NodeInterface $node, $original_vid, $comparing_vid) {
+    $diff = $this->diffController->compareRevisions($original_vid, $comparing_vid);
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
     if (empty($field_settings['diff'])) {
@@ -371,45 +318,39 @@ class AssessmentWorkflow {
         }
       }
     }
-    $field_settings['diff'][$compare->getRevisionId()] = $diff;
+    $field_settings['diff'][$comparing_vid] = $diff;
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
-    if ($save) {
-      $node->save();
-    }
   }
 
   /**
-   * Adds the comments from a reviewer revision to the main revision.
+   * Appends comments from the second revision to the field settings of the
+   * first node.
    *
    * @param \Drupal\node\NodeInterface $node
    *   The default revision.
    * @param \Drupal\node\NodeInterface $revision
    *   The reviewer revision.
-   * @param bool $save
-   *   Is node->save called.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
-  public function appendCommentsToFieldSettings(NodeInterface $node, NodeInterface $revision, $save = TRUE) {
+  public function appendCommentsToFieldSettings(NodeInterface $node, NodeInterface $revision) {
     $revision_field_settings_json = $revision->field_settings->value;
     $revision_field_settings = json_decode($revision_field_settings_json, TRUE);
-    $revision_comments = $revision_field_settings['comments'];
-    if (empty($revision_comments)) {
+    if (empty($revision_field_settings['comments'])) {
       return;
     }
 
     $field_settings_json = $node->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
 
-    foreach ($revision_comments as $tab => $revision_comment) {
+    foreach ($revision_field_settings['comments'] as $tab => $revision_comment) {
       if (!empty($revision_comment[$revision->getRevisionUserId()])) {
         $field_settings['comments'][$tab][$revision->getRevisionUserId()] = $revision_comment[$revision->getRevisionUserId()];
       }
     }
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
-    if ($save) {
-      $node->save();
-    }
   }
 
   /**
@@ -423,46 +364,21 @@ class AssessmentWorkflow {
    *   The revision log message.
    * @param bool $state
    *   If this is set, the revision will have a certain state.
-   * @param bool $is_default
+   * @param bool $default
    *   Whether or not the created revision is the default one.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createRevision(NodeInterface $node, $uid = NULL, $message = '', $state = NULL, $is_default = FALSE) {
-    if (empty($uid)) {
-      $uid = $this->currentUser->id();
-    }
-    if (empty($state)) {
-      $state = $node->field_state->value;
-    }
-    if (empty($message)) {
-      $message = 'State: ' . $state;
-    }
+  public function createRevision(NodeInterface $node, $state, $uid = NULL, $message = '', $default = FALSE) {
     /** @var \Drupal\node\NodeInterface $new_revision */
-    $new_revision = $this->nodeStorage->createRevision($node, $is_default);
+    $new_revision = $this->nodeStorage->createRevision($node, $default);
     $new_revision->setRevisionCreationTime(time());
-    $new_revision->setRevisionLogMessage($message);
-    $new_revision->setRevisionUserId($uid);
-    if (empty($is_published)) {
-      $new_revision->setPublished(FALSE);
-    }
+    $new_revision->setRevisionLogMessage($message ?: "New state: {$state}");
+    $new_revision->setRevisionUserId($uid ?: $this->currentUser->id());
+    $new_revision->setPublished(FALSE);
     $this->forceAssessmentState($new_revision, $state, FALSE);
     $new_revision->save();
-  }
-
-  /**
-   * Creates a revision for a reviewer.
-   *
-   * This function sets the appropiate revision user id and message when
-   * creating a revision for a reviewer.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   * @param int $uid
-   *   The user id of the reviewer.
-   */
-  public function createRevisionForReviewer(NodeInterface $node, $uid) {
-    $revision_user = User::load($uid)->getUsername();
-    $message = 'Revision created for reviewer ' . $revision_user;
-    $this->createRevision($node, $uid, $message);
+    return $new_revision;
   }
 
   /**
@@ -499,40 +415,6 @@ class AssessmentWorkflow {
       return TRUE;
     }
     return FALSE;
-  }
-
-  /**
-   * Retrieve the user ids of all reviewers added on a node save.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The saved node.
-   * @param \Drupal\node\NodeInterface $original
-   *   The node before the save.
-   *
-   * @return array
-   *   An array with all the user ids.
-   */
-  public function getAddedReviewers(NodeInterface $node, NodeInterface $original) {
-    $original_reviewers = $this->getReviewersArray($original);
-    $new_reviewers = $this->getReviewersArray($node);
-    return array_diff($new_reviewers, $original_reviewers);
-  }
-
-  /**
-   * Retrieve the user ids of all reviewers removed on a node save.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The saved node.
-   * @param \Drupal\node\NodeInterface $original
-   *   The node before the save.
-   *
-   * @return array
-   *   An array with all the user ids.
-   */
-  public function getRemovedReviewers(NodeInterface $node, NodeInterface $original) {
-    $original_reviewers = $this->getReviewersArray($original);
-    $new_reviewers = $this->getReviewersArray($node);
-    return array_diff($original_reviewers, $new_reviewers);
   }
 
   /**
@@ -666,8 +548,7 @@ class AssessmentWorkflow {
    *   A revision or null.
    */
   public function getRevisionByState(NodeInterface $node, $state) {
-    $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
-    $assessment_revisions_ids = array_reverse($assessment_revisions_ids);
+    $assessment_revisions_ids = array_reverse($this->nodeStorage->revisionIds($node));
     $reviewers = $this->getReviewersArray($node);
     foreach ($assessment_revisions_ids as $rid) {
       /** @var \Drupal\node\Entity\Node $node_revision */
@@ -737,7 +618,7 @@ class AssessmentWorkflow {
    * @param int $vid
    *   The revision id.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\node\NodeInterface|null
    *   The revision.
    */
   public function getAssessmentRevision($vid) {
@@ -751,19 +632,14 @@ class AssessmentWorkflow {
    *   The assessment.
    * @param string $key
    *   The key to be deleted.
-   * @param bool $save
-   *   Save the node or not.
    */
-  public function clearKeyFromFieldSettings(NodeInterface $node, $key, $save = TRUE) {
+  public function clearKeyFromFieldSettings(NodeInterface $node, $key) {
     $settings = $node->field_settings->value;
     $settings = json_decode($settings, TRUE);
     if (!empty($settings[$key])) {
       unset($settings[$key]);
     }
     $node->field_settings->value = json_encode($settings);
-    if ($save) {
-      $node->save();
-    }
   }
 
   /**
@@ -779,28 +655,30 @@ class AssessmentWorkflow {
   }
 
   /**
-   * Sets the current user as a coordinator and updates the state.
+   * Create a site_protection paragraph for each existing term in
+   * "assessment_protection_topic" vocabulary if the node field field_as_protection
+   * is empty.
    *
-   * This function should only be used for new assessments. Sets the
-   * current user as a coordinator if he has the coordinator role and
-   * move the node into the under evaluation state.
+   * @param \Drupal\node\NodeInterface $node
    *
-   * @param NodeInterface $node
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function setCoordinatorAndState(NodeInterface $node, $execute = TRUE) {
-    if (!$node->isDefaultRevision()) {
-      return;
+  public function createSiteProtectionParagraphs(NodeInterface $node) {
+    if (empty($node->field_as_protection->getValue())) {
+      $terms = $this->termStorage->loadByProperties([
+        'vid' => 'assessment_protection_topic',
+      ]);
+      $protectionParagraphs = [];
+      foreach ($terms as $term) {
+        $paragraph = Paragraph::create([
+          'type' => 'as_site_protection',
+          'field_as_protection_topic' => [$term->id()],
+        ]);
+        $paragraph->save();
+        $protectionParagraphs[] = $paragraph;
+      }
+      $node->set('field_as_protection', $protectionParagraphs);
     }
-    if (!empty($node->field_coordinator->target_id) || !$this->isNewAssessment($node)) {
-      return;
-    }
-    $current_user = \Drupal::currentUser();
-    if (!in_array('coordinator', $current_user->getRoles())) {
-      return;
-    }
-
-    $node->field_coordinator->target_id = $current_user->id();
-    $this->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $execute);
   }
 
 }

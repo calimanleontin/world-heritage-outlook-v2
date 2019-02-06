@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -16,25 +17,7 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 
 class NodeSiteAssessmentForm {
 
-  public static function hideUnnecessaryFields(array &$form) {
-    // Hide unnecessary fields.
-    unset($form['actions']['delete']);
-    unset($form['advanced']);
-    unset($form['revision']);
-    unset($form['revision_log']);
-    unset($form['author']);
-    unset($form['meta']);
-    $form['field_state']['#access'] = FALSE;
-  }
-
-  public static function addRedirectToAllActions(array &$form) {
-    // Redirect to node edit on form submit.
-    foreach ($form['actions'] as $key => &$action) {
-      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
-        $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
-      }
-    }
-  }
+  use AssessmentEntityFormTrait;
 
   public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);
@@ -49,39 +32,52 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  public static function prepareForm(NodeInterface $node, $operation, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+
+    // The revision edit page is actually the node edit page.
+    // We need to change the form entity to the selected revision.
+    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
+    if (!empty($node_revision)) {
+      $node = $node_revision;
+    }
+
+    $formDisplay = $formObject->getFormDisplay($form_state);
+
+    $group_as_tabs = $formDisplay->getThirdPartySetting('field_group', 'group_as_tabs');
+    if (!empty($group_as_tabs['children'])) {
+      $tab = \Drupal::request()->get('tab') ?: 'values';
+      foreach ($group_as_tabs['children'] as $group_tab) {
+        $fieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $group_tab);
+        $tab_id = str_replace('_', '-', $fieldGroupTab['format_settings']['id']);
+        if ($tab_id == $tab) {
+          continue;
+        }
+        self::removeGroupFields($formDisplay, $fieldGroupTab);
+      }
+    }
+    $formObject->setFormDisplay($formDisplay, $form_state);
+    $formObject->setEntity($node);
+    $form_state->setFormObject($formObject);
+  }
+
   /**
    * Recursive function used to used to unset the fields of a fieldgroup.
    */
-  public static function removeGroupFields(&$form, $group) {
-    foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
-      if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        if (FieldConfig::loadByName('node', 'site_assessment', $nested_field)->getSetting('target_type') == 'paragraph') {
-          unset($form[$nested_field]);
-        }
-        else {
-          $form[$nested_field]['#access'] = FALSE;
-        }
-      }
-      elseif (!empty($form['#fieldgroups'][$nested_field])) {
-        self::removeGroupFields($form, $nested_field);
+  public static function removeGroupFields(EntityFormDisplayInterface $formDisplay, $fieldGroupTab) {
+    foreach ($fieldGroupTab['children'] as $child) {
+      $formDisplay->removeComponent($child);
+
+      $childFieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $child);
+      if (!empty($childFieldGroupTab)) {
+        self::removeGroupFields($formDisplay, $childFieldGroupTab);
       }
     }
   }
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
     $tab = \Drupal::request()->get('tab') ?: 'values';
-    if (empty(\Drupal::request()->get('_wrapper_format'))
-      || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
-      // Unset the fields that are only present on other tabs.
-      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
-      foreach ($group_tabs as $group_tab) {
-        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
-        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
-        if ($tab_id != $tab) {
-          self::removeGroupFields($form, $group_tab);
-        }
-      }
-    }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
@@ -132,22 +128,23 @@ class NodeSiteAssessmentForm {
 
     if (!empty($node->id()) && !empty($state)) {
       $form['current_state'] = self::getCurrentStateMarkup($node);
-
-      $form['main_data_container'] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['main-data-container']],
-        '#weight' => -999,
-        'data' => [
+      if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
+        $form['main_data_container'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['data-fields']],
-          'title' => $form['title'],
-          'langcode' => $form['langcode'],
-          'field_assessment_file' => $form['field_assessment_file'],
-        ],
-      ];
-      unset($form['title']);
-      unset($form['langcode']);
-      unset($form['field_assessment_file']);
+          '#attributes' => ['class' => ['main-data-container']],
+          '#weight' => -999,
+          'data' => [
+            '#type' => 'container',
+            '#attributes' => ['class' => ['data-fields']],
+            'title' => $form['title'],
+            'langcode' => $form['langcode'],
+            'field_assessment_file' => $form['field_assessment_file'],
+          ],
+        ];
+        unset($form['title']);
+        unset($form['langcode']);
+        unset($form['field_assessment_file']);
+      }
 
       $blockContent = BlockContent::load(8);
       if (!empty($blockContent)) {
@@ -269,8 +266,6 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
-
     // Hide these fields if there are no other biodiversity values.
     if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
       $fields = [
@@ -305,6 +300,8 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -329,15 +326,18 @@ class NodeSiteAssessmentForm {
     $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
-  /*
-   *
-   * Store comments on node.
+  /**
+   * Store comments on node and set the current user as coordinator for NEW assessments.
    *
    * @param $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
-    $current_user = \Drupal::currentUser();
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -345,11 +345,23 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $values = $form_state->getValues();
 
+    if ($node->isDefaultRevision()
+      && $workflowService->isNewAssessment($node)
+      && empty($node->field_coordinator->target_id)
+      && in_array('coordinator', $currentUser->getRoles())) {
+      // Sets the current user as a coordinator if he has the coordinator role
+      // and edits the assessment.
+      $oldState = $node->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    }
+
     $settings = json_decode($node->field_settings->value, TRUE);
     foreach ($values as $key => $value) {
       if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
         $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab][$current_user->id()] = $value;
+        $settings['comments'][$commented_tab][$currentUser->id()] = $value;
       }
     }
     $node->field_settings->setValue(json_encode($settings));
@@ -387,45 +399,6 @@ class NodeSiteAssessmentForm {
       '#attributes' => ['class' => ['current-state']],
       '#value' => t('Current workflow state: <b>@state</b>', ['@state' => $state_label]),
     ];
-  }
-
-  /**
-   * Submit callback for the state change form.
-   *
-   * Redirects the user to the assessment edit page if he can access it.
-   * Otherwise, this will redirect the user to /user.
-   *
-   * @param $form
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public static function assessmentSubmitRedirect(&$form, FormStateInterface $form_state) {
-    /** @var \Drupal\node\NodeForm $nodeForm */
-    $nodeForm = $form_state->getFormObject();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $nodeForm->getEntity();
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $tab = \Drupal::request()->query->get('tab');
-    $options = [];
-    if (!empty($tab)) {
-      $options = ['query' => ['tab' => $tab]];
-    }
-    if ($workflow_service->checkAssessmentAccess($node, 'edit')->isAllowed()) {
-      if (!$node->isDefaultRevision()) {
-        $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
-      }
-      else {
-        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
-      }
-    }
-    elseif ($workflow_service->checkAssessmentAccess($node, 'change_state')->isAllowed()) {
-      $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
-    }
-    else {
-      $form_state->setRedirect('who.user-dashboard');
-    }
   }
 
   /**
@@ -487,7 +460,6 @@ class NodeSiteAssessmentForm {
   }
 
   public static function buildDiffButtons(&$form, $node) {
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.field_diff';
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
     $diff = self::getNodeDiff($node);
     if (empty($diff)) {
@@ -550,7 +522,7 @@ class NodeSiteAssessmentForm {
           'paragraphs-icon-button',
           'paragraphs-icon-button-compare',
           'use-ajax',
-          'field-diff',
+          'field-diff-button',
         ],
         'title' => t('See differences'),
       ],

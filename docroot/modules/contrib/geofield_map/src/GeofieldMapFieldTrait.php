@@ -302,7 +302,7 @@ trait GeofieldMapFieldTrait {
       ]);
     }
     else {
-      $map_google_api_key_value = $this->t("<span class='geofield-map-warning'>Gmap Api Key missing.<br>Google Maps functionality may not be available. </span>@settings_page_link", [
+      $map_google_api_key_value = $this->t("<span class='geofield-map-warning'>Gmap Api Key missing - @settings_page_link<br>Google Maps functionalities not available. </span>", [
         '@settings_page_link' => $this->link->generate($this->t('Set it in the Geofield Map Configuration Page'), Url::fromRoute('geofield_map.settings', [], [
           'query' => [
             'destination' => Url::fromRoute('<current>')
@@ -435,6 +435,13 @@ trait GeofieldMapFieldTrait {
    */
   private function setMapZoomAndPanElement(array $settings, array $default_settings, array &$elements) {
 
+    if (isset($this->fieldDefinition)) {
+      $force_center_selector = ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_center][center_force]"]';
+    }
+    else {
+      $force_center_selector = ':input[name="style_options[map_center][center_force]"]';
+    }
+
     $elements['map_zoom_and_pan'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Map Zoom and Pan'),
@@ -455,6 +462,11 @@ trait GeofieldMapFieldTrait {
         '#description' => $this->t('In case of multiple GeoMarkers, the Map will naturally focus zoom on the input Geofields bounds.<br>This option will instead force the Map Zoom on the input Start Zoom value'),
         '#default_value' => $settings['map_zoom_and_pan']['zoom']['force'],
         '#return_value' => 1,
+        '#states' => [
+          'visible' => [
+            $force_center_selector => ['checked' => FALSE],
+          ],
+        ],
       ],
       'min' => [
         '#type' => 'number',
@@ -648,6 +660,8 @@ trait GeofieldMapFieldTrait {
     $elements['map_marker_and_infowindow'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Map Marker and Infowindow'),
+      '#prefix' => '<div id="map-marker-and-infowindow-wrapper">',
+      '#suffix' => '</div>',
     ];
     $elements['map_marker_and_infowindow']['icon_image_path'] = [
       '#type' => 'textfield',
@@ -659,6 +673,14 @@ trait GeofieldMapFieldTrait {
       '#element_validate' => [[get_class($this), 'urlValidate']],
       '#weight' => -10,
     ];
+
+    // Add SVG UI file support.
+    $elements['map_marker_and_infowindow']['icon_image_path']['#description'] .= !$this->moduleHandler->moduleExists('svg_image') ? '<br>' . $this->t('SVG Files support is disabled. Enabled it with @svg_image_link', [
+      '@svg_image_link' => $this->link->generate('SVG Image Module', Url::fromUri('https://www.drupal.org/project/svg_image', [
+        'absolute' => TRUE,
+        'attributes' => ['target' => 'blank'],
+      ])),
+    ]) : '<br>' . $this->t('SVG Files support enabled.');
 
     $multivalue_fields_states = [];
 
@@ -722,7 +744,7 @@ trait GeofieldMapFieldTrait {
       $elements['map_marker_and_infowindow']['infowindow_field'] = [
         '#type' => 'select',
         '#title' => $this->t('Marker Infowindow Content from'),
-        '#description' => $this->t('Choose an existing string/text type field from which populate the Marker Infowindow'),
+        '#description' => $this->t('Choose an existing string/text type field from which populate the Marker Infowindow.'),
         '#options' => $info_window_source_options,
         '#default_value' => $settings['map_marker_and_infowindow']['infowindow_field'],
       ];

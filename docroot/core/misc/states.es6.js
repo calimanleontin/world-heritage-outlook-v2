@@ -60,6 +60,30 @@
   }
 
   /**
+   * Bitwise AND with a third undefined state.
+   *
+   * @function Drupal.states~ternary
+   *
+   * @param {*} a
+   *   Value a.
+   * @param {*} b
+   *   Value b
+   *
+   * @return {bool}
+   *   The result.
+   */
+  function ternary(a, b) {
+    if (typeof a === 'undefined') {
+      return b;
+    }
+    if (typeof b === 'undefined') {
+      return a;
+    }
+
+    return a && b;
+  }
+
+  /**
    * Attaches the states.
    *
    * @type {Drupal~behavior}
@@ -205,7 +229,6 @@
       if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
         return false;
       }
-
       const value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         // Use a custom compare function for certain reference value types.
@@ -286,7 +309,7 @@
       let result;
       if ($.isArray(constraints)) {
         // This constraint is an array (OR or XOR).
-        const hasXor = $.inArray('xor', constraints) === -1;
+        const hasXor = $.inArray('xor', constraints) !== -1;
         const len = constraints.length;
         for (let i = 0; i < len; i++) {
           if (constraints[i] !== 'xor') {
@@ -297,8 +320,8 @@
             );
             // Return if this is OR and we have a satisfied constraint or if
             // this is XOR and we have a second satisfied constraint.
-            if (constraint && (hasXor || result)) {
-              return hasXor;
+            if (hasXor && constraint && result) {
+              return false;
             }
             result = result || constraint;
           }
@@ -309,18 +332,20 @@
       // bogus, we don't want to end up with an infinite loop.
       else if ($.isPlainObject(constraints)) {
         // This constraint is an object (AND).
-        result = Object.keys(constraints).every(constraint => {
-          const check = this.checkConstraints(
-            constraints[constraint],
-            selector,
-            constraint,
-          );
-          /**
-           * The checkConstraints() function's return value can be undefined. If
-           * this so, consider it to have returned true.
-           */
-          return typeof check === 'undefined' ? true : check;
-        });
+        // eslint-disable-next-line no-restricted-syntax
+        for (const n in constraints) {
+          if (constraints.hasOwnProperty(n)) {
+            result = ternary(
+              result,
+              this.checkConstraints(constraints[n], selector, n),
+            );
+            // False and anything else will evaluate to false, so return when
+            // any false condition is found.
+            if (result === false) {
+              return false;
+            }
+          }
+        }
       }
       return result;
     },

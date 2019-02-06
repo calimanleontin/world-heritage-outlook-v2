@@ -3,96 +3,103 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\iucn_assessment\Controller\ModalDiffController;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\user\Entity\User;
 
-class IucnModalFieldDiffForm extends IucnModalForm {
+class IucnModalFieldDiffForm extends IucnModalDiffForm {
+
+  public function getNodeFieldDiff($fieldWidgetType) {
+    $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
+    if (empty($settings['diff'])) {
+      return [];
+    }
+
+    $fieldDiff = [
+      0 => [
+        'author' => $this->t('Initial version'),
+      ],
+    ];
+
+    foreach ($settings['diff'] as $vid => $diff) {
+      if (empty($diff['node'][$this->nodeRevision->id()]['diff'][$this->fieldName])) {
+        continue;
+      }
+
+      $rowDiff = $diff['node'][$this->nodeRevision->id()];
+      $revision = $this->workflowService->getAssessmentRevision($vid);
+      $fieldDiff[] = [
+        'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
+          ? $this->nodeRevision->field_assessor->entity->getDisplayName()
+          : $revision->getRevisionUser()->getDisplayName(),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName]),
+        'copy' => $this->getCopyValueButton($vid, $fieldWidgetType, $this->fieldName, $revision->get($this->fieldName)->getValue()),
+      ];
+
+      if (empty($initialValue)) {
+        // All revisions have the same initial version.
+        $initialRevision = $this->workflowService->getAssessmentRevision($rowDiff['initial_revision_id']);
+        $initialValue = $initialRevision->get($this->fieldName)->getValue();
+        $renderedInitialValue = $initialRevision->get($this->fieldName)->view('diff');
+        $renderedInitialValue['#title'] = NULL;
+        $fieldDiff[0]['markup'] = [[['data' => $renderedInitialValue]]];
+        $fieldDiff[0]['copy'] = $init_button = $this->getCopyValueButton(0, $fieldWidgetType, $this->fieldName, $initialValue);
+      }
+    }
+    return $fieldDiff;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $node = $this->getRouteMatch()->getParameter('node_revision');
-    $field = $this->getRouteMatch()->getParameter('field');
-    $parent_form = parent::buildForm($form, $form_state);
+    $this->init($form_state);
+    $this->setFormDisplay($this->nodeFormDisplay, $form_state);
 
-    $diff_table = [
+    $form = parent::buildForm($form, $form_state);
+
+    $diffTable = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $this->t('Difference')],
+      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget']['#title']],
       '#rows' => [],
       '#weight' => -10,
-      '#attributes' => ['class' => ['field-diff-table']],
+      '#attributes' => ['class' => ['diff-table']],
     ];
 
-    $form = [];
-    unset($parent_form[$field]['diff']);
-
-    $row = [];
-    $row['author']['data']['#markup'] = '<b>' . $this->t('Initial version') . '</b>';
-    $diff_table['#rows'][] = $row;
-
-
-    $form['actions'] = $parent_form['actions'];
-    $form['#prefix'] = '<div id="drupal-modal" class="diff-modal">';
-    $form['#suffix'] = '</div>';
-
-    $settings = $node->field_settings->value;
-    $settings = json_decode($settings, TRUE);
-
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    foreach ($settings['diff'] as $assessment_vid => $diff) {
-      if (empty($diff['node'][$node->id()]['diff'][$field])) {
-        continue;
-      }
-      /** @var \Drupal\node\NodeInterface $revision */
-      $revision = $workflow_service->getAssessmentRevision($assessment_vid);
-      $diff_data = $diff['node'][$node->id()]['diff'][$field];
-      $row = [];
-      $row['author'] = $node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
-        ? $node->field_assessor->entity->getDisplayName()
-        : $revision->getRevisionUser()->getDisplayName();
-
-      $row['diff'] = ['data' => []];
-      $diff_rows = ModalDiffController::getDiffMarkup($diff_data);
-
-      if ($node->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        $data_value = $node->get($field)->getValue();
-        $data_value_0 = $revision->get($field)->getValue();
-        $value_0 = $revision->get($field)->view(['settings' => ['link' => 0]]);
-      }
-      else {
-        $data_value_0 = $node->get($field)->getValue();
-        $value_0 = $node->get($field)->view(['settings' => ['link' => 0]]);
-        $data_value = $revision->get($field)->getValue();
-      }
-      if ($value_0) {
-        unset($value_0['#title']);
-      }
-      $type = $this->get_diff_field_type($parent_form, $field);
-      $row['diff']['data'] = [
-        '#type' => 'table',
-        '#rows' => $diff_rows,
-        '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
-        '#prefix' => '<div class="diff-wrapper">',
-        '#suffix' => $this->get_copy_value_button($form, $type, $data_value, $field, $assessment_vid, $field) . '</div>',
+    $fieldDiff = $this->getNodeFieldDiff($this->getDiffFieldWidgetType($form[$this->fieldName]['widget']));
+    foreach ($fieldDiff as $diff) {
+      $diffTable['#rows'][] = [
+        'author' => ['data' => ['#markup' => $diff['author']]],
+        'diff' => [
+          'data' => [
+            '#type' => 'table',
+            '#rows' => $diff['markup'],
+            '#attributes' => ['class' => ['relative', 'diff-context-wrapper']],
+            '#prefix' => '<div class="diff-wrapper">',
+            '#suffix' => $diff['copy'] . '</div>',
+          ],
+        ],
       ];
-      $diff_table['#rows'][] = $row;
-      $init_button = $this->get_copy_value_button($form, $type, $data_value_0, $field, 0, $field);
-      $diff_table['#rows'][0]['diff']['data'] = $value_0;
-      $diff_table['#rows'][0]['diff']['data']['#prefix'] = '<div class="diff-wrapper">';
-      $diff_table['#rows'][0]['diff']['data']['#suffix'] = $init_button . '</div>';
     }
-    $diff_table['rows'][] = ['#markup' => '<b>' . $this->t('Final version') . '</b>'];
-    $diff_table['rows'][] = $parent_form[$field];
 
-    $form['diff'] = $diff_table;
-    $form['#attached']['library'][] = 'diff/diff.colors';
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
+    unset($form[$this->fieldName]['#title']);
+    unset($form[$this->fieldName]['widget']['#title']);
+    unset($form[$this->fieldName]['widget'][0]['#title']);
+    unset($form[$this->fieldName]['widget'][0]['value']['#title']);
+    $diffTable[] = [
+      'author' => ['data' => ['#markup' => $this->t('Final version')]],
+      'diff' => $form[$this->fieldName],
+    ];
 
-    self::buildCancelButton($form);
-    unset($form['actions']['delete']);
+    $form[$this->fieldName] = $diffTable;
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function ajaxSave(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+    $this->nodeRevision = $formObject->getEntity();
+    return parent::ajaxSave($form, $form_state);
+  }
 }

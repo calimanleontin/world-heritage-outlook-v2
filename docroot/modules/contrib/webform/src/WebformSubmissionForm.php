@@ -28,6 +28,8 @@ use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * Provides a webform to collect and edit submissions.
@@ -35,6 +37,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WebformSubmissionForm extends ContentEntityForm {
 
   use WebformDialogFormTrait;
+
+  /**
+   * The configuration object factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * The renderer service.
@@ -140,10 +149,19 @@ class WebformSubmissionForm extends ContentEntityForm {
   protected $sourceEntity;
 
   /**
+   * States API prefix.
+   *
+   * @var string
+   */
+  protected $statesPrefix;
+
+  /**
    * Constructs a WebformSubmissionForm object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service.
    * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
@@ -167,8 +185,23 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @param \Drupal\webform\WebformSubmissionGenerateInterface $submission_generate
    *   The webform submission generation service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, RendererInterface $renderer, AliasManagerInterface $alias_manager, PathValidatorInterface $path_validator, WebformRequestInterface $request_handler, WebformElementManagerInterface $element_manager, WebformThirdPartySettingsManagerInterface $third_party_settings_manager, WebformMessageManagerInterface $message_manager, WebformTokenManagerInterface $token_manager, WebformSubmissionConditionsValidator $conditions_validator, WebformEntityReferenceManagerInterface $webform_entity_reference_manager, WebformSubmissionGenerateInterface $submission_generate) {
+  public function __construct(
+    EntityManagerInterface $entity_manager,
+    ConfigFactoryInterface $config_factory,
+    RendererInterface $renderer,
+    AliasManagerInterface $alias_manager,
+    PathValidatorInterface $path_validator,
+    WebformRequestInterface $request_handler,
+    WebformElementManagerInterface $element_manager,
+    WebformThirdPartySettingsManagerInterface $third_party_settings_manager,
+    WebformMessageManagerInterface $message_manager,
+    WebformTokenManagerInterface $token_manager,
+    WebformSubmissionConditionsValidator $conditions_validator,
+    WebformEntityReferenceManagerInterface $webform_entity_reference_manager,
+    WebformSubmissionGenerateInterface $submission_generate
+  ) {
     parent::__construct($entity_manager);
+    $this->configFactory = $config_factory;
     $this->renderer = $renderer;
     $this->requestHandler = $request_handler;
     $this->aliasManager = $alias_manager;
@@ -189,6 +222,7 @@ class WebformSubmissionForm extends ContentEntityForm {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity.manager'),
+      $container->get('config.factory'),
       $container->get('renderer'),
       $container->get('path.alias_manager'),
       $container->get('path.validator'),
@@ -200,7 +234,6 @@ class WebformSubmissionForm extends ContentEntityForm {
       $container->get('webform_submission.conditions_validator'),
       $container->get('webform.entity_reference_manager'),
       $container->get('webform_submission.generate')
-
     );
   }
 
@@ -252,12 +285,16 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Get the source entity and allow webform submission to be used as a source
     // entity.
-    $this->sourceEntity = $this->requestHandler->getCurrentSourceEntity(['webform']);
+    $this->sourceEntity = $entity->getSourceEntity() ?: $this->requestHandler->getCurrentSourceEntity(['webform']);
     if ($this->sourceEntity === $entity) {
       $this->sourceEntity = $this->requestHandler->getCurrentSourceEntity(['webform', 'webform_submission']);
     }
 
+    // Get source entity.
     $source_entity = $this->sourceEntity;
+
+    // Get account.
+    $account = $this->currentUser();
 
     // Load entity from token or saved draft when not editing or testing
     // submission form.
@@ -268,7 +305,6 @@ class WebformSubmissionForm extends ContentEntityForm {
         $entity = $webform_submission_token;
       }
       elseif ($webform->getSetting('draft') != WebformInterface::DRAFT_NONE) {
-        $account = $this->currentUser();
         if ($webform->getSetting('draft_multiple')) {
           // Allow multiple drafts to be restored using token.
           // This allows the webform's public facing URL to be used instead of
@@ -288,12 +324,38 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Set entity before calling get last submission.
     $this->entity = $entity;
 
-    // Autofill with previous submission.
-    if ($this->operation === 'add' && $entity->isNew() && $webform->getSetting('autofill')) {
-      if ($last_submission = $this->getLastSubmission()) {
-        $excluded_elements = $webform->getSetting('autofill_excluded_elements') ?: [];
-        $last_submission_data = array_diff_key($last_submission->getData(), $excluded_elements);
-        $entity->setData($last_submission_data + $entity->getData());
+    if ($entity->isNew()) {
+      if ($webform->getSetting('limit_total_unique')) {
+        // Get last webform/source entity submission.
+        $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, NULL, ['in_draft' => FALSE]);
+        if ($last_submission) {
+          $entity = $last_submission;
+          $this->operation = 'edit';
+        }
+      }
+      elseif ($webform->getSetting('limit_user_unique')) {
+        // Require user to be authenticated to access a unique submission.
+        if (!$account->isAuthenticated()) {
+          throw new AccessDeniedHttpException();
+        }
+
+        // Get last user submission.
+        $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, $account, ['in_draft' => FALSE]);
+        if ($last_submission) {
+          $entity = $last_submission;
+          $this->operation = 'edit';
+        }
+      }
+    }
+
+    if ($this->operation === 'add' && $entity->isNew()) {
+      if ($webform->getSetting('autofill')) {
+        // Autofill with previous submission.
+        if ($last_submission = $this->getLastSubmission()) {
+          $excluded_elements = $webform->getSetting('autofill_excluded_elements') ?: [];
+          $last_submission_data = array_diff_key($last_submission->getData(), $excluded_elements);
+          $entity->setData($last_submission_data + $entity->getData());
+        }
       }
     }
 
@@ -314,6 +376,9 @@ class WebformSubmissionForm extends ContentEntityForm {
     if ($this->getRequest()->query->get('_webform_dialog') && !$webform->getSetting('ajax')) {
       $webform->setSettingOverride('ajax', TRUE);
     }
+
+    // Set the webform's current operation.
+    $webform->setOperation($this->operation);
 
     return parent::setEntity($entity);
   }
@@ -397,6 +462,9 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Server side #states API validation.
     $this->conditionsValidator->buildForm($form, $form_state);
 
+    // Add Ajax callbacks.
+    $form = $this->buildAjaxForm($form, $form_state);
+
     // Alter webform via webform handler.
     $this->getWebform()->invokeHandlers('alterForm', $form, $form_state, $webform_submission);
 
@@ -404,7 +472,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     $form_id = $this->getFormId();
     $this->thirdPartySettingsManager->alter('webform_submission_form', $form, $form_state, $form_id);
 
-    return $this->buildAjaxForm($form, $form_state);
+    return $form;
   }
 
   /**
@@ -466,6 +534,10 @@ class WebformSubmissionForm extends ContentEntityForm {
     }
     array_walk($class, ['\Drupal\Component\Utility\Html', 'getClass']);
     $form['#attributes']['class'] = $class;
+
+    // Get last class, which is the most specific, as #states prefix.
+    // @see \Drupal\webform\WebformSubmissionForm::addStatesPrefix
+    $this->statesPrefix = '.' . end($class);
 
     // Check for a custom webform, track it, and return it.
     if ($custom_form = $this->getCustomForm($form, $form_state)) {
@@ -775,7 +847,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     }
 
     // Check total limit.
-    if ($this->checkTotalLimit()) {
+    if ($this->checkTotalLimit() && empty($this->getWebformSetting('limit_total_unique'))) {
       $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::LIMIT_TOTAL_MESSAGE);
       if ($webform->access('submission_update_any')) {
         $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::ADMIN_CLOSED, 'info');
@@ -786,7 +858,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     }
 
     // Check user limit.
-    if ($this->checkUserLimit()) {
+    if ($this->checkUserLimit() && empty($this->getWebformSetting('limit_user_unique'))) {
       $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::LIMIT_USER_MESSAGE, 'warning');
       if ($webform->access('submission_update_any')) {
         $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::ADMIN_CLOSED, 'info');
@@ -814,7 +886,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     $source_entity = $this->getSourceEntity();
 
     // Display test message.
-    if ($this->isGet() && $this->isRoute('webform.test_form')) {
+    if ($this->isGet() && $this->operation === 'test') {
       $this->getMessageManager()->display(WebformMessageManagerInterface::SUBMISSION_TEST, 'warning');
 
       // Display devel generate link for webform or source entity.
@@ -1436,7 +1508,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Validate file (upload) limit.
     // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::validateManagedFileLimit
     $file_limit = $this->getWebform()->getSetting('form_file_limit')
-      ?: \Drupal::config('webform.settings')->get('settings.default_form_file_limit')
+      ?: $this->configFactory->get('webform.settings')->get('settings.default_form_file_limit')
       ?: '';
     $file_limit = Bytes::toInt($file_limit);
     if (!$file_limit) {
@@ -1462,7 +1534,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     if ($total_file_size > $file_limit) {
       $t_args = ['%quota' => format_size($file_limit)];
       $message = [];
-      $message['content'] = ['#markup' => t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
+      $message['content'] = ['#markup' => $this->t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
       $message['files'] = [
         '#theme' => 'item_list',
         '#items' => $file_names,
@@ -1550,12 +1622,9 @@ class WebformSubmissionForm extends ContentEntityForm {
         $uri = preg_replace('/\?$/', '', $uri);
       }
       $webform_submission->set('uri', $uri);
+      $webform_submission->set('remote_addr', ($this->getWebform()->hasRemoteAddr()) ? $this->getRequest()->getClientIp() : '');
       if ($this->isConfidential()) {
         $webform_submission->setOwnerId(0);
-        $webform_submission->set('remote_addr', '');
-      }
-      else {
-        $webform_submission->set('remote_addr', $this->getRequest()->getClientIp());
       }
     }
 
@@ -2027,9 +2096,40 @@ class WebformSubmissionForm extends ContentEntityForm {
       // Build the webform element.
       $this->elementManager->buildElement($element, $form, $form_state);
 
+      if (isset($element['#states'])) {
+        $element['#states'] = $this->addStatesPrefix($element['#states']);
+      }
+
       // Recurse and prepare nested elements.
       $this->prepareElements($element, $form, $form_state);
     }
+  }
+
+  /**
+   * Add unique class prefix to all :input #states selectors.
+   *
+   * @param array $array
+   *   An associative array.
+   *
+   * @return array
+   *   An associative array with unique class prefix added to all :input
+   *   #states selectors.
+   */
+  protected function addStatesPrefix(array $array) {
+    $prefixed_array = [];
+    foreach ($array as $key => $value) {
+      if (strpos($key, ':input') === 0) {
+        $key = $this->statesPrefix . ' ' . $key;
+        $prefixed_array[$key] = $value;
+      }
+      elseif (is_array($value)) {
+        $prefixed_array[$key] = $this->addStatesPrefix($value);
+      }
+      else {
+        $prefixed_array[$key] = $value;
+      }
+    }
+    return $prefixed_array;
   }
 
   /**
@@ -2123,9 +2223,16 @@ class WebformSubmissionForm extends ContentEntityForm {
   protected function checkTotalLimit() {
     $webform = $this->getWebform();
 
+    // Get limit total to unique submission per webform/source entity.
+    $limit_total_unique = $this->getWebformSetting('limit_total_unique');
+
     // Check per source entity total limit.
     $entity_limit_total = $this->getWebformSetting('entity_limit_total');
     $entity_limit_total_interval = $this->getWebformSetting('entity_limit_total_interval');
+    if ($limit_total_unique) {
+      $entity_limit_total = 1;
+      $entity_limit_total_interval = NULL;
+    }
     if ($entity_limit_total && ($source_entity = $this->getLimitSourceEntity())) {
       if ($this->getStorage()->getTotal($webform, $source_entity, NULL, ['interval' => $entity_limit_total_interval]) >= $entity_limit_total) {
         return TRUE;
@@ -2135,6 +2242,10 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Check total limit.
     $limit_total = $this->getWebformSetting('limit_total');
     $limit_total_interval = $this->getWebformSetting('limit_total_interval');
+    if ($limit_total_unique) {
+      $limit_total = 1;
+      $limit_total_interval = NULL;
+    }
     if ($limit_total && $this->getStorage()->getTotal($webform, NULL, NULL, ['interval' => $limit_total_interval]) >= $limit_total) {
       return TRUE;
     }

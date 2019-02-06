@@ -29,15 +29,21 @@ class RavenTest extends BrowserTestBase {
     foreach (range(1, 8) as $level) {
       $config["log_levels[$level]"] = '1';
     }
-    $this->drupalPostForm('admin/config/development/raven', $config, t('Save configuration'));
+    $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', 'Logged');
     $this->assertSession()->responseHeaderEquals('X-Not-Logged', NULL);
+    $this->assertSession()->responseHeaderEquals('X-Stacktrace-File', drupal_get_path('module', 'raven_test') . '/raven_test.module');
 
     // Test fatal error handling.
     $memory_limit = mt_rand(16000000, 17999999);
     $url = $admin_user->toUrl()->setOption('query', ['memory_limit' => $memory_limit]);
     // Output should be the memory limit and 0 pending events/requests.
     $this->assertEqual($memory_limit . '00', $this->drupalGet($url));
+
+    // Test ignored channels.
+    $config = ['ignored_channels' => "X-Logged\r\n"];
+    $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
+    $this->assertSession()->responseHeaderEquals('X-Logged', NULL);
   }
 
 }
