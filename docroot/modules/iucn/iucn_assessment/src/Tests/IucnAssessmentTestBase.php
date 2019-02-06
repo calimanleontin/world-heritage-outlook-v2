@@ -41,7 +41,7 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     $this->entityDefinitionUpdateManager->applyUpdates();
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
-    TestSupport::createAllTestData();
+    TestSupport::createTestData();
   }
 
   /**

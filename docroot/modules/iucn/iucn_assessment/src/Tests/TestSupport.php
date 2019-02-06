@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Tests;
 
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -94,25 +95,9 @@ class TestSupport {
   /**
    * Create all the test data.
    */
-  public static function createAllTestData() {
-    self::createUsers();
-    self::createTaxonomyTerms();
-    foreach (self::getAssessments() as $title) {
-      self::createAssessment($title);
-    }
-  }
-
-  /**
-   * Gets an array.
-   *
-   * The keys inside the array represent an user email.
-   * The values are arrays of user roles associated with the key user.
-   *
-   * @return array
-   *   The users with their roles.
-   */
-  public static function getUsers() {
-    return [
+  public static function createTestData() {
+    // Create test users.
+    $users = [
       self::ADMINISTRATOR => ['administrator'],
       self::IUCN_MANAGER => ['iucn_manager'],
       self::COORDINATOR1 => ['coordinator'],
@@ -123,45 +108,39 @@ class TestSupport {
       self::REVIEWER2 => ['reviewer'],
       self::REVIEWER3 => ['reviewer'],
     ];
-  }
+    foreach ($users as $user => $roles) {
+      self::createUser($user, $roles);
+    }
 
-  /**
-   * An array containing all the site assessments.
-   *
-   * @return array
-   *   The assessments.
-   */
-  public static function getAssessments() {
-    return [
+    // Create taxonomy terms in all vocabularies.
+    self::createTaxonomyTerms();
+
+    // Create 4 test assessments.
+    $assessments = [
       self::ASSESSMENT1,
       self::ASSESSMENT2,
       self::ASSESSMENT3,
       self::ASSESSMENT4,
     ];
+    foreach ($assessments as $title) {
+      self::createAssessment($title);
+    }
   }
 
   /**
    * Generate 5 terms in each important vocabulary.
    */
   public static function createTaxonomyTerms() {
+    /** @var \Drupal\taxonomy\VocabularyInterface[] $vocabularies */
     $vocabularies = Vocabulary::loadMultiple();
     foreach ($vocabularies as $vocabulary) {
       for ($i = 1; $i <= 5; $i++) {
         $term = Term::create([
           'vid' => $vocabulary->id(),
-          'name' => "{$vocabulary} term {$i}",
+          'name' => "{$vocabulary->id()} term {$i}",
         ]);
         $term->save();
       }
-    }
-  }
-
-  /**
-   * Generate all the users required for testing.
-   */
-  public static function createUsers() {
-    foreach (self::getUsers() as $user => $roles) {
-      self::createUser($user, $roles);
     }
   }
 
@@ -204,7 +183,7 @@ class TestSupport {
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
-      'field_state' => 'assessment_creation',
+      'field_state' => AssessmentWorkflow::STATUS_NEW,
       'status' => 0,
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
