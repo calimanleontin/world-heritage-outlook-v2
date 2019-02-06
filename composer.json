@@ -116,6 +116,7 @@
   ],
   "require": {
     "ext-json": "^1.6",
+    "PHPOffice/PHPExcel": "1.8.*",
     "adamwulf/columnizer": "^1.6",
     "behat/mink": "^1.7",
     "behat/mink-browserkit-driver": "^1.3",
