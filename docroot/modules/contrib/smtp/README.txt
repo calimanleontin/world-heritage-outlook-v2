@@ -5,10 +5,12 @@ REQUIREMENTS
 ------------
 * Access to an SMTP server
 * The following PHP extensions need to be installed: ereg, hash, date & pcre.
+* PHPMailer class needs to be installed via Composer https://github.com/PHPMailer/PHPMailer
 
 * Optional: To connect to an SMTP server using SSL, you need to have the
   openssl package installed on your server, and your webserver and PHP
   installation need to have additional components installed and configured.
+
 
 INSTALLATION INSTRUCTIONS
 -------------------------

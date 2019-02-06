@@ -6,7 +6,7 @@ dependencies:
     - workflow.state.assessment_new
     - workflow.state.assessment_under_evaluation
 id: assessment_new_under_evaluation
-label: 'Start evaluation'
+label: 'Initiate assessment'
 module: workflow
 from_sid: assessment_new
 to_sid: assessment_under_evaluation

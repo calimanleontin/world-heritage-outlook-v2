@@ -228,6 +228,105 @@
 .node-site-assessment-state-change-form .layout-region {
   padding-right: 0!important;
 }
+.node-site-assessment-edit-form .layout-node-form .layout-region,
+.node-site-assessment-state-change-form .layout-node-form .layout-region {
+  width: 100%;
+}
+.node-site-assessment-edit-form .layout-node-form .layout-region-node-footer__content,
+.node-site-assessment-state-change-form .layout-node-form .layout-region-node-footer__content {
+  border-top: none;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
+  padding: 5px 10px 5px 0;
+}
+.node-site-assessment-edit-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form #edit-group-as-key-cons .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
+  padding: 0 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
+  margin: 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
+  position: relative;
+  top: 0;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa {
+  font-size: 1em;
+  margin: 0 2.1em 0 1em;
+  position: relative;
+  color: #fafafa;
+  -webkit-text-stroke: 1px #0074bd;
+  transition: color .1s;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:hover,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:hover {
+  color: #0074bd;
+  cursor: pointer;
+  -webkit-text-stroke: initial;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:before,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:before {
+  font-size: 2em;
+  position: absolute;
+  right: -22px;
+  top: -30px;
+  z-index: 200;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected {
+  display: flex;
+  align-items: center;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a {
+  padding-left: 1em;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
+  background-color: initial;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description {
+  position: relative;
+  margin: 0;
+  padding: 5px 5px 5px 24px;
+  border: none;
+  background-image: linear-gradient(to bottom, white, #ffffbe);
+  font-style: italic;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description:before,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description:before {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 14px;
+  height: 16px;
+  content: ' ';
+  background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+}
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
 .paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
 .paragraph-as-site-threat-iucn-modal-paragraph-add-form,
@@ -562,92 +661,605 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 #block-views-block-people-assignments-block-1 .views-field-user-assignments ol {
   margin: 0;
 }
-.horizontal-tab-button .fa {
-  font-size: 1em;
-  margin: 0 2.1em 0 1em;
-  position: relative;
-  color: #fafafa;
-  -webkit-text-stroke: 1px #0074bd;
-  transition: color .1s;
-}
-.horizontal-tab-button .fa:hover {
-  color: #0074bd;
-  cursor: pointer;
-  -webkit-text-stroke: initial;
-}
-.horizontal-tab-button .fa:before {
-  font-size: 2em;
-  position: absolute;
-  right: -22px;
-  top: -30px;
-  z-index: 200;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected {
-  display: flex;
-  align-items: center;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected a {
-  padding-left: 1em;
-}
-.horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
-  background-color: initial;
-}
-.horizontal-tabs-panes .description {
-  position: relative;
-  margin: 0;
-  padding: 5px 5px 5px 24px;
-  border: none;
-  background-image: linear-gradient(to bottom, white, #ffffbe);
-  font-style: italic;
-}
-.horizontal-tabs-panes .description:before {
-  display: block;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 14px;
-  height: 16px;
-  content: ' ';
-  background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
-}
-.layout-node-form .layout-region {
-  width: 100%;
-}
-.layout-node-form .layout-region-node-footer__content {
-  border-top: none;
-}
-.layout-node-form .horizontal-tabs-panes details > .details-wrapper {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
-  margin-top: 0;
-  margin-bottom: 0;
-  border-radius: 0;
-}
-.layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
-  padding: 5px 10px 5px 0;
-}
-.layout-node-form #edit-group-as-key-cons .details-wrapper {
-  padding: 0;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
-  padding: 0 10px;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
-  margin: 10px;
-}
-.layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
-  position: relative;
-  top: 0;
-}
 .toolbar-icon-iucn-who-core-administration-dashboard:before {
   background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);
 }
 .feed-icons {
   margin: 10px 0;
+}
+.field--widget-row-entity-reference-paragraphs table {
+  margin-bottom: 0;
+}
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child {
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba;
+}
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr:hover {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr:focus {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs .details-wrapper {
+  overflow-x: scroll;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
+  font-size: .9em;
+  grid-row: 1 / span 1;
+  padding: 10px 12px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
+  border-right: 1px solid #e6e4df;
+}
+.field--widget-row-entity-reference-paragraphs .field-multiple-drag {
+  border-right: 1px solid #e6e4df;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top {
+  align-items: stretch;
+  display: grid;
+  grid-gap: 0;
+  z-index: 10000;
+}
+.field--widget-row-entity-reference-paragraphs td {
+  padding: 0;
+}
+.field--widget-row-entity-reference-paragraphs .field-multiple-table .field-multiple-drag {
+  vertical-align: top;
+}
+.field--widget-row-entity-reference-paragraphs .draggable a.tabledrag-handle {
+  float: none;
+  margin-left: 0;
+}
+.field--widget-row-entity-reference-paragraphs .tabledrag-toggle-weight-wrapper {
+  display: none;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-1 {
+  grid-column-end: span 1;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-2 {
+  grid-column-end: span 2;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-3 {
+  grid-column-end: span 3;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+  grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+  grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+  grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+  grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+  grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+  grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+  grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+  grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+  grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+  grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+  grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+  grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+  grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+  grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+  grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+  grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+  grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
+  grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
+  grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
+  grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
+  grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
+  grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
+  grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
+  grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
+  grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
+  grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
+  grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
+  grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
+  grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
+  grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
+  grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
+  grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
+  grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
+  grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
+  grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
+  grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
+  grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 9rem;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
+  column-span: 1;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
+  flex-wrap: wrap;
+  grid-column: -2 / span 1 !important;
+  justify-self: normal !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
+  justify-content: center;
+  right: 0;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-header {
+  margin-bottom: 0;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle {
+  float: right;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle[disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
+  background: #ececec!important;
+  font-size: .9em;
+  text-transform: none;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+  grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
+  grid-template-columns: repeat(21, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
+  grid-template-columns: repeat(20, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
+  grid-template-columns: repeat(19, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
+  grid-template-columns: repeat(18, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
+  grid-template-columns: repeat(17, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
+  grid-template-columns: repeat(16, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
+  grid-template-columns: repeat(15, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
+  grid-template-columns: repeat(14, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
+  grid-template-columns: repeat(13, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
+  grid-template-columns: repeat(12, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
+  grid-template-columns: repeat(11, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
+  grid-template-columns: repeat(10, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
+  grid-template-columns: repeat(9, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
+  grid-template-columns: repeat(8, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
+  grid-template-columns: repeat(7, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
+  grid-template-columns: repeat(6, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
+  grid-template-columns: repeat(5, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
+  grid-template-columns: repeat(4, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
+  grid-template-columns: repeat(3, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
+  grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .chosen-container {
+  width: 100% !important;
+}
+.diff-modal .chosen-drop {
+  border: 1px solid grey;
+  width: 300px;
+}
+.diff-modal .paragraph-diff-row {
+  background-color: #fcfcfa !important;
+}
+.diff-modal .paragraph-diff-row .paragraphs-actions {
+  background-color: #fcfcfa !important;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
+  margin-top: 0;
+  position: relative;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item .field-add-more-submit {
+  margin: 10px;
+}
+.js .field--widget-row-entity-reference-paragraphs {
+  position: relative;
+}
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
+  align-items: flex-start;
+  background: #fcfcfa;
+  border-left: 1px solid #dddddd;
+  display: flex;
+  flex-wrap: nowrap;
+  grid: none;
+  justify-content: flex-end;
+  margin-top: -10px;
+  min-height: min-content;
+  padding: 10px 12px;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: auto;
+  z-index: 1;
+}
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+  border-top-color: #bfbfba;
+  justify-content: center;
+  right: 0;
+  text-align: center;
+}
+.js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
+  overflow: auto;
+}
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper {
+  background: #ececec;
+  border-bottom: 1px solid #e6e4df;
+  height: 14px;
+  overflow: auto;
+}
+.js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+  background: #ececec;
+  border-bottom: 1px solid #e6e4df;
+  height: 14px;
+  overflow-y: hidden;
+}
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
+  position: static;
+}
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.raw-paragraphs-tabs-wrapper .paragraphs-tabs {
+  display: none;
+}
+.raw-paragraphs-tabs-wrapper table {
+  margin-bottom: 0;
+}
+.raw-paragraphs-tabs-wrapper > .form-item {
+  margin-top: 0;
+  position: relative;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.field--widget-row-entity-reference-paragraphs > .raw-paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.paragraph-deleted-row {
+  background-color: #ffaaaa !important;
+}
+.paragraph-deleted-row .paragraphs-actions {
+  background-color: #ffaaaa !important;
+}
+.paragraph-new-row {
+  background-color: #77f177 !important;
+}
+.paragraph-new-row .paragraphs-actions {
+  background-color: #77f177 !important;
+}
+.paragraph-author {
+  margin-right: 10px;
+}
+.paragraph-summary-component {
+  word-wrap: break-word;
+}
+.paragraph-diff-row {
+  background-color: #fcf8e3 !important;
+}
+.paragraph-diff-row .paragraphs-actions {
+  background-color: #fcf8e3 !important;
+}
+#drupal-modal {
+  padding: 0;
+}
+#drupal-modal .layout-node-form .layout-region {
+  padding-right: 0;
+}
+#drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: -1px;
+  position: relative;
+}
+#drupal-modal .diff-modal table.diff-table > thead > tr > th {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: -1px;
+  position: relative;
+}
+#drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
+  visibility: hidden;
+}
+#drupal-modal > .paragraph-form {
+  box-sizing: border-box;
+  padding: 1em;
+}
+#drupal-modal > .diff-form {
+  padding: 0;
+}
+.paragraph-diff-final {
+  border-top: 3px solid black;
+}
+.diff-original-row {
+  border-bottom: 3px solid black;
+}
+.diff-original-row .paragraph-summary-component-author {
+  font-weight: bold;
+}
+span.field-boolean-tick {
+  font-size: 1.6rem;
+}
+.diff-tick-true {
+  font-size: 1.6rem;
+}
+.diff-tick-false {
+  font-size: 1.6rem;
+}
+.diff-context-wrapper td.diff-tick-false {
+  background-color: #fcfcfa;
+  display: block;
+}
+.diff-context-wrapper td.diff-tick-false span.diffchange {
+  background-color: #ffdddd;
+}
+.diff-context-wrapper td.diff-tick-true {
+  background-color: #fcfcfa;
+  display: block;
+}
+.diff-context-wrapper td.diff-tick-true span.diffchange {
+  background-color: #ddffdd;
+}
+table.diff-context-wrapper {
+  display: block;
+}
+.diff-tick-marker {
+  display: block;
+}
+.diff-modal .messages--info {
+  display: inline-block;
+  margin: 0;
+  padding: 5px;
+  border: none;
+  font-size: 0.8em;
+}
+.diff-modal table.diff-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .9em;
+}
+.diff-modal table.diff-table .diff-context-wrapper td {
+  padding: 0;
+}
+.diff-modal table.diff-table > thead > tr > th {
+  background: #ececec !important;
+  font-size: .9em;
+  text-transform: none;
+  border-right: 1px solid #e6e4df;
+  padding: 10px 12px;
+}
+.diff-modal table.diff-table > thead > tr > th:nth-child(2) {
+  padding-left: 45px;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td {
+  border-top: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td {
+  border-bottom: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr > td {
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  padding: 3px 5px;
+  vertical-align: top;
+  position: relative;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--checkboxes,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--select {
+  min-width: 150px;
+  max-width: 150px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--checkbox {
+  min-width: 50px;
+  max-width: 50px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea {
+  min-width: 500px;
+  max-width: 500px;
+}
+.diff-modal table.diff-table > tbody > tr > td.field-name--author {
+  min-width: 100px;
+  max-width: 100px;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield,
+.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories,
+.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_threat,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--paragraph {
+  min-width: 250px;
+  max-width: 250px;
+}
+.diff-modal table.diff-table > tbody > tr > td input[type="text"],
+.diff-modal table.diff-table > tbody > tr > td textarea,
+.diff-modal table.diff-table > tbody > tr > td select {
+  width: 100%;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr {
+  border-bottom: none;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr td {
+  padding: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
+  min-height: 34px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  border: 1px solid #dedede;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 12px;
+  min-width: 32px;
+  padding: 3px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  text-align: center;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:hover {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:active {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button i {
+  font-size: 1.5em;
+  margin-bottom: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button p {
+  font-size: 0.8em;
+  margin: 0;
+}
+.field-diff-button {
+  margin: 10px 3px !important;
+  position: absolute !important;
+  right: 0;
+  top: 0;
+}
+.overall-row > div {
+  position: relative;
+}
+.field-with-diff {
+  position: relative;
+}
+.field-with-diff .form-textarea-wrapper {
+  background-color: #fcf8e3;
+}
+.field-with-diff > div > div {
+  padding-right: 40px !important;
+}
+.field-with-diff > div > select {
+  margin-right: 30px;
+}
+.diff-marker {
+  width: 1px;
+}
+.field-with-diff.field--type-entity-reference {
+  background-color: #fcf8e3;
+  display: tabl e-row-group;
+}
+.field-with-diff#edit-field-as-references-wrapper {
+  background-color: #fcf8e3;
+}
+.field-with-diff.field--type-string-long {
+  display: table-row-group;
 }
 @media all and (min-width: 851px) {
   .sidebar {

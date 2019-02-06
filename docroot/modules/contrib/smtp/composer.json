@@ -6,5 +6,8 @@
   "support": {
     "issues": "https://www.drupal.org/project/issues/smtp"
   },
-  "license": "GPL-2.0"
+  "license": "GPL-2.0",
+  "require": {
+    "phpmailer/phpmailer": "~6.0"
+  }
 }

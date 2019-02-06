@@ -54,7 +54,7 @@ class IucnModalController extends ControllerBase {
    */
   public function deleteParagraph($node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
     $response = new AjaxResponse();
-    $form = $this->formBuilder()->getForm('\Drupal\iucn_assessment\Form\IucnModalParagraphDeleteForm');
+    $form = $this->entityFormBuilder()->getForm($paragraph_revision, 'iucn_modal_paragraph_delete', []);
     $paragraph_title = $this->getParagraphTitle($field);
     $response->addCommand(new OpenModalDialogCommand($this->t('Edit @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%']));
 

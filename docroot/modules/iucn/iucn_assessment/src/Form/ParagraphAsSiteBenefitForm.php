@@ -9,12 +9,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 
 class ParagraphAsSiteBenefitForm {
 
-  public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
-    // Form already altered in IucnModalParagraphDiffForm.
-    if (!empty($form['#processed'])) {
-      return;
-    }
-
+  public static function alter(array &$form, FormStateInterface $form_state) {
     $form['field_as_benefits_category']['#element_validate'][] = [self::class, 'validateBenefitCategories'];
   }
 

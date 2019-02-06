@@ -205,7 +205,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'field_wrapper_id' => "#$field_wrapper",
           'paragraph_revision' => $paragraphs_entity->getRevisionId(),
           'tab' => $tab,
-          'display_mode' => $this->getSetting('form_display_mode'),
+          'form_display_mode' => $this->getSetting('form_display_mode'),
         ]),
         'progress' => [
           'type' => 'fullscreen',
