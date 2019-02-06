@@ -55,6 +55,10 @@
             padding: 0;
             border-right: none;
             border-bottom: none;
+            .form-type-textarea {
+              display: grid;
+              grid-template-columns: 300px auto;
+            }
             label,
             .form-textarea-wrapper {
               display: table-cell;
@@ -62,6 +66,7 @@
               padding: 10px 12px;
               border-bottom: 1px solid @table-border-color;
               border-right: 1px solid @table-border-color;
+              margin: 0;
             }
             label {
               font-weight: normal;
