@@ -57,6 +57,10 @@
   border-right: none;
   border-bottom: none;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
   display: table-cell;
@@ -64,6 +68,7 @@
   padding: 10px 12px;
   border-bottom: 1px solid #e6e4df;
   border-right: 1px solid #e6e4df;
+  margin: 0;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
@@ -335,8 +340,6 @@
 .paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
 .paragraph-as-site-project-iucn-modal-paragraph-add-form,
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form {
-  display: table;
-  table-layout: fixed;
   width: 100%;
 }
 .paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper,
@@ -349,160 +352,83 @@
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper {
   padding-bottom: 10px;
 }
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup {
+#drupal-modal .paragraph-form .form-checkboxes > div,
+#drupal-modal .paragraph-form .form-type-textfield,
+#drupal-modal .paragraph-form .form-type-textarea,
+#drupal-modal .paragraph-form .form-type-checkbox,
+#drupal-modal .paragraph-form .form-type-select,
+#drupal-modal .paragraph-form .form-composite {
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+#drupal-modal .paragraph-form .form-checkboxes > div .label,
+#drupal-modal .paragraph-form .form-type-textfield .label,
+#drupal-modal .paragraph-form .form-type-textarea .label,
+#drupal-modal .paragraph-form .form-type-checkbox .label,
+#drupal-modal .paragraph-form .form-type-select .label,
+#drupal-modal .paragraph-form .form-composite .label,
+#drupal-modal .paragraph-form .form-checkboxes > div label,
+#drupal-modal .paragraph-form .form-type-textfield label,
+#drupal-modal .paragraph-form .form-type-textarea label,
+#drupal-modal .paragraph-form .form-type-checkbox label,
+#drupal-modal .paragraph-form .form-type-select label,
+#drupal-modal .paragraph-form .form-composite label,
+#drupal-modal .paragraph-form .form-checkboxes > div legend,
+#drupal-modal .paragraph-form .form-type-textfield legend,
+#drupal-modal .paragraph-form .form-type-textarea legend,
+#drupal-modal .paragraph-form .form-type-checkbox legend,
+#drupal-modal .paragraph-form .form-type-select legend,
+#drupal-modal .paragraph-form .form-composite legend {
+  order: -1;
+}
+#drupal-modal .paragraph-form .form-checkboxes > div .form-type-textfield,
+#drupal-modal .paragraph-form .form-type-textfield .form-type-textfield,
+#drupal-modal .paragraph-form .form-type-textarea .form-type-textfield,
+#drupal-modal .paragraph-form .form-type-checkbox .form-type-textfield,
+#drupal-modal .paragraph-form .form-type-select .form-type-textfield,
+#drupal-modal .paragraph-form .form-composite .form-type-textfield,
+#drupal-modal .paragraph-form .form-checkboxes > div .form-type-textarea,
+#drupal-modal .paragraph-form .form-type-textfield .form-type-textarea,
+#drupal-modal .paragraph-form .form-type-textarea .form-type-textarea,
+#drupal-modal .paragraph-form .form-type-checkbox .form-type-textarea,
+#drupal-modal .paragraph-form .form-type-select .form-type-textarea,
+#drupal-modal .paragraph-form .form-composite .form-type-textarea,
+#drupal-modal .paragraph-form .form-checkboxes > div .form-type-checkbox,
+#drupal-modal .paragraph-form .form-type-textfield .form-type-checkbox,
+#drupal-modal .paragraph-form .form-type-textarea .form-type-checkbox,
+#drupal-modal .paragraph-form .form-type-checkbox .form-type-checkbox,
+#drupal-modal .paragraph-form .form-type-select .form-type-checkbox,
+#drupal-modal .paragraph-form .form-composite .form-type-checkbox,
+#drupal-modal .paragraph-form .form-checkboxes > div .form-type-select,
+#drupal-modal .paragraph-form .form-type-textfield .form-type-select,
+#drupal-modal .paragraph-form .form-type-textarea .form-type-select,
+#drupal-modal .paragraph-form .form-type-checkbox .form-type-select,
+#drupal-modal .paragraph-form .form-type-select .form-type-select,
+#drupal-modal .paragraph-form .form-composite .form-type-select,
+#drupal-modal .paragraph-form .form-checkboxes > div .form-composite,
+#drupal-modal .paragraph-form .form-type-textfield .form-composite,
+#drupal-modal .paragraph-form .form-type-textarea .form-composite,
+#drupal-modal .paragraph-form .form-type-checkbox .form-composite,
+#drupal-modal .paragraph-form .form-type-select .form-composite,
+#drupal-modal .paragraph-form .form-composite .form-composite {
+  display: block;
+}
+#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup {
   display: table-row;
 }
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .label,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item label,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup label,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item legend,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item legend,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup legend,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup legend {
+#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
+#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
+#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > legend {
   vertical-align: top;
   display: table-cell;
   width: 200px;
-  min-width: 200px;
-  max-width: 200px;
+  float: left;
 }
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-text,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-text,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-textarea-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-textarea-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .fieldset-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .fieldset-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-select,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-select,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .form-item .form-data,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper .fieldgroup .form-data,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper .fieldgroup .form-data {
+#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper {
   display: table-cell;
-  width: calc(100% - 0px);
+}
+#drupal-modal .paragraph-form td.description-row {
+  width: 164px;
 }
 .field-group-assessment-fieldset > legend,
 .overall-container > legend {
@@ -512,13 +438,6 @@
 .field-group-assessment-fieldset > legend > .fieldset-legend,
 .overall-container > legend > .fieldset-legend {
   display: block;
-}
-.field--name-field-as-values-criteria legend {
-  display: contents !important;
-}
-.field--name-field-as-values-criteria legend .fieldset-legend {
-  display: table-cell;
-  width: 200px;
 }
 .paragraph-as-site-benefit-iucn-modal-paragraph-add-form > fieldset,
 .paragraph-as-site-benefit-iucn-modal-paragraph-edit-form > fieldset {
