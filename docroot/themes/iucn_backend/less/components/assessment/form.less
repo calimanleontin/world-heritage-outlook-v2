@@ -159,25 +159,52 @@
 .paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
 .paragraph-as-site-project-iucn-modal-paragraph-add-form,
 .paragraph-as-site-project-iucn-modal-paragraph-edit-form {
-  display: table;
-  table-layout: fixed;
   width: 100%;
   > .form-wrapper {
     padding-bottom: 10px;
-    .form-item, .fieldgroup {
-      display: table-row;
-      .label, label, legend {
-        vertical-align: top;
-        display: table-cell;
-        width: 200px;
-        min-width: 200px;
-        max-width: 200px;
-      }
-      .form-text, .form-textarea-wrapper, .fieldset-wrapper, .form-select, .form-data {
-        display: table-cell;
-        width: calc(~'100% - 0px');
-      }
+  }
+}
+
+#drupal-modal .paragraph-form {
+  .form-checkboxes > div,
+  .form-type-textfield,
+  .form-type-textarea,
+  .form-type-checkbox,
+  .form-type-select,
+  .form-composite {
+    display: grid;
+    grid-template-columns: 200px auto;
+
+    .label, label, legend {
+      order: -1;
     }
+
+    // Nesting
+    .form-type-textfield,
+    .form-type-textarea,
+    .form-type-checkbox,
+    .form-type-select,
+    .form-composite {
+      display: block;
+    }
+
+  }
+
+  > .form-wrapper > .fieldgroup {
+    display: table-row;
+    > .label, > label, > legend {
+      vertical-align: top;
+      display: table-cell;
+      width: 200px;
+      float: left;
+    }
+    > .fieldset-wrapper {
+      display: table-cell;
+    }
+  }
+
+  td.description-row {
+    width: (200px - 36px);
   }
 }
 
@@ -194,10 +221,10 @@
 
 .field--name-field-as-values-criteria {
   legend {
-    display: contents !important;
+    // display: contents !important;
     .fieldset-legend {
-      display: table-cell;
-      width: 200px;
+      // display: table-cell;
+      // width: 200px;
     }
   }
 }
