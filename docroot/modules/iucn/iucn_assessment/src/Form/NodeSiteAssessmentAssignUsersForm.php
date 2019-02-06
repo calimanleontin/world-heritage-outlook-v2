@@ -62,6 +62,11 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
     ]);
 
+    $form['#title'] = t('Assign users for @type @assessment', [
+      '@type' => $node->type->entity->label(),
+      '@assessment' => $node->getTitle(),
+    ]);
+
     $form['actions']['submit']['#submit'][] = [self::class, 'submitForm'];
   }
 

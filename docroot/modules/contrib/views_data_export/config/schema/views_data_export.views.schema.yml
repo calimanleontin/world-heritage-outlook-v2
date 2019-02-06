@@ -13,6 +13,21 @@ views.display.data_export:
     filename:
       type: string
       label: 'Downloaded filename'
+    automatic_download:
+      type: boolean
+      label: 'Download instantly'
+    redirect_path:
+      type: string
+      label: 'Redirect path'
+    export_method:
+      type: string
+      label: 'Export method'
+    export_batch_size:
+      type: integer
+      label: 'Batch size'
+    export_limit:
+      type: integer
+      label: 'Limit'
 
 views.style.data_export:
   type: views_style
