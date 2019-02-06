@@ -11,7 +11,7 @@ use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
  *
  * @FieldWidget(
  *   id = "text_textarea_with_scayt",
- *   label = @Translation("Text area with scayt(multiple rows)"),
+ *   label = @Translation("Text area with scayt (multiple rows)"),
  *   field_types = {
  *     "string_long"
  *   }
