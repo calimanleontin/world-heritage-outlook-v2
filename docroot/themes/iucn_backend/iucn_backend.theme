@@ -77,6 +77,9 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
         && in_array($tab, ['values', 'assessing-values']) || !empty($variables['element']['#hide_draggable'])) {
         _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
       }
+      if ($tab == 'protection-management') {
+        _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+      }
 
       $title = $variables['element']['#title'];
       unset($variables['table']['#header'][1]);

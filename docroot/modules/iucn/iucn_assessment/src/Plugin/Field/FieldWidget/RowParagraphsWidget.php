@@ -21,6 +21,7 @@ use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
 use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -281,8 +282,28 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
     $summary_components = $this->getSummaryComponents($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
+
+    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
+      $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
+      $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
+
+      $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
+      $names = [];
+      foreach($subcategories  as $term) {
+        $storage = \Drupal::service('entity_type.manager')
+          ->getStorage('taxonomy_term');
+        $parents = $storage->loadParents($term['target_id']);
+        foreach($parents as $parent) {
+          $names[$parent->getName()] = $parent->getName();
+        }
+      }
+      $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
+    }
     $element['top']['summary'] = $summary_containers;
     $count = $this->calculateColumnCount($summary_components) + 1;
+    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
+      $count += 2;
+    }
     $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
     $this->colCount = $count;
 
@@ -404,6 +425,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
+      if (!empty($header_components['field_as_threats_categories'])) {
+        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_threats_categories']];
+        $subcategories['field_as_threats_subcategories']['value'] = 'Threat subcategory';
+        $this->insertElementAfter($header_components, 'field_as_threats_categories', $subcategories);
+      }
       $header_containers = $this->getHeaderContainers($header_components);
       $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
       $header_containers['actions']['#suffix'] = '</div>';
@@ -913,7 +939,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($class) {
         $summary[$summary_field_name]['class'] = $class;
       }
-      $summary[$summary_field_name]['value'][] = $value;
+      if ('field_as_threats_extent' == $field_name) {
+        $summary[$summary_field_name]['value'][0] .= ' ' . $value;
+      }
+      else {
+        $summary[$summary_field_name]['value'][] = $value;
+      }
       $summary[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
@@ -984,7 +1015,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       $text = $paragraph->get($field_name)->value;
-      if (strlen($text) > 600) {
+      if ((strlen($text) > 600) && ('field_as_values_curr_text' != $field_name)) {
         $text = Unicode::truncate($text, 600);
         $text .= '...';
       }
@@ -1038,6 +1069,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
    */
   public static function getGroupedFields() {
     return [
+      'field_as_threats_values_bio' => [
+        'grouped_with' => 'field_as_threats_values_wh',
+        'label' => t('WH values'),
+      ],
+      'field_as_resource_use_type' => [
+        'grouped_with' => 'field_as_legality',
+        'label' => t('Other information'),
+      ],
+      'field_as_targeted_species' => [
+        'grouped_with' => 'field_as_legality',
+        'label' => t('Other information'),
+      ],
+      'field_as_threats_extent' => [
+        'grouped_with' => 'field_as_threats_in',
+        'label' => t('Inside site'),
+      ],
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
         'label' => t('Habitat'),
@@ -1115,6 +1162,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
     if (empty($label)) {
       $label = $entity->label();
     }
+    if ($entity->bundle() == 'assessment_protection_topic') {
+      if (!empty($entity->field_help_text) && $entity->field_help_text->value) {
+        $label = '<div class="btn btn-primary tooltip">' . $label . '<div class="right">' . $entity->field_help_text->value . '<i></i></div></div>';
+      }
+    }
     return $label;
   }
 
@@ -1170,6 +1222,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
     }
 
     static::setWidgetState($element['#field_parents'], $field_name, $form_state, $widget_state);
+  }
+
+  /**
+   * Insert element after require key.
+   *
+   * @param array $components
+   * @param $key
+   * @param array $element
+   */
+  protected function insertElementAfter(&$array, $key, $element) {
+    $afterIndex = array_search($key, array_keys($array));
+    $array = array_merge(
+      array_slice($array, 0, $afterIndex + 1),
+      $element,
+      array_slice($array, $afterIndex + 1)
+    );
   }
 
 }

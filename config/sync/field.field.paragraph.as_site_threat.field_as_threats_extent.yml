@@ -18,7 +18,7 @@ id: paragraph.as_site_threat.field_as_threats_extent
 field_name: field_as_threats_extent
 entity_type: paragraph
 bundle: as_site_threat
-label: 'Threat extent'
+label: 'Extent of threat inside site'
 description: ''
 required: false
 translatable: false

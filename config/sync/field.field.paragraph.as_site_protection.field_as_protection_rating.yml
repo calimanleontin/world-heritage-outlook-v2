@@ -18,7 +18,7 @@ id: paragraph.as_site_protection.field_as_protection_rating
 field_name: field_as_protection_rating
 entity_type: paragraph
 bundle: as_site_protection
-label: Rating
+label: Assessment
 description: ''
 required: true
 translatable: false

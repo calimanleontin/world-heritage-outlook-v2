@@ -272,3 +272,76 @@ function iucn_assessment_update_8006() {
     $term->save();
   }
 }
+
+/**
+ * Update assessment threat level weights.
+ */
+function iucn_assessment_update_8007() {
+  $tids = [
+    1364, // Very Low Threat
+    1365, // Low Threat
+    1366, // High Threat
+    1367, // Very High Threat
+    1368, // Data Deficient
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
+
+/**
+ * Update Assessment protection rating weights.
+ */
+function iucn_assessment_update_8008() {
+  $tids = [
+    1325, //Highly Effective
+    1326, //Effective
+    1327, //Some Concern
+    1328, //Serious Concern
+    1329, //Data Deficient
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    if ($term->getName() == 'Effective') {
+      $term->setName('Mostly effective');
+    }
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
+
+/**
+ * Update assessment value state and value trend weights.
+ */
+function iucn_assessment_update_8009() {
+  // State.
+  $tids = [
+    1346, // Good
+    1347, // Low Concern
+    1348, // High Concern
+    1349, // Critical
+    1350, // Data Deficient
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+
+  // Trend.
+  $tids = [
+    1416, // Improving
+    1417, // Stable
+    1418, // Deteriorating
+    1419, // Data Deficient
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+
+}
+
