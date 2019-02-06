@@ -6,6 +6,13 @@ use Drupal\paragraphs\Entity\Paragraph;
 
 class EditFormTest extends  IucnAssessmentTestBase {
 
+  /**
+   * Test that each tab on assessment edit page can be submitting without
+   * the validation failing for the rest of the tabs.
+   *
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   public function testTabValidation() {
     $this->userLogIn(TestSupport::COORDINATOR1);
 
