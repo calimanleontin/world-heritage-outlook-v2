@@ -105,13 +105,14 @@ class AssessmentWorkflow {
    * @return \Drupal\Core\Access\AccessResultInterface
    */
   public function checkAssessmentAccess(NodeInterface $node, $action = 'edit', AccountInterface $account = NULL) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::allowedIf($action != 'change_state');
+    }
+
     if (empty($account)) {
       $account = $this->currentUser;
     }
-    if ($node->bundle() != 'site_assessment') {
-      return AccessResult::allowed();
-    }
-    $access = AccessResult::neutral();
+    $access = AccessResult::allowed();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
@@ -145,9 +146,8 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_UNDER_REVIEW:
-          // Only coordinators can edit the main revision.
           // Reviewers can edit their respective revisions.
-          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
+          $access = AccessResult::allowedIf($node->isDefaultRevision() === FALSE && $node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
@@ -164,6 +164,10 @@ class AssessmentWorkflow {
         case self::STATUS_CREATION:
         case self::STATUS_NEW:
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
+          break;
+
+        case self::STATUS_UNDER_REVIEW:
+          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
@@ -363,6 +367,7 @@ class AssessmentWorkflow {
    * @param bool $default
    *   Whether or not the created revision is the default one.
    *
+   * @return \Drupal\node\NodeInterface
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function createRevision(NodeInterface $node, $state, $uid = NULL, $message = '', $default = FALSE) {

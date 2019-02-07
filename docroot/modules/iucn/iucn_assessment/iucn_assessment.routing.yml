@@ -91,7 +91,7 @@ iucn_assessment.revert_paragraph:
         type: 'entity:paragraph'
 
 iucn_assessment.paragraph_diff_form:
-  path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}/{form_display_mode}'
   defaults:
     _title: 'See differences'
     _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::paragraphDiffForm'

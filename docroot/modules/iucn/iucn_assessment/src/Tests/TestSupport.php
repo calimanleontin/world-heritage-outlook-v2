@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
@@ -41,6 +42,7 @@ class TestSupport {
    */
   public static function createAllTestData() {
     self::createUsers();
+    self::createTaxonomyTerms();
     self::createAssessments();
   }
 
@@ -83,6 +85,29 @@ class TestSupport {
   }
 
   /**
+   * Generate 5 terms in each important vocabulary.
+   */
+  public static function createTaxonomyTerms() {
+    $vocabularies = [
+      'assessment_threat_level',
+      'assessment_protection_rating',
+      'assessment_value_state',
+      'assessment_value_trend',
+      'assessment_conservation_rating',
+    ];
+
+    foreach ($vocabularies as $vocabulary) {
+      for ($i = 1; $i <= 5; $i++) {
+        $term = Term::create([
+          'vid' => $vocabulary,
+          'name' => "{$vocabulary} term {$i}",
+        ]);
+        $term->save();
+      }
+    }
+  }
+
+  /**
    * Generate all the users required for testing.
    */
   public static function createUsers() {
@@ -117,21 +142,17 @@ class TestSupport {
   }
 
   /**
-   * Create an site_assessment node.
+   * Create a site_assessment node.
    *
-   * @param string $title
-   *   The title.
+   * @param null $title
    *
-   * @return int
-   *   The node id.
+   * @return \Drupal\node\NodeInterface
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function createAssessment($title = NULL) {
-    if (empty($title)) {
-      $title = 'test assessment';
-    }
-    $assessment = [
+    $node = Node::create([
       'type' => 'site_assessment',
-      'title' => $title,
+      'title' => $title ?: 'Test assessment',
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
@@ -139,11 +160,9 @@ class TestSupport {
       'status' => 0,
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
-    ];
-    $node = Node::create($assessment);
+    ]);
     $node->save();
-
-    return $node->id();
+    return $node;
   }
 
   /**
@@ -169,14 +188,36 @@ class TestSupport {
   public static function getNodeByTitle($title, $bundle = NULL) {
     $query = \Drupal::entityQuery('node');
     $query->condition('title', $title);
-    if ($bundle) {
+    if (!empty($bundle)) {
       $query->condition('type', $bundle);
     }
-    $nids = $query->execute();
-    if (!empty($nids)) {
-      return Node::load(current($nids));
+    $ids = $query->execute();
+    return !empty($ids)
+      ? Node::load(current($ids))
+      : NULL;
+  }
+
+  /**
+   * Retrieve a taxonomy term from a specified vocabulary.
+   *
+   * @param $vid
+   *  Vocabulary id.
+   * @param int|null $termIndex
+   *  If provided, the term with name "$vid term $termIndex" will be loaded.
+   *  See TestSupport::createTaxonomyTerms.
+   *
+   * @return \Drupal\taxonomy\Entity\Term|null
+   */
+  public static function getTaxonomyTerm($vid, $termIndex = NULL) {
+    $query = \Drupal::entityQuery('taxonomy_term');
+    $query->condition('vid', $vid);
+    if (!empty($termIndex)) {
+      $query->condition('name', "{$vid} term {$termIndex}");
     }
-    return NULL;
+    $ids = $query->execute();
+    return !empty($ids)
+      ? Term::load(current($ids))
+      : NULL;
   }
 
 }

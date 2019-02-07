@@ -19,6 +19,9 @@ use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\iucn_assessment\Form\ParagraphAsSiteBenefitForm;
 use Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResult;
 
 function iucn_assessment_theme() {
   return [
@@ -666,6 +669,7 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
       // All textareas should be limited to a certain number of characters.
       $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
       $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxDisplayLimit'] = $element['value']['#attributes']['maxDisplayLimit'] = 200;
       $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
     }
   }
@@ -674,14 +678,9 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
 /**
  * Implements hook_ENTITY_TYPE_prepare_form().
  */
-function iucn_assessment_node_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
-  // The revision edit page is actually the node edit page.
-  // We need to change the form entity to the selected revision.
-  if ($entity->bundle() == 'site_assessment' && $operation == 'edit') {
-    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
-    if (!empty($node_revision)) {
-      $form_state->getFormObject()->setEntity($node_revision);
-    }
+function iucn_assessment_node_prepare_form(NodeInterface $node, $operation, FormStateInterface $form_state) {
+  if ($node->bundle() == 'site_assessment' && $operation == 'edit') {
+    NodeSiteAssessmentForm::prepareForm($node, $operation, $form_state);
   }
 }
 
@@ -810,6 +809,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     // Remove the edit entity operation when it isn't actually allowed.
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
+    } elseif($entity->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      /** @var User $currentUser */
+      $currentUser = User::load(\Drupal::currentUser()->id());
+      if ($currentUser->hasRole('assessor')) {
+        $operations['edit']['title'] = t('Review');
+      }
     }
   }
 }
@@ -866,5 +871,62 @@ function iucn_assessment_views_pre_view(ViewExecutable $view, $display_id, array
   if ($view->id() == 'account_assignments' && $display_id == 'block_4' && !in_array('coordinator', \Drupal::currentUser()->getRoles())) {
     // #5784 - remove the help text for managers
     $view->removeHandler($display_id, 'header', 'area');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operation, AccountInterface $account) {
+  if ($operation == 'view') {
+    switch ($paragraph->bundle()) {
+      case 'as_site_value_wh':
+      case 'as_site_value_bio':
+        // Values paragraphs are displayed in the "See differences" popup.
+        return $paragraph->getParentEntity()->access('edit', $account, TRUE)->isForbidden()
+          ? AccessResult::forbidden()
+          : AccessResult::allowed();
+        break;
+    }
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+  if (empty($data['tabs'])) {
+    return;
+  }
+
+  foreach ($data['tabs'] as &$tab) {
+    if (empty($tab['entity.node.canonical']['#link']['url'])) {
+      continue;
+    }
+
+    $url = $tab['entity.node.canonical']['#link']['url'];
+
+    if (!($url instanceof Url)) {
+      continue;
+    }
+
+    $parameters = $url->getRouteParameters();
+
+    if (empty($parameters['node'])) {
+      continue;
+    }
+
+    /** @var Node $node */
+    $node = Node::load($parameters['node']);
+
+    if (empty($node) || $node->getType() != 'site_assessment') {
+      return;
+    }
+
+    $tab['entity.node.canonical']['#link']['url'] = Url::fromRoute('entity.node.revision', [
+      'node' => $node->id(),
+      'node_revision' => $node->getLoadedRevisionId(),
+    ]);
   }
 }

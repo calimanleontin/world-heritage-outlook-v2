@@ -2,6 +2,7 @@
 
 namespace Drupal\social_media\Plugin\Block;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Block\BlockBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -147,7 +148,7 @@ class SocialSharingBlock extends BlockBase implements ContainerFactoryPluginInte
       ],
       '#cache' => [
         'tags' => [
-          'social_media:' . $this->currentPath->getPath(),
+          'social_media:' . UrlHelper::encodePath($this->currentPath->getPath()),
         ],
         'contexts' => [
           'url',

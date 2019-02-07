@@ -62,6 +62,11 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
     ]);
 
+    $form['#title'] = t('Assign users for @type @assessment', [
+      '@type' => $node->type->entity->label(),
+      '@assessment' => $node->getTitle(),
+    ]);
+
     $form['actions']['submit']['#submit'][] = [self::class, 'submitForm'];
   }
 
@@ -76,7 +81,8 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_NEW,
     ]) && !empty($node->field_coordinator->getValue())) {
       // If the coordinator was set, set assessment status to UNDER EVALUATION.
-      \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
   }
 

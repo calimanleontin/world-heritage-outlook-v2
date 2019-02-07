@@ -2,39 +2,22 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Component\Utility\SortArray;
+use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
-  /** @var \Drupal\Core\Entity\EntityFormBuilderInterface */
-  protected $entityFormBuilder;
-
-  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
-  protected $entityFormDisplay;
-
   /** @var \Drupal\Core\Entity\ContentEntityStorageInterface */
   protected $paragraphStorage;
-
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
-  protected $workflowService;
-
-  /** @var \Drupal\node\NodeInterface|null */
-  protected $nodeRevision;
-
-  /** @var \Drupal\paragraphs\ParagraphInterface */
-  protected $paragraphRevision;
-
-  /** @var string|null */
-  protected $field;
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null */
   protected $paragraphFormDisplay;
@@ -45,37 +28,24 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   /** @var string[] */
   protected $fieldWidgetTypes = [];
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
-    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
-    $this->setEntityTypeManager($entityTypeManager);
-    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
-    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
-    $this->workflowService = $assessmentWorkflow;
+  /** @var string[] */
+  protected $fieldWithDifferences = [
+    'author', // Revision author is always rendered.
+  ];
 
-    $routeMatch = $this->getRouteMatch();
-    $this->field = $routeMatch->getParameter('field');
-    $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
-    $this->nodeRevision = $routeMatch->getParameter('node_revision');
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entity_form_builder, $entityTypeManager, $temp_store_factory, $assessmentWorkflow);
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
 
     // We want to render the diff forms using the form widget configured for the
     // parent entity.
-    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.default");
+    $this->paragraphFormDisplay = $this->entityFormDisplay->load("{$this->paragraphRevision->getEntityTypeId()}.{$this->paragraphRevision->bundle()}.{$this->formDisplayMode}");
     $this->paragraphFormComponents = $this->paragraphFormDisplay->getComponents();
     uasort($this->paragraphFormComponents, 'Drupal\Component\Utility\SortArray::sortByWeightElement');
   }
 
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity.repository'),
-      $container->get('entity_type.bundle.info'),
-      $container->get('datetime.time'),
-      $container->get('entity_type.manager'),
-      $container->get('iucn_assessment.workflow')
-    );
-  }
-
   public function getParagraphRevisionFromParentEntity(NodeInterface $parentEntity) {
-    foreach ($parentEntity->get($this->field)->getValue() as $value) {
+    foreach ($parentEntity->get($this->fieldName)->getValue() as $value) {
       if (!empty($value['target_id']) && $value['target_id'] == $this->paragraphRevision->id()) {
         return $this->paragraphStorage->loadRevision($value['target_revision_id']);
       }
@@ -108,19 +78,22 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $row = [
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
-          : $revision->getRevisionUser()->getDisplayName(),
+          : $assessmentRevision->getRevisionUser()->getDisplayName(),
       ];
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
-          $row[$fieldName] = [];
           continue;
         }
+        $field = $revision instanceof ParagraphInterface
+          ? $revision->get($fieldName)
+          : NULL;
+        $fieldValue = !empty($field) ? $field->getValue() : [];
         $row[$fieldName] = [
           'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $revision->get($fieldName)
-            ->getValue()),
+          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
           'widget_type' => $this->fieldWidgetTypes[$fieldName],
         ];
+        $this->fieldWithDifferences[] = $fieldName;
       }
       $paragraphDiff[] = $row;
 
@@ -129,12 +102,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         // All revisions have the same initial version.
         /** @var \Drupal\paragraphs\ParagraphInterface $initialRevision */
         $initialRevision = $this->getParagraphRevisionFromParentEntity($initialAssessmentRevision);
-
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
           $initialValue = $initialRevision->get($fieldName)->getValue();
-          $renderedInitialValue = $initialRevision->get($fieldName)
-            ->view(['settings' => ['link' => 0]]);
-          unset($renderedInitialValue['#title']);
+          $renderedInitialValue = $initialRevision->get($fieldName)->view('diff');
+          $renderedInitialValue['#title'] = NULL;
           $paragraphDiff[0][$fieldName] = [
             'markup' => [[['data' => $renderedInitialValue]]],
             'copy' => !empty($initialValue)
@@ -155,13 +126,18 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#type' => 'table',
       '#header' => ['author' => $this->t('Author')],
       '#rows' => [],
-      '#weight' => -10,
-      '#attributes' => ['class' => ['field-diff-table']],
+      '#weight' => 10,
+      '#attributes' => ['class' => ['diff-table']],
+      '#tree' => FALSE,
     ];
     $finalRow = [
       'author' => $this->t('Final version'),
     ];
     foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
+      if (empty($this->paragraphRevision->{$fieldName})) {
+        unset($this->paragraphFormComponents[$fieldName]);
+        continue;
+      }
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
       $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
         ->getLabel();
@@ -169,32 +145,77 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     }
 
     $paragraphDiff = $this->getParagraphDiff();
+
+    $dependentFieldsList = [
+      ['field_as_threats_in', 'field_as_threats_out'],
+      ['field_as_threats_values_wh', 'field_as_threats_values_bio'],
+    ];
+    foreach ($dependentFieldsList as $dependentFields) {
+      if (!empty(array_intersect($this->fieldWithDifferences, $dependentFields))) {
+        // These fields need to be rendered together. So, if at least one of them
+        // was modified, we render both of them.
+        $this->fieldWithDifferences = array_unique(array_merge($this->fieldWithDifferences, $dependentFields));
+      }
+    }
+
+    foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
+      if (!in_array($fieldName, $this->fieldWithDifferences)) {
+        unset($diffTable['#header'][$fieldName]);
+        unset($finalRow[$fieldName]);
+      }
+    }
+
+    if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
+      $form['info'] = [
+        '#type' => 'markup',
+        '#markup' => sprintf('<div class="messages messages--info">%s</div>',
+          $this->t('The table below contains only fields which were modified by other user(s). For editing other fields, use the default row edit popup.')),
+        '#weight' => -100,
+      ];
+    }
+
     $paragraphDiff['edit'] = $finalRow;
 
     foreach ($paragraphDiff as $key => $diff) {
       $row = [];
-      foreach ($diff as $field => $diffData) {
-        if (!is_array($diffData)) {
-          $row[$field] = ['data' => ['#markup' => $diffData]];
+      foreach (array_merge(['author' => []], $this->paragraphFormComponents) as $field => $widgetSettings) {
+        if (!in_array($field, $this->fieldWithDifferences)) {
           continue;
         }
-        elseif (!empty($diffData['input'])) {
+
+        if (empty($diff[$field])) {
+          $row[$field] = [
+            'data' => ['#markup' => ''],
+            '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+          ];
+          continue;
+        }
+
+        $diffData = $diff[$field];
+        if (!is_array($diffData)) {
+          $row[$field] = [
+            'data' => ['#markup' => $diffData],
+            '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+          ];
+          continue;
+        }
+
+        $cssClass = ' field-name--' . $field;
+        if (!empty($diffData['widget_type'])) {
+          $cssClass .= ' widget-type--' . $diffData['widget_type'];
+        }
+        if (!empty($diffData['input'])) {
           $row[$field] = $diffData['input'];
-          $row[$field]['#attributes']['class'][] = 'widget-type--' . $diffData['widget_type'];
+          $row[$field]['#wrapper_attributes']['class'][] = $cssClass;
         }
         elseif (!empty($diffData['markup'])) {
           $row[$field] = [
             'data' => [
               '#type' => 'table',
               '#rows' => $diffData['markup'],
-              '#attributes' => [
-                'class' => [
-                  'relative',
-                  'diff-context-wrapper',
-                  'widget-type--' . $diffData['widget_type'],
-                ],
-              ],
+              '#tree' => FALSE,
             ],
+            '#wrapper_attributes' => ['class' => [$cssClass]],
           ];
         }
         else {
@@ -224,19 +245,20 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       elseif (preg_match('/(field\_.+)\_select\_wrapper/', $field, $matches)) {
         // See ParagraphAsSiteThreatForm::alter to understand this code block.
         $originalField = $matches[1];
-        $form['diff']['edit'][$originalField] = $form[$field];
-        unset($form[$field]);
-        unset($form[$originalField]);
       }
-      else {
-        $form['diff']['edit'][$field] = $form[$field];
-        unset($form[$field]);
+
+      if (!empty($form['diff']['edit'][$originalField])) {
+        $widget = $form[$field];
+        unset($widget['#title']);
+        unset($widget["{$originalField}_select"]['#title']);
+        unset($widget['widget']['#title']);
+        unset($widget['widget'][0]['#title']);
+        unset($widget['widget'][0]['value']['#title']);
+        $form['diff']['edit'][$originalField] = $widget;
       }
-      unset($form['diff']['edit'][$originalField]['#title']);
-      unset($form['diff']['edit'][$originalField]["{$originalField}_select"]['#title']);
-      unset($form['diff']['edit'][$originalField]['widget']['#title']);
-      unset($form['diff']['edit'][$originalField]['widget'][0]['#title']);
-      unset($form['diff']['edit'][$originalField]['widget'][0]['value']['#title']);
+
+      unset($form[$field]);
+      unset($form[$originalField]);
     }
   }
 

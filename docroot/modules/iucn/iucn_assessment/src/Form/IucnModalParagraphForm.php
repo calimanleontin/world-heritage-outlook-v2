@@ -3,48 +3,72 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnModalParagraphForm extends ContentEntityForm {
 
   use AssessmentEntityFormTrait;
 
-  /**
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
+  /** @var \Drupal\Core\Form\FormBuilderInterface */
   protected $entityFormBuilder;
 
-  /**
-   * @var \Drupal\node\NodeInterface
-   */
+  /** @var \Drupal\node\NodeInterface */
   protected $nodeRevision;
 
-  /**
-   * @var string
-   */
+  /** @var \Drupal\paragraphs\ParagraphInterface */
+  protected $paragraphRevision;
+
+  /** @var string */
   protected $fieldName;
 
-  /**
-   * @var string
-   */
+  /** @var string */
   protected $fieldWrapperId;
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL) {
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface */
+  protected $entityFormDisplay;
+
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null  */
+  protected $nodeFormDisplay;
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
+  /** @var string */
+  protected $formDisplayMode;
+
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
+    $this->setEntityTypeManager($entityTypeManager);
     $this->entityFormBuilder = $entity_form_builder;
+    $this->workflowService = $assessmentWorkflow;
+    $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
 
     $routeMatch = $this->getRouteMatch();
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
+    $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
     $this->fieldName = $routeMatch->getParameter('field');
     $this->fieldWrapperId = $routeMatch->getParameter('field_wrapper_id');
+    $this->formDisplayMode = $routeMatch->getParameter('form_display_mode');
+
+    $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
+    foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
+      // Remove all other fields except the selected one.
+      if ($name != $this->fieldName) {
+        $this->nodeFormDisplay->removeComponent($name);
+      }
+    }
   }
 
   public static function create(ContainerInterface $container) {
@@ -52,7 +76,10 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $container->get('entity.repository'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('entity.form_builder')
+      $container->get('entity.form_builder'),
+      $container->get('entity_type.manager'),
+      $container->get('tempstore.private'),
+      $container->get('iucn_assessment.workflow')
     );
   }
 
@@ -98,30 +125,48 @@ class IucnModalParagraphForm extends ContentEntityForm {
         '#weight' => -10,
       ];
       $response->addCommand(new HtmlCommand('#drupal-modal', $form));
+      return $response;
     }
-    else {
-      // Update parent node change date.
-      $this->nodeRevision->setChangedTime(time());
-      $this->nodeRevision->save();
+    
+    // Update parent node change date.
+    $this->nodeRevision->setChangedTime(time());
 
-      // Get all necessary data to be able to correctly update the correct
-      // field on the parent node.
-      $temporary_data = $form_state->getTemporary();
-      $parent_entity_revision = isset($temporary_data['node_revision']) ?
-        $temporary_data['node_revision'] :
-        $this->nodeRevision;
-      $parent_entity_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($parent_entity_revision->getRevisionId());
+    if ($this->nodeRevision->isDefaultRevision()
+      && $this->workflowService->isNewAssessment($this->nodeRevision)
+      && empty($this->nodeRevision->field_coordinator->target_id)
+      && in_array('coordinator', $this->currentUser()->getRoles())) {
+      // Sets the current user as a coordinator if he has the coordinator role
+      // and edits the assessment.
+      $oldState = $this->nodeRevision->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
 
-      // Refresh the paragraphs field.
+      $this->nodeRevision->set('field_coordinator', ['target_id' => $this->currentUser()->id()]);
+      $new_revision = $this->workflowService->createRevision($this->nodeRevision, $newState, $this->currentUser()->id(), "{$oldState} ({$this->nodeRevision->getRevisionId()}) => {$newState}", TRUE);
+
       $response->addCommand(
-        new HtmlCommand(
-          $this->fieldWrapperId,
-          $this->entityFormBuilder->getForm($parent_entity_revision, 'default')[$this->fieldName]
+        new ReplaceCommand(
+          "#node-site-assessment-edit-form .current-state",
+          NodeSiteAssessmentForm::getCurrentStateMarkup($new_revision)
         )
       );
-
-      $response->addCommand(new CloseModalDialogCommand());
     }
+    else {
+      $this->nodeRevision->save();
+    }
+
+    $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
+      'form_display' => $this->nodeFormDisplay,
+      'entity_form_initialized' => TRUE,
+    ]);
+
+    // Refresh the paragraphs field.
+    $response->addCommand(
+      new ReplaceCommand(
+        "{$this->fieldWrapperId} >:first-child",
+        $nodeForm[$this->fieldName]['widget']
+      )
+    );
+    $response->addCommand(new CloseModalDialogCommand());
 
     return $response;
   }
