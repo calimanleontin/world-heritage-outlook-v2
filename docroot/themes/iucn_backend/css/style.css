@@ -1185,6 +1185,17 @@ table.diff-context-wrapper {
 .field-with-diff.field--type-string-long {
   display: table-row-group;
 }
+.field--widget-text-textarea-with-scayt .cke_top {
+  padding: 0;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup {
+  margin: 0;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup .cke_button {
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
 .field--widget-text-textarea-with-scayt .cke_contents {
   padding: 5px;
 }
