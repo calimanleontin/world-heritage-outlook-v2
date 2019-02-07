@@ -27,10 +27,10 @@
       {% if description.content %}
         <div{{ description.attributes.addClass('description') }} >{{ description.content }}</div>
       {% endif %}
-      {# <div class="double-scrollbar-helper"><div class="inner"></div></div> #}
-      {# <div class="responsive-wrapper"> #}
+      <div class="double-scrollbar-helper"><div class="inner"></div></div>
+      <div class="responsive-wrapper">
         {{ table }}
-      {# </div> #}
+      </div>
     {% else %}
       {% if description.content %}
         <div{{ description.attributes.addClass('description') }} >{{ description.content }}</div>
