@@ -1191,10 +1191,13 @@ table.diff-context-wrapper {
 .field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup {
   margin: 0;
 }
-.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup .cke_button {
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button {
   border-top: none;
   border-left: none;
   border-bottom: none;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button:hover {
+  cursor: pointer;
 }
 .field--widget-text-textarea-with-scayt .cke_contents {
   padding: 5px;
