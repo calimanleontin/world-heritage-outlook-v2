@@ -1424,6 +1424,11 @@ table.diff-context-wrapper {
 .field--widget-text-textarea-with-scayt .cke_bottom {
   display: none;
 }
+.field--widget-text-textarea-with-scayt .counter.warning {
+  color: red;
+  font-weight: bold;
+  font-size: 1.2em;
+}
 @media all and (min-width: 851px) {
   .sidebar {
     float: left;

@@ -6,7 +6,7 @@ Source: https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch
 
 
 Block paste when limit is exceeded
-Source: https://www.drupal.org/files/issues/2019-02-06/block-paste.patch
+Source: https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch
 
 
 CKEditor - Counter flashes and then re-displays max character limit while typing
