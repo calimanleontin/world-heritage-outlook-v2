@@ -75,7 +75,7 @@
   .paragraph-columns(@i: 1) when (@i >= 1) {
     .paragraph-top-col-@{i} {
       grid-template-columns: repeat(@i - 1, 1fr) 9rem;
-      @media (max-width: 767px) {
+      @media (max-width: 999px) {
         grid-template-columns: repeat(@i - 1, minmax(6.5rem, 1fr)) 9rem;
       }
     }
@@ -211,7 +211,7 @@
         }
       }
     }
-    @media (max-width: 767px) {
+    @media (max-width: 999px) {
       .responsive-wrapper {
         overflow: auto;
       }
@@ -270,8 +270,9 @@
   margin-right: 10px;
 }
 .paragraph-summary-component {
-  word-break: break-word;
   hyphens: auto;
+  overflow: hidden;
+  word-break: break-word;
 }
 .paragraph-diff-row {
   background-color: #fcf8e3 !important;
