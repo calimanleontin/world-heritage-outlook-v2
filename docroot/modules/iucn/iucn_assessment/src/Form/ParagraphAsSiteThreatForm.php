@@ -208,8 +208,11 @@ class ParagraphAsSiteThreatForm {
       $selected = $form_state->getValue("{$field}_select");
       $values = [];
       if (!empty($selected) && is_array($selected)) {
-        foreach ($selected as $target_id) {
-          $valueParagraph = Paragraph::load($target_id);
+        foreach ($selected as $id => $isSelected) {
+          if (empty($isSelected)) {
+            continue;
+          }
+          $valueParagraph = Paragraph::load($id);
           if (empty($valueParagraph->id())) {
             continue;
           }
