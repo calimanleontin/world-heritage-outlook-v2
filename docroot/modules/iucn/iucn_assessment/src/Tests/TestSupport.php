@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Tests;
 
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
@@ -135,11 +136,9 @@ class TestSupport {
     $vocabularies = Vocabulary::loadMultiple();
     foreach ($vocabularies as $vocabulary) {
       for ($i = 1; $i <= 5; $i++) {
-        $term = Term::create([
-          'vid' => $vocabulary->id(),
+        self::createSampleEntity('taxonomy_term', $vocabulary->id(), [
           'name' => "{$vocabulary->id()} term {$i}",
         ]);
-        $term->save();
       }
     }
   }
@@ -177,8 +176,7 @@ class TestSupport {
    * @return \Drupal\node\NodeInterface
    */
   public static function createAssessment($title = NULL) {
-    $node = Node::create([
-      'type' => 'site_assessment',
+    return self::createSampleEntity('node', 'site_assessment', [
       'title' => $title ?: 'Test assessment',
       'created' => time(),
       'uid' => 0,
@@ -188,8 +186,6 @@ class TestSupport {
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
     ]);
-    $node->save();
-    return $node;
   }
 
   /**
@@ -213,6 +209,36 @@ class TestSupport {
     return !empty($ids)
       ? Term::load(current($ids))
       : NULL;
+  }
+
+  public static function createSampleEntity($type, $bundle, $fields = []) {
+    switch ($type) {
+      case 'node':
+        $entity = Node::create([
+          'type' => $bundle,
+        ]);
+        break;
+
+      case 'taxonomy_term':
+        $entity = Term::create([
+          'vid' => $bundle,
+        ]);
+        break;
+
+      case 'paragraph':
+        $entity = Paragraph::create([
+          'type' => $bundle,
+        ]);
+        break;
+
+      default:
+        throw new \InvalidArgumentException('Invalid entity type provided. Accepted types are: node, taxonomy_term, paragraph.');
+    }
+    foreach ($fields as $field => $value) {
+      $entity->set($field, $value);
+    }
+    $entity->save();
+    return $entity;
   }
 
 }
