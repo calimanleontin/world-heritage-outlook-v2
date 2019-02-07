@@ -289,11 +289,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
       $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
       $names = [];
-      foreach($subcategories  as $term) {
+      foreach ($subcategories as $term) {
         $storage = \Drupal::service('entity_type.manager')
           ->getStorage('taxonomy_term');
         $parents = $storage->loadParents($term['target_id']);
-        foreach($parents as $parent) {
+        foreach ($parents as $parent) {
           $names[$parent->getName()] = $parent->getName();
         }
       }
@@ -313,8 +313,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
     // and at least one field that is visible in this row was changed.
     $show_diff = FALSE;
     if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
-     && $this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $field_name, $paragraphs_entity->id())
-     && !$this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $field_name, $paragraphs_entity->id())) {
+      && $this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $field_name, $paragraphs_entity->id())
+      && !$this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $field_name, $paragraphs_entity->id())) {
       $element['top']['#attributes']['class'][] = "paragraph-new-row";
     }
     else {
@@ -641,12 +641,31 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $elements = [];
     if (!empty($paragraphs)) {
       foreach ($paragraphs as $paragraph) {
-        $components = $this->getSummaryComponents(Paragraph::load($paragraph));
-        $containers = $this->getSummaryContainers($components);
+        $paragraphs_entity = Paragraph::load($paragraph);
+        $components = $this->getSummaryComponents($paragraphs_entity);
+        $summary_containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
+        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
+          $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
+          $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
+          $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
+          $names = [];
+          foreach ($subcategories as $term) {
+            $storage = \Drupal::service('entity_type.manager')
+              ->getStorage('taxonomy_term');
+            $parents = $storage->loadParents($term['target_id']);
+            foreach ($parents as $parent) {
+              $names[$parent->getName()] = $parent->getName();
+            }
+          }
+          $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
+        }
+        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
+          $column_count += 2;
+        }
         $elements[$paragraph] = [
           '#type' => 'container',
-          'top' => ['summmary' => $containers],
+          'top' => ['summmary' => $summary_containers],
           'actions' => [
             '#type' => 'container',
             'actions' => [
