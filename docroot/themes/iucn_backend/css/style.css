@@ -1196,7 +1196,8 @@ table.diff-context-wrapper {
   border-left: none;
   border-bottom: none;
 }
-.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button:hover {
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button:hover,
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button > span:hover {
   cursor: pointer;
 }
 .field--widget-text-textarea-with-scayt .cke_contents {
