@@ -7,6 +7,7 @@ use Drupal\node\Entity\Node;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowConfigTransition;
 use Drupal\taxonomy\Entity\Term;
@@ -20,15 +21,6 @@ use Drupal\taxonomy\Entity\Term;
 class WorkflowTest extends IucnAssessmentTestBase {
 
   protected $hasDraftRevision;
-
-  /**
-   * Test the assessment workflow, going through all the states.
-   */
-  public function testAssessmentWorkflowAccess() {
-    $assessment = TestSupport::getNodeByTitle(TestSupport::ASSESSMENT1);
-
-    $this->checkAccessOnEveryState($assessment);
-  }
 
   /**
    * Tests an user access on an assessment edit page.
@@ -95,12 +87,11 @@ class WorkflowTest extends IucnAssessmentTestBase {
   }
 
   /**
+   * Test the assessment workflow, going through all the states.
    * Loop an assessment through all the states and check all users' edit access.
-   *
-   * @param \Drupal\node\NodeInterface $assessment
-   *   The assessment.
    */
-  protected function checkAccessOnEveryState(NodeInterface $assessment) {
+  protected function testAccessOnEveryState() {
+    $assessment = TestSupport::createAssessment();
     $states = [
       AssessmentWorkflow::STATUS_NEW,
       AssessmentWorkflow::STATUS_UNDER_EVALUATION,
@@ -349,7 +340,5 @@ class WorkflowTest extends IucnAssessmentTestBase {
 
     $this->assertRaw('paragraph-deleted-row');
     $this->assertRaw('value="Revert"');
-
   }
-
 }

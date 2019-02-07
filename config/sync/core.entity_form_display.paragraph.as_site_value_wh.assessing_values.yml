@@ -20,7 +20,7 @@ mode: assessing_values
 content:
   field_as_values_curr_state:
     type: options_select
-    weight: 3
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -33,7 +33,7 @@ content:
     type: text_textarea_with_scayt
     region: content
   field_as_values_curr_trend:
-    weight: 2
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select

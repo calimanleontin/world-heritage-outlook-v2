@@ -213,6 +213,13 @@ class NodeSiteAssessmentForm {
       hide($form['field_as_vass_bio_text']);
       hide($form['field_as_vass_bio_trend']);
     }
+    if (!empty($form['field_as_global_assessment_level'])) {
+      // Exclude coming soon.
+      $tid = 1420;
+      if (!in_array($tid, $form['field_as_global_assessment_level']['widget']['#default_value'])) {
+        unset($form['field_as_global_assessment_level']['widget']['#options'][$tid]);
+      }
+    }
 
     if (in_array($tab, ['threats', 'protection-management', 'assessing-values', 'conservation-outlook'])) {
       $form['overall_table_thead'] = [
@@ -236,7 +243,7 @@ class NodeSiteAssessmentForm {
             'title' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => t('Justification'),
+              '#value' => t('Justification of assessment'),
             ],
           ],
         ],

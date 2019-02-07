@@ -44,6 +44,23 @@ class AssessmentFieldset extends FieldGroupFormatterBase {
       }
 
     }
+    $tab = \Drupal::request()->query->get('tab');
+    if ($tab == 'conservation-outlook') {
+      $element['headings'] = [
+        'topic' => [
+          "#type" => "markup",
+          "#markup" => '<div class="overall-row-view overall-header"><div>' . $this->t('Topic') . '</div>',
+        ],
+        'justification' => [
+          "#type" => "markup",
+          "#markup" => '<div>' . $this->t('Justification of assessment') . '</div>',
+        ],
+        'assessment' => [
+          "#type" => "markup",
+          "#markup" => '<div>' . $this->t('Assessment') . '</div></div>',
+        ]
+      ];
+    }
 
     if ($this->getSetting('id')) {
       $element['#id'] = Html::getId($this->getSetting('id'));

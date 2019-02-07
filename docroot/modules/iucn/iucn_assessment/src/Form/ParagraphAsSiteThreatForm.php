@@ -72,10 +72,10 @@ class ParagraphAsSiteThreatForm {
         $formField = &$form[$field];
         $form["{$field}_select_wrapper"] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['form-wrapper']],
+          '#attributes' => ['class' => ['form-wrapper ' . $field . '_checkboxes']],
           '#weight' => $formField['#weight'],
           "{$field}_select" => [
-            '#type' => 'select',
+            '#type' => 'checkboxes',
             '#title' => !empty($formField['widget']['title']['#value'])
               ? $formField['widget']['title']['#value']
               : $form[$field]['widget']['#title'],
@@ -157,7 +157,8 @@ class ParagraphAsSiteThreatForm {
   public static function validateValues(array &$form, FormStateInterface $form_state) {
     $values_filled = FALSE;
     foreach (self::AFFECTED_VALUES_FIELDS as $field) {
-      if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($form_state->getValue("{$field}_select"))) {
+      $values_selected = array_filter($form_state->getValue("{$field}_select"), function ($x) { return !empty($x); });
+      if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($values_selected)) {
         // The field is not rendered on diff modal OR a value has been selected.
         $values_filled = TRUE;
         break;
@@ -208,8 +209,11 @@ class ParagraphAsSiteThreatForm {
       $selected = $form_state->getValue("{$field}_select");
       $values = [];
       if (!empty($selected) && is_array($selected)) {
-        foreach ($selected as $target_id) {
-          $valueParagraph = Paragraph::load($target_id);
+        foreach ($selected as $id => $isSelected) {
+          if (empty($isSelected)) {
+            continue;
+          }
+          $valueParagraph = Paragraph::load($id);
           if (empty($valueParagraph->id())) {
             continue;
           }

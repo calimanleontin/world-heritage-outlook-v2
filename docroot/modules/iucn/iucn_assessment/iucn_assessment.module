@@ -441,6 +441,33 @@ function _iucn_assessment_display_negociate_assessment_revision(\Drupal\node\Ent
   return NULL;
 }
 
+function _iucn_assessment_level_class($class) {
+  $map = [
+    'iucn-pr-rating--data-deficient' => 'level-data-deficient',
+    'iucn-pr-rating--effective' => 'level-low-concern',
+    'iucn-pr-rating--highly-effective' => 'level-good',
+    'iucn-pr-rating--some-concern' => 'level-high-concern',
+    'iucn-pr-rating--serious-concern' => 'level-critical',
+
+    'iucn-threat--data-deficient' => 'level-data-deficient',
+    'iucn-threat--low-threat' => 'level-low-concern',
+    'iucn-threat--very-low-threat' => 'level-good',
+    'iucn-threat--high-threat' => 'level-high-concern',
+    'iucn-threat--very-high-threat' => 'level-critical',
+
+    'iucn-state--data-deficient' => 'level-data-deficient',
+    'iucn-state--good' => 'level-good',
+    'iucn-state--low-concern' => 'level-low-concern',
+    'iucn-state--high-concern' => 'level-high-concern',
+    'iucn-state--critical' => 'level-critical',
+
+  ];
+  if (empty($map[$class])) {
+    return null;
+  }
+  return $map[$class];
+}
+
 function _iucn_assessment_set_site_assessments($node) {
   // Set assessment field.
   $query = \Drupal::entityQuery('node');

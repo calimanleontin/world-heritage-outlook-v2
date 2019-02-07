@@ -6,11 +6,19 @@ dependencies:
     - field.storage.paragraph.field_as_threats_rating
     - paragraphs.paragraphs_type.as_site_threat
     - taxonomy.vocabulary.assessment_threat_level
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_threat.field_as_threats_rating
 field_name: field_as_threats_rating
 entity_type: paragraph
 bundle: as_site_threat
-label: Rating
+label: Assessment
 description: ''
 required: true
 translatable: false
