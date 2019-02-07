@@ -7,6 +7,7 @@ use Drupal\node\Entity\Node;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowConfigTransition;
 use Drupal\taxonomy\Entity\Term;
@@ -20,15 +21,6 @@ use Drupal\taxonomy\Entity\Term;
 class WorkflowTest extends IucnAssessmentTestBase {
 
   protected $hasDraftRevision;
-
-  /**
-   * Test the assessment workflow, going through all the states.
-   */
-  public function testAssessmentWorkflowAccess() {
-    $assessment = TestSupport::getNodeByTitle(TestSupport::ASSESSMENT1);
-
-    $this->checkAccessOnEveryState($assessment);
-  }
 
   /**
    * Tests an user access on an assessment edit page.
@@ -95,12 +87,11 @@ class WorkflowTest extends IucnAssessmentTestBase {
   }
 
   /**
+   * Test the assessment workflow, going through all the states.
    * Loop an assessment through all the states and check all users' edit access.
-   *
-   * @param \Drupal\node\NodeInterface $assessment
-   *   The assessment.
    */
-  protected function checkAccessOnEveryState(NodeInterface $assessment) {
+  protected function testAccessOnEveryState() {
+    $assessment = TestSupport::createAssessment();
     $states = [
       AssessmentWorkflow::STATUS_NEW,
       AssessmentWorkflow::STATUS_UNDER_EVALUATION,
@@ -312,46 +303,6 @@ class WorkflowTest extends IucnAssessmentTestBase {
   }
 
   /**
-   * Check that assessors cannot edit values.
-   */
-  protected function testValuesTabAccess() {
-    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
-    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
-    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
-
-    $paragraph = Paragraph::create([
-      'type' => 'as_site_value_wh',
-    ]);
-    $paragraph->save();
-    $assessment->field_as_values_wh->appendItem($paragraph);
-    $assessment->save();
-
-    $this->userLogIn(TestSupport::COORDINATOR1);
-
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
-
-    drupal_flush_all_caches();
-
-    $this->userLogIn(TestSupport::ASSESSOR1);
-
-    foreach (['values', 'assessing-values'] as $tab) {
-      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
-      $this->assertNoRaw('tabledrag-handle');
-      $this->assertNoRaw('value="Remove"');
-      $this->assertNoRaw('value="Add more"');
-      $this->assertRaw('Save');
-      if ($tab == 'values') {
-        $this->assertNoRaw('value="Edit"');
-      }
-      else {
-        $this->assertRaw('value="Edit"');
-      }
-    }
-  }
-
-  /**
    * Check that deleted paragraphs are shown in red .
    */
   protected function testDeletedParagraphs() {
@@ -389,7 +340,5 @@ class WorkflowTest extends IucnAssessmentTestBase {
 
     $this->assertRaw('paragraph-deleted-row');
     $this->assertRaw('value="Revert"');
-
   }
-
 }

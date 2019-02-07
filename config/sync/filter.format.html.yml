@@ -9,7 +9,7 @@ dependencies:
     - spamspan
 name: HTML
 format: html
-weight: 0
+weight: -9
 filters:
   filter_align:
     id: filter_align

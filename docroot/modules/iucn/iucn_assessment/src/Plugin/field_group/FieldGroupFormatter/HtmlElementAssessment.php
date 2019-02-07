@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Template\Attribute;
 use Drupal\field_group\FieldGroupFormatterBase;
 use Drupal\field_group\Plugin\field_group\FieldGroupFormatter\HtmlElement;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'html_element' formatter.
@@ -28,7 +29,7 @@ class HtmlElementAssessment extends HtmlElement {
    */
   public function preRender(&$element, $rendering_object) {
     parent::preRender($element, $rendering_object);
-
+    
     $field_names = $this->getSetting('terms');
     if (!empty($field_names)) {
       $field_names = explode('|', $field_names);
@@ -47,6 +48,7 @@ class HtmlElementAssessment extends HtmlElement {
     if ($this->getSetting('show_fields_preview')) {
       $label = '<div>' . $this->label . '</div>';
       foreach($element as $key => $container) {
+        $attr = '';
         if (is_array($container) && !empty($container['#type']) && $container['#type'] == 'container') {
           $markup = '';
           $widget = $container['widget'];
@@ -60,6 +62,11 @@ class HtmlElementAssessment extends HtmlElement {
             if ($widget["#type"] == 'select') {
               $markup = [];
               foreach($widget['#value'] as $option) {
+                $term = Term::load($option);
+                $class = _iucn_assessment_level_class($term->field_css_identifier->value);
+                if ($class) {
+                  $attr = 'class="' . $class . '"';
+                }
                 $markup[] = $widget['#options'][$option];
               }
               $markup = implode(', ', $markup);
@@ -67,7 +74,7 @@ class HtmlElementAssessment extends HtmlElement {
           }
           $element[$key] = [
             '#type' => 'markup',
-            '#markup' => $label . '<div>' . $markup . '</div>',
+            '#markup' => $label . '<div ' . $attr . '>' . $markup . '</div>',
           ];
           $label = '';
         }

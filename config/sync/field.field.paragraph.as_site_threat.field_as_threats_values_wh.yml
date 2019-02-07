@@ -7,12 +7,19 @@ dependencies:
     - paragraphs.paragraphs_type.as_site_threat
     - paragraphs.paragraphs_type.as_site_value_wh
   module:
+    - disable_field
     - entity_reference_revisions
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_threat.field_as_threats_values_wh
 field_name: field_as_threats_values_wh
 entity_type: paragraph
 bundle: as_site_threat
-label: 'Affected values'
+label: 'World Heritage values affected by threat'
 description: ''
 required: false
 translatable: false
@@ -21,6 +28,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_value_wh: as_site_value_wh
     target_bundles_drag_drop:
@@ -29,9 +37,6 @@ settings:
         enabled: false
       as_site_benefit:
         weight: 14
-        enabled: false
-      as_site_conservation:
-        weight: 15
         enabled: false
       as_site_project:
         weight: 16
@@ -42,14 +47,23 @@ settings:
       as_site_value_wh:
         enabled: true
         weight: 18
+      as_site_key_conservation:
+        weight: 19
+        enabled: false
       content_html:
         weight: 19
         enabled: false
       content_teasers:
         weight: 20
         enabled: false
+      as_site_protection:
+        weight: 21
+        enabled: false
       danger_list:
         weight: 21
+        enabled: false
+      as_site_reference:
+        weight: 22
         enabled: false
       number_heading_list:
         weight: 22
@@ -59,5 +73,14 @@ settings:
         enabled: false
       teaser:
         weight: 24
+        enabled: false
+      decision:
+        weight: 29
+        enabled: false
+      image_grid:
+        weight: 30
+        enabled: false
+      image_link:
+        weight: 31
         enabled: false
 field_type: entity_reference_revisions
