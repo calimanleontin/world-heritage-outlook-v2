@@ -18,4 +18,5 @@ permissions:
   - 'revert site revisions'
   - 'translate site node'
   - 'update content translations'
+  - 'use text format assessment_text_format'
   - 'view site revisions'

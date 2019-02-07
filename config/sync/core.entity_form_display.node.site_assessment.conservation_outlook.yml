@@ -406,7 +406,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_key_cons:
     type: row_entity_reference_paragraphs
@@ -459,7 +459,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_protection_ov_rating:
     weight: 25
@@ -473,7 +473,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_references_p:
     type: row_entity_reference_paragraphs
@@ -526,7 +526,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_threats_potent_rating:
     weight: 30
@@ -540,7 +540,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_threats_potential:
     type: row_entity_reference_paragraphs
@@ -572,7 +572,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_values_wh:
     type: row_entity_reference_paragraphs
@@ -604,7 +604,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_vass_bio_trend:
     type: entity_reference_autocomplete
@@ -627,7 +627,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_vass_wh_trend:
     type: entity_reference_autocomplete
