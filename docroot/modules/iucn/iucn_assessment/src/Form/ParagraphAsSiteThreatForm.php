@@ -157,7 +157,8 @@ class ParagraphAsSiteThreatForm {
   public static function validateValues(array &$form, FormStateInterface $form_state) {
     $values_filled = FALSE;
     foreach (self::AFFECTED_VALUES_FIELDS as $field) {
-      if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($form_state->getValue("{$field}_select"))) {
+      $values_selected = array_filter($form_state->getValue("{$field}_select"), function ($x) { return !empty($x); });
+      if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($values_selected)) {
         // The field is not rendered on diff modal OR a value has been selected.
         $values_filled = TRUE;
         break;
