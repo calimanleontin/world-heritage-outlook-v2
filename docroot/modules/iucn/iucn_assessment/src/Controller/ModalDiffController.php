@@ -16,7 +16,7 @@ class ModalDiffController extends ControllerBase {
   public function paragraphDiffForm(NodeInterface $node, NodeInterface $node_revision, $field, $field_wrapper_id, ParagraphInterface $paragraph_revision) {
     $response = new AjaxResponse();
     $form = $this->entityFormBuilder()->getForm($paragraph_revision, 'iucn_modal_paragraph_diff', []);
-    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '90%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '90%', 'classes' => ['ui-dialog' => 'paragraph-diff-form-modal'] ]));
 
     return $response;
   }
@@ -24,7 +24,7 @@ class ModalDiffController extends ControllerBase {
   public function fieldDiffForm(NodeInterface $node, NodeInterface $node_revision, $field, $field_wrapper_id) {
     $response = new AjaxResponse();
     $form = $this->entityFormBuilder()->getForm($node_revision, 'iucn_modal_field_diff');
-    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%']));
+    $response->addCommand(new OpenModalDialogCommand($this->t('See differences'), $form, ['width' => '80%', 'classes' => ['ui-dialog' => 'field-diff-form-modal'] ]));
     return $response;
   }
 
