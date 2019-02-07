@@ -1,0 +1,42 @@
+uuid: bfab1456-0ff3-4ace-8ff3-b73e346e4dc4
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.simple_text_formater_with_scayt
+  module:
+    - ckeditor
+    - editor_file
+third_party_settings:
+  editor_file:
+    status: true
+    scheme: public
+    directory: inline-files
+    extensions: txt
+    max_size: ''
+format: simple_text_formater_with_scayt
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Scayt
+  plugins:
+    language:
+      language_list: un
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
+    stylescombo:
+      styles: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

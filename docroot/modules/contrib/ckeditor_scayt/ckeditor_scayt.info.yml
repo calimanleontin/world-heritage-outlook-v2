@@ -1,0 +1,14 @@
+name: 'CKEditor SCAYT'
+type: module
+description: CKEditor spell checker integration.
+package: CKEditor
+# version: VERSION
+# core: 8.x
+dependencies:
+  - drupal:ckeditor
+
+# Information added by Drupal.org packaging script on 2018-08-12
+version: '8.x-1.0-alpha2'
+core: '8.x'
+project: 'ckeditor_scayt'
+datestamp: 1534083486

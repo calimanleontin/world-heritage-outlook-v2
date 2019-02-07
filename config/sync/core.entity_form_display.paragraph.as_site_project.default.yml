@@ -9,6 +9,8 @@ dependencies:
     - field.field.paragraph.as_site_project.field_as_projects_organisation
     - field.field.paragraph.as_site_project.field_as_projects_to
     - paragraphs.paragraphs_type.as_site_project
+  module:
+    - iucn_assessment
 id: paragraph.as_site_project.default
 targetEntityType: paragraph
 bundle: as_site_project
@@ -20,7 +22,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_projects_contact:
     weight: 3
@@ -28,7 +30,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_projects_organisation:
     weight: 1

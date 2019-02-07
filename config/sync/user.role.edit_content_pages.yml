@@ -53,6 +53,7 @@ permissions:
   - 'translate paragraph'
   - 'translate publication node'
   - 'update content translations'
+  - 'use text format assessment_text_format'
   - 'view benefit revisions'
   - 'view faq revisions'
   - 'view news revisions'
