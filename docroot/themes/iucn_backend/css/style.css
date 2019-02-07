@@ -22,9 +22,9 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
   display: grid;
-  grid-auto-columns: auto;
+  grid-auto-columns: 200px;
   grid-auto-flow: column;
-  grid-template-columns: 700px;
+  grid-template-columns: auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
   font-weight: bold;
@@ -37,12 +37,7 @@
   font-weight: bold;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
-  grid-template-columns: 300px auto;
-}
-@media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
-    grid-template-columns: 150px auto;
-  }
+  grid-template-columns: 150px auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
   margin: 0;
@@ -72,13 +67,7 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
   display: grid;
-  grid-template-columns: 300px auto;
-  grid-column: span 3;
-}
-@media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
-    grid-template-columns: 150px auto;
-  }
+  grid-template-columns: 150px auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
@@ -498,6 +487,11 @@ div[aria-required="aria-required"] label:after {
   width: 6px;
   height: 6px;
   margin: 0 0.3em;
+}
+@media (min-width: 768px) {
+  .ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+    overflow-x: hidden;
+  }
 }
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
@@ -1196,8 +1190,20 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 #drupal-modal {
   padding: 0;
 }
+#drupal-modal .layout-node-form {
+  display: flex;
+  flex-wrap: wrap;
+}
 #drupal-modal .layout-node-form .layout-region {
   padding-right: 0;
+  width: auto;
+}
+#drupal-modal .layout-node-form .layout-region-node-main,
+#drupal-modal .layout-node-form .layout-region-node-footer {
+  flex: 1 1 65%;
+}
+#drupal-modal .layout-node-form .layout-region-node-secondary {
+  flex: 0 1 auto;
 }
 #drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
   border-bottom: 1px solid black;
@@ -1210,6 +1216,10 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border-top: 1px solid black;
   margin-bottom: -1px;
   position: relative;
+}
+#drupal-modal .diff-modal table.diff-table > thead > tr > th:first-child,
+#drupal-modal .diff-modal table.diff-table > tbody > tr > td:first-child {
+  width: 100px;
 }
 #drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
   visibility: hidden;
@@ -1270,6 +1280,7 @@ table.diff-context-wrapper {
   border-collapse: separate;
   border-spacing: 0;
   font-size: .9em;
+  table-layout: fixed;
 }
 .diff-modal table.diff-table .diff-context-wrapper td {
   padding: 0;
@@ -1281,8 +1292,8 @@ table.diff-context-wrapper {
   border-right: 1px solid #e6e4df;
   padding: 10px 12px;
 }
-.diff-modal table.diff-table > thead > tr > th:nth-child(2) {
-  padding-left: 45px;
+.diff-modal table.diff-table > thead > tr > th.field-name--author {
+  width: 100px;
 }
 .diff-modal table.diff-table > tbody > tr:last-child > td {
   border-top: 3px solid black;
@@ -1303,29 +1314,8 @@ table.diff-context-wrapper {
   vertical-align: top;
   position: relative;
 }
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkboxes,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--select {
-  min-width: 150px;
-  max-width: 150px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkbox {
-  min-width: 50px;
-  max-width: 50px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea {
-  min-width: 500px;
-  max-width: 500px;
-}
 .diff-modal table.diff-table > tbody > tr > td.field-name--author {
-  min-width: 100px;
-  max-width: 100px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_threat,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--paragraph {
-  min-width: 250px;
-  max-width: 250px;
+  width: 100px;
 }
 .diff-modal table.diff-table > tbody > tr > td input[type="text"],
 .diff-modal table.diff-table > tbody > tr > td textarea,
@@ -1391,9 +1381,6 @@ table.diff-context-wrapper {
 .field-with-diff .form-textarea-wrapper {
   background-color: #fcf8e3;
 }
-.field-with-diff > div > div {
-  padding-right: 40px !important;
-}
 .field-with-diff > div > select {
   margin-right: 30px;
 }
@@ -1402,13 +1389,9 @@ table.diff-context-wrapper {
 }
 .field-with-diff.field--type-entity-reference {
   background-color: #fcf8e3;
-  display: table-row-group;
 }
 .field-with-diff#edit-field-as-references-wrapper {
   background-color: #fcf8e3;
-}
-.field-with-diff.field--type-string-long {
-  display: table-row-group;
 }
 .field--widget-text-textarea-with-scayt .cke_top {
   padding: 0;

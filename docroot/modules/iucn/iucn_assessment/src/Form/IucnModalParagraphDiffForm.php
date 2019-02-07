@@ -9,6 +9,7 @@ use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -145,8 +146,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         continue;
       }
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
-      $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
-        ->getLabel();
+      $diffTable['#header'][$fieldName] = [
+        'data' => $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel(),
+        'class' => ['widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form[$fieldName]['widget']))]
+      ];
       $finalRow[$fieldName]['input'] = $form[$fieldName];
     }
 

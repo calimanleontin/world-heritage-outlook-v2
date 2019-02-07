@@ -23,10 +23,12 @@
       .overall-row {
         // display: table-row;
         display: grid;
-        grid-auto-columns: auto;
+        grid-auto-columns: 200px;
         grid-auto-flow: column;
-        grid-template-columns: 700px;
-
+        grid-template-columns: auto;
+        // @media screen and (max-width: 1024px) {
+        //   grid-template-columns: 550px;
+        // }
         &.overall-thead-row {
           .overall-cell {
             font-weight: bold;
@@ -39,10 +41,7 @@
             }
           }
           > div[class*="-textarea"] {
-            grid-template-columns: 300px auto;
-            @media screen and (max-width: 1024px) {
-              grid-template-columns: 150px auto;
-            }
+            grid-template-columns: 150px auto;
           }
         }
         .form-item {
@@ -75,11 +74,7 @@
             border-bottom: none;
             .form-type-textarea {
               display: grid;
-              grid-template-columns: 300px auto;
-              grid-column: span 3;
-              @media screen and (max-width: 1024px) {
-                grid-template-columns: 150px auto;
-              }
+              grid-template-columns: 150px auto;
             }
             label,
             .form-textarea-wrapper {

@@ -283,8 +283,18 @@
 #drupal-modal {
   padding: 0;
   .layout-node-form {
+    display: flex;
+    flex-wrap: wrap;
     .layout-region {
       padding-right: 0;
+      width: auto;
+    }
+    .layout-region-node-main,
+    .layout-region-node-footer {
+      flex: 1 1 65%;
+    }
+    .layout-region-node-secondary {
+      flex: 0 1 auto;
     }
   }
   .diff-modal {
@@ -302,6 +312,11 @@
       margin-bottom: -1px;
       position: relative;
     }
+    table.diff-table>thead>tr>th:first-child,
+    table.diff-table>tbody>tr>td:first-child {
+      width: 100px;
+    }
+
     .tabledrag-toggle-weight-wrapper {
       visibility: hidden;
     }
@@ -354,5 +369,3 @@ table.diff-context-wrapper {
 .diff-tick-marker {
   display: block;
 }
-
-
