@@ -15,12 +15,18 @@
       text-transform: uppercase;
     }
     .fieldset-wrapper {
-      display: table;
+      // display: table;
       width: calc(~'100% - 1px');
       border-top: 1px solid @table-border-color;
       border-left: 1px solid @table-border-color;
+      overflow: auto;
       .overall-row {
-        display: table-row;
+        // display: table-row;
+        display: grid;
+        grid-auto-columns: auto;
+        grid-auto-flow: column;
+        grid-template-columns: 700px;
+
         &.overall-thead-row {
           .overall-cell {
             font-weight: bold;
@@ -32,25 +38,37 @@
               font-weight: bold;
             }
           }
+          > div[class*="-textarea"] {
+            grid-template-columns: 300px auto;
+            @media screen and (max-width: 1024px) {
+              grid-template-columns: 150px auto;
+            }
+          }
         }
         .form-item {
           margin: 0;
         }
         > div {
-          display: table-cell;
+          display: block;
           padding: 10px 12px;
           border-right: 1px solid @table-border-color;
           border-bottom: 1px solid @table-border-color;
           font-weight: normal;
+          &.field-with-diff {
+            padding-right: 60px;
+            .field-diff-button {
+              right: 12px;
+            }
+          }
           .form-item {
             width: 100%;
-            display: table-row;
+            // display: table-row;
           }
           &:last-child {
-            width: 150px;
+            // width: 150px;
           }
           &[class*="-textarea"] {
-            display: table;
+            display: grid;
             width: 100%;
             padding: 0;
             border-right: none;
@@ -58,13 +76,14 @@
             .form-type-textarea {
               display: grid;
               grid-template-columns: 300px auto;
+              grid-column: span 3;
               @media screen and (max-width: 1024px) {
                 grid-template-columns: 150px auto;
               }
             }
             label,
             .form-textarea-wrapper {
-              display: table-cell;
+              display: block;
               box-sizing: border-box;
               padding: 10px 12px;
               border-bottom: 1px solid @table-border-color;
@@ -73,10 +92,10 @@
             }
             label {
               font-weight: normal;
-              width: 300px;
-              @media screen and (max-width: 1024px) {
-                width: 150px;
-              }
+              // width: 300px;
+              // @media screen and (max-width: 1024px) {
+              //   width: 150px;
+              // }
             }
           }
           label {
