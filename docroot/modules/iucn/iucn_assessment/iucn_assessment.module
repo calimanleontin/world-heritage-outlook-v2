@@ -936,3 +936,11 @@ function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Cor
     ]);
   }
 }
+
+function iucn_assessment_editor_js_settings_alter(array &$settings) {
+  foreach ($settings['editor']['formats'] as $name => &$value) {
+    if ($name == 'simple_text_formater_with_scayt') {
+      $value['editorSettings']['contentsCss'][] = '/themes/iucn_backend/css/ckeditor-iframe.css';
+    }
+  }
+}
