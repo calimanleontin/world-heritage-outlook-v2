@@ -496,7 +496,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $bundle = reset($target_paragraph);
     if (!empty($this->parentNode->id())) {
       $tab = \Drupal::request()->query->get('tab');
-      $add_more = ($tab == 'projects') ? $this->t('Add more') : $this->t('Add a project');
+      $add_more = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
       $elements['add_more'][$add_more_button] = [
         '#type' => 'submit',
         '#value' => $add_more,

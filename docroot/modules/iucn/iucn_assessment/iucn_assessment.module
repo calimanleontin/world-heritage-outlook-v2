@@ -664,7 +664,11 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
   $items = $context['items'];
   if ($items instanceof \Drupal\Core\Field\FieldItemListInterface) {
     $field_definition = $items->getFieldDefinition();
-    if ($field_definition->getType() == 'string_long') {
+    if (
+      ($field_definition->getType() == 'string_long')
+      &&
+      ('field_reference' != $field_definition->getName())
+    ) {
       // https://helpdesk.eaudeweb.ro/issues/5556
       // All textareas should be limited to a certain number of characters.
       $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
