@@ -103,6 +103,9 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     elseif (!empty($widget[0]['value']['#type'])) {
       $type = $widget[0]['value']['#type'];
     }
+    elseif (!empty($widget[0]['#type'])) {
+      $type = $widget[0]['#type'];
+    }
     elseif (!empty($widget[0]['#entity_type'])) {
       $type = $widget[0]['#entity_type'];
     }
@@ -124,6 +127,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     $selector = 'edit-' . str_replace('_', '-', $fieldName);
     switch ($fieldWidgetType) {
       case "textarea":
+      case "text_format":
         $selector .= '-0-value';
         break;
 

@@ -330,6 +330,34 @@
           }
           // Add the events on the editor.
           e.editor.on('key', function(e) {
+            var keyEvent = e.data.domEvent.$;
+            if (keyEvent !== undefined) {
+              if (ml.isCharacterKeyPressed(keyEvent)) {
+                var obj = $('#' + e.editor.element.getId());
+                var content = ml.ckeditorGetData(e);
+                var limit = parseInt(obj.attr('maxlength'));
+                var options = ml.options[e.editor.element.getId()];
+                var count;
+                if (options.truncateHtml) {
+                  count = ml.strip_tags(content).length;
+                }
+                else {
+                  count = ml.twochar_lineending(content).length;
+                }
+
+                //Enter fills 2 characters
+                if (keyEvent.keyCode === 13) {
+                  count++;
+                }
+
+                var available = limit - count;
+                if (available <= 0) {
+                  e.cancel();
+                  e.stop();
+                  return false;
+                }
+              }
+            }
             setTimeout(function(){ml.ckeditorChange(e)}, 100);
           });
           e.editor.on('paste', function(e) {
@@ -349,14 +377,17 @@
               var limit = parseInt(obj.attr('maxlength'));
               var options = ml.options[e.editor.element.getId()];
               var count;
+              var countSelected;
+              var selected = e.editor.getSelection().getSelectedText();
               if (options.truncateHtml) {
                 count = ml.strip_tags(content).length;
+                countSelected = ml.strip_tags(selected).length;
               }
               else {
                 count = ml.twochar_lineending(content).length;
+                countSelected = ml.twochar_lineending(selected).length;
               }
-
-              var available = limit - count;
+              var available = limit - count + countSelected;
               if (available < ml.strip_tags(e.data.dataValue).length) {
                 blockPasteLabel = blockPasteLabel.replace('@limit', limit);
                 e.cancel();
@@ -405,5 +436,17 @@
       e.editor.getSelection().selectRanges([range]);
     }});
   }
+
+  ml.isCharacterKeyPressed = function(evt) {
+    if (typeof evt.which === "undefined") {
+      return false;
+    } else if (typeof evt.which === "number" && evt.which > 0) {
+      return !evt.ctrlKey && !evt.metaKey && !evt.altKey &&
+        evt.which !== 8 && evt.which !== 37 && evt.which !== 38 && evt.which !== 39 && evt.which !== 40 &&
+        evt.which !== 46;
+    }
+
+    return false;
+  };
 
 })(jQuery);
