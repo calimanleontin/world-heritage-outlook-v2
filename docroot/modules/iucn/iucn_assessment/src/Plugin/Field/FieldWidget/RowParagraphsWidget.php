@@ -283,6 +283,22 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $summary_components = $this->getSummaryComponents($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
 
+    if ($field_name == 'field_as_benefits') {
+      $subcategories = ['field_as_benefits_subcategories' => $summary_containers['field_as_benefits_category']];
+      $this->insertElementAfter($summary_containers, 'field_as_benefits_category', $subcategories);
+
+      $subcategories = $paragraphs_entity->field_as_benefits_category->getValue();
+      $names = [];
+      foreach ($subcategories as $term) {
+        $storage = \Drupal::service('entity_type.manager')
+          ->getStorage('taxonomy_term');
+        $parents = $storage->loadParents($term['target_id']);
+        foreach ($parents as $parent) {
+          $names[$parent->getName()] = $parent->getName();
+        }
+      }
+      $summary_containers['field_as_benefits_category']['data']['#markup'] = implode(', ', $names);
+    }
     if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
       $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
       $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
@@ -302,6 +318,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $element['top']['summary'] = $summary_containers;
     $count = $this->calculateColumnCount($summary_components) + 1;
     if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
+      $count += 2;
+    }
+    if (($field_name == 'field_as_benefits')) {
       $count += 2;
     }
     $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
@@ -430,6 +449,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $subcategories['field_as_threats_subcategories']['value'] = 'Threat subcategory';
         $this->insertElementAfter($header_components, 'field_as_threats_categories', $subcategories);
       }
+      if (!empty($header_components['field_as_benefits_category'])) {
+        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_benefits_category']];
+        $this->insertElementAfter($header_components, 'field_as_benefits_category', $subcategories);
+        $header_components['field_as_benefits_category']['value'] = 'Benefit type';
+      }
       $header_containers = $this->getHeaderContainers($header_components);
       $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
       $header_containers['actions']['#suffix'] = '</div>';
@@ -471,9 +495,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ->getSetting('handler_settings')['target_bundles'];
     $bundle = reset($target_paragraph);
     if (!empty($this->parentNode->id())) {
+      $tab = \Drupal::request()->query->get('tab');
+      $add_more = ($tab == 'projects') ? $this->t('Add more') : $this->t('Add a project');
       $elements['add_more'][$add_more_button] = [
         '#type' => 'submit',
-        '#value' => $this->t('Add more'),
+        '#value' => $add_more,
         '#ajax' => [
           'event' => 'click',
           'url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
@@ -961,6 +987,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ('field_as_threats_extent' == $field_name) {
         $summary[$summary_field_name]['value'][0] .= ' ' . $value;
       }
+      elseif (!empty($grouped_fields[$field_name]['benefits'])) {
+        if ($value) {
+          $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
+        }
+        if ($field_name == 'field_as_benefits_invassp_trend') {
+          $value = [];
+          foreach($summary[$summary_field_name]['value'] as $title => $values) {
+            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
+          }
+          $summary[$summary_field_name]['value'] = implode('<br>', $value);
+        }
+      }
       else {
         $summary[$summary_field_name]['value'][] = $value;
       }
@@ -972,6 +1010,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
   public function getFieldSpan(FieldDefinitionInterface $field_definition) {
     $field_name = $field_definition->getName();
+    if ($field_name == 'field_as_projects_contact') {
+      return 2;
+    }
+    if ($field_name == 'field_as_comment') {
+      return 2;
+    }
     if ($field_definition->getType() == 'string_long') {
       return 3;
     }
@@ -1034,9 +1078,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       $text = $paragraph->get($field_name)->value;
-      if ((strlen($text) > 600) && ('field_as_values_curr_text' != $field_name)) {
-        $text = Unicode::truncate($text, 600);
-        $text .= '...';
+      if (strlen($text) > 600) {
+        if (!in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
+          $text = Unicode::truncate($text, 600);
+          $text .= '...';
+        }
       }
       $summary = $text;
     }
@@ -1106,23 +1152,54 @@ class RowParagraphsWidget extends ParagraphsWidget {
       ],
       'field_as_benefits_hab_trend' => [
         'grouped_with' => 'field_as_benefits_hab_level',
-        'label' => t('Habitat'),
+        'benefits' => t('Habitat change:'),
+        'label' => t(''),
+      ],
+      'field_as_benefits_hab_level' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Habitat change:'),
+        'label' => t(''),
       ],
       'field_as_benefits_pollut_trend' => [
-        'grouped_with' => 'field_as_benefits_pollut_level',
-        'label' => t('Pollution'),
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Pollution:'),
+        'label' => t(''),
+      ],
+      'field_as_benefits_pollut_level' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Pollution:'),
+        'label' => t(''),
       ],
       'field_as_benefits_oex_trend' => [
-        'grouped_with' => 'field_as_benefits_oex_level',
-        'label' => t('Overexploatation'),
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Over exploitation:'),
+        'title' => t('Over exploitation'),
+        'label' => t(''),
+      ],
+      'field_as_benefits_oex_level' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Over exploitation:'),
+        'label' => t(''),
       ],
       'field_as_benefits_climate_trend' => [
-        'grouped_with' => 'field_as_benefits_climate_level',
-        'label' => t('Climate change'),
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Climate change:'),
+        'label' => t(''),
+      ],
+      'field_as_benefits_climate_level' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Climate change:'),
+        'label' => t(''),
+      ],
+      'field_as_benefits_invassp_level' => [
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Invasive species:'),
+        'label' => t(''),
       ],
       'field_as_benefits_invassp_trend' => [
-        'grouped_with' => 'field_as_benefits_invassp_level',
-        'label' => t('Invasive species'),
+        'grouped_with' => 'field_as_benefits_hab_level',
+        'benefits' => t('Invasive species:'),
+        'label' => t('Factors negatively affecting provision of benefits'),
       ],
 
     ];
