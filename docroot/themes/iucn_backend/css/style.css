@@ -1429,6 +1429,9 @@ table.diff-context-wrapper {
   font-weight: bold;
   font-size: 1.2em;
 }
+.field--widget-text-textarea-with-scayt html {
+  overflow-y: auto;
+}
 @media all and (min-width: 851px) {
   .sidebar {
     float: left;
