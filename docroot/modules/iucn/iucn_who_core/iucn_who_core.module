@@ -479,14 +479,15 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
   }
 
   if ($form_id == 'user_form') {
+    $currentUser = \Drupal::currentUser();
+    if (!$currentUser->hasPermission('change other users agreement settings')) {
+      return;
+    }
+
     $formObject = $form_state->getFormObject();
-    $user= $formObject->getEntity();
+    $user = $formObject->getEntity();
 
     $disabled = $user->field_user_agreement_disabled->value;
-
-    $currentUser = \Drupal::currentUser();
-
-    $disabled = (!$currentUser->hasPermission('change other users agreement settings')) || $disabled;
 
     array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
     $form['user_agreement_disabled'] = [
@@ -502,7 +503,7 @@ function saveAgreement(array $form, FormStateInterface $form_state) {
   $formObject = $form_state->getFormObject();
 
   $user = $formObject->getEntity();
-  $user->set('user_agreement_disabled', $form_state->getValue('user_agreement_disabled'));
+  $user->set('field_user_agreement_disabled', $form_state->getValue('user_agreement_disabled'));
 
   $formObject->setEntity($user);
   $form_state->setFormObject($formObject);
