@@ -21,3 +21,4 @@ permissions:
   - 'delete page revisions'
   - 'delete publication revisions'
   - 'revert benefit revisions'
+  - 'use text format assessment_text_format'

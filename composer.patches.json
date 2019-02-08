@@ -38,6 +38,9 @@
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },
     "drupal/maxlength": {
+      "Max length count html tags as characters when used with ckeditor": "https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch",
+      "Block paste when limit is exceeded":"https://www.drupal.org/files/issues/2019-02-06/block-paste.patch",
+      "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
       "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
     }
   }

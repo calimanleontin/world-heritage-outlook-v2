@@ -14,3 +14,4 @@ permissions:
   - 'delete content translations'
   - 'delete site revisions'
   - 'revert site revisions'
+  - 'use text format assessment_text_format'

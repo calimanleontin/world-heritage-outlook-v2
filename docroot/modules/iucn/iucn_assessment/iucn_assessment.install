@@ -305,7 +305,7 @@ function iucn_assessment_update_8008() {
   foreach($tids as $weight => $tid) {
     $term = \Drupal\taxonomy\Entity\Term::load($tid);
     if ($term->getName() == 'Effective') {
-      $term->setName('Mostly effective');
+      $term->setName('Mostly Effective');
     }
     $term->setWeight($weight);
     $term->save();

@@ -10,3 +10,4 @@ permissions:
   - 'administer menu'
   - 'create assessment workflow_transition'
   - 'translate menu_link_content'
+  - 'use text format assessment_text_format'

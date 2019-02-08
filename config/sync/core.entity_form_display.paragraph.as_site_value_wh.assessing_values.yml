@@ -11,6 +11,8 @@ dependencies:
     - field.field.paragraph.as_site_value_wh.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_wh.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_wh
+  module:
+    - iucn_assessment
 id: paragraph.as_site_value_wh.assessing_values
 targetEntityType: paragraph
 bundle: as_site_value_wh
@@ -28,7 +30,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_values_curr_trend:
     weight: 3
