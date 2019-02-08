@@ -926,7 +926,8 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ($field_type = $field_definition->getType() == 'entity_reference') {
         if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
           if (!empty($paragraph->get($field_name)->entity->field_css_identifier)) {
-            $class = _iucn_assessment_level_class($paragraph->get($field_name)->entity->field_css_identifier->value);
+            $value = $paragraph->get($field_name)->getValue();
+            $class = _iucn_assessment_level_class($value[0]['target_id']);
           }
           $entities = $paragraph->get($field_name)->getValue();
           $target_type = $field_definition->getFieldStorageDefinition()->getSetting('target_type');
