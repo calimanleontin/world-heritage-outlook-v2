@@ -47,34 +47,34 @@
     },
 };
 
-  Drupal.behaviors.rowParagraphFixedActions = {
-    attach: function(context, settings) {
-      $(function() {
-        var inheritParentDims = function() {
-            var $items = $('.field--widget-row-entity-reference-paragraphs .paragraphs-actions', context);
-            $items.each(function() {
-                var $parent = $(this).parent();
-                var $parentHeight = $parent.height();
-                var $parentWidth = $parent.width();
-                if ($parentWidth === 0) {
-                  $parentWidth = 120;
-                }
-                if ($parentHeight === 0) {
-                  $parentHeight = 60;
-                }
-                $(this).height($parentHeight);
-                $(this).width($parentWidth);
-                $parent.css('min-height', $parentHeight);
-                $parent.addClass('processed');
-            });
-        };
+  // Drupal.behaviors.rowParagraphFixedActions = {
+  //   attach: function(context, settings) {
+  //     $(function() {
+  //       var inheritParentDims = function() {
+  //           var $items = $('.field--widget-row-entity-reference-paragraphs .paragraphs-actions', context);
+  //           $items.each(function() {
+  //               var $parent = $(this).parent();
+  //               var $parentHeight = $parent.height();
+  //               var $parentWidth = $parent.width();
+  //               if ($parentWidth === 0) {
+  //                 $parentWidth = 120;
+  //               }
+  //               if ($parentHeight === 0) {
+  //                 $parentHeight = 60;
+  //               }
+  //               $(this).height($parentHeight);
+  //               $(this).width($parentWidth);
+  //               $parent.css('min-height', $parentHeight);
+  //               $parent.addClass('processed');
+  //           });
+  //       };
 
-        inheritParentDims();
-        $(document).once('upd\ateParagraphActions').on('DOMSubtreeModified', _.debounce(inheritParentDims, 100));
-        $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
-      });
-    }
-  };
+  //       inheritParentDims();
+  //       $(document).once('upd\ateParagraphActions').on('DOMSubtreeModified', _.debounce(inheritParentDims, 100));
+  //       $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
+  //     });
+  //   }
+  // };
 
   Drupal.behaviors.scrollAtStart = {
     attach: function (context, settings) {

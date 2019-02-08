@@ -26,7 +26,7 @@
     }
   }
   .details-wrapper {
-    overflow-x: scroll;
+    // overflow-x: scroll;
   }
   .paragraph-summary-component {
     font-size: .9em;
@@ -44,6 +44,7 @@
     display: grid;
     grid-gap: 0;
     z-index: 10000;
+    grid-auto-columns: 1fr;
   }
   td {
     padding: 0;
@@ -71,117 +72,20 @@
   .paragraph-summary-component-span-3 {
     grid-column-end: span 3;
   }
-  .paragraph-top-col-39 {
-    grid-template-columns: repeat(38, minmax(6rem, 1fr)) 9rem;
+  .paragraph-columns(@i: 1) when (@i >= 1) {
+    .paragraph-top-col-@{i} {
+      grid-template-columns: repeat(@i - 1, 1fr) 9rem;
+      @media (max-width: 767px) {
+        grid-template-columns: repeat(@i - 1, minmax(6.5rem, 1fr)) 9rem;
+      }
+    }
+
+    .paragraph-columns(@i - 1);
+
   }
-  .paragraph-top-col-38 {
-    grid-template-columns: repeat(37, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-37 {
-    grid-template-columns: repeat(36, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-36 {
-    grid-template-columns: repeat(35, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-35 {
-    grid-template-columns: repeat(34, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-34 {
-    grid-template-columns: repeat(33, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-33 {
-    grid-template-columns: repeat(32, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-32 {
-    grid-template-columns: repeat(31, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-31 {
-    grid-template-columns: repeat(30, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-30 {
-    grid-template-columns: repeat(29, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-29 {
-    grid-template-columns: repeat(28, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-28 {
-    grid-template-columns: repeat(27, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-27 {
-    grid-template-columns: repeat(26, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-26 {
-    grid-template-columns: repeat(25, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-25 {
-    grid-template-columns: repeat(24, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-24 {
-    grid-template-columns: repeat(23, minmax(6rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-23 {
-    grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-22 {
-    grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-21 {
-    grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-20 {
-    grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-19 {
-    grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-18 {
-    grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-17 {
-    grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-16 {
-    grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-15 {
-    grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-14 {
-    grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-13 {
-    grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-12 {
-    grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-11 {
-    grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-10 {
-    grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-9 {
-    grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-8 {
-    grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-7 {
-    grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-6 {
-    grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-5 {
-    grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-4 {
-    grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 9rem;
-  }
-  .paragraph-top-col-3 {
-    grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 9rem;
-  }
+
+  .paragraph-columns(39);
+
   .paragraph-summary-component-field {
     column-span: 1;
   }
@@ -189,6 +93,13 @@
     flex-wrap: wrap;
     grid-column: -2 / span 1 !important;
     justify-self: normal !important;
+    margin-left: -5px;
+    margin-top: -5px;
+
+    > .button {
+      margin-left: 5px;
+      margin-top: 5px;
+    }
   }
   .paragraph-header {
     font-weight: bold;
@@ -197,6 +108,9 @@
       text-overflow: ellipsis;
     }
     .paragraphs-actions {
+      margin-left: 0;
+      margin-top: 0;
+
       .inner {
         justify-content: center;
         right: 0;
@@ -232,69 +146,15 @@
         }
       }
     }
-    .paragraph-top-col-23 {
-      grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
+
+    .paragraph-modal-columns(@i: 23) when (@i >= 1) {
+      .paragraph-top-col-@{i} {
+        grid-template-columns: repeat(@i - 1, minmax(6rem, 1fr)) 9rem;
+      }
+      .paragraph-modal-columns(@i - 1);
     }
-    .paragraph-top-col-22 {
-      grid-template-columns: repeat(21, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-21 {
-      grid-template-columns: repeat(20, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-20 {
-      grid-template-columns: repeat(19, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-19 {
-      grid-template-columns: repeat(18, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-18 {
-      grid-template-columns: repeat(17, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-17 {
-      grid-template-columns: repeat(16, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-16 {
-      grid-template-columns: repeat(15, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-15 {
-      grid-template-columns: repeat(14, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-14 {
-      grid-template-columns: repeat(13, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-13 {
-      grid-template-columns: repeat(12, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-12 {
-      grid-template-columns: repeat(11, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-11 {
-      grid-template-columns: repeat(10, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-10 {
-      grid-template-columns: repeat(9, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-9 {
-      grid-template-columns: repeat(8, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-8 {
-      grid-template-columns: repeat(7, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-7 {
-      grid-template-columns: repeat(6, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-6 {
-      grid-template-columns: repeat(5, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-5 {
-      grid-template-columns: repeat(4, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-4 {
-      grid-template-columns: repeat(3, minmax(6rem, 1fr)) 9rem;
-    }
-    .paragraph-top-col-3 {
-      grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
-    }
+
+    .paragraph-modal-columns();
   }
   .chosen-container {
     width: 100% !important;
@@ -351,19 +211,21 @@
         }
       }
     }
-    .responsive-wrapper {
-      overflow: auto;
-    }
-    .double-scrollbar-helper {
-      background: #ececec;
-      border-bottom: 1px solid rgb(230, 228, 223);
-      height: 14px;
-      overflow: auto;
-      .inner {
+    @media (max-width: 767px) {
+      .responsive-wrapper {
+        overflow: auto;
+      }
+      .double-scrollbar-helper {
         background: #ececec;
         border-bottom: 1px solid rgb(230, 228, 223);
         height: 14px;
-        overflow-y: hidden;
+        overflow: auto;
+        .inner {
+          background: #ececec;
+          border-bottom: 1px solid rgb(230, 228, 223);
+          height: 14px;
+          overflow-y: hidden;
+        }
       }
     }
   }
@@ -408,7 +270,8 @@
   margin-right: 10px;
 }
 .paragraph-summary-component {
-  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 .paragraph-diff-row {
   background-color: #fcf8e3 !important;
@@ -490,3 +353,5 @@ table.diff-context-wrapper {
 .diff-tick-marker {
   display: block;
 }
+
+
