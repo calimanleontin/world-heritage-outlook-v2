@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5961e21a98ce12c388d589002a2a8705",
+    "content-hash": "23bb9cfd7e72b97233abf82522eddad7",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -2855,6 +2855,53 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/ckeditor_scayt",
                 "issues": "https://www.drupal.org/project/issues/ckeditor_scayt"
+            }
+        },
+        {
+            "name": "drupal/ckeditorheight",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/ckeditorheight",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ckeditorheight-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "61442ca07f8ece0ae4672ea97ad21c38c51ce050"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1538040180",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "axel.rutz",
+                    "homepage": "https://www.drupal.org/user/229048"
+                }
+            ],
+            "description": "Adjusts CKEditor height until https://www.drupal.org/node/2788905.",
+            "homepage": "https://www.drupal.org/project/ckeditorheight",
+            "support": {
+                "source": "http://cgit.drupalcode.org/ckeditorheight"
             }
         },
         {
@@ -5860,6 +5907,9 @@
                     }
                 },
                 "patches_applied": {
+                    "Max length count html tags as characters when used with ckeditor": "https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch",
+                    "Block paste when limit is exceeded": "https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
+                    "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
                     "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
                 }
             },
