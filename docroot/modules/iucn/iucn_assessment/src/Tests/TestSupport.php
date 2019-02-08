@@ -2,6 +2,8 @@
 
 namespace Drupal\iucn_assessment\Tests;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -175,8 +177,8 @@ class TestSupport {
    *
    * @return \Drupal\node\NodeInterface
    */
-  public static function createAssessment($title = NULL) {
-    return self::createSampleEntity('node', 'site_assessment', [
+  public static function createAssessment($title = NULL, $fieldsCompleted = []) {
+    $node = self::createSampleEntity('node', 'site_assessment', [
       'title' => $title ?: 'Test assessment',
       'created' => time(),
       'uid' => 0,
@@ -186,6 +188,92 @@ class TestSupport {
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
     ]);
+    foreach ($fieldsCompleted as $fieldName) {
+
+    }
+    return $node;
+  }
+
+  public static function populateAllFieldsData(FieldableEntityInterface $entity) {
+    foreach ($entity->getFieldDefinitions() as $fieldDefinition) {
+      $fieldName = $fieldDefinition->getName();
+      if (!preg_match('/^field\_/', $fieldName)) {
+        continue;
+      }
+      self::populateFieldData($entity, $fieldDefinition->getName());
+    }
+  }
+
+  public static function populateFieldData(FieldableEntityInterface $entity, $fieldName) {
+    /** @var \Drupal\field\FieldConfigInterface $fieldDefinition */
+    $fieldDefinition = $entity->get($fieldName)->getFieldDefinition();
+    /** @var \Drupal\field\FieldStorageConfigInterface $fieldStorageDefinition */
+    $fieldStorageDefinition = $fieldDefinition->getFieldStorageDefinition();
+    switch ($fieldDefinition->getType()) {
+      case '':
+        // Do nothing for these fields.
+        break;
+      case 'boolean':
+        // @todo
+        break;
+
+      case 'integer':
+        // @todo
+        break;
+
+      case 'float':
+        // @todo
+        break;
+
+      case 'datetime':
+        // @todo
+        break;
+
+      case 'string':
+        // @todo
+        break;
+
+      case 'string_long':
+        // @todo
+        break;
+
+      case 'list_string':
+        // @todo
+        break;
+
+      case 'entity_reference':
+        // @todo
+        break;
+
+      case 'entity_reference_revisions':
+        $handlerSettings = $fieldDefinition->getSetting('handler_settings');
+        $targetType = $fieldDefinition->getSetting('target_type');
+        $targetBundle = reset($handlerSettings['target_bundles']);
+
+        $entityTypeManager = \Drupal::entityTypeManager();
+        $entityType = $entityTypeManager->getDefinition($targetType);
+        $entityStorage = $entityTypeManager->getStorage($targetType);
+
+        $cardinality = $fieldStorageDefinition->getCardinality();
+        if ($cardinality == -1) {
+          $cardinality = 5;
+        }
+
+        for ($i = 0; $i < $cardinality; $i++) {
+          /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
+          $childEntity = $entityStorage->create([
+            $entityType->getKey('bundle') => $targetBundle,
+          ]);
+          self::populateAllFieldsData($childEntity);
+          $childEntity->save();
+          $entity->get($fieldName)->appendItem($childEntity);
+        }
+        break;
+
+      default:
+        // @todo remove this
+        var_dump($fieldDefinition->getType());
+    }
   }
 
   /**

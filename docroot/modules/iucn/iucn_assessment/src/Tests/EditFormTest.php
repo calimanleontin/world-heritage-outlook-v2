@@ -137,21 +137,20 @@ class EditFormTest extends  IucnAssessmentTestBase {
    * Check that if the 'View diff' button appears on all types of paragraphs.
    */
   protected function testViewDiffForAllParagraphs() {
-    $assessment = TestSupport::createAssessment();
+    $this->paragraphCounter = [];
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
-
     $this->userLogIn(TestSupport::COORDINATOR1);
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
 
     // For every field that shows up in a tab, we create an empty paragraph of a
     // certain bundle (e.g. as_site_value_wh) and append it to it's
     // corresponding assessment field.
 
-    $this->paragraphCounter = [];
 
     //    2 - Paragraphs belonging to the 'Threats' tab
 
+    $assessment = TestSupport::createAssessment();
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
     // -- "Current threats"
     for ($x = 0; $x < 13; $x++) {
       $paragraph = Paragraph::create([
