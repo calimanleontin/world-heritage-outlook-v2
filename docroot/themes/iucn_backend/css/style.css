@@ -1499,18 +1499,23 @@ table.diff-context-wrapper {
 .js-form-item-field-as-threats-categories-options-groups .chosen-container .chosen-results {
   max-height: fit-content;
 }
+.level-good,
 div.field--type-entity-reference.level-good {
   background-color: #92d050;
 }
+.level-low-concern,
 div.field--type-entity-reference.level-low-concern {
   background-color: #acd373;
 }
+.level-high-concern,
 div.field--type-entity-reference.level-high-concern {
   background-color: #ffc000;
 }
+.level-critical,
 div.field--type-entity-reference.level-critical {
   background-color: #ff0000;
 }
+.level-data-deficient,
 div.field--type-entity-reference.level-data-deficient {
   background-color: none;
 }
