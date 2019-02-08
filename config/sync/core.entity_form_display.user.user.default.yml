@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_accepted_agreement
+    - field.field.user.user.field_user_agreement_disabled
   module:
     - path
     - user
@@ -17,6 +18,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_user_agreement_disabled:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   google_analytics:
     weight: 2
     region: content
