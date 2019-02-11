@@ -15,13 +15,16 @@
   text-transform: uppercase;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper {
-  display: table;
   width: calc(100% - 1px);
   border-top: 1px solid #e6e4df;
   border-left: 1px solid #e6e4df;
+  overflow: auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
-  display: table-row;
+  display: grid;
+  grid-auto-columns: 200px;
+  grid-auto-flow: column;
+  grid-template-columns: auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
   font-weight: bold;
@@ -33,25 +36,30 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label {
   font-weight: bold;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+  grid-template-columns: 150px auto;
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
   margin: 0;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
-  display: table-cell;
+  display: block;
   padding: 10px 12px;
   border-right: 1px solid #e6e4df;
   border-bottom: 1px solid #e6e4df;
   font-weight: normal;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
+  padding-right: 60px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-diff-button {
+  right: 12px;
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
-  display: table-row;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:last-child {
-  width: 150px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
-  display: table;
+  display: grid;
   width: 100%;
   padding: 0;
   border-right: none;
@@ -59,16 +67,11 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
   display: grid;
-  grid-template-columns: 300px auto;
-}
-@media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
-    grid-template-columns: 150px auto;
-  }
+  grid-template-columns: 150px auto;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
-  display: table-cell;
+  display: block;
   box-sizing: border-box;
   padding: 10px 12px;
   border-bottom: 1px solid #e6e4df;
@@ -77,12 +80,6 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
-  width: 300px;
-}
-@media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
-    width: 150px;
-  }
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
@@ -337,102 +334,100 @@
   content: ' ';
   background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
 }
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form {
+.add-paragraph-form-modal .paragraph-form,
+.edit-paragraph-form-modal .paragraph-form {
   width: 100%;
 }
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form > .form-wrapper,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form > .form-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form > .form-wrapper,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form > .form-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form > .form-wrapper,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form > .form-wrapper {
+.add-paragraph-form-modal .paragraph-form > .form-wrapper,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper {
   padding-bottom: 10px;
 }
-#drupal-modal .paragraph-form .form-checkboxes > div,
-#drupal-modal .paragraph-form .form-type-textfield,
-#drupal-modal .paragraph-form .form-type-textarea,
-#drupal-modal .paragraph-form .form-type-checkbox,
-#drupal-modal .paragraph-form .form-type-select,
-#drupal-modal .paragraph-form .form-composite {
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox,
+.add-paragraph-form-modal .paragraph-form .form-type-select,
+.edit-paragraph-form-modal .paragraph-form .form-type-select,
+.add-paragraph-form-modal .paragraph-form .form-composite,
+.edit-paragraph-form-modal .paragraph-form .form-composite {
   display: grid;
   grid-template-columns: 200px auto;
 }
-#drupal-modal .paragraph-form .form-checkboxes > div .label,
-#drupal-modal .paragraph-form .form-type-textfield .label,
-#drupal-modal .paragraph-form .form-type-textarea .label,
-#drupal-modal .paragraph-form .form-type-checkbox .label,
-#drupal-modal .paragraph-form .form-type-select .label,
-#drupal-modal .paragraph-form .form-composite .label,
-#drupal-modal .paragraph-form .form-checkboxes > div label,
-#drupal-modal .paragraph-form .form-type-textfield label,
-#drupal-modal .paragraph-form .form-type-textarea label,
-#drupal-modal .paragraph-form .form-type-checkbox label,
-#drupal-modal .paragraph-form .form-type-select label,
-#drupal-modal .paragraph-form .form-composite label,
-#drupal-modal .paragraph-form .form-checkboxes > div legend,
-#drupal-modal .paragraph-form .form-type-textfield legend,
-#drupal-modal .paragraph-form .form-type-textarea legend,
-#drupal-modal .paragraph-form .form-type-checkbox legend,
-#drupal-modal .paragraph-form .form-type-select legend,
-#drupal-modal .paragraph-form .form-composite legend {
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .label,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .label,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .label,
+.add-paragraph-form-modal .paragraph-form .form-type-select .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .label,
+.add-paragraph-form-modal .paragraph-form .form-composite .label,
+.edit-paragraph-form-modal .paragraph-form .form-composite .label,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div label,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div label,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield label,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea label,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox label,
+.add-paragraph-form-modal .paragraph-form .form-type-select label,
+.edit-paragraph-form-modal .paragraph-form .form-type-select label,
+.add-paragraph-form-modal .paragraph-form .form-composite label,
+.edit-paragraph-form-modal .paragraph-form .form-composite label,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div legend,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div legend,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield legend,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea legend,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox legend,
+.add-paragraph-form-modal .paragraph-form .form-type-select legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-select legend,
+.add-paragraph-form-modal .paragraph-form .form-composite legend,
+.edit-paragraph-form-modal .paragraph-form .form-composite legend {
   order: -1;
 }
-#drupal-modal .paragraph-form .form-checkboxes > div .form-type-textfield,
-#drupal-modal .paragraph-form .form-type-textfield .form-type-textfield,
-#drupal-modal .paragraph-form .form-type-textarea .form-type-textfield,
-#drupal-modal .paragraph-form .form-type-checkbox .form-type-textfield,
-#drupal-modal .paragraph-form .form-type-select .form-type-textfield,
-#drupal-modal .paragraph-form .form-composite .form-type-textfield,
-#drupal-modal .paragraph-form .form-checkboxes > div .form-type-textarea,
-#drupal-modal .paragraph-form .form-type-textfield .form-type-textarea,
-#drupal-modal .paragraph-form .form-type-textarea .form-type-textarea,
-#drupal-modal .paragraph-form .form-type-checkbox .form-type-textarea,
-#drupal-modal .paragraph-form .form-type-select .form-type-textarea,
-#drupal-modal .paragraph-form .form-composite .form-type-textarea,
-#drupal-modal .paragraph-form .form-checkboxes > div .form-type-checkbox,
-#drupal-modal .paragraph-form .form-type-textfield .form-type-checkbox,
-#drupal-modal .paragraph-form .form-type-textarea .form-type-checkbox,
-#drupal-modal .paragraph-form .form-type-checkbox .form-type-checkbox,
-#drupal-modal .paragraph-form .form-type-select .form-type-checkbox,
-#drupal-modal .paragraph-form .form-composite .form-type-checkbox,
-#drupal-modal .paragraph-form .form-checkboxes > div .form-type-select,
-#drupal-modal .paragraph-form .form-type-textfield .form-type-select,
-#drupal-modal .paragraph-form .form-type-textarea .form-type-select,
-#drupal-modal .paragraph-form .form-type-checkbox .form-type-select,
-#drupal-modal .paragraph-form .form-type-select .form-type-select,
-#drupal-modal .paragraph-form .form-composite .form-type-select,
-#drupal-modal .paragraph-form .form-checkboxes > div .form-composite,
-#drupal-modal .paragraph-form .form-type-textfield .form-composite,
-#drupal-modal .paragraph-form .form-type-textarea .form-composite,
-#drupal-modal .paragraph-form .form-type-checkbox .form-composite,
-#drupal-modal .paragraph-form .form-type-select .form-composite,
-#drupal-modal .paragraph-form .form-composite .form-composite {
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textarea,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textarea,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-checkbox,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-checkbox,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-select,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-select,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-composite,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-composite {
   display: block;
 }
-#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup {
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup {
   display: table-row;
 }
-#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
-#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
-#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > legend {
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > legend,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > legend {
   vertical-align: top;
   display: table-cell;
   width: 200px;
   float: left;
 }
-#drupal-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper {
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper {
   display: table-cell;
 }
-#drupal-modal .paragraph-form td.description-row {
+.add-paragraph-form-modal .paragraph-form td.description-row,
+.edit-paragraph-form-modal .paragraph-form td.description-row {
   width: 164px;
 }
 .field-group-assessment-fieldset > legend,
@@ -492,6 +487,11 @@ div[aria-required="aria-required"] label:after {
   width: 6px;
   height: 6px;
   margin: 0 0.3em;
+}
+@media (min-width: 768px) {
+  .ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+    overflow-x: hidden;
+  }
 }
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
@@ -654,7 +654,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
   grid-template-columns: repeat(38, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
     grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -662,7 +662,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
   grid-template-columns: repeat(37, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
     grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -670,7 +670,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
   grid-template-columns: repeat(36, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
     grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -678,7 +678,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
   grid-template-columns: repeat(35, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
     grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -686,7 +686,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
   grid-template-columns: repeat(34, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
     grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -694,7 +694,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
   grid-template-columns: repeat(33, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
     grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -702,7 +702,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
   grid-template-columns: repeat(32, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
     grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -710,7 +710,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
   grid-template-columns: repeat(31, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
     grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -718,7 +718,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
   grid-template-columns: repeat(30, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
     grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -726,7 +726,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
   grid-template-columns: repeat(29, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
     grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -734,7 +734,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
   grid-template-columns: repeat(28, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
     grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -742,7 +742,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
   grid-template-columns: repeat(27, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
     grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -750,7 +750,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
   grid-template-columns: repeat(26, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
     grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -758,7 +758,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
   grid-template-columns: repeat(25, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
     grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -766,7 +766,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
   grid-template-columns: repeat(24, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
     grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -774,7 +774,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
   grid-template-columns: repeat(23, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
     grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -782,7 +782,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
   grid-template-columns: repeat(22, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
     grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -790,7 +790,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
   grid-template-columns: repeat(21, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
     grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -798,7 +798,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
   grid-template-columns: repeat(20, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
     grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -806,7 +806,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
   grid-template-columns: repeat(19, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
     grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -814,7 +814,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
   grid-template-columns: repeat(18, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
     grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -822,7 +822,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
   grid-template-columns: repeat(17, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
     grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -830,7 +830,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
   grid-template-columns: repeat(16, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
     grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -838,7 +838,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
   grid-template-columns: repeat(15, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
     grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -846,7 +846,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
   grid-template-columns: repeat(14, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
     grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -854,7 +854,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
   grid-template-columns: repeat(13, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
     grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -862,7 +862,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
   grid-template-columns: repeat(12, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
     grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -870,7 +870,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
   grid-template-columns: repeat(11, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
     grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -878,7 +878,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
   grid-template-columns: repeat(10, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
     grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -886,7 +886,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
   grid-template-columns: repeat(9, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
     grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -894,7 +894,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
   grid-template-columns: repeat(8, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
     grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -902,7 +902,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
   grid-template-columns: repeat(7, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
     grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -910,7 +910,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
   grid-template-columns: repeat(6, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
     grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -918,7 +918,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
   grid-template-columns: repeat(5, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
     grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -926,7 +926,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
   grid-template-columns: repeat(4, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
     grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -934,7 +934,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
   grid-template-columns: repeat(3, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
     grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -942,7 +942,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
   grid-template-columns: repeat(2, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
     grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -950,7 +950,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
   grid-template-columns: repeat(1, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
     grid-template-columns: repeat(1, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -958,7 +958,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
   grid-template-columns: repeat(0, 1fr) 9rem;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
     grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 9rem;
   }
@@ -1122,7 +1122,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   right: 0;
   text-align: center;
 }
-@media (max-width: 767px) {
+@media (max-width: 999px) {
   .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
     overflow: auto;
   }
@@ -1177,8 +1177,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   margin-right: 10px;
 }
 .paragraph-summary-component {
-  word-break: break-word;
   hyphens: auto;
+  overflow: hidden;
+  word-break: break-word;
 }
 .paragraph-diff-row {
   background-color: #fcf8e3 !important;
@@ -1189,8 +1190,20 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 #drupal-modal {
   padding: 0;
 }
+#drupal-modal .layout-node-form {
+  display: flex;
+  flex-wrap: wrap;
+}
 #drupal-modal .layout-node-form .layout-region {
   padding-right: 0;
+  width: auto;
+}
+#drupal-modal .layout-node-form .layout-region-node-main,
+#drupal-modal .layout-node-form .layout-region-node-footer {
+  flex: 1 1 65%;
+}
+#drupal-modal .layout-node-form .layout-region-node-secondary {
+  flex: 0 1 auto;
 }
 #drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
   border-bottom: 1px solid black;
@@ -1203,6 +1216,10 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   border-top: 1px solid black;
   margin-bottom: -1px;
   position: relative;
+}
+#drupal-modal .diff-modal table.diff-table > thead > tr > th:first-child,
+#drupal-modal .diff-modal table.diff-table > tbody > tr > td:first-child {
+  width: 100px;
 }
 #drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
   visibility: hidden;
@@ -1263,6 +1280,7 @@ table.diff-context-wrapper {
   border-collapse: separate;
   border-spacing: 0;
   font-size: .9em;
+  table-layout: fixed;
 }
 .diff-modal table.diff-table .diff-context-wrapper td {
   padding: 0;
@@ -1274,8 +1292,8 @@ table.diff-context-wrapper {
   border-right: 1px solid #e6e4df;
   padding: 10px 12px;
 }
-.diff-modal table.diff-table > thead > tr > th:nth-child(2) {
-  padding-left: 45px;
+.diff-modal table.diff-table > thead > tr > th.field-name--author {
+  width: 100px;
 }
 .diff-modal table.diff-table > tbody > tr:last-child > td {
   border-top: 3px solid black;
@@ -1290,35 +1308,15 @@ table.diff-context-wrapper {
   font-weight: bold;
 }
 .diff-modal table.diff-table > tbody > tr > td {
-  border-right: 1px solid #e6e4df;
   border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  height: 45px;
   padding: 3px 5px;
-  vertical-align: top;
   position: relative;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkboxes,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--select {
-  min-width: 150px;
-  max-width: 150px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkbox {
-  min-width: 50px;
-  max-width: 50px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea {
-  min-width: 500px;
-  max-width: 500px;
+  vertical-align: top;
 }
 .diff-modal table.diff-table > tbody > tr > td.field-name--author {
-  min-width: 100px;
-  max-width: 100px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_threat,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--paragraph {
-  min-width: 250px;
-  max-width: 250px;
+  width: 100px;
 }
 .diff-modal table.diff-table > tbody > tr > td input[type="text"],
 .diff-modal table.diff-table > tbody > tr > td textarea,
@@ -1384,9 +1382,6 @@ table.diff-context-wrapper {
 .field-with-diff .form-textarea-wrapper {
   background-color: #fcf8e3;
 }
-.field-with-diff > div > div {
-  padding-right: 40px !important;
-}
 .field-with-diff > div > select {
   margin-right: 30px;
 }
@@ -1395,13 +1390,9 @@ table.diff-context-wrapper {
 }
 .field-with-diff.field--type-entity-reference {
   background-color: #fcf8e3;
-  display: table-row-group;
 }
 .field-with-diff#edit-field-as-references-wrapper {
   background-color: #fcf8e3;
-}
-.field-with-diff.field--type-string-long {
-  display: table-row-group;
 }
 .field--widget-text-textarea-with-scayt .cke_top {
   padding: 0;
@@ -1428,6 +1419,9 @@ table.diff-context-wrapper {
   color: red;
   font-weight: bold;
   font-size: 1.2em;
+}
+.field--widget-text-textarea-with-scayt html {
+  overflow-y: auto;
 }
 @media all and (min-width: 851px) {
   .sidebar {
@@ -1599,5 +1593,17 @@ div.field--type-entity-reference.level-data-deficient {
   margin: 0;
   border: none;
   background: none;
+}
+#group-threat-extent .form-item-field-as-threats-in-value {
+  margin-top: 0;
+}
+#group-threat-extent .fieldset-wrapper {
+  margin-top: 10px;
+}
+#group-threat-extent .field--name-field-as-threats-in {
+  width: 200px;
+}
+#group-threat-extent .form-item-field-as-threats-extent label {
+  float: left;
 }
 /*# sourceMappingURL=style.css.map */

@@ -151,21 +151,13 @@
   }
 }
 
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form {
+.add-paragraph-form-modal .paragraph-form,
+.edit-paragraph-form-modal .paragraph-form {
   width: 100%;
   > .form-wrapper {
     padding-bottom: 10px;
   }
-}
 
-#drupal-modal .paragraph-form {
   .form-checkboxes > div,
   .form-type-textfield,
   .form-type-textarea,
@@ -179,7 +171,17 @@
       order: -1;
     }
 
-    // Nesting
+    // // Nesting
+    // .form-type-textfield,
+    // .form-type-textarea,
+    // .form-type-checkbox,
+    // .form-type-select,
+    // .form-composite {
+    //   display: block;
+    // }
+
+  }
+  .fieldset-wrapper {
     .form-type-textfield,
     .form-type-textarea,
     .form-type-checkbox,
@@ -187,7 +189,6 @@
     .form-composite {
       display: block;
     }
-
   }
 
   > .form-wrapper > .fieldgroup {
@@ -283,3 +284,8 @@ div[aria-required="aria-required"] {
   }
 }
 
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+  @media (min-width: 768px) {
+    overflow-x: hidden;
+  }
+}

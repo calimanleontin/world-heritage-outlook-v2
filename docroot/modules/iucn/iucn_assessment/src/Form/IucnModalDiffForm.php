@@ -65,7 +65,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
       '#attached' => [
         'drupalSettings' => [
           'diff' => [
-            $key => $this->getCopyFieldValue($fieldValue),
+            $key => $this->getCopyFieldValue($fieldName, $fieldValue),
           ],
         ],
       ],
@@ -76,7 +76,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
       $element['#key2'] = $key2;
       $element['#selector2'] = $this->getJsSelector($extraFieldName, $fieldWidgetType);
       if (!empty($extraFieldValue)) {
-        $element['#attached']['drupalSettings']['diff'][$key2] = $this->getCopyFieldValue($extraFieldValue);
+        $element['#attached']['drupalSettings']['diff'][$key2] = $this->getCopyFieldValue($fieldName, $extraFieldValue);
       }
     }
 
@@ -86,30 +86,36 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
   /**
    * Retrieves the field type from the form element widget.
    *
-   * @param $widget
-   *  The widget of the field.
+   * @param array $form
+   * @param string field
    *
    * @return string
    *  The field type.
    */
-  public function getDiffFieldWidgetType($widget) {
-    $type = '';
+  public function getDiffFieldWidgetType(array $form, $field) {
+    if (in_array($field, ParagraphAsSiteThreatForm::AFFECTED_VALUES_FIELDS)) {
+      return 'checkboxes';
+    }
+
+    $widget = $form[$field]['widget'];
     if (!empty($widget['#type'])) {
-      $type = $widget['#type'];
+      return $widget['#type'];
     }
-    elseif (!empty($widget['value']['#type'])) {
-      $type = $widget['value']['#type'];
+
+    if (!empty($widget['value']['#type'])) {
+      return $widget['value']['#type'];
     }
-    elseif (!empty($widget[0]['value']['#type'])) {
-      $type = $widget[0]['value']['#type'];
+
+    if (!empty($widget[0]['value']['#type'])) {
+      return $widget[0]['value']['#type'];
     }
-    elseif (!empty($widget[0]['#type'])) {
-      $type = $widget[0]['#type'];
+
+    if (!empty($widget[0]['#type'])) {
+      return $widget[0]['#type'];
     }
-    elseif (!empty($widget[0]['#entity_type'])) {
-      $type = $widget[0]['#entity_type'];
-    }
-    return $type;
+
+    \Drupal::logger('iucn_assessments')
+      ->error(sprintf('Invalid widget found: %s', json_encode($form[$field]['widget'])));
   }
 
   /**
@@ -136,6 +142,9 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
         break;
 
       case "checkboxes":
+        if (in_array($fieldName, ParagraphAsSiteThreatForm::AFFECTED_VALUES_FIELDS)) {
+          $selector .= '-select';
+        }
         break;
 
       case "checkbox":
@@ -155,13 +164,14 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
   /**
    * Retrieves the value which will be passed to JS settings.
    *
+   * @param $fieldName
    * @param $fieldValue
    *  The Drupal-style value of the field.
    *
    * @return array|mixed
    *  The value which will be used by the JS script.
    */
-  public function getCopyFieldValue($fieldValue) {
+  public function getCopyFieldValue($fieldName, $fieldValue) {
     $value = [];
     foreach ($fieldValue as $fv) {
       if (!is_array($fv)) {
@@ -170,6 +180,10 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
       }
 
       foreach (['target_revision_id', 'target_id', 'value'] as $key) {
+        if ($key == 'target_revision_id' && in_array($fieldName, ParagraphAsSiteThreatForm::AFFECTED_VALUES_FIELDS)) {
+          continue;
+        }
+
         if (array_key_exists($key, $fv)) {
           $value[] = $fv[$key];
           break;
