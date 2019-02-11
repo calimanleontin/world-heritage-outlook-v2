@@ -35,6 +35,13 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   protected $empty_groups;
 
   /**
+   * The parent node.
+   *
+   * @var \Drupal\Node\NodeInterface
+   */
+  protected $parentNode;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -122,7 +129,21 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   /**
    * {@inheritdoc}
    */
+  protected function isHiddenTerm($tid) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if (!$moduleHandler->moduleExists('iucn_fields')) {
+      return FALSE;
+    }
+    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    $this->parentNode = \Drupal::routeMatch()->getParameter('node');
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $all_options = $this->getOptions($items->getEntity());
     $this->groups = [];
@@ -131,18 +152,21 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $states = [];
     $current_id = NULL;
     $this->empty_groups = [];
-    foreach ($all_options as $id => $title) {
-      $options[$id] = $title;
+    foreach ($all_options as $tid => $title) {
+      if ($this->isHiddenTerm($tid)) {
+        continue;
+      }
+      $options[$tid] = $title;
       if (strpos($title, '-') === FALSE) {
-        $current_id = $id;
-        $this->groups[$id] = $title;
-        $this->empty_groups[$id] = $id;
+        $current_id = $tid;
+        $this->groups[$tid] = $title;
+        $this->empty_groups[$tid] = $tid;
       }
       else {
-        $states[$id] = $current_id;
+        $states[$tid] = $current_id;
         unset($this->empty_groups[$current_id]);
       }
-      $options[$id] = ltrim($title, '-');
+      $options[$tid] = ltrim($title, '-');
     }
 
     $selected = $this->getSelectedOptions($items);

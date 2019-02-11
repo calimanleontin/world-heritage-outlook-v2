@@ -32,15 +32,6 @@ class IucnModalController extends ControllerBase {
     $response = new AjaxResponse();
     $form = $this->entityFormBuilder()->getForm($paragraph_revision, 'iucn_modal_paragraph_edit', []);
     $paragraph_title = $this->getParagraphTitle($field);
-    $map = [
-      'field_as_threats_current' => 'current threat',
-      'field_as_threats_potential' => 'potential threat',
-      'field_as_protection' => 'protection and management topic',
-      'field_as_values_wh' => 'state and trend of World Heritage value',
-    ];
-    if (isset($map[$field])) {
-      $paragraph_title = $map[$field];
-    }
     $response->addCommand(new OpenModalDialogCommand($this->t('Edit @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%','classes' => ['ui-dialog' => 'edit-paragraph-form-modal'] ]));
 
     return $response;
@@ -54,7 +45,15 @@ class IucnModalController extends ControllerBase {
       ->getSetting('handler_settings')['target_bundles'];
     $target_paragraph = reset($target_paragraph);
     $type = ParagraphsType::load($target_paragraph);
-
+    $map = [
+      'field_as_threats_current' => 'current threat',
+      'field_as_threats_potential' => 'potential threat',
+      'field_as_protection' => 'protection and management topic',
+      'field_as_values_wh' => 'state and trend of World Heritage value',
+    ];
+    if (isset($map[$field])) {
+      return $map[$field];
+    }
     return $type->label();
   }
 
