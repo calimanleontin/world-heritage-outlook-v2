@@ -273,9 +273,9 @@ function iucn_assessment_update_8006() {
   }
 }
 
-/**
- * Update assessment threat level weights.
- */
+  /**
+   * Update assessment threat level weights.
+   */
 function iucn_assessment_update_8007() {
   $tids = [
     1364, // Very Low Threat
@@ -291,9 +291,9 @@ function iucn_assessment_update_8007() {
   }
 }
 
-/**
- * Update Assessment protection rating weights.
- */
+  /**
+   * Update Assessment protection rating weights.
+   */
 function iucn_assessment_update_8008() {
   $tids = [
     1325, //Highly Effective
@@ -376,12 +376,42 @@ function iucn_assessment_update_8010() {
 }
 
 /**
- * Subcategory term name change.
+ * Subcategory term name change and adjust benefit types order.
  */
 function iucn_assessment_update_8011() {
   $term = \Drupal\taxonomy\Entity\Term::load(1433);
-  if ($term->getName() == 'Non-timber forest products (NTFPs)') {
+  if ($term && $term->getName() == 'Non-timber forest products (NTFPs)') {
     $term->setName('Collection of non-timber forest products (NTFPs)');
     $term->save();
   }
+
+  $tids = [
+    1298, // Food
+    1299, // Water
+    1300, // Cultural and spiritual values
+    1301, // Health and recreation
+    1302, // Knowledge
+    1303, // Environmental services
+    1304, // Materials
+    1305, // Contribution to local economy
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+
+  $tids = [
+    1272, // History and tradition
+    1273, // Wilderness and iconic features
+    1274, // Sacred natural sites or landscapes
+    1294, // Sacred or symbolic plants or animals
+    1295, // Cultural identity and sense of belonging
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+
 }
