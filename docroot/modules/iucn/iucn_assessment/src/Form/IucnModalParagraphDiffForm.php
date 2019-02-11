@@ -135,6 +135,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#rows' => [],
       '#weight' => 10,
       '#attributes' => ['class' => ['diff-table']],
+      '#prefix' => '<div class="double-scrollbar-helper"><div class="inner"></div></div><div class="responsive-wrapper">',
+      '#suffix' => '</div>',
       '#tree' => FALSE,
     ];
     $finalRow = [
@@ -145,10 +147,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         unset($this->paragraphFormComponents[$fieldName]);
         continue;
       }
-      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
+      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form, $fieldName);
       $diffTable['#header'][$fieldName] = [
         'data' => $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel(),
-        'class' => ['widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form[$fieldName]['widget']))]
+        'class' => ['widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form, $fieldName))]
       ];
       $finalRow[$fieldName]['input'] = $form[$fieldName];
     }

@@ -1,4 +1,9 @@
 html {
+  font-family: inherit;
+  font-size: inherit;
   overflow-y: hidden;
+}
+body {
+  font-size: inherit;
 }
 /*# sourceMappingURL=ckeditor-iframe.css.map */

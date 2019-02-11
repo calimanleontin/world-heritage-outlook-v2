@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - inline_responsive_images
-name: 'Simple text formater with scayt'
+name: 'Plain text with spell checker'
 format: simple_text_formater_with_scayt
 weight: -10
 filters:

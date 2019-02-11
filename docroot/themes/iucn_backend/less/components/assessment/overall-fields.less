@@ -23,7 +23,7 @@
       .overall-row {
         // display: table-row;
         display: grid;
-        grid-auto-columns: 200px;
+        grid-auto-columns: 150px;
         grid-auto-flow: column;
         grid-template-columns: auto;
         // @media screen and (max-width: 1024px) {
@@ -41,7 +41,10 @@
             }
           }
           > div[class*="-textarea"] {
-            grid-template-columns: 150px auto;
+            grid-template-columns: 300px auto;
+            @media screen and (max-width: 1024px) {
+              grid-template-columns: 150px auto;
+            }
           }
         }
         .form-item {
@@ -56,15 +59,21 @@
           &.field-with-diff {
             padding-right: 60px;
             .field-diff-button {
-              right: 12px;
+              margin-right: 12px !important;
             }
           }
           .form-item {
             width: 100%;
             // display: table-row;
           }
+
+          &:first-child {
+            border-left: none;
+          }
+
           &:last-child {
             // width: 150px;
+            border-right: none;
           }
           &[class*="-textarea"] {
             display: grid;
@@ -74,7 +83,10 @@
             border-bottom: none;
             .form-type-textarea {
               display: grid;
-              grid-template-columns: 150px auto;
+              grid-template-columns: 300px auto;
+              @media screen and (max-width: 1024px) {
+                grid-template-columns: 150px auto;
+              }
             }
             label,
             .form-textarea-wrapper {
@@ -117,16 +129,19 @@
         margin: 0;
       }
       .overall-row-view > div {
-        display: table-cell;
-        padding: 10px 12px;
-        border-right: 1px solid #e6e4df;
         border-bottom: 1px solid #e6e4df;
+        border-right: 1px solid #e6e4df;
+        box-sizing: border-box;
+        display: table-cell;
         font-weight: normal;
+        padding: 10px 12px;
       }
       .overall-row-view > div:first-child {
+        border-left: none;
         width: 300px;
       }
       .overall-row-view > div:last-child {
+        border-right: none;
         width: 150px;
       }
 
@@ -170,7 +185,9 @@
       }
 
       .button.paragraphs-icon-button {
-        margin-top: 48px !important;
+        &.field-diff-button {
+          margin-right: 12px !important;
+        }
       }
     }
   }

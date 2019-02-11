@@ -10,7 +10,6 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowConfigTransition;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Defines test scenarios for the assessment workflow.

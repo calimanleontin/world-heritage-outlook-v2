@@ -10,7 +10,7 @@
     border-collapse: separate;
     border-spacing: 0;
     font-size: .9em;
-    table-layout: fixed;
+    // table-layout: fixed;
 
     .diff-context-wrapper {
       td {
@@ -31,38 +31,38 @@
             // padding-left: 45px;
           }
 
-          // &.widget-type--checkboxes,
-          // &.widget-type--select {
-          //   // min-width: 150px;
-          //   width: 150px;
-          // }
+          &.widget-type--checkboxes,
+          &.widget-type--select {
+            // min-width: 150px;
+            width: 150px;
+          }
 
-          // &.widget-type--checkbox {
-          //   // min-width: 50px;
-          //   width: 50px;
-          // }
+          &.widget-type--checkbox {
+            // min-width: 50px;
+            width: 50px;
+          }
 
-          // &.widget-type--textarea {
-          //   // min-width: 500px;
-          //   width: 500px;
-          // }
+          &.widget-type--textarea {
+            // min-width: 500px;
+            width: 500px;
+          }
 
           &.field-name--author {
             // min-width: 100px;
             width: 100px;
           }
 
-          // &.widget-type--textfield,
-          // &.field-name--field_as_threats_categories,
-          // &.field-name--field_as_threats_threat,
-          // &.widget-type--paragraph {
-          //   // min-width: 250px;
-          //   width: 250px;
-          // }
+          &.widget-type--textfield,
+          &.field-name--field_as_threats_categories,
+          &.field-name--field_as_threats_threat,
+          &.widget-type--paragraph {
+            // min-width: 250px;
+            width: 250px;
+          }
 
-          // &.field-name--field_as_threats_categories {
-          //   width: 150px;
-          // }
+          &.field-name--field_as_threats_categories {
+            width: 150px;
+          }
         }
       }
     }
@@ -93,38 +93,38 @@
           position: relative;
           vertical-align: top;
 
-          // &.widget-type--checkboxes,
-          // &.widget-type--select {
-          //   // min-width: 150px;
-          //   width: 150px;
-          // }
+          &.widget-type--checkboxes,
+          &.widget-type--select {
+            // min-width: 150px;
+            width: 150px;
+          }
 
-          // &.widget-type--checkbox {
-          //   // min-width: 50px;
-          //   width: 50px;
-          // }
+          &.widget-type--checkbox {
+            // min-width: 50px;
+            width: 50px;
+          }
 
-          // &.widget-type--textarea {
-          //   // min-width: 500px;
-          //   // width: 500px;
-          // }
+          &.widget-type--textarea {
+            // min-width: 500px;
+            width: 500px;
+          }
 
           &.field-name--author {
             // min-width: 100px;
             width: 100px;
           }
 
-          // &.widget-type--textfield,
-          // &.field-name--field_as_threats_categories,
-          // &.field-name--field_as_threats_threat,
-          // &.widget-type--paragraph {
-          //   // min-width: 250px;
-          //   width: 250px;
-          // }
+          &.widget-type--textfield,
+          &.field-name--field_as_threats_categories,
+          &.field-name--field_as_threats_threat,
+          &.widget-type--paragraph {
+            // min-width: 250px;
+            width: 250px;
+          }
 
-          // &.field-name--field_as_threats_categories {
-          //   width: 150px;
-          // }
+          &.field-name--field_as_threats_categories {
+            width: 150px;
+          }
 
           input[type="text"],
           textarea,
@@ -229,4 +229,22 @@
 
 .field-with-diff.field--type-string-long {
   // display: table-row-group;
+}
+
+.paragraph-diff-form-modal {
+  .responsive-wrapper {
+    overflow: auto;
+  }
+  .double-scrollbar-helper {
+    background: #ececec;
+    border-bottom: 1px solid rgb(230, 228, 223);
+    height: 14px;
+    overflow: auto;
+    .inner {
+      background: #ececec;
+      border-bottom: 1px solid rgb(230, 228, 223);
+      height: 14px;
+      overflow-y: hidden;
+    }
+  }
 }
