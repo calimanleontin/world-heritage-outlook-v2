@@ -29,7 +29,9 @@ class HtmlElementAssessment extends HtmlElement {
    */
   public function preRender(&$element, $rendering_object) {
     parent::preRender($element, $rendering_object);
-    
+    $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
+    $element['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
+
     $field_names = $this->getSetting('terms');
     if (!empty($field_names)) {
       $field_names = explode('|', $field_names);
@@ -62,8 +64,7 @@ class HtmlElementAssessment extends HtmlElement {
             if ($widget["#type"] == 'select') {
               $markup = [];
               foreach($widget['#value'] as $option) {
-                $term = Term::load($option);
-                $class = _iucn_assessment_level_class($term->field_css_identifier->value);
+                $class = _iucn_assessment_level_class($option);
                 if ($class) {
                   $attr = 'class="' . $class . '"';
                 }

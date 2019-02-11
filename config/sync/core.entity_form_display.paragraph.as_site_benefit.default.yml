@@ -30,7 +30,6 @@ third_party_settings:
       children:
         - field_as_benefits_category
         - field_as_description
-        - field_as_benefits_datadeficient
         - field_as_benefits_hab_level
         - field_as_benefits_hab_trend
         - field_as_benefits_pollut_level
@@ -80,13 +79,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_as_benefits_datadeficient:
-    weight: 4
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
     region: content
   field_as_benefits_hab_level:
     weight: 5
@@ -162,5 +154,6 @@ hidden:
   field_as_benefits_commun_in: true
   field_as_benefits_commun_out: true
   field_as_benefits_commun_wide: true
+  field_as_benefits_datadeficient: true
   status: true
   uid: true

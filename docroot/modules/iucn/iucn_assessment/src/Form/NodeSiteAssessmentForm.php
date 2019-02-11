@@ -285,6 +285,8 @@ class NodeSiteAssessmentForm {
       }
     }
 
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
+    $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     // Validation.
     if ($tab == 'benefits') {
       $form['#validate'][] = [self::class, 'benefitsValidation'];

@@ -345,3 +345,33 @@ function iucn_assessment_update_8009() {
 
 }
 
+/**
+ * Update assessment value state and value trend weights.
+ */
+function iucn_assessment_update_8010() {
+  // Assessment benefits impact level.
+  $tids = [
+    1318, // Very High
+    1319, // High
+    1320, // Moderate
+    1321, // Low
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+
+  // Assessment benefits impact trend.
+  $tids = [
+    1322, // Increasing
+    1323, // Continuing
+    1324, // Decreasing
+  ];
+  foreach($tids as $weight => $tid) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
+

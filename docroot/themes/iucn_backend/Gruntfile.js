@@ -16,7 +16,8 @@ module.exports = function (grunt) {
                     paths: ["less/"]
                 },
                 files: {
-                    "css/style.css": "less/style.less"
+                    "css/style.css": "less/style.less",
+                    "css/ckeditor-iframe.css": "less/ckeditor-iframe.less",
                 }
             }
         }
