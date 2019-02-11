@@ -529,6 +529,25 @@ div[aria-required="aria-required"] label:after {
     overflow-x: hidden;
   }
 }
+#group-threat-extent {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  border: none;
+  background: none;
+}
+#group-threat-extent .form-item-field-as-threats-in-value {
+  margin-top: 0;
+}
+#group-threat-extent .fieldset-wrapper {
+  margin-top: 10px;
+}
+#group-threat-extent .field--name-field-as-threats-in {
+  width: 200px;
+}
+#group-threat-extent .form-item-field-as-threats-extent label {
+  float: left;
+}
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;
 }
@@ -1514,6 +1533,52 @@ table.diff-context-wrapper {
 .field--widget-text-textarea-with-scayt html {
   overflow-y: auto;
 }
+.tooltip {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+}
+.tooltip .right {
+  min-width: 400px;
+  top: 50%;
+  left: 100%;
+  margin-left: 20px;
+  transform: translate(0, -50%);
+  padding: 10px 20px;
+  color: #444444;
+  background-color: #EEEEEE;
+  font-weight: normal;
+  font-size: 13px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+.tooltip .right i {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -12px;
+  width: 12px;
+  height: 24px;
+  overflow: hidden;
+}
+.tooltip .right i:after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 0;
+  top: 50%;
+  transform: translate(50%, -50%) rotate(-45deg);
+  background-color: #EEEEEE;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+.tooltip:hover .right {
+  display: block;
+}
 @media all and (min-width: 851px) {
   .sidebar {
     float: left;
@@ -1633,70 +1698,5 @@ div.field--type-entity-reference.level-data-deficient {
 .paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field--name-field-as-threats-in .form-item label {
   width: 188px;
   min-width: 188px;
-}
-.tooltip {
-  display: inline-block;
-  position: relative;
-  text-align: left;
-}
-.tooltip .right {
-  min-width: 400px;
-  top: 50%;
-  left: 100%;
-  margin-left: 20px;
-  transform: translate(0, -50%);
-  padding: 10px 20px;
-  color: #444444;
-  background-color: #EEEEEE;
-  font-weight: normal;
-  font-size: 13px;
-  border-radius: 8px;
-  position: absolute;
-  z-index: 99999999;
-  box-sizing: border-box;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-  display: none;
-}
-.tooltip:hover .right {
-  display: block;
-}
-.tooltip .right i {
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  margin-top: -12px;
-  width: 12px;
-  height: 24px;
-  overflow: hidden;
-}
-.tooltip .right i::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  left: 0;
-  top: 50%;
-  transform: translate(50%, -50%) rotate(-45deg);
-  background-color: #EEEEEE;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-}
-#group-threat-extent {
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0;
-  border: none;
-  background: none;
-}
-#group-threat-extent .form-item-field-as-threats-in-value {
-  margin-top: 0;
-}
-#group-threat-extent .fieldset-wrapper {
-  margin-top: 10px;
-}
-#group-threat-extent .field--name-field-as-threats-in {
-  width: 200px;
-}
-#group-threat-extent .form-item-field-as-threats-extent label {
-  float: left;
 }
 /*# sourceMappingURL=style.css.map */
