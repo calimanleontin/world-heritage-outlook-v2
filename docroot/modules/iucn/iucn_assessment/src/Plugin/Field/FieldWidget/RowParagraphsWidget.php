@@ -1160,6 +1160,10 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'grouped_with' => 'field_as_legality',
         'label' => t('Other information'),
       ],
+      'field_as_species_name' => [
+        'grouped_with' => 'field_as_legality',
+        'label' => t('Other information'),
+      ],
       'field_as_threats_extent' => [
         'grouped_with' => 'field_as_threats_in',
         'label' => t('Inside site'),

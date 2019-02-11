@@ -375,3 +375,13 @@ function iucn_assessment_update_8010() {
   }
 }
 
+/**
+ * Subcategory term name change.
+ */
+function iucn_assessment_update_8011() {
+  $term = \Drupal\taxonomy\Entity\Term::load(1433);
+  if ($term->getName() == 'Non-timber forest products (NTFPs)') {
+    $term->setName('Collection of non-timber forest products (NTFPs)');
+    $term->save();
+  }
+}
