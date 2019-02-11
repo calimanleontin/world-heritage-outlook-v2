@@ -1,6 +1,7 @@
 <?php
 
 use \Drupal\taxonomy\Entity\Term;
+use \Drupal\user\Entity\User;
 
 function iucn_who_core_install() {
   module_load_include('module', 'iucn_who_core');
@@ -16,7 +17,7 @@ function iucn_who_core_install() {
   foreach ($terms as $data) {
     $term = Term::create($data + [
       'vid' => TAXONOMY_SITE_CONSERVATION_RATING,
-      'language' => 'en'
+      'language' => 'en',
     ]);
     $term->save();
   }
@@ -33,5 +34,20 @@ function iucn_who_core_update_8001() {
 
   foreach ($paragraphs as $paragraph) {
     $paragraph->delete();
+  }
+}
+
+/**
+ * Add field_user_agreement_disabled to all users.
+ */
+function iucn_who_core_update_8002() {
+  $users = \Drupal::entityTypeManager()
+    ->getStorage('user')
+    ->loadMultiple();
+
+  /** @var User $user */
+  foreach ($users as $user) {
+    $user->field_user_agreement_disabled = FALSE;
+    $user->save();
   }
 }
