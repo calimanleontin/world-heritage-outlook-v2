@@ -817,7 +817,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
             unset($component['value'][$idx]);
           }
         }
-        if ((is_array($component['value'][0])) && (!empty($component['value'][0]['label']))) {
+        if (!empty($component['value'][0]) && is_array($component['value'][0]) && (!empty($component['value'][0]['label']))) {
           $data = $component['value'][0];
         }
         else {
