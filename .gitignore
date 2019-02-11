@@ -5,6 +5,7 @@ docroot/sites/*/files
 docroot/sites/simpletest
 docroot/sites/*/files-private
 docroot/sites/*/private
+private-files
 docroot/modules/contrib/examples
 acquia-files
 drush/sites/self.site.yml
