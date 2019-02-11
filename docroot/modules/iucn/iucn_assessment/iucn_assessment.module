@@ -25,6 +25,13 @@ use Drupal\Core\Access\AccessResult;
 
 function iucn_assessment_theme() {
   return [
+    'topic_tooltip' => [
+      'template' => 'topic-tooltip',
+      'variables' => [
+        'label' => NULL,
+        'help_text' => NULL,
+      ],
+    ],
     'assessment_horizontal_tabs' => array(
       'render element' => 'element',
       'template' => 'assessment-horizontal-tabs',

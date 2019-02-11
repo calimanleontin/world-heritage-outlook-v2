@@ -817,10 +817,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
             unset($component['value'][$idx]);
           }
         }
-        $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+        if ((is_array($component['value'][0])) && (!empty($component['value'][0]['label']))) {
+          $data = $component['value'][0];
+        }
+        else {
+          $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+        }
       }
       else {
         $data = $component['value'];
+      }
+      if (!is_array($data)) {
+        $data = ['#markup' => $data];
       }
       $containers[$key] = [
         '#type' => 'container',
@@ -831,7 +839,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
             "paragraph-summary-component-span-$span",
           ],
         ],
-        'data' => ['#markup' => $data],
+        'data' => $data,
       ];
       if (!empty($component['class'])) {
         $containers[$key]['#attributes']['class'][] = $component['class'];
@@ -946,7 +954,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
               $labels[] = $label;
             }
           }
-          $value = !empty($labels) ? implode(', ', $labels) : NULL;
+          if (count($labels) == 1) {
+            $value = $labels[0];
+          }
+          else {
+            $value = !empty($labels) ? implode(', ', $labels) : NULL;
+          }
         }
       }
 
@@ -1261,7 +1274,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
     }
     if ($entity->bundle() == 'assessment_protection_topic') {
       if (!empty($entity->field_help_text) && $entity->field_help_text->value) {
-        $label = '<div class="btn btn-primary tooltip">' . $label . '<div class="right">' . $entity->field_help_text->value . '<i></i></div></div>';
+        $label = [
+          '#theme' => 'topic_tooltip',
+          '#label' => $label,
+          '#help_text' => $entity->field_help_text->value,
+        ];
+        $label = ['label' => $label];
       }
     }
     return $label;
