@@ -158,17 +158,25 @@
     padding-bottom: 10px;
   }
 
+
   .form-checkboxes > div,
   .form-type-textfield,
   .form-type-textarea,
   .form-type-checkbox,
   .form-type-select,
   .form-composite {
+    align-items: flex-start;
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 200px 1fr;
 
     .label, label, legend {
       order: -1;
+    }
+
+    .chosen-container {
+      min-width: 0;
+      max-width: 100%;
+      width: 100% !important;
     }
 
     // // Nesting

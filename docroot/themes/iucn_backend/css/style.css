@@ -22,7 +22,7 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
   display: grid;
-  grid-auto-columns: 200px;
+  grid-auto-columns: 150px;
   grid-auto-flow: column;
   grid-template-columns: auto;
 }
@@ -37,7 +37,12 @@
   font-weight: bold;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
-  grid-template-columns: 150px auto;
+  grid-template-columns: 300px auto;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+    grid-template-columns: 150px auto;
+  }
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
   margin: 0;
@@ -53,10 +58,16 @@
   padding-right: 60px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-diff-button {
-  right: 12px;
+  margin-right: 12px !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:first-child {
+  border-left: none;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:last-child {
+  border-right: none;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
   display: grid;
@@ -67,7 +78,12 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
   display: grid;
-  grid-template-columns: 150px auto;
+  grid-template-columns: 300px auto;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+    grid-template-columns: 150px auto;
+  }
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
@@ -101,16 +117,19 @@
   margin: 0;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
-  display: table-cell;
-  padding: 10px 12px;
-  border-right: 1px solid #e6e4df;
   border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  box-sizing: border-box;
+  display: table-cell;
   font-weight: normal;
+  padding: 10px 12px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+  border-left: none;
   width: 300px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
+  border-right: none;
   width: 150px;
 }
 @media screen and (max-width: 1024px) {
@@ -148,8 +167,8 @@
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
   padding: 10px 12px;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button {
-  margin-top: 48px !important;
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button.field-diff-button {
+  margin-right: 12px !important;
 }
 .button.paragraphs-icon-button.paragraphs-icon-button-compare {
   overflow: hidden;
@@ -354,8 +373,9 @@
 .edit-paragraph-form-modal .paragraph-form .form-type-select,
 .add-paragraph-form-modal .paragraph-form .form-composite,
 .edit-paragraph-form-modal .paragraph-form .form-composite {
+  align-items: flex-start;
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 200px 1fr;
 }
 .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
 .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
@@ -394,6 +414,22 @@
 .add-paragraph-form-modal .paragraph-form .form-composite legend,
 .edit-paragraph-form-modal .paragraph-form .form-composite legend {
   order: -1;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-composite .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
+  min-width: 0;
+  max-width: 100%;
+  width: 100% !important;
 }
 .add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
 .edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
@@ -619,6 +655,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
   border-right: 1px solid #e6e4df;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
+  font-size: 1em;
+}
 .field--widget-row-entity-reference-paragraphs .field-multiple-drag {
   border-right: 1px solid #e6e4df;
 }
@@ -652,315 +691,315 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   grid-column-end: span 3;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
-  grid-template-columns: repeat(38, 1fr) 9rem;
+  grid-template-columns: repeat(38, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
-    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
-  grid-template-columns: repeat(37, 1fr) 9rem;
+  grid-template-columns: repeat(37, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
-    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
-  grid-template-columns: repeat(36, 1fr) 9rem;
+  grid-template-columns: repeat(36, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
-    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
-  grid-template-columns: repeat(35, 1fr) 9rem;
+  grid-template-columns: repeat(35, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
-    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
-  grid-template-columns: repeat(34, 1fr) 9rem;
+  grid-template-columns: repeat(34, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
-    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
-  grid-template-columns: repeat(33, 1fr) 9rem;
+  grid-template-columns: repeat(33, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
-    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
-  grid-template-columns: repeat(32, 1fr) 9rem;
+  grid-template-columns: repeat(32, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
-    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
-  grid-template-columns: repeat(31, 1fr) 9rem;
+  grid-template-columns: repeat(31, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
-    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
-  grid-template-columns: repeat(30, 1fr) 9rem;
+  grid-template-columns: repeat(30, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
-    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
-  grid-template-columns: repeat(29, 1fr) 9rem;
+  grid-template-columns: repeat(29, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
-    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
-  grid-template-columns: repeat(28, 1fr) 9rem;
+  grid-template-columns: repeat(28, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
-    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
-  grid-template-columns: repeat(27, 1fr) 9rem;
+  grid-template-columns: repeat(27, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
-    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
-  grid-template-columns: repeat(26, 1fr) 9rem;
+  grid-template-columns: repeat(26, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
-    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
-  grid-template-columns: repeat(25, 1fr) 9rem;
+  grid-template-columns: repeat(25, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
-    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
-  grid-template-columns: repeat(24, 1fr) 9rem;
+  grid-template-columns: repeat(24, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
-    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
-  grid-template-columns: repeat(23, 1fr) 9rem;
+  grid-template-columns: repeat(23, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
-    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
-  grid-template-columns: repeat(22, 1fr) 9rem;
+  grid-template-columns: repeat(22, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
-    grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
-  grid-template-columns: repeat(21, 1fr) 9rem;
+  grid-template-columns: repeat(21, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
-    grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
-  grid-template-columns: repeat(20, 1fr) 9rem;
+  grid-template-columns: repeat(20, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
-    grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
-  grid-template-columns: repeat(19, 1fr) 9rem;
+  grid-template-columns: repeat(19, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
-    grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
-  grid-template-columns: repeat(18, 1fr) 9rem;
+  grid-template-columns: repeat(18, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
-    grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
-  grid-template-columns: repeat(17, 1fr) 9rem;
+  grid-template-columns: repeat(17, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
-    grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
-  grid-template-columns: repeat(16, 1fr) 9rem;
+  grid-template-columns: repeat(16, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
-    grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
-  grid-template-columns: repeat(15, 1fr) 9rem;
+  grid-template-columns: repeat(15, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
-    grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
-  grid-template-columns: repeat(14, 1fr) 9rem;
+  grid-template-columns: repeat(14, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
-    grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
-  grid-template-columns: repeat(13, 1fr) 9rem;
+  grid-template-columns: repeat(13, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
-    grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
-  grid-template-columns: repeat(12, 1fr) 9rem;
+  grid-template-columns: repeat(12, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
-    grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
-  grid-template-columns: repeat(11, 1fr) 9rem;
+  grid-template-columns: repeat(11, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
-    grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
-  grid-template-columns: repeat(10, 1fr) 9rem;
+  grid-template-columns: repeat(10, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
-    grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
-  grid-template-columns: repeat(9, 1fr) 9rem;
+  grid-template-columns: repeat(9, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
-    grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
-  grid-template-columns: repeat(8, 1fr) 9rem;
+  grid-template-columns: repeat(8, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
-    grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
-  grid-template-columns: repeat(7, 1fr) 9rem;
+  grid-template-columns: repeat(7, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
-    grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
-  grid-template-columns: repeat(6, 1fr) 9rem;
+  grid-template-columns: repeat(6, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
-    grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
-  grid-template-columns: repeat(5, 1fr) 9rem;
+  grid-template-columns: repeat(5, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
-    grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
-  grid-template-columns: repeat(4, 1fr) 9rem;
+  grid-template-columns: repeat(4, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
-    grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
-  grid-template-columns: repeat(3, 1fr) 9rem;
+  grid-template-columns: repeat(3, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
-    grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
-  grid-template-columns: repeat(2, 1fr) 9rem;
+  grid-template-columns: repeat(2, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
-    grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
-  grid-template-columns: repeat(1, 1fr) 9rem;
+  grid-template-columns: repeat(1, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
-    grid-template-columns: repeat(1, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(1, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
-  grid-template-columns: repeat(0, 1fr) 9rem;
+  grid-template-columns: repeat(0, 1fr) 150px;
 }
 @media (max-width: 999px) {
   .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
-    grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 9rem;
+    grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
   }
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
