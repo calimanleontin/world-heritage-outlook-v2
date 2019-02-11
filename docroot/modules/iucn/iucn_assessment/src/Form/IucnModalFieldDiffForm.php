@@ -64,7 +64,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
       '#attributes' => ['class' => ['diff-table']],
     ];
 
-    $fieldDiff = $this->getNodeFieldDiff($this->getDiffFieldWidgetType($form[$this->fieldName]['widget']));
+    $fieldDiff = $this->getNodeFieldDiff($this->getDiffFieldWidgetType($form, $this->fieldName));
     foreach ($fieldDiff as $diff) {
       $diffTable['#rows'][] = [
         'author' => ['data' => ['#markup' => $diff['author']]],

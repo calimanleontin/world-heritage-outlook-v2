@@ -144,7 +144,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         unset($this->paragraphFormComponents[$fieldName]);
         continue;
       }
-      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
+      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form, $fieldName);
       $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
         ->getLabel();
       $finalRow[$fieldName]['input'] = $form[$fieldName];
