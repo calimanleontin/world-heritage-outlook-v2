@@ -77,7 +77,6 @@ module:
   redirect: 0
   responsive_favicons: 0
   responsive_image: 0
-  search: 0
   search_api: 0
   search_api_db: 0
   search_api_solr: 0
@@ -95,6 +94,7 @@ module:
   text: 0
   token: 0
   toolbar: 0
+  update: 0
   user: 0
   varnish_purge_tags: 0
   varnish_purger: 0
