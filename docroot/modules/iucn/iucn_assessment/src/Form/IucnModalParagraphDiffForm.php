@@ -135,6 +135,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#rows' => [],
       '#weight' => 10,
       '#attributes' => ['class' => ['diff-table']],
+      '#prefix' => '<div class="double-scrollbar-helper"><div class="inner"></div></div><div class="responsive-wrapper">',
+      '#suffix' => '</div>',
       '#tree' => FALSE,
     ];
     $finalRow = [

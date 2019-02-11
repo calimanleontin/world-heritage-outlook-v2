@@ -88,7 +88,7 @@
     attach: function (context, settings) {
         $(function(){
             $(".responsive-wrapper", context).each(function() {
-                var $table = $(this).find('.field-multiple-table');
+                var $table = $(this).find('.responsive-enabled');
                 $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
             });
 
@@ -103,7 +103,7 @@
 
             $(window).once("bind-dsb-to-window").on('resize', _.debounce(function(){
                 $(".responsive-wrapper", context).each(function() {
-                    var $table = $(this).find('.field-multiple-table');
+                    var $table = $(this).find('.responsive-enabled');
                     $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
                 });
             }, 100));
