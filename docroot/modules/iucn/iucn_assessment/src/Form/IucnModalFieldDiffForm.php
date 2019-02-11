@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 
 class IucnModalFieldDiffForm extends IucnModalDiffForm {
@@ -55,10 +56,19 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     $this->setFormDisplay($this->nodeFormDisplay, $form_state);
 
     $form = parent::buildForm($form, $form_state);
+    $fieldWidgetType = $this->getDiffFieldWidgetType($form, $this->fieldName['widget']);
 
     $diffTable = [
       '#type' => 'table',
-      '#header' => [$this->t('Author'), $form[$this->fieldName]['widget']['#title']],
+      '#header' => [
+        [
+          'data' => $this->t('Author'),
+        ],
+        [
+          'data' => $form[$this->fieldName]['widget']['#title'],
+          'class' => 'widget-type--' . Html::cleanCssIdentifier($fieldWidgetType),
+        ]
+      ],
       '#rows' => [],
       '#weight' => -10,
       '#attributes' => ['class' => ['diff-table']],
