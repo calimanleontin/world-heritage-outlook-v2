@@ -1308,11 +1308,12 @@ table.diff-context-wrapper {
   font-weight: bold;
 }
 .diff-modal table.diff-table > tbody > tr > td {
-  border-right: 1px solid #e6e4df;
   border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  height: 45px;
   padding: 3px 5px;
-  vertical-align: top;
   position: relative;
+  vertical-align: top;
 }
 .diff-modal table.diff-table > tbody > tr > td.field-name--author {
   width: 100px;
