@@ -17,6 +17,9 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
   /** @var \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface */
   protected $entityDefinitionUpdateManager;
 
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface */
+  protected $entityFieldManager;
+
   /**
    * Disable strict config schema checking.
    *
@@ -37,8 +40,9 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
+    $this->entityFieldManager = $this->container->get('entity_field.manager');
+    $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
     $this->entityDefinitionUpdateManager->applyUpdates();
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createTestData();
