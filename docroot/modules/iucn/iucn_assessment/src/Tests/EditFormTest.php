@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Tests;
 
+use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -70,12 +71,8 @@ class EditFormTest extends IucnAssessmentTestBase {
     $assessment->get('field_as_values_wh')->appendItem($paragraph);
     $assessment->save();
 
-
-    $this->userLogIn(TestSupport::COORDINATOR1);
     $assessment = $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
     $assessment = $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
-
-    drupal_flush_all_caches();
 
     $this->userLogIn(TestSupport::ASSESSOR1);
 
@@ -182,9 +179,7 @@ class EditFormTest extends IucnAssessmentTestBase {
 
     $expectedDifferences = [];
 
-    $this->userLogIn(TestSupport::ASSESSOR1);
     foreach ($this->tabs as $tab => $fields) {
-      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
       $expectedDifferences[$tab] = 0;
       if ($tab == 'values') {
         // Other users can't edit values so we can't have differences on this tab.
@@ -223,9 +218,12 @@ class EditFormTest extends IucnAssessmentTestBase {
         $assessment->set($field, $fieldItemList->getValue());
       }
     }
-
     $assessment->save();
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+    drupal_flush_all_caches();
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $this->drupalPostForm(Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]), [], 'Finish assessment');
 
     $this->userLogIn(TestSupport::COORDINATOR1);
     foreach ($this->tabs as $tab => $fields) {

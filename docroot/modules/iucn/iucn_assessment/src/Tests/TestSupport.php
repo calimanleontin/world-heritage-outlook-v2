@@ -21,7 +21,7 @@ class TestSupport {
   const IUCN_MANAGER = 'manager@test.ro';
 
   // Coordinators.
-  const COORDINATOR1 = 'coordinator1@test.ro';
+  const COORDINATOR1 = 'coordinator2@test.ro';
   const COORDINATOR2 = 'coordinator2@test.ro';
 
   // Assessors.
@@ -206,13 +206,23 @@ class TestSupport {
         break;
 
       case 'entity_reference':
+        $entityTypeManager = \Drupal::entityTypeManager();
         $handlerSettings = $fieldDefinition->getSetting('handler_settings');
         $targetType = $fieldDefinition->getSetting('target_type');
-        if ($targetType == 'user') {
-          // We don't create users.
-          break;
+        $entityType = $entityTypeManager->getDefinition($targetType);
+        $entityStorage = $entityTypeManager->getStorage($targetType);
+        $query = $entityStorage->getQuery();
+
+        if (!empty($handlerSettings['target_bundles'])) {
+          $targetBundle = reset($handlerSettings['target_bundles']);
+          $query->condition($entityType->getKey('bundle'), $targetBundle);
         }
-        // Todo.
+
+        $ids = $query->execute();
+        if ($hasValue) {
+          end($ids);
+        }
+        $newValue = key($ids);
         break;
 
       case 'entity_reference_revisions':
