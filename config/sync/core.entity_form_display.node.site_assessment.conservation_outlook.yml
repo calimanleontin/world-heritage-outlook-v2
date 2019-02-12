@@ -344,7 +344,7 @@ third_party_settings:
         - field_as_global_assessment_level
       parent_name: group_conservation_overall_container
       weight: 20
-      format_type: html_element
+      format_type: html_element_assessment
       format_settings:
         id: ''
         classes: overall-row

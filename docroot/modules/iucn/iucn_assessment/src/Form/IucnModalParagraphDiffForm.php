@@ -9,6 +9,7 @@ use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -134,6 +135,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#rows' => [],
       '#weight' => 10,
       '#attributes' => ['class' => ['diff-table']],
+      '#prefix' => '<div class="double-scrollbar-helper"><div class="inner"></div></div><div class="responsive-wrapper">',
+      '#suffix' => '</div>',
       '#tree' => FALSE,
     ];
     $finalRow = [
@@ -144,9 +147,11 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         unset($this->paragraphFormComponents[$fieldName]);
         continue;
       }
-      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form[$fieldName]['widget']);
-      $diffTable['#header'][$fieldName] = $this->paragraphRevision->{$fieldName}->getFieldDefinition()
-        ->getLabel();
+      $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form, $fieldName);
+      $diffTable['#header'][$fieldName] = [
+        'data' => $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel(),
+        'class' => ['widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form, $fieldName))]
+      ];
       $finalRow[$fieldName]['input'] = $form[$fieldName];
     }
 

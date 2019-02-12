@@ -151,35 +151,45 @@
   }
 }
 
-.paragraph-as-site-value-wh-iucn-modal-paragraph-add-form,
-.paragraph-as-site-value-wh-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-add-form,
-.paragraph-as-site-threat-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-add-form,
-.paragraph-as-site-protection-iucn-modal-paragraph-edit-form,
-.paragraph-as-site-project-iucn-modal-paragraph-add-form,
-.paragraph-as-site-project-iucn-modal-paragraph-edit-form {
+.add-paragraph-form-modal .paragraph-form,
+.edit-paragraph-form-modal .paragraph-form {
   width: 100%;
   > .form-wrapper {
     padding-bottom: 10px;
   }
-}
 
-#drupal-modal .paragraph-form {
+
   .form-checkboxes > div,
   .form-type-textfield,
   .form-type-textarea,
   .form-type-checkbox,
   .form-type-select,
   .form-composite {
+    align-items: flex-start;
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 200px 1fr;
 
     .label, label, legend {
       order: -1;
     }
 
-    // Nesting
+    .chosen-container {
+      min-width: 0;
+      max-width: 100%;
+      width: 100% !important;
+    }
+
+    // // Nesting
+    // .form-type-textfield,
+    // .form-type-textarea,
+    // .form-type-checkbox,
+    // .form-type-select,
+    // .form-composite {
+    //   display: block;
+    // }
+
+  }
+  .fieldset-wrapper {
     .form-type-textfield,
     .form-type-textarea,
     .form-type-checkbox,
@@ -187,7 +197,6 @@
     .form-composite {
       display: block;
     }
-
   }
 
   > .form-wrapper > .fieldgroup {
@@ -283,3 +292,30 @@ div[aria-required="aria-required"] {
   }
 }
 
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+  @media (min-width: 768px) {
+    overflow-x: hidden;
+  }
+}
+
+#group-threat-extent {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  .form-item-field-as-threats-in-value {
+    margin-top: 0;
+  }
+  .fieldset-wrapper {
+    margin-top: 10px;
+  }
+  .field--name-field-as-threats-in {
+    width: 200px;
+  }
+  .form-item-field-as-threats-extent {
+    label {
+      float: left;
+    }
+  }
+}

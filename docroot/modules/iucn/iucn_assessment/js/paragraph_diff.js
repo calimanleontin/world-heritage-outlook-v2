@@ -29,6 +29,10 @@
 
       function update(values, selector, type) {
         if (type == 'checkboxes') {
+          if (typeof values === 'number' || typeof values === 'string') {
+            values = [values];
+          }
+
           $(get_data_selector(selector) + ' input.form-checkbox').prop('checked', false);
           for (var i = 0; i < values.length; i++) {
             var sel = '[data-drupal-selector="' + selector + '-' + values[i] + '"]';
@@ -61,6 +65,10 @@
           $(get_data_selector(selector)).val(values);
           $(get_data_selector(selector)).trigger('change');
         } else if (type == 'text_format') {
+          if (values === false) {
+            values = '';
+          }
+
           CKEDITOR.instances[$(get_data_selector(selector)).attr('id')].setData(values);
         }
         else {

@@ -15,12 +15,20 @@
       text-transform: uppercase;
     }
     .fieldset-wrapper {
-      display: table;
+      // display: table;
       width: calc(~'100% - 1px');
       border-top: 1px solid @table-border-color;
       border-left: 1px solid @table-border-color;
+      overflow: auto;
       .overall-row {
-        display: table-row;
+        // display: table-row;
+        display: grid;
+        grid-auto-columns: 150px;
+        grid-auto-flow: column;
+        grid-template-columns: auto;
+        // @media screen and (max-width: 1024px) {
+        //   grid-template-columns: 550px;
+        // }
         &.overall-thead-row {
           .overall-cell {
             font-weight: bold;
@@ -32,25 +40,43 @@
               font-weight: bold;
             }
           }
+          > div[class*="-textarea"] {
+            grid-template-columns: 300px auto;
+            @media screen and (max-width: 1024px) {
+              grid-template-columns: 150px auto;
+            }
+          }
         }
         .form-item {
           margin: 0;
         }
         > div {
-          display: table-cell;
+          display: block;
           padding: 10px 12px;
           border-right: 1px solid @table-border-color;
           border-bottom: 1px solid @table-border-color;
           font-weight: normal;
+          &.field-with-diff {
+            padding-right: 60px;
+            .field-diff-button {
+              margin-right: 12px !important;
+            }
+          }
           .form-item {
             width: 100%;
-            display: table-row;
+            // display: table-row;
           }
+
+          &:first-child {
+            border-left: none;
+          }
+
           &:last-child {
-            width: 150px;
+            // width: 150px;
+            border-right: none;
           }
           &[class*="-textarea"] {
-            display: table;
+            display: grid;
             width: 100%;
             padding: 0;
             border-right: none;
@@ -64,7 +90,7 @@
             }
             label,
             .form-textarea-wrapper {
-              display: table-cell;
+              display: block;
               box-sizing: border-box;
               padding: 10px 12px;
               border-bottom: 1px solid @table-border-color;
@@ -73,10 +99,10 @@
             }
             label {
               font-weight: normal;
-              width: 300px;
-              @media screen and (max-width: 1024px) {
-                width: 150px;
-              }
+              // width: 300px;
+              // @media screen and (max-width: 1024px) {
+              //   width: 150px;
+              // }
             }
           }
           label {
@@ -103,16 +129,19 @@
         margin: 0;
       }
       .overall-row-view > div {
-        display: table-cell;
-        padding: 10px 12px;
-        border-right: 1px solid #e6e4df;
         border-bottom: 1px solid #e6e4df;
+        border-right: 1px solid #e6e4df;
+        box-sizing: border-box;
+        display: table-cell;
         font-weight: normal;
+        padding: 10px 12px;
       }
       .overall-row-view > div:first-child {
+        border-left: none;
         width: 300px;
       }
       .overall-row-view > div:last-child {
+        border-right: none;
         width: 150px;
       }
 
@@ -156,7 +185,9 @@
       }
 
       .button.paragraphs-icon-button {
-        margin-top: 48px !important;
+        &.field-diff-button {
+          margin-right: 12px !important;
+        }
       }
     }
   }

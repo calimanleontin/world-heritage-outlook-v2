@@ -25,6 +25,13 @@ use Drupal\Core\Access\AccessResult;
 
 function iucn_assessment_theme() {
   return [
+    'topic_tooltip' => [
+      'template' => 'topic-tooltip',
+      'variables' => [
+        'label' => NULL,
+        'help_text' => NULL,
+      ],
+    ],
     'assessment_horizontal_tabs' => array(
       'render element' => 'element',
       'template' => 'assessment-horizontal-tabs',
@@ -441,31 +448,41 @@ function _iucn_assessment_display_negociate_assessment_revision(\Drupal\node\Ent
   return NULL;
 }
 
-function _iucn_assessment_level_class($class) {
-  $map = [
-    'iucn-pr-rating--data-deficient' => 'level-data-deficient',
-    'iucn-pr-rating--effective' => 'level-low-concern',
-    'iucn-pr-rating--highly-effective' => 'level-good',
-    'iucn-pr-rating--some-concern' => 'level-high-concern',
-    'iucn-pr-rating--serious-concern' => 'level-critical',
-
-    'iucn-threat--data-deficient' => 'level-data-deficient',
-    'iucn-threat--low-threat' => 'level-low-concern',
-    'iucn-threat--very-low-threat' => 'level-good',
-    'iucn-threat--high-threat' => 'level-high-concern',
-    'iucn-threat--very-high-threat' => 'level-critical',
-
-    'iucn-state--data-deficient' => 'level-data-deficient',
-    'iucn-state--good' => 'level-good',
-    'iucn-state--low-concern' => 'level-low-concern',
-    'iucn-state--high-concern' => 'level-high-concern',
-    'iucn-state--critical' => 'level-critical',
-
-  ];
-  if (empty($map[$class])) {
+function _iucn_assessment_level_class($tid) {
+  $map = _iucn_assessment_get_term_colors();
+  if (empty($map[$tid])) {
     return null;
   }
-  return $map[$class];
+  return $map[$tid];
+}
+
+function _iucn_assessment_get_term_colors() {
+  return [
+    1346 => "level-good",
+    1347 => "level-low-concern",
+    1348 => "level-high-concern",
+    1349 => "level-critical",
+    1350 => "level-data-deficient",
+
+    1364 => "level-good",
+    1365 => "level-low-concern",
+    1366 => "level-high-concern",
+    1367 => "level-critical",
+    1368 => "level-data-deficient",
+
+    1325 => "level-good",
+    1326 => "level-low-concern",
+    1327 => "level-high-concern",
+    1328 => "level-critical",
+    1329 => "level-data-deficient",
+
+    1420 => "level-data-deficient",
+    1309 => "level-good",
+    1310 => "level-low-concern",
+    1311 => "level-high-concern",
+    1312 => "level-critical",
+    1313 => "level-data-deficient",
+  ];
 }
 
 function _iucn_assessment_set_site_assessments($node) {
@@ -664,7 +681,11 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
   $items = $context['items'];
   if ($items instanceof \Drupal\Core\Field\FieldItemListInterface) {
     $field_definition = $items->getFieldDefinition();
-    if ($field_definition->getType() == 'string_long') {
+    if (
+      ($field_definition->getType() == 'string_long')
+      &&
+      ('field_reference' != $field_definition->getName())
+    ) {
       // https://helpdesk.eaudeweb.ro/issues/5556
       // All textareas should be limited to a certain number of characters.
       $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
@@ -934,5 +955,13 @@ function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Cor
       'node' => $node->id(),
       'node_revision' => $node->getLoadedRevisionId(),
     ]);
+  }
+}
+
+function iucn_assessment_editor_js_settings_alter(array &$settings) {
+  foreach ($settings['editor']['formats'] as $name => &$value) {
+    if ($name == 'simple_text_formater_with_scayt') {
+      $value['editorSettings']['contentsCss'][] = '/themes/iucn_backend/css/ckeditor-iframe.css';
+    }
   }
 }

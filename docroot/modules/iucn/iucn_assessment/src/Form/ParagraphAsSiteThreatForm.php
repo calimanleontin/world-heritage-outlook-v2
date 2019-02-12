@@ -9,7 +9,10 @@ use Drupal\paragraphs\Entity\Paragraph;
 
 class ParagraphAsSiteThreatForm {
 
-  const AFFECTED_VALUES_FIELDS = ['field_as_threats_values_wh', 'field_as_threats_values_bio'];
+  const AFFECTED_VALUES_FIELDS = [
+    'field_as_threats_values_wh',
+    'field_as_threats_values_bio',
+  ];
 
   const FIELD_DEPENDENT_FIELDS = [
     'field_as_threats_extent' => 'field_as_threats_in',
@@ -72,7 +75,12 @@ class ParagraphAsSiteThreatForm {
         $formField = &$form[$field];
         $form["{$field}_select_wrapper"] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['form-wrapper ' . $field . '_checkboxes']],
+          '#attributes' => [
+            'class' => [
+              'form-wrapper ' . $field . '_checkboxes',
+            ],
+          ],
+          '#id' => 'edit-' . str_replace('_', '-', $field) . '-select',
           '#weight' => $formField['#weight'],
           "{$field}_select" => [
             '#type' => 'checkboxes',

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_accepted_agreement
+    - field.field.user.user.field_user_agreement_disabled
   module:
     - user
 id: user.user.default
@@ -21,4 +22,5 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_accepted_agreement: true
+  field_user_agreement_disabled: true
   langcode: true

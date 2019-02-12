@@ -25,13 +25,13 @@ settings:
           items:
             - Scayt
   plugins:
+    stylescombo:
+      styles: ''
     language:
       language_list: un
     drupallink:
       linkit_enabled: false
       linkit_profile: ''
-    stylescombo:
-      styles: ''
 image_upload:
   status: false
   scheme: public
