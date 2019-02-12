@@ -57,17 +57,22 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
   padding-right: 60px;
 }
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
+  padding-right: 12px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select {
+  margin-right: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-diff-button {
+  float: right;
+  margin-right: 0 !important;
+  position: relative !important;
+}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-diff-button {
   margin-right: 12px !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:first-child {
-  border-left: none;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div:last-child {
-  border-right: none;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
   display: grid;
@@ -1342,34 +1347,46 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table .diff-context-wrapper td {
   padding: 0;
 }
+.diff-modal table.diff-table td.widget-type--checkboxes,
+.diff-modal table.diff-table th.widget-type--checkboxes,
+.diff-modal table.diff-table td.widget-type--select,
+.diff-modal table.diff-table th.widget-type--select {
+  min-width: 150px;
+}
+.diff-modal table.diff-table td.widget-type--checkbox,
+.diff-modal table.diff-table th.widget-type--checkbox {
+  min-width: 50px;
+}
+.diff-modal table.diff-table td.widget-type--textarea,
+.diff-modal table.diff-table th.widget-type--textarea,
+.diff-modal table.diff-table td.widget-type--text-format,
+.diff-modal table.diff-table th.widget-type--text-format {
+  min-width: 300px;
+}
+.diff-modal table.diff-table td.field-name--author,
+.diff-modal table.diff-table th.field-name--author {
+  min-width: 100px;
+}
+.diff-modal table.diff-table td.widget-type--textfield,
+.diff-modal table.diff-table th.widget-type--textfield,
+.diff-modal table.diff-table td.field-name--field_as_threats_categories,
+.diff-modal table.diff-table th.field-name--field_as_threats_categories,
+.diff-modal table.diff-table td.field-name--field_as_threats_threat,
+.diff-modal table.diff-table th.field-name--field_as_threats_threat,
+.diff-modal table.diff-table td.widget-type--paragraph,
+.diff-modal table.diff-table th.widget-type--paragraph {
+  min-width: 250px;
+}
+.diff-modal table.diff-table td.field-name--field_as_threats_categories,
+.diff-modal table.diff-table th.field-name--field_as_threats_categories {
+  min-width: 150px;
+}
 .diff-modal table.diff-table > thead > tr > th {
   background: #ececec !important;
   font-size: .9em;
   text-transform: none;
   border-right: 1px solid #e6e4df;
   padding: 10px 12px;
-}
-.diff-modal table.diff-table > thead > tr > th.widget-type--checkboxes,
-.diff-modal table.diff-table > thead > tr > th.widget-type--select {
-  width: 150px;
-}
-.diff-modal table.diff-table > thead > tr > th.widget-type--checkbox {
-  width: 50px;
-}
-.diff-modal table.diff-table > thead > tr > th.widget-type--textarea {
-  width: 500px;
-}
-.diff-modal table.diff-table > thead > tr > th.field-name--author {
-  width: 100px;
-}
-.diff-modal table.diff-table > thead > tr > th.widget-type--textfield,
-.diff-modal table.diff-table > thead > tr > th.field-name--field_as_threats_categories,
-.diff-modal table.diff-table > thead > tr > th.field-name--field_as_threats_threat,
-.diff-modal table.diff-table > thead > tr > th.widget-type--paragraph {
-  width: 250px;
-}
-.diff-modal table.diff-table > thead > tr > th.field-name--field_as_threats_categories {
-  width: 150px;
 }
 .diff-modal table.diff-table > tbody > tr:last-child > td {
   border-top: 3px solid black;
@@ -1390,28 +1407,6 @@ table.diff-context-wrapper {
   padding: 3px 5px;
   position: relative;
   vertical-align: top;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkboxes,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--select {
-  width: 150px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--checkbox {
-  width: 50px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea {
-  width: 500px;
-}
-.diff-modal table.diff-table > tbody > tr > td.field-name--author {
-  width: 100px;
-}
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_threat,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--paragraph {
-  width: 250px;
-}
-.diff-modal table.diff-table > tbody > tr > td.field-name--field_as_threats_categories {
-  width: 150px;
 }
 .diff-modal table.diff-table > tbody > tr > td input[type="text"],
 .diff-modal table.diff-table > tbody > tr > td textarea,

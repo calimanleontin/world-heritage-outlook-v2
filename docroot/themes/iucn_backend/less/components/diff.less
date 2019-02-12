@@ -18,6 +18,37 @@
       }
     }
 
+    td, th {
+      &.widget-type--checkboxes,
+      &.widget-type--select {
+        min-width: 150px;
+      }
+
+      &.widget-type--checkbox {
+        min-width: 50px;
+      }
+
+      &.widget-type--textarea,
+      &.widget-type--text-format {
+        min-width: 300px;
+      }
+
+      &.field-name--author {
+        min-width: 100px;
+      }
+
+      &.widget-type--textfield,
+      &.field-name--field_as_threats_categories,
+      &.field-name--field_as_threats_threat,
+      &.widget-type--paragraph {
+        min-width: 250px;
+      }
+
+      &.field-name--field_as_threats_categories {
+        min-width: 150px;
+      }
+    }
+
     > thead {
       > tr {
         > th {
@@ -26,43 +57,6 @@
           text-transform: none;
           border-right: 1px solid rgb(230, 228, 223);
           padding: 10px 12px;
-
-          &:nth-child(2) {
-            // padding-left: 45px;
-          }
-
-          &.widget-type--checkboxes,
-          &.widget-type--select {
-            // min-width: 150px;
-            width: 150px;
-          }
-
-          &.widget-type--checkbox {
-            // min-width: 50px;
-            width: 50px;
-          }
-
-          &.widget-type--textarea {
-            // min-width: 500px;
-            width: 500px;
-          }
-
-          &.field-name--author {
-            // min-width: 100px;
-            width: 100px;
-          }
-
-          &.widget-type--textfield,
-          &.field-name--field_as_threats_categories,
-          &.field-name--field_as_threats_threat,
-          &.widget-type--paragraph {
-            // min-width: 250px;
-            width: 250px;
-          }
-
-          &.field-name--field_as_threats_categories {
-            width: 150px;
-          }
         }
       }
     }
@@ -92,39 +86,6 @@
           padding: 3px 5px;
           position: relative;
           vertical-align: top;
-
-          &.widget-type--checkboxes,
-          &.widget-type--select {
-            // min-width: 150px;
-            width: 150px;
-          }
-
-          &.widget-type--checkbox {
-            // min-width: 50px;
-            width: 50px;
-          }
-
-          &.widget-type--textarea {
-            // min-width: 500px;
-            width: 500px;
-          }
-
-          &.field-name--author {
-            // min-width: 100px;
-            width: 100px;
-          }
-
-          &.widget-type--textfield,
-          &.field-name--field_as_threats_categories,
-          &.field-name--field_as_threats_threat,
-          &.widget-type--paragraph {
-            // min-width: 250px;
-            width: 250px;
-          }
-
-          &.field-name--field_as_threats_categories {
-            width: 150px;
-          }
 
           input[type="text"],
           textarea,
