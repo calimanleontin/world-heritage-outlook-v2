@@ -148,7 +148,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     if (!empty($item->field_as_threats_in->value) &&
       $item->field_as_threats_extent->isEmpty()) {
-      static::addStatusMessage($form, t('Field <b>threat extent</b> is required in tab Threat!'), 'error');
+      static::addStatusMessage($form, t('Field <b>Threat extent</b> is required in tab Threat!'), 'error');
     }
 
     foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $key => $tids) {
@@ -247,7 +247,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (empty($mainCategory)) {
-      static::addStatusMessage($form, t('Field <b>category</b> is required in @tab tab!',
+      static::addStatusMessage($form, t('Field <b>Category</b> is required in @tab tab!',
         [
           '@tab' => $tab,
         ]
@@ -256,7 +256,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (empty($subCategories) && !$skipSubcategories) {
-      static::addStatusMessage($form, t('Select at least one <b>subcategory</b> in @tab tab!',
+      static::addStatusMessage($form, t('Select at least one <b>Subcategory</b> in @tab tab!',
         [
           '@tab' => $tab,
         ]
