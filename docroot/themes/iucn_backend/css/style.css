@@ -1699,4 +1699,24 @@ div.field--type-entity-reference.level-data-deficient {
   width: 188px;
   min-width: 188px;
 }
+.horizontal-tab-button a strong.values:after,
+.horizontal-tab-button a strong.threats:after,
+.horizontal-tab-button a strong.protection-and-management:after,
+.horizontal-tab-button a strong.assessing-values:after,
+.horizontal-tab-button a strong.conservation-outlook:after,
+.horizontal-tab-button a strong.references:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.horizontal-tab-button a strong.benefits,
+.horizontal-tab-button a strong.projects {
+  color: #92d050;
+}
 /*# sourceMappingURL=style.css.map */
