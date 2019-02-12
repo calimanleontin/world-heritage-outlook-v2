@@ -18,6 +18,7 @@ module.exports = function (grunt) {
                 files: {
                     "css/style.css": "less/style.less",
                     "css/ckeditor-iframe.css": "less/ckeditor-iframe.less",
+                    "css/ckeditor-dialog.css": "less/ckeditor-dialog.less",
                 }
             }
         }

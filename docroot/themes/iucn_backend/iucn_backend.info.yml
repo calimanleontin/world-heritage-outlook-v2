@@ -6,8 +6,6 @@ alt text: 'Custom theme that extends the default administration theme for Drupal
 package: Custom
 version: VERSION
 core: 8.x
-libraries:
- - iucn_backend/global-styling
 
 regions:
   header: 'Header'
@@ -17,3 +15,10 @@ regions:
   help: Help
   sidebar_first: 'First sidebar'
   content: Content
+
+libraries:
+ - iucn_backend/global-styling
+
+libraries-extend:
+  seven/ckeditor-dialog:
+    - iucn_backend/ckeditor-dialog
