@@ -71,7 +71,7 @@
 
   //       inheritParentDims();
   //       $(document).once('upd\ateParagraphActions').on('DOMSubtreeModified', _.debounce(inheritParentDims, 100));
-  //       $(window).once("bind-to-window").on('resize', _.debounce(inheritParentDims, 100));
+  //       $(window).once('bind-to-window').on('resize', _.debounce(inheritParentDims, 100));
   //     });
   //   }
   // };
@@ -86,25 +86,26 @@
 
   Drupal.behaviors.doubleScrollBar = {
     attach: function (context, settings) {
-        $(function(){
-            $(".responsive-wrapper", context).each(function() {
-                var $table = $(this).find('.responsive-enabled');
-                $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
+        $(function() {
+            $('.responsive-wrapper', context).once('dsb-inner-width').each(function() {
+                var $table = $(this).children('table');
+                $(this).siblings('.double-scrollbar-helper').find('.inner').width($table.width());
             });
 
-            $(".responsive-wrapper", context).scroll(function(){
-                $(this).siblings(".double-scrollbar-helper")
-                    .scrollLeft($(this).scrollLeft());
-            });
-            $(".double-scrollbar-helper", context).scroll(function(){
-                $(this).siblings(".responsive-wrapper")
+            $('.responsive-wrapper', context).once('dsb-update-scroll-1').scroll(function() {
+                $(this).siblings('.double-scrollbar-helper')
                     .scrollLeft($(this).scrollLeft());
             });
 
-            $(window).once("bind-dsb-to-window").on('resize', _.debounce(function(){
-                $(".responsive-wrapper", context).each(function() {
-                    var $table = $(this).find('.responsive-enabled');
-                    $(this).siblings(".double-scrollbar-helper").find('.inner').width($table.width());
+            $('.double-scrollbar-helper', context).once('dsb-update-scroll-2').scroll(function() {
+                $(this).siblings('.responsive-wrapper')
+                    .scrollLeft($(this).scrollLeft());
+            });
+
+            $(window).once('bind-dsb-to-window').on('resize', _.debounce(function() {
+                $('.responsive-wrapper', context).each(function() {
+                    var $table = $(this).children('table');
+                    $(this).siblings('.double-scrollbar-helper').find('.inner').width($table.width());
                 });
             }, 100));
         });
