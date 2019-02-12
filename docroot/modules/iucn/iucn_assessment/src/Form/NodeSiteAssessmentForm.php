@@ -302,13 +302,17 @@ class NodeSiteAssessmentForm {
           'field_as_vass_bio_trend',
         ];
         foreach ($required_fields as $field) {
-          if (isset($form[$field]['widget'][0]['#required']) &&
-            $form[$field]['widget'][0]['#required'] === FALSE) {
+          if (!empty($form[$field]['widget'][0]['value'])) {
+            $form[$field]['widget'][0]['value']['#required'] = TRUE;
+          }
+          elseif (!empty($form[$field]['widget'][0])) {
             $form[$field]['widget'][0]['#required'] = TRUE;
           }
-          if (isset($form[$field]['widget']['#required']) &&
-            $form[$field]['widget']['#required'] === FALSE) {
+          elseif (!empty($form[$field]['widget'])) {
             $form[$field]['widget']['#required'] = TRUE;
+          }
+          else {
+            $form[$field]['#required'] = TRUE;
           }
         }
       }
