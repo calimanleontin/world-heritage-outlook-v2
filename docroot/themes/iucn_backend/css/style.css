@@ -1194,7 +1194,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 }
 @media (max-width: 999px) {
   .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
-    overflow: auto;
+    overflow: auto hidden;
   }
   .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper {
     background: #ececec;
@@ -1492,17 +1492,13 @@ table.diff-context-wrapper {
   background-color: #fcf8e3;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
-  overflow: auto;
+  overflow: auto hidden;
 }
 .paragraph-diff-form-modal .double-scrollbar-helper {
-  background: #ececec;
-  border-bottom: 1px solid #e6e4df;
   height: 14px;
   overflow: auto hidden;
 }
 .paragraph-diff-form-modal .double-scrollbar-helper .inner {
-  background: #ececec;
-  border-bottom: 1px solid #e6e4df;
   height: 14px;
   overflow: hidden;
 }

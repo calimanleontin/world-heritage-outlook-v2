@@ -1024,6 +1024,12 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
   public function getFieldSpan(FieldDefinitionInterface $field_definition) {
     $field_name = $field_definition->getName();
+    // if ($field_name == 'field_as_protection_rating') {
+    //   return 1;
+    // }
+    // if ($field_name == 'field_as_values_criteria') {
+    //   return 1;
+    // }
     if ($field_name == 'field_as_projects_contact') {
       return 2;
     }
@@ -1046,7 +1052,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
     elseif ($field_definition->getType() == 'boolean') {
       return 1;
     }
-    return 2;
+    return 1;
   }
 
   /**
