@@ -441,7 +441,7 @@
 .edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
   min-width: 0;
   max-width: 100%;
-  width: 100% !important;
+  width: auto !important;
 }
 .add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
 .edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
