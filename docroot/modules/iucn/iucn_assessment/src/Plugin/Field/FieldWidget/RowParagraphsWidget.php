@@ -1000,6 +1000,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if ('field_as_threats_extent' == $field_name) {
         $summary[$summary_field_name]['value'][0] .= ' ' . $value;
       }
+      elseif (!empty($grouped_fields[$field_name]['threats'])) {
+        if ($value) {
+          $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
+        }
+        if ($field_name == 'field_as_species_name') {
+          $value = [];
+          foreach($summary[$summary_field_name]['value'] as $title => $values) {
+            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
+          }
+          $summary[$summary_field_name]['value'] = implode('<br>', $value);
+        }
+      }
       elseif (!empty($grouped_fields[$field_name]['benefits'])) {
         if ($value) {
           $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
@@ -1151,16 +1163,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'grouped_with' => 'field_as_threats_values_wh',
         'label' => t('WH values'),
       ],
+      'field_as_legality' => [
+        'grouped_with' => 'field_as_legality',
+        'threats' => t('Legality:'),
+        'label' => t(''),
+      ],
       'field_as_resource_use_type' => [
         'grouped_with' => 'field_as_legality',
-        'label' => t('Other information'),
+        'threats' => t('Resource use type:'),
+        'label' => t(''),
       ],
       'field_as_targeted_species' => [
         'grouped_with' => 'field_as_legality',
-        'label' => t('Other information'),
+        'threats' => t('Targeted species:'),
+        'label' => t(''),
       ],
       'field_as_species_name' => [
         'grouped_with' => 'field_as_legality',
+        'threats' => t('Species name:'),
         'label' => t('Other information'),
       ],
       'field_as_threats_extent' => [
