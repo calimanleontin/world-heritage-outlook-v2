@@ -2,8 +2,8 @@
 
 namespace Drupal\iucn_assessment\Tests;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -188,16 +188,18 @@ class TestSupport {
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
     ]);
-    foreach ($fieldsCompleted as $fieldName) {
-
-    }
     return $node;
   }
 
   public static function populateAllFieldsData(FieldableEntityInterface $entity) {
+    $excludedFields = [
+      'field_assessments',
+      'field_current_assessment',
+    ];
     foreach ($entity->getFieldDefinitions() as $fieldDefinition) {
       $fieldName = $fieldDefinition->getName();
-      if (!preg_match('/^field\_/', $fieldName)) {
+      if ((!preg_match('/^field\_/', $fieldName) && !in_array($fieldName, ['title', 'name']))
+        || in_array($fieldName, $excludedFields)) {
         continue;
       }
       self::populateFieldData($entity, $fieldDefinition->getName());
@@ -210,44 +212,47 @@ class TestSupport {
     /** @var \Drupal\field\FieldStorageConfigInterface $fieldStorageDefinition */
     $fieldStorageDefinition = $fieldDefinition->getFieldStorageDefinition();
     switch ($fieldDefinition->getType()) {
-      case '':
-        // Do nothing for these fields.
-        break;
       case 'boolean':
-        // @todo
+        $entity->set($fieldName, rand(0, 1) == 1);
         break;
 
       case 'integer':
-        // @todo
+        $entity->set($fieldName, rand(0, 100));
         break;
 
       case 'float':
-        // @todo
+        $entity->set($fieldName, rand(0, 10000) / 100);
         break;
 
       case 'datetime':
-        // @todo
+        $entity->set($fieldName, date(DateTimeItemInterface::DATE_STORAGE_FORMAT));
         break;
 
       case 'string':
-        // @todo
+        $entity->set($fieldName, 'Lorem ipsum dolor sit amet.');
         break;
 
       case 'string_long':
-        // @todo
+        $entity->set($fieldName, 'Suspendisse vitae fringilla augue. Proin eros eros, eleifend nec mi eget, hendrerit gravida libero. Curabitur lobortis pellentesque nisl, vitae mattis mauris pulvinar at. Vestibulum luctus mauris a quam ultrices sagittis. Vivamus laoreet erat sed lorem tincidunt elementum. ');
+        break;
+
+      case 'text_long':
+        $entity->set($fieldName, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tincidunt nisi nulla, eu pretium ligula vehicula viverra. Sed risus est, pharetra at congue at, consectetur vel nibh. Duis sit amet sagittis tortor, non consequat tellus. Nam vestibulum enim felis, quis pellentesque erat molestie a. Nullam ultrices sapien suscipit nulla dapibus, et congue erat pharetra. Pellentesque consequat semper felis ac posuere. Suspendisse ut ultricies ex. Nullam cursus ligula in odio tincidunt ultrices. Donec sed suscipit nibh.');
         break;
 
       case 'list_string':
-        // @todo
+        $allowedValues = $fieldStorageDefinition->getSettings()['allowed_values'];
+        $entity->set($fieldName, key($allowedValues));
         break;
 
       case 'entity_reference':
-        // @todo
-        break;
-
       case 'entity_reference_revisions':
         $handlerSettings = $fieldDefinition->getSetting('handler_settings');
         $targetType = $fieldDefinition->getSetting('target_type');
+        if ($targetType == 'user') {
+          // We don't create users.
+          break;
+        }
         $targetBundle = reset($handlerSettings['target_bundles']);
 
         $entityTypeManager = \Drupal::entityTypeManager();
@@ -269,10 +274,6 @@ class TestSupport {
           $entity->get($fieldName)->appendItem($childEntity);
         }
         break;
-
-      default:
-        // @todo remove this
-        var_dump($fieldDefinition->getType());
     }
   }
 
