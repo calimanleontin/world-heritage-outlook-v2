@@ -989,10 +989,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if (!array_key_exists($summary_field_name, $summary)) {
         $summary[$summary_field_name]['value'] = [];
       }
-
-      $prefix = self::getSummaryPrefix($field_name);
-      if (!empty($prefix) && !empty($value)) {
-        $value = $this->t("$prefix - @value", ['@value' => $value]);
+      $suffix = self::getSummarySuffix($field_name);
+      if (!empty($suffix) && !empty($value)) {
+        $value = $this->t("@value $suffix", ['@value' => $value]);
       }
 
       if ($class) {
@@ -1224,28 +1223,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   /**
-   * Retrieves a prefix that should show up before a paragraph summary value.
+   * Retrieves a suffix that should show up before a paragraph summary value.
    *
    * @param $field
    *   The name of the field.
    *
    * @return mixed|null
-   *   The prefix.
+   *   The suffix.
    */
-  public static function getSummaryPrefix($field) {
-    $prefixes = [
-      'field_as_benefits_hab_trend' => t('Trend'),
-      'field_as_benefits_pollut_trend' => t('Trend'),
-      'field_as_benefits_oex_trend' => t('Trend'),
-      'field_as_benefits_climate_trend' => t('Trend'),
-      'field_as_benefits_invassp_trend' => t('Trend'),
-      'field_as_benefits_hab_level' => t('Impact level'),
-      'field_as_benefits_pollut_level' => t('Impact level'),
-      'field_as_benefits_oex_level' => t('Impact level'),
-      'field_as_benefits_climate_level' => t('Impact level'),
-      'field_as_benefits_invassp_level' => t('Impact level'),
+  public static function getSummarySuffix($field) {
+    $suffixes = [
+      'field_as_benefits_hab_trend' => t('trend'),
+      'field_as_benefits_pollut_trend' => t('trend'),
+      'field_as_benefits_oex_trend' => t('trend'),
+      'field_as_benefits_climate_trend' => t('trend'),
+      'field_as_benefits_invassp_trend' => t('trend'),
+      'field_as_benefits_hab_level' => t('level'),
+      'field_as_benefits_pollut_level' => t('level'),
+      'field_as_benefits_oex_level' => t('level'),
+      'field_as_benefits_climate_level' => t('level'),
     ];
-    return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
+    return !empty($suffixes[$field]) ? $suffixes[$field] : NULL;
   }
 
   /**
