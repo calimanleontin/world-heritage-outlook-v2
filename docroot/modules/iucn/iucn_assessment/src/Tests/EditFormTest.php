@@ -220,8 +220,7 @@ class EditFormTest extends IucnAssessmentTestBase {
     }
     $assessment->save();
 
-    drupal_flush_all_caches();
-    \Drupal::service('page_cache_kill_switch')->trigger();
+    // Access denied?!
     $this->userLogIn(TestSupport::ASSESSOR1);
     $this->drupalPostForm(Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]), [], 'Finish assessment');
 
