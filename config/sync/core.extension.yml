@@ -1,5 +1,6 @@
 module:
   anchor_only: 0
+  basic_auth: 0
   blazy: 0
   block: 0
   block_content: 0
@@ -25,6 +26,7 @@ module:
   editor: 0
   editor_advanced_link: 0
   editor_file: 0
+  edw_healthcheck: 0
   entity_print: 0
   entity_reference_revisions: 0
   facets: 0

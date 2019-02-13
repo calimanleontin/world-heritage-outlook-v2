@@ -142,6 +142,7 @@
     "drupal/ds": "^3.1",
     "drupal/editor_advanced_link": "^1.4",
     "drupal/editor_file": "^1.2",
+    "drupal/edw_healthcheck": "^1.6",
     "drupal/entity_print": "^2.1",
     "drupal/entity_reference_revisions": "^1.5",
     "drupal/facets": "^1.1",
