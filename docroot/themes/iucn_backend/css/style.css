@@ -427,6 +427,20 @@
 .edit-paragraph-form-modal .paragraph-form .form-composite legend {
   order: -1;
 }
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-select .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .form-data,
+.add-paragraph-form-modal .paragraph-form .form-composite .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-composite .form-data {
+  min-width: 0;
+}
 .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
 .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
 .add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
@@ -442,6 +456,38 @@
   min-width: 0;
   max-width: 100%;
   width: auto !important;
+}
+@media (min-width: 992px) {
+  .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-composite .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
+    min-width: 200px;
+  }
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop {
+  width: 100%;
+  border-top: 1px solid #aaa;
+  min-width: 200px;
 }
 .add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
 .edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,

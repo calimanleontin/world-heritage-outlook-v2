@@ -172,11 +172,24 @@
     .label, label, legend {
       order: -1;
     }
+    .form-data {
+      min-width: 0;
+    }
 
     .chosen-container {
       min-width: 0;
       max-width: 100%;
       width: auto !important;
+
+      @media (min-width: 992px) {
+        min-width: 200px;
+      }
+
+      .chosen-drop {
+        width: 100%;
+        border-top: 1px solid #aaa;
+        min-width: 200px;
+      }
     }
 
     // // Nesting
