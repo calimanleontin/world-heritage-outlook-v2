@@ -112,6 +112,21 @@
           "type" : "zip"
         }
       }
+    },
+    {
+      "type"    : "package",
+      "package" : {
+        "name"    : "webspellchecker/ckeditor-plugin-scayt",
+        "version" : "5.3.2.0",
+        "type"    : "drupal-library",
+        "dist"    : {
+          "url"  : "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+          "type" : "zip"
+        },
+        "require": {
+          "composer/installers": "^1.2.0"
+        }
+      }
     }
   ],
   "require": {
@@ -217,7 +232,8 @@
     "kenwheeler/slick": "^1.6",
     "phpmailer/phpmailer": "^6.0",
     "webflo/drupal-finder": "^1.1",
-    "webmozart/path-util": "^2.3"
+    "webmozart/path-util": "^2.3",
+    "webspellchecker/ckeditor-plugin-scayt": "^5.3"
   },
   "require-dev": {
     "consolidation/robo": "~1",

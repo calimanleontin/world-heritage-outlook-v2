@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c675926007a8e83faa0452e104eb96b",
+    "content-hash": "e0dc3efb4decf0f317ce26d625bfcc46",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -12672,6 +12672,25 @@
             ],
             "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
             "time": "2015-12-17T08:42:14+00:00"
+        },
+        {
+            "name": "webspellchecker/ckeditor-plugin-scayt",
+            "version": "5.3.2.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "^1.2.0"
+            },
+            "type": "drupal-library",
+            "extra": {
+                "patches_applied": {
+                    "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
+                }
+            }
         },
         {
             "name": "zendframework/zend-diactoros",
