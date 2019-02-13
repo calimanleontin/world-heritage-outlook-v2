@@ -9,6 +9,7 @@ $databases['default']['default'] = array (
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
+$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
 $settings['hash_salt'] = 'super-secret-hash-salt';
 $settings['install_profile'] = 'minimal';
 $config_directories['sync'] = realpath(DRUPAL_ROOT . '/../config/default');
