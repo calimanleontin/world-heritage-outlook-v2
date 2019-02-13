@@ -1,20 +1,12 @@
 check:
   disabled_extensions: false
-<<<<<<< HEAD
   interval_days: 7
-=======
-  interval_days: 1
->>>>>>> c76fe25e2... refs #5887 - Enabled update (drupal core) module
 fetch:
   url: ''
   max_attempts: 2
   timeout: 30
 notification:
   emails: {  }
-<<<<<<< HEAD
   threshold: security
-=======
-  threshold: all
->>>>>>> c76fe25e2... refs #5887 - Enabled update (drupal core) module
 _core:
   default_config_hash: 2QzULf0zovJQx3J06Y9rufzzfi-CY2CTTlEfJJh2Qyw
