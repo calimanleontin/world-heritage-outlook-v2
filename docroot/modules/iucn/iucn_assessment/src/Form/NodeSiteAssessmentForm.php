@@ -331,7 +331,7 @@ class NodeSiteAssessmentForm {
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
     $node = $form_state->getFormObject()->getEntity();
     if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')[0]['value'])) {
-      $form_state->setErrorByName('field_as_benefits', t('Summary of benefits field is required'));
+      $form_state->setErrorByName('field_as_benefits_summary', t('Summary of benefits field is required'));
     }
   }
 

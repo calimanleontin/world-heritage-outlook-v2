@@ -695,7 +695,6 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
       $element['#attributes']['maxlength'] = 2000;
       $element['#attributes']['maxDisplayLimit'] = 200;
       $element['#attributes']['blockPaste'] = 1;
-      $element['#attributes']['class'] = array_merge($element['#attributes']['class'], $extraCssClasses);
       $element['#attributes']['class'][] = 'maxlength_js_enforce';
       $element['#attributes']['class'][] = 'maxlength_js_truncate_html';
       $element['#attributes']['maxlength_js_label'][] = $maxlengthLabel;
