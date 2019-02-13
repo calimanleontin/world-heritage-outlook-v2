@@ -14498,6 +14498,27 @@
         "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths."
     },
     {
+        "name": "webspellchecker/ckeditor-plugin-scayt",
+        "version": "5.3.2.0",
+        "version_normalized": "5.3.2.0",
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+            "reference": null,
+            "shasum": null
+        },
+        "require": {
+            "composer/installers": "^1.2.0"
+        },
+        "type": "drupal-library",
+        "extra": {
+            "patches_applied": {
+                "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
+            }
+        },
+        "installation-source": "dist"
+    },
+    {
         "name": "zendframework/zend-diactoros",
         "version": "1.8.6",
         "version_normalized": "1.8.6.0",

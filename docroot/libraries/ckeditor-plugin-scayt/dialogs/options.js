@@ -675,8 +675,9 @@ CKEDITOR.dialog.add( 'scaytDialog', function( editor ) {
 				scayt_instance =  editor.scayt,
 				scaytOptions = dialog.getContentElement("options", "scaytOptions"),
 				changedOptions = self.getChangedOption.call(dialog);
-
-			scayt_instance.commitOption({ changedOptions: changedOptions });
+      for (var instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].scayt.commitOption({changedOptions: changedOptions});
+      }
 		},
 		toggleDictionaryButtons: function(exist) {
 			var existance = this.getContentElement("dictionaries", "existDic").getElement().getParent(),
@@ -707,6 +708,10 @@ CKEDITOR.dialog.add( 'scaytDialog', function( editor ) {
 
 			if(languageModelState.isChanged()) {
 				changedOption[languageModelState.id] = editor.config.scayt_sLang = languageModelState.currentLang = languageModelState.newLang;
+        jQuery.cookie("scayt_sLang", languageModelState.newLang, {
+          expires: 365,
+          path: '/'
+        });
 			}
 
 			return changedOption;

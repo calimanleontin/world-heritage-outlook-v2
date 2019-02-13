@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "23bb9cfd7e72b97233abf82522eddad7",
+    "content-hash": "e0dc3efb4decf0f317ce26d625bfcc46",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -2551,6 +2551,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Error: Unsupported operand types during providers JSON discovery": "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -12622,6 +12625,25 @@
             ],
             "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
             "time": "2015-12-17T08:42:14+00:00"
+        },
+        {
+            "name": "webspellchecker/ckeditor-plugin-scayt",
+            "version": "5.3.2.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "require": {
+                "composer/installers": "^1.2.0"
+            },
+            "type": "drupal-library",
+            "extra": {
+                "patches_applied": {
+                    "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
+                }
+            }
         },
         {
             "name": "zendframework/zend-diactoros",

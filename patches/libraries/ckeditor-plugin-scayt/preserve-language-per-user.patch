@@ -1,0 +1,41 @@
+diff --git a/dialogs/options.js b/dialogs/options.js
+index c5b7209..f742a1a 100644
+--- a/dialogs/options.js
++++ b/dialogs/options.js
+@@ -675,8 +675,9 @@ CKEDITOR.dialog.add( 'scaytDialog', function( editor ) {
+ 				scayt_instance =  editor.scayt,
+ 				scaytOptions = dialog.getContentElement("options", "scaytOptions"),
+ 				changedOptions = self.getChangedOption.call(dialog);
+-
+-			scayt_instance.commitOption({ changedOptions: changedOptions });
++      for (var instance in CKEDITOR.instances) {
++        CKEDITOR.instances[instance].scayt.commitOption({changedOptions: changedOptions});
++      }
+ 		},
+ 		toggleDictionaryButtons: function(exist) {
+ 			var existance = this.getContentElement("dictionaries", "existDic").getElement().getParent(),
+@@ -707,6 +708,10 @@ CKEDITOR.dialog.add( 'scaytDialog', function( editor ) {
+
+ 			if(languageModelState.isChanged()) {
+ 				changedOption[languageModelState.id] = editor.config.scayt_sLang = languageModelState.currentLang = languageModelState.newLang;
++        jQuery.cookie("scayt_sLang", languageModelState.newLang, {
++          expires: 365,
++          path: '/'
++        });
+ 			}
+
+ 			return changedOption;
+diff --git a/plugin.js b/plugin.js
+index 8f5a623..587150c 100755
+--- a/plugin.js
++++ b/plugin.js
+@@ -589,6 +589,9 @@ CKEDITOR.plugins.add('scayt', {
+ 			editor.config.scayt_contextMenuItemsOrder = 'suggest|moresuggest|control';
+ 		}
+
++    if (jQuery.cookie('scayt_sLang')) {
++      editor.config.scayt_sLang = jQuery.cookie('scayt_sLang');
++    }
+ 		if(!editor.config.scayt_sLang) {
+ 			editor.config.scayt_sLang = 'en_US';
+ 		}

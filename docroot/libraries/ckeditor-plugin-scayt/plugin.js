@@ -9,11 +9,6 @@ CKEDITOR.plugins.add('scayt', {
 	tabToOpen : null,
 	dialogName: 'scaytDialog',
 	onLoad: function(editor){
-		/*
-			Create timestamp for unique url. Timestamp was created once when plugin loaded
-		*/
-		CKEDITOR.plugins.scayt.onLoadTimestamp = new Date().getTime();
-
 		// Append skin specific stylesheet fo moono-lisa skin.
 		if ( ( CKEDITOR.skinName || editor.config.skin ) == 'moono-lisa' ) {
 			CKEDITOR.document.appendStyleSheet( this.path + 'skins/' + CKEDITOR.skin.name + '/scayt.css' );
@@ -594,6 +589,9 @@ CKEDITOR.plugins.add('scayt', {
 			editor.config.scayt_contextMenuItemsOrder = 'suggest|moresuggest|control';
 		}
 
+    if (jQuery.cookie('scayt_sLang')) {
+      editor.config.scayt_sLang = jQuery.cookie('scayt_sLang');
+    }
 		if(!editor.config.scayt_sLang) {
 			editor.config.scayt_sLang = 'en_US';
 		}
@@ -748,6 +746,14 @@ CKEDITOR.plugins.add('scayt', {
 			};
 
 			editor.config.scayt_disableOptionsStorage = makeOptionsToStorage( userOptions );
+		}
+
+		if (editor.config.scayt_disableCache && typeof editor.config.scayt_disableCache !== 'boolean') {
+			editor.config.scayt_disableCache = false;
+		}
+
+		if (editor.config.scayt_cacheSize === undefined || typeof editor.config.scayt_cacheSize != 'number' || editor.config.scayt_cacheSize < 1) {
+			editor.config.scayt_cacheSize = 4000;
 		}
 	},
 	addRule: function(editor) {
@@ -1196,7 +1202,6 @@ CKEDITOR.plugins.scayt = {
 			})()
 		}
 	],
-	onLoadTimestamp : '',
 	state: {
 		scayt: {},
 		grayt: {}
@@ -1303,6 +1308,8 @@ CKEDITOR.plugins.scayt = {
 				multiLanguageMode 	: _editor.config.scayt_multiLanguageMode,
 				multiLanguageStyles	: _editor.config.scayt_multiLanguageStyles,
 				graytAutoStartup	: _editor.config.grayt_autoStartup,
+				disableCache		: _editor.config.scayt_disableCache,
+				cacheSize			: _editor.config.scayt_cacheSize,
 				charsToObserve		: plugin.charsToObserve
 			};
 
@@ -1446,7 +1453,7 @@ CKEDITOR.plugins.scayt = {
 		// when callback executing is delayed for a few milliseconds, and scayt can be created twise
 		// on one instance
 		if (typeof window.SCAYT === 'undefined' || typeof window.SCAYT.CKSCAYT !== 'function') {
-			scaytUrl = editor.config.scayt_srcUrl + '?' + this.onLoadTimestamp;
+			scaytUrl = editor.config.scayt_srcUrl;
 			CKEDITOR.scriptLoader.load(scaytUrl, function(success) {
 				if (success) {
 					runCallback();
@@ -2064,5 +2071,32 @@ CKEDITOR.on('scaytReady', function() {
  *		};
  *
  * @cfg {Object} [scayt_multiLanguageStyles = {}]
+ * @member CKEDITOR.config
+ */
+
+ /**
+ * The parameter disables cache for storing the most popular correct and misspelled words with their suggestions.
+ * It is aimed at speeding up the proofreading process.
+ *
+ * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ *
+ *		// disable cache.
+ *		config.scayt_disableCache = true;
+ *
+ * @cfg {Boolean} [scayt_disableCache=false]
+ * @member CKEDITOR.config
+ */
+
+ /**
+ * The parameter sets the max cache size that will be used for storing the most popular correct and misspelled words with their suggestions.
+ * It is aimed at speeding up the proofreading process.
+ * Note: It is recommended to change this value wisely as it might lead to exceeding the browser local storage.
+ *
+ * Read more in the [documentation](#!/guide/dev_spellcheck) and see the [SDK sample](http://sdk.ckeditor.com/samples/spellchecker.html).
+ *
+ *		// set cache size.
+ *		config.scayt_cacheSize = 2000;
+ *
+ * @cfg {Number} [scayt_cacheSize=4000]
  * @member CKEDITOR.config
  */
