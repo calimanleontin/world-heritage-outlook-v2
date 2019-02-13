@@ -172,14 +172,16 @@
     .label, label, legend {
       order: -1;
     }
-    .form-data {
+
+    > .form-data,
+    > .form-text {
       min-width: 0;
     }
 
     .chosen-container {
       min-width: 0;
       max-width: 100%;
-      width: auto !important;
+      width: 100% !important;
 
       @media (min-width: 992px) {
         min-width: 200px;
@@ -191,7 +193,9 @@
         min-width: 200px;
       }
     }
-
+    > .chosen-container {
+      width: auto !important;
+    }
     // // Nesting
     // .form-type-textfield,
     // .form-type-textarea,
