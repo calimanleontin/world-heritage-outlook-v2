@@ -2,15 +2,12 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
-id: node.field_coordinate_x
-field_name: field_coordinate_x
-entity_type: node
-type: string
-settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+    - user
+id: user.field_user_agreement_disabled
+field_name: field_user_agreement_disabled
+entity_type: user
+type: boolean
+settings: {  }
 module: core
 locked: false
 cardinality: 1
