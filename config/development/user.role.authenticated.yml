@@ -16,7 +16,6 @@ permissions:
   - 'access devel information'
   - 'access files overview'
   - 'access kint'
-  - 'access site in maintenance mode'
   - 'access toolbar'
   - 'create assessment workflow_transition'
   - 'execute php code'

@@ -7,6 +7,7 @@ label: 'Publish content pages'
 weight: 0
 is_admin: null
 permissions:
+  - 'access site in maintenance mode'
   - 'administer nodes'
   - 'create assessment workflow_transition'
   - 'delete any benefit content'

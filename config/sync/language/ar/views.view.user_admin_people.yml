@@ -1,4 +1,5 @@
 label: الأشخاص
+description: 'Find and manage people interacting with your site.'
 display:
   default:
     display_title: الرئيسي
@@ -55,6 +56,7 @@ display:
     display_options:
       menu:
         title: لائحة
+        description: 'Find and manage people interacting with your site.'
       tab_options:
         title: الأشخاص
         description: 'إدارة حسابات المستخدمين والأدوار والصلاحيات.'

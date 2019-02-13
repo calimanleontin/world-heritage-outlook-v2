@@ -7,12 +7,26 @@ display:
           submit_button: Aplicar
           reset_button_label: Restablecer
           exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           expose:
             items_per_page_label: 'Elementos por página'
             items_per_page_options_all_label: '- Todo -'
             offset_label: Desplazamiento
+          tags:
+            previous: '‹ anterior'
+            next: 'siguiente ›'
+            first: '« primero'
+            last: 'última »'
+      fields:
+        title:
+          separator: ', '
+        name:
+          separator: ', '
+        type:
+          separator: ', '
       filters:
         title:
           expose:

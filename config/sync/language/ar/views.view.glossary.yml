@@ -1,3 +1,4 @@
+label: Glossary
 display:
   default:
     display_title: الرئيسي
@@ -24,3 +25,6 @@ display:
     display_title: المرفق
   page_1:
     display_title: الصفحة
+    display_options:
+      menu:
+        title: Glossary
