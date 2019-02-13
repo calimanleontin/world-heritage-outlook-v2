@@ -1,9 +1,9 @@
-uuid: 51ab2665-76b4-41b2-b532-2f4dcff654b6
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.user.user.field_accepted_agreement
+    - field.field.user.user.field_user_agreement_disabled
   module:
     - path
     - user
@@ -40,4 +40,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_accepted_agreement: true
+  field_user_agreement_disabled: true
   langcode: true

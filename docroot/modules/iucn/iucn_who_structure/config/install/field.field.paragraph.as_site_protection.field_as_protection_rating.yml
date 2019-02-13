@@ -1,4 +1,3 @@
-uuid: 8efa8c7f-2c7e-4969-b6c3-d08cf4ec0422
 langcode: en
 status: true
 dependencies:
@@ -18,7 +17,7 @@ id: paragraph.as_site_protection.field_as_protection_rating
 field_name: field_as_protection_rating
 entity_type: paragraph
 bundle: as_site_protection
-label: Rating
+label: Assessment
 description: ''
 required: true
 translatable: false

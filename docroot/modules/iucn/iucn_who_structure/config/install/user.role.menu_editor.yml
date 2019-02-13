@@ -1,4 +1,3 @@
-uuid: ad528c50-8e9b-4198-848a-2a2867cbce09
 langcode: en
 status: true
 dependencies: {  }
@@ -6,7 +5,3 @@ id: menu_editor
 label: 'Menu editor'
 weight: 1
 is_admin: null
-permissions:
-  - 'administer menu'
-  - 'create assessment workflow_transition'
-  - 'translate menu_link_content'

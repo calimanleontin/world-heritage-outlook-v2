@@ -1,4 +1,3 @@
-uuid: 2ff4e438-8529-4e50-8883-3311783dc97d
 langcode: en
 status: true
 dependencies:
@@ -9,6 +8,8 @@ dependencies:
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_bio.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_bio
+  module:
+    - iucn_assessment
 id: paragraph.as_site_value_bio.default
 targetEntityType: paragraph
 bundle: as_site_value_bio
@@ -20,7 +21,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_values_value:
     weight: 0

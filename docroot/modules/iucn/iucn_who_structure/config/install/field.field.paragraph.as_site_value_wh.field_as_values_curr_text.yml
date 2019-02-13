@@ -1,15 +1,22 @@
-uuid: 98ead511-fe84-43d5-9c50-c7c48563e1c7
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_as_values_curr_text
     - paragraphs.paragraphs_type.as_site_value_wh
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_value_wh.field_as_values_curr_text
 field_name: field_as_values_curr_text
 entity_type: paragraph
 bundle: as_site_value_wh
-label: Justification
+label: 'Justification of assessment'
 description: ''
 required: true
 translatable: true
