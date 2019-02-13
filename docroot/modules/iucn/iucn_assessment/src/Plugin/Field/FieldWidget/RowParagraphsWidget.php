@@ -989,10 +989,9 @@ class RowParagraphsWidget extends ParagraphsWidget {
       if (!array_key_exists($summary_field_name, $summary)) {
         $summary[$summary_field_name]['value'] = [];
       }
-
-      $prefix = self::getSummaryPrefix($field_name);
-      if (!empty($prefix) && !empty($value)) {
-        $value = $this->t("$prefix - @value", ['@value' => $value]);
+      $suffix = self::getSummarySuffix($field_name);
+      if (!empty($suffix) && !empty($value)) {
+        $value = $this->t("@value $suffix", ['@value' => $value]);
       }
 
       if ($class) {
@@ -1000,6 +999,18 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
       if ('field_as_threats_extent' == $field_name) {
         $summary[$summary_field_name]['value'][0] .= ' ' . $value;
+      }
+      elseif (!empty($grouped_fields[$field_name]['threats'])) {
+        if ($value) {
+          $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
+        }
+        if ($field_name == 'field_as_species_name') {
+          $value = [];
+          foreach($summary[$summary_field_name]['value'] as $title => $values) {
+            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
+          }
+          $summary[$summary_field_name]['value'] = implode('<br>', $value);
+        }
       }
       elseif (!empty($grouped_fields[$field_name]['benefits'])) {
         if ($value) {
@@ -1158,16 +1169,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'grouped_with' => 'field_as_threats_values_wh',
         'label' => t('WH values'),
       ],
+      'field_as_legality' => [
+        'grouped_with' => 'field_as_legality',
+        'threats' => t('Legality:'),
+        'label' => t(''),
+      ],
       'field_as_resource_use_type' => [
         'grouped_with' => 'field_as_legality',
-        'label' => t('Other information'),
+        'threats' => t('Resource use type:'),
+        'label' => t(''),
       ],
       'field_as_targeted_species' => [
         'grouped_with' => 'field_as_legality',
-        'label' => t('Other information'),
+        'threats' => t('Targeted species:'),
+        'label' => t(''),
       ],
       'field_as_species_name' => [
         'grouped_with' => 'field_as_legality',
+        'threats' => t('Species name:'),
         'label' => t('Other information'),
       ],
       'field_as_threats_extent' => [
@@ -1230,28 +1249,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
   }
 
   /**
-   * Retrieves a prefix that should show up before a paragraph summary value.
+   * Retrieves a suffix that should show up before a paragraph summary value.
    *
    * @param $field
    *   The name of the field.
    *
    * @return mixed|null
-   *   The prefix.
+   *   The suffix.
    */
-  public static function getSummaryPrefix($field) {
-    $prefixes = [
-      'field_as_benefits_hab_trend' => t('Trend'),
-      'field_as_benefits_pollut_trend' => t('Trend'),
-      'field_as_benefits_oex_trend' => t('Trend'),
-      'field_as_benefits_climate_trend' => t('Trend'),
-      'field_as_benefits_invassp_trend' => t('Trend'),
-      'field_as_benefits_hab_level' => t('Impact level'),
-      'field_as_benefits_pollut_level' => t('Impact level'),
-      'field_as_benefits_oex_level' => t('Impact level'),
-      'field_as_benefits_climate_level' => t('Impact level'),
-      'field_as_benefits_invassp_level' => t('Impact level'),
+  public static function getSummarySuffix($field) {
+    $suffixes = [
+      'field_as_benefits_hab_trend' => t('trend'),
+      'field_as_benefits_pollut_trend' => t('trend'),
+      'field_as_benefits_oex_trend' => t('trend'),
+      'field_as_benefits_climate_trend' => t('trend'),
+      'field_as_benefits_invassp_trend' => t('trend'),
+      'field_as_benefits_hab_level' => t('level'),
+      'field_as_benefits_pollut_level' => t('level'),
+      'field_as_benefits_oex_level' => t('level'),
+      'field_as_benefits_climate_level' => t('level'),
     ];
-    return !empty($prefixes[$field]) ? $prefixes[$field] : NULL;
+    return !empty($suffixes[$field]) ? $suffixes[$field] : NULL;
   }
 
   /**

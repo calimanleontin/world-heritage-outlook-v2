@@ -174,3 +174,20 @@
     width: 188px;
     min-width: 188px;
 }
+
+.horizontal-tab-button a strong {
+  &.values,
+  &.threats,
+  &.protection-and-management,
+  &.assessing-values,
+  &.conservation-outlook,
+  &.references {
+    &:after {
+      .form-required();
+    }
+  }
+  &.benefits,
+  &.projects {
+    color: #92d050;
+  }
+}

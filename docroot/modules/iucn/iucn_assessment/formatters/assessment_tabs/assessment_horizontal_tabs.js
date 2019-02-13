@@ -270,7 +270,7 @@
     }
     tab.item = $('<li class="horizontal-tab-button" tabindex="-1"></li>')
       .append(tab.link = $(tag)
-        .append(tab.title = $('<strong></strong>').text(settings.title))
+        .append(tab.title = $('<strong></strong>').addClass(settings.title.trim().toLowerCase().replace(/ /g, '-')).text(settings.title))
       );
 
     if (diff_tabs !== undefined && idAttr in diff_tabs) {

@@ -1251,6 +1251,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   overflow: hidden;
   word-break: break-word;
 }
+.paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
+  overflow: visible;
+}
 .paragraph-diff-row {
   background-color: #fcf8e3 !important;
 }
@@ -1535,12 +1538,13 @@ table.diff-context-wrapper {
   display: inline-block;
   position: relative;
   text-align: left;
+  vertical-align: middle;
 }
 .tooltip .right {
   min-width: 400px;
   top: 50%;
   left: 100%;
-  margin-left: 20px;
+  margin-left: 8px;
   transform: translate(0, -50%);
   padding: 10px 20px;
   color: #444444;
@@ -1553,6 +1557,9 @@ table.diff-context-wrapper {
   box-sizing: border-box;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: none;
+}
+.tooltip .right:hover {
+  display: block;
 }
 .tooltip .right i {
   position: absolute;
@@ -1691,5 +1698,25 @@ table.diff-context-wrapper {
 .paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field--name-field-as-threats-in .form-item label {
   width: 188px;
   min-width: 188px;
+}
+.horizontal-tab-button a strong.values:after,
+.horizontal-tab-button a strong.threats:after,
+.horizontal-tab-button a strong.protection-and-management:after,
+.horizontal-tab-button a strong.assessing-values:after,
+.horizontal-tab-button a strong.conservation-outlook:after,
+.horizontal-tab-button a strong.references:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.horizontal-tab-button a strong.benefits,
+.horizontal-tab-button a strong.projects {
+  color: #92d050;
 }
 /*# sourceMappingURL=style.css.map */
