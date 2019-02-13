@@ -135,6 +135,7 @@ class GeofieldGoogleStaticMapFormatter extends FormatterBase implements Containe
         ])),
       ]),
     ];
+
     $elements['width'] = [
       '#type' => 'number',
       '#title' => $this->t('Map width'),
@@ -145,6 +146,7 @@ class GeofieldGoogleStaticMapFormatter extends FormatterBase implements Containe
       '#description' => $this->t('The width of the map, in pixels.'),
       '#required' => TRUE,
     ];
+
     $elements['height'] = [
       '#type' => 'number',
       '#title' => $this->t('Map height'),
@@ -155,6 +157,7 @@ class GeofieldGoogleStaticMapFormatter extends FormatterBase implements Containe
       '#description' => $this->t('The height of the map, in pixels.'),
       '#required' => TRUE,
     ];
+
     $elements['scale'] = [
       '#type' => 'select',
       '#title' => $this->t('Scale'),
