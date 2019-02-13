@@ -15,6 +15,8 @@ Integration;
 *   implement advanced front-end Google Maps with Marker Icon & Infowindow 
 advanced customizations, custom Google Map Styles and Marker Clustering 
 capabilities;
+*   customize Map Geometries properties (Lines & Polylines, Polygons, 
+Multipolygons, etc.), based on Google Maps Polygons APIs
 
 * * *
 

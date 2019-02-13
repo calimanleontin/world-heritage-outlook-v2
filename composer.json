@@ -144,7 +144,7 @@
     "drupal/core": "8.6.*",
     "drupal/crop": "^1.5",
     "drupal/csv_serialization": "^1.4",
-    "drupal/devel": "^1.0@RC",
+    "drupal/devel": "^2",
     "drupal/diff": "^1.0@RC",
     "drupal/disable_field": "^1.8",
     "drupal/display_field_copy": "^1.0",
