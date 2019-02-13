@@ -8391,6 +8391,11 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "2789531": "patches/views_data_export/2789531-123.patch",
+                "2789531-123": "patches/views_data_export/2789531-123-fixed-count-query.patch",
+                "2945252": "patches/views_data_export/2945252-5.patch"
             }
         },
         "installation-source": "dist",
