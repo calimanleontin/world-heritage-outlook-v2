@@ -1,4 +1,3 @@
-uuid: 9efc1919-b007-4335-bfb8-b3d7b13e20b9
 langcode: en
 status: true
 dependencies: {  }
@@ -6,34 +5,3 @@ id: edit_world_heritage_site_assessments
 label: 'Edit World Heritage site assessments'
 weight: -8
 is_admin: null
-permissions:
-  - 'create assessment workflow_transition'
-  - 'create content translations'
-  - 'create content unpublished'
-  - 'create site_assessment content'
-  - 'delete any site_assessment content'
-  - 'delete own site_assessment content'
-  - 'edit any site_assessment content'
-  - 'edit own site_assessment content'
-  - 'revert site_assessment revisions'
-  - 'translate site_assessment node'
-  - 'update content translations'
-  - 'use assessment transition approved_approved'
-  - 'use assessment transition approved_published'
-  - 'use assessment transition new_new'
-  - 'use assessment transition new_under_assessment'
-  - 'use assessment transition new_under_evaluation'
-  - 'use assessment transition published_published'
-  - 'use assessment transition ready_for_review_ready_for_review'
-  - 'use assessment transition ready_for_review_under_review'
-  - 'use assessment transition reviewed_reviewed'
-  - 'use assessment transition reviewed_under_comparison'
-  - 'use assessment transition under_assessment_ready_for_review'
-  - 'use assessment transition under_assessment_under_assessment'
-  - 'use assessment transition under_comparison_approved'
-  - 'use assessment transition under_comparison_under_comparison'
-  - 'use assessment transition under_evaluation_under_evaluation'
-  - 'use assessment transition under_review_reviewed'
-  - 'use assessment transition under_review_under_comparison'
-  - 'use assessment transition under_review_under_review'
-  - 'view site_assessment revisions'

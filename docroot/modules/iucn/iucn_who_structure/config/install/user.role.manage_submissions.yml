@@ -1,4 +1,3 @@
-uuid: f1a45441-4a1d-411e-8851-47b80961d1a0
 langcode: en
 status: true
 dependencies: {  }
@@ -6,9 +5,3 @@ id: manage_submissions
 label: 'Webforms manager'
 weight: 4
 is_admin: null
-permissions:
-  - 'access webform overview'
-  - 'access webform submission log'
-  - 'administer webform submission'
-  - 'create assessment workflow_transition'
-  - 'delete any webform submission'

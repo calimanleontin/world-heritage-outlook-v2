@@ -1,9 +1,6 @@
-uuid: 3b0d956a-a923-48bc-9c66-05db5f1db1f5
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: JcavejT08VViTl68t8GwH-G74yWhGC8Tmt8KSrZAkMk
 name: 'Conservation rating'
 vid: conservation_rating
 description: 'Overall site conservation rating'

@@ -1,4 +1,3 @@
-uuid: b0f09010-6027-4ad4-a274-73d9c5ee753d
 langcode: en
 status: true
 dependencies:
@@ -18,6 +17,30 @@ dependencies:
     - image
     - text
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_publications_full
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - node_title
+        - field_author
+        - body
+        - field_publication_year
+      right_1:
+        - field_publication_image
+      right_2:
+        - field_file
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
 id: node.publication.default
 targetEntityType: node
 bundle: publication

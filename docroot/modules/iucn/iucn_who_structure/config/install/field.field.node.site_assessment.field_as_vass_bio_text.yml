@@ -1,4 +1,3 @@
-uuid: f341742a-290e-44ec-b971-7180ac791746
 langcode: en
 status: true
 dependencies:
@@ -17,7 +16,7 @@ id: node.site_assessment.field_as_vass_bio_text
 field_name: field_as_vass_bio_text
 entity_type: node
 bundle: site_assessment
-label: 'Assessment of the current state and trend of other important biodiversity values (if applicable)'
+label: 'Assessment of the current state and trend of other important biodiversity values'
 description: ''
 required: false
 translatable: true
