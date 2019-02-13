@@ -1,6 +1,0 @@
-project:
-  sync:
-    sql:
-      url: https://path/to/dump
-      username: username
-      password: password

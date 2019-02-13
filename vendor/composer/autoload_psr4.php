@@ -64,6 +64,7 @@ return array(
     'Grasmash\\Expander\\' => array($vendorDir . '/grasmash/expander/src'),
     'Goutte\\' => array($vendorDir . '/fabpot/goutte/Goutte'),
     'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src/FontLib'),
+    'EauDeWeb\\Robo\\Task\\Curl\\' => array($vendorDir . '/eaudeweb/robo-curl/src'),
     'EauDeWeb\\' => array($vendorDir . '/eaudeweb/heavy-lifter/src'),
     'Drush\\Internal\\' => array($vendorDir . '/drush/drush/internal-copy'),
     'Drush\\' => array($vendorDir . '/drush/drush/src'),
