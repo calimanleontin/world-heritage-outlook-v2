@@ -139,7 +139,7 @@ class NodeSiteAssessmentStateChangeForm {
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
       unset($form['warning']);
-      unset($form['actions']);
+      $form['actions']['#access'] = FALSE;
     }
   }
 
