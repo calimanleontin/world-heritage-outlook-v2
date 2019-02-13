@@ -14,6 +14,14 @@ display:
           expose:
             items_per_page_options_all_label: '- الكل -'
       fields:
+        timestamp:
+          label: 'التوقيت الزمني'
+        field_name:
+          label: 'اسم الحقل'
+        uid:
+          label: 'معرف المستخدم'
+        comment:
+          label: 'رسالة السجل'
         operations:
           label: عمليات
       arguments:

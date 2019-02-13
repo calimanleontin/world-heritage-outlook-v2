@@ -1,12 +1,9 @@
-uuid: f04f8b53-c2e3-4c07-89ff-af8730ab5711
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_css_identifier
     - taxonomy.vocabulary.conservation_rating
-_core:
-  default_config_hash: buQB3yivfPNwbEsOGBEiZ8IYbkp3IYxX5YsOt4UoAyA
 id: taxonomy_term.conservation_rating.field_css_identifier
 field_name: field_css_identifier
 entity_type: taxonomy_term

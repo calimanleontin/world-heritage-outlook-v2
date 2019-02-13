@@ -1,4 +1,3 @@
-uuid: d1d4fbaf-9cb7-4faa-8fb4-6a1225128c54
 langcode: en
 status: true
 dependencies:
@@ -17,7 +16,7 @@ id: paragraph.as_site_protection.field_as_description
 field_name: field_as_description
 entity_type: paragraph
 bundle: as_site_protection
-label: Justification
+label: 'Justification of assessment'
 description: ''
 required: true
 translatable: true

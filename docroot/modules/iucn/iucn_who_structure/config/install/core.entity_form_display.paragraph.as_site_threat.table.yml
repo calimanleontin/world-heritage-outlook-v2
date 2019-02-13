@@ -1,4 +1,3 @@
-uuid: 7eea083c-3519-47cf-839a-ed1bcb2cb3bc
 langcode: en
 status: true
 dependencies:
@@ -27,7 +26,7 @@ bundle: as_site_threat
 mode: table
 content:
   field_as_description:
-    weight: 6
+    weight: 7
     settings:
       rows: 5
       placeholder: ''
@@ -48,7 +47,7 @@ content:
     third_party_settings: {  }
   field_as_species_name:
     type: string_textfield
-    weight: 11
+    weight: 12
     region: content
     settings:
       size: 60
@@ -72,7 +71,7 @@ content:
     type: assessment_options_buttons
     region: content
   field_as_threats_extent:
-    weight: 7
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -92,7 +91,7 @@ content:
     type: boolean_checkbox
     region: content
   field_as_threats_rating:
-    weight: 12
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select

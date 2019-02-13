@@ -5,26 +5,49 @@ core: 8.x
 package: IUCN
 dependencies:
   - blazy
+  - block
   - content_translation
+  - crop
   - datetime
+  - diff
+  - disable_field
   - ds
   - entity_reference_revisions
+  - facets
   - field
   - field_group
+  - file
   - geofield
   - image
+  - image_effects
   - image_widget_crop
-  - iucn_site
   - iucn_assessment
+  - iucn_pdf
+  - iucn_site
+  - iucn_who_core
   - language
+  - link
+  - menu_link_content
   - menu_ui
   - metatag
   - node
   - options
   - paragraphs
   - path
+  - rest
+  - search_api
+  - search_api_db
+  - search_api_sorts
+  - search_autocomplete
+  - serialization
   - smart_trim
   - string_field_formatter
+  - system
   - taxonomy
   - text
   - user
+  - views
+  - views_accordion
+  - views_data_export
+  - workflow
+  - xls_serialization
