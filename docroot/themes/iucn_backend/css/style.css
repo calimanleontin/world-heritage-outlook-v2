@@ -90,13 +90,6 @@
     grid-template-columns: 150px auto;
   }
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter {
-  order: 1;
-}
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
   display: block;
@@ -105,6 +98,13 @@
   border-bottom: 1px solid #e6e4df;
   border-right: 1px solid #e6e4df;
   margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter {
+  order: 1;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
@@ -427,6 +427,32 @@
 .edit-paragraph-form-modal .paragraph-form .form-composite legend {
   order: -1;
 }
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-composite > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-composite > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .form-text {
+  min-width: 0;
+}
 .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
 .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
 .add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
@@ -441,6 +467,52 @@
 .edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
   min-width: 0;
   max-width: 100%;
+  width: 100% !important;
+}
+@media (min-width: 992px) {
+  .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-composite .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
+    min-width: 200px;
+  }
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop {
+  width: 100%;
+  border-top: 1px solid #aaa;
+  min-width: 200px;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-composite > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .chosen-container {
   width: auto !important;
 }
 .add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
@@ -1043,6 +1115,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   margin-left: -5px;
   margin-top: -5px;
 }
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions input[type="submit"]:first-child,
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions > .button {
   margin-left: 5px;
   margin-top: 5px;
@@ -1654,23 +1727,33 @@ table.diff-context-wrapper {
 .js-form-item-field-as-threats-categories-options-groups .chosen-container .chosen-results {
   max-height: fit-content;
 }
-.paragraph-summary-component.level-good {
+.paragraph-summary-component.level-good,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div.level-good,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.level-good {
   background-color: #92d050;
   padding: 10px 12px;
 }
-.paragraph-summary-component.level-low-concern {
+.paragraph-summary-component.level-low-concern,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div.level-low-concern,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.level-low-concern {
   background-color: #acd373;
   padding: 10px 12px;
 }
-.paragraph-summary-component.level-high-concern {
+.paragraph-summary-component.level-high-concern,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div.level-high-concern,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.level-high-concern {
   background-color: #ffc000;
   padding: 10px 12px;
 }
-.paragraph-summary-component.level-critical {
+.paragraph-summary-component.level-critical,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div.level-critical,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.level-critical {
   background-color: #ff0000;
   padding: 10px 12px;
 }
-.paragraph-summary-component.level-data-deficient {
+.paragraph-summary-component.level-data-deficient,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div.level-data-deficient,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.level-data-deficient {
   background-color: none;
   padding: 10px 12px;
 }
