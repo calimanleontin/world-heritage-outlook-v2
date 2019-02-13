@@ -10,6 +10,7 @@ permissions:
   - 'access content'
   - 'access contextual links'
   - 'access in-place editing'
+  - 'access site in maintenance mode'
   - 'access site reports'
   - 'access user profiles'
   - 'administer blocks'

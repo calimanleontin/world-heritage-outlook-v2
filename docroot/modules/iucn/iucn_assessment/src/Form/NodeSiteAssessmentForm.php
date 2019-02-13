@@ -296,9 +296,24 @@ class NodeSiteAssessmentForm {
     }
     elseif ($tab == 'assessing-values') {
       if (!empty($node->field_as_values_bio->getValue())) {
-        $required_fields = ['field_as_vass_bio_text', 'field_as_vass_bio_state', 'field_as_vass_bio_trend'];
+        $required_fields = [
+          'field_as_vass_bio_text',
+          'field_as_vass_bio_state',
+          'field_as_vass_bio_trend',
+        ];
         foreach ($required_fields as $field) {
-          $form[$field]['widget'][0]['value']['#required'] = TRUE;
+          if (!empty($form[$field]['widget'][0]['value'])) {
+            $form[$field]['widget'][0]['value']['#required'] = TRUE;
+          }
+          elseif (!empty($form[$field]['widget'][0])) {
+            $form[$field]['widget'][0]['#required'] = TRUE;
+          }
+          elseif (!empty($form[$field]['widget'])) {
+            $form[$field]['widget']['#required'] = TRUE;
+          }
+          else {
+            $form[$field]['#required'] = TRUE;
+          }
         }
       }
     }
@@ -315,8 +330,8 @@ class NodeSiteAssessmentForm {
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
     $node = $form_state->getFormObject()->getEntity();
-    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
-      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits field is required'));
+    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')[0]['value'])) {
+      $form_state->setErrorByName('field_as_benefits_summary', t('Summary of benefits field is required'));
     }
   }
 

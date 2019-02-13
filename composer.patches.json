@@ -45,6 +45,9 @@
     },
     "drupal/bootstrap": {
       "Error: Unsupported operand types during providers JSON discovery" : "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
+    },
+    "webspellchecker/ckeditor-plugin-scayt": {
+      "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
     }
   }
 }

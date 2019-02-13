@@ -4,15 +4,9 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
-use Drupal\user\Entity\Role;
-use Drupal\user\Entity\User;
-use Drupal\workflow\Entity\WorkflowState;
-use Drupal\workflow\Entity\WorkflowTransition;
 use Drupal\paragraphs\Entity\Paragraph;
 
 class NodeSiteAssessmentStateChangeForm {
@@ -87,9 +81,8 @@ class NodeSiteAssessmentStateChangeForm {
     ]);
   }
 
-  public static function validateNode($form, NodeInterface $node) {
+  public static function validateNode(&$form, NodeInterface $node) {
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
-    $validation_error = FALSE;
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
       $tab_has_errors = FALSE;
       if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
@@ -100,11 +93,30 @@ class NodeSiteAssessmentStateChangeForm {
           foreach ($node->{$fieldName} as &$value) {
             $target = $value->getValue();
             $paragraph = Paragraph::load($target['target_id']);
+
+            if (in_array($fieldName, ['field_as_threats_current', 'field_as_threats_potential'])) {
+              static::validateThreat($form, $paragraph);
+            }
+
+            if ($fieldName == 'field_as_benefits') {
+              static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits!');
+              if (empty($node->field_as_benefits_summary->value)) {
+                static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+                  '@field' => t('Summary of benefits'),
+                  '@tab' => t('Benefits'),
+                ]), 'error', $fieldName);
+              }
+            }
+
+            if ($fieldName == 'field_as_values_bio') {
+              static::validateAssessingValues($form, $node);
+            }
+
             $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
             foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
               if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $tab_has_errors = $validation_error = TRUE;
-                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in "@label" table. Please fill it.', [
+                $tab_has_errors = TRUE;
+                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
                   '@field' => $paragraphFieldSettings->getLabel(),
                   '@label' => $fieldSettings->getLabel(),
                 ]), 'error');
@@ -118,17 +130,133 @@ class NodeSiteAssessmentStateChangeForm {
         }
       }
       else {
-        $validation_error = TRUE;
-        self::addStatusMessage($form, t('<b>@label</b> field is required. Please fill it.', ['@label' => $fieldSettings->getLabel()]), 'error');
+        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => $fieldSettings->getLabel()]), 'error');
       }
     }
 
-    if (!empty($validation_error)) {
+    if (!empty($form['error'])) {
       unset($form['field_coordinator']);
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
       unset($form['warning']);
-      unset($form['actions']);
+      $form['actions']['#access'] = FALSE;
+    }
+  }
+
+  private static function validateThreat(&$form, $item) {
+    if (empty($item->field_as_threats_out->value) &&
+      empty($item->field_as_threats_in->value)) {
+      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> in <b>Threats</b> tab.'), 'error');
+    }
+
+    if (!empty($item->field_as_threats_in->value) &&
+      $item->field_as_threats_extent->isEmpty()) {
+      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        '@field' => t('Threat extent'),
+        '@tab' => t('Threats'),
+      ]), 'error');
+    }
+
+    foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $key => $tids) {
+      if ($item->$key->isEmpty() && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
+        static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+          '@field' => $item->getFieldDefinition($key)->getLabel(),
+          '@tab' => t('Threats'),
+        ]), 'error');
+      }
+    }
+
+    $affectedValues = FALSE;
+    foreach (ParagraphAsSiteThreatForm::AFFECTED_VALUES_FIELDS as $affectedField) {
+      $affectedValues = $affectedValues || !$item->$affectedField->isEmpty();
+    }
+
+    if (!$affectedValues) {
+      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        '@field' => t('Affected values'),
+        '@tab' => t('Threats'),
+      ]), 'error', 'field_affected_values');
+    }
+
+    static::validateCategories($form, $item->field_as_threats_categories, 'Threats');
+  }
+
+  public static function validateBenefit(&$form, $node) {
+    foreach ($node->field_as_benefits as $item) {
+      static::validateCategories($form, $item->entity->field_as_benefits_category, 'Benefits');
+    }
+
+    if ($node->field_as_benefits->getValue() && empty($node->field_as_benefits_summary->value)) {
+      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        '@field' => t('Summary of benefits'),
+        '@tab' => t('Benefits'),
+      ]), 'error');
+    }
+  }
+
+  public static function validateAssessingValues(&$form, $node) {
+    if (empty($node->field_as_values_bio->getValue())) {
+      return;
+    }
+
+    $required_fields = [
+      'field_as_vass_bio_text',
+      'field_as_vass_bio_state',
+      'field_as_vass_bio_trend',
+    ];
+
+    $requiredLabels = [];
+    foreach ($required_fields as $required_field) {
+      if ($node->$required_field->isEmpty()) {
+        $requiredLabels[] = $node->getFieldDefinition($required_field)->getLabel();
+      }
+    }
+
+    if (!empty($requiredLabels)) {
+      $labels = implode(', ', $requiredLabels);
+      $message = \Drupal::translation()->formatPlural(count($requiredLabels),
+        "<b>@field</b> field is required in <b>@tab</b> tab.",
+        "<b>@field</b> fields are required in <b>@tab</b> tab.",
+        ['@field' => $labels, '@tab' => t('Assessing values')]);
+      static::addStatusMessage( $form, $message, 'error', 'field_as_values_bio');
+    }
+  }
+
+  private static function validateCategories(&$form, $items, $tab) {
+    $mainCategory = FALSE;
+    $skipSubcategories = FALSE;
+    $subCategories = [];
+    foreach ($items as $category) {
+      $parent = array_column($category->entity->parent->getValue(), 'target_id');
+      $parent = reset($parent);
+      if (empty($parent)) {
+        $mainCategory = $category->entity->id();
+        $possibleSubCategories = \Drupal::entityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadChildren($mainCategory);
+        if (empty($possibleSubCategories)) {
+          $skipSubcategories = TRUE;
+          break;
+        }
+        continue;
+      }
+
+      $subCategories[] = $category->entity->id();
+      $mainCategory = $category->entity->parent->entity->id();
+    }
+
+    if (empty($mainCategory)) {
+      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        '@field' => t('Category'),
+        '@tab' => $tab,
+      ]), 'error');
+    }
+
+    if (empty($subCategories) && !$skipSubcategories) {
+      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        '@field' => t('Subcategory'),
+        '@tab' => $tab,
+      ]), 'error');
     }
   }
 
@@ -152,16 +280,24 @@ class NodeSiteAssessmentStateChangeForm {
     return !empty(array_diff($newValue, $originalValue));
   }
 
-  public static function addStatusMessage(&$form, $message, $type = 'warning') {
+  public static function addStatusMessage(&$form, $message, $type = 'warning', $key = NULL) {
     if (empty($form[$type])) {
       $form[$type] = [];
     }
-    $form[$type][] = [
+
+    $message = [
       '#type' => 'markup',
       '#markup' => sprintf('<div role="contentinfo" aria-label="%s message" class="messages messages--%s">%s</div>',
         $type, $type, $message),
       '#weight' => -1000,
     ];
+
+    if ($key) {
+      $form[$type][$key] = $message;
+      return;
+    }
+
+    $form[$type][] = $message;
   }
 
   public static function addStateChangeWarning(&$form, NodeInterface $node, AccountInterface $current_user) {

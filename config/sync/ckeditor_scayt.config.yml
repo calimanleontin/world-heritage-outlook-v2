@@ -1,4 +1,4 @@
-library_path: libraries/scayt
+library_path: libraries/ckeditor-plugin-scayt
 language: en_GB
 auto_startup: true
 _core:

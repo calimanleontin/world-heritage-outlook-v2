@@ -688,16 +688,28 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
     ) {
       // https://helpdesk.eaudeweb.ro/issues/5556
       // All textareas should be limited to a certain number of characters.
-      $element['#maxlength_js'] = $element['value']['#maxlength_js'] = TRUE;
-      $element['#attributes']['maxlength'] = $element['value']['#attributes']['maxlength'] = 2000;
-      $element['#attributes']['maxDisplayLimit'] = $element['value']['#attributes']['maxDisplayLimit'] = 200;
-      $element['#attributes']['blockPaste'] = $element['value']['#attributes']['blockPaste'] = 1;
+      $maxlengthLabel = t('@remaining characters left.');
+      $blockPasteLabel = t('The text cannot be pasted because the characters limit of @limit is exceeded.');
+
+      $element['#maxlength_js'] = TRUE;
+      $element['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxDisplayLimit'] = 200;
+      $element['#attributes']['blockPaste'] = 1;
       $element['#attributes']['class'][] = 'maxlength_js_enforce';
       $element['#attributes']['class'][] = 'maxlength_js_truncate_html';
-      $element['value']['#attributes']['class'][] = 'maxlength_js_enforce';
-      $element['value']['#attributes']['class'][] = 'maxlength_js_truncate_html';
-      $element['#attributes']['maxlength_js_label'][] = $element['value']['#attributes']['maxlength_js_label'][] = t('@remaining characters left.');
-      $element['#attributes']['blockPasteLabel'][] = $element['value']['#attributes']['blockPasteLabel'][] = t('The text cannot be pasted because the characters limit of @limit is exceeded.');
+      $element['#attributes']['maxlength_js_label'][] = $maxlengthLabel;
+      $element['#attributes']['blockPasteLabel'][] = $blockPasteLabel;
+
+      if (!empty($element['value'])) {
+        $element['value']['#maxlength_js'] = $element['#maxlength_js'];
+        $element['value']['#attributes']['maxlength'] = $element['#attributes']['maxlength'];
+        $element['value']['#attributes']['maxDisplayLimit'] = $element['#attributes']['maxDisplayLimit'];
+        $element['value']['#attributes']['blockPaste'] = $element['#attributes']['blockPaste'];
+        $element['value']['#attributes']['class'][] = 'maxlength_js_enforce';
+        $element['value']['#attributes']['class'][] = 'maxlength_js_truncate_html';
+        $element['value']['#attributes']['maxlength_js_label'][] = $maxlengthLabel;
+        $element['value']['#attributes']['blockPasteLabel'][] = $blockPasteLabel;
+      }
     }
   }
 }
@@ -962,6 +974,10 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
   foreach ($settings['editor']['formats'] as $name => &$value) {
     if ($name == 'simple_text_formater_with_scayt') {
       $value['editorSettings']['contentsCss'][] = '/themes/iucn_backend/css/ckeditor-iframe.css';
+      if (!empty(\Drupal::request()->cookies->get('scayt_sLang'))) {
+        $value['editorSettings']['scayt_sLang'] = \Drupal::request()->cookies->get('scayt_sLang');
+        $value['editorSettings']['scayt_disableOptionsStorage'] = 'lang';
+      }
     }
   }
 }

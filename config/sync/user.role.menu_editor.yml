@@ -7,6 +7,7 @@ label: 'Menu editor'
 weight: 1
 is_admin: null
 permissions:
+  - 'access site in maintenance mode'
   - 'administer menu'
   - 'create assessment workflow_transition'
   - 'translate menu_link_content'

@@ -14,7 +14,6 @@ permissions:
   - 'access content overview'
   - 'access contextual links'
   - 'access files overview'
-  - 'access site in maintenance mode'
   - 'access toolbar'
   - 'create assessment workflow_transition'
   - 'search content'
