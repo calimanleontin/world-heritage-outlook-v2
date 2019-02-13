@@ -140,6 +140,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'E' => 
         array (
+            'EauDeWeb\\Robo\\Task\\Curl\\' => 24,
             'EauDeWeb\\' => 9,
         ),
         'D' => 
@@ -418,6 +419,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'FontLib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
+        ),
+        'EauDeWeb\\Robo\\Task\\Curl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/eaudeweb/robo-curl/src',
         ),
         'EauDeWeb\\' => 
         array (
