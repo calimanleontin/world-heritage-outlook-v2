@@ -1,8 +1,0 @@
-{
-    "name": "drupal/config_ignore_keys",
-    "description": "Allows the developer to ignore particular keys in the configuration.",
-    "type": "drupal-module",
-    "license": "GPL-2.0+",
-    "require": {
-    }
-}
