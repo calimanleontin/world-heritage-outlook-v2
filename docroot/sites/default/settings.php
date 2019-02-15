@@ -769,11 +769,3 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 }
 $config_directories['sync'] = '../config/sync';
 $settings['install_profile'] = 'minimal';
-
-// TODO Check how can we use kernel.environment property that you can overwrite in services.yml
-$config['config_split.config_split.development']['status'] = FALSE;
-$config['config_split.config_split.live']['status'] = FALSE;
-if (!empty($settings['environment'])) {
-  $config['config_split.config_split.development']['status'] = $settings['environment'] == 'dev';
-  $config['config_split.config_split.live']['status'] = in_array($settings['environment'], ['live', 'production', 'prod']);
-}
