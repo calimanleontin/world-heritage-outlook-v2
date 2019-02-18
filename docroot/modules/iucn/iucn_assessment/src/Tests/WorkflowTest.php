@@ -241,23 +241,26 @@ class WorkflowTest extends IucnAssessmentTestBase {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
     $reviewer_revision = $workflow_service->getReviewerRevision($assessment, $reviewer->id());
-    $this->assertTrue(!empty($reviewer_revision), 'Reviewer revision was created.');
-    $this->userLogIn(TestSupport::REVIEWER1);
-    $this->drupalGet($assessment->toUrl('edit-form'));
-    $url = $this->getUrl();
-    $node_revision_url = Url::fromRoute('node.revision_edit',
-      ['node' => $assessment->id(), 'node_revision' => $reviewer_revision->vid->value])
-      ->setAbsolute(TRUE)
-      ->toString();
+    $this->assertTrue(!empty($reviewer_revision), 'Reviewer revision exists.');
+    if (!empty($reviewer_revision)) {
+      $this->assertTrue(!empty($reviewer_revision), 'Reviewer revision was created.');
+      $this->userLogIn(TestSupport::REVIEWER1);
+      $this->drupalGet($assessment->toUrl('edit-form'));
+      $url = $this->getUrl();
+      $node_revision_url = Url::fromRoute('node.revision_edit',
+        ['node' => $assessment->id(), 'node_revision' => $reviewer_revision->vid->value])
+        ->setAbsolute(TRUE)
+        ->toString();
 
-    $this->assertEqual($url, $node_revision_url, 'Successfully redirected reviewer.');
-    $this->assertEqual($reviewer_revision->getRevisionUserId(), $reviewer->id());
-    $this->assertTrue(!$reviewer_revision->isDefaultRevision());
+      $this->assertEqual($url, $node_revision_url, 'Successfully redirected reviewer.');
+      $this->assertEqual($reviewer_revision->getRevisionUserId(), $reviewer->id());
+      $this->assertTrue(!$reviewer_revision->isDefaultRevision());
 
-    $reviewer_revision->setTitle('test_1');
-    $reviewer_revision->save();
-    $reviewer_revision = $workflow_service->getReviewerRevision($assessment, $reviewer->id());
-
+      $reviewer_revision->setTitle('test_1');
+      $reviewer_revision->save();
+      $reviewer_revision = $workflow_service->getReviewerRevision($assessment, $reviewer->id());
+    }
+    
     $assessment->setTitle('test_2');
     $assessment->save();
     $assessment = Node::load($assessment->id());
@@ -267,9 +270,11 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $under_evaluation_revision->save();
     $under_evaluation_revision = $workflow_service->getRevisionByState($assessment, $workflow_service::STATUS_UNDER_EVALUATION);
 
-    // Check that editing a revision doesn't alter the other revisions.
-    $this->assertNotEqual($reviewer_revision->getTitle(), $assessment->getTitle());
-    $this->assertNotEqual($reviewer_revision->getTitle(), $under_evaluation_revision->getTitle());
+    if (!empty($reviewer_revision)) {
+      // Check that editing a revision doesn't alter the other revisions.
+      $this->assertNotEqual($reviewer_revision->getTitle(), $assessment->getTitle());
+      $this->assertNotEqual($reviewer_revision->getTitle(), $under_evaluation_revision->getTitle());
+    }
     $this->assertNotEqual($assessment->getTitle(), $under_evaluation_revision->getTitle());
 
     $paragraph1 = Paragraph::create([
