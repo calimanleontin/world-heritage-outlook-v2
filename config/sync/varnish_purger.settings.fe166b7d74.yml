@@ -5,11 +5,11 @@ dependencies: {  }
 id: fe166b7d74
 name: Varnish
 invalidationtype: tag
-hostname: localhost
-port: 6081
+hostname: www.worldheritageoutlook.iucn.org
+port: 80
 path: /
 request_method: BAN
-scheme: http
+scheme: https
 verify: '1'
 headers:
   -
