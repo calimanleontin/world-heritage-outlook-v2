@@ -6,7 +6,7 @@ id: fe166b7d74
 name: Varnish
 invalidationtype: tag
 hostname: www.worldheritageoutlook.iucn.org
-port: 80
+port: 443
 path: /
 request_method: BAN
 scheme: https
