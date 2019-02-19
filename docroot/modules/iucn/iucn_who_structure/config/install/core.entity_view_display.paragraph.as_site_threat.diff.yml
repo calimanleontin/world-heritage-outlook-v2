@@ -5,7 +5,6 @@ dependencies:
     - core.entity_view_mode.paragraph.diff
     - field.field.paragraph.as_site_threat.field_as_description
     - field.field.paragraph.as_site_threat.field_as_legality
-    - field.field.paragraph.as_site_threat.field_as_resource_use_type
     - field.field.paragraph.as_site_threat.field_as_species_name
     - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
@@ -16,6 +15,7 @@ dependencies:
     - field.field.paragraph.as_site_threat.field_as_threats_threat
     - field.field.paragraph.as_site_threat.field_as_threats_values_bio
     - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - field.field.paragraph.as_site_threat.field_invasive_species_names
     - paragraphs.paragraphs_type.as_site_threat
   module:
     - ds
@@ -39,13 +39,6 @@ content:
   field_as_legality:
     type: list_key
     weight: 5
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_as_resource_use_type:
-    type: list_key
-    weight: 7
     region: content
     label: hidden
     settings: {  }
@@ -150,3 +143,4 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_invasive_species_names: true

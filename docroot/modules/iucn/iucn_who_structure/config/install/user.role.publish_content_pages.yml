@@ -5,3 +5,20 @@ id: publish_content_pages
 label: 'Publish content pages'
 weight: 0
 is_admin: null
+permissions:
+  - 'access site in maintenance mode'
+  - 'administer nodes'
+  - 'create assessment workflow_transition'
+  - 'delete any benefit content'
+  - 'delete any faq content'
+  - 'delete any news content'
+  - 'delete any page content'
+  - 'delete any publication content'
+  - 'delete benefit revisions'
+  - 'delete content translations'
+  - 'delete faq revisions'
+  - 'delete news revisions'
+  - 'delete page revisions'
+  - 'delete publication revisions'
+  - 'revert benefit revisions'
+  - 'use text format assessment_text_format'
