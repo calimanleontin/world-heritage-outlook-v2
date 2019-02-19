@@ -47,6 +47,13 @@ class ParagraphAsSiteThreatForm {
     ],
   ];
 
+  const REQUIRED_DEPENDENT_FIELDS = [
+    'field_as_legality',
+    'field_as_targeted_species',
+    'field_as_species_name',
+    'field_as_resource_use_type',
+  ];
+
   public static function alter(array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
@@ -61,7 +68,7 @@ class ParagraphAsSiteThreatForm {
     }
 
     if ($parentEntity instanceof NodeInterface) {
-      foreach (self::AFFECTED_VALUES_FIELDS as $field) {
+      foreach (static::AFFECTED_VALUES_FIELDS as $field) {
         $parentFieldName = str_replace('as_threats_values', 'as_values', $field);
         $parentField = $parentEntity->{$parentFieldName};
         if (!$parentField instanceof EntityReferenceRevisionsFieldItemList) {
@@ -121,25 +128,27 @@ class ParagraphAsSiteThreatForm {
       ],
     ];
 
-    foreach (self::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
+    foreach (static::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
       $generic_selector = ':input[data-drupal-selector="edit-field-as-threats-categories-%tid"]';
       foreach ($tids as $idx => $tid) {
         $selector = str_replace('%tid', $tid, $generic_selector);
         $form[$field]['#states']['visible'][0][] = [$selector => ['checked' => TRUE]];
-        $form[$field]['widget'][0]['value']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
-        $form[$field]['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+        if (in_array($field, static::REQUIRED_DEPENDENT_FIELDS)) {
+          $form[$field]['widget'][0]['value']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+          $form[$field]['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+        }
       }
       // Required states API is bugged. It only shows the asterisk.
-      $form[$field]['#element_validate'][] = [self::class, 'validateSubcategoryDependentField'];
+      $form[$field]['#element_validate'][] = [static::class, 'validateSubcategoryDependentField'];
     }
 
-    $form['field_as_threats_extent']['#element_validate'][] = [self::class, 'validateThreatExtent'];
-    $form['field_as_threats_categories']['#element_validate'][] = [self::class, 'validateThreatCategories'];
+    $form['field_as_threats_extent']['#element_validate'][] = [static::class, 'validateThreatExtent'];
+    $form['field_as_threats_categories']['#element_validate'][] = [static::class, 'validateThreatCategories'];
 
-    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setDependentFieldValues']);
-    $form['actions']['submit']['#submit'][] = [self::class, 'updateAffectedValues'];
+    array_unshift($form['actions']['submit']['#submit'], [static::class, 'setDependentFieldValues']);
+    $form['actions']['submit']['#submit'][] = [static::class, 'updateAffectedValues'];
 
-    $form['#validate'][] = [self::class, 'validateValues'];
+    $form['#validate'][] = [static::class, 'validateValues'];
   }
 
   public static function validateSubcategoryDependentField(array &$element, FormStateInterface $form_state, array &$form) {
@@ -147,13 +156,15 @@ class ParagraphAsSiteThreatForm {
     $title = $element['widget']['#title'];
     $selected_subcategories = $form_state->getValue('field_as_threats_categories');
     $selected_subcategories = array_column($selected_subcategories, 'target_id');
-    if (empty($form_state->getValue($field)[0]['value']) && !empty(array_intersect(self::SUBCATEGORY_DEPENDENT_FIELDS[$field], $selected_subcategories))) {
+    if (empty($form_state->getValue($field)[0]['value'])
+      && !empty(array_intersect(static::SUBCATEGORY_DEPENDENT_FIELDS[$field], $selected_subcategories))
+      && in_array($field, static::REQUIRED_DEPENDENT_FIELDS)) {
       $form_state->setError($element, t('@field field is required', ['@field' => $title]));
     }
   }
 
   public static function setDependentFieldValues(array &$form, FormStateInterface $form_state) {
-    foreach (self::FIELD_DEPENDENT_FIELDS as $field => $depends_on) {
+    foreach (static::FIELD_DEPENDENT_FIELDS as $field => $depends_on) {
       if (empty($form_state->getValue($depends_on)['value'])) {
         $form_state->setValue($field, []);
       }
@@ -161,7 +172,7 @@ class ParagraphAsSiteThreatForm {
 
     $selected_subcategories = $form_state->getValue('field_as_threats_categories');
     $selected_subcategories = array_column($selected_subcategories, 'target_id');
-    foreach (self::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
+    foreach (static::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
       if (empty(array_intersect($tids, $selected_subcategories))) {
         $form_state->setValue($field, []);
       }
@@ -170,7 +181,7 @@ class ParagraphAsSiteThreatForm {
 
   public static function validateValues(array &$form, FormStateInterface $form_state) {
     $values_filled = FALSE;
-    foreach (self::AFFECTED_VALUES_FIELDS as $field) {
+    foreach (static::AFFECTED_VALUES_FIELDS as $field) {
       $values_selected = array_filter($form_state->getValue("{$field}_select"), function ($x) { return !empty($x); });
       if ((empty($form[$field]) && empty($form['diff']['edit'][$field])) || !empty($values_selected)) {
         // The field is not rendered on diff modal OR a value has been selected.
@@ -219,7 +230,7 @@ class ParagraphAsSiteThreatForm {
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */
     $entity = $formObject->getEntity();
 
-    foreach (self::AFFECTED_VALUES_FIELDS as $field) {
+    foreach (static::AFFECTED_VALUES_FIELDS as $field) {
       $selected = $form_state->getValue("{$field}_select");
       $values = [];
       if (!empty($selected) && is_array($selected)) {
