@@ -19,204 +19,69 @@ use Drupal\workflow\Entity\WorkflowConfigTransition;
  */
 class WorkflowTest extends IucnAssessmentTestBase {
 
-  protected $hasDraftRevision;
+  const TRANSITION_LABELS = [
+    AssessmentWorkflow::STATUS_NEW => 'Save',
+    AssessmentWorkflow::STATUS_UNDER_EVALUATION => 'Initiate assessment',
+    AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Send to assessor',
+    AssessmentWorkflow::STATUS_READY_FOR_REVIEW => 'Finish assessment',
+    AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Send assessment to reviewers',
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Finish reviewing',
+    AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Start comparing reviews',
+    AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Review references',
+    AssessmentWorkflow::STATUS_APPROVED => 'Approve',
+    AssessmentWorkflow::STATUS_PUBLISHED => 'Publish',
+    AssessmentWorkflow::STATUS_DRAFT => 'Start working on a draft',
+  ];
 
-  /**
-   * Tests an user access on an assessment edit page.
-   *
-   * If the vid parameter is passed,
-   * the test will be done on the revision edit page.
-   *
-   * @param string $mail
-   *   The user mail.
-   * @param \Drupal\node\NodeInterface $assessment
-   *   The assessment.
-   * @param int $assert_response_code
-   *   The response code that the visited page should return.
-   * @param int $vid
-   *   The revision id.
-   */
-  protected function assertUserAccessOnAssessmentEdit($mail, NodeInterface $assessment, $assert_response_code, $vid = NULL) {
-    \Drupal::service('page_cache_kill_switch')->trigger();
-    if (empty($vid)) {
-      $url = $assessment->toUrl('edit-form');
-    }
-    else {
-      $url = Url::fromRoute('node.revision_edit', ['node' => $assessment->id(), 'node_revision' => $vid]);
-    }
-    $this->userLogIn($mail);
+  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
+    $this->userLogIn($user);
     $this->drupalGet($url);
-    $this->assertResponse($assert_response_code);
-  }
-
-  /**
-   * Check all users' access on an assessment edit page.
-   *
-   * @param \Drupal\node\NodeInterface $assessment
-   *   The assessment.
-   */
-  protected function assertAllUserAccessOnAssessmentEdit(NodeInterface $assessment) {
-    $state = $assessment->field_state->value;
-    // Administrators and managers can edit any assessment, regardless of state.
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::ADMINISTRATOR, $assessment, 200);
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::IUCN_MANAGER, $assessment, 200);
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT || $state == AssessmentWorkflow::STATUS_NEW) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 403);
-    }
-    else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR1, $assessment, 200);
-    }
-
-    // Assessor 1 should only be able to edit in the under_assessment state.
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 200);
-    }
-    else {
-      $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR1, $assessment, 403);
-    }
-
-    // Coordinator 2 can only never edit.
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::COORDINATOR2, $assessment, 403);
-
-
-    // Assessor 2 is never allowed to edit this assessment.
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER1, $assessment, 403);
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::ASSESSOR2, $assessment, 403);
-    $this->assertUserAccessOnAssessmentEdit(TestSupport::REVIEWER2, $assessment, 403);
+    $this->assertResponse($expectedResponseCode, "User {$user} tries to access {$url->toString()} and the HTTP response code should be {$expectedResponseCode}.");
   }
 
   /**
    * Test the assessment workflow, going through all the states.
    * Loop an assessment through all the states and check all users' edit access.
    */
-  protected function testAccessOnEveryState() {
+  public function testWorkflowTransitionsAndAccess() {
     $assessment = TestSupport::createAssessment();
-    $states = [
-      AssessmentWorkflow::STATUS_NEW,
-      AssessmentWorkflow::STATUS_UNDER_EVALUATION,
-      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
-      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
-      AssessmentWorkflow::STATUS_UNDER_REVIEW,
-      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
-      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
-      AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
-      AssessmentWorkflow::STATUS_APPROVED,
-      AssessmentWorkflow::STATUS_PUBLISHED,
-      AssessmentWorkflow::STATUS_DRAFT,
-    ];
-    foreach ($states as $state) {
-      $field_changes = NULL;
-      if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = user_load_by_mail(TestSupport::COORDINATOR1);
-        $field_changes = ['field_coordinator' => $user->id()];
-      }
-      if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = user_load_by_mail(TestSupport::ASSESSOR1);
-        $field_changes = ['field_assessor' => $user->id()];
-      }
-      elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-        /** @var \Drupal\user\Entity\User $user */
-        $user = user_load_by_mail(TestSupport::REVIEWER1);
-        $field_changes = ['field_reviewers' => $user->id()];
-      }
-      $this->setAssessmentState($assessment, $state, $field_changes);
-      if ($state != AssessmentWorkflow::STATUS_DRAFT) {
-        $this->assertEqual($assessment->field_state->value, $state, "Testing state: $state");
-      }
-      else {
-        // The state of the assessment is never draft.
-        // We only have draft revisions.
-        $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_PUBLISHED, "Testing state: $state");
-        $this->hasDraftRevision = TRUE;
-      }
-      $this->assertAllUserAccessOnAssessmentEdit($assessment);
-    }
-  }
+    TestSupport::populateAllFieldsData($assessment);
+    $assessment->save();
 
-  /**
-   * Make sure transition conditions are respected.
-   *
-   * Moving to state under_evaluation requires a coordinator.
-   * Moving to state under_assessment requires an assessor.
-   * Moving to state under_review requires a reviewer.
-   */
-  protected function testValidTransitions() {
-    $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
-    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_NEW);
+    $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+    // Assessment state: NEW
+    $this->assert('pass', "Testing assessment state: NEW");
+    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 200);
+    $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+
+    // Assessment state: UNDER EVALUATION
+    $this->assert('pass', "Testing assessment state: UNDER EVALUATION");
     $this->userLogIn(TestSupport::COORDINATOR1);
-    $url = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
-
-    $this->drupalGet($url);
-    $this->assertText(t('Coordinator'));
-    $this->assertNoText(t('Assessor'));
-    $this->assertNoText(t('Reviewers'));
-
-    $transition = WorkflowConfigTransition::load('assessment_new_under_evaluation');
-    $button_label = $transition->label();
-    // Try to change the state without assigning coordinator.
-    $this->drupalPostForm($url, [], t($button_label));
-    // Reload node.
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_NEW);
-
-    /** @var \Drupal\user\Entity\User $coordinator1 */
-    $coordinator1 = user_load_by_mail(TestSupport::COORDINATOR1);
-    $this->drupalPostForm($url, ['field_coordinator' => $coordinator1->id()], t($button_label));
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-
-    $this->drupalGet($url);
-    $this->assertNoText(t('Coordinator'));
-    $this->assertText(t('Assessor'));
-    $this->assertNoText(t('Reviewers'));
-
-    $transition = WorkflowConfigTransition::load('assessment_under_evaluation_under_assessment');
-    $button_label = $transition->label();
-    // Try to change the state without assigning assessor.
-    $this->drupalPostForm($url, [], t($button_label));
-    // Reload node.
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-
-    /** @var \Drupal\user\Entity\User $coordinator1 */
-    $assessor1 = user_load_by_mail(TestSupport::ASSESSOR1);
-    $this->drupalPostForm($url, ['field_assessor' => $assessor1->id()], t($button_label));
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
-
-    $this->userLogIn(TestSupport::ASSESSOR1);
-    $transition = WorkflowConfigTransition::load('assessment_under_assessment_ready_for_review');
-    $button_label = $transition->label();
-    $this->drupalPostForm($url, [], t($button_label));
-    drupal_flush_all_caches();
-
-    $this->userLogIn(TestSupport::COORDINATOR1);
-    $this->drupalGet($url);
-    $this->assertNoText(t('Coordinator'));
-    $this->assertNoText(t('Assessor'));
-    $this->assertText(t('Reviewers'));
-
-    $transition = WorkflowConfigTransition::load('assessment_ready_for_review_under_review');
-    $button_label = $transition->label();
-    // Try to change the state without assigning reviewer.
-    $this->drupalPostForm($url, [], t($button_label));
-    // Reload node.
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
-
-    /** @var \Drupal\user\Entity\User $coordinator1 */
-    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
-    $this->drupalPostForm($url, ['field_reviewers[]' => [$reviewer1->id()]], t($button_label));
-    drupal_flush_all_caches();
-    $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_UNDER_REVIEW);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
+    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
   }
 
   /**

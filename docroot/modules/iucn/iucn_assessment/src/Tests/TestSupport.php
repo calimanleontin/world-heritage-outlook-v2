@@ -15,23 +15,23 @@ use Drupal\taxonomy\Entity\Term;
 class TestSupport {
 
   // Site administrator.
-  const ADMINISTRATOR = 'admin@test.ro';
+  const ADMINISTRATOR = 'administrator@example.com';
 
   // IUCN manager.
-  const IUCN_MANAGER = 'manager@test.ro';
+  const IUCN_MANAGER = 'iucn_manager@example.com';
 
   // Coordinators.
-  const COORDINATOR1 = 'coordinator2@test.ro';
-  const COORDINATOR2 = 'coordinator2@test.ro';
+  const COORDINATOR1 = 'coordinator1@example.com';
+  const COORDINATOR2 = 'coordinator2@example.com';
 
   // Assessors.
-  const ASSESSOR1 = 'assessor1@test.ro';
-  const ASSESSOR2 = 'assessor2@test.ro';
+  const ASSESSOR1 = 'assessor1@example.com';
+  const ASSESSOR2 = 'assessor2@example.com';
 
   // Reviewers.
-  const REVIEWER1 = 'rev1@test.ro';
-  const REVIEWER2 = 'rev2@test.ro';
-  const REVIEWER3 = 'rev3@test.ro';
+  const REVIEWER1 = 'reviewer1@example.com';
+  const REVIEWER2 = 'reviewer2@example.com';
+  const REVIEWER3 = 'reviewer3@example.com';
 
   // Assessments.
   const ASSESSMENT1 = 'assessment1';
@@ -122,12 +122,12 @@ class TestSupport {
    * @return \Drupal\node\NodeInterface
    */
   public static function createAssessment($title = NULL, $fieldsCompleted = []) {
+    /** @var \Drupal\node\NodeInterface $node */
     $node = self::createSampleEntity('node', 'site_assessment', [
       'title' => $title ?: 'Test assessment',
       'created' => time(),
       'uid' => 0,
       'promote' => 0,
-      'field_state' => AssessmentWorkflow::STATUS_NEW,
       'status' => 0,
       'field_as_version' => 1,
       'field_as_cycle' => 2020,
@@ -139,14 +139,26 @@ class TestSupport {
     $excludedFields = [
       'field_assessments',
       'field_current_assessment',
+      'field_as_protection',
     ];
-    foreach ($entity->getFieldDefinitions() as $fieldDefinition) {
+    $fieldDefinitions = $entity->getFieldDefinitions();
+
+    foreach ($fieldDefinitions as $fieldDefinition) {
       $fieldName = $fieldDefinition->getName();
       if ((!preg_match('/^field\_/', $fieldName) && !in_array($fieldName, ['title', 'name']))
         || in_array($fieldName, $excludedFields)) {
         continue;
       }
       self::updateFieldData($entity, $fieldDefinition->getName());
+    }
+
+    if (array_key_exists('field_as_protection', $fieldDefinitions)) {
+      foreach ($entity->field_as_protection as &$value) {
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $value->entity;
+        static::populateAllFieldsData($paragraph);
+        $paragraph->save();
+      }
     }
   }
 
