@@ -278,6 +278,15 @@ class NodeSiteAssessmentForm {
             = $fieldAsProtectionWidget[$child]['_weight']['#default_value']
             = $protectionTopic->getWeight();
         }
+
+        $fieldAsProtectionBestPracticeWidget = &$form['field_as_protection_ov_practices']['widget'][0];
+        $title = [
+          '#theme' => 'topic_tooltip',
+          '#label' => t('Best Practice Examples'),
+          '#help_text' => t('Tooltip. Text needs to be provided.'),
+        ];
+        $fieldAsProtectionBestPracticeWidget['#title'] = render($title);
+
       }
     }
 
