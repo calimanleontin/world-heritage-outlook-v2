@@ -21,6 +21,7 @@ dependencies:
   module:
     - field_group
     - iucn_assessment
+    - maxlength
     - paragraphs
 third_party_settings:
   field_group:
@@ -118,10 +119,15 @@ content:
   field_as_threats_threat:
     weight: 1
     settings:
-      rows: 5
+      rows: 1
       placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea_with_scayt
+    third_party_settings:
+      maxlength:
+        maxlength_js: null
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: false
+        maxlength_js_truncate_html: false
+    type: string_textarea
     region: content
   field_as_threats_values_bio:
     type: entity_reference_paragraphs

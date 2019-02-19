@@ -116,6 +116,9 @@ class ParagraphAsSiteThreatForm {
       }
     }
 
+    $specificThreatWidget = &$form['field_as_threats_threat']['widget'][0]['value'];
+    $specificThreatWidget['#default_value'] = strip_tags($specificThreatWidget['#default_value']);
+
     $form['field_as_threats_extent']['#states'] = [
       'visible' => [
         ':input[data-drupal-selector="edit-field-as-threats-in-value"]' => ['checked' => TRUE],
