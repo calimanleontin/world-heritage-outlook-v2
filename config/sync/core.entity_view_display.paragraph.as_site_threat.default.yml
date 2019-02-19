@@ -16,6 +16,7 @@ dependencies:
     - field.field.paragraph.as_site_threat.field_as_threats_threat
     - field.field.paragraph.as_site_threat.field_as_threats_values_bio
     - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - field.field.paragraph.as_site_threat.field_invasive_species_names
     - paragraphs.paragraphs_type.as_site_threat
   module:
     - ds
@@ -122,6 +123,14 @@ content:
     third_party_settings: {  }
     type: parent_category
     region: terms
+  field_invasive_species_names:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true

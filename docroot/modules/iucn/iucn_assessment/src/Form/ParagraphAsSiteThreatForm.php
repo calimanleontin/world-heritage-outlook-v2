@@ -39,6 +39,12 @@ class ParagraphAsSiteThreatForm {
       1388, // Other biological resource use
       1433, // Non-timber forest products (NTFPs)
     ],
+    'field_invasive_species_names' => [
+      1395,
+      1396,
+      1397,
+      1434,
+    ],
   ];
 
   public static function alter(array &$form, FormStateInterface $form_state) {

@@ -1,0 +1,21 @@
+uuid: 68e24a7c-cbaa-4e6c-b8d1-7099a4ebc09e
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_invasive_species_names
+field_name: field_invasive_species_names
+entity_type: paragraph
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

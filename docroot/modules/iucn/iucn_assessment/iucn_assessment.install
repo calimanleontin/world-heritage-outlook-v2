@@ -416,16 +416,3 @@ function iucn_assessment_update_8011() {
   }
 
 }
-
-/**
- * Refs #6107 - new threat subcategory.
- */
-function iucn_assessment_update_8012() {
-  $term = Term::create([
-    'vid' => 'assessment_threat',
-    'name' => 'Diseases/pathogens',
-    'parent' => 1358,
-    'weight' => 3,
-  ]);
-  $term->save();
-}
