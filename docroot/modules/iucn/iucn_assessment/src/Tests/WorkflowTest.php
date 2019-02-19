@@ -51,6 +51,10 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
     $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
 
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+
     // Assessment state: NEW
     $this->assert('pass', "Testing assessment state: NEW");
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
@@ -80,6 +84,23 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+
+    // Assessment state: UNDER ASSESSMENT
+    $this->assert('pass', "Testing assessment state: UNDER ASSESSMENT");
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
+    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 200);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
   }

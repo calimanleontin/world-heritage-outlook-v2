@@ -6,6 +6,9 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Entity\Paragraph;
 
+/**
+ * @group iucn
+ */
 class EditFormTest extends IucnAssessmentTestBase {
 
   protected $tabs = [
