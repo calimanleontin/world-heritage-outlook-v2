@@ -12,7 +12,6 @@ permissions:
   - 'access content'
   - 'access devel information'
   - 'access kint'
-  - 'create assessment workflow_transition'
   - 'execute php code'
   - 'switch users'
   - 'use search autocomplete'

@@ -9,7 +9,6 @@ is_admin: null
 permissions:
   - 'access site in maintenance mode'
   - 'administer nodes'
-  - 'create assessment workflow_transition'
   - 'create site content'
   - 'delete any site content'
   - 'delete content translations'

@@ -8,7 +8,6 @@ weight: -8
 is_admin: null
 permissions:
   - 'access site in maintenance mode'
-  - 'create assessment workflow_transition'
   - 'create content translations'
   - 'create content unpublished'
   - 'create site_assessment content'
