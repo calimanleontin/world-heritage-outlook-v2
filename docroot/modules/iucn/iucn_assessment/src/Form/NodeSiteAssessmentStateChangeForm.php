@@ -158,7 +158,9 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $key => $tids) {
-      if ($item->$key->isEmpty() && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
+      if ($item->$key->isEmpty()
+        && in_array($key, ParagraphAsSiteThreatForm::REQUIRED_DEPENDENT_FIELDS)
+        && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
         static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
           '@field' => $item->getFieldDefinition($key)->getLabel(),
           '@tab' => t('Threats'),
