@@ -292,20 +292,20 @@ function iucn_assessment_preprocess_field(&$variables) {
       }
       $items = $variables['items'];
       usort($items,
-      function($a, $b) {
-        $a_weight = 0;
-        if ($a['content']['#paragraph']->field_as_protection_topic->count()) {
-          $a_weight = $a['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
+        function($a, $b) {
+          $a_weight = 0;
+          if ($a['content']['#paragraph']->field_as_protection_topic->count()) {
+            $a_weight = $a['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
+          }
+          $b_weight = 0;
+          if ($b['content']['#paragraph']->field_as_protection_topic->count()) {
+            $b_weight = $b['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
+          }
+          if ($a_weight == $b_weight) {
+            return 0;
+          }
+          return ($a_weight < $b_weight) ? -1 : 1;
         }
-        $b_weight = 0;
-        if ($b['content']['#paragraph']->field_as_protection_topic->count()) {
-          $b_weight = $b['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
-        }
-        if ($a_weight == $b_weight) {
-          return 0;
-        }
-        return ($a_weight < $b_weight) ? -1 : 1;
-      }
       );
 
       break;

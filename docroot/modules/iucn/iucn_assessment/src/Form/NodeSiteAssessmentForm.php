@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -262,6 +263,21 @@ class NodeSiteAssessmentForm {
           '#attributes' => ['class' => ['overall-cell', 'overall-cell-trend']],
           '#value' => t('Trend'),
         ];
+      }
+      elseif ($tab == 'protection-management') {
+        $fieldAsProtectionWidget = &$form['field_as_protection']['widget'];
+        foreach (Element::children($fieldAsProtectionWidget) as $child) {
+          if (empty($fieldAsProtectionWidget[$child]['#paragraph_id'])) {
+            continue;
+          }
+          $paragraph = Paragraph::load($fieldAsProtectionWidget[$child]['#paragraph_id']);
+          /** @var \Drupal\taxonomy\TermInterface $protectionTopic */
+          $protectionTopic = $paragraph->field_as_protection_topic->entity;
+          $fieldAsProtectionWidget[$child]['#delta']
+            = $fieldAsProtectionWidget[$child]['#weight']
+            = $fieldAsProtectionWidget[$child]['_weight']['#default_value']
+            = $protectionTopic->getWeight();
+        }
       }
     }
 
