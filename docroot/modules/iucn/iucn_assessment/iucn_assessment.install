@@ -5,6 +5,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\ParagraphInterface;
 use Psr\Log\LoggerInterface;
 use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -414,4 +415,17 @@ function iucn_assessment_update_8011() {
     $term->save();
   }
 
+}
+
+/**
+ * Refs #6107 - new threat subcategory.
+ */
+function iucn_assessment_update_8012() {
+  $term = Term::create([
+    'vid' => 'assessment_threat',
+    'name' => 'Diseases/pathogens',
+    'parent' => 1358,
+    'weight' => 3,
+  ]);
+  $term->save();
 }
