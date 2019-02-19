@@ -32,13 +32,6 @@ class ParagraphAsSiteThreatForm {
     'field_as_species_name' => [
       1395, // Invasive Non-Native/ Alien Species
     ],
-    'field_as_resource_use_type' => [
-      1384, // Hunting and trapping
-      1386, // Logging/ Wood harvesting
-      1387, // Fishing/ Harvesting aquatic resources
-      1388, // Other biological resource use
-      1433, // Non-timber forest products (NTFPs)
-    ],
     'field_invasive_species_names' => [
       1395,
       1396,
@@ -51,7 +44,6 @@ class ParagraphAsSiteThreatForm {
     'field_as_legality',
     'field_as_targeted_species',
     'field_as_species_name',
-    'field_as_resource_use_type',
   ];
 
   public static function alter(array &$form, FormStateInterface $form_state) {

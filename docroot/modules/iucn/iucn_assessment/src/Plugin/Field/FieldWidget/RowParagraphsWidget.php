@@ -1178,11 +1178,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'threats' => t('Legality:'),
         'label' => t(''),
       ],
-      'field_as_resource_use_type' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Resource use type:'),
-        'label' => t(''),
-      ],
       'field_as_targeted_species' => [
         'grouped_with' => 'field_as_legality',
         'threats' => t('Targeted species:'),

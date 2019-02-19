@@ -6,7 +6,6 @@ dependencies:
     - core.entity_form_mode.paragraph.table
     - field.field.paragraph.as_site_threat.field_as_description
     - field.field.paragraph.as_site_threat.field_as_legality
-    - field.field.paragraph.as_site_threat.field_as_resource_use_type
     - field.field.paragraph.as_site_threat.field_as_species_name
     - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
@@ -17,6 +16,7 @@ dependencies:
     - field.field.paragraph.as_site_threat.field_as_threats_threat
     - field.field.paragraph.as_site_threat.field_as_threats_values_bio
     - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - field.field.paragraph.as_site_threat.field_invasive_species_names
     - paragraphs.paragraphs_type.as_site_threat
   module:
     - iucn_assessment
@@ -37,12 +37,6 @@ content:
   field_as_legality:
     type: options_select
     weight: 8
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_as_resource_use_type:
-    type: options_select
-    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -131,6 +125,7 @@ content:
     region: content
 hidden:
   created: true
+  field_invasive_species_names: true
   status: true
   translation: true
   uid: true
