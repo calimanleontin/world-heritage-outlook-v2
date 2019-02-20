@@ -135,7 +135,7 @@ class TestSupport {
     return $node;
   }
 
-  public static function populateAllFieldsData(FieldableEntityInterface $entity) {
+  public static function populateAllFieldsData(FieldableEntityInterface $entity, $maxChildParagraphs = 3) {
     $excludedFields = [
       'field_assessments',
       'field_current_assessment',
@@ -149,20 +149,20 @@ class TestSupport {
         || in_array($fieldName, $excludedFields)) {
         continue;
       }
-      self::updateFieldData($entity, $fieldDefinition->getName());
+      self::updateFieldData($entity, $fieldDefinition->getName(), $maxChildParagraphs);
     }
 
     if (array_key_exists('field_as_protection', $fieldDefinitions)) {
       foreach ($entity->field_as_protection as &$value) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $value->entity;
-        static::populateAllFieldsData($paragraph);
+        static::populateAllFieldsData($paragraph, $maxChildParagraphs);
         $paragraph->save();
       }
     }
   }
 
-  public static function updateFieldData(FieldableEntityInterface &$entity, $fieldName) {
+  public static function updateFieldData(FieldableEntityInterface &$entity, $fieldName, $maxChildParagraphs = 3) {
     $fieldItemList = $entity->get($fieldName);
     /** @var \Drupal\field\FieldConfigInterface $fieldDefinition */
     $fieldDefinition = $fieldItemList->getFieldDefinition();
@@ -244,8 +244,7 @@ class TestSupport {
 
         $cardinality = $fieldStorageDefinition->getCardinality();
         if ($cardinality == -1) {
-          // We need up to 20 paragraphs for some tests so don't change this number.
-          $cardinality = 20;
+          $cardinality = $maxChildParagraphs;
         }
 
         for ($i = 0; $i < $cardinality; $i++) {

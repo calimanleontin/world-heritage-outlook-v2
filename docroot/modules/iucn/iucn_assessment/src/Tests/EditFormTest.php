@@ -176,7 +176,7 @@ class EditFormTest extends IucnAssessmentTestBase {
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
 
     $assessment = TestSupport::createAssessment();
-    TestSupport::populateAllFieldsData($assessment);
+    TestSupport::populateAllFieldsData($assessment, 20);
     $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION, ['field_coordinator' => $coordinator->id()]);
     $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor->id()]);
 

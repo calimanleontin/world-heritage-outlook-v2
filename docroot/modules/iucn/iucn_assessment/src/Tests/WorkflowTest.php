@@ -33,30 +33,38 @@ class WorkflowTest extends IucnAssessmentTestBase {
     AssessmentWorkflow::STATUS_DRAFT => 'Start working on a draft',
   ];
 
+  /** @var \Drupal\node\NodeInterface */
+  protected $assessment;
+
+  /** @var \Drupal\Core\Url */
+  protected $editUrl;
+
+  /** @var \Drupal\Core\Url */
+  protected $stateChangeUrl;
+
+  public function setUp() {
+    parent::setUp();
+    $this->assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($this->assessment);
+    $this->assessment->save();
+    $this->editUrl = $this->assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]);
+  }
+
   public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
     $this->userLogIn($user);
     $this->drupalGet($url);
     $this->assertResponse($expectedResponseCode, "User {$user} tries to access {$url->toString()} and the HTTP response code should be {$expectedResponseCode}.");
   }
 
-  /**
-   * Test the assessment workflow, going through all the states.
-   * Loop an assessment through all the states and check all users' edit access.
-   */
-  public function testWorkflowTransitionsAndAccess() {
+  public function testNewPhase() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment);
     $assessment->save();
-
     $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
     $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
 
-    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
-    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
-    $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
-
-    // Assessment state: NEW
-    $this->assert('pass', "Testing assessment state: NEW");
+    $this->assertText('Current workflow state: New');
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
@@ -70,10 +78,21 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
 
-    // Assessment state: UNDER EVALUATION
-    $this->assert('pass', "Testing assessment state: UNDER EVALUATION");
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
+  }
+
+  public function testUnderEvaluationPhase() {
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment);
+    $assessment->save();
+    $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
+
+    $this->assertText('Current workflow state: Under evaluation');
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
@@ -87,10 +106,24 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
 
-    // Assessment state: UNDER ASSESSMENT
-    $this->assert('pass', "Testing assessment state: UNDER ASSESSMENT");
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
+  }
+
+  public function testUnderAssessmentPhase() {
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment);
+    $assessment->save();
+    $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
+    $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
+
+    $this->assertText('Current workflow state: Under assessment');
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
@@ -103,6 +136,48 @@ class WorkflowTest extends IucnAssessmentTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 200);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
+  }
+
+  public function testReadyForReviewPhase() {
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment);
+    $assessment->save();
+    $editUrl = $assessment->toUrl('edit-form', ['query' => ['tab' => 'protection-management']]);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
+    $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
+
+    $this->assertText('Current workflow state: Ready for review');
+    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
+    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
+    $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $this->drupalPostForm($stateChangeUrl, [
+      'field_reviewers' => [
+        $reviewer1->id(),
+        $reviewer2->id(),
+      ],
+    ], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
   }
 
   /**
