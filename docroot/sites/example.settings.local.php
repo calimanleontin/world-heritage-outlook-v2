@@ -145,10 +145,10 @@ $base_url = 'iucn.local';
 
 $config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
 $config['smtp.settings']['smtp_port'] = 465;
-$config['smtp.settings']['smtp_username'] = 'user@test.com';
+$config['smtp.settings']['smtp_username'] = 'user@example.com';
 $config['smtp.settings']['smtp_password'] = '';
 $config['smtp.settings']['smtp_protocol'] = 'ssl';
-$config['smtp.settings']['smtp_from'] = 'user@test.com';
+$config['smtp.settings']['smtp_from'] = 'user@example.com';
 
 $config['user.settings']['register'] = 'admin_only';
 
@@ -160,7 +160,7 @@ $config['varnish_purger.settings.fe166b7d74']['hostname'] = '';
 $config['varnish_purger.settings.fe166b7d74']['port'] = 443;
 $config['varnish_purger.settings.fe166b7d74']['scheme'] = 'http';
 
-$config['system.site']['mail'] = 'no-reply@eaudeweb.ro';
+$config['system.site']['mail'] = 'user@example.ro';
 
 $settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
 $config['system.file']['path']['temporary'] = '/tmp';
