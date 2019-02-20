@@ -5,3 +5,14 @@ id: assessor
 label: Assessor
 weight: -5
 is_admin: null
+permissions:
+  - 'create assessment workflow_transition'
+  - 'create content unpublished'
+  - 'edit any site_assessment content'
+  - 'edit own site_assessment content'
+  - 'use assessment transition new_new'
+  - 'use assessment transition under_assessment_ready_for_review'
+  - 'use assessment transition under_assessment_under_assessment'
+  - 'use text format assessment_text_format'
+  - 'view any unpublished content'
+  - 'view latest version'

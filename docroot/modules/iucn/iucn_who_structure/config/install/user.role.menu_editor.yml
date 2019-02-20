@@ -5,3 +5,8 @@ id: menu_editor
 label: 'Menu editor'
 weight: 1
 is_admin: null
+permissions:
+  - 'access site in maintenance mode'
+  - 'administer menu'
+  - 'translate menu_link_content'
+  - 'use text format assessment_text_format'

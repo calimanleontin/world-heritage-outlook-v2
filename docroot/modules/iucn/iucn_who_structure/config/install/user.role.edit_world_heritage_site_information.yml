@@ -5,3 +5,17 @@ id: edit_world_heritage_site_information
 label: 'Edit World Heritage site information'
 weight: 2
 is_admin: null
+permissions:
+  - 'access site in maintenance mode'
+  - 'create content translations'
+  - 'create content unpublished'
+  - 'create site content'
+  - 'delete any site content'
+  - 'delete own site content'
+  - 'edit any site content'
+  - 'edit own site content'
+  - 'revert site revisions'
+  - 'translate site node'
+  - 'update content translations'
+  - 'use text format assessment_text_format'
+  - 'view site revisions'

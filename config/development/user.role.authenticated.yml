@@ -17,7 +17,6 @@ permissions:
   - 'access files overview'
   - 'access kint'
   - 'access toolbar'
-  - 'create assessment workflow_transition'
   - 'execute php code'
   - 'search content'
   - 'switch users'
