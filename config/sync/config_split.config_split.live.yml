@@ -4,15 +4,12 @@ status: true
 dependencies: {  }
 id: live
 label: live
+description: ''
 folder: ../config/live
-module:
-  raven: 0
+module: {  }
 theme: {  }
-blacklist:
-  - raven.settings
-  - recaptcha.settings
-graylist:
-  - varnish_purger.settings.fe166b7d74
+blacklist: {  }
+graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0

@@ -129,9 +129,41 @@ $databases['default']['default'] = array (
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
-$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
+
 $settings['hash_salt'] = 'super-secret-hash-salt';
 $settings['environment'] = 'dev';
 $settings['trusted_host_patterns'] = [
-  'worldheritageoutlook.local',
+  'iucn.local',
 ];
+
+$config['recaptcha.settings']['site_key'] = '';
+$config['recaptcha.settings']['secret_key'] = '';
+
+$config['google_maps_api.install']['api_key'] = '';
+
+$base_url = 'iucn.local';
+
+$settings['encryption_key'] = 'dmVyeS1zZWNyZXQta2V5LXRoYXQtYmFzZTY0LWVuYwo=';
+
+$config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
+$config['smtp.settings']['smtp_port'] = 465;
+$config['smtp.settings']['smtp_username'] = 'no-reply@eaudeweb.ro';
+$config['smtp.settings']['smtp_password'] = '';
+$config['smtp.settings']['smtp_protocol'] = 'ssl';
+$config['smtp.settings']['smtp_from'] = 'no-reply@eaudeweb.ro';
+
+$config['user.settings']['register'] = 'admin_only';
+
+$config['raven.settings']['client_key'] = '';
+$config['raven.settings']['public_dsn'] = '';
+$config['raven.settings']['environment'] = $settings['environment'];
+
+
+$config['varnish_purger.settings.fe166b7d74']['hostname'] = '';
+$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
+$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'http';
+
+$config['system.site']['mail'] = 'no-reply@eaudeweb.ro';
+
+$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
+$config['system.file']['path']['temporary'] = '/tmp';
