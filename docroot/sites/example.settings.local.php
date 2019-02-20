@@ -155,7 +155,7 @@ $config['raven.settings']['environment'] = '';
 
 $config['varnish_purger.settings.fe166b7d74']['hostname'] = '';
 $config['varnish_purger.settings.fe166b7d74']['port'] = 443;
-$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'http';
+$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
 
 $config['system.site']['mail'] = 'user@example.ro';
 
