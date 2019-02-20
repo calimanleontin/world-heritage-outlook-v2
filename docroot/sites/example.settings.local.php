@@ -114,11 +114,6 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
-# Configure Varnish purger to invalidate using front-end web server
-$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
-$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
-$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
-
 $databases['default']['default'] = array (
   'database' => 'drupal',
   'username' => 'root',
@@ -131,30 +126,32 @@ $databases['default']['default'] = array (
 );
 
 $settings['hash_salt'] = 'super-secret-hash-salt';
-$settings['environment'] = 'dev';
+
+$base_url = 'worldheritageoutlook.local';
 $settings['trusted_host_patterns'] = [
-  'iucn.local',
+  'worldheritageoutlook.local',
 ];
+
+# Configure Varnish purger to invalidate using front-end web server
+$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
+$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
+$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
 
 $config['recaptcha.settings']['site_key'] = '';
 $config['recaptcha.settings']['secret_key'] = '';
 
 $config['google_maps_api.install']['api_key'] = '';
 
-$base_url = 'iucn.local';
-
 $config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
 $config['smtp.settings']['smtp_port'] = 465;
-$config['smtp.settings']['smtp_username'] = 'user@example.com';
-$config['smtp.settings']['smtp_password'] = '';
 $config['smtp.settings']['smtp_protocol'] = 'ssl';
 $config['smtp.settings']['smtp_from'] = 'user@example.com';
-
-$config['user.settings']['register'] = 'admin_only';
+$config['smtp.settings']['smtp_username'] = 'user@example.com';
+$config['smtp.settings']['smtp_password'] = '';
 
 $config['raven.settings']['client_key'] = '';
 $config['raven.settings']['public_dsn'] = '';
-$config['raven.settings']['environment'] = $settings['environment'];
+$config['raven.settings']['environment'] = '';
 
 $config['varnish_purger.settings.fe166b7d74']['hostname'] = '';
 $config['varnish_purger.settings.fe166b7d74']['port'] = 443;
@@ -162,5 +159,5 @@ $config['varnish_purger.settings.fe166b7d74']['scheme'] = 'http';
 
 $config['system.site']['mail'] = 'user@example.ro';
 
-$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
+$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-files');
 $config['system.file']['path']['temporary'] = '/tmp';
