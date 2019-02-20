@@ -18,6 +18,7 @@ module:
   config: 0
   config_filter: 0
   config_translation: 0
+  config_update: 0
   contextual: 0
   crop: 0
   csv_serialization: 0
@@ -38,6 +39,8 @@ module:
   entity_reference_revisions: 0
   facets: 0
   facets_pretty_paths: 0
+  features: 0
+  features_ui: 0
   field: 0
   field_group: 0
   field_ui: 0
