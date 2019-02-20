@@ -9,7 +9,7 @@ use Drupal\iucn_assessment\Tests\TestSupport;
 /**
  * @group iucn_workflow
  */
-class NewPhaseTest extends WorkflowTest {
+class NewPhaseTest extends WorkflowTestBase {
 
   public function testNewPhase() {
     $assessment = TestSupport::createAssessment();
