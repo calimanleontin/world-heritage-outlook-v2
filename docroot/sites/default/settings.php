@@ -249,7 +249,9 @@
  *   );
  * @endcode
  */
-$config_directories = array();
+$config_directories = array(
+  CONFIG_SYNC_DIRECTORY => '../config/sync',
+);
 
 /**
  * Settings:
@@ -276,7 +278,7 @@ $config_directories = array();
  *   service requires the install profile use the 'install_profile' container
  *   parameter. Functional code can use \Drupal::installProfile().
  */
-# $settings['install_profile'] = '';
+$settings['install_profile'] = 'minimal';
 
 /**
  * Salt for one-time login links, cancel links, form tokens, etc.
@@ -749,10 +751,6 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
-// TODO Set this in settings.local.php
-$config['iucn_migration.settings']['assessment_path'] = 'http://iucn.local/modules/iucn/iucn_migrate/source/assessments.json';
-$config['iucn_migration.settings']['sites_path'] = 'http://iucn.local/modules/iucn/iucn_migrate/source/sites.json';
-
 /**
  * Load local development override configuration, if available.
  *
@@ -763,20 +761,8 @@ $config['iucn_migration.settings']['sites_path'] = 'http://iucn.local/modules/iu
  *
  * Keep this code block at the end of this file to take full effect.
  */
-#
+
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
-$config_directories['sync'] = '../config/sync';
-$settings['install_profile'] = 'minimal';
 
-// TODO Check how can we use kernel.environment property
-// that you can overwrite in services.yml
-// Assume that is always test/development env.
-$config['config_split.config_split.development']['status'] = TRUE;
-$config['config_split.config_split.live']['status'] = FALSE;
-$live_env = ['live', 'prod', 'production'];
-if (!empty($settings['environment']) && in_array($settings['environment'], $live_env)) {
-  $config['config_split.config_split.live']['status'] = TRUE;
-  $config['config_split.config_split.development']['status'] = FALSE;
-}
