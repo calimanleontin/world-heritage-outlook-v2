@@ -27,6 +27,7 @@ dependencies:
   - iucn_who_core
   - language
   - link
+  - maxlength
   - menu_link_content
   - menu_ui
   - metatag
