@@ -143,21 +143,18 @@ $config['google_maps_api.install']['api_key'] = '';
 
 $base_url = 'iucn.local';
 
-$settings['encryption_key'] = 'dmVyeS1zZWNyZXQta2V5LXRoYXQtYmFzZTY0LWVuYwo=';
-
 $config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
 $config['smtp.settings']['smtp_port'] = 465;
-$config['smtp.settings']['smtp_username'] = 'no-reply@eaudeweb.ro';
+$config['smtp.settings']['smtp_username'] = 'user@test.com';
 $config['smtp.settings']['smtp_password'] = '';
 $config['smtp.settings']['smtp_protocol'] = 'ssl';
-$config['smtp.settings']['smtp_from'] = 'no-reply@eaudeweb.ro';
+$config['smtp.settings']['smtp_from'] = 'user@test.com';
 
 $config['user.settings']['register'] = 'admin_only';
 
 $config['raven.settings']['client_key'] = '';
 $config['raven.settings']['public_dsn'] = '';
 $config['raven.settings']['environment'] = $settings['environment'];
-
 
 $config['varnish_purger.settings.fe166b7d74']['hostname'] = '';
 $config['varnish_purger.settings.fe166b7d74']['port'] = 443;
