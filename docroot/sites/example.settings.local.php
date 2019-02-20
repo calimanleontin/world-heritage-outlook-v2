@@ -127,6 +127,7 @@ $databases['default']['default'] = array (
 
 $settings['hash_salt'] = 'super-secret-hash-salt';
 
+$settings['testing_url'] = 'http://worldheritageoutlook.local';
 $base_url = 'worldheritageoutlook.local';
 $settings['trusted_host_patterns'] = [
   'worldheritageoutlook.local',

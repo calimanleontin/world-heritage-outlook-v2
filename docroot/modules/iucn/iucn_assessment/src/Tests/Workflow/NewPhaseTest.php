@@ -7,7 +7,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Tests\TestSupport;
 
 /**
- * @group iucn_workflow
+ * @group iucn_assessment_workflow
  */
 class NewPhaseTest extends WorkflowTestBase {
 
