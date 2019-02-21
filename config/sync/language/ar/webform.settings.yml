@@ -7,5 +7,8 @@ settings:
   default_wizard_confirmation_label: Complete
   default_preview_next_button_label: معاينة
   default_preview_label: معاينة
+  dialog_options:
+    normal:
+      title: Normal
 element:
   default_more_title: المزيد
