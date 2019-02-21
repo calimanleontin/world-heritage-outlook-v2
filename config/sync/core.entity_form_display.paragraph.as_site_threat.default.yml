@@ -45,7 +45,7 @@ bundle: as_site_threat
 mode: default
 content:
   field_as_description:
-    weight: 9
+    weight: 7
     settings:
       rows: 5
       placeholder: ''
@@ -53,13 +53,13 @@ content:
     type: text_textarea_with_scayt
     region: content
   field_as_legality:
-    weight: 8
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_as_species_name:
-    weight: 5
+    weight: 3
     settings:
       size: 60
       placeholder: ''
@@ -67,7 +67,7 @@ content:
     type: string_textfield
     region: content
   field_as_targeted_species:
-    weight: 4
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -104,7 +104,7 @@ content:
     type: boolean_checkbox
     region: content
   field_as_threats_rating:
-    weight: 11
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -124,7 +124,7 @@ content:
     region: content
   field_as_threats_values_bio:
     type: entity_reference_paragraphs
-    weight: 7
+    weight: 5
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -136,7 +136,7 @@ content:
     region: content
   field_as_threats_values_wh:
     type: entity_reference_paragraphs
-    weight: 6
+    weight: 4
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -147,7 +147,7 @@ content:
     third_party_settings: {  }
     region: content
   field_invasive_species_names:
-    weight: 10
+    weight: 9
     settings:
       size: 60
       placeholder: ''

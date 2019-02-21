@@ -28,6 +28,10 @@ class ParagraphAsSiteThreatForm {
     ],
     'field_as_targeted_species' => [
       1384, // Hunting and trapping
+      1386, // Logging/ Wood harvesting
+      1387, // Fishing/ Harvesting aquatic resources
+      1388, // Other biological resource use
+      1433, // Non-timber forest products (NTFPs)
     ],
     'field_as_species_name' => [
       1395, // Invasive Non-Native/ Alien Species
@@ -42,7 +46,6 @@ class ParagraphAsSiteThreatForm {
 
   const REQUIRED_DEPENDENT_FIELDS = [
     'field_as_legality',
-    'field_as_targeted_species',
     'field_as_species_name',
   ];
 

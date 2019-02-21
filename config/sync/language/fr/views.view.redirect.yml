@@ -26,7 +26,7 @@ display:
           label: 'A partir de'
           separator: ', '
         created:
-          label: Créé(e)
+          label: Créé
       filters:
         redirect_source__path:
           expose:
@@ -35,7 +35,10 @@ display:
           expose:
             label: À
         status_code:
+          expose:
+            label: 'Code du statut'
           group_info:
+            label: 'Code du statut'
             group_items:
               1:
                 title: '300 Choix Multiples'
