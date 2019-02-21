@@ -37,10 +37,10 @@ class ParagraphAsSiteThreatForm {
       1395, // Invasive Non-Native/ Alien Species
     ],
     'field_invasive_species_names' => [
-      1395,
-      1396,
-      1397,
-      1434,
+      1395, // Invasive Non-Native/ Alien Species
+      1396, // Hyper-Abundant Species
+      1397, // Modified Genetic Material
+      1434, // Diseases/pathogens
     ],
   ];
 
