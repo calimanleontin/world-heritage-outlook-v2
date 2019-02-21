@@ -11,7 +11,7 @@ use Drupal\iucn_assessment\Tests\TestSupport;
  */
 class UnderReviewPhaseTest extends WorkflowTestBase {
 
-  public function testUnderReviewPhase() {
+  public function testUnderReviewPhaseAccess() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();

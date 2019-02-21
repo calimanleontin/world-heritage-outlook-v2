@@ -11,7 +11,7 @@ use Drupal\iucn_assessment\Tests\TestSupport;
  */
 class NewPhaseTest extends WorkflowTestBase {
 
-  public function testNewPhase() {
+  public function testNewPhaseAccess() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();
