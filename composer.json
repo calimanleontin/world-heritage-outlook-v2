@@ -137,7 +137,7 @@
     "drupal/console": "^1.7.0",
     "drupal/core": "8.6.*",
     "drupal/crop": "^1.5",
-    "drupal/devel": "^1.0@RC",
+    "drupal/devel": "^2.0",
     "drupal/display_field_copy": "^1.0",
     "drupal/ds": "^3.1",
     "drupal/editor_advanced_link": "^1.4",
