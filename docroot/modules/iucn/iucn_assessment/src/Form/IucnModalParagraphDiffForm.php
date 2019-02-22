@@ -54,6 +54,19 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     return NULL;
   }
 
+  function isDeletedField($fieldDiff) {
+    foreach ($fieldDiff as $rows) {
+      foreach ($rows as $line) {
+        if (is_array($line) && !is_array($line['data'])) {
+          if ($line['data'] == '+') {
+            return FALSE;
+          }
+        }
+      }
+    }
+    return TRUE;
+  }
+
   public function getParagraphDiff() {
     $settings = json_decode($this->nodeRevision->field_settings->value, TRUE);
     if (empty($settings['diff'])) {
@@ -81,6 +94,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $assessmentRevision->getRevisionUser()->getDisplayName(),
       ];
+      $deletedLine = TRUE;
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName])) {
           continue;
@@ -89,6 +103,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           ? $revision->get($fieldName)
           : NULL;
         $fieldValue = !empty($field) ? $field->getValue() : [];
+        if (!$this->isDeletedField($rowDiff['diff'][$fieldName])) {
+          $deletedLine = FALSE;
+        }
+
         $row[$fieldName] = [
           'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
           'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
@@ -96,6 +114,11 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         ];
         $this->fieldWithDifferences[] = $fieldName;
       }
+
+      if ($deletedLine) {
+        $row = ['author' => $row['author'], 'deleted' => $this->t('This row has been deleted')];
+      }
+
       $paragraphDiff[] = $row;
 
       if (empty($initialRevision)) {
@@ -189,6 +212,20 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
     foreach ($paragraphDiff as $key => $diff) {
       $row = [];
+      if (!empty($diff["deleted"])) {
+        $field = 'author';
+        $row[$field] = [
+          'data' => ['#markup' => $diff[$field]],
+          '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+        ];
+        $field = 'deleted';
+        $row[$field] = [
+          'data' => ['#markup' => $diff[$field]],
+          '#wrapper_attributes' => ['class' => ['diff-deletedline'], 'colspan' => count($this->fieldWithDifferences) - 1],
+        ];
+        $diffTable[$key] = $row;
+        continue;
+      }
       foreach (array_merge(['author' => []], $this->paragraphFormComponents) as $field => $widgetSettings) {
         if (!in_array($field, $this->fieldWithDifferences)) {
           continue;
