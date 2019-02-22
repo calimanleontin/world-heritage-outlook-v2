@@ -287,6 +287,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
     $summary_components = $this->getSummaryComponents($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
 
+    $childFields = array_keys($paragraphs_entity->getFieldDefinitions());
+    $childFields = array_values(array_filter($childFields, function ($field) {
+      return preg_match('/^field\_/', $field);
+    }));
+
     if ($field_name == 'field_as_benefits') {
       $subcategories = ['field_as_benefits_subcategories' => $summary_containers['field_as_benefits_category']];
       $this->insertElementAfter($summary_containers, 'field_as_benefits_category', $subcategories);
@@ -341,7 +346,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $element['top']['#attributes']['class'][] = "paragraph-new-row";
     }
     else {
-      if ($this->isParagraphWithDiff($paragraphs_entity->id(), array_keys($summary_containers))
+      if ($this->isParagraphWithDiff($paragraphs_entity->id(), $childFields)
         && in_array($this->parentNode->field_state->value, [
           AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
           AssessmentWorkflow::STATUS_UNDER_COMPARISON,

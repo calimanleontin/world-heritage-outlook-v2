@@ -140,6 +140,8 @@ class TestSupport {
       'field_assessments',
       'field_current_assessment',
       'field_as_protection',
+      'field_coordinator',
+      'field_assessor',
     ];
     $fieldDefinitions = $entity->getFieldDefinitions();
 
@@ -174,15 +176,17 @@ class TestSupport {
     $newValue = NULL;
     switch ($fieldDefinition->getType()) {
       case 'boolean':
-        $newValue = $hasValue ? !$fieldItemList->value : rand(0, 1) == 1;
+        $map = [1, 0];
+        $value = $fieldItemList->getValue();
+        $newValue = $hasValue ? $map[$value[0]['value']] : rand(0, 1);
         break;
 
       case 'integer':
-        $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1) == 1;
+        $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1);
         break;
 
       case 'float':
-        $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1) == 1;
+        $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1);
         break;
 
       case 'datetime':
@@ -235,6 +239,11 @@ class TestSupport {
           end($ids);
         }
         $newValue = key($ids);
+        $oldValue = $fieldItemList->getValue();
+        if (!empty($oldValue[0]['target_id']) && $oldValue[0]['target_id'] == $newValue) {
+          reset($ids);
+          $newValue = key($ids);
+        }
         break;
 
       case 'entity_reference_revisions':
@@ -247,12 +256,19 @@ class TestSupport {
           $cardinality = $maxChildParagraphs;
         }
 
+        // Todo check set vs appendItem.
+        $count = $entity->get($fieldName)->count();
         for ($i = 0; $i < $cardinality; $i++) {
           /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
           $childEntity = self::createSampleEntity($targetType, $targetBundle);
           self::populateAllFieldsData($childEntity);
           $childEntity->save();
-          $entity->get($fieldName)->appendItem($childEntity);
+          if ($i < $count) {
+            $entity->get($fieldName)->set($i, $childEntity);
+          }
+          else {
+            $entity->get($fieldName)->appendItem($childEntity);
+          }
         }
         break;
     }
