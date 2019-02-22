@@ -378,12 +378,16 @@
 }
 .add-paragraph-form-modal .paragraph-form fieldset.error,
 .edit-paragraph-form-modal .paragraph-form fieldset.error {
-  border-width: 1px;
-  border-color: #e62600;
+  border: 1px solid #e62600;
 }
 .add-paragraph-form-modal .paragraph-form fieldset.error .form-item label,
 .edit-paragraph-form-modal .paragraph-form fieldset.error .form-item label {
   color: #a51b00;
+}
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label {
+  color: #a51b00;
+  font-weight: bold;
 }
 .add-paragraph-form-modal .paragraph-form .form-checkboxes > div,
 .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div,
