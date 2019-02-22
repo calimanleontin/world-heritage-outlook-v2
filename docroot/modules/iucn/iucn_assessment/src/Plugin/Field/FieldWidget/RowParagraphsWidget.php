@@ -260,6 +260,73 @@ class RowParagraphsWidget extends ParagraphsWidget {
     ];
   }
 
+  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
+    unset($element['top']['actions']['dropdown_actions']);
+
+    $element['top']['actions']['actions']['remove_button'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Remove'),
+      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => "#$field_wrapper",
+        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+      ]),
+      '#attributes' => [
+        'class' => [
+          'use-ajax',
+          'button',
+          'paragraphs-icon-button',
+          'paragraphs-icon-delete',
+        ],
+        'data-dialog-type' => 'modal',
+        'title' => $this->t('Remove'),
+      ],
+    ];
+  }
+
+  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
+    if ($type == 'accept') {
+      $icon = 'paragraphs-icon-button-accept';
+      $title = $this->t('Accept');
+      $paragraph = Paragraph::load($paragraph_id);
+      /** @var User $author */
+      $author = $paragraph->getRevisionAuthor();
+      $author = $author->getDisplayName();
+    }
+    else {
+      $icon = 'paragraphs-icon-button-revert';
+      $title = $this->t('Revert');
+    }
+
+    $paragraph_row['actions']['actions']['revert'] = [
+      '#type' => 'link',
+      '#title' => $title,
+      '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+        'paragraph' => $paragraph_id,
+      ]),
+      '#attributes' => [
+        'class' => [
+          'use-ajax',
+          'button',
+          'paragraphs-icon-button',
+          $icon,
+        ],
+        'data-dialog-type' => 'modal',
+        'title' => $title,
+      ],
+    ];
+    if (!empty($author)) {
+      $tooltip = $this->t('Added by: @author', ['@author' => $author]);
+      $paragraph_row['actions']['actions']['revert']['#prefix'] = '<div class="paragraph-author">' . $tooltip . '</div>';
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -367,32 +434,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
     return $element;
   }
 
-  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
-    unset($element['top']['actions']['dropdown_actions']);
-
-    $element['top']['actions']['actions']['remove_button'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Remove'),
-      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
-        'node' => $this->parentNode->id(),
-        'node_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => "#$field_wrapper",
-        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-      ]),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-delete',
-        ],
-        'data-dialog-type' => 'modal',
-        'title' => $this->t('Remove'),
-      ],
-    ];
-  }
-
   /**
    * Check if a paragraph is new compared to previous revisions of a certain state.
    *
@@ -484,25 +525,29 @@ class RowParagraphsWidget extends ParagraphsWidget {
 
   public function buildAddMoreAjaxButton(&$elements, $field_name) {
     $add_more_button = array_keys($elements['add_more'])[0];
-    $label = $elements['add_more'][$add_more_button]['#value'];
     $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
       ->getSetting('handler_settings')['target_bundles'];
     $bundle = reset($target_paragraph);
     if (!empty($this->parentNode->id())) {
       $tab = \Drupal::request()->query->get('tab');
-      $add_more = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
+      $title = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
       $elements['add_more'][$add_more_button] = [
-        '#type' => 'submit',
-        '#value' => $add_more,
-        '#ajax' => [
-          'event' => 'click',
-          'url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
-            'node' => $this->parentNode->id(),
-            'node_revision' => $this->parentNode->getRevisionId(),
-            'field' => $field_name,
-            'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-            'bundle' => $bundle,
-          ]),
+        '#type' => 'title',
+        '#title' => $title,
+        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+          'bundle' => $bundle,
+        ]),
+        '#attributes' => [
+          'class' => [
+            'use-ajax',
+            'button',
+          ],
+          'data-dialog-type' => 'modal',
+          'title' => $title,
         ],
       ];
     }
@@ -584,52 +629,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
         $elements[] = $reviewer_paragraph_row;
       }
     }
-  }
-
-  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
-    if ($type == 'accept') {
-      $icon = 'paragraphs-icon-button-accept';
-      $title = $this->t('Accept');
-      $paragraph = Paragraph::load($paragraph_id);
-      /** @var User $author */
-      $author = $paragraph->getRevisionAuthor();
-      $author = $author->getDisplayName();
-    }
-    else {
-      $icon = 'paragraphs-icon-button-revert';
-      $title = $this->t('Revert');
-    }
-
-    $paragraph_row['actions']['actions']['revert'] = [
-      '#type' => 'submit',
-      '#value' => $title,
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-          'paragraph' => $paragraph_id,
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
-      '#attributes' => [
-        'class' => [
-          'paragraphs-icon-button',
-          $icon,
-        ],
-        'title' => $title,
-      ],
-    ];
-    if (!empty($author)) {
-      $tooltip = $this->t('Added by: @author', ['@author' => $author]);
-      $paragraph_row['actions']['actions']['revert']['#prefix'] = '<div class="paragraph-author">' . $tooltip . '</div>';
-    }
-
   }
 
   public function getAssessorDeletedParagraphs($field_name) {
