@@ -220,6 +220,9 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.paragraphs-add-more-button {
+  margin: .75em 0 0 .75em!important;
+}
 .node-site-assessment-edit-form .current-state,
 .node-site-assessment-state-change-form .current-state {
   margin: 10px 0;

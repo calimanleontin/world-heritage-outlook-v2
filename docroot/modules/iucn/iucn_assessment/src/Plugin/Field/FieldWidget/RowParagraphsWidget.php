@@ -286,6 +286,37 @@ class RowParagraphsWidget extends ParagraphsWidget {
     ];
   }
 
+  public function buildAddMoreAjaxButton(&$elements, $field_name) {
+    $add_more_button = array_keys($elements['add_more'])[0];
+    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
+      ->getSetting('handler_settings')['target_bundles'];
+    $bundle = reset($target_paragraph);
+    if (!empty($this->parentNode->id())) {
+      $tab = \Drupal::request()->query->get('tab');
+      $title = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
+      $elements['add_more'][$add_more_button] = [
+        '#type' => 'link',
+        '#title' => $title,
+        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+          'node' => $this->parentNode->id(),
+          'node_revision' => $this->parentNode->getRevisionId(),
+          'field' => $field_name,
+          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
+          'bundle' => $bundle,
+        ]),
+        '#attributes' => [
+          'class' => [
+            'use-ajax',
+            'button',
+            'paragraphs-add-more-button',
+          ],
+          'data-dialog-type' => 'modal',
+          'title' => $title,
+        ],
+      ];
+    }
+  }
+
   public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
     if ($type == 'accept') {
       $icon = 'paragraphs-icon-button-accept';
@@ -520,36 +551,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
           'data' => ['#markup' => $empty_message],
         ];
       }
-    }
-  }
-
-  public function buildAddMoreAjaxButton(&$elements, $field_name) {
-    $add_more_button = array_keys($elements['add_more'])[0];
-    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
-      ->getSetting('handler_settings')['target_bundles'];
-    $bundle = reset($target_paragraph);
-    if (!empty($this->parentNode->id())) {
-      $tab = \Drupal::request()->query->get('tab');
-      $title = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
-      $elements['add_more'][$add_more_button] = [
-        '#type' => 'title',
-        '#title' => $title,
-        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-          'bundle' => $bundle,
-        ]),
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
-            'button',
-          ],
-          'data-dialog-type' => 'modal',
-          'title' => $title,
-        ],
-      ];
     }
   }
 
