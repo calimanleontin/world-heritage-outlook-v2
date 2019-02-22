@@ -195,7 +195,8 @@ class ParagraphAsSiteThreatForm {
     $fieldThreatsInIsRendered = (!empty($form['field_as_threats_in']) || !empty($form['diff']['edit']['field_as_threats_in']));
     $fieldThreatsOutIsRendered = (!empty($form['field_as_threats_out']) || !empty($form['diff']['edit']['field_as_threats_out']));
     if ($fieldThreatsInIsRendered && $fieldThreatsOutIsRendered && empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_out')['value'])) {
-      $form_state->setErrorByName('threat_in_out', t('At least one option must be selected for Inside site/Outside site'));
+      $form_state->setErrorByName('field_as_threats_in', t('At least one option must be selected for Inside site/Outside site'));
+      $form_state->setErrorByName('field_as_threats_out', t('At least one option must be selected for Inside site/Outside site'));
     }
   }
 
