@@ -199,32 +199,27 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['diff_button'] = [
-      '#type' => 'submit',
-      '#value' => 'See differences',
+      '#type' => 'link',
+      '#title' => $this->t('See differences'),
       '#weight' => 2,
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => "#$field_wrapper",
-          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'tab' => $tab,
-          'form_display_mode' => $this->getSetting('form_display_mode'),
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
+      '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => "#$field_wrapper",
+        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        'tab' => $tab,
+        'form_display_mode' => $this->getSetting('form_display_mode'),
+      ]),
       '#access' => $paragraphs_entity->access('update'),
       '#attributes' => [
         'class' => [
+          'use-ajax',
+          'button',
           'paragraphs-icon-button',
           'paragraphs-icon-button-compare',
-          'use-ajax',
         ],
+        'data-dialog-type' => 'modal',
         'title' => $this->t('See differences'),
       ],
     ];
@@ -242,25 +237,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
   public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
     $tab = \Drupal::request()->query->get('tab');
     $element['top']['actions']['actions']['edit_button'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Edit'),
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => "#$field_wrapper",
-          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-          'tab' => $tab,
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
+      '#type' => 'link',
+      '#title' => $this->t('Edit'),
+      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => "#$field_wrapper",
+        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+        'tab' => $tab,
+      ]),
       '#attributes' => [
-        'class' => ['paragraphs-icon-button', 'paragraphs-icon-button-edit'],
+        'class' => [
+          'use-ajax',
+          'button',
+          'paragraphs-icon-button',
+          'paragraphs-icon-button-edit',
+        ],
+        'data-dialog-type' => 'modal',
         'title' => $this->t('Edit'),
       ],
     ];
@@ -377,28 +371,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
     unset($element['top']['actions']['dropdown_actions']);
 
     $element['top']['actions']['actions']['remove_button'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Remove'),
+      '#type' => 'link',
+      '#title' => $this->t('Remove'),
+      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $field_name,
+        'field_wrapper_id' => "#$field_wrapper",
+        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
+      ]),
       '#attributes' => [
-        'title' => $this->t('Remove'),
         'class' => [
-          'paragraphs-icon-delete',
+          'use-ajax',
+          'button',
           'paragraphs-icon-button',
+          'paragraphs-icon-delete',
         ],
-      ],
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => "#$field_wrapper",
-          'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
+        'data-dialog-type' => 'modal',
+        'title' => $this->t('Remove'),
       ],
     ];
   }
