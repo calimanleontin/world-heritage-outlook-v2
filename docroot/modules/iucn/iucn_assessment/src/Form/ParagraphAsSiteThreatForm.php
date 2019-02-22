@@ -188,7 +188,8 @@ class ParagraphAsSiteThreatForm {
       }
     }
     if (!$values_filled) {
-      $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
+      $form_state->setErrorByName('field_as_threats_values_wh_select', t('At least one affected value must be selected'));
+      $form_state->setErrorByName('field_as_threats_values_bio_select', t('At least one affected value must be selected'));
     }
 
     $fieldThreatsInIsRendered = (!empty($form['field_as_threats_in']) || !empty($form['diff']['edit']['field_as_threats_in']));
