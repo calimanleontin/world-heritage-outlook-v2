@@ -117,8 +117,8 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
-    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 200);
-    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 403);
     $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
@@ -128,7 +128,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER2, 403);
 
-    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->userLogIn(TestSupport::IUCN_MANAGER);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_PUBLISHED]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 302);
@@ -136,8 +136,8 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 302);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
-    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 302);
-    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 403);
     $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
@@ -147,7 +147,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER2, 403);
 
-    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->userLogIn(TestSupport::IUCN_MANAGER);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_DRAFT]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
@@ -155,8 +155,8 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
-    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 200);
-    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 200);
+    $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 403);
     $this->checkUserAccess($editUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($editUrl, TestSupport::ASSESSOR1, 403);
@@ -166,7 +166,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER2, 403);
 
-    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->userLogIn(TestSupport::IUCN_MANAGER);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_PUBLISHED]);
   }
 }
