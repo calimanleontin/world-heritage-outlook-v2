@@ -11,15 +11,6 @@ use Drupal\node\Entity\Node;
  * @group iucn
  */
 class EditFormTest extends IucnAssessmentTestBase {
-  // Todo fields breaks updateFieldData call.
-  protected $exclude_fields = [
-    'field_as_threats_values_bio',
-    'field_as_threats_values_wh',
-    'field_as_threats_in',
-    'field_as_threats_out',
-    'field_as_benefits_datadeficient',
-  ];
-
   protected $tabs = [
     'values' => [
       'field_as_values_wh',
@@ -227,28 +218,23 @@ class EditFormTest extends IucnAssessmentTestBase {
           }));
 
           foreach ($childFields as $i => $childField) {
-            if (in_array($childField, $this->exclude_fields)) {
-              continue;
-            }
             // We update only one field for each child entity to test if the
             // differences are retrieved for all fields.
             $childValue = $fieldItemList->get($i);
-            // Todo check why $childValue->entity crashes.
             if ($childValue) {
               /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
               $childEntity = $childValue->entity;
               TestSupport::updateFieldData($childEntity, $childField);
               $childEntity->save();
-              $fieldItemList->set($i, $childEntity);
               $expectedDifferences[$tab]++;
             }
           }
+          $assessment->set($field, $fieldItemList->getValue());
         }
         else {
           TestSupport::updateFieldData($assessment, $field);
           $expectedDifferences[$tab]++;
         }
-        $assessment->set($field, $fieldItemList->getValue());
       }
     }
     $assessment->save();

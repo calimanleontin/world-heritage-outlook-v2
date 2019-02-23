@@ -179,14 +179,17 @@ class TestSupport {
         $map = [1, 0];
         $value = $fieldItemList->getValue();
         $newValue = $hasValue ? $map[$value[0]['value']] : rand(0, 1);
+        $entity->set($fieldName, $newValue);
         break;
 
       case 'integer':
         $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1);
+        $entity->set($fieldName, $newValue);
         break;
 
       case 'float':
         $newValue = $hasValue ? $fieldItemList->value + 1 : rand(0, 1);
+        $entity->set($fieldName, $newValue);
         break;
 
       case 'datetime':
