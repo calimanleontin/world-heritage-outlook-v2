@@ -7,11 +7,11 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\iucn_assessment\Tests\TestSupport;
 
 /**
- * @group iucn_workflow
+ * @group iucn_assessment_workflow
  */
 class UnderEvaluationPhaseTest extends WorkflowTestBase {
 
-  public function testUnderEvaluationPhase() {
+  public function testUnderEvaluationPhaseAccess() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();

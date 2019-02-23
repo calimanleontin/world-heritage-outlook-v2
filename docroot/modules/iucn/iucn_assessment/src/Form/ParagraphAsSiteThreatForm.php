@@ -28,21 +28,24 @@ class ParagraphAsSiteThreatForm {
     ],
     'field_as_targeted_species' => [
       1384, // Hunting and trapping
+      1386, // Logging/ Wood harvesting
+      1387, // Fishing/ Harvesting aquatic resources
+      1388, // Other biological resource use
+      1433, // Non-timber forest products (NTFPs)
     ],
     'field_as_species_name' => [
       1395, // Invasive Non-Native/ Alien Species
     ],
     'field_invasive_species_names' => [
-      1395,
-      1396,
-      1397,
-      1434,
+      1395, // Invasive Non-Native/ Alien Species
+      1396, // Hyper-Abundant Species
+      1397, // Modified Genetic Material
+      1434, // Diseases/pathogens
     ],
   ];
 
   const REQUIRED_DEPENDENT_FIELDS = [
     'field_as_legality',
-    'field_as_targeted_species',
     'field_as_species_name',
   ];
 
@@ -185,13 +188,15 @@ class ParagraphAsSiteThreatForm {
       }
     }
     if (!$values_filled) {
-      $form_state->setErrorByName('affected_values', t('At least one affected value must be selected'));
+      $form_state->setErrorByName('field_as_threats_values_wh_select', t('At least one affected value must be selected'));
+      $form_state->setErrorByName('field_as_threats_values_bio_select', t('At least one affected value must be selected'));
     }
 
     $fieldThreatsInIsRendered = (!empty($form['field_as_threats_in']) || !empty($form['diff']['edit']['field_as_threats_in']));
     $fieldThreatsOutIsRendered = (!empty($form['field_as_threats_out']) || !empty($form['diff']['edit']['field_as_threats_out']));
     if ($fieldThreatsInIsRendered && $fieldThreatsOutIsRendered && empty($form_state->getValue('field_as_threats_in')['value']) && empty($form_state->getValue('field_as_threats_out')['value'])) {
-      $form_state->setErrorByName('threat_in_out', t('At least one option must be selected for Inside site/Outside site'));
+      $form_state->setErrorByName('field_as_threats_in', t('At least one option must be selected for Inside site/Outside site'));
+      $form_state->setErrorByName('field_as_threats_out', t('At least one option must be selected for Inside site/Outside site'));
     }
   }
 

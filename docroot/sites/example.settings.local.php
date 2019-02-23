@@ -1,5 +1,7 @@
 <?php
 
+// @codingStandardsIgnoreFile
+
 /**
  * @file
  * Local development override configuration feature.
@@ -53,7 +55,7 @@ $config['system.performance']['css']['preprocess'] = FALSE;
 $config['system.performance']['js']['preprocess'] = FALSE;
 
 /**
- * Disable the render cache (this includes the page cache).
+ * Disable the render cache.
  *
  * Note: you should test with the render cache enabled, to ensure the correct
  * cacheability metadata is present. However, in the early stages of
@@ -62,7 +64,7 @@ $config['system.performance']['js']['preprocess'] = FALSE;
  * This setting disables the render cache by using the Null cache back-end
  * defined by the development.services.yml file above.
  *
- * Do not use this setting until after the site is installed.
+ * Only use this setting once the site has been installed.
  */
 # $settings['cache']['bins']['render'] = 'cache.backend.null';
 
@@ -73,6 +75,20 @@ $config['system.performance']['js']['preprocess'] = FALSE;
  * database. This makes it easier to develop custom migrations.
  */
 # $settings['cache']['bins']['discovery_migration'] = 'cache.backend.memory';
+
+/**
+ * Disable Internal Page Cache.
+ *
+ * Note: you should test with Internal Page Cache enabled, to ensure the correct
+ * cacheability metadata is present. However, in the early stages of
+ * development, you may want to disable it.
+ *
+ * This setting disables the page cache by using the Null cache back-end
+ * defined by the development.services.yml file above.
+ *
+ * Only use this setting once the site has been installed.
+ */
+# $settings['cache']['bins']['page'] = 'cache.backend.null';
 
 /**
  * Disable Dynamic Page Cache.
@@ -90,7 +106,7 @@ $config['system.performance']['js']['preprocess'] = FALSE;
  * During development it can be useful to install test extensions for debugging
  * purposes.
  */
-$settings['extension_discovery_scan_tests'] = TRUE;
+# $settings['extension_discovery_scan_tests'] = TRUE;
 
 /**
  * Enable access to rebuild.php.
@@ -114,11 +130,6 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
-# Configure Varnish purger to invalidate using front-end web server
-$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
-$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
-$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
-
 $databases['default']['default'] = array (
   'database' => 'drupal',
   'username' => 'root',
@@ -129,9 +140,38 @@ $databases['default']['default'] = array (
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
-$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
+
 $settings['hash_salt'] = 'super-secret-hash-salt';
-$settings['environment'] = 'dev';
+
+$settings['testing_url'] = 'http://worldheritageoutlook.local';
+$base_url = 'worldheritageoutlook.local';
 $settings['trusted_host_patterns'] = [
   'worldheritageoutlook.local',
 ];
+
+# Configure Varnish purger to invalidate using front-end web server
+$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
+$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
+$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
+$config['varnish_image_purge.configuration']['entity_types'] = ['random-entity-that-does-not-exist'];
+
+$config['recaptcha.settings']['site_key'] = '';
+$config['recaptcha.settings']['secret_key'] = '';
+
+$config['google_maps_api.install']['api_key'] = '';
+
+$config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
+$config['smtp.settings']['smtp_port'] = 465;
+$config['smtp.settings']['smtp_protocol'] = 'ssl';
+$config['smtp.settings']['smtp_from'] = 'user@example.com';
+$config['smtp.settings']['smtp_username'] = 'user@example.com';
+$config['smtp.settings']['smtp_password'] = '';
+
+$config['raven.settings']['client_key'] = '';
+$config['raven.settings']['public_dsn'] = '';
+$config['raven.settings']['environment'] = '';
+
+$config['system.site']['mail'] = 'user@example.ro';
+
+$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-files');
+$config['system.file']['path']['temporary'] = '/tmp';

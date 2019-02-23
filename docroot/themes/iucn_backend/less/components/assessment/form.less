@@ -158,6 +158,21 @@
     padding-bottom: 10px;
   }
 
+  fieldset.error {
+    border: 1px solid #e62600;
+    .form-item {
+      label {
+        color: #a51b00;
+      }
+    }
+  }
+
+  .form-type-checkbox {
+    input.error + label {
+      color: #a51b00;
+      font-weight: bold;
+    }
+  }
 
   .form-checkboxes > div,
   .form-type-textfield,
@@ -196,14 +211,6 @@
     > .chosen-container {
       width: auto !important;
     }
-    // // Nesting
-    // .form-type-textfield,
-    // .form-type-textarea,
-    // .form-type-checkbox,
-    // .form-type-select,
-    // .form-composite {
-    //   display: block;
-    // }
 
   }
   .fieldset-wrapper {

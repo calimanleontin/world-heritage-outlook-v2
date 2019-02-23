@@ -220,6 +220,9 @@
 .paragraphs-icon-button-accept {
   background-image: url("../images/icon-accept.svg") !important;
 }
+.paragraphs-add-more-button {
+  margin: .75em 0 0 .75em!important;
+}
 .node-site-assessment-edit-form .current-state,
 .node-site-assessment-state-change-form .current-state {
   margin: 10px 0;
@@ -372,6 +375,19 @@
 .add-paragraph-form-modal .paragraph-form > .form-wrapper,
 .edit-paragraph-form-modal .paragraph-form > .form-wrapper {
   padding-bottom: 10px;
+}
+.add-paragraph-form-modal .paragraph-form fieldset.error,
+.edit-paragraph-form-modal .paragraph-form fieldset.error {
+  border: 1px solid #e62600;
+}
+.add-paragraph-form-modal .paragraph-form fieldset.error .form-item label,
+.edit-paragraph-form-modal .paragraph-form fieldset.error .form-item label {
+  color: #a51b00;
+}
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label {
+  color: #a51b00;
+  font-weight: bold;
 }
 .add-paragraph-form-modal .paragraph-form .form-checkboxes > div,
 .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div,

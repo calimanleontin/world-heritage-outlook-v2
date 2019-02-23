@@ -12,7 +12,8 @@ project:
           url: https://iucn-who.edw.ro/sync/files.tar.gz
       develop:
         admin_username: iucn
-        config_split: TRUE
+        config_split: FALSE
         modules:
           - devel
           - webprofiler
+          - simpletest
