@@ -19,7 +19,7 @@ class EditFormTabsValidationTest extends IucnAssessmentTestBase {
    */
   protected function testValuesTabAccess() {
     $assessment = TestSupport::createAssessment();
-    TestSupport::updateFieldData($assessment, 'field_as_values_wh');
+    TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();
 
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
