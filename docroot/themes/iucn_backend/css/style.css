@@ -1507,6 +1507,9 @@ table.diff-context-wrapper {
   position: relative;
   vertical-align: top;
 }
+.diff-modal table.diff-table > tbody > tr > td.diff-deletedline {
+  line-height: 45px;
+}
 .diff-modal table.diff-table > tbody > tr > td input[type="text"],
 .diff-modal table.diff-table > tbody > tr > td textarea,
 .diff-modal table.diff-table > tbody > tr > td select {

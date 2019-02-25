@@ -552,29 +552,24 @@ class NodeSiteAssessmentForm {
 
   public static function getFieldDiffButton(NodeInterface $node, $field) {
     return [
-      '#type' => 'submit',
-      '#value' => 'See differences',
+      '#type' => 'link',
+      '#title' => t('See differences'),
       '#weight' => 2,
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
-          'node' => $node->id(),
-          'node_revision' => $node->getRevisionId(),
-          'field' => $field,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
+      '#url' => Url::fromRoute('iucn_assessment.field_diff_form', [
+        'node' => $node->id(),
+        'node_revision' => $node->getRevisionId(),
+        'field' => $field,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
+      ]),
       '#attributes' => [
         'class' => [
+          'use-ajax',
+          'button',
           'paragraphs-icon-button',
           'paragraphs-icon-button-compare',
-          'use-ajax',
           'field-diff-button',
         ],
+        'data-dialog-type' => 'modal',
         'title' => t('See differences'),
       ],
     ];
