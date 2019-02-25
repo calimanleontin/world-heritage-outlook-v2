@@ -23,6 +23,58 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface */
   protected $entityFieldManager;
 
+  /**
+   * Array with all fields rendered on each tab.
+   *
+   * @var array
+   */
+  protected $tabs = [
+    'values' => [
+      'field_as_values_wh',
+      'field_as_values_bio',
+    ],
+    'threats' => [
+      'field_as_threats_current',
+      'field_as_threats_potential',
+      'field_as_threats_current_text',
+      'field_as_threats_current_rating',
+      'field_as_threats_potent_text',
+      'field_as_threats_potent_rating',
+      'field_as_threats_text',
+      'field_as_threats_rating',
+    ],
+    'protection-management' => [
+      'field_as_protection',
+      'field_as_protection_ov_text',
+      'field_as_protection_ov_rating',
+      'field_as_protection_ov_out_text',
+      'field_as_protection_ov_out_rate',
+      'field_as_protection_ov_practices',
+    ],
+    'assessing-values' => [
+      'field_as_values_wh',
+      'field_as_vass_wh_text',
+      'field_as_vass_wh_state',
+      'field_as_vass_wh_trend',
+      'field_as_vass_bio_text',
+      'field_as_vass_bio_state',
+      'field_as_vass_bio_trend',
+    ],
+    'conservation-outlook' => [
+      'field_as_global_assessment_text',
+      'field_as_global_assessment_level',
+    ],
+    'benefits' => [
+      'field_as_benefits',
+      'field_as_benefits_summary',
+    ],
+    'projects' => [
+      'field_as_projects',
+    ],
+    'references' => [
+      'field_as_references_p',
+    ],
+  ];
 
   /**
    * Disable strict config schema checking.
