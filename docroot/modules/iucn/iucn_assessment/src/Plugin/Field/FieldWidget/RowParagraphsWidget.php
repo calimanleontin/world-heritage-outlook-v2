@@ -434,11 +434,7 @@ class RowParagraphsWidget extends ParagraphsWidget {
       $element['top']['#attributes']['class'][] = "paragraph-new-row";
     }
     else {
-      $childFields = array_keys($paragraphs_entity->getFieldDefinitions());
-      $childFields = array_values(array_filter($childFields, function ($field) {
-        return preg_match('/^field\_/', $field);
-      }));
-      if ($this->isParagraphWithDiff($paragraphs_entity->id(), $childFields)
+      if ($this->isParagraphWithDiff($paragraphs_entity->id(), array_keys($summary_containers))
         && in_array($assessmentState, [
           AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
           AssessmentWorkflow::STATUS_UNDER_COMPARISON,
