@@ -273,11 +273,12 @@ class NodeSiteAssessmentForm {
           $paragraph = Paragraph::load($fieldAsProtectionWidget[$child]['#paragraph_id']);
           /** @var \Drupal\taxonomy\TermInterface $protectionTopic */
           $protectionTopic = $paragraph->field_as_protection_topic->entity;
-          if ($protectionTopic) {
-            $fieldAsProtectionWidget[$child]['#delta'] = $protectionTopic->getWeight();
-            $fieldAsProtectionWidget[$child]['#weight'] = $protectionTopic->getWeight();
-            $fieldAsProtectionWidget[$child]['_weight']['#default_value'] = $protectionTopic->getWeight();
+          if (empty($protectionTopic)) {
+            continue;
           }
+          $fieldAsProtectionWidget[$child]['#delta'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['#weight'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['_weight']['#default_value'] = $protectionTopic->getWeight();
         }
 
         $fieldAsProtectionBestPracticeWidget = &$form['field_as_protection_ov_practices']['widget'][0];

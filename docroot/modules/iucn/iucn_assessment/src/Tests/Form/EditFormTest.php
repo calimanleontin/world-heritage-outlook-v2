@@ -1,16 +1,19 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests;
+namespace Drupal\iucn_assessment\Tests\Form;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\iucn_assessment\Tests\IucnAssessmentTestBase;
+use Drupal\iucn_assessment\Tests\TestSupport;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\node\Entity\Node;
 
 /**
- * @group iucn
+ * @group iucn_assessment_forms
  */
 class EditFormTest extends IucnAssessmentTestBase {
+
   protected $tabs = [
     'values' => [
       'field_as_values_wh',
@@ -109,34 +112,11 @@ class EditFormTest extends IucnAssessmentTestBase {
       // only the fields rendered on that tab completed.
       $assessment = TestSupport::createAssessment("Assessment for {$tab} tab");
       switch ($tab) {
-
-        case 'references':
-          $siteReferenceParagraph = Paragraph::create(['type' => 'as_site_reference']);
-          $siteReferenceParagraph->save();
-          $assessment->get('field_as_references_p')->appendItem($siteReferenceParagraph);
-
-        case 'conservation-outlook':
-          $conservation_rating = TestSupport::getTaxonomyTerm('assessment_conservation_rating');
-          $assessment->set('field_as_global_assessment_text', 'text');
-          $assessment->set('field_as_global_assessment_level', $conservation_rating->id());
-
-        case 'assessing-values':
+        case 'values':
           $whValueParagraph = Paragraph::create(['type' => 'as_site_value_wh']);
           $whValueParagraph->save();
           $assessment->get('field_as_values_wh')->appendItem($whValueParagraph);
-          $assessment->set('field_as_vass_wh_text', 'text');
-          $assessment->set('field_as_vass_wh_state', TestSupport::getTaxonomyTerm('assessment_value_state')->id());
-          $assessment->set('field_as_vass_wh_trend', TestSupport::getTaxonomyTerm('assessment_value_trend')->id());
-
-        case 'protection-management':
-          $protectionRating = TestSupport::getTaxonomyTerm('assessment_protection_rating');
-          $siteProtectionParagraph = Paragraph::create(['type' => 'as_site_protection']);
-          $siteProtectionParagraph->save();
-          $assessment->get('field_as_protection')->appendItem($siteProtectionParagraph);
-          $assessment->set('field_as_protection_ov_text', 'text');
-          $assessment->set('field_as_protection_ov_rating', $protectionRating->id());
-          $assessment->set('field_as_protection_ov_out_text', 'text');
-          $assessment->set('field_as_protection_ov_out_rate', $protectionRating->id());
+          break;
 
         case 'threats':
           $threatLevel = TestSupport::getTaxonomyTerm('assessment_threat_level');
@@ -162,11 +142,39 @@ class EditFormTest extends IucnAssessmentTestBase {
           $assessment->set('field_as_threats_current_rating', $threatLevel->id());
           $assessment->set('field_as_threats_potent_rating', $threatLevel->id());
           $assessment->set('field_as_threats_rating', $threatLevel->id());
+          break;
 
-        case 'values':
+        case 'protection-management':
+          $protectionRating = TestSupport::getTaxonomyTerm('assessment_protection_rating');
+          $siteProtectionParagraph = Paragraph::create(['type' => 'as_site_protection']);
+          $siteProtectionParagraph->save();
+          $assessment->get('field_as_protection')->appendItem($siteProtectionParagraph);
+          $assessment->set('field_as_protection_ov_text', 'text');
+          $assessment->set('field_as_protection_ov_rating', $protectionRating->id());
+          $assessment->set('field_as_protection_ov_out_text', 'text');
+          $assessment->set('field_as_protection_ov_out_rate', $protectionRating->id());
+          break;
+
+        case 'assessing-values':
           $whValueParagraph = Paragraph::create(['type' => 'as_site_value_wh']);
           $whValueParagraph->save();
           $assessment->get('field_as_values_wh')->appendItem($whValueParagraph);
+          $assessment->set('field_as_vass_wh_text', 'text');
+          $assessment->set('field_as_vass_wh_state', TestSupport::getTaxonomyTerm('assessment_value_state')->id());
+          $assessment->set('field_as_vass_wh_trend', TestSupport::getTaxonomyTerm('assessment_value_trend')->id());
+          break;
+
+        case 'conservation-outlook':
+          $conservation_rating = TestSupport::getTaxonomyTerm('assessment_conservation_rating');
+          $assessment->set('field_as_global_assessment_text', 'text');
+          $assessment->set('field_as_global_assessment_level', $conservation_rating->id());
+          break;
+
+        case 'references':
+          $siteReferenceParagraph = Paragraph::create(['type' => 'as_site_reference']);
+          $siteReferenceParagraph->save();
+          $assessment->get('field_as_references_p')->appendItem($siteReferenceParagraph);
+          break;
       }
       $assessment->save();
       
@@ -221,13 +229,11 @@ class EditFormTest extends IucnAssessmentTestBase {
             // We update only one field for each child entity to test if the
             // differences are retrieved for all fields.
             $childValue = $fieldItemList->get($i);
-            if ($childValue) {
-              /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
-              $childEntity = $childValue->entity;
-              TestSupport::updateFieldData($childEntity, $childField);
-              $childEntity->save();
-              $expectedDifferences[$tab]++;
-            }
+            /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
+            $childEntity = $childValue->entity;
+            TestSupport::updateFieldData($childEntity, $childField);
+            $childEntity->save();
+            $expectedDifferences[$tab]++;
           }
           $assessment->set($field, $fieldItemList->getValue());
         }
@@ -240,7 +246,6 @@ class EditFormTest extends IucnAssessmentTestBase {
     $assessment->save();
     $assessment = Node::load($assessment->id());
 
-    // Access denied?!
     $this->userLogIn(TestSupport::ASSESSOR1);
     $this->drupalPostForm($stateChangeUrl, [], 'Finish assessment');
 
@@ -251,7 +256,7 @@ class EditFormTest extends IucnAssessmentTestBase {
         continue;
       }
       $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
-      $actualDifferences = substr_count($this->getRawContent(), 'value="See differences"');
+      $actualDifferences = substr_count($this->getRawContent(), 'title="See differences"');
       $this->assertEqual($expectedDifferences[$tab], $actualDifferences, "Expected {$expectedDifferences[$tab]} differences on \"{$tab}\" tab, {$actualDifferences} found.");
     }
   }

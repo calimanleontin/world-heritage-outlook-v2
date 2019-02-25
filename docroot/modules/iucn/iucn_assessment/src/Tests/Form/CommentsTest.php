@@ -1,22 +1,15 @@
 <?php
 
+namespace Drupal\iucn_assessment\Tests\Form;
 
-namespace Drupal\iucn_assessment\Tests;
-
-use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
+use Drupal\iucn_assessment\Tests\IucnAssessmentTestBase;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\NodeInterface;
+use Drupal\iucn_assessment\Tests\TestSupport;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\user\Entity\User;
-use Drupal\workflow\Entity\WorkflowConfigTransition;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * Defines test scenarios for the assessment workflow.
- *
- * @package Drupal\iucn_assessment\Tests
- * @group iucn
+ * @group iucn_assessment_forms
  */
 class CommentsTest extends IucnAssessmentTestBase {
 
