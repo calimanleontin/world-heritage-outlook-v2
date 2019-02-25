@@ -41,7 +41,7 @@ content:
     third_party_settings: {  }
   field_as_species_name:
     type: string_textfield
-    weight: 12
+    weight: 11
     region: content
     settings:
       size: 60
@@ -85,7 +85,7 @@ content:
     type: boolean_checkbox
     region: content
   field_as_threats_rating:
-    weight: 13
+    weight: 12
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -122,9 +122,16 @@ content:
       default_paragraph_type: as_site_value_wh
     third_party_settings: {  }
     region: content
+  field_invasive_species_names:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
 hidden:
   created: true
-  field_invasive_species_names: true
   status: true
   translation: true
   uid: true

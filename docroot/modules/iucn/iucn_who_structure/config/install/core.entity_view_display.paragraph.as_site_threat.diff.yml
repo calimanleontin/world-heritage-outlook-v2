@@ -45,7 +45,7 @@ content:
     third_party_settings: {  }
   field_as_species_name:
     type: plain_string_formatter
-    weight: 8
+    weight: 7
     region: content
     label: hidden
     settings:
@@ -54,7 +54,7 @@ content:
     third_party_settings: {  }
   field_as_targeted_species:
     type: plain_string_formatter
-    weight: 9
+    weight: 8
     region: content
     label: hidden
     settings:
@@ -139,8 +139,15 @@ content:
     third_party_settings:
       ds:
         ds_limit: ''
+  field_invasive_species_names:
+    type: string
+    weight: 9
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_invasive_species_names: true

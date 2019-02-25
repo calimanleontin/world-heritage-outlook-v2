@@ -1178,6 +1178,11 @@ class RowParagraphsWidget extends ParagraphsWidget {
         'threats' => t('Targeted species:'),
         'label' => t(''),
       ],
+      'field_invasive_species_names' => [
+        'grouped_with' => 'field_as_legality',
+        'threats' => t('Invasive/problematic species:'),
+        'label' => t(''),
+      ],
       'field_as_species_name' => [
         'grouped_with' => 'field_as_legality',
         'threats' => t('Species name:'),

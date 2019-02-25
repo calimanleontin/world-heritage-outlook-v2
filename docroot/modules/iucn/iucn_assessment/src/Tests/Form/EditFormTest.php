@@ -82,19 +82,15 @@ class EditFormTest extends IucnAssessmentTestBase {
 
     $this->userLogIn(TestSupport::ASSESSOR1);
 
-    foreach (['values', 'assessing-values'] as $tab) {
-      $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
-      $this->assertNoRaw('tabledrag-handle');
-      $this->assertNoRaw('value="Remove"');
-      $this->assertNoRaw('value="Add more"');
-      $this->assertRaw('Save');
-      if ($tab == 'values') {
-        $this->assertNoRaw('value="Edit"');
-      }
-      else {
-        $this->assertRaw('value="Edit"');
-      }
-    }
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'values']]));
+    $this->assertNoText('Remove"');
+    $this->assertNoText('Add more"');
+    $this->assertNoText('Edit"');
+
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'assessing-values']]));
+    $this->assertNoText('Remove');
+    $this->assertNoText('Add more"');
+    $this->assertText('Edit');
   }
 
   /**
@@ -192,11 +188,37 @@ class EditFormTest extends IucnAssessmentTestBase {
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
 
-    $assessment = TestSupport::createAssessment();
-    TestSupport::populateAllFieldsData($assessment, 20);
-    $assessment->save();
-    $this->userLogIn(TestSupport::ADMINISTRATOR);
+    $childrenFields = [];
 
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment, 0);
+    foreach ($this->tabs as $tab => $fields) {
+      $expectedDifferences[$tab] = 0;
+      foreach ($fields as $field) {
+        if ($field == 'field_as_threats_potential') {
+          continue;
+        }
+        /** @var \Drupal\field\FieldConfigInterface $fieldDefinition */
+        $fieldDefinition = $assessment->get($field)->getFieldDefinition();
+        if ($fieldDefinition->getType() == 'entity_reference_revisions') {
+          $handlerSettings = $fieldDefinition->getSetting('handler_settings');
+          $targetType = $fieldDefinition->getSetting('target_type');
+          $targetBundle = reset($handlerSettings['target_bundles']);
+
+          $childFields = array_keys($this->entityFieldManager->getFieldDefinitions($targetType, $targetBundle));
+          $childrenFields[$field] = array_values(array_filter($childFields, function ($field) {
+            // We skip testing for the following 2 fields.
+            if ($field == 'field_as_threats_values_bio') return FALSE;
+            if ($field == 'field_as_threats_values_wh') return FALSE;
+            return preg_match('/^field\_/', $field);
+          }));
+          TestSupport::updateFieldData($assessment, $field, count($childrenFields[$field]));
+        }
+      }
+    }
+    $assessment->save();
+
+    $this->userLogIn(TestSupport::ADMINISTRATOR);
     $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalPostForm($stateChangeUrl, ['field_coordinator' => $coordinator->id()], 'Initiate assessment');
     $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], 'Send to assessor');
@@ -215,17 +237,8 @@ class EditFormTest extends IucnAssessmentTestBase {
         $fieldItemList = $assessment->get($field);
         /** @var \Drupal\field\FieldConfigInterface $fieldDefinition */
         $fieldDefinition = $fieldItemList->getFieldDefinition();
-        if ($fieldDefinition->getType() == 'entity_reference_revisions') {
-          $handlerSettings = $fieldDefinition->getSetting('handler_settings');
-          $targetType = $fieldDefinition->getSetting('target_type');
-          $targetBundle = reset($handlerSettings['target_bundles']);
-
-          $childFields = array_keys($this->entityFieldManager->getFieldDefinitions($targetType, $targetBundle));
-          $childFields = array_values(array_filter($childFields, function ($field) {
-            return preg_match('/^field\_/', $field);
-          }));
-
-          foreach ($childFields as $i => $childField) {
+        if (!empty($childrenFields[$field])) {
+          foreach ($childrenFields[$field] as $i => $childField) {
             // We update only one field for each child entity to test if the
             // differences are retrieved for all fields.
             $childValue = $fieldItemList->get($i);
@@ -237,14 +250,13 @@ class EditFormTest extends IucnAssessmentTestBase {
           }
           $assessment->set($field, $fieldItemList->getValue());
         }
-        else {
+        elseif ($fieldDefinition->getType() != 'entity_reference_revisions') {
           TestSupport::updateFieldData($assessment, $field);
           $expectedDifferences[$tab]++;
         }
       }
     }
     $assessment->save();
-    $assessment = Node::load($assessment->id());
 
     $this->userLogIn(TestSupport::ASSESSOR1);
     $this->drupalPostForm($stateChangeUrl, [], 'Finish assessment');
@@ -256,7 +268,7 @@ class EditFormTest extends IucnAssessmentTestBase {
         continue;
       }
       $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
-      $actualDifferences = substr_count($this->getRawContent(), 'title="See differences"');
+      $actualDifferences = substr_count($this->getTextContent(), 'See differences');
       $this->assertEqual($expectedDifferences[$tab], $actualDifferences, "Expected {$expectedDifferences[$tab]} differences on \"{$tab}\" tab, {$actualDifferences} found.");
     }
   }

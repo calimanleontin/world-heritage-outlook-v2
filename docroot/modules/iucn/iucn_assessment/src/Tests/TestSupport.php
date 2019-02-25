@@ -140,8 +140,6 @@ class TestSupport {
       'field_assessments',
       'field_current_assessment',
       'field_as_protection',
-      'field_coordinator',
-      'field_assessor',
     ];
     $fieldDefinitions = $entity->getFieldDefinitions();
 
@@ -264,7 +262,7 @@ class TestSupport {
         for ($i = 0; $i < $cardinality; $i++) {
           /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
           $childEntity = self::createSampleEntity($targetType, $targetBundle);
-          self::populateAllFieldsData($childEntity);
+          self::populateAllFieldsData($childEntity, $maxChildParagraphs);
           $childEntity->save();
           if ($i < $count) {
             $entity->get($fieldName)->set($i, $childEntity);
