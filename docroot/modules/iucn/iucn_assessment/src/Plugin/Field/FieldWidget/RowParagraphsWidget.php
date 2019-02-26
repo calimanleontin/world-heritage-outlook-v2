@@ -910,28 +910,26 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
-    foreach (array_keys($components) as $field_name) {
-      $field_definition = $paragraph->getFieldDefinition($field_name);
+    foreach (array_keys($components) as $fieldName) {
+      $field_definition = $paragraph->getFieldDefinition($fieldName);
       // We do not add content to the summary from base fields, skip them
       // keeps performance while building the paragraph summary.
       if (!($field_definition instanceof FieldConfigInterface)
-        || $paragraph->get($field_name)->access('view') == FALSE) {
+        || $paragraph->get($fieldName)->access('view') == FALSE) {
         continue;
       }
 
-      $class = NULL;
+      /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
+      $fieldItemList = $paragraph->get($fieldName);
       $value = NULL;
 
-      if (!empty($grouped_fields[$field_name])) {
-        $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
-      }
-      else {
-        $summary_field_name = $field_name;
-      }
+      $fieldColumn = !empty($grouped_fields[$fieldName])
+        ? $grouped_fields[$fieldName]['grouped_with']
+        : $fieldName;
 
       switch ($field_definition->getType()) {
         case 'boolean':
-          $value = !empty($paragraph->{$field_name}->value)
+          $value = !empty($paragraph->{$fieldName}->value)
             ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
             : '';
           break;
@@ -946,25 +944,40 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             'parent_type',
             'parent_field_name',
           ];
-          if (in_array($field_name, $excludedTextFields)) {
-            $value = '';
+          if (in_array($fieldName, $excludedTextFields)) {
             break;
           }
-          $value = trim($paragraph->get($field_name)->value);
-          if (strlen($value) > 600 && !in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
+          $value = trim($fieldItemList->value);
+          if (strlen($value) > 600 && !in_array($fieldName, ['field_as_values_curr_text', 'field_as_description'])) {
             $value = Unicode::truncate($text, 600) . '...';
           }
+          break;
+
+        case 'link':
+          if (empty($fieldItemList->first())) {
+            break;
+          }
+          if (!empty($fieldItemList->title)) {
+            $value = $fieldItemList->title;
+            break;
+          }
+          // If title is not set, fallback to the uri.
+          $value = $fieldItemList->uri;
           break;
 
         case 'entity_reference':
         case 'entity_reference_revisions':
           $viewBuilder = NULL;
           $childrenView = [];
-          foreach ($paragraph->{$field_name} as $childEntityValue) {
+          foreach ($paragraph->{$fieldName} as $childEntityValue) {
             /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
             $childEntity = $childEntityValue->entity;
             if (empty($viewBuilder)) {
               $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
+            }
+            $cssClass = _iucn_assessment_level_class($childEntity->id());
+            if (!empty($cssClass)) {
+              $row[$fieldColumn]['class'] = $cssClass;
             }
             $childView = $viewBuilder->view($childEntity, 'teaser');
             $childrenView[] = render($childView);
@@ -988,71 +1001,45 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           break;
       }
 
-      // Add the Block admin label referenced by block_field.
-      if ($field_definition->getType() == 'block_field') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          $block_admin_label = $paragraph->get($field_name)
-            ->first()
-            ->getBlock()
-            ->getPluginDefinition()['admin_label'];
-          $value = $block_admin_label;
-        }
+      if (!array_key_exists($fieldColumn, $row)) {
+        $row[$fieldColumn]['value'] = [];
       }
-
-      if ($field_definition->getType() == 'link') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          // If title is not set, fallback to the uri.
-          if ($title = $paragraph->get($field_name)->title) {
-            $value = $title;
-          }
-          else {
-            $value = $paragraph->get($field_name)->uri;
-          }
-        }
-      }
-
-      if (!array_key_exists($summary_field_name, $row)) {
-        $row[$summary_field_name]['value'] = [];
-      }
-      $suffix = self::getSummarySuffix($field_name);
+      $suffix = self::getSummarySuffix($fieldName);
       if (!empty($suffix) && !empty($value)) {
         $value = $this->t("@value $suffix", ['@value' => $value]);
       }
 
-      if ($class) {
-        $row[$summary_field_name]['class'] = $class;
+      if ('field_as_threats_extent' == $fieldName) {
+        $row[$fieldColumn]['value'][0] .= ' ' . $value;
       }
-      if ('field_as_threats_extent' == $field_name) {
-        $row[$summary_field_name]['value'][0] .= ' ' . $value;
-      }
-      elseif (!empty($grouped_fields[$field_name]['threats'])) {
+      elseif (!empty($grouped_fields[$fieldName]['threats'])) {
         if ($value) {
-          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
+          $row[$fieldColumn]['value']['' . $grouped_fields[$fieldName]['threats']][] = $value;
         }
-        if ($field_name == 'field_as_species_name') {
+        if ($fieldName == 'field_as_species_name') {
           $value = [];
-          foreach($row[$summary_field_name]['value'] as $title => $values) {
+          foreach($row[$fieldColumn]['value'] as $title => $values) {
             $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
           }
-          $row[$summary_field_name]['value'] = implode('<br>', $value);
+          $row[$fieldColumn]['value'] = implode('<br>', $value);
         }
       }
-      elseif (!empty($grouped_fields[$field_name]['benefits'])) {
+      elseif (!empty($grouped_fields[$fieldName]['benefits'])) {
         if ($value) {
-          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
+          $row[$fieldColumn]['value']['' . $grouped_fields[$fieldName]['benefits']][] = $value;
         }
-        if ($field_name == 'field_as_benefits_invassp_trend') {
+        if ($fieldName == 'field_as_benefits_invassp_trend') {
           $value = [];
-          foreach($row[$summary_field_name]['value'] as $title => $values) {
+          foreach($row[$fieldColumn]['value'] as $title => $values) {
             $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
           }
-          $row[$summary_field_name]['value'] = implode('<br>', $value);
+          $row[$fieldColumn]['value'] = implode('<br>', $value);
         }
       }
       else {
-        $row[$summary_field_name]['value'][] = $value;
+        $row[$fieldColumn]['value'][] = $value;
       }
-      $row[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
+      $row[$fieldColumn]['span'] = $this->getFieldSpan($field_definition);
     }
 
     return $row;
