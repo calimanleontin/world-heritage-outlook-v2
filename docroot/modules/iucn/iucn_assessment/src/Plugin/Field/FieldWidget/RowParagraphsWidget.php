@@ -5,7 +5,9 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
@@ -23,6 +25,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -36,12 +39,19 @@ use Drupal\taxonomy\Entity\Term;
  *   }
  * )
  */
-class RowParagraphsWidget extends ParagraphsWidget {
+class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPluginInterface {
 
-  /**
-   * @var RouteMatchInterface
-   */
+  /** @var \Drupal\Core\Routing\RouteMatchInterface */
   protected $routeMatch;
+
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
+  protected $entityTypeManager;
+
+  /** @var \Drupal\Core\Entity\ContentEntityStorageInterface */
+  protected $paragraphStorage;
+
+  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface */
+  protected $paragraphViewBuilder;
 
   /**
    * The last paragraph entity that has been processed.
@@ -91,9 +101,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
     ];
   }
 
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->routeMatch = \Drupal::routeMatch();
+    $this->routeMatch = $routeMatch;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+    $this->paragraphViewBuilder = $this->entityTypeManager->getViewBuilder('paragraph');
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
@@ -917,7 +942,24 @@ class RowParagraphsWidget extends ParagraphsWidget {
       }
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
-        $value = $this->getNestedSummary($paragraph, $field_name);
+        $childrenView = [];
+        foreach ($paragraph->{$field_name} as $childParagraphValue) {
+          /** @var \Drupal\paragraphs\ParagraphInterface $childParagraph */
+          $childParagraph = $childParagraphValue->entity;
+          $childView = $this->paragraphViewBuilder->view($childParagraph, 'teaser');
+          $childrenView[] = render($childView);
+        }
+        if (count($childrenView) <= 1) {
+          $value = reset($childrenView);
+        }
+        else {
+          $list = [
+            '#theme' => 'item_list',
+            '#list_type' => 'ul',
+            '#items' => $childrenView,
+          ];
+          $value = render($list);
+        }
       }
 
       if ($field_definition->getType() == 'boolean') {
@@ -1114,39 +1156,6 @@ class RowParagraphsWidget extends ParagraphsWidget {
     }
 
     return trim($summary);
-  }
-
-  /**
-   * Returns the text summary of a referenced paragraph field.
-   *
-   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
-   * @param string $field_name
-   *   The field name.
-   *
-   * @return string
-   *   The text summary.
-   */
-  protected function getNestedSummary(ParagraphInterface $paragraph, $field_name) {
-    $summary = [];
-
-    foreach ($paragraph->get($field_name) as $item) {
-      $entity = $item->entity;
-      if ($entity instanceof ParagraphInterface) {
-        $summary_components = $this->getSummaryComponents($entity);
-        $first_component = reset($summary_components);
-        $summary[] = is_array($first_component['value'])
-          ? implode(', ', $first_component['value'])
-          : $first_component['value'];
-      }
-    }
-
-    if (empty($summary)) {
-      return '';
-    }
-
-    $paragraph_summary = implode(', ', $summary);
-    return $paragraph_summary;
   }
 
   /**
