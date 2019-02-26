@@ -927,6 +927,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ? $grouped_fields[$fieldName]['grouped_with']
         : $fieldName;
 
+      if (empty($row[$fieldColumn]['value'])) {
+        $row[$fieldColumn]['value'] = [];
+      }
+
       switch ($field_definition->getType()) {
         case 'boolean':
           $value = !empty($paragraph->{$fieldName}->value)
@@ -979,6 +983,27 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             if (!empty($cssClass)) {
               $row[$fieldColumn]['class'] = $cssClass;
             }
+
+            switch ($fieldName) {
+              case 'field_as_benefits_hab_trend':
+              case 'field_as_benefits_pollut_trend':
+              case 'field_as_benefits_oex_trend':
+              case 'field_as_benefits_climate_trend':
+              case 'field_as_benefits_invassp_trend':
+                /** @var \Drupal\taxonomy\TermInterface $childEntity */
+                $name = $childEntity->getName();
+                $childEntity->setName("{$name} {$this->t('trend')}");
+                break;
+              case 'field_as_benefits_hab_level':
+              case 'field_as_benefits_pollut_level':
+              case 'field_as_benefits_oex_level':
+              case 'field_as_benefits_climate_level':
+                /** @var \Drupal\taxonomy\TermInterface $childEntity */
+                $name = $childEntity->getName();
+                $childEntity->setName("{$name} {$this->t('level')}");
+                break;
+            }
+
             $childView = $viewBuilder->view($childEntity, 'teaser');
             $childrenView[] = render($childView);
           }
@@ -999,14 +1024,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         case 'file':
           // @todo
           break;
-      }
-
-      if (!array_key_exists($fieldColumn, $row)) {
-        $row[$fieldColumn]['value'] = [];
-      }
-      $suffix = self::getSummarySuffix($fieldName);
-      if (!empty($suffix) && !empty($value)) {
-        $value = $this->t("@value $suffix", ['@value' => $value]);
       }
 
       if ('field_as_threats_extent' == $fieldName) {
@@ -1170,30 +1187,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ],
 
     ];
-  }
-
-  /**
-   * Retrieves a suffix that should show up before a paragraph summary value.
-   *
-   * @param $field
-   *   The name of the field.
-   *
-   * @return mixed|null
-   *   The suffix.
-   */
-  public static function getSummarySuffix($field) {
-    $suffixes = [
-      'field_as_benefits_hab_trend' => t('trend'),
-      'field_as_benefits_pollut_trend' => t('trend'),
-      'field_as_benefits_oex_trend' => t('trend'),
-      'field_as_benefits_climate_trend' => t('trend'),
-      'field_as_benefits_invassp_trend' => t('trend'),
-      'field_as_benefits_hab_level' => t('level'),
-      'field_as_benefits_pollut_level' => t('level'),
-      'field_as_benefits_oex_level' => t('level'),
-      'field_as_benefits_climate_level' => t('level'),
-    ];
-    return !empty($suffixes[$field]) ? $suffixes[$field] : NULL;
   }
 
   /**
