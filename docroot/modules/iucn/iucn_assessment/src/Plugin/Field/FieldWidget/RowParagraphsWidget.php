@@ -402,7 +402,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
 
-    $summary_components = $this->getSummaryComponents($paragraphs_entity);
+    $summary_components = $this->getRow($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
 
     if ($field_name == 'field_as_benefits') {
@@ -689,7 +689,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($paragraphs)) {
       foreach ($paragraphs as $paragraph) {
         $paragraphs_entity = Paragraph::load($paragraph);
-        $components = $this->getSummaryComponents($paragraphs_entity);
+        $components = $this->getRow($paragraphs_entity);
         $summary_containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
         if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
@@ -776,7 +776,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
+    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -882,7 +882,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    *   The field components.
    */
-  public static function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
+  public function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
     $bundle = $paragraph->getType();
     $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
     if (empty($entityFormDisplay)) {
@@ -894,24 +894,26 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Returns an array containing a summary for every field inside a paragraph.
+   * Returns the paragraph row for table display.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
    *
    * @return array
-   *   The summary array.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getSummaryComponents(ParagraphInterface $paragraph) {
+  public function getRow(ParagraphInterface $paragraph) {
     $summary = [];
     $grouped_fields = self::getGroupedFields();
+
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
       $num += 1;
       $summary['num']['value'] = $num;
     }
 
-    $components = self::getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
+    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
       $class = NULL;
       // Components can be extra fields, check if the field really exists.
