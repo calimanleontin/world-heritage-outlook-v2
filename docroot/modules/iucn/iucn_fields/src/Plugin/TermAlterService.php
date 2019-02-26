@@ -42,17 +42,6 @@ class TermAlterService {
         return $alteredTermLabel[$term->id()] != '<hidden>' ? t($alteredTermLabel[$term->id()]) : '<hidden>';
       }
     }
-
-    $terms = [1330, 1332, 1333];
-    if (in_array($this->routeMatch->getRouteName(), [
-        'iucn_assessment.modal_paragraph_add',
-        'iucn_assessment.modal_paragraph_edit',
-        'entity.node.edit_form',
-      ])) {
-      if (in_array($term->id(), $terms)) {
-        return $term->getName() . ' ' . strip_tags($term->getDescription());
-      }
-    }
     return NULL;
   }
 

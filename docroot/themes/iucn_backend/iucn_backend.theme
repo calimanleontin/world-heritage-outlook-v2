@@ -152,10 +152,13 @@ function iucn_backend_preprocess_taxonomy_term(&$variables) {
   /** @var \Drupal\taxonomy\TermInterface $term */
   $term = $variables['term'];
   $viewMode = $variables['view_mode'];
-  if ($viewMode != 'teaser' || !in_array($term->bundle(), ['assessment_benefits_impact_level', 'assessment_benefits_impact_trend'])) {
-    return;
+
+  if ($viewMode == 'teaser' || in_array($term->bundle(), ['assessment_benefits_impact_level', 'assessment_benefits_impact_trend'])) {
+    $suffix = $term->bundle() == 'assessment_benefits_impact_level' ? 'level' : 'trend';
+    $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t($suffix));
   }
 
-  $suffix = $term->bundle() == 'assessment_benefits_impact_level' ? 'level' : 'trend';
-  $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t($suffix));
+  if (in_array($term->id(), [1330, 1332 ,1333])) {
+    $variables['name'][0]['#context']['value'] .= sprintf(" %s", strip_tags($term->getDescription()));
+  }
 }
