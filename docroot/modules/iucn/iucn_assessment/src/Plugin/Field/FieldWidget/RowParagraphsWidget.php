@@ -915,18 +915,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
     $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
     foreach (array_keys($components) as $field_name) {
-      $class = NULL;
-      // Components can be extra fields, check if the field really exists.
-      if (!$paragraph->hasField($field_name)) {
-        continue;
-      }
       $field_definition = $paragraph->getFieldDefinition($field_name);
       // We do not add content to the summary from base fields, skip them
       // keeps performance while building the paragraph summary.
-      if (!($field_definition instanceof FieldConfigInterface) || !$paragraph->get($field_name)
-          ->access('view')) {
+      if (!($field_definition instanceof FieldConfigInterface)
+        || $paragraph->get($field_name)->access('view') == FALSE) {
         continue;
       }
+
+      $class = NULL;
+      $value = NULL;
 
       if (!empty($grouped_fields[$field_name])) {
         $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
@@ -935,12 +933,31 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $summary_field_name = $field_name;
       }
 
+      switch ($field_definition->getType()) {
+        case 'text_with_summary':
+        case 'text':
+        case 'text_long':
+        case 'string':
+        case 'string_long':
+          $excludedTextFields = [
+            'parent_id',
+            'parent_type',
+            'parent_field_name',
+          ];
+          if (in_array($field_name, $excludedTextFields)) {
+            $value = '';
+            break;
+          }
+          $value = trim($paragraph->get($field_name)->value);
+          if (strlen($value) > 600 && !in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
+            $value = Unicode::truncate($text, 600) . '...';
+          }
+          break;
 
-      $text_summary = $this->getTextSummary($paragraph, $field_name, $field_definition);
-      $value = $text_summary;
-
-      if ($field_definition->getType() == 'image' || $field_definition->getType() == 'file') {
-        $value = $paragraph->getFileSummary($field_name);
+        case 'image':
+        case 'file':
+          // @todo
+          break;
       }
 
       if ($field_definition->getType() == 'entity_reference_revisions') {
@@ -1103,61 +1120,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       return 1;
     }
     return 2;
-  }
-
-  /**
-   * Returns the summary of a paragraph's text field.
-   *
-   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
-   * @param string $field_name
-   *   The field name.
-   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
-   *   The field definition for the field.
-   *
-   * @return string
-   *   The summary.
-   */
-  public function getTextSummary(ParagraphInterface $paragraph, $field_name, FieldDefinitionInterface $field_definition) {
-    $text_types = [
-      'text_with_summary',
-      'text',
-      'text_long',
-      'string',
-      'string_long',
-    ];
-
-    $excluded_text_types = [
-      'parent_id',
-      'parent_type',
-      'parent_field_name',
-    ];
-
-    if ($field_definition->getType() == 'list_string') {
-      $allowed_values = $field_definition->getFieldStorageDefinition()->getSetting('allowed_values');
-      $state_value = $paragraph->get($field_name)->value;
-      if (!empty($allowed_values[$state_value])) {
-        return $allowed_values[$state_value];
-      }
-    }
-
-    $summary = '';
-    if (in_array($field_definition->getType(), $text_types)) {
-      if (in_array($field_name, $excluded_text_types)) {
-        return $summary;
-      }
-
-      $text = $paragraph->get($field_name)->value;
-      if (strlen($text) > 600) {
-        if (!in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
-          $text = Unicode::truncate($text, 600);
-          $text .= '...';
-        }
-      }
-      $summary = $text;
-    }
-
-    return trim($summary);
   }
 
   /**
