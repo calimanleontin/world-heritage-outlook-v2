@@ -907,8 +907,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *
    * @return array
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getRow(ParagraphInterface $paragraph) {
@@ -1136,93 +1134,17 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return NULL;
   }
 
-  public function getFieldSpan(FieldDefinitionInterface $field_definition) {
-    $field_name = $field_definition->getName();
-    if ($field_name == 'field_as_protection_rating') {
+  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition) {
+    $fieldName = $fieldDefinition->getName();
+    if ($fieldDefinition->getType() == 'boolean'
+      || $fieldName == 'field_as_protection_rating'
+      || $fieldName == 'field_as_values_criteria') {
       return 1;
     }
-    if ($field_name == 'field_as_values_criteria') {
-      return 1;
-    }
-    if ($field_name == 'field_as_projects_contact') {
-      return 2;
-    }
-    if ($field_name == 'field_as_comment') {
-      return 2;
-    }
-    if ($field_definition->getType() == 'string_long') {
+    if ($fieldDefinition->getType() == 'string_long') {
       return 3;
-    }
-    elseif ($this->routeMatch->getRouteName() == 'iucn_assessment.paragraph_diff_form'
-      && in_array($field_name, [
-        'field_as_threats_categories',
-        'field_as_threats_values_wh',
-        'field_as_threats_values_bio',
-        'field_as_benefits_category',
-      ])
-    ) {
-      return 3;
-    }
-    elseif ($field_definition->getType() == 'boolean') {
-      return 1;
     }
     return 2;
-  }
-
-  /**
-   * Retrieves the label for an entity.
-   *
-   * @param \Drupal\Core\Entity\Entity $entity
-   *   The entity.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|null|string
-   *   The label
-   */
-  protected function getEntityLabel(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return NULL;
-    }
-    $label = '';
-    if ($entity->getEntityType()->id() == 'taxonomy_term') {
-      /** @var \Drupal\Core\Entity\Term $entity */
-      $tid = $entity->id();
-      /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-      $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-      $term_new_name = $term_alter_service->getTermLabelForYear($tid, $this->parentNode->field_as_cycle->value);
-      if (!empty($term_new_name)) {
-        $label = $term_new_name;
-      }
-    }
-    if (empty($label)) {
-      $label = $entity->label();
-    }
-    if ($entity->bundle() == 'assessment_protection_topic') {
-      if (!empty($entity->field_help_text) && $entity->field_help_text->value) {
-        $label = [
-          '#theme' => 'topic_tooltip',
-          '#label' => $label,
-          '#help_text' => $entity->field_help_text->value,
-        ];
-        $label = ['label' => $label];
-      }
-    }
-    return $label;
-  }
-
-  protected function isHiddenTerm(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return FALSE;
-    }
-    if ($entity->getEntityType()->id() != 'taxonomy_term') {
-      return FALSE;
-    }
-    /** @var \Drupal\Core\Entity\Term $entity */
-    $tid = $entity->id();
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
   }
 
   public static function getWidgetState(array $parents, $field_name, FormStateInterface $form_state) {
