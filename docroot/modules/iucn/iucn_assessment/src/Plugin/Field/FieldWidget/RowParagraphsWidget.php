@@ -73,6 +73,25 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   protected $diff;
 
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->routeMatch = $routeMatch;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -93,24 +112,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     ];
   }
 
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->routeMatch = $routeMatch;
-    $this->entityTypeManager = $entityTypeManager;
-    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
-  }
-
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('current_route_match'),
-      $container->get('entity_type.manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -155,7 +156,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ];
         break;
     }
-
     return isset($options) ? $options : NULL;
   }
 
@@ -188,17 +188,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   public function isParagraphWithDiff($paragraph_id, $rendered_fields) {
-    if (!empty($this->diff)) {
-      foreach ($this->diff as $vid => $diff) {
-        if (empty($diff['paragraph'])) {
-          continue;
-        }
-        if (in_array($paragraph_id, array_keys($diff['paragraph']))) {
-          foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
-            if (in_array($diff_field, $rendered_fields)) {
-              return TRUE;
-            }
-          }
+    if (empty($this->diff)) {
+      return FALSE;
+    }
+    foreach ($this->diff as $vid => $diff) {
+      if (empty($diff['paragraph']) || !in_array($paragraph_id, array_keys($diff['paragraph']))) {
+        continue;
+      }
+      foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
+        if (in_array($diff_field, $rendered_fields)) {
+          return TRUE;
         }
       }
     }
