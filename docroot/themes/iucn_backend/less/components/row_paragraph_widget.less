@@ -31,12 +31,19 @@
   .paragraph-summary-component {
     font-size: .9em;
     grid-row: 1 / span 1;
-    padding: 10px 12px;
+    padding: 5px;
     &:not(:last-child) {
       border-right: 1px solid rgb(230, 228, 223);
     }
     select {
       font-size: 1em;
+    }
+    ul {
+      li {
+        list-style-type: none;
+        margin-left: 0;
+        margin-bottom: 1em;
+      }
     }
   }
   .field-multiple-drag {
