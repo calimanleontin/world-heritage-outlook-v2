@@ -838,7 +838,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $data = $component['value'][0];
         }
         else {
-          $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+          $data = !empty($component['value']) ? implode("\n", $component['value']) : '';
         }
       }
       else {
@@ -912,10 +912,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
     $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $fieldName) {
-      $field_definition = $paragraph->getFieldDefinition($fieldName);
+      $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
       // We do not add content to the summary from base fields, skip them
       // keeps performance while building the paragraph summary.
-      if (!($field_definition instanceof FieldConfigInterface)
+      if (!($fieldDefinition instanceof FieldConfigInterface)
         || $paragraph->get($fieldName)->access('view') == FALSE) {
         continue;
       }
@@ -931,8 +931,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
       }
+      if (empty($row[$fieldColumn]['span'])) {
+        $row[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
+      }
 
-      switch ($field_definition->getType()) {
+      switch ($fieldDefinition->getType()) {
         case 'boolean':
           $value = !empty($paragraph->{$fieldName}->value)
             ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
@@ -1027,34 +1030,32 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           break;
       }
 
-      if (!empty($grouped_fields[$fieldName]['threats'])) {
-        if ($value) {
-          $row[$fieldColumn]['value']['' . $grouped_fields[$fieldName]['threats']][] = $value;
-        }
-        if ($fieldName == 'field_as_species_name') {
-          $value = [];
-          foreach($row[$fieldColumn]['value'] as $title => $values) {
-            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
-          }
-          $row[$fieldColumn]['value'] = implode('<br>', $value);
-        }
+      if (empty($value)) {
+        continue;
       }
-      elseif (!empty($grouped_fields[$fieldName]['benefits'])) {
-        if ($value) {
-          $row[$fieldColumn]['value']['' . $grouped_fields[$fieldName]['benefits']][] = $value;
-        }
-        if ($fieldName == 'field_as_benefits_invassp_trend') {
-          $value = [];
-          foreach($row[$fieldColumn]['value'] as $title => $values) {
-            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
-          }
-          $row[$fieldColumn]['value'] = implode('<br>', $value);
-        }
+
+      $fieldLabel = NULL;
+      switch ($fieldName) {
+        case 'field_as_legality':
+          $fieldLabel = $this->t('Legality');
+          break;
+        case 'field_as_targeted_species':
+          $fieldLabel = $this->t('Targeted species');
+          break;
+        case 'field_invasive_species_names':
+          $fieldLabel = $this->t('Invasive/problematic species');
+          break;
+        case 'field_as_species_name':
+          $fieldLabel = $this->t('Species name');
+          break;
+      }
+
+      if (!empty($fieldLabel)) {
+        $row[$fieldColumn]['value'][] = sprintf("<b>%s: </b>%s", $fieldLabel, $value);
       }
       else {
         $row[$fieldColumn]['value'][] = $value;
       }
-      $row[$fieldColumn]['span'] = $this->getFieldSpan($field_definition);
     }
 
     return $row;
