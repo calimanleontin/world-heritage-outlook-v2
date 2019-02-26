@@ -1,6 +1,9 @@
 <?php
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\node\NodeInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_field_widget_form_alter().
@@ -13,10 +16,10 @@ function iucn_fields_field_widget_form_alter(&$element, \Drupal\Core\Form\FormSt
     if (!_iucn_fields_is_altered_element($element, $context)) {
       return;
     }
-    if (empty($assessment = _iucn_fields_get_assessment($form_state))) {
-      return;
-    }
-    $assessment_year = $assessment->field_as_cycle->value;
+
+    $assessment = _iucn_fields_get_assessment($form_state);
+    $assessment_year = _iucn_fields_get_assessment_year($assessment);
+
     _iucn_fields_alter_element_options($element, $assessment_year);
 
     if ($plugin_id == 'assessment_options_buttons') {
@@ -25,21 +28,33 @@ function iucn_fields_field_widget_form_alter(&$element, \Drupal\Core\Form\FormSt
   }
 }
 
+function _iucn_fields_get_assessment_year($assessment = NULL) {
+  if (empty($assessment)) {
+    $assessment = \Drupal::routeMatch()->getParameter('node');
+  }
+  if (!$assessment instanceof NodeInterface || $assessment->getType() != 'site_assessment') {
+    return \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
+  }
+
+  return $assessment->field_as_cycle->value;
+}
+
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
-  $assessment = \Drupal::routeMatch()->getParameter('node');
-  if ($assessment->getType() != 'site_assessment') {
-    return;
-  }
-
-  $assessment_year = $assessment->field_as_cycle->value;
+  $assessment_year = _iucn_fields_get_assessment_year();
 
   /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
   $term_alter_service = \Drupal::service('iucn_fields.term_alter');
   $is_hidden = $term_alter_service->isTermHiddenForYear($entity->id(), $assessment_year);
   if ($is_hidden) {
+    foreach (Element::children($build) as $id) {
+      if ($id == 'name') {
+        continue;
+      }
+      unset($build[$id]);
+    }
     $build['name'][0]['#context']['value'] = '';
     return;
   }
@@ -51,42 +66,22 @@ function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\
 }
 
 /**
- * Implements hook_preprocess_field().
+ * Implements hook_ENTITY_TYPE_load().
  */
-function iucn_fields_preprocess_field(&$variables) {
-  if ($variables['element']['#entity_type'] != 'paragraph' || $variables['element']['#field_type'] != 'entity_reference') {
-    return;
-  }
-  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
-  $items = $variables['element']['#items'];
-  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-  $field_definition = $items->getFieldDefinition();
-  $target_type = $field_definition->getSetting('target_type');
-  if ($target_type != 'taxonomy_term') {
-    return;
-  }
-  $field_name = $variables['field_name'];
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['element']['#object'];
-  /** @var \Drupal\node\Entity\Node $assessment */
-  $assessment = $paragraph->getParentEntity();
-  if ($assessment->getType() != 'site_assessment') {
-    return;
-  }
-  $assessment_year = $assessment->field_as_cycle->value;
-  /** @var \Drupal\taxonomy\Entity\Term $term */
-  $term = $paragraph->{$field_name}->entity;
-
+function iucn_fields_taxonomy_term_load(array $entities) {
+  $assessment_year = _iucn_fields_get_assessment_year();
   /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
   $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-  $is_hidden = $term_alter_service->isTermHiddenForYear($term->id(), $assessment_year);
-  if ($is_hidden) {
-    $term->name->value = '';
-  }
-  else {
+  foreach ($entities as $term) {
+    /** @var \Drupal\taxonomy\TermInterface $term */
+    $is_hidden = $term_alter_service->isTermHiddenForYear($term->id(), $assessment_year);
+    if ($is_hidden) {
+      $term->setName('');
+      continue;
+    }
     $term_label = $term_alter_service->getTermLabelForYear($term->id(), $assessment_year);
     if (!empty($term_label)) {
-      $term->name->value = $term_label;
+      $term->setName($term_label);
     }
   }
 }
