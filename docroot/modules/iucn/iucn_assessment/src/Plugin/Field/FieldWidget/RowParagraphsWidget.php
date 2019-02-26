@@ -1197,24 +1197,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    *   The label
    */
   protected function getEntityLabel(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return NULL;
-    }
-    $label = '';
-    if ($entity->getEntityType()->id() == 'taxonomy_term') {
-      /** @var \Drupal\Core\Entity\Term $entity */
-      $tid = $entity->id();
-      /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-      $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-      $term_new_name = $term_alter_service->getTermLabelForYear($tid, $this->parentNode->field_as_cycle->value);
-      if (!empty($term_new_name)) {
-        $label = $term_new_name;
-      }
-    }
-    if (empty($label)) {
-      $label = $entity->label();
-    }
+    $label = $entity->label();
     if ($entity->bundle() == 'assessment_protection_topic') {
       if (!empty($entity->field_help_text) && $entity->field_help_text->value) {
         $label = [
@@ -1226,21 +1209,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
     }
     return $label;
-  }
-
-  protected function isHiddenTerm(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return FALSE;
-    }
-    if ($entity->getEntityType()->id() != 'taxonomy_term') {
-      return FALSE;
-    }
-    /** @var \Drupal\Core\Entity\Term $entity */
-    $tid = $entity->id();
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
   }
 
   public static function getWidgetState(array $parents, $field_name, FormStateInterface $form_state) {

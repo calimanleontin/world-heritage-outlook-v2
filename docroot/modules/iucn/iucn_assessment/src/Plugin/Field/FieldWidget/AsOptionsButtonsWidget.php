@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'assessment_options_buttons' widget.
@@ -130,13 +131,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    * {@inheritdoc}
    */
   protected function isHiddenTerm($tid) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return FALSE;
-    }
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
+    return empty(Term::load($tid)->label());
   }
 
   /**

@@ -43,12 +43,12 @@ function iucn_fields_taxonomy_term_load(array $entities) {
   $term_alter_service = \Drupal::service('iucn_fields.term_alter');
   foreach ($entities as $term) {
     /** @var \Drupal\taxonomy\TermInterface $term */
-    $is_hidden = $term_alter_service->isTermHiddenForYear($term->id(), $assessment_year);
+    $is_hidden = $term_alter_service->isTermHiddenForYear($term, $assessment_year);
     if ($is_hidden) {
       $term->setName('');
       continue;
     }
-    $term_label = $term_alter_service->getTermLabelForYear($term->id(), $assessment_year);
+    $term_label = $term_alter_service->getTermLabelForYear($term, $assessment_year);
     if (!empty($term_label)) {
       $term->setName($term_label);
     }
