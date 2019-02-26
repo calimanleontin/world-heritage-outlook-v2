@@ -919,6 +919,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         continue;
       }
 
+      /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
+      $fieldItemList = $paragraph->get($field_name);
       $class = NULL;
       $value = NULL;
 
@@ -947,13 +949,24 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             'parent_field_name',
           ];
           if (in_array($field_name, $excludedTextFields)) {
-            $value = '';
             break;
           }
-          $value = trim($paragraph->get($field_name)->value);
+          $value = trim($fieldItemList->value);
           if (strlen($value) > 600 && !in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
             $value = Unicode::truncate($text, 600) . '...';
           }
+          break;
+
+        case 'link':
+          if (empty($fieldItemList->first())) {
+            break;
+          }
+          if (!empty($fieldItemList->title)) {
+            $value = $fieldItemList->title;
+            break;
+          }
+          // If title is not set, fallback to the uri.
+          $value = $fieldItemList->uri;
           break;
 
         case 'entity_reference':
@@ -986,29 +999,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         case 'file':
           // @todo
           break;
-      }
-
-      // Add the Block admin label referenced by block_field.
-      if ($field_definition->getType() == 'block_field') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          $block_admin_label = $paragraph->get($field_name)
-            ->first()
-            ->getBlock()
-            ->getPluginDefinition()['admin_label'];
-          $value = $block_admin_label;
-        }
-      }
-
-      if ($field_definition->getType() == 'link') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          // If title is not set, fallback to the uri.
-          if ($title = $paragraph->get($field_name)->title) {
-            $value = $title;
-          }
-          else {
-            $value = $paragraph->get($field_name)->uri;
-          }
-        }
       }
 
       if (!array_key_exists($summary_field_name, $row)) {
