@@ -50,9 +50,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   /** @var \Drupal\Core\Entity\ContentEntityStorageInterface */
   protected $paragraphStorage;
 
-  /** @var \Drupal\Core\Entity\EntityViewBuilderInterface */
-  protected $paragraphViewBuilder;
-
   /**
    * The last paragraph entity that has been processed.
    *
@@ -106,7 +103,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $this->routeMatch = $routeMatch;
     $this->entityTypeManager = $entityTypeManager;
     $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
-    $this->paragraphViewBuilder = $this->entityTypeManager->getViewBuilder('paragraph');
   }
 
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -934,6 +930,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       switch ($field_definition->getType()) {
+        case 'boolean':
+          $value = !empty($paragraph->{$field_name}->value)
+            ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
+            : '';
+          break;
+
         case 'text_with_summary':
         case 'text':
         case 'text_long':
@@ -954,69 +956,36 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           }
           break;
 
+        case 'entity_reference':
+        case 'entity_reference_revisions':
+          $viewBuilder = NULL;
+          $childrenView = [];
+          foreach ($paragraph->{$field_name} as $childEntityValue) {
+            /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
+            $childEntity = $childEntityValue->entity;
+            if (empty($viewBuilder)) {
+              $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
+            }
+            $childView = $viewBuilder->view($childEntity, 'teaser');
+            $childrenView[] = render($childView);
+          }
+          if (count($childrenView) <= 1) {
+            $value = reset($childrenView);
+          }
+          else {
+            $list = [
+              '#theme' => 'item_list',
+              '#list_type' => 'ul',
+              '#items' => $childrenView,
+            ];
+            $value = render($list);
+          }
+          break;
+
         case 'image':
         case 'file':
           // @todo
           break;
-      }
-
-      if ($field_definition->getType() == 'entity_reference_revisions') {
-        $childrenView = [];
-        foreach ($paragraph->{$field_name} as $childParagraphValue) {
-          /** @var \Drupal\paragraphs\ParagraphInterface $childParagraph */
-          $childParagraph = $childParagraphValue->entity;
-          $childView = $this->paragraphViewBuilder->view($childParagraph, 'teaser');
-          $childrenView[] = render($childView);
-        }
-        if (count($childrenView) <= 1) {
-          $value = reset($childrenView);
-        }
-        else {
-          $list = [
-            '#theme' => 'item_list',
-            '#list_type' => 'ul',
-            '#items' => $childrenView,
-          ];
-          $value = render($list);
-        }
-      }
-
-      if ($field_definition->getType() == 'boolean') {
-        $value = !empty($paragraph->{$field_name}->value)
-          ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
-          : '';
-      }
-
-      if ($field_type = $field_definition->getType() == 'entity_reference') {
-        if ($paragraph->get($field_name)->entity && $paragraph->get($field_name)->entity->access('view label')) {
-          if (!empty($paragraph->get($field_name)->entity->field_css_identifier)) {
-            $value = $paragraph->get($field_name)->getValue();
-            $class = _iucn_assessment_level_class($value[0]['target_id']);
-          }
-          $entities = $paragraph->get($field_name)->getValue();
-          $target_type = $field_definition->getFieldStorageDefinition()->getSetting('target_type');
-          $ids = array_column($entities, 'target_id');
-          $labels = [];
-          foreach ($ids as $id) {
-            $entity = \Drupal::entityTypeManager()->getStorage($target_type)->load($id);
-            if ($target_type == 'taxonomy_term' && $entity instanceof TermInterface && !$this->isHiddenTerm($entity)) {
-              $label = $this->getEntityLabel($entity);
-            }
-            else {
-              $label = $entity->label();
-            }
-
-            if (!empty($label)) {
-              $labels[] = $label;
-            }
-          }
-          if (count($labels) == 1) {
-            $value = $labels[0];
-          }
-          else {
-            $value = !empty($labels) ? implode(', ', $labels) : NULL;
-          }
-        }
       }
 
       // Add the Block admin label referenced by block_field.
