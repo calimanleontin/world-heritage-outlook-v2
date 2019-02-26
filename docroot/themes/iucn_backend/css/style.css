@@ -769,13 +769,18 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
   font-size: .9em;
   grid-row: 1 / span 1;
-  padding: 10px 12px;
+  padding: 5px;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
   border-right: 1px solid #e6e4df;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component ul li {
+  list-style-type: none;
+  margin-left: 0;
+  margin-bottom: 1em;
 }
 .field--widget-row-entity-reference-paragraphs .field-multiple-drag {
   border-right: 1px solid #e6e4df;
