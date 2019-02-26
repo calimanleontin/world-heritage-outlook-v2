@@ -997,17 +997,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             $childView = $viewBuilder->view($childEntity, 'teaser');
             $childrenView[] = render($childView);
           }
-          if (count($childrenView) <= 1) {
-            $value = reset($childrenView);
-          }
-          else {
-            $list = [
-              '#theme' => 'item_list',
-              '#list_type' => 'ul',
-              '#items' => $childrenView,
-            ];
-            $value = render($list);
-          }
+          $list = [
+            '#theme' => 'item_list',
+            '#list_type' => 'ul',
+            '#items' => $childrenView,
+          ];
+          $value = render($list);
           break;
 
         case 'image':
