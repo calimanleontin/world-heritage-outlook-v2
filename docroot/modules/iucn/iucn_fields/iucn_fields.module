@@ -26,6 +26,31 @@ function iucn_fields_field_widget_form_alter(&$element, \Drupal\Core\Form\FormSt
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  $assessment = \Drupal::routeMatch()->getParameter('node');
+  if ($assessment->getType() != 'site_assessment') {
+    return;
+  }
+
+  $assessment_year = $assessment->field_as_cycle->value;
+
+  /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+  $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+  $is_hidden = $term_alter_service->isTermHiddenForYear($entity->id(), $assessment_year);
+  if ($is_hidden) {
+    $build['name'][0]['#context']['value'] = '';
+    return;
+  }
+
+  $term_label = $term_alter_service->getTermLabelForYear($entity->id(), $assessment_year);
+  if (!empty($term_label)) {
+    $build['name'][0]['#context']['value'] = $term_label;
+  }
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function iucn_fields_preprocess_field(&$variables) {
