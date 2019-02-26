@@ -2,14 +2,11 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -22,9 +19,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
-use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
-use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -764,7 +759,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
-    $grouped_fields = self::getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
         'value' => $this->t('No.'),
@@ -773,20 +767,37 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     $components = $this->getFieldComponents($paragraph);
-    foreach (array_keys($components) as $field_name) {
-      if (!$paragraph->hasField($field_name)) {
+    foreach (array_keys($components) as $fieldName) {
+      $fieldColumn = $this->getFieldColumn($fieldName);
+      $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
+      if (!($fieldDefinition instanceof FieldConfigInterface)
+        || $paragraph->get($fieldName)->access('view') == FALSE
+        || !empty($header[$fieldColumn])) {
+        // We do not add content to the summary from base fields, skip them
+        // keeps performance while building the paragraph summary.
         continue;
       }
-      $field_definition = $paragraph->getFieldDefinition($field_name);
-      if (!empty($grouped_fields[$field_name])) {
-        $label = $grouped_fields[$field_name]['label'];
-        $field_name = $grouped_fields[$field_name]['grouped_with'];
+
+      switch ($fieldColumn) {
+        case 'field_as_threats_values_wh':
+        case 'field_as_threats_values_bio':
+          $label = $this->t('WH values');
+          break;
+
+        case 'other_information':
+          $label = $this->t('Other information');
+          break;
+
+        case 'negative_factors':
+          $label = $this->t('Factors negatively affecting provision of benefits');
+          break;
+
+        default:
+          $label = $fieldDefinition->getLabel();
       }
-      else {
-        $label = $field_definition->getLabel();
-      }
-      $header[$field_name]['value'] = $label;
-      $header[$field_name]['span'] = $this->getFieldSpan($field_definition);
+
+      $header[$fieldColumn]['value'] = $label;
+      $header[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
     }
 
     $header += [
@@ -902,7 +913,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function getRow(ParagraphInterface $paragraph) {
     $row = [];
-    $grouped_fields = self::getGroupedFields();
 
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
@@ -913,10 +923,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $fieldName) {
       $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
-      // We do not add content to the summary from base fields, skip them
-      // keeps performance while building the paragraph summary.
       if (!($fieldDefinition instanceof FieldConfigInterface)
         || $paragraph->get($fieldName)->access('view') == FALSE) {
+        // We do not add content to the summary from base fields, skip them
+        // keeps performance while building the paragraph summary.
         continue;
       }
 
@@ -924,9 +934,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $fieldItemList = $paragraph->get($fieldName);
       $value = NULL;
 
-      $fieldColumn = !empty($grouped_fields[$fieldName])
-        ? $grouped_fields[$fieldName]['grouped_with']
-        : $fieldName;
+      $fieldColumn = $this->getFieldColumn($fieldName);
 
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
@@ -1034,28 +1042,98 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         continue;
       }
 
-      $fieldLabel = NULL;
-      switch ($fieldName) {
-        case 'field_as_legality':
-          $fieldLabel = $this->t('Legality');
-          break;
-        case 'field_as_targeted_species':
-          $fieldLabel = $this->t('Targeted species');
-          break;
-        case 'field_invasive_species_names':
-          $fieldLabel = $this->t('Invasive/problematic species');
-          break;
+      $fieldGroup = (string) $this->getFieldGroup($fieldName);
+      if (empty($fieldGroup)) {
+        $row[$fieldColumn]['value'][] = $value;
+        continue;
       }
 
-      if (!empty($fieldLabel)) {
-        $row[$fieldColumn]['value'][] = sprintf("<b>%s: </b>%s", $fieldLabel, $value);
+      if (empty($row[$fieldColumn]['value'][$fieldGroup])) {
+        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<b>%s: </b>", $fieldGroup);
       }
-      else {
-        $row[$fieldColumn]['value'][] = $value;
-      }
+      $row[$fieldColumn]['value'][$fieldGroup] .= $value;
     }
 
     return $row;
+  }
+
+  /**
+   * Returns the column name where the field should be rendered.
+   *
+   * @param $fieldName
+   *
+   * @return string
+   *  The machine name of the column. Default column is the field name.
+   */
+  public function getFieldColumn($fieldName) {
+    switch ($fieldName) {
+      case 'field_as_threats_values_bio':
+        return 'field_as_threats_values_wh';
+
+      case 'field_as_threats_extent':
+        return 'field_as_threats_in';
+
+      case 'field_as_legality':
+      case 'field_as_targeted_species':
+      case 'field_invasive_species_names':
+        return 'other_information';
+
+      case 'field_as_benefits_hab_trend':
+      case 'field_as_benefits_hab_level':
+      case 'field_as_benefits_pollut_trend':
+      case 'field_as_benefits_pollut_level':
+      case 'field_as_benefits_oex_trend':
+      case 'field_as_benefits_oex_level':
+      case 'field_as_benefits_climate_trend':
+      case 'field_as_benefits_climate_level':
+      case 'field_as_benefits_invassp_level':
+      case 'field_as_benefits_invassp_trend':
+        return 'negative_factors';
+    }
+    return $fieldName;
+  }
+
+  /**
+   * Some fields which are rendered in the same column are also grouped.
+   * (e.g. "Pollution: {field_as_benefits_pollut_trend} trend, {field_as_benefits_pollut_level} level"
+   *
+   * @param $fieldName
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
+   *  The label of the group.
+   */
+  public function getFieldGroup($fieldName) {
+    switch ($fieldName) {
+      case 'field_as_legality':
+        return $this->t('Legality');
+
+      case 'field_as_targeted_species':
+        return $this->t('Targeted species');
+
+      case 'field_invasive_species_names':
+        return $this->t('Invasive/problematic species');
+
+      case 'field_as_benefits_hab_trend':
+      case 'field_as_benefits_hab_level':
+        return $this->t('Habitat change');
+
+      case 'field_as_benefits_pollut_trend':
+      case 'field_as_benefits_pollut_level':
+        return $this->t('Pollution');
+
+      case 'field_as_benefits_oex_trend':
+      case 'field_as_benefits_oex_level':
+        return $this->t('Over exploitation');
+
+      case 'field_as_benefits_climate_trend':
+      case 'field_as_benefits_climate_level':
+        return $this->t('Climate change');
+
+      case 'field_as_benefits_invassp_trend':
+      case 'field_as_benefits_invassp_level':
+        return $this->t('Invasive species');
+    }
+    return NULL;
   }
 
   public function getFieldSpan(FieldDefinitionInterface $field_definition) {
@@ -1089,95 +1167,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       return 1;
     }
     return 2;
-  }
-
-  /**
-   * Get the array defining grouped fields.
-   *
-   * The key of the array is the field that needs to be grouped with
-   * another field, under a common label.
-   *
-   * @return array
-   *   The grouped fields.
-   */
-  public static function getGroupedFields() {
-    return [
-      'field_as_threats_values_bio' => [
-        'grouped_with' => 'field_as_threats_values_wh',
-        'label' => t('WH values'),
-      ],
-      'field_as_legality' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Legality:'),
-        'label' => t(''),
-      ],
-      'field_as_targeted_species' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Targeted species:'),
-        'label' => t(''),
-      ],
-      'field_invasive_species_names' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Invasive/problematic species:'),
-        'label' => t(''),
-      ],
-      'field_as_threats_extent' => [
-        'grouped_with' => 'field_as_threats_in',
-        'label' => t('Inside site'),
-      ],
-      'field_as_benefits_hab_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Habitat change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_hab_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Habitat change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_pollut_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Pollution:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_pollut_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Pollution:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_oex_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Over exploitation:'),
-        'title' => t('Over exploitation'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_oex_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Over exploitation:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_climate_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Climate change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_climate_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Climate change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_invassp_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Invasive species:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_invassp_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Invasive species:'),
-        'label' => t('Factors negatively affecting provision of benefits'),
-      ],
-
-    ];
   }
 
   /**
