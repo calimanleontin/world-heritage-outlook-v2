@@ -1,32 +1,8 @@
 <?php
 
-use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Core\Render\Element;
-
-/**
- * Implements hook_field_widget_form_alter().
- */
-function iucn_fields_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
-  /** @var \Drupal\Core\Field\WidgetInterface $widget */
-  $widget = $context['widget'];
-  $plugin_id = $widget->getPluginId();
-  if ($plugin_id == 'options_select' || $plugin_id == 'assessment_options_buttons') {
-    if (!_iucn_fields_is_altered_element($element, $context)) {
-      return;
-    }
-
-    $assessment = _iucn_fields_get_assessment($form_state);
-    $assessment_year = _iucn_fields_get_assessment_year($assessment);
-
-    _iucn_fields_alter_element_options($element, $assessment_year);
-
-    if ($plugin_id == 'assessment_options_buttons') {
-      _iucn_fields_alter_element_options($element['options_groups'], $assessment_year);
-    }
-  }
-}
 
 function _iucn_fields_get_assessment_year($assessment = NULL) {
   if (empty($assessment)) {
@@ -37,6 +13,25 @@ function _iucn_fields_get_assessment_year($assessment = NULL) {
   }
 
   return $assessment->field_as_cycle->value;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  // Remove all the build components of a term if it's label is empty.
+  $is_hidden = empty($entity->label());
+  if (!$is_hidden) {
+    return;
+  }
+
+  foreach (Element::children($build) as $id) {
+    if ($id == 'name') {
+      continue;
+    }
+    unset($build[$id]);
+  }
+  $build['name'][0]['#context']['value'] = '';
 }
 
 /**
@@ -56,68 +51,6 @@ function iucn_fields_taxonomy_term_load(array $entities) {
     $term_label = $term_alter_service->getTermLabelForYear($term->id(), $assessment_year);
     if (!empty($term_label)) {
       $term->setName($term_label);
-    }
-  }
-}
-
-function _iucn_fields_get_assessment(\Drupal\Core\Form\FormStateInterface $form_state) {
-  $assessment = $form_state->getFormObject()->getEntity();
-  while ($assessment instanceof \Drupal\paragraphs\ParagraphInterface) {
-    // Values paragraphs have threat paragraphs as parents.
-    $assessment = $assessment->getParentEntity();
-  }
-
-  if ($assessment instanceof \Drupal\node\NodeInterface && $assessment->bundle() == 'site_assessment') {
-    return $assessment;
-  }
-
-  $route_match = \Drupal::routeMatch();
-  if ($route_match->getRouteName() == 'iucn_assessment.modal_paragraph_add') {
-    return $route_match->getParameter('node_revision');
-  }
-
-  return NULL;
-}
-
-function _iucn_fields_is_altered_element($element, $context) {
-  if ($element['#entity_type'] != 'paragraph') {
-    return FALSE;
-  }
-  /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $items */
-  $items = $context['items'];
-  /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-  $field_definition = $items->getFieldDefinition();
-  $target_type = $field_definition->getSetting('target_type');
-  if ($target_type != 'taxonomy_term') {
-    return FALSE;
-  }
-  return TRUE;
-}
-
-function _iucn_fields_alter_element_options(array &$element, $assessment_year) {
-  foreach ($element['#options'] as $tid => &$label) {
-    $term = Term::load($tid);
-    if (empty($term)) {
-      continue;
-    }
-    $term_name = $term->getName();
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    if ($term_alter_service->isTermHiddenForYear($tid, $assessment_year)) {
-      unset($element['#options'][$tid]);
-      if (!empty($element['#default_value'])) {
-        if (is_array($element['#default_value'])) {
-          unset($element['#default_value'][$tid]);
-        }
-        elseif ($element['#default_value'] == $tid) {
-          $element['#default_value'] = NULL;
-        }
-      }
-      continue;
-    }
-    $term_new_name = $term_alter_service->getTermLabelForYear($tid, $assessment_year);
-    if (!empty($term_new_name)) {
-      $label = str_replace($term_name, $term_new_name, $label);
     }
   }
 }
