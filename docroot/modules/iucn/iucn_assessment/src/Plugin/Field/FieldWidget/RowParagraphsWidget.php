@@ -994,26 +994,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
               $row[$fieldColumn]['class'] = $cssClass;
             }
 
-            switch ($fieldName) {
-              case 'field_as_benefits_hab_trend':
-              case 'field_as_benefits_pollut_trend':
-              case 'field_as_benefits_oex_trend':
-              case 'field_as_benefits_climate_trend':
-              case 'field_as_benefits_invassp_trend':
-                /** @var \Drupal\taxonomy\TermInterface $childEntity */
-                $name = $childEntity->getName();
-                $childEntity->setName("{$name} {$this->t('trend')}");
-                break;
-              case 'field_as_benefits_hab_level':
-              case 'field_as_benefits_pollut_level':
-              case 'field_as_benefits_oex_level':
-              case 'field_as_benefits_climate_level':
-                /** @var \Drupal\taxonomy\TermInterface $childEntity */
-                $name = $childEntity->getName();
-                $childEntity->setName("{$name} {$this->t('level')}");
-                break;
-            }
-
             $childView = $viewBuilder->view($childEntity, 'teaser');
             $childrenView[] = render($childView);
           }
