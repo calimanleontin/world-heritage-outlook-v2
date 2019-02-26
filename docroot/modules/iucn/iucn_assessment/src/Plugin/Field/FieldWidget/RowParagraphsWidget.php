@@ -904,13 +904,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getRow(ParagraphInterface $paragraph) {
-    $summary = [];
+    $row = [];
     $grouped_fields = self::getGroupedFields();
 
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
       $num += 1;
-      $summary['num']['value'] = $num;
+      $row['num']['value'] = $num;
     }
 
     $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
@@ -1025,8 +1025,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         }
       }
 
-      if (!array_key_exists($summary_field_name, $summary)) {
-        $summary[$summary_field_name]['value'] = [];
+      if (!array_key_exists($summary_field_name, $row)) {
+        $row[$summary_field_name]['value'] = [];
       }
       $suffix = self::getSummarySuffix($field_name);
       if (!empty($suffix) && !empty($value)) {
@@ -1034,42 +1034,42 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       if ($class) {
-        $summary[$summary_field_name]['class'] = $class;
+        $row[$summary_field_name]['class'] = $class;
       }
       if ('field_as_threats_extent' == $field_name) {
-        $summary[$summary_field_name]['value'][0] .= ' ' . $value;
+        $row[$summary_field_name]['value'][0] .= ' ' . $value;
       }
       elseif (!empty($grouped_fields[$field_name]['threats'])) {
         if ($value) {
-          $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
+          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
         }
         if ($field_name == 'field_as_species_name') {
           $value = [];
-          foreach($summary[$summary_field_name]['value'] as $title => $values) {
+          foreach($row[$summary_field_name]['value'] as $title => $values) {
             $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
           }
-          $summary[$summary_field_name]['value'] = implode('<br>', $value);
+          $row[$summary_field_name]['value'] = implode('<br>', $value);
         }
       }
       elseif (!empty($grouped_fields[$field_name]['benefits'])) {
         if ($value) {
-          $summary[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
+          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
         }
         if ($field_name == 'field_as_benefits_invassp_trend') {
           $value = [];
-          foreach($summary[$summary_field_name]['value'] as $title => $values) {
+          foreach($row[$summary_field_name]['value'] as $title => $values) {
             $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
           }
-          $summary[$summary_field_name]['value'] = implode('<br>', $value);
+          $row[$summary_field_name]['value'] = implode('<br>', $value);
         }
       }
       else {
-        $summary[$summary_field_name]['value'][] = $value;
+        $row[$summary_field_name]['value'][] = $value;
       }
-      $summary[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
+      $row[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
     }
 
-    return $summary;
+    return $row;
   }
 
   public function getFieldSpan(FieldDefinitionInterface $field_definition) {
