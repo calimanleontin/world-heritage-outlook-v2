@@ -164,3 +164,5 @@ $config['system.site']['mail'] = 'user@example.ro';
 
 $settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-storage');
 $config['system.file']['path']['temporary'] = '/tmp';
+
+$config['google_analytics.settings']['account'] = 'UA-0-0';
