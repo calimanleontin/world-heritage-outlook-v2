@@ -772,7 +772,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
+    $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $field_name) {
       if (!$paragraph->hasField($field_name)) {
         continue;
@@ -878,7 +878,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    *   The field components.
    */
-  public function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
+  public function getFieldComponents(ParagraphInterface $paragraph) {
+    $form_display_mode = $this->getSetting('form_display_mode');
     $bundle = $paragraph->getType();
     $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
     if (empty($entityFormDisplay)) {
@@ -909,7 +910,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $row['num']['value'] = $num;
     }
 
-    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
+    $components = $this->getFieldComponents($paragraph);
     foreach (array_keys($components) as $fieldName) {
       $field_definition = $paragraph->getFieldDefinition($fieldName);
       // We do not add content to the summary from base fields, skip them
