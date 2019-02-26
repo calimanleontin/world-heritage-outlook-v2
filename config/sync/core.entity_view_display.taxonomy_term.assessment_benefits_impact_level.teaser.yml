@@ -1,0 +1,18 @@
+uuid: cf11c345-04cb-480e-b402-7dd31f80854a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.assessment_benefits_impact_level
+id: taxonomy_term.assessment_benefits_impact_level.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_impact_level
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

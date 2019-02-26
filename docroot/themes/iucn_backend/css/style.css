@@ -769,13 +769,27 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
   font-size: .9em;
   grid-row: 1 / span 1;
-  padding: 10px 12px;
+  padding: 5px;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
   border-right: 1px solid #e6e4df;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label:not(:first-child) {
+  margin-top: 1em;
+}
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component ul li {
+  list-style-type: none;
+  margin-left: 0;
+  margin-bottom: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-negative_factors ul li {
+  margin-bottom: 0;
 }
 .field--widget-row-entity-reference-paragraphs .field-multiple-drag {
   border-right: 1px solid #e6e4df;
@@ -1130,11 +1144,19 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   justify-self: normal !important;
   margin-left: -5px;
   margin-top: -5px;
+  position: relative;
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions input[type="submit"]:first-child,
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions > .button {
   margin-left: 5px;
   margin-top: 5px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .ajax-progress {
+  position: absolute;
+  z-index: 99999999;
+  display: block;
+  top: calc(40%);
+  left: calc(40%);
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-header {
   font-weight: bold;
@@ -1338,7 +1360,6 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-summary-component {
   hyphens: auto;
   overflow: hidden;
-  word-break: break-word;
 }
 .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
   overflow: visible;

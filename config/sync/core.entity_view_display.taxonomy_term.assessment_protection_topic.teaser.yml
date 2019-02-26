@@ -1,0 +1,20 @@
+uuid: d3db7e12-2858-4e75-bbde-dfb1cb63b878
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_protection_topic.field_help_text
+    - taxonomy.vocabulary.assessment_protection_topic
+id: taxonomy_term.assessment_protection_topic.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_protection_topic
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_help_text: true
+  langcode: true

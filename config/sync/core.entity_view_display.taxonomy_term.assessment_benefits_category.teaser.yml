@@ -1,0 +1,22 @@
+uuid: e7764591-9fbf-4897-886d-b1dec52327fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_benefits_category.field_category_image
+    - field.field.taxonomy_term.assessment_benefits_category.field_image
+    - taxonomy.vocabulary.assessment_benefits_category
+id: taxonomy_term.assessment_benefits_category.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_category
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_category_image: true
+  field_image: true
+  langcode: true

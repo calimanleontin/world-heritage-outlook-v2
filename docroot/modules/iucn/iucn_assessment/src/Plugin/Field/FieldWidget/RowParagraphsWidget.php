@@ -2,14 +2,11 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -22,9 +19,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
-use Drupal\taxonomy\TermInterface;
 use Drupal\user\Entity\User;
-use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -764,7 +759,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function getHeaderComponents(ParagraphInterface $paragraph) {
     $header = [];
-    $grouped_fields = self::getGroupedFields();
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
         'value' => $this->t('No.'),
@@ -772,21 +766,38 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
-    foreach (array_keys($components) as $field_name) {
-      if (!$paragraph->hasField($field_name)) {
+    $components = $this->getFieldComponents($paragraph);
+    foreach (array_keys($components) as $fieldName) {
+      $fieldColumn = $this->getFieldColumn($fieldName);
+      $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
+      if (!($fieldDefinition instanceof FieldConfigInterface)
+        || $paragraph->get($fieldName)->access('view') == FALSE
+        || !empty($header[$fieldColumn])) {
+        // We do not add content to the summary from base fields, skip them
+        // keeps performance while building the paragraph summary.
         continue;
       }
-      $field_definition = $paragraph->getFieldDefinition($field_name);
-      if (!empty($grouped_fields[$field_name])) {
-        $label = $grouped_fields[$field_name]['label'];
-        $field_name = $grouped_fields[$field_name]['grouped_with'];
+
+      switch ($fieldColumn) {
+        case 'field_as_threats_values_wh':
+        case 'field_as_threats_values_bio':
+          $label = $this->t('WH values');
+          break;
+
+        case 'other_information':
+          $label = $this->t('Other information');
+          break;
+
+        case 'negative_factors':
+          $label = $this->t('Factors negatively affecting provision of benefits');
+          break;
+
+        default:
+          $label = $fieldDefinition->getLabel();
       }
-      else {
-        $label = $field_definition->getLabel();
-      }
-      $header[$field_name]['value'] = $label;
-      $header[$field_name]['span'] = $this->getFieldSpan($field_definition);
+
+      $header[$fieldColumn]['value'] = $label;
+      $header[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
     }
 
     $header += [
@@ -838,7 +849,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $data = $component['value'][0];
         }
         else {
-          $data = !empty($component['value']) ? implode('; ', $component['value']) : '';
+          $data = !empty($component['value']) ? implode("\n", $component['value']) : '';
         }
       }
       else {
@@ -878,7 +889,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    *   The field components.
    */
-  public function getFieldComponents(ParagraphInterface $paragraph, $form_display_mode = NULL) {
+  public function getFieldComponents(ParagraphInterface $paragraph) {
+    $form_display_mode = $this->getSetting('form_display_mode');
     $bundle = $paragraph->getType();
     $entityFormDisplay = EntityFormDisplay::load("paragraph.$bundle.$form_display_mode");
     if (empty($entityFormDisplay)) {
@@ -895,13 +907,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *
    * @return array
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getRow(ParagraphInterface $paragraph) {
     $row = [];
-    $grouped_fields = self::getGroupedFields();
 
     static $num = 0;
     if ($this->getSetting('show_numbers') == 'yes') {
@@ -909,29 +918,34 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $row['num']['value'] = $num;
     }
 
-    $components = $this->getFieldComponents($paragraph, $this->getSetting('form_display_mode'));
-    foreach (array_keys($components) as $field_name) {
-      $field_definition = $paragraph->getFieldDefinition($field_name);
-      // We do not add content to the summary from base fields, skip them
-      // keeps performance while building the paragraph summary.
-      if (!($field_definition instanceof FieldConfigInterface)
-        || $paragraph->get($field_name)->access('view') == FALSE) {
+    $components = $this->getFieldComponents($paragraph);
+    foreach (array_keys($components) as $fieldName) {
+      $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
+      if (!($fieldDefinition instanceof FieldConfigInterface)
+        || $paragraph->get($fieldName)->access('view') == FALSE) {
+        // We do not add content to the summary from base fields, skip them
+        // keeps performance while building the paragraph summary.
         continue;
       }
 
-      $class = NULL;
+      /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
+      $fieldItemList = $paragraph->get($fieldName);
+      $fieldColumn = $this->getFieldColumn($fieldName);
+      if (empty($row[$fieldColumn]['value'])) {
+        $row[$fieldColumn]['value'] = [];
+      }
+      if (empty($row[$fieldColumn]['span'])) {
+        $row[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
+      }
+
+      if (empty($fieldItemList->getValue())) {
+        continue;
+      }
+
       $value = NULL;
-
-      if (!empty($grouped_fields[$field_name])) {
-        $summary_field_name = $grouped_fields[$field_name]['grouped_with'];
-      }
-      else {
-        $summary_field_name = $field_name;
-      }
-
-      switch ($field_definition->getType()) {
+      switch ($fieldDefinition->getType()) {
         case 'boolean':
-          $value = !empty($paragraph->{$field_name}->value)
+          $value = !empty($paragraph->{$fieldName}->value)
             ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
             : '';
           break;
@@ -946,40 +960,51 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             'parent_type',
             'parent_field_name',
           ];
-          if (in_array($field_name, $excludedTextFields)) {
-            $value = '';
+          if (in_array($fieldName, $excludedTextFields)) {
             break;
           }
-          $value = trim($paragraph->get($field_name)->value);
-          if (strlen($value) > 600 && !in_array($field_name, ['field_as_values_curr_text', 'field_as_description'])) {
+          $value = trim($fieldItemList->value);
+          if (strlen($value) > 600 && !in_array($fieldName, ['field_as_values_curr_text', 'field_as_description'])) {
             $value = Unicode::truncate($text, 600) . '...';
           }
+          break;
+
+        case 'link':
+          if (empty($fieldItemList->first())) {
+            break;
+          }
+          if (!empty($fieldItemList->title)) {
+            $value = $fieldItemList->title;
+            break;
+          }
+          // If title is not set, fallback to the uri.
+          $value = $fieldItemList->uri;
           break;
 
         case 'entity_reference':
         case 'entity_reference_revisions':
           $viewBuilder = NULL;
           $childrenView = [];
-          foreach ($paragraph->{$field_name} as $childEntityValue) {
+          foreach ($paragraph->{$fieldName} as $childEntityValue) {
             /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
             $childEntity = $childEntityValue->entity;
             if (empty($viewBuilder)) {
               $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
             }
+            $cssClass = _iucn_assessment_level_class($childEntity->id());
+            if (!empty($cssClass)) {
+              $row[$fieldColumn]['class'] = $cssClass;
+            }
+
             $childView = $viewBuilder->view($childEntity, 'teaser');
             $childrenView[] = render($childView);
           }
-          if (count($childrenView) <= 1) {
-            $value = reset($childrenView);
-          }
-          else {
-            $list = [
-              '#theme' => 'item_list',
-              '#list_type' => 'ul',
-              '#items' => $childrenView,
-            ];
-            $value = render($list);
-          }
+          $list = [
+            '#theme' => 'item_list',
+            '#list_type' => 'ul',
+            '#items' => $childrenView,
+          ];
+          $value = render($list);
           break;
 
         case 'image':
@@ -988,281 +1013,115 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           break;
       }
 
-      // Add the Block admin label referenced by block_field.
-      if ($field_definition->getType() == 'block_field') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          $block_admin_label = $paragraph->get($field_name)
-            ->first()
-            ->getBlock()
-            ->getPluginDefinition()['admin_label'];
-          $value = $block_admin_label;
-        }
+      if (empty($value)) {
+        continue;
       }
 
-      if ($field_definition->getType() == 'link') {
-        if (!empty($paragraph->get($field_name)->first())) {
-          // If title is not set, fallback to the uri.
-          if ($title = $paragraph->get($field_name)->title) {
-            $value = $title;
-          }
-          else {
-            $value = $paragraph->get($field_name)->uri;
-          }
-        }
+      $fieldGroup = (string) $this->getFieldGroup($fieldName);
+      if (empty($fieldGroup)) {
+        $row[$fieldColumn]['value'][] = $value;
+        continue;
       }
 
-      if (!array_key_exists($summary_field_name, $row)) {
-        $row[$summary_field_name]['value'] = [];
+      if (empty($row[$fieldColumn]['value'][$fieldGroup])) {
+        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<div class='group-label'>%s: </div>", $fieldGroup);
       }
-      $suffix = self::getSummarySuffix($field_name);
-      if (!empty($suffix) && !empty($value)) {
-        $value = $this->t("@value $suffix", ['@value' => $value]);
-      }
-
-      if ($class) {
-        $row[$summary_field_name]['class'] = $class;
-      }
-      if ('field_as_threats_extent' == $field_name) {
-        $row[$summary_field_name]['value'][0] .= ' ' . $value;
-      }
-      elseif (!empty($grouped_fields[$field_name]['threats'])) {
-        if ($value) {
-          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['threats']][] = $value;
-        }
-        if ($field_name == 'field_as_species_name') {
-          $value = [];
-          foreach($row[$summary_field_name]['value'] as $title => $values) {
-            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
-          }
-          $row[$summary_field_name]['value'] = implode('<br>', $value);
-        }
-      }
-      elseif (!empty($grouped_fields[$field_name]['benefits'])) {
-        if ($value) {
-          $row[$summary_field_name]['value']['' . $grouped_fields[$field_name]['benefits']][] = $value;
-        }
-        if ($field_name == 'field_as_benefits_invassp_trend') {
-          $value = [];
-          foreach($row[$summary_field_name]['value'] as $title => $values) {
-            $value[] = '<b>' . $title . '</b> ' . implode(', ', $values);
-          }
-          $row[$summary_field_name]['value'] = implode('<br>', $value);
-        }
-      }
-      else {
-        $row[$summary_field_name]['value'][] = $value;
-      }
-      $row[$summary_field_name]['span'] = $this->getFieldSpan($field_definition);
+      $row[$fieldColumn]['value'][$fieldGroup] .= $value;
     }
 
     return $row;
   }
 
-  public function getFieldSpan(FieldDefinitionInterface $field_definition) {
-    $field_name = $field_definition->getName();
-    if ($field_name == 'field_as_protection_rating') {
+  /**
+   * Returns the column name where the field should be rendered.
+   *
+   * @param $fieldName
+   *
+   * @return string
+   *  The machine name of the column. Default column is the field name.
+   */
+  public function getFieldColumn($fieldName) {
+    switch ($fieldName) {
+      case 'field_as_threats_values_bio':
+        return 'field_as_threats_values_wh';
+
+      case 'field_as_threats_extent':
+        return 'field_as_threats_in';
+
+      case 'field_as_legality':
+      case 'field_as_targeted_species':
+      case 'field_invasive_species_names':
+        return 'other_information';
+
+      case 'field_as_benefits_hab_trend':
+      case 'field_as_benefits_hab_level':
+      case 'field_as_benefits_pollut_trend':
+      case 'field_as_benefits_pollut_level':
+      case 'field_as_benefits_oex_trend':
+      case 'field_as_benefits_oex_level':
+      case 'field_as_benefits_climate_trend':
+      case 'field_as_benefits_climate_level':
+      case 'field_as_benefits_invassp_level':
+      case 'field_as_benefits_invassp_trend':
+        return 'negative_factors';
+    }
+    return $fieldName;
+  }
+
+  /**
+   * Some fields which are rendered in the same column are also grouped.
+   * (e.g. "Pollution: {field_as_benefits_pollut_trend} trend, {field_as_benefits_pollut_level} level"
+   *
+   * @param $fieldName
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
+   *  The label of the group.
+   */
+  public function getFieldGroup($fieldName) {
+    switch ($fieldName) {
+      case 'field_as_legality':
+        return $this->t('Legality');
+
+      case 'field_as_targeted_species':
+        return $this->t('Targeted species');
+
+      case 'field_invasive_species_names':
+        return $this->t('Invasive/problematic species');
+
+      case 'field_as_benefits_hab_trend':
+      case 'field_as_benefits_hab_level':
+        return $this->t('Habitat change');
+
+      case 'field_as_benefits_pollut_trend':
+      case 'field_as_benefits_pollut_level':
+        return $this->t('Pollution');
+
+      case 'field_as_benefits_oex_trend':
+      case 'field_as_benefits_oex_level':
+        return $this->t('Over exploitation');
+
+      case 'field_as_benefits_climate_trend':
+      case 'field_as_benefits_climate_level':
+        return $this->t('Climate change');
+
+      case 'field_as_benefits_invassp_trend':
+      case 'field_as_benefits_invassp_level':
+        return $this->t('Invasive species');
+    }
+    return NULL;
+  }
+
+  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition) {
+    $fieldName = $fieldDefinition->getName();
+    if ($fieldDefinition->getType() == 'boolean'
+      || $fieldName == 'field_as_protection_rating'
+      || $fieldName == 'field_as_values_criteria') {
       return 1;
     }
-    if ($field_name == 'field_as_values_criteria') {
-      return 1;
-    }
-    if ($field_name == 'field_as_projects_contact') {
-      return 2;
-    }
-    if ($field_name == 'field_as_comment') {
-      return 2;
-    }
-    if ($field_definition->getType() == 'string_long') {
+    if ($fieldDefinition->getType() == 'string_long') {
       return 3;
-    }
-    elseif ($this->routeMatch->getRouteName() == 'iucn_assessment.paragraph_diff_form'
-      && in_array($field_name, [
-        'field_as_threats_categories',
-        'field_as_threats_values_wh',
-        'field_as_threats_values_bio',
-        'field_as_benefits_category',
-      ])
-    ) {
-      return 3;
-    }
-    elseif ($field_definition->getType() == 'boolean') {
-      return 1;
     }
     return 2;
-  }
-
-  /**
-   * Get the array defining grouped fields.
-   *
-   * The key of the array is the field that needs to be grouped with
-   * another field, under a common label.
-   *
-   * @return array
-   *   The grouped fields.
-   */
-  public static function getGroupedFields() {
-    return [
-      'field_as_threats_values_bio' => [
-        'grouped_with' => 'field_as_threats_values_wh',
-        'label' => t('WH values'),
-      ],
-      'field_as_legality' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Legality:'),
-        'label' => t(''),
-      ],
-      'field_as_targeted_species' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Targeted species:'),
-        'label' => t(''),
-      ],
-      'field_invasive_species_names' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Invasive/problematic species:'),
-        'label' => t(''),
-      ],
-      'field_as_species_name' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Species name:'),
-        'label' => t('Other information'),
-      ],
-      'field_as_threats_extent' => [
-        'grouped_with' => 'field_as_threats_in',
-        'label' => t('Inside site'),
-      ],
-      'field_as_benefits_hab_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Habitat change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_hab_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Habitat change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_pollut_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Pollution:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_pollut_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Pollution:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_oex_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Over exploitation:'),
-        'title' => t('Over exploitation'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_oex_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Over exploitation:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_climate_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Climate change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_climate_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Climate change:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_invassp_level' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Invasive species:'),
-        'label' => t(''),
-      ],
-      'field_as_benefits_invassp_trend' => [
-        'grouped_with' => 'field_as_benefits_hab_level',
-        'benefits' => t('Invasive species:'),
-        'label' => t('Factors negatively affecting provision of benefits'),
-      ],
-
-    ];
-  }
-
-  /**
-   * Retrieves a suffix that should show up before a paragraph summary value.
-   *
-   * @param $field
-   *   The name of the field.
-   *
-   * @return mixed|null
-   *   The suffix.
-   */
-  public static function getSummarySuffix($field) {
-    $suffixes = [
-      'field_as_benefits_hab_trend' => t('trend'),
-      'field_as_benefits_pollut_trend' => t('trend'),
-      'field_as_benefits_oex_trend' => t('trend'),
-      'field_as_benefits_climate_trend' => t('trend'),
-      'field_as_benefits_invassp_trend' => t('trend'),
-      'field_as_benefits_hab_level' => t('level'),
-      'field_as_benefits_pollut_level' => t('level'),
-      'field_as_benefits_oex_level' => t('level'),
-      'field_as_benefits_climate_level' => t('level'),
-    ];
-    return !empty($suffixes[$field]) ? $suffixes[$field] : NULL;
-  }
-
-  /**
-   * Retrieves the label for an entity.
-   *
-   * @param \Drupal\Core\Entity\Entity $entity
-   *   The entity.
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|mixed|null|string
-   *   The label
-   */
-  protected function getEntityLabel(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return NULL;
-    }
-    $label = '';
-    if ($entity->getEntityType()->id() == 'taxonomy_term') {
-      /** @var \Drupal\Core\Entity\Term $entity */
-      $tid = $entity->id();
-      /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-      $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-      $term_new_name = $term_alter_service->getTermLabelForYear($tid, $this->parentNode->field_as_cycle->value);
-      if (!empty($term_new_name)) {
-        $label = $term_new_name;
-      }
-    }
-    if (empty($label)) {
-      $label = $entity->label();
-    }
-    if ($entity->bundle() == 'assessment_protection_topic') {
-      if (!empty($entity->field_help_text) && $entity->field_help_text->value) {
-        $label = [
-          '#theme' => 'topic_tooltip',
-          '#label' => $label,
-          '#help_text' => $entity->field_help_text->value,
-        ];
-        $label = ['label' => $label];
-      }
-    }
-    return $label;
-  }
-
-  protected function isHiddenTerm(Entity $entity) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return FALSE;
-    }
-    if ($entity->getEntityType()->id() != 'taxonomy_term') {
-      return FALSE;
-    }
-    /** @var \Drupal\Core\Entity\Term $entity */
-    $tid = $entity->id();
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
   }
 
   public static function getWidgetState(array $parents, $field_name, FormStateInterface $form_state) {
