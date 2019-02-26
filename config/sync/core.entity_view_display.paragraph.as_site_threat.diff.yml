@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.paragraph.diff
     - field.field.paragraph.as_site_threat.field_as_description
     - field.field.paragraph.as_site_threat.field_as_legality
-    - field.field.paragraph.as_site_threat.field_as_species_name
     - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
     - field.field.paragraph.as_site_threat.field_as_threats_extent
@@ -43,15 +42,6 @@ content:
     region: content
     label: hidden
     settings: {  }
-    third_party_settings: {  }
-  field_as_species_name:
-    type: plain_string_formatter
-    weight: 7
-    region: content
-    label: hidden
-    settings:
-      wrap_tag: _none
-      wrap_class: ''
     third_party_settings: {  }
   field_as_targeted_species:
     type: plain_string_formatter

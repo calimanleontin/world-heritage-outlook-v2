@@ -1045,9 +1045,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         case 'field_invasive_species_names':
           $fieldLabel = $this->t('Invasive/problematic species');
           break;
-        case 'field_as_species_name':
-          $fieldLabel = $this->t('Species name');
-          break;
       }
 
       if (!empty($fieldLabel)) {
@@ -1123,11 +1120,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         'grouped_with' => 'field_as_legality',
         'threats' => t('Invasive/problematic species:'),
         'label' => t(''),
-      ],
-      'field_as_species_name' => [
-        'grouped_with' => 'field_as_legality',
-        'threats' => t('Species name:'),
-        'label' => t('Other information'),
       ],
       'field_as_threats_extent' => [
         'grouped_with' => 'field_as_threats_in',
