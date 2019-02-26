@@ -1144,11 +1144,19 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   justify-self: normal !important;
   margin-left: -5px;
   margin-top: -5px;
+  position: relative;
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions input[type="submit"]:first-child,
 .field--widget-row-entity-reference-paragraphs .paragraphs-actions > .button {
   margin-left: 5px;
   margin-top: 5px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-actions .ajax-progress {
+  position: absolute;
+  z-index: 99999999;
+  display: block;
+  top: calc(40%);
+  left: calc(40%);
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-header {
   font-weight: bold;

@@ -118,6 +118,7 @@
     justify-self: normal !important;
     margin-left: -5px;
     margin-top: -5px;
+    position: relative;
 
     input[type="submit"]:first-child,
     > .button {
@@ -125,7 +126,13 @@
       margin-top: 5px;
     }
 
-
+    .ajax-progress {
+      position: absolute;
+      z-index: 99999999;
+      display: block;
+      top: calc(50% - 10px);
+      left: calc(50% - 10px);
+    }
   }
   .paragraph-header {
     font-weight: bold;
