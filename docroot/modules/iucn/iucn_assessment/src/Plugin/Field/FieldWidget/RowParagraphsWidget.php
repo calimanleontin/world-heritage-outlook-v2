@@ -1026,10 +1026,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           break;
       }
 
-      if ('field_as_threats_extent' == $fieldName) {
-        $row[$fieldColumn]['value'][0] .= ' ' . $value;
-      }
-      elseif (!empty($grouped_fields[$fieldName]['threats'])) {
+      if (!empty($grouped_fields[$fieldName]['threats'])) {
         if ($value) {
           $row[$fieldColumn]['value']['' . $grouped_fields[$fieldName]['threats']][] = $value;
         }
