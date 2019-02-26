@@ -1,15 +1,14 @@
-uuid: 57e2e316-d806-43d7-b5c2-3ad83486a747
+uuid: 7154c74b-7e4b-4aeb-b6fd-aa3dee1d02e9
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.assessment_protection_rating.field_css_identifier
-    - taxonomy.vocabulary.assessment_protection_rating
+    - taxonomy.vocabulary.designation
   module:
     - text
-id: taxonomy_term.assessment_protection_rating.default
+id: taxonomy_term.designation.default
 targetEntityType: taxonomy_term
-bundle: assessment_protection_rating
+bundle: designation
 mode: default
 content:
   description:
@@ -23,5 +22,4 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_css_identifier: true
   langcode: true
