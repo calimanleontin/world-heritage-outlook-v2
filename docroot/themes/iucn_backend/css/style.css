@@ -774,6 +774,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
   border-right: 1px solid #e6e4df;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label:not(:first-child) {
+  margin-top: 1em;
+}
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
 }
@@ -781,6 +787,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   list-style-type: none;
   margin-left: 0;
   margin-bottom: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-negative_factors ul li {
+  margin-bottom: 0;
 }
 .field--widget-row-entity-reference-paragraphs .field-multiple-drag {
   border-right: 1px solid #e6e4df;

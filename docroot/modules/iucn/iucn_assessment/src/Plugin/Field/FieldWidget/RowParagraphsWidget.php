@@ -930,10 +930,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
       /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
       $fieldItemList = $paragraph->get($fieldName);
-      $value = NULL;
-
       $fieldColumn = $this->getFieldColumn($fieldName);
-
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
       }
@@ -941,6 +938,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $row[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
       }
 
+      if (empty($fieldItemList->getValue())) {
+        continue;
+      }
+
+      $value = NULL;
       switch ($fieldDefinition->getType()) {
         case 'boolean':
           $value = !empty($paragraph->{$fieldName}->value)
@@ -1022,7 +1024,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       if (empty($row[$fieldColumn]['value'][$fieldGroup])) {
-        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<b>%s: </b>", $fieldGroup);
+        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<div class='group-label'>%s: </div>", $fieldGroup);
       }
       $row[$fieldColumn]['value'][$fieldGroup] .= $value;
     }
