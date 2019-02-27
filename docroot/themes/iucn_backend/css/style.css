@@ -1317,6 +1317,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs > .raw-paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
   margin: 10px;
 }
+.paragraph-diff-row {
+  background-color: #fcf8e3 !important;
+}
+.paragraph-diff-row .paragraph-summary-component-actions {
+  background-color: #fcf8e3 !important;
+}
 .paragraph-deleted-row {
   background-color: #ffaaaa !important;
 }
@@ -1338,12 +1344,6 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 }
 .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
   overflow: visible;
-}
-.paragraph-diff-row {
-  background-color: #fcf8e3 !important;
-}
-.paragraph-diff-row .paragraph-summary-component-actions {
-  background-color: #fcf8e3 !important;
 }
 #drupal-modal {
   padding: 0;
