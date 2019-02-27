@@ -29,13 +29,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   protected $groups;
 
   /**
-   * The parent node.
-   *
-   * @var \Drupal\Node\NodeInterface
-   */
-  protected $parentNode;
-
-  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -124,7 +117,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $this->parentNode = \Drupal::routeMatch()->getParameter('node');
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $all_options = $this->getOptions($items->getEntity());
     $this->groups = [];
