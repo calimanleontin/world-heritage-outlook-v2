@@ -211,7 +211,7 @@
 .button.paragraphs-icon-button-edit:focus {
   background-image: url("../images/icon-edit.svg");
 }
-.paragraphs-icon-delete {
+.paragraphs-icon-button-delete {
   background-image: url("../images/icon-delete.svg") !important;
 }
 .paragraphs-icon-button-revert {
