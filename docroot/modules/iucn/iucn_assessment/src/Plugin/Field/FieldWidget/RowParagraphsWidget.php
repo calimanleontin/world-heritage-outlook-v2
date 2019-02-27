@@ -392,7 +392,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
 
-    $summary_components = $this->getRow($paragraphs_entity);
+    $summary_components = $this->buildRow($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
 
     if ($field_name == 'field_as_benefits') {
@@ -679,7 +679,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($paragraphs)) {
       foreach ($paragraphs as $paragraph) {
         $paragraphs_entity = Paragraph::load($paragraph);
-        $components = $this->getRow($paragraphs_entity);
+        $components = $this->buildRow($paragraphs_entity);
         $summary_containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
         if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
@@ -908,7 +908,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getRow(ParagraphInterface $paragraph) {
+  public function buildRow(ParagraphInterface $paragraph) {
     $row = [];
 
     static $num = 0;
@@ -944,7 +944,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $value = NULL;
       switch ($fieldDefinition->getType()) {
         case 'boolean':
-          $value = !empty($paragraph->{$fieldName}->value)
+          $value = !empty($fieldItemList->value)
             ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
             : '';
           break;
@@ -984,7 +984,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         case 'entity_reference_revisions':
           $viewBuilder = NULL;
           $childrenView = [];
-          foreach ($paragraph->{$fieldName} as $childEntityValue) {
+          foreach ($fieldItemList as $childEntityValue) {
             /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
             $childEntity = $childEntityValue->entity;
             if (empty($viewBuilder)) {
