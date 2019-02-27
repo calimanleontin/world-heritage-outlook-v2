@@ -29,13 +29,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   protected $groups;
 
   /**
-   * Groups with no children.
-   *
-   * @var array
-   */
-  protected $empty_groups;
-
-  /**
    * The parent node.
    *
    * @var \Drupal\Node\NodeInterface
@@ -130,13 +123,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
   /**
    * {@inheritdoc}
    */
-  protected function isHiddenTerm($tid) {
-    return empty(Term::load($tid)->label());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $this->parentNode = \Drupal::routeMatch()->getParameter('node');
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
@@ -146,20 +132,28 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $options = [0 => ''];
     $states = [];
     $current_id = NULL;
-    $this->empty_groups = [];
+    $last_parent_title = '';
+
     foreach ($all_options as $tid => $title) {
-      if ($this->isHiddenTerm($tid)) {
+      // Hidden child term.
+      if ($title == '-') {
         continue;
       }
+
       $options[$tid] = $title;
-      if (strpos($title, '-') === FALSE) {
+      // Children will always start with -
+      if (substr($title, 0, 1) !== '-') {
         $current_id = $tid;
-        $this->groups[$tid] = $title;
-        $this->empty_groups[$tid] = $tid;
+        $last_parent_title = $title;
       }
       else {
+        // Hidden parent term so we ignore the child.
+        if ($last_parent_title == '') {
+          continue;
+        }
+        // At least one child was found for a parent category, we can now list it as an option.
+        $this->groups[$current_id] = $last_parent_title;
         $states[$tid] = $current_id;
-        unset($this->empty_groups[$current_id]);
       }
       $options[$tid] = ltrim($title, '-');
     }
@@ -199,7 +193,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
-      '#empty_groups' => $this->empty_groups,
     );
 
     $element['options_groups']['#prefix'] = '<div>'.
@@ -227,7 +220,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $key => $value) {
-      if (isset($this->groups[$value['target_id']]) && empty($this->empty_groups[$value['target_id']])) {
+      if (isset($this->groups[$value['target_id']])) {
         unset($values[$key]);
       }
     }
