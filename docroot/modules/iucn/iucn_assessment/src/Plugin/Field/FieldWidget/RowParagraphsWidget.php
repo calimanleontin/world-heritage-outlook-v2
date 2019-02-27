@@ -389,11 +389,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $this->lastProcessedParagraph = $widgetState['paragraphs'][$delta]['entity'];
     $element['#paragraph_id'] = $this->lastProcessedParagraph->id();
 
-    $summary_components = $this->buildRow($this->lastProcessedParagraph);
-    $summary_containers = $this->getSummaryContainers($summary_components);
+    $row = $this->buildRow($this->lastProcessedParagraph);
+    if (empty($this->colCount)) {
+      $this->colCount = array_sum(array_column($row, 'span'));;
+    }
+    $summary_containers = $this->getSummaryContainers($row);
 
     $element['top']['summary'] = $summary_containers;
-    $this->colCount = $this->calculateColumnCount($summary_components) + 1;
 
     // Check if we need to show the diff for a paragraph.
     // We should show the diff if the paragraph id appears in the diff array
@@ -505,23 +507,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Calculate the column count for a row.
-   *
-   * @param array $components
-   *
-   * @return int
-   */
-  public function calculateColumnCount(array $components) {
-    $count = 0;
-    foreach ($components as $key => $component) {
-      if (!empty($component['span'])) {
-        $count += $component['span'];
-      }
-    }
-    return $count;
-  }
-
-  /**
    * Build the table header.
    *
    * @param $elements
@@ -529,7 +514,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   public function buildHeader() {
     // Use the last rendered paragraph to build the header based on it's fields.
     if (!empty($this->lastProcessedParagraph)) {
-      $header_components = $this->getHeaderComponents($this->lastProcessedParagraph);
+      $header_components = $this->getHeaderRow($this->lastProcessedParagraph);
       $header_components += ['actions' => $this->t('Actions')];
       $header_containers = $this->getSummaryContainers($header_components);
       foreach ($header_containers as &$container) {
@@ -640,8 +625,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($paragraphs)) {
       foreach ($paragraphs as $paragraph) {
         $paragraphs_entity = Paragraph::load($paragraph);
-        $components = $this->buildRow($paragraphs_entity);
-        $summary_containers = $this->getSummaryContainers($components);
+        $row = $this->buildRow($paragraphs_entity);
+        $summary_containers = $this->getSummaryContainers($row);
         $elements[$paragraph] = [
           '#type' => 'container',
           'top' => ['summmary' => $summary_containers],
@@ -697,7 +682,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    *   The components.
    */
-  public function getHeaderComponents(ParagraphInterface $paragraph) {
+  public function getHeaderRow(ParagraphInterface $paragraph) {
     $header = [];
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
