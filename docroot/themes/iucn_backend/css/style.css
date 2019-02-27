@@ -1138,7 +1138,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
   column-span: 1;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions {
   flex-wrap: wrap;
   grid-column: -2 / span 1 !important;
   justify-self: normal !important;
@@ -1146,12 +1146,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   margin-top: -5px;
   position: relative;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions input[type="submit"]:first-child,
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions > .button {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions input[type="submit"]:first-child,
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions > .button {
   margin-left: 5px;
   margin-top: 5px;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions .ajax-progress {
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions .ajax-progress {
   position: absolute;
   z-index: 99999999;
   display: block;
@@ -1165,11 +1165,11 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions {
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions {
   margin-left: 0;
   margin-top: 0;
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions .inner {
   justify-content: center;
   right: 0;
 }
@@ -1267,7 +1267,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .diff-modal .paragraph-diff-row {
   background-color: #fcfcfa !important;
 }
-.diff-modal .paragraph-diff-row .paragraphs-actions {
+.diff-modal .paragraph-diff-row .paragraph-summary-component-actions {
   background-color: #fcfcfa !important;
 }
 .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
@@ -1280,7 +1280,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .js .field--widget-row-entity-reference-paragraphs {
   position: relative;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraph-summary-component-actions {
   align-items: flex-start;
   background: #fcfcfa;
   border-left: 1px solid #dddddd;
@@ -1297,7 +1297,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   top: auto;
   z-index: 1;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
   border-top-color: #bfbfba;
   justify-content: center;
   right: 0;
@@ -1345,13 +1345,13 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-deleted-row {
   background-color: #ffaaaa !important;
 }
-.paragraph-deleted-row .paragraphs-actions {
+.paragraph-deleted-row .paragraph-summary-component-actions {
   background-color: #ffaaaa !important;
 }
 .paragraph-new-row {
   background-color: #77f177 !important;
 }
-.paragraph-new-row .paragraphs-actions {
+.paragraph-new-row .paragraph-summary-component-actions {
   background-color: #77f177 !important;
 }
 .paragraph-author {
@@ -1367,7 +1367,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-diff-row {
   background-color: #fcf8e3 !important;
 }
-.paragraph-diff-row .paragraphs-actions {
+.paragraph-diff-row .paragraph-summary-component-actions {
   background-color: #fcf8e3 !important;
 }
 #drupal-modal {
@@ -1716,7 +1716,7 @@ table.diff-context-wrapper {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
   background-color: #ececec;
 }
 .views-field-operations .dropbutton a {

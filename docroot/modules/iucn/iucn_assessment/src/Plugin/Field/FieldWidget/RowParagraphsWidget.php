@@ -531,7 +531,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($this->lastProcessedParagraph)) {
       $header_components = $this->getHeaderComponents($this->lastProcessedParagraph);
       $header_components += ['actions' => $this->t('Actions')];
-      $header_containers = $this->getHeaderContainers($header_components);
+      $header_containers = $this->getSummaryContainers($header_components);
+      foreach ($header_containers as &$container) {
+        $container['#attributes']['title'] = $container['data'];
+      }
       $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
       $header_containers['actions']['#suffix'] = '</div>';
       return [
@@ -752,23 +755,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Creates the markup for header components.
-   *
-   * @param array $components
-   *   The header components.
-   *
-   * @return array
-   *   The header markup.
-   */
-  public function getHeaderContainers(array $components) {
-    $containers = $this->getSummaryContainers($components);
-    foreach ($containers as &$container) {
-      $container['#attributes']['title'] = $container['data'];
-    }
-    return $containers;
-  }
-
-  /**
    * Creates the markup for the summary components.
    *
    * @param array $components
@@ -781,25 +767,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $containers = [];
     foreach ($components as $key => $component) {
       $span = !empty($component['span']) ? $component['span'] : 1;
-      if (is_array($component['value'])) {
-        foreach ($component['value'] as $idx => $value) {
-          if (empty($value)) {
-            unset($component['value'][$idx]);
-          }
-        }
-        if (!empty($component['value'][0]) && is_array($component['value'][0]) && (!empty($component['value'][0]['label']))) {
-          $data = $component['value'][0];
-        }
-        else {
-          $data = !empty($component['value']) ? implode("\n", $component['value']) : '';
-        }
-      }
-      else {
-        $data = $component['value'];
-      }
-      if (!is_array($data)) {
-        $data = ['#markup' => $data];
-      }
       $containers[$key] = [
         '#type' => 'container',
         '#attributes' => [
@@ -809,13 +776,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             "paragraph-summary-component-span-$span",
           ],
         ],
-        'data' => $data,
+        'data' => [
+          '#markup' => is_array($component['value']) ? implode("\n", $component['value']) : $component['value'],
+        ],
       ];
       if (!empty($component['class'])) {
         $containers[$key]['#attributes']['class'][] = $component['class'];
-      }
-      if ($key === 'actions') {
-        $containers[$key]['#attributes']['class'] = 'paragraphs-actions';
       }
     }
 
