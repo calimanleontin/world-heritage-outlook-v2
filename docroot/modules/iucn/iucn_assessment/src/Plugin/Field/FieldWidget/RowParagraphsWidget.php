@@ -2,7 +2,6 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Entity\Entity;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -73,6 +72,25 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   protected $diff;
 
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->routeMatch = $routeMatch;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -93,24 +111,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     ];
   }
 
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->routeMatch = $routeMatch;
-    $this->entityTypeManager = $entityTypeManager;
-    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
-  }
-
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('current_route_match'),
-      $container->get('entity_type.manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -155,7 +155,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ];
         break;
     }
-
     return isset($options) ? $options : NULL;
   }
 
@@ -188,17 +187,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   public function isParagraphWithDiff($paragraph_id, $rendered_fields) {
-    if (!empty($this->diff)) {
-      foreach ($this->diff as $vid => $diff) {
-        if (empty($diff['paragraph'])) {
-          continue;
-        }
-        if (in_array($paragraph_id, array_keys($diff['paragraph']))) {
-          foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
-            if (in_array($diff_field, $rendered_fields)) {
-              return TRUE;
-            }
-          }
+    if (empty($this->diff)) {
+      return FALSE;
+    }
+    foreach ($this->diff as $vid => $diff) {
+      if (empty($diff['paragraph']) || !in_array($paragraph_id, array_keys($diff['paragraph']))) {
+        continue;
+      }
+      foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
+        if (in_array($diff_field, $rendered_fields)) {
+          return TRUE;
         }
       }
     }
@@ -393,52 +391,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
     $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
 
-    $summary_components = $this->getRow($paragraphs_entity);
+    $summary_components = $this->buildRow($paragraphs_entity);
     $summary_containers = $this->getSummaryContainers($summary_components);
 
-    if ($field_name == 'field_as_benefits') {
-      $subcategories = ['field_as_benefits_subcategories' => $summary_containers['field_as_benefits_category']];
-      $this->insertElementAfter($summary_containers, 'field_as_benefits_category', $subcategories);
-
-      $subcategories = $paragraphs_entity->field_as_benefits_category->getValue();
-      $names = [];
-      foreach ($subcategories as $term) {
-        $storage = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term');
-        $parents = $storage->loadParents($term['target_id']);
-        foreach ($parents as $parent) {
-          $names[$parent->getName()] = $parent->getName();
-        }
-      }
-      $summary_containers['field_as_benefits_category']['data']['#markup'] = implode(', ', $names);
-    }
-    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-      $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
-      $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
-
-      $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
-      $names = [];
-      foreach ($subcategories as $term) {
-        $storage = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term');
-        $parents = $storage->loadParents($term['target_id']);
-        foreach ($parents as $parent) {
-          $names[$parent->getName()] = $parent->getName();
-        }
-      }
-      $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
-    }
     $element['top']['summary'] = $summary_containers;
-    $count = $this->calculateColumnCount($summary_components) + 1;
-    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-      $count += 2;
-    }
-    if (($field_name == 'field_as_benefits')) {
-      $count += 2;
-    }
-    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
-    $this->colCount = $count;
-
+    $this->colCount = $this->calculateColumnCount($summary_components) + 1;
+    $element['top']['#attributes']['class'][] = "paragraph-top-col-{$this->colCount}";
 
     // Check if we need to show the diff for a paragraph.
     // We should show the diff if the paragraph id appears in the diff array
@@ -680,7 +638,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($paragraphs)) {
       foreach ($paragraphs as $paragraph) {
         $paragraphs_entity = Paragraph::load($paragraph);
-        $components = $this->getRow($paragraphs_entity);
+        $components = $this->buildRow($paragraphs_entity);
         $summary_containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
         if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
@@ -907,9 +865,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getRow(ParagraphInterface $paragraph) {
+  public function buildRow(ParagraphInterface $paragraph) {
     $row = [];
 
     static $num = 0;
@@ -930,10 +890,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
       /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
       $fieldItemList = $paragraph->get($fieldName);
-      $value = NULL;
-
       $fieldColumn = $this->getFieldColumn($fieldName);
-
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
       }
@@ -941,11 +898,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $row[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
       }
 
+      if (empty($fieldItemList->getValue())) {
+        continue;
+      }
+
+      $value = NULL;
       switch ($fieldDefinition->getType()) {
         case 'boolean':
-          $value = !empty($paragraph->{$fieldName}->value)
-            ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
-            : '';
+          $value = $this->renderBooleanField($fieldItemList);
           break;
 
         case 'text_with_summary':
@@ -953,80 +913,55 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         case 'text_long':
         case 'string':
         case 'string_long':
-          $excludedTextFields = [
-            'parent_id',
-            'parent_type',
-            'parent_field_name',
-          ];
-          if (in_array($fieldName, $excludedTextFields)) {
-            break;
-          }
-          $value = trim($fieldItemList->value);
-          if (strlen($value) > 600 && !in_array($fieldName, ['field_as_values_curr_text', 'field_as_description'])) {
-            $value = Unicode::truncate($text, 600) . '...';
-          }
+          $value = $this->renderStringField($fieldItemList, !in_array($fieldName, ['field_as_values_curr_text', 'field_as_description']));
           break;
 
         case 'link':
-          if (empty($fieldItemList->first())) {
-            break;
-          }
-          if (!empty($fieldItemList->title)) {
-            $value = $fieldItemList->title;
-            break;
-          }
-          // If title is not set, fallback to the uri.
-          $value = $fieldItemList->uri;
+          $value = $this->renderLinkField($fieldItemList);
           break;
 
         case 'entity_reference':
         case 'entity_reference_revisions':
-          $viewBuilder = NULL;
-          $childrenView = [];
-          foreach ($paragraph->{$fieldName} as $childEntityValue) {
-            /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
-            $childEntity = $childEntityValue->entity;
-            if (empty($viewBuilder)) {
-              $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
-            }
-            $cssClass = _iucn_assessment_level_class($childEntity->id());
+          $value = $this->renderEntityReferenceField($fieldItemList);
+
+          foreach ($fieldItemList as $childEntityValue) {
+            $cssClass = _iucn_assessment_level_class($childEntityValue->target_id);
             if (!empty($cssClass)) {
               $row[$fieldColumn]['class'] = $cssClass;
             }
+          }
 
-            switch ($fieldName) {
-              case 'field_as_benefits_hab_trend':
-              case 'field_as_benefits_pollut_trend':
-              case 'field_as_benefits_oex_trend':
-              case 'field_as_benefits_climate_trend':
-              case 'field_as_benefits_invassp_trend':
-                /** @var \Drupal\taxonomy\TermInterface $childEntity */
-                $name = $childEntity->getName();
-                $childEntity->setName("{$name} {$this->t('trend')}");
-                break;
-              case 'field_as_benefits_hab_level':
-              case 'field_as_benefits_pollut_level':
-              case 'field_as_benefits_oex_level':
-              case 'field_as_benefits_climate_level':
-                /** @var \Drupal\taxonomy\TermInterface $childEntity */
-                $name = $childEntity->getName();
-                $childEntity->setName("{$name} {$this->t('level')}");
-                break;
+          $fieldsWithParents = [
+            'field_as_benefits_category',
+            'field_as_threats_categories',
+          ];
+          if (in_array($fieldName, $fieldsWithParents)) {
+            // For these fields we insert an extra column for term parents because
+            // categories have sub-categories.
+            $insertedParents = [];
+            for ($i = 0; $i < $fieldItemList->count(); $i++) {
+              /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $childEntityValue */
+              $childEntityValue = $fieldItemList->get($i);
+              /** @var \Drupal\taxonomy\TermStorageInterface $termStorage */
+              $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
+              $parents = $termStorage->loadParents($childEntityValue->target_id);
+              if (!empty($parents) && !in_array(key($parents), $insertedParents )) {
+                $insertedParents [] = key($parents);
+                $childEntityValue->setValue(key($parents));
+              }
+              else {
+                $fieldItemList->removeItem($i);
+                $i--;
+              }
             }
-
-            $childView = $viewBuilder->view($childEntity, 'teaser');
-            $childrenView[] = render($childView);
-          }
-          if (count($childrenView) <= 1) {
-            $value = reset($childrenView);
-          }
-          else {
-            $list = [
-              '#theme' => 'item_list',
-              '#list_type' => 'ul',
-              '#items' => $childrenView,
+            $childrenCell = [
+              'child_category' => [
+                'value' => [$value],
+                'span' => $this->getFieldSpan($fieldDefinition),
+              ],
             ];
-            $value = render($list);
+            $row = $row + $childrenCell;
+            $value = $this->renderEntityReferenceField($fieldItemList);
           }
           break;
 
@@ -1047,12 +982,57 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       if (empty($row[$fieldColumn]['value'][$fieldGroup])) {
-        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<b>%s: </b>", $fieldGroup);
+        $row[$fieldColumn]['value'][$fieldGroup] = sprintf("<div class='group-label'>%s: </div>", $fieldGroup);
       }
       $row[$fieldColumn]['value'][$fieldGroup] .= $value;
     }
 
     return $row;
+  }
+
+  protected function renderBooleanField(FieldItemListInterface $fieldItemList) {
+    return !empty($fieldItemList->value)
+      ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
+      : '';
+  }
+
+  protected function renderStringField(FieldItemListInterface $fieldItemList, $truncate = FALSE) {
+    $value = trim($fieldItemList->value);
+    if ($truncate === TRUE && strlen($value) > 600) {
+      $value = Unicode::truncate($text, 600) . '...';
+    }
+    return $value;
+  }
+
+  protected function renderLinkField(FieldItemListInterface $fieldItemList) {
+    if (empty($fieldItemList->first())) {
+      return NULL;
+    }
+    if (!empty($fieldItemList->title)) {
+      return $fieldItemList->title;
+    }
+    // If title is not set, fallback to the uri.
+    return $fieldItemList->uri;
+  }
+
+  protected function renderEntityReferenceField(FieldItemListInterface $fieldItemList) {
+    $viewBuilder = NULL;
+    $childrenView = [];
+    foreach ($fieldItemList as $childEntityValue) {
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
+      $childEntity = $childEntityValue->entity;
+      if (empty($viewBuilder)) {
+        $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
+      }
+      $childView = $viewBuilder->view($childEntity, 'teaser');
+      $childrenView[] = render($childView);
+    }
+    $list = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#items' => $childrenView,
+    ];
+    return render($list);
   }
 
   /**
