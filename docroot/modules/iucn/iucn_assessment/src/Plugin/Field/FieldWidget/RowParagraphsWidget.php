@@ -531,7 +531,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $elements = parent::formMultipleElements($items, $form, $form_state);
     $field_settings_json = $this->parentNode->field_settings->value;
     $field_settings = json_decode($field_settings_json, TRUE);
-    $diff = !empty($field_settings['diff']) ? $field_settings['diff'] : NULL;
 
     $this->buildHeader($elements);
 
