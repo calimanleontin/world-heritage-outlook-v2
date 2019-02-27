@@ -486,16 +486,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (!empty($this->paragraphsEntity)) {
       $header_components = $this->getHeaderComponents($this->paragraphsEntity);
       $header_components += ['actions' => $this->t('Actions')];
-      if (!empty($header_components['field_as_threats_categories'])) {
-        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_threats_categories']];
-        $subcategories['field_as_threats_subcategories']['value'] = 'Threat subcategory';
-        $this->insertElementAfter($header_components, 'field_as_threats_categories', $subcategories);
-      }
-      if (!empty($header_components['field_as_benefits_category'])) {
-        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_benefits_category']];
-        $this->insertElementAfter($header_components, 'field_as_benefits_category', $subcategories);
-        $header_components['field_as_benefits_category']['value'] = 'Benefit type';
-      }
       $header_containers = $this->getHeaderContainers($header_components);
       $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
       $header_containers['actions']['#suffix'] = '</div>';
@@ -641,24 +631,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $components = $this->buildRow($paragraphs_entity);
         $summary_containers = $this->getSummaryContainers($components);
         $column_count = $this->calculateColumnCount($components) + 1;
-        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-          $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
-          $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
-          $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
-          $names = [];
-          foreach ($subcategories as $term) {
-            $storage = \Drupal::service('entity_type.manager')
-              ->getStorage('taxonomy_term');
-            $parents = $storage->loadParents($term['target_id']);
-            foreach ($parents as $parent) {
-              $names[$parent->getName()] = $parent->getName();
-            }
-          }
-          $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
-        }
-        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-          $column_count += 2;
-        }
         $elements[$paragraph] = [
           '#type' => 'container',
           'top' => ['summmary' => $summary_containers],
@@ -724,19 +696,24 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph);
-    foreach (array_keys($components) as $fieldName) {
+    $columns = $this->buildRow($paragraph);
+    foreach (array_keys($columns) as $fieldName) {
       $fieldColumn = $this->getFieldColumn($fieldName);
       $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
-      if (!($fieldDefinition instanceof FieldConfigInterface)
-        || $paragraph->get($fieldName)->access('view') == FALSE
-        || !empty($header[$fieldColumn])) {
-        // We do not add content to the summary from base fields, skip them
-        // keeps performance while building the paragraph summary.
-        continue;
-      }
 
       switch ($fieldColumn) {
+        case 'field_as_benefits_category':
+          $label = $this->t('Benefit type');
+          break;
+
+        case 'field_as_benefits_category_child_category':
+          $label = $this->t('Specific benefits');
+          break;
+
+        case 'field_as_threats_categories_child_category':
+          $label = $this->t('Subcategories');
+          break;
+
         case 'field_as_threats_values_wh':
         case 'field_as_threats_values_bio':
           $label = $this->t('WH values');
@@ -955,7 +932,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
               }
             }
             $childrenCell = [
-              'child_category' => [
+              "{$fieldName}_child_category" => [
                 'value' => [$value],
                 'span' => $this->getFieldSpan($fieldDefinition),
               ],
@@ -1114,7 +1091,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return NULL;
   }
 
-  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition) {
+  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition = NULL) {
+    if (empty($fieldDefinition)) {
+      return 2;
+    }
     $fieldName = $fieldDefinition->getName();
     if ($fieldDefinition->getType() == 'boolean'
       || $fieldName == 'field_as_protection_rating'
