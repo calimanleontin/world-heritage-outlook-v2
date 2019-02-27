@@ -29,6 +29,7 @@
     // overflow-x: scroll;
   }
   .paragraph-summary-component {
+    position: relative;
     font-size: .9em;
     grid-row: 1 / span 1;
     padding: 5px;
@@ -102,38 +103,52 @@
         grid-template-columns: repeat(@i - 1, minmax(6.5rem, 1fr)) 150px;
       }
     }
-
     .paragraph-columns(@i - 1);
-
   }
-
   .paragraph-columns(39);
 
-  .paragraph-summary-component-field {
-    column-span: 1;
-  }
-  .paragraph-summary-component-actions {
-    flex-wrap: wrap;
-    grid-column: -2 / span 1 !important;
-    justify-self: normal !important;
-    margin-left: -5px;
-    margin-top: -5px;
+  .paragraphs-icon-button {
+    padding: 0;
+    min-width: 36px;
+    width: 36px !important;
+    height: 36px;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: 24px 24px;
+    border-radius: 4px;
+    text-indent: -9999em;
+    margin: 0 5px 0 0;
     position: relative;
 
-    input[type="submit"]:first-child,
-    > .button {
-      margin-left: 5px;
-      margin-top: 5px;
+    &.paragraphs-icon-button-edit {
+      background-image: url("../images/icon-edit.svg");
     }
-
-    .ajax-progress {
-      position: absolute;
-      z-index: 99999999;
-      display: block;
-      top: calc(50% - 10px);
-      left: calc(50% - 10px);
+    &.paragraphs-icon-button-delete {
+      background-image: url("../images/icon-delete.svg") !important;
+    }
+    &.paragraphs-icon-button-compare {
+      background-image: url(../images/compare.svg);
+    }
+    &.paragraphs-icon-button-revert {
+      background-image: url("../images/icon-revert.svg") !important;
+    }
+    &.paragraphs-icon-button-accept {
+      background-image: url("../images/icon-accept.svg") !important;
     }
   }
+
+  .ajax-progress {
+    position: absolute;
+    z-index: 99999999;
+    display: block;
+    top: 14px;
+    left: calc(50% - 10px);
+  }
+
+  .paragraphs-add-more-button {
+    margin: .75em 0 0 .75em!important;
+  }
+
   .paragraph-header {
     font-weight: bold;
     .paragraph-summary-component {

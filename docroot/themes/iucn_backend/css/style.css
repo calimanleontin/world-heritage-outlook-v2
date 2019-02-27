@@ -182,47 +182,6 @@
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button.field-diff-button {
   margin-right: 12px !important;
 }
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (max-width: 768px) {
-  .button.paragraphs-icon-button.paragraphs-icon-button-compare {
-    background-image: url(../images/compare.svg);
-  }
-}
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-  background-image: url(../images/compare.svg);
-}
-.button.paragraphs-icon-button {
-  padding: 0;
-  min-width: 36px;
-  width: 36px !important;
-  height: 36px;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: 24px 24px;
-  border-radius: 4px;
-  text-indent: -9999em;
-}
-.button.paragraphs-icon-button-edit,
-.button.paragraphs-icon-button-edit:active,
-.button.paragraphs-icon-button-edit:hover,
-.button.paragraphs-icon-button-edit:focus {
-  background-image: url("../images/icon-edit.svg");
-}
-.paragraphs-icon-button-delete {
-  background-image: url("../images/icon-delete.svg") !important;
-}
-.paragraphs-icon-button-revert {
-  background-image: url("../images/icon-revert.svg") !important;
-}
-.paragraphs-icon-button-accept {
-  background-image: url("../images/icon-accept.svg") !important;
-}
-.paragraphs-add-more-button {
-  margin: .75em 0 0 .75em!important;
-}
 .node-site-assessment-edit-form .current-state,
 .node-site-assessment-state-change-form .current-state {
   margin: 10px 0;
@@ -767,6 +726,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   background-color: #fcfcfa;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
+  position: relative;
   font-size: .9em;
   grid-row: 1 / span 1;
   padding: 5px;
@@ -1135,28 +1095,43 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
     grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
   }
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
-  column-span: 1;
-}
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions {
-  flex-wrap: wrap;
-  grid-column: -2 / span 1 !important;
-  justify-self: normal !important;
-  margin-left: -5px;
-  margin-top: -5px;
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button {
+  padding: 0;
+  min-width: 36px;
+  width: 36px !important;
+  height: 36px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px;
+  border-radius: 4px;
+  text-indent: -9999em;
+  margin: 0 5px 0 0;
   position: relative;
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions input[type="submit"]:first-child,
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions > .button {
-  margin-left: 5px;
-  margin-top: 5px;
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-edit {
+  background-image: url("../images/icon-edit.svg");
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-actions .ajax-progress {
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-delete {
+  background-image: url("../images/icon-delete.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare {
+  background-image: url(../images/compare.svg);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-revert {
+  background-image: url("../images/icon-revert.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-accept {
+  background-image: url("../images/icon-accept.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .ajax-progress {
   position: absolute;
   z-index: 99999999;
   display: block;
-  top: calc(40%);
+  top: 14px;
   left: calc(40%);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-add-more-button {
+  margin: .75em 0 0 .75em!important;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-header {
   font-weight: bold;

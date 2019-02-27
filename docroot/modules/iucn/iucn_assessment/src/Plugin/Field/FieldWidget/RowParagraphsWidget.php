@@ -211,6 +211,30 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return FALSE;
   }
 
+  /**
+   * Check if a paragraph is new compared to previous revisions of a certain
+   * state.
+   *
+   * @param NodeInterface $node
+   * @param $fieldName
+   * @param $paragraph_id
+   *
+   * @return bool
+   */
+  public function isNewParagraph(NodeInterface $node, $state, $fieldName, $paragraph_id) {
+    // @todo maybe paragraphHasDifferences() can help us here?
+    /** @var AssessmentWorkflow $assessment_workflow */
+    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+    $revision = $assessment_workflow->getRevisionByState($node, $state);
+    if (empty($revision)) {
+      return FALSE;
+    }
+    return !in_array($paragraph_id, array_column($revision->get($fieldName)
+        ->getValue(), 'target_id'))
+      && in_array($paragraph_id, array_column($node->get($fieldName)
+        ->getValue(), 'target_id'));
+  }
+
   public function buildAddMoreAjaxButton(&$elements, $field_name) {
     $add_more_button = array_keys($elements['add_more'])[0];
     $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
@@ -364,6 +388,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
       $element['top']['#attributes']['class'][] = "paragraph-top-col-{$this->colCount}";
       foreach (Element::children($element['top']) as $topKey) {
+        if ($topKey == 'actions') {
+          continue;
+        }
         $element['top'][$topKey] = $this->buildCellsContainers($element['top'][$topKey]);
       }
     }
@@ -371,6 +398,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return $elements;
   }
 
+  /**
+   * Includes each cell content in a container render element which has all
+   * need attributes for the CSS grid table display.
+   *
+   * @param $elements
+   *
+   * @return array
+   */
   protected function buildCellsContainers($elements) {
     foreach ($elements as $field => $component) {
       if ($field[0] === '#') {
@@ -406,44 +441,15 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Check if a paragraph is new compared to previous revisions of a certain
-   * state.
+   * Returns the render array for the top row.
    *
-   * @param NodeInterface $node
-   * @param $fieldName
-   * @param $paragraph_id
-   *
-   * @return bool
-   */
-  public function isNewParagraph(NodeInterface $node, $state, $fieldName, $paragraph_id) {
-    /** @var AssessmentWorkflow $assessment_workflow */
-    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $revision = $assessment_workflow->getRevisionByState($node, $state);
-    if (empty($revision)) {
-      return FALSE;
-    }
-    return !in_array($paragraph_id, array_column($revision->get($fieldName)
-        ->getValue(), 'target_id'))
-      && in_array($paragraph_id, array_column($node->get($fieldName)
-        ->getValue(), 'target_id'));
-  }
-
-  /**
-   * Build the table header.
-   *
-   * @param $elements
+   * @return array
    */
   public function buildHeaderRow() {
     // Use the last rendered paragraph to build the header based on it's fields.
     if (!empty($this->lastProcessedParagraph)) {
       $row = $this->getHeaderRow($this->lastProcessedParagraph);
       $row += ['actions' => $this->t('Actions')];
-//      $header_containers = $this->getSummaryContainers($row);
-//      foreach ($header_containers as &$container) {
-//        $container['#attributes']['title'] = $container['data'];
-//      }
-//      $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
-//      $header_containers['actions']['#suffix'] = '</div>';
       return [
         '#weight' => -100,
         '#delta' => -100,
@@ -913,6 +919,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $actions = [
       '#type' => 'container',
       '#weight' => 100,
+      '#attributes' => [
+        'class' => [
+          'paragraph-summary-component',
+          "paragraph-summary-component-actions",
+          "paragraph-summary-component-span-1",
+        ]
+      ],
       'edit' => [
         '#type' => 'link',
         '#title' => $this->t('Edit'),
