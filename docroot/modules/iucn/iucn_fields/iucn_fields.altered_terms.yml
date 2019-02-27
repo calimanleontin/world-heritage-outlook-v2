@@ -5,6 +5,8 @@
 
 # If a term is no longer available, set it's label to <hidden>
 
+# Note: if you want to hide a parent term, list all of its children as well.
+
 2023:
 #  1384: '<hidden>'
 2020:
