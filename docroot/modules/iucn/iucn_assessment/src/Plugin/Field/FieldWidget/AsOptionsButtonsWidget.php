@@ -5,7 +5,6 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'assessment_options_buttons' widget.
@@ -59,6 +58,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       '#title' => $this->t('Checkboxes label'),
       '#default_value' => $this->getSetting('checkboxes_label'),
     ];
+
     return $elements;
   }
 
@@ -79,6 +79,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     if (!empty($select_label)) {
       $summary[] = $this->t('Select label: @select_label', ['@select_label' => $select_label]);
     }
+
     return $summary;
   }
 
@@ -98,11 +99,11 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         $value = $states[$item["#return_value"]];
       }
       $id = explode('--', $element['options_groups']['#id']);
-      $element[$key]['#states'] = array(
-        'visible' => array(
-          ':input[data-drupal-selector="' . $id[0] . '"]' => array('value' => $value),
-        ),
-      );
+      $element[$key]['#states'] = [
+        'visible' => [
+          ':input[data-drupal-selector="' . $id[0] . '"]' => ['value' => $value],
+        ],
+      ];
     }
 
     $parents = $element['#field_parents'];
@@ -110,6 +111,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     $field_state['array_parents'] = $element['#array_parents'];
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
+
     return $element;
   }
 
@@ -176,7 +178,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       $default_value = reset($selected);
     }
     $element['#title'] = '';
-    $element['options_groups'] = array(
+    $element['options_groups'] = [
       '#type' => 'select',
       '#options' => $this->groups,
       '#default_value' => $default_value,
@@ -185,25 +187,26 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
-    );
+    ];
 
-    $element['options_groups']['#prefix'] = '<div>'.
+    $element['options_groups']['#prefix'] = '<div>' .
       '<div class="label">' . $this->getSetting('select_label') . '</div>' .
       '<div class="form-data">';
-    $element['options_groups']['#suffix'] = '</div>'.
-      '</div>'.
-      '<div>'.
-      '<div class="label as-checkboxes-label">' . $this->getSetting('checkboxes_label') . '</div>'.
+    $element['options_groups']['#suffix'] = '</div>' .
+      '</div>' .
+      '<div>' .
+      '<div class="label as-checkboxes-label">' . $this->getSetting('checkboxes_label') . '</div>' .
       '<div class="form-data">';
-    $element['checkboxes_group_close'] = array(
+    $element['checkboxes_group_close'] = [
       '#weight' => 99,
       '#markup' => '</div></div>',
-    );
+    ];
     $this->states = $states;
 
     $element['#prefix'] = '<div class="as-checkboxes">';
     $element['#suffix'] = '</div>';
     $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.option_buttons';
+
     return $element;
   }
 
@@ -216,6 +219,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         unset($values[$key]);
       }
     }
+
     return $values;
   }
 
