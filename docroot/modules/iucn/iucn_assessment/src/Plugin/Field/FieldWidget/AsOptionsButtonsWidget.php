@@ -2,9 +2,13 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'assessment_options_buttons' widget.
@@ -18,7 +22,26 @@ use Drupal\Core\Form\FormStateInterface;
  *   multiple_values = TRUE
  * )
  */
-class AsOptionsButtonsWidget extends OptionsWidgetBase {
+class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFactoryPluginInterface {
+
+  /** @var \Drupal\taxonomy\TermStorageInterface */
+  protected $termStorage;
+
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * The main terms.
@@ -135,8 +158,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       }
 
       $options[$tid] = $title;
-      // Children will always start with -
-      if (substr($title, 0, 1) !== '-') {
+      if ($this->isParentTerm($tid)) {
         $current_id = $tid;
         $last_parent_title = $title;
       }
@@ -230,6 +252,14 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     if (!$this->required && !$this->multiple) {
       return t('N/A');
     }
+  }
+
+  /**
+   * @param $tid
+   * @return bool
+   */
+  protected function isParentTerm($tid) {
+    return empty($this->termStorage->loadParents($tid));
   }
 
 }
