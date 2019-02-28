@@ -898,29 +898,32 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           "paragraph-summary-component-span-1",
         ]
       ],
+    ];
+    $buttons = [
+      '#type' => 'container',
+      '#access' => $paragraph->access('update'),
       'edit' => [
         '#type' => 'link',
         '#title' => $this->t('Edit'),
         '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', $routeAttributes),
-        '#access' => $paragraph->access('update'),
       ],
       'delete' => [
         '#type' => 'link',
         '#title' => $this->t('Delete'),
         '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', $routeAttributes),
-        '#access' => $paragraph->access('update') && $this->getSetting('only_editable') == FALSE,
+        '#access' => $this->getSetting('only_editable') == FALSE,
       ],
       'compare' => [
         '#type' => 'link',
         '#title' => $this->t('See differences'),
         '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', $routeAttributes),
-        '#access' => $paragraph->access('update') && $this->paragraphHasDifferences($paragraph),
+        '#access' =>$this->paragraphHasDifferences($paragraph),
       ],
       'revert' => [
         '#type' => 'link',
         '#title' => $this->t('Revert'),
         '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', $routeAttributes),
-        '#access' => $paragraph->access('update') && $this->paragraphIsDeleted($paragraph),
+        '#access' => $this->paragraphIsDeleted($paragraph),
       ],
 //      'accept' => [
 //        '#type' => 'link',
@@ -930,16 +933,15 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 //        '#access' => $paragraph->access('update') && todo,
 //      ],
     ];
-
     if ($this->paragraphIsDeleted($paragraph)) {
-      unset($actions['edit']);
-      unset($actions['delete']);
-      unset($actions['compare']);
+      unset($buttons['edit']);
+      unset($buttons['delete']);
+      unset($buttons['compare']);
     }
 
-    foreach (Element::children($actions) as $buttonKey) {
+    foreach (Element::children($buttons) as $buttonKey) {
       $cssIdentifier = Html::cleanCssIdentifier($buttonKey);
-      $actions[$buttonKey]['#attributes'] = [
+      $buttons[$buttonKey]['#attributes'] = [
         'class' => [
           'use-ajax',
           'button',
@@ -947,9 +949,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           "paragraphs-icon-button-{$cssIdentifier}",
         ],
         'data-dialog-type' => 'modal',
-        'title' => $actions[$buttonKey]['#title'],
+        'title' => $buttons[$buttonKey]['#title'],
       ];
     }
+    $actions['buttons'] = $buttons;
     return $actions;
   }
 
