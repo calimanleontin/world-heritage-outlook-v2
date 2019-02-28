@@ -917,7 +917,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         '#type' => 'link',
         '#title' => $this->t('See differences'),
         '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', $routeAttributes),
-        '#access' =>$this->paragraphHasDifferences($paragraph),
+        '#access' => $this->paragraphHasDifferences($paragraph),
       ],
       'revert' => [
         '#type' => 'link',
