@@ -69,4 +69,15 @@ class IucnModalController extends ControllerBase {
     return $response;
   }
 
+  /**
+   * Create a modal dialog to delete a single paragraph.
+   */
+  public function revertParagraph($node, $node_revision, $field, $field_wrapper_id, $paragraph_revision) {
+    $response = new AjaxResponse();
+    $form = $this->entityFormBuilder()->getForm($paragraph_revision, 'iucn_modal_paragraph_revert', []);
+    $paragraph_title = $this->getParagraphTitle($field);
+    $response->addCommand(new OpenModalDialogCommand($this->t('Revert @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%']));
+    return $response;
+  }
+
 }
