@@ -9,10 +9,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -114,6 +112,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       'features' => [],
       'empty_message' => '',
       'only_editable' => FALSE,
+      'add_more_text' => t('Add more'),
     ];
   }
 
@@ -137,6 +136,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       '#title' => $this->t('Empty message'),
       '#description' => $this->t('Show a message when there are no paragraphs.'),
       '#default_value' => $this->getSetting('empty_message'),
+    ];
+    $elements['add_more_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add more text'),
+      '#description' => $this->t('The title of the add more button'),
+      '#default_value' => $this->getSetting('add_more_text'),
     ];
     $elements['only_editable'] = [
       '#type' => 'checkbox',
@@ -183,6 +188,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     return $summary;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  protected function getDefaultParagraphTypeMachineName() {
+    $default_type = $this->getSetting('default_paragraph_type');
+    $allowed_types = $this->getAllowedTypes();
+    if ($default_type && isset($allowed_types[$default_type])) {
+      return $default_type;
+    }
+    return !empty($allowed_types) ? key($allowed_types) : NULL;
   }
 
   /**
@@ -258,37 +275,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return $deleted;
   }
 
-  public function buildAddMoreAjaxButton(&$elements, $field_name) {
-    $add_more_button = array_keys($elements['add_more'])[0];
-    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
-      ->getSetting('handler_settings')['target_bundles'];
-    $bundle = reset($target_paragraph);
-    if (!empty($this->parentNode->id())) {
-      $tab = \Drupal::request()->query->get('tab');
-      $title = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
-      $elements['add_more'][$add_more_button] = [
-        '#type' => 'link',
-        '#title' => $title,
-        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-          'bundle' => $bundle,
-        ]),
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
-            'button',
-            'paragraphs-add-more-button',
-          ],
-          'data-dialog-type' => 'modal',
-          'title' => $title,
-        ],
-      ];
-    }
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -361,21 +347,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $elements = parent::formMultipleElements($items, $form, $form_state);
     $elements[] = $this->buildHeaderRow();
 
-    if (!empty($elements['add_more'])) {
-      if (empty($this->getSetting('only_editable'))) {
-        // Make the add more button open a modal.
-        $this->buildAddMoreAjaxButton($elements, $this->parentFieldName);
-      }
-      else {
-        $elements['add_more']['#access'] = FALSE;
-      }
-    }
-
-    $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
-    $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
-    $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
-
     foreach (Element::children($elements) as $key) {
       $element = &$elements[$key];
       if (empty($element['top'])) {
@@ -390,6 +361,39 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
     }
 
+
+    if (!empty($elements['add_more'])) {
+      $addMoreUrl = Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $this->parentFieldName,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $this->parentFieldName) . '-wrapper',
+        'bundle' => $this->getDefaultParagraphTypeMachineName(),
+      ]);
+      $addMoreButtons = $elements['add_more'];
+      foreach (Element::children($addMoreButtons) as $key) {
+        $elements['add_more'][$key] = [
+          '#type' => 'link',
+          '#title' => $this->getSetting('add_more_text'),
+          '#url' => $addMoreUrl,
+          '#access' => empty($this->getSetting('only_editable')) && $addMoreUrl->access(),
+          '#attributes' => [
+            'class' => [
+              'button',
+              'use-ajax',
+              'paragraphs-add-more-button',
+            ],
+            'data-dialog-type' => 'modal',
+            'title' => $this->getSetting('add_more_text'),
+          ],
+        ];
+      }
+    }
+
+    $elements['#attached']['library'][] = 'core/drupal.dialog.ajax';
+    $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
+    $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
+    $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
     return $elements;
   }
 
