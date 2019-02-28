@@ -94,6 +94,23 @@ iucn_assessment.revert_paragraph:
       paragraph_revision:
         type: 'entity_revision:paragraph'
 
+iucn_assessment.accept_paragraph:
+  path: 'accept_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  defaults:
+    _title: 'Revert paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::acceptParagraph'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
+
 iucn_assessment.paragraph_diff_form:
   path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}/{form_display_mode}'
   defaults:

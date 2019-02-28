@@ -4,15 +4,15 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-class IucnModalParagraphRevertForm extends IucnModalParagraphConfirmationForm {
+class IucnModalParagraphAcceptForm extends IucnModalParagraphConfirmationForm {
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $form['warning']['#value'] = $this->t('Are you sure you want to revert this row?');
-    $form['actions']['submit']['#value'] = $this->t('Revert');
+    $form['warning']['#value'] = $this->t('Are you sure you want to accept this row?');
+    $form['actions']['submit']['#value'] = $this->t('Accept');
     return $form;
   }
 

@@ -3,21 +3,21 @@
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\field\FieldConfigInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
-use Drupal\Component\Utility\Unicode;
+use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -234,6 +234,19 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return in_array($paragraph->id(), $this->getNewParagraphsIds());
   }
 
+  protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
+    if ($this->paragraphIsNew($paragraph)) {
+      return FALSE;
+    }
+    foreach ($this->diff as $vid => $diff) {
+      $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
+      if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
   protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
     return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
   }
@@ -246,9 +259,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return !empty($column) ? array_column($value, $column) : $value;
   }
 
-  protected function getNewParagraphsIds() {
+  protected function getNewParagraphsIds(NodeInterface $currentRevision = NULL) {
+    if (empty($currentRevision)) {
+      $currentRevision = $this->parentNode;
+    }
     $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
-    $currentValue = $this->getParentFieldValue($this->parentNode);
+    $currentValue = $this->getParentFieldValue($currentRevision);
     return array_diff($currentValue, $previousValue);
   }
 
@@ -256,6 +272,23 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
     $currentValue = $this->getParentFieldValue($this->parentNode);
     return array_diff($previousValue, $currentValue);
+  }
+
+  protected function getNewParagraphsList(NodeInterface $currentRevision = NULL) {
+    $newIds = $this->getNewParagraphsIds($currentRevision);
+    if (empty($newIds)) {
+      return [];
+    }
+    $new = [];
+    $currentValue = $this->getParentFieldValue($currentRevision, NULL);
+    foreach ($newIds as $id) {
+      foreach ($currentValue as $value) {
+        if ($value['target_id'] == $id) {
+          $new[] = $value;
+        }
+      }
+    }
+    return $new;
   }
 
   protected function getDeletedParagraphsList() {
@@ -284,27 +317,28 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $parents = $element['#field_parents'];
     $widgetState = static::getWidgetState($parents, $this->parentFieldName, $form_state);
 
-    $this->lastProcessedParagraph = $widgetState['paragraphs'][$delta]['entity'];
-    $element['#paragraph_id'] = $this->lastProcessedParagraph->id();
+    $this->lastProcessedParagraph = $paragraph = $widgetState['paragraphs'][$delta]['entity'];
+    $element['#paragraph_id'] = $paragraph->id();
 
+    $hasDifferences = $this->paragraphHasDifferences($paragraph);
+    $isNew = $this->paragraphIsNew($paragraph);
+    $isCreatedOnOtherRevision = $this->paragraphIsCreatedOnOtherRevision($paragraph);
+    $isDeleted = $this->paragraphIsDeleted($paragraph);
     $element['top'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['paragraph-top']],
-      'summary' => $this->buildRow($this->lastProcessedParagraph),
-      'actions' => $this->buildRowActions($this->lastProcessedParagraph),
+      'summary' => $this->buildRow($paragraph),
+      'actions' => $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted),
     ];
-    if (empty($this->numberOfColumns)) {
-      $this->numberOfColumns = array_sum(array_column($element['top']['summary'], 'span')) + 1;
-    }
 
     if ($this->showDifferences === TRUE) {
-      if ($this->paragraphHasDifferences($this->lastProcessedParagraph)) {
+      if ($hasDifferences) {
         $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
       }
-      if ($this->paragraphIsNew($this->lastProcessedParagraph)) {
+      if ($isNew || $isCreatedOnOtherRevision) {
         $element['top']['#attributes']['class'][] = 'paragraph-new-row';
       }
-      elseif ($this->paragraphIsDeleted($this->lastProcessedParagraph)) {
+      elseif ($isDeleted) {
         $element['top']['#attributes']['class'][] = 'paragraph-deleted-row';
       }
     }
@@ -334,9 +368,24 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     if (in_array($this->parentNode->field_state->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
       $this->showDifferences = TRUE;
       $items = clone $items;
-      $deletedParagraphs = $this->getDeletedParagraphsList();
+
+      // Add deleted paragraphs.
+      $extraParagraphs = $this->getDeletedParagraphsList();
+
+      foreach ($this->diff as $vid => $diff) {
+        // Add new paragraphs created by reviewers.
+        $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
+        $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
+        $extraParagraphs = array_merge($extraParagraphs, $newParagraphs);
+      }
+
+      $currentValue = array_column($this->parentNode->{$this->parentFieldName}->getValue(), 'target_id');
       $formStateStorage = $form_state->getStorage();
-      foreach ($deletedParagraphs as $item) {
+      foreach ($extraParagraphs as $item) {
+        if (in_array($item['target_id'], $currentValue)) {
+          // Paragraph has been accepted or reverted.
+          continue;
+        }
         $items->appendItem($item);
         $formStateStorage['field_storage']['#parents']['#fields'][$this->parentFieldName]['items_count']++;
       }
@@ -482,95 +531,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return [];
   }
 
-//  public function getReviewerParagraphs() {
-//    /** @var AssessmentWorkflow $assessment_workflow */
-//    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-//    $current_revision = $this->parentNode;
-//    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
-//    if (empty($reviewer_revisions)) {
-//      return NULL;
-//    }
-//    $reviewer_added_paragraphs = [];
-//    foreach ($reviewer_revisions as $reviewer_revision) {
-//      $current_revision_paragraphs = array_column($current_revision->get($this->parentFieldName)
-//        ->getValue(), 'target_id');
-//      $reviewer_revision_paragraphs = array_column($reviewer_revision->get($this->parentFieldName)
-//        ->getValue(), 'target_id');
-//      $added_paragraphs = array_diff($reviewer_revision_paragraphs, $current_revision_paragraphs);
-//      $reviewer_added_paragraphs = array_merge($reviewer_added_paragraphs, $added_paragraphs);
-//    }
-//    return $reviewer_added_paragraphs;
-//  }
-
-//  public function appendReviewerParagraphs(&$elements) {
-//    $reviewer_paragraphs = $this->getReviewerParagraphs($this->parentFieldName);
-//    $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $this->parentFieldName, 'paragraph-new-row');
-//    if (!empty($reviewer_paragraphs_rows)) {
-//      foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
-//        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $this->parentFieldName, 'accept');
-//        $reviewer_paragraph_row['_weight'] = [
-//          '#type' => 'weight',
-//          '#delta' => $this->realItemCount + 10,
-//          '#default_value' => $this->realItemCount + 10,
-//        ];
-//        $elements[] = $reviewer_paragraph_row;
-//      }
-//    }
-//  }
-
-//  public function getAssessorDeletedParagraphs() {
-//    /** @var AssessmentWorkflow $assessment_workflow */
-//    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-//    $current_revision = $this->parentNode;
-//    $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-//    if (empty($under_evaluation_revision)) {
-//      return NULL;
-//    }
-//    $assessor_deleted_paragraphs = $this->getDeletedParagraphsIds($current_revision, $under_evaluation_revision, $this->parentFieldName);
-//    $under_as_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
-//    if (empty($under_as_revision)) {
-//      return $assessor_deleted_paragraphs;
-//    }
-//
-//    $coordinator_deleted_paragraphs = $this->getDeletedParagraphsIds($current_revision, $under_as_revision, $this->parentFieldName);
-//    return array_diff($assessor_deleted_paragraphs, $coordinator_deleted_paragraphs);
-//  }
-
-//  public function getParagraphsRows($paragraphs, $row_class = '') {
-//    $elements = [];
-//    if (!empty($paragraphs)) {
-//      foreach ($paragraphs as $paragraph) {
-//        $paragraphs_entity = Paragraph::load($paragraph);
-//        $row = $this->buildRow($paragraphs_entity);
-//        $elements[$paragraph] = [
-//          '#type' => 'container',
-//          'top' => ['summmary' => $row],
-//          'actions' => [
-//            '#type' => 'container',
-//            'actions' => [
-//              '#type' => 'container',
-//              '#attributes' => ['class' => ['paragraphs-actions']],
-//            ],
-//            '#attributes' => [
-//              'class' => [
-//                'paragraph-summary-component',
-//              ],
-//            ],
-//          ],
-//          '#attributes' => [
-//            'class' => [
-//              'paragraph-top',
-//              'paragraph-top-add-above',
-//              'paragraph-no-tabledrag',
-//              $row_class,
-//            ],
-//          ],
-//        ];
-//      }
-//    }
-//    return $elements;
-//  }
-
   /**
    * Returns an array containing the components for the header.
    *
@@ -590,6 +550,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     $columns = $this->buildRow($paragraph);
+    $this->numberOfColumns = array_sum(array_column($columns, 'span')) + 1;
     foreach (array_keys($columns) as $fieldName) {
       $fieldColumn = $this->getFieldColumn($fieldName);
       $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
@@ -868,10 +829,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns the render array with the paragraph action buttons.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   * @param boolean $hasDifferences
+   * @param boolean $isNew
+   * @param boolean $isCreatedOnOtherRevision
+   * @param boolean $isDeleted
    *
    * @return array
    */
-  protected function buildRowActions(ParagraphInterface $paragraph) {
+  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
     $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
     $routeAttributes = [
       'node' => $this->parentNode->id(),
@@ -901,38 +866,34 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         '#type' => 'link',
         '#title' => $this->t('Edit'),
         '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', $routeAttributes),
+        '#access' => !$isDeleted && !$isCreatedOnOtherRevision,
       ],
       'delete' => [
         '#type' => 'link',
         '#title' => $this->t('Delete'),
         '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', $routeAttributes),
-        '#access' => $this->getSetting('only_editable') == FALSE,
+        '#access' => $this->getSetting('only_editable') == FALSE && !$isDeleted && !$isCreatedOnOtherRevision,
       ],
       'compare' => [
         '#type' => 'link',
         '#title' => $this->t('See differences'),
         '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', $routeAttributes),
-        '#access' => $this->paragraphHasDifferences($paragraph),
+        '#access' => $hasDifferences && !$isDeleted && !$isCreatedOnOtherRevision,
       ],
       'revert' => [
         '#type' => 'link',
         '#title' => $this->t('Revert'),
         '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', $routeAttributes),
-        '#access' => $this->paragraphIsDeleted($paragraph),
+        '#access' => $isDeleted,
       ],
-//      'accept' => [
-//        '#type' => 'link',
-//        '#title' => $this->t('Accept'),
-//        '#prefix' => sprintf('<div class="paragraph-author">%s</div>', $paragraph->getRevisionAuthor()->getDisplayName()),
-//        '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', $routeAttributes),
-//        '#access' => $paragraph->access('update') && todo,
-//      ],
+      'accept' => [
+        '#type' => 'link',
+        '#title' => $this->t('Accept new row'),
+        '#prefix' => sprintf('<div class="paragraph-author">%s %s</div>', $this->t('Row added by'), $paragraph->getRevisionAuthor()->getDisplayName()),
+        '#url' => Url::fromRoute('iucn_assessment.accept_paragraph', $routeAttributes),
+        '#access' => $isCreatedOnOtherRevision,
+      ],
     ];
-    if ($this->paragraphIsDeleted($paragraph)) {
-      unset($buttons['edit']);
-      unset($buttons['delete']);
-      unset($buttons['compare']);
-    }
 
     foreach (Element::children($buttons) as $buttonKey) {
       if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey]['#access'] == TRUE) {
@@ -1067,5 +1028,4 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     // Fix some issues with the diff form save.
     return parent::getWidgetState($parents, $fieldName, $form_state) ?: [];
   }
-
 }
