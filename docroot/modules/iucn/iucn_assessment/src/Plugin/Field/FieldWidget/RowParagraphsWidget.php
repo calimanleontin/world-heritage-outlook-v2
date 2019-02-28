@@ -361,12 +361,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $elements = parent::formMultipleElements($items, $form, $form_state);
     $elements[] = $this->buildHeaderRow();
 
-    // Show deleted paragraphs.
-//
-//    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
-//      $this->appendReviewerParagraphs($elements, $this->parentFieldName);
-//    }
-
     if (!empty($elements['add_more'])) {
       if (empty($this->getSetting('only_editable'))) {
         // Make the add more button open a modal.
@@ -486,41 +480,41 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return [];
   }
 
-  public function getReviewerParagraphs() {
-    /** @var AssessmentWorkflow $assessment_workflow */
-    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $current_revision = $this->parentNode;
-    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
-    if (empty($reviewer_revisions)) {
-      return NULL;
-    }
-    $reviewer_added_paragraphs = [];
-    foreach ($reviewer_revisions as $reviewer_revision) {
-      $current_revision_paragraphs = array_column($current_revision->get($this->parentFieldName)
-        ->getValue(), 'target_id');
-      $reviewer_revision_paragraphs = array_column($reviewer_revision->get($this->parentFieldName)
-        ->getValue(), 'target_id');
-      $added_paragraphs = array_diff($reviewer_revision_paragraphs, $current_revision_paragraphs);
-      $reviewer_added_paragraphs = array_merge($reviewer_added_paragraphs, $added_paragraphs);
-    }
-    return $reviewer_added_paragraphs;
-  }
+//  public function getReviewerParagraphs() {
+//    /** @var AssessmentWorkflow $assessment_workflow */
+//    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
+//    $current_revision = $this->parentNode;
+//    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
+//    if (empty($reviewer_revisions)) {
+//      return NULL;
+//    }
+//    $reviewer_added_paragraphs = [];
+//    foreach ($reviewer_revisions as $reviewer_revision) {
+//      $current_revision_paragraphs = array_column($current_revision->get($this->parentFieldName)
+//        ->getValue(), 'target_id');
+//      $reviewer_revision_paragraphs = array_column($reviewer_revision->get($this->parentFieldName)
+//        ->getValue(), 'target_id');
+//      $added_paragraphs = array_diff($reviewer_revision_paragraphs, $current_revision_paragraphs);
+//      $reviewer_added_paragraphs = array_merge($reviewer_added_paragraphs, $added_paragraphs);
+//    }
+//    return $reviewer_added_paragraphs;
+//  }
 
-  public function appendReviewerParagraphs(&$elements) {
-    $reviewer_paragraphs = $this->getReviewerParagraphs($this->parentFieldName);
-    $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $this->parentFieldName, 'paragraph-new-row');
-    if (!empty($reviewer_paragraphs_rows)) {
-      foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
-        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $this->parentFieldName, 'accept');
-        $reviewer_paragraph_row['_weight'] = [
-          '#type' => 'weight',
-          '#delta' => $this->realItemCount + 10,
-          '#default_value' => $this->realItemCount + 10,
-        ];
-        $elements[] = $reviewer_paragraph_row;
-      }
-    }
-  }
+//  public function appendReviewerParagraphs(&$elements) {
+//    $reviewer_paragraphs = $this->getReviewerParagraphs($this->parentFieldName);
+//    $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $this->parentFieldName, 'paragraph-new-row');
+//    if (!empty($reviewer_paragraphs_rows)) {
+//      foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
+//        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $this->parentFieldName, 'accept');
+//        $reviewer_paragraph_row['_weight'] = [
+//          '#type' => 'weight',
+//          '#delta' => $this->realItemCount + 10,
+//          '#default_value' => $this->realItemCount + 10,
+//        ];
+//        $elements[] = $reviewer_paragraph_row;
+//      }
+//    }
+//  }
 
 //  public function getAssessorDeletedParagraphs() {
 //    /** @var AssessmentWorkflow $assessment_workflow */
@@ -540,40 +534,40 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 //    return array_diff($assessor_deleted_paragraphs, $coordinator_deleted_paragraphs);
 //  }
 
-  public function getParagraphsRows($paragraphs, $row_class = '') {
-    $elements = [];
-    if (!empty($paragraphs)) {
-      foreach ($paragraphs as $paragraph) {
-        $paragraphs_entity = Paragraph::load($paragraph);
-        $row = $this->buildRow($paragraphs_entity);
-        $elements[$paragraph] = [
-          '#type' => 'container',
-          'top' => ['summmary' => $row],
-          'actions' => [
-            '#type' => 'container',
-            'actions' => [
-              '#type' => 'container',
-              '#attributes' => ['class' => ['paragraphs-actions']],
-            ],
-            '#attributes' => [
-              'class' => [
-                'paragraph-summary-component',
-              ],
-            ],
-          ],
-          '#attributes' => [
-            'class' => [
-              'paragraph-top',
-              'paragraph-top-add-above',
-              'paragraph-no-tabledrag',
-              $row_class,
-            ],
-          ],
-        ];
-      }
-    }
-    return $elements;
-  }
+//  public function getParagraphsRows($paragraphs, $row_class = '') {
+//    $elements = [];
+//    if (!empty($paragraphs)) {
+//      foreach ($paragraphs as $paragraph) {
+//        $paragraphs_entity = Paragraph::load($paragraph);
+//        $row = $this->buildRow($paragraphs_entity);
+//        $elements[$paragraph] = [
+//          '#type' => 'container',
+//          'top' => ['summmary' => $row],
+//          'actions' => [
+//            '#type' => 'container',
+//            'actions' => [
+//              '#type' => 'container',
+//              '#attributes' => ['class' => ['paragraphs-actions']],
+//            ],
+//            '#attributes' => [
+//              'class' => [
+//                'paragraph-summary-component',
+//              ],
+//            ],
+//          ],
+//          '#attributes' => [
+//            'class' => [
+//              'paragraph-top',
+//              'paragraph-top-add-above',
+//              'paragraph-no-tabledrag',
+//              $row_class,
+//            ],
+//          ],
+//        ];
+//      }
+//    }
+//    return $elements;
+//  }
 
   /**
    * Returns an array containing the components for the header.
@@ -821,7 +815,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   protected function renderStringField(FieldItemListInterface $fieldItemList, $truncate = FALSE) {
     $value = trim($fieldItemList->value);
     if ($truncate === TRUE && strlen($value) > 600) {
-      $value = Unicode::truncate($text, 600) . '...';
+      $value = Unicode::truncate($value, 600) . '...';
     }
     return $value;
   }
@@ -945,7 +939,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
     foreach (Element::children($buttons) as $buttonKey) {
       if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey] == TRUE) {
-        $buttons[$buttonKey]['#access'] = $buttons[$buttonKey]['#url']->access();
+        /** @var \Drupal\Core\Url $url */
+        $url = $buttons[$buttonKey]['#url'];
+        $buttons[$buttonKey]['#access'] = $url->access();
       }
       $cssIdentifier = Html::cleanCssIdentifier($buttonKey);
       $buttons[$buttonKey]['#attributes'] = [
