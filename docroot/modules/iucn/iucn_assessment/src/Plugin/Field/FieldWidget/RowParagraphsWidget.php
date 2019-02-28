@@ -297,19 +297,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $this->numberOfColumns = array_sum(array_column($element['top']['summary'], 'span')) + 1;
     }
 
-    if ($this->showDifferences == FALSE || !$this->paragraphHasDifferences($this->lastProcessedParagraph)) {
-      goto returnStatement;
+    if ($this->showDifferences === TRUE) {
+      if ($this->paragraphHasDifferences($this->lastProcessedParagraph)) {
+        $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
+      }
+      if ($this->paragraphIsNew($this->lastProcessedParagraph)) {
+        $element['top']['#attributes']['class'][] = 'paragraph-new-row';
+      }
+      elseif ($this->paragraphIsDeleted($this->lastProcessedParagraph)) {
+        $element['top']['#attributes']['class'][] = 'paragraph-deleted-row';
+      }
     }
 
-    $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
-    if ($this->paragraphIsNew($this->lastProcessedParagraph)) {
-      $element['top']['#attributes']['class'][] = 'paragraph-new-row';
-    }
-    if ($this->paragraphIsDeleted($this->lastProcessedParagraph)) {
-      $element['top']['#attributes']['class'][] = 'paragraph-deleted-row';
-    }
-
-    returnStatement:
     return $element;
   }
 
@@ -767,11 +766,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             $row = $row + $childrenCell;
             $value = $this->renderEntityReferenceField($fieldItemList);
           }
-          break;
-
-        case 'image':
-        case 'file':
-          // @todo
           break;
       }
 
