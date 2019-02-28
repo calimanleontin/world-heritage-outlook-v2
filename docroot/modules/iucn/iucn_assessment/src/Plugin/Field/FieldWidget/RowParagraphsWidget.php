@@ -361,7 +361,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
     }
 
-
     if (!empty($elements['add_more'])) {
       $addMoreUrl = Url::fromRoute('iucn_assessment.modal_paragraph_add', [
         'node' => $this->parentNode->id(),
@@ -942,7 +941,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     foreach (Element::children($buttons) as $buttonKey) {
-      if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey] == TRUE) {
+      if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey]['#access'] == TRUE) {
         /** @var \Drupal\Core\Url $url */
         $url = $buttons[$buttonKey]['#url'];
         $buttons[$buttonKey]['#access'] = $url->access();
