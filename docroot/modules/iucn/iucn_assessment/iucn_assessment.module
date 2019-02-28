@@ -755,6 +755,8 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_edit', '\Drupal\iucn_assessment\Form\IucnModalParagraphForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_add', '\Drupal\iucn_assessment\Form\IucnModalParagraphAddForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_delete', '\Drupal\iucn_assessment\Form\IucnModalParagraphDeleteForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_revert', '\Drupal\iucn_assessment\Form\IucnModalParagraphRevertForm');
+  $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_accept', '\Drupal\iucn_assessment\Form\IucnModalParagraphAcceptForm');
   $entity_types['paragraph']->setFormClass('iucn_modal_paragraph_diff', '\Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm');
 }
 

@@ -21,3 +21,6 @@ edit assessment main data:
 
 change other users agreement settings:
   title: 'Can change other user agreement settings'
+
+view assessment differences:
+  title: 'View assessment differences'

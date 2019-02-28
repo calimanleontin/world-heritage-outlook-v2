@@ -73,47 +73,4 @@ class IucnNodeController extends NodeController {
     return $build;
   }
 
-  public function revertParagraph(NodeInterface $node, $field, $field_wrapper_id, ParagraphInterface $paragraph) {
-    $node->get($field)->appendItem(['entity' => $paragraph]);
-    $settings = $node->field_settings->value;
-    $changed_settings = FALSE;
-    if (!empty($settings)) {
-      $settings = json_decode($settings, TRUE);
-      if (!empty($settings['diff'])) {
-        foreach (array_keys($settings['diff']) as $vid) {
-          if (!empty($settings['diff'][$vid][$paragraph->id()])) {
-            unset($settings['diff'][$vid][$paragraph->id()]);
-            $changed_settings = TRUE;
-          }
-        }
-      }
-    }
-    if ($changed_settings) {
-      $node->field_settings->value = json_encode($settings);
-    }
-    $node->save();
-    $response = new AjaxResponse();
-
-    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $nodeFormDisplay */
-    $nodeFormDisplay = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load("{$node->getEntityTypeId()}.{$node->bundle()}.default");
-    foreach ($nodeFormDisplay->getComponents() as $name => $component) {
-      // Remove all other fields except the selected one.
-      if ($name != $field) {
-        $nodeFormDisplay->removeComponent($name);
-      }
-    }
-    $nodeForm = \Drupal::service('entity.form_builder')->getForm($node, 'default', [
-      'form_display' => $nodeFormDisplay,
-      'entity_form_initialized' => TRUE,
-    ]);
-
-    $response->addCommand(
-      new ReplaceCommand(
-        "{$field_wrapper_id} .js-form-item",
-        $nodeForm[$field]['widget']
-      )
-    );
-    return $response;
-  }
-
 }

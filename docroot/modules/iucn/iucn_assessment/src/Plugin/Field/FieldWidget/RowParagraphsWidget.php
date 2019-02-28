@@ -2,25 +2,24 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Entity\Entity;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
+use Drupal\field\FieldConfigInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
-use Drupal\Component\Utility\Unicode;
-use Drupal\user\Entity\User;
+use Drupal\paragraphs\Plugin\Field\FieldWidget\ParagraphsWidget;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Plugin implementation of the 'row_entity_reference_paragraphs' widget.
@@ -36,6 +35,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPluginInterface {
 
+  /** @var \Symfony\Component\HttpFoundation\Request */
+  protected $request;
+
   /** @var \Drupal\Core\Routing\RouteMatchInterface */
   protected $routeMatch;
 
@@ -45,33 +47,53 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   /** @var \Drupal\Core\Entity\ContentEntityStorageInterface */
   protected $paragraphStorage;
 
-  /**
-   * The last paragraph entity that has been processed.
-   *
-   * @var \Drupal\paragraphs\ParagraphInterface
-   */
-  protected $paragraphsEntity;
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
 
-  /**
-   * The number of columns in the grid.
-   *
-   * @var int
-   */
-  protected $colCount;
+  /** @var \Drupal\paragraphs\ParagraphInterface */
+  protected $lastProcessedParagraph;
 
-  /**
-   * The parent node.
-   *
-   * @var \Drupal\Node\NodeInterface
-   */
+  /** @var int */
+  protected $numberOfColumns;
+
+  /** @var \Drupal\node\NodeInterface */
   protected $parentNode;
 
-  /**
-   * The diff array.
-   *
-   * @var array
-   */
+  /** @var string */
+  protected $parentFieldName;
+
+  /** @var \Drupal\node\NodeInterface */
+  protected $parentNodeInitialRevision;
+
+  /** @var array */
   protected $diff;
+
+  /** @var bool */
+  protected $showDifferences = FALSE;
+
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RequestStack $requestStack, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager, AssessmentWorkflow $assessmentWorkflow) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->request = $requestStack->getCurrentRequest();
+    $this->routeMatch = $routeMatch;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+    $this->workflowService = $assessmentWorkflow;
+    $this->parentFieldName = $this->fieldDefinition->getName();
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('request_stack'),
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager'),
+      $container->get('iucn_assessment.workflow')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -90,27 +112,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       'features' => [],
       'empty_message' => '',
       'only_editable' => FALSE,
+      'add_more_text' => t('Add more'),
     ];
   }
 
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-    $this->routeMatch = $routeMatch;
-    $this->entityTypeManager = $entityTypeManager;
-    $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
-  }
-
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('current_route_match'),
-      $container->get('entity_type.manager')
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -132,13 +137,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       '#description' => $this->t('Show a message when there are no paragraphs.'),
       '#default_value' => $this->getSetting('empty_message'),
     ];
+    $elements['add_more_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add more text'),
+      '#description' => $this->t('The title of the add more button'),
+      '#default_value' => $this->getSetting('add_more_text'),
+    ];
     $elements['only_editable'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Remove add/delete buttons.'),
       '#description' => $this->t('Make it impossible to add or delete paragraphs.'),
       '#default_value' => $this->getSetting('only_editable'),
     ];
-
     return $elements;
   }
 
@@ -155,7 +165,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ];
         break;
     }
-
     return isset($options) ? $options : NULL;
   }
 
@@ -181,24 +190,39 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
+   * @inheritdoc
+   */
+  protected function getDefaultParagraphTypeMachineName() {
+    $default_type = $this->getSetting('default_paragraph_type');
+    $allowed_types = $this->getAllowedTypes();
+    if ($default_type && isset($allowed_types[$default_type])) {
+      return $default_type;
+    }
+    return !empty($allowed_types) ? key($allowed_types) : NULL;
+  }
+
+  /**
    * Check if a paragraph has any differences for the rendered fields.
    *
    * @param $paragraph_id
    * @param $rendered_fields
+   *
    * @return bool
    */
-  public function isParagraphWithDiff($paragraph_id, $rendered_fields) {
-    if (!empty($this->diff)) {
-      foreach ($this->diff as $vid => $diff) {
-        if (empty($diff['paragraph'])) {
-          continue;
-        }
-        if (in_array($paragraph_id, array_keys($diff['paragraph']))) {
-          foreach (array_keys($diff['paragraph'][$paragraph_id]['diff']) as $diff_field) {
-            if (in_array($diff_field, $rendered_fields)) {
-              return TRUE;
-            }
-          }
+  protected function paragraphHasDifferences(ParagraphInterface $paragraph, array $fieldsToCheck = NULL) {
+    if (empty($fieldsToCheck)) {
+      $fieldsToCheck = array_keys($this->getFieldComponents($paragraph));
+    }
+    if (empty($this->diff)) {
+      return FALSE;
+    }
+    foreach ($this->diff as $vid => $diff) {
+      if (empty($diff['paragraph']) || !in_array($paragraph->id(), array_keys($diff['paragraph']))) {
+        continue;
+      }
+      foreach (array_keys($diff['paragraph'][$paragraph->id()]['diff']) as $diff_field) {
+        if (in_array($diff_field, $fieldsToCheck)) {
+          return TRUE;
         }
       }
     }
@@ -206,173 +230,140 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Build the diff button for the row.
+   * Checks if the paragraph didn't exist on previous revision, but exists on
+   * the current one.
    *
-   * @param array $element
-   * @param ParagraphInterface $paragraphs_entity
-   * @param string $field_wrapper
-   * @param string $field_name
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
    */
-  public function buildDiffButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
-    $tab = \Drupal::request()->query->get('tab');
-    $element['top']['actions']['actions']['diff_button'] = [
-      '#type' => 'link',
-      '#title' => $this->t('See differences'),
-      '#weight' => 2,
-      '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', [
-        'node' => $this->parentNode->id(),
-        'node_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => "#$field_wrapper",
-        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-        'tab' => $tab,
-        'form_display_mode' => $this->getSetting('form_display_mode'),
-      ]),
-      '#access' => $paragraphs_entity->access('update'),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-compare',
-        ],
-        'data-dialog-type' => 'modal',
-        'title' => $this->t('See differences'),
-      ],
-    ];
+  protected function paragraphIsNew(ParagraphInterface $paragraph) {
+    return in_array($paragraph->id(), $this->getNewParagraphsIds());
   }
 
   /**
-   * Build the edit button as an ajax callback.
+   * Returns a list of paragraphs ids which did not exist on previous revision.
    *
-   * @param array $element
-   * @param ParagraphInterface $paragraphs_entity
-   * @param $field_wrapper
-   * @param $field_name
-   * @param $delta
+   * @param \Drupal\node\NodeInterface|NULL $currentRevision
+   *
+   * @return array
    */
-  public function buildAjaxEditButton(array &$element, ParagraphInterface $paragraphs_entity, $field_wrapper, $field_name) {
-    $tab = \Drupal::request()->query->get('tab');
-    $element['top']['actions']['actions']['edit_button'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Edit'),
-      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', [
-        'node' => $this->parentNode->id(),
-        'node_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => "#$field_wrapper",
-        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-        'tab' => $tab,
-      ]),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-edit',
-        ],
-        'data-dialog-type' => 'modal',
-        'title' => $this->t('Edit'),
-      ],
-    ];
+  protected function getNewParagraphsIds(NodeInterface $currentRevision = NULL) {
+    if (empty($currentRevision)) {
+      $currentRevision = $this->parentNode;
+    }
+    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
+    $currentValue = $this->getParentFieldValue($currentRevision);
+    return array_diff($currentValue, $previousValue);
   }
 
-  public function appendAjaxDeleteButton(&$element, ParagraphInterface $paragraphs_entity, $field_name, $field_wrapper) {
-    unset($element['top']['actions']['dropdown_actions']);
-
-    $element['top']['actions']['actions']['remove_button'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Remove'),
-      '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', [
-        'node' => $this->parentNode->id(),
-        'node_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => "#$field_wrapper",
-        'paragraph_revision' => $paragraphs_entity->getRevisionId(),
-      ]),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-delete',
-        ],
-        'data-dialog-type' => 'modal',
-        'title' => $this->t('Remove'),
-      ],
-    ];
+  /**
+   * Returns a list with both target_id and target_revision_id for each new
+   * paragraph.
+   *
+   * @param \Drupal\node\NodeInterface|NULL $currentRevision
+   *
+   * @return array
+   */
+  protected function getNewParagraphsList(NodeInterface $currentRevision = NULL) {
+    $newIds = $this->getNewParagraphsIds($currentRevision);
+    if (empty($newIds)) {
+      return [];
+    }
+    $new = [];
+    $currentValue = $this->getParentFieldValue($currentRevision, NULL);
+    foreach ($newIds as $id) {
+      foreach ($currentValue as $value) {
+        if ($value['target_id'] == $id) {
+          $new[] = $value;
+        }
+      }
+    }
+    return $new;
   }
 
-  public function buildAddMoreAjaxButton(&$elements, $field_name) {
-    $add_more_button = array_keys($elements['add_more'])[0];
-    $target_paragraph = FieldConfig::loadByName('node', 'site_assessment', $field_name)
-      ->getSetting('handler_settings')['target_bundles'];
-    $bundle = reset($target_paragraph);
-    if (!empty($this->parentNode->id())) {
-      $tab = \Drupal::request()->query->get('tab');
-      $title = ($tab != 'projects') ? $this->t('Add more') : $this->t('Add a project');
-      $elements['add_more'][$add_more_button] = [
-        '#type' => 'link',
-        '#title' => $title,
-        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_add', [
-          'node' => $this->parentNode->id(),
-          'node_revision' => $this->parentNode->getRevisionId(),
-          'field' => $field_name,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-          'bundle' => $bundle,
-        ]),
-        '#attributes' => [
-          'class' => [
-            'use-ajax',
-            'button',
-            'paragraphs-add-more-button',
-          ],
-          'data-dialog-type' => 'modal',
-          'title' => $title,
-        ],
-      ];
+  /**
+   * Checks if the paragraph has been created on another revision (for example
+   * a reviewer revision).
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
+   */
+  protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
+    if ($this->paragraphIsNew($paragraph)) {
+      // The paragraph has been already acceptedinto the actual revision.
+      return FALSE;
     }
+    foreach ($this->diff as $vid => $diff) {
+      $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
+      if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
-  public function appendRevertParagraphAction(array &$paragraph_row, $paragraph_id, $field_name, $type) {
-    if ($type == 'accept') {
-      $icon = 'paragraphs-icon-button-accept';
-      $title = $this->t('Accept');
-      $paragraph = Paragraph::load($paragraph_id);
-      /** @var User $author */
-      $author = $paragraph->getRevisionAuthor();
-      $author = $author->getDisplayName();
-    }
-    else {
-      $icon = 'paragraphs-icon-button-revert';
-      $title = $this->t('Revert');
-    }
+  /**
+   * Checks if the paragraph existed on previous revision, but doesn't exist
+   * anymore on the current one.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
+   */
+  protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
+    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
+  }
 
-    $paragraph_row['actions']['actions']['revert'] = [
-      '#type' => 'link',
-      '#title' => $title,
-      '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', [
-        'node' => $this->parentNode->id(),
-        'node_revision' => $this->parentNode->getRevisionId(),
-        'field' => $field_name,
-        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field_name) . '-wrapper',
-        'paragraph' => $paragraph_id,
-      ]),
-      '#attributes' => [
-        'class' => [
-          'use-ajax',
-          'button',
-          'paragraphs-icon-button',
-          $icon,
-        ],
-        'data-dialog-type' => 'modal',
-        'title' => $title,
-      ],
-    ];
-    if (!empty($author)) {
-      $tooltip = $this->t('Added by: @author', ['@author' => $author]);
-      $paragraph_row['actions']['actions']['revert']['#prefix'] = '<div class="paragraph-author">' . $tooltip . '</div>';
+  /**
+   * Returns a list of paragraphs ids which were deleted.
+   *
+   * @return array
+   */
+  protected function getDeletedParagraphsIds() {
+    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
+    $currentValue = $this->getParentFieldValue($this->parentNode);
+    return array_diff($previousValue, $currentValue);
+  }
+
+  /**
+   * Returns a list with both target_id and target_revision_id for each deleted
+   * paragraph.
+   *
+   * @return array
+   */
+  protected function getDeletedParagraphsList() {
+    $deletedIds = $this->getDeletedParagraphsIds();
+    if (empty($deletedIds)) {
+      return [];
     }
+    $deleted = [];
+    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision, NULL);
+    foreach ($deletedIds as $id) {
+      foreach ($previousValue as $value) {
+        if ($value['target_id'] == $id) {
+          $deleted[] = $value;
+        }
+      }
+    }
+    return $deleted;
+  }
+
+  /**
+   * Retrieves a entity reference revisions field value.
+   *
+   * @param \Drupal\node\NodeInterface|NULL $node
+   * @param string $column
+   *
+   * @return array|mixed
+   */
+  protected function getParentFieldValue(NodeInterface $node = NULL, $column = 'target_id') {
+    if (empty($node)) {
+      return [];
+    }
+    $value = $node->get($this->parentFieldName)->getValue();
+    return !empty($column) ? array_column($value, $column) : $value;
   }
 
   /**
@@ -380,222 +371,123 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $widgetState = static::getWidgetState($element['#field_parents'], $this->parentFieldName, $form_state);
+    $this->lastProcessedParagraph = $paragraph = $widgetState['paragraphs'][$delta]['entity'];
+    $element['#paragraph_id'] = $paragraph->id();
 
-    unset($element['top']['type']);
-    unset($element['top']['icons']);
-    unset($element['top']['summary']);
+    $hasDifferences = $this->paragraphHasDifferences($paragraph);
+    $isNew = $this->paragraphIsNew($paragraph);
+    $isCreatedOnOtherRevision = $this->paragraphIsCreatedOnOtherRevision($paragraph);
+    $isDeleted = $this->paragraphIsDeleted($paragraph);
 
-    $field_name = $this->fieldDefinition->getName();
-    $parents = $element['#field_parents'];
-
-    $widget_state = static::getWidgetState($parents, $field_name, $form_state);
-
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraphs_entity */
-    $paragraphs_entity = $widget_state['paragraphs'][$delta]['entity'];
-
-    $summary_components = $this->getRow($paragraphs_entity);
-    $summary_containers = $this->getSummaryContainers($summary_components);
-
-    if ($field_name == 'field_as_benefits') {
-      $subcategories = ['field_as_benefits_subcategories' => $summary_containers['field_as_benefits_category']];
-      $this->insertElementAfter($summary_containers, 'field_as_benefits_category', $subcategories);
-
-      $subcategories = $paragraphs_entity->field_as_benefits_category->getValue();
-      $names = [];
-      foreach ($subcategories as $term) {
-        $storage = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term');
-        $parents = $storage->loadParents($term['target_id']);
-        foreach ($parents as $parent) {
-          $names[$parent->getName()] = $parent->getName();
-        }
+    $element['top'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['paragraph-top']],
+      'summary' => $this->buildRow($paragraph),
+      'actions' => $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted),
+    ];
+    if ($this->showDifferences === TRUE) {
+      if ($hasDifferences) {
+        $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
       }
-      $summary_containers['field_as_benefits_category']['data']['#markup'] = implode(', ', $names);
-    }
-    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-      $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
-      $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
-
-      $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
-      $names = [];
-      foreach ($subcategories as $term) {
-        $storage = \Drupal::service('entity_type.manager')
-          ->getStorage('taxonomy_term');
-        $parents = $storage->loadParents($term['target_id']);
-        foreach ($parents as $parent) {
-          $names[$parent->getName()] = $parent->getName();
-        }
+      if ($isNew || $isCreatedOnOtherRevision) {
+        $element['top']['#attributes']['class'][] = 'paragraph-new-row';
       }
-      $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
-    }
-    $element['top']['summary'] = $summary_containers;
-    $count = $this->calculateColumnCount($summary_components) + 1;
-    if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-      $count += 2;
-    }
-    if (($field_name == 'field_as_benefits')) {
-      $count += 2;
-    }
-    $element['top']['#attributes']['class'][] = "paragraph-top-col-$count";
-    $this->colCount = $count;
-
-
-    // Check if we need to show the diff for a paragraph.
-    // We should show the diff if the paragraph id appears in the diff array
-    // and at least one field that is visible in this row was changed.
-    $show_diff = FALSE;
-    $assessmentState = $this->parentNode->field_state->value;
-    if ($assessmentState == AssessmentWorkflow::STATUS_READY_FOR_REVIEW
-      && $this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_EVALUATION, $field_name, $paragraphs_entity->id())
-      && !$this->isNewParagraph($this->parentNode, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $field_name, $paragraphs_entity->id())) {
-      $element['top']['#attributes']['class'][] = "paragraph-new-row";
-    }
-    else {
-      if ($this->isParagraphWithDiff($paragraphs_entity->id(), array_keys($summary_containers))
-        && in_array($assessmentState, [
-          AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
-          AssessmentWorkflow::STATUS_UNDER_COMPARISON,
-        ])) {
-        $show_diff = TRUE;
+      elseif ($isDeleted) {
+        $element['top']['#attributes']['class'][] = 'paragraph-deleted-row';
       }
     }
-
-    $element['top']['actions']['#weight'] = 9999;
-    $element['top']['actions']['#prefix'] = '<div class="paragraph-summary-component">';
-    $element['top']['actions']['#suffix'] = '</div>';
-
-    $field_wrapper = 'edit-' . str_replace('_', '-', $field_name) . '-wrapper';
-    if (!empty($element['top']['actions']['actions']['edit_button']) && $show_diff) {
-      $this->buildDiffButton($element, $paragraphs_entity, $field_wrapper, $field_name);
-      $element['#attributes']['class'][] = 'paragraph-diff-row';
-    }
-
-    $this->buildAjaxEditButton($element, $paragraphs_entity, $field_wrapper, $field_name);
-
-    $element['#paragraph_id'] = $paragraphs_entity->id();
-    $this->paragraphsEntity = $paragraphs_entity;
-
-    $this->appendAjaxDeleteButton($element, $paragraphs_entity, $field_name, $field_wrapper);
-    if (!empty($this->getSetting('only_editable'))) {
-      $element['top']['actions']['actions']['remove_button']['#access'] = FALSE;
-    }
-
     return $element;
-  }
-
-  /**
-   * Check if a paragraph is new compared to previous revisions of a certain state.
-   *
-   * @param NodeInterface $node
-   * @param $field_name
-   * @param $paragraph_id
-   * @return bool
-   */
-  public function isNewParagraph(NodeInterface $node, $state, $field_name, $paragraph_id) {
-    /** @var AssessmentWorkflow $assessment_workflow */
-    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $revision = $assessment_workflow->getRevisionByState($node, $state);
-    if (empty($revision)) {
-      return FALSE;
-    }
-    return !in_array($paragraph_id, array_column($revision->get($field_name)->getValue(), 'target_id'))
-      && in_array($paragraph_id, array_column($node->get($field_name)->getValue(), 'target_id'));
-  }
-
-  /**
-   * Calculate the column count for a row.
-   *
-   * @param array $components
-   * @return int
-   */
-  public function calculateColumnCount(array $components) {
-    $count = 0;
-    foreach ($components as $key => $component) {
-      if (!empty($component['span'])) {
-        $count += $component['span'];
-      }
-    }
-    return $count;
-  }
-
-  /**
-   * Build the table header.
-   *
-   * @param $elements
-   */
-  public function buildHeader(&$elements) {
-    // Use the last rendered paragraph to build the header based on it's fields.
-    if (!empty($this->paragraphsEntity)) {
-      $header_components = $this->getHeaderComponents($this->paragraphsEntity);
-      $header_components += ['actions' => $this->t('Actions')];
-      if (!empty($header_components['field_as_threats_categories'])) {
-        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_threats_categories']];
-        $subcategories['field_as_threats_subcategories']['value'] = 'Threat subcategory';
-        $this->insertElementAfter($header_components, 'field_as_threats_categories', $subcategories);
-      }
-      if (!empty($header_components['field_as_benefits_category'])) {
-        $subcategories = ['field_as_threats_subcategories' => $header_components['field_as_benefits_category']];
-        $this->insertElementAfter($header_components, 'field_as_benefits_category', $subcategories);
-        $header_components['field_as_benefits_category']['value'] = 'Benefit type';
-      }
-      $header_containers = $this->getHeaderContainers($header_components);
-      $header_containers['actions']['#prefix'] = '<div class="paragraph-summary-component">';
-      $header_containers['actions']['#suffix'] = '</div>';
-      $count = $this->colCount;
-
-      $header = [
-        'header' => [
-          '#type' => 'container',
-          '#weight' => -2000,
-          '#attributes' => [
-            'class' => [
-              'paragraph-top',
-              'paragraph-header',
-              "paragraph-top-col-$count",
-            ],
-          ],
-          'data' => $header_containers,
-        ],
-      ];
-      $elements += $header;
-    }
-    else {
-      // Show an empty message if the table is empty.
-      $empty_message = $this->getSetting('empty_message');
-      if (!empty($empty_message)) {
-        $elements['empty_message'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['paragraph-summary-component', 'paragraph-empty']],
-          'data' => ['#markup' => $empty_message],
-        ];
-      }
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
-    $this->parentNode = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
+    $formObject = $form_state->getFormObject();
+    $this->parentNode = $formObject->getEntity();
     $settings = json_decode($this->parentNode->field_settings->value, TRUE);
-    $this->diff = !empty($settings['diff']) ? $settings['diff'] : NULL;
+    $this->diff = !empty($settings['diff']) ? $settings['diff'] : [];
+    $nodeDiff = array_column($this->diff, 'node');
+    $nodeDiff = reset($nodeDiff);
+    if (!empty($nodeDiff[$this->parentNode->id()]['initial_revision_id'])) {
+      $this->parentNodeInitialRevision = $this->workflowService->getAssessmentRevision($nodeDiff[$this->parentNode->id()]['initial_revision_id']);
+    }
+    else {
+      $previousRevision = $this->workflowService->getPreviousWorkflowRevision($this->parentNode);
+      $this->parentNodeInitialRevision = $this->workflowService->getPreviousWorkflowRevision($previousRevision);
+    }
+
+    if (in_array($this->parentNode->field_state->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+      $this->showDifferences = TRUE;
+      $items = clone $items;
+
+      // Add deleted paragraphs.
+      $extraParagraphs = $this->getDeletedParagraphsList();
+
+      foreach ($this->diff as $vid => $diff) {
+        // Add new paragraphs created by reviewers.
+        $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
+        $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
+        $extraParagraphs = array_merge($extraParagraphs, $newParagraphs);
+      }
+
+      $currentValue = array_column($this->parentNode->{$this->parentFieldName}->getValue(), 'target_id');
+      $formStateStorage = $form_state->getStorage();
+      foreach ($extraParagraphs as $item) {
+        if (in_array($item['target_id'], $currentValue)) {
+          // Paragraph has been accepted or reverted.
+          continue;
+        }
+        $items->appendItem($item);
+        $formStateStorage['field_storage']['#parents']['#fields'][$this->parentFieldName]['items_count']++;
+      }
+      $form_state->setStorage($formStateStorage);
+    }
 
     $elements = parent::formMultipleElements($items, $form, $form_state);
-    $field_settings_json = $this->parentNode->field_settings->value;
-    $field_settings = json_decode($field_settings_json, TRUE);
-    $diff = !empty($field_settings['diff']) ? $field_settings['diff'] : NULL;
+    $elements[] = $this->buildHeaderRow();
 
-    $this->buildHeader($elements);
-
-    $field_name = $this->fieldDefinition->getName();
+    foreach (Element::children($elements) as $key) {
+      $element = &$elements[$key];
+      if (empty($element['top'])) {
+        continue;
+      }
+      $element['top']['#attributes']['class'][] = "paragraph-top-col-{$this->numberOfColumns}";
+      foreach (Element::children($element['top']) as $topKey) {
+        if ($topKey == 'actions') {
+          continue;
+        }
+        $element['top'][$topKey] = $this->buildCellsContainers($element['top'][$topKey]);
+      }
+    }
 
     if (!empty($elements['add_more'])) {
-      if (empty($this->getSetting('only_editable'))) {
-        // Make the add more button open a modal.
-        $this->buildAddMoreAjaxButton($elements, $field_name);
-      }
-      else {
-        $elements['add_more']['#access'] = FALSE;
+      $addMoreUrl = Url::fromRoute('iucn_assessment.modal_paragraph_add', [
+        'node' => $this->parentNode->id(),
+        'node_revision' => $this->parentNode->getRevisionId(),
+        'field' => $this->parentFieldName,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $this->parentFieldName) . '-wrapper',
+        'bundle' => $this->getDefaultParagraphTypeMachineName(),
+      ]);
+      $addMoreButtons = $elements['add_more'];
+      foreach (Element::children($addMoreButtons) as $key) {
+        $elements['add_more'][$key] = [
+          '#type' => 'link',
+          '#title' => $this->getSetting('add_more_text'),
+          '#url' => $addMoreUrl,
+          '#access' => empty($this->getSetting('only_editable')) && $addMoreUrl->access(),
+          '#attributes' => [
+            'class' => [
+              'button',
+              'use-ajax',
+              'paragraphs-add-more-button',
+            ],
+            'data-dialog-type' => 'modal',
+            'title' => $this->getSetting('add_more_text'),
+          ],
+        ];
       }
     }
 
@@ -603,161 +495,111 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $elements['#attached']['library'][] = 'iucn_assessment/iucn_assessment.row_paragraph';
     $elements['#attached']['library'][] = 'iucn_backend/font-awesome';
     $elements['#prefix'] = str_replace('paragraphs-tabs-wrapper', 'raw-paragraphs-tabs-wrapper', $elements['#prefix']);
-
-    // Show deleted paragraphs.
-    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-      $this->appendDeletedParagraphs($elements, $field_name);
-    }
-
-    if ($this->parentNode->field_state->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
-      $this->appendReviewerParagraphs($elements, $field_name);
-    }
-
     return $elements;
   }
 
-  public function getReviewerParagraphs($field_name) {
-    /** @var AssessmentWorkflow $assessment_workflow */
-    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $current_revision = $this->parentNode;
-    $reviewer_revisions = $assessment_workflow->getAllReviewersRevisions($current_revision);
-    if (empty($reviewer_revisions)) {
-      return NULL;
-    }
-    $reviewer_added_paragraphs = [];
-    foreach ($reviewer_revisions as $reviewer_revision) {
-      $current_revision_paragraphs = array_column($current_revision->get($field_name)->getValue(), 'target_id');
-      $reviewer_revision_paragraphs = array_column($reviewer_revision->get($field_name)->getValue(), 'target_id');
-      $added_paragraphs = array_diff($reviewer_revision_paragraphs, $current_revision_paragraphs);
-      $reviewer_added_paragraphs = array_merge($reviewer_added_paragraphs, $added_paragraphs);
-    }
-    return $reviewer_added_paragraphs;
-  }
-
-  public function appendReviewerParagraphs(&$elements, $field_name) {
-    $reviewer_paragraphs = $this->getReviewerParagraphs($field_name);
-    $reviewer_paragraphs_rows = $this->getParagraphsRows($reviewer_paragraphs, $field_name, 'paragraph-new-row');
-    if (!empty($reviewer_paragraphs_rows)) {
-      foreach ($reviewer_paragraphs_rows as $paragraph_id => &$reviewer_paragraph_row) {
-        $this->appendRevertParagraphAction($reviewer_paragraph_row, $paragraph_id, $field_name, 'accept');
-        $reviewer_paragraph_row['_weight'] = [
-          '#type' => 'weight',
-          '#delta' => $this->realItemCount + 10,
-          '#default_value' => $this->realItemCount + 10,
-        ];
-        $elements[] = $reviewer_paragraph_row;
+  /**
+   * Includes each cell content in a container render element which has all
+   * need attributes for the CSS grid table display.
+   *
+   * @param $elements
+   *
+   * @return array
+   */
+  protected function buildCellsContainers($elements) {
+    foreach ($elements as $field => $component) {
+      if ($field[0] === '#') {
+        continue;
       }
-    }
-  }
-
-  public function getAssessorDeletedParagraphs($field_name) {
-    /** @var AssessmentWorkflow $assessment_workflow */
-    $assessment_workflow = \Drupal::service('iucn_assessment.workflow');
-    $current_revision = $this->parentNode;
-    $under_evaluation_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
-    if (empty($under_evaluation_revision)) {
-      return NULL;
-    }
-    $assessor_deleted_paragraphs = $this->getDeletedParagraphs($current_revision, $under_evaluation_revision, $field_name);
-    $under_as_revision = $assessment_workflow->getRevisionByState($current_revision, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
-    if (empty($under_as_revision)) {
-      return $assessor_deleted_paragraphs;
-    }
-
-    $coordinator_deleted_paragraphs = $this->getDeletedParagraphs($current_revision, $under_as_revision, $field_name);
-    return array_diff($assessor_deleted_paragraphs, $coordinator_deleted_paragraphs);
-  }
-
-  public function getDeletedParagraphs(NodeInterface $new_revision, NodeInterface $old_revision, $field_name) {
-    $new_revision_paragraphs = array_column($new_revision->get($field_name)->getValue(), 'target_id');
-    $old_revision_paragraphs = array_column($old_revision->get($field_name)->getValue(), 'target_id');
-    $deleted_paragraphs = array_diff($old_revision_paragraphs, $new_revision_paragraphs);
-    return $deleted_paragraphs;
-  }
-
-  public function getParagraphsRows($paragraphs, $field_name, $row_class = '') {
-    $elements = [];
-    if (!empty($paragraphs)) {
-      foreach ($paragraphs as $paragraph) {
-        $paragraphs_entity = Paragraph::load($paragraph);
-        $components = $this->getRow($paragraphs_entity);
-        $summary_containers = $this->getSummaryContainers($components);
-        $column_count = $this->calculateColumnCount($components) + 1;
-        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-          $subcategories = ['field_as_threats_subcategories' => $summary_containers['field_as_threats_categories']];
-          $this->insertElementAfter($summary_containers, 'field_as_threats_categories', $subcategories);
-          $subcategories = $paragraphs_entity->field_as_threats_categories->getValue();
-          $names = [];
-          foreach ($subcategories as $term) {
-            $storage = \Drupal::service('entity_type.manager')
-              ->getStorage('taxonomy_term');
-            $parents = $storage->loadParents($term['target_id']);
-            foreach ($parents as $parent) {
-              $names[$parent->getName()] = $parent->getName();
-            }
-          }
-          $summary_containers['field_as_threats_categories']['data']['#markup'] = implode(', ', $names);
-        }
-        if (($field_name == 'field_as_threats_current') || ($field_name == 'field_as_threats_potential')) {
-          $column_count += 2;
-        }
-        $elements[$paragraph] = [
-          '#type' => 'container',
-          'top' => ['summmary' => $summary_containers],
-          'actions' => [
-            '#type' => 'container',
-            'actions' => [
-              '#type' => 'container',
-              '#attributes' => ['class' => ['paragraphs-actions']],
-            ],
-            '#attributes' => [
-              'class' => [
-                'paragraph-summary-component',
-              ],
-            ],
+      $span = !empty($component['span']) ? $component['span'] : 1;
+      unset($component['span']);
+      $container = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'paragraph-summary-component',
+            "paragraph-summary-component-$field",
+            "paragraph-summary-component-span-$span",
           ],
-          '#attributes' => [
-            'class' => [
-              'paragraph-top',
-              'paragraph-top-add-above',
-              "paragraph-top-col-$column_count",
-              'paragraph-no-tabledrag',
-              $row_class,
-            ],
-          ],
-        ];
+        ],
+      ];
+      if (!empty($component['value'])) {
+        $container['data']['#markup'] = is_array($component['value']) ? implode("\n", $component['value']) : $component['value'];
       }
+      else {
+        $container['data'] = $component;
+      }
+      if (!empty($component['class'])) {
+        $container['#attributes']['class'][] = $component['class'];
+      }
+      if (!empty($component['#weight'])) {
+        $container['#weight'] = $component['#weight'];
+      }
+      $elements[$field] = $container;
     }
     return $elements;
   }
 
   /**
-   * Show the paragraphs deleted by the assessor.
+   * Returns the render array for the top row.
    *
-   * @param $elements
-   * @param $field_name
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function appendDeletedParagraphs(&$elements, $field_name) {
-    $deleted_paragraphs = $this->getAssessorDeletedParagraphs($field_name);
-    $deleted_paragraphs_rows = $this->getParagraphsRows($deleted_paragraphs, $field_name, 'paragraph-deleted-row');
-    if (!empty($deleted_paragraphs_rows)) {
-      foreach ($deleted_paragraphs_rows as $paragraph_id => &$deleted_paragraph_row) {
-        $this->appendRevertParagraphAction($deleted_paragraph_row, $paragraph_id, $field_name, 'revert');
-      }
-      $elements += $deleted_paragraphs_rows;
+  public function buildHeaderRow() {
+    // Use the last rendered paragraph to build the header based on it's fields.
+    if (!empty($this->lastProcessedParagraph)) {
+      $row = $this->getHeaderRow($this->lastProcessedParagraph);
+      $row += ['actions' => $this->t('Actions')];
+      return [
+        '#weight' => -100,
+        '#delta' => -100,
+        'top' => [
+          '#type' => 'container',
+          '#weight' => -100,
+          '#delta' => -100,
+          '#attributes' => [
+            'class' => [
+              'paragraph-top',
+              'paragraph-header',
+            ],
+          ],
+          'summary' => $row,
+        ],
+      ];
     }
+
+    // Show an empty message if the table is empty.
+    $empty_message = $this->getSetting('empty_message');
+    if (!empty($empty_message)) {
+      return [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'paragraph-summary-component',
+            'paragraph-empty',
+          ],
+        ],
+        'data' => ['#markup' => $empty_message],
+      ];
+    }
+    return [];
   }
 
   /**
    * Returns an array containing the components for the header.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
    *
    * @return array
-   *   The components.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getHeaderComponents(ParagraphInterface $paragraph) {
+  public function getHeaderRow(ParagraphInterface $paragraph) {
     $header = [];
     if ($this->getSetting('show_numbers') == 'yes') {
       $header['num'] = [
@@ -766,19 +608,25 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $components = $this->getFieldComponents($paragraph);
-    foreach (array_keys($components) as $fieldName) {
+    $columns = $this->buildRow($paragraph);
+    $this->numberOfColumns = array_sum(array_column($columns, 'span')) + 1;
+    foreach (array_keys($columns) as $fieldName) {
       $fieldColumn = $this->getFieldColumn($fieldName);
       $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
-      if (!($fieldDefinition instanceof FieldConfigInterface)
-        || $paragraph->get($fieldName)->access('view') == FALSE
-        || !empty($header[$fieldColumn])) {
-        // We do not add content to the summary from base fields, skip them
-        // keeps performance while building the paragraph summary.
-        continue;
-      }
 
       switch ($fieldColumn) {
+        case 'field_as_benefits_category':
+          $label = $this->t('Benefit type');
+          break;
+
+        case 'field_as_benefits_category_child_category':
+          $label = $this->t('Specific benefits');
+          break;
+
+        case 'field_as_threats_categories_child_category':
+          $label = $this->t('Subcategories');
+          break;
+
         case 'field_as_threats_values_wh':
         case 'field_as_threats_values_bio':
           $label = $this->t('WH values');
@@ -810,77 +658,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Creates the markup for header components.
-   *
-   * @param array $components
-   *   The header components.
-   *
-   * @return array
-   *   The header markup.
-   */
-  public function getHeaderContainers(array $components) {
-    $containers = $this->getSummaryContainers($components);
-    foreach ($containers as &$container) {
-      $container['#attributes']['title'] = $container['data'];
-    }
-    return $containers;
-  }
-
-  /**
-   * Creates the markup for the summary components.
-   *
-   * @param array $components
-   *   The summary components.
-   *
-   * @return array
-   *   The summary markup.
-   */
-  public function getSummaryContainers(array $components) {
-    $containers = [];
-    foreach ($components as $key => $component) {
-      $span = !empty($component['span']) ? $component['span'] : 1;
-      if (is_array($component['value'])) {
-        foreach ($component['value'] as $idx => $value) {
-          if (empty($value)) {
-            unset($component['value'][$idx]);
-          }
-        }
-        if (!empty($component['value'][0]) && is_array($component['value'][0]) && (!empty($component['value'][0]['label']))) {
-          $data = $component['value'][0];
-        }
-        else {
-          $data = !empty($component['value']) ? implode("\n", $component['value']) : '';
-        }
-      }
-      else {
-        $data = $component['value'];
-      }
-      if (!is_array($data)) {
-        $data = ['#markup' => $data];
-      }
-      $containers[$key] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'paragraph-summary-component',
-            "paragraph-summary-component-$key",
-            "paragraph-summary-component-span-$span",
-          ],
-        ],
-        'data' => $data,
-      ];
-      if (!empty($component['class'])) {
-        $containers[$key]['#attributes']['class'][] = $component['class'];
-      }
-      if ($key === 'actions') {
-        $containers[$key]['#attributes']['class'] = 'paragraphs-actions';
-      }
-    }
-
-    return $containers;
-  }
-
-  /**
    * Returns the field components for the default display view of a paragraph.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
@@ -902,14 +679,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Returns the paragraph row for table display.
+   * Returns the render array with the paragraph table row.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getRow(ParagraphInterface $paragraph) {
+  public function buildRow(ParagraphInterface $paragraph) {
     $row = [];
 
     static $num = 0;
@@ -945,71 +724,68 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $value = NULL;
       switch ($fieldDefinition->getType()) {
         case 'boolean':
-          $value = !empty($paragraph->{$fieldName}->value)
-            ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
-            : '';
+          $value = $this->renderBooleanField($fieldItemList);
           break;
 
         case 'text_with_summary':
-        case 'text':
+        case 'list_text':
         case 'text_long':
+        case 'list_string':
         case 'string':
         case 'string_long':
-          $excludedTextFields = [
-            'parent_id',
-            'parent_type',
-            'parent_field_name',
-          ];
-          if (in_array($fieldName, $excludedTextFields)) {
-            break;
-          }
-          $value = trim($fieldItemList->value);
-          if (strlen($value) > 600 && !in_array($fieldName, ['field_as_values_curr_text', 'field_as_description'])) {
-            $value = Unicode::truncate($text, 600) . '...';
-          }
+          $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
+            'field_as_values_curr_text',
+            'field_as_description',
+          ]));
           break;
 
         case 'link':
-          if (empty($fieldItemList->first())) {
-            break;
-          }
-          if (!empty($fieldItemList->title)) {
-            $value = $fieldItemList->title;
-            break;
-          }
-          // If title is not set, fallback to the uri.
-          $value = $fieldItemList->uri;
+          $value = $this->renderLinkField($fieldItemList);
           break;
 
         case 'entity_reference':
         case 'entity_reference_revisions':
-          $viewBuilder = NULL;
-          $childrenView = [];
-          foreach ($paragraph->{$fieldName} as $childEntityValue) {
-            /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
-            $childEntity = $childEntityValue->entity;
-            if (empty($viewBuilder)) {
-              $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
-            }
-            $cssClass = _iucn_assessment_level_class($childEntity->id());
+          $value = $this->renderEntityReferenceField($fieldItemList);
+
+          foreach ($fieldItemList as $childEntityValue) {
+            $cssClass = _iucn_assessment_level_class($childEntityValue->target_id);
             if (!empty($cssClass)) {
               $row[$fieldColumn]['class'] = $cssClass;
             }
-
-            $childView = $viewBuilder->view($childEntity, 'teaser');
-            $childrenView[] = render($childView);
           }
-          $list = [
-            '#theme' => 'item_list',
-            '#list_type' => 'ul',
-            '#items' => $childrenView,
-          ];
-          $value = render($list);
-          break;
 
-        case 'image':
-        case 'file':
-          // @todo
+          $fieldsWithParents = [
+            'field_as_benefits_category',
+            'field_as_threats_categories',
+          ];
+          if (in_array($fieldName, $fieldsWithParents)) {
+            // For these fields we insert an extra column for term parents because
+            // categories have sub-categories.
+            $insertedParents = [];
+            for ($i = 0; $i < $fieldItemList->count(); $i++) {
+              /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $childEntityValue */
+              $childEntityValue = $fieldItemList->get($i);
+              /** @var \Drupal\taxonomy\TermStorageInterface $termStorage */
+              $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
+              $parents = $termStorage->loadParents($childEntityValue->target_id);
+              if (!empty($parents) && !in_array(key($parents), $insertedParents)) {
+                $insertedParents [] = key($parents);
+                $childEntityValue->setValue(key($parents));
+              }
+              else {
+                $fieldItemList->removeItem($i);
+                $i--;
+              }
+            }
+            $childrenCell = [
+              "{$fieldName}_child_category" => [
+                'value' => [$value],
+                'span' => $this->getFieldSpan($fieldDefinition),
+              ],
+            ];
+            $row = $row + $childrenCell;
+            $value = $this->renderEntityReferenceField($fieldItemList);
+          }
           break;
       }
 
@@ -1030,6 +806,174 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     return $row;
+  }
+
+  /**
+   * Returns the markup for a boolean field.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
+   *
+   * @return string
+   */
+  protected function renderBooleanField(FieldItemListInterface $fieldItemList) {
+    return !empty($fieldItemList->value)
+      ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
+      : '';
+  }
+
+  /**
+   * Returns the markup for a string field.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
+   * @param bool $truncate
+   *
+   * @return string
+   */
+  protected function renderStringField(FieldItemListInterface $fieldItemList, $truncate = FALSE) {
+    $value = trim($fieldItemList->value);
+    if ($truncate === TRUE && strlen($value) > 600) {
+      $value = Unicode::truncate($value, 600) . '...';
+    }
+    return $value;
+  }
+
+  /**
+   * Returns the markup for a link field.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
+   *
+   * @return |null
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  protected function renderLinkField(FieldItemListInterface $fieldItemList) {
+    if (empty($fieldItemList->first())) {
+      return NULL;
+    }
+    if (!empty($fieldItemList->title)) {
+      return $fieldItemList->title;
+    }
+    // If title is not set, fallback to the uri.
+    return $fieldItemList->uri;
+  }
+
+  /**
+   * Returns the markup for an entity reference field. Also entity_reference_revisions
+   * fields should use this method.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
+   *
+   * @return mixed|null
+   */
+  protected function renderEntityReferenceField(FieldItemListInterface $fieldItemList) {
+    $viewBuilder = NULL;
+    $childrenView = [];
+    foreach ($fieldItemList as $childEntityValue) {
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
+      $childEntity = $childEntityValue->entity;
+      if (empty($viewBuilder)) {
+        $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
+      }
+      $childView = $viewBuilder->view($childEntity, 'teaser');
+      $childrenView[] = render($childView);
+    }
+    $list = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#items' => $childrenView,
+    ];
+    return render($list);
+  }
+
+  /**
+   * Returns the render array with the paragraph action buttons.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   * @param boolean $hasDifferences
+   * @param boolean $isNew
+   * @param boolean $isCreatedOnOtherRevision
+   * @param boolean $isDeleted
+   *
+   * @return array
+   */
+  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
+    $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
+    $routeAttributes = [
+      'node' => $this->parentNode->id(),
+      'node_revision' => $this->parentNode->getRevisionId(),
+      'field' => $this->parentFieldName,
+      'field_wrapper_id' => $fieldWrapperId,
+      'paragraph' => $paragraph->id(),
+      'paragraph_revision' => $paragraph->getRevisionId(),
+      'tab' => $this->request->query->get('tab'),
+      'form_display_mode' => $this->getSetting('form_display_mode'),
+    ];
+    $actions = [
+      '#type' => 'container',
+      '#weight' => 100,
+      '#attributes' => [
+        'class' => [
+          'paragraph-summary-component',
+          "paragraph-summary-component-actions",
+          "paragraph-summary-component-span-1",
+        ]
+      ],
+    ];
+    $buttons = [
+      '#type' => 'container',
+      '#access' => $paragraph->access('update'),
+      'edit' => [
+        '#type' => 'link',
+        '#title' => $this->t('Edit'),
+        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_edit', $routeAttributes),
+        '#access' => !$isDeleted && !$isCreatedOnOtherRevision,
+      ],
+      'delete' => [
+        '#type' => 'link',
+        '#title' => $this->t('Delete'),
+        '#url' => Url::fromRoute('iucn_assessment.modal_paragraph_delete', $routeAttributes),
+        '#access' => $this->getSetting('only_editable') == FALSE && !$isDeleted && !$isCreatedOnOtherRevision,
+      ],
+      'compare' => [
+        '#type' => 'link',
+        '#title' => $this->t('See differences'),
+        '#url' => Url::fromRoute('iucn_assessment.paragraph_diff_form', $routeAttributes),
+        '#access' => $hasDifferences && !$isDeleted && !$isCreatedOnOtherRevision,
+      ],
+      'revert' => [
+        '#type' => 'link',
+        '#title' => $this->t('Revert'),
+        '#url' => Url::fromRoute('iucn_assessment.revert_paragraph', $routeAttributes),
+        '#access' => $isDeleted,
+      ],
+      'accept' => [
+        '#type' => 'link',
+        '#title' => $this->t('Accept new row'),
+        '#prefix' => sprintf('<div class="paragraph-author">%s %s</div>', $this->t('Row added by'), $paragraph->getRevisionAuthor()->getDisplayName()),
+        '#url' => Url::fromRoute('iucn_assessment.accept_paragraph', $routeAttributes),
+        '#access' => $isCreatedOnOtherRevision,
+      ],
+    ];
+
+    foreach (Element::children($buttons) as $buttonKey) {
+      if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey]['#access'] == TRUE) {
+        /** @var \Drupal\Core\Url $url */
+        $url = $buttons[$buttonKey]['#url'];
+        $buttons[$buttonKey]['#access'] = $url->access();
+      }
+      $cssIdentifier = Html::cleanCssIdentifier($buttonKey);
+      $buttons[$buttonKey]['#attributes'] = [
+        'class' => [
+          'use-ajax',
+          'button',
+          'paragraphs-icon-button',
+          "paragraphs-icon-button-{$cssIdentifier}",
+        ],
+        'data-dialog-type' => 'modal',
+        'title' => $buttons[$buttonKey]['#title'],
+      ];
+    }
+    $actions['buttons'] = $buttons;
+    return $actions;
   }
 
   /**
@@ -1070,7 +1014,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
   /**
    * Some fields which are rendered in the same column are also grouped.
-   * (e.g. "Pollution: {field_as_benefits_pollut_trend} trend, {field_as_benefits_pollut_level} level"
+   * (e.g. "Pollution: {field_as_benefits_pollut_trend} trend,
+   * {field_as_benefits_pollut_level} level"
    *
    * @param $fieldName
    *
@@ -1111,7 +1056,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return NULL;
   }
 
-  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition) {
+  /**
+   * We are using CSS grid template to display a table and the columns need to
+   * have different widths based on the field type.
+   *
+   * @param \Drupal\Core\Field\FieldDefinitionInterface|NULL $fieldDefinition
+   *
+   * @return int
+   */
+  public function getFieldSpan(FieldDefinitionInterface $fieldDefinition = NULL) {
+    if (empty($fieldDefinition)) {
+      return 2;
+    }
     $fieldName = $fieldDefinition->getName();
     if ($fieldDefinition->getType() == 'boolean'
       || $fieldName == 'field_as_protection_rating'
@@ -1124,25 +1080,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return 2;
   }
 
-  public static function getWidgetState(array $parents, $field_name, FormStateInterface $form_state) {
-    // Fix some issues with the diff form save.
-    return parent::getWidgetState($parents, $field_name, $form_state) ?: [];
-  }
-
   /**
-   * Insert element after require key.
-   *
-   * @param array $components
-   * @param $key
-   * @param array $element
+   * @inheritdoc
    */
-  protected function insertElementAfter(&$array, $key, $element) {
-    $afterIndex = array_search($key, array_keys($array));
-    $array = array_merge(
-      array_slice($array, 0, $afterIndex + 1),
-      $element,
-      array_slice($array, $afterIndex + 1)
-    );
+  public static function getWidgetState(array $parents, $fieldName, FormStateInterface $form_state) {
+    // Fix some issues with the diff form save.
+    return parent::getWidgetState($parents, $fieldName, $form_state) ?: [];
   }
-
 }

@@ -452,6 +452,7 @@ content:
       show_numbers: 'no'
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_benefits_summary:
@@ -495,6 +496,7 @@ content:
       show_numbers: 'no'
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_projects:
@@ -510,12 +512,13 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
       show_numbers: 'no'
+      empty_message: ''
+      add_more_text: 'Add a project'
       features:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
-      empty_message: ''
-      only_editable: false
+      only_editable: 0
     third_party_settings: {  }
     region: content
   field_as_protection:
@@ -537,6 +540,7 @@ content:
         duplicate: 0
         collapse_edit_all: 0
         add_above: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_protection_ov_out_rate:
@@ -594,6 +598,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_threats_current:
@@ -615,6 +620,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_threats_current_rating:
@@ -664,6 +670,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_threats_rating:
@@ -699,6 +706,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_values_wh:
@@ -720,6 +728,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_vass_bio_state:

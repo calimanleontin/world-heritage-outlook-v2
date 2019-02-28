@@ -2,12 +2,13 @@
 
 namespace Drupal\iucn_assessment\Plugin\Access;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\ParagraphInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AssessmentAccess implements ContainerInjectionInterface {
@@ -44,4 +45,8 @@ class AssessmentAccess implements ContainerInjectionInterface {
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'change_state', $account);
   }
 
+  public function paragraphDiffAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision, $field, $field_wrapper_id, ParagraphInterface $paragraph_revision) {
+    return AccessResult::allowedIf($account->hasPermission('view assessment differences')
+      && $this->assessmentEditAccess($account, $node, $node_revision)->isAllowed());
+  }
 }
