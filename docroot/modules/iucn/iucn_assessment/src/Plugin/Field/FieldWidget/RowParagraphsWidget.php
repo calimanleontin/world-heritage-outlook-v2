@@ -204,8 +204,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   /**
    * Check if a paragraph has any differences for the rendered fields.
    *
-   * @param $paragraph_id
-   * @param $rendered_fields
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   * @param array|NULL $fieldsToCheck
    *
    * @return bool
    */
@@ -372,6 +372,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $widgetState = static::getWidgetState($element['#field_parents'], $this->parentFieldName, $form_state);
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     $this->lastProcessedParagraph = $paragraph = $widgetState['paragraphs'][$delta]['entity'];
     $element['#paragraph_id'] = $paragraph->id();
 
@@ -383,9 +384,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $element['top'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['paragraph-top']],
-      'summary' => $this->buildRow($paragraph),
-      'actions' => $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted),
     ];
+    try {
+      $element['top']['summary'] = $this->buildRow($paragraph);
+      $element['top']['actions'] = $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted);
+    }
+    catch (\Exception $e) {
+      $element['top']['summary'] = ['error' => ['value' => [$this->t('There has been an error while generating this row.')]]];
+    }
     if ($this->showDifferences === TRUE) {
       if ($hasDifferences) {
         $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
@@ -407,6 +413,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     /** @var \Drupal\Core\Entity\ContentEntityFormInterface $formObject */
     $formObject = $form_state->getFormObject();
     $this->parentNode = $formObject->getEntity();
+    $this->showDifferences = in_array($this->parentNode->field_state->value, [
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+    ]);
     $settings = json_decode($this->parentNode->field_settings->value, TRUE);
     $this->diff = !empty($settings['diff']) ? $settings['diff'] : [];
     $nodeDiff = array_column($this->diff, 'node');
@@ -419,8 +429,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $this->parentNodeInitialRevision = $this->workflowService->getPreviousWorkflowRevision($previousRevision);
     }
 
-    if (in_array($this->parentNode->field_state->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
-      $this->showDifferences = TRUE;
+    if ($this->showDifferences) {
       $items = clone $items;
 
       // Add deleted paragraphs.
@@ -544,9 +553,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns the render array for the top row.
    *
    * @return array
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function buildHeaderRow() {
     // Use the last rendered paragraph to build the header based on it's fields.
@@ -594,10 +600,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *
    * @return array
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getHeaderRow(ParagraphInterface $paragraph) {
     $header = [];
@@ -608,44 +610,49 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ];
     }
 
-    $columns = $this->buildRow($paragraph);
-    $this->numberOfColumns = array_sum(array_column($columns, 'span')) + 1;
-    foreach (array_keys($columns) as $fieldName) {
-      $fieldColumn = $this->getFieldColumn($fieldName);
-      $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
+    try {
+      $columns = $this->buildRow($paragraph);
+      $this->numberOfColumns = array_sum(array_column($columns, 'span')) + 1;
+      foreach (array_keys($columns) as $fieldName) {
+        $fieldColumn = $this->getFieldColumn($fieldName);
+        $fieldDefinition = $paragraph->getFieldDefinition($fieldName);
 
-      switch ($fieldColumn) {
-        case 'field_as_benefits_category':
-          $label = $this->t('Benefit type');
-          break;
+        switch ($fieldColumn) {
+          case 'field_as_benefits_category':
+            $label = $this->t('Benefit type');
+            break;
 
-        case 'field_as_benefits_category_child_category':
-          $label = $this->t('Specific benefits');
-          break;
+          case 'field_as_benefits_category_child_category':
+            $label = $this->t('Specific benefits');
+            break;
 
-        case 'field_as_threats_categories_child_category':
-          $label = $this->t('Subcategories');
-          break;
+          case 'field_as_threats_categories_child_category':
+            $label = $this->t('Subcategories');
+            break;
 
-        case 'field_as_threats_values_wh':
-        case 'field_as_threats_values_bio':
-          $label = $this->t('WH values');
-          break;
+          case 'field_as_threats_values_wh':
+          case 'field_as_threats_values_bio':
+            $label = $this->t('WH values');
+            break;
 
-        case 'other_information':
-          $label = $this->t('Other information');
-          break;
+          case 'other_information':
+            $label = $this->t('Other information');
+            break;
 
-        case 'negative_factors':
-          $label = $this->t('Factors negatively affecting provision of benefits');
-          break;
+          case 'negative_factors':
+            $label = $this->t('Factors negatively affecting provision of benefits');
+            break;
 
-        default:
-          $label = $fieldDefinition->getLabel();
+          default:
+            $label = $fieldDefinition->getLabel();
+        }
+
+        $header[$fieldColumn]['value'] = $label;
+        $header[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
       }
-
-      $header[$fieldColumn]['value'] = $label;
-      $header[$fieldColumn]['span'] = $this->getFieldSpan($fieldDefinition);
+    }
+    catch (\Exception $e) {
+      $header = ['error' => ['value' => [$this->t('There has been an error while generating this row.')]]];
     }
 
     $header += [
@@ -857,8 +864,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
-   * Returns the markup for an entity reference field. Also entity_reference_revisions
-   * fields should use this method.
+   * Returns the markup for an entity reference field. Also
+   * entity_reference_revisions fields should use this method.
    *
    * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
    *
@@ -888,10 +895,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns the render array with the paragraph action buttons.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   * @param boolean $hasDifferences
-   * @param boolean $isNew
-   * @param boolean $isCreatedOnOtherRevision
-   * @param boolean $isDeleted
+   * @param $hasDifferences
+   * @param $isCreatedOnOtherRevision
+   * @param $isDeleted
    *
    * @return array
    */
@@ -915,9 +921,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           'paragraph-summary-component',
           "paragraph-summary-component-actions",
           "paragraph-summary-component-span-1",
-        ]
+        ],
       ],
     ];
+    /** @var \Drupal\Core\Session\AccountInterface $paragraphAuthor */
+    $paragraphAuthor = $paragraph->getRevisionAuthor();
     $buttons = [
       '#type' => 'container',
       '#access' => $paragraph->access('update'),
@@ -948,7 +956,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       'accept' => [
         '#type' => 'link',
         '#title' => $this->t('Accept new row'),
-        '#prefix' => sprintf('<div class="paragraph-author">%s %s</div>', $this->t('Row added by'), $paragraph->getRevisionAuthor()->getDisplayName()),
+        '#prefix' => sprintf('<div class="paragraph-author">%s %s</div>', $this->t('Row added by'), $paragraphAuthor->getDisplayName()),
         '#url' => Url::fromRoute('iucn_assessment.accept_paragraph', $routeAttributes),
         '#access' => $isCreatedOnOtherRevision,
       ],
