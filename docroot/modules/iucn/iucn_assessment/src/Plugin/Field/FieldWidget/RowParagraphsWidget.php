@@ -149,7 +149,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       '#description' => $this->t('Make it impossible to add or delete paragraphs.'),
       '#default_value' => $this->getSetting('only_editable'),
     ];
-
     return $elements;
   }
 
@@ -230,35 +229,25 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return FALSE;
   }
 
+  /**
+   * Checks if the paragraph didn't exist on previous revision, but exists on
+   * the current one.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
+   */
   protected function paragraphIsNew(ParagraphInterface $paragraph) {
     return in_array($paragraph->id(), $this->getNewParagraphsIds());
   }
 
-  protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
-    if ($this->paragraphIsNew($paragraph)) {
-      return FALSE;
-    }
-    foreach ($this->diff as $vid => $diff) {
-      $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
-      if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
-        return TRUE;
-      }
-    }
-    return FALSE;
-  }
-
-  protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
-    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
-  }
-
-  protected function getParentFieldValue(NodeInterface $node = NULL, $column = 'target_id') {
-    if (empty($node)) {
-      return [];
-    }
-    $value = $node->get($this->parentFieldName)->getValue();
-    return !empty($column) ? array_column($value, $column) : $value;
-  }
-
+  /**
+   * Returns a list of paragraphs ids which did not exist on previous revision.
+   *
+   * @param \Drupal\node\NodeInterface|NULL $currentRevision
+   *
+   * @return array
+   */
   protected function getNewParagraphsIds(NodeInterface $currentRevision = NULL) {
     if (empty($currentRevision)) {
       $currentRevision = $this->parentNode;
@@ -268,12 +257,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return array_diff($currentValue, $previousValue);
   }
 
-  protected function getDeletedParagraphsIds() {
-    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
-    $currentValue = $this->getParentFieldValue($this->parentNode);
-    return array_diff($previousValue, $currentValue);
-  }
-
+  /**
+   * Returns a list with both target_id and target_revision_id for each new
+   * paragraph.
+   *
+   * @param \Drupal\node\NodeInterface|NULL $currentRevision
+   *
+   * @return array
+   */
   protected function getNewParagraphsList(NodeInterface $currentRevision = NULL) {
     $newIds = $this->getNewParagraphsIds($currentRevision);
     if (empty($newIds)) {
@@ -291,6 +282,57 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return $new;
   }
 
+  /**
+   * Checks if the paragraph has been created on another revision (for example
+   * a reviewer revision).
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
+   */
+  protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
+    if ($this->paragraphIsNew($paragraph)) {
+      // The paragraph has been already acceptedinto the actual revision.
+      return FALSE;
+    }
+    foreach ($this->diff as $vid => $diff) {
+      $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
+      if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Checks if the paragraph existed on previous revision, but doesn't exist
+   * anymore on the current one.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return bool
+   */
+  protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
+    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
+  }
+
+  /**
+   * Returns a list of paragraphs ids which were deleted.
+   *
+   * @return array
+   */
+  protected function getDeletedParagraphsIds() {
+    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
+    $currentValue = $this->getParentFieldValue($this->parentNode);
+    return array_diff($previousValue, $currentValue);
+  }
+
+  /**
+   * Returns a list with both target_id and target_revision_id for each deleted
+   * paragraph.
+   *
+   * @return array
+   */
   protected function getDeletedParagraphsList() {
     $deletedIds = $this->getDeletedParagraphsIds();
     if (empty($deletedIds)) {
@@ -309,14 +351,27 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
+   * Retrieves a entity reference revisions field value.
+   *
+   * @param \Drupal\node\NodeInterface|NULL $node
+   * @param string $column
+   *
+   * @return array|mixed
+   */
+  protected function getParentFieldValue(NodeInterface $node = NULL, $column = 'target_id') {
+    if (empty($node)) {
+      return [];
+    }
+    $value = $node->get($this->parentFieldName)->getValue();
+    return !empty($column) ? array_column($value, $column) : $value;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
-
-    $parents = $element['#field_parents'];
-    $widgetState = static::getWidgetState($parents, $this->parentFieldName, $form_state);
-
+    $widgetState = static::getWidgetState($element['#field_parents'], $this->parentFieldName, $form_state);
     $this->lastProcessedParagraph = $paragraph = $widgetState['paragraphs'][$delta]['entity'];
     $element['#paragraph_id'] = $paragraph->id();
 
@@ -324,13 +379,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $isNew = $this->paragraphIsNew($paragraph);
     $isCreatedOnOtherRevision = $this->paragraphIsCreatedOnOtherRevision($paragraph);
     $isDeleted = $this->paragraphIsDeleted($paragraph);
+
     $element['top'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['paragraph-top']],
       'summary' => $this->buildRow($paragraph),
       'actions' => $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted),
     ];
-
     if ($this->showDifferences === TRUE) {
       if ($hasDifferences) {
         $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
@@ -342,7 +397,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $element['top']['#attributes']['class'][] = 'paragraph-deleted-row';
       }
     }
-
     return $element;
   }
 
@@ -490,6 +544,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns the render array for the top row.
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function buildHeaderRow() {
     // Use the last rendered paragraph to build the header based on it's fields.
@@ -535,10 +592,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns an array containing the components for the header.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
    *
    * @return array
-   *   The components.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getHeaderRow(ParagraphInterface $paragraph) {
     $header = [];
