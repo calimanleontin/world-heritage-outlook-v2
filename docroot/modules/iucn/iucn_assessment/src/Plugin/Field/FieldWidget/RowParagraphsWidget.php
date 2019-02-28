@@ -20,7 +20,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\field\FieldConfigInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Component\Utility\Unicode;
-use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -70,6 +69,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
   /** @var array */
   protected $diff;
+
+  /** @var bool */
+  protected $showDifferences = FALSE;
 
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, RequestStack $requestStack, RouteMatchInterface $routeMatch, EntityTypeManagerInterface $entityTypeManager, AssessmentWorkflow $assessmentWorkflow) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
@@ -309,8 +311,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $this->numberOfColumns = array_sum(array_column($element['top']['summary'], 'span')) + 1;
     }
 
-    if (!in_array($this->parentNode->field_state->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])
-      || !$this->paragraphHasDifferences($this->lastProcessedParagraph)) {
+    if ($this->showDifferences == FALSE || !$this->paragraphHasDifferences($this->lastProcessedParagraph)) {
       goto returnStatement;
     }
 
@@ -345,17 +346,20 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $this->parentNodeInitialRevision = $this->workflowService->getPreviousWorkflowRevision($previousRevision);
     }
 
-    $items = clone $items;
-    $deletedParagraphs = $this->getDeletedParagraphsList();
-    $formStateStorage = $form_state->getStorage();
-    foreach ($deletedParagraphs as $item) {
-      $items->appendItem($item);
-      $formStateStorage['field_storage']['#parents']['#fields'][$this->parentFieldName]['items_count']++;
+    if (in_array($this->parentNode->field_state->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+      $this->showDifferences = TRUE;
+      $items = clone $items;
+      $deletedParagraphs = $this->getDeletedParagraphsList();
+      $formStateStorage = $form_state->getStorage();
+      foreach ($deletedParagraphs as $item) {
+        $items->appendItem($item);
+        $formStateStorage['field_storage']['#parents']['#fields'][$this->parentFieldName]['items_count']++;
+      }
+      $form_state->setStorage($formStateStorage);
     }
-    $form_state->setStorage($formStateStorage);
+
     $elements = parent::formMultipleElements($items, $form, $form_state);
     $elements[] = $this->buildHeaderRow();
-
 
     // Show deleted paragraphs.
 //
@@ -940,6 +944,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     foreach (Element::children($buttons) as $buttonKey) {
+      if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey] == TRUE) {
+        $buttons[$buttonKey]['#access'] = $buttons[$buttonKey]['#url']->access();
+      }
       $cssIdentifier = Html::cleanCssIdentifier($buttonKey);
       $buttons[$buttonKey]['#attributes'] = [
         'class' => [

@@ -83,7 +83,7 @@ iucn_assessment.revert_paragraph:
     _title: 'Revert paragraph'
     _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::revertParagraph'
   requirements:
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
   options:
     _admin_route: TRUE
     parameters:
@@ -100,7 +100,7 @@ iucn_assessment.paragraph_diff_form:
     _title: 'See differences'
     _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::paragraphDiffForm'
   requirements:
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
   options:
     _admin_route: TRUE
     parameters:

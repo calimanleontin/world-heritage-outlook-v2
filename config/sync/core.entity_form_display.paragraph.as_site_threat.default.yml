@@ -70,7 +70,7 @@ content:
     settings:
       select_title: ''
       select_label: 'Select category'
-      checkboxes_label: 'Select subcategory'
+      checkboxes_label: 'Select subcategories'
     third_party_settings: {  }
     type: assessment_options_buttons
     region: content
