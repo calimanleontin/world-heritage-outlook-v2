@@ -18,7 +18,7 @@ use Drupal\diff\Plugin\diff\Field\CoreFieldBuilder;
  *   },
  * )
  */
-class IucnStringLongDiffBuilder extends CoreFieldBuilder {
+class IucnRawValue extends CoreFieldBuilder {
 
   /**
    * {@inheritdoc}
