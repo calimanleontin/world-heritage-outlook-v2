@@ -426,7 +426,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
     else {
       $previousRevision = $this->workflowService->getPreviousWorkflowRevision($this->parentNode);
-      $this->parentNodeInitialRevision = $this->workflowService->getPreviousWorkflowRevision($previousRevision);
+      if (!empty($previousRevision)) {
+        $initialRevision = $this->workflowService->getPreviousWorkflowRevision($previousRevision);
+        $this->parentNodeInitialRevision = !empty($initialRevision)
+          ? $initialRevision
+          : $previousRevision;
+      }
     }
 
     if ($this->showDifferences) {
