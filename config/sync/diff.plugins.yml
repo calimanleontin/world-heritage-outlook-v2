@@ -149,7 +149,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_benefits_summary:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -166,7 +166,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_global_assessment_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -197,12 +197,12 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_protection_ov_out_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_protection_ov_practices:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -213,7 +213,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_protection_ov_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -241,7 +241,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_current_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -252,7 +252,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_potent_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -268,7 +268,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -289,7 +289,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_vass_bio_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -306,7 +306,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_vass_wh_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -580,12 +580,12 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_comment:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_description:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -601,7 +601,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_projects_contact:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -661,7 +661,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_threats_threat:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -688,7 +688,7 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_as_values_curr_text:
-      type: core_field_diff_builder
+      type: iucn_raw_value
       settings:
         show_header: 1
         markdown: drupal_html_to_text
@@ -833,6 +833,11 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_reference:
+      type: iucn_raw_value
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_invasive_species_names:
       type: core_field_diff_builder
       settings:
         show_header: 1
