@@ -65,7 +65,7 @@ third_party_settings:
         - group_as_projects
         - group_as_references
       parent_name: ''
-      weight: 4
+      weight: 5
       format_type: assessment_tabs
       format_settings:
         id: ''
@@ -186,7 +186,7 @@ third_party_settings:
       children:
         - field_as_key_cons
       parent_name: ''
-      weight: 3
+      weight: 4
       format_type: tab
       format_settings:
         id: ''
@@ -601,6 +601,12 @@ content:
       add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
+  field_as_site:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_as_threats_current:
     type: row_entity_reference_paragraphs
     weight: 22
@@ -772,7 +778,7 @@ content:
     type: options_select
     region: content
   field_assessment_file:
-    weight: 2
+    weight: 3
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -780,7 +786,7 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 1
+    weight: 2
     region: content
     settings:
       include_locked: true
@@ -800,7 +806,6 @@ hidden:
   field_as_end_date: true
   field_as_projects_needs: true
   field_as_references: true
-  field_as_site: true
   field_as_start_date: true
   field_as_version: true
   field_assessor: true

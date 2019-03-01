@@ -352,6 +352,19 @@ class NodeSiteAssessmentForm {
 
     self::setValidationErrors($form, $form, []);
 
+    if (empty($node->id())) {
+      // We allow users to create nodes without child paragraphs.
+      $allowedFields = ['field_as_site', 'field_assessment_file'];
+      $form = array_filter($form, function ($key) use ($allowedFields) {
+        return !preg_match('/^field\_/', $key) || in_array($key, $allowedFields);
+      }, ARRAY_FILTER_USE_KEY);
+      unset($form['#fieldgroups']);
+    }
+    else {
+      // Hide the site field because it is in the title.
+      unset($form['field_as_site']);
+    }
+
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
   }
 
