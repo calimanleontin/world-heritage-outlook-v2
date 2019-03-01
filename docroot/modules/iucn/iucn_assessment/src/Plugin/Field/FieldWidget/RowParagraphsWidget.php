@@ -483,9 +483,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
       $element['top']['#attributes']['class'][] = "paragraph-top-col-{$this->numberOfColumns}";
       foreach (Element::children($element['top']) as $topKey) {
-        if ($topKey == 'actions') {
-          continue;
-        }
         $element['top'][$topKey] = $this->buildCellsContainers($element['top'][$topKey]);
       }
     }
@@ -576,7 +573,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     // Use the last rendered paragraph to build the header based on it's fields.
     if (!empty($this->lastProcessedParagraph)) {
       $row = $this->getHeaderRow($this->lastProcessedParagraph);
-      $row += ['actions' => $this->t('Actions')];
       return [
         '#weight' => -100,
         '#delta' => -100,
@@ -591,6 +587,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             ],
           ],
           'summary' => $row,
+          'actions' => [
+            'buttons' => [
+              'value' => ['#markup' => $this->t('Actions')],
+              'span' => 1,
+            ],
+          ],
         ],
       ];
     }
@@ -672,13 +674,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     catch (\Exception $e) {
       $header = ['error' => ['value' => [$this->t('There has been an error while generating this row.')]]];
     }
-
-    $header += [
-      'actions' => [
-        'value' => $this->t('Actions'),
-        'span' => 1,
-      ],
-    ];
     return $header;
   }
 
@@ -916,13 +911,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * Returns the render array with the paragraph action buttons.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   * @param $hasDifferences
-   * @param $isCreatedOnOtherRevision
-   * @param $isDeleted
+   * @param bool $hasDifferences
+   * @param bool $isCreatedOnOtherRevision
+   * @param bool $isDeleted
    *
    * @return array
    */
-  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
+  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences = FALSE, $isCreatedOnOtherRevision = FALSE, $isDeleted = FALSE) {
     if (empty($this->parentNode) || empty($paragraph->id())) {
       return [];
     }
@@ -988,12 +983,14 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       ],
     ];
 
+    $buttonsCount = 0;
     foreach (Element::children($buttons) as $buttonKey) {
       if (!array_key_exists('#access', $buttons[$buttonKey]) || $buttons[$buttonKey]['#access'] == TRUE) {
         /** @var \Drupal\Core\Url $url */
         $url = $buttons[$buttonKey]['#url'];
         $buttons[$buttonKey]['#access'] = $url->access();
       }
+      $buttonsCount += (int) $buttons[$buttonKey]['#access'];
       $cssIdentifier = Html::cleanCssIdentifier($buttonKey);
       $buttons[$buttonKey]['#attributes'] = [
         'class' => [
@@ -1005,6 +1002,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         'data-dialog-type' => 'modal',
         'title' => $buttons[$buttonKey]['#title'],
       ];
+    }
+    if ($buttonsCount == 0) {
+      return [];
     }
     $actions['buttons'] = $buttons;
     return $actions;

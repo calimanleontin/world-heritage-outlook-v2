@@ -490,21 +490,6 @@ class NodeSiteAssessmentForm {
    */
   public static function hideParagraphsActionsFromWidget(array &$widget, $alter_colspan = TRUE) {
     $widget['add_more']['#access'] = FALSE;
-    if (!empty($widget['header']['data']['actions'])) {
-      $widget['header']['data']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$widget['header']['#attributes']['class'];
-        foreach ($classes as &$class) {
-          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
-            $col_number = $matches[1];
-            $col_class = $class;
-            $new_col_number = $col_number - 1;
-            $new_col_class = "paragraph-top-col-$new_col_number";
-            $class = $new_col_class;
-          }
-        }
-      }
-    }
     foreach ($widget as $key => &$paragraph) {
       if (!is_int($key)) {
         continue;
