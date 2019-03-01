@@ -12,6 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\field\FieldConfigInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -421,6 +422,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $this->diff = !empty($settings['diff']) ? $settings['diff'] : [];
     $nodeDiff = array_column($this->diff, 'node');
     $nodeDiff = reset($nodeDiff);
+
+    if (empty($this->parentNode->id())) {
+      $elements = parent::formMultipleElements($items, $form, $form_state);
+      unset($elements['add_more']);
+      $elements[0] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->t('This field can be completed after the node is created.'),
+      ];
+      return $elements;
+    }
+
     if (!empty($nodeDiff[$this->parentNode->id()]['initial_revision_id'])) {
       $this->parentNodeInitialRevision = $this->workflowService->getAssessmentRevision($nodeDiff[$this->parentNode->id()]['initial_revision_id']);
     }
@@ -882,6 +895,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     foreach ($fieldItemList as $childEntityValue) {
       /** @var \Drupal\Core\Entity\ContentEntityInterface $childEntity */
       $childEntity = $childEntityValue->entity;
+      if (empty($childEntity)) {
+        continue;
+      }
       if (empty($viewBuilder)) {
         $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
       }
@@ -907,6 +923,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    */
   protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
+    if (empty($this->parentNode) || empty($paragraph->id())) {
+      return [];
+    }
     $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
     $routeAttributes = [
       'node' => $this->parentNode->id(),
@@ -929,8 +948,10 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ],
       ],
     ];
-    /** @var \Drupal\Core\Session\AccountInterface $paragraphAuthor */
     $paragraphAuthor = $paragraph->getRevisionAuthor();
+    $authorName = $paragraphAuthor instanceof AccountInterface
+      ? $paragraphAuthor->getDisplayName()
+      : '';
     $buttons = [
       '#type' => 'container',
       '#access' => $paragraph->access('update'),
@@ -961,7 +982,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       'accept' => [
         '#type' => 'link',
         '#title' => $this->t('Accept new row'),
-        '#prefix' => sprintf('<div class="paragraph-author">%s %s</div>', $this->t('Row added by'), $paragraphAuthor->getDisplayName()),
+        '#prefix' => sprintf('<div class="paragraph-author">%s</div>', $this->t('Row added by %author', ['%author' => $authorName])),
         '#url' => Url::fromRoute('iucn_assessment.accept_paragraph', $routeAttributes),
         '#access' => $isCreatedOnOtherRevision,
       ],
