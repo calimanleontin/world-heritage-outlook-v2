@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.assessment_benefits_impact_trend
+id: taxonomy_term.assessment_benefits_impact_trend.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_impact_trend
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

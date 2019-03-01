@@ -2,13 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.assessment_value_state.field_css_identifier
-    - taxonomy.vocabulary.assessment_value_state
+    - taxonomy.vocabulary.theme
   module:
     - text
-id: taxonomy_term.assessment_value_state.default
+id: taxonomy_term.theme.default
 targetEntityType: taxonomy_term
-bundle: assessment_value_state
+bundle: theme
 mode: default
 content:
   description:
@@ -22,5 +21,4 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_css_identifier: true
   langcode: true
