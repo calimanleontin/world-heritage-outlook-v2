@@ -861,16 +861,6 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
- * Implements hook_ENTITY_TYPE_update().
- */
-function iucn_assessment_paragraph_update(\Drupal\paragraphs\ParagraphInterface $paragraph) {
-  if ($paragraph->isNew() || !$paragraph->isDefaultRevision()) {
-    // When a new paragraph is added, node_save is called for parent.
-    return;
-  }
-}
-
-/**
  * Implements hook_views_query_alter().
  */
 function iucn_assessment_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
