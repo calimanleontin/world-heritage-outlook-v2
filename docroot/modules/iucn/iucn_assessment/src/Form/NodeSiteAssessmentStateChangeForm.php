@@ -146,14 +146,16 @@ class NodeSiteAssessmentStateChangeForm {
   private static function validateThreat(&$form, $item) {
     if (empty($item->field_as_threats_out->value) &&
       empty($item->field_as_threats_in->value)) {
-      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> in <b>Threats</b> tab.'), 'error');
+      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>@threat</i> threat.', [
+        '@threat' => $item->field_as_threats_threat->value,
+      ]), 'error');
     }
 
     if (!empty($item->field_as_threats_in->value) &&
       $item->field_as_threats_extent->isEmpty()) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+      static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
         '@field' => t('Threat extent'),
-        '@tab' => t('Threats'),
+        '@threat' => $item->field_as_threats_threat->value,
       ]), 'error');
     }
 
@@ -161,9 +163,9 @@ class NodeSiteAssessmentStateChangeForm {
       if ($item->$key->isEmpty()
         && in_array($key, ParagraphAsSiteThreatForm::REQUIRED_DEPENDENT_FIELDS)
         && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
-        static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
           '@field' => $item->getFieldDefinition($key)->getLabel(),
-          '@tab' => t('Threats'),
+          '@threat' => $item->field_as_threats_threat->value,
         ]), 'error');
       }
     }
@@ -174,9 +176,9 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!$affectedValues) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+      static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
         '@field' => t('Affected values'),
-        '@tab' => t('Threats'),
+        '@threat' => $item->field_as_threats_threat->value,
       ]), 'error', 'field_affected_values');
     }
 
