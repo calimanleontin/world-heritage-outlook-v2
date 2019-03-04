@@ -14,6 +14,8 @@ class NodeSiteAssessmentStateChangeForm {
   use AssessmentEntityFormTrait;
 
   public static function alter(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
@@ -21,8 +23,10 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     $currentUser = \Drupal::currentUser();
 
-    self::validateNode($form, $node);
-    self::addStateChangeWarning($form, $node, $currentUser);
+    if ($workflowService->isNewAssessment($node) === FALSE) {
+      self::validateNode($form, $node);
+      self::addStateChangeWarning($form, $node, $currentUser);
+    }
     self::hideUnnecessaryFields($form);
 
     // We want to replace the core submitForm method so the node won't get saved
@@ -146,14 +150,14 @@ class NodeSiteAssessmentStateChangeForm {
   private static function validateThreat(&$form, $item) {
     if (empty($item->field_as_threats_out->value) &&
       empty($item->field_as_threats_in->value)) {
-      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>@threat</i> threat.', [
+      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>"@threat"</i> threat.', [
         '@threat' => $item->field_as_threats_threat->value,
       ]), 'error');
     }
 
     if (!empty($item->field_as_threats_in->value) &&
       $item->field_as_threats_extent->isEmpty()) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
+      static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Threat extent'),
         '@threat' => $item->field_as_threats_threat->value,
       ]), 'error');
@@ -163,7 +167,7 @@ class NodeSiteAssessmentStateChangeForm {
       if ($item->$key->isEmpty()
         && in_array($key, ParagraphAsSiteThreatForm::REQUIRED_DEPENDENT_FIELDS)
         && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
-        static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
+        static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
           '@field' => $item->getFieldDefinition($key)->getLabel(),
           '@threat' => $item->field_as_threats_threat->value,
         ]), 'error');
@@ -176,7 +180,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!$affectedValues) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required for <i>@threat</i> threat.", [
+      static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Affected values'),
         '@threat' => $item->field_as_threats_threat->value,
       ]), 'error', 'field_affected_values');
