@@ -59,27 +59,45 @@
 
 
           &.field-with-diff {
+            position: relative;
             padding-right: 60px;
+
+            .field-icon-button {
+              margin: 10px 3px !important;
+              position: absolute !important;
+              right: 0;
+              top: 0;
+              padding: 0;
+              min-width: 36px;
+              width: 36px !important;
+              height: 36px;
+              background-position: center !important;
+              background-repeat: no-repeat !important;
+              background-size: 24px 24px;
+              border-radius: 4px;
+              text-indent: -9999em;
+
+              &.field-icon-button-compare {
+                background-image: url(../images/compare.svg);
+              }
+            }
 
             &.field--widget-options-select {
               padding-right: 12px;
               select {
                 margin-right: 0;
               }
-              .field-diff-button {
+              .field-icon-button {
                 float: right;
                 margin-right: 0 !important;
                 position: relative !important;
               }
             }
 
-            .field-diff-button {
-              margin-right: 12px !important;
-            }
+
           }
           .form-item {
             width: 100%;
-            // display: table-row;
           }
 
           &[class*="-textarea"] {
@@ -118,10 +136,6 @@
 
             label {
               font-weight: normal;
-              // width: 300px;
-              // @media screen and (max-width: 1024px) {
-              //   width: 150px;
-              // }
             }
           }
           label {
@@ -201,12 +215,6 @@
 
       .form-textarea-wrapper {
         padding: 10px 12px;
-      }
-
-      .button.paragraphs-icon-button {
-        &.field-diff-button {
-          margin-right: 12px !important;
-        }
       }
     }
   }

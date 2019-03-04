@@ -578,9 +578,8 @@ class NodeSiteAssessmentForm {
         'class' => [
           'use-ajax',
           'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-compare',
-          'field-diff-button',
+          'field-icon-button',
+          'field-icon-button-compare',
         ],
         'data-dialog-type' => 'modal',
         'title' => t('See differences'),
