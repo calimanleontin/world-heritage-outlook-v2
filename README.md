@@ -24,11 +24,10 @@ Workflow is the following:
 
 # Testing
 
-Running tests from the CLI scenarios:
+1. copy docroot/core/phpunit.xml.dist to docroot/core/phpunit.xml
 
-```
-# Run tests
+2. edit docroot/core/phpunit.xml according to your needs
 
-## Run specific test method
-../bin/run-test.sh --class Drupal\\iucn_assessment\\Tests\\WorkflowTest::testAssessmentWorkflowAccess
-```
+3. run `../vendor/bin/phpunit --configuration core --group iucn_assessment_forms`
+   or `../vendor/bin/phpunit --configuration core modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php`
+
