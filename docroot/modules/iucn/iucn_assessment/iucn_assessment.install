@@ -228,6 +228,7 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
     ]);
   }
   $logger->info("Migrated references for assessment: {$node->getTitle()}");
+  $logger->info("Memory usage: " . round(memory_get_usage()/1048576,2) . "MB");
 }
 
 /**
