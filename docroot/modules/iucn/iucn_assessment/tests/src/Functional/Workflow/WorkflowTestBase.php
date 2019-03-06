@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests\Workflow;
+namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
-use Drupal\iucn_assessment\Tests\IucnAssessmentTestBase;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 
 class WorkflowTestBase extends IucnAssessmentTestBase {
 
@@ -25,7 +25,7 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
   public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
     $this->userLogIn($user);
     $this->drupalGet($url);
-    $this->assertResponse($expectedResponseCode, "User {$user} tries to access {$url->toString()} and the HTTP response code should be {$expectedResponseCode}.");
+    $this->assertResponse($expectedResponseCode);
   }
 
 }

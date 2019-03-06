@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests\Form;
+namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
-use Drupal\iucn_assessment\Tests\IucnAssessmentTestBase;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\iucn_assessment\Tests\TestSupport;
+use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
+use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\taxonomy\Entity\Term;
 

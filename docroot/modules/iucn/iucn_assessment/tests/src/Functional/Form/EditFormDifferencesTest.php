@@ -1,12 +1,11 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests\Form;
+namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\iucn_assessment\Tests\IucnAssessmentTestBase;
-use Drupal\iucn_assessment\Tests\TestSupport;
-use Drupal\iucn_assessment\Tests\Workflow\WorkflowTestBase;
+use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
+use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\node\Entity\Node;
 
 /**

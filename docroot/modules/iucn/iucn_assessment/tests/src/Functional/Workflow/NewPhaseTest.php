@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests\Workflow;
+namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\iucn_assessment\Tests\TestSupport;
+use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
  * @group iucn_assessment_workflow

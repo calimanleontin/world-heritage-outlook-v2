@@ -1,10 +1,9 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests;
+namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;

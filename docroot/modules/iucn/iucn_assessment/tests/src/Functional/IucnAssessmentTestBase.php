@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests;
+namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\node\NodeInterface;
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewTestData;
 
 /**
  * Base for Assessment Tests.
  */
-abstract class IucnAssessmentTestBase extends WebTestBase {
+abstract class IucnAssessmentTestBase extends BrowserTestBase {
 
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
@@ -22,6 +22,9 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
 
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface */
   protected $entityFieldManager;
+
+  /** @var CurrentRouteMatch */
+  protected $routeMatch;
 
   /**
    * Array with all fields rendered on each tab.
@@ -101,6 +104,7 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
     $this->entityFieldManager = $this->container->get('entity_field.manager');
     $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
     $this->entityDefinitionUpdateManager->applyUpdates();
+    $this->routeMatch = $this->container->get('current_route_match');
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createTestData();
   }
@@ -138,7 +142,7 @@ abstract class IucnAssessmentTestBase extends WebTestBase {
    */
   protected function userLogIn($mail) {
     $user = user_load_by_mail($mail);
-    $user->pass_raw = 'password';
+    $user->passRaw = 'password';
     $this->drupalLogin($user);
   }
 

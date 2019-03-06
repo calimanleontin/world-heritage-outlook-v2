@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\iucn_assessment\Tests\Workflow;
+namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\iucn_assessment\Tests\TestSupport;
+use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
  * Includes following phases:
@@ -131,10 +131,15 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::IUCN_MANAGER);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_PUBLISHED]);
 
-    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 302);
+    $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
+    $redirected = $this->getUrl() == $stateChangeUrl->toString();
+    $this->assertTrue($redirected, 'The user was redirected to the state change page.');
     $this->assertText('Current workflow state: Published');
+
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 302);
+    $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
+    $redirected = $this->getUrl() == $stateChangeUrl->toString();
+    $this->assertTrue($redirected, 'The user was redirected to the state change page.');
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::COORDINATOR1, 403);
