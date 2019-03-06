@@ -75,7 +75,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REVIEWER2, 403);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Under comparison');
+    $this->assertSession()->pageTextContains('Current workflow state: Under comparison');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
@@ -94,7 +94,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_REVIEWING_REFERENCES]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Reviewing references');
+    $this->assertSession()->pageTextContains('Current workflow state: Reviewing references');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
@@ -113,7 +113,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_APPROVED]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Approved');
+    $this->assertSession()->pageTextContains('Current workflow state: Approved');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
@@ -134,7 +134,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $redirected = $this->getUrl() == $stateChangeUrl->toString();
     $this->assertTrue($redirected, 'The user was redirected to the state change page.');
-    $this->assertText('Current workflow state: Published');
+    $this->assertSession()->pageTextContains('Current workflow state: Published');
 
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
@@ -156,7 +156,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_DRAFT]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Draft');
+    $this->assertSession()->pageTextContains('Current workflow state: Draft');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

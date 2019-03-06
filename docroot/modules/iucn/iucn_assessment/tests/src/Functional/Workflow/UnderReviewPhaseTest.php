@@ -36,7 +36,7 @@ class UnderReviewPhaseTest extends WorkflowTestBase {
     ], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Under review');
+    $this->assertSession()->pageTextContains('Current workflow state: Under review');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

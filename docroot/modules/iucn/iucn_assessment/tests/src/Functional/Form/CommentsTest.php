@@ -104,9 +104,9 @@ class CommentsTest extends IucnAssessmentTestBase {
       $comment_text = 'test comment ' . $tab;
       $url = $assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]);
       $this->drupalPostForm($url, ["comment_$tab" => $comment_text], t('Save'));
-      $this->assertRaw('has been updated.');
+      $this->assertSession()->responseContains('has been updated.');
       $this->drupalGet($url);
-      $this->assertText($comment_text);
+      $this->assertSession()->pageTextContains($comment_text);
     }
   }
 }

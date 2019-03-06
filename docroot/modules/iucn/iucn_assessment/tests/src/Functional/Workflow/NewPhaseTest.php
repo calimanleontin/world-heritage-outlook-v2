@@ -19,7 +19,7 @@ class NewPhaseTest extends WorkflowTestBase {
     $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: New');
+    $this->assertSession()->pageTextContains('Current workflow state: New');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

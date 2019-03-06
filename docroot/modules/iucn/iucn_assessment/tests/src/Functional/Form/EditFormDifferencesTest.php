@@ -7,6 +7,7 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\node\Entity\Node;
+use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
 /**
  * @group iucn_assessment_forms
@@ -102,7 +103,7 @@ class EditFormDifferencesTest extends IucnAssessmentTestBase {
       }
       $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
       $actualDifferences = substr_count($this->getTextContent(), 'See differences');
-      $this->assertEqual($expectedDifferences[$tab], $actualDifferences, "Expected {$expectedDifferences[$tab]} differences on \"{$tab}\" tab, {$actualDifferences} found.");
+      $this->assertEquals($expectedDifferences[$tab], $actualDifferences, "Expected {$expectedDifferences[$tab]} differences on \"{$tab}\" tab, {$actualDifferences} found.");
     }
   }
 

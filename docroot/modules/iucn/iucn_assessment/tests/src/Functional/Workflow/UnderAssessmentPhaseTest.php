@@ -24,7 +24,7 @@ class UnderAssessmentPhaseTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertText('Current workflow state: Under assessment');
+    $this->assertSession()->pageTextContains('Current workflow state: Under assessment');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

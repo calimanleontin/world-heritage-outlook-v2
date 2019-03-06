@@ -25,7 +25,7 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
   public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
     $this->userLogIn($user);
     $this->drupalGet($url);
-    $this->assertResponse($expectedResponseCode);
+    $this->assertSession()->statusCodeEquals($expectedResponseCode);
   }
 
 }
