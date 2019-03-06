@@ -237,7 +237,7 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
  *  Fix broken values references.
  *  Delete all protection management paragraphs with no values.
  */
-function iucn_assessment_update_8003() {
+function _iucn_assessment_update_nodes(array $nodesIds) {
   $logger = \Drupal::logger('iucn_assessment');
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
   $workflow_service = \Drupal::service('iucn_assessment.workflow');
@@ -245,15 +245,6 @@ function iucn_assessment_update_8003() {
   /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
   $nodeStorage = $entityTypeManager->getStorage('node');
   $paragraphStorage = $entityTypeManager->getStorage('paragraph');
-
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
 
   foreach ($nodesIds as $nid) {
     $node = Node::load($nid);
@@ -324,32 +315,59 @@ function iucn_assessment_update_8003() {
   }
 }
 
+function _iucn_assessment_update_get_assessments($start, $length) {
+  return \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+    ->condition('type', 'site_assessment')
+    ->sort('nid')
+    ->range($start, $length)
+    ->execute();
+}
+
 /**
- * Make sure the 8003 update finished successfully.
+ * We split the update function in multiple ones because of memory issues.
+ */
+function iucn_assessment_update_8003() {
+  $nodesIds = _iucn_assessment_update_get_assessments(0, 100);
+  _iucn_assessment_update_nodes($nodesIds);
+}
+
+/**
+ * Update assessments 100->200.
  */
 function iucn_assessment_update_8004() {
-  $entityTypeManager = \Drupal::entityTypeManager();
-  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
-  $nodeStorage = $entityTypeManager->getStorage('node');
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
-  if (!empty($nodesIds)) {
-    // Run the update again because it failed.
-    drupal_set_installed_schema_version('iucn_assessment', 8002);
-  }
+  $nodesIds = _iucn_assessment_update_get_assessments(100, 100);
+  _iucn_assessment_update_nodes($nodesIds);
+}
+
+/**
+ * Update assessments 200->300.
+ */
+function iucn_assessment_update_8005() {
+  $nodesIds = _iucn_assessment_update_get_assessments(200, 100);
+  _iucn_assessment_update_nodes($nodesIds);
+}
+
+/**
+ * Update assessments 300->400.
+ */
+function iucn_assessment_update_8006() {
+  $nodesIds = _iucn_assessment_update_get_assessments(300, 100);
+  _iucn_assessment_update_nodes($nodesIds);
+}
+
+/**
+ * Update assessments 400->last one.
+ */
+function iucn_assessment_update_8007() {
+  $nodesIds = _iucn_assessment_update_get_assessments(400, 100000);
+  _iucn_assessment_update_nodes($nodesIds);
 }
 
 /**
  * Set 2014 and 2017 cycles as "created".
  * Create 2020 assessments.
  */
-function iucn_assessment_update_8005() {
+function iucn_assessment_update_8008() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
   \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
   \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
