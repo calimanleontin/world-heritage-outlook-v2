@@ -33,9 +33,6 @@ class ParagraphAsSiteThreatForm {
       1388, // Other biological resource use
       1433, // Non-timber forest products (NTFPs)
     ],
-    'field_as_species_name' => [
-      1395, // Invasive Non-Native/ Alien Species
-    ],
     'field_invasive_species_names' => [
       1395, // Invasive Non-Native/ Alien Species
       1396, // Hyper-Abundant Species
@@ -46,7 +43,6 @@ class ParagraphAsSiteThreatForm {
 
   const REQUIRED_DEPENDENT_FIELDS = [
     'field_as_legality',
-    'field_as_species_name',
   ];
 
   public static function alter(array &$form, FormStateInterface $form_state) {

@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.paragraph.as_site_threat.field_as_description
     - field.field.paragraph.as_site_threat.field_as_legality
-    - field.field.paragraph.as_site_threat.field_as_species_name
     - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
     - field.field.paragraph.as_site_threat.field_as_threats_extent
@@ -135,7 +134,6 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_as_legality: true
-  field_as_species_name: true
   field_as_targeted_species: true
   field_as_threats_threat: true
   field_as_threats_values_bio: true

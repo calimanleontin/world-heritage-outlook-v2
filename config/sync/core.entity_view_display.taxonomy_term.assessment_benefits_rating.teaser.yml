@@ -1,0 +1,18 @@
+uuid: ff85662a-b4bb-4249-b6e9-d8bd662efd2d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.assessment_benefits_rating
+id: taxonomy_term.assessment_benefits_rating.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_rating
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

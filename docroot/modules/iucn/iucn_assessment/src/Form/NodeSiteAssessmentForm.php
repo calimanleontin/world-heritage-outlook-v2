@@ -273,10 +273,12 @@ class NodeSiteAssessmentForm {
           $paragraph = Paragraph::load($fieldAsProtectionWidget[$child]['#paragraph_id']);
           /** @var \Drupal\taxonomy\TermInterface $protectionTopic */
           $protectionTopic = $paragraph->field_as_protection_topic->entity;
-          $fieldAsProtectionWidget[$child]['#delta']
-            = $fieldAsProtectionWidget[$child]['#weight']
-            = $fieldAsProtectionWidget[$child]['_weight']['#default_value']
-            = $protectionTopic->getWeight();
+          if (empty($protectionTopic)) {
+            continue;
+          }
+          $fieldAsProtectionWidget[$child]['#delta'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['#weight'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['_weight']['#default_value'] = $protectionTopic->getWeight();
         }
 
         $fieldAsProtectionBestPracticeWidget = &$form['field_as_protection_ov_practices']['widget'][0];
@@ -349,6 +351,19 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    if (empty($node->id())) {
+      // We allow users to create nodes without child paragraphs.
+      $allowedFields = ['field_as_site', 'field_assessment_file'];
+      $form = array_filter($form, function ($key) use ($allowedFields) {
+        return !preg_match('/^field\_/', $key) || in_array($key, $allowedFields);
+      }, ARRAY_FILTER_USE_KEY);
+      unset($form['#fieldgroups']);
+    }
+    else {
+      // Hide the site field because it is in the title.
+      unset($form['field_as_site']);
+    }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
   }
@@ -473,38 +488,11 @@ class NodeSiteAssessmentForm {
    * @param bool $alter_colspan
    *   Is the colspan of the table altered.
    */
-  public static function hideParagraphsActionsFromWidget(array &$widget, $alter_colspan = TRUE) {
+  public static function hideParagraphsActionsFromWidget(array &$widget) {
     $widget['add_more']['#access'] = FALSE;
-    if (!empty($widget['header']['data']['actions'])) {
-      $widget['header']['data']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$widget['header']['#attributes']['class'];
-        foreach ($classes as &$class) {
-          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
-            $col_number = $matches[1];
-            $col_class = $class;
-            $new_col_number = $col_number - 1;
-            $new_col_class = "paragraph-top-col-$new_col_number";
-            $class = $new_col_class;
-          }
-        }
-      }
-    }
-    foreach ($widget as $key => &$paragraph) {
-      if (!is_int($key)) {
-        continue;
-      }
-      $paragraph['top']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$paragraph['top']['#attributes']['class'];
-        if (!empty($new_col_class)) {
-          foreach ($classes as &$class) {
-            if ($class == $col_class) {
-              $class = $new_col_class;
-            }
-          }
-        }
-      }
+    foreach (Element::children($widget) as $child) {
+      unset($widget[$child]['top']['actions']);
+      unset($widget[$child]['top']['summary']['actions']);
     }
   }
 
@@ -550,29 +538,23 @@ class NodeSiteAssessmentForm {
 
   public static function getFieldDiffButton(NodeInterface $node, $field) {
     return [
-      '#type' => 'submit',
-      '#value' => 'See differences',
+      '#type' => 'link',
+      '#title' => t('See differences'),
       '#weight' => 2,
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
-          'node' => $node->id(),
-          'node_revision' => $node->getRevisionId(),
-          'field' => $field,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
+      '#url' => Url::fromRoute('iucn_assessment.field_diff_form', [
+        'node' => $node->id(),
+        'node_revision' => $node->getRevisionId(),
+        'field' => $field,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
+      ]),
       '#attributes' => [
         'class' => [
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-compare',
           'use-ajax',
-          'field-diff-button',
+          'button',
+          'field-icon-button',
+          'field-icon-button-compare',
         ],
+        'data-dialog-type' => 'modal',
         'title' => t('See differences'),
       ],
     ];

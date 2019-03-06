@@ -1,0 +1,25 @@
+uuid: 0482104c-c1d7-4af3-af23-4ecd005eae5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.unesco_region
+  module:
+    - text
+id: taxonomy_term.unesco_region.default
+targetEntityType: taxonomy_term
+bundle: unesco_region
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

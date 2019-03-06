@@ -1,0 +1,24 @@
+uuid: f74692b4-4f70-4c25-a22b-2b5eeb69d5f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.inscription_criteria.field_description
+    - field.field.taxonomy_term.inscription_criteria.field_title
+    - field.field.taxonomy_term.inscription_criteria.field_type
+    - taxonomy.vocabulary.inscription_criteria
+id: taxonomy_term.inscription_criteria.teaser
+targetEntityType: taxonomy_term
+bundle: inscription_criteria
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_description: true
+  field_title: true
+  field_type: true
+  langcode: true

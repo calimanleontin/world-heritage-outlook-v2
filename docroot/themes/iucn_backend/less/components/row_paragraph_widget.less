@@ -29,14 +29,35 @@
     // overflow-x: scroll;
   }
   .paragraph-summary-component {
+    position: relative;
     font-size: .9em;
     grid-row: 1 / span 1;
-    padding: 10px 12px;
+    padding: 5px;
     &:not(:last-child) {
       border-right: 1px solid rgb(230, 228, 223);
     }
+    .group-label {
+      font-weight: bold;
+      &:not(:first-child) {
+        margin-top: 1em;
+      }
+    }
     select {
       font-size: 1em;
+    }
+    ul {
+      li {
+        list-style-type: none;
+        margin-left: 0;
+        margin-bottom: 1em;
+      }
+    }
+    &.paragraph-summary-component-negative_factors {
+      ul {
+        li {
+          margin-bottom: 0;
+        }
+      }
     }
   }
   .field-multiple-drag {
@@ -82,38 +103,59 @@
         grid-template-columns: repeat(@i - 1, minmax(6.5rem, 1fr)) 150px;
       }
     }
-
     .paragraph-columns(@i - 1);
-
   }
-
   .paragraph-columns(39);
 
-  .paragraph-summary-component-field {
-    column-span: 1;
-  }
-  .paragraphs-actions {
-    flex-wrap: wrap;
-    grid-column: -2 / span 1 !important;
-    justify-self: normal !important;
-    margin-left: -5px;
-    margin-top: -5px;
+  .paragraphs-icon-button {
+    padding: 0;
+    min-width: 36px;
+    width: 36px !important;
+    height: 36px;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: 24px 24px;
+    border-radius: 4px;
+    text-indent: -9999em;
+    margin: 0 5px 0 0;
+    position: relative;
 
-    input[type="submit"]:first-child,
-    > .button {
-      margin-left: 5px;
-      margin-top: 5px;
+    &.paragraphs-icon-button-edit {
+      background-image: url("../images/icon-edit.svg");
     }
-
-
+    &.paragraphs-icon-button-delete {
+      background-image: url("../images/icon-delete.svg") !important;
+    }
+    &.paragraphs-icon-button-compare {
+      background-image: url(../images/compare.svg);
+    }
+    &.paragraphs-icon-button-revert {
+      background-image: url("../images/icon-revert.svg") !important;
+    }
+    &.paragraphs-icon-button-accept {
+      background-image: url("../images/icon-accept.svg") !important;
+    }
   }
+
+  .ajax-progress {
+    position: absolute;
+    z-index: 99999999;
+    display: block;
+    top: 14px;
+    left: calc(50% - 10px);
+  }
+
+  .paragraphs-add-more-button {
+    margin: .75em 0 0 .75em!important;
+  }
+
   .paragraph-header {
     font-weight: bold;
     .paragraph-summary-component {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .paragraphs-actions {
+    .paragraph-summary-component-actions {
       margin-left: 0;
       margin-top: 0;
 
@@ -171,7 +213,7 @@
   }
   .paragraph-diff-row {
     background-color: #fcfcfa !important;
-    .paragraphs-actions {
+    .paragraph-summary-component-actions {
       background-color: #fcfcfa !important;
     }
   }
@@ -187,7 +229,7 @@
   .field--widget-row-entity-reference-paragraphs {
     position: relative;
     .paragraph-summary-component.processed {
-      .paragraphs-actions {
+      .paragraph-summary-component-actions {
         align-items: flex-start;
         background: #fcfcfa;
         border-left: 1px solid #dddddd;
@@ -209,7 +251,7 @@
     }
     .paragraph-header {
       .paragraph-summary-component.processed {
-        .paragraphs-actions {
+        .paragraph-summary-component-actions {
           border-top-color: #bfbfba;
           justify-content: center;
           right: 0;
@@ -260,15 +302,21 @@
 .field--widget-row-entity-reference-paragraphs>.raw-paragraphs-tabs-wrapper>.form-item>.clearfix>input[type="submit"] {
   margin: 10px;
 }
+.paragraph-diff-row {
+  background-color: #fcf8e3 !important;
+  .paragraph-summary-component-actions {
+    background-color: #fcf8e3 !important;
+  }
+}
 .paragraph-deleted-row {
   background-color: #ffaaaa !important;
-  .paragraphs-actions {
+  .paragraph-summary-component-actions {
     background-color: #ffaaaa !important;
   }
 }
 .paragraph-new-row {
   background-color: #77f177 !important;
-  .paragraphs-actions {
+  .paragraph-summary-component-actions {
     background-color: #77f177 !important;
   }
 }
@@ -278,15 +326,8 @@
 .paragraph-summary-component {
   hyphens: auto;
   overflow: hidden;
-  word-break: break-word;
   &.paragraph-summary-component-field_as_protection_topic {
     overflow: visible;
-  }
-}
-.paragraph-diff-row {
-  background-color: #fcf8e3 !important;
-  .paragraphs-actions {
-    background-color: #fcf8e3 !important;
   }
 }
 #drupal-modal {

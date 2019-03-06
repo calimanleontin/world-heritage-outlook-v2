@@ -55,7 +55,26 @@
   font-weight: normal;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
+  position: relative;
   padding-right: 60px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button {
+  margin: 10px 3px !important;
+  position: absolute !important;
+  right: 0;
+  top: 0;
+  padding: 0;
+  min-width: 36px;
+  width: 36px !important;
+  height: 36px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px;
+  border-radius: 4px;
+  text-indent: -9999em;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare {
+  background-image: url(../images/compare.svg);
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
   padding-right: 12px;
@@ -63,13 +82,10 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select {
   margin-right: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-diff-button {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button {
   float: right;
   margin-right: 0 !important;
   position: relative !important;
-}
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-diff-button {
-  margin-right: 12px !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
@@ -178,50 +194,6 @@
 }
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
   padding: 10px 12px;
-}
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .button.paragraphs-icon-button.field-diff-button {
-  margin-right: 12px !important;
-}
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (max-width: 768px) {
-  .button.paragraphs-icon-button.paragraphs-icon-button-compare {
-    background-image: url(../images/compare.svg);
-  }
-}
-.button.paragraphs-icon-button.paragraphs-icon-button-compare {
-  background-image: url(../images/compare.svg);
-}
-.button.paragraphs-icon-button {
-  padding: 0;
-  min-width: 36px;
-  width: 36px !important;
-  height: 36px;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: 24px 24px;
-  border-radius: 4px;
-  text-indent: -9999em;
-}
-.button.paragraphs-icon-button-edit,
-.button.paragraphs-icon-button-edit:active,
-.button.paragraphs-icon-button-edit:hover,
-.button.paragraphs-icon-button-edit:focus {
-  background-image: url("../images/icon-edit.svg");
-}
-.paragraphs-icon-delete {
-  background-image: url("../images/icon-delete.svg") !important;
-}
-.paragraphs-icon-button-revert {
-  background-image: url("../images/icon-revert.svg") !important;
-}
-.paragraphs-icon-button-accept {
-  background-image: url("../images/icon-accept.svg") !important;
-}
-.paragraphs-add-more-button {
-  margin: .75em 0 0 .75em!important;
 }
 .node-site-assessment-edit-form .current-state,
 .node-site-assessment-state-change-form .current-state {
@@ -767,15 +739,30 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   background-color: #fcfcfa;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
+  position: relative;
   font-size: .9em;
   grid-row: 1 / span 1;
-  padding: 10px 12px;
+  padding: 5px;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
   border-right: 1px solid #e6e4df;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label:not(:first-child) {
+  margin-top: 1em;
+}
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component ul li {
+  list-style-type: none;
+  margin-left: 0;
+  margin-bottom: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-negative_factors ul li {
+  margin-bottom: 0;
 }
 .field--widget-row-entity-reference-paragraphs .field-multiple-drag {
   border-right: 1px solid #e6e4df;
@@ -1121,20 +1108,43 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
     grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
   }
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-field {
-  column-span: 1;
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button {
+  padding: 0;
+  min-width: 36px;
+  width: 36px !important;
+  height: 36px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px;
+  border-radius: 4px;
+  text-indent: -9999em;
+  margin: 0 5px 0 0;
+  position: relative;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions {
-  flex-wrap: wrap;
-  grid-column: -2 / span 1 !important;
-  justify-self: normal !important;
-  margin-left: -5px;
-  margin-top: -5px;
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-edit {
+  background-image: url("../images/icon-edit.svg");
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions input[type="submit"]:first-child,
-.field--widget-row-entity-reference-paragraphs .paragraphs-actions > .button {
-  margin-left: 5px;
-  margin-top: 5px;
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-delete {
+  background-image: url("../images/icon-delete.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare {
+  background-image: url(../images/compare.svg);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-revert {
+  background-image: url("../images/icon-revert.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-accept {
+  background-image: url("../images/icon-accept.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .ajax-progress {
+  position: absolute;
+  z-index: 99999999;
+  display: block;
+  top: 14px;
+  left: calc(40%);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-add-more-button {
+  margin: .75em 0 0 .75em!important;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-header {
   font-weight: bold;
@@ -1143,11 +1153,11 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions {
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions {
   margin-left: 0;
   margin-top: 0;
 }
-.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraphs-actions .inner {
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions .inner {
   justify-content: center;
   right: 0;
 }
@@ -1245,7 +1255,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .diff-modal .paragraph-diff-row {
   background-color: #fcfcfa !important;
 }
-.diff-modal .paragraph-diff-row .paragraphs-actions {
+.diff-modal .paragraph-diff-row .paragraph-summary-component-actions {
   background-color: #fcfcfa !important;
 }
 .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
@@ -1258,7 +1268,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .js .field--widget-row-entity-reference-paragraphs {
   position: relative;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraph-summary-component-actions {
   align-items: flex-start;
   background: #fcfcfa;
   border-left: 1px solid #dddddd;
@@ -1275,7 +1285,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   top: auto;
   z-index: 1;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
   border-top-color: #bfbfba;
   justify-content: center;
   right: 0;
@@ -1320,16 +1330,22 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs > .raw-paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
   margin: 10px;
 }
+.paragraph-diff-row {
+  background-color: #fcf8e3 !important;
+}
+.paragraph-diff-row .paragraph-summary-component-actions {
+  background-color: #fcf8e3 !important;
+}
 .paragraph-deleted-row {
   background-color: #ffaaaa !important;
 }
-.paragraph-deleted-row .paragraphs-actions {
+.paragraph-deleted-row .paragraph-summary-component-actions {
   background-color: #ffaaaa !important;
 }
 .paragraph-new-row {
   background-color: #77f177 !important;
 }
-.paragraph-new-row .paragraphs-actions {
+.paragraph-new-row .paragraph-summary-component-actions {
   background-color: #77f177 !important;
 }
 .paragraph-author {
@@ -1338,16 +1354,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-summary-component {
   hyphens: auto;
   overflow: hidden;
-  word-break: break-word;
 }
 .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
   overflow: visible;
-}
-.paragraph-diff-row {
-  background-color: #fcf8e3 !important;
-}
-.paragraph-diff-row .paragraphs-actions {
-  background-color: #fcf8e3 !important;
 }
 #drupal-modal {
   padding: 0;
@@ -1507,6 +1516,9 @@ table.diff-context-wrapper {
   position: relative;
   vertical-align: top;
 }
+.diff-modal table.diff-table > tbody > tr > td.diff-deletedline {
+  line-height: 45px;
+}
 .diff-modal table.diff-table > tbody > tr > td input[type="text"],
 .diff-modal table.diff-table > tbody > tr > td textarea,
 .diff-modal table.diff-table > tbody > tr > td select {
@@ -1555,33 +1567,6 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button p {
   font-size: 0.8em;
   margin: 0;
-}
-.field-diff-button {
-  margin: 10px 3px !important;
-  position: absolute !important;
-  right: 0;
-  top: 0;
-}
-.overall-row > div {
-  position: relative;
-}
-.field-with-diff {
-  position: relative;
-}
-.field-with-diff .form-textarea-wrapper {
-  background-color: #fcf8e3;
-}
-.field-with-diff > div > select {
-  margin-right: 30px;
-}
-.diff-marker {
-  width: 1px;
-}
-.field-with-diff.field--type-entity-reference {
-  background-color: #fcf8e3;
-}
-.field-with-diff#edit-field-as-references-wrapper {
-  background-color: #fcf8e3;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
@@ -1692,7 +1677,7 @@ table.diff-context-wrapper {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraphs-actions {
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
   background-color: #ececec;
 }
 .views-field-operations .dropbutton a {

@@ -132,9 +132,6 @@ class AssessmentWorkflow {
         case self::STATUS_READY_FOR_REVIEW:
         case self::STATUS_UNDER_COMPARISON:
         case self::STATUS_REVIEWING_REFERENCES:
-        case self::STATUS_APPROVED:
-        case self::STATUS_PUBLISHED:
-        case self::STATUS_DRAFT:
           // Assessments can only be edited by their coordinator.
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;

@@ -2,9 +2,13 @@
 
 namespace Drupal\iucn_assessment\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'assessment_options_buttons' widget.
@@ -18,7 +22,26 @@ use Drupal\Core\Form\FormStateInterface;
  *   multiple_values = TRUE
  * )
  */
-class AsOptionsButtonsWidget extends OptionsWidgetBase {
+class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFactoryPluginInterface {
+
+  /** @var \Drupal\taxonomy\TermStorageInterface */
+  protected $termStorage;
+
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * The main terms.
@@ -26,20 +49,6 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    * @var array
    */
   protected $groups;
-
-  /**
-   * Groups with no children.
-   *
-   * @var array
-   */
-  protected $empty_groups;
-
-  /**
-   * The parent node.
-   *
-   * @var \Drupal\Node\NodeInterface
-   */
-  protected $parentNode;
 
   /**
    * {@inheritdoc}
@@ -72,6 +81,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       '#title' => $this->t('Checkboxes label'),
       '#default_value' => $this->getSetting('checkboxes_label'),
     ];
+
     return $elements;
   }
 
@@ -92,6 +102,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     if (!empty($select_label)) {
       $summary[] = $this->t('Select label: @select_label', ['@select_label' => $select_label]);
     }
+
     return $summary;
   }
 
@@ -111,11 +122,11 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         $value = $states[$item["#return_value"]];
       }
       $id = explode('--', $element['options_groups']['#id']);
-      $element[$key]['#states'] = array(
-        'visible' => array(
-          ':input[data-drupal-selector="' . $id[0] . '"]' => array('value' => $value),
-        ),
-      );
+      $element[$key]['#states'] = [
+        'visible' => [
+          ':input[data-drupal-selector="' . $id[0] . '"]' => ['value' => $value],
+        ],
+      ];
     }
 
     $parents = $element['#field_parents'];
@@ -123,27 +134,14 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $field_state = static::getWidgetState($parents, $field_name, $form_state);
     $field_state['array_parents'] = $element['#array_parents'];
     static::setWidgetState($parents, $field_name, $form_state, $field_state);
+
     return $element;
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function isHiddenTerm($tid) {
-    $moduleHandler = \Drupal::service('module_handler');
-    if (!$moduleHandler->moduleExists('iucn_fields')) {
-      return FALSE;
-    }
-    /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
-    $term_alter_service = \Drupal::service('iucn_fields.term_alter');
-    return $term_alter_service->isTermHiddenForYear($tid, $this->parentNode->field_as_cycle->value);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $this->parentNode = \Drupal::routeMatch()->getParameter('node');
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $all_options = $this->getOptions($items->getEntity());
     $this->groups = [];
@@ -151,20 +149,27 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     $options = [0 => ''];
     $states = [];
     $current_id = NULL;
-    $this->empty_groups = [];
+    $last_parent_title = '';
+
     foreach ($all_options as $tid => $title) {
-      if ($this->isHiddenTerm($tid)) {
+      // Hidden child term.
+      if ($title == '-') {
         continue;
       }
+
       $options[$tid] = $title;
-      if (strpos($title, '-') === FALSE) {
+      if ($this->isParentTerm($tid)) {
         $current_id = $tid;
-        $this->groups[$tid] = $title;
-        $this->empty_groups[$tid] = $tid;
+        $last_parent_title = $title;
       }
       else {
+        // Hidden parent term so we ignore the child.
+        if ($last_parent_title == '') {
+          continue;
+        }
+        // At least one child was found for a parent category, we can now list it as an option.
+        $this->groups[$current_id] = $last_parent_title;
         $states[$tid] = $current_id;
-        unset($this->empty_groups[$current_id]);
       }
       $options[$tid] = ltrim($title, '-');
     }
@@ -195,7 +200,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
       $default_value = reset($selected);
     }
     $element['#title'] = '';
-    $element['options_groups'] = array(
+    $element['options_groups'] = [
       '#type' => 'select',
       '#options' => $this->groups,
       '#default_value' => $default_value,
@@ -204,26 +209,26 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
-      '#empty_groups' => $this->empty_groups,
-    );
+    ];
 
-    $element['options_groups']['#prefix'] = '<div>'.
+    $element['options_groups']['#prefix'] = '<div>' .
       '<div class="label">' . $this->getSetting('select_label') . '</div>' .
       '<div class="form-data">';
-    $element['options_groups']['#suffix'] = '</div>'.
-      '</div>'.
-      '<div>'.
-      '<div class="label as-checkboxes-label">' . $this->getSetting('checkboxes_label') . '</div>'.
+    $element['options_groups']['#suffix'] = '</div>' .
+      '</div>' .
+      '<div>' .
+      '<div class="label as-checkboxes-label">' . $this->getSetting('checkboxes_label') . '</div>' .
       '<div class="form-data">';
-    $element['checkboxes_group_close'] = array(
+    $element['checkboxes_group_close'] = [
       '#weight' => 99,
       '#markup' => '</div></div>',
-    );
+    ];
     $this->states = $states;
 
     $element['#prefix'] = '<div class="as-checkboxes">';
     $element['#suffix'] = '</div>';
     $element['#attached']['library'][] = 'iucn_assessment/iucn_assessment.option_buttons';
+
     return $element;
   }
 
@@ -232,10 +237,11 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $key => $value) {
-      if (isset($this->groups[$value['target_id']]) && empty($this->empty_groups[$value['target_id']])) {
+      if (isset($this->groups[$value['target_id']])) {
         unset($values[$key]);
       }
     }
+
     return $values;
   }
 
@@ -246,6 +252,14 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase {
     if (!$this->required && !$this->multiple) {
       return t('N/A');
     }
+  }
+
+  /**
+   * @param $tid
+   * @return bool
+   */
+  protected function isParentTerm($tid) {
+    return empty($this->termStorage->loadParents($tid));
   }
 
 }

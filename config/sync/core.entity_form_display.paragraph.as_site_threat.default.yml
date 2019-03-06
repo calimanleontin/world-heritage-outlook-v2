@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.paragraph.as_site_threat.field_as_description
     - field.field.paragraph.as_site_threat.field_as_legality
-    - field.field.paragraph.as_site_threat.field_as_species_name
     - field.field.paragraph.as_site_threat.field_as_targeted_species
     - field.field.paragraph.as_site_threat.field_as_threats_categories
     - field.field.paragraph.as_site_threat.field_as_threats_extent
@@ -58,14 +57,6 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_as_species_name:
-    weight: 3
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_as_targeted_species:
     weight: 8
     settings:
@@ -79,7 +70,7 @@ content:
     settings:
       select_title: ''
       select_label: 'Select category'
-      checkboxes_label: 'Select subcategory'
+      checkboxes_label: 'Select subcategories'
     third_party_settings: {  }
     type: assessment_options_buttons
     region: content

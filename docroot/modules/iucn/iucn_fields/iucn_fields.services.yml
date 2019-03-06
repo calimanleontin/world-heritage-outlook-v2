@@ -1,3 +1,4 @@
 services:
   iucn_fields.term_alter:
     class: 'Drupal\iucn_fields\Plugin\TermAlterService'
+    arguments: ['@current_route_match']

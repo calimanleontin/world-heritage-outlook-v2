@@ -1,0 +1,20 @@
+uuid: 0842f74c-7fa5-41cf-89db-169ad5c266c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_value_state.field_css_identifier
+    - taxonomy.vocabulary.assessment_value_state
+id: taxonomy_term.assessment_value_state.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_value_state
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_css_identifier: true
+  langcode: true

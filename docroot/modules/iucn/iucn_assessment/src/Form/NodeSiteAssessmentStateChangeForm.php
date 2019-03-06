@@ -4,25 +4,42 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class NodeSiteAssessmentStateChangeForm {
 
   use AssessmentEntityFormTrait;
 
   public static function alter(&$form, FormStateInterface $form_state) {
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
+
+    if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+      // Redirect the user to state change form of the draft assessment.
+      $draft_revision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
+      if (!empty($draft_revision)) {
+        $url = Url::fromRoute('iucn_assessment.node_revision.state_change', ['node' => $node->id(), 'node_revision' => $draft_revision->getRevisionId()]);
+        $response = new RedirectResponse($url->setAbsolute()->toString());
+        $response->send();
+      }
+    }
+
     $currentUser = \Drupal::currentUser();
 
-    self::validateNode($form, $node);
-    self::addStateChangeWarning($form, $node, $currentUser);
+    if ($workflowService->isNewAssessment($node) === FALSE) {
+      self::validateNode($form, $node);
+      self::addStateChangeWarning($form, $node, $currentUser);
+    }
     self::hideUnnecessaryFields($form);
 
     // We want to replace the core submitForm method so the node won't get saved
@@ -146,14 +163,16 @@ class NodeSiteAssessmentStateChangeForm {
   private static function validateThreat(&$form, $item) {
     if (empty($item->field_as_threats_out->value) &&
       empty($item->field_as_threats_in->value)) {
-      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> in <b>Threats</b> tab.'), 'error');
+      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>"@threat"</i> threat.', [
+        '@threat' => $item->field_as_threats_threat->value,
+      ]), 'error');
     }
 
     if (!empty($item->field_as_threats_in->value) &&
       $item->field_as_threats_extent->isEmpty()) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+      static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Threat extent'),
-        '@tab' => t('Threats'),
+        '@threat' => $item->field_as_threats_threat->value,
       ]), 'error');
     }
 
@@ -161,9 +180,9 @@ class NodeSiteAssessmentStateChangeForm {
       if ($item->$key->isEmpty()
         && in_array($key, ParagraphAsSiteThreatForm::REQUIRED_DEPENDENT_FIELDS)
         && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
-        static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+        static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
           '@field' => $item->getFieldDefinition($key)->getLabel(),
-          '@tab' => t('Threats'),
+          '@threat' => $item->field_as_threats_threat->value,
         ]), 'error');
       }
     }
@@ -174,9 +193,9 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!$affectedValues) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+      static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Affected values'),
-        '@tab' => t('Threats'),
+        '@threat' => $item->field_as_threats_threat->value,
       ]), 'error', 'field_affected_values');
     }
 
@@ -429,6 +448,12 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
         $default = FALSE;
+        break;
+
+      case AssessmentWorkflow::STATUS_DRAFT . '>' . AssessmentWorkflow::STATUS_PUBLISHED:
+        $workflowService->forceAssessmentState($node, $newState);
+        $default = TRUE;
+        $createNewRevision = TRUE;
         break;
     }
 

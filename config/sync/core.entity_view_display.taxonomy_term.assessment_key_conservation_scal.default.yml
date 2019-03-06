@@ -1,0 +1,25 @@
+uuid: 72d000fe-eb7b-4a04-80c3-9158d7d5f2eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_key_conservation_scal
+  module:
+    - text
+id: taxonomy_term.assessment_key_conservation_scal.default
+targetEntityType: taxonomy_term
+bundle: assessment_key_conservation_scal
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
