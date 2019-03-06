@@ -2,15 +2,14 @@
 
 namespace Drupal\iucn_assessment\Plugin\diff\Field;
 
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\diff\Plugin\diff\Field\CoreFieldBuilder;
+use Drupal\diff\FieldDiffBuilderBase;
 
 /**
  * Plugin to diff core field types.
  *
  * @FieldDiffBuilder(
- *   id = "iucn_raw_value",
+ *   id = "strip_tags_field_diff_builder",
  *   label = @Translation("IUCN raw value diff"),
  *   field_types = {"decimal", "integer", "float", "email", "telephone",
  *     "date", "uri", "string", "timestamp", "created",
@@ -18,21 +17,18 @@ use Drupal\diff\Plugin\diff\Field\CoreFieldBuilder;
  *   },
  * )
  */
-class IucnRawValue extends CoreFieldBuilder {
+class StripTagsBuilder extends FieldDiffBuilderBase {
 
   /**
    * {@inheritdoc}
    */
   public function build(FieldItemListInterface $field_items) {
-    $result = array();
+    $result = [];
 
-    // Every item from $field_items is of type FieldItemInterface.
     foreach ($field_items as $field_key => $field_item) {
-      if (!$field_item->isEmpty()) {
-        $value = $field_item->value;
-        $value = Xss::filter($value);
-        $value = trim($value);
-        $result[$field_key][] = $value;
+      /** @var \Drupal\Core\Field\FieldItemInterface $field_item */
+      if ($field_item->isEmpty() == FALSE) {
+        $result[$field_key][] = trim(strip_tags(html_entity_decode($field_item->value), " \t\n\r\0\x0B\xC2\xA0"));
       }
     }
 
