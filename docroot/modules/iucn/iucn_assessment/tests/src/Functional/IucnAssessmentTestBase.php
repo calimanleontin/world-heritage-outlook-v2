@@ -23,9 +23,6 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface */
   protected $entityFieldManager;
 
-  /** @var CurrentRouteMatch */
-  protected $routeMatch;
-
   /**
    * Array with all fields rendered on each tab.
    *
@@ -104,7 +101,6 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
     $this->entityFieldManager = $this->container->get('entity_field.manager');
     $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
     $this->entityDefinitionUpdateManager->applyUpdates();
-    $this->routeMatch = $this->container->get('current_route_match');
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createTestData();
   }
