@@ -1236,7 +1236,7 @@ display:
           batch_size: 1
           form_step: true
           buttons: false
-          clear_on_exposed: 0
+          clear_on_exposed: false
           action_title: Action
           selected_actions:
             entity_print_download_action: 0
