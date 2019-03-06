@@ -310,8 +310,6 @@ function _iucn_assessment_update_nodes(array $nodesIds) {
     _iucn_assessment_migrate_references($node, $logger);
 
     $node->save();
-
-    \Drupal::state()->set($stateKey, $nid);
   }
 }
 
