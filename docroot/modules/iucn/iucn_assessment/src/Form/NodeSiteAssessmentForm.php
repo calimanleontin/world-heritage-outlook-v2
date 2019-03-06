@@ -488,38 +488,11 @@ class NodeSiteAssessmentForm {
    * @param bool $alter_colspan
    *   Is the colspan of the table altered.
    */
-  public static function hideParagraphsActionsFromWidget(array &$widget, $alter_colspan = TRUE) {
+  public static function hideParagraphsActionsFromWidget(array &$widget) {
     $widget['add_more']['#access'] = FALSE;
-    if (!empty($widget['header']['data']['actions'])) {
-      $widget['header']['data']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$widget['header']['#attributes']['class'];
-        foreach ($classes as &$class) {
-          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
-            $col_number = $matches[1];
-            $col_class = $class;
-            $new_col_number = $col_number - 1;
-            $new_col_class = "paragraph-top-col-$new_col_number";
-            $class = $new_col_class;
-          }
-        }
-      }
-    }
-    foreach ($widget as $key => &$paragraph) {
-      if (!is_int($key)) {
-        continue;
-      }
-      $paragraph['top']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$paragraph['top']['#attributes']['class'];
-        if (!empty($new_col_class)) {
-          foreach ($classes as &$class) {
-            if ($class == $col_class) {
-              $class = $new_col_class;
-            }
-          }
-        }
-      }
+    foreach (Element::children($widget) as $child) {
+      unset($widget[$child]['top']['actions']);
+      unset($widget[$child]['top']['summary']['actions']);
     }
   }
 
@@ -578,9 +551,8 @@ class NodeSiteAssessmentForm {
         'class' => [
           'use-ajax',
           'button',
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-compare',
-          'field-diff-button',
+          'field-icon-button',
+          'field-icon-button-compare',
         ],
         'data-dialog-type' => 'modal',
         'title' => t('See differences'),

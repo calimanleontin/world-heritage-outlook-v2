@@ -181,11 +181,16 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     $paragraphDiff = $this->getParagraphDiff();
 
     $dependentFieldsList = [
-      ['field_as_threats_in', 'field_as_threats_out'],
-      ['field_as_threats_values_wh', 'field_as_threats_values_bio'],
+      'field_as_threats_in' => ['field_as_threats_out', 'field_as_threats_extent'],
+      'field_as_threats_out' => ['field_as_threats_in', 'field_as_threats_extent'],
+      'field_as_threats_values_wh' => ['field_as_threats_values_bio'],
+      'field_as_threats_values_bio' => ['field_as_threats_values_wh'],
+      'field_as_legality' => ['field_as_threats_categories'],
+      'field_as_targeted_species' => ['field_as_threats_categories'],
+      'field_invasive_species_names' => ['field_as_threats_categories'],
     ];
-    foreach ($dependentFieldsList as $dependentFields) {
-      if (!empty(array_intersect($this->fieldWithDifferences, $dependentFields))) {
+    foreach ($dependentFieldsList as $fieldName => $dependentFields) {
+      if (in_array($fieldName, $this->fieldWithDifferences)) {
         // These fields need to be rendered together. So, if at least one of them
         // was modified, we render both of them.
         $this->fieldWithDifferences = array_unique(array_merge($this->fieldWithDifferences, $dependentFields));

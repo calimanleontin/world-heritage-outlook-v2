@@ -31,6 +31,9 @@ class TermAlterService {
    *   The term name.
    */
   public function getTermLabelForYear(TermInterface $term, $year) {
+    if (empty($this->alteredTerms)) {
+      return NULL;
+    }
     foreach ($this->alteredTerms as $key => $alteredTermLabel) {
       if (empty($alteredTermLabel)) {
         continue;

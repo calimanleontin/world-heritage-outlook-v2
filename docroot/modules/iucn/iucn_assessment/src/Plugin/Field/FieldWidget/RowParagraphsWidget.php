@@ -408,6 +408,15 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   }
 
   /**
+   * @inheritdoc
+   */
+  public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state) {
+    // All actions (add, edit, delete) are handles in an ajax request where
+    // also the parent node is saved.
+    return [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
