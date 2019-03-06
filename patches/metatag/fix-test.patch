@@ -1,0 +1,37 @@
+diff --git a/tests/src/Functional/SchemaMetatagTest.php b/tests/src/Functional/SchemaMetatagTest.php
+index bc4330c..9bd830e 100644
+--- a/tests/src/Functional/SchemaMetatagTest.php
++++ b/tests/src/Functional/SchemaMetatagTest.php
+@@ -4,16 +4,20 @@
+ 
+ use Drupal\Tests\schema_web_page\Functional\SchemaWebPageTest;
+ 
+-/**
+- * Wrapper to trigger one of the Schema.org Metatag module's tests.
+- *
+- * This will help avoid making changes to Metatag that trigger problems for
+- * separate submodules.
+- *
+- * @see https://www.drupal.org/project/metatag/issues/2994979
+- *
+- * @group metatag
+- */
+-class SchemaMetatagTest extends SchemaWebPageTest {
+-  // Just run the tests as-is.
++if (class_exists('Drupal\Tests\schema_web_page\Functional\SchemaWebPageTest')) {
++
++  /**
++   * Wrapper to trigger one of the Schema.org Metatag module's tests.
++   *
++   * This will help avoid making changes to Metatag that trigger problems for
++   * separate submodules.
++   *
++   * @see https://www.drupal.org/project/metatag/issues/2994979
++   *
++   * @group metatag
++   */
++  class SchemaMetatagTest extends SchemaWebPageTest {
++    // Just run the tests as-is.
++  }
++
+ }

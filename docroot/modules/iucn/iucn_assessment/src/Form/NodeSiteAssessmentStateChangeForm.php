@@ -4,10 +4,12 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class NodeSiteAssessmentStateChangeForm {
 
@@ -21,6 +23,17 @@ class NodeSiteAssessmentStateChangeForm {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
+
+    if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+      // Redirect the user to state change form of the draft assessment.
+      $draft_revision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
+      if (!empty($draft_revision)) {
+        $url = Url::fromRoute('iucn_assessment.node_revision.state_change', ['node' => $node->id(), 'node_revision' => $draft_revision->getRevisionId()]);
+        $response = new RedirectResponse($url->setAbsolute()->toString());
+        $response->send();
+      }
+    }
+
     $currentUser = \Drupal::currentUser();
 
     if ($workflowService->isNewAssessment($node) === FALSE) {
@@ -435,6 +448,12 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
         $default = FALSE;
+        break;
+
+      case AssessmentWorkflow::STATUS_DRAFT . '>' . AssessmentWorkflow::STATUS_PUBLISHED:
+        $workflowService->forceAssessmentState($node, $newState);
+        $default = TRUE;
+        $createNewRevision = TRUE;
         break;
     }
 
