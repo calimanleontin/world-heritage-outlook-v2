@@ -449,6 +449,12 @@ class NodeSiteAssessmentStateChangeForm {
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
         $default = FALSE;
         break;
+
+      case AssessmentWorkflow::STATUS_DRAFT . '>' . AssessmentWorkflow::STATUS_PUBLISHED:
+        $workflowService->forceAssessmentState($node, $newState);
+        $default = TRUE;
+        $createNewRevision = TRUE;
+        break;
     }
 
     if ($createNewRevision === TRUE) {
