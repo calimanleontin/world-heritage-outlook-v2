@@ -42,9 +42,6 @@
       "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch",
       "PHPMailer breaks AJAX response": "https://www.drupal.org/files/issues/2019-02-04/phpmailer-breaks-ajax-response.patch"
     },
-    "drupal/social_media": {
-      "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
-    },
     "drupal/maxlength": {
       "Max length count html tags as characters when used with ckeditor": "https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch",
       "Block paste when limit is exceeded":"https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
@@ -56,6 +53,9 @@
     },
     "webspellchecker/ckeditor-plugin-scayt": {
       "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
+    },
+    "drupal/social_media": {
+      "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },
     "drupal/search_api": {
       "Infinite loop inside Highlight.php -> createExcerpt function": "https://www.drupal.org/files/issues/2019-01-04/3022724-10--fix_highlight_excerpt_creation_infinite_loop.patch"

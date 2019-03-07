@@ -14,7 +14,9 @@
         $items.each(function () {
           var tid = $(this).val();
           if (drupalSettings.terms_colors[tid]) {
-            $(this).parent().parent().attr('data-color', drupalSettings.terms_colors[tid]);
+            $(this).parent().parent().removeClass (function (index, className) {
+              return (className.match (/(^|\s)level-\S+/g) || []).join(' ');
+            });
             $(this).parent().parent().addClass(drupalSettings.terms_colors[tid]);
           }
         });
@@ -23,9 +25,9 @@
       $('select', context).change(function() {
         var tid = $(this).val();
         if (drupalSettings.terms_colors[tid]) {
-          var old_class = $(this).parent().parent().attr('data-color');
-          $(this).parent().parent().removeClass(old_class);
-          $(this).parent().parent().attr('data-color', drupalSettings.terms_colors[tid]);
+          $(this).parent().parent().removeClass (function (index, className) {
+            return (className.match (/(^|\s)level-\S+/g) || []).join(' ');
+          });
           $(this).parent().parent().addClass(drupalSettings.terms_colors[tid]);
         }
       })

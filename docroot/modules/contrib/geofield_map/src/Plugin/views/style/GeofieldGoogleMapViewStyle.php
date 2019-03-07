@@ -737,8 +737,13 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
               $view_data[$field_name] = $rendered_field->__toString();
             }
           }
+
+          // Define a Tooltip for the Feature.
+          $tooltip_field = isset($map_settings['map_marker_and_infowindow']['tooltip_field']) ? $map_settings['map_marker_and_infowindow']['tooltip_field'] : NULL;
+          $tooltip = isset($entity) && !empty($tooltip_field) ? trim(html_entity_decode(strip_tags($this->rendered_fields[$id][$tooltip_field]), ENT_QUOTES)) : NULL;
+
           // Generate GeoJsonData.
-          $geojson_data = $this->getGeoJsonData($geofield_value, $description, $view_data);
+          $geojson_data = $this->getGeoJsonData($geofield_value, $description, $tooltip, $view_data);
 
           // Add Theming Icon based on the $theming plugin.
           $theming = NULL;

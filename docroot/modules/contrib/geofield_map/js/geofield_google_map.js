@@ -156,6 +156,11 @@
 
       var map = self.map_data[mapid].map;
 
+      // Add a default Tooltip on the title geojsonProperty, if existing.
+      if (feature.setTitle && feature.geojsonProperties.tooltip) {
+        feature.setTitle(feature.geojsonProperties.tooltip);
+      }
+
       // If the feature is a Point, make it a Marker and extend the Map bounds.
       if (feature.getPosition) {
         if (oms) {
@@ -348,6 +353,22 @@
             content: ''
           });
 
+          // If the map.infowindow is defined, add an event listener for the
+          // Ajax Infowindow Popup.
+          google.maps.event.addListener(map.infowindow, 'domready', function(){
+            var infowindow_content = document.createElement('div');
+            infowindow_content.innerHTML = map.infowindow.getContent().trim();
+            var content = $('[data-geofield-google-map-ajax-popup]', infowindow_content);
+            if (content.length) {
+              var url = content.data('geofield-google-map-ajax-popup');
+              $.get(url, function (response) {
+                if (response) {
+                  map.infowindow.setContent(response)
+                }
+              });
+            }
+          });
+
           // Define the icon_image, if set.
           var icon_image = map_settings.map_marker_and_infowindow.icon_image_path.length > 0 ? map_settings.map_marker_and_infowindow.icon_image_path : null;
 
@@ -401,21 +422,6 @@
           // Force the Map Zoom if requested.
           if (self.map_data[mapid].zoom_force) {
             self.map_data[mapid].map.setZoom(self.map_data[mapid].map_options.zoom);
-          }
-        });
-
-        // Add an event listener for the Ajax Infowindow Popup.
-        google.maps.event.addListener(map.infowindow, 'domready', function(){
-          var infowindow_content = document.createElement('div');
-          infowindow_content.innerHTML = map.infowindow.getContent().trim();
-          var content = $('[data-geofield-google-map-ajax-popup]', infowindow_content);
-          if (content.length) {
-            var url = content.data('geofield-google-map-ajax-popup');
-            $.get(url, function (response) {
-              if (response) {
-                map.infowindow.setContent(response)
-              }
-            });
           }
         });
 

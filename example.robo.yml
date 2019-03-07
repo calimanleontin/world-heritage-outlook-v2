@@ -16,4 +16,3 @@ project:
         modules:
           - devel
           - webprofiler
-          - simpletest

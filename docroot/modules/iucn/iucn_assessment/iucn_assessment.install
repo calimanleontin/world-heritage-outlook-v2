@@ -40,14 +40,128 @@ function iucn_assessment_update_8001() {
   }
 }
 
+function _iucn_assessment_update_terms_weights(array $tids) {
+  foreach($tids as $weight => $tid) {
+    $term = Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
+
 /**
- * Set 2014 and 2017 cycles as "created".
- * Create 2020 assessments.
+ * Refs #5902 #5903 #5904 #5905 #5906 #6108. Taxonomy terms weight.
  */
 function iucn_assessment_update_8002() {
-  \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
-  \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
-  \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
+  $term = Term::load(1433);
+  $term->setName('Collection of non-timber forest products (NTFPs)');
+  $term->save();
+
+  // Threats categories weights.
+  _iucn_assessment_update_terms_weights([
+    1351, // Residential and Commercial Development
+    1352, // Agriculture and Aquaculture
+    1353, // Energy Production and Mining
+    1354, // Transportation and Service Corridors
+    1355, // Biological Resource Use
+    1356, // Human Intrusions & Disturbance
+    1357, // Natural System Modifications
+    1358, // Invasive and Other Problematic Species & Genes
+    1359, // Pollution
+    1360, // Geological Events
+    1361, // Climate Change & Severe Weather
+    1362, // Social/ Cultural Changes
+    1363, // Other
+  ]);
+
+  // Threat levels weights.
+  _iucn_assessment_update_terms_weights([
+    1364, // Very Low Threat
+    1365, // Low Threat
+    1366, // High Threat
+    1367, // Very High Threat
+    1368, // Data Deficient
+  ]);
+
+  // Protection rating.
+  _iucn_assessment_update_terms_weights([
+    1325, // Highly Effective
+    1326, // Effective
+    1327, // Some Concern
+    1328, // Serious Concern
+    1329, // Data Deficient
+  ]);
+
+  // Value states.
+  _iucn_assessment_update_terms_weights([
+    1346, // Good
+    1347, // Low Concern
+    1348, // High Concern
+    1349, // Critical
+    1350, // Data Deficient
+  ]);
+
+  // Value trend.
+  _iucn_assessment_update_terms_weights([
+    1416, // Improving
+    1417, // Stable
+    1418, // Deteriorating
+    1419, // Data Deficient
+  ]);
+
+  // Benefits impact level.
+  _iucn_assessment_update_terms_weights([
+    1318, // Very High
+    1319, // High
+    1320, // Moderate
+    1321, // Low
+  ]);
+
+  // Benefits impact trend.
+  _iucn_assessment_update_terms_weights([
+    1322, // Increasing
+    1323, // Continuing
+    1324, // Decreasing
+  ]);
+
+  // Benefits categories.
+  _iucn_assessment_update_terms_weights([
+    1298, // Food
+    1299, // Water
+    1300, // Cultural and spiritual values
+    1301, // Health and recreation
+    1302, // Knowledge
+    1303, // Environmental services
+    1304, // Materials
+    1305, // Contribution to local economy
+  ]);
+
+  // Benefits categories.
+  _iucn_assessment_update_terms_weights([
+    1272, // History and tradition
+    1273, // Wilderness and iconic features
+    1274, // Sacred natural sites or landscapes
+    1294, // Sacred or symbolic plants or animals
+    1295, // Cultural identity and sense of belonging
+  ]);
+
+  // Topics.
+  _iucn_assessment_update_terms_weights([
+    1333, // Management system (for transboundary/serial properties, integrated management system should also be described/evaluated)
+    1334, // Effectiveness of management system
+    1336, // Boundaries
+    1332, // Integration into regional and national planning systems (including sea/landscape connectivity)
+    1330, // Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)
+    1331, // Legal framework
+    1345, // Law enforcement
+    1335, // Implementation of Committee decisions and recommendations
+    1339, // Sustainable use
+    1337, // Sustainable finance
+    1338, // Staff capacity, training and development
+    1340, // Education and interpretation programs
+    1341, // Tourism and visitation management
+    1342, // Monitoring
+    1343, // Research
+  ]);
 }
 
 function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, array $values, $assessment_id, LoggerInterface $logger) {
@@ -114,19 +228,17 @@ function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $
     ]);
   }
   $logger->info("Migrated references for assessment: {$node->getTitle()}");
+  $logger->info("Memory usage: " . round(memory_get_usage()/1048576,2) . "MB");
 }
 
 /**
  *  Delete all revisions for old assessments.
- *  Set "Published" status to all existing assessments.Force workflow status for
+ *  Set "Published" status to all existing assessments. Force workflow status for
  * old assessments.
  *  Fix broken values references.
- *  Delete all protection maangement paragraphs with no values.
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ *  Delete all protection management paragraphs with no values.
  */
-function iucn_assessment_update_8003() {
+function _iucn_assessment_update_nodes(array $nodesIds) {
   $logger = \Drupal::logger('iucn_assessment');
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
   $workflow_service = \Drupal::service('iucn_assessment.workflow');
@@ -134,15 +246,6 @@ function iucn_assessment_update_8003() {
   /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
   $nodeStorage = $entityTypeManager->getStorage('node');
   $paragraphStorage = $entityTypeManager->getStorage('paragraph');
-
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
 
   foreach ($nodesIds as $nid) {
     $node = Node::load($nid);
@@ -208,239 +311,62 @@ function iucn_assessment_update_8003() {
     _iucn_assessment_migrate_references($node, $logger);
 
     $node->save();
-
-    \Drupal::state()->set($stateKey, $nid);
   }
 }
 
+function _iucn_assessment_update_get_assessments($start, $length) {
+  return \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+    ->condition('type', 'site_assessment')
+    ->sort('nid')
+    ->range($start, $length)
+    ->execute();
+}
+
 /**
- * Delete assessment_child entities.
+ * We split the update function in multiple ones because of memory issues.
+ */
+function iucn_assessment_update_8003() {
+  $nodesIds = _iucn_assessment_update_get_assessments(0, 100);
+  _iucn_assessment_update_nodes($nodesIds);
+}
+
+/**
+ * Update assessments 100->200.
  */
 function iucn_assessment_update_8004() {
-  try {
-    $storage = \Drupal::entityTypeManager()->getStorage('assessment_child');
-    $entities = $storage->loadMultiple();
-    $storage->delete($entities);
-  }
-  catch (\Exception $e) {
-    // Entity type has already been deleted. Do nothing.
-  }
+  $nodesIds = _iucn_assessment_update_get_assessments(100, 100);
+  _iucn_assessment_update_nodes($nodesIds);
 }
 
 /**
- * Make sure the 8003 update finished successfully.
+ * Update assessments 200->300.
  */
 function iucn_assessment_update_8005() {
-  $entityTypeManager = \Drupal::entityTypeManager();
-  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
-  $nodeStorage = $entityTypeManager->getStorage('node');
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
-  if (!empty($nodesIds)) {
-    // Run the update again because it failed.
-    drupal_set_installed_schema_version('iucn_assessment', 8002);
-  }
+  $nodesIds = _iucn_assessment_update_get_assessments(200, 100);
+  _iucn_assessment_update_nodes($nodesIds);
 }
 
 /**
- * Update threats categories weights.
+ * Update assessments 300->400.
  */
 function iucn_assessment_update_8006() {
-  $tids = [
-    1351, // Residential and Commercial Development
-    1352, // Agriculture and Aquaculture
-    1353, // Energy Production and Mining
-    1354, // Transportation and Service Corridors
-    1355, // Biological Resource Use
-    1356, // Human Intrusions & Disturbance
-    1357, // Natural System Modifications
-    1358, // Invasive and Other Problematic Species & Genes
-    1359, // Pollution
-    1360, // Geological Events
-    1361, // Climate Change & Severe Weather
-    1362, // Social/ Cultural Changes
-    1363, // Other
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
+  $nodesIds = _iucn_assessment_update_get_assessments(300, 100);
+  _iucn_assessment_update_nodes($nodesIds);
 }
 
-  /**
-   * Update assessment threat level weights.
-   */
+/**
+ * Update assessments 400->last one.
+ */
 function iucn_assessment_update_8007() {
-  $tids = [
-    1364, // Very Low Threat
-    1365, // Low Threat
-    1366, // High Threat
-    1367, // Very High Threat
-    1368, // Data Deficient
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
+  $nodesIds = _iucn_assessment_update_get_assessments(400, 100000);
+  _iucn_assessment_update_nodes($nodesIds);
 }
 
-  /**
-   * Update Assessment protection rating weights.
-   */
+/**
+ * Set 2014 and 2017 cycles as "created".
+ * Create 2020 assessments.
+ */
 function iucn_assessment_update_8008() {
-  $tids = [
-    1325, //Highly Effective
-    1326, //Effective
-    1327, //Some Concern
-    1328, //Serious Concern
-    1329, //Data Deficient
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    if ($term->getName() == 'Effective') {
-      $term->setName('Mostly Effective');
-    }
-    $term->setWeight($weight);
-    $term->save();
-  }
-}
-
-/**
- * Update assessment value state and value trend weights.
- */
-function iucn_assessment_update_8009() {
-  // State.
-  $tids = [
-    1346, // Good
-    1347, // Low Concern
-    1348, // High Concern
-    1349, // Critical
-    1350, // Data Deficient
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-
-  // Trend.
-  $tids = [
-    1416, // Improving
-    1417, // Stable
-    1418, // Deteriorating
-    1419, // Data Deficient
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-
-}
-
-/**
- * Update assessment value state and value trend weights.
- */
-function iucn_assessment_update_8010() {
-  // Assessment benefits impact level.
-  $tids = [
-    1318, // Very High
-    1319, // High
-    1320, // Moderate
-    1321, // Low
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-
-  // Assessment benefits impact trend.
-  $tids = [
-    1322, // Increasing
-    1323, // Continuing
-    1324, // Decreasing
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-}
-
-/**
- * Subcategory term name change and adjust benefit types order.
- */
-function iucn_assessment_update_8011() {
-  $term = Term::load(1433);
-  if ($term && $term->getName() == 'Non-timber forest products (NTFPs)') {
-    $term->setName('Collection of non-timber forest products (NTFPs)');
-    $term->save();
-  }
-
-  $tids = [
-    1298, // Food
-    1299, // Water
-    1300, // Cultural and spiritual values
-    1301, // Health and recreation
-    1302, // Knowledge
-    1303, // Environmental services
-    1304, // Materials
-    1305, // Contribution to local economy
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-
-  $tids = [
-    1272, // History and tradition
-    1273, // Wilderness and iconic features
-    1274, // Sacred natural sites or landscapes
-    1294, // Sacred or symbolic plants or animals
-    1295, // Cultural identity and sense of belonging
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
-
-}
-
-/**
- * Refs #6108 - Ordering of topics should be locked
- */
-function iucn_assessment_update_8012() {
-  $tids = [
-    1333, // Management system (for transboundary/serial properties, integrated management system should also be described/evaluated)
-    1334, // Effectiveness of management system
-    1336, // Boundaries
-    1332, // Integration into regional and national planning systems (including sea/landscape connectivity)
-    1330, // Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)
-    1331, // Legal framework
-    1345, // Law enforcement
-    1335, // Implementation of Committee decisions and recommendations
-    1339, // Sustainable use
-    1337, // Sustainable finance
-    1338, // Staff capacity, training and development
-    1340, // Education and interpretation programs
-    1341, // Tourism and visitation management
-    1342, // Monitoring
-    1343, // Research
-  ];
-  foreach($tids as $weight => $tid) {
-    $term = Term::load($tid);
-    $term->setWeight($weight);
-    $term->save();
-  }
+  \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
+  \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
 }
