@@ -369,5 +369,4 @@ function iucn_assessment_update_8007() {
 function iucn_assessment_update_8008() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
   \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
-  \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
 }
