@@ -12,10 +12,10 @@ cd "$SCRIPT_DIR/../docroot"
 PHPUNIT_FILES_PATH="sites/default/files/phpunit"
 
 if [ -d "$PHPUNIT_FILES_PATH" ]; then
-  rm -rf "$SIMPLETEST_FILES_PATH/*"
+  rm -rf "$PHPUNIT_FILES_PATH/*"
 else
   mkdir "$PHPUNIT_FILES_PATH"
 fi
 
 echo -e "\n";
-../vendor/bin/phpunit --configuration core "$@"
+../vendor/bin/phpunit "$@"

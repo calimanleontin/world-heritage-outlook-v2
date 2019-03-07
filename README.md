@@ -24,10 +24,10 @@ Workflow is the following:
 
 # Testing
 
-1. copy docroot/core/phpunit.example.xml to docroot/core/phpunit.xml
+1. copy docroot/example.phpunit.xml to docroot/phpunit.xml
 
-2. edit docroot/core/phpunit.xml according to your needs
+2. edit docroot/phpunit.xml according to your needs
 
-3. run `../vendor/bin/phpunit --configuration core --group iucn_assessment_forms`
-   or `../vendor/bin/phpunit --configuration core modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php`
+3. run `./bin/run-test.sh --group iucn_assessment_forms`
+   or `./bin/run-test.sh modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php`
 

@@ -1,4 +1,4 @@
-sites/default/settings.php<?php
+<?php
 
 /**
  * @file
