@@ -38,6 +38,7 @@ conf/config.json
 conf/apache.conf
 docroot/sites/local.services.yml
 docroot/core/phpunit.xml
+docroot/phpunit.xml
 docroot/core/install.php
 
 # Vagrant Files #
