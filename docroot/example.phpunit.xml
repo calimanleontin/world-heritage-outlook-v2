@@ -35,9 +35,6 @@
     <!--<env name="SIMPLETEST_DB" value="mysql://root:root@10.0.10.25:3307/who_test"/>-->
     <env name="SIMPLETEST_DB" value="mysql://root:root@localhost/iucn"/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
-
-
-
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="sites/default/files/phpunit"/>
     <!-- To disable deprecation testing completely uncomment the next line. -->
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
@@ -67,15 +64,15 @@
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist>
-      <directory>./includes</directory>
-      <directory>./lib</directory>
+      <directory>./core/includes</directory>
+      <directory>./core/lib</directory>
+      <directory>./core/modules</directory>
       <directory>./modules</directory>
-      <directory>../modules</directory>
-      <directory>../sites</directory>
+      <directory>./sites</directory>
       <!-- By definition test classes have no tests. -->
       <exclude>
-        <directory suffix="Test.php">./</directory>
-        <directory suffix="TestBase.php">./</directory>
+        <directory suffix="Test.php">./core/</directory>
+        <directory suffix="TestBase.php">./core/</directory>
       </exclude>
      </whitelist>
   </filter>
