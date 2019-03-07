@@ -12,10 +12,10 @@
 
 ## Grunt usage {#gruntusage}
 - in Terminal, navigate to theme folder and `npm install`
-- First time setting up & for production build:
-    - run `grunt build`
+- For production build:
+    - run `npm run theme:build`
 - During development:
-    - run `grunt start` to build and start the watcher
+    - run `npm run theme:watch` to build and start the watcher
 
 **WARNING:** Do not modify the files inside of
 `./iucn_who/bootstrap` directly. Doing so may cause issues when upgrading the

@@ -63,9 +63,7 @@ class UserDataCollector extends DataCollector implements DrupalDataCollectorInte
     $storage = $this->entityManager->getStorage('user_role');
     foreach ($this->currentUser->getRoles() as $role) {
       $entity = $storage->load($role);
-      if ($entity) {
-        $this->data['roles'][] = $entity->label();
-      }
+      $this->data['roles'][] = $entity->label();
     }
 
     foreach ($this->providerCollector->getSortedProviders() as $provider_id => $provider) {
