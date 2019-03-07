@@ -24,7 +24,7 @@ Workflow is the following:
 
 # Testing
 
-1. copy docroot/core/phpunit.xml.dist to docroot/core/phpunit.xml
+1. copy docroot/core/phpunit.example.xml to docroot/core/phpunit.xml
 
 2. edit docroot/core/phpunit.xml according to your needs
 
