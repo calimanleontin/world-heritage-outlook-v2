@@ -692,7 +692,7 @@ function iucn_assessment_field_widget_form_alter(&$element, \Drupal\Core\Form\Fo
       $blockPasteLabel = t('The text cannot be pasted because the characters limit of @limit is exceeded.');
 
       $element['#maxlength_js'] = TRUE;
-      $element['#attributes']['maxlength'] = 2000;
+      $element['#attributes']['maxlength'] = 4250;
       $element['#attributes']['maxDisplayLimit'] = 200;
       $element['#attributes']['blockPaste'] = 1;
       $element['#attributes']['class'][] = 'maxlength_js_enforce';
