@@ -649,6 +649,16 @@ div[aria-required="aria-required"] label:after {
 #block-tools > ul.menu > li.menu-item > a {
   font-weight: bold;
 }
+#block-tools > ul.menu > li.menu-item > span {
+  color: #0074bd;
+  font-weight: bold;
+  position: relative;
+  display: block;
+  padding: .5rem 1rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
 #block-tools > ul.menu li.menu-item {
   list-style-type: none;
   list-style-image: none;
