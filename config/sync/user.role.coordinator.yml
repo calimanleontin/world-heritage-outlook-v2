@@ -38,4 +38,5 @@ permissions:
   - 'use text format assessment_text_format'
   - 'view any unpublished content'
   - 'view assessment differences'
+  - 'view assessment reports'
   - 'view latest version'

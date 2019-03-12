@@ -127,4 +127,5 @@ permissions:
   - 'use text format assessment_text_format'
   - 'view all revisions'
   - 'view assessment differences'
+  - 'view assessment reports'
   - 'view own unpublished content'
