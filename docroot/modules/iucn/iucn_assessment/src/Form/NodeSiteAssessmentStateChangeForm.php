@@ -36,7 +36,8 @@ class NodeSiteAssessmentStateChangeForm {
 
     $currentUser = \Drupal::currentUser();
 
-    if ($workflowService->isNewAssessment($node) === FALSE) {
+    if ($workflowService->isNewAssessment($node) === FALSE
+      && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
       self::validateNode($form, $node);
       self::addStateChangeWarning($form, $node, $currentUser);
     }
