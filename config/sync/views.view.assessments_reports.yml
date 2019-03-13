@@ -14,9 +14,12 @@ dependencies:
     - field.storage.node.field_as_vass_wh_state
     - field.storage.node.field_as_vass_wh_trend
     - node.type.site_assessment
+    - taxonomy.vocabulary.country
+    - taxonomy.vocabulary.iucn_region
   module:
     - node
     - options
+    - taxonomy
     - user
 id: assessments_reports
 label: 'Assessments reports'
@@ -44,7 +47,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: false
-          distinct: false
+          distinct: true
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -1529,6 +1532,47 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          group: 1
+        langcode:
+          id: langcode
+          table: node_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: langcode
+          plugin_id: language
         field_as_cycle_value:
           id: field_as_cycle_value
           table: node__field_as_cycle
@@ -1582,11 +1626,127 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
+        field_iucn_region_target_id:
+          id: field_iucn_region_target_id
+          table: taxonomy_term__field_iucn_region
+          field: field_iucn_region_target_id
+          relationship: field_country
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_iucn_region_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_iucn_region_target_id_op
+            identifier: field_iucn_region_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              edw_healthcheck_role: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: iucn_region
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_country_target_id:
+          id: field_country_target_id
+          table: node__field_country
+          field: field_country_target_id
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_country_target_id_op
+            label: Country
+            description: ''
+            use_operator: false
+            operator: field_country_target_id_op
+            identifier: field_country_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              administrator: '0'
+              iucn_manager: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
+              coordinator: '0'
+              assessor: '0'
+              reviewer: '0'
+              anonymous: '0'
+              edit_content_pages: '0'
+              publish_content_pages: '0'
+              menu_editor: '0'
+              edit_world_heritage_site_information: '0'
+              edw_healthcheck_role: '0'
+              publish_world_heritage_site_information: '0'
+              manage_submissions: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: country
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         title:
           id: title
           table: node_field_data
           field: title
-          relationship: none
+          relationship: field_as_site
           group_type: group
           admin_label: ''
           operator: contains
@@ -1651,13 +1811,36 @@ display:
           exposed: false
           expose:
             label: ''
-      title: 'Overall summary'
+      title: Values
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        field_as_site:
+          id: field_as_site
+          table: node__field_as_site
+          field: field_as_site
+          relationship: none
+          group_type: group
+          admin_label: 'field_as_site: Content'
+          required: true
+          plugin_id: standard
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: 'field_country: Taxonomy term'
+          required: true
+          plugin_id: standard
       arguments: {  }
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -1665,6 +1848,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1681,11 +1865,42 @@ display:
   overall_summary:
     display_plugin: page
     id: overall_summary
-    display_title: Page
+    display_title: 'Overall summary'
     position: 1
     display_options:
       display_extenders: {  }
       path: admin/reports/assessments/overall
+      rendering_language: '***LANGUAGE_language_interface***'
+      display_description: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_as_global_assessment_level'
+        - 'config:field.storage.node.field_as_protection_ov_out_rate'
+        - 'config:field.storage.node.field_as_protection_ov_rating'
+        - 'config:field.storage.node.field_as_threats_current_rating'
+        - 'config:field.storage.node.field_as_threats_potent_rating'
+        - 'config:field.storage.node.field_as_threats_rating'
+        - 'config:field.storage.node.field_as_vass_bio_state'
+        - 'config:field.storage.node.field_as_vass_bio_trend'
+        - 'config:field.storage.node.field_as_vass_wh_state'
+        - 'config:field.storage.node.field_as_vass_wh_trend'
+  values:
+    display_plugin: page
+    id: values
+    display_title: Values
+    position: 2
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      path: admin/reports/assessments/values
     cache_metadata:
       max-age: -1
       contexts:
@@ -1693,6 +1908,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
