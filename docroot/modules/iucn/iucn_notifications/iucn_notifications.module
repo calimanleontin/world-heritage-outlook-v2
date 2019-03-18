@@ -35,8 +35,6 @@ function iucn_notifications_mail_alter(&$message) {
   ];
   if (!empty($message['params']['account']) && $message['params']['account'] instanceof \Drupal\user\UserInterface) {
     $tokens['user'] = $message['params']['account'];
-    $tokens['iucn']['one-time-login-url'] = user_pass_reset_url($message['params']['account'], ['langcode' => 'en']);
-    $tokens['iucn']['one-time-login-url:en'] = user_pass_reset_url($message['params']['account'], ['langcode' => 'en']);
   }
 
   /** @var \Drupal\iucn_notifications\Plugin\NotificationService $notificationService */
