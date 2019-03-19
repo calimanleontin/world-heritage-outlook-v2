@@ -190,7 +190,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
 
     $default_value = 0;
     foreach ($selected as $key => $value) {
-      if ($states[$value]) {
+      if (!empty($states[$value])) {
         $default_value = $states[$value];
         break;
       }
