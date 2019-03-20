@@ -237,8 +237,8 @@ iucn_who_core.dashboard.reports.overall_summary:
 
 
 iucn_who_core.dashboard.reports.values:
-  title: '2017 values'
+  title: 'Values'
   parent: iucn_who_core.dashboard.reports
-  route_name: view.export_values_in_excel.page_1
+  route_name: view.assessments_reports.values
   menu_name: tools
   weight: 10
