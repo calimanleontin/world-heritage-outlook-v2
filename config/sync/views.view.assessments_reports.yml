@@ -13,13 +13,17 @@ dependencies:
     - field.storage.node.field_as_vass_bio_trend
     - field.storage.node.field_as_vass_wh_state
     - field.storage.node.field_as_vass_wh_trend
+    - field.storage.node.field_country
+    - field.storage.paragraph.field_as_description
     - field.storage.paragraph.field_as_values_criteria
+    - field.storage.paragraph.field_as_values_curr_state
+    - field.storage.paragraph.field_as_values_curr_trend
     - field.storage.paragraph.field_as_values_value
-    - field.storage.taxonomy_term.field_iucn_region
     - node.type.site_assessment
     - taxonomy.vocabulary.country
     - taxonomy.vocabulary.iucn_region
   module:
+    - iucn_who_core
     - node
     - options
     - paragraphs
@@ -98,18 +102,29 @@ display:
           summary: ''
           description: ''
           columns:
+            nid: nid
+            vid: vid
             title: title
-            field_as_vass_wh_trend: field_as_vass_wh_trend
-            field_as_vass_wh_state: field_as_vass_wh_state
-            field_as_vass_bio_trend: field_as_vass_bio_trend
-            field_as_vass_bio_state: field_as_vass_bio_state
-            field_as_threats_rating: field_as_threats_rating
-            field_as_threats_current_rating: field_as_threats_current_rating
-            field_as_threats_potent_rating: field_as_threats_potent_rating
-            field_as_protection_ov_rating: field_as_protection_ov_rating
-            field_as_protection_ov_out_rate: field_as_protection_ov_out_rate
-            field_as_global_assessment_level: field_as_global_assessment_level
+            field_iucn_region: field_iucn_region
+            field_as_values_criteria: field_as_values_criteria
+            id: id
+            field_as_values_value: field_as_values_value
+            field_as_description: field_as_description
           info:
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            vid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             title:
               sortable: false
               default_sort_order: asc
@@ -117,72 +132,33 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_as_vass_wh_trend:
+            field_iucn_region:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_as_vass_wh_state:
+            field_as_values_criteria:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            id:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_as_vass_bio_trend:
+            field_as_values_value:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_as_vass_bio_state:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_threats_rating:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_threats_current_rating:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_threats_potent_rating:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_protection_ov_rating:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_protection_ov_out_rate:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_as_global_assessment_level:
-              sortable: false
-              default_sort_order: asc
+            field_as_description:
               align: ''
               separator: ''
               empty_column: false
@@ -1873,7 +1849,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/reports/assessments/overall
+      path: admin/dashboard/reports/assessments/overall
       rendering_language: '***LANGUAGE_language_interface***'
       display_description: ''
     cache_metadata:
@@ -1904,7 +1880,7 @@ display:
     display_options:
       display_extenders: {  }
       display_description: ''
-      path: admin/reports/assessments/values
+      path: admin/dashboard/reports/assessments/values
       fields:
         nid:
           id: nid
@@ -1959,7 +1935,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2025,7 +2001,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2090,7 +2066,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2103,11 +2079,11 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
           label: Region
@@ -2152,9 +2128,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
+          type: country_region
+          settings: {  }
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -2218,7 +2193,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2282,7 +2257,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: entity_id
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2347,7 +2322,257 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_description:
+          id: field_as_description
+          table: paragraph__field_as_description
+          field: field_as_description
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: ''
+          label: 'Value Description'
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ field_as_description__value  | replace({''<p>'': '''', ''</p>'': ''''})}}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: basic_string
+          settings: {  }
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_values_curr_state_1:
+          id: field_as_values_curr_state_1
+          table: paragraph__field_as_values_curr_state
+          field: field_as_values_curr_state
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: ''
+          label: State
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_values_curr_state:
+          id: field_as_values_curr_state
+          table: paragraph__field_as_values_curr_state
+          field: field_as_values_curr_state
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: ''
+          label: State
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_values_curr_state_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_values_curr_trend:
+          id: field_as_values_curr_trend
+          table: paragraph__field_as_values_curr_trend
+          field: field_as_values_curr_trend
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: ''
+          label: Trend
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2391,10 +2616,10 @@ display:
           required: true
           plugin_id: standard
       title: 'World Heritage Values'
+      rendering_language: '***LANGUAGE_language_interface***'
     cache_metadata:
       max-age: -1
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
@@ -2402,6 +2627,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_country'
+        - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_values_criteria'
+        - 'config:field.storage.paragraph.field_as_values_curr_state'
+        - 'config:field.storage.paragraph.field_as_values_curr_trend'
         - 'config:field.storage.paragraph.field_as_values_value'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
