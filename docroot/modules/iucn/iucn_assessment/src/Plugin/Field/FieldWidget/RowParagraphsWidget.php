@@ -372,6 +372,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    if (!empty($element['subform'])) {
+      unset($element['subform']);
+    }
     $widgetState = static::getWidgetState($element['#field_parents'], $this->parentFieldName, $form_state);
     /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     $this->lastProcessedParagraph = $paragraph = $widgetState['paragraphs'][$delta]['entity'];
@@ -414,6 +417,13 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     // All actions (add, edit, delete) are handles in an ajax request where
     // also the parent node is saved.
     return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function elementValidate($element, FormStateInterface $form_state, $form) {
+    // Do nothing here since all validation is done on the add/edit form.
   }
 
   /**
