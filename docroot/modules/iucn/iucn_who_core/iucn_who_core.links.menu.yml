@@ -235,10 +235,37 @@ iucn_who_core.dashboard.reports.overall_summary:
   menu_name: tools
   weight: 0
 
-
 iucn_who_core.dashboard.reports.values:
   title: 'Values'
   parent: iucn_who_core.dashboard.reports
   route_name: view.assessments_reports.values
   menu_name: tools
-  weight: 10
+  weight: 1
+
+iucn_who_core.dashboard.reports.current_threats:
+  title: 'Current threats'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.current_threats
+  menu_name: tools
+  weight: 2
+
+iucn_who_core.dashboard.reports.potential_threats:
+  title: 'Potential threats'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.potential_threats
+  menu_name: tools
+  weight: 3
+
+iucn_who_core.dashboard.reports.threats_affected_values:
+  title: 'Current threats and affected values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.threats_affected_values
+  menu_name: tools
+  weight: 4
+
+iucn_who_core.dashboard.reports.protection_and_management:
+  title: 'Protection and management'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.protection_and_management
+  menu_name: tools
+  weight: 5
