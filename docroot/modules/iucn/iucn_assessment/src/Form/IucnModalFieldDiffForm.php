@@ -56,7 +56,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
     $this->setFormDisplay($this->nodeFormDisplay, $form_state);
 
     $form = parent::buildForm($form, $form_state);
-    $fieldWidgetType = $this->getDiffFieldWidgetType($form, $this->fieldName['widget']);
+    $fieldWidgetType = $this->getDiffFieldWidgetType($form, $this->fieldName);
 
     $diffTable = [
       '#type' => 'table',
