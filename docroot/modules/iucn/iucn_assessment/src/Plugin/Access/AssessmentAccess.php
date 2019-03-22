@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Plugin\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -36,6 +37,17 @@ class AssessmentAccess implements ContainerInjectionInterface {
       $node = $node_revision;
     }
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
+  }
+
+  public function translationOverviewAccess(AccountInterface $account, NodeInterface $node) {
+    // Assessments are only translatable in the published state.
+    if ($node->bundle() == 'site_assessment' && $node->field_state->value != AssessmentWorkflow::STATUS_PUBLISHED) {
+      return AccessResult::forbidden();
+    }
+    $condition = $node instanceof ContentEntityInterface && $node->access('view') &&
+      !$node->getUntranslated()->language()->isLocked() && \Drupal::languageManager()->isMultilingual() && $node->isTranslatable() &&
+      ($account->hasPermission('create content translations') || $account->hasPermission('update content translations') || $account->hasPermission('delete content translations'));
+    return AccessResult::allowedIf($condition)->cachePerPermissions()->addCacheableDependency($node);
   }
 
   public function assessmentStateChangeAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision = NULL) {

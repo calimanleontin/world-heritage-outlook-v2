@@ -8,10 +8,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowManager;
 use Drupal\workflow\Entity\WorkflowTransition;
 
@@ -112,6 +110,12 @@ class AssessmentWorkflow {
     if (empty($account)) {
       $account = $this->currentUser;
     }
+
+    if (!$node->isDefaultTranslation()) {
+      return AccessResult::allowedIf($node->field_state->value == self::STATUS_PUBLISHED
+        && ($account->hasPermission('translate any entity') || $account->hasPermission('translate site_assessment node')));
+    }
+
     $access = AccessResult::allowed();
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
