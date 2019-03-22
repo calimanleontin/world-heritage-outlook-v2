@@ -4,10 +4,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_as_global_assessment_level
+    - field.storage.node.field_as_protection
     - field.storage.node.field_as_protection_ov_out_rate
     - field.storage.node.field_as_protection_ov_rating
+    - field.storage.node.field_as_threats_current
     - field.storage.node.field_as_threats_current_rating
     - field.storage.node.field_as_threats_potent_rating
+    - field.storage.node.field_as_threats_potential
     - field.storage.node.field_as_threats_rating
     - field.storage.node.field_as_vass_bio_state
     - field.storage.node.field_as_vass_bio_trend
@@ -2071,6 +2074,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_current:
+          id: field_as_threats_current
+          table: node__field_as_threats_current
+          field: field_as_threats_current
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current threats'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_revisions_entity_view
+          settings:
+            view_mode: default
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_threat:
           id: field_as_threats_threat
           table: paragraph__field_as_threats_threat
@@ -2484,6 +2550,20 @@ display:
           plugin_id: standard
       title: 'Current threats'
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: tab
+        title: 'Current threats'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 2
+        context: '1'
+        menu_name: main
+      tab_options:
+        type: normal
+        title: Reports
+        description: ''
+        weight: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -2494,6 +2574,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_as_threats_current'
         - 'config:field.storage.node.field_country'
         - 'config:field.storage.paragraph.field_as_threats_categories'
         - 'config:field.storage.paragraph.field_as_threats_in'
@@ -2507,9 +2588,23 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/dashboard/reports/assessments/overall
+      path: admin/dashboard/reports/assessments
       rendering_language: '***LANGUAGE_language_interface***'
       display_description: ''
+      menu:
+        type: 'default tab'
+        title: 'Overall summary'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 0
+        context: '1'
+        menu_name: main
+      tab_options:
+        type: none
+        title: Reports
+        description: ''
+        weight: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -2789,6 +2884,69 @@ display:
           type: country_region
           settings: {  }
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_potential:
+          id: field_as_threats_potential
+          table: node__field_as_threats_potential
+          field: field_as_threats_potential
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Potential threats'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_revisions_entity_view
+          settings:
+            view_mode: default
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3212,6 +3370,15 @@ display:
           plugin_id: standard
       title: 'Potential threats'
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: tab
+        title: 'Potential threats'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 2
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -3222,6 +3389,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_as_threats_potential'
         - 'config:field.storage.node.field_country'
         - 'config:field.storage.paragraph.field_as_threats_categories'
         - 'config:field.storage.paragraph.field_as_threats_in'
@@ -3487,6 +3655,69 @@ display:
           type: country_region
           settings: {  }
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection:
+          id: field_as_protection
+          table: node__field_as_protection
+          field: field_as_protection
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Assessing Protection and Management'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_revisions_entity_view
+          settings:
+            view_mode: default
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3781,6 +4012,15 @@ display:
           plugin_id: standard
       title: 'Protection and management'
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: tab
+        title: 'Protection and management'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 4
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -3791,6 +4031,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_as_protection'
         - 'config:field.storage.node.field_country'
         - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_protection_rating'
@@ -4054,6 +4295,69 @@ display:
           type: country_region
           settings: {  }
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_current:
+          id: field_as_threats_current
+          table: node__field_as_threats_current
+          field: field_as_threats_current
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current threats'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_revisions_entity_view
+          settings:
+            view_mode: default
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4473,6 +4777,15 @@ display:
           plugin_id: standard
       title: 'Current threats and affected values'
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: tab
+        title: 'Current threats and affected values'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 3
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -4483,6 +4796,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_as_threats_current'
         - 'config:field.storage.node.field_country'
         - 'config:field.storage.paragraph.field_as_threats_categories'
         - 'config:field.storage.paragraph.field_as_threats_rating'
@@ -5234,6 +5548,15 @@ display:
           plugin_id: standard
       title: 'World Heritage Values'
       rendering_language: '***LANGUAGE_language_interface***'
+      menu:
+        type: tab
+        title: 'World Heritage values'
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 1
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
