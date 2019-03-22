@@ -64,7 +64,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
 
-    if (!$this->paragraphRevision->hasTranslation($this->current_language)) {
+    if (!empty($this->paragraphRevision) && !$this->paragraphRevision->hasTranslation($this->current_language)) {
       $translation = $this->paragraphRevision->addTranslation($this->current_language, $this->paragraphRevision->toArray());
       $translation->save();
       $this->paragraphRevision = $translation;
