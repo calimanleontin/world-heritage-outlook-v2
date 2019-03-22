@@ -196,41 +196,51 @@
   padding: 10px 12px;
 }
 .node-site-assessment-edit-form .current-state,
+.node-site-assessment-form .current-state,
 .node-site-assessment-state-change-form .current-state {
   margin: 10px 0;
 }
 .node-site-assessment-edit-form .form-item-title-0-value,
+.node-site-assessment-form .form-item-title-0-value,
 .node-site-assessment-state-change-form .form-item-title-0-value {
   margin-top: 0;
 }
 .node-site-assessment-edit-form .main-data-container,
+.node-site-assessment-form .main-data-container,
 .node-site-assessment-state-change-form .main-data-container {
   display: block;
   widows: 100%;
 }
 .node-site-assessment-edit-form .main-data-container .data-fields,
+.node-site-assessment-form .main-data-container .data-fields,
 .node-site-assessment-state-change-form .main-data-container .data-fields,
 .node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-form .main-data-container .help-text,
 .node-site-assessment-state-change-form .main-data-container .help-text {
   box-sizing: border-box;
   padding-right: 5px;
 }
 @media screen and (min-width: 980px) {
   .node-site-assessment-edit-form .main-data-container .data-fields,
+  .node-site-assessment-form .main-data-container .data-fields,
   .node-site-assessment-state-change-form .main-data-container .data-fields,
   .node-site-assessment-edit-form .main-data-container .help-text,
+  .node-site-assessment-form .main-data-container .help-text,
   .node-site-assessment-state-change-form .main-data-container .help-text {
     float: left;
     width: 50%;
   }
 }
 .node-site-assessment-edit-form .main-data-container .data-fields img,
+.node-site-assessment-form .main-data-container .data-fields img,
 .node-site-assessment-state-change-form .main-data-container .data-fields img,
 .node-site-assessment-edit-form .main-data-container .help-text img,
+.node-site-assessment-form .main-data-container .help-text img,
 .node-site-assessment-state-change-form .main-data-container .help-text img {
   vertical-align: middle;
 }
 .node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-form .main-data-container .help-text,
 .node-site-assessment-state-change-form .main-data-container .help-text {
   background: #f5f5f2;
   border: 1px solid #e6e4df;
@@ -238,53 +248,65 @@
   border-radius: 5px;
 }
 .node-site-assessment-edit-form .layout-region,
+.node-site-assessment-form .layout-region,
 .node-site-assessment-state-change-form .layout-region {
   padding-right: 0!important;
 }
 .node-site-assessment-edit-form .layout-node-form .layout-region,
+.node-site-assessment-form .layout-node-form .layout-region,
 .node-site-assessment-state-change-form .layout-node-form .layout-region {
   width: 100%;
 }
 .node-site-assessment-edit-form .layout-node-form .layout-region-node-footer__content,
+.node-site-assessment-form .layout-node-form .layout-region-node-footer__content,
 .node-site-assessment-state-change-form .layout-node-form .layout-region-node-footer__content {
   border-top: none;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper {
   padding: 0;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
   padding: 0;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
   margin-top: 0;
   margin-bottom: 0;
   border-radius: 0;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
   padding: 5px 10px 5px 0;
 }
 .node-site-assessment-edit-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
+.node-site-assessment-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
 .node-site-assessment-state-change-form .layout-node-form #edit-group-as-key-cons .details-wrapper {
   padding: 0;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
   padding: 0 10px;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
   margin: 10px;
 }
 .node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
 .node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
   position: relative;
   top: 0;
 }
 .node-site-assessment-edit-form .horizontal-tab-button .fa,
+.node-site-assessment-form .horizontal-tab-button .fa,
 .node-site-assessment-state-change-form .horizontal-tab-button .fa {
   font-size: 1em;
   margin: 0 2.1em 0 1em;
@@ -294,12 +316,14 @@
   transition: color .1s;
 }
 .node-site-assessment-edit-form .horizontal-tab-button .fa:hover,
+.node-site-assessment-form .horizontal-tab-button .fa:hover,
 .node-site-assessment-state-change-form .horizontal-tab-button .fa:hover {
   color: #0074bd;
   cursor: pointer;
   -webkit-text-stroke: initial;
 }
 .node-site-assessment-edit-form .horizontal-tab-button .fa:before,
+.node-site-assessment-form .horizontal-tab-button .fa:before,
 .node-site-assessment-state-change-form .horizontal-tab-button .fa:before {
   font-size: 2em;
   position: absolute;
@@ -308,19 +332,23 @@
   z-index: 200;
 }
 .node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
 .node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected {
   display: flex;
   align-items: center;
 }
 .node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
 .node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a {
   padding-left: 1em;
 }
 .node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
 .node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
   background-color: initial;
 }
 .node-site-assessment-edit-form .horizontal-tabs-panes .description,
+.node-site-assessment-form .horizontal-tabs-panes .description,
 .node-site-assessment-state-change-form .horizontal-tabs-panes .description {
   position: relative;
   margin: 0;
@@ -330,6 +358,7 @@
   font-style: italic;
 }
 .node-site-assessment-edit-form .horizontal-tabs-panes .description:before,
+.node-site-assessment-form .horizontal-tabs-panes .description:before,
 .node-site-assessment-state-change-form .horizontal-tabs-panes .description:before {
   display: block;
   position: absolute;

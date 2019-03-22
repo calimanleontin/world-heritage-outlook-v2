@@ -88,7 +88,7 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
 
-    if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+    if ($node->isDefaultTranslation() && $state == AssessmentWorkflow::STATUS_PUBLISHED) {
       // Redirect the user to edit form of the draft assessment.
       $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
       if (!empty($draft_revision)) {
