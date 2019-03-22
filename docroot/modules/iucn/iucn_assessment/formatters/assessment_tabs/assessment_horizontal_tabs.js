@@ -264,7 +264,7 @@
     if (drupalSettings.path.currentQuery !== undefined && drupalSettings.path.currentQuery.tab !== undefined) {
       curr_tab = drupalSettings.path.currentQuery.tab
     }
-    var tag = '<a href="/' + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>';
+    var tag = '<a href="/' + drupalSettings.path.pathPrefix + drupalSettings.path.currentPath + '?tab=' + idAttr + '"></a>';
     if (curr_tab == idAttr) {
       tag = '<a href="#" disabled="disabled" onclick="return false;"></a>';
     }
