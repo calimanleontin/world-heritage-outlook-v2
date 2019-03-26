@@ -6434,7 +6434,7 @@ display:
         potential_threats: '0'
         threats_affected_values: '0'
         values: '0'
-      filename: protection-and-management-xlsx
+      filename: protection-and-management.xlsx
       automatic_download: false
       redirect_path: ''
     cache_metadata:
