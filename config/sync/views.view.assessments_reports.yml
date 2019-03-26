@@ -1758,7 +1758,7 @@ display:
           exposed: false
           expose:
             label: ''
-      title: 'Export as Excel'
+      title: 'Download Excel'
       header: {  }
       footer: {  }
       empty: {  }
@@ -3328,7 +3328,7 @@ display:
           admin_label: 'Current threats'
           required: true
           plugin_id: standard
-      title: 'Export as Excel'
+      title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       export_method: batch
       export_batch_size: 50
@@ -5012,7 +5012,7 @@ display:
           admin_label: 'Potential threats'
           required: true
           plugin_id: standard
-      title: 'Export as Excel'
+      title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       export_method: batch
       export_batch_size: 50
@@ -6371,7 +6371,7 @@ display:
           admin_label: 'Protection topic'
           required: false
           plugin_id: standard
-      title: 'Export as Excel'
+      title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       sorts:
         title:
@@ -7960,7 +7960,7 @@ display:
           admin_label: 'Current threats'
           required: true
           plugin_id: standard
-      title: 'Export as Excel'
+      title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       style:
         type: data_export
@@ -9529,7 +9529,7 @@ display:
           admin_label: 'World Heritage Values'
           required: true
           plugin_id: standard
-      title: 'Export as Excel'
+      title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       style:
         type: data_export

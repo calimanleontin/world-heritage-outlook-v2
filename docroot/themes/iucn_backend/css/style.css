@@ -798,6 +798,9 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .feed-icons {
   margin: 10px 0;
 }
+.view-assessments-reports .attachment-before {
+  margin-bottom: 15px;
+}
 .field--widget-row-entity-reference-paragraphs table {
   margin-bottom: 0;
 }
