@@ -3331,7 +3331,7 @@ display:
       title: 'Export as Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       export_method: batch
-      export_batch_size: 1000
+      export_batch_size: 50
       filename: current-threats.xlsx
       automatic_download: false
       redirect_path: ''
@@ -3442,7 +3442,7 @@ display:
       rendering_language: '***LANGUAGE_language_interface***'
       display_description: ''
       export_method: batch
-      export_batch_size: 1000
+      export_batch_size: 50
       filename: overall-summary.xlsx
       automatic_download: false
       redirect_path: ''
@@ -5015,7 +5015,7 @@ display:
       title: 'Export as Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       export_method: batch
-      export_batch_size: 1000
+      export_batch_size: 50
       filename: potential-threats.xlsx
       automatic_download: false
       redirect_path: ''
@@ -6437,6 +6437,8 @@ display:
       filename: protection-and-management.xlsx
       automatic_download: false
       redirect_path: ''
+      export_method: batch
+      export_batch_size: 50
     cache_metadata:
       max-age: -1
       contexts:
@@ -7985,7 +7987,7 @@ display:
               manager: ''
               company: ''
       export_method: batch
-      export_batch_size: 1000
+      export_batch_size: 50
       filename: threats-affected-values.xlsx
       automatic_download: false
       redirect_path: ''
@@ -9554,7 +9556,7 @@ display:
               manager: ''
               company: ''
       export_method: batch
-      export_batch_size: 1000
+      export_batch_size: 50
       displays:
         values: values
         default: '0'
