@@ -102,6 +102,10 @@ class NodeSiteAssessmentStateChangeForm {
   public static function validateNode(&$form, NodeInterface $node) {
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
+      if (!static::isAssessmentFieldVisible($fieldName)) {
+        continue;
+      }
+
       $tab_has_errors = FALSE;
       if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
@@ -159,6 +163,25 @@ class NodeSiteAssessmentStateChangeForm {
       unset($form['warning']);
       $form['actions']['#access'] = FALSE;
     }
+  }
+
+  private static function isAssessmentFieldVisible($field) {
+    $form_modes = [
+      'default',
+      'assessing_values',
+      'conservation_outlook',
+    ];
+
+    if (empty($assessment_forms)) {
+      foreach ($form_modes as $form_mode) {
+        $hidden_fields = \Drupal::configFactory()->getEditable("core.entity_form_display.node.site_assessment.$form_mode")->get('hidden');
+        if (in_array($field, array_keys($hidden_fields))) {
+          return FALSE;
+        }
+      }
+    }
+
+    return TRUE;
   }
 
   private static function validateThreat(&$form, $item) {
