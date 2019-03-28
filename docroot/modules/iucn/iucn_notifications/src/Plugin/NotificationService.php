@@ -103,7 +103,17 @@ class NotificationService {
       }
       $subject = $this->token->replace($pet->getSubject(), $substitutions, ['clear' => TRUE]);
       $subject = htmlspecialchars_decode($subject);
-      $content = $this->token->replace($content, $substitutions, ['clear' => TRUE]);
+
+      // Tokens with no replacement value will be removed.
+      $options = [
+        'clear' => TRUE,
+      ];
+      // For password reset tokens we need to add user_mail_tokens() as a callback.
+      if ($notificationType == NotificationService::USER_PASSWORD_RESET) {
+        $options['callback'] = 'user_mail_tokens';
+      }
+
+      $content = $this->token->replace($content, $substitutions, $options);
       $success = $this->send('iucn_notifications_' . $notificationType, $email, $subject, $content);
       if ($success === FALSE) {
         $globalSuccess = FALSE;
