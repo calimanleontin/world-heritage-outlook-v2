@@ -172,12 +172,10 @@ class NodeSiteAssessmentStateChangeForm {
       'conservation_outlook',
     ];
 
-    if (empty($assessment_forms)) {
-      foreach ($form_modes as $form_mode) {
-        $hidden_fields = \Drupal::configFactory()->getEditable("core.entity_form_display.node.site_assessment.$form_mode")->get('hidden');
-        if (in_array($field, array_keys($hidden_fields))) {
-          return FALSE;
-        }
+    foreach ($form_modes as $form_mode) {
+      $hidden_fields = \Drupal::configFactory()->getEditable("core.entity_form_display.node.site_assessment.$form_mode")->get('hidden');
+      if (in_array($field, array_keys($hidden_fields))) {
+        return FALSE;
       }
     }
 
