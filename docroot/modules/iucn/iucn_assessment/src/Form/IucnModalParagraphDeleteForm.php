@@ -3,6 +3,8 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\Entity\Paragraph;
 
 class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
@@ -19,9 +21,17 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
     $form['#title'] = $this->t('Delete row');
     $form['warning']['#value'] = $this->t('Are you sure you want to delete this row? This action cannot be reverted.');
     $form['actions']['submit']['#value'] = $this->t('Delete');
+    $paragraph = $form_state->getFormObject()->getEntity();
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof Paragraph) {
+      $parent = $parent->getParentEntity();
+    }
 
     if (!in_array($this->entity->bundle(), array_keys($this->affectedValuesFields))) {
       // No more validation is required.
+      if ($parent->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+        return $this->ajaxSave($form, $form_state);
+      }
       return $form;
     }
 
@@ -67,6 +77,11 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
         ],
       ];
     }
+    else {
+      if ($parent->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+        return $this->ajaxSave($form, $form_state);
+      }
+    }
 
     return $form;
   }
@@ -95,6 +110,4 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     return parent::ajaxSave($form, $form_state);
   }
-
-
 }
