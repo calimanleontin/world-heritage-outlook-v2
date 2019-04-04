@@ -135,12 +135,21 @@ class NodeSiteAssessmentStateChangeForm {
             }
 
             $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
+            $groupedErrors = [];
             foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
               if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $tab_has_errors = TRUE;
-                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
-                  '@field' => $paragraphFieldSettings->getLabel(),
-                  '@label' => $fieldSettings->getLabel(),
+                $groupedErrors[$fieldSettings->getLabel()][] = $paragraphFieldSettings->getLabel();
+              }
+            }
+
+            if (!empty($groupedErrors)) {
+              $tab_has_errors = TRUE;
+              foreach ($groupedErrors as  $label => $errors) {
+                $errors = array_unique($errors);
+
+                self::addStatusMessage($form, t('<b>@fields</b> fields are required rows in <b>@label</b> table.', [
+                  '@fields' => implode(', ', $errors),
+                  '@label' => $label,
                 ]), 'error');
               }
             }
