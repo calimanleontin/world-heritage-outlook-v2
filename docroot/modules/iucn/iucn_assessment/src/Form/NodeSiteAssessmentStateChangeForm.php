@@ -445,6 +445,10 @@ class NodeSiteAssessmentStateChangeForm {
         $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
         break;
 
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
+        $workflowService->removeCommentsFromFieldSettings($node);
+        break;
+
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
