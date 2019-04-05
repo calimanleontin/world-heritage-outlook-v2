@@ -29,7 +29,7 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     if (!in_array($this->entity->bundle(), array_keys($this->affectedValuesFields))) {
       // No more validation is required.
-      if ($parent->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
         return $this->ajaxSave($form, $form_state);
       }
       return $form;
@@ -78,7 +78,7 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
       ];
     }
     else {
-      if ($parent->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
         return $this->ajaxSave($form, $form_state);
       }
     }
