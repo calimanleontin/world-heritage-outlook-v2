@@ -109,7 +109,7 @@ class NotificationService {
         'clear' => TRUE,
       ];
       // For password reset tokens we need to add user_mail_tokens() as a callback.
-      if ($notificationType == NotificationService::USER_PASSWORD_RESET) {
+      if (in_array($notificationType, [NotificationService::USER_PASSWORD_RESET, NotificationService::USER_ACCOUNT_ACTIVATED])) {
         $options['callback'] = 'user_mail_tokens';
       }
 
