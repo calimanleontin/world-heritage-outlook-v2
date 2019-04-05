@@ -1831,7 +1831,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: "You can't edit the assessments during \"<i>Under assessment</i>\" and \"<i>Under review</i>\" phases because they are edited by assessor/reviewers.<br/>\r\n<b>Bolded</b> users are still working on those assessments.<br/>\r\nAssessments in \"<i>Under review</i>\" phase will be ready for comparison when ALL reviewers have finished their work. "
+            value: "Note: You can't edit assessments during the \"<i>Being assessed</i>\" and \"<i>Under review</i>\" stages because they are being edited by assessor/reviewers. <br/>\r\nUsers shown in <b>bold</b> are still working on those assessments.<br/>\r\nAssessments in the “<i>Under review</i>\" stage will be ready for comparison when ALL reviewers have finished their work.<br/>"
             format: html
           plugin_id: text
     cache_metadata:
