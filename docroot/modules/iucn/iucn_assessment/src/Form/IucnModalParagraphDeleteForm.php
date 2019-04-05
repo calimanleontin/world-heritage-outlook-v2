@@ -80,21 +80,26 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
     if (in_array($paragraph->bundle(), array_keys($this->affectedValuesFields))) {
-      $threats = array_merge($this->nodeRevision->get('field_as_threats_current')->getValue(), $this->nodeRevision->get('field_as_threats_potential')->getValue());
-      foreach ($threats as $threat) {
-        $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
-        $field = $this->affectedValuesFields[$paragraph->bundle()];
-        $affected_values = $threat->get($field)->getValue();
-        $key = array_search($this->entity->id(), array_column($affected_values, 'target_id'));
-        if ($key !== FALSE) {
-          $threat->get($field)->removeItem($key);
-          $threat->save();
+      foreach (['field_as_threats_current', 'field_as_threats_potential'] as $threatField) {
+        $threats = $this->nodeRevision->get($threatField)->getValue();
+        $threatIds = array_column($this->nodeRevision->get($threatField)->getValue(), 'target_id');
+
+        foreach ($threats as $threat) {
+          $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
+          $field = $this->affectedValuesFields[$paragraph->bundle()];
+          $affected_values = $threat->get($field)->getValue();
+          $key = array_search($this->entity->id(), array_column($affected_values, 'target_id'));
+          if ($key !== FALSE) {
+            $threat->get($field)->removeItem($key);
+            $threat->save();
+
+            $threatKey = array_search($threat->id(), $threatIds);
+            $this->nodeRevision->get($threatField)->set($threatKey, $threat);
+          }
         }
       }
     }
 
     return parent::ajaxSave($form, $form_state);
   }
-
-
 }
