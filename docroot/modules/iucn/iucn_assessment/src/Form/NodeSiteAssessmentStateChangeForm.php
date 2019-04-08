@@ -93,7 +93,7 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $form['#title'] = t('Change state of @type @assessment', [
+    $form['#title'] = t('Submit @assessment @type', [
       '@type' => $node->type->entity->label(),
       '@assessment' => $node->getTitle(),
     ]);
@@ -349,7 +349,7 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish it.'));
+      self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
