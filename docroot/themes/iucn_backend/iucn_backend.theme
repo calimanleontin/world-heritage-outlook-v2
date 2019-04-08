@@ -153,12 +153,12 @@ function iucn_backend_preprocess_taxonomy_term(&$variables) {
   $term = $variables['term'];
   $viewMode = $variables['view_mode'];
 
-  $ignoreTermSufix = ['assessment_threat_level'];
-  if ($viewMode == 'teaser' || in_array($term->bundle(), ['assessment_benefits_impact_level', 'assessment_benefits_impact_trend'])) {
-    if (substr($term->bundle(), -5) === 'level' && !in_array($term->bundle(), $ignoreTermSufix)) {
+  if ($viewMode == 'teaser') {
+    if ($term->bundle() == 'assessment_benefits_impact_level') {
       $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('level'));
     }
-    elseif (substr($term->bundle(), -5) === 'trend') {
+
+    if ($term->bundle() == 'assessment_benefits_impact_trend') {
       $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('trend'));
     }
   }
