@@ -489,6 +489,6 @@ class NodeSiteAssessmentStateChangeForm {
 
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
+    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]));
   }
 }
