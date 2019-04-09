@@ -93,7 +93,12 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $form['#title'] = t('Submit @assessment @type', [
+    $titlePlaceholder = 'Change state of @type @assessment';
+    if (in_array('assessor', $currentUser->getRoles())) {
+      $titlePlaceholder = 'Submit @assessment @type';
+    }
+
+    $form['#title'] = t($titlePlaceholder, [
       '@type' => $node->type->entity->label(),
       '@assessment' => $node->getTitle(),
     ]);
@@ -489,6 +494,13 @@ class NodeSiteAssessmentStateChangeForm {
 
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]));
+    $currentUser = \Drupal::currentUser();
+
+    $message = t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]);
+    if (in_array('assessor', $currentUser->getRoles())) {
+      $message = t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]);
+    }
+
+    \Drupal::messenger()->addMessage($message);
   }
 }
