@@ -10,6 +10,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AssessmentAccess implements ContainerInjectionInterface {
@@ -60,5 +61,15 @@ class AssessmentAccess implements ContainerInjectionInterface {
   public function paragraphDiffAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision, $field, $field_wrapper_id, ParagraphInterface $paragraph_revision) {
     return AccessResult::allowedIf($account->hasPermission('view assessment differences')
       && $this->assessmentEditAccess($account, $node, $node_revision)->isAllowed());
+  }
+
+  public function assessmentRevisionsAccess(AccountInterface $account, NodeInterface $node) {
+    $user = User::load($account->id());
+    if ($user->hasPermission('administrator')) {
+      return AccessResult::allowed();
+    }
+
+    return AccessResult::allowedIf($account->hasPermission('view site_assessment revisions')
+      && $node->bundle() == 'site_assessment');
   }
 }

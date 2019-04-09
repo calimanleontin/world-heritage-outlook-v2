@@ -129,3 +129,4 @@ permissions:
   - 'view assessment differences'
   - 'view assessment reports'
   - 'view own unpublished content'
+  - 'view site_assessment revisions'

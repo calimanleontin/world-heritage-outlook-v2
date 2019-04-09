@@ -767,6 +767,7 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
 function iucn_assessment_entity_operation(EntityInterface $entity) {
   $operations = [];
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'site_assessment') {
+    $nodeManager = \Drupal::entityManager()->getStorage('node');
     // Add the available transitions as entity operations.
     $transitions = \Drupal::entityTypeManager()
       ->getStorage('workflow_config_transition')
@@ -827,6 +828,16 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
           'node_revision' => $reviewer_revision->getRevisionId(),
         ]),
         'weight' => 20,
+      ];
+    }
+
+    if ($current_user->access('view site_assessment revisions') && $nodeManager->revisionIds($entity) > 1) {
+      $operations['view_revisions'] = [
+        'title' => t('Revisions'),
+        'url' => Url::fromRoute('entity.node.version_history', [
+          'node' => $entity->id(),
+        ]),
+        'weight' => 21,
       ];
     }
   }
@@ -974,5 +985,14 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
         $value['editorSettings']['scayt_disableOptionsStorage'] = 'lang';
       }
     }
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function iucn_assessment_node_access(\Drupal\node\NodeInterface $node, $op, \Drupal\Core\Session\AccountInterface $account) {
+  if ($node->bundle() == 'site_assessment' && $op == 'view') {
+    return AccessResult::allowedIf($account->hasPermission('view site_assessment revisions'));
   }
 }

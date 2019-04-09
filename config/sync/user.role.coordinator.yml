@@ -40,3 +40,4 @@ permissions:
   - 'view assessment differences'
   - 'view assessment reports'
   - 'view latest version'
+  - 'view site_assessment revisions'
