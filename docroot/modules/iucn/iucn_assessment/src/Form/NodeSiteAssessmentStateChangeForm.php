@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -93,7 +94,15 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $form['#title'] = t('Change state of @type @assessment', [
+    static::changeWorkflowButtons($form, $currentUser);
+
+    $titlePlaceholder = 'Change state of @type @assessment';
+
+    if (in_array('reviewer', $currentUser->getRoles())) {
+      $titlePlaceholder = 'Submit review of @assessment @type';
+    }
+
+    $form['#title'] = t($titlePlaceholder, [
       '@type' => $node->type->entity->label(),
       '@assessment' => $node->getTitle(),
     ]);
@@ -353,7 +362,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
@@ -490,5 +499,15 @@ class NodeSiteAssessmentStateChangeForm {
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
     \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
+  }
+
+  private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
+    if (in_array('reviewer', $currentUser->getRoles())) {
+      if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+        $element = &$form['actions']['workflow_assessment_finished_reviewing'];
+
+        $element['#value'] = t('Submit review');
+      }
+    }
   }
 }

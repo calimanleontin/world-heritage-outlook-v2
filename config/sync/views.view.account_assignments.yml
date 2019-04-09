@@ -3743,7 +3743,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Finish reviewing" button.'
+            value: 'When you have finished working on an assessment, press "Submit review" button.'
             format: html
           plugin_id: text
       sorts:
