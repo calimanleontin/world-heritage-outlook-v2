@@ -10,6 +10,12 @@
     }
     ,
     isChanged: function() {
+      // Check textarea for changes.
+      $( "textarea" ).each(function( index ) {
+        if ($( this ).data('changed') !== undefined) {
+          $(this.form).data("changed", true);
+        }
+      });
       return this.data("changed");
     }
   });
@@ -31,6 +37,16 @@
   Drupal.behaviors.AssessmentTabs = {
     attach: function (context) {
       $("form.node-form").trackChanges();
+      setTimeout(function () {
+        $( "textarea" ).each(function( index ) {
+          var id = $( this ).attr('id');
+          if (id in CKEDITOR.instances) {
+            CKEDITOR.instances[id].on('change', function() {
+              $('#' + this.name).data("changed", true);
+            });
+          }
+        });
+      }, 0, context);
 
       // var width = drupalSettings.widthBreakpoint || 640;
       // var mq = '(max-width: ' + width + 'px)';
@@ -133,7 +149,6 @@
 
     this.link.on('click', function (e) {
       if ($("form.node-form").isChanged()) {
-        // alert("data changed....");
         var result = confirm("There are unsaved changes. Are you sure you want to proceed?");
         if (!result) {
           e.preventDefault();
