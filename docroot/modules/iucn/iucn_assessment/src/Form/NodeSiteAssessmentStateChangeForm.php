@@ -43,6 +43,14 @@ class NodeSiteAssessmentStateChangeForm {
     }
     self::hideUnnecessaryFields($form);
 
+    $form['actions']['workflow_force_finish_review'] = [
+      '#type' => 'submit',
+      '#value' => t('Force finish reviewing'),
+      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('edit assessment main data'),
+      '#weight' => 100,
+      '#name' => 'force_finish_review',
+    ];
+
     // We want to replace the core submitForm method so the node won't get saved
     // twice.
     $form['#submit'] = [[self::class, 'submitForm']];
@@ -397,21 +405,36 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      // Handle reviewers revisions.
-      $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
-        ? $workflowService->getReviewersArray($original)
-        : [];
-      $newReviewers = $workflowService->getReviewersArray($node);
+      $removedReviewers = $addedReviewers = [];
 
-      $addedReviewers = array_diff($newReviewers, $originalReviewers);
-      $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      if (!empty($form_state->getValue('force_finish_review'))) {
+        $underReviewRevisions = $workflowService->getRevisionsByState($node, AssessmentWorkflow::STATUS_UNDER_REVIEW);
+        /** @var NodeInterface $revision */
+        foreach ($underReviewRevisions as $revision) {
+          $removedReviewers[] = $revision->getRevisionUserId();
+        }
+      }
+      else {
+        // Handle reviewers revisions.
+        $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
+          ? $workflowService->getReviewersArray($original)
+          : [];
+        $newReviewers = $workflowService->getReviewersArray($node);
+
+        $addedReviewers = array_diff($newReviewers, $originalReviewers);
+        $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      }
 
       if (!empty($addedReviewers)) {
         // Create a revision for each newly added reviewer.
         foreach ($addedReviewers as $reviewerId) {
-          if (empty($workflowService->getReviewerRevision($node, $reviewerId))) {
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          if (empty($reviewerRevision)) {
             $message = "Revision created for reviewer {$reviewerId}";
             $workflowService->createRevision($node, $newState, $reviewerId, $message);
+          } else {
+            $reviewerRevision->set('field_state', AssessmentWorkflow::STATUS_UNDER_REVIEW);
+            $reviewerRevision->save();
           }
         }
       }
@@ -419,7 +442,7 @@ class NodeSiteAssessmentStateChangeForm {
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
         foreach ($removedReviewers as $reviewerId) {
-          $workflowService->deleteReviewerRevisions($node, $reviewerId);
+          $workflowService->markReviewerRevisionsAsFinished($node, $reviewerId);
         }
       }
 

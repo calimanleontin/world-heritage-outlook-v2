@@ -3,11 +3,13 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\workflow\Entity\WorkflowManager;
@@ -437,17 +439,16 @@ class AssessmentWorkflow {
   }
 
   /**
-   * Deletes the revision created for a reviewer.
-   *
    * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   * @param int $uid
-   *   The user id of the reviewer.
+   * @param $uid
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
+  public function markReviewerRevisionsAsFinished(NodeInterface $node, $uid) {
     $reviewer_revision = $this->getReviewerRevision($node, $uid);
     if (!empty($reviewer_revision)) {
-      $this->nodeStorage->deleteRevision($reviewer_revision->getRevisionId());
+      $reviewer_revision->set('field_state', static::STATUS_FINISHED_REVIEWING);
+      $reviewer_revision->save();
     }
   }
 
@@ -567,6 +568,28 @@ class AssessmentWorkflow {
       }
     }
     return NULL;
+  }
+
+  public function getRevisionsByState(NodeInterface $node, $state, bool $includeDefault = false) {
+    $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
+    $reviews = [];
+
+    foreach ($assessment_revisions_ids as $rid) {
+      /** @var \Drupal\node\Entity\Node $node_revision */
+      $node_revision = $this->getAssessmentRevision($rid);
+
+      if ($node_revision->isDefaultRevision() != $includeDefault) {
+        continue;
+      }
+
+      if ($node_revision->field_state->value != $state) {
+        continue;
+      }
+
+      $reviews[] = $node_revision;
+    }
+
+    return $reviews;
   }
 
   /**
