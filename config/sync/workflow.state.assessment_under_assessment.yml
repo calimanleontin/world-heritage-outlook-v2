@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_under_assessment
-label: 'Under assessment'
+label: 'Being assessed'
 module: workflow
 wid: assessment
 weight: -7

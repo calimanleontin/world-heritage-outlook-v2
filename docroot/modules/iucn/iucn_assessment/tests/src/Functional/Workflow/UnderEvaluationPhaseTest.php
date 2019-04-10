@@ -22,7 +22,7 @@ class UnderEvaluationPhaseTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Under evaluation');
+    $this->assertSession()->pageTextContains('Current workflow state: Pre-assessment edits');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

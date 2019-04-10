@@ -211,9 +211,9 @@ class AssessmentWorkflow {
 
     if (in_array($currentState, [self::STATUS_FINISHED_REVIEWING, self::STATUS_UNDER_COMPARISON])) {
       // Except the default revisions, there are multiple revisions with
-      // "Under review" and "Finished reviewing" status (one for each reviewer),
-      // so we compare the "Finished reviewing" and "Under comparison" revisions
-      // with the only "Ready for review" one.
+      // "Under review" and "Feedback from all reviewers received" status (one for each reviewer),
+      // so we compare the "Feedback from all reviewers received" and "Post-review edits" revisions
+      // with the only "Pre-review edits" one.
       $previousStateKey = array_search(self::STATUS_READY_FOR_REVIEW, $workflow);
     }
     else {
