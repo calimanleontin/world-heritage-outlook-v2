@@ -1755,6 +1755,9 @@ table.diff-context-wrapper {
     width: 75%;
   }
 }
+body.modal-open {
+  overflow: hidden;
+}
 .js td .dropbutton-wrapper {
   width: 157px;
 }
