@@ -317,6 +317,22 @@ div[aria-required="aria-required"] {
   }
 }
 
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+
+  &,
+  & .ui-widget-content.ui-dialog-content {
+    height: 100% !important;
+  }
+
+  .ui-dialog-titlebar {
+    border-radius: 0;
+  }
+}
+
 .ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
   @media (min-width: 768px) {
     overflow-x: hidden;
