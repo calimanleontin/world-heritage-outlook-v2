@@ -1700,6 +1700,9 @@ table.diff-context-wrapper {
   font-size: 0.8em;
   margin: 0;
 }
+.diff-modal td.diff-marker {
+  width: 1%;
+}
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
 }
