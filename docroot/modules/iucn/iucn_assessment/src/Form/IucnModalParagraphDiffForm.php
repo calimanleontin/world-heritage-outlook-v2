@@ -208,8 +208,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
       $form['info'] = [
         '#type' => 'markup',
-        '#markup' => sprintf('<div class="messages messages--info">%s</div>',
-          $this->t('The table below contains only fields which were modified by other user(s). For editing other fields, use the default row edit popup.')),
+        '#markup' => sprintf('<div class="messages messages--info"><div class="pull-left"><span>%s</span></div><div class="pull-right"><span class="legend-content-removed">%s</span><span class="legend-content-added">%s</span></div></div>',
+          $this->t('The table below contains only fields which were modified by other user(s). For editing other fields, use the default row edit popup.'),
+          $this->t('Content removed'),
+          $this->t('Content added')),
         '#weight' => -100,
       ];
     }

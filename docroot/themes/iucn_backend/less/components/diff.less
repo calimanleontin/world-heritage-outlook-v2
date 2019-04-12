@@ -1,10 +1,33 @@
 .diff-modal {
   .messages--info {
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
     margin: 0;
     padding: 5px;
     border: none;
     font-size: 0.8em;
+    .pull-right {
+      margin-left: auto;
+    }
+  }
+
+  .legend-content-added,
+  .legend-content-removed {
+    display: inline-flex;
+    align-items: center;
+    &:after {
+      content: '';
+      display: block;
+      width: 1em;
+      height: 1em;
+      background-color: #faa;
+      margin-left: .5em;
+      margin-right: .5em;
+    }
+  }
+
+  .legend-content-added:after {
+    background-color: #77f177;
   }
   table.diff-table {
     border-collapse: separate;
