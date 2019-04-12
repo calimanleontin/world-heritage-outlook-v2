@@ -58,7 +58,8 @@
   position: relative;
   padding-right: 60px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
   margin: 10px 3px !important;
   position: absolute !important;
   right: 0;
@@ -73,7 +74,8 @@
   border-radius: 4px;
   text-indent: -9999em;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare {
   background-image: url(../images/compare.svg);
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
@@ -188,6 +190,7 @@
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
+  position: relative;
 }
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
   display: none;
@@ -1191,7 +1194,8 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
     grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
   }
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button {
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
   padding: 0;
   min-width: 36px;
   width: 36px !important;
@@ -1210,7 +1214,8 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-delete {
   background-image: url("../images/icon-delete.svg") !important;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare {
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
   background-image: url(../images/compare.svg);
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-revert {
