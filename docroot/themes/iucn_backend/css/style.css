@@ -1704,6 +1704,9 @@ table.diff-context-wrapper {
 .diff-modal td.diff-marker {
   width: 1%;
 }
+.diff-modal .diff-addedline.diff-tick-false {
+  background-color: #fdd;
+}
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
 }
