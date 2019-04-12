@@ -208,11 +208,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       }
     }
 
-    $form['row_title'] = [
-      '#type' => 'markup',
-      '#markup' => '<div>Protection and management</div>',
-      '#weight' => -101,
-    ];
+    $viewBuilder = $this->entityTypeManager->getViewBuilder('paragraph');
+    $form['row_title'] = $viewBuilder->view($this->paragraphRevision, 'teaser');
 
     if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
       $form['info'] = [
