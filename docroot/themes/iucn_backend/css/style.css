@@ -1523,6 +1523,7 @@ span.field-boolean-tick {
 }
 .diff-tick-false {
   font-size: 1.6rem;
+  color: red;
 }
 .diff-context-wrapper td.diff-tick-false {
   background-color: #fcfcfa;
