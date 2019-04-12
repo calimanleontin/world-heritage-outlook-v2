@@ -208,6 +208,12 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       }
     }
 
+    $form['row_title'] = [
+      '#type' => 'markup',
+      '#markup' => '<div>Protection and management</div>',
+      '#weight' => -101,
+    ];
+
     if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
       $form['info'] = [
         '#type' => 'markup',
@@ -241,6 +247,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         if (!in_array($field, $this->fieldWithDifferences)) {
           continue;
         }
+
 
         $cssClass = ' field-name--' . Html::cleanCssIdentifier($field);
 
