@@ -174,7 +174,10 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form, $fieldName);
       $diffTable['#header'][$fieldName] = [
         'data' => $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel(),
-        'class' => ['widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form, $fieldName))]
+        'class' => [
+          'widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form, $fieldName)),
+          'field-name--' . Html::cleanCssIdentifier($fieldName)
+        ]
       ];
       $finalRow[$fieldName]['input'] = $form[$fieldName];
     }
@@ -224,7 +227,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         $field = 'author';
         $row[$field] = [
           'data' => ['#markup' => $diff[$field]],
-          '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+          '#wrapper_attributes' => ['class' => [$cssClass]],
         ];
         $field = 'deleted';
         $row[$field] = [
@@ -239,10 +242,12 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           continue;
         }
 
+        $cssClass = ' field-name--' . Html::cleanCssIdentifier($field);
+
         if (empty($diff[$field])) {
           $row[$field] = [
             'data' => ['#markup' => ''],
-            '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+            '#wrapper_attributes' => ['class' => [$cssClass]],
           ];
           continue;
         }
@@ -251,12 +256,11 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         if (!is_array($diffData)) {
           $row[$field] = [
             'data' => ['#markup' => $diffData],
-            '#wrapper_attributes' => ['class' => ['field-name--' . $field]],
+            '#wrapper_attributes' => ['class' => [$cssClass]],
           ];
           continue;
         }
 
-        $cssClass = ' field-name--' . $field;
         if (!empty($diffData['widget_type'])) {
           $cssClass .= ' widget-type--' . $diffData['widget_type'];
         }

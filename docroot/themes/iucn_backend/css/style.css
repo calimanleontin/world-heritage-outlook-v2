@@ -1609,17 +1609,15 @@ table.diff-context-wrapper {
 }
 .diff-modal table.diff-table td.widget-type--textfield,
 .diff-modal table.diff-table th.widget-type--textfield,
-.diff-modal table.diff-table td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table th.field-name--field_as_threats_categories,
-.diff-modal table.diff-table td.field-name--field_as_threats_threat,
-.diff-modal table.diff-table th.field-name--field_as_threats_threat,
 .diff-modal table.diff-table td.widget-type--paragraph,
 .diff-modal table.diff-table th.widget-type--paragraph {
   min-width: 250px;
 }
-.diff-modal table.diff-table td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table th.field-name--field_as_threats_categories {
-  min-width: 150px;
+.diff-modal table.diff-table td.field-name--field-as-threats-categories,
+.diff-modal table.diff-table th.field-name--field-as-threats-categories,
+.diff-modal table.diff-table td.field-name--field-as-threats-threat,
+.diff-modal table.diff-table th.field-name--field-as-threats-threat {
+  min-width: 100px;
 }
 .diff-modal table.diff-table > thead > tr > th {
   background: #ececec !important;
