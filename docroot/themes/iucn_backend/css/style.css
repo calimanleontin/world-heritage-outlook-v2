@@ -1662,6 +1662,12 @@ table.diff-context-wrapper {
   height: 14px;
   overflow: hidden;
 }
+td.diff-deletedline > .diffchange {
+  background-color: unset !important;
+}
+td.diff-addedline > .diffchange {
+  background-color: unset !important;
+}
 .field--widget-text-textarea-with-scayt .cke_top {
   display: none;
   padding: 0;
