@@ -140,8 +140,16 @@ function iucn_notifications_node_update(NodeInterface $node) {
  * Implements hook_form_alter().
  */
 function iucn_notifications_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'pet_edit_form') {
-    // Don't let users change the title of the pets because it is used by the NotificationService.
-    $form['title']['#disabled'] = TRUE;
+  switch ($form_id) {
+    case 'pet_edit_form':
+      // Don't let users change the title of the pets because it is used by the NotificationService.
+      $form['title']['#disabled'] = TRUE;
+      $form['mail_body']['widget']['0']['value']['#format'] = 'html';
+      break;
+
+    case
+    'pet_add_form':
+      $form['mail_body']['widget']['0']['#format'] = 'html';
+      break;
   }
 }
