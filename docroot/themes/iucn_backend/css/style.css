@@ -1547,6 +1547,9 @@ table.diff-context-wrapper {
 .paragraph-summary-component-field_as_threats_in {
   min-width: 125px;
 }
+.diff-modal textarea {
+  min-height: 5em;
+}
 .diff-modal .messages--info {
   display: flex;
   flex-wrap: wrap;
