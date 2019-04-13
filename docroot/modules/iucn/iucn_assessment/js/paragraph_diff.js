@@ -60,6 +60,7 @@
           } else {
             $(get_data_selector(selector)).val(['_none']);
           }
+          $(get_data_selector(selector)).trigger('change');
         }
         else if (type == 'textarea') {
           $(get_data_selector(selector)).val(values);
