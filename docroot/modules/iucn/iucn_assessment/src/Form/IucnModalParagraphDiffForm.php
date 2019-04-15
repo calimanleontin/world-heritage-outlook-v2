@@ -79,7 +79,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         'author' => $this->t('Initial version'),
       ],
     ];
-
+    $readOnlyFields = ['field_as_values_value', 'field_as_protection_topic'];
     foreach ($settings['diff'] as $vid => $diff) {
       if (empty($diff['paragraph'][$this->paragraphRevision->id()]['diff'])) {
         continue;
@@ -97,13 +97,18 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       ];
       $deletedLine = TRUE;
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
-        if (empty($rowDiff['diff'][$fieldName])) {
+        if (empty($rowDiff['diff'][$fieldName]) && !in_array($fieldName, $readOnlyFields)) {
           continue;
         }
         $field = $revision instanceof ParagraphInterface
           ? $revision->get($fieldName)
           : NULL;
         $fieldValue = !empty($field) ? $field->getValue() : [];
+
+        if (empty($rowDiff['diff'][$fieldName]) && in_array($fieldName, $readOnlyFields)) {
+          $rowDiff['diff'][$fieldName] = [];
+        }
+
         if (!$this->isDeletedField($rowDiff['diff'][$fieldName])) {
           $deletedLine = FALSE;
         }
