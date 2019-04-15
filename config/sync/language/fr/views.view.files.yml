@@ -2,13 +2,13 @@ label: Fichiers
 description: 'Trouver et gérer les fichiers.'
 display:
   default:
-    display_title: Maître
+    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Filtrer
-          reset_button_label: Réinitialiser
-          exposed_sorts_label: 'Trier par'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -17,9 +17,9 @@ display:
             previous: '‹ Précédent'
             next: 'Suivant ›'
           expose:
-            items_per_page_label: 'Éléments par page'
-            items_per_page_options_all_label: '- Tout -'
-            offset_label: Décalage
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       fields:
         fid:
           label: 'Identifiant (FID)'
@@ -70,9 +70,9 @@ display:
             previous: '‹ Précédent'
             next: 'Suivant ›'
           expose:
-            items_per_page_label: 'Éléments par page'
-            items_per_page_options_all_label: '- Tout -'
-            offset_label: Décalage
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       fields:
         entity_label:
           label: Entité
@@ -86,5 +86,5 @@ display:
       arguments:
         fid:
           exception:
-            title: Tout
+            title: All
           title: 'Information d''utilisation du fichier {{ arguments.fid }}'
