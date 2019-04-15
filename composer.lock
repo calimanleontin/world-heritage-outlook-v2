@@ -6604,6 +6604,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Fields definition": "patches/pet/pet.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
