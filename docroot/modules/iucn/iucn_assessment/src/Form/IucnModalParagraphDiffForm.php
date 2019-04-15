@@ -163,9 +163,22 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#suffix' => '</div>',
       '#tree' => FALSE,
     ];
-    $finalRow = [
-      'author' => $this->t('Final version'),
+
+    $helpText = 'Initial text in this row is the assessor\'s version';
+    if ($this->nodeRevision->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
+      $helpText = 'Initial text in this row is the coordinator\'s version sent out for review';
+    }
+
+    $title = [
+      '#theme' => 'topic_tooltip',
+      '#label' => t('Final version'),
+      '#help_text' => t($helpText),
     ];
+
+    $finalRow = [
+      'author' => render($title)
+    ];
+
     foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
       if (empty($this->paragraphRevision->{$fieldName})) {
         unset($this->paragraphFormComponents[$fieldName]);
