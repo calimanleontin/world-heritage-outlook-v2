@@ -93,15 +93,7 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $titlePlaceholder = 'Change state of @type @assessment';
-    if (in_array('assessor', $currentUser->getRoles())) {
-      $titlePlaceholder = 'Submit @assessment @type';
-    }
-
-    $form['#title'] = t($titlePlaceholder, [
-      '@type' => $node->type->entity->label(),
-      '@assessment' => $node->getTitle(),
-    ]);
+    $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
   }
 
   public static function validateNode(&$form, NodeInterface $node) {
