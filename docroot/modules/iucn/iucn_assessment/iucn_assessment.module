@@ -990,6 +990,17 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
 }
 
 /**
+ * Implements hook_toolbar_alter().
+ */
+function iucn_assessment_toolbar_alter(&$items) {
+  if (!\Drupal::currentUser()
+    ->getAccount()
+    ->hasPermission('view home button')) {
+    unset($items['home']);
+  }
+}
+
+/**
  * Implements hook_node_access().
  */
 function iucn_assessment_node_access(NodeInterface $node, $op, AccountInterface $account) {

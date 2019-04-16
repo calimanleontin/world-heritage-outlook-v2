@@ -93,10 +93,7 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $form['#title'] = t('Change state of @type @assessment', [
-      '@type' => $node->type->entity->label(),
-      '@assessment' => $node->getTitle(),
-    ]);
+    $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
   }
 
   public static function validateNode(&$form, NodeInterface $node) {
@@ -349,7 +346,7 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish it.'));
+      self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
@@ -445,6 +442,10 @@ class NodeSiteAssessmentStateChangeForm {
         $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
         break;
 
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
+        $workflowService->removeCommentsFromFieldSettings($node);
+        break;
+
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
@@ -489,6 +490,13 @@ class NodeSiteAssessmentStateChangeForm {
 
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
+    $currentUser = \Drupal::currentUser();
+
+    $message = t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]);
+    if (in_array('assessor', $currentUser->getRoles())) {
+      $message = t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]);
+    }
+
+    \Drupal::messenger()->addMessage($message);
   }
 }

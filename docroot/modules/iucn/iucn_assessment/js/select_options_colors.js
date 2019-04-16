@@ -15,7 +15,7 @@
           var tid = $(this).val();
           if (drupalSettings.terms_colors[tid]) {
             $(this).parent().parent().removeClass (function (index, className) {
-              return (className.match (/(^|\s)level-\S+/g) || []).join(' ');
+              return (className.match (/(^|\s)assessment-level-\S+/g) || []).join(' ')
             });
             $(this).parent().parent().addClass(drupalSettings.terms_colors[tid]);
           }
@@ -26,7 +26,7 @@
         var tid = $(this).val();
         if (drupalSettings.terms_colors[tid]) {
           $(this).parent().parent().removeClass (function (index, className) {
-            return (className.match (/(^|\s)level-\S+/g) || []).join(' ');
+            return (className.match (/(^|\s)assessment-level-\S+/g) || []).join(' ')
           });
           $(this).parent().parent().addClass(drupalSettings.terms_colors[tid]);
         }

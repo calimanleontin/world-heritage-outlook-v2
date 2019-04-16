@@ -128,7 +128,7 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['mail_body'] = BaseFieldDefinition::create('string_long')
+    $fields['mail_body'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Mail Body'))
       ->setDescription(t('The body of the email template. May include tokens of any token type specified below.'))
       ->setDefaultValue(NULL)
@@ -142,7 +142,7 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['mail_body_plain'] = BaseFieldDefinition::create('string_long')
+    $fields['mail_body_plain'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Mail Body Plain'))
       ->setDescription(t('The plain text body of the email template. May include tokens of any token type specified below. If left empty Mime Mail will use drupal_html_to_text() to create a plain text version of the email.'))
       ->setDisplayOptions('form', array(

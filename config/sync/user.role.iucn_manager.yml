@@ -8,6 +8,7 @@ weight: -9
 is_admin: null
 permissions:
   - 'access content'
+  - 'access content overview'
   - 'access contextual links'
   - 'access in-place editing'
   - 'access site in maintenance mode'
@@ -128,5 +129,6 @@ permissions:
   - 'view all revisions'
   - 'view assessment differences'
   - 'view assessment reports'
+  - 'view home button'
   - 'view own unpublished content'
   - 'view site_assessment revisions'

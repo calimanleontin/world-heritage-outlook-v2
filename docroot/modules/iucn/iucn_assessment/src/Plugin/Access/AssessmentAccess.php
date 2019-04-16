@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
@@ -66,10 +67,12 @@ class AssessmentAccess implements ContainerInjectionInterface {
   public static function revisionAccess(AccountInterface $account, NodeInterface $node, $op = 'view') {
     if ($op == 'view' && $account->hasPermission('view site_assessment revisions')) {
       $user = User::load($account->id());
-      if ($node->isDefaultRevision() && $user->hasRole('coordinator') && $node->field_coordinator->target_id != $account->id()) {
-        return AccessResult::forbidden();
+      if ($user->hasRole('coordinator')) {
+        $defaultRevision = Node::load($node->id());
+        return AccessResult::allowedIf($defaultRevision->field_coordinator->target_id == $account->id());
       }
+      return AccessResult::allowed();
     }
-    return AccessResult::allowed();
+    return AccessResult::forbidden();
   }
 }

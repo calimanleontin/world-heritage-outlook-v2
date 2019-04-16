@@ -186,6 +186,7 @@
     "drupal/inline_responsive_images": "^2.1",
     "drupal/lang_dropdown": "^2",
     "drupal/linkit": "^5.0",
+    "drupal/mail_login": "^1.0",
     "drupal/maxlength": "^1.0@beta",
     "drupal/menu_block": "^1.5",
     "drupal/menu_breadcrumb": "^1.6",

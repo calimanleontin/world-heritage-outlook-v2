@@ -7,6 +7,7 @@ label: Coordinator
 weight: -6
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access user profiles'
   - 'administer users'
   - 'assign coordinator to assessment'
@@ -39,5 +40,6 @@ permissions:
   - 'view any unpublished content'
   - 'view assessment differences'
   - 'view assessment reports'
+  - 'view home button'
   - 'view latest version'
   - 'view site_assessment revisions'
