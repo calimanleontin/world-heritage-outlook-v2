@@ -167,6 +167,14 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $this->nodeRevision->save();
     }
 
+
+    $tab = \Drupal::request()->get('tab');
+    if ($tab == 'assessing-values') {
+      $content = $this->nodeFormDisplay->getComponents();
+      $content['field_as_values_wh']['settings']['form_display_mode'] = 'assessing_values';
+      $this->nodeFormDisplay->setComponent('field_as_values_wh', $content['field_as_values_wh']);
+    }
+
     $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
       'form_display' => $this->nodeFormDisplay,
       'entity_form_initialized' => TRUE,
