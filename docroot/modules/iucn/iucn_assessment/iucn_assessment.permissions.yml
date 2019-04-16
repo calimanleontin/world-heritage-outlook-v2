@@ -27,3 +27,6 @@ view assessment differences:
 
 view assessment reports:
   title: 'View assessment reports'
+
+view home button:
+  title: 'View home button'
