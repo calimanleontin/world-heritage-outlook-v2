@@ -22,6 +22,7 @@ use Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\iucn_assessment\Plugin\Access\AssessmentAccess;
 
 function iucn_assessment_theme() {
   return [
@@ -831,13 +832,13 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       ];
     }
 
-    if ($current_user->access('view site_assessment revisions') && $nodeManager->revisionIds($entity) > 1) {
+    if ($nodeManager->revisionIds($entity) > 1 && AssessmentAccess::revisionAccess($current_account, $entity)->isAllowed()) {
       $operations['view_revisions'] = [
         'title' => t('Revisions'),
         'url' => Url::fromRoute('entity.node.version_history', [
           'node' => $entity->id(),
         ]),
-        'weight' => 21,
+        'weight' => 121,
       ];
     }
   }
@@ -991,8 +992,9 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
 /**
  * Implements hook_node_access().
  */
-function iucn_assessment_node_access(\Drupal\node\NodeInterface $node, $op, \Drupal\Core\Session\AccountInterface $account) {
-  if ($node->bundle() == 'site_assessment' && $op == 'view') {
-    return AccessResult::allowedIf($account->hasPermission('view site_assessment revisions'));
+function iucn_assessment_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->bundle() == 'site_assessment' && AssessmentAccess::revisionAccess($account, $node, $op)->isAllowed()) {
+
+    return AccessResult::allowed();
   }
 }

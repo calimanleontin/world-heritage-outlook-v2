@@ -36,11 +36,5 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setRequirement('_access', 'FALSE');
     }
-
-    $route = $collection->get('entity.node.version_history');
-    if ($route) {
-      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentRevisionsAccess');
-    }
   }
-
 }

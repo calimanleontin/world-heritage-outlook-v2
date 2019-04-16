@@ -63,13 +63,13 @@ class AssessmentAccess implements ContainerInjectionInterface {
       && $this->assessmentEditAccess($account, $node, $node_revision)->isAllowed());
   }
 
-  public function assessmentRevisionsAccess(AccountInterface $account, NodeInterface $node) {
-    $user = User::load($account->id());
-    if ($user->hasPermission('administrator')) {
-      return AccessResult::allowed();
+  public static function revisionAccess(AccountInterface $account, NodeInterface $node, $op = 'view') {
+    if ($op == 'view' && $account->hasPermission('view site_assessment revisions')) {
+      $user = User::load($account->id());
+      if ($node->isDefaultRevision() && $user->hasRole('coordinator') && $node->field_coordinator->target_id != $account->id()) {
+        return AccessResult::forbidden();
+      }
     }
-
-    return AccessResult::allowedIf($account->hasPermission('view site_assessment revisions')
-      && $node->bundle() == 'site_assessment');
+    return AccessResult::allowed();
   }
 }
