@@ -305,7 +305,7 @@ third_party_settings:
       weight: 23
       format_type: html_element_assessment
       format_settings:
-        label: 'Current State Trend of World Heritage values'
+        label: 'Current state and trend of World Heritage values'
         terms: ''
         element: div
         show_label: '0'
@@ -317,7 +317,7 @@ third_party_settings:
         id: ''
         classes: overall-row-view
         required_fields: 0
-      label: 'Current State Trend of World Heritage values'
+      label: 'Current state and trend of World Heritage values'
     group_assessing_values_other:
       children:
         - field_as_vass_bio_text
@@ -326,18 +326,19 @@ third_party_settings:
       weight: 24
       format_type: html_element_assessment
       format_settings:
-        label: 'Current state and trend of other important biodiversity values (if applicable)'
-        id: ''
-        classes: overall-row-view
+        label: 'Current state and trend of other important biodiversity values'
+        terms: ''
         element: div
-        show_label: false
+        show_label: '0'
         show_fields_preview: '1'
         label_element: h3
-        required_fields: false
         attributes: ''
         effect: none
         speed: fast
-      label: 'Current state and trend of other important biodiversity values (if applicable)'
+        id: ''
+        classes: overall-row-view
+        required_fields: 0
+      label: 'Current state and trend of other important biodiversity values'
     group_assessment_of_conservation:
       children:
         - field_as_global_assessment_text
@@ -427,6 +428,7 @@ content:
       show_numbers: 'no'
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
   field_as_protection:
@@ -446,6 +448,7 @@ content:
       features: {  }
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
   field_as_protection_ov_out_rate:
     weight: 28
@@ -495,6 +498,7 @@ content:
         collapse_edit_all: 0
         add_above: 0
       only_editable: 0
+      add_more_text: 'Add more'
     third_party_settings: {  }
   field_as_threats_current:
     type: row_entity_reference_paragraphs
@@ -513,6 +517,7 @@ content:
       features: {  }
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
   field_as_threats_current_rating:
     weight: 31
@@ -559,6 +564,7 @@ content:
       features: {  }
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
   field_as_threats_rating:
     weight: 33
@@ -591,6 +597,7 @@ content:
       features: {  }
       empty_message: ''
       only_editable: false
+      add_more_text: 'Add more'
     third_party_settings: {  }
   field_as_vass_bio_state:
     weight: 25

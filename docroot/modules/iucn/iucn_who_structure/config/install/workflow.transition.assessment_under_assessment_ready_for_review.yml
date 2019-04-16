@@ -5,7 +5,7 @@ dependencies:
     - workflow.state.assessment_ready_for_review
     - workflow.state.assessment_under_assessment
 id: assessment_under_assessment_ready_for_review
-label: 'Finish assessment'
+label: 'Submit assessment'
 module: workflow
 from_sid: assessment_under_assessment
 to_sid: assessment_ready_for_review

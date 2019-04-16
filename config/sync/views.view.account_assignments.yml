@@ -2779,7 +2779,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Finish assessment" button.'
+            value: 'When you have finished working on an assessment, press "Submit assessment" button.'
             format: html
           plugin_id: text
     cache_metadata:
