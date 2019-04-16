@@ -15,6 +15,12 @@ class NodeSiteAssessmentStateChangeForm {
 
   use AssessmentEntityFormTrait;
 
+  const ASSESSING_VALUES_FIELDS = [
+    'field_as_values_curr_state',
+    'field_as_values_curr_text',
+    'field_as_values_curr_trend',
+  ];
+
   public static function alter(&$form, FormStateInterface $form_state) {
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
     $workflowService = \Drupal::service('iucn_assessment.workflow');
@@ -138,7 +144,11 @@ class NodeSiteAssessmentStateChangeForm {
             $groupedErrors = [];
             foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
               if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $groupedErrors[$fieldSettings->getLabel()][] = $paragraphFieldSettings->getLabel();
+                $tab = $fieldSettings->getLabel();
+                if (in_array($paragraphFieldName, static::ASSESSING_VALUES_FIELDS)) {
+                  $tab = t('Assessing the current state and trend of values')->render();
+                }
+                $groupedErrors[$tab][] = $paragraphFieldSettings->getLabel();
               }
             }
 
