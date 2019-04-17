@@ -234,6 +234,10 @@ class NodeSiteAssessmentStateChangeForm {
     }
   }
 
+  /**
+   * There are 3 fields in "Assessing values" tab which are required only if
+   * field_as_values_bio is not empty.
+   */
   public static function validateSummaryOfTheValues(&$form, $node) {
     if (empty($node->field_as_values_bio->getValue())) {
       return;
