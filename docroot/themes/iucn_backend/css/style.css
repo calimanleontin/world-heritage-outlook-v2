@@ -1532,7 +1532,7 @@ span.field-boolean-tick {
 }
 .diff-tick-false {
   font-size: 1.6rem;
-  color: red;
+  color: #7f0000;
 }
 .diff-context-wrapper td.diff-tick-false {
   background-color: #fcfcfa;
@@ -1712,8 +1712,14 @@ table.diff-context-wrapper {
 .diff-modal td.diff-marker {
   width: 1%;
 }
-.diff-modal .diff-addedline.diff-tick-false {
-  background-color: #fdd;
+.diff-modal td.diff-addedline.diff-full-bg,
+.diff-modal td.diff-addedline span.diffchange {
+  background-color: #77f177;
+}
+.diff-modal td.diff-addedline.diff-tick-false,
+.diff-modal td.diff-deletedline.diff-full-bg,
+.diff-modal td.diff-deletedline span.diffchange {
+  background-color: #ffaaaa;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;

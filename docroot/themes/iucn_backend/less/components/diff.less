@@ -177,8 +177,16 @@
   td.diff-marker {
     width: 1%;
   }
-  .diff-addedline.diff-tick-false {
-    background-color: #fdd;
+
+  td.diff-addedline.diff-full-bg,
+  td.diff-addedline span.diffchange {
+    background-color: #77f177;
+  }
+
+  td.diff-addedline.diff-tick-false,
+  td.diff-deletedline.diff-full-bg,
+  td.diff-deletedline span.diffchange {
+    background-color: #ffaaaa;
   }
 }
 
