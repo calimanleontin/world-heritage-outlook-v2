@@ -225,9 +225,6 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         unset($finalRow[$fieldName]);
       }
     }
-    // @todo: issue #6337, no. 8
-    $viewBuilder = $this->entityTypeManager->getViewBuilder('paragraph');
-    $form['row_title'] = $viewBuilder->view($this->paragraphRevision, 'teaser');
 
     if (count($this->fieldWithDifferences) <= count($this->paragraphFormComponents)) {
       $form['info'] = [
