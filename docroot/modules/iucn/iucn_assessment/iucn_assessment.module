@@ -1005,8 +1005,7 @@ function iucn_assessment_toolbar_alter(&$items) {
  * Implements hook_node_access().
  */
 function iucn_assessment_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() == 'site_assessment' && AssessmentAccess::revisionAccess($account, $node, $op)->isAllowed()) {
-
+  if ($node->bundle() == 'site_assessment' && $op == 'view' && AssessmentAccess::revisionAccess($account, $node)->isAllowed()) {
     return AccessResult::allowed();
   }
 }
