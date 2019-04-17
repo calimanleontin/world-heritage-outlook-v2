@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
@@ -98,12 +99,33 @@ class NodeSiteAssessmentStateChangeForm {
 
   public static function validateNode(&$form, NodeInterface $node) {
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
-    static::validateSummaryOfTheValues($form, $node);
+
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
+      /** @var \Drupal\Core\Field\FieldConfigInterface $fieldSettings */
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
       }
-      if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
+
+      // First we do custom validation for some fields.
+      switch ($fieldName) {
+        case 'field_as_vass_bio_text':
+        case 'field_as_vass_bio_state':
+        case 'field_as_vass_bio_trend':
+          // These 3 fields are required only if field_as_values_bio is not empty.
+          if (!empty($node->field_as_values_bio->getValue())) {
+            $fieldSettings->setRequired(TRUE);
+          }
+          break;
+
+        case 'field_as_benefits_summary':
+          // This field is required only if field_as_benefits is not empty.
+          if (!empty($node->field_as_benefits->getValue())) {
+            $fieldSettings->setRequired(TRUE);
+          }
+          break;
+      }
+
+      if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
       if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
@@ -114,21 +136,17 @@ class NodeSiteAssessmentStateChangeForm {
       if ($fieldSettings->getType() == 'entity_reference_revisions') {
         $tab_has_errors = FALSE;
         foreach ($node->{$fieldName} as &$value) {
+          // We need to validate each child paragraph.
           $target = $value->getValue();
           $paragraph = Paragraph::load($target['target_id']);
 
           if (in_array($fieldName, ['field_as_threats_current', 'field_as_threats_potential'])) {
             static::validateThreat($form, $paragraph);
+            static::validateCategories($form, $paragraph->field_as_threats_categories, 'Threats');
           }
 
           if ($fieldName == 'field_as_benefits') {
-            static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits!');
-            if (empty($node->field_as_benefits_summary->value)) {
-              static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-                '@field' => t('Summary of benefits'),
-                '@tab' => t('Benefits'),
-              ]), 'error', $fieldName);
-            }
+            static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits');
           }
 
           $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
@@ -213,54 +231,8 @@ class NodeSiteAssessmentStateChangeForm {
         '@threat' => $item->field_as_threats_threat->value,
       ]), 'error', 'field_affected_values');
     }
-
-    static::validateCategories($form, $item->field_as_threats_categories, 'Threats');
   }
 
-  public static function validateBenefit(&$form, $node) {
-    foreach ($node->field_as_benefits as $item) {
-      static::validateCategories($form, $item->entity->field_as_benefits_category, 'Benefits');
-    }
-
-    if ($node->field_as_benefits->getValue() && empty($node->field_as_benefits_summary->value)) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-        '@field' => t('Summary of benefits'),
-        '@tab' => t('Benefits'),
-      ]), 'error');
-    }
-  }
-
-  /**
-   * There are 3 fields in "Assessing values" tab which are required only if
-   * field_as_values_bio is not empty.
-   */
-  public static function validateSummaryOfTheValues(&$form, $node) {
-    if (empty($node->field_as_values_bio->getValue())) {
-      return;
-    }
-
-    $required_fields = [
-      'field_as_vass_bio_text',
-      'field_as_vass_bio_state',
-      'field_as_vass_bio_trend',
-    ];
-
-    $requiredLabels = [];
-    foreach ($required_fields as $required_field) {
-      if ($node->$required_field->isEmpty()) {
-        $requiredLabels[] = $node->getFieldDefinition($required_field)->getLabel();
-      }
-    }
-
-    if (!empty($requiredLabels)) {
-      $labels = implode(', ', $requiredLabels);
-      $message = \Drupal::translation()->formatPlural(count($requiredLabels),
-        "<b>@field</b> field is required in <b>@tab</b> tab.",
-        "<b>@field</b> fields are required in <b>@tab</b> tab.",
-        ['@field' => $labels, '@tab' => t('Assessing values')]);
-      static::addStatusMessage( $form, $message, 'error', 'field_as_values_bio');
-    }
-  }
 
   private static function validateCategories(&$form, $items, $tab) {
     $mainCategory = FALSE;
