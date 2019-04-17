@@ -839,7 +839,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         'url' => Url::fromRoute('entity.node.version_history', [
           'node' => $entity->id(),
         ]),
-        'weight' => 121,
+        'weight' => 90,
       ];
     }
   }
