@@ -752,7 +752,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
-      $fieldItemList = $paragraph->get($fieldName);
+      $fieldItemList = clone $paragraph->get($fieldName);
       $fieldColumn = $this->getFieldColumn($fieldName);
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
