@@ -768,7 +768,8 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
 function iucn_assessment_entity_operation(EntityInterface $entity) {
   $operations = [];
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'site_assessment') {
-    $nodeManager = \Drupal::entityManager()->getStorage('node');
+    /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+    $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
     // Add the available transitions as entity operations.
     $transitions = \Drupal::entityTypeManager()
       ->getStorage('workflow_config_transition')
@@ -832,7 +833,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       ];
     }
 
-    if ($nodeManager->revisionIds($entity) > 1 && AssessmentAccess::revisionAccess($current_account, $entity)->isAllowed()) {
+    if (count($nodeStorage->revisionIds($entity)) > 1 && AssessmentAccess::revisionAccess($current_account, $entity)->isAllowed()) {
       $operations['view_revisions'] = [
         'title' => t('Revisions'),
         'url' => Url::fromRoute('entity.node.version_history', [
