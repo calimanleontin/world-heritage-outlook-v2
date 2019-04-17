@@ -112,12 +112,7 @@ class NodeSiteAssessmentStateChangeForm {
       switch ($fieldName) {
         // These 3 fields are required only if field_as_values_bio is not empty.
         case 'field_as_vass_bio_text':
-          $fieldSettings->setLabel(t('Summary of the values - justification of assessment'));
-          if (!empty($node->field_as_values_bio->getValue())) {
-            $fieldSettings->setRequired(TRUE);
-          }
-          break;
-
+          $fieldSettings->setLabel(t('Justification of assessment'));
         case 'field_as_vass_bio_state':
         case 'field_as_vass_bio_trend':
           $fieldSettings->setLabel(t('Summary of the values - ' . $fieldSettings->getLabel()));
