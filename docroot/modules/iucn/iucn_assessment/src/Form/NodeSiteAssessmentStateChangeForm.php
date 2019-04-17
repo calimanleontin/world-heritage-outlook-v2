@@ -128,7 +128,7 @@ class NodeSiteAssessmentStateChangeForm {
             }
 
             if ($fieldName == 'field_as_values_bio') {
-              static::validateAssessingValues($form, $node);
+              static::validateSummaryOfTheValues($form, $node);
             }
 
             $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
@@ -234,7 +234,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
   }
 
-  public static function validateAssessingValues(&$form, $node) {
+  public static function validateSummaryOfTheValues(&$form, $node) {
     if (empty($node->field_as_values_bio->getValue())) {
       return;
     }
