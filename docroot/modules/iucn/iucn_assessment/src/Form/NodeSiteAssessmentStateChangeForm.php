@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Form;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -98,10 +99,11 @@ class NodeSiteAssessmentStateChangeForm {
   }
 
   public static function validateNode(&$form, NodeInterface $node) {
+    /** @var \Drupal\Core\Field\FieldConfigInterface[] $siteAssessmentFields */
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    $errors = [];
 
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
-      /** @var \Drupal\Core\Field\FieldConfigInterface $fieldSettings */
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
       }
@@ -129,12 +131,11 @@ class NodeSiteAssessmentStateChangeForm {
         continue;
       }
       if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
-        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => $fieldSettings->getLabel()]), 'error');
+        $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
         continue;
       }
 
       if ($fieldSettings->getType() == 'entity_reference_revisions') {
-        $tab_has_errors = FALSE;
         foreach ($node->{$fieldName} as &$value) {
           // We need to validate each child paragraph.
           $target = $value->getValue();
@@ -149,22 +150,29 @@ class NodeSiteAssessmentStateChangeForm {
             static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits');
           }
 
+          /** @var \Drupal\Core\Field\FieldConfigInterface[] $paragraphFieldDefinitions */
           $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
           foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
             if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-              $tab_has_errors = TRUE;
-              self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
-                '@field' => $paragraphFieldSettings->getLabel(),
-                '@label' => $fieldSettings->getLabel(),
-              ]), 'error');
+              $errors[$fieldName][$paragraphFieldName] = $paragraphFieldSettings->getLabel();
             }
-          }
-          // Show errors only in 1 paragraph row.
-          if (!empty($tab_has_errors)) {
-            break;
           }
         }
       }
+    }
+
+    foreach($errors as $parentField => $errorData) {
+      if (key($errorData) == $parentField) {
+        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => reset($errorData)]), 'error');
+        continue;
+      }
+
+      $singularMessage = '<b>@field</b> field is required for all rows in <b>@table</b> table.';
+      $pluralMessage = '<b>@field</b> fields are required for all rows in <b>@table</b> table.';
+      self::addStatusMessage($form, new PluralTranslatableMarkup(count($errorData), $singularMessage, $pluralMessage, [
+        '@field' => implode(', ', $errorData),
+        '@table' => $siteAssessmentFields[$parentField]->getLabel(),
+      ]), 'error');
     }
 
     if (!empty($form['error'])) {
