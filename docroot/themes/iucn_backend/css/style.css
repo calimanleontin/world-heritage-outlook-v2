@@ -1668,6 +1668,7 @@ table.diff-context-wrapper {
   border-bottom: none;
 }
 .diff-modal table.diff-table > tbody > tr > td table tr td {
+  background: none;
   padding: 3px;
 }
 .diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
