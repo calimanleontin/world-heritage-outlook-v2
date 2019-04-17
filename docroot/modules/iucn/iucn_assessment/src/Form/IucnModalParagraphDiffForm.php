@@ -79,7 +79,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         'author' => $this->t('Initial version'),
       ],
     ];
-
+    $readOnlyFields = ['field_as_values_value', 'field_as_protection_topic'];
     foreach ($settings['diff'] as $vid => $diff) {
       if (empty($diff['paragraph'][$this->paragraphRevision->id()]['diff'])) {
         continue;
@@ -97,13 +97,18 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       ];
       $deletedLine = TRUE;
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
-        if (empty($rowDiff['diff'][$fieldName])) {
+        if (empty($rowDiff['diff'][$fieldName]) && !in_array($fieldName, $readOnlyFields)) {
           continue;
         }
         $field = $revision instanceof ParagraphInterface
           ? $revision->get($fieldName)
           : NULL;
         $fieldValue = !empty($field) ? $field->getValue() : [];
+
+        if (empty($rowDiff['diff'][$fieldName]) && in_array($fieldName, $readOnlyFields)) {
+          $rowDiff['diff'][$fieldName] = [];
+        }
+
         if (!$this->isDeletedField($rowDiff['diff'][$fieldName])) {
           $deletedLine = FALSE;
         }
@@ -163,9 +168,22 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       '#suffix' => '</div>',
       '#tree' => FALSE,
     ];
-    $finalRow = [
-      'author' => $this->t('Final version'),
+
+    $helpText = 'Initial text in this row is the assessor\'s version';
+    if ($this->nodeRevision->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
+      $helpText = 'Initial text in this row is the coordinator\'s version sent out for review';
+    }
+
+    $title = [
+      '#theme' => 'topic_tooltip',
+      '#label' => t('Final version'),
+      '#help_text' => t($helpText),
     ];
+
+    $finalRow = [
+      'author' => render($title)
+    ];
+
     foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
       if (empty($this->paragraphRevision->{$fieldName})) {
         unset($this->paragraphFormComponents[$fieldName]);
