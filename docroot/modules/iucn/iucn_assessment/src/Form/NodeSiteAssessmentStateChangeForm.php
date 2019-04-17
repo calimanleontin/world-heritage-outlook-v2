@@ -98,6 +98,7 @@ class NodeSiteAssessmentStateChangeForm {
 
   public static function validateNode(&$form, NodeInterface $node) {
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    static::validateSummaryOfTheValues($form, $node);
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
@@ -128,10 +129,6 @@ class NodeSiteAssessmentStateChangeForm {
                 '@tab' => t('Benefits'),
               ]), 'error', $fieldName);
             }
-          }
-
-          if ($fieldName == 'field_as_values_bio') {
-            static::validateSummaryOfTheValues($form, $node);
           }
 
           $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
