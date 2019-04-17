@@ -102,54 +102,53 @@ class NodeSiteAssessmentStateChangeForm {
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
       }
-
-      $tab_has_errors = FALSE;
       if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
-      if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
-        if ($fieldSettings->getType() == 'entity_reference_revisions') {
-          foreach ($node->{$fieldName} as &$value) {
-            $target = $value->getValue();
-            $paragraph = Paragraph::load($target['target_id']);
+      if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
+        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => $fieldSettings->getLabel()]), 'error');
+        continue;
+      }
 
-            if (in_array($fieldName, ['field_as_threats_current', 'field_as_threats_potential'])) {
-              static::validateThreat($form, $paragraph);
-            }
+      if ($fieldSettings->getType() == 'entity_reference_revisions') {
+        $tab_has_errors = FALSE;
+        foreach ($node->{$fieldName} as &$value) {
+          $target = $value->getValue();
+          $paragraph = Paragraph::load($target['target_id']);
 
-            if ($fieldName == 'field_as_benefits') {
-              static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits!');
-              if (empty($node->field_as_benefits_summary->value)) {
-                static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-                  '@field' => t('Summary of benefits'),
-                  '@tab' => t('Benefits'),
-                ]), 'error', $fieldName);
-              }
-            }
+          if (in_array($fieldName, ['field_as_threats_current', 'field_as_threats_potential'])) {
+            static::validateThreat($form, $paragraph);
+          }
 
-            if ($fieldName == 'field_as_values_bio') {
-              static::validateSummaryOfTheValues($form, $node);
-            }
-
-            $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
-            foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
-              if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $tab_has_errors = TRUE;
-                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
-                  '@field' => $paragraphFieldSettings->getLabel(),
-                  '@label' => $fieldSettings->getLabel(),
-                ]), 'error');
-              }
-            }
-            // Show errors only in 1 paragraph row.
-            if (!empty($tab_has_errors)) {
-              break;
+          if ($fieldName == 'field_as_benefits') {
+            static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits!');
+            if (empty($node->field_as_benefits_summary->value)) {
+              static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
+                '@field' => t('Summary of benefits'),
+                '@tab' => t('Benefits'),
+              ]), 'error', $fieldName);
             }
           }
+
+          if ($fieldName == 'field_as_values_bio') {
+            static::validateSummaryOfTheValues($form, $node);
+          }
+
+          $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
+          foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
+            if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
+              $tab_has_errors = TRUE;
+              self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
+                '@field' => $paragraphFieldSettings->getLabel(),
+                '@label' => $fieldSettings->getLabel(),
+              ]), 'error');
+            }
+          }
+          // Show errors only in 1 paragraph row.
+          if (!empty($tab_has_errors)) {
+            break;
+          }
         }
-      }
-      else {
-        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => $fieldSettings->getLabel()]), 'error');
       }
     }
 
