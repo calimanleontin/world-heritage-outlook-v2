@@ -7,6 +7,7 @@ label: 'Edit World Heritage site assessments'
 weight: -8
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'create content translations'
   - 'create content unpublished'
@@ -37,4 +38,5 @@ permissions:
   - 'use assessment transition under_review_under_comparison'
   - 'use assessment transition under_review_under_review'
   - 'use text format assessment_text_format'
+  - 'view home button'
   - 'view site_assessment revisions'

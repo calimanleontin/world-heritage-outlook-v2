@@ -860,6 +860,13 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
   font-size: 1em;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .subcategories {
+  margin-left: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .subcategories ul li {
+  list-style-type: disc;
+  margin-left: 0.5em;
+}
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component ul li {
   list-style-type: none;
   margin-left: 0;

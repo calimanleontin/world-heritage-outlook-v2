@@ -3,6 +3,8 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\Entity\Paragraph;
 
 class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
@@ -19,9 +21,17 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
     $form['#title'] = $this->t('Delete row');
     $form['warning']['#value'] = $this->t('Are you sure you want to delete this row? This action cannot be reverted.');
     $form['actions']['submit']['#value'] = $this->t('Delete');
+    $paragraph = $form_state->getFormObject()->getEntity();
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof Paragraph) {
+      $parent = $parent->getParentEntity();
+    }
 
     if (!in_array($this->entity->bundle(), array_keys($this->affectedValuesFields))) {
       // No more validation is required.
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+        return $this->ajaxSave($form, $form_state);
+      }
       return $form;
     }
 
@@ -67,6 +77,11 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
         ],
       ];
     }
+    else {
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+        return $this->ajaxSave($form, $form_state);
+      }
+    }
 
     return $form;
   }
@@ -80,21 +95,26 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
     if (in_array($paragraph->bundle(), array_keys($this->affectedValuesFields))) {
-      $threats = array_merge($this->nodeRevision->get('field_as_threats_current')->getValue(), $this->nodeRevision->get('field_as_threats_potential')->getValue());
-      foreach ($threats as $threat) {
-        $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
-        $field = $this->affectedValuesFields[$paragraph->bundle()];
-        $affected_values = $threat->get($field)->getValue();
-        $key = array_search($this->entity->id(), array_column($affected_values, 'target_id'));
-        if ($key !== FALSE) {
-          $threat->get($field)->removeItem($key);
-          $threat->save();
+      foreach (['field_as_threats_current', 'field_as_threats_potential'] as $threatField) {
+        $threats = $this->nodeRevision->get($threatField)->getValue();
+        $threatIds = array_column($this->nodeRevision->get($threatField)->getValue(), 'target_id');
+
+        foreach ($threats as $threat) {
+          $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
+          $field = $this->affectedValuesFields[$paragraph->bundle()];
+          $affected_values = $threat->get($field)->getValue();
+          $key = array_search($this->entity->id(), array_column($affected_values, 'target_id'));
+          if ($key !== FALSE) {
+            $threat->get($field)->removeItem($key);
+            $threat->save();
+
+            $threatKey = array_search($threat->id(), $threatIds);
+            $this->nodeRevision->get($threatField)->set($threatKey, $threat);
+          }
         }
       }
     }
 
     return parent::ajaxSave($form, $form_state);
   }
-
-
 }
