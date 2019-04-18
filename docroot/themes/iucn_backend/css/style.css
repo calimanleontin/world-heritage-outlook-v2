@@ -1664,11 +1664,13 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td select {
   width: 100%;
 }
+.diff-modal table.diff-table > tbody > tr > td.widget-type--text_format table tr td {
+  background: none;
+}
 .diff-modal table.diff-table > tbody > tr > td table tr {
   border-bottom: none;
 }
 .diff-modal table.diff-table > tbody > tr > td table tr td {
-  background: none;
   padding: 3px;
 }
 .diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
@@ -1712,10 +1714,12 @@ table.diff-context-wrapper {
 .diff-modal td.diff-marker {
   width: 1%;
 }
+.diff-modal td.diff-addedline,
 .diff-modal td.diff-addedline.diff-full-bg,
 .diff-modal td.diff-addedline span.diffchange {
   background-color: #77f177;
 }
+.diff-modal td.diff-deletedline,
 .diff-modal td.diff-addedline.diff-tick-false .diffchange,
 .diff-modal td.diff-deletedline.diff-full-bg,
 .diff-modal td.diff-deletedline span.diffchange {

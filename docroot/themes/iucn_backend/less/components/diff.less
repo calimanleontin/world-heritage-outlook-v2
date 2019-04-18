@@ -121,16 +121,24 @@
             width: 100%;
           }
 
-          table {
-            tr {
-              border-bottom: none;
-              td {
-                background: none;
-                padding: 3px;
+          &.widget-type--text_format {
+            table {
+              tr {
+                td {
+                  background: none;
+                }
               }
             }
           }
 
+          table {
+            tr {
+              border-bottom: none;
+              td {
+                padding: 3px;
+              }
+            }
+          }
           .diff-wrapper {
             min-height: 34px;
             a.diff-button {
@@ -178,11 +186,13 @@
     width: 1%;
   }
 
+  td.diff-addedline,
   td.diff-addedline.diff-full-bg,
   td.diff-addedline span.diffchange {
     background-color: #77f177;
   }
 
+  td.diff-deletedline,
   td.diff-addedline.diff-tick-false .diffchange,
   td.diff-deletedline.diff-full-bg,
   td.diff-deletedline span.diffchange {
