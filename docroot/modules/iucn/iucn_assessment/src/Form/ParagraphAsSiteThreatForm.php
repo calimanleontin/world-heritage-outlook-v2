@@ -130,6 +130,7 @@ class ParagraphAsSiteThreatForm {
         if (in_array($field, static::REQUIRED_DEPENDENT_FIELDS)) {
           $form[$field]['widget'][0]['value']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
           $form[$field]['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
+          $form[$field]['widget']['#states']['required'][0][] = [$selector => ['checked' => TRUE]];
         }
       }
       // Required states API is bugged. It only shows the asterisk.
