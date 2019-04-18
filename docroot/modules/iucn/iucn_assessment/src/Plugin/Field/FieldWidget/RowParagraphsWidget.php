@@ -669,7 +669,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
           case 'field_as_threats_values_wh':
           case 'field_as_threats_values_bio':
-            $label = $this->t('WH values');
+            $label = $this->t('Values affected');
             break;
 
           case 'other_information':
