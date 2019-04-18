@@ -4,7 +4,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_ready_for_review
-label: 'Ready for review'
+label: 'Pre-review edits'
 module: workflow
 wid: assessment
 weight: -6
