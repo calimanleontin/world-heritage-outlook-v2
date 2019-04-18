@@ -9,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_invassp_level
 field_name: field_as_benefits_invassp_level
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Invasive species level'
+label: 'Invasive species - level of impact'
 description: ''
 required: false
 translatable: false

@@ -9,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_oex_level
 field_name: field_as_benefits_oex_level
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Overexploitation level'
+label: 'Overexploitation - level of impact'
 description: ''
 required: false
 translatable: false

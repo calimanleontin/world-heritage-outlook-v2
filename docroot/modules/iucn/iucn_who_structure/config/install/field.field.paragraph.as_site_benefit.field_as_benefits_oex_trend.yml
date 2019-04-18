@@ -9,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_oex_trend
 field_name: field_as_benefits_oex_trend
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Overexploitation trend'
+label: 'Overexploitation - trend'
 description: ''
 required: false
 translatable: false
