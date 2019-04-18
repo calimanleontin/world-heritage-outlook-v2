@@ -17,6 +17,13 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     $form['#attached']['library'][] = 'diff/diff.colors';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.paragraph_diff';
     $form['#attached']['library'][] = 'iucn_backend/font-awesome';
+    $form['info_content'] = [
+      '#type' => 'markup',
+      '#markup' => sprintf('<div class="messages messages--info"><div class="pull-right"><span class="legend-content-removed">%s</span><span class="legend-content-added">%s</span></div></div>',
+        $this->t('Content removed'),
+        $this->t('Content added')),
+      '#weight' => -99,
+    ];
     return $form;
   }
 

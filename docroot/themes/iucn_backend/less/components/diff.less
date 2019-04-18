@@ -1,16 +1,41 @@
 .diff-modal {
+  textarea {
+    min-height: 5em;
+  }
   .messages--info {
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
     margin: 0;
     padding: 5px;
     border: none;
     font-size: 0.8em;
+    .pull-right {
+      margin-left: auto;
+    }
+  }
+
+  .legend-content-added,
+  .legend-content-removed {
+    display: inline-flex;
+    align-items: center;
+    &:after {
+      content: '';
+      display: block;
+      width: 1em;
+      height: 1em;
+      background-color: #faa;
+      margin-left: .5em;
+      margin-right: .5em;
+    }
+  }
+
+  .legend-content-added:after {
+    background-color: #77f177;
   }
   table.diff-table {
     border-collapse: separate;
     border-spacing: 0;
     font-size: .9em;
-    // table-layout: fixed;
 
     .diff-context-wrapper {
       td {
@@ -38,14 +63,13 @@
       }
 
       &.widget-type--textfield,
-      &.field-name--field_as_threats_categories,
-      &.field-name--field_as_threats_threat,
       &.widget-type--paragraph {
         min-width: 250px;
       }
 
-      &.field-name--field_as_threats_categories {
-        min-width: 150px;
+      &.field-name--field-as-threats-categories,
+      &.field-name--field-as-threats-threat {
+        min-width: 100px;
       }
     }
 
@@ -97,6 +121,16 @@
             width: 100%;
           }
 
+          &.widget-type--text_format {
+            table {
+              tr {
+                td {
+                  background: none;
+                }
+              }
+            }
+          }
+
           table {
             tr {
               border-bottom: none;
@@ -105,7 +139,6 @@
               }
             }
           }
-
           .diff-wrapper {
             min-height: 34px;
             a.diff-button {
@@ -148,6 +181,27 @@
       }
     }
   }
+
+  td.diff-marker {
+    width: 1%;
+  }
+
+  td.diff-addedline,
+  td.diff-addedline.diff-full-bg,
+  td.diff-addedline span.diffchange {
+    background-color: #77f177;
+  }
+
+  td.diff-deletedline,
+  td.diff-addedline.diff-tick-false .diffchange,
+  td.diff-deletedline.diff-full-bg,
+  td.diff-deletedline span.diffchange {
+    background-color: #ffaaaa;
+  }
+
+  td.diff-addedline.diff-tick-false {
+    background: none;
+  }
 }
 
 .paragraph-diff-form-modal {
@@ -157,9 +211,14 @@
   .double-scrollbar-helper {
     height: 14px;
     overflow: auto hidden;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
     .inner {
       height: 14px;
       overflow: hidden;
     }
   }
 }
+
