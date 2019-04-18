@@ -75,7 +75,7 @@ third_party_settings:
       label: Tabs
     group_as_values:
       children:
-        - field_as_threats_potential
+        - field_as_values_bio
       parent_name: group_as_tabs
       weight: 20
       format_type: assessment_tab
@@ -89,6 +89,7 @@ third_party_settings:
     group_as_threats:
       children:
         - field_as_threats_current
+        - field_as_threats_potential
       parent_name: group_as_tabs
       weight: 21
       format_type: assessment_tab
@@ -142,6 +143,8 @@ third_party_settings:
       label: 'Conservation Outlook'
     group_as_benefits:
       children:
+        - field_as_benefits
+        - field_as_benefits_summary
         - field_as_vass_wh_trend
       parent_name: group_as_tabs
       weight: 25
@@ -155,7 +158,7 @@ third_party_settings:
       label: Benefits
     group_as_projects:
       children:
-        - field_as_vass_bio_trend
+        - field_as_projects
       parent_name: group_as_tabs
       weight: 27
       format_type: assessment_tab
@@ -280,6 +283,7 @@ third_party_settings:
       children:
         - field_as_protection_ov_out_text
         - field_as_protection_ov_out_rate
+        - field_as_protection_ov_practices
       parent_name: group_conservation_summary
       weight: 29
       format_type: html_element_assessment
@@ -343,6 +347,7 @@ third_party_settings:
       children:
         - field_as_global_assessment_text
         - field_as_global_assessment_level
+        - field_as_vass_bio_trend
       parent_name: group_conservation_overall_container
       weight: 20
       format_type: html_element_assessment
@@ -395,6 +400,33 @@ targetEntityType: node
 bundle: site_assessment
 mode: conservation_outlook
 content:
+  field_as_benefits:
+    type: row_entity_reference_paragraphs
+    weight: 0
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      show_numbers: 'no'
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
+      empty_message: ''
+      only_editable: false
+      add_more_text: 'Add more'
+    third_party_settings: {  }
+  field_as_benefits_summary:
+    type: string_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_as_global_assessment_level:
     weight: 22
     settings: {  }
@@ -431,6 +463,25 @@ content:
       add_more_text: 'Add more'
     third_party_settings: {  }
     region: content
+  field_as_projects:
+    type: row_entity_reference_paragraphs
+    weight: 20
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      show_numbers: 'no'
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
+      empty_message: ''
+      only_editable: false
+      add_more_text: 'Add more'
+    third_party_settings: {  }
   field_as_protection:
     type: row_entity_reference_paragraphs
     weight: 0
@@ -464,6 +515,14 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_scayt
     region: content
+  field_as_protection_ov_practices:
+    type: string_textarea
+    weight: 29
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_as_protection_ov_rating:
     weight: 25
     settings: {  }
@@ -549,7 +608,7 @@ content:
     region: content
   field_as_threats_potential:
     type: row_entity_reference_paragraphs
-    weight: 0
+    weight: 23
     region: content
     settings:
       title: Paragraph
@@ -580,9 +639,28 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_scayt
     region: content
+  field_as_values_bio:
+    type: row_entity_reference_paragraphs
+    weight: 0
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      show_numbers: 'no'
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features: {  }
+      empty_message: ''
+      only_editable: false
+      add_more_text: 'Add more'
+    third_party_settings: {  }
   field_as_values_wh:
     type: row_entity_reference_paragraphs
-    weight: 21
+    weight: 22
     region: content
     settings:
       title: Paragraph
@@ -615,7 +693,7 @@ content:
     region: content
   field_as_vass_bio_trend:
     type: entity_reference_autocomplete
-    weight: 0
+    weight: 23
     region: content
     settings:
       match_operator: CONTAINS
@@ -638,7 +716,7 @@ content:
     region: content
   field_as_vass_wh_trend:
     type: entity_reference_autocomplete
-    weight: 26
+    weight: 2
     region: content
     settings:
       match_operator: CONTAINS
@@ -670,17 +748,12 @@ content:
 hidden:
   created: true
   field_as_archived: true
-  field_as_benefits: true
-  field_as_benefits_summary: true
   field_as_cycle: true
   field_as_end_date: true
-  field_as_projects: true
   field_as_projects_needs: true
-  field_as_protection_ov_practices: true
   field_as_references: true
   field_as_site: true
   field_as_start_date: true
-  field_as_values_bio: true
   field_as_version: true
   field_assessor: true
   field_coordinator: true

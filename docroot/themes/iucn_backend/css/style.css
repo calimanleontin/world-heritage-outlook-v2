@@ -58,7 +58,8 @@
   position: relative;
   padding-right: 60px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
   margin: 10px 3px !important;
   position: absolute !important;
   right: 0;
@@ -73,7 +74,8 @@
   border-radius: 4px;
   text-indent: -9999em;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare {
   background-image: url(../images/compare.svg);
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
@@ -188,6 +190,7 @@
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
+  position: relative;
 }
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
   display: none;
@@ -624,6 +627,24 @@ div[aria-required="aria-required"] label:after {
   width: 6px;
   height: 6px;
   margin: 0 0.3em;
+}
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal,
+.ui-dialog.field-diff-form-modal .ui-widget-content.ui-dialog-content,
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+  height: 100% !important;
+}
+.ui-dialog.field-diff-form-modal .ui-dialog-titlebar,
+.ui-dialog.paragraph-diff-form-modal .ui-dialog-titlebar,
+.ui-dialog.field-diff-form-modal .ui-widget-content.ui-dialog-buttonpane,
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-buttonpane {
+  border-radius: 0;
 }
 @media (min-width: 768px) {
   .ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
@@ -1198,7 +1219,8 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
     grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
   }
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button {
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
   padding: 0;
   min-width: 36px;
   width: 36px !important;
@@ -1217,7 +1239,8 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-delete {
   background-image: url("../images/icon-delete.svg") !important;
 }
-.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare {
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
   background-image: url(../images/compare.svg);
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-revert {
@@ -1509,6 +1532,7 @@ span.field-boolean-tick {
 }
 .diff-tick-false {
   font-size: 1.6rem;
+  color: #7f0000;
 }
 .diff-context-wrapper td.diff-tick-false {
   background-color: #fcfcfa;
@@ -1530,12 +1554,40 @@ table.diff-context-wrapper {
 .diff-tick-marker {
   display: block;
 }
+.paragraph-summary-component-field_as_threats_in {
+  min-width: 125px;
+}
+.diff-modal textarea {
+  min-height: 5em;
+}
 .diff-modal .messages--info {
-  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
   padding: 5px;
   border: none;
   font-size: 0.8em;
+}
+.diff-modal .messages--info .pull-right {
+  margin-left: auto;
+}
+.diff-modal .legend-content-added,
+.diff-modal .legend-content-removed {
+  display: inline-flex;
+  align-items: center;
+}
+.diff-modal .legend-content-added:after,
+.diff-modal .legend-content-removed:after {
+  content: '';
+  display: block;
+  width: 1em;
+  height: 1em;
+  background-color: #faa;
+  margin-left: .5em;
+  margin-right: .5em;
+}
+.diff-modal .legend-content-added:after {
+  background-color: #77f177;
 }
 .diff-modal table.diff-table {
   border-collapse: separate;
@@ -1567,17 +1619,15 @@ table.diff-context-wrapper {
 }
 .diff-modal table.diff-table td.widget-type--textfield,
 .diff-modal table.diff-table th.widget-type--textfield,
-.diff-modal table.diff-table td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table th.field-name--field_as_threats_categories,
-.diff-modal table.diff-table td.field-name--field_as_threats_threat,
-.diff-modal table.diff-table th.field-name--field_as_threats_threat,
 .diff-modal table.diff-table td.widget-type--paragraph,
 .diff-modal table.diff-table th.widget-type--paragraph {
   min-width: 250px;
 }
-.diff-modal table.diff-table td.field-name--field_as_threats_categories,
-.diff-modal table.diff-table th.field-name--field_as_threats_categories {
-  min-width: 150px;
+.diff-modal table.diff-table td.field-name--field-as-threats-categories,
+.diff-modal table.diff-table th.field-name--field-as-threats-categories,
+.diff-modal table.diff-table td.field-name--field-as-threats-threat,
+.diff-modal table.diff-table th.field-name--field-as-threats-threat {
+  min-width: 100px;
 }
 .diff-modal table.diff-table > thead > tr > th {
   background: #ececec !important;
@@ -1613,6 +1663,9 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td textarea,
 .diff-modal table.diff-table > tbody > tr > td select {
   width: 100%;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--text_format table tr td {
+  background: none;
 }
 .diff-modal table.diff-table > tbody > tr > td table tr {
   border-bottom: none;
@@ -1658,12 +1711,32 @@ table.diff-context-wrapper {
   font-size: 0.8em;
   margin: 0;
 }
+.diff-modal td.diff-marker {
+  width: 1%;
+}
+.diff-modal td.diff-addedline,
+.diff-modal td.diff-addedline.diff-full-bg,
+.diff-modal td.diff-addedline span.diffchange {
+  background-color: #77f177;
+}
+.diff-modal td.diff-deletedline,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange,
+.diff-modal td.diff-deletedline.diff-full-bg,
+.diff-modal td.diff-deletedline span.diffchange {
+  background-color: #ffaaaa;
+}
+.diff-modal td.diff-addedline.diff-tick-false {
+  background: none;
+}
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
 }
 .paragraph-diff-form-modal .double-scrollbar-helper {
   height: 14px;
   overflow: auto hidden;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 .paragraph-diff-form-modal .double-scrollbar-helper .inner {
   height: 14px;
@@ -1758,6 +1831,9 @@ table.diff-context-wrapper {
     float: left;
     width: 75%;
   }
+}
+body.modal-open {
+  overflow: hidden;
 }
 .js td .dropbutton-wrapper {
   width: 157px;

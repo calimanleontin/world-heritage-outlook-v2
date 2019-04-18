@@ -63,7 +63,8 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       if ($node->bundle() !== 'site_assessment') {
         return;
       }
-      if (!$node->access('edit')) {
+
+      if (!$node->access('edit') && !\Drupal::currentUser()->hasPermission('view site_assessment revisions')) {
         throw new AccessDeniedHttpException();
       }
 
@@ -77,6 +78,4 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       $event->setResponse($response);
     }
   }
-
-
 }

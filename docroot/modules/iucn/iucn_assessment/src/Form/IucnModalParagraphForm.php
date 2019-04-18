@@ -172,6 +172,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     if ($tab == 'assessing-values') {
       $content = $this->nodeFormDisplay->getComponents();
       $content['field_as_values_wh']['settings']['form_display_mode'] = 'assessing_values';
+      $content['field_as_values_wh']['settings']['only_editable'] = true;
       $this->nodeFormDisplay->setComponent('field_as_values_wh', $content['field_as_values_wh']);
     }
 

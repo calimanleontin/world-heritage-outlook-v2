@@ -22,6 +22,7 @@ use Drupal\iucn_assessment\Form\IucnModalParagraphDiffForm;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\iucn_assessment\Plugin\Access\AssessmentAccess;
 
 function iucn_assessment_theme() {
   return [
@@ -767,6 +768,8 @@ function iucn_assessment_entity_type_build(array &$entity_types) {
 function iucn_assessment_entity_operation(EntityInterface $entity) {
   $operations = [];
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'site_assessment') {
+    /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+    $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
     // Add the available transitions as entity operations.
     $transitions = \Drupal::entityTypeManager()
       ->getStorage('workflow_config_transition')
@@ -827,6 +830,16 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
           'node_revision' => $reviewer_revision->getRevisionId(),
         ]),
         'weight' => 20,
+      ];
+    }
+
+    if (count($nodeStorage->revisionIds($entity)) > 1 && AssessmentAccess::revisionAccess($current_account, $entity)->isAllowed()) {
+      $operations['view_revisions'] = [
+        'title' => t('Revisions'),
+        'url' => Url::fromRoute('entity.node.version_history', [
+          'node' => $entity->id(),
+        ]),
+        'weight' => 90,
       ];
     }
   }
@@ -981,7 +994,18 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
  * Implements hook_toolbar_alter().
  */
 function iucn_assessment_toolbar_alter(&$items) {
-  if (!\Drupal::currentUser()->getAccount()->hasPermission('view home button')) {
+  if (!\Drupal::currentUser()
+    ->getAccount()
+    ->hasPermission('view home button')) {
     unset($items['home']);
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function iucn_assessment_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if ($node->bundle() == 'site_assessment' && $op == 'view' && AssessmentAccess::revisionAccess($account, $node)->isAllowed()) {
+    return AccessResult::allowed();
   }
 }

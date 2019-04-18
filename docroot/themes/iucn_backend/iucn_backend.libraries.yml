@@ -2,6 +2,8 @@ global-styling:
   css:
     component:
       css/style.css: {}
+  js:
+    js/main.js: {}
 
 font-awesome:
   remote: https://fontawesome.com

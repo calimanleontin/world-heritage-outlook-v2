@@ -42,3 +42,4 @@ permissions:
   - 'view assessment reports'
   - 'view home button'
   - 'view latest version'
+  - 'view site_assessment revisions'
