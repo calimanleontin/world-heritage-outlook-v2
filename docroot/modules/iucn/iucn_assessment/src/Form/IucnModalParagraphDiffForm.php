@@ -95,7 +95,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $assessmentRevision->getRevisionUser()->getDisplayName(),
       ];
-      $deletedLine = TRUE;
+      $onlyRemovedContent = TRUE;
       foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
         if (empty($rowDiff['diff'][$fieldName]) && !in_array($fieldName, $readOnlyFields)) {
           continue;
@@ -110,7 +110,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         }
 
         if (!$this->isDeletedField($rowDiff['diff'][$fieldName])) {
-          $deletedLine = FALSE;
+          $onlyRemovedContent = FALSE;
         }
 
         $row[$fieldName] = [
@@ -121,7 +121,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         $this->fieldWithDifferences[] = $fieldName;
       }
 
-      if ($deletedLine) {
+      if ($onlyRemovedContent && count($row) > count($this->paragraphFormComponents)) {
         $row = ['author' => $row['author'], 'deleted' => $this->t('This row has been deleted')];
       }
 

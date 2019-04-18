@@ -1716,10 +1716,13 @@ table.diff-context-wrapper {
 .diff-modal td.diff-addedline span.diffchange {
   background-color: #77f177;
 }
-.diff-modal td.diff-addedline.diff-tick-false,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange,
 .diff-modal td.diff-deletedline.diff-full-bg,
 .diff-modal td.diff-deletedline span.diffchange {
   background-color: #ffaaaa;
+}
+.diff-modal td.diff-addedline.diff-tick-false {
+  background: none;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
