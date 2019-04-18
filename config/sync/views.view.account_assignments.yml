@@ -2396,7 +2396,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Submit assessment" button.'
+            value: 'To begin editing an assessment, click the “Review” button under the Actions column. When you have finished the assessment, click the "Submit assessment” button under the Actions column.'
             format: html
           plugin_id: text
     cache_metadata:
