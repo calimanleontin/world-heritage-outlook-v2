@@ -155,11 +155,11 @@ function iucn_backend_preprocess_taxonomy_term(&$variables) {
 
   if ($viewMode == 'teaser') {
     if ($term->bundle() == 'assessment_benefits_impact_level') {
-      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('level'));
+      $variables['name'][0]['#context']['value'] = sprintf("%s: %s",(string) t('Level of impact'), $variables['name'][0]['#context']['value']);
     }
 
     if ($term->bundle() == 'assessment_benefits_impact_trend') {
-      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('trend'));
+      $variables['name'][0]['#context']['value'] = sprintf("%s: %s", (string) t('Trend'), $variables['name'][0]['#context']['value']);
     }
   }
 
