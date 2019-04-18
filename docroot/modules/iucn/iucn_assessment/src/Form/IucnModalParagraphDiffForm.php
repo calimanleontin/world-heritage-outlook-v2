@@ -35,7 +35,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     'author', // Revision author is always rendered.
   ];
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager = NULL) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entity_form_builder, $entityTypeManager, $temp_store_factory, $assessmentWorkflow, $languageManager);
     $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
 
@@ -53,19 +53,6 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       }
     }
     return NULL;
-  }
-
-  function isDeletedField($fieldDiff) {
-    foreach ($fieldDiff as $rows) {
-      foreach ($rows as $line) {
-        if (is_array($line) && !is_array($line['data'])) {
-          if ($line['data'] == '+') {
-            return FALSE;
-          }
-        }
-      }
-    }
-    return TRUE;
   }
 
   public function getParagraphDiff() {
@@ -95,34 +82,31 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $assessmentRevision->getRevisionUser()->getDisplayName(),
       ];
-      $onlyRemovedContent = TRUE;
-      foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
-        if (empty($rowDiff['diff'][$fieldName]) && !in_array($fieldName, $readOnlyFields)) {
-          continue;
-        }
-        $field = $revision instanceof ParagraphInterface
-          ? $revision->get($fieldName)
-          : NULL;
-        $fieldValue = !empty($field) ? $field->getValue() : [];
 
-        if (empty($rowDiff['diff'][$fieldName]) && in_array($fieldName, $readOnlyFields)) {
-          $rowDiff['diff'][$fieldName] = [];
-        }
-
-        if (!$this->isDeletedField($rowDiff['diff'][$fieldName])) {
-          $onlyRemovedContent = FALSE;
-        }
-
-        $row[$fieldName] = [
-          'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
-          'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
-          'widget_type' => $this->fieldWidgetTypes[$fieldName],
-        ];
-        $this->fieldWithDifferences[] = $fieldName;
-      }
-
-      if ($onlyRemovedContent && count($row) > count($this->paragraphFormComponents)) {
+      if ($revision === NULL) {
         $row = ['author' => $row['author'], 'deleted' => $this->t('This row has been deleted')];
+      }
+      else {
+        foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {
+          if (empty($rowDiff['diff'][$fieldName]) && !in_array($fieldName, $readOnlyFields)) {
+            continue;
+          }
+          $field = $revision instanceof ParagraphInterface
+            ? $revision->get($fieldName)
+            : NULL;
+          $fieldValue = !empty($field) ? $field->getValue() : [];
+
+          if (empty($rowDiff['diff'][$fieldName]) && in_array($fieldName, $readOnlyFields)) {
+            $rowDiff['diff'][$fieldName] = [];
+          }
+
+          $row[$fieldName] = [
+            'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
+            'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
+            'widget_type' => $this->fieldWidgetTypes[$fieldName],
+          ];
+          $this->fieldWithDifferences[] = $fieldName;
+        }
       }
 
       $paragraphDiff[] = $row;
@@ -243,7 +227,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         $field = 'author';
         $row[$field] = [
           'data' => ['#markup' => $diff[$field]],
-          '#wrapper_attributes' => ['class' => [$cssClass]],
+          '#wrapper_attributes' => ['class' => ['field-name--author']],
         ];
         $field = 'deleted';
         $row[$field] = [
