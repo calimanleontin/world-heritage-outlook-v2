@@ -1,8 +1,9 @@
-uuid: 4704e27c-4d75-4a49-aa74-b43e739eef9c
+uuid: 5d655c1c-7390-438f-84b7-a4dc7d664a74
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.diff
     - field.field.paragraph.as_site_benefit.field_as_benefits_category
     - field.field.paragraph.as_site_benefit.field_as_benefits_climate_level
     - field.field.paragraph.as_site_benefit.field_as_benefits_climate_trend
@@ -24,7 +25,6 @@ dependencies:
   module:
     - ds
     - field_group
-    - iucn_assessment
     - iucn_site
 third_party_settings:
   ds:
@@ -190,10 +190,10 @@ third_party_settings:
         id: ''
         classes: inline-element-list
       label: Community
-id: paragraph.as_site_benefit.default
+id: paragraph.as_site_benefit.diff
 targetEntityType: paragraph
 bundle: as_site_benefit
-mode: default
+mode: diff
 content:
   field_as_benefits_category:
     type: entity_reference_list
@@ -210,39 +210,44 @@ content:
       ds:
         ds_limit: ''
   field_as_benefits_climate_level:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 21
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_climate_trend:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 22
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_commun_in:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 2
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_commun_out:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 3
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_commun_wide:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 4
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_datadeficient:
     type: boolean
@@ -255,60 +260,68 @@ content:
       format_custom_false: ''
     third_party_settings: {  }
   field_as_benefits_hab_level:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 1
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_hab_trend:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 2
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_invassp_level:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 8
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_invassp_trend:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 9
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_oex_level:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 1
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_oex_trend:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 2
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_pollut_level:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 0
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_benefits_pollut_trend:
-    type: assessment_factor
+    type: entity_reference_label
     weight: 1
     region: description
     label: hidden
-    settings: {  }
+    settings:
+      link: false
     third_party_settings: {  }
   field_as_comment:
     type: basic_string
