@@ -1,5 +1,5 @@
-Raven Sentry client
-===================
+Raven Sentry integration
+========================
 
 CONTENTS OF THIS FILE
 ---------------------
@@ -8,6 +8,7 @@ CONTENTS OF THIS FILE
  * Requirements
  * Installation
  * Configuration
+ * Usage
  * Troubleshooting
  * Maintainers
 
@@ -15,8 +16,8 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-Raven module is a Drupal client for [Sentry](https://sentry.io/), an open source
-exception logging, aggregation and notification platform.
+Raven module provides integration with [Sentry](https://sentry.io/), an open
+source exception logging, aggregation and notification platform.
 
 This module allows your Drupal site to send errors, warnings and notices to a
 Sentry server, including fatal PHP and JavaScript errors that typically are not
@@ -74,6 +75,34 @@ suppress breadcrumbs, you may implement hook_raven_breadcrumb_alter().
 The Sentry browser client configuration can be modified via the
 `$page['#attached']['drupalSettings']['raven']['options']` object in PHP or the
 `drupalSettings.raven.options` object in JavaScript.
+
+
+USAGE
+-----
+
+Assuming the applicable PHP log levels have been enabled at
+admin/config/development/logging, Drupal's exception and error handlers will
+send events to Sentry, and developers can use the normal Drupal (or PHP) APIs to
+send events to Sentry:
+
+try {
+  throw new \Exception('Oopsie');
+}
+catch (\Exception $e) {
+  // Capture event via Drupal logger:
+  \Drupal::logger('oops')->error($e);
+  // Capture event via Drupal watchdog (which calls logger internally):
+  watchdog_exception('oops', $e);
+  // Capture event via PHP user notice:
+  trigger_error($e);
+}
+
+In addition, the Raven_Client object is available to developers at:
+\Drupal::service('logger.raven')->client
+
+You can find documentation for the (now deprecated) Raven_Client at:
+ * https://docs.sentry.io/clients/php/usage/#reporting-exceptions
+ * https://docs.sentry.io/clients/php/config/#sentry-php-request-context
 
 
 TROUBLESHOOTING
