@@ -6,33 +6,25 @@
     attach: function (context, drupalSettings) {
 
       // Init all maps in drupalSettings.
-      if (drupalSettings['geofield_map']) {
+      $.each(drupalSettings['geofield_map'], function (mapid, options) {
 
-        $.each(drupalSettings['geofield_map'], function (mapid, options) {
+        // Define the first map id, for a multivalue geofield map.
+        if (mapid.indexOf('0-value') !== -1) {
+          Drupal.geoFieldMap.firstMapId = mapid;
+        }
+        // Check if the Map container really exists and hasn't been yet initialized.
+        if ($('#' + mapid, context).length > 0 && !Drupal.geoFieldMap.map_data[mapid]) {
 
-          // Define the first map id, for a multivalue geofield map.
-          if (mapid.indexOf('0-value') !== -1) {
-            Drupal.geoFieldMap.firstMapId = mapid;
-          }
-          // Check if the Map container really exists and hasn't been yet initialized.
-          if ($('#' + mapid, context).length > 0 && !Drupal.geoFieldMap.map_data[mapid]) {
+          // Set the map_data[mapid] settings.
+          Drupal.geoFieldMap.map_data[mapid] = options;
 
-            // Set the map_data[mapid] settings.
-            Drupal.geoFieldMap.map_data[mapid] = options;
+          // Load before the Gmap Library, if needed, then initialize the Map.
+          Drupal.geoFieldMap.loadGoogle(mapid, options.gmap_api_key, function () {
+            Drupal.geoFieldMap.map_initialize(options);
+          });
+        }
+      });
 
-            // Load before the Gmap Library, if needed, then initialize the Map.
-            if (typeof google === 'undefined' && (options.gmap_api_key || options.map_library === 'gmap')) {
-              Drupal.geoFieldMap.loadGoogle(mapid, function () {
-                Drupal.geoFieldMap.map_initialize(options);
-              });
-            }
-            // Just initialize the Map, if Gmap Library not requested or already loaded.
-            else {
-              Drupal.geoFieldMap.map_initialize(options);
-            }
-          }
-        });
-      }
     }
   };
 
@@ -53,10 +45,10 @@
     googleMapsLanguage: function (html_language) {
       switch (html_language) {
         case 'zh-hans':
-          html_language = 'zh-CN'
+          html_language = 'zh-CN';
           break;
         case 'zh-hant':
-          html_language = 'zh-TW'
+          html_language = 'zh-TW';
           break;
       }
       return html_language;
@@ -87,9 +79,9 @@
     },
 
     // Lead Google Maps library.
-    loadGoogle: function (mapid, callback) {
+    loadGoogle: function (mapid, gmap_api_key, callback) {
       var self = this;
-      var html_language = $('html').attr("lang") ? $('html').attr("lang") : 'en'
+      var html_language = $('html').attr("lang") ? $('html').attr("lang") : 'en';
 
       // Add the callback.
       self.addCallback(callback);
@@ -107,8 +99,8 @@
         var scriptPath = self.map_data[mapid]['gmap_api_localization'] + '?v=3.exp&sensor=false&libraries=places&language=' + self.googleMapsLanguage(html_language);
 
         // If a Google API key is set, use it.
-        if (typeof self.map_data[mapid]['gmap_api_key'] !== 'undefined' && self.map_data[mapid]['gmap_api_key'] !== null) {
-          scriptPath += '&key=' + self.map_data[mapid]['gmap_api_key'];
+        if (gmap_api_key) {
+          scriptPath += '&key=' + gmap_api_key;
         }
 
         $.getScript(scriptPath)
@@ -193,10 +185,10 @@
       var storage_type = self.map_data[mapid].geocode_cache.clientside;
       switch (storage_type) {
         case 'session_storage':
-          sessionStorage.setItem('Drupal.geofield_map.reverse_geocode.' + latlng, address)
+          sessionStorage.setItem('Drupal.geofield_map.reverse_geocode.' + latlng, address);
           break;
         case 'local_storage':
-          localStorage.setItem('Drupal.geofield_map.reverse_geocode.' + latlng, address)
+          localStorage.setItem('Drupal.geofield_map.reverse_geocode.' + latlng, address);
           break;
       }
     },
@@ -208,10 +200,10 @@
       var storage_type = self.map_data[mapid].geocode_cache.clientside;
       switch (storage_type) {
         case 'session_storage':
-          result = sessionStorage.getItem('Drupal.geofield_map.reverse_geocode.' + latlng)
+          result = sessionStorage.getItem('Drupal.geofield_map.reverse_geocode.' + latlng);
           break;
         case 'local_storage':
-          result = localStorage.getItem('Drupal.geofield_map.reverse_geocode.' + latlng)
+          result = localStorage.getItem('Drupal.geofield_map.reverse_geocode.' + latlng);
           break;
         default:
           result = null;
@@ -472,8 +464,8 @@
       // Define a map self property, so other code can interact with it.
       self.map_data[params.mapid].map = map;
 
-      // Add the Google Places Options, if requested/enabled.
-      if (params['gmap_places']) {
+      // Add the Google Places Options, if requested/enabled, and supported.
+      if (typeof google !== 'undefined' && (params.gmap_api_key && params.gmap_api_key.length > 0) && params['gmap_places']) {
         self.map_data[params.mapid].gmap_places = params['gmap_places'];
         // Extend defaults placesAutocompleteServiceOptions.
         self.map_data[params.mapid].gmap_places_options = params['gmap_places_options'].length > 0 ? $.extend({}, {placeIdOnly: true}, JSON.parse(params['gmap_places_options'])) : {placeIdOnly: true};
@@ -509,16 +501,16 @@
             self.map_data[params.mapid].search.autocomplete({
               // This bit uses the geocoder to fetch address values.
               source: function (request, response) {
-                  self.geocoder.geocode({address: request.term}, function (results, status) {
-                    response($.map(results, function (item) {
-                      return {
-                        // the value property is needed to be passed to the select.
-                        value: item.formatted_address,
-                        latitude: item.geometry.location.lat(),
-                        longitude: item.geometry.location.lng()
-                      };
-                    }));
-                  });
+                self.geocoder.geocode({address: request.term}, function (results, status) {
+                  response($.map(results, function (item) {
+                    return {
+                      // the value property is needed to be passed to the select.
+                      value: item.formatted_address,
+                      latitude: item.geometry.location.lat(),
+                      longitude: item.geometry.location.lng()
+                    };
+                  }));
+                });
               },
               // This bit is executed upon selection of an address.
               select: function (event, ui) {
@@ -579,21 +571,6 @@
         }
 
         if (params.map_library === 'gmap') {
-
-          // Fix map issue in field_groups / details & vertical tabs
-          google.maps.event.addListenerOnce(map, "idle", function () {
-
-            // Show all map tiles when a map is shown in a vertical tab.
-            $('#' + params.mapid).closest('div.vertical-tabs').find('.vertical-tabs__menu-item a').click(function () {
-              self.map_refresh(params.mapid);
-            });
-
-            // Show all map tiles when a map is shown in a collapsible detail/ single tab.
-            $('#' + params.mapid).closest('.field-group-details, .field-group-tab').find('summary').click(function () {
-                self.map_refresh(params.mapid);
-              }
-            );
-          });
 
           // Add listener to marker for reverse geocoding.
           google.maps.event.addListener(marker, 'dragend', function () {

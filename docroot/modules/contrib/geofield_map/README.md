@@ -15,26 +15,21 @@ Integration;
 *   implement advanced front-end Google Maps with Marker Icon & Infowindow 
 advanced customizations, custom Google Map Styles and Marker Clustering 
 capabilities;
+*   customize Map Geometries properties (Lines & Polylines, Polygons, 
+Multipolygons, etc.), based on Google Maps Polygons APIs
 
 * * *
 
 #### Geofield Map 2.x. What's New
 
-### **Dynamic Map Theming & Contextual Legends.**
+### **Dynamic Map Markers Theming & Contextual Legends.**
 
-The Geofield Map 2.x new version allows the Geofield Map View definition of Custom 
+The Geofield Map 2.x version allows the Geofield Map View definition of Custom 
 Markers & Icons Images based on dynamic values of the Map features.
 
-As an absolute novelty and uniqueness in the history of Drupal CMS (!), 
-moreover, a custom Geofield Map Legend Block is defined by the module and is 
-able to expose each Map Theming logics defined in the application in the form 
-of fully configurable and impressive Legends.
-
-<u>Compatibility:</u> This Geofield Map 2.x new version is fully compatible
- with the existing Geofield Map 1.x version (<u>Drupal cache needs to be 
- cleaned right after updating the code</u>).  
-You are (should be) free to upgrade cleanly, without loosing any of your 
-existing Geofield Map settings (!).
+Moreover, as an absolute novelty and uniqueness in the history of Drupal CMS (!), 
+a custom Geofield Map Legend Block is defined by the module and is 
+able to expose each Map Theming logics in the form of fully configurable and impressive Legends.
 
 ### **Technical Functionalities and specifications**
 
@@ -66,6 +61,15 @@ contents Geofields / Geolocations, throughout:
 content;
 *   the integration of 
 [Markecluster Google Maps Library](https://github.com/googlemaps/js-marker-clusterer "Markecluster Google Maps Library") functionalities and its personalization;
+
+A "Geofield Google Map (static)" formatter is also available, that renders a 
+Google Map, accordingly to the [Google Maps Static API](https://developers.google.com/maps/documentation/maps-static/dev-guide)
+(only Points supported, and not Geometries such as Polylines, Polygons, etc.).
+The use of the static maps API is significantly cheaper than the dynamic map. The
+drawback is that the map is displayed as a static image (i.e. without any
+controls, zoom, pan, etc). 
+For more information on pricing you can consult the 
+[Google Maps Static Pricing documentation](https://developers.google.com/maps/billing/understanding-cost-of-use#static-maps).
 
 #### Views Integration
 
@@ -121,7 +125,7 @@ properties data;
 ### **Geofield Map 2.x Dynamic Markers Theming & Legends Specifications**
 
 Geofield Map 2.x introduces the MapThemer Plugin system that allows the 
-definition of MapThemer Plugins able to dinamically differentiate Map 
+definition of MapThemer Plugins able to dynamically differentiate Map 
 Features/Markers based on Contents Types, Taxonomy Terms, Values, etc. Each 
 Plugin Type provides the automatic definition of a related Legend Build, that 
 is able to fill the definition of a Custom GeofieldMapLegend block.
@@ -135,28 +139,41 @@ Icon, valid for all the Map Markers;
 View filtered Entity Types/Bundles;
 *   Taxonomy Term, allows the definition of different Marker Icons based on 
 Taxonomy Terms reference field in View;
-*   List Type Field, allows the definition of different Marker Icons based on List (Options) Type fields in View;
+*   List Type Field, allows the definition of different Marker Icons based on 
+List (Options) Type fields in View;
 
 As Drupal 8 Plugin system based, the Geofield MapThemers Plugin and Legend 
 block system is fully extendable and overridable. You, as D8 developer, are 
 free to override and extend the existing ones, or create your custom MapThemer 
 based on your specific needs and logics.
 
-#### How to use.
+##### How to use.
 
 In a Geofield Map View Display, just go into its settings and choose the wanted 
 MapThemer in the new Map Theming Options section/fieldset. It is possible to 
-associate a Drupal Managed File for each MapThemer plugin value and even the 
-Icon Image style the Icon should be rendered on the Map. The Value labels and 
+associate a Drupal File for each MapThemer plugin value and even the 
+Image style the Icon should be rendered on the Map with. The Value labels and 
 Icons might have an alias, might be reordered and might be hidden from the 
 correspondent Legend Block.
 
-Once defined and configured the Legend you are free to place it, once or several
-times, as a normal Drupal 8 block on the pages, with your logics and contextual 
-rules.
+Once defined and configured the Legend you are free to place it, once or 
+several times, as a normal Drupal 8 block on the pages, with your logics and 
+contextual rules.
 
 #### **Notes & Warnings**
 
-*   The Geofield Map module depends from the [Geofield](https://www.drupal.org/project/geofield "Geofield") module;
-*   A valid <u>Gmap Api Key is needed</u> for Google Maps rendering, and for any Geocoding and Reverse Geocoding functionalities, as actually based on the Google Geocoder;
-*   Although in mind, there is no <u>Leaflet Map library support</u> at the moment for the Geofield Map Formatter and the Map Views Plugin. Please refer to the [Leaflet](https://www.drupal.org/project/leaflet "Leaflet") and the [Leaflet Markercluster](https://www.drupal.org/project/leaflet_markercluster "Leaflet Markercluster") modules for Leaflet front-end mapping of Drupal 8 Geofields;
+*   The Geofield Map module depends from the 
+[Geofield](https://www.drupal.org/project/geofield) module;
+*   A unique [Gmap Api Key](https://developers.google.com/maps/documentation/javascript/get-api-key) 
+is required for both Google Mapping and Geocoding operations, all performed 
+client-side by js. 
+[It might/should be restricted using the Website Domain / HTTP referrers method](https://developers.google.com/maps/documentation/javascript/get-api-key#key-restrictions).
+
+#### **Roadmap / Planned evolution**
+*   Full integration with [Geocoder](https://www.drupal.org/project/geocoder) 
+module;
+*   Leaflet Map library support for the Geofield Map Formatter and the Map 
+Views Plugin. Now please refer to the 
+[Leaflet](https://www.drupal.org/project/leaflet "Leaflet") and the 
+[Leaflet Markercluster](https://www.drupal.org/project/leaflet_markercluster) 
+modules for Leaflet front-end mapping of Drupal 8 Geofields;

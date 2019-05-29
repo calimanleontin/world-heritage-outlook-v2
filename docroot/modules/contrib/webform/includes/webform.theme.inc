@@ -120,7 +120,7 @@ function webform_theme() {
     ],
 
     'webform_email_html' => [
-      'variables' => ['subject' => '', 'body' => ''],
+      'variables' => ['subject' => '', 'body' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
     'webform_email_message_html' => [
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
@@ -129,6 +129,9 @@ function webform_theme() {
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
 
+    'webform_html_editor_markup' => [
+      'variables' => ['markup' => NULL, 'allowed_tags' => []],
+    ],
     'webform_horizontal_rule' => [
       'render element' => 'element',
     ],
@@ -275,6 +278,50 @@ function webform_preprocess_radios(&$variables) {
 }
 
 /******************************************************************************/
+// Preprocess tables.
+/******************************************************************************/
+
+/**
+ * Prepares variables for table templates.
+ */
+function webform_preprocess_table(&$variables) {
+  // Add links to 'Translate' webform tab.
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.webform.config_translation_overview') {
+    /** @var \Drupal\webform\WebformInterface $webform */
+    $webform = \Drupal::routeMatch()->getParameter('webform');
+    foreach ($variables['rows'] as &$row) {
+      // Check first cell.
+      if (!isset($row['cells'][0]['content'])
+        || !is_array($row['cells'][0]['content'])
+        || !isset($row['cells'][0]['content']['#markup'])) {
+        continue;
+      }
+
+      // Check last cell edit link.
+      if (!isset($row['cells'][1]['content'])
+        || !is_array($row['cells'][1]['content'])
+        || !isset($row['cells'][1]['content']['#links'])
+        || !is_array($row['cells'][1]['content']['#links'])
+        || !isset($row['cells'][1]['content']['#links']['edit'])) {
+        continue;
+      }
+
+      // Get language from edit link.
+      $route_parameters = $row['cells'][1]['content']['#links']['edit']['url']->getRouteParameters();
+      $langcode = (isset($route_parameters['langcode'])) ? $route_parameters['langcode'] : NULL;
+      $language = \Drupal::languageManager()->getLanguage($langcode);
+
+      // Convert first to link.
+      $row['cells'][0]['content'] = [
+        '#type' => 'link',
+        '#url' => $webform->toUrl('canonical', ['language' => $language]),
+        '#title' => $row['cells'][0]['content'],
+      ];
+    }
+  }
+}
+
+/******************************************************************************/
 // Preprocess containers.
 /******************************************************************************/
 
@@ -342,7 +389,7 @@ function webform_preprocess_fieldset(&$variables) {
         $variables['prefix'] = ['prefix' => $variables['prefix']];
       }
       else {
-        $variables['prefix'] = ['prefix' => ['#markup' => $variables['prefix']] ];
+        $variables['prefix'] = ['prefix' => ['#markup' => $variables['prefix']]];
       }
     }
     else {
@@ -406,6 +453,12 @@ function webform_preprocess_form_element_label(&$variables) {
 
   // Restructure the label's title to include #help.
   _webform_preprocess_help_title($variables['title'], $element);
+
+  // Remove label 'for' attribute.
+  if (!empty($element['#attributes']['webform-remove-for-attribute'])) {
+    unset($variables['attributes']['webform-remove-for-attribute']);
+    unset($variables['attributes']['for']);
+  }
 }
 
 /******************************************************************************/
@@ -468,7 +521,6 @@ function webform_preprocess_file_managed_file(&$variables) {
   // Attach library.
   $element['#attached']['library'][] = 'webform/webform.element.file.button';
 }
-
 
 /**
  * Prepares variables for file upload help text templates.
@@ -605,6 +657,13 @@ function _webform_preprocess_element(array &$variables, $title_parents = ['title
     $variables['description']['content'] = [
       'description' => $variables['description']['content'],
     ];
+  }
+  elseif (isset($variables['description']) && empty($variables['description'])) {
+    // Unset $variable['description'] which can be set to NULL or empty string.
+    // This allows $variable['description'] to be converted to render array.
+    // @see template_preprocess_details()
+    // @see template_preprocess_form_element()
+    unset($variables['description']);
   }
 
   $title =& NestedArray::getValue($variables, $title_parents);
@@ -909,6 +968,13 @@ function webform_theme_suggestions_webform_container_base_html(array $variables)
  */
 function webform_theme_suggestions_webform_container_base_text(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_container_base_text');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_email_html(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_email_html');
 }
 
 /**

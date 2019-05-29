@@ -45,6 +45,9 @@ raven.settings:
     timeout:
       type: float
       label: 'Timeout'
+    message_limit:
+      type: integer
+      label: 'Message limit'
     trace:
       type: boolean
       label: 'Reflection tracing'
@@ -66,3 +69,12 @@ raven.settings:
     ca_cert:
       type: string
       label: 'Path to the CA certificate file of the Sentry server specified in the DSN'
+    ignored_channels:
+      type: sequence
+      label: 'Log channels that should be ignored'
+      sequence:
+        type: string
+        label: 'Log channel'
+    polyfill_promise:
+      type: boolean
+      label: 'Load Polyfill'

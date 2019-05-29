@@ -32,7 +32,7 @@
 
         // Skip if date inputs are supported by the browser and input is not a text field.
         // @see \Drupal\webform\Element\WebformDatetime
-        if (window.Modernizr && Modernizr.inputtypes.date === true && $input.attr('type') !== 'text') {
+        if (window.Modernizr && Modernizr.inputtypes && Modernizr.inputtypes.date === true && $input.attr('type') !== 'text') {
           return;
         }
 
@@ -40,6 +40,16 @@
           changeMonth: true,
           changeYear: true
         }, Drupal.webform.datePicker.options);
+
+        // Add datepicker button.
+        if ($input.hasData('datepicker-button')) {
+          options = $.extend({
+            showOn: 'both',
+            buttonImage: settings.webform.datePicker.buttonImage,
+            buttonImageOnly: true,
+            buttonText: Drupal.t('Select date')
+          }, Drupal.webform.datePicker.options);
+        }
 
         var dateFormat = $input.data('drupalDateFormat');
 
@@ -72,11 +82,16 @@
 
         // Add min/max year to data range.
         if (!options.yearRange && $input.data('min-year') && $input.data('max-year')) {
-          options.yearRange = $input.data('min-year') + ':' + $input.attr('data-max-year')
+          options.yearRange = $input.data('min-year') + ':' + $input.attr('data-max-year');
         }
 
         // First day of the week.
         options.firstDay = settings.webform.dateFirstDay;
+
+        // Disable autocomplete.
+        // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
+        var isChrome = /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor);
+        $input.attr('autocomplete', (isChrome) ? 'off' : 'false');
 
         $input.datepicker(options);
       });

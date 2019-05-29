@@ -8,6 +8,28 @@
   'use strict';
 
   /**
+   * Remove single submit event listener.
+   *
+   * @type {Drupal~behavior}
+   *
+   * @prop {Drupal~behaviorAttach} attach
+   *   Attaches the behavior for removing single submit event listener.
+   *
+   * @see Drupal.behaviors.formSingleSubmit
+   */
+  Drupal.behaviors.webformRemoveFormSingleSubmit = {
+    attach: function attach() {
+      function onFormSubmit(e) {
+        var $form = $(e.currentTarget);
+        $form.removeAttr('data-drupal-form-submit-last');
+      }
+      $('body')
+        .once('webform-single-submit')
+        .on('submit.singleSubmit', 'form.webform-remove-single-submit', onFormSubmit);
+    }
+  };
+
+  /**
    * Autofocus first input.
    *
    * @type {Drupal~behavior}
@@ -37,8 +59,7 @@
         .not(':button, :submit, :reset, :image, :file')
         .once('webform-disable-autosubmit')
         .on('keyup keypress', function (e) {
-          var keyCode = e.keyCode || e.which;
-          if (keyCode === 13) {
+          if (e.which === 13) {
             e.preventDefault();
             return false;
           }
@@ -53,12 +74,15 @@
    *
    * @prop {Drupal~behaviorAttach} attach
    *   Attaches the behavior for the skipping client-side validation.
+   *
+   * @deprecated in Webform 8.x-5.x and will be removed in Webform 8.x-6.x.
+   *   Use 'formnovalidate' attribute instead.
    */
   Drupal.behaviors.webformSubmitNoValidate = {
     attach: function (context) {
-      $(context).find(':submit.js-webform-novalidate').once('webform-novalidate').on('click', function () {
-        $(this.form).attr('novalidate', 'novalidate');
-      });
+      $(context).find(':submit.js-webform-novalidate')
+        .once('webform-novalidate')
+        .attr('formnovalidate', 'formnovalidate');
     }
   };
 
@@ -80,21 +104,29 @@
   };
 
   /**
-   * Custom required error message.
+   * Custom required and pattern validation error messages.
    *
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attaches the behavior for the webform custom required error message.
+   *   Attaches the behavior for the webform custom required and pattern
+   *   validation error messages.
    *
    * @see http://stackoverflow.com/questions/5272433/html5-form-required-attribute-set-custom-validation-message
-   */
+   **/
   Drupal.behaviors.webformRequiredError = {
     attach: function (context) {
-      $(context).find(':input[data-webform-required-error]').once('webform-required-error')
+      $(context).find(':input[data-webform-required-error], :input[data-webform-pattern-error]').once('webform-required-error')
         .on('invalid', function () {
           this.setCustomValidity('');
-          if (!this.valid) {
+          if (this.valid) {
+            return;
+          }
+
+          if (this.validity.patternMismatch && $(this).attr('data-webform-pattern-error')) {
+            this.setCustomValidity($(this).attr('data-webform-pattern-error'));
+          }
+          else if (this.validity.valueMissing && $(this).attr('data-webform-required-error')) {
             this.setCustomValidity($(this).attr('data-webform-required-error'));
           }
         })

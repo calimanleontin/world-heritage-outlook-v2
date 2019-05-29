@@ -56,10 +56,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             'Webmozart\\PathUtil\\' => 19,
             'Webmozart\\Assert\\' => 17,
         ),
-        'U' => 
-        array (
-            'Unish\\' => 6,
-        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -119,6 +115,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'J' => 
         array (
+            'JakubOnderka\\PhpConsoleHighlighter\\' => 35,
             'JakubOnderka\\PhpConsoleColor\\' => 29,
         ),
         'I' => 
@@ -165,9 +162,11 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'C' => 
         array (
+            'Consolidation\\SiteProcess\\' => 26,
             'Consolidation\\SiteAlias\\' => 24,
             'Consolidation\\OutputFormatters\\' => 31,
             'Consolidation\\Log\\' => 18,
+            'Consolidation\\Filter\\' => 21,
             'Consolidation\\Config\\' => 21,
             'Consolidation\\AnnotatedCommand\\' => 31,
             'Composer\\Semver\\' => 16,
@@ -225,10 +224,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
-        'Unish\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/drush/drush/tests',
         ),
         'Twig\\' => 
         array (
@@ -386,6 +381,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         array (
             0 => __DIR__ . '/..' . '/league/container/src',
         ),
+        'JakubOnderka\\PhpConsoleHighlighter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
+        ),
         'JakubOnderka\\PhpConsoleColor\\' => 
         array (
             0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
@@ -432,7 +431,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'Drush\\Internal\\' => 
         array (
-            0 => __DIR__ . '/..' . '/drush/drush/internal-copy',
+            0 => __DIR__ . '/..' . '/drush/drush/src/internal-forks',
         ),
         'Drush\\' => 
         array (
@@ -501,6 +500,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             2 => __DIR__ . '/..' . '/doctrine/persistence/lib/Doctrine/Common',
             3 => __DIR__ . '/..' . '/doctrine/reflection/lib/Doctrine/Common',
         ),
+        'Consolidation\\SiteProcess\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/site-process/src',
+        ),
         'Consolidation\\SiteAlias\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/site-alias/src',
@@ -512,6 +515,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'Consolidation\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/log/src',
+        ),
+        'Consolidation\\Filter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/consolidation/filter-via-dot-access-data/src',
         ),
         'Consolidation\\Config\\' => 
         array (
@@ -604,13 +611,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
-        ),
-        'J' => 
-        array (
-            'JakubOnderka\\PhpConsoleHighlighter' => 
-            array (
-                0 => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src',
             ),
         ),
         'E' => 

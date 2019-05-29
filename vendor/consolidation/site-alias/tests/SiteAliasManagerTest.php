@@ -103,13 +103,13 @@ root: /dup/path/to/single',
         $allNames = array_keys($all);
         sort($allNames);
 
-        $this->assertEquals('@single.alternate,@single.dev,@wild.*,@wild.dev', implode(',', $allNames));
+        $this->assertEquals('@single.alternate,@single.dev,@single.empty,@wild.*,@wild.dev', implode(',', $allNames));
 
         $all = $this->manager->getMultiple('@single');
         $allNames = array_keys($all);
         sort($allNames);
 
-        $this->assertEquals('@single.alternate,@single.dev', implode(',', $allNames));
+        $this->assertEquals('@single.alternate,@single.dev,@single.empty', implode(',', $allNames));
 
         // Next set of tests: Get all aliases in the 'other' location
 
@@ -119,7 +119,7 @@ root: /dup/path/to/single',
         $allNames = array_keys($all);
         sort($allNames);
 
-        $this->assertEquals('@other.bob.dev,@other.bob.other,@other.fred.dev,@other.fred.other,@other.single.dev,@other.single.other,@single.alternate,@single.dev,@wild.*,@wild.dev', implode(',', $allNames));
+        $this->assertEquals('@other.bob.dev,@other.bob.other,@other.fred.dev,@other.fred.other,@other.single.dev,@other.single.other,@single.alternate,@single.dev,@single.empty,@wild.*,@wild.dev', implode(',', $allNames));
 
         $all = $this->manager->getMultiple('@other');
         $allNames = array_keys($all);
@@ -135,7 +135,7 @@ root: /dup/path/to/single',
         $allNames = array_keys($all);
         sort($allNames);
 
-        $this->assertEquals('@dup.bob.dev,@dup.bob.other,@dup.fred.dev,@dup.fred.other,@dup.single.alternate,@dup.single.dev,@other.bob.dev,@other.bob.other,@other.fred.dev,@other.fred.other,@other.single.dev,@other.single.other,@single.alternate,@single.dev,@wild.*,@wild.dev', implode(',', $allNames));
+        $this->assertEquals('@dup.bob.dev,@dup.bob.other,@dup.fred.dev,@dup.fred.other,@dup.single.alternate,@dup.single.dev,@other.bob.dev,@other.bob.other,@other.fred.dev,@other.fred.other,@other.single.dev,@other.single.other,@single.alternate,@single.dev,@single.empty,@wild.*,@wild.dev', implode(',', $allNames));
 
         $all = $this->manager->getMultiple('@dup');
         $allNames = array_keys($all);
@@ -160,6 +160,21 @@ root: /dup/path/to/single',
         sort($allNames);
 
         $this->assertEquals('@other.single.dev,@other.single.other', implode(',', $allNames));
+    }
+
+    /**
+     * @covers \Consolidation\SiteAlias\SiteAlias::root()
+     */
+    public function testGetRoot() {
+        /* @var SiteAlias $alias */
+        $alias = $this->manager->get('@single');
+        $this->assertEquals($alias->root(), '/path/to/single');
+        /* @var SiteAlias $alias */
+        $alias = $this->manager->get('@single.common');
+        // Ensure that when root is not specified in the alias, an Exception is
+        // thrown.
+        $this->expectExceptionMessage('Site alias @single.common does not specify a root.');
+        $alias->root();
     }
 
     /**

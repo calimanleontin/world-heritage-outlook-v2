@@ -78,7 +78,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Submission settings.
     $form['submission_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission settings'),
+      '#title' => $this->t('Submission general settings'),
       '#open' => TRUE,
     ];
     $form['submission_settings']['submission_label'] = [
@@ -118,11 +118,119 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#default_value' => $webform_storage->getNextSerial($webform),
     ];
     $form['submission_settings']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    $form['submission_settings']['submission_container']['elements'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Included submission values'),
+      '#description' => $this->t('If you wish to include only parts of the submission when viewing as HTML, table, or plain text, select the elements that should be included. Please note, element specific access controls are still applied to displayed elements.'),
+      '#open' => $settings['submission_excluded_elements'] ? TRUE : FALSE,
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_excluded_elements'] = [
+      '#type' => 'webform_excluded_elements',
+      '#webform_id' => $this->getEntity()->id(),
+      '#default_value' => $settings['submission_excluded_elements'],
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_exclude_empty'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Exclude empty elements'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['submission_exclude_empty'],
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_exclude_empty_checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Exclude unselected checkboxes'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['submission_exclude_empty_checkbox'],
+    ];
+
+    // Submission behaviors.
+    $form['submission_behaviors'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Submission behaviors'),
+      '#open' => TRUE,
+    ];
+    $form['submission_behaviors']['form_confidential'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Confidential submissions'),
+      '#description' => $this->t('Confidential submissions have no recorded IP address and must be submitted while logged out.'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['form_confidential'],
+      '#weight' => -100,
+    ];
+    $form['submission_behaviors']['form_confidential_message'] = [
+      '#type' => 'webform_html_editor',
+      '#title' => $this->t('Webform confidential message'),
+      '#description' => $this->t('A message to be displayed when authenticated users try to access a confidential webform.'),
+      '#default_value' => $settings['form_confidential_message'],
+      '#states' => [
+        'visible' => [
+          ':input[name="form_confidential"]' => ['checked' => TRUE],
+        ],
+      ],
+      '#weight' => -99,
+    ];
+    $form['submission_behaviors']['form_remote_addr'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Track user IP address'),
+      '#description' => $this->t("If checked, a user's IP address will be recorded."),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['form_remote_addr'],
+      '#states' => [
+        'visible' => [
+          ':input[name="form_confidential"]' => ['checked' => FALSE],
+        ],
+      ],
+      '#weight' => -98,
+    ];
+    $form['submission_behaviors']['form_convert_anonymous'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Convert anonymous user drafts and submissions to authenticated user'),
+      '#description' => $this->t('If checked, drafts and submissions created by an anonymous user will be reassigned to their user account when they login.'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['form_convert_anonymous'],
+      '#states' => [
+        'visible' => [
+          ':input[name="form_confidential"]' => ['checked' => FALSE],
+        ],
+      ],
+      '#weight' => -97,
+    ];
+    $behavior_elements = [
+      // Form specific behaviors.
+      'form_previous_submissions' => [
+        'title' => $this->t('Show the notification about previous submissions'),
+        'form_description' => $this->t('Show the previous submissions notification that appears when users have previously submitted this form.'),
+      ],
+      'token_update' => [
+        'title' => $this->t('Allow users to update a submission using a secure token'),
+        'form_description' => $this->t("If checked users will be able to update a submission using the webform's URL appended with the submission's (secure) token.") . ' ' .
+          $this->t("The 'tokenized' URL to update a submission will be available when viewing a submission's information and can be inserted into an email using the [webform_submission:update-url] token.") . ' ' .
+          $this->t('Only webforms that are open to new submissions can be updated using the secure token.'),
+      ],
+      // Global behaviors.
+      // @see \Drupal\webform\Form\WebformAdminSettingsForm
+      'submission_log' => [
+        'title' => $this->t('Log submission events'),
+        'all_description' => $this->t('All submission event are being logged for all webforms'),
+        'form_description' => $this->t('If checked, events will be logged for submissions to this webform.'),
+      ],
+    ];
+    $this->appendBehaviors($form['submission_behaviors'], $behavior_elements, $settings, $default_settings);
+    $form['submission_behaviors']['token_update_warning'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => $this->t("Submissions accessed using the (secure) token will by-pass all webform submission access rules."),
+      '#states' => [
+        'visible' => [
+          ':input[name="token_update"]' => ['checked' => TRUE],
+        ],
+      ],
+      '#weight' => $form['submission_behaviors']['token_update']['#weight'] + 1,
+    ];
 
     // User settings.
     $form['submission_user_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('User settings'),
+      '#title' => $this->t('Submission user settings'),
       '#open' => TRUE,
     ];
     $form['submission_user_settings']['submission_user_duplicate'] = [
@@ -134,7 +242,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     ];
     $form['submission_user_settings']['submission_columns'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission columns'),
+      '#title' => $this->t('Submission user columns'),
       '#description' => $this->t('Below columns are displayed to users who can view previous submissions and/or pending drafts.'),
     ];
     // Submission user columns.
@@ -172,12 +280,15 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Access denied.
     $form['access_denied'] = [
       '#type' => 'details',
-      '#title' => $this->t('Access denied'),
+      '#title' => $this->t('Submission access denied settings'),
       '#open' => TRUE,
     ];
     $form['access_denied']['submission_access_denied'] = [
       '#type' => 'radios',
       '#title' => $this->t('When a user is denied access to a submission'),
+      '#description' => $this->t('Select what happens when a user is denied access to a submission.') .
+        '<br/><br/>' .
+        $this->t('Go to <a href=":href">form settings</a> to select what happens when a user is denied access to a webform.', [':href' => Url::fromRoute('entity.webform.settings_form', ['webform' => $webform->id()])->toString()]),
       '#options' => [
         WebformInterface::ACCESS_DENIED_DEFAULT => $this->t('Default (Displays the default access denied page)'),
         WebformInterface::ACCESS_DENIED_PAGE => $this->t('Page (Displays message when access is denied to a submission)'),
@@ -228,95 +339,32 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#default_value' => $settings['submission_access_denied_attributes'],
     ];
 
-    // Submission behaviors.
-    $form['submission_behaviors'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Submission behaviors'),
-      '#open' => TRUE,
-    ];
-    $form['submission_behaviors']['form_confidential'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Confidential submissions'),
-      '#description' => $this->t('Confidential submissions have no recorded IP address and must be submitted while logged out.'),
-      '#return_value' => TRUE,
-      '#default_value' => $settings['form_confidential'],
-      '#weight' => -100,
-    ];
-    $form['submission_behaviors']['form_confidential_message'] = [
-      '#type' => 'webform_html_editor',
-      '#title' => $this->t('Webform confidential message'),
-      '#description' => $this->t('A message to be displayed when authenticated users try to access a confidential webform.'),
-      '#default_value' => $settings['form_confidential_message'],
-      '#states' => [
-        'visible' => [
-          ':input[name="form_confidential"]' => ['checked' => TRUE],
-        ],
-      ],
-      '#weight' => -99,
-    ];
-    $form['submission_behaviors']['form_convert_anonymous'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Convert anonymous user drafts and submissions to authenticated user'),
-      '#description' => $this->t('If checked, drafts and submissions created by an anonymous user will be reassigned to their user account when they login.'),
-      '#return_value' => TRUE,
-      '#default_value' => $settings['form_convert_anonymous'],
-      '#states' => [
-        'visible' => [
-          ':input[name="form_confidential"]' => ['checked' => FALSE],
-        ],
-      ],
-      '#weight' => -98,
-    ];
-    $behavior_elements = [
-      // Form specific behaviors.
-      'form_previous_submissions' => [
-        'title' => $this->t('Show the notification about previous submissions'),
-        'form_description' => $this->t('Show the previous submissions notification that appears when users have previously submitted this form.'),
-      ],
-      'token_update' => [
-        'title' => $this->t('Allow users to update a submission using a secure token.'),
-        'form_description' => $this->t("If checked users will be able to update a submission using the webform's URL appended with the submission's (secure) token.") . ' ' .
-          $this->t("The 'tokenized' URL to update a submission will be available when viewing a submission's information and can be inserted into an email using the [webform_submission:update-url] token.") . ' ' .
-          $this->t('Only webforms that are open to new submissions can be updated using the secure token.'),
-      ],
-      // Global behaviors.
-      // @see \Drupal\webform\Form\WebformAdminSettingsForm
-      'submission_log' => [
-        'title' => $this->t('Log submission events'),
-        'all_description' => $this->t('All submission event are being logged for all webforms'),
-        'form_description' => $this->t('If checked, events will be logged for submissions to this webform.'),
-      ],
-    ];
-    $this->appendBehaviors($form['submission_behaviors'], $behavior_elements, $settings, $default_settings);
-    $form['submission_behaviors']['token_update_warning'] = [
-      '#type' => 'webform_message',
-      '#message_type' => 'warning',
-      '#message_message' => $this->t("Submissions accessed using the (secure) token will by-pass all webform submission access rules."),
-      '#states' => [
-        'visible' => [
-          ':input[name="token_update"]' => ['checked' => TRUE],
-        ],
-      ],
-      '#weight' => $form['submission_behaviors']['token_update']['#weight'] + 1,
-    ];
-
     // Submission limits.
     $form['submission_limits'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission limits'),
+      '#title' => $this->t('Submission limit settings'),
       '#open' => TRUE,
     ];
+    // Submission limits: Total.
     $form['submission_limits']['total'] = [
       '#type' => 'details',
       '#title' => $this->t('Total submissions'),
     ];
-    $form['submission_limits']['total']['limit_total'] = [
+    $form['submission_limits']['total']['total_container'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_total_unique"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+    $form['submission_limits']['total']['total_container']['limit_total'] = [
       '#type' => 'number',
       '#title' => $this->t('Total submissions limit'),
       '#min' => 1,
       '#default_value' => $settings['limit_total'],
     ];
-    $form['submission_limits']['total']['limit_total_interval'] = [
+    $form['submission_limits']['total']['total_container']['limit_total_interval'] = [
       '#type' => 'select',
       '#options' => WebformDateHelper::getIntervalOptions(),
       '#title' => $this->t('Total submissions limit interval'),
@@ -325,13 +373,13 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         'visible' => [':input[name="limit_total"]' => ['!value' => '']],
       ],
     ];
-    $form['submission_limits']['total']['entity_limit_total'] = [
+    $form['submission_limits']['total']['total_container']['entity_limit_total'] = [
       '#type' => 'number',
       '#title' => $this->t('Total submissions limit per source entity'),
       '#min' => 1,
       '#default_value' => $settings['entity_limit_total'],
     ];
-    $form['submission_limits']['total']['entity_limit_total_interval'] = [
+    $form['submission_limits']['total']['total_container']['entity_limit_total_interval'] = [
       '#type' => 'select',
       '#options' => WebformDateHelper::getIntervalOptions(),
       '#title' => $this->t('Total submissions limit interval per source entity'),
@@ -340,7 +388,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         'visible' => [':input[name="entity_limit_total"]' => ['!value' => '']],
       ],
     ];
-    $form['submission_limits']['total']['limit_total_message'] = [
+    $form['submission_limits']['total']['total_container']['limit_total_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Total submissions limit message'),
       '#min' => 1,
@@ -353,9 +401,9 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         ],
       ],
     ];
-    $form['submission_limits']['total']['token_tree_link'] = $this->tokenManager->buildTreeElement();
-    if ($form['submission_limits']['total']['token_tree_link']) {
-      $form['submission_limits']['total']['token_tree_link'] += [
+    $form['submission_limits']['total']['total_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    if ($form['submission_limits']['total']['total_container']['token_tree_link']) {
+      $form['submission_limits']['total']['total_container']['token_tree_link'] += [
         '#states' => [
           'visible' => [
             [':input[name="limit_total"]' => ['!value' => '']],
@@ -365,19 +413,62 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         ],
       ];
     }
-
+    $form['submission_limits']['total']['limit_total_unique'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Limit total to one submission per webform/source entity'),
+      '#default_value' => $settings['limit_total_unique'],
+    ];
+    $form['submission_limits']['total']['limit_total_unique_info'] = [
+      '#type' => 'webform_message',
+      '#message_message' => $this->t('Only submission administrators will only be able to create and update the unique submission.') . '<br/><br/>' .
+        $this->t('Webform blocks can be used to place this webform on the desired source entity types.'),
+      '#message_type' => 'info',
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_total_unique"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['submission_limits']['total']['limit_total_unique_warning'] = [
+      '#type' => 'webform_message',
+      '#message_message' => $this->t("Please make sure users are allowed to 'edit any submission'."),
+      '#message_type' => 'warning',
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_total_unique"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    // Submission limits: User.
     $form['submission_limits']['user'] = [
       '#type' => 'details',
       '#title' => $this->t('Per user'),
       '#description' => $this->t('Limit the number of submissions per user. A user is identified by their user id if logged-in, or by their Cookie if anonymous.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_total_unique"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
-    $form['submission_limits']['user']['limit_user'] = [
+    $form['submission_limits']['user']['user_container'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_user_unique"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+    $form['submission_limits']['user']['user_container']['limit_user'] = [
       '#type' => 'number',
       '#title' => $this->t('Per user submission limit'),
       '#min' => 1,
       '#default_value' => $settings['limit_user'],
     ];
-    $form['submission_limits']['user']['limit_user_interval'] = [
+    $form['submission_limits']['user']['user_container']['limit_user_interval'] = [
       '#type' => 'select',
       '#options' => WebformDateHelper::getIntervalOptions(),
       '#title' => $this->t('Per user submission limit interval'),
@@ -386,13 +477,13 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         'visible' => [':input[name="limit_user"]' => ['!value' => '']],
       ],
     ];
-    $form['submission_limits']['user']['entity_limit_user'] = [
+    $form['submission_limits']['user']['user_container']['entity_limit_user'] = [
       '#type' => 'number',
       '#min' => 1,
       '#title' => $this->t('Per user submission limit per source entity'),
       '#default_value' => $settings['entity_limit_user'],
     ];
-    $form['submission_limits']['user']['entity_limit_user_interval'] = [
+    $form['submission_limits']['user']['user_container']['entity_limit_user_interval'] = [
       '#type' => 'select',
       '#options' => WebformDateHelper::getIntervalOptions(),
       '#title' => $this->t('Per user submission limit interval per source entity'),
@@ -401,7 +492,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         'visible' => [':input[name="entity_limit_user"]' => ['!value' => '']],
       ],
     ];
-    $form['submission_limits']['user']['limit_user_message'] = [
+    $form['submission_limits']['user']['user_container']['limit_user_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Per user submission limit message'),
       '#default_value' => $settings['limit_user_message'],
@@ -413,9 +504,9 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         ],
       ],
     ];
-    $form['submission_limits']['user']['token_tree_link'] = $this->tokenManager->buildTreeElement();
-    if ($form['submission_limits']['user']['token_tree_link']) {
-      $form['submission_limits']['user']['token_tree_link'] += [
+    $form['submission_limits']['user']['user_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    if ($form['submission_limits']['user']['user_container']['token_tree_link']) {
+      $form['submission_limits']['user']['user_container']['token_tree_link'] += [
         '#states' => [
           'visible' => [
             [':input[name="limit_user"]' => ['!value' => '']],
@@ -425,11 +516,40 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         ],
       ];
     }
+    $form['submission_limits']['user']['limit_user_unique'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Limit users to one submission per webform/source entity'),
+      '#default_value' => $settings['limit_user_unique'],
+    ];
+    $form['submission_limits']['user']['limit_user_unique_info'] = [
+      '#type' => 'webform_message',
+      '#message_message' => $this->t('Only authenticated users will be able to create and update their unique submission.'),
+      '#message_type' => 'info',
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_user_unique"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['submission_limits']['user']['limit_user_unique_warning'] = [
+      '#type' => 'webform_message',
+      '#message_message' => $this->t("Please make sure users are allowed to 'edit own submission'."),
+      '#message_type' => 'warning',
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+      '#states' => [
+        'visible' => [
+          ':input[name="limit_user_unique"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
 
     // Purge settings.
     $form['purge_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission purging'),
+      '#title' => $this->t('Submission purge settings'),
       '#open' => TRUE,
     ];
     $form['purge_settings']['purge'] = [
@@ -458,7 +578,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Draft settings.
     $form['draft_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Draft settings'),
+      '#title' => $this->t('Submission draft settings'),
       '#open' => TRUE,
     ];
     $form['draft_settings']['draft'] = [
@@ -524,7 +644,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Autofill settings.
     $form['autofill_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Autofill settings'),
+      '#title' => $this->t('Submission autofill settings'),
       '#open' => TRUE,
     ];
     $form['autofill_settings']['autofill'] = [
@@ -562,7 +682,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Submission views.
     $form['views_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Submission views'),
+      '#title' => $this->t('Submission views settings'),
       '#open' => TRUE,
     ];
     if (!$this->moduleHandler->moduleExists('webform_views')) {
@@ -639,6 +759,29 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       $next_serial = $max_serial;
     }
     $webform_storage->setNextSerial($webform, $next_serial);
+
+    // Limit total unique.
+    if (!empty($values['limit_total_unique'])) {
+      $values['limit_total'] = NULL;
+      $values['limit_total_interval'] = NULL;
+      $values['limit_total_message'] = '';
+      $values['entity_limit_total'] = NULL;
+      $values['entity_limit_total_interval'] = NULL;
+      $values['limit_user'] = NULL;
+      $values['limit_user_interval'] = NULL;
+      $values['limit_user_message'] = '';
+      $values['entity_limit_user'] = NULL;
+      $values['entity_limit_user_interval'] = NULL;
+    }
+
+    // Limit user unique.
+    if (!empty($values['limit_user_unique'])) {
+      $values['limit_user'] = NULL;
+      $values['limit_user_interval'] = NULL;
+      $values['limit_user_message'] = '';
+      $values['entity_limit_user'] = NULL;
+      $values['entity_limit_user_interval'] = NULL;
+    }
 
     // Remove main properties.
     unset(

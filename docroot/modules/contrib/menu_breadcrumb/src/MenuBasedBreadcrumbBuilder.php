@@ -5,6 +5,7 @@ namespace Drupal\menu_breadcrumb;
 use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -13,11 +14,15 @@ use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Lock\LockBackendInterface;
+use Drupal\Core\Menu\MenuActiveTrail;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
+use Drupal\menu_link_content\Plugin\Menu\MenuLinkContent;
+use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -83,6 +88,20 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   protected $entityTypeManager;
 
   /**
+   * The caching backend.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheMenu;
+
+  /**
+   * The locking backend.
+   *
+   * @var \Drupal\Core\Lock\LockBackendInterface
+   */
+  protected $lock;
+
+  /**
    * The Menu Breadcrumbs configuration.
    *
    * @var \Drupal\Core\Config\Config
@@ -128,7 +147,9 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     TitleResolverInterface $title_resolver,
     RequestStack $request_stack,
     LanguageManagerInterface $language_manager,
-    EntityTypeManagerInterface $entity_type_manager
+    EntityTypeManagerInterface $entity_type_manager,
+    CacheBackendInterface $cache_menu,
+    LockBackendInterface $lock
   ) {
     $this->configFactory = $config_factory;
     $this->menuActiveTrail = $menu_active_trail;
@@ -138,6 +159,8 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $this->currentRequest = $request_stack->getCurrentRequest();
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->cacheMenu = $cache_menu;
+    $this->lock = $lock;
     $this->config = $this->configFactory->get('menu_breadcrumb.settings');
   }
 
@@ -185,7 +208,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       if (!empty($params['enabled'])) {
 
         // Skip over any menu that's not in the current content language,
-        //   if and only if the "language handling" option set for that menu.
+        // if and only if the "language handling" option set for that menu.
         // NOTE this menu option is added late, so we check its existence first.
         if (array_key_exists('langhandle', $params) && $params['langhandle']) {
           $menu_objects = $this->entityTypeManager->getStorage('menu')
@@ -200,7 +223,17 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
           }
         }
 
-        $trail_ids = $this->menuActiveTrail->getActiveTrailIds($menu_name);
+        if ($this->config->get('derived_active_trail')) {
+          // Do not use the global MenuActiveTrail service because we need one
+          // which is aware of the given routeMatch, not of the global one.
+          $menuActiveTrail = new MenuActiveTrail($this->menuLinkManager, $route_match, $this->cacheMenu, $this->lock);
+          $trail_ids = $menuActiveTrail->getActiveTrailIds($menu_name);
+        }
+        else {
+          // Default, for the majority & compatibility with historical use and
+          // other modules: use the global (injected) MenuActiveTrail service.
+          $trail_ids = $this->menuActiveTrail->getActiveTrailIds($menu_name);
+        }
         $trail_ids = array_filter($trail_ids);
         if ($trail_ids) {
           $this->menuName = $menu_name;
@@ -224,7 +257,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
               $route_links = $this->menuLinkManager->loadLinksByRoute($url->getRouteName(), $url->getRouteParameters(), $menu_name);
               if (!empty($route_links)) {
                 // Successfully found taxonomy attachment, so pass to build():
-                // - the menu in in which we have found the attachment
+                // - the menu in which we have found the attachment
                 // - the effective menu trail of the taxonomy-attached node
                 // - the node itself (in build() we will find its title & URL)
                 $taxonomy_term_link = reset($route_links);
@@ -252,7 +285,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     // (i.e., the reverse of the assigned breadcrumb trail):
     $links = [];
     // (https://www.drupal.org/docs/develop/standards/coding-standards#array)
-
+    //
     if ($this->languageManager->isMultilingual()) {
       $breadcrumb->addCacheContexts(['languages:language_content']);
     }
@@ -279,11 +312,16 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
         continue;
       }
 
+      // Stop items when the first url matching occurs.
+      if ($this->config->get('stop_on_first_match') && $plugin->getUrlObject()->toString() == Url::fromRoute('<current>')->toString()) {
+        break;
+      }
+
       $links[] = Link::fromTextAndUrl($plugin->getTitle(), $plugin->getUrlObject());
       $breadcrumb->addCacheableDependency($plugin);
-      // In the last line the MenuLinkContent plugin is not providing cache tags.
+      // In the last line, MenuLinkContent plugin is not providing cache tags.
       // Until this is fixed in core add the tags here:
-      if ($plugin instanceof \Drupal\menu_link_content\Plugin\Menu\MenuLinkContent) {
+      if ($plugin instanceof MenuLinkContent) {
         $uuid = $plugin->getDerivativeId();
         $entities = $this->entityTypeManager->getStorage('menu_link_content')->loadByProperties(['uuid' => $uuid]);
         if ($entity = reset($entities)) {
@@ -298,7 +336,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $label = $this->config->get('home_as_site_name') ?
       $this->configFactory->get('system.site')->get('name') :
       $this->t('Home', [], ['langcode' => $langcode]);
-      // (https://www.drupal.org/docs/develop/standards/coding-standards#array)
+    // (https://www.drupal.org/docs/develop/standards/coding-standards#array)
     $home_link = Link::createFromRoute($label, '<front>');
 
     // The first link from the menu trail, being the root, may be the
@@ -334,7 +372,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     if (!empty($links)) {
       $page_type = $this->taxonomyAttachment ? 'member_page' : 'current_page';
       // Display the last item of the breadcrumbs trail as the options indicate.
-      /** @var Link $current */
+      /** @var \Drupal\Core\Link $current */
       $current = array_pop($links);
       if ($this->config->get('append_' . $page_type)) {
         if (!$this->config->get($page_type . '_as_link')) {
@@ -362,7 +400,7 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
         $last_url->getRouteName() === $route_match->getRouteName() &&
         $last_url->getRouteParameters() === $route_match->getRawParameters()->all()
       ) {
-        // We already have a link, no need to add one.
+        // We already have a link, so no need to add one.
         return;
       }
     }
@@ -376,6 +414,86 @@ class MenuBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $links[] = Link::fromTextAndUrl($title,
         Url::fromRouteMatch($route_match));
     }
+  }
+
+  /**
+   * The getter function for $menuName property.
+   *
+   * @return string
+   *   The menu name.
+   */
+  public function getMenuName() {
+    return $this->menuName;
+  }
+
+  /**
+   * The setter function for $menuName property.
+   *
+   * @param string $menu_name
+   *   The menu name.
+   */
+  public function setMenuName($menu_name) {
+    $this->menuName = $menu_name;
+  }
+
+  /**
+   * The getter function for $menuTrail property.
+   *
+   * @return string
+   *   The menu trail.
+   */
+  public function getMenuTrail() {
+    return $this->menuTrail;
+  }
+
+  /**
+   * The setter function for $menuTrail property.
+   *
+   * @param string $menu_trail
+   *   The menu trail.
+   */
+  public function setMenuTrail($menu_trail) {
+    $this->menuTrail = $menu_trail;
+  }
+
+  /**
+   * The getter function for $taxonomyAttachment property.
+   *
+   * @return \Drupal\node\NodeInterface
+   *   The taxonomy attachment.
+   */
+  public function getTaxonomyAttachment() {
+    return $this->taxonomyAttachment;
+  }
+
+  /**
+   * The setter function for $taxonomyAttachment property.
+   *
+   * @param \Drupal\node\NodeInterface $taxonomy_attachment
+   *   The taxonomy attachment.
+   */
+  public function setTaxonomyAttachment(NodeInterface $taxonomy_attachment) {
+    $this->taxonomyAttachment = $taxonomy_attachment;
+  }
+
+  /**
+   * The getter function for $contentLanguage property.
+   *
+   * @return string
+   *   The content language.
+   */
+  public function getContentLanguage() {
+    return $this->contentLanguage;
+  }
+
+  /**
+   * The setter function for $contentLanguage property.
+   *
+   * @param string $contentLanguage
+   *   The content language.
+   */
+  public function setContentLanguage($contentLanguage) {
+    $this->contentLanguage = $contentLanguage;
   }
 
 }

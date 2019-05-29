@@ -4,7 +4,6 @@ namespace Drupal\webform\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -27,6 +26,7 @@ use Drupal\webform\Plugin\WebformElement\Checkbox;
 use Drupal\webform\Plugin\WebformElement\Checkboxes;
 use Drupal\webform\Plugin\WebformElement\ContainerBase;
 use Drupal\webform\Plugin\WebformElement\Details;
+use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Twig\TwigExtension;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -211,10 +211,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       // Form validation.
       'required' => FALSE,
       'required_error' => '',
-      'unique' => FALSE,
-      'unique_user' => FALSE,
-      'unique_entity' => FALSE,
-      'unique_error' => '',
       // Attributes.
       'wrapper_attributes' => [],
       'label_attributes' => [],
@@ -226,7 +222,18 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'format_items' => $this->getItemsDefaultFormat(),
       'format_items_html' => '',
       'format_items_text' => '',
+      'format_attributes' => [],
     ];
+
+    // Unique validation.
+    if (!$this->isComposite()) {
+      $properties += [
+        'unique' => FALSE,
+        'unique_user' => FALSE,
+        'unique_entity' => FALSE,
+        'unique_error' => '',
+      ];
+    }
 
     $properties += $this->getDefaultBaseProperties();
 
@@ -245,10 +252,11 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'multiple__header_label' => '',
       'multiple__min_items' => '',
       'multiple__empty_items' => 1,
-      'multiple__add_more' => 1,
-      'multiple__add_more_button_label' => $this->t('Add'),
-      'multiple__add_more_input_label' => $this->t('more items'),
-      'multiple__no_items_message' => $this->t('No items entered. Please add items below.'),
+      'multiple__add_more' => TRUE,
+      'multiple__add_more_items' => 1,
+      'multiple__add_more_button_label' => (string) $this->t('Add'),
+      'multiple__add_more_input_label' => (string) $this->t('more items'),
+      'multiple__no_items_message' => (string) $this->t('No items entered. Please add items below.'),
       'multiple__sorting' => TRUE,
       'multiple__operations' => TRUE,
     ];
@@ -305,6 +313,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'markup',
       'test',
       'default_value',
+      'header_label',
       'add_more_button_label',
       'add_more_input_label',
       'no_items_message',
@@ -374,7 +383,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     }
     $property_name = ($property_name[0] !== '#') ? '#' . $property_name : $property_name;
     $type = $element['#type'];
-    return $property_value = $this->elementInfo->getInfoProperty($type, $property_name, NULL)
+    return $this->elementInfo->getInfoProperty($type, $property_name, NULL)
       ?: $this->elementInfo->getInfoProperty("webform_$type", $property_name, NULL);
   }
 
@@ -470,6 +479,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function isRoot() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasManagedFiles(array $element) {
     return FALSE;
   }
 
@@ -702,9 +718,17 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $element['#wrapper_attributes']['class'][] = 'webform-element--title-inline';
     }
 
-    // Check description markup.
-    if (isset($element['#description'])) {
-      $element['#description'] = WebformHtmlEditor::checkMarkup($element['#description']);
+    // Check markup properties.
+    $markup_properties = [
+      '#description',
+      '#help',
+      '#more',
+      '#multiple__no_items_message',
+    ];
+    foreach ($markup_properties as $markup_property) {
+      if (isset($element[$markup_property])) {
+        $element[$markup_property] = WebformHtmlEditor::checkMarkup($element[$markup_property]);
+      }
     }
 
     // Add default description display.
@@ -755,9 +779,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $element[$attributes_property]['data-webform-states-no-clear'] = TRUE;
     }
 
-    // Set element's #element_validate callback so that is not replaced by
-    // additional #element_validate callbacks.
+    // Set element's #element_validate callback so that is not replaced when
+    // we append additional #element_validate callbacks.
     $this->setElementDefaultCallback($element, 'element_validate');
+    $this->prepareElementValidateCallbacks($element, $webform_submission);
 
     if ($this->isInput($element)) {
       // Handle #readonly support.
@@ -775,18 +800,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (!empty($element['#required_error'])) {
         $element['#attributes']['data-webform-required-error'] = $element['#required_error'];
       }
-
-      // Add webform element #minlength, #multiple, and/or #unique
-      // validation handler.
-      if (isset($element['#minlength'])) {
-        $element['#element_validate'][] = [get_class($this), 'validateMinlength'];
-      }
-      if (isset($element['#multiple']) && $element['#multiple'] > 1) {
-        $element['#element_validate'][] = [get_class($this), 'validateMultiple'];
-      }
-      if (isset($element['#unique']) && $webform_submission) {
-        $element['#element_validate'][] = [get_class($this), 'validateUnique'];
-      }
     }
 
     // Replace tokens for all properties.
@@ -799,9 +812,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function finalize(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    // Set element's #pre_render callback so that is not replaced by
-    // additional element #pre_render callbacks.
+    // Set element's #element_validate callback so that is not replaced when
+    // we append additional #pre_render callbacks.
     $this->setElementDefaultCallback($element, 'pre_render');
+    $this->prepareElementPreRenderCallbacks($element, $webform_submission);
 
     // Prepare composite element.
     $this->prepareCompositeFormElement($element);
@@ -899,10 +913,57 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    */
   public function replaceTokens(array &$element, EntityInterface $entity = NULL) {
     foreach ($element as $key => $value) {
-      if (!Element::child($key)) {
-        $element[$key] = $this->tokenManager->replace($value, $entity);
+      // Only replace tokens in properties.
+      if (Element::child($key)) {
+        continue;
       }
+
+      // Ignore tokens in #template and #format_* properties.
+      if (in_array($key, ['#template', '#format_html', '#format_text', 'format_items_html', 'format_items_text'])) {
+        continue;
+      }
+
+      $element[$key] = $this->tokenManager->replace($value, $entity);
     }
+  }
+
+  /**
+   * Prepare an element's validation callbacks.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    // Validation callbacks are only applicable to inputs.
+    if (!$this->isInput($element)) {
+      return;
+    }
+
+    // Add webform element #minlength, #multiple, and/or #unique
+    // validation handler.
+    if (isset($element['#minlength'])) {
+      $element['#element_validate'][] = [get_class($this), 'validateMinlength'];
+    }
+    if (isset($element['#multiple']) && $element['#multiple'] > 1) {
+      $element['#element_validate'][] = [get_class($this), 'validateMultiple'];
+    }
+    if (isset($element['#unique']) && $webform_submission) {
+      $element['#element_validate'][] = [get_class($this), 'validateUnique'];
+    }
+  }
+
+  /**
+   * Prepare an element's pre render callbacks.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  protected function prepareElementPreRenderCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    // Do nothing.
   }
 
   /**
@@ -1005,15 +1066,25 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
     // Set the multiple element.
     $element['#element'] = $element;
+
     // Remove properties that should only be applied to the parent element.
-    $element['#element'] = array_diff_key($element['#element'], array_flip(['#default_value', '#description', '#description_display', '#required', '#required_error', '#states', '#wrapper_attributes', '#prefix', '#suffix', '#element', '#tags', '#multiple']));
+    $element['#element'] = array_diff_key($element['#element'], array_flip(['#access', '#default_value', '#description', '#description_display', '#required', '#required_error', '#states', '#wrapper_attributes', '#prefix', '#suffix', '#element', '#tags', '#multiple']));
+
     // Propagate #states to sub element.
     // @see \Drupal\webform\Element\WebformCompositeBase::processWebformComposite
     if (!empty($element['#states'])) {
       $element['#element']['#_webform_states'] = $element['#states'];
     }
+
     // Always make the title invisible.
     $element['#element']['#title_display'] = 'invisible';
+
+    // Set hidden element #after_build handler.
+    $element['#element']['#after_build'][] = [get_class($this), 'hiddenElementAfterBuild'];
+
+    // Remove 'for' from the main element's label.
+    // This must be done after the $element['#element' is defined.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
 
     // Change the element to a multiple element.
     $element['#type'] = 'webform_multiple';
@@ -1088,6 +1159,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function getAdminLabel(array $element) {
+    $element += ['#admin_title' => '', '#title' => '', '#webform_key' => ''];
     return $element['#admin_title'] ?: $element['#title'] ?: $element['#webform_key'];
   }
 
@@ -1132,17 +1204,14 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A render array representing an element as text or HTML.
    */
   protected function build($format, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $options += [
-      'exclude_empty' => TRUE,
-    ];
     $options['multiline'] = $this->isMultiline($element);
     $format_function = 'format' . ucfirst($format);
     $value = $this->$format_function($element, $webform_submission, $options);
 
     // Handle empty value.
     if ($value === '') {
-      // Return NULL for empty formatted value.
-      if (!empty($options['exclude_empty'])) {
+      // Return NULL if empty is excluded.
+      if ($this->isEmptyExcluded($element, $options)) {
         return NULL;
       }
       // Else set the formatted value to empty message/placeholder.
@@ -1207,7 +1276,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (isset($options['delta'])) {
         return $this->$item_function($element, $webform_submission, $options);
       }
-      elseif ($this->getItemsFormat($element) === 'custom') {
+      elseif ($this->getItemsFormat($element) === 'custom' && !empty($element['#format_items_' . strtolower($type)])) {
         return $this->formatCustomItems($type, $element, $webform_submission, $options);
       }
       else {
@@ -1215,7 +1284,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
     else {
-      if ($this->getItemFormat($element) === 'custom') {
+      if ($this->getItemFormat($element) === 'custom' && !empty($element['#format_' . strtolower($type)])) {
         return $this->formatCustomItem($type, $element, $webform_submission, $options);
       }
       else {
@@ -1235,11 +1304,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A webform submission.
    * @param array $options
    *   An array of options.
+   * @param array $context
+   *   (optional) Context to be passed to inline Twig template.
    *
    * @return array|string
    *   The element's items formatted as plain text or a render array.
    */
-  protected function formatCustomItems($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatCustomItems($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = [], array $context = []) {
     $name = strtolower($type);
 
     // Get value.
@@ -1256,18 +1327,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $template = trim($element['#format_items_' . $name]);
 
     // Get context.
-    $context = (isset($options['context'])) ? $options['context'] : [];
+    $options += ['context' => []];
     $context += [
       'value' => $value,
       'items' => $items,
-      'data' => $webform_submission->getData(),
     ];
 
-    return [
-      '#type' => 'inline_template',
-      '#template' => $template,
-      '#context' => $context,
-    ];
+    return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
   }
 
   /**
@@ -1426,22 +1492,20 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A webform submission.
    * @param array $options
    *   An array of options.
+   * @param array $context
+   *   (optional) Context to be passed to inline Twig template.
    *
    * @return array|string
    *   The element's item formatted as plain text or a render array.
    */
-  protected function formatCustomItem($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatCustomItem($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = [], array $context = []) {
     $name = strtolower($type);
 
     // Get template.
     $template = trim($element['#format_' . $name]);
 
-    // Get context.
-    $context = (isset($options['context'])) ? $options['context'] : [];
-
     // Get context.value.
-    $value = $this->getValue($element, $webform_submission, $options);
-    $context['value'] = $value;
+    $context['value'] = $this->getValue($element, $webform_submission, $options);
 
     // Get content.item.
     $context['item'] = [];
@@ -1454,21 +1518,12 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
 
-    // Add submission data to context.
-    $context['data'] = $webform_submission->getData();
-
-    $build = [
-      '#type' => 'inline_template',
-      '#template' => $template,
-      '#context' => $context,
-    ];
-
     // Return inline template.
     if ($type === 'Text') {
-      return \Drupal::service('renderer')->renderPlain($build);
+      return TwigExtension::renderTwigTemplate($webform_submission, $template, $options, $context);
     }
     else {
-      return $build;
+      return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
     }
   }
 
@@ -1715,6 +1770,16 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     return $this->formatHtml($element, $webform_submission);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmptyExcluded(array $element, array $options) {
+    $options += [
+      'exclude_empty' => TRUE,
+    ];
+    return !empty($options['exclude_empty']);
+  }
+
   /****************************************************************************/
   // Export methods.
   /****************************************************************************/
@@ -1795,11 +1860,11 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return;
     }
 
-    if (!empty($element['#value']) && Unicode::strlen($element['#value']) < $element['#minlength']) {
+    if (!empty($element['#value']) && mb_strlen($element['#value']) < $element['#minlength']) {
       $t_args = [
         '%name' => empty($element['#title']) ? $element['#parents'][0] : $element['#title'],
         '%min' => $element['#minlength'],
-        '%length' => Unicode::strlen($element['#value']),
+        '%length' => mb_strlen($element['#value']),
       ];
       $form_state->setError($element, t('%name cannot be less than %min characters but is currently %length characters long.', $t_args));
     }
@@ -1813,11 +1878,20 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return;
     }
 
+    /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+    $element_manager = \Drupal::service('plugin.manager.webform.element');
+
     $name = $element['#webform_key'];
     $value = NestedArray::getValue($form_state->getValues(), $element['#parents']);
 
-    // Skip empty unique fields or composite arrays.
-    if ($value === '' || is_array($value)) {
+    // Skip composite elements.
+    $element_plugin = $element_manager->getElementInstance($element);
+    if ($element_plugin->isComposite()) {
+      return;
+    }
+
+    // Skip empty values but allow for '0'.
+    if ($value === '' || $value === NULL || (is_array($value) && empty($value))) {
       return;
     }
 
@@ -1827,13 +1901,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $webform_submission = $form_object->getEntity();
     $webform = $webform_submission->getWebform();
 
-    // Build unique query.
+    // Build unique query which return a single duplicate value.
     $query = \Drupal::database()->select('webform_submission', 'ws');
     $query->leftJoin('webform_submission_data', 'wsd', 'ws.sid = wsd.sid');
-    $query->fields('ws', ['sid']);
+    $query->fields('wsd', ['value']);
     $query->condition('wsd.webform_id', $webform->id());
     $query->condition('wsd.name', $name);
-    $query->condition('wsd.value', $value);
+    $query->condition('wsd.value', (array) $value, 'IN');
     // Unique user condition.
     if (!empty($element['#unique_user'])) {
       $query->condition('ws.uid', $webform_submission->getOwnerId());
@@ -1853,24 +1927,31 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     if ($sid = $webform_submission->id()) {
       $query->condition('ws.sid', $sid, '<>');
     }
-    // Using range() is more efficient than using countQuery() for data checks.
+    // Get single duplicate value.
     $query->range(0, 1);
-    $count = $query->execute()->fetchField();
+    $duplicate_value = $query->execute()->fetchField();
 
-    if ($count) {
-      if (isset($element['#unique_error'])) {
-        $form_state->setError($element, $element['#unique_error']);
+    // Skip NULL or empty string value.
+    if ($duplicate_value === FALSE || $duplicate_value === '') {
+      return;
+    }
+
+    if (isset($element['#unique_error'])) {
+      $form_state->setError($element, $element['#unique_error']);
+    }
+    elseif (isset($element['#title'])) {
+      // Get #options display value.
+      if (isset($element['#options'])) {
+        $duplicate_value = WebformOptionsHelper::getOptionText($duplicate_value, $element['#options'], TRUE);
       }
-      elseif (isset($element['#title'])) {
-        $t_args = [
-          '%name' => empty($element['#title']) ? $element['#parents'][0] : $element['#title'],
-          '%value' => $value,
-        ];
-        $form_state->setError($element, t('The value %value has already been submitted once for the %name element. You may have already submitted this webform, or you need to use a different value.', $t_args));
-      }
-      else {
-        $form_state->setError($element);
-      }
+      $t_args = [
+        '%name' => empty($element['#title']) ? $element['#parents'][0] : $element['#title'],
+        '%value' => $duplicate_value,
+      ];
+      $form_state->setError($element, t('The value %value has already been submitted once for the %name element. You may have already submitted this webform, or you need to use a different value.', $t_args));
+    }
+    else {
+      $form_state->setError($element);
     }
   }
 
@@ -1975,7 +2056,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $validation_optgroup => [
         'required' => $this->t('Required'),
         'optional' => $this->t('Optional'),
-      ]
+      ],
     ];
 
     // Set readwrite/readonly states for any element that supports it
@@ -2008,8 +2089,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @see \Drupal\webform\Entity\Webform::getElementsSelectorOptions
    */
   public function getElementSelectorOptions(array $element) {
     if ($this->hasMultipleValues($element) && $this->hasMultipleWrapper()) {
@@ -2029,6 +2108,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     else {
       return [":input[name=\"$name\"]" => $title];
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getElementSelectorSourceValues(array $element) {
+    return [];
   }
 
   /**
@@ -2171,7 +2257,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $form['element_description']['help'] = [
       '#type' => 'details',
       '#title' => $this->t('Help'),
-      '#description' => $this->t("Displays a help tooltip after the element's title"),
+      '#description' => $this->t("Displays a help tooltip after the element's title."),
       '#states' => [
         'invisible' => [
           [':input[name="properties[title_display]"]' => ['value' => 'invisible']],
@@ -2343,7 +2429,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $form['form']['icheck'] = [
       '#type' => 'select',
       '#title' => 'Enhance using iCheck',
-      '#description' => $this->t('Replaces @type element with jQuery <a href=":href">iCheck</a> boxes.', ['@type' => Unicode::strtolower($this->getPluginLabel()), ':href' => 'http://icheck.fronteed.com/']),
+      '#description' => $this->t('Replaces @type element with jQuery <a href=":href">iCheck</a> boxes.', ['@type' => mb_strtolower($this->getPluginLabel()), ':href' => 'http://icheck.fronteed.com/']),
       '#empty_option' => $this->t('- Default -'),
       '#options' => [
         (string) $this->t('Minimal') => [
@@ -2506,6 +2592,8 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_element_states',
       '#state_options' => $this->getElementStateOptions(),
       '#selector_options' => $webform->getElementsSelectorOptions(),
+      '#selector_sources' => $webform->getElementsSelectorSourceValues(),
+      '#disabled_message' => TRUE,
     ];
     $form['conditional_logic']['states_clear'] = [
       '#type' => 'checkbox',
@@ -2569,6 +2657,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
           ':input[name="properties[multiple][container][cardinality_number]"]' => ['value' => 1],
         ],
       ],
+      '#attributes' => ['data-webform-states-no-clear' => TRUE],
     ];
     $form['multiple']['multiple__header'] = [
       '#type' => 'checkbox',
@@ -2581,75 +2670,113 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#title' => $this->t('Table header label'),
       '#description' => $this->t('This is used as the table header for this webform element when displaying multiple values.'),
     ];
-    $form['multiple']['multiple__add_more_button_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Add more button label'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
-      '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
-    ];
-    $form['multiple']['multiple__add_more_input_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Add more input label'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
-      '#description' => $this->t('This is used as the add more items input label for this webform element when displaying multiple values.'),
-    ];
-    $form['multiple']['multiple__add_more_button_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Add more button label'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
-      '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
-    ];
     $form['multiple']['multiple__no_items_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('No items message'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#description' => $this->t('This is used when there are no items entered.'),
     ];
     $form['multiple']['multiple__min_items'] = [
       '#type' => 'number',
       '#title' => $this->t('Minimum amount of items'),
       '#description' => $this->t('Minimum items defaults to 0 for optional elements and 1 for required elements.'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#min' => 0,
       '#max' => 20,
     ];
     $form['multiple']['multiple__empty_items'] = [
       '#type' => 'number',
       '#title' => $this->t('Number of empty items'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#required' => TRUE,
       '#min' => 0,
-      '#max' => 20,
-    ];
-    $form['multiple']['multiple__add_more'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Number of add more items'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
-      '#required' => TRUE,
-      '#min' => 1,
       '#max' => 20,
     ];
     $form['multiple']['multiple__sorting'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Allow users to sort elements.'),
       '#description' => $this->t('If unchecked, the elements will no longer be sortable.'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#return_value' => TRUE,
     ];
     $form['multiple']['multiple__operations'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Allow users to add/remove elements.'),
       '#description' => $this->t('If unchecked, the add/remove (+/x) buttons will be removed from each table row.'),
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#return_value' => TRUE,
+    ];
+    $form['multiple']['multiple__add_more'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allows users to add more items'),
+      '#description' => $this->t('If checked, an add more input will be added below the multiple values.'),
+      '#return_value' => TRUE,
+    ];
+    $form['multiple']['multiple__add_more_container'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="properties[multiple__add_more]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    $form['multiple']['multiple__add_more_container']['multiple__add_more_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add more button label'),
+      '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
+    ];
+    $form['multiple']['multiple__add_more_container']['multiple__add_more_input_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add more input label'),
+      '#description' => $this->t('This is used as the add more items input label for this webform element when displaying multiple values.'),
+    ];
+    $form['multiple']['multiple__add_more_container']['multiple__add_more_button_label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Add more button label'),
+      '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
+    ];
+    $form['multiple']['multiple__add_more_container']['multiple__add_more_items'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Number of add more items'),
+      '#required' => TRUE,
+      '#min' => 1,
+      '#max' => 20,
     ];
 
     /* Wrapper attributes */
 
     $form['wrapper_attributes'] = [
       '#type' => 'details',
-      '#title' => $this->t('Wrapper attributes'),
+      '#title' => ($this->hasProperty('wrapper_type')) ?
+        $this->t('Wrapper type and attributes') :
+        $this->t('Wrapper attributes'),
     ];
+    $form['wrapper_attributes']['wrapper_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Wrapper type'),
+      '#options' => [
+        'fieldset' => $this->t('Fieldset'),
+        'form_element' => $this->t('Form element'),
+        'container' => $this->t('Container'),
+      ],
+      '#description' => '<b>' . t('Fieldset') . ':</b> ' . t('Wraps inputs in a fieldset.') . ' <strong>' . t('Recommended') . '</strong>' .
+        '<br/><br/><b>' . t('Form element') . ':</b> ' . t('Wraps inputs in a basic form element with title and description.') .
+        '<br/><br/><b>' . t('Container') . ':</b> ' . t('Wraps inputs in a basic div with no title or description.'),
+    ];
+    // Hide element description and display when using a container wrapper.
+    if ($this->hasProperty('wrapper_type')) {
+      $form['element_description']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ],
+      ];
+      $form['form']['display_container']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ],
+      ];
+      $form['form']['field_container']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ],
+      ];
+    }
+
     $form['wrapper_attributes']['wrapper_attributes'] = [
       '#type' => 'webform_element_attributes',
       '#title' => $this->t('Wrapper'),
@@ -2722,7 +2849,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     if ($format_custom) {
       $form['display']['item']['format']['#options'] += ['custom' => $this->t('Custom…')];
     }
-    $custom_states = [
+    $format_custom_states = [
       'visible' => [':input[name="properties[format]"]' => ['value' => 'custom']],
       'required' => [':input[name="properties[format]"]' => ['value' => 'custom']],
     ];
@@ -2730,47 +2857,47 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Item format custom HTML'),
-      '#description' => $this->t('The HTML to display for a single element value. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The HTML to display for a single element value. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_custom_states,
       '#access' => $format_custom,
     ];
     $form['display']['item']['format_text'] = [
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Item format custom Text'),
-      '#description' => $this->t('The text to display for a single element value. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The text to display for a single element value. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_custom_states,
       '#access' => $format_custom,
     ];
-    $items = [
-      'value' => '{{ value }}',
-    ];
-    $formats = $this->getItemFormats();
-    foreach ($formats as $format_name => $format) {
-      if (is_array($format)) {
-        foreach ($format as $sub_format_name => $sub_format) {
-          $items["item['$sub_format_name']"] = "{{ item['$sub_format_name'] }}";
+    if ($has_edit_twig_access) {
+      // Containers use the 'children' variable and inputs use the
+      // 'value' variable.
+      $twig_variables = ($this instanceof ContainerBase) ? ['children' => '{{ children }}'] : ['value' => '{{ value }}'];
+
+      // Composite Twig variables.
+      if ($this instanceof WebformCompositeBase) {
+        // Add composite elements to items.
+        $composite_elements = $this->getCompositeElements();
+        foreach ($composite_elements as $composite_key => $composite_element) {
+          $twig_variables["element.$composite_key"] = "{{ element.$composite_key }}";
         }
       }
-      else {
-        $items["item.$format_name"] = "{{ item.$format_name }}";
+
+      $formats = $this->getItemFormats();
+      foreach ($formats as $format_name => $format) {
+        if (is_array($format)) {
+          foreach ($format as $sub_format_name => $sub_format) {
+            $twig_variables["item['$sub_format_name']"] = "{{ item['$sub_format_name'] }}";
+          }
+        }
+        else {
+          $twig_variables["item.$format_name"] = "{{ item.$format_name }}";
+        }
       }
+      $form['display']['item']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['item']['twig']['#states'] = $format_custom_states;
+      WebformElementHelper::setPropertyRecursive($form['display']['item']['twig'], '#access', TRUE);
     }
-    $form['display']['item']['patterns'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Replacement patterns'),
-      '#access' => $has_edit_twig_access,
-      '#states' => $custom_states,
-      '#value' => [
-        'description' => [
-          '#markup' => '<p>' . $this->t('The following replacement tokens are available for single element value.') . '</p>',
-        ],
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $items,
-        ],
-      ],
-    ];
 
     // Items.
     $form['display']['items'] = [
@@ -2795,7 +2922,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     if ($format_items_custom) {
       $form['display']['items']['format_items']['#options'] += ['custom' => $this->t('Custom…')];
     }
-    $custom_states = [
+    $format_items_custom_states = [
       'visible' => [':input[name="properties[format_items]"]' => ['value' => 'custom']],
       'required' => [':input[name="properties[format_items]"]' => ['value' => 'custom']],
     ];
@@ -2803,36 +2930,39 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Items format custom HTML'),
-      '#description' => $this->t('The HTML to display for multiple element values. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The HTML to display for multiple element values. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_items_custom_states,
       '#access' => $format_items_custom,
     ];
     $form['display']['items']['format_items_text'] = [
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Items format custom Text'),
-      '#description' => $this->t('The text to display for multiple element values. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The text to display for multiple element values. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_items_custom_states,
       '#access' => $format_items_custom,
     ];
-    $items = [
-      '{{ value }}',
-      '{{ items }}',
-    ];
-    $form['display']['items']['patterns'] = [
+    if ($format_items_custom) {
+      $twig_variables = [
+        '{{ value }}',
+        '{{ items }}',
+      ];
+      $form['display']['items']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['items']['twig']['#states'] = $format_items_custom_states;
+      WebformElementHelper::setPropertyRecursive($form['display']['items']['twig'], '#access', TRUE);
+    }
+
+    $form['display']['format_attributes'] = [
       '#type' => 'details',
-      '#title' => $this->t('Replacement patterns'),
-      '#access' => $has_edit_twig_access,
-      '#states' => $custom_states,
-      '#value' => [
-        'description' => [
-          '#markup' => '<p>' . $this->t('The following replacement tokens are available for multiple element values.') . '</p>',
-        ],
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $items,
-        ],
-      ],
+      '#title' => $this->t('Display wrapper attributes'),
+    ];
+    $form['display']['format_attributes']['format_attributes'] = [
+      '#type' => 'webform_element_attributes',
+      '#title' => $this->t('Display'),
+      '#class__description' => $this->t("Apply classes to the element's display wrapper. Select 'custom…' to enter custom classes."),
+      '#style__description' => $this->t("Apply custom styles to the element's display wrapper."),
+      '#attributes__description' => $this->t("Enter additional attributes to be added to the element's display wrapper."),
+      '#classes' => $this->configFactory->get('webform.settings')->get('element.wrapper_classes'),
     ];
 
     /* Administration */

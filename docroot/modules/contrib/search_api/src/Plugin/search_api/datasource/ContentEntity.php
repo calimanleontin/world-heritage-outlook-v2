@@ -2,7 +2,6 @@
 
 namespace Drupal\search_api\Plugin\search_api\datasource;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
@@ -508,7 +507,7 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
     $options = [];
     if (($bundles = $this->getEntityBundles())) {
       foreach ($bundles as $bundle => $bundle_info) {
-        $options[$bundle] = Html::escape($bundle_info['label']);
+        $options[$bundle] = Utility::escapeHtml($bundle_info['label']);
       }
     }
     return $options;
@@ -952,7 +951,8 @@ class ContentEntity extends DatasourcePluginBase implements EntityDatasourceInte
       }
     }
 
-    if (isset($nested_path) && $property instanceof ComplexDataDefinitionInterface) {
+    if ($nested_path !== NULL
+        && $property instanceof ComplexDataDefinitionInterface) {
       $nested = $this->getFieldsHelper()->getNestedProperties($property);
       $nested_dependencies = $this->getPropertyPathDependencies($nested_path, $nested);
       foreach ($nested_dependencies as $type => $names) {
