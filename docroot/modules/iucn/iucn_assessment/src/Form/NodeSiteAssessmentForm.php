@@ -560,4 +560,12 @@ class NodeSiteAssessmentForm {
     ];
   }
 
+
+  public static function changeTabLabel(&$tab) {
+    if (in_array('reviewer', \Drupal::currentUser()->getRoles())) {
+      if (!empty($tab['#link']['title'])) {
+        $tab['#link']['title'] = t('Submit review');
+      }
+    }
+  }
 }

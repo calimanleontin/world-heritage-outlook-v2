@@ -944,6 +944,10 @@ function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Cor
   }
 
   foreach ($data['tabs'] as &$tab) {
+    if (!empty($tab['iucn_assessment.node_revision.state_change'])) {
+      NodeSiteAssessmentForm::changeTabLabel($tab['iucn_assessment.node_revision.state_change']);
+    }
+
     if (empty($tab['entity.node.canonical']['#link']['url'])) {
       continue;
     }
