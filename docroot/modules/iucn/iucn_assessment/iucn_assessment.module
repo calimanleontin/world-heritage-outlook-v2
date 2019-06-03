@@ -861,14 +861,25 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
     /** @var \Drupal\node\NodeInterface $entity */
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
+    /** @var User $currentUser */
+    $currentUser = User::load(\Drupal::currentUser()->id());
     // Remove the edit entity operation when it isn't actually allowed.
     if ($workflow_service->checkAssessmentAccess($entity)->isAllowed() === FALSE) {
       unset($operations['edit']);
     } elseif($entity->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-      /** @var User $currentUser */
-      $currentUser = User::load(\Drupal::currentUser()->id());
       if ($currentUser->hasRole('assessor')) {
         $operations['edit']['title'] = t('Review');
+      }
+    }
+
+
+    if ($currentUser->hasRole('reviewer')) {
+      if (!empty($operations['edit_reviewer_revision'])) {
+        $operations['edit_reviewer_revision']['title'] = t('Review');
+      }
+
+      if (!empty($operations['finish_reviewer_revision'])) {
+        $operations['finish_reviewer_revision']['title'] = t('Submit review');
       }
     }
   }
@@ -946,6 +957,10 @@ function iucn_assessment_menu_local_tasks_alter(&$data, $route_name, \Drupal\Cor
   }
 
   foreach ($data['tabs'] as &$tab) {
+    if (!empty($tab['iucn_assessment.node_revision.state_change'])) {
+      NodeSiteAssessmentForm::changeTabLabel($tab['iucn_assessment.node_revision.state_change']);
+    }
+
     if (empty($tab['entity.node.canonical']['#link']['url'])) {
       continue;
     }

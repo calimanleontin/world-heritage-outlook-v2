@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Form;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -97,6 +98,18 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
+    static::changeWorkflowButtons($form, $currentUser);
+
+    $titlePlaceholder = 'Change state of @type @assessment';
+
+    if (in_array('reviewer', $currentUser->getRoles())) {
+      $titlePlaceholder = 'Submit review of @assessment @type';
+    }
+
+    $form['#title'] = t($titlePlaceholder, [
+      '@type' => $node->type->entity->label(),
+      '@assessment' => $node->getTitle(),
+    ]);
   }
 
   public static function validateNode(&$form, NodeInterface $node) {
@@ -142,8 +155,8 @@ class NodeSiteAssessmentStateChangeForm {
         foreach ($node->{$fieldName} as &$value) {
           // We need to validate each child paragraph.
           $target = $value->getValue();
-          $paragraph = Paragraph::load($target['target_id']);
 
+          $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($target['target_revision_id']);
           if ($paragraph->bundle() == 'as_site_threat') {
             static::validateThreat($form, $paragraph);
           }
@@ -270,7 +283,6 @@ class NodeSiteAssessmentStateChangeForm {
    * There are some entity reference fields which are required to have both
    * level 1 terms and at least one of their child.
    *
-   * @param $form
    * @param $items
    *
    * @return bool|string
@@ -304,8 +316,6 @@ class NodeSiteAssessmentStateChangeForm {
       $subCategories[] = $category->entity->id();
       $mainCategory = $category->entity->parent->entity->id();
     }
-
-
 
     if (empty($mainCategory)) {
       return 'main';
@@ -367,7 +377,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
@@ -515,5 +525,15 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     \Drupal::messenger()->addMessage($message);
+  }
+
+  private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
+    if (in_array('reviewer', $currentUser->getRoles())) {
+      if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+        $element = &$form['actions']['workflow_assessment_finished_reviewing'];
+
+        $element['#value'] = t('Submit review');
+      }
+    }
   }
 }
