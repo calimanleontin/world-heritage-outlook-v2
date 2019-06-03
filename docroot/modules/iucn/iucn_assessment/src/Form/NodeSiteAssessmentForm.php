@@ -366,6 +366,8 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
