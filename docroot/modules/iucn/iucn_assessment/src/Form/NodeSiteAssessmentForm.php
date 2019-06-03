@@ -166,23 +166,32 @@ class NodeSiteAssessmentForm {
         || !empty($settings['comments'][$tab])) {
         $current_user = \Drupal::currentUser();
 
+        $form['comments'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['comments-container']],
+        ];
+
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
         $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
           ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
           : t('Comment about current tab');
-        $form["comment_$tab"] = [
+        $form['comments']['comment'] = [
           '#type' => 'textarea',
-          '#title' => $comment_title,
-          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
+          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight + 1 : 0,
           '#default_value' => !empty($settings['comments'][$tab][$current_user->id()]) ? $settings['comments'][$tab][$current_user->id()] : '',
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
-          '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
           '#maxlength' => 255,
+          '#tab' => $tab,
+          '#parents' => ['comments'],
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
-          $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
-          unset($form["comment_$tab"]['#description']);
+          $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
+          $form['#attached']['library'][] = 'iucn_backend/font-awesome';
+          $form['comments']['comment']['#prefix'] = '<div class="paragraph-comments-textarea bubble">';
+
+          $form['comments']['comment']['#attributes'] = ['readonly' => 'readonly'];
+          unset($form['comments']['#description']);
           $comments = '';
           if (!empty($settings['comments'][$tab])) {
             foreach ($settings['comments'][$tab] as $uid => $comment) {
@@ -191,15 +200,18 @@ class NodeSiteAssessmentForm {
 
               $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
-            $form["comment_$tab"]['#type'] = 'markup';
-            $form["comment_$tab"]['#markup'] = $comments;
+            $form['comments']['comment']['#type'] = 'markup';
+            $form['comments']['comment']['#markup'] = $comments;
           }
           else {
-            $form["comment_$tab"]['#access'] = FALSE;
+            $form['comments']['comment']['#access'] = FALSE;
           }
         }
-        $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
-        $form['#attached']['library'][] = 'iucn_backend/font-awesome';
+        else {
+          $form['comments']['help'] = [
+            '#markup' => '<div class="comments-help"><div><b>' . t('Internal comments on worksheet changes for IUCN?') .  '</b></div><div>' . t('Use the space below if you wish to provide comments on your worksheet changes to IUCN. These comments will be visible to IUCN but are not part of the conservation outlook assessment/will not be made publicly available.') . '</div></div>',
+          ];
+        }
       }
     }
 
@@ -424,12 +436,11 @@ class NodeSiteAssessmentForm {
     }
 
     $settings = json_decode($node->field_settings->value, TRUE);
-    foreach ($values as $key => $value) {
-      if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
-        $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab][$currentUser->id()] = $value;
-      }
+
+    if (!empty($comment = trim($values['comments']))) {
+      $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
     }
+
     $node->field_settings->setValue(json_encode($settings));
     $nodeForm->setEntity($node);
     $form_state->setFormObject($nodeForm);
