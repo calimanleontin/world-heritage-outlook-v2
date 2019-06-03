@@ -155,8 +155,8 @@ class NodeSiteAssessmentStateChangeForm {
         foreach ($node->{$fieldName} as &$value) {
           // We need to validate each child paragraph.
           $target = $value->getValue();
-          $paragraph = Paragraph::load($target['target_id']);
 
+          $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($target['target_revision_id']);
           if ($paragraph->bundle() == 'as_site_threat') {
             static::validateThreat($form, $paragraph);
           }
@@ -283,7 +283,6 @@ class NodeSiteAssessmentStateChangeForm {
    * There are some entity reference fields which are required to have both
    * level 1 terms and at least one of their child.
    *
-   * @param $form
    * @param $items
    *
    * @return bool|string
@@ -317,8 +316,6 @@ class NodeSiteAssessmentStateChangeForm {
       $subCategories[] = $category->entity->id();
       $mainCategory = $category->entity->parent->entity->id();
     }
-
-
 
     if (empty($mainCategory)) {
       return 'main';
