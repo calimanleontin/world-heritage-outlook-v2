@@ -34,17 +34,13 @@
             },
           },
           close: function (event, ui) {
-            saveCookie(cookieName, true);
+            jQuery.cookie(cookieName, true, {
+              expires: 1,
+              path: '/'
+            });
             $(this).remove();
           }
         });
-
-      function saveCookie(name, value, expires = 1, path = '/') {
-        jQuery.cookie(name, value, {
-          expires: expires,
-          path: path
-        });
-      }
     },
   };
 
