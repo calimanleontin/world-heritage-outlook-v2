@@ -63,7 +63,7 @@ content:
     weight: 2
     settings:
       select_title: ''
-      select_label: 'Select benefit type'
+      select_label: 'Select specific benefit'
       checkboxes_label: 'Select specific benefits'
     third_party_settings: {  }
     type: assessment_options_buttons
