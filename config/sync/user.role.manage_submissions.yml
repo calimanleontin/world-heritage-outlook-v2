@@ -7,9 +7,11 @@ label: 'Webforms manager'
 weight: 4
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'access webform overview'
   - 'access webform submission log'
   - 'administer webform submission'
   - 'delete any webform submission'
   - 'use text format assessment_text_format'
+  - 'view home button'

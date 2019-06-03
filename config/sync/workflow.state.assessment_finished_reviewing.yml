@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_finished_reviewing
-label: 'Finished reviewing'
+label: 'Feedback from all reviewers received'
 module: workflow
 wid: assessment
 weight: -4

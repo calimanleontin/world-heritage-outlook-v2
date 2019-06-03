@@ -57,8 +57,8 @@
     "drupal/social_media": {
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },
-    "drupal/search_api": {
-      "Infinite loop inside Highlight.php -> createExcerpt function": "https://www.drupal.org/files/issues/2019-01-04/3022724-10--fix_highlight_excerpt_creation_infinite_loop.patch"
+    "drupal/pet": {
+      "Fields definition": "patches/pet/pet.patch"
     }
   }
 }

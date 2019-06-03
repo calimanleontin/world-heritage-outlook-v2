@@ -80,7 +80,7 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_CREATION,
       AssessmentWorkflow::STATUS_NEW,
     ]) && !empty($node->field_coordinator->getValue())) {
-      // If the coordinator was set, set assessment status to UNDER EVALUATION.
+      // If the coordinator was set, set assessment status to PRE-ASSESSMENT EDITS.
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }

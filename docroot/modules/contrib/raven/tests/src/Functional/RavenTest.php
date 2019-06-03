@@ -24,10 +24,10 @@ class RavenTest extends BrowserTestBase {
   public function testRavenConfigAndHooks() {
     $admin_user = $this->drupalCreateUser(['administer site configuration']);
     $this->drupalLogin($admin_user);
-    $config['client_key'] = 'https://user:password@sentry.test/123456';
-    $config['fatal_error_handler'] = 1;
+    $config['raven[php][client_key]'] = 'https://user:password@sentry.test/123456';
+    $config['raven[php][fatal_error_handler]'] = 1;
     foreach (range(1, 8) as $level) {
-      $config["log_levels[$level]"] = '1';
+      $config["raven[php][log_levels][$level]"] = '1';
     }
     $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', 'Logged');
@@ -41,7 +41,7 @@ class RavenTest extends BrowserTestBase {
     $this->assertEqual($memory_limit . '00', $this->drupalGet($url));
 
     // Test ignored channels.
-    $config = ['ignored_channels' => "X-Logged\r\n"];
+    $config = ['raven[php][ignored_channels]' => "X-Logged\r\n"];
     $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', NULL);
   }

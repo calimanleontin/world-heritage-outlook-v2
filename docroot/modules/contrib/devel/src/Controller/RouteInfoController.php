@@ -2,6 +2,7 @@
 
 namespace Drupal\devel\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
@@ -112,6 +113,14 @@ class RouteInfoController extends ControllerBase {
           'devel' => [
             'title' => $this->t('Devel'),
             'url' => Url::fromRoute('devel.route_info.item', [], $parameters),
+            'attributes' => [
+              'class' => ['use-ajax'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => Json::encode([
+                'width' => 700,
+                'minHeight' => 500,
+              ]),
+            ],
           ],
         ],
       ];
@@ -177,7 +186,8 @@ class RouteInfoController extends ControllerBase {
         $route = $this->router->match($path);
       }
       catch (\Exception $e) {
-        drupal_set_message($this->t("Unable to load route for url '%url'", ['%url' => $path]), 'warning');
+        $this->messenger()->addWarning($this->t("Unable to load route for url '%url'", ['%url' => $path]));
+
       }
     }
 
@@ -188,7 +198,7 @@ class RouteInfoController extends ControllerBase {
         $route = $this->routeProvider->getRouteByName($route_name);
       }
       catch (\Exception $e) {
-        drupal_set_message($this->t("Unable to load route '%name'", ['%name' => $route_name]), 'warning');
+        $this->messenger()->addWarning($this->t("Unable to load route '%name'", ['%name' => $route_name]));
       }
     }
 

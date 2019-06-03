@@ -4,7 +4,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_under_evaluation
-label: 'Under evaluation'
+label: 'Pre-assessment edits'
 module: workflow
 wid: assessment
 weight: -8

@@ -9,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_pollut_trend
 field_name: field_as_benefits_pollut_trend
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Pollution trend'
+label: 'Pollution - trend'
 description: ''
 required: false
 translatable: false

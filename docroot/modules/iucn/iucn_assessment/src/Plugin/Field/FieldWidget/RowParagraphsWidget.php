@@ -664,12 +664,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             break;
 
           case 'field_as_threats_categories_child_category':
-            $label = $this->t('Subcategories');
+            $label = $this->t('Category');
             break;
 
           case 'field_as_threats_values_wh':
           case 'field_as_threats_values_bio':
-            $label = $this->t('WH values');
+            $label = $this->t('Values affected');
             break;
 
           case 'other_information':
@@ -752,7 +752,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
-      $fieldItemList = $paragraph->get($fieldName);
+      $fieldItemList = clone $paragraph->get($fieldName);
       $fieldColumn = $this->getFieldColumn($fieldName);
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
@@ -828,7 +828,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
               ],
             ];
             $row = $row + $childrenCell;
-            $value = $this->renderEntityReferenceField($fieldItemList);
+            if ($fieldName == 'field_as_threats_categories') {
+              $value = $this->renderEntityReferenceField($fieldItemList) . '<div class="subcategories">' . $value . '</div>';
+            }
+            else {
+              $value = $this->renderEntityReferenceField($fieldItemList);
+            }
           }
           break;
       }
@@ -1039,6 +1044,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function getFieldColumn($fieldName) {
     switch ($fieldName) {
+      case 'field_as_threats_categories':
+        return 'field_as_threats_categories_child_category';
+
       case 'field_as_threats_values_bio':
         return 'field_as_threats_values_wh';
 

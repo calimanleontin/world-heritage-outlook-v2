@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_reviewing_references
-label: 'Reviewing references'
+label: 'Reference standardisation'
 module: workflow
 wid: assessment
 weight: -2

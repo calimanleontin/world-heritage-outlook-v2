@@ -366,6 +366,8 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -418,7 +420,7 @@ class NodeSiteAssessmentForm {
       $oldState = $node->field_state->value;
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
-      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
+      $node = $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
 
     $settings = json_decode($node->field_settings->value, TRUE);
