@@ -21,7 +21,7 @@
       }
 
       var title = 'Warning!';
-      var message = '<h6>This interface is not optimized for your browser. Please switch to Chrome!</h6>';
+      var message = '<h6>This interface is not optimized for your browser. Please use Chrome!</h6>';
 
       $('<div></div>').appendTo('body')
         .html(message)
