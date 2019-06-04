@@ -77,4 +77,4 @@ raven.settings:
         label: 'Log channel'
     polyfill_promise:
       type: boolean
-      label: 'Load Promise polyfill'
+      label: 'Load Polyfill'

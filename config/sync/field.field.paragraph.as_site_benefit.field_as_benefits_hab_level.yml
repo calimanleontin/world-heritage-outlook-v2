@@ -10,7 +10,7 @@ id: paragraph.as_site_benefit.field_as_benefits_hab_level
 field_name: field_as_benefits_hab_level
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Habitat change level'
+label: 'Habitat change - level of impact'
 description: ''
 required: false
 translatable: false

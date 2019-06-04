@@ -10,7 +10,7 @@ id: paragraph.as_site_benefit.field_as_benefits_invassp_trend
 field_name: field_as_benefits_invassp_trend
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Invasive species trend'
+label: 'Invasive species - trend'
 description: ''
 required: false
 translatable: false

@@ -171,7 +171,7 @@ class UserAssignForm extends FormBase {
           AssessmentWorkflow::STATUS_CREATION,
           AssessmentWorkflow::STATUS_NEW,
         ]) && !empty($assessment->field_coordinator->getValue())) {
-        // If the coordinator was set, set assessment status to UNDER EVALUATION.
+        // If the coordinator was set, set assessment status to PRE-ASSESSMENT EDITS.
         $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
         $this->workflowService->createRevision($assessment, $newState, NULL, "{$state} ({$assessment->getRevisionId()}) => {$newState}", TRUE);
       }

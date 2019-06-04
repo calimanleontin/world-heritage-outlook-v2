@@ -66,8 +66,9 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
       && $field_entity->getSetting('handler') == 'default:paragraph') {
 
       $tab = \Drupal::request()->get('tab') ?: 'values';
-      if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE
-        && in_array($tab, ['values', 'assessing-values']) || !empty($variables['element']['#hide_draggable'])) {
+      $currentUser = \Drupal::currentUser();
+      if ($currentUser->hasPermission('edit assessment main data') === FALSE
+        && in_array($tab, ['values', 'assessing-values', 'benefits', 'threats']) || !empty($variables['element']['#hide_draggable'])) {
         _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
       }
       if (($tab == 'protection-management') || ($tab == 'references')) {
@@ -155,11 +156,11 @@ function iucn_backend_preprocess_taxonomy_term(&$variables) {
 
   if ($viewMode == 'teaser') {
     if ($term->bundle() == 'assessment_benefits_impact_level') {
-      $variables['name'][0]['#context']['value'] = sprintf("%s: %s",(string) t('Level of impact'), $variables['name'][0]['#context']['value']);
+      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('level'));
     }
 
     if ($term->bundle() == 'assessment_benefits_impact_trend') {
-      $variables['name'][0]['#context']['value'] = sprintf("%s: %s", (string) t('Trend'), $variables['name'][0]['#context']['value']);
+      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('trend'));
     }
   }
 

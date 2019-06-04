@@ -8,8 +8,8 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
  * Includes following phases:
- *  - under comparison
- *  - reviewing references
+ *  - post-review edits
+ *  - reference standardisation
  *  - approved
  *  - published
  *  - draft
@@ -75,7 +75,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REVIEWER2, 403);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Under comparison');
+    $this->assertSession()->pageTextContains('Current workflow state: Post-review edits');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
@@ -94,7 +94,7 @@ class FinalPhasesTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_REVIEWING_REFERENCES]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Reviewing references');
+    $this->assertSession()->pageTextContains('Current workflow state: Reference standardisation');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

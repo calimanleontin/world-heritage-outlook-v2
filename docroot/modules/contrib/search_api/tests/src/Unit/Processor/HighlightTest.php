@@ -1073,11 +1073,11 @@ END;
    * @param string $expected
    *   The expected result containing the highlighted strings.
    *
-   * @see https://www.drupal.org/project/search_api/issues/3022724
+   * @see https://www.drupal.org/node/3022724
    *
    * @dataProvider regressionBug3022724DataProvider
    */
-  public function testRegressionBug3022724($text, $keys, $expected) {
+  public function testRegressionBug3022724($text, array $keys, $expected) {
     $method = new \ReflectionMethod($this->processor, 'createExcerpt');
     $method->setAccessible(TRUE);
     $excerpt = $method->invoke($this->processor, $text, $keys);
