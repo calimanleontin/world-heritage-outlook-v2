@@ -49,7 +49,7 @@ class NodeSiteAssessmentStateChangeForm {
     $form['actions']['workflow_force_finish_review'] = [
       '#type' => 'submit',
       '#value' => t('Force finish reviewing'),
-      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('edit assessment main data'),
+      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
       '#weight' => 100,
       '#name' => 'force_finish_review',
     ];
@@ -422,9 +422,13 @@ class NodeSiteAssessmentStateChangeForm {
       $removedReviewers = $addedReviewers = [];
 
       if (!empty($form_state->getValue('force_finish_review'))) {
-        $underReviewRevisions = $workflowService->getRevisionsByState($node, AssessmentWorkflow::STATUS_UNDER_REVIEW);
+        $underReviewRevisions = $workflowService->getAllReviewersRevisions($node);
         /** @var NodeInterface $revision */
         foreach ($underReviewRevisions as $revision) {
+          if ($revision->get('field_state')->value != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+            continue;
+          }
+
           $removedReviewers[] = $revision->getRevisionUserId();
         }
       }

@@ -581,28 +581,6 @@ class AssessmentWorkflow {
     return NULL;
   }
 
-  public function getRevisionsByState(NodeInterface $node, $state, bool $includeDefault = false) {
-    $assessment_revisions_ids = $this->nodeStorage->revisionIds($node);
-    $reviews = [];
-
-    foreach ($assessment_revisions_ids as $rid) {
-      /** @var \Drupal\node\Entity\Node $node_revision */
-      $node_revision = $this->getAssessmentRevision($rid);
-
-      if ($node_revision->isDefaultRevision() != $includeDefault) {
-        continue;
-      }
-
-      if ($node_revision->field_state->value != $state) {
-        continue;
-      }
-
-      $reviews[] = $node_revision;
-    }
-
-    return $reviews;
-  }
-
   /**
    * Force a state change on an assessment.
    *
