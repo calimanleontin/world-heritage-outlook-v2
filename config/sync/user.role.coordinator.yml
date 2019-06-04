@@ -20,6 +20,7 @@ permissions:
   - 'edit assessment main data'
   - 'edit new assessments'
   - 'edit own site_assessment content'
+  - 'force finish reviewing'
   - 'use assessment transition approved_approved'
   - 'use assessment transition new_new'
   - 'use assessment transition new_under_assessment'

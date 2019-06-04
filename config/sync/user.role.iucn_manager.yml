@@ -86,6 +86,7 @@ permissions:
   - 'edit terms in iucn_region'
   - 'edit terms in theme'
   - 'edit terms in unesco_region'
+  - 'force finish reviewing'
   - 'revert all revisions'
   - 'search content'
   - 'translate any entity'

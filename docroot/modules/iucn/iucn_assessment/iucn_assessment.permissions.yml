@@ -30,3 +30,6 @@ view assessment reports:
 
 view home button:
   title: 'View home button'
+
+force finish reviewing:
+  title: 'Force finish reviewing'
