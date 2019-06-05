@@ -26,11 +26,6 @@
         }
         // Do something
       }, false);
-
-      $(document).on("submit", "form", function(event){
-        // disable unload warning
-        $(window).off('beforeunload');
-      });
     },
     detach: function(context, settings) {
       var $context = $(context);
