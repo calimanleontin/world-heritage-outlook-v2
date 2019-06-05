@@ -474,7 +474,10 @@ class NodeSiteAssessmentStateChangeForm {
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
         foreach ($removedReviewers as $reviewerId) {
-          $workflowService->markReviewerRevisionsAsFinished($node, $reviewerId);
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          $readyForReviewRevision = $workflowService->getRevisionByState($reviewerRevision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+          $workflowService->markRevisionAsFinished($node, $reviewerRevision, $readyForReviewRevision);
         }
       }
 
@@ -513,19 +516,8 @@ class NodeSiteAssessmentStateChangeForm {
 
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+        $workflowService->markRevisionAsFinished($defaultUnderReviewRevision, $node, $readyForReviewRevision);
 
-        // Save the differences on the revision "under review" revision.
-        $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
-        $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
-        $defaultUnderReviewRevision->setNewRevision(FALSE);
-        $defaultUnderReviewRevision->save();
-
-        if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
-          // If all other reviewers finished their work, send the assessment
-          // back to the coordinator.
-          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
-        }
-        $node->setRevisionLogMessage("{$oldState} => {$newState}");
         $createNewRevision = FALSE;
         break;
 
