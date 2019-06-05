@@ -438,7 +438,7 @@ class NodeSiteAssessmentForm {
 
     $settings = json_decode($node->field_settings->value, TRUE);
 
-    if (!empty($comment = trim($values['comments']))) {
+    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
       $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
     }
 
