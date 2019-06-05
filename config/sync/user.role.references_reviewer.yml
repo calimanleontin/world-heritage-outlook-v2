@@ -1,0 +1,15 @@
+uuid: a8c9d619-82ca-451c-937e-75e67fd03569
+langcode: en
+status: true
+dependencies: {  }
+id: references_reviewer
+label: 'References reviewer'
+weight: 5
+is_admin: null
+permissions:
+  - 'create assessment workflow_transition'
+  - 'edit any site_assessment content'
+  - 'edit own site_assessment content'
+  - 'use text format assessment_text_format'
+  - 'view any unpublished content'
+  - 'view latest version'

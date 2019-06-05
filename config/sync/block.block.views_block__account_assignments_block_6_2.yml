@@ -1,4 +1,4 @@
-uuid: 661aaa6c-db33-432d-95d8-ad03832ea3d2
+uuid: aa7c3c04-49c9-4935-8ce9-52b9e8974e03
 langcode: en
 status: true
 dependencies:
@@ -8,15 +8,15 @@ dependencies:
     - system
     - views
   theme:
-    - iucn_who
-id: views_block__account_assignments_block_4
-theme: iucn_who
+    - iucn_backend
+id: views_block__account_assignments_block_6_2
+theme: iucn_backend
 region: content
-weight: -11
+weight: 0
 provider: null
-plugin: 'views_block:account_assignments-block_4'
+plugin: 'views_block:account_assignments-block_6'
 settings:
-  id: 'views_block:account_assignments-block_4'
+  id: 'views_block:account_assignments-block_6'
   label: ''
   provider: views
   label_display: visible
