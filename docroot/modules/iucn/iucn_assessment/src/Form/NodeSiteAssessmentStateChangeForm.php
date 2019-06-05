@@ -492,7 +492,9 @@ class NodeSiteAssessmentStateChangeForm {
 
     $default = $node->isDefaultRevision();
     $settingsWithDifferences = $node->field_settings->value;
-    $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    if ($oldState != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    }
 
     switch ($oldState . '>' . $newState) {
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
@@ -505,6 +507,10 @@ class NodeSiteAssessmentStateChangeForm {
         break;
 
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        if (!empty($removedReviewers)) {
+          break;
+        }
+
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
 
@@ -538,12 +544,15 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    if ($createNewRevision === TRUE) {
-      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
-    }
-    else {
-      $workflowService->forceAssessmentState($node, $newState);
-      $entity = $node;
+    $entity = $node;
+    if (empty($removedReviewers)) {
+      if ($createNewRevision === TRUE) {
+        $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
+      }
+      else {
+        $workflowService->forceAssessmentState($node, $newState);
+        $entity = $node;
+      }
     }
 
     $nodeForm->setEntity($entity);

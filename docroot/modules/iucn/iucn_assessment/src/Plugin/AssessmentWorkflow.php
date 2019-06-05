@@ -450,20 +450,6 @@ class AssessmentWorkflow {
   }
 
   /**
-   * @param \Drupal\node\NodeInterface $node
-   * @param $uid
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function markReviewerRevisionsAsFinished(NodeInterface $node, $uid) {
-    $reviewer_revision = $this->getReviewerRevision($node, $uid);
-    if (!empty($reviewer_revision)) {
-      $reviewer_revision->set('field_state', static::STATUS_FINISHED_REVIEWING);
-      $reviewer_revision->save();
-    }
-  }
-
-  /**
    * Retrieves the revision created for a reviewer.
    *
    * All the reviewer revisions have their revision user id set
@@ -695,4 +681,34 @@ class AssessmentWorkflow {
     }
   }
 
+  /**
+   * @param Node $defaultUnderReviewRevision
+   * @param $uid
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   */
+  public function markReviewerRevisionsAsFinished(Node $defaultUnderReviewRevision, $uid) {
+    $reviewer_revision = $this->getReviewerRevision($defaultUnderReviewRevision, $uid);
+    $readyForReviewRevision = $this->getRevisionByState($reviewer_revision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+    $oldState = AssessmentWorkflow::STATUS_UNDER_REVIEW;
+    $newState = AssessmentWorkflow::STATUS_FINISHED_REVIEWING;
+
+    // Save the differences on the revision "under review" revision.
+    $this->appendCommentsToFieldSettings($defaultUnderReviewRevision, $reviewer_revision);
+    $this->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $reviewer_revision->getRevisionId());
+    $defaultUnderReviewRevision->setNewRevision(FALSE);
+    $defaultUnderReviewRevision->save();
+
+    if ($this->isAssessmentReviewed($defaultUnderReviewRevision, $reviewer_revision->getRevisionId())) {
+      // If all other reviewers finished their work, send the assessment
+      // back to the coordinator.
+      $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
+    }
+
+    $reviewer_revision->setRevisionLogMessage("{$oldState} => {$newState}");
+
+    $this->forceAssessmentState($reviewer_revision, $newState);
+  }
 }
