@@ -18,7 +18,8 @@
     "postcss-flexibility": "^2.0.0",
     "postcss-rtl": "^1.3.2",
     "rtlcss": "^2.2.1",
-    "simplebar": "^2.6.1"
+    "simplebar": "^2.6.1",
+    "extend": ">=3.0.2"
   },
   "scripts": {
     "theme:watch": "grunt",
