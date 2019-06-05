@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -83,11 +82,13 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_coordinator']['#access'] = $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
       $form['field_assessor']['#access'] = $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $form['field_reviewers']['#access'] = $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+      $form['field_references_reviewer']['#access'] = $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     }
     else {
       $form['field_coordinator']['#access'] = FALSE;
       $form['field_assessor']['#access'] = FALSE;
       $form['field_reviewers']['#access'] = FALSE;
+      $form['field_references_reviewer']['#access'] = FALSE;
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
@@ -208,6 +209,7 @@ class NodeSiteAssessmentStateChangeForm {
       unset($form['field_coordinator']);
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
+      unset($form['field_references_reviewer']);
       unset($form['warning']);
       $form['actions']['#access'] = FALSE;
     }
@@ -411,7 +413,7 @@ class NodeSiteAssessmentStateChangeForm {
     $oldState = $newState = $node->field_state->value;
     $createNewRevision = TRUE;
 
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
       $node->set($field, $form_state->getValue($field));
     }
 

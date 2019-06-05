@@ -120,6 +120,7 @@ class AssessmentWorkflow {
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
+    $accountIsReferencesReviewer = $node->field_references_reviewer->target_id === $account->id();
 
     if ($account->hasPermission('edit assessment in any state')) {
       return AccessResult::allowed();
@@ -135,11 +136,12 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_EVALUATION:
         case self::STATUS_READY_FOR_REVIEW:
         case self::STATUS_UNDER_COMPARISON:
-        case self::STATUS_REVIEWING_REFERENCES:
           // Assessments can only be edited by their coordinator.
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
-
+        case self::STATUS_REVIEWING_REFERENCES:
+          $access = AccessResult::allowedIf($accountIsReferencesReviewer);
+          break;
 
         case self::STATUS_UNDER_ASSESSMENT:
           // In this state, assessments can only be edited by their assessors.

@@ -872,7 +872,6 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
       }
     }
 
-
     if ($currentUser->hasRole('reviewer')) {
       if (!empty($operations['edit_reviewer_revision'])) {
         $operations['edit_reviewer_revision']['title'] = t('Review');
