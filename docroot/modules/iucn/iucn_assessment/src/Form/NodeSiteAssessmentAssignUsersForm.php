@@ -59,7 +59,6 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_UNDER_EVALUATION,
       AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
-      AssessmentWorkflow::STATUS_UNDER_REVIEW,
     ]);
 
     $form['#title'] = t('Assign users for @type @assessment', [
