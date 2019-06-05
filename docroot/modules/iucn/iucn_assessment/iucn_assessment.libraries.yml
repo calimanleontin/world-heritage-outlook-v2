@@ -2,7 +2,6 @@ iucn_assessment.row_paragraph:
   version: VERSION
   js:
     js/row_paragraph_widget.js: {}
-    js/paragraph_comments.js: {}
 
 iucn_assessment.option_buttons:
   version: VERSION
