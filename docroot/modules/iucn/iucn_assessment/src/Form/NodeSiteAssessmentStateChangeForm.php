@@ -53,6 +53,10 @@ class NodeSiteAssessmentStateChangeForm {
       '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
       '#weight' => 100,
       '#name' => 'force_finish_review',
+      '#attributes' => [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the reviewing phase? Reviewers will no longer be able to edit this assessment.")){return false;}',
+      ],
     ];
 
     // We want to replace the core submitForm method so the node won't get saved
