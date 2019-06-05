@@ -269,3 +269,10 @@ iucn_who_core.dashboard.reports.protection_and_management:
   route_name: view.assessments_reports.protection_and_management
   menu_name: tools
   weight: 5
+
+iucn_who_core.dashboard.reports.projects:
+  title: 'Projects'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.projects
+  menu_name: tools
+  weight: 6

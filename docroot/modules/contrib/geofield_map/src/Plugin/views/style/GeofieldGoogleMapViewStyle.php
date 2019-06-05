@@ -21,6 +21,7 @@ use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Utility\LinkGeneratorInterface;
 use Drupal\geofield\GeoPHP\GeoPHPInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\geofield_map\Services\GoogleMapsService;
 use Drupal\geofield_map\MapThemerPluginManager;
@@ -125,6 +126,13 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
   protected $currentUser;
 
   /**
+   * The messenger.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * The Renderer service property.
    *
    * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
@@ -189,6 +197,8 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
    *   The The geoPhpWrapper.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   Current user service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The Renderer service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
@@ -209,6 +219,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     LinkGeneratorInterface $link_generator,
     GeoPHPInterface $geophp_wrapper,
     AccountInterface $current_user,
+    MessengerInterface $messenger,
     RendererInterface $renderer,
     ModuleHandlerInterface $module_handler,
     GoogleMapsService $google_maps_service,
@@ -223,6 +234,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
     $this->link = $link_generator;
     $this->geoPhpWrapper = $geophp_wrapper;
     $this->currentUser = $current_user;
+    $this->messenger = $messenger;
     $this->renderer = $renderer;
     $this->moduleHandler = $module_handler;
     $this->googleMapsService = $google_maps_service;
@@ -245,6 +257,7 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
       $container->get('link_generator'),
       $container->get('geofield.geophp'),
       $container->get('current_user'),
+      $container->get('messenger'),
       $container->get('renderer'),
       $container->get('module_handler'),
       $container->get('geofield_map.google_maps'),
@@ -650,122 +663,144 @@ class GeofieldGoogleMapViewStyle extends DefaultStyle implements ContainerFactor
             }
           }
 
+          // We need to define this before.
           $description = [];
-          $description_field = isset($map_settings['map_marker_and_infowindow']['infowindow_field']) ? $map_settings['map_marker_and_infowindow']['infowindow_field'] : NULL;
 
           // Render the entity with the selected view mode.
-          if (isset($entity) && isset($description_field)) {
+          /* @var \Drupal\core\Entity\FieldableEntityInterface $entity */
+          if (isset($entity)) {
+            try {
+              // Get and set (if not set) the Geofield cardinality.
+              /* @var \Drupal\Core\Field\FieldItemList $geofield_entity */
+              if (!isset($js_settings['map_settings']['geofield_cardinality'])) {
+                $geofield_entity = $entity->get($geofield_name);
+                $js_settings['map_settings']['geofield_cardinality'] = $geofield_entity->getFieldDefinition()
+                  ->getFieldStorageDefinition()
+                  ->getCardinality();
+              }
+              $entity_type = $entity->getEntityTypeId();
+              $entity_type_langcode_attribute = $entity_type . '_field_data_langcode';
 
-            /* @var \Drupal\Core\Field\FieldItemList $description_field_entity */
-            $description_field_entity = $entity->$description_field;
+              $view = $this->view;
 
-            $entity_type = $entity->getEntityTypeId();
-            $entity_type_langcode_attribute = $entity_type . '_field_data_langcode';
-
-            $view = $this->view;
-
-            // Set the langcode to be used for rendering the entity.
-            $rendering_language = $view->display_handler->getOption('rendering_language');
-            $dynamic_renderers = [
-              '***LANGUAGE_entity_translation***' => 'TranslationLanguageRenderer',
-              '***LANGUAGE_entity_default***' => 'DefaultLanguageRenderer',
-            ];
-            if (isset($dynamic_renderers[$rendering_language])) {
-              /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-              $langcode = isset($result->$entity_type_langcode_attribute) ? $result->$entity_type_langcode_attribute : $entity->language()->getId();
-            }
-            else {
-              if (strpos($rendering_language, '***LANGUAGE_') !== FALSE) {
-                $langcode = PluginBase::queryLanguageSubstitutions()[$rendering_language];
+              // Set the langcode to be used for rendering the entity.
+              $rendering_language = $view->display_handler->getOption('rendering_language');
+              $dynamic_renderers = [
+                '***LANGUAGE_entity_translation***' => 'TranslationLanguageRenderer',
+                '***LANGUAGE_entity_default***' => 'DefaultLanguageRenderer',
+              ];
+              if (isset($dynamic_renderers[$rendering_language])) {
+                /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
+                $langcode = isset($result->$entity_type_langcode_attribute) ? $result->$entity_type_langcode_attribute : $entity->language()
+                  ->getId();
               }
               else {
-                // Specific langcode set.
-                $langcode = $rendering_language;
+                if (strpos($rendering_language, '***LANGUAGE_') !== FALSE) {
+                  $langcode = PluginBase::queryLanguageSubstitutions()[$rendering_language];
+                }
+                else {
+                  // Specific langcode set.
+                  $langcode = $rendering_language;
+                }
               }
-            }
 
-            switch ($description_field) {
-              case '#rendered_entity':
-                $build = $this->entityManager->getViewBuilder($entity->getEntityTypeId())->view($entity, $this->options['view_mode'], $langcode);
-                $description[] = $this->renderer->renderPlain($build);
-                break;
+              $description_field = isset($map_settings['map_marker_and_infowindow']['infowindow_field']) ? $map_settings['map_marker_and_infowindow']['infowindow_field'] : NULL;
+              if (isset($description_field)) {
 
-              case '#rendered_entity_ajax':
-                $parameters = [
-                  'entity_type' => $entity->getEntityTypeId(),
-                  'entity' => $entity->id(),
-                  'view_mode' => $this->options['view_mode'],
-                  'langcode' => $langcode,
-                ];
-                $url = Url::fromRoute('geofield_map.ajax_popup', $parameters, ['absolute' => TRUE]);
-                $build = [
-                  '#type' => 'html_tag',
-                  '#tag' => 'div',
-                  '#value' => '',
-                  '#attributes' => [
-                    'class' => ['geofield-google-map-ajax-popup'],
-                    'data-geofield-google-map-ajax-popup' => $url->toString(),
-                  ],
-                ];
-                $description[] = $this->renderer->renderRoot($build);
-                break;
+                /* @var \Drupal\Core\Field\FieldItemList $description_field_entity */
+                $description_field_entity = $entity->$description_field;
 
-              default:
-                // Check if the entity has a $description_field field.
-                if (isset($description_field_entity)) {
-                  $description_field_cardinality = $description_field_entity->getFieldDefinition()->getFieldStorageDefinition()->getCardinality();
-                  foreach ($description_field_entity->getValue() as $value) {
-                    if ($description_field_cardinality == 1 || $map_settings['map_marker_and_infowindow']['multivalue_split'] == FALSE) {
-                      $description[] = $this->rendered_fields[$id][$description_field];
-                      break;
+                switch ($description_field) {
+                  case '#rendered_entity':
+                    $build = $this->entityManager->getViewBuilder($entity->getEntityTypeId())
+                      ->view($entity, $this->options['view_mode'], $langcode);
+                    $description[] = $this->renderer->renderPlain($build);
+                    break;
+
+                  case '#rendered_entity_ajax':
+                    $parameters = [
+                      'entity_type' => $entity->getEntityTypeId(),
+                      'entity' => $entity->id(),
+                      'view_mode' => $this->options['view_mode'],
+                      'langcode' => $langcode,
+                    ];
+                    $url = Url::fromRoute('geofield_map.ajax_popup', $parameters, ['absolute' => TRUE]);
+                    $build = [
+                      '#type' => 'html_tag',
+                      '#tag' => 'div',
+                      '#value' => '',
+                      '#attributes' => [
+                        'class' => ['geofield-google-map-ajax-popup'],
+                        'data-geofield-google-map-ajax-popup' => $url->toString(),
+                      ],
+                    ];
+                    $description[] = $this->renderer->renderRoot($build);
+                    break;
+
+                  default:
+                    // Check if the entity has a $description_field field.
+                    if (isset($description_field_entity)) {
+                      $description_field_cardinality = $description_field_entity->getFieldDefinition()
+                        ->getFieldStorageDefinition()
+                        ->getCardinality();
+                      foreach ($description_field_entity->getValue() as $value) {
+                        if ($description_field_cardinality == 1 || $map_settings['map_marker_and_infowindow']['multivalue_split'] == FALSE) {
+                          $description[] = $this->rendered_fields[$id][$description_field];
+                          break;
+                        }
+                        $description[] = isset($value['value']) ? $value['value'] : NULL;
+                      }
                     }
-                    $description[] = isset($value['value']) ? $value['value'] : NULL;
-                  }
+                    // Else get the views field value.
+                    elseif (isset($this->rendered_fields[$id][$description_field])) {
+                      $description[] = $this->rendered_fields[$id][$description_field];
+                    }
                 }
-                // Else get the views field value.
-                elseif (isset($this->rendered_fields[$id][$description_field])) {
-                  $description[] = $this->rendered_fields[$id][$description_field];
-                }
-            }
-          }
-
-          // Add Views fields to the Json output as additional_data property.
-          $view_data = [];
-          foreach ($this->rendered_fields[$id] as $field_name => $rendered_field) {
-            if (!empty($rendered_field) && !$this->view->field[$field_name]->options['exclude']) {
-              /* @var \Drupal\Core\Render\Markup $rendered_field */
-              $view_data[$field_name] = $rendered_field->__toString();
-            }
-          }
-
-          // Define a Tooltip for the Feature.
-          $tooltip_field = isset($map_settings['map_marker_and_infowindow']['tooltip_field']) ? $map_settings['map_marker_and_infowindow']['tooltip_field'] : NULL;
-          $tooltip = isset($entity) && !empty($tooltip_field) ? trim(html_entity_decode(strip_tags($this->rendered_fields[$id][$tooltip_field]), ENT_QUOTES)) : NULL;
-
-          // Generate GeoJsonData.
-          $geojson_data = $this->getGeoJsonData($geofield_value, $description, $tooltip, $view_data);
-
-          // Add Theming Icon based on the $theming plugin.
-          $theming = NULL;
-          if (isset($map_settings['map_marker_and_infowindow']['theming']) && $map_settings['map_marker_and_infowindow']['theming']['plugin_id'] != 'none') {
-            $theming = $map_settings['map_marker_and_infowindow']['theming'];
-            try {
-              /* @var \Drupal\geofield_map\MapThemerInterface $map_themer */
-              $map_themer = $this->mapThemerManager->createInstance($theming['plugin_id'], ['geofieldMapView' => $this]);
-              $map_theming = $theming[$map_themer->getPluginId()]['values'];
-              foreach ($geojson_data as $k => $datum) {
-                $geojson_data[$k]['properties']['icon'] = $map_themer->getIcon($datum, $this, $entity, $map_theming);
-                // Flag the data with theming, for later rendering logic.
-                $geojson_data[$k]['properties']['theming'] = TRUE;
               }
+
+              // Add Views fields to Json output as additional_data property.
+              $view_data = [];
+              foreach ($this->rendered_fields[$id] as $field_name => $rendered_field) {
+                if (!empty($rendered_field) && !$this->view->field[$field_name]->options['exclude']) {
+                  /* @var \Drupal\Core\Render\Markup $rendered_field */
+                  $view_data[$field_name] = $rendered_field->__toString();
+                }
+              }
+
+              // Define a Tooltip for the Feature.
+              $tooltip_field = isset($map_settings['map_marker_and_infowindow']['tooltip_field']) ? $map_settings['map_marker_and_infowindow']['tooltip_field'] : NULL;
+              $tooltip = isset($entity) && !empty($tooltip_field) ? trim(html_entity_decode(strip_tags($this->rendered_fields[$id][$tooltip_field]), ENT_QUOTES)) : NULL;
+
+              // Generate GeoJsonData.
+              $geojson_data = $this->getGeoJsonData($geofield_value, $entity->id(), $description, $tooltip, $view_data);
+
+              // Add Theming Icon based on the $theming plugin.
+              $theming = NULL;
+              if (isset($map_settings['map_marker_and_infowindow']['theming']) && $map_settings['map_marker_and_infowindow']['theming']['plugin_id'] != 'none') {
+                $theming = $map_settings['map_marker_and_infowindow']['theming'];
+                /* @var \Drupal\geofield_map\MapThemerInterface $map_themer */
+                $map_themer = $this->mapThemerManager->createInstance($theming['plugin_id'], ['geofieldMapView' => $this]);
+                $map_theming = $theming[$map_themer->getPluginId()]['values'];
+                foreach ($geojson_data as $k => $datum) {
+                  $geojson_data[$k]['properties']['icon'] = $map_themer->getIcon($datum, $this, $entity, $map_theming);
+                  // Flag the data with theming, for later rendering logic.
+                  $geojson_data[$k]['properties']['theming'] = TRUE;
+                }
+              }
+
+              // Generate incremental GeoJsonData.
+              $data = array_merge($data, $geojson_data);
             }
-            catch (PluginException $e) {
+            catch (\Exception $e) {
+              watchdog_exception('geofield_map', $e);
+              if ($this->currentUser->hasPermission('configure geofield_map')) {
+                $this->messenger->addError($this->t('This Geofield Map cannot be rendered due to bad configuration in the GeofieldMap View Style (@log: @message)', [
+                  '@message' => $e->getMessage(),
+                ]));
+              }
+              return [];
             }
           }
-
-          // Generate incremental GeoJsonData.
-          $data = array_merge($data, $geojson_data);
-
         }
       }
 

@@ -169,7 +169,21 @@
         else {
           feature.setMap(map);
         }
-        self.map_data[mapid].markers.push(feature);
+
+        // Generate the markers object index based on entity id (and geofield
+        // cardinality), and add the marker to the markers object.
+        var entity_id = feature['geojsonProperties']['entity_id'];
+        if (self.map_data[mapid].geofield_cardinality && self.map_data[mapid].geofield_cardinality !== 1) {
+          var i = 0;
+          while (self.map_data[mapid].markers[entity_id + '-' + i]) {
+            i++;
+          }
+          self.map_data[mapid].markers[entity_id + '-' + i] = feature;
+        }
+        else {
+          self.map_data[mapid].markers[entity_id] = feature;
+        }
+
         self.map_data[mapid].map_bounds.extend(feature.getPosition());
 
         // Check for eventual simple or OverlappingMarkerSpiderfier click Listener
@@ -322,7 +336,7 @@
         self.map_data[mapid].map = map;
         self.map_data[mapid].map_options = mapOptions;
         self.map_data[mapid].features = data.features;
-        self.map_data[mapid].markers = [];
+        self.map_data[mapid].markers = {};
 
         // Define the MapBounds property.
         self.map_data[mapid].map_bounds = new google.maps.LatLngBounds();
@@ -391,7 +405,7 @@
 
           // Implement Markeclustering, if more than 1 marker on the map,
           // and the markercluster option is set to true.
-          if (self.map_data[mapid].markers.length > 1 && typeof MarkerClusterer !== 'undefined' && map_settings.map_markercluster.markercluster_control) {
+          if (self.map_data[mapid].markers.constructor === Object && Object.keys(self.map_data[mapid].markers).length > 0 && typeof MarkerClusterer !== 'undefined' && map_settings.map_markercluster.markercluster_control) {
 
             var markeclusterOption = {
               imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
@@ -405,7 +419,7 @@
             }
 
             // Define a markerCluster property, so other code can interact with it.
-            self.map_data[mapid].markerCluster = new MarkerClusterer(map, self.map_data[mapid].markers, markeclusterOption);
+            self.map_data[mapid].markerCluster = new MarkerClusterer(map, Object.values(self.map_data[mapid].markers), markeclusterOption);
           }
         }
 
@@ -414,8 +428,8 @@
           map.fitBounds(self.map_data[mapid].map_bounds);
         }
         // else if the Map Initial State is defined by just One marker.
-        else if (self.map_data[mapid].markers.length === 1 && !self.map_data[mapid].center_force) {
-          map.setCenter(self.map_data[mapid].markers[0].getPosition());
+        else if (self.map_data[mapid].markers.constructor === Object && Object.keys(self.map_data[mapid].markers).length === 1 && !self.map_data[mapid].center_force) {
+          map.setCenter(self.map_data[mapid].markers[Object.keys(self.map_data[mapid].markers)[0]].getPosition());
         }
 
         google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
@@ -467,6 +481,7 @@
       controlUI.style.margin = '6px';
       controlUI.style.textAlign = 'center';
       controlUI.title = Drupal.t('Click to reset the map to its initial state');
+      controlUI.id = 'geofield-map--' + mapid + '--reset-control';
       controlDiv.appendChild(controlUI);
 
       // Set CSS for the control interior.
@@ -484,6 +499,7 @@
         Drupal.geoFieldMap.map_data[mapid].map.setCenter(Drupal.geoFieldMap.map_data[mapid].map_start_center);
         Drupal.geoFieldMap.map_data[mapid].map.setZoom(Drupal.geoFieldMap.map_data[mapid].map_start_zoom);
       });
+      return controlUI;
     }
 
   };

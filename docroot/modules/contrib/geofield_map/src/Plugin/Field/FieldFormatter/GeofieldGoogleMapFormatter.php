@@ -540,7 +540,7 @@ class GeofieldGoogleMapFormatter extends FormatterBase implements ContainerFacto
       'force_open' => [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $this->t('Open Infowindow on Load: @state', ['@state' => $settings['map_marker_and_infowindow']['force_open'] ? $this->t('Yes') : $this->t('No')]),
+        '#value' => $this->t('Open Infowindow on Load: @state', ['@state' => !empty($settings['map_marker_and_infowindow']['force_open']) ? $this->t('Yes') : $this->t('No')]),
         '#weight' => 3,
       ],
     ];
@@ -692,6 +692,9 @@ class GeofieldGoogleMapFormatter extends FormatterBase implements ContainerFacto
       'data' => [],
     ];
 
+    // Get and set the Geofield cardinality.
+    $js_settings['map_settings']['geofield_cardinality'] = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
+
     $description = [];
     $description_field = isset($map_settings['map_marker_and_infowindow']['infowindow_field']) ? $map_settings['map_marker_and_infowindow']['infowindow_field'] : NULL;
     /* @var \Drupal\Core\Field\FieldItemList $description_field_entity */
@@ -723,7 +726,7 @@ class GeofieldGoogleMapFormatter extends FormatterBase implements ContainerFacto
       $tooltip = $entity->label();
     }
 
-    $geojson_data = $this->getGeoJsonData($items, $description, $tooltip);
+    $geojson_data = $this->getGeoJsonData($items, $entity->id(), $description, $tooltip);
 
     // Add Custom Icon File, if set.
     if (isset($map_settings['map_marker_and_infowindow']['icon_image_mode'])

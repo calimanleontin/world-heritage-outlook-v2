@@ -245,6 +245,8 @@ trait GeofieldMapFieldTrait {
    *
    * @param mixed $items
    *   The Geofield Data Values.
+   * @param int $entity_id
+   *   The Entity Id.
    * @param string $description
    *   The description value.
    * @param string $tooltip
@@ -257,7 +259,7 @@ trait GeofieldMapFieldTrait {
    *   The data array for the current feature, including Geojson and additional
    *   data.
    */
-  protected function getGeoJsonData($items, $description = NULL, $tooltip = NULL, array $additional_data = NULL) {
+  protected function getGeoJsonData($items, $entity_id, $description = NULL, $tooltip = NULL, array $additional_data = NULL) {
     $data = [];
     foreach ($items as $delta => $item) {
 
@@ -279,6 +281,7 @@ trait GeofieldMapFieldTrait {
           'description' => isset($description[$delta]) ? $description[$delta] : (isset($description[0]) ? $description[0] : NULL),
           'tooltip' => $tooltip,
           'data' => $additional_data,
+          'entity_id' => $entity_id,
         ];
 
         $data[] = $datum;
@@ -373,7 +376,7 @@ trait GeofieldMapFieldTrait {
     $elements['map_empty'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Which behaviour for the empty map?'),
-      '#description' => $this->t('If there are no entries on the map, what should be the output of field?'),
+      '#description' => $this->t('If there are no entries on the map, what should be the output?'),
     ];
 
     if (isset($this->fieldDefinition)) {
@@ -677,7 +680,7 @@ trait GeofieldMapFieldTrait {
       '#size' => '120',
       '#description' => $this->t('Input the Specific Icon Image path (absolute path, or relative to the Drupal site root prefixed with a trailing hash). If not set, or not found/loadable, the Default Google Marker will be used.'),
       '#default_value' => $settings['map_marker_and_infowindow']['icon_image_path'],
-      '#placeholder' => 'modules/custom/geofield_map/images/beachflag.png',
+      '#placeholder' => 'modules/contrib/geofield_map/images/beachflag.png',
       '#element_validate' => [[get_class($this), 'urlValidate']],
       '#weight' => -10,
     ];

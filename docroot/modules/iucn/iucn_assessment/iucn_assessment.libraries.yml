@@ -2,7 +2,6 @@ iucn_assessment.row_paragraph:
   version: VERSION
   js:
     js/row_paragraph_widget.js: {}
-    js/paragraph_comments.js: {}
 
 iucn_assessment.option_buttons:
   version: VERSION
@@ -34,3 +33,8 @@ iucn_assessment.paragraph_diff:
   version: 1.x
   js:
     js/paragraph_diff.js: {}
+
+iucn_assessment.chrome_alert:
+  version: 1.x
+  js:
+    js/chrome_alert.js: {}
