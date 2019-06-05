@@ -16,7 +16,9 @@
       }
       // Chrome shows own text for beforeunload 'Changes you made may not be saved.'
       window.addEventListener("beforeunload", function (e) {
-        if ($("form.node-form").data("changed")) {
+        var submitButtonClicked = (e.target.activeElement.type === "submit");
+        var formIsModified = $("form.node-form").data("changed");
+        if (formIsModified && !submitButtonClicked) {
           // Cancel the event
           e.preventDefault();
           // Chrome requires returnValue to be set
@@ -24,6 +26,11 @@
         }
         // Do something
       }, false);
+
+      $(document).on("submit", "form", function(event){
+        // disable unload warning
+        $(window).off('beforeunload');
+      });
     },
     detach: function(context, settings) {
       var $context = $(context);
