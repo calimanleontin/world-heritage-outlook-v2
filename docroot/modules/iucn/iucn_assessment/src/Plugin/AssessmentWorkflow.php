@@ -140,7 +140,7 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
         case self::STATUS_REVIEWING_REFERENCES:
-          $access = AccessResult::allowedIf($accountIsReferencesReviewer);
+          $access = AccessResult::allowedIf($accountIsReferencesReviewer || ($accountIsCoordinator && empty($node->field_references_reviewer->target_id)));
           break;
 
         case self::STATUS_UNDER_ASSESSMENT:
