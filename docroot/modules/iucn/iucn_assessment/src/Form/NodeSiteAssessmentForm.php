@@ -7,7 +7,6 @@ use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -19,6 +18,19 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 class NodeSiteAssessmentForm {
 
   use AssessmentEntityFormTrait;
+
+  const PARAGRAPH_FIELDS = [
+    'field_as_benefits',
+    'field_as_key_cons',
+    'field_as_projects',
+    'field_as_projects_needs',
+    'field_as_protection',
+    'field_as_references_p',
+    'field_as_threats_current',
+    'field_as_threats_potential',
+    'field_as_values_bio',
+    'field_as_values_wh',
+  ];
 
   public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);
@@ -105,10 +117,8 @@ class NodeSiteAssessmentForm {
     self::addRedirectToAllActions($form);
 
     // On the values tab, only coordinators and above can edit the values.
+    self::hideParagraphsActions($form);//todo: leontin
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values') {
-        self::hideParagraphsActions($form);
-      }
       $form['title']['#disabled'] = TRUE;
       $form['langcode']['#disabled'] = TRUE;
       $form['field_as_start_date']['#access'] = FALSE;
@@ -485,10 +495,29 @@ class NodeSiteAssessmentForm {
    *   The form.
    */
   public static function hideParagraphsActions(array &$form) {
-    $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
-    foreach ($read_only_paragraph_fields as $field) {
-      if (!empty($form[$field]['widget'])) {
-        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+    $currentUser = \Drupal::currentUser();
+    foreach (static::PARAGRAPH_FIELDS as $field) {
+      if (empty($form[$field]['widget'])) {
+        continue;
+      }
+
+      $actions = [
+        'add more ',
+        'edit ',
+        'delete ',
+      ];
+
+      foreach ($actions as $action) {
+        $permission = $action . $field;
+        if ($currentUser->hasPermission($permission)) {
+          continue;
+        }
+
+        if (static::isPermissionException($field, trim($action), $currentUser->getRoles(true))) {
+          continue;
+        }
+
+        self::hideParagraphsActionFromWidget($form[$field]['widget'], trim($action));
       }
     }
   }
@@ -498,12 +527,33 @@ class NodeSiteAssessmentForm {
    *
    * @param array $widget
    *   The widget.
-   * @param bool $alter_colspan
-   *   Is the colspan of the table altered.
-   */
-  public static function hideParagraphsActionsFromWidget(array &$widget) {
-    $widget['add_more']['#access'] = FALSE;
+   * @param string $action
+   *   The action to hide
+   **/
+  public static function hideParagraphsActionFromWidget(array &$widget, $action) {
+    if ($action == 'add more') {
+      $widget['add_more']['#access'] = FALSE;
+    }
+
     foreach (Element::children($widget) as $child) {
+      unset($widget[$child]['top']['actions']['buttons'][$action]);
+    }
+
+    foreach (Element::children($widget) as $child) {
+      if (empty($widget[$child]['top']['actions']['buttons'])) {
+        continue;
+      }
+
+      foreach ($widget[$child]['top']['actions']['buttons'] as $button) {
+        if (!is_array($button)) {
+          continue;
+        }
+
+        if (!empty($button['#access'])) {
+          continue 2;
+        }
+      }
+
       unset($widget[$child]['top']['actions']);
       unset($widget[$child]['top']['summary']['actions']);
     }
@@ -515,6 +565,7 @@ class NodeSiteAssessmentForm {
     if (empty($diff)) {
       return;
     }
+
     foreach ($form as $field => &$form_item) {
       if (!self::isFieldWithDiff($node, $field, $diff)) {
         continue;
@@ -573,12 +624,24 @@ class NodeSiteAssessmentForm {
     ];
   }
 
-
   public static function changeTabLabel(&$tab) {
     if (in_array('reviewer', \Drupal::currentUser()->getRoles())) {
       if (!empty($tab['#link']['title'])) {
         $tab['#link']['title'] = t('Submit review');
       }
     }
+  }
+
+  private static function isPermissionException($field, $action, array $roles) {
+    switch ([$field, $action, TRUE]) {
+      case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
+      case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
+        if (\Drupal::request()->query->get('tab') == 'assessing-values') {
+          return true;
+        }
+      break;
+    }
+
+    return false;
   }
 }
