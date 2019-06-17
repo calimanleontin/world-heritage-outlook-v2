@@ -38,3 +38,8 @@ iucn_assessment.chrome_alert:
   version: 1.x
   js:
     js/chrome_alert.js: {}
+
+iucn_assessment.unsaved_warning:
+  version: 1.x
+  js:
+    js/unsaved_warning.js: {}

@@ -380,6 +380,7 @@ class NodeSiteAssessmentForm {
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -437,7 +438,7 @@ class NodeSiteAssessmentForm {
 
     $settings = json_decode($node->field_settings->value, TRUE);
 
-    if (!empty($comment = trim($values['comments']))) {
+    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
       $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
     }
 
