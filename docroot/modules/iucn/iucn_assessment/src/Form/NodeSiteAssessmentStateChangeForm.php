@@ -46,6 +46,18 @@ class NodeSiteAssessmentStateChangeForm {
     }
     self::hideUnnecessaryFields($form);
 
+    $form['actions']['workflow_force_finish_review'] = [
+      '#type' => 'submit',
+      '#value' => t('Force finish reviewing'),
+      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
+      '#weight' => 100,
+      '#name' => 'force_finish_review',
+      '#attributes' => [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the reviewing phase? Reviewers will no longer be able to edit this assessment.")){return false;}',
+      ],
+    ];
+
     // We want to replace the core submitForm method so the node won't get saved
     // twice.
     $form['#submit'] = [[self::class, 'submitForm']];
@@ -431,21 +443,40 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      // Handle reviewers revisions.
-      $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
-        ? $workflowService->getReviewersArray($original)
-        : [];
-      $newReviewers = $workflowService->getReviewersArray($node);
+      $removedReviewers = $addedReviewers = [];
 
-      $addedReviewers = array_diff($newReviewers, $originalReviewers);
-      $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      if (!empty($form_state->getValue('force_finish_review'))) {
+        $underReviewRevisions = $workflowService->getAllReviewersRevisions($node);
+        /** @var NodeInterface $revision */
+        foreach ($underReviewRevisions as $revision) {
+          if ($revision->get('field_state')->value != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+            continue;
+          }
+
+          $removedReviewers[] = $revision->getRevisionUserId();
+        }
+      }
+      else {
+        // Handle reviewers revisions.
+        $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
+          ? $workflowService->getReviewersArray($original)
+          : [];
+        $newReviewers = $workflowService->getReviewersArray($node);
+
+        $addedReviewers = array_diff($newReviewers, $originalReviewers);
+        $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      }
 
       if (!empty($addedReviewers)) {
         // Create a revision for each newly added reviewer.
         foreach ($addedReviewers as $reviewerId) {
-          if (empty($workflowService->getReviewerRevision($node, $reviewerId))) {
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          if (empty($reviewerRevision)) {
             $message = "Revision created for reviewer {$reviewerId}";
             $workflowService->createRevision($node, $newState, $reviewerId, $message);
+          } else {
+            $reviewerRevision->set('field_state', AssessmentWorkflow::STATUS_UNDER_REVIEW);
+            $reviewerRevision->save();
           }
         }
       }
@@ -453,7 +484,10 @@ class NodeSiteAssessmentStateChangeForm {
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
         foreach ($removedReviewers as $reviewerId) {
-          $workflowService->deleteReviewerRevisions($node, $reviewerId);
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          $readyForReviewRevision = $workflowService->getRevisionByState($reviewerRevision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+          $workflowService->markRevisionAsFinished($node, $reviewerRevision, $readyForReviewRevision);
         }
       }
 
@@ -471,7 +505,9 @@ class NodeSiteAssessmentStateChangeForm {
 
     $default = $node->isDefaultRevision();
     $settingsWithDifferences = $node->field_settings->value;
-    $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    if ($oldState != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    }
 
     switch ($oldState . '>' . $newState) {
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
@@ -484,21 +520,14 @@ class NodeSiteAssessmentStateChangeForm {
         break;
 
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        if (!empty($removedReviewers)) {
+          break;
+        }
+
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+        $workflowService->markRevisionAsFinished($defaultUnderReviewRevision, $node, $readyForReviewRevision);
 
-        // Save the differences on the revision "under review" revision.
-        $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
-        $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
-        $defaultUnderReviewRevision->setNewRevision(FALSE);
-        $defaultUnderReviewRevision->save();
-
-        if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
-          // If all other reviewers finished their work, send the assessment
-          // back to the coordinator.
-          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
-        }
-        $node->setRevisionLogMessage("{$oldState} => {$newState}");
         $createNewRevision = FALSE;
         break;
 
@@ -517,12 +546,15 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    if ($createNewRevision === TRUE) {
-      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
-    }
-    else {
-      $workflowService->forceAssessmentState($node, $newState);
-      $entity = $node;
+    $entity = $node;
+    if (empty($removedReviewers)) {
+      if ($createNewRevision === TRUE) {
+        $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
+      }
+      else {
+        $workflowService->forceAssessmentState($node, $newState);
+        $entity = $node;
+      }
     }
 
     $nodeForm->setEntity($entity);

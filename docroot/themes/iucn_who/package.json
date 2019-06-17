@@ -4,7 +4,7 @@
   "devDependencies": {
     "autoprefixer": "^9.2.0",
     "flexibility": "^2.0.1",
-    "grunt": "^1.0.3",
+    "grunt": "^1.0.4",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^3.0.0",
@@ -18,7 +18,8 @@
     "postcss-flexibility": "^2.0.0",
     "postcss-rtl": "^1.3.2",
     "rtlcss": "^2.2.1",
-    "simplebar": "^2.6.1"
+    "simplebar": "^2.6.1",
+    "extend": ">=3.0.2"
   },
   "scripts": {
     "theme:watch": "grunt",

@@ -126,6 +126,7 @@ permissions:
   - 'reorder field_as_threats_potential'
   - 'reorder field_as_values_bio'
   - 'reorder field_as_values_wh'
+  - 'force finish reviewing'
   - 'revert all revisions'
   - 'search content'
   - 'translate any entity'
