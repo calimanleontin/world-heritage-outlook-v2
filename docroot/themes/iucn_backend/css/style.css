@@ -57,6 +57,7 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
   position: relative;
   padding-right: 60px;
+  background-color: #fcf8e3 !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
 .node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
