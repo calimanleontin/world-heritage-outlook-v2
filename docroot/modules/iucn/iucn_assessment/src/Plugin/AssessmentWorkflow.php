@@ -3,11 +3,13 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\workflow\Entity\WorkflowManager;
@@ -450,21 +452,6 @@ class AssessmentWorkflow {
   }
 
   /**
-   * Deletes the revision created for a reviewer.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   * @param int $uid
-   *   The user id of the reviewer.
-   */
-  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
-    $reviewer_revision = $this->getReviewerRevision($node, $uid);
-    if (!empty($reviewer_revision)) {
-      $this->nodeStorage->deleteRevision($reviewer_revision->getRevisionId());
-    }
-  }
-
-  /**
    * Retrieves the revision created for a reviewer.
    *
    * All the reviewer revisions have their revision user id set
@@ -696,4 +683,32 @@ class AssessmentWorkflow {
     }
   }
 
+  /**
+   * @param NodeInterface $defaultUnderReviewRevision
+   * @param NodeInterface $reviewerRevision
+   * @param NodeInterface $readyForReviewRevision
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   */
+  public function markRevisionAsFinished(NodeInterface $defaultUnderReviewRevision, NodeInterface $reviewerRevision, NodeInterface $readyForReviewRevision) {
+    $oldState = AssessmentWorkflow::STATUS_UNDER_REVIEW;
+    $newState = AssessmentWorkflow::STATUS_FINISHED_REVIEWING;
+
+    // Save the differences on the revision "under review" revision.
+    $this->appendCommentsToFieldSettings($defaultUnderReviewRevision, $reviewerRevision);
+    $this->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $reviewerRevision->getRevisionId());
+    $defaultUnderReviewRevision->setNewRevision(FALSE);
+    $defaultUnderReviewRevision->save();
+
+    if ($this->isAssessmentReviewed($defaultUnderReviewRevision, $reviewerRevision->getRevisionId())) {
+      // If all other reviewers finished their work, send the assessment
+      // back to the coordinator.
+      $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
+    }
+
+    $reviewerRevision->setRevisionLogMessage("{$oldState} => {$newState}");
+
+    $this->forceAssessmentState($reviewerRevision, $newState);
+  }
 }

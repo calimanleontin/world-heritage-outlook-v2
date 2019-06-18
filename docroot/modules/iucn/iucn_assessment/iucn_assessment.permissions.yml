@@ -150,3 +150,6 @@ delete field field_as_values_wh:
 
 reorder field field_as_values_wh:
   title: 'Reorder field field_as_values_wh'
+
+force finish reviewing:
+  title: 'Force finish reviewing'

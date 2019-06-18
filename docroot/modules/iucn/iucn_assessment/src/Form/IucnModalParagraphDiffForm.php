@@ -85,6 +85,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
       if ($revision === NULL) {
         $row = ['author' => $row['author'], 'deleted' => $this->t('This row has been deleted')];
+        $this->fieldWithDifferences = array_merge($this->fieldWithDifferences, array_keys($this->paragraphFormComponents));
       }
       else {
         foreach ($this->paragraphFormComponents as $fieldName => $widgetSettings) {

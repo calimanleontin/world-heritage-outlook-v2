@@ -60,6 +60,7 @@ permissions:
   - 'reorder field_as_threats_potential'
   - 'reorder field_as_values_bio'
   - 'reorder field_as_values_wh'
+  - 'force finish reviewing'
   - 'use assessment transition approved_approved'
   - 'use assessment transition new_new'
   - 'use assessment transition new_under_assessment'
