@@ -117,7 +117,7 @@ class NodeSiteAssessmentForm {
     self::addRedirectToAllActions($form);
 
     // On the values tab, only coordinators and above can edit the values.
-    self::hideParagraphsActions($form);//todo: leontin
+    self::hideParagraphsActions($form);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       $form['title']['#disabled'] = TRUE;
       $form['langcode']['#disabled'] = TRUE;
