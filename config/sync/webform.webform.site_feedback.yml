@@ -1,12 +1,8 @@
-uuid: dada4a82-77c6-4929-988f-b3a7b9bc3e77
 langcode: en
 status: open
 dependencies:
   module:
     - honeypot
-third_party_settings:
-  honeypot:
-    honeypot: true
 open: null
 close: null
 weight: 0
@@ -26,6 +22,7 @@ settings:
   page: true
   page_submit_path: /more/contact-us/site-feedback
   page_confirm_path: ''
+  form_title: both
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -33,6 +30,7 @@ settings:
   form_previous_submissions: false
   form_confidential: true
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -52,6 +50,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }
@@ -66,6 +65,9 @@ settings:
   submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -106,9 +108,11 @@ settings:
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: null
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: null
   entity_limit_total_interval: null
   entity_limit_user: null
@@ -161,6 +165,10 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
 handlers:
   email:
     id: email
@@ -197,3 +205,7 @@ handlers:
       sender_name: ''
       theme: ''
       theme_name: ''
+uuid: dada4a82-77c6-4929-988f-b3a7b9bc3e77
+third_party_settings:
+  honeypot:
+    honeypot: true

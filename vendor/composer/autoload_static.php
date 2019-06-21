@@ -9,7 +9,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
@@ -137,6 +136,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'E' => 
         array (
+            'Egulias\\EmailValidator\\' => 23,
             'EauDeWeb\\Robo\\Task\\Curl\\' => 24,
             'EauDeWeb\\' => 9,
         ),
@@ -154,6 +154,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             'DrupalCodeGenerator\\' => 20,
             'Dompdf\\' => 7,
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Inflector\\' => 26,
             'Doctrine\\Common\\Collections\\' => 28,
             'Doctrine\\Common\\Cache\\' => 22,
@@ -421,6 +422,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         array (
             0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
         ),
+        'Egulias\\EmailValidator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
+        ),
         'EauDeWeb\\Robo\\Task\\Curl\\' => 
         array (
             0 => __DIR__ . '/..' . '/eaudeweb/robo-curl/src',
@@ -476,6 +481,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Doctrine\\Common\\Lexer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
         ),
         'Doctrine\\Common\\Inflector\\' => 
         array (
@@ -612,13 +621,13 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
+            'PEAR' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/pear_exception',
+            ),
         ),
         'E' => 
         array (
-            'Egulias\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/egulias/email-validator/src',
-            ),
             'EasyRdf_' => 
             array (
                 0 => __DIR__ . '/..' . '/easyrdf/easyrdf/lib',
@@ -626,10 +635,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'D' => 
         array (
-            'Doctrine\\Common\\Lexer\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
-            ),
             'Dflydev\\PlaceholderResolver' => 
             array (
                 0 => __DIR__ . '/..' . '/dflydev/placeholder-resolver/src',
@@ -643,6 +648,24 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
                 0 => __DIR__ . '/..' . '/dflydev/dot-access-configuration/src',
             ),
         ),
+        'C' => 
+        array (
+            'Console' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/console_getopt',
+            ),
+        ),
+        'A' => 
+        array (
+            'Archive_Tar' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/archive_tar',
+            ),
+        ),
+    );
+
+    public static $fallbackDirsPsr0 = array (
+        0 => __DIR__ . '/..' . '/pear/pear-core-minimal/src',
     );
 
     public static $classMap = array (
@@ -1122,6 +1145,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             $loader->prefixLengthsPsr4 = ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be::$classMap;
 
         }, null, ClassLoader::class);

@@ -40,6 +40,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_text
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_date_published
     - node.type.site_assessment
   module:
@@ -903,6 +904,7 @@ hidden:
   field_as_start_date: true
   field_as_values_wh: true
   field_as_version: true
+  field_assessment_file: true
   field_date_published: true
   langcode: true
   links: true

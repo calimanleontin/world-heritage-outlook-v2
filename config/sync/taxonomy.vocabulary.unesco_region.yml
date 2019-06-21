@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'UNESCO Region'
 vid: unesco_region
 description: ''
-hierarchy: 0
 weight: 0
