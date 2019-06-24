@@ -76,10 +76,7 @@ class NodeSiteAssessmentStateChangeForm {
     // Hide the save button for every state except under_review.
     // When under review, the save button is useful
     // for adding/removing reviewers.
-    if (!$node->isDefaultRevision() || !in_array($state, [
-        AssessmentWorkflow::STATUS_UNDER_REVIEW,
-        AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
-      ])) {
+    if (!$node->isDefaultRevision() || $state != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
       $form['actions']['submit']['#access'] = FALSE;
       $form['actions']['workflow_' . $state]['#access'] = FALSE;
     }
@@ -111,11 +108,6 @@ class NodeSiteAssessmentStateChangeForm {
       && !self::assessmentHasNewReferences($node)) {
 
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
-    }
-
-    if ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES &&
-      $node->field_references_reviewer->target_id == $currentUser->id()) {
-      unset($form['field_references_reviewer']['widget']['#default_value']);
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
@@ -533,6 +525,11 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_FINISHED_REVIEWING . '>' . AssessmentWorkflow::STATUS_UNDER_COMPARISON:
         $node->set('field_settings', $settingsWithDifferences);
+        break;
+
+      case AssessmentWorkflow::STATUS_REVIEWING_REFERENCES . '>' . AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        $underComparisonRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_COMPARISON);
+        $workflowService->appendDiffToFieldSettings($node, $underComparisonRevision->getRevisionId(), $original->getRevisionId());
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:

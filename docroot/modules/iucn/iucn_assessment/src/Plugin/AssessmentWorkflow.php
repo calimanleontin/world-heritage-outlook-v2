@@ -47,6 +47,9 @@ class AssessmentWorkflow {
   /** Coordinator starts reviewing the references */
   const STATUS_REVIEWING_REFERENCES = 'assessment_reviewing_references';
 
+  /** Coordinator starts reviewing the references */
+  const STATUS_FINAL_CHANGES = 'assessment_final_changes';
+
   /** Coordinator has done the comparison and merge phase */
   const STATUS_APPROVED = 'assessment_approved';
 
@@ -138,11 +141,13 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_EVALUATION:
         case self::STATUS_READY_FOR_REVIEW:
         case self::STATUS_UNDER_COMPARISON:
+        case self::STATUS_FINAL_CHANGES:
           // Assessments can only be edited by their coordinator.
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
+
         case self::STATUS_REVIEWING_REFERENCES:
-          $access = AccessResult::allowedIf($accountIsReferencesReviewer || ($accountIsCoordinator && empty($node->field_references_reviewer->target_id)));
+          $access = AccessResult::allowedIf($accountIsReferencesReviewer);
           break;
 
         case self::STATUS_UNDER_ASSESSMENT:
