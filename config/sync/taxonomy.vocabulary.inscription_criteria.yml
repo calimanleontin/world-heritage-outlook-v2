@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Inscription criteria'
 vid: inscription_criteria
 description: ''
-hierarchy: 0
 weight: 0

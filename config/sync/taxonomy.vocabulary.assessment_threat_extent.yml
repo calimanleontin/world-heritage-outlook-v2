@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Assessment threat extent'
 vid: assessment_threat_extent
 description: 'The extent of which the threat is affecting the site'
-hierarchy: 0
 weight: 0
