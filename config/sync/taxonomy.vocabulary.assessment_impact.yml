@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Assessment impact'
 vid: assessment_impact
 description: 'Level of impact'
-hierarchy: 0
 weight: 0
