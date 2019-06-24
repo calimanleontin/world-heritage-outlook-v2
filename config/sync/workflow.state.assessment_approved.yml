@@ -8,5 +8,5 @@ id: assessment_approved
 label: Approved
 module: workflow
 wid: assessment
-weight: -1
+weight: 0
 sysid: 0

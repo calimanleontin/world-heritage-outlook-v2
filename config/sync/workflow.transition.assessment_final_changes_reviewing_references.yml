@@ -1,0 +1,20 @@
+uuid: 82302917-e40b-4e2c-80c8-9d4453cdd933
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_final_changes
+    - workflow.state.assessment_reviewing_references
+id: assessment_final_changes_reviewing_references
+label: null
+module: workflow
+from_sid: assessment_final_changes
+to_sid: assessment_reviewing_references
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'
