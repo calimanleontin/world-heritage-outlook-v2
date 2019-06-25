@@ -5,5 +5,4 @@ dependencies: {  }
 name: Designation
 vid: designation
 description: ''
-hierarchy: 0
 weight: 0

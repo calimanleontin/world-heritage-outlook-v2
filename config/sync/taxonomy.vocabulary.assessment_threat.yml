@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Assessment threat categories'
 vid: assessment_threat
 description: 'List of factors that are threatening the site'
-hierarchy: 0
 weight: 0

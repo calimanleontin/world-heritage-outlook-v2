@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Assessment benefits impact trend'
 vid: assessment_benefits_impact_trend
 description: 'Trend impact for a site benefit'
-hierarchy: 0
 weight: 0
