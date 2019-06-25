@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: coordinator
 label: Coordinator
-weight: -6
+weight: -8
 is_admin: null
 permissions:
   - 'access content overview'
@@ -50,6 +50,7 @@ permissions:
   - 'edit field_as_values_wh'
   - 'edit new assessments'
   - 'edit own site_assessment content'
+  - 'force finish reviewing'
   - 'reorder field_as_benefits'
   - 'reorder field_as_key_cons'
   - 'reorder field_as_projects'
@@ -60,7 +61,6 @@ permissions:
   - 'reorder field_as_threats_potential'
   - 'reorder field_as_values_bio'
   - 'reorder field_as_values_wh'
-  - 'force finish reviewing'
   - 'use assessment transition approved_approved'
   - 'use assessment transition new_new'
   - 'use assessment transition new_under_assessment'

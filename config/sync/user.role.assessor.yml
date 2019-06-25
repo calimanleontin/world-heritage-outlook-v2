@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: assessor
 label: Assessor
-weight: -5
+weight: -7
 is_admin: null
 permissions:
   - 'add more field_as_benefits'

@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: references_reviewer
 label: 'References reviewer'
-weight: 5
+weight: -5
 is_admin: null
 permissions:
   - 'add more field_as_references_p'
