@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.state.assessment_final_changes
 id: assessment_final_changes_final_changes
-label: null
+label: ''
 module: workflow
 from_sid: assessment_final_changes
 to_sid: assessment_final_changes

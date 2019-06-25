@@ -6,7 +6,7 @@ dependencies:
     - workflow.state.assessment_approved
     - workflow.state.assessment_final_changes
 id: assessment_final_changes_approved
-label: null
+label: ''
 module: workflow
 from_sid: assessment_final_changes
 to_sid: assessment_approved
