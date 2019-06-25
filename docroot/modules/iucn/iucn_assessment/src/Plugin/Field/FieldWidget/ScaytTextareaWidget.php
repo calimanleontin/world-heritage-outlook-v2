@@ -30,6 +30,7 @@ class ScaytTextareaWidget extends TextareaWidget {
     $main_widget['#after_build'][] = [$this, 'remove_textarea_help'];
 
     unset($main_widget['#base_type']);
+    $main_widget['#default_value'] = nl2br($main_widget['#default_value']);
 
     return $main_widget;
   }

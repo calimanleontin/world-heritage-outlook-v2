@@ -771,12 +771,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $value = $this->renderBooleanField($fieldItemList);
           break;
 
+        case 'string_long':
+          $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
+            'field_as_values_curr_text',
+            'field_as_description',
+          ]));
+          $value = nl2br($value);
+          break;
         case 'text_with_summary':
         case 'list_text':
         case 'text_long':
         case 'list_string':
         case 'string':
-        case 'string_long':
           $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
             'field_as_values_curr_text',
             'field_as_description',
