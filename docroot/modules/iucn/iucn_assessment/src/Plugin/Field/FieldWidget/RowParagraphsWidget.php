@@ -292,17 +292,29 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
+    return $this->getParagraphParentNodeRevision($paragraph)->getRevisionId() === $this->parentNode->getRevisionId();
+  }
+
+  /**
+   * Gets the node revision which holds the paragraph entity. The paragraph could
+   * have been created on a reviewer/assessor revision.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  protected function getParagraphParentNodeRevision(ParagraphInterface $paragraph) {
     if ($this->paragraphIsNew($paragraph)) {
-      // The paragraph has been already acceptedinto the actual revision.
-      return FALSE;
+      // The paragraph has been already accepted into the actual revision.
+      return $this->parentNode;
     }
     foreach ($this->diff as $vid => $diff) {
       $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
       if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
-        return TRUE;
+        return $comparedRevision;
       }
     }
-    return FALSE;
+    return $this->parentNode;
   }
 
   /**
@@ -382,7 +394,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
     $hasDifferences = $this->paragraphHasDifferences($paragraph);
     $isNew = $this->paragraphIsNew($paragraph);
-    $isCreatedOnOtherRevision = $this->paragraphIsCreatedOnOtherRevision($paragraph);
+    $paragraphParentNodeRevision = $this->getParagraphParentNodeRevision($paragraph);
+    $isCreatedOnOtherRevision = $paragraphParentNodeRevision->getRevisionId() !== $this->parentNode->getRevisionId();
     $isDeleted = $this->paragraphIsDeleted($paragraph);
 
     $element['top'] = [
@@ -391,7 +404,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     ];
     try {
       $element['top']['summary'] = $this->buildRow($paragraph);
-      $element['top']['actions'] = $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted);
+      $element['top']['actions'] = $this->buildRowActions($paragraph, $hasDifferences, $paragraphParentNodeRevision, $isDeleted);
     }
     catch (\Exception $e) {
       $element['top']['summary'] = ['error' => ['value' => [$this->t('There has been an error while generating this row.')]]];
@@ -941,15 +954,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    * @param $hasDifferences
-   * @param $isCreatedOnOtherRevision
+   * @param \Drupal\node\NodeInterface $paragraphParentNodeRevision
    * @param $isDeleted
    *
    * @return array
    */
-  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
+  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, NodeInterface $paragraphParentNodeRevision, $isDeleted) {
     if (empty($this->parentNode) || empty($paragraph->id())) {
       return [];
     }
+    $isCreatedOnOtherRevision = $paragraphParentNodeRevision->getRevisionId() !== $this->parentNode->getRevisionId();
     $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
     $routeAttributes = [
       'node' => $this->parentNode->id(),
@@ -972,7 +986,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ],
       ],
     ];
-    $paragraphAuthor = $paragraph->getRevisionAuthor();
+    $paragraphAuthor = $paragraphParentNodeRevision->getRevisionUser();
     $authorName = $paragraphAuthor instanceof AccountInterface
       ? $paragraphAuthor->getDisplayName()
       : '';
