@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_final_changes
-label: 'Final changes'
+label: 'Submit'
 module: workflow
 wid: assessment
 weight: -1

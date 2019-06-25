@@ -881,6 +881,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
         $operations['finish_reviewer_revision']['title'] = t('Submit review');
       }
     }
+
+    if ($currentUser->hasRole('references_reviewer')) {
+      if (!empty($operations['edit'])) {
+        $operations['edit']['title'] = t('Review');
+      }
+    }
   }
 }
 
