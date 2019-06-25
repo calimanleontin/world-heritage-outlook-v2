@@ -490,7 +490,7 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Hide all paragraphs actions on a form.
+   * Hide paragraphs actions based on user permissions.
    *
    * @param array $form
    *   The form.
