@@ -4,9 +4,7 @@ namespace Drupal\iucn_assessment;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -19,20 +17,13 @@ class AssessmentFieldsPermissions implements ContainerInjectionInterface {
    */
   protected $entityFieldManager;
 
-  /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  public function __construct(EntityFieldManagerInterface $entityFieldManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(EntityFieldManagerInterface $entityFieldManager) {
     $this->entityFieldManager = $entityFieldManager;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_field.manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_field.manager')
     );
   }
 
@@ -42,8 +33,6 @@ class AssessmentFieldsPermissions implements ContainerInjectionInterface {
    * @return array
    *   The assessment node fields permissions.
    *   @see \Drupal\user\PermissionHandlerInterface::getPermissions()
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getPermissions() {
     $permissions = [];
@@ -54,12 +43,6 @@ class AssessmentFieldsPermissions implements ContainerInjectionInterface {
       // We want permissions only for custom fields.
       return preg_match('/^field\_.+/', $field);
     }, ARRAY_FILTER_USE_KEY);
-
-    /** @var \Drupal\workflow\Entity\WorkflowState[] $states */
-    $states = $this->entityTypeManager->getStorage('workflow_state')->loadByProperties(['wid' => 'assessment']);
-    uasort($states, function (WorkflowState $a, WorkflowState $b){
-      return ($a->getWeight() < $b->getWeight()) ? -1 : 1;
-    });
 
     // $i is used to display the permissions grouped by field.
     $i = 1000;
