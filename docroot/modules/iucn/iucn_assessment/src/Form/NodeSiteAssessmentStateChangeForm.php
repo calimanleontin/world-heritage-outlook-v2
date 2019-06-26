@@ -567,12 +567,8 @@ class NodeSiteAssessmentStateChangeForm {
   }
 
   private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
-    if (in_array('reviewer', $currentUser->getRoles())) {
-      if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
-        $element = &$form['actions']['workflow_assessment_finished_reviewing'];
-
-        $element['#value'] = t('Submit review');
-      }
+    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
     }
   }
 }

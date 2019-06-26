@@ -6,7 +6,7 @@ dependencies:
     - workflow.state.assessment_final_changes
     - workflow.state.assessment_reviewing_references
 id: assessment_reviewing_references_final_changes
-label: ''
+label: Submit
 module: workflow
 from_sid: assessment_reviewing_references
 to_sid: assessment_final_changes
