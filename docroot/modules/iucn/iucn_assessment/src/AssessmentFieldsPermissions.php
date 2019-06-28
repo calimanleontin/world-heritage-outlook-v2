@@ -53,7 +53,7 @@ class AssessmentFieldsPermissions implements ContainerInjectionInterface {
         '%fieldId' => $fieldId,
       ];
 
-      $permissions["edit field {$fieldId}"] = [
+      $permissions["edit {$fieldId}"] = [
         'title' => $this->t("{$key} %fieldId - edit", $translationParameters),
         'description' => $this->t("Edit value(s) for %field", $translationParameters),
       ];
@@ -61,15 +61,18 @@ class AssessmentFieldsPermissions implements ContainerInjectionInterface {
       if ($field->getFieldStorageDefinition()->getCardinality() === 1) {
         continue;
       }
-      $permissions["add more field {$fieldId}"] = [
+
+      $permissions["add more {$fieldId}"] = [
         'title' => $this->t("{$key} %fieldId - add more", $translationParameters),
         'description' => $this->t("Add more values to %field", $translationParameters),
       ];
-      $permissions["delete field {$fieldId}"] = [
+
+      $permissions["delete {$fieldId}"] = [
         'title' => $this->t("{$key} %fieldId - delete", $translationParameters),
         'description' => $this->t("Delete values from %field", $translationParameters),
       ];
-      $permissions["reorder field {$fieldId}"] = [
+
+      $permissions["reorder {$fieldId}"] = [
         'title' => $this->t("{$key} %fieldId - reorder", $translationParameters),
         'description' => $this->t("Reorder values in %field", $translationParameters),
       ];

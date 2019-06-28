@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -116,8 +117,7 @@ class NodeSiteAssessmentForm {
     self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
-    // On the values tab, only coordinators and above can edit the values.
-    self::hideParagraphsActions($form);
+    self::hideParagraphsActions($form, $node);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       $form['title']['#disabled'] = TRUE;
       $form['langcode']['#disabled'] = TRUE;
@@ -490,35 +490,63 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Hide paragraphs actions based on user permissions.
+   * Hide paragraphs actions based on user permissions and field settings.
    *
    * @param array $form
+   * @param NodeInterface $siteAssessment
    *   The form.
    */
-  public static function hideParagraphsActions(array &$form) {
+  public static function hideParagraphsActions(array &$form, NodeInterface $siteAssessment) {
+    $state = $siteAssessment->get('field_state')->value;
+
+    /** @var \Drupal\Core\Session\AccountProxy $currentUser */
     $currentUser = \Drupal::currentUser();
-    foreach (static::PARAGRAPH_FIELDS as $field) {
+    /** @var \Drupal\Core\Entity\EntityFieldManager $entityFieldManager */
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fieldDefinitions */
+    $fieldDefinitions = $entityFieldManager->getFieldDefinitions('node', 'site_assessment');
+
+    $actions = ['add more', 'edit', 'delete',];
+
+    foreach ($fieldDefinitions as $field => $fieldDefinition) {
+      if (!$fieldDefinition instanceof ConfigEntityBase) {
+        continue;
+      }
+
       if (empty($form[$field]['widget'])) {
         continue;
       }
 
-      $actions = [
-        'add more ',
-        'edit ',
-        'delete ',
-      ];
+      $widget = &$form[$field]['widget'];
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+      $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
+      $disabledActions = [];
       foreach ($actions as $action) {
-        $permission = $action . $field;
+        if (!$editableField) {
+          $disabledActions[] = $action;
+          continue;
+        }
+
+        if ($cardinality == 1 and $action != 'edit') {
+          continue;
+        }
+
+        $permission = "$action $field";
         if ($currentUser->hasPermission($permission)) {
           continue;
         }
 
-        if (static::isPermissionException($field, trim($action), $currentUser->getRoles(true))) {
+        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE))) {
           continue;
         }
 
-        self::hideParagraphsActionFromWidget($form[$field]['widget'], trim($action));
+        $disabledActions[] = $action;
+      }
+
+      if ($disabledActions) {
+        static::hideParagraphsActionFromWidget($widget, $disabledActions);
       }
     }
   }
@@ -528,20 +556,32 @@ class NodeSiteAssessmentForm {
    *
    * @param array $widget
    *   The widget.
-   * @param string $action
+   * @param array $actions
    *   The action to hide
    **/
-  public static function hideParagraphsActionFromWidget(array &$widget, $action) {
-    if ($action == 'add more') {
-      $widget['add_more']['#access'] = FALSE;
-    }
+  public static function hideParagraphsActionFromWidget(array &$widget, array $actions) {
+    static::disableWidget($widget);
 
-    foreach (Element::children($widget) as $child) {
-      unset($widget[$child]['top']['actions']['buttons'][$action]);
+    foreach ($actions as $action) {
+      if ($action == 'add more') {
+        if (!empty($widget['add more'])) {
+          $widget['add more']['#access'] = FALSE;
+        }
+        if (!empty($widget['add_more'])) {
+          $widget['add_more']['#access'] = FALSE;
+        }
+      }
+
+      foreach (Element::children($widget) as $child) {
+        unset($widget[$child]['top']['actions']['buttons'][$action]);
+      }
     }
 
     foreach (Element::children($widget) as $child) {
       if (empty($widget[$child]['top']['actions']['buttons'])) {
+
+        unset($widget[$child]['top']['actions']);
+        unset($widget[$child]['top']['summary']['actions']);
         continue;
       }
 
@@ -557,6 +597,29 @@ class NodeSiteAssessmentForm {
 
       unset($widget[$child]['top']['actions']);
       unset($widget[$child]['top']['summary']['actions']);
+    }
+  }
+  /**
+   * Disable a widget.
+   *
+   * @param array $widget
+   *   The widget.
+   **/
+  public static function disableWidget(array &$widget) {
+    $disabledInputs = ['select', 'text_format', 'entity_autocomplete'];
+
+    if (!empty($widget['#type']) && in_array($widget['#type'], $disabledInputs)) {
+      $widget['#disabled'] = true;
+    }
+
+    foreach (Element::children($widget) as $child) {
+      if (!empty($widget[$child]['#type']) && in_array($widget[$child]['#type'], $disabledInputs)) {
+        $widget[$child]['#disabled'] = true;
+      }
+
+      if (!empty($widget[$child]['target_id']['#type']) && in_array($widget[$child]['target_id']['#type'], $disabledInputs)) {
+        $widget['#disabled'] = true;
+      }
     }
   }
 
