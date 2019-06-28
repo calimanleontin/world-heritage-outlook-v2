@@ -142,7 +142,6 @@ permissions:
   - 'reorder field_as_key_cons'
   - 'reorder field_as_projects'
   - 'reorder field_as_projects_needs'
-  - 'reorder field_as_protection'
   - 'reorder field_as_threats_current'
   - 'reorder field_as_threats_potential'
   - 'reorder field_as_values_bio'
