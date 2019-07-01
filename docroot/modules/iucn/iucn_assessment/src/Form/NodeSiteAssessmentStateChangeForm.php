@@ -103,6 +103,14 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_references_reviewer']['#access'] = FALSE;
     }
 
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      // If users have multiple roles, having these fields only hidden using #access
+      // property can break things, so we need to fully unset them.
+      if ($form[$field]['#access'] === FALSE) {
+        unset($form[$field]);
+      }
+    }
+
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $currentUser->id()
       && !self::assessmentHasNewReferences($node)) {
