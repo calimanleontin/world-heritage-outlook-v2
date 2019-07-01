@@ -65,8 +65,14 @@ function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
     if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
       && $field_entity->getSetting('handler') == 'default:paragraph') {
 
-      if (!\Drupal::currentUser()->hasPermission('reorder ' . $field_name)) {
-        _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+
+      $siteAssessment = \Drupal::routeMatch()->getParameter('node');
+      if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
+        $state = $siteAssessment->get('field_state')->value;
+        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+        if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
+          _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+        }
       }
 
       unset($variables['table']['#header'][1]);
