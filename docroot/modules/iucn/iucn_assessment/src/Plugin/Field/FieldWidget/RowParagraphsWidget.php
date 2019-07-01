@@ -449,6 +449,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $this->showDifferences = in_array($this->parentNode->field_state->value, [
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
       AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_FINAL_CHANGES,
     ]);
     $settings = json_decode($this->parentNode->field_settings->value, TRUE);
     $this->diff = !empty($settings['diff']) ? $settings['diff'] : [];
