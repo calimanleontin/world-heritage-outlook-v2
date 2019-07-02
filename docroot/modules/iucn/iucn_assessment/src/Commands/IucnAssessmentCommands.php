@@ -50,9 +50,18 @@ class IucnAssessmentCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager, AssessmentCycleCreator $assessmentCycleCreator) {
+    parent::__construct();
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->assessmentCycleCreator = $assessmentCycleCreator;
+  }
+
+  protected function getLatestFixedAssessmentStateKey($cycle = NULL) {
+    $key = static::LATEST_FIXED_ASSESSMENT_STATE_KEY;
+    if (!empty($cycle)) {
+      $key .= "_{$cycle}";
+    }
+    return $key;
   }
 
   /**
@@ -67,32 +76,30 @@ class IucnAssessmentCommands extends DrushCommands {
    * @throws \Exception
    */
   public function createAssessments($cycle, $originalCycle = 2017) {
-    $latestProcessed = \Drupal::state()->get(static::LATEST_FIXED_ASSESSMENT_STATE_KEY, 0);
-    if (empty($latestProcessed)) {
-      throw new \Exception("Please fix old assessments before creating the new cycle using: drush iucn_assessment:fix-old-assessments");
-    }
-    elseif (!empty($this->getAssessmentsInRange($latestProcessed, 50))) {
-      throw new \Exception("There are old assessments which have not been processed. Please run again: drush iucn_assessment:fix-old-assessments");
-    }
     $this->assessmentCycleCreator->createAssessments($cycle, $originalCycle);
+    $this->fixAssessments($cycle);
   }
 
   /**
    *  Delete all revisions for old assessments.
-   *  Set "Published" status to all existing assessments. Force workflow status
-   * for old assessments. Fix broken values references. Delete all protection
-   * management paragraphs with no values.
+   *  Set "Published" status to all existing assessments.
+   *  Force workflow status for old assessments.
+   *  Fix broken values references.
+   *  Delete all protection management paragraphs with no values.
    *
-   * @command iucn_assessment:fix-old-assessments
+   * @param null $cycle
+   *
+   * @command iucn_assessment:fix-assessments
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function fixOldAssessments() {
-    $latestProcessed = \Drupal::state()->get(static::LATEST_FIXED_ASSESSMENT_STATE_KEY, 0);
+  public function fixAssessments($cycle = NULL) {
+    $stateKey = $this->getLatestFixedAssessmentStateKey($cycle);
+    $latestProcessed = \Drupal::state()->get($stateKey, 0);
 
-    $nodesIds = $this->getAssessmentsInRange($latestProcessed, 50);
+    $nodesIds = $this->getAssessmentsInRange($latestProcessed, $cycle);
     while (!empty($nodesIds)) {
       $logger = \Drupal::logger('iucn_assessment');
       /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
@@ -105,7 +112,7 @@ class IucnAssessmentCommands extends DrushCommands {
       foreach ($nodesIds as $nid) {
         $node = Node::load($nid);
         $cycle = $node->field_as_cycle->value;
-        if ($cycle != 2020) {
+        if ((int) $cycle < 2020) {
           // Delete all revisions for old assessments.
           $defaultVid = $node->getRevisionId();
           $vids = $nodeStorage->revisionIds($node);
@@ -172,17 +179,20 @@ class IucnAssessmentCommands extends DrushCommands {
 
         $node->save();
 
-        \Drupal::state()->set(static::LATEST_FIXED_ASSESSMENT_STATE_KEY, ++$latestProcessed);
+        \Drupal::state()->set($stateKey, ++$latestProcessed);
       }
 
-      $nodesIds = $this->getAssessmentsInRange($latestProcessed, 50);
+      $nodesIds = $this->getAssessmentsInRange($latestProcessed, $cycle);
     }
   }
 
-  protected function getAssessmentsInRange($start, $length) {
-    return \Drupal::entityTypeManager()->getStorage('node')->getQuery()
-      ->condition('type', 'site_assessment')
-      ->sort('nid')
+  protected function getAssessmentsInRange($start, $cycle = NULL, $length = 50) {
+    $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
+      ->condition('type', 'site_assessment');
+    if (!empty($cycle)) {
+      $query->condition('field_as_cycle', $cycle);
+    }
+    return $query->sort('nid')
       ->range($start, $length)
       ->execute();
   }
