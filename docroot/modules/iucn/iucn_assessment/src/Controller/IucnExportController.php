@@ -72,7 +72,7 @@ class IucnExportController extends ControllerBase {
 
     }
 
-    $name = Html::getClass($node->getTitle());
+    $name = Html::getClass('assessment-' . $node->getTitle());
 
     header("Content-Disposition: attachment; filename=$name.docx");
     ob_end_clean();

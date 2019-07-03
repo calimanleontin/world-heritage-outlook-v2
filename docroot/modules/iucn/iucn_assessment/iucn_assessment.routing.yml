@@ -206,11 +206,13 @@ iucn_assessment.modal_paragraph_edit:
 iucn_assessment.node.word_export:
   path: 'node/{node}/word-export'
   defaults:
-    _title: 'Assign users'
+    _title: 'Export to Word'
     _controller: '\Drupal\iucn_assessment\Controller\IucnExportController::docExport'
   requirements:
     _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
   options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
     parameters:
       node:
         type: entity:node
