@@ -1,0 +1,360 @@
+uuid: eab3174a-c15c-4ebb-9539-d0c9655c3426
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.doc
+    - field.field.node.site_assessment.field_as_archived
+    - field.field.node.site_assessment.field_as_benefits
+    - field.field.node.site_assessment.field_as_benefits_summary
+    - field.field.node.site_assessment.field_as_cycle
+    - field.field.node.site_assessment.field_as_end_date
+    - field.field.node.site_assessment.field_as_global_assessment_level
+    - field.field.node.site_assessment.field_as_global_assessment_text
+    - field.field.node.site_assessment.field_as_key_cons
+    - field.field.node.site_assessment.field_as_projects
+    - field.field.node.site_assessment.field_as_projects_needs
+    - field.field.node.site_assessment.field_as_protection
+    - field.field.node.site_assessment.field_as_protection_ov_out_rate
+    - field.field.node.site_assessment.field_as_protection_ov_out_text
+    - field.field.node.site_assessment.field_as_protection_ov_practices
+    - field.field.node.site_assessment.field_as_protection_ov_rating
+    - field.field.node.site_assessment.field_as_protection_ov_text
+    - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
+    - field.field.node.site_assessment.field_as_site
+    - field.field.node.site_assessment.field_as_start_date
+    - field.field.node.site_assessment.field_as_threats_current
+    - field.field.node.site_assessment.field_as_threats_current_rating
+    - field.field.node.site_assessment.field_as_threats_current_text
+    - field.field.node.site_assessment.field_as_threats_potent_rating
+    - field.field.node.site_assessment.field_as_threats_potent_text
+    - field.field.node.site_assessment.field_as_threats_potential
+    - field.field.node.site_assessment.field_as_threats_rating
+    - field.field.node.site_assessment.field_as_threats_text
+    - field.field.node.site_assessment.field_as_values_bio
+    - field.field.node.site_assessment.field_as_values_wh
+    - field.field.node.site_assessment.field_as_vass_bio_state
+    - field.field.node.site_assessment.field_as_vass_bio_text
+    - field.field.node.site_assessment.field_as_vass_bio_trend
+    - field.field.node.site_assessment.field_as_vass_wh_state
+    - field.field.node.site_assessment.field_as_vass_wh_text
+    - field.field.node.site_assessment.field_as_vass_wh_trend
+    - field.field.node.site_assessment.field_as_version
+    - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_assessor
+    - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_settings
+    - field.field.node.site_assessment.field_state
+    - node.type.site_assessment
+  module:
+    - datetime
+    - entity_reference_revisions
+    - file
+    - options
+    - user
+id: node.site_assessment.doc
+targetEntityType: node
+bundle: site_assessment
+mode: doc
+content:
+  field_as_benefits:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_benefits_summary:
+    type: basic_string
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_cycle:
+    type: list_default
+    weight: 34
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_end_date:
+    weight: 30
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'd M Y'
+    third_party_settings: {  }
+    type: datetime_custom
+    region: content
+  field_as_global_assessment_level:
+    weight: 31
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_as_global_assessment_text:
+    weight: 11
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_key_cons:
+    type: entity_reference_revisions_entity_view
+    weight: 19
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_projects:
+    type: entity_reference_revisions_entity_view
+    weight: 18
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_projects_needs:
+    type: entity_reference_revisions_entity_view
+    weight: 20
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_protection:
+    type: entity_reference_revisions_entity_view
+    weight: 25
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_protection_ov_out_rate:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_protection_ov_out_text:
+    type: basic_string
+    weight: 8
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_protection_ov_practices:
+    type: basic_string
+    weight: 28
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_protection_ov_rating:
+    type: entity_reference_label
+    weight: 9
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_protection_ov_text:
+    type: basic_string
+    weight: 15
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_references_p:
+    type: entity_reference_revisions_entity_view
+    weight: 29
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_as_threats_current:
+    type: entity_reference_revisions_entity_view
+    weight: 16
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_threats_current_rating:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_current_text:
+    type: basic_string
+    weight: 12
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_potent_rating:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_potent_text:
+    type: basic_string
+    weight: 6
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_potential:
+    type: entity_reference_revisions_entity_view
+    weight: 13
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_threats_rating:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_text:
+    type: basic_string
+    weight: 10
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_bio:
+    type: entity_reference_revisions_entity_view
+    weight: 14
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_values_wh:
+    type: entity_reference_revisions_entity_view
+    weight: 33
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_as_vass_bio_state:
+    type: entity_reference_label
+    weight: 22
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_bio_text:
+    type: basic_string
+    weight: 26
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_vass_bio_trend:
+    type: entity_reference_label
+    weight: 24
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_wh_state:
+    type: entity_reference_label
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_vass_wh_text:
+    type: basic_string
+    weight: 17
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_vass_wh_trend:
+    type: entity_reference_label
+    weight: 27
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_assessment_file:
+    weight: 21
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_date_published:
+    type: datetime_default
+    weight: 32
+    region: content
+    label: hidden
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  field_state:
+    weight: 23
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_as_archived: true
+  field_as_references: true
+  field_as_site: true
+  field_as_start_date: true
+  field_as_version: true
+  field_assessor: true
+  field_coordinator: true
+  field_reviewers: true
+  field_settings: true
+  langcode: true
+  links: true
+  site_assessments_link: true
+  site_assessments_rating: true
