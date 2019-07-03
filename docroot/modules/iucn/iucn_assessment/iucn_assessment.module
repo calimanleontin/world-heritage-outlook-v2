@@ -844,6 +844,14 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         'weight' => 90,
       ];
     }
+
+    $operations['word_export'] = [
+      'title' => t('Word export'),
+      'url' => Url::fromRoute('iucn_assessment.node.word_export', [
+        'node' => $entity->id(),
+      ]),
+      'weight' => 10,
+    ];
   }
   elseif ($entity->getEntityTypeId() == 'user') {
     $operations['assign'] = [
