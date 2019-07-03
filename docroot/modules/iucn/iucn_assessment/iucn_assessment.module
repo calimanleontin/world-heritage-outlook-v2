@@ -998,8 +998,29 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
       $value['editorSettings']['pasteFromWordPromptCleanup'] = false;
       $value['editorSettings']['forcePasteAsPlainText'] = true;
       $value['editorSettings']['enterMode'] = 2;
-      if (!empty(\Drupal::request()->cookies->get('scayt_sLang'))) {
-        $value['editorSettings']['scayt_sLang'] = \Drupal::request()->cookies->get('scayt_sLang');
+      $node = \Drupal::request()->get('node');
+      if (is_numeric($node)) {
+        $node = Node::load($node);
+      }
+      $languageMapping = [
+        'en' => 'en_US',
+        'fr' => 'fr_FR',
+        'es' => 'es_ES',
+      ];
+
+      $language = null;
+      if ($node instanceof NodeInterface && $node->bundle() == 'site_assessment') {
+        if (!empty($languageMapping[$node->get('langcode')->value]))
+        $language = $languageMapping[$node->get('langcode')->value];
+      }
+
+      if (empty($language)) {
+        $language = \Drupal::request()->cookies->get('scayt_sLang');
+      }
+
+      if (!empty($language)) {
+        \Drupal::request()->cookies->set('scayt_sLang', $language);
+        $value['editorSettings']['scayt_sLang'] = $language;
         $value['editorSettings']['scayt_disableOptionsStorage'] = 'lang';
       }
     }
