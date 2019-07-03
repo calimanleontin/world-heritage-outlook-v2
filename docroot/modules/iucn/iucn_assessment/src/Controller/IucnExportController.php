@@ -2,14 +2,45 @@
 
 namespace Drupal\iucn_assessment\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
-use HTMLtoOpenXML\Parser;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IucnExportController extends ControllerBase {
+
+  /**
+   * @var array
+   *
+   * The builds for parsed entities.
+   */
+  protected $entityDisplays;
+
+  /**
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(RendererInterface $renderer) {
+    $this->entityTypeManager = $this->entityTypeManager();
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer')
+    );
+  }
 
   /**
    * Export the assessment as a DOC file.
@@ -31,7 +62,7 @@ class IucnExportController extends ControllerBase {
       $firstParagraphField = reset($arrayKeys);
       $templateDocument->cloneRow($firstParagraphField, count($paragraphFieldList));
 
-      if ($firstParagraphField == 'field_as_values_wh.index') {
+      if ($firstParagraphField == 'field_as_values_wh.index' || $firstParagraphField == 'field_as_values_bio.index') {
         $templateDocument->cloneRow($firstParagraphField, count($paragraphFieldList));
       }
 
@@ -41,25 +72,70 @@ class IucnExportController extends ControllerBase {
 
     }
 
-    $templateDocument->saveAs('/home/stefan/work/iucn/docroot/sites/default/files/template-res.docx');
-    return ['#markup' => 'xd', '#cache' => ['max-age' => 0]];
+    $name = Html::getClass($node->getTitle());
+
+    header("Content-Disposition: attachment; filename=$name.docx");
+    ob_end_clean();
+    $templateDocument->saveAs('php://output');
+
+    exit(1);
   }
 
   protected function getFieldValue(FieldableEntityInterface $entity, $field) {
-    $fieldRender = $entity->get($field)->view(['label' => 'hidden']);
-    $fieldRender = \Drupal::service('renderer')->render($fieldRender);
-    $fieldRender = $this->stripTagsContent($fieldRender, '<button>', TRUE);
-    return strip_tags($fieldRender);
+    /** @var \Drupal\Core\Entity\EntityViewBuilder $viewBuilder */
+    $viewBuilder = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
+
+    if (empty($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()])) {
+      $this->entityDisplays[$entity->getEntityTypeId()][$entity->id()] = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
+    }
+
+    if (empty($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field])
+      && empty($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()]['#fieldgroups'][$field])) {
+      return '';
+    }
+
+    if (strpos($field, "group_") === 0) {
+      $children = $this->entityDisplays[$entity->getEntityTypeId()][$entity->id()]['#fieldgroups'][$field]->children;
+      $childrenRender = [];
+      foreach ($children as $child) {
+        $childRender = $this->renderer->render($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$child]);
+        if (is_object($childRender)) {
+          $childRender = $childRender->__toString();
+        }
+
+        $childRender = $this->stripValue($childRender);
+        if (empty($childRender)) {
+          continue;
+        }
+
+        $childrenRender[] = $childRender;
+      }
+      $fieldRender = implode(', ', $childrenRender);
+    }
+    else {
+      $fieldRender = $this->renderer->render($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field]);
+      if (is_object($fieldRender)) {
+        $childRender = $fieldRender->__toString();
+      }
+      $fieldRender = $this->stripValue($fieldRender);
+    }
+
+    return $fieldRender;
+  }
+
+  protected function stripValue($value) {
+    $value = $this->stripTagsContent($value, '<button>', TRUE);
+    return trim(strip_tags($value));
   }
 
   protected function writeParagraphToTemplate(TemplateProcessor $templateProcessor, ParagraphInterface $paragraph, $fields, $index) {
     foreach ($fields as $templateVariable => $field) {
-      if (!$paragraph->hasField($field)) {
+      if ($field == 'index') {
+        $templateProcessor->setValue("$templateVariable#$index", $index);
         continue;
       }
 
       $templateProcessor->setValue("$templateVariable#$index", $this->getFieldValue($paragraph, $field), 2);
-//      $templateProcessor->replaceBlock()
     }
   }
 
