@@ -250,6 +250,7 @@
   border: 1px solid #e6e4df;
   padding: 0 5px;
   border-radius: 5px;
+  float: right;
 }
 .node-site-assessment-edit-form .layout-region,
 .node-site-assessment-form .layout-region,

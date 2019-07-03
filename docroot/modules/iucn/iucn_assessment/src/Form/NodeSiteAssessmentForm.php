@@ -7,7 +7,6 @@ use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -134,17 +133,7 @@ class NodeSiteAssessmentForm {
           '#type' => 'container',
           '#attributes' => ['class' => ['main-data-container']],
           '#weight' => -999,
-          'data' => [
-            '#type' => 'container',
-            '#attributes' => ['class' => ['data-fields']],
-            'title' => $form['title'],
-            'langcode' => $form['langcode'],
-            'field_assessment_file' => $form['field_assessment_file'],
-          ],
         ];
-        unset($form['title']);
-        unset($form['langcode']);
-        unset($form['field_assessment_file']);
       }
 
       $blockContent = BlockContent::load(8);
