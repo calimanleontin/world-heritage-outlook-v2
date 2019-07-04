@@ -59,7 +59,7 @@ class AssessmentCycleCreator {
     if (!array_key_exists($cycle, $this->availableCycles) || !array_key_exists($originalCycle, $this->availableCycles)) {
       throw new \InvalidArgumentException('Invalid cycle parameter. Available cycles: ' . implode(', ', array_keys($this->availableCycles)));
     }
-    $createdCycles = $this->state->get(self::CREATED_CYCLES_STATE);
+    $createdCycles = $this->state->get(self::CREATED_CYCLES_STATE, []);
     if (!in_array($originalCycle, $createdCycles)) {
       throw new \Exception('Original cycle assessments are not created.');
     }
