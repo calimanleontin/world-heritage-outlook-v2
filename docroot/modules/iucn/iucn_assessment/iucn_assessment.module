@@ -1018,16 +1018,10 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
         'es' => 'es_ES',
       ];
 
-      $language = null;
-      if ($node instanceof NodeInterface && $node->bundle() == 'site_assessment') {
-        if (!empty($languageMapping[$node->get('langcode')->value]))
+      $language = \Drupal::request()->cookies->get('scayt_sLang');
+      if ($node instanceof NodeInterface && $node->bundle() == 'site_assessment' && !empty($languageMapping[$node->get('langcode')->value])) {
         $language = $languageMapping[$node->get('langcode')->value];
       }
-
-      if (empty($language)) {
-        $language = \Drupal::request()->cookies->get('scayt_sLang');
-      }
-
       if (!empty($language)) {
         \Drupal::request()->cookies->set('scayt_sLang', $language);
         $value['editorSettings']['scayt_sLang'] = $language;
