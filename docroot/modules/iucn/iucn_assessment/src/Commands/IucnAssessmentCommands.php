@@ -38,8 +38,6 @@ class IucnAssessmentCommands extends DrushCommands {
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator */
   protected $assessmentCycleCreator;
 
-  const LATEST_FIXED_ASSESSMENT_STATE_KEY = 'fix_old_assessments_latest_processed_node';
-
   /**
    * IucnAssessmentCommands constructor.
    *
@@ -54,14 +52,6 @@ class IucnAssessmentCommands extends DrushCommands {
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->assessmentCycleCreator = $assessmentCycleCreator;
-  }
-
-  protected function getLatestFixedAssessmentStateKey($cycle = NULL) {
-    $key = static::LATEST_FIXED_ASSESSMENT_STATE_KEY;
-    if (!empty($cycle)) {
-      $key .= "_{$cycle}";
-    }
-    return $key;
   }
 
   /**
@@ -96,10 +86,7 @@ class IucnAssessmentCommands extends DrushCommands {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function fixAssessments($cycle = NULL) {
-    $stateKey = $this->getLatestFixedAssessmentStateKey($cycle);
-    $latestProcessed = \Drupal::state()->get($stateKey, 0);
-
-    $nodesIds = $this->getAssessmentsInRange($latestProcessed, $cycle);
+    $nodesIds = $this->getAssessmentsInRange($cycle);
     while (!empty($nodesIds)) {
       $logger = \Drupal::logger('iucn_assessment');
       /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
@@ -177,18 +164,21 @@ class IucnAssessmentCommands extends DrushCommands {
         // Migrate references from text field to paragraph.
         $this->assessmentMigrateReferences($node, $logger);
 
+        $node->set('field_programmatically_fixed', TRUE);
         $node->save();
-
-        \Drupal::state()->set($stateKey, ++$latestProcessed);
       }
 
-      $nodesIds = $this->getAssessmentsInRange($latestProcessed, $cycle);
+      $nodesIds = $this->getAssessmentsInRange($cycle);
     }
   }
 
-  protected function getAssessmentsInRange($start, $cycle = NULL, $length = 50) {
+  protected function getAssessmentsInRange($cycle = NULL, $start = NULL, $length = 50) {
     $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery()
       ->condition('type', 'site_assessment');
+    $or = $query->orConditionGroup()
+      ->notExists('field_programmatically_fixed')
+      ->condition('field_programmatically_fixed', 0);
+    $query->condition($or);
     if (!empty($cycle)) {
       $query->condition('field_as_cycle', $cycle);
     }
