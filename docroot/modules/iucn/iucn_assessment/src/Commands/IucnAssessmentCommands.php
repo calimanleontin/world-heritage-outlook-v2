@@ -77,7 +77,7 @@ class IucnAssessmentCommands extends DrushCommands {
    */
   public function createAssessments($cycle, $originalCycle = 2017) {
     $this->assessmentCycleCreator->createAssessments($cycle, $originalCycle);
-    $this->fixAssessments($cycle);
+    $this->logger->critical("Assessments successfully created, please run `drush iucn_assessment:fix-assessments {$cycle}`!!!");
   }
 
   /**
