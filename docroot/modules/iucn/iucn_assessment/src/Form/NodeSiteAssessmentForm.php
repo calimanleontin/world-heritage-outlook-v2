@@ -139,37 +139,6 @@ class NodeSiteAssessmentForm {
 
     if (!empty($node->id()) && !empty($state)) {
       $form['current_state'] = self::getCurrentStateMarkup($node);
-      if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
-        $form['main_data_container'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['main-data-container']],
-          '#weight' => -999,
-          'data' => [
-            '#type' => 'container',
-            '#attributes' => ['class' => ['data-fields']],
-            'title' => $form['title'],
-            'langcode' => $form['langcode'],
-            'field_assessment_file' => $form['field_assessment_file'],
-          ],
-        ];
-        unset($form['title']);
-        unset($form['langcode']);
-        unset($form['field_assessment_file']);
-      }
-
-      $blockContent = BlockContent::load(8);
-      if (!empty($blockContent)) {
-        $form['main_data_container']['help'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['help-text']],
-          'title' => [
-            '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => t('Help'),
-          ],
-          'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
-        ];
-      }
 
       $settings = json_decode($node->field_settings->value, TRUE);
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
@@ -182,9 +151,6 @@ class NodeSiteAssessmentForm {
         ];
 
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
-        $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
-          ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
-          : t('Comment about current tab');
         $form['comments']['comment'] = [
           '#type' => 'textarea',
           '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight + 1 : 0,
@@ -373,6 +339,38 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
+      $form['main_data_container'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['main-data-container']],
+        '#weight' => -999,
+        'data' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['data-fields']],
+          'title' => $form['title'],
+          'langcode' => $form['langcode'],
+          'field_assessment_file' => $form['field_assessment_file'],
+        ],
+      ];
+      unset($form['title']);
+      unset($form['langcode']);
+      unset($form['field_assessment_file']);
+    }
+
+    $blockContent = BlockContent::load(8);
+    if (!empty($blockContent)) {
+      $form['main_data_container']['help'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['help-text']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => t('Help'),
+        ],
+        'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
+      ];
+    }
 
     if (empty($node->id())) {
       // We allow users to create nodes without child paragraphs.
