@@ -59,7 +59,7 @@ class AssessmentCycleCreator {
     if (!array_key_exists($cycle, $this->availableCycles) || !array_key_exists($originalCycle, $this->availableCycles)) {
       throw new \InvalidArgumentException('Invalid cycle parameter. Available cycles: ' . implode(', ', array_keys($this->availableCycles)));
     }
-    $createdCycles = $this->state->get(self::CREATED_CYCLES_STATE);
+    $createdCycles = $this->state->get(self::CREATED_CYCLES_STATE, []);
     if (!in_array($originalCycle, $createdCycles)) {
       throw new \Exception('Original cycle assessments are not created.');
     }
@@ -67,16 +67,25 @@ class AssessmentCycleCreator {
       throw new \Exception("$cycle cycle assessments are already created.");
     }
     $createdCycles[] = $cycle;
-    $this->state->set(self::CREATED_CYCLES_STATE, $createdCycles);
-
     $originalAssessmentsIds = $this->nodeStorage->getQuery()
       ->condition('type', 'site_assessment')
       ->condition('field_as_cycle', $originalCycle)
       ->execute();
     foreach ($originalAssessmentsIds as $nid) {
       $originalNode = Node::load($nid);
+      $existing = $this->nodeStorage->getQuery()
+        ->condition('type', 'site_assessment')
+        ->condition('field_as_cycle', $cycle)
+        ->condition('field_as_site', $originalNode->get('field_as_site')->target_id)
+        ->count()
+        ->execute();
+      if (!empty($existing)) {
+        $this->logger->notice("Assessment \"{$originalNode->getTitle()}\" has already been duplicated for {$cycle} cycle.");
+        continue;
+      }
       $this->createDuplicateAssessment($originalNode, $cycle, $originalCycle);
     }
+    $this->state->set(self::CREATED_CYCLES_STATE, $createdCycles);
   }
 
   /**
