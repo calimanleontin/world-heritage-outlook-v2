@@ -105,7 +105,7 @@ class EntityReferenceFieldItemList extends FieldItemList implements EntityRefere
    */
   public function defaultValuesFormSubmit(array $element, array &$form, FormStateInterface $form_state) {
     $default_value = parent::defaultValuesFormSubmit($element, $form, $form_state);
-
+    $default_value = array_filter($default_value);
     // Convert numeric IDs to UUIDs to ensure config deployability.
     $ids = [];
     foreach ($default_value as $delta => $properties) {

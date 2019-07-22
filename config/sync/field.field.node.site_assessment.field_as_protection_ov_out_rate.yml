@@ -6,6 +6,30 @@ dependencies:
     - field.storage.node.field_as_protection_ov_out_rate
     - node.type.site_assessment
     - taxonomy.vocabulary.assessment_protection_rating
+  module:
+    - disable_field
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
+      assessment_ready_for_review: assessment_ready_for_review
+      assessment_under_review: assessment_under_review
+      assessment_finished_reviewing: assessment_finished_reviewing
+      assessment_under_comparison: assessment_under_comparison
+      assessment_final_changes: assessment_final_changes
+      assessment_approved: assessment_approved
+      assessment_draft: assessment_draft
+      assessment_reviewing_references: 0
+      assessment_published: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_protection_ov_out_rate
 field_name: field_as_protection_ov_out_rate
 entity_type: node

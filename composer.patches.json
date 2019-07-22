@@ -4,7 +4,8 @@
       "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
       "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
       "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
-      "Fix states api or condition": "patches/core/states-api-or.patch"
+      "Fix states api or condition": "patches/core/states-api-or.patch",
+      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
     },
     "drupal/display_field_copy": {
       "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",

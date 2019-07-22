@@ -129,3 +129,51 @@ $settings['rebuild_access'] = TRUE;
  * directory.
  */
 $settings['skip_permissions_hardening'] = TRUE;
+
+$databases['default']['default'] = array (
+  'database' => 'drupal',
+  'username' => 'root',
+  'password' => 'root',
+  'prefix' => '',
+  'host' => 'db',
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
+
+$settings['hash_salt'] = 'super-secret-hash-salt';
+
+$settings['testing_url'] = 'http://worldheritageoutlook.local';
+$base_url = 'worldheritageoutlook.local';
+$settings['trusted_host_patterns'] = [
+  'worldheritageoutlook.local',
+];
+
+# Configure Varnish purger to invalidate using front-end web server
+$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
+$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
+$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
+$config['varnish_image_purge.configuration']['entity_types'] = ['random-entity-that-does-not-exist'];
+
+$config['recaptcha.settings']['site_key'] = '';
+$config['recaptcha.settings']['secret_key'] = '';
+
+$config['google_maps_api.install']['api_key'] = '';
+
+$config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
+$config['smtp.settings']['smtp_port'] = 465;
+$config['smtp.settings']['smtp_protocol'] = 'ssl';
+$config['smtp.settings']['smtp_from'] = 'user@example.com';
+$config['smtp.settings']['smtp_username'] = 'user@example.com';
+$config['smtp.settings']['smtp_password'] = '';
+
+$config['raven.settings']['client_key'] = '';
+$config['raven.settings']['public_dsn'] = '';
+$config['raven.settings']['environment'] = '';
+
+$config['system.site']['mail'] = 'user@example.ro';
+
+$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-files');
+$config['system.file']['path']['temporary'] = '/tmp';
+
+$config['google_analytics.settings']['account'] = 'UA-0-0';

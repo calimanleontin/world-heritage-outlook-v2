@@ -23,6 +23,7 @@ use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\iucn_assessment\Plugin\Access\AssessmentAccess;
+use Drupal\iucn_assessment\Form\FieldConfigEditForm;
 
 function iucn_assessment_theme() {
   return [
@@ -585,6 +586,10 @@ function iucn_assessment_views_pre_render(ViewExecutable $view) {
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'field_config_edit_form':
+      FieldConfigEditForm::alter($form, $form_state, $form_id);
+      break;
+
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':
       if ($form_id == 'node_site_assessment_edit_form') {
@@ -872,7 +877,6 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
       }
     }
 
-
     if ($currentUser->hasRole('reviewer')) {
       if (!empty($operations['edit_reviewer_revision'])) {
         $operations['edit_reviewer_revision']['title'] = t('Review');
@@ -880,6 +884,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
 
       if (!empty($operations['finish_reviewer_revision'])) {
         $operations['finish_reviewer_revision']['title'] = t('Submit review');
+      }
+    }
+
+    if ($currentUser->hasRole('references_reviewer')) {
+      if (!empty($operations['edit'])) {
+        $operations['edit']['title'] = t('Review');
       }
     }
   }
