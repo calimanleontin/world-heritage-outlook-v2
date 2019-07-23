@@ -855,7 +855,7 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       'url' => Url::fromRoute('iucn_assessment.node.word_export', [
         'node' => $entity->id(),
       ]),
-      'weight' => 10,
+      'weight' => 100,
     ];
   }
   elseif ($entity->getEntityTypeId() == 'user') {

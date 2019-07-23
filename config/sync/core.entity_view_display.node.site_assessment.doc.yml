@@ -352,6 +352,8 @@ hidden:
   field_as_version: true
   field_assessor: true
   field_coordinator: true
+  field_programmatically_fixed: true
+  field_references_reviewer: true
   field_reviewers: true
   field_settings: true
   langcode: true

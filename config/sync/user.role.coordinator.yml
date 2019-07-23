@@ -70,6 +70,7 @@ permissions:
   - 'edit field_as_vass_wh_trend'
   - 'edit new assessments'
   - 'edit own site_assessment content'
+  - 'export nodes to word'
   - 'force finish reviewing'
   - 'reorder field field_as_benefits'
   - 'reorder field_as_benefits'
