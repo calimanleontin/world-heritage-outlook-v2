@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -95,11 +94,21 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_coordinator']['#access'] = $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
       $form['field_assessor']['#access'] = $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $form['field_reviewers']['#access'] = $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+      $form['field_references_reviewer']['#access'] = $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     }
     else {
       $form['field_coordinator']['#access'] = FALSE;
       $form['field_assessor']['#access'] = FALSE;
       $form['field_reviewers']['#access'] = FALSE;
+      $form['field_references_reviewer']['#access'] = FALSE;
+    }
+
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      // If users have multiple roles, having these fields only hidden using #access
+      // property can break things, so we need to fully unset them.
+      if ($form[$field]['#access'] === FALSE) {
+        unset($form[$field]);
+      }
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
@@ -220,6 +229,7 @@ class NodeSiteAssessmentStateChangeForm {
       unset($form['field_coordinator']);
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
+      unset($form['field_references_reviewer']);
       unset($form['warning']);
       $form['actions']['#access'] = FALSE;
     }
@@ -423,7 +433,7 @@ class NodeSiteAssessmentStateChangeForm {
     $oldState = $newState = $node->field_state->value;
     $createNewRevision = TRUE;
 
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
       $node->set($field, $form_state->getValue($field));
     }
 
@@ -525,6 +535,11 @@ class NodeSiteAssessmentStateChangeForm {
         $node->set('field_settings', $settingsWithDifferences);
         break;
 
+      case AssessmentWorkflow::STATUS_REVIEWING_REFERENCES . '>' . AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        $underComparisonRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_COMPARISON);
+        $workflowService->appendDiffToFieldSettings($node, $underComparisonRevision->getRevisionId(), $original->getRevisionId());
+        break;
+
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
         $default = FALSE;
         break;
@@ -560,12 +575,8 @@ class NodeSiteAssessmentStateChangeForm {
   }
 
   private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
-    if (in_array('reviewer', $currentUser->getRoles())) {
-      if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
-        $element = &$form['actions']['workflow_assessment_finished_reviewing'];
-
-        $element['#value'] = t('Submit review');
-      }
+    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
     }
   }
 }

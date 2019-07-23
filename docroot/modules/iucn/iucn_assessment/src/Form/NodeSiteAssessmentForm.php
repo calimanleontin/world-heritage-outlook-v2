@@ -3,11 +3,11 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -19,6 +19,19 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 class NodeSiteAssessmentForm {
 
   use AssessmentEntityFormTrait;
+
+  const PARAGRAPH_FIELDS = [
+    'field_as_benefits',
+    'field_as_key_cons',
+    'field_as_projects',
+    'field_as_projects_needs',
+    'field_as_protection',
+    'field_as_references_p',
+    'field_as_threats_current',
+    'field_as_threats_potential',
+    'field_as_values_bio',
+    'field_as_values_wh',
+  ];
 
   public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);
@@ -104,11 +117,8 @@ class NodeSiteAssessmentForm {
     self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
-    // On the values tab, only coordinators and above can edit the values.
+    self::hideParagraphsActions($form, $node);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values') {
-        self::hideParagraphsActions($form);
-      }
       $form['title']['#disabled'] = TRUE;
       $form['langcode']['#disabled'] = TRUE;
       $form['field_as_start_date']['#access'] = FALSE;
@@ -129,37 +139,6 @@ class NodeSiteAssessmentForm {
 
     if (!empty($node->id()) && !empty($state)) {
       $form['current_state'] = self::getCurrentStateMarkup($node);
-      if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
-        $form['main_data_container'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['main-data-container']],
-          '#weight' => -999,
-          'data' => [
-            '#type' => 'container',
-            '#attributes' => ['class' => ['data-fields']],
-            'title' => $form['title'],
-            'langcode' => $form['langcode'],
-            'field_assessment_file' => $form['field_assessment_file'],
-          ],
-        ];
-        unset($form['title']);
-        unset($form['langcode']);
-        unset($form['field_assessment_file']);
-      }
-
-      $blockContent = BlockContent::load(8);
-      if (!empty($blockContent)) {
-        $form['main_data_container']['help'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['help-text']],
-          'title' => [
-            '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => t('Help'),
-          ],
-          'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
-        ];
-      }
 
       $settings = json_decode($node->field_settings->value, TRUE);
       if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
@@ -172,9 +151,6 @@ class NodeSiteAssessmentForm {
         ];
 
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
-        $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
-          ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
-          : t('Comment about current tab');
         $form['comments']['comment'] = [
           '#type' => 'textarea',
           '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight + 1 : 0,
@@ -364,6 +340,38 @@ class NodeSiteAssessmentForm {
 
     self::setValidationErrors($form, $form, []);
 
+    if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
+      $form['main_data_container'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['main-data-container']],
+        '#weight' => -999,
+        'data' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['data-fields']],
+          'title' => $form['title'],
+          'langcode' => $form['langcode'],
+          'field_assessment_file' => $form['field_assessment_file'],
+        ],
+      ];
+      unset($form['title']);
+      unset($form['langcode']);
+      unset($form['field_assessment_file']);
+    }
+
+    $blockContent = BlockContent::load(8);
+    if (!empty($blockContent)) {
+      $form['main_data_container']['help'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['help-text']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => t('Help'),
+        ],
+        'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
+      ];
+    }
+
     if (empty($node->id())) {
       // We allow users to create nodes without child paragraphs.
       $allowedFields = ['field_as_site', 'field_assessment_file'];
@@ -480,16 +488,63 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Hide all paragraphs actions on a form.
+   * Hide paragraphs actions based on user permissions and field settings.
    *
    * @param array $form
+   * @param NodeInterface $siteAssessment
    *   The form.
    */
-  public static function hideParagraphsActions(array &$form) {
-    $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
-    foreach ($read_only_paragraph_fields as $field) {
-      if (!empty($form[$field]['widget'])) {
-        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+  public static function hideParagraphsActions(array &$form, NodeInterface $siteAssessment) {
+    $state = $siteAssessment->get('field_state')->value;
+
+    /** @var \Drupal\Core\Session\AccountProxy $currentUser */
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\Core\Entity\EntityFieldManager $entityFieldManager */
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fieldDefinitions */
+    $fieldDefinitions = $entityFieldManager->getFieldDefinitions('node', 'site_assessment');
+
+    $actions = ['add more', 'edit', 'delete',];
+
+    foreach ($fieldDefinitions as $field => $fieldDefinition) {
+      if (!$fieldDefinition instanceof ConfigEntityBase) {
+        continue;
+      }
+
+      if (empty($form[$field]['widget'])) {
+        continue;
+      }
+
+      $widget = &$form[$field]['widget'];
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+      $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
+
+      $disabledActions = [];
+      foreach ($actions as $action) {
+        if (!$editableField) {
+          $disabledActions[] = $action;
+          continue;
+        }
+
+        if ($cardinality == 1 and $action != 'edit') {
+          continue;
+        }
+
+        $permission = "$action $field";
+        if ($currentUser->hasPermission($permission)) {
+          continue;
+        }
+
+        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE))) {
+          continue;
+        }
+
+        $disabledActions[] = $action;
+      }
+
+      if ($disabledActions) {
+        static::hideParagraphsActionFromWidget($widget, $disabledActions);
       }
     }
   }
@@ -499,14 +554,70 @@ class NodeSiteAssessmentForm {
    *
    * @param array $widget
    *   The widget.
-   * @param bool $alter_colspan
-   *   Is the colspan of the table altered.
-   */
-  public static function hideParagraphsActionsFromWidget(array &$widget) {
-    $widget['add_more']['#access'] = FALSE;
+   * @param array $actions
+   *   The action to hide
+   **/
+  public static function hideParagraphsActionFromWidget(array &$widget, array $actions) {
+    static::disableWidget($widget);
+
+    foreach ($actions as $action) {
+      if ($action == 'add more') {
+        if (!empty($widget['add more'])) {
+          $widget['add more']['#access'] = FALSE;
+        }
+        if (!empty($widget['add_more'])) {
+          $widget['add_more']['#access'] = FALSE;
+        }
+      }
+
+      foreach (Element::children($widget) as $child) {
+        unset($widget[$child]['top']['actions']['buttons'][$action]);
+      }
+    }
+
     foreach (Element::children($widget) as $child) {
+      if (empty($widget[$child]['top']['actions']['buttons'])) {
+
+        unset($widget[$child]['top']['actions']);
+        unset($widget[$child]['top']['summary']['actions']);
+        continue;
+      }
+
+      foreach ($widget[$child]['top']['actions']['buttons'] as $button) {
+        if (!is_array($button)) {
+          continue;
+        }
+
+        if (!empty($button['#access'])) {
+          continue 2;
+        }
+      }
+
       unset($widget[$child]['top']['actions']);
       unset($widget[$child]['top']['summary']['actions']);
+    }
+  }
+  /**
+   * Disable a widget.
+   *
+   * @param array $widget
+   *   The widget.
+   **/
+  public static function disableWidget(array &$widget) {
+    $disabledInputs = ['select', 'text_format', 'entity_autocomplete'];
+
+    if (!empty($widget['#type']) && in_array($widget['#type'], $disabledInputs)) {
+      $widget['#disabled'] = true;
+    }
+
+    foreach (Element::children($widget) as $child) {
+      if (!empty($widget[$child]['#type']) && in_array($widget[$child]['#type'], $disabledInputs)) {
+        $widget[$child]['#disabled'] = true;
+      }
+
+      if (!empty($widget[$child]['target_id']['#type']) && in_array($widget[$child]['target_id']['#type'], $disabledInputs)) {
+        $widget['#disabled'] = true;
+      }
     }
   }
 
@@ -516,6 +627,7 @@ class NodeSiteAssessmentForm {
     if (empty($diff)) {
       return;
     }
+
     foreach ($form as $field => &$form_item) {
       if (!self::isFieldWithDiff($node, $field, $diff)) {
         continue;
@@ -574,12 +686,24 @@ class NodeSiteAssessmentForm {
     ];
   }
 
-
   public static function changeTabLabel(&$tab) {
     if (in_array('reviewer', \Drupal::currentUser()->getRoles())) {
       if (!empty($tab['#link']['title'])) {
         $tab['#link']['title'] = t('Submit review');
       }
     }
+  }
+
+  private static function isPermissionException($field, $action, array $roles) {
+    switch ([$field, $action, TRUE]) {
+      case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
+      case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
+        if (\Drupal::request()->query->get('tab') == 'assessing-values') {
+          return true;
+        }
+      break;
+    }
+
+    return false;
   }
 }

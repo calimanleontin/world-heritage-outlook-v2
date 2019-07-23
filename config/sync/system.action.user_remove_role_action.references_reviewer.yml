@@ -1,0 +1,14 @@
+uuid: a23af40b-caa2-4c02-b62b-7b9c406c4b21
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.references_reviewer
+  module:
+    - user
+id: user_remove_role_action.references_reviewer
+label: 'Remove the References reviewer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: references_reviewer

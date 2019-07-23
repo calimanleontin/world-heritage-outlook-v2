@@ -18,7 +18,8 @@
       window.addEventListener("beforeunload", function (e) {
         var submitButtonClicked = (e.target.activeElement.type === "submit");
         var formIsModified = $("form.node-form").data("changed");
-        if (formIsModified && !submitButtonClicked) {
+        var orderIsCHanged = $('form.node-form').has('abbr.warning.tabledrag-changed').length !== 0;
+        if ((orderIsCHanged || formIsModified) && !submitButtonClicked) {
           // Cancel the event
           e.preventDefault();
           // Chrome requires returnValue to be set
@@ -42,7 +43,13 @@
     if (!ml.ckeditorOnce) {
       ml.ckeditorOnce = true;
       CKEDITOR.on('instanceReady', function(e) {
-        var editor = $('#' + e.editor.name + '.maxlength');
+        var editorSelector = '#' + e.editor.name + '.maxlength';
+        if ($("form.node-form").has(editorSelector).length === 0) {
+          return;
+        }
+
+        var editor = $(editorSelector);
+
         if (editor.length == 1) {
           e.editor.on('key', function(e) {
             $("form.node-form").data("changed", true);

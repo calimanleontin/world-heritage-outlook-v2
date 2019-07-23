@@ -1,6 +1,7 @@
 module:
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
+  admin_toolbar_tools: 0
   anchor_only: 0
   basic_auth: 0
   blazy: 0

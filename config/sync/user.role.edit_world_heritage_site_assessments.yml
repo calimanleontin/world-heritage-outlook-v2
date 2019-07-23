@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: edit_world_heritage_site_assessments
 label: 'Edit World Heritage site assessments'
-weight: -8
+weight: -4
 is_admin: null
 permissions:
   - 'access content overview'
