@@ -163,7 +163,6 @@ class IucnAssessmentCommands extends DrushCommands {
 
         // Migrate references from text field to paragraph.
         $this->assessmentMigrateReferences($node, $logger);
-
         $node->set('field_programmatically_fixed', TRUE);
         $node->save();
       }
@@ -200,6 +199,7 @@ class IucnAssessmentCommands extends DrushCommands {
         }
 
         $valueIsFixed = FALSE;
+        $brokenValues = [];
         /** @var ParagraphInterface $referencedParagraph */
         $referencedParagraph = $paragraphStorage->load($referencedValue['target_id']);
         $searchById = in_array($referencedValue['target_id'], array_column($values, 'target_id'));
@@ -222,8 +222,14 @@ class IucnAssessmentCommands extends DrushCommands {
         }
 
         if ($valueIsFixed === FALSE) {
-          $logger->warning("[{$assessmentNode->getTitle()}] Threat '{$threat->field_as_threats_threat->value}' has a broken value: {$referencedParagraph->field_as_values_value->value}");
+          $brokenValues[] = $referencedParagraph->field_as_values_value->value;
         }
+      }
+
+      if (!empty($brokenValues)) {
+        $numberOfBrokenValues = count($brokenValues);
+        $brokenValuesText = implode('; ', $brokenValues);
+        $logger->warning("[{$assessmentNode->getTitle()}] Threat {$threat->field_as_threats_threat->value}' has {$numberOfBrokenValues} broken value(s): {$brokenValuesText}");
       }
 
       if ($update === TRUE) {
@@ -245,9 +251,16 @@ class IucnAssessmentCommands extends DrushCommands {
     if (empty($references)) {
       return;
     }
+
+    $alreadyMigratedReferences = [];
+    foreach ($node->get('field_as_references_p')->getValue() as $value) {
+      $paragraph = Paragraph::load($value['target_id']);
+      $alreadyMigratedReferences[] = $paragraph->field_reference->value;
+    }
+
     foreach ($references as $idx => $reference) {
       $reference = $reference['value'];
-      if (empty($reference)) {
+      if (empty($reference) || in_array($reference, $alreadyMigratedReferences)) {
         continue;
       }
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
