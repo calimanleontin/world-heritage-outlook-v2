@@ -295,7 +295,7 @@ class IucnAssessmentCommands extends DrushCommands {
       );
 
     //Condition to exclude assessment that have been excluded by other paragraphs
-    $verifiedAssessments = [];
+    $verifiedAssessments = $deletedEntities = [];
     $count = 0;
 
     foreach ($terms as $term) {
@@ -345,12 +345,19 @@ class IucnAssessmentCommands extends DrushCommands {
             $fieldValues = array_column($field->getValue(), 'target_id');
             $index = array_search($paragraph->id(), $fieldValues);
             if ($index !== FALSE) {
-              $this->logger->warning("Found paragraph \"{$paragraph->id()}\" on node \"{$node->id()}\"  and field \"{$field->getName()}\" at position {$index} referencing a hidden term! It will be delete from node then deleted from db!");
               $count++;
               if (!$dryRun) {
                 $node->get($field->getName())->removeItem($index);
                 $node->save();
                 $paragraph->delete();
+                $this->logger->warning("Deleted paragraph \"{$paragraph->id()}\" from node \"{$node->id()}\" and field \"{$field->getName()}\" at position {$index} !");
+              } else {
+                $nodeKey = "\"{$node->label()} ({$node->id()})\"";
+                if (empty($deletedEntities[$nodeKey][$field->getName()])) {
+                  $deletedEntities[$nodeKey][$field->getName()] = [];
+                }
+
+                $deletedEntities[$nodeKey][$field->getName()][] = $paragraphId;
               }
             }
           }
@@ -358,6 +365,21 @@ class IucnAssessmentCommands extends DrushCommands {
       }
     }
 
-    $this->logger->warning("Found $count paragraphs that were deleted!");
+    if (!empty($deletedEntities)) {
+      foreach ($deletedEntities as $nodeKey => $deletedParagraphs) {
+        $brokenParagraphs = [];
+        foreach ($deletedParagraphs as $field => $paragraphIds) {
+          $paragraphIds = array_unique($paragraphIds);
+          $brokenIds = implode(', ', $paragraphIds);
+          $brokenParagraphs[] = count($paragraphIds) . " broken paragraphs of type $field: ({$brokenIds})";
+        }
+
+        $brokenParagraphsValue = implode("and ", $brokenParagraphs);
+
+        $this->logger->warning("On node {$nodeKey} found: {$brokenParagraphsValue}");
+      }
+    }
+
+    $this->logger->warning("Found $count broken paragraphs!");
   }
 }
