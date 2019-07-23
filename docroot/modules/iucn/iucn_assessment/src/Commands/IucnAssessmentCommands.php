@@ -2,12 +2,15 @@
 
 namespace Drupal\iucn_assessment\Commands;
 
+use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\iucn_fields\Plugin\TermAlterService;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -38,6 +41,9 @@ class IucnAssessmentCommands extends DrushCommands {
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator */
   protected $assessmentCycleCreator;
 
+  /** @var TermAlterService */
+  protected $termAlterService;
+
   /**
    * IucnAssessmentCommands constructor.
    *
@@ -47,11 +53,12 @@ class IucnAssessmentCommands extends DrushCommands {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, AssessmentCycleCreator $assessmentCycleCreator) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, AssessmentCycleCreator $assessmentCycleCreator, TermAlterService $termAlterService) {
     parent::__construct();
     $this->entityTypeManager = $entityTypeManager;
     $this->nodeStorage = $this->entityTypeManager->getStorage('node');
     $this->assessmentCycleCreator = $assessmentCycleCreator;
+    $this->termAlterService = $termAlterService;
   }
 
   /**
@@ -257,4 +264,100 @@ class IucnAssessmentCommands extends DrushCommands {
     $logger->info("Memory usage: " . round(memory_get_usage() / 1048576, 2) . "MB");
   }
 
+  /**
+   * Remove paragraphs from assessments that references a hidden term for a cycle
+   *
+   * @param $cycle
+   * @options dry-run Option to make command run without doing any changes
+   *
+   * @command iucn_assessment:remove-hidden-terms-references
+   *
+   * @throws \Exception
+   */
+  public function removeHiddenTermsReferences($cycle, $options = ['dry-run' => FALSE]) {
+    $dryRun = $options['dry-run'] !== FALSE;
+
+    $termIds = $this->termAlterService->getHiddenTermsForCycle($cycle);
+
+    /** @var Term[] $terms */
+    $terms = Term::loadMultiple($termIds);
+
+    $paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+
+    $fieldStorageConfigs = $this->entityTypeManager
+      ->getStorage('field_config')
+      ->loadByProperties(
+        [
+          'entity_type' => 'paragraph',
+          'field_type' => 'entity_reference',
+          'status' => TRUE,
+        ]
+      );
+
+    //Condition to exclude assessment that have been excluded by other paragraphs
+    $verifiedAssessments = [];
+    $count = 0;
+
+    foreach ($terms as $term) {
+      foreach ($fieldStorageConfigs as $fieldStorageConfig) {
+        if (empty($fieldStorageConfig->getSetting('handler_settings'))) {
+          continue;
+        }
+
+        if (!array_key_exists($term->bundle(), $fieldStorageConfig->getSetting('handler_settings')['target_bundles'])) {
+          continue;
+        }
+
+        $query = $paragraphStorage->getQuery()
+          ->condition($fieldStorageConfig->get('field_name'), $term->id());
+        if ($verifiedAssessments) {
+          $query->condition('parent_id', $verifiedAssessments, 'NOT IN');
+        }
+
+        $paragraphIds = $query->execute();
+        if (empty($paragraphIds)) {
+          continue;
+        }
+
+        foreach ($paragraphIds as $paragraphId) {
+          $paragraph = Paragraph::load($paragraphId);
+          if (empty($paragraph->getParentEntity())) {
+            continue;
+          }
+
+          if ($paragraph->getParentEntity()->bundle() != 'site_assessment') {
+            $verifiedAssessments[] = $paragraph->getParentEntity()->id();
+            continue;
+          }
+
+          if ($paragraph->getParentEntity()->get('field_as_cycle')->value != $cycle) {
+            $verifiedAssessments[] = $paragraph->getParentEntity()->id();
+            continue;
+          }
+
+          /** @var Node $node */
+          $node = $paragraph->getParentEntity();
+          foreach ($node->getFields() as $field) {
+            if (!$field instanceof EntityReferenceRevisionsFieldItemList) {
+              continue;
+            }
+
+            $fieldValues = array_column($field->getValue(), 'target_id');
+            $index = array_search($paragraph->id(), $fieldValues);
+            if ($index !== FALSE) {
+              $this->logger->warning("Found paragraph \"{$paragraph->id()}\" on node \"{$node->id()}\"  and field \"{$field->getName()}\" at position {$index} referencing a hidden term! It will be delete from node then deleted from db!");
+              $count++;
+              if (!$dryRun) {
+                $node->get($field->getName())->removeItem($index);
+                $node->save();
+                $paragraph->delete();
+              }
+            }
+          }
+        }
+      }
+    }
+
+    $this->logger->warning("Found $count paragraphs that were deleted!");
+  }
 }
