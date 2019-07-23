@@ -188,24 +188,47 @@ class IucnAssessmentCommands extends DrushCommands {
   }
 
   protected function assessmentFixReferences(ParagraphInterface $threat, $field, array $values, $assessment_id, LoggerInterface $logger) {
-    $referenced_values = $threat->get($field)->getValue();
-    if (!empty($referenced_values)) {
+    $assessmentNode = Node::load($assessment_id);
+    $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    $referencedValues = $threat->get($field)->getValue();
+    if (!empty($referencedValues)) {
       $update = FALSE;
-      foreach ($referenced_values as &$referenced_value) {
-        $referenced_paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($referenced_value['target_revision_id']);
+
+      foreach ($referencedValues as $key => $referencedValue) {
+        if (in_array($referencedValue['target_revision_id'], array_column($values, 'target_revision_id'))) {
+          continue;
+        }
+
+        $valueIsFixed = FALSE;
+        /** @var ParagraphInterface $referencedParagraph */
+        $referencedParagraph = $paragraphStorage->load($referencedValue['target_id']);
+        $searchById = in_array($referencedValue['target_id'], array_column($values, 'target_id'));
         foreach ($values as $value) {
-          $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($value['target_revision_id']);
-          if ($referenced_paragraph->field_as_values_value->value == $paragraph->field_as_values_value->value
-            && $referenced_paragraph->getRevisionId() != $paragraph->getRevisionId()) {
-            $update = TRUE;
-            $referenced_value = $value;
+          if ($searchById === TRUE) {
+            if ($value['target_id'] == $referencedValue['target_id']) {
+              $valueIsFixed = $update = TRUE;
+              $referencedValues[$key] = $value;
+              break;
+            }
+            continue;
+          }
+
+          $valueParagraph = $paragraphStorage->loadRevision($value['target_revision_id']);
+          if ($referencedParagraph->field_as_values_value->value == $valueParagraph->field_as_values_value->value) {
+            $valueIsFixed = $update = TRUE;
+            $referencedValues[$key] = $value;
             break;
           }
         }
+
+        if ($valueIsFixed === FALSE) {
+          $logger->warning("[{$assessmentNode->getTitle()}] Threat '{$threat->field_as_threats_threat->value}' has a broken value: {$referencedParagraph->field_as_values_value->value}");
+        }
       }
-      if ($update) {
-        $logger->info("Fixed threat '{$threat->field_as_threats_threat->value}' (assessment id = $assessment_id)");
-        $threat->get($field)->setValue($referenced_values);
+
+      if ($update === TRUE) {
+        $logger->info("[{$assessmentNode->getTitle()}] Fixed threat '{$threat->field_as_threats_threat->value}'");
+        $threat->get($field)->setValue($referencedValues);
         $threat->save();
       }
     }
