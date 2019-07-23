@@ -850,20 +850,24 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
       ];
     }
 
-    $operations['word_export'] = [
-      'title' => t('Word export'),
-      'url' => Url::fromRoute('iucn_assessment.node.word_export', [
-        'node' => $entity->id(),
-      ]),
-      'weight' => 100,
-    ];
+    $wordExportUrl = Url::fromRoute('iucn_assessment.node.word_export', ['node' => $entity->id()]);
+    if ($wordExportUrl->access()) {
+      $operations['word_export'] = [
+        'title' => t('Word export'),
+        'url' => $wordExportUrl,
+        'weight' => 100,
+      ];
+    }
   }
   elseif ($entity->getEntityTypeId() == 'user') {
-    $operations['assign'] = [
-      'title' => t('Assign'),
-      'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
-      'weight' => 0,
-    ];
+    $userAssignUrl = Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]);
+    if ($userAssignUrl->access()) {
+      $operations['assign'] = [
+        'title' => t('Assign'),
+        'url' => $userAssignUrl,
+        'weight' => 0,
+      ];
+    }
   }
   return $operations;
 }
