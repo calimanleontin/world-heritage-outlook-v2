@@ -7075,7 +7075,9 @@
                     "message": "RC releases are not covered by Drupal security advisories."
                 }
             },
-            "patches_applied": []
+            "patches_applied": {
+                "Fields definition": "patches/pet/pet.patch"
+            }
         },
         "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
