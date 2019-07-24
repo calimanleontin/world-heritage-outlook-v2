@@ -587,6 +587,7 @@ function iucn_assessment_views_pre_render(ViewExecutable $view) {
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  dpm($form_id);
   switch ($form_id) {
     case 'field_config_edit_form':
       FieldConfigEditForm::alter($form, $form_state, $form_id);
@@ -627,7 +628,7 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'paragraph_as_site_reference_iucn_modal_paragraph_add_form':
-      $form['field_reference']['widget'][0]['value']['#description'] = t('You can add multiple references at once, one per line.');
+      $form['field_reference']['widget'][0]['#description'] = t('You can add multiple references at once, one per line.');
       break;
 
     case 'paragraph_as_site_value_wh_iucn_modal_paragraph_add_form':
