@@ -8,7 +8,6 @@
       "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
     },
     "drupal/display_field_copy": {
-      "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
       "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
     },
     "drupal/linkit": {
@@ -47,9 +46,6 @@
       "Block paste when limit is exceeded":"https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
       "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
       "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
-    },
-    "drupal/bootstrap": {
-      "Error: Unsupported operand types during providers JSON discovery" : "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
     },
     "webspellchecker/ckeditor-plugin-scayt": {
       "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
