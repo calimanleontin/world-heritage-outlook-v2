@@ -379,7 +379,6 @@ class IucnAssessmentCommands extends DrushCommands {
               if (!$dryRun) {
                 $node->get($field->getName())->removeItem($index);
                 $node->save();
-                $paragraph->delete();
                 $this->logger->warning("Deleted paragraph \"{$paragraph->id()}\" from node \"{$node->id()}\" and field \"{$field->getName()}\" at position {$index} !");
               } else {
                 $nodeKey = "\"{$node->label()} ({$node->id()})\"";
