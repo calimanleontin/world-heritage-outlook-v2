@@ -6,7 +6,7 @@ pet.admin.config.pet_settings:
 
 pet.admin.structure.pets_list:
   title: Previewable Email Templates
-  route_name: pet.list
+  route_name: entity.pet.collection
   parent: system.admin_structure
   description: 'List of Previewable Email Templates'
   weight: 10

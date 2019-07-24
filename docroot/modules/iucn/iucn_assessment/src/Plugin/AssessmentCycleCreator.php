@@ -113,6 +113,7 @@ class AssessmentCycleCreator {
     $duplicate->set('field_as_end_date', NULL);
     $duplicate->set('field_as_cycle', $cycle);
     $duplicate->set('field_state', AssessmentWorkflow::STATUS_NEW);
+    $duplicate->set('field_programmatically_fixed', FALSE);
     $this->createDuplicateReferencedEntities($duplicate);
     $duplicate->save();
     return $duplicate;

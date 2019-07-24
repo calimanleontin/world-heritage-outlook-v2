@@ -17,14 +17,12 @@ function raven_requirements($phase) {
         $requirements['raven_environment'] = [
           'title' => t('Sentry environment'),
           'value' => $client->environment,
-          'severity' => REQUIREMENT_OK,
         ];
       }
       if ($client->release) {
         $requirements['raven_release'] = [
           'title' => t('Sentry release'),
           'value' => $client->release,
-          'severity' => REQUIREMENT_OK,
         ];
       }
     }
@@ -46,7 +44,6 @@ function raven_requirements($phase) {
   $requirements['raven_trace']['title'] = t('Sentry reflection tracing');
   if (\Drupal::config('raven.settings')->get('trace')) {
     $requirements['raven_trace']['description'] = t('Sentry reflection tracing is enabled, which may result in sensitive data being logged by Sentry.');
-    $requirements['raven_trace']['severity'] = REQUIREMENT_WARNING;
     $requirements['raven_trace']['value'] = t('Enabled');
   }
   else {

@@ -136,6 +136,7 @@ permissions:
   - 'edit terms in iucn_region'
   - 'edit terms in theme'
   - 'edit terms in unesco_region'
+  - 'export nodes to word'
   - 'force finish reviewing'
   - 'reorder field field_as_benefits'
   - 'reorder field_as_benefits'

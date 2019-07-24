@@ -407,8 +407,10 @@ function iucn_assessment_preprocess_field(&$variables) {
       break;
 
     case 'field_as_threats_extent':
-      foreach ($variables['items'] as $key => $item) {
-        $variables['items'][$key]['content']['#plain_text'] = ', ' . $variables['items'][$key]['content']['#plain_text'];
+      if ($variables['element']['#view_mode'] != 'doc') {
+        foreach ($variables['items'] as $key => $item) {
+          $variables['items'][$key]['content']['#plain_text'] = ', ' . $variables['items'][$key]['content']['#plain_text'];
+        }
       }
       break;
 
@@ -847,13 +849,25 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         'weight' => 90,
       ];
     }
+
+    $wordExportUrl = Url::fromRoute('iucn_assessment.node.word_export', ['node' => $entity->id()]);
+    if ($wordExportUrl->access()) {
+      $operations['word_export'] = [
+        'title' => t('Word export'),
+        'url' => $wordExportUrl,
+        'weight' => 100,
+      ];
+    }
   }
   elseif ($entity->getEntityTypeId() == 'user') {
-    $operations['assign'] = [
-      'title' => t('Assign'),
-      'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
-      'weight' => 0,
-    ];
+    $userAssignUrl = Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]);
+    if ($userAssignUrl->access()) {
+      $operations['assign'] = [
+        'title' => t('Assign'),
+        'url' => $userAssignUrl,
+        'weight' => 0,
+      ];
+    }
   }
   return $operations;
 }
@@ -1077,4 +1091,10 @@ function iucn_assessment_entity_presave(Drupal\Core\Entity\EntityInterface $enti
     $value = $entity->{$fieldName}->value;
     $entity->set($field->getName(), strip_tags($entity->{$fieldName}->value));
   }
+}
+
+function xd() {
+  /** @var \Drupal\Core\Entity\EntityViewBuilder $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
+  $build = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
 }

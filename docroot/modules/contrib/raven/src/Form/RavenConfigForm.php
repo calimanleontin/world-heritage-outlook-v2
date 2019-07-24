@@ -39,7 +39,7 @@ class RavenConfigForm {
       '#type'           => 'textfield',
       '#title'          => t('Sentry public DSN'),
       '#default_value'  => $config->get('public_dsn'),
-      '#description'    => t('Sentry public client key for current site.'),
+      '#description'    => t('Sentry public client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
     ];
     $form['raven']['js']['polyfill_promise'] = [
       '#type'           => 'checkbox',
@@ -56,7 +56,7 @@ class RavenConfigForm {
       '#type'           => 'textfield',
       '#title'          => t('Sentry DSN'),
       '#default_value'  => $config->get('client_key'),
-      '#description'    => t('Sentry client key for current site.'),
+      '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
     ];
     // "0" is not a valid checkbox option.
     foreach (RfcLogLevel::getLevels() as $key => $value) {
@@ -145,13 +145,13 @@ class RavenConfigForm {
       '#type'           => 'textfield',
       '#title'          => t('Environment'),
       '#default_value'  => $config->get('environment'),
-      '#description'    => t('The environment in which this site is running (leave blank to use kernel.environment parameter).'),
+      '#description'    => t('The environment in which this site is running (leave blank to use kernel.environment parameter). This setting can be overridden with the SENTRY_ENVIRONMENT environment variable.'),
     ];
     $form['raven']['release'] = [
       '#type'           => 'textfield',
       '#title'          => t('Release'),
       '#default_value'  => $config->get('release'),
-      '#description'    => t('The release this site is running (could be a version or commit hash).'),
+      '#description'    => t('The release this site is running (could be a version or commit hash). This setting can be overridden with the SENTRY_RELEASE environment variable.'),
     ];
     $form['#submit'][] = 'Drupal\raven\Form\RavenConfigForm::submitForm';
   }

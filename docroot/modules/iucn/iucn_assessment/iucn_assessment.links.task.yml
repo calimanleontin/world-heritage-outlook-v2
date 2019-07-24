@@ -26,3 +26,9 @@ iucn_assessment.user.assign:
   route_name: iucn_assessment.user_assign
   base_route: entity.user.canonical
   title: Assign
+
+iucn_assessment.node.word_export:
+  route_name: iucn_assessment.node.word_export
+  base_route: entity.node.canonical
+  title: Export to Word
+  weight: 6

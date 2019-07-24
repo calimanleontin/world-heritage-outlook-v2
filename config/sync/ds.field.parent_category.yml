@@ -1,0 +1,9 @@
+id: parent_category
+label: 'Parent category'
+ui_limit: 'as_site_threat|*'
+properties:
+  field_id: paragraph.as_site_threat.field_as_threats_categories
+type: display_field_copy
+type_label: 'Copy field'
+entities:
+  paragraph: paragraph

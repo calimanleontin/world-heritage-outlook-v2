@@ -1,0 +1,9 @@
+id: parent_benefits_category
+label: 'Parent benefits category'
+ui_limit: 'as_site_benefit|*'
+properties:
+  field_id: paragraph.as_site_benefit.field_as_benefits_category
+type: display_field_copy
+type_label: 'Copy field'
+entities:
+  paragraph: paragraph

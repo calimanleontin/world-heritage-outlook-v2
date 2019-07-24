@@ -5,11 +5,11 @@ package: Mail
 # core: 8.x
 configure: pet.settings
 dependencies:
-  - entity_reference
-  - options
+  - drupal:options
+  - token:token
 
-# Information added by Drupal.org packaging script on 2017-10-11
-version: '8.x-1.0-beta1'
+# Information added by Drupal.org packaging script on 2019-06-27
+version: '8.x-1.0-rc1'
 core: '8.x'
 project: 'pet'
-datestamp: 1507706653
+datestamp: 1561638493

@@ -44,6 +44,9 @@ class RavenTest extends BrowserTestBase {
     $config = ['raven[php][ignored_channels]' => "X-Logged\r\n"];
     $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', NULL);
+
+    // Test client functionality after logger is serialized and unserialized.
+    unserialize(serialize($this->container->get('logger.raven')))->client->captureException(new \Exception('This is a test.'));
   }
 
 }

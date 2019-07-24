@@ -34,5 +34,8 @@ view home button:
 force finish reviewing:
   title: 'Force finish reviewing'
 
+export nodes to word:
+  title: 'Export nodes to Word'
+
 permission_callbacks:
   - Drupal\iucn_assessment\AssessmentFieldsPermissions::getPermissions
