@@ -362,12 +362,7 @@ class IucnAssessmentCommands extends DrushCommands {
             continue;
           }
 
-          if ($node->bundle() != 'site_assessment') {
-            $verifiedAssessments[] = $node->id();
-            continue;
-          }
-
-          if ($node->get('field_as_cycle')->value != $cycle) {
+          if ($node->bundle() != 'site_assessment' || $node->get('field_as_cycle')->value != $cycle) {
             $verifiedAssessments[] = $node->id();
             continue;
           }
