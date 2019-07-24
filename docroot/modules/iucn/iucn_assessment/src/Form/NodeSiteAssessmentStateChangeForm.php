@@ -520,6 +520,7 @@ class NodeSiteAssessmentStateChangeForm {
         break;
 
       case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
+      case AssessmentWorkflow::STATUS_UNDER_COMPARISON . '>' . AssessmentWorkflow::STATUS_REVIEWING_REFERENCES:
         $workflowService->removeCommentsFromFieldSettings($node);
         break;
 

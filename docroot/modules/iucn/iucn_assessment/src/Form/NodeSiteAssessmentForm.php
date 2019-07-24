@@ -141,8 +141,11 @@ class NodeSiteAssessmentForm {
       $form['current_state'] = self::getCurrentStateMarkup($node);
 
       $settings = json_decode($node->field_settings->value, TRUE);
-      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
-        || !empty($settings['comments'][$tab])) {
+      if (in_array($state, [
+          AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+          AssessmentWorkflow::STATUS_UNDER_REVIEW,
+          AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
+        ]) || !empty($settings['comments'][$tab])) {
         $current_user = \Drupal::currentUser();
 
         $form['comments'] = [
