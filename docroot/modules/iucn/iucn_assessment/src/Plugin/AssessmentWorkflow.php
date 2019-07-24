@@ -75,6 +75,7 @@ class AssessmentWorkflow {
   const DIFF_STATES = [
     self::STATUS_READY_FOR_REVIEW,
     self::STATUS_UNDER_COMPARISON,
+    self::STATUS_FINAL_CHANGES,
   ];
 
   const CURRENT_WORKFLOW_CYCLE_STATE_KEY = 'iucn_assessment_current_workflow_cycle_state';
