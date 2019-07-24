@@ -587,7 +587,6 @@ function iucn_assessment_views_pre_render(ViewExecutable $view) {
  * Implements hook_form_alter().
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  dpm($form_id);
   switch ($form_id) {
     case 'field_config_edit_form':
       FieldConfigEditForm::alter($form, $form_state, $form_id);
