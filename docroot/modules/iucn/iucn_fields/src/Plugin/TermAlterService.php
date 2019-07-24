@@ -71,17 +71,13 @@ class TermAlterService {
    * @return array
    */
   public function getHiddenTermsForCycle($cycle) {
-    if (empty($this->alteredTerms)) {
-      return [];
+    $hiddenTerms = [];
+    if (!empty($this->alteredTerms[$cycle])) {
+      $hiddenTerms = array_keys(array_filter($this->alteredTerms[$cycle], function ($value) {
+        return $value == '<hidden>';
+      }));
     }
-
-    if (empty($this->alteredTerms[$cycle])) {
-      return [];
-    }
-
-    return array_keys(array_filter($this->alteredTerms[$cycle], function ($value) {
-      return $value == '<hidden>';
-    }));
+    return $hiddenTerms;
   }
 
 }
