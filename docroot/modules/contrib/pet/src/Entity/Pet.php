@@ -19,10 +19,15 @@ use Drupal\pet\PetInterface;
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\pet\Controller\PetListBuilder",
+ *     "translation" = "Drupal\pet\PetTranslationHandler",
  *     "form" = {
+ *       "default" = "Drupal\pet\Form\PetForm",
  *       "add" = "Drupal\pet\Form\PetForm",
  *       "edit" = "Drupal\pet\Form\PetForm",
  *       "delete" = "Drupal\pet\Form\PetDeleteForm",
+ *     },
+ *    "route_provider" = {
+ *       "html" = "Drupal\pet\PetHtmlRouteProvider",
  *     },
  *     "access" = "Drupal\pet\PetAccessControlHandler",
  *   },
@@ -34,12 +39,16 @@ use Drupal\pet\PetInterface;
  *     "label" = "title",
  *     "uuid" = "uuid",
  *     "name" = "name",
+ *     "langcode" = "langcode",
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/pets/{pet}",
+ *     "add-form" = "/admin/structure/pets/add",
  *     "delete-form" = "/admin/structure/pets/{pet}/delete",
  *     "edit-form" = "/admin/structure/pets/{pet}/edit",
+ *     "collection" = "/admin/structure/pets",
  *   },
+ *   translatable = TRUE,
  * )
  *
  */
@@ -50,9 +59,9 @@ class Pet extends ContentEntityBase implements PetInterface {
    */
   public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
     parent::preCreate($storage_controller, $values);
-    $values += array(
+    $values += [
       'user_id' => \Drupal::currentUser()->id(),
-    );
+    ];
   }
 
   /**
@@ -66,9 +75,9 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setDescription(t('The internal identifier for any templates.'))
       ->setReadOnly(TRUE)
       ->setSetting('unsigned', TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
           'weight' => -10,
-        )
+        ]
       );
 
     // Standard field, unique outside of the scope of the current project.
@@ -85,14 +94,15 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setLabel(t('Title'))
       ->setDescription(t('A short, descriptive title for this email template. It will be used in administrative interfaces, and in page titles and menu items.'))
       ->setRequired(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => -14,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -100,31 +110,37 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setLabel(t('Status'))
       ->setDescription(t('The exportable status of the entity.'))
       ->setRequired(TRUE)
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'integer',
         'unsigned' => TRUE,
         'weight' => -12,
-      ));
+      ]);
+
+    $fields['langcode'] = BaseFieldDefinition::create('language')
+      ->setLabel(t('Language code'))
+      ->setDescription(t('The Pet entity language code.'))
+      ->setRevisionable(TRUE);
 
     $fields['subject'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Subject'))
       ->setDescription(t('The subject line of the email template. May include tokens of any token type specified below.'))
       ->setRequired(TRUE)
-      ->setSettings(array(
+      ->setTranslatable(TRUE)
+      ->setSettings([
         'default_value' => '',
         'max_length' => 255,
         'text_processing' => 0,
-      ))
-      ->setDisplayOptions('view', array(
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
         'weight' => -9,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'string',
         'weight' => -9,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -132,108 +148,110 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setLabel(t('Mail Body'))
       ->setDescription(t('The body of the email template. May include tokens of any token type specified below.'))
       ->setDefaultValue(NULL)
-      ->setDisplayOptions('form', array(
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
         'type' => 'string_textarea',
         'weight' => -8,
-        'settings' => array(
+        'settings' => [
           'rows' => 4,
-        ),
-      ))
+        ],
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['mail_body_plain'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Mail Body Plain'))
       ->setDescription(t('The plain text body of the email template. May include tokens of any token type specified below. If left empty Mime Mail will use drupal_html_to_text() to create a plain text version of the email.'))
-      ->setDisplayOptions('form', array(
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('form', [
         'type' => 'string_textarea',
         'weight' => -7,
-        'settings' => array(
+        'settings' => [
           'rows' => 4,
-        ),
-      ))
+        ],
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['send_plain'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Send only plain text'))
       ->setDescription(t('Send email as plain text only. If checked, only the plain text here will be sent. If unchecked both will be sent as multipart mime.Send email as plain text only. If checked, only the plain text here will be sent. If unchecked both will be sent as multipart mime..'))
-      ->setDisplayOptions('form', array(
+      ->setDisplayOptions('form', [
         'weight' => -6,
         'type' => 'boolean_checkbox',
-        'settings' => array(
+        'settings' => [
           'display_label' => TRUE,
-        ),
-      ))
+        ],
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['recipient_callback'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Recipient Callback'))
       ->setDescription(t('The name of a function which will be called to retrieve a list of recipients. This function will be called if the query parameter uid=0 is in the URL. It will be called with one argument, the loaded node (if the PET takes one) or NULL if not. This function should return an array of recipients in the form uid|email, as in 136|bob@example.com. If the recipient has no uid, leave it blank but leave the pipe in. Providing the uid allows token substitution for the user.'))
-      ->setSettings(array(
+      ->setSettings([
         'default_value' => '',
         'max_length' => 255,
-      ))
-      ->setDisplayOptions('view', array(
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
         'weight' => -5,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'string',
         'weight' => -5,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['from_override'] = BaseFieldDefinition::create('email')
       ->setLabel(t('From Override'))
       ->setDescription(t('Email to override system from address.'))
-      ->setSettings(array(
+      ->setSettings([
         'default_value' => '',
         'max_length' => 255,
         'text_processing' => 0,
-      ))
-      ->setDisplayOptions('view', array(
+      ])
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'email',
         'weight' => -4,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'email',
         'weight' => -4,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['cc_default'] = BaseFieldDefinition::create('email')
       ->setLabel(t('CC Default'))
       ->setDescription(t('Emails to be copied by default for each mail sent to recipient. Enter emails separated by lines or commas.'))
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
         'weight' => -3,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'email',
         'weight' => -3,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['bcc_default'] = BaseFieldDefinition::create('email')
       ->setLabel(t('BCC Default'))
       ->setDescription(t('Emails to be blind copied by default for each mail sent to recipient. Enter emails separated by lines or commas.'))
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'string',
         'weight' => -2,
-      ))
-      ->setDisplayOptions('form', array(
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'email',
         'weight' => -2,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -246,11 +264,11 @@ class Pet extends ContentEntityBase implements PetInterface {
       ->setDescription(t('The Name of the associated user.'))
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'default')
-      ->setDisplayOptions('view', array(
+      ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'entity_reference',
         'weight' => -1,
-      ))
+      ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 

@@ -5,36 +5,58 @@ namespace Drupal\raven\Logger;
 use Drupal\Component\ClassFinder\ClassFinder;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Logger\RfcLoggerTrait;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Raven_Client;
 use Raven_ErrorHandler;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Logs events to Sentry.
  */
 class Raven implements LoggerInterface {
 
+  use DependencySerializationTrait {
+    __sleep as protected dependencySleep;
+    __wakeup as protected dependencyWakeup;
+  }
+
   use RfcLoggerTrait;
 
   /**
    * Raven client.
    *
-   * @var \Raven_Client
+   * @var \Raven_Client|null
    */
   public $client;
 
   /**
-   * A configuration object containing syslog settings.
+   * A configuration object containing Raven settings.
    *
    * @var \Drupal\Core\Config\Config
    */
   protected $config;
+
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface|null
+   */
+  protected $currentUser;
 
   /**
    * The module handler.
@@ -51,6 +73,20 @@ class Raven implements LoggerInterface {
   protected $parser;
 
   /**
+   * Request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack|null
+   */
+  protected $requestStack;
+
+  /**
+   * The settings array.
+   *
+   * @var \Drupal\Core\Site\Settings
+   */
+  protected $settings;
+
+  /**
    * Constructs a Raven log object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -61,23 +97,44 @@ class Raven implements LoggerInterface {
    *   The module handler.
    * @param string $environment
    *   The kernel.environment parameter.
+   * @param \Drupal\Core\Session\AccountInterface|null $current_user
+   *   The current user (optional).
+   * @param \Symfony\Component\HttpFoundation\RequestStack|null $request_stack
+   *   The request stack (optional).
+   * @param \Drupal\Core\Site\Settings $settings
+   *   The settings array (optional).
    */
-  public function __construct(ConfigFactoryInterface $config_factory, LogMessageParserInterface $parser, ModuleHandlerInterface $module_handler, $environment) {
+  public function __construct(ConfigFactoryInterface $config_factory, LogMessageParserInterface $parser, ModuleHandlerInterface $module_handler, $environment, AccountInterface $current_user = NULL, RequestStack $request_stack = NULL, Settings $settings = NULL) {
+    $this->configFactory = $config_factory;
+    $this->config = $this->configFactory->get('raven.settings');
+    $this->currentUser = $current_user;
+    $this->requestStack = $request_stack;
+    $this->moduleHandler = $module_handler;
+    $this->parser = $parser;
+    $this->environment = $this->config->get('environment') ?: $environment;
+    $this->settings = $settings ?: Settings::getInstance();
+    $this->setClient();
+    // Raven can catch fatal errors which are not caught by the Drupal logger.
+    if ($this->client && $this->config->get('fatal_error_handler')) {
+      $error_handler = new Raven_ErrorHandler($this->client);
+      $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
+      register_shutdown_function([$this->client, 'onShutdown']);
+    }
+  }
+
+  /**
+   * Creates Sentry client based on config and any alter hooks.
+   */
+  public function setClient() {
     if (!class_exists('Raven_Client')) {
       // Sad raven.
       return;
     }
-    $this->config = $config_factory->get('raven.settings');
-    $this->moduleHandler = $module_handler;
-    $this->parser = $parser;
-    if (!empty($this->config->get('environment'))) {
-      $environment = $this->config->get('environment');
-    }
     $options = [
       'auto_log_stacks' => $this->config->get('stack'),
       'curl_method' => 'async',
-      'dsn' => $this->config->get('client_key'),
-      'environment' => $environment,
+      'dsn' => empty($_SERVER['SENTRY_DSN']) ? $this->config->get('client_key') : $_SERVER['SENTRY_DSN'],
+      'environment' => empty($_SERVER['SENTRY_ENVIRONMENT']) ? $this->environment : $_SERVER['SENTRY_ENVIRONMENT'],
       'processors' => ['Drupal\raven\Processor\SanitizeDataProcessor'],
       'timeout' => $this->config->get('timeout'),
       'message_limit' => $this->config->get('message_limit'),
@@ -95,8 +152,24 @@ class Raven implements LoggerInterface {
       $options['verify_ssl'] = FALSE;
     }
 
-    if (!empty($this->config->get('release'))) {
+    if (!empty($_SERVER['SENTRY_RELEASE'])) {
+      $options['release'] = $_SERVER['SENTRY_RELEASE'];
+    }
+    elseif (!empty($this->config->get('release'))) {
       $options['release'] = $this->config->get('release');
+    }
+
+    // Proxy configuration.
+    $parsed_dsn = parse_url($options['dsn']);
+    if (!empty($parsed_dsn['host']) && !empty($parsed_dsn['scheme'])) {
+      $http_client_config = $this->settings->get('http_client_config', []);
+      if (!empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
+        $no_proxy = isset($http_client_config['proxy']['no']) ? $http_client_config['proxy']['no'] : [];
+        // No need to configure proxy if Sentry host is on proxy bypass list.
+        if (!in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
+          $options['http_proxy'] = $http_client_config['proxy'][$parsed_dsn['scheme']];
+        }
+      }
     }
 
     // Disable the default breadcrumb handler because Drupal error handler
@@ -111,30 +184,11 @@ class Raven implements LoggerInterface {
       // Raven is incorrectly configured.
       return;
     }
-    // Raven can catch fatal errors which are not caught by the Drupal logger.
-    if ($this->config->get('fatal_error_handler')) {
-      // Set default user context to avoid sending session ID to Sentry.
-      $this->client->user_context(['id' => 0, 'ip_address' => '']);
-      $error_handler = new Raven_ErrorHandler($this->client);
-      $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
-      register_shutdown_function([$this->client, 'onShutdown']);
-    }
-  }
-
-  /**
-   * Set user context before capturing fatal error.
-   */
-  public function setContainer(ContainerInterface $container = NULL) {
-    if ($container && $this->client) {
-      if ($current_user = $container->get('current_user')) {
-        $this->client->user_context(['id' => $current_user->id()]);
-      }
-      if ($request_stack = $container->get('request_stack')) {
-        if ($request = $request_stack->getCurrentRequest()) {
-          $this->client->user_context(['ip_address' => $request->getClientIp()]);
-        }
-      }
-    }
+    // Set default user context to avoid sending session ID to Sentry.
+    $this->client->user_context([
+      'id' => $this->currentUser ? $this->currentUser->id() : 0,
+      'ip_address' => $this->requestStack && ($request = $this->requestStack->getCurrentRequest()) ? $request->getClientIp() : '',
+    ]);
   }
 
   /**
@@ -168,7 +222,6 @@ class Raven implements LoggerInterface {
     ];
     $data['timestamp'] = gmdate('Y-m-d\TH:i:s\Z', $context['timestamp']);
     $data['logger'] = $context['channel'];
-    $data['tags']['channel'] = $context['channel'];
     $data['extra']['link'] = $context['link'];
     $data['extra']['referer'] = $context['referer'];
     $data['extra']['request_uri'] = $context['request_uri'];
@@ -230,6 +283,34 @@ class Raven implements LoggerInterface {
     $this->moduleHandler->alter('raven_breadcrumb', $breadcrumb);
     if (!empty($breadcrumb['process'])) {
       $this->client->breadcrumbs->record($breadcrumb['breadcrumb']);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __sleep() {
+    return array_diff($this->dependencySleep(), ['client', 'config']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __wakeup() {
+    $this->dependencyWakeup();
+    $this->config = $this->configFactory->get('raven.settings');
+    $this->setClient();
+  }
+
+  /**
+   * Sends all unsent events.
+   *
+   * Call this method periodically if you have a long-running script or are
+   * processing a large set of data which may generate errors.
+   */
+  public function flush() {
+    if ($this->client) {
+      $this->client->onShutdown();
     }
   }
 

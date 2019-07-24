@@ -3,11 +3,11 @@ description: Defines a view mode to set up the columns of the table for the Inli
 type: module
 package: Fields
 dependencies:
-  - inline_entity_form
+  - inline_entity_form:inline_entity_form
 # core: 8.x
 
-# Information added by Drupal.org packaging script on 2018-09-02
-version: '8.x-2.0-beta1'
+# Information added by Drupal.org packaging script on 2019-06-11
+version: '8.x-2.0'
 core: '8.x'
 project: 'ief_table_view_mode'
-datestamp: 1535905691
+datestamp: 1560256087

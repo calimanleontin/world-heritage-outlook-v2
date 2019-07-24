@@ -1,0 +1,6 @@
+entity.pet.add_form:
+  route_name: entity.pet.add_form
+  title: 'Add Previewable email template'
+  appears_on:
+    - entity.pet.collection
+    - pet.list

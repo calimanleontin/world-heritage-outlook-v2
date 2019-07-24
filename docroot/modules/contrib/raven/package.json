@@ -2,7 +2,7 @@
   "name": "drupal-raven",
   "description": "Raven Drupal module",
   "devDependencies": {
-    "@sentry/browser": "^5.0.8",
+    "@sentry/browser": "^5.5.0",
     "js-yaml": "^3.13.1"
   },
   "scripts": {

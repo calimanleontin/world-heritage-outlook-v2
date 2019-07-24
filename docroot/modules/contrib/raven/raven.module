@@ -20,9 +20,12 @@ function raven_page_attachments(array &$page) {
     if (!isset($page['#attached']['drupalSettings']['raven']['options'])) {
       $page['#attached']['drupalSettings']['raven']['options'] = new \stdClass();
     }
-    $page['#attached']['drupalSettings']['raven']['options']->dsn = $config->get('public_dsn');
-    $page['#attached']['drupalSettings']['raven']['options']->environment = $config->get('environment') ?: \Drupal::getContainer()->getParameter('kernel.environment');
-    if ($release = $config->get('release')) {
+    $page['#attached']['drupalSettings']['raven']['options']->dsn = empty($_SERVER['SENTRY_DSN']) ? $config->get('public_dsn') : $_SERVER['SENTRY_DSN'];
+    $page['#attached']['drupalSettings']['raven']['options']->environment = empty($_SERVER['SENTRY_ENVIRONMENT']) ? ($config->get('environment') ?: \Drupal::getContainer()->getParameter('kernel.environment')) : $_SERVER['SENTRY_ENVIRONMENT'];
+    if (!empty($_SERVER['SENTRY_RELEASE'])) {
+      $page['#attached']['drupalSettings']['raven']['options']->release = $_SERVER['SENTRY_RELEASE'];
+    }
+    elseif ($release = $config->get('release')) {
       $page['#attached']['drupalSettings']['raven']['options']->release = $release;
     }
     $page['#attached']['library'][] = 'raven/raven';
