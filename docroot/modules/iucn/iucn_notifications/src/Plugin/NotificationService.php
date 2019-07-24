@@ -66,6 +66,10 @@ class NotificationService {
    */
   public function sendNotificationToUser($notificationType, $userId, $options = []) {
     $user = User::load($userId);
+    if (empty($user)) {
+      $this->logger->error("NotificationService::sendNotificationToUser: invalid user id {$userId}, notification could not be sent.");
+      return FALSE;
+    }
     return $this->sendNotification($notificationType, $user->getEmail(), $options);
   }
 
