@@ -45,6 +45,15 @@
     select {
       font-size: 1em;
     }
+    .subcategories {
+      margin-left: 1em;
+      ul {
+        li {
+          list-style-type: disc;
+          margin-left: 0.5em;
+        }
+      }
+    }
     ul {
       li {
         list-style-type: none;
@@ -396,6 +405,7 @@ span.field-boolean-tick {
 }
 .diff-tick-false {
   font-size: 1.6rem;
+  color: #7f0000;
 }
 .diff-context-wrapper {
   td.diff-tick-false {
@@ -418,4 +428,13 @@ table.diff-context-wrapper {
 }
 .diff-tick-marker {
   display: block;
+}
+
+.paragraph-summary-component-field_as_threats_in {
+    min-width: 125px;
+}
+
+.field--name-field-as-benefits-summary .field-icon-button-compare {
+  &:extend(.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button);
+  &:extend(.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare);
 }

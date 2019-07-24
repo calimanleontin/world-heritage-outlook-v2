@@ -4,6 +4,7 @@ namespace Drupal\webform_ui;
 
 use Drupal\Core\Entity\BundleEntityFormBase;
 use Drupal\Core\Form\OptGroup;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
@@ -24,6 +25,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WebformUiEntityElementsForm extends BundleEntityFormBase {
 
   use WebformEntityAjaxFormTrait;
+
+  /**
+   * Array of required states.
+   *
+   * @var array
+   */
+  protected $requiredStates = [
+    'required' => 'required',
+    '!required' => '!required',
+    'optional' => 'optional',
+    '!optional' => '!optional',
+  ];
 
   /**
    * The renderer.
@@ -199,7 +212,12 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
       }
 
       // Set #required or remove the property.
-      if (isset($webform_ui_elements[$key]['required'])) {
+      $is_conditionally_required = isset($elements_flattened[$key]['#states']) && array_intersect_key($this->requiredStates, $elements_flattened[$key]['#states']);
+      if ($is_conditionally_required) {
+        // Always unset conditionally required elements.
+        unset($elements_flattened[$key]['#required']);
+      }
+      elseif (isset($webform_ui_elements[$key]['required'])) {
         if (empty($webform_ui_elements[$key]['required'])) {
           unset($elements_flattened[$key]['#required']);
         }
@@ -334,7 +352,7 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
 
       if (empty($element['#title'])) {
         if (!empty($element['#markup'])) {
-          $element['#title'] = ['#markup' => Unicode::truncate(strip_tags($element['#markup']), 100, TRUE, TRUE)];
+          $element['#title'] = Markup::create(Unicode::truncate(strip_tags($element['#markup']), 100, TRUE, TRUE));
         }
         else {
           $element['#title'] = '[' . $element_key . ']';
@@ -532,10 +550,12 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
       ];
     }
 
+    $is_conditionally_required = FALSE;
     if ($webform->hasConditions()) {
       $states = [];
       if (!empty($element['#states'])) {
         $states = array_intersect_key($element_state_options, $element['#states']);
+        $is_conditionally_required = array_intersect_key($this->requiredStates, $element['#states']);
       }
       $row['conditional'] = [
         '#type' => 'link',
@@ -561,6 +581,10 @@ class WebformUiEntityElementsForm extends BundleEntityFormBase {
         '#title_display' => 'invisible',
         '#default_value' => (empty($element['#required'])) ? FALSE : TRUE,
       ];
+      if ($is_conditionally_required) {
+        $row['required']['#default_value'] = TRUE;
+        $row['required']['#disabled'] = TRUE;
+      }
     }
     else {
       $row['required'] = ['#markup' => ''];

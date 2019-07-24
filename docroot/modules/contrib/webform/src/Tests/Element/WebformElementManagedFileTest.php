@@ -63,7 +63,7 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
    */
   public function testFileUpload() {
     /* Element rendering */
-    $this->drupalGet('webform/test_element_managed_file');
+    $this->drupalGet('/webform/test_element_managed_file');
 
     // Check single file upload button.
     $this->assertRaw('<label for="edit-managed-file-single-button-upload-button--2" class="button button-action webform-file-button">Choose file</label>');
@@ -72,24 +72,24 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
     $this->assertRaw('<label for="edit-managed-file-multiple-button-upload-button--2" class="button button-action webform-file-button">Choose files</label>');
 
     // Check single custom file upload button.
-    $this->assertRaw('<label for="edit-managed-file-single-button-custom-upload">managed_file_single_button</label>');
+    $this->assertRaw('<label style="color: red" for="edit-managed-file-single-button-custom-upload-button--2" class="button button-action webform-file-button">{Custom label}</label>');
 
     /* Element processing */
 
     $this->checkFileUpload('single', $this->files[0], $this->files[1]);
     $this->checkFileUpload('multiple', $this->files[2], $this->files[3]);
-    
+
     /* File placeholder */
 
     // Check placeholder is displayed.
-    $this->drupalGet('webform/test_element_managed_file');
+    $this->drupalGet('/webform/test_element_managed_file');
     $this->assertRaw('<div class="webform-managed-file-placeholder managed-file-placeholder js-form-wrapper form-wrapper" data-drupal-selector="edit-managed-file-single-placeholder-file-placeholder" id="edit-managed-file-single-placeholder-file-placeholder">This is the single file upload placeholder</div>');
     $this->assertRaw('<div class="webform-managed-file-placeholder managed-file-placeholder js-form-wrapper form-wrapper" data-drupal-selector="edit-managed-file-multiple-placeholder-file-placeholder" id="edit-managed-file-multiple-placeholder-file-placeholder">This is the multiple file upload placeholder</div>');
 
     $this->drupalLogin($this->rootUser);
 
     // Check placeholder is not displayed when files are uploaded.
-    $this->drupalGet('webform/test_element_managed_file/test');
+    $this->drupalGet('/webform/test_element_managed_file/test');
     $this->assertNoRaw('<div class="webform-managed-file-placeholder managed-file-placeholder js-form-wrapper form-wrapper" data-drupal-selector="edit-managed-file-single-placeholder-file-placeholder" id="edit-managed-file-single-placeholder-file-placeholder">This is the single file upload placeholder</div>');
     $this->assertNoRaw('<div class="webform-managed-file-placeholder managed-file-placeholder js-form-wrapper form-wrapper" data-drupal-selector="edit-managed-file-multiple-placeholder-file-placeholder" id="edit-managed-file-multiple-placeholder-file-placeholder">This is the multiple file upload placeholder</div>');
   }
@@ -323,12 +323,18 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
     // Check test file 1 file usage.
     $this->assertIdentical(['webform' => ['webform_submission' => [$sid => '1']]], $this->fileUsage->listUsage($new_file), 'The new file has 1 usage.');
 
+    // Check that file directory was create.
+    $this->assertTrue(file_exists('private://webform/test_element_managed_file/' . $sid . '/'));
+
     // Delete the submission.
     $submission->delete();
 
     // Check that test file 1 was deleted from the disk and database.
     $this->assert(!file_exists($new_file->getFileUri()), 'Test new file deleted from disk');
     $this->assertEqual(0, \Drupal::database()->query('SELECT COUNT(fid) AS total FROM {file_managed} WHERE fid = :fid', [':fid' => $new_fid])->fetchField(), 'Test new file deleted from database');
+
+    // Check that empty file directory was deleted.
+    $this->assertFalse(file_exists('private://webform/test_element_managed_file/' . $sid . '/'));
   }
 
 }

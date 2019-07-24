@@ -4,9 +4,10 @@ status: true
 dependencies: {  }
 id: publish_world_heritage_site_assessments
 label: 'Publish World Heritage site assessments'
-weight: -7
+weight: -3
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'create site_assessment content'
   - 'delete any site_assessment content'
@@ -14,3 +15,4 @@ permissions:
   - 'delete site_assessment revisions'
   - 'revert site_assessment revisions'
   - 'use text format assessment_text_format'
+  - 'view home button'

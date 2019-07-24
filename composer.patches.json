@@ -4,12 +4,8 @@
       "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
       "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
       "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
-      "EntityRevisionParamConverter doesn't check if the entity revision actually exists": "https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch",
-      "Fix states api or condition": "patches/core/states-api-or.patch"
-    },
-    "drupal/display_field_copy": {
-      "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
-      "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
+      "Fix states api or condition": "patches/core/states-api-or.patch",
+      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
     },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
@@ -48,17 +44,14 @@
       "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
       "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
     },
-    "drupal/bootstrap": {
-      "Error: Unsupported operand types during providers JSON discovery" : "https://www.drupal.org/files/issues/2019-01-24/3027569-8.x-3.x-8.patch"
-    },
     "webspellchecker/ckeditor-plugin-scayt": {
       "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
     },
     "drupal/social_media": {
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
     },
-    "drupal/search_api": {
-      "Infinite loop inside Highlight.php -> createExcerpt function": "https://www.drupal.org/files/issues/2019-01-04/3022724-10--fix_highlight_excerpt_creation_infinite_loop.patch"
+    "drupal/pet": {
+      "Fields definition": "patches/pet/pet.patch"
     }
   }
 }

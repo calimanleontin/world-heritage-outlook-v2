@@ -61,6 +61,7 @@
           &.field-with-diff {
             position: relative;
             padding-right: 60px;
+            background-color: #fcf8e3 !important;
 
             .field-icon-button {
               margin: 10px 3px !important;
@@ -208,6 +209,7 @@
       margin: 0 !important;
       padding: 0 !important;
       border: none !important;
+      position: relative;
 
       label {
         display: none;
@@ -216,6 +218,11 @@
       .form-textarea-wrapper {
         padding: 10px 12px;
       }
+
+      .field-icon-button-compare {
+        &:extend(.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button all) ;
+      }
     }
   }
 }
+

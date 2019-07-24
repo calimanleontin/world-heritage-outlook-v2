@@ -40,6 +40,8 @@ function template_preprocess_webform_help(array &$variables) {
   $variables += $help_info;
 
   $help = [];
+
+  // Content.
   if (is_array($help_info['content'])) {
     $help['content'] = $help_info['content'];
   }
@@ -49,39 +51,10 @@ function template_preprocess_webform_help(array &$variables) {
     ];
   }
 
-  // Build watch video link.
-  // If help info load the video else this is the video info.
+  // Video.
   $video_info = (isset($help_info['video_id'])) ? $help_manager->getVideo($help_info['video_id']) : $help_info;
-  if (!empty($video_info['youtube_id'])) {
-    $classes = ['button', 'button-action', 'button--small', 'button-webform-play'];
-
-    $video_display = \Drupal::config('webform.settings')->get('ui.video_display');
-    switch ($video_display) {
-      case 'dialog':
-        $variables['#attached']['library'][] = 'webform/webform.ajax';
-        $help['link'] = [
-          '#type' => 'link',
-          '#title' => t('Watch video'),
-          '#url' => Url::fromRoute('webform.help.video', ['id' => str_replace('_', '-', $video_info['id'])]),
-          '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_WIDE, $classes),
-          '#prefix' => ' ',
-        ];
-        break;
-
-      case 'link':
-        $help['link'] = [
-          '#type' => 'link',
-          '#title' => t('Watch video'),
-          '#url' => Url::fromUri('https://youtu.be/' . $video_info['youtube_id']),
-          '#attributes' => ['class' => $classes],
-          '#prefix' => ' ',
-        ];
-        break;
-
-      case 'hidden':
-      default:
-        break;
-    }
+  if (isset($video_info['id'])) {
+    $help['link'] = $help_manager->buildVideoLink($video_info['id']);
   }
 
   $variables['help'] = $help;
@@ -295,6 +268,25 @@ function template_preprocess_webform_submission(array &$variables) {
 }
 
 /**
+ * Prepares variables for webform submission data templates.
+ *
+ * Default template: webform-submission-data.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: An array of elements to display in view mode.
+ *   - webform_submission: The webform submissions object.
+ *   - view_mode: View mode; e.g., 'html', 'text', 'table', 'yaml', etc.
+ */
+function template_preprocess_webform_submission_data(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $variables['webform_submission'] = $variables['elements']['#webform_submission'];
+  if ($variables['webform_submission'] instanceof WebformSubmissionInterface) {
+    $variables['webform'] = $variables['webform_submission']->getWebform();
+  }
+}
+
+/**
  * Prepares variables for webform submission information template.
  *
  * Default template: webform-submission-information.html.twig.
@@ -329,7 +321,7 @@ function template_preprocess_webform_submission_information(array &$variables) {
   $variables['language'] = isset($languages[$langcode]) ? $languages[$langcode]->getName() : $langcode;
 
   if ($source_url = $webform_submission->getSourceUrl()) {
-    $variables['uri'] = Link::fromTextAndUrl($source_url->setAbsolute(FALSE)->toString(), $source_url);;
+    $variables['uri'] = Link::fromTextAndUrl($source_url->setAbsolute(FALSE)->toString(), $source_url);
   }
 
   if ($webform->getSetting('token_update')) {
@@ -635,6 +627,23 @@ function template_preprocess_webform_message(array &$variables) {
 }
 
 /**
+ * Prepares variables for Webform HTML Editor markup templates.
+ *
+ * Default template: webform-html-editor-markup.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - markup: HTML markup.
+ *   - allowed_tags: Allowed tags.
+ */
+function template_preprocess_webform_html_editor_markup(array &$variables) {
+  $variables['content'] = [
+    '#markup' => $variables['markup'],
+    '#allowed_tags' => $variables['allowed_tags'],
+  ];
+}
+
+/**
  * Prepares variables for Webform horizontal rule templates.
  *
  * Default template: webform-horizontal-rule.html.twig.
@@ -865,6 +874,11 @@ function template_preprocess_webform_element_more(array &$variables) {
   // Make sure there is a unique id.
   if (empty($variables['id'])) {
     $variables['id'] = Html::getUniqueId('webform-element-more');
+  }
+
+  // Make sure attributes id is set.
+  if (!isset($variables['attributes']['id'])) {
+    $variables['attributes']['id'] = $variables['id'];
   }
 }
 

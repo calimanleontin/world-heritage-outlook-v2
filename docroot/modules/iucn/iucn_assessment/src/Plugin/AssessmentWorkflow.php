@@ -3,11 +3,13 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\workflow\Entity\WorkflowManager;
@@ -44,6 +46,9 @@ class AssessmentWorkflow {
 
   /** Coordinator starts reviewing the references */
   const STATUS_REVIEWING_REFERENCES = 'assessment_reviewing_references';
+
+  /** Coordinator starts reviewing the references */
+  const STATUS_FINAL_CHANGES = 'assessment_final_changes';
 
   /** Coordinator has done the comparison and merge phase */
   const STATUS_APPROVED = 'assessment_approved';
@@ -120,6 +125,7 @@ class AssessmentWorkflow {
     $state = $node->field_state->value ?: self::STATUS_CREATION;
     $accountIsCoordinator = $node->field_coordinator->target_id === $account->id();
     $accountIsAssessor = $node->field_assessor->target_id === $account->id();
+    $accountIsReferencesReviewer = $node->field_references_reviewer->target_id === $account->id();
 
     if ($account->hasPermission('edit assessment in any state')) {
       return AccessResult::allowed();
@@ -135,11 +141,14 @@ class AssessmentWorkflow {
         case self::STATUS_UNDER_EVALUATION:
         case self::STATUS_READY_FOR_REVIEW:
         case self::STATUS_UNDER_COMPARISON:
-        case self::STATUS_REVIEWING_REFERENCES:
+        case self::STATUS_FINAL_CHANGES:
           // Assessments can only be edited by their coordinator.
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
 
+        case self::STATUS_REVIEWING_REFERENCES:
+          $access = AccessResult::allowedIf($accountIsReferencesReviewer);
+          break;
 
         case self::STATUS_UNDER_ASSESSMENT:
           // In this state, assessments can only be edited by their assessors.
@@ -211,9 +220,9 @@ class AssessmentWorkflow {
 
     if (in_array($currentState, [self::STATUS_FINISHED_REVIEWING, self::STATUS_UNDER_COMPARISON])) {
       // Except the default revisions, there are multiple revisions with
-      // "Under review" and "Finished reviewing" status (one for each reviewer),
-      // so we compare the "Finished reviewing" and "Under comparison" revisions
-      // with the only "Ready for review" one.
+      // "Under review" and "Feedback from all reviewers received" status (one for each reviewer),
+      // so we compare the "Feedback from all reviewers received" and "Post-review edits" revisions
+      // with the only "Pre-review edits" one.
       $previousStateKey = array_search(self::STATUS_READY_FOR_REVIEW, $workflow);
     }
     else {
@@ -354,6 +363,17 @@ class AssessmentWorkflow {
     $node->get('field_settings')->setValue($field_settings_json);
   }
 
+  public function removeCommentsFromFieldSettings(NodeInterface $node) {
+    $field_settings = json_decode($node->field_settings->value, TRUE);
+    if (empty($field_settings['comments'])) {
+      return;
+    }
+
+    $field_settings['comments'] = [];
+    $field_settings_json = json_encode($field_settings);
+    $node->get('field_settings')->setValue($field_settings_json);
+  }
+
   /**
    * Create a revision for an assessment.
    *
@@ -434,21 +454,6 @@ class AssessmentWorkflow {
       return array_column($reviewers, 'target_id');
     }
     return [];
-  }
-
-  /**
-   * Deletes the revision created for a reviewer.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The assessment.
-   * @param int $uid
-   *   The user id of the reviewer.
-   */
-  public function deleteReviewerRevisions(NodeInterface $node, $uid) {
-    $reviewer_revision = $this->getReviewerRevision($node, $uid);
-    if (!empty($reviewer_revision)) {
-      $this->nodeStorage->deleteRevision($reviewer_revision->getRevisionId());
-    }
   }
 
   /**
@@ -683,4 +688,32 @@ class AssessmentWorkflow {
     }
   }
 
+  /**
+   * @param NodeInterface $defaultUnderReviewRevision
+   * @param NodeInterface $reviewerRevision
+   * @param NodeInterface $readyForReviewRevision
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
+   */
+  public function markRevisionAsFinished(NodeInterface $defaultUnderReviewRevision, NodeInterface $reviewerRevision, NodeInterface $readyForReviewRevision) {
+    $oldState = AssessmentWorkflow::STATUS_UNDER_REVIEW;
+    $newState = AssessmentWorkflow::STATUS_FINISHED_REVIEWING;
+
+    // Save the differences on the revision "under review" revision.
+    $this->appendCommentsToFieldSettings($defaultUnderReviewRevision, $reviewerRevision);
+    $this->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $reviewerRevision->getRevisionId());
+    $defaultUnderReviewRevision->setNewRevision(FALSE);
+    $defaultUnderReviewRevision->save();
+
+    if ($this->isAssessmentReviewed($defaultUnderReviewRevision, $reviewerRevision->getRevisionId())) {
+      // If all other reviewers finished their work, send the assessment
+      // back to the coordinator.
+      $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
+    }
+
+    $reviewerRevision->setRevisionLogMessage("{$oldState} => {$newState}");
+
+    $this->forceAssessmentState($reviewerRevision, $newState);
+  }
 }

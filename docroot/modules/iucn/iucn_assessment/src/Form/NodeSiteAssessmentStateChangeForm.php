@@ -2,13 +2,16 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class NodeSiteAssessmentStateChangeForm {
@@ -42,6 +45,18 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStateChangeWarning($form, $node, $currentUser);
     }
     self::hideUnnecessaryFields($form);
+
+    $form['actions']['workflow_force_finish_review'] = [
+      '#type' => 'submit',
+      '#value' => t('Force finish reviewing'),
+      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
+      '#weight' => 100,
+      '#name' => 'force_finish_review',
+      '#attributes' => [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the reviewing phase? Reviewers will no longer be able to edit this assessment.")){return false;}',
+      ],
+    ];
 
     // We want to replace the core submitForm method so the node won't get saved
     // twice.
@@ -79,11 +94,22 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_coordinator']['#access'] = $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
       $form['field_assessor']['#access'] = $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $form['field_reviewers']['#access'] = $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+      $form['field_references_reviewer']['#access'] = $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     }
     else {
       $form['field_coordinator']['#access'] = FALSE;
       $form['field_assessor']['#access'] = FALSE;
       $form['field_reviewers']['#access'] = FALSE;
+      $form['field_references_reviewer']['#access'] = FALSE;
+    }
+
+
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      // If users have multiple roles, having these fields only hidden using #access
+      // property can break things, so we need to fully unset them.
+      if ($form[$field]['#access'] === FALSE) {
+        unset($form[$field]);
+      }
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
@@ -93,73 +119,118 @@ class NodeSiteAssessmentStateChangeForm {
       self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
     }
 
-    $form['#title'] = t('Change state of @type @assessment', [
+    $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
+    static::changeWorkflowButtons($form, $currentUser);
+
+    $titlePlaceholder = 'Change state of @type @assessment';
+
+    if (in_array('reviewer', $currentUser->getRoles())) {
+      $titlePlaceholder = 'Submit review of @assessment @type';
+    }
+
+    $form['#title'] = t($titlePlaceholder, [
       '@type' => $node->type->entity->label(),
       '@assessment' => $node->getTitle(),
     ]);
   }
 
   public static function validateNode(&$form, NodeInterface $node) {
+    /** @var \Drupal\Core\Field\FieldConfigInterface[] $siteAssessmentFields */
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
+    $errors = [];
+
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
       }
 
-      $tab_has_errors = FALSE;
-      if (!$fieldSettings->isRequired() && ($fieldSettings->getType() != 'entity_reference_revisions')) {
+      // First we do custom validation for some fields.
+      switch ($fieldName) {
+        case 'field_as_vass_bio_text':
+          $fieldSettings->setLabel(t('Justification of assessment'));
+        case 'field_as_vass_bio_state':
+        case 'field_as_vass_bio_trend':
+          $fieldSettings->setLabel(t('Summary of the values - ' . $fieldSettings->getLabel()));
+          if (!empty($node->field_as_values_bio->getValue())) {
+            // These 3 fields are required only if field_as_values_bio is not empty.
+            $fieldSettings->setRequired(TRUE);
+          }
+          break;
+
+        case 'field_as_benefits_summary':
+          // This field is required only if field_as_benefits is not empty.
+          if (!empty($node->field_as_benefits->getValue())) {
+            $fieldSettings->setRequired(TRUE);
+          }
+          break;
+      }
+
+      if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
-      if (!empty($node->{$fieldName}->getValue()) || !$fieldSettings->isRequired()) {
-        if ($fieldSettings->getType() == 'entity_reference_revisions') {
-          foreach ($node->{$fieldName} as &$value) {
-            $target = $value->getValue();
-            $paragraph = Paragraph::load($target['target_id']);
+      if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
+        $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
+        continue;
+      }
 
-            if (in_array($fieldName, ['field_as_threats_current', 'field_as_threats_potential'])) {
-              static::validateThreat($form, $paragraph);
+      if ($fieldSettings->getType() == 'entity_reference_revisions') {
+        foreach ($node->{$fieldName} as &$value) {
+          // We need to validate each child paragraph.
+          $target = $value->getValue();
+
+          $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($target['target_revision_id']);
+          if ($paragraph->bundle() == 'as_site_threat') {
+            static::validateThreat($form, $paragraph);
+          }
+
+          if ($paragraph->bundle() == 'as_site_benefit') {
+            $categoryError =  static::validateTaxonomyReferenceFieldWithTwoLevels($paragraph->field_as_threats_categories);
+            if (!$categoryError !== FALSE) {
+              $errors[$fieldName][$categoryError] = ($categoryError == 'main') ? t('Benefit type') : t('Specific benefits');
             }
+          }
 
-            if ($fieldName == 'field_as_benefits') {
-              static::validateCategories($form, $paragraph->field_as_benefits_category, 'Benefits!');
-              if (empty($node->field_as_benefits_summary->value)) {
-                static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-                  '@field' => t('Summary of benefits'),
-                  '@tab' => t('Benefits'),
-                ]), 'error', $fieldName);
+          /** @var \Drupal\Core\Field\FieldConfigInterface[] $paragraphFieldDefinitions */
+          $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
+          foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
+            if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
+              if (in_array($paragraphFieldName, [
+                'field_as_values_curr_text',
+                'field_as_values_curr_state',
+                'field_as_values_curr_trend',
+              ])) {
+                $siteAssessmentFields['assessing_values'] = clone $fieldSettings;
+                $siteAssessmentFields['assessing_values']->setLabel('Assessing values');
+                $errors['assessing_values'][$paragraphFieldName] = $paragraphFieldSettings->getLabel();
               }
-            }
-
-            if ($fieldName == 'field_as_values_bio') {
-              static::validateAssessingValues($form, $node);
-            }
-
-            $paragraphFieldDefinitions = $paragraph->getFieldDefinitions();
-            foreach ($paragraphFieldDefinitions as $paragraphFieldName => $paragraphFieldSettings) {
-              if ($paragraphFieldSettings->isRequired() && empty($paragraph->{$paragraphFieldName}->getValue())) {
-                $tab_has_errors = TRUE;
-                self::addStatusMessage($form, t('<b>@field</b> field is required for all rows in <b>@label</b> table.', [
-                  '@field' => $paragraphFieldSettings->getLabel(),
-                  '@label' => $fieldSettings->getLabel(),
-                ]), 'error');
+              else {
+                $errors[$fieldName][$paragraphFieldName] = $paragraphFieldSettings->getLabel();
               }
-            }
-            // Show errors only in 1 paragraph row.
-            if (!empty($tab_has_errors)) {
-              break;
             }
           }
         }
       }
-      else {
-        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => $fieldSettings->getLabel()]), 'error');
+    }
+
+    foreach($errors as $parentField => $errorData) {
+      if (key($errorData) == $parentField) {
+        self::addStatusMessage($form, t('<b>@name</b> field is required.', ['@name' => reset($errorData)]), 'error');
+        continue;
       }
+
+      $singularMessage = '<b>@field</b> field is required for all rows in <b>@table</b> table.';
+      $pluralMessage = '<b>@field</b> fields are required for all rows in <b>@table</b> table.';
+      self::addStatusMessage($form, new PluralTranslatableMarkup(count($errorData), $singularMessage, $pluralMessage, [
+        '@field' => implode(', ', $errorData),
+        '@table' => $siteAssessmentFields[$parentField]->getLabel(),
+      ]), 'error');
     }
 
     if (!empty($form['error'])) {
       unset($form['field_coordinator']);
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
+      unset($form['field_references_reviewer']);
       unset($form['warning']);
       $form['actions']['#access'] = FALSE;
     }
@@ -182,93 +253,74 @@ class NodeSiteAssessmentStateChangeForm {
     return TRUE;
   }
 
-  private static function validateThreat(&$form, $item) {
-    if (empty($item->field_as_threats_out->value) &&
-      empty($item->field_as_threats_in->value)) {
-      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>"@threat"</i> threat.', [
-        '@threat' => $item->field_as_threats_threat->value,
+  private static function validateThreat(&$form, ParagraphInterface $paragraph) {
+    $threatTitle = $paragraph->get('field_as_threats_threat')->value;
+    $categoryError =  static::validateTaxonomyReferenceFieldWithTwoLevels($paragraph->field_as_threats_categories);
+    if ($categoryError !== FALSE) {
+      static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
+        '@field' => ($categoryError == 'main') ? t('Category') : t('Subcategories'),
+        '@threat' => $threatTitle,
       ]), 'error');
     }
 
-    if (!empty($item->field_as_threats_in->value) &&
-      $item->field_as_threats_extent->isEmpty()) {
+    if (empty($paragraph->get('field_as_threats_out')->value) &&
+      empty($paragraph->get('field_as_threats_in')->value)) {
+      static::addStatusMessage($form, t('At least one option must be selected for <b>Inside site/Outside site</b> for <i>"@threat"</i> threat.', [
+        '@threat' => $threatTitle,
+      ]), 'error');
+    }
+
+    if (!empty($paragraph->get('field_as_threats_in')->value) &&
+      $paragraph->get('field_as_threats_extent')->isEmpty()) {
       static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Threat extent'),
-        '@threat' => $item->field_as_threats_threat->value,
+        '@threat' => $threatTitle,
       ]), 'error');
     }
 
     foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $key => $tids) {
-      if ($item->$key->isEmpty()
+      if ($paragraph->$key->isEmpty()
         && in_array($key, ParagraphAsSiteThreatForm::REQUIRED_DEPENDENT_FIELDS)
-        && !empty(array_intersect($tids, array_column($item->field_as_threats_categories->getValue(), 'target_id')))) {
+        && !empty(array_intersect($tids, array_column($paragraph->get('field_as_threats_categories')->getValue(), 'target_id')))) {
         static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
-          '@field' => $item->getFieldDefinition($key)->getLabel(),
-          '@threat' => $item->field_as_threats_threat->value,
+          '@field' => $paragraph->getFieldDefinition($key)->getLabel(),
+          '@threat' => $threatTitle,
         ]), 'error');
       }
     }
 
     $affectedValues = FALSE;
     foreach (ParagraphAsSiteThreatForm::AFFECTED_VALUES_FIELDS as $affectedField) {
-      $affectedValues = $affectedValues || !$item->$affectedField->isEmpty();
+      $affectedValues = $affectedValues || !$paragraph->get($affectedField)->isEmpty();
     }
 
     if (!$affectedValues) {
       static::addStatusMessage($form, t('<b>@field</b> field is required for <i>"@threat"</i> threat.', [
         '@field' => t('Affected values'),
-        '@threat' => $item->field_as_threats_threat->value,
+        '@threat' => $threatTitle,
       ]), 'error', 'field_affected_values');
     }
-
-    static::validateCategories($form, $item->field_as_threats_categories, 'Threats');
   }
 
-  public static function validateBenefit(&$form, $node) {
-    foreach ($node->field_as_benefits as $item) {
-      static::validateCategories($form, $item->entity->field_as_benefits_category, 'Benefits');
-    }
-
-    if ($node->field_as_benefits->getValue() && empty($node->field_as_benefits_summary->value)) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-        '@field' => t('Summary of benefits'),
-        '@tab' => t('Benefits'),
-      ]), 'error');
-    }
-  }
-
-  public static function validateAssessingValues(&$form, $node) {
-    if (empty($node->field_as_values_bio->getValue())) {
-      return;
-    }
-
-    $required_fields = [
-      'field_as_vass_bio_text',
-      'field_as_vass_bio_state',
-      'field_as_vass_bio_trend',
-    ];
-
-    $requiredLabels = [];
-    foreach ($required_fields as $required_field) {
-      if ($node->$required_field->isEmpty()) {
-        $requiredLabels[] = $node->getFieldDefinition($required_field)->getLabel();
-      }
-    }
-
-    if (!empty($requiredLabels)) {
-      $labels = implode(', ', $requiredLabels);
-      $message = \Drupal::translation()->formatPlural(count($requiredLabels),
-        "<b>@field</b> field is required in <b>@tab</b> tab.",
-        "<b>@field</b> fields are required in <b>@tab</b> tab.",
-        ['@field' => $labels, '@tab' => t('Assessing values')]);
-      static::addStatusMessage( $form, $message, 'error', 'field_as_values_bio');
-    }
-  }
-
-  private static function validateCategories(&$form, $items, $tab) {
+  /**
+   * There are some entity reference fields which are required to have both
+   * level 1 terms and at least one of their child.
+   *
+   * @param $items
+   *
+   * @return bool|string
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  private static function validateTaxonomyReferenceFieldWithTwoLevels(EntityReferenceFieldItemList $items = NULL) {
     $mainCategory = FALSE;
     $skipSubcategories = FALSE;
     $subCategories = [];
+
+    if (empty($items)) {
+      return 'main';
+    }
+
     foreach ($items as $category) {
       $parent = array_column($category->entity->parent->getValue(), 'target_id');
       $parent = reset($parent);
@@ -289,18 +341,13 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (empty($mainCategory)) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-        '@field' => t('Category'),
-        '@tab' => $tab,
-      ]), 'error');
+      return 'main';
     }
 
     if (empty($subCategories) && !$skipSubcategories) {
-      static::addStatusMessage($form, t("<b>@field</b> field is required in <b>@tab</b> tab.", [
-        '@field' => t('Subcategory'),
-        '@tab' => $tab,
-      ]), 'error');
+      return 'sub';
     }
+    return FALSE;
   }
 
   /**
@@ -349,11 +396,11 @@ class NodeSiteAssessmentStateChangeForm {
     $state = $node->field_state->value;
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
       && $node->field_assessor->target_id == $current_user->id()) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish it.'));
+      self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
     elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
       && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You will NO longer be able to edit the assessment after you finish reviewing it.'));
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
@@ -387,7 +434,10 @@ class NodeSiteAssessmentStateChangeForm {
     $oldState = $newState = $node->field_state->value;
     $createNewRevision = TRUE;
 
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      if (empty($form_state->getValue($field))) {
+        continue;
+      }
       $node->set($field, $form_state->getValue($field));
     }
 
@@ -397,21 +447,40 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if ($newState == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-      // Handle reviewers revisions.
-      $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
-        ? $workflowService->getReviewersArray($original)
-        : [];
-      $newReviewers = $workflowService->getReviewersArray($node);
+      $removedReviewers = $addedReviewers = [];
 
-      $addedReviewers = array_diff($newReviewers, $originalReviewers);
-      $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      if (!empty($form_state->getValue('force_finish_review'))) {
+        $underReviewRevisions = $workflowService->getAllReviewersRevisions($node);
+        /** @var NodeInterface $revision */
+        foreach ($underReviewRevisions as $revision) {
+          if ($revision->get('field_state')->value != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+            continue;
+          }
+
+          $removedReviewers[] = $revision->getRevisionUserId();
+        }
+      }
+      else {
+        // Handle reviewers revisions.
+        $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
+          ? $workflowService->getReviewersArray($original)
+          : [];
+        $newReviewers = $workflowService->getReviewersArray($node);
+
+        $addedReviewers = array_diff($newReviewers, $originalReviewers);
+        $removedReviewers = array_diff($originalReviewers, $newReviewers);
+      }
 
       if (!empty($addedReviewers)) {
         // Create a revision for each newly added reviewer.
         foreach ($addedReviewers as $reviewerId) {
-          if (empty($workflowService->getReviewerRevision($node, $reviewerId))) {
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          if (empty($reviewerRevision)) {
             $message = "Revision created for reviewer {$reviewerId}";
             $workflowService->createRevision($node, $newState, $reviewerId, $message);
+          } else {
+            $reviewerRevision->set('field_state', AssessmentWorkflow::STATUS_UNDER_REVIEW);
+            $reviewerRevision->save();
           }
         }
       }
@@ -419,7 +488,10 @@ class NodeSiteAssessmentStateChangeForm {
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
         foreach ($removedReviewers as $reviewerId) {
-          $workflowService->deleteReviewerRevisions($node, $reviewerId);
+          $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
+          $readyForReviewRevision = $workflowService->getRevisionByState($reviewerRevision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+
+          $workflowService->markRevisionAsFinished($node, $reviewerRevision, $readyForReviewRevision);
         }
       }
 
@@ -437,7 +509,9 @@ class NodeSiteAssessmentStateChangeForm {
 
     $default = $node->isDefaultRevision();
     $settingsWithDifferences = $node->field_settings->value;
-    $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    if ($oldState != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+      $workflowService->clearKeyFromFieldSettings($node, 'diff');
+    }
 
     switch ($oldState . '>' . $newState) {
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
@@ -445,27 +519,29 @@ class NodeSiteAssessmentStateChangeForm {
         $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
         break;
 
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
+        $workflowService->removeCommentsFromFieldSettings($node);
+        break;
+
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        if (!empty($removedReviewers)) {
+          break;
+        }
+
         $defaultUnderReviewRevision = Node::load($node->id());
         $readyForReviewRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+        $workflowService->markRevisionAsFinished($defaultUnderReviewRevision, $node, $readyForReviewRevision);
 
-        // Save the differences on the revision "under review" revision.
-        $workflowService->appendCommentsToFieldSettings($defaultUnderReviewRevision, $node);
-        $workflowService->appendDiffToFieldSettings($defaultUnderReviewRevision, $readyForReviewRevision->getRevisionId(), $node->getRevisionId());
-        $defaultUnderReviewRevision->setNewRevision(FALSE);
-        $defaultUnderReviewRevision->save();
-
-        if ($workflowService->isAssessmentReviewed($defaultUnderReviewRevision, $node->getRevisionId())) {
-          // If all other reviewers finished their work, send the assessment
-          // back to the coordinator.
-          $workflowService->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
-        }
-        $node->setRevisionLogMessage("{$oldState} => {$newState}");
         $createNewRevision = FALSE;
         break;
 
       case AssessmentWorkflow::STATUS_FINISHED_REVIEWING . '>' . AssessmentWorkflow::STATUS_UNDER_COMPARISON:
         $node->set('field_settings', $settingsWithDifferences);
+        break;
+
+      case AssessmentWorkflow::STATUS_REVIEWING_REFERENCES . '>' . AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        $underComparisonRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_COMPARISON);
+        $workflowService->appendDiffToFieldSettings($node, $underComparisonRevision->getRevisionId(), $original->getRevisionId());
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
@@ -479,16 +555,32 @@ class NodeSiteAssessmentStateChangeForm {
         break;
     }
 
-    if ($createNewRevision === TRUE) {
-      $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
-    }
-    else {
-      $workflowService->forceAssessmentState($node, $newState);
-      $entity = $node;
+    $entity = $node;
+    if (empty($removedReviewers)) {
+      if ($createNewRevision === TRUE) {
+        $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
+      }
+      else {
+        $workflowService->forceAssessmentState($node, $newState);
+        $entity = $node;
+      }
     }
 
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
-    \Drupal::messenger()->addMessage(t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]));
+    $currentUser = \Drupal::currentUser();
+
+    $message = t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]);
+    if (in_array('assessor', $currentUser->getRoles())) {
+      $message = t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]);
+    }
+
+    \Drupal::messenger()->addMessage($message);
+  }
+
+  private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
+    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
+    }
   }
 }

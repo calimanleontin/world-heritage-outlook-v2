@@ -202,3 +202,18 @@ iucn_assessment.modal_paragraph_edit:
         type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
+
+iucn_assessment.node.word_export:
+  path: 'node/{node}/word-export'
+  defaults:
+    _title: 'Export to Word'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnExportController::docExport'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _permission: 'export nodes to word'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node

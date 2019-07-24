@@ -3,28 +3,33 @@
 namespace Drupal\ief_table_view_mode\Form;
 
 use Drupal\inline_entity_form\Form\EntityInlineForm;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 
+/**
+ * Entity inline table view mode form handler.
+ */
 class EntityInlineTableViewModeForm extends EntityInlineForm {
 
+  const IEF_TABLE_VIEW_MODE_NAME = 'ief_table';
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTableFields($bundles) {
     $fields = parent::getTableFields($bundles);
     $entity_type = $this->entityType->id();
-    $original_fields = $fields;
-    $old_fields = array();
-    $change_apply = FALSE;
+    $old_fields = [];
     $entityFieldManager = \Drupal::service('entity_field.manager');
 
     foreach ($bundles as $bundle) {
-      $display = entity_load('entity_view_display', $entity_type . '.' . $bundle . '.' . IEF_TABLE_VIEW_MODE_NAME);
-      if (!$display || !($display instanceof EntityViewDisplayInterface) || !$display->status()) {
+      $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.' . self::IEF_TABLE_VIEW_MODE_NAME);
+      if (!$display || !$display->status()) {
         continue;
       }
 
       $old_fields = $fields;
-      $fields = array();
+      $fields = [];
 
-      $change_apply = TRUE;
       $field_definitions = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
       // Checking fields instances.
       foreach ($field_definitions as $field_name => $field_definition) {
@@ -35,12 +40,12 @@ class EntityInlineTableViewModeForm extends EntityInlineForm {
         if (empty($display_options)) {
           continue;
         }
-        $fields[$field_name] = array(
+        $fields[$field_name] = [
           'type' => 'field',
           'label' => $field_definition->getLabel(),
           'display_options' => $display_options,
           'weight' => $display_options['weight'],
-        );
+        ];
       }
 
       // Default settings maybe has not registered any extra field.
@@ -56,26 +61,27 @@ class EntityInlineTableViewModeForm extends EntityInlineForm {
         $fields[$old_field_name]['weight'] = $display_options['weight'];
       }
 
-      $old_fields = array();
+      $old_fields = [];
 
       $extra_fields = $entityFieldManager->getExtraFields($entity_type, $bundle);
-      $extra_fields = isset($extra_fields['display']) ? $extra_fields['display'] : array();
+      $extra_fields = isset($extra_fields['display']) ? $extra_fields['display'] : [];
 
       foreach ($extra_fields as $extra_field_name => $extra_field) {
         $display_options = $display->getComponent($extra_field_name);
         if (empty($display_options)) {
           continue;
         }
-        $fields[$extra_field_name] = array(
+        $fields[$extra_field_name] = [
           'type' => 'callback',
           'label' => $extra_field['label']->render(),
           'callback' => 'ief_table_view_mode_table_field_extra_field_callback',
-          'callback_arguments' => array($extra_field_name),
+          'callback_arguments' => [$extra_field_name],
           'weight' => $display_options['weight'],
-        );
+        ];
       }
     }
 
     return $fields;
   }
+
 }

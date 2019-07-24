@@ -115,7 +115,7 @@ abstract class WebformComputedBase extends FormElement {
       $wrapper_id = 'webform-computed-' . implode('-', $element['#parents']) . '-wrapper';
 
       // Get computed value element keys which are used to trigger Ajax updates.
-      preg_match_all('/(?:\[webform_submission:values:|data\.)([_a-z]+)/', $element['#template'], $matches);
+      preg_match_all('/(?:\[webform_submission:values:|data\.)([_a-z0-9]+)/', $element['#template'], $matches);
       $element_keys = $matches[1] ?: [];
       $element_keys = array_unique($element_keys);
 
@@ -138,11 +138,11 @@ abstract class WebformComputedBase extends FormElement {
           'wrapper' => $wrapper_id,
           'progress' => ['type' => 'none'],
         ],
-        // Hide button and disable validation.
+        // Disable validation, hide button, add submit button trigger class.
         '#attributes' => [
+          'formnovalidate' => 'formnovalidate',
           'class' => [
             'js-hide',
-            'js-webform-novalidate',
             'js-webform-computed-submit',
           ],
         ],
@@ -359,7 +359,7 @@ abstract class WebformComputedBase extends FormElement {
       //
       // Therefore, we are creating a single clone of the webform submission
       // and only copying the submitted form values to the cached submission.
-      if ($form_state->isValidationComplete()) {
+      if ($form_state->isValidationComplete() && !$form_state->isRebuilding()) {
         if (!isset(static::$submissions[$webform_submission->uuid()])) {
           static::$submissions[$webform_submission->uuid()] = clone $form_object->getEntity();
         }

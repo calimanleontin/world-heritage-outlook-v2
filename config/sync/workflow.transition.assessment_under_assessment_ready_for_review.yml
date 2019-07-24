@@ -6,7 +6,7 @@ dependencies:
     - workflow.state.assessment_ready_for_review
     - workflow.state.assessment_under_assessment
 id: assessment_under_assessment_ready_for_review
-label: 'Finish assessment'
+label: 'Submit assessment'
 module: workflow
 from_sid: assessment_under_assessment
 to_sid: assessment_ready_for_review
@@ -15,15 +15,6 @@ roles:
   iucn_manager: iucn_manager
   assessor: assessor
   workflow_author: '0'
-  edit_world_heritage_site_assessments: '0'
-  publish_world_heritage_site_assessments: '0'
   coordinator: '0'
   reviewer: '0'
-  anonymous: '0'
-  authenticated: '0'
-  edit_content_pages: '0'
-  publish_content_pages: '0'
-  menu_editor: '0'
-  edit_world_heritage_site_information: '0'
-  publish_world_heritage_site_information: '0'
-  manage_submissions: '0'
+  references_reviewer: '0'

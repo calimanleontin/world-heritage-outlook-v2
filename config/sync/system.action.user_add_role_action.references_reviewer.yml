@@ -1,0 +1,14 @@
+uuid: 879583e9-d0eb-48d3-823e-27c889ab8ef6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.references_reviewer
+  module:
+    - user
+id: user_add_role_action.references_reviewer
+label: 'Add the References reviewer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: references_reviewer

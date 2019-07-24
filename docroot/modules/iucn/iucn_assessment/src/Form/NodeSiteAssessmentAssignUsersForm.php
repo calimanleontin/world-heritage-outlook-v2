@@ -59,7 +59,16 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_UNDER_EVALUATION,
       AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+    ]);
+   $form['field_references_reviewer']['widget']['#disabled'] = !in_array($state, [
+      AssessmentWorkflow::STATUS_CREATION,
+      AssessmentWorkflow::STATUS_NEW,
+      AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
       AssessmentWorkflow::STATUS_UNDER_REVIEW,
+      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
     ]);
 
     $form['#title'] = t('Assign users for @type @assessment', [
@@ -80,7 +89,7 @@ class NodeSiteAssessmentAssignUsersForm {
       AssessmentWorkflow::STATUS_CREATION,
       AssessmentWorkflow::STATUS_NEW,
     ]) && !empty($node->field_coordinator->getValue())) {
-      // If the coordinator was set, set assessment status to UNDER EVALUATION.
+      // If the coordinator was set, set assessment status to PRE-ASSESSMENT EDITS.
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }

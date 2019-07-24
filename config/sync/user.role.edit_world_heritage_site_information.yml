@@ -4,9 +4,10 @@ status: true
 dependencies: {  }
 id: edit_world_heritage_site_information
 label: 'Edit World Heritage site information'
-weight: 2
+weight: 1
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'create content translations'
   - 'create content unpublished'
@@ -19,4 +20,5 @@ permissions:
   - 'translate site node'
   - 'update content translations'
   - 'use text format assessment_text_format'
+  - 'view home button'
   - 'view site revisions'

@@ -292,17 +292,29 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   protected function paragraphIsCreatedOnOtherRevision(ParagraphInterface $paragraph) {
+    return $this->getParagraphParentNodeRevision($paragraph)->getRevisionId() === $this->parentNode->getRevisionId();
+  }
+
+  /**
+   * Gets the node revision which holds the paragraph entity. The paragraph could
+   * have been created on a reviewer/assessor revision.
+   *
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  protected function getParagraphParentNodeRevision(ParagraphInterface $paragraph) {
     if ($this->paragraphIsNew($paragraph)) {
-      // The paragraph has been already acceptedinto the actual revision.
-      return FALSE;
+      // The paragraph has been already accepted into the actual revision.
+      return $this->parentNode;
     }
     foreach ($this->diff as $vid => $diff) {
       $comparedRevision = $this->workflowService->getAssessmentRevision($vid);
       if (in_array($paragraph->id(), $this->getNewParagraphsIds($comparedRevision))) {
-        return TRUE;
+        return $comparedRevision;
       }
     }
-    return FALSE;
+    return $this->parentNode;
   }
 
   /**
@@ -382,7 +394,8 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
     $hasDifferences = $this->paragraphHasDifferences($paragraph);
     $isNew = $this->paragraphIsNew($paragraph);
-    $isCreatedOnOtherRevision = $this->paragraphIsCreatedOnOtherRevision($paragraph);
+    $paragraphParentNodeRevision = $this->getParagraphParentNodeRevision($paragraph);
+    $isCreatedOnOtherRevision = $paragraphParentNodeRevision->getRevisionId() !== $this->parentNode->getRevisionId();
     $isDeleted = $this->paragraphIsDeleted($paragraph);
 
     $element['top'] = [
@@ -391,7 +404,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     ];
     try {
       $element['top']['summary'] = $this->buildRow($paragraph);
-      $element['top']['actions'] = $this->buildRowActions($paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted);
+      $element['top']['actions'] = $this->buildRowActions($paragraph, $hasDifferences, $paragraphParentNodeRevision, $isDeleted);
     }
     catch (\Exception $e) {
       $element['top']['summary'] = ['error' => ['value' => [$this->t('There has been an error while generating this row.')]]];
@@ -436,6 +449,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     $this->showDifferences = in_array($this->parentNode->field_state->value, [
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
       AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_FINAL_CHANGES,
     ]);
     $settings = json_decode($this->parentNode->field_settings->value, TRUE);
     $this->diff = !empty($settings['diff']) ? $settings['diff'] : [];
@@ -664,12 +678,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             break;
 
           case 'field_as_threats_categories_child_category':
-            $label = $this->t('Subcategories');
+            $label = $this->t('Category');
             break;
 
           case 'field_as_threats_values_wh':
           case 'field_as_threats_values_bio':
-            $label = $this->t('WH values');
+            $label = $this->t('Values affected');
             break;
 
           case 'other_information':
@@ -752,7 +766,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       }
 
       /** @var \Drupal\Core\Field\FieldItemListInterface $fieldItemList */
-      $fieldItemList = $paragraph->get($fieldName);
+      $fieldItemList = clone $paragraph->get($fieldName);
       $fieldColumn = $this->getFieldColumn($fieldName);
       if (empty($row[$fieldColumn]['value'])) {
         $row[$fieldColumn]['value'] = [];
@@ -771,12 +785,18 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $value = $this->renderBooleanField($fieldItemList);
           break;
 
+        case 'string_long':
+          $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
+            'field_as_values_curr_text',
+            'field_as_description',
+          ]));
+          $value = nl2br($value);
+          break;
         case 'text_with_summary':
         case 'list_text':
         case 'text_long':
         case 'list_string':
         case 'string':
-        case 'string_long':
           $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
             'field_as_values_curr_text',
             'field_as_description',
@@ -828,7 +848,12 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
               ],
             ];
             $row = $row + $childrenCell;
-            $value = $this->renderEntityReferenceField($fieldItemList);
+            if ($fieldName == 'field_as_threats_categories') {
+              $value = $this->renderEntityReferenceField($fieldItemList) . '<div class="subcategories">' . $value . '</div>';
+            }
+            else {
+              $value = $this->renderEntityReferenceField($fieldItemList);
+            }
           }
           break;
       }
@@ -936,15 +961,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    * @param $hasDifferences
-   * @param $isCreatedOnOtherRevision
+   * @param \Drupal\node\NodeInterface $paragraphParentNodeRevision
    * @param $isDeleted
    *
    * @return array
    */
-  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, $isCreatedOnOtherRevision, $isDeleted) {
+  protected function buildRowActions(ParagraphInterface $paragraph, $hasDifferences, NodeInterface $paragraphParentNodeRevision, $isDeleted) {
     if (empty($this->parentNode) || empty($paragraph->id())) {
       return [];
     }
+    $isCreatedOnOtherRevision = $paragraphParentNodeRevision->getRevisionId() !== $this->parentNode->getRevisionId();
     $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
     $routeAttributes = [
       'node' => $this->parentNode->id(),
@@ -967,7 +993,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ],
       ],
     ];
-    $paragraphAuthor = $paragraph->getRevisionAuthor();
+    $paragraphAuthor = $paragraphParentNodeRevision->getRevisionUser();
     $authorName = $paragraphAuthor instanceof AccountInterface
       ? $paragraphAuthor->getDisplayName()
       : '';
@@ -1039,6 +1065,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    */
   public function getFieldColumn($fieldName) {
     switch ($fieldName) {
+      case 'field_as_threats_categories':
+        return 'field_as_threats_categories_child_category';
+
       case 'field_as_threats_values_bio':
         return 'field_as_threats_values_wh';
 

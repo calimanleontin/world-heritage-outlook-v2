@@ -66,7 +66,7 @@ class FinishedReviewingPhaseTest extends WorkflowTestBase {
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Finished reviewing');
+    $this->assertSession()->pageTextContains('Current workflow state: Feedback from all reviewers received');
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($editUrl, TestSupport::COORDINATOR1, 403);

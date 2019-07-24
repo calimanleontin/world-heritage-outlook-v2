@@ -4,6 +4,7 @@ namespace Drupal\webform\Plugin\WebformHandler;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -165,9 +166,11 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       'draft_custom_data' => '',
       'converted_url' => '',
       'converted_custom_data' => '',
-      // Custom response messages.
+      // Custom error response messages.
       'message' => '',
       'messages' => [],
+      // Custom error response redirect URL.
+      'error_url' => '',
     ];
   }
 
@@ -336,6 +339,13 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       ],
       '#default_value' => $this->configuration['messages'],
     ];
+    $form['additional']['error_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Custom error response redirect URL'),
+      '#description' => $this->t('The URL or path to redirect to when a remote fails.', $t_args),
+      '#default_value' => $this->configuration['error_url'],
+      '#pattern' => '(https?:\/\/|\/).+',
+    ];
 
     // Development.
     $form['development'] = [
@@ -375,7 +385,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#default_value' => $this->configuration['excluded_data'],
     ];
 
-    $this->tokenManager->elementValidate($form);
+    $this->elementTokenValidate($form);
 
     return $this->setSettingsParents($form);
   }
@@ -427,13 +437,13 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     $this->messageManager->setWebformSubmission($webform_submission);
 
     $request_url = $this->configuration[$state . '_url'];
-    $request_url = $this->tokenManager->replace($request_url, $webform_submission);
+    $request_url = $this->replaceTokens($request_url, $webform_submission);
     $request_method = (!empty($this->configuration['method'])) ? $this->configuration['method'] : 'POST';
     $request_type = ($request_method !== 'GET') ? $this->configuration['type'] : NULL;
 
     // Get request options with tokens replaced.
     $request_options = (!empty($this->configuration['custom_options'])) ? Yaml::decode($this->configuration['custom_options']) : [];
-    $request_options = $this->tokenManager->replaceNoRenderContext($request_options, $webform_submission);
+    $request_options = $this->replaceTokens($request_options, $webform_submission);
 
     try {
       if ($request_method === 'GET') {
@@ -477,7 +487,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     if ($submission_has_token) {
       $response_data = $this->getResponseData($response);
       $token_data = ['webform_handler' => [$this->getHandlerId() => [$state => $response_data]]];
-      $submission_data = $this->tokenManager->replaceNoRenderContext($submission_data, $webform_submission, $token_data);
+      $submission_data = $this->replaceTokens($submission_data, $webform_submission, $token_data);
       $webform_submission->setData($submission_data);
       // Resave changes to the submission data without invoking any hooks
       // or handlers.
@@ -559,7 +569,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     }
 
     // Replace tokens.
-    $data = $this->tokenManager->replaceNoRenderContext($data, $webform_submission);
+    $data = $this->replaceTokens($data, $webform_submission);
 
     return $data;
   }
@@ -835,6 +845,8 @@ class RemotePostWebformHandler extends WebformHandlerBase {
    *   The response returned by the remote server.
    */
   protected function handleError($state, $message, $request_url, $request_method, $request_type, $request_options, $response) {
+    global $base_url, $base_path;
+
     // If debugging is enabled, display the error message on screen.
     $this->debug($message, $state, $request_url, $request_method, $request_type, $request_options, $response, 'error');
 
@@ -845,11 +857,14 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '@type' => $request_type,
       '@url' => $request_url,
       '@message' => $message,
+      'webform_submission' => $this->getWebformSubmission(),
+      'handler_id' => $this->getHandlerId(),
+      'operation' => 'error',
       'link' => $this->getWebform()
         ->toLink($this->t('Edit'), 'handlers')
         ->toString(),
     ];
-    $this->getLogger()
+    $this->getLogger('webform_submission')
       ->error('@form webform remote @type post (@state) to @url failed. @message', $context);
 
     // Display custom or default exception message.
@@ -860,12 +875,23 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         ],
       ];
       $build_message = [
-        '#markup' => $this->tokenManager->replaceNoRenderContext($custom_response_message, $this->getWebform(), $token_data),
+        '#markup' => $this->replaceTokens($custom_response_message, $this->getWebform(), $token_data),
       ];
       $this->messenger()->addError(\Drupal::service('renderer')->renderPlain($build_message));
     }
     else {
       $this->messageManager->display(WebformMessageManagerInterface::SUBMISSION_EXCEPTION_MESSAGE, 'error');
+    }
+
+    // Redirect the current request to the error url.
+    $error_url = $this->configuration['error_url'];
+    if ($error_url && PHP_SAPI !== 'cli') {
+      // Convert error path to URL.
+      if (strpos($error_url, '/') === 0) {
+        $error_url = $base_url . preg_replace('#^' . $base_path . '#', '/', $error_url);
+      }
+      $response = new TrustedRedirectResponse($error_url);
+      $response->send();
     }
   }
 
@@ -888,6 +914,14 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       }
     }
     return (!empty($this->configuration['message'])) ? $this->configuration['message'] : '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildTokenTreeElement(array $token_types = ['webform', 'webform_submission'], $description = NULL) {
+    $description = $description ?: $this->t('Use [webform_submission:values:ELEMENT_KEY:raw] to get plain text values.');
+    return parent::buildTokenTreeElement($token_types, $description);
   }
 
 }

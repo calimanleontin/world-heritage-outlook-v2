@@ -20,10 +20,11 @@ class PetPreviewForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, PetInterface $pet = NULL) {
-    $body_description = t('Review and edit standard template before previewing. This will not change the template for future emailings, just for this one. To change the template permanently, go to the template page. You may use the tokens below.');
+    $messenger = \Drupal::messenger();
+    $body_description = $this->t('Review and edit standard template before previewing. This will not change the template for future emailings, just for this one. To change the template permanently, go to the template page. You may use the tokens below.');
     $storage = $form_state->getStorage();
     if (pet_isset_or($storage['step']) == 3) {
-      drupal_set_message(t('Email(s) sent'));
+      $messenger->addMessage($this->t('Email(s) sent'));
       $form_state->setStorage([]);
     }
 
@@ -54,13 +55,16 @@ class PetPreviewForm extends FormBase {
               $default_mail = $account->getEmail();
             }
             else {
-              drupal_set_message(t('Cannot load a user with uid @uid.', ['@uid' => $uid]), 'error');
+              $messenger->addMessage($this->t('Cannot load a user with uid @uid.', ['@uid' => $uid]), 'error');
             }
           }
         }
         $form['recipients'] = [
           '#title' => t('To'),
           '#type' => 'email',
+          // #2931344 - enable this when core allows multiple values in email field.
+          // '#attributes' => ['multiple' => 'multiple'],
+          // '#element_validate' => [],
           '#required' => TRUE,
           '#default_value' => $default_mail,
           '#description' => t('Enter the recipient(s) separated by lines or commas. A separate email will be sent to each, with token substitution if the email corresponds to a site user.'),
@@ -94,7 +98,7 @@ class PetPreviewForm extends FormBase {
         ];
         if (!(pet_has_mimemail() && $pet->getSendPlain())) {
           $form['mail_body'] = [
-            '#type' => 'textarea',
+            '#type' => 'text_format',
             '#title' => t('Body'),
             '#default_value' => pet_isset_or($storage['mail_body']) ? $storage['mail_body'] : $pet->getMailbody(),
             '#rows' => 15,
@@ -293,8 +297,8 @@ class PetPreviewForm extends FormBase {
 
     $token = \Drupal::token();
     $storage['subject_preview'] = $token->replace($values['subject'], $subs);
-    $storage['body_preview'] = $token->replace(pet_isset_or($values['mail_body']), $subs);
-    $storage['body_preview_plain'] = $token->replace(pet_isset_or($values['mail_body_plain']), $subs);
+    $storage['body_preview'] = $token->replace(pet_isset_or($values['mail_body']['value']), $subs);
+    $storage['body_preview_plain'] = $token->replace(pet_isset_or($values['mail_body_plain']['value']), $subs);
     $form_state->setStorage($storage);
   }
 

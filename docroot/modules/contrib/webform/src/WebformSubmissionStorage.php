@@ -2,7 +2,9 @@
 
 namespace Drupal\webform;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -35,6 +37,13 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   protected $elementDataSchema = [];
 
   /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
@@ -50,12 +59,16 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
   /**
    * WebformSubmissionStorage constructor.
+   *
+   * @todo Webform 8.x-6.x: Move $time before $access_rules_manager.
+   * @todo Webform 8.x-6.x: Move $memory_cache right after $language_manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager) {
-    parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
+  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager, TimeInterface $time = NULL, MemoryCacheInterface $memory_cache = NULL) {
+    parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager, $memory_cache);
 
     $this->currentUser = $current_user;
     $this->accessRulesManager = $access_rules_manager;
+    $this->time = $time ?: \Drupal::time();
   }
 
   /**
@@ -69,7 +82,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $container->get('cache.entity'),
       $container->get('language_manager'),
       $container->get('current_user'),
-      $container->get('webform.access_rules_manager')
+      $container->get('webform.access_rules_manager'),
+      $container->get('datetime.time'),
+      $container->get('entity.memory_cache')
     );
   }
 
@@ -201,8 +216,10 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     // Add account query wheneven filter by uid.
     if (isset($values['uid'])) {
       $account = User::load($values['uid']);
-      $this->addQueryConditions($entity_query, NULL, NULL, $account);
-      unset($values['uid']);
+      if ($account instanceof UserInterface) {
+        $this->addQueryConditions($entity_query, NULL, NULL, $account);
+        unset($values['uid']);
+      }
     }
 
     parent::buildPropertyQuery($entity_query, $values);
@@ -382,7 +399,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     }
 
     if ($options['in_draft'] !== NULL) {
-      $query->condition('in_draft', $options['in_draft']);
+      // Cast boolean to integer to support SQLite.
+      $query->condition('in_draft', (int) $options['in_draft']);
     }
 
     if ($options['interval']) {
@@ -921,11 +939,11 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     $webform = $entity->getWebform();
 
-    if ($entity->getWebform()->hasSubmissionLog()) {
+    if ($webform->hasSubmissionLog()) {
       // Log webform submission events to the 'webform_submission' log.
       $context = [
         '@title' => $entity->label(),
-        'link' => $entity->toLink($this->t('Edit'), 'edit-form')->toString(),
+        'link' => ($entity->id()) ? $entity->toLink($this->t('Edit'), 'edit-form')->toString() : NULL,
         'webform_submission' => $entity,
       ];
       switch ($entity->getState()) {
@@ -977,7 +995,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       }
       \Drupal::logger('webform_submission')->notice($message, $context);
     }
-    elseif (!$entity->getWebform()->getSetting('results_disabled')) {
+    elseif (!$webform->getSetting('results_disabled')) {
       // Log general events to the 'webform'.
       switch ($entity->getState()) {
         case WebformSubmissionInterface::STATE_DRAFT:
@@ -1000,7 +1018,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         $context = [
           '@id' => $entity->id(),
           '@title' => $entity->label(),
-          'link' => $entity->toLink($this->t('Edit'), 'edit-form')->toString(),
+          'link' => ($entity->id()) ? $entity->toLink($this->t('Edit'), 'edit-form')->toString() : NULL,
         ];
         \Drupal::logger('webform')->notice($message, $context);
       }
@@ -1067,7 +1085,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       foreach ($stream_wrappers as $stream_wrapper) {
         $file_directory = $stream_wrapper . '://webform/' . $webform->id() . '/' . $entity->id();
         // Clear empty webform submission directory.
-        if (empty(file_scan_directory($file_directory, '/.*/'))) {
+        if (file_exists($file_directory)
+          && empty(file_scan_directory($file_directory, '/.*/'))) {
           file_unmanaged_delete_recursive($file_directory);
         }
       }
@@ -1131,15 +1150,15 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         // actually need to query the entire dataset of webform submissions, we
         // are disabling access check.
         $query->accessCheck(FALSE);
-        $query->condition('created', REQUEST_TIME - ($webform->getSetting('purge_days') * $days_to_seconds), '<');
+        $query->condition('created', $this->time->getRequestTime() - ($webform->getSetting('purge_days') * $days_to_seconds), '<');
         $query->condition('webform_id', $webform->id());
         switch ($webform->getSetting('purge')) {
           case self::PURGE_DRAFT:
-            $query->condition('in_draft', TRUE);
+            $query->condition('in_draft', 1);
             break;
 
           case self::PURGE_COMPLETED:
-            $query->condition('in_draft', FALSE);
+            $query->condition('in_draft', 0);
             break;
         }
         $query->range(0, $count - count($webform_submissions_to_purge));
@@ -1397,6 +1416,36 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getAnonymousSubmissionIds(AccountInterface $account) {
+    // Make sure the account and current user are identical.
+    if ($account->id() != $this->currentUser->id()) {
+      return NULL;
+    }
+
+    if (empty($_SESSION['webform_submissions'])) {
+      return NULL;
+    }
+
+    // Cleanup sids because drafts could have been purged or the webform
+    // submission could have been deleted.
+    $_SESSION['webform_submissions'] = $this->getQuery()
+      // Disable access check because user having 'sid' in his $_SESSION already
+      // implies he has access to it.
+      ->accessCheck(FALSE)
+      ->condition('sid', $_SESSION['webform_submissions'], 'IN')
+      ->sort('sid')
+      ->execute();
+    if (empty($_SESSION['webform_submissions'])) {
+      unset($_SESSION['webform_submissions']);
+      return NULL;
+    }
+
+    return $_SESSION['webform_submissions'];
+  }
+
+  /**
    * Track anonymous submissions.
    *
    * Anonymous submission are tracked so that they can be assigned to the user
@@ -1463,43 +1512,6 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     else {
       return FALSE;
     }
-  }
-
-  /**
-   * Get anonymous user's submission ids.
-   *
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   A user account.
-   *
-   * @return array|
-   *   A array of submission ids or NULL if the user us not anonymous or has
-   *   not saved submissions.
-   */
-  protected function getAnonymousSubmissionIds(AccountInterface $account) {
-    // Make sure the account and current user are identical.
-    if ($account->id() != $this->currentUser->id()) {
-      return NULL;
-    }
-
-    if (empty($_SESSION['webform_submissions'])) {
-      return NULL;
-    }
-
-    // Cleanup sids because drafts could have been purged or the webform
-    // submission could have been deleted.
-    $_SESSION['webform_submissions'] = $this->getQuery()
-      // Disable access check because user having 'sid' in his $_SESSION already
-      // implies he has access to it.
-      ->accessCheck(FALSE)
-      ->condition('sid', $_SESSION['webform_submissions'], 'IN')
-      ->sort('sid')
-      ->execute();
-    if (empty($_SESSION['webform_submissions'])) {
-      unset($_SESSION['webform_submissions']);
-      return NULL;
-    }
-
-    return $_SESSION['webform_submissions'];
   }
 
 }

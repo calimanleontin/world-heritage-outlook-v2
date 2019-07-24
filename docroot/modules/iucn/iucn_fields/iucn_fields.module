@@ -38,6 +38,24 @@ function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\
  * Implements hook_ENTITY_TYPE_load().
  */
 function iucn_fields_taxonomy_term_load(array $entities) {
+  $termAlterRoutes = [
+    'entity.node.canonical',
+    'entity.node.edit_form',
+    'node.revision_edit',
+    'node.add',
+    'iucn_assessment.paragraph_diff_form',
+    'iucn_assessment.field_diff_form',
+    'iucn_assessment.modal_paragraph_add',
+    'iucn_assessment.modal_paragraph_edit',
+    'iucn_assessment.modal_paragraph_delete',
+    'iucn_assessment.node.state_change',
+    'iucn_assessment.node_revision.state_change',
+  ];
+
+  if (!in_array(\Drupal::routeMatch()->getRouteName(), $termAlterRoutes)) {
+    return;
+  }
+
   $assessment_year = _iucn_fields_get_assessment_year();
   /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
   $term_alter_service = \Drupal::service('iucn_fields.term_alter');

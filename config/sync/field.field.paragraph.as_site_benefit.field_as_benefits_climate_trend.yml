@@ -10,7 +10,7 @@ id: paragraph.as_site_benefit.field_as_benefits_climate_trend
 field_name: field_as_benefits_climate_trend
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Climate change trend'
+label: 'Climate change - trend'
 description: ''
 required: false
 translatable: false

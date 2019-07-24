@@ -24,7 +24,7 @@ class RavenTest extends WebDriverTestBase {
   public function testRavenJavascriptConfig() {
     $admin_user = $this->drupalCreateUser(['administer site configuration', 'send javascript errors to sentry']);
     $this->drupalLogin($admin_user);
-    $this->drupalPostForm('admin/config/development/logging', ['javascript_error_handler' => TRUE], t('Save configuration'));
+    $this->drupalPostForm('admin/config/development/logging', ['raven[js][javascript_error_handler]' => TRUE], t('Save configuration'));
   }
 
 }

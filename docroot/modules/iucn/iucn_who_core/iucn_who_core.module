@@ -497,6 +497,36 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
       '#weight' => 10,
     ];
   }
+
+  if ($form_id == 'user_register_form') {
+    $form['account']['pass']['#required'] = FALSE;
+    $form['account']['mail']['#required'] = TRUE;
+    $form['account']['name']['#title'] = t('Username (First name Last name)');
+    $form['account']['field_user_title'] = $form['field_user_title'];
+    unset($form['field_user_title']);
+
+    $form['account']['notify_container'] = [
+      '#type' => 'container',
+      'notify_title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'b',
+        '#value' => t('Email notification'),
+      ],
+      'notify' => $form['account']['notify'],
+    ];
+
+    $form['actions']['submit']['#submit'][] = 'addRegisterFormSuccessMessage';
+    unset($form['account']['notify']);
+  }
+}
+
+function addRegisterFormSuccessMessage(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  if ($form_state->getValue('notity')) {
+    return;
+  }
+
+  $account = $form_state->getFormObject()->getEntity();
+  \Drupal::messenger()->addStatus(t('Created a new user account for <a href=":url">%name</a>.', [':url' => $account->url(), '%name' => $account->getUsername()]));
 }
 
 function saveAgreement(array $form, FormStateInterface $form_state) {

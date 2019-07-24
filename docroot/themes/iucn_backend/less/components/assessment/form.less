@@ -295,6 +295,16 @@
   display: none !important;
 }
 
+.comments-container {
+  .comments-help {
+    background-color: #ffff99;
+    padding: 10px;
+  }
+  textarea {
+    background-color: #ffff99;
+  }
+}
+
 .paragraph-comments-textarea {
   .comments-container {
     display: flex;
@@ -314,6 +324,23 @@ div[aria-required="aria-required"] {
     &:after {
       .form-required();
     }
+  }
+}
+
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+
+  &,
+  & .ui-widget-content.ui-dialog-content {
+    height: 100% !important;
+  }
+
+  .ui-dialog-titlebar,
+  .ui-widget-content.ui-dialog-buttonpane {
+    border-radius: 0;
   }
 }
 

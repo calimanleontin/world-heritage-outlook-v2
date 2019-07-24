@@ -26,7 +26,7 @@ class ReadyForReviewPhaseTest extends WorkflowTestBase {
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Ready for review');
+    $this->assertSession()->pageTextContains('Current workflow state: Pre-review edits');
     $this->checkUserAccess($stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
     $this->checkUserAccess($editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($stateChangeUrl, TestSupport::IUCN_MANAGER, 200);

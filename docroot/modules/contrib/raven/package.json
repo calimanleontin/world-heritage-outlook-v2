@@ -2,10 +2,11 @@
   "name": "drupal-raven",
   "description": "Raven Drupal module",
   "devDependencies": {
-    "@sentry/browser": "^4.5.0"
+    "@sentry/browser": "^5.5.0",
+    "js-yaml": "^3.13.1"
   },
   "scripts": {
-    "postinstall": "drush raven:updateLibrary"
+    "postinstall": "node js/install.js"
   },
   "repository": {
     "type": "git",
