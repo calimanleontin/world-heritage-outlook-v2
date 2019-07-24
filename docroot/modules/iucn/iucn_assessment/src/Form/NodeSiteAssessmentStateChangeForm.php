@@ -103,6 +103,7 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_references_reviewer']['#access'] = FALSE;
     }
 
+
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
       // If users have multiple roles, having these fields only hidden using #access
       // property can break things, so we need to fully unset them.
@@ -434,6 +435,9 @@ class NodeSiteAssessmentStateChangeForm {
     $createNewRevision = TRUE;
 
     foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      if (empty($form_state->getValue($field))) {
+        continue;
+      }
       $node->set($field, $form_state->getValue($field));
     }
 
