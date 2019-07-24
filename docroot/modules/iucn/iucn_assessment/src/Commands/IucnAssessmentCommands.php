@@ -357,22 +357,21 @@ class IucnAssessmentCommands extends DrushCommands {
 
         foreach ($paragraphIds as $paragraphId) {
           $paragraph = Paragraph::load($paragraphId);
-          if (empty($paragraph->getParentEntity())) {
-            continue;
-          }
-
-          if ($paragraph->getParentEntity()->bundle() != 'site_assessment') {
-            $verifiedAssessments[] = $paragraph->getParentEntity()->id();
-            continue;
-          }
-
-          if ($paragraph->getParentEntity()->get('field_as_cycle')->value != $cycle) {
-            $verifiedAssessments[] = $paragraph->getParentEntity()->id();
-            continue;
-          }
-
-          /** @var Node $node */
           $node = $paragraph->getParentEntity();
+          if (!$node instanceof NodeInterface) {
+            continue;
+          }
+
+          if ($node->bundle() != 'site_assessment') {
+            $verifiedAssessments[] = $node->id();
+            continue;
+          }
+
+          if ($node->get('field_as_cycle')->value != $cycle) {
+            $verifiedAssessments[] = $node->id();
+            continue;
+          }
+
           foreach ($node->getFields() as $field) {
             if (!$field instanceof EntityReferenceRevisionsFieldItemList) {
               continue;
