@@ -402,10 +402,7 @@ class NodeSiteAssessmentForm {
   }
 
   public static function setTabsDrupalSettings(&$form, $node) {
-    $diff = self::getNodeDiff($node);
-    if (empty($diff)) {
-      return;
-    }
+    $diff = static::getNodeSettings($node, 'diff');
     $diff_tabs = [];
     foreach ($diff as $vid => $diff_data) {
       if (empty($diff_data['fieldgroups'])) {
@@ -413,6 +410,13 @@ class NodeSiteAssessmentForm {
       }
       $diff_tabs += $diff_data['fieldgroups'];
     }
+
+    $comments = static::getNodeSettings($node, 'comments');
+
+    foreach ($comments as $tab => $comment) {
+      $diff_tabs += [$tab => $tab];
+    }
+
     $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
@@ -626,7 +630,7 @@ class NodeSiteAssessmentForm {
 
   public static function buildDiffButtons(&$form, $node) {
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $diff = self::getNodeDiff($node);
+    $diff = self::getNodeSettings($node, 'diff');
     if (empty($diff)) {
       return;
     }
@@ -641,16 +645,18 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  public static function getNodeDiff($node) {
+  public static function getNodeSettings($node, $settingsKey) {
     $settings = $node->field_settings->value;
     if (empty($settings)) {
-      return NULL;
+      return [];
     }
+
     $settings = json_decode($settings, TRUE);
-    if (empty($settings['diff'])) {
-      return NULL;
+    if (empty($settings[$settingsKey])) {
+      return [];
     }
-    return $settings['diff'];
+
+    return $settings[$settingsKey];
   }
 
   public static function isFieldWithDiff($node, $field, $diff) {
