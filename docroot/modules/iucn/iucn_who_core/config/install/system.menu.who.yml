@@ -1,9 +1,0 @@
-id: who
-label: 'Wold Heritage Outlook administration'
-description: 'Links related to managing WHO website.'
-langcode: en
-locked: true
-dependencies:
-  enforced:
-    module:
-      - iucn_who_core

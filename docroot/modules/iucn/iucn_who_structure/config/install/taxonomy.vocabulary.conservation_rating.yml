@@ -1,8 +1,9 @@
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: JcavejT08VViTl68t8GwH-G74yWhGC8Tmt8KSrZAkMk
 name: 'Conservation rating'
 vid: conservation_rating
 description: 'Overall site conservation rating'
-hierarchy: 0
 weight: 0

@@ -3,6 +3,8 @@ status: true
 dependencies:
   module:
     - taxonomy
+_core:
+  default_config_hash: zLihgnmRVmleUgxewyhea5w_Lq3UaJ-X6SCvUDZyheA
 id: taxonomy_term.field_css_identifier
 field_name: field_css_identifier
 entity_type: taxonomy_term
