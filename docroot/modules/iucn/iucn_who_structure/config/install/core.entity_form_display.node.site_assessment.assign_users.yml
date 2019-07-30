@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -43,6 +44,7 @@ dependencies:
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_references_reviewer
     - field.field.node.site_assessment.field_reviewers
     - field.field.node.site_assessment.field_settings
     - field.field.node.site_assessment.field_state
@@ -61,6 +63,12 @@ content:
   field_coordinator:
     type: options_select
     weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_references_reviewer:
+    type: options_select
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }

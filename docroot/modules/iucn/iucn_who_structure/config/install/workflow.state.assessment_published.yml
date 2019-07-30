@@ -7,5 +7,5 @@ id: assessment_published
 label: Published
 module: workflow
 wid: assessment
-weight: 0
+weight: 1
 sysid: 0

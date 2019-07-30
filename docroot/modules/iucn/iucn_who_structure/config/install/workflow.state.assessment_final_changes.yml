@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_final_changes
+label: 'Final changes'
+module: workflow
+wid: assessment
+weight: -1
+sysid: 0

@@ -3,10 +3,12 @@ status: true
 dependencies: {  }
 id: menu_editor
 label: 'Menu editor'
-weight: 1
+weight: 0
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'administer menu'
   - 'translate menu_link_content'
   - 'use text format assessment_text_format'
+  - 'view home button'

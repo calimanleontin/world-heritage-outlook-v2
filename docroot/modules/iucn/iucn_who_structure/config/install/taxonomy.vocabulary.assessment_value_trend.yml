@@ -4,5 +4,4 @@ dependencies: {  }
 name: 'Assessment value trend'
 vid: assessment_value_trend
 description: 'The list of trends regarding value assessment'
-hierarchy: 0
 weight: 0

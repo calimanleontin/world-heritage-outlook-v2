@@ -6,6 +6,7 @@ label: 'Publish World Heritage site information'
 weight: 3
 is_admin: null
 permissions:
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'administer nodes'
   - 'create site content'
@@ -14,3 +15,4 @@ permissions:
   - 'delete site revisions'
   - 'revert site revisions'
   - 'use text format assessment_text_format'
+  - 'view home button'

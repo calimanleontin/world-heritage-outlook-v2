@@ -37,6 +37,8 @@ excluded:
   - block.block.views_block__account_assignments_block_4_2
   - block.block.views_block__account_assignments_block_5
   - block.block.views_block__account_assignments_block_5_2
+  - block.block.views_block__account_assignments_block_6
+  - block.block.views_block__account_assignments_block_6_2
   - facets.facet.benefit
   - facets.facet.designation
   - facets.facet.inscription_criteria
@@ -50,7 +52,6 @@ excluded:
   - views.view.account_assignments
   - views.view.benefits_list
   - views.view.decision_tree
-  - views.view.export_values_in_excel
   - views.view.frequently_asked_questions
   - views.view.news
   - views.view.people_assignments
@@ -58,4 +59,8 @@ excluded:
   - views.view.sites_search
   - views.view.site_s_assessments
   - views.view.users_by_roles
+  - views.view.assessments_reports
+  - diff.plugins
+  - iucn_pdf.settings
+  - iucn_who.settings
 required: true

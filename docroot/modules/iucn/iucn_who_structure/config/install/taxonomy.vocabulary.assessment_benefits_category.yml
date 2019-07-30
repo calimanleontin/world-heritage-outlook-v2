@@ -4,5 +4,4 @@ dependencies: {  }
 name: 'Assessment benefits category'
 vid: assessment_benefits_category
 description: 'Categories of benefits for a site assessment'
-hierarchy: 0
 weight: 0

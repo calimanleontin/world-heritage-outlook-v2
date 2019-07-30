@@ -3,10 +3,11 @@ status: true
 dependencies: {  }
 id: edit_content_pages
 label: 'Edit content pages'
-weight: -1
+weight: -2
 is_admin: null
 permissions:
   - 'access content'
+  - 'access content overview'
   - 'access site in maintenance mode'
   - 'administer blocks'
   - 'create benefit content'
@@ -55,6 +56,7 @@ permissions:
   - 'use text format assessment_text_format'
   - 'view benefit revisions'
   - 'view faq revisions'
+  - 'view home button'
   - 'view news revisions'
   - 'view own unpublished content'
   - 'view page revisions'

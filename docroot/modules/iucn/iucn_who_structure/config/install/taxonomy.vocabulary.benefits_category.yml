@@ -4,5 +4,4 @@ dependencies: {  }
 name: 'Benefits case study category'
 vid: benefits_category
 description: ''
-hierarchy: 0
 weight: 0
