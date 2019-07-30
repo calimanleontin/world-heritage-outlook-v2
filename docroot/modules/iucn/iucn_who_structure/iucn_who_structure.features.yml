@@ -60,7 +60,4 @@ excluded:
   - views.view.site_s_assessments
   - views.view.users_by_roles
   - views.view.assessments_reports
-  - diff.plugins
-  - iucn_pdf.settings
-  - iucn_who.settings
 required: true
