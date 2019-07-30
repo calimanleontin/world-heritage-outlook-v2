@@ -14,9 +14,6 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
 
-  /** @var \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface */
-  protected $entityDefinitionUpdateManager;
-
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
@@ -99,9 +96,7 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->entityFieldManager = $this->container->get('entity_field.manager');
-    $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
-    $this->entityDefinitionUpdateManager->applyUpdates();
-    ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
+    ViewTestData::createTestViews(static::class, ['iucn_who_structure']);
     TestSupport::createTestData();
   }
 
@@ -113,12 +108,14 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
    *
    * @param \Drupal\node\NodeInterface $node
    *   The assessment.
-   * @param string $state
+   * @param string $newState
    *   The state.
    * @param array $field_changes
    *   An array of field changes.
    *
    * @return \Drupal\node\NodeInterface
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function setAssessmentState(NodeInterface $node, $newState, $field_changes = NULL) {
     if (!empty($field_changes)) {
