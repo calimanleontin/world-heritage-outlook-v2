@@ -133,12 +133,38 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
    *  Assessment workflow state.
    * @param array $values
    *  Extra fields values.
+   * @param bool $doNotReferenceUser
+   *  Defaults to FALSE. If set to TRUE, the default users fields (coordinator,
+   * assessor, reviewers and references reviewer) will be left empty.
    *
    * @return \Drupal\node\NodeInterface|null
    */
-  protected function createMockAssessmentNode($state, array $values = []) {
+  protected function createMockAssessmentNode($state, array $values = [], $doNotReferenceUser = FALSE) {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
+
+    if ($doNotReferenceUser === FALSE) {
+      /** @var \Drupal\user\UserInterface $coordinator */
+      $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+      /** @var \Drupal\user\UserInterface $assessor */
+      $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+      /** @var \Drupal\user\UserInterface $reviewer1 */
+      $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+      /** @var \Drupal\user\UserInterface $reviewer2 */
+      $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+      /** @var \Drupal\user\UserInterface $referencesReviewer */
+      $referencesReviewer = user_load_by_mail(TestSupport::REFERENCES_REVIEWER1);
+      $values += [
+        'field_coordinator' => $coordinator->id(),
+        'field_assessor' => $assessor->id(),
+        'field_reviewers' => [
+          $reviewer1->id(),
+          $reviewer2->id(),
+        ],
+        'field_references_reviewer' => $referencesReviewer->id(),
+      ];
+    }
+
     try {
       $assessment->save();
       return $this->setAssessmentState($assessment, $state, $values);
