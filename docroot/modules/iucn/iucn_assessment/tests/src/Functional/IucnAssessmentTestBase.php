@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional;
 
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewTestData;
@@ -103,28 +104,48 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
   /**
    * Helper function used to force an assessment state.
    *
-   * If field_changes is passed, for every key in the array
-   * we will set $node->{$key}->target_id = $value.
-   *
-   * @param \Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
    * @param string $newState
-   *   The state.
-   * @param array $field_changes
+   *   The new state.
+   * @param array $values
    *   An array of field changes.
    *
-   * @return \Drupal\node\NodeInterface
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @return \Drupal\node\NodeInterface|null
    */
-  protected function setAssessmentState(NodeInterface $node, $newState, $field_changes = NULL) {
-    if (!empty($field_changes)) {
-      foreach ($field_changes as $field => $target_id) {
-        $node->{$field}->target_id = $target_id;
-      }
+  protected function setAssessmentState(NodeInterface $assessment, $newState, array $values = []) {
+    foreach ($values as $field => $value) {
+      $assessment->set($field, $value);
     }
-    $state = $node->field_state->value;
-    return $this->workflowService->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    $state = $assessment->field_state->value;
+    try {
+      return $this->workflowService->createRevision($assessment, $newState, NULL, "{$state} ({$assessment->getRevisionId()}) => {$newState}", TRUE);
+    }
+    catch (EntityStorageException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * Creates a new assessment in the provided state.
+   *
+   * @param $state
+   *  Assessment workflow state.
+   * @param array $values
+   *  Extra fields values.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  protected function createMockAssessmentNode($state, array $values = []) {
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment, 1);
+    try {
+      $assessment->save();
+      return $this->setAssessmentState($assessment, $state, $values);
+    }
+    catch (EntityStorageException $e) {
+      return NULL;
+    }
   }
 
   /**

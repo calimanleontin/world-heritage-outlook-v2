@@ -147,6 +147,10 @@ class TestSupport {
       'field_assessments',
       'field_current_assessment',
       'field_as_protection',
+      'field_coordinator',
+      'field_assessor',
+      'field_reviewers',
+      'field_references_reviewer',
     ];
     $fieldDefinitions = $entity->getFieldDefinitions();
 

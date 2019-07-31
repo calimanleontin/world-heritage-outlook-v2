@@ -14,16 +14,18 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
 
   public function testUnderAssessmentPhaseAccess() {
-    $assessment = TestSupport::createAssessment();
-    TestSupport::populateAllFieldsData($assessment, 1);
-    $assessment->save();
+    /** @var \Drupal\user\UserInterface $coordinator */
+    $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+    /** @var \Drupal\user\UserInterface $assessor */
+    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+
+    $referencedUsers = [
+      'field_coordinator' => $coordinator->id(),
+      'field_assessor' => $assessor->id(),
+    ];
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, $referencedUsers);
     $editUrl = $assessment->toUrl('edit-form');
     $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
-
-    $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
-    $this->userLogIn(TestSupport::COORDINATOR1);
-    $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
-    $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
 
     $this->checkUserAccess($editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->assertSession()->pageTextContains('Current workflow state: Being assessed');
