@@ -38,6 +38,10 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $currentUser = \Drupal::currentUser();
+    $coordinator = !empty($node->field_coordinator->target_id)
+      ? $node->field_coordinator->target_id
+      : NULL;
+    $currentUserIsCoordinator = $currentUser->id() === $coordinator;
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
@@ -49,7 +53,9 @@ class NodeSiteAssessmentStateChangeForm {
     $form['actions']['workflow_force_finish_review'] = [
       '#type' => 'submit',
       '#value' => t('Force finish reviewing'),
-      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
+      '#access' => $state == AssessmentWorkflow::STATUS_UNDER_REVIEW
+        && $currentUser->hasPermission('force finish reviewing')
+        && $currentUserIsCoordinator,
       '#weight' => 100,
       '#name' => 'force_finish_review',
       '#attributes' => [
@@ -82,7 +88,8 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (in_array('coordinator', $currentUser->getRoles())
-      && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE) {
+      && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE
+      && empty($form['field_coordinator']['widget']['#default_value'])) {
       $form['field_coordinator']['widget']['#options'] = [
         '_none' => t('- Select -'),
         $currentUser->id() => $currentUser->getAccountName(),
@@ -90,26 +97,21 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_coordinator']['widget']['#default_value'] = $currentUser->id();
     }
 
+    $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
+    $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+    $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
-      $form['field_coordinator']['#access'] = $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
-      $form['field_assessor']['#access'] = $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-      $form['field_reviewers']['#access'] = $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
-      $form['field_references_reviewer']['#access'] = $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
+      $form['field_coordinator']['#disabled'] = !$form['field_coordinator']['widget']['#required'];
+      $form['field_assessor']['#disabled'] = !$form['field_assessor']['widget']['#required'] || !$currentUserIsCoordinator;
+      $form['field_reviewers']['#disabled'] = !$form['field_reviewers']['widget']['#required'] || !$currentUserIsCoordinator;
+      $form['field_references_reviewer']['#disabled'] = !$form['field_references_reviewer']['widget']['#required'] || !$currentUserIsCoordinator;
     }
     else {
-      $form['field_coordinator']['#access'] = FALSE;
-      $form['field_assessor']['#access'] = FALSE;
-      $form['field_reviewers']['#access'] = FALSE;
-      $form['field_references_reviewer']['#access'] = FALSE;
-    }
-
-
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
-      // If users have multiple roles, having these fields only hidden using #access
-      // property can break things, so we need to fully unset them.
-      if ($form[$field]['#access'] === FALSE) {
-        unset($form[$field]);
-      }
+      $form['field_coordinator']['#disabled'] = TRUE;
+      $form['field_assessor']['#disabled'] = TRUE;
+      $form['field_reviewers']['#disabled'] = TRUE;
+      $form['field_references_reviewer']['#disabled'] = TRUE;
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT

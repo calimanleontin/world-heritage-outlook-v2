@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - user.role.assessor
+    - user.role.authenticated
     - user.role.coordinator
     - user.role.references_reviewer
     - user.role.reviewer
@@ -25,8 +26,10 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            authenticated: authenticated
       cache:
         type: tag
         options: {  }
@@ -193,6 +196,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.roles
       tags: {  }
   entity_reference_1:
     display_plugin: entity_reference
@@ -216,6 +220,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user.roles
       tags: {  }
   entity_reference_2:
     display_plugin: entity_reference
@@ -299,6 +304,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user.roles
       tags: {  }
   entity_reference_3:
     display_plugin: entity_reference
@@ -382,6 +388,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user.roles
       tags: {  }
   entity_reference_4:
     display_plugin: entity_reference
@@ -465,4 +472,5 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user.roles
       tags: {  }
