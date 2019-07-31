@@ -16,9 +16,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  *
  * @group iucn_assessment_workflow
  */
-class FinalPhasesTest extends WorkflowTestBase {
+class Workflow09FinalChangesPhasesTest extends WorkflowTestBase {
 
-  public function testFinalPhasesAccess() {
+  public function testFinalChangesPhaseAccess() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();
