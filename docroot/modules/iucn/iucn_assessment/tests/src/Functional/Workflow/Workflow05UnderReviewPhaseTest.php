@@ -115,8 +115,8 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
         $reviewer3->id(),
       ],
     ], 'Save');
-    $revisionsIds = $this->entityTypeManager->getStorage('node')->revisionIds($assessment);
-    $this->assertFalse(in_array($reviewer2Revision->getRevisionId(), $revisionsIds), 'Revision for reviewer 2 was deleted.');
+    $reviewer2Revision = $this->entityTypeManager->getStorage('node')->loadRevision($reviewer2Revision->getRevisionId());
+    $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $reviewer2Revision->field_state->value, 'Revision for reviewer 2 was marked as finished.');
 
     $reviewer3Revision = $this->workflowService->getReviewerRevision($assessment, $reviewer3->id());
     $reviewer3RevisionEditUrl = Url::fromRoute('node.revision_edit', [
