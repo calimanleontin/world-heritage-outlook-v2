@@ -207,6 +207,10 @@ display:
           search_fields:
             name: name
       display_description: ''
+      pager:
+        type: none
+        options:
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -286,6 +290,10 @@ display:
         options:
           search_fields:
             name: name
+      pager:
+        type: none
+        options:
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -365,6 +373,10 @@ display:
         operator: AND
         groups:
           1: AND
+      pager:
+        type: none
+        options:
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
@@ -444,6 +456,10 @@ display:
         operator: AND
         groups:
           1: AND
+      pager:
+        type: none
+        options:
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
