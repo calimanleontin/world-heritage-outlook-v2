@@ -7,6 +7,8 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
+ * Phase: Being assessed (assessment_under_assessment)
+ *
  * @group iucn_assessment_workflow
  */
 class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
@@ -36,6 +38,10 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 200);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $this->userLogIn(TestSupport::ASSESSOR1);
     $this->drupalPostForm($stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);

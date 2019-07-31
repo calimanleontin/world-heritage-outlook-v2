@@ -32,6 +32,11 @@ class TestSupport {
   const REVIEWER2 = 'reviewer2@example.com';
   const REVIEWER3 = 'reviewer3@example.com';
 
+  // References reviews.
+  const REFERENCES_REVIEWER1 = 'referencesreviewer1@example.com';
+  const REFERENCES_REVIEWER2 = 'referencesreviewer2@example.com';
+  const REFERENCES_REVIEWER3 = 'referencesreviewer3@example.com';
+
   // Assessments.
   const ASSESSMENT1 = 'assessment1';
   const ASSESSMENT2 = 'assessment2';
@@ -53,6 +58,9 @@ class TestSupport {
       self::REVIEWER1 => ['reviewer'],
       self::REVIEWER2 => ['reviewer'],
       self::REVIEWER3 => ['reviewer'],
+      self::REFERENCES_REVIEWER1 => ['references_reviewer'],
+      self::REFERENCES_REVIEWER2 => ['references_reviewer'],
+      self::REFERENCES_REVIEWER3 => ['references_reviewer'],
     ];
     foreach ($users as $user => $roles) {
       self::createUser($user, $roles);

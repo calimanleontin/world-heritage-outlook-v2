@@ -7,6 +7,8 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
+ * Phase: Pre-review edits (assessment_ready_for_review)
+ *
  * @group iucn_assessment_workflow
  */
 class Workflow04ReadyForReviewPhaseTest extends WorkflowTestBase {
@@ -38,6 +40,10 @@ class Workflow04ReadyForReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
     $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);

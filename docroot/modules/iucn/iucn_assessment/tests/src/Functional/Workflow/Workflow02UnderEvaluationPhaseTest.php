@@ -7,6 +7,8 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
+ * Phase: Pre-assessment edits (assessment_under_evaluation)
+ *
  * @group iucn_assessment_workflow
  */
 class Workflow02UnderEvaluationPhaseTest extends WorkflowTestBase {
@@ -34,6 +36,10 @@ class Workflow02UnderEvaluationPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::ASSESSOR1, 403);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER1, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
     $this->userLogIn(TestSupport::COORDINATOR1);

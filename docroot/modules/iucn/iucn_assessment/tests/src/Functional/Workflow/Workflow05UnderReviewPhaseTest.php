@@ -7,6 +7,8 @@ use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
+ * Phase: Under review (assessment_under_review)
+ *
  * @group iucn_assessment_workflow
  */
 class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
@@ -52,6 +54,10 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($editUrl, TestSupport::REVIEWER3, 403);
     $this->checkUserAccess($stateChangeUrl, TestSupport::REVIEWER3, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment, $reviewer1->id());
     $reviewer1RevisionEditUrl = Url::fromRoute('node.revision_edit', [
@@ -79,6 +85,10 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($reviewer1RevisionStateChangeUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($reviewer1RevisionEditUrl, TestSupport::REVIEWER3, 403);
     $this->checkUserAccess($reviewer1RevisionStateChangeUrl, TestSupport::REVIEWER3, 403);
+    $this->checkUserAccess($reviewer1RevisionEditUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer1RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer1RevisionEditUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($reviewer1RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $reviewer2Revision = $this->workflowService->getReviewerRevision($assessment, $reviewer2->id());
     $reviewer2RevisionEditUrl = Url::fromRoute('node.revision_edit', [
@@ -106,6 +116,10 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REVIEWER2, 200);
     $this->checkUserAccess($reviewer2RevisionEditUrl, TestSupport::REVIEWER3, 403);
     $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REVIEWER3, 403);
+    $this->checkUserAccess($reviewer2RevisionEditUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer2RevisionEditUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($reviewer2RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     // Remove reviewer2 and add reviewer 3.
     $this->userLogIn(TestSupport::COORDINATOR1);
@@ -144,6 +158,10 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($reviewer3RevisionStateChangeUrl, TestSupport::REVIEWER2, 403);
     $this->checkUserAccess($reviewer3RevisionEditUrl, TestSupport::REVIEWER3, 200);
     $this->checkUserAccess($reviewer3RevisionStateChangeUrl, TestSupport::REVIEWER3, 200);
+    $this->checkUserAccess($reviewer3RevisionEditUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer3RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+    $this->checkUserAccess($reviewer3RevisionEditUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+    $this->checkUserAccess($reviewer3RevisionStateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $this->userLogIn(TestSupport::REVIEWER1);
     $this->drupalPostForm($reviewer1RevisionStateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
