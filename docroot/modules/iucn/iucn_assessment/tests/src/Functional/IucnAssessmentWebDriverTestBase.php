@@ -9,9 +9,9 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewTestData;
 
 /**
- * Base for Assessment Tests.
+ * Base for Assessment Tests using Web drivers.
  */
-abstract class IucnAssessmentTestBase extends BrowserTestBase {
+abstract class IucnAssessmentWebDriverTestBase extends WebDriverTestBase {
 
   use IucnAssessmentTestTrait;
 
