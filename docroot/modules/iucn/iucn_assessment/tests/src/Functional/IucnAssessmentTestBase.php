@@ -3,6 +3,7 @@
 namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewTestData;
@@ -10,7 +11,7 @@ use Drupal\views\Tests\ViewTestData;
 /**
  * Base for Assessment Tests.
  */
-abstract class IucnAssessmentTestBase extends BrowserTestBase {
+abstract class IucnAssessmentTestBase extends WebDriverTestBase {
 
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;

@@ -4,6 +4,7 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\NodeInterface;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 
 class WorkflowTestBase extends IucnAssessmentTestBase {
