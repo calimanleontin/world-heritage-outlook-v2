@@ -4,6 +4,8 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
@@ -38,4 +40,30 @@ class Workflow02UnderEvaluationPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
   }
+
+  public function testWarningAppearance()
+  {
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION, []);
+
+    $paragraph = $assessment->field_as_threats_current->entity;
+
+    /** @var Paragraph $value */
+    $value = $assessment->field_as_values_wh->entity;
+    $paragraph->field_as_threats_values_wh->setValue([
+      'target_id' => $value->id(),
+      'target_revision_id' => $value->getRevisionId(),
+    ]);
+    $paragraph->field_as_threats_values_bio->setValue([]);
+    $paragraph->save();
+    $assessment = Node::load($assessment->id());
+    $this->drupalGet($assessment->toUrl('edit-form'));
+
+    $this->click('#edit-field-as-values-wh-0-top-actions-buttons-delete');
+    $assert_session = $this->assertSession();
+    $assert_session->waitForElement('css', '#drupal-modal');
+    $this->assertSession()->responseContains('This value cannot be deleted because it is the only affected value for the some threats. Please edit or delete these threats first');
+
+  }
+
 }
