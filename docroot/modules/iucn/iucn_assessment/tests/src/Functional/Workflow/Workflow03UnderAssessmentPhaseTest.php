@@ -43,11 +43,9 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, []);
     $this->drupalGet($assessment->toUrl('edit-form'));
 
-    sleep(20);
     $this->assertNoLinkByHref('/node/edit_paragraph');
     $this->assertNoLinkByHref('/node/delete_paragraph');
     $this->assertNoLinkByHref('/node/add_paragraph');
-    $this->assertNoLinkByHref('#');
-//    $this->assertLinkByHref('#');
+    $this->assertSession()->responseNotContains('tabledrag-handle');
   }
 }

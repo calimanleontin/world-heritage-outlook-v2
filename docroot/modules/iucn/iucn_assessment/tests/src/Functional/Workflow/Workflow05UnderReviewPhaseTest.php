@@ -4,7 +4,6 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\Entity\Node;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
@@ -23,7 +22,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
     /** @var \Drupal\user\UserInterface $reviewer3 */
     $reviewer3 = user_load_by_mail(TestSupport::REVIEWER3);
-    
+
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, [
       'field_reviewers[]' => [

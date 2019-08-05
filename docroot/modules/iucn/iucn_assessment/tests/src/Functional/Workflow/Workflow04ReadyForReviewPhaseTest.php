@@ -44,4 +44,5 @@ class Workflow04ReadyForReviewPhaseTest extends WorkflowTestBase {
       ],
     ], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
   }
+
 }
