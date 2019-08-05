@@ -4,6 +4,7 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
@@ -163,4 +164,58 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::REVIEWER3);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
   }
+
+  public function testReadOnlyAccessFoReviewers(){
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
+
+    $reviewer1Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer1->id() );
+
+    $this->editUrl = Url::fromRoute('node.revision_edit', [
+      'node' => $reviewer1Revision->id(),
+      'node_revision' => $reviewer1Revision->getRevisionId(),
+    ]);
+
+    $this->userLogIn(TestSupport::REVIEWER1);
+
+    $assessment = Node::load($assessment->id());
+    $this->drupalGet($this->editUrl);
+    $this->assertNoLinkByHref('/node/edit_paragraph');
+    $this->assertNoLinkByHref('/node/delete_paragraph');
+    $this->assertNoLinkByHref('/node/add_paragraph');
+    $this->assertSession()->responseNotContains('tabledrag-handle');
+  }
+
+  public function testStateAssessmentChangeToFinishedReviewing() {
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
+
+    $reviewer1Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer1->id() );
+    $reviewer2Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer2->id() );
+
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+      'node' => $reviewer1Revision->id(),
+      'node_revision' => $reviewer1Revision->getRevisionId(),
+    ]);
+
+    $this->userLogIn(TestSupport::REVIEWER1);
+    $assessment = Node::load($assessment->id());
+    $this->drupalGet($this->stateChangeUrl);
+    $this->drupalPostForm($this->stateChangeUrl, [], t('Finish reviewing'));
+
+    $this->userLogIn(TestSupport::REVIEWER2);
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+      'node' => $reviewer2Revision->id(),
+      'node_revision' => $reviewer2Revision->getRevisionId(),
+    ]);
+    $assessment = Node::load($assessment->id());
+    $this->drupalGet($this->stateChangeUrl);
+    $this->drupalPostForm($this->stateChangeUrl, [], t('Finish reviewing'));
+
+    $assessment = Node::load($assessment->id());
+    sleep(10);
+    $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
+  }
+
 }
