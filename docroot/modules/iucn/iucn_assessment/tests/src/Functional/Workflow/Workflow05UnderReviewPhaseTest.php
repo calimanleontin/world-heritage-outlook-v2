@@ -187,12 +187,18 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
   }
 
   public function testStateAssessmentChangeToFinishedReviewing() {
+    /** @var \Drupal\user\Entity\User $reviewer1 */
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    /** @var \Drupal\user\Entity\User $reviewer2 */
     $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
-    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, [
+      'field_reviewers' => [$reviewer1->id(), $reviewer2->id()]
+    ], TRUE);
 
-    $reviewer1Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer1->id() );
-    $reviewer2Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer2->id() );
+    $this->setAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_REVIEW);
+
+    $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer1->id());
+    $reviewer2Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer2->id());
 
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
       'node' => $reviewer1Revision->id(),
