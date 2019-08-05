@@ -41,7 +41,7 @@ class Workflow01NewPhaseTest extends WorkflowTestBase {
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
   }
 
-  public function testStateAssessmentChange() {
+  public function testStateAssessmentChangeToUnderEvaluation() {
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_NEW, [], TRUE);
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($assessment->toUrl('edit-form'), [], t('Save'));

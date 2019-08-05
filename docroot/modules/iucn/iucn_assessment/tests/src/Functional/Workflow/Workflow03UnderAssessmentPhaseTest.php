@@ -14,27 +14,45 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
 
   const WORKFLOW_STATE = AssessmentWorkflow::STATUS_UNDER_ASSESSMENT;
+//
+//  public function testUnderAssessmentPhaseAccess() {
+//    $this->checkUserAccess($this->editUrl, TestSupport::ADMINISTRATOR, 200);
+//    $this->assertSession()->pageTextContains('Current workflow state: Being assessed');
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
+//    $this->checkUserAccess($this->editUrl, TestSupport::IUCN_MANAGER, 200);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
+//    $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR1, 403);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR1, 403);
+//    $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR2, 403);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR2, 403);
+//    $this->checkUserAccess($this->editUrl, TestSupport::ASSESSOR1, 200);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::ASSESSOR1, 200);
+//    $this->checkUserAccess($this->editUrl, TestSupport::REVIEWER1, 403);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REVIEWER1, 403);
+//    $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
+//    $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+//    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+//
+//    $this->userLogIn(TestSupport::ASSESSOR1);
+//    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
+//  }
 
-  public function testUnderAssessmentPhaseAccess() {
-    $this->checkUserAccess($this->editUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->assertSession()->pageTextContains('Current workflow state: Being assessed');
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
-    $this->checkUserAccess($this->editUrl, TestSupport::IUCN_MANAGER, 200);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
-    $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR1, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR1, 403);
-    $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR2, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR2, 403);
-    $this->checkUserAccess($this->editUrl, TestSupport::ASSESSOR1, 200);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::ASSESSOR1, 200);
-    $this->checkUserAccess($this->editUrl, TestSupport::REVIEWER1, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REVIEWER1, 403);
-    $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER1, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
-    $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
-
+  public function testReadOnlyAccessForAssessor() {
+    \Drupal::service('theme_handler')->install(['iucn_backend']);
+    $this->config('system.theme')
+      ->set('admin', 'iucn_backend')
+      ->save();
+    drupal_flush_all_caches();
     $this->userLogIn(TestSupport::ASSESSOR1);
-    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, []);
+    $this->drupalGet($assessment->toUrl('edit-form'));
+
+    sleep(20);
+    $this->assertNoLinkByHref('/node/edit_paragraph');
+    $this->assertNoLinkByHref('/node/delete_paragraph');
+    $this->assertNoLinkByHref('/node/add_paragraph');
+    $this->assertNoLinkByHref('#');
+//    $this->assertLinkByHref('#');
   }
 }
