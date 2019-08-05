@@ -39,4 +39,18 @@ class Workflow08ReviewingReferencesPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::REFERENCES_REVIEWER1);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINAL_CHANGES]);
   }
+
+  public function testCheckReadOnlyAccess() {
+    $this->userLogIn(TestSupport::REFERENCES_REVIEWER1);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_REVIEWING_REFERENCES, []);
+    $this->checkReadOnlyAccess($assessment, 'values');
+    $this->checkReadOnlyAccess($assessment, 'threats');
+    $this->checkReadOnlyAccess($assessment, 'protection-management');
+    $this->checkReadOnlyAccess($assessment, 'assessing-values');
+    $this->checkReadOnlyAccess($assessment, 'conservation-outlook');
+    $this->checkReadOnlyAccess($assessment, 'benefits');
+    $this->checkReadOnlyAccess($assessment, 'projects');
+    $this->checkNoReadOnlyAccess($assessment, 'references');
+  }
+
 }
