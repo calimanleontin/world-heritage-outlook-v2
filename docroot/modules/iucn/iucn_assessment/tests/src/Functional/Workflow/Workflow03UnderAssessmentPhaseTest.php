@@ -39,11 +39,6 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
 //  }
 
   public function testReadOnlyAccessForAssessor() {
-    \Drupal::service('theme_handler')->install(['iucn_backend']);
-    $this->config('system.theme')
-      ->set('admin', 'iucn_backend')
-      ->save();
-    drupal_flush_all_caches();
     $this->userLogIn(TestSupport::ASSESSOR1);
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, []);
     $this->drupalGet($assessment->toUrl('edit-form'));
