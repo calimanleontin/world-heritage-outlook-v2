@@ -165,42 +165,40 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
 //    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
 //  }
 //
-//  public function testReadOnlyAccessFoReviewers(){
-//    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
-//    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
-//
-//    $reviewer1Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer1->id() );
-//
-//    $this->editUrl = Url::fromRoute('node.revision_edit', [
-//      'node' => $reviewer1Revision->id(),
-//      'node_revision' => $reviewer1Revision->getRevisionId(),
-//    ]);
-//
-//    $this->userLogIn(TestSupport::REVIEWER1);
-//
-//    $assessment = Node::load($assessment->id());
-//    $this->drupalGet($this->editUrl);
-//    $this->assertNoLinkByHref('/node/edit_paragraph');
-//    $this->assertNoLinkByHref('/node/delete_paragraph');
-//    $this->assertNoLinkByHref('/node/add_paragraph');
-//    $this->assertSession()->responseNotContains('tabledrag-handle');
-//  }
+
+  public function testReadOnlyAccessFoReviewers(){
+    $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
+
+    $reviewer1Revision = $this->workflowService->createRevision($assessment,AssessmentWorkflow::STATUS_UNDER_REVIEW, $reviewer1->id() );
+
+    $this->editUrl = Url::fromRoute('node.revision_edit', [
+      'node' => $reviewer1Revision->id(),
+      'node_revision' => $reviewer1Revision->getRevisionId(),
+    ]);
+
+    $this->userLogIn(TestSupport::REVIEWER1);
+
+    $assessment = Node::load($assessment->id());
+    $this->drupalGet($this->editUrl);
+    $this->checkReadOnlyAccess();
+  }
 
   public function testStateAssessmentChangeToFinishedReviewing() {
     /** @var \Drupal\user\Entity\User $reviewer1 */
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
     /** @var \Drupal\user\Entity\User $reviewer2 */
     $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+    //1
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
-   // $this->drupalGet($this->stateChangeUrl);
     $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]));
-
-  //  $this->workflowService->forceAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_REVIEW);
 
     $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer1->id());
     $reviewer2Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer2->id());
+
+    $assessment = Node::load($assessment->id());
 
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
       'node' => $reviewer1Revision->id(),
@@ -208,22 +206,70 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     ]);
 
     $this->userLogIn(TestSupport::REVIEWER1);
-    $assessment = Node::load($assessment->id());
-//    $this->drupalGet($this->stateChangeUrl);
     $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]));
+    $assessment = Node::load($assessment->id());
 
     $this->userLogIn(TestSupport::REVIEWER2);
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
       'node' => $reviewer2Revision->id(),
       'node_revision' => $reviewer2Revision->getRevisionId(),
     ]);
-    $assessment = Node::load($assessment->id());
-//    $this->drupalGet($this->stateChangeUrl);
     $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING] ));
 
     $assessment = Node::load($assessment->id());
-    sleep(10);
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
+
+
+    //2
+////    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
+////    $this->userLogIn(TestSupport::COORDINATOR1);
+////    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+////    $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]));
+//
+// //   $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer1->id());
+//
+//    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+//      'node' => $reviewer1Revision->id(),
+//      'node_revision' => $reviewer1Revision->getRevisionId(),
+//    ]);
+//
+//    $assessment = Node::load($assessment->id());
+//
+//    $this->userLogIn(TestSupport::REVIEWER1);
+//    $assessment = Node::load($assessment->id());
+//    $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING] ));
+//
+//    $assessment = Node::load($assessment->id());
+//    $this->userLogIn(TestSupport::COORDINATOR1);
+//    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', [
+//      'node' => $reviewer1Revision->id(),
+//      'node_revision' => $reviewer1Revision->getRevisionId(),
+//    ]);
+//    $this->drupalPostForm($this->stateChangeUrl, [
+//      'field_reviewers[]' => [
+//        $reviewer1->id(),
+//      ],
+//    ], 'Save');
+//    sleep(20);
+//    $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
+
+
+    //3
+//    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
+//    $this->userLogIn(TestSupport::COORDINATOR1);
+//    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+//    $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]));
+//    header_remove('Set-Cookie');
+//    $this->drupalPostForm($this->stateChangeUrl, [], t('Force finish reviewing'));
+//    $assert_session = $this->assertSession();
+//    header_remove('Set-Cookie');
+//    $assert_session->waitForElement('css', '#drupal-modal');
+//    header_remove('Set-Cookie');
+//    sleep(200);
+//    $this->click('#edit-field-as-values-wh-0-top-actions-buttons-delete');
+//    sleep(200);
+//    $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
+
   }
 
 }

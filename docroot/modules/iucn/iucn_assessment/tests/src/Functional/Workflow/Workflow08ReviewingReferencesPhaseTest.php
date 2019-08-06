@@ -43,14 +43,22 @@ class Workflow08ReviewingReferencesPhaseTest extends WorkflowTestBase {
   public function testCheckReadOnlyAccess() {
     $this->userLogIn(TestSupport::REFERENCES_REVIEWER1);
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_REVIEWING_REFERENCES, []);
-    $this->checkReadOnlyAccess($assessment, 'values');
-    $this->checkReadOnlyAccess($assessment, 'threats');
-    $this->checkReadOnlyAccess($assessment, 'protection-management');
-    $this->checkReadOnlyAccess($assessment, 'assessing-values');
-    $this->checkReadOnlyAccess($assessment, 'conservation-outlook');
-    $this->checkReadOnlyAccess($assessment, 'benefits');
-    $this->checkReadOnlyAccess($assessment, 'projects');
-    $this->checkNoReadOnlyAccess($assessment, 'references');
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'values']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'threats']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'protection-management']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'assessing-values']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'conservation-outlook']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'benefits']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  =>'projects']]));
+    $this->checkReadOnlyAccess();
+    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'references']]));
+    $this->checkNoReadOnlyAccess();
   }
 
 }

@@ -54,16 +54,14 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]);
   }
 
-  public function checkReadOnlyAccess($assessment, $tab) {
-    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => $tab]]));
+  public function checkReadOnlyAccess() {
     $this->assertNoLinkByHref('/node/edit_paragraph');
     $this->assertNoLinkByHref('/node/delete_paragraph');
     $this->assertNoLinkByHref('/node/add_paragraph');
     $this->assertSession()->responseNotContains('tabledrag-handle');
   }
 
-  public function checkNoReadOnlyAccess($assessment, $tab) {
-    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => $tab]]));
+  public function checkNoReadOnlyAccess() {
     $this->assertLinkByHref('/node/edit_paragraph');
     $this->assertLinkByHref('/node/delete_paragraph');
     $this->assertLinkByHref('/node/add_paragraph');
