@@ -36,7 +36,6 @@ class Workflow02JsUnderEvaluationPhaseTest extends IucnAssessmentWebDriverTestBa
     $this->click('#edit-field-as-values-wh-0-top-actions-buttons-delete');
     $assert_session = $this->assertSession();
     $assert_session->waitForElement('css', '#drupal-modal');
-    sleep(10);
     $this->assertSession()->responseContains('This value cannot be deleted because it is the only affected value for the some threats. Please edit or delete these threats first');
   }
 
