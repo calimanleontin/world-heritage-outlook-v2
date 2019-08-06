@@ -11,6 +11,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  */
 class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
   const WORKFLOW_STATE = AssessmentWorkflow::STATUS_READY_FOR_REVIEW;
+
   public function testUnderReviewPhaseAccess() {
     /** @var \Drupal\user\UserInterface $reviewer1 */
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
@@ -18,6 +19,8 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
     /** @var \Drupal\user\UserInterface $reviewer3 */
     $reviewer3 = user_load_by_mail(TestSupport::REVIEWER3);
+
+
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, [
       'field_reviewers[]' => [
@@ -25,6 +28,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
         $reviewer2->id(),
       ],
     ], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+
     $this->checkUserAccess($this->editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->assertSession()->pageTextContains('Current workflow state: Under review');
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::ADMINISTRATOR, 200);
@@ -46,6 +50,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
     $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+
     $reviewer1Revision = $this->workflowService->getReviewerRevision($this->assessment, $reviewer1->id());
     $this->editUrl = Url::fromRoute('node.revision_edit', [
       'node' => $reviewer1Revision->id(),
@@ -76,6 +81,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
     $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+
     $reviewer2Revision = $this->workflowService->getReviewerRevision($this->assessment, $reviewer2->id());
     $this->editUrl = Url::fromRoute('node.revision_edit', [
       'node' => $reviewer2Revision->id(),
@@ -106,6 +112,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER1, 403);
     $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
+
     // Remove reviewer2 and add reviewer 3.
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, [
@@ -116,6 +123,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     ], 'Save');
     $reviewer2Revision = $this->entityTypeManager->getStorage('node')->loadRevision($reviewer2Revision->getRevisionId());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $reviewer2Revision->field_state->value, 'Revision for reviewer 2 was marked as finished.');
+
     $reviewer3Revision = $this->workflowService->getReviewerRevision($this->assessment, $reviewer3->id());
     $this->editUrl = Url::fromRoute('node.revision_edit', [
       'node' => $reviewer3Revision->id(),
@@ -151,6 +159,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::REVIEWER3);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
   }
+
   public function testReadOnlyAccessFoReviewers(){
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_REVIEW, []);
@@ -189,6 +198,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $this->click("[value=\"{$label}\"]");
+
     $this->userLogIn(TestSupport::REVIEWER2);
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
       'node' => $reviewer2Revision->id(),
@@ -198,6 +208,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $this->click("[value=\"{$label}\"]");
+
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
