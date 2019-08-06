@@ -58,14 +58,14 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->assertNoLinkByHref('/node/edit_paragraph');
     $this->assertNoLinkByHref('/node/delete_paragraph');
     $this->assertNoLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseNotContains('tabledrag-handle');
+    $this->assertSession()->responseNotContains('field-multiple-drag');
   }
 
   public function checkNoReadOnlyAccess() {
     $this->assertLinkByHref('/node/edit_paragraph');
     $this->assertLinkByHref('/node/delete_paragraph');
     $this->assertLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseContains('tabledrag-handle');
+    $this->assertSession()->responseContains('field-multiple-drag');
   }
 
 
