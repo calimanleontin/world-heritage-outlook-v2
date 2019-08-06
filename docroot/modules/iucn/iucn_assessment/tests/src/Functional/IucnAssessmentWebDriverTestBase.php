@@ -26,6 +26,10 @@ abstract class IucnAssessmentWebDriverTestBase extends WebDriverTestBase {
     'iucn_who_structure',
   ];
 
+  public static $testViews = [
+    'users_by_roles',
+  ];
+
   /**
    * {@inheritdoc}
    */
