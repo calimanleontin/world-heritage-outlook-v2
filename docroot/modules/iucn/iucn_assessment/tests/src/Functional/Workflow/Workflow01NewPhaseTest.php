@@ -57,6 +57,7 @@ class Workflow01NewPhaseTest extends WorkflowTestBase {
     $assert_session->waitForElement('css', '.edit-paragraph-form-modal .button--primary');
 
     $this->click('.edit-paragraph-form-modal .ui-dialog-buttonpane .button--primary');
+    sleep(10);
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_UNDER_EVALUATION, $assessment->field_state->value);
     $this->assertEquals(user_load_by_mail(TestSupport::COORDINATOR1)->id(), $assessment->field_coordinator->target_id);
