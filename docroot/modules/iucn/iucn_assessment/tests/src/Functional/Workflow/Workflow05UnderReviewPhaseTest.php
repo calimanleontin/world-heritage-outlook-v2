@@ -172,16 +172,12 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]));
-
     $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer1->id());;
-
     $this->editUrl = Url::fromRoute('node.revision_edit', [
       'node' => $reviewer1Revision->id(),
       'node_revision' => $reviewer1Revision->getRevisionId(),
     ]);
-
     $this->userLogIn(TestSupport::REVIEWER1);
-
     $this->drupalGet($this->editUrl);
     $this->checkReadOnlyAccess();
   }
@@ -206,7 +202,6 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
       'node' => $reviewer1Revision->id(),
       'node_revision' => $reviewer1Revision->getRevisionId(),
     ]);
-    $assessment = Node::load($assessment->id());
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $this->click("[value=\"{$label}\"]");
@@ -216,11 +211,9 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
       'node' => $reviewer2Revision->id(),
       'node_revision' => $reviewer2Revision->getRevisionId(),
     ]);
-    $assessment = Node::load($assessment->id());
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $this->click("[value=\"{$label}\"]");
-
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
@@ -238,7 +231,6 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
       'node' => $reviewer1Revision->id(),
       'node_revision' => $reviewer1Revision->getRevisionId(),
     ]);
-    $assessment = Node::load($assessment->id());
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $this->click("[value=\"{$label}\"]");
@@ -248,13 +240,11 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
       'node' => $reviewer1Revision->id(),
       'node_revision' => $reviewer1Revision->getRevisionId(),
     ]);
-    $assessment = Node::load($assessment->id());
     $this->drupalPostForm($this->stateChangeUrl, [
       'field_reviewers[]' => [
         $reviewer1->id(),
       ],
     ], 'Save');
-
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
