@@ -18,6 +18,7 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class InlineEntityFormComplexTableViewMode extends InlineEntityFormComplex {
+
   /**
    * {@inheritdoc}
    */
@@ -37,4 +38,5 @@ class InlineEntityFormComplexTableViewMode extends InlineEntityFormComplex {
       $this->inlineFormHandler = $this->entityTypeManager->getHandler($target_type, 'inline_form_table_view_mode');
     }
   }
+
 }

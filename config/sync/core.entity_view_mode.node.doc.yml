@@ -1,0 +1,10 @@
+uuid: 34f65072-d2b8-4efc-990b-571b0a4a5806
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.doc
+label: DOC
+targetEntityType: node
+cache: true

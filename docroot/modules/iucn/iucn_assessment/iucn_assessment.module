@@ -23,6 +23,7 @@ use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\iucn_assessment\Plugin\Access\AssessmentAccess;
+use Drupal\iucn_assessment\Form\FieldConfigEditForm;
 
 function iucn_assessment_theme() {
   return [
@@ -406,8 +407,10 @@ function iucn_assessment_preprocess_field(&$variables) {
       break;
 
     case 'field_as_threats_extent':
-      foreach ($variables['items'] as $key => $item) {
-        $variables['items'][$key]['content']['#plain_text'] = ', ' . $variables['items'][$key]['content']['#plain_text'];
+      if ($variables['element']['#view_mode'] != 'doc') {
+        foreach ($variables['items'] as $key => $item) {
+          $variables['items'][$key]['content']['#plain_text'] = ', ' . $variables['items'][$key]['content']['#plain_text'];
+        }
       }
       break;
 
@@ -585,6 +588,10 @@ function iucn_assessment_views_pre_render(ViewExecutable $view) {
  */
 function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'field_config_edit_form':
+      FieldConfigEditForm::alter($form, $form_state, $form_id);
+      break;
+
     case 'node_site_assessment_form':
     case 'node_site_assessment_edit_form':
       if ($form_id == 'node_site_assessment_edit_form') {
@@ -620,7 +627,7 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'paragraph_as_site_reference_iucn_modal_paragraph_add_form':
-      $form['field_reference']['widget'][0]['value']['#description'] = t('You can add multiple references at once, one per line.');
+      $form['field_reference']['widget'][0]['#description'] = t('You can add multiple references at once, one per line.');
       break;
 
     case 'paragraph_as_site_value_wh_iucn_modal_paragraph_add_form':
@@ -842,13 +849,25 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
         'weight' => 90,
       ];
     }
+
+    $wordExportUrl = Url::fromRoute('iucn_assessment.node.word_export', ['node' => $entity->id()]);
+    if ($wordExportUrl->access()) {
+      $operations['word_export'] = [
+        'title' => t('Word export'),
+        'url' => $wordExportUrl,
+        'weight' => 100,
+      ];
+    }
   }
   elseif ($entity->getEntityTypeId() == 'user') {
-    $operations['assign'] = [
-      'title' => t('Assign'),
-      'url' => Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]),
-      'weight' => 0,
-    ];
+    $userAssignUrl = Url::fromRoute('iucn_assessment.user_assign', ['user' => $entity->id()]);
+    if ($userAssignUrl->access()) {
+      $operations['assign'] = [
+        'title' => t('Assign'),
+        'url' => $userAssignUrl,
+        'weight' => 0,
+      ];
+    }
   }
   return $operations;
 }
@@ -872,7 +891,6 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
       }
     }
 
-
     if ($currentUser->hasRole('reviewer')) {
       if (!empty($operations['edit_reviewer_revision'])) {
         $operations['edit_reviewer_revision']['title'] = t('Review');
@@ -880,6 +898,12 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
 
       if (!empty($operations['finish_reviewer_revision'])) {
         $operations['finish_reviewer_revision']['title'] = t('Submit review');
+      }
+    }
+
+    if ($currentUser->hasRole('references_reviewer')) {
+      if (!empty($operations['edit'])) {
+        $operations['edit']['title'] = t('Review');
       }
     }
   }
@@ -998,8 +1022,23 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
       $value['editorSettings']['pasteFromWordPromptCleanup'] = false;
       $value['editorSettings']['forcePasteAsPlainText'] = true;
       $value['editorSettings']['enterMode'] = 2;
-      if (!empty(\Drupal::request()->cookies->get('scayt_sLang'))) {
-        $value['editorSettings']['scayt_sLang'] = \Drupal::request()->cookies->get('scayt_sLang');
+      $node = \Drupal::request()->get('node');
+      if (is_numeric($node)) {
+        $node = Node::load($node);
+      }
+      $languageMapping = [
+        'en' => 'en_US',
+        'fr' => 'fr_FR',
+        'es' => 'es_ES',
+      ];
+
+      $language = \Drupal::request()->cookies->get('scayt_sLang');
+      if ($node instanceof NodeInterface && $node->bundle() == 'site_assessment' && !empty($languageMapping[$node->get('langcode')->value])) {
+        $language = $languageMapping[$node->get('langcode')->value];
+      }
+      if (!empty($language)) {
+        \Drupal::request()->cookies->set('scayt_sLang', $language);
+        $value['editorSettings']['scayt_sLang'] = $language;
         $value['editorSettings']['scayt_disableOptionsStorage'] = 'lang';
       }
     }
@@ -1052,4 +1091,10 @@ function iucn_assessment_entity_presave(Drupal\Core\Entity\EntityInterface $enti
     $value = $entity->{$fieldName}->value;
     $entity->set($field->getName(), strip_tags($entity->{$fieldName}->value));
   }
+}
+
+function xd() {
+  /** @var \Drupal\Core\Entity\EntityViewBuilder $viewBuilder */
+  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
+  $build = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
 }

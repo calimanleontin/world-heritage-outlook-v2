@@ -11,7 +11,6 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -39,6 +38,10 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $currentUser = \Drupal::currentUser();
+    $coordinator = !empty($node->field_coordinator->target_id)
+      ? $node->field_coordinator->target_id
+      : NULL;
+    $currentUserIsCoordinator = $currentUser->id() === $coordinator;
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
@@ -50,7 +53,9 @@ class NodeSiteAssessmentStateChangeForm {
     $form['actions']['workflow_force_finish_review'] = [
       '#type' => 'submit',
       '#value' => t('Force finish reviewing'),
-      '#access' => $node->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_REVIEW && $currentUser->hasPermission('force finish reviewing'),
+      '#access' => $state == AssessmentWorkflow::STATUS_UNDER_REVIEW
+        && $currentUser->hasPermission('force finish reviewing')
+        && $currentUserIsCoordinator,
       '#weight' => 100,
       '#name' => 'force_finish_review',
       '#attributes' => [
@@ -83,7 +88,8 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (in_array('coordinator', $currentUser->getRoles())
-      && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE) {
+      && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE
+      && empty($form['field_coordinator']['widget']['#default_value'])) {
       $form['field_coordinator']['widget']['#options'] = [
         '_none' => t('- Select -'),
         $currentUser->id() => $currentUser->getAccountName(),
@@ -91,15 +97,21 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_coordinator']['widget']['#default_value'] = $currentUser->id();
     }
 
+    $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
+    $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+    $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
-      $form['field_coordinator']['#access'] = $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
-      $form['field_assessor']['#access'] = $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-      $form['field_reviewers']['#access'] = $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+      $form['field_coordinator']['#disabled'] = !$form['field_coordinator']['widget']['#required'];
+      $form['field_assessor']['#disabled'] = !$form['field_assessor']['widget']['#required'] || !$currentUserIsCoordinator;
+      $form['field_reviewers']['#disabled'] = !$form['field_reviewers']['widget']['#required'] || !$currentUserIsCoordinator;
+      $form['field_references_reviewer']['#disabled'] = !$form['field_references_reviewer']['widget']['#required'] || !$currentUserIsCoordinator;
     }
     else {
-      $form['field_coordinator']['#access'] = FALSE;
-      $form['field_assessor']['#access'] = FALSE;
-      $form['field_reviewers']['#access'] = FALSE;
+      $form['field_coordinator']['#disabled'] = TRUE;
+      $form['field_assessor']['#disabled'] = TRUE;
+      $form['field_reviewers']['#disabled'] = TRUE;
+      $form['field_references_reviewer']['#disabled'] = TRUE;
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
@@ -220,6 +232,7 @@ class NodeSiteAssessmentStateChangeForm {
       unset($form['field_coordinator']);
       unset($form['field_assessor']);
       unset($form['field_reviewers']);
+      unset($form['field_references_reviewer']);
       unset($form['warning']);
       $form['actions']['#access'] = FALSE;
     }
@@ -423,7 +436,10 @@ class NodeSiteAssessmentStateChangeForm {
     $oldState = $newState = $node->field_state->value;
     $createNewRevision = TRUE;
 
-    foreach (['field_coordinator', 'field_assessor', 'field_reviewers'] as $field) {
+    foreach (['field_coordinator', 'field_assessor', 'field_reviewers', 'field_references_reviewer'] as $field) {
+      if (empty($form_state->getValue($field))) {
+        continue;
+      }
       $node->set($field, $form_state->getValue($field));
     }
 
@@ -506,6 +522,7 @@ class NodeSiteAssessmentStateChangeForm {
         break;
 
       case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
+      case AssessmentWorkflow::STATUS_UNDER_COMPARISON . '>' . AssessmentWorkflow::STATUS_REVIEWING_REFERENCES:
         $workflowService->removeCommentsFromFieldSettings($node);
         break;
 
@@ -523,6 +540,11 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_FINISHED_REVIEWING . '>' . AssessmentWorkflow::STATUS_UNDER_COMPARISON:
         $node->set('field_settings', $settingsWithDifferences);
+        break;
+
+      case AssessmentWorkflow::STATUS_REVIEWING_REFERENCES . '>' . AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        $underComparisonRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_COMPARISON);
+        $workflowService->appendDiffToFieldSettings($node, $underComparisonRevision->getRevisionId(), $original->getRevisionId());
         break;
 
       case AssessmentWorkflow::STATUS_PUBLISHED . '>' . AssessmentWorkflow::STATUS_DRAFT:
@@ -560,12 +582,8 @@ class NodeSiteAssessmentStateChangeForm {
   }
 
   private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
-    if (in_array('reviewer', $currentUser->getRoles())) {
-      if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
-        $element = &$form['actions']['workflow_assessment_finished_reviewing'];
-
-        $element['#value'] = t('Submit review');
-      }
+    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
+      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
     }
   }
 }

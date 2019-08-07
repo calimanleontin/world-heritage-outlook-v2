@@ -1,0 +1,33 @@
+uuid: c530fc7b-4446-40b5-9084-10fb536b2076
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_references_reviewer
+    - node.type.site_assessment
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
+id: node.site_assessment.field_references_reviewer
+field_name: field_references_reviewer
+entity_type: node
+bundle: site_assessment
+label: 'References reviewer'
+description: 'These users will review the assessment references before publishing.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: users_by_roles
+      display_name: entity_reference_4
+      arguments: {  }
+field_type: entity_reference

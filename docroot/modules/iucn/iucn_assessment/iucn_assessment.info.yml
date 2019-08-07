@@ -1,4 +1,4 @@
-name: iucn_assessment
+name: 'IUCN assessment'
 type: module
 description: 'IUCN assessment related functionality'
 core: 8.x

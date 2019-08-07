@@ -5,6 +5,7 @@ dependencies:
   config:
     - user.role.assessor
     - user.role.coordinator
+    - user.role.references_reviewer
     - user.role.reviewer
   module:
     - iucn_who_core
@@ -2226,6 +2227,7 @@ display:
             coordinator: coordinator
             assessor: assessor
             reviewer: reviewer
+            references_reviewer: references_reviewer
           group: 1
           exposed: true
           expose:
@@ -2242,18 +2244,20 @@ display:
               authenticated: authenticated
               administrator: '0'
               iucn_manager: '0'
-              edit_world_heritage_site_assessments: '0'
-              publish_world_heritage_site_assessments: '0'
               coordinator: '0'
               assessor: '0'
               reviewer: '0'
-              anonymous: '0'
+              references_reviewer: '0'
+              edit_world_heritage_site_assessments: '0'
+              publish_world_heritage_site_assessments: '0'
               edit_content_pages: '0'
               publish_content_pages: '0'
               menu_editor: '0'
               edit_world_heritage_site_information: '0'
+              edw_healthcheck_role: '0'
               publish_world_heritage_site_information: '0'
               manage_submissions: '0'
+              anonymous: '0'
             reduce: false
           is_grouped: false
           group_info:

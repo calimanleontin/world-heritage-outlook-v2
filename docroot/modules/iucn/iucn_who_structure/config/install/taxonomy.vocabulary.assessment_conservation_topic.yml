@@ -4,5 +4,4 @@ dependencies: {  }
 name: 'Assessment conservation topic'
 vid: assessment_conservation_topic
 description: 'Conservation outlook assessment topic'
-hierarchy: 0
 weight: 0

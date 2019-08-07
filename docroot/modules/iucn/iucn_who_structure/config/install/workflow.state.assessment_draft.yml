@@ -7,5 +7,5 @@ id: assessment_draft
 label: Draft
 module: workflow
 wid: assessment
-weight: 1
+weight: 2
 sysid: 0

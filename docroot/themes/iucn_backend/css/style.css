@@ -373,6 +373,20 @@
   content: ' ';
   background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
 }
+.node-site-assessment-edit-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-references-reviewer .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-references-reviewer .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-references-reviewer .form-item.form-disabled {
+  display: none;
+}
 .add-paragraph-form-modal .paragraph-form,
 .edit-paragraph-form-modal .paragraph-form {
   width: 100%;

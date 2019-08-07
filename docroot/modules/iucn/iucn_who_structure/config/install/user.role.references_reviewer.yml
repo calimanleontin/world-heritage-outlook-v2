@@ -1,0 +1,19 @@
+uuid: a8c9d619-82ca-451c-937e-75e67fd03569
+langcode: en
+status: true
+dependencies: {  }
+id: references_reviewer
+label: 'References reviewer'
+weight: -5
+is_admin: null
+permissions:
+  - 'add more field_as_references_p'
+  - 'create assessment workflow_transition'
+  - 'delete field_as_references_p'
+  - 'edit any site_assessment content'
+  - 'edit field_as_references_p'
+  - 'edit own site_assessment content'
+  - 'reorder field_as_references_p'
+  - 'use text format assessment_text_format'
+  - 'view any unpublished content'
+  - 'view latest version'

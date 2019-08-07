@@ -233,6 +233,7 @@
     "jackmoore/colorbox": "^1.6",
     "kenwheeler/slick": "^1.6",
     "phpmailer/phpmailer": "^6.0",
+    "phpoffice/phpword": "^0.16.0",
     "webflo/drupal-finder": "^1.1",
     "webmozart/path-util": "^2.3",
     "webspellchecker/ckeditor-plugin-scayt": "^5.3"

@@ -47,6 +47,7 @@ function iucn_fields_taxonomy_term_load(array $entities) {
     'iucn_assessment.field_diff_form',
     'iucn_assessment.modal_paragraph_add',
     'iucn_assessment.modal_paragraph_edit',
+    'iucn_assessment.modal_paragraph_delete',
     'iucn_assessment.node.state_change',
     'iucn_assessment.node_revision.state_change',
   ];

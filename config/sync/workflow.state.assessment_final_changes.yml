@@ -1,0 +1,12 @@
+uuid: 553a1190-0a8b-42c5-aebc-652601e8d8e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_final_changes
+label: 'Final changes'
+module: workflow
+wid: assessment
+weight: -1
+sysid: 0

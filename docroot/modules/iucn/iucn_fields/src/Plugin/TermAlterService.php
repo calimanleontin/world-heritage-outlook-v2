@@ -63,4 +63,21 @@ class TermAlterService {
     return self::getTermLabelForYear($term, $year) == '<hidden>';
   }
 
+  /**
+   * Retrieves termIds hidden for a given cycle
+   *
+   * @param $cycle
+   *
+   * @return array
+   */
+  public function getHiddenTermsForCycle($cycle) {
+    $hiddenTerms = [];
+    if (!empty($this->alteredTerms[$cycle])) {
+      $hiddenTerms = array_keys(array_filter($this->alteredTerms[$cycle], function ($value) {
+        return $value == '<hidden>';
+      }));
+    }
+    return $hiddenTerms;
+  }
+
 }

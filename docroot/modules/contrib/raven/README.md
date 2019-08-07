@@ -74,7 +74,27 @@ suppress breadcrumbs, you may implement hook_raven_breadcrumb_alter().
 
 The Sentry browser client configuration can be modified via the
 `$page['#attached']['drupalSettings']['raven']['options']` object in PHP or the
-`drupalSettings.raven.options` object in JavaScript.
+`drupalSettings.raven.options` object in JavaScript. Sentry callbacks can be
+configured via custom JavaScript (using library weight to ensure your custom
+configuration is added early enough), for example:
+
+```
+drupalSettings.raven.options.beforeSend = function(event) {
+  var isUnsupportedBrowser = Boolean(navigator.userAgent.match(/Trident.*rv:11\./));
+  if (isUnsupportedBrowser) {
+    // Do not log the event to Sentry.
+    return null;
+  }
+  else {
+    // Do not alter the event.
+    return event;
+  }
+};
+```
+
+If desired, the SENTRY_DSN, SENTRY_ENVIRONMENT and SENTRY_RELEASE environment
+variables can be used to configure this module, overriding the corresponding
+settings at admin/config/development/logging.
 
 
 USAGE
@@ -85,6 +105,7 @@ admin/config/development/logging, Drupal's exception and error handlers will
 send events to Sentry, and developers can use the normal Drupal (or PHP) APIs to
 send events to Sentry:
 
+```
 try {
   throw new \Exception('Oopsie');
 }
@@ -96,9 +117,10 @@ catch (\Exception $e) {
   // Capture event via PHP user notice:
   trigger_error($e);
 }
+```
 
 In addition, the Raven_Client object is available to developers at:
-\Drupal::service('logger.raven')->client
+`\Drupal::service('logger.raven')->client`
 
 You can find documentation for the (now deprecated) Raven_Client at:
  * https://docs.sentry.io/clients/php/usage/#reporting-exceptions
@@ -117,7 +139,8 @@ that storing and sending the errors to Sentry requires a large amount of memory
 and execution time, enough to exceed your configured `memory_limit` and
 `max_execution_time` settings. This could result in a stalled or failed request.
 A workaround for this case would be to disable sending notice-level events to
-Sentry.
+Sentry, or, for long-running processes, to periodically call
+`\Drupal::service('logger.raven')->flush()`.
 
 
 DRUSH INTEGRATION

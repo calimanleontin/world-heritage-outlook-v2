@@ -193,6 +193,7 @@ function pet_send_mail($pet_id, $recipients, $options) {
  */
 function pet_send_one_mail(Pet $pet, $params) {
   $pet_logging = \Drupal::config('pet.settings')->get('pet_logging');
+  $messenger = \Drupal::messenger();
 
   if (!pet_is_valid($pet)) {
     if ($pet_logging < 2) {
@@ -200,7 +201,7 @@ function pet_send_one_mail(Pet $pet, $params) {
         ->error('Invalid PET object in pet_send_one_mail().');
     }
     else {
-      drupal_set_message(t('Invalid PET object in pet_send_one_mail().'), 'error');
+      $messenger->addMessage(t('Invalid PET object in pet_send_one_mail().'), 'error');
     }
     return;
   }
@@ -212,7 +213,7 @@ function pet_send_one_mail(Pet $pet, $params) {
         ->error('Missing sender email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]);
     }
     else {
-      drupal_set_message(t('Missing sender email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]), 'error');
+      $messenger->addMessage(t('Missing sender email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]), 'error');
     }
     return;
   }
@@ -223,7 +224,7 @@ function pet_send_one_mail(Pet $pet, $params) {
         ->error('Missing recipient email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]);
     }
     else {
-      drupal_set_message(t('Missing recipient email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]), 'error');
+      $messenger->addMessage(t('Missing recipient email address in pet_send_one_mail() for PET \'%pet_title\'.', ['%pet_title' => $pet_title]), 'error');
     }
     return;
   }

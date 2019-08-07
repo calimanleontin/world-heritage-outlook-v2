@@ -9,7 +9,7 @@
 
   Drupal.behaviors.rowParagraphWidget = {
     attach: function attach(context) {
-      $('.field--widget-row-entity-reference-paragraphs table tbody tr:first-child', context).removeClass('draggable').find('.field-multiple-drag').html('');
+      $('.field--widget-row-entity-reference-paragraphs table tbody tr:first-child').removeClass('draggable').find('.field-multiple-drag').html('');
       $('tr.draggable', context).once('deletedParagraph').each(function () {
         if ($(this).find('.paragraph-deleted-row').length !== 0) {
           $(this).addClass('paragraph-deleted-row');

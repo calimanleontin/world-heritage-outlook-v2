@@ -13,9 +13,9 @@ use PHPUnit\Framework\Assert;
 function raven_test_page_attachments(array &$attachments) {
   $client = \Drupal::service('logger.raven')->client;
   $client->setSendCallback(function ($data) use (&$attachments) {
-    if (!empty($data['tags']['channel']) && !empty($data['sentry.interfaces.Message']['formatted'])) {
+    if (!empty($data['logger']) && !empty($data['sentry.interfaces.Message']['formatted'])) {
       $attachments['#attached']['http_header'][] = [
-        $data['tags']['channel'],
+        $data['logger'],
         $data['sentry.interfaces.Message']['formatted'],
         FALSE,
       ];

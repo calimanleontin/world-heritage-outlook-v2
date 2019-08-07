@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional;
 
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\views\Tests\ViewTestData;
@@ -13,9 +14,6 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
 
   /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
   protected $workflowService;
-
-  /** @var \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface */
-  protected $entityDefinitionUpdateManager;
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
@@ -99,8 +97,6 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->entityFieldManager = $this->container->get('entity_field.manager');
-    $this->entityDefinitionUpdateManager = $this->container->get('entity.definition_update_manager');
-    $this->entityDefinitionUpdateManager->applyUpdates();
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createTestData();
   }
@@ -108,26 +104,74 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
   /**
    * Helper function used to force an assessment state.
    *
-   * If field_changes is passed, for every key in the array
-   * we will set $node->{$key}->target_id = $value.
-   *
-   * @param \Drupal\node\NodeInterface $node
+   * @param \Drupal\node\NodeInterface $assessment
    *   The assessment.
-   * @param string $state
-   *   The state.
-   * @param array $field_changes
+   * @param string $newState
+   *   The new state.
+   * @param array $values
    *   An array of field changes.
    *
-   * @return \Drupal\node\NodeInterface
+   * @return \Drupal\node\NodeInterface|null
    */
-  protected function setAssessmentState(NodeInterface $node, $newState, $field_changes = NULL) {
-    if (!empty($field_changes)) {
-      foreach ($field_changes as $field => $target_id) {
-        $node->{$field}->target_id = $target_id;
-      }
+  protected function setAssessmentState(NodeInterface $assessment, $newState, array $values = []) {
+    foreach ($values as $field => $value) {
+      $assessment->set($field, $value);
     }
-    $state = $node->field_state->value;
-    return $this->workflowService->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    $state = $assessment->field_state->value;
+    try {
+      return $this->workflowService->createRevision($assessment, $newState, NULL, "{$state} ({$assessment->getRevisionId()}) => {$newState}", TRUE);
+    }
+    catch (EntityStorageException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * Creates a new assessment in the provided state.
+   *
+   * @param $state
+   *  Assessment workflow state.
+   * @param array $values
+   *  Extra fields values.
+   * @param bool $doNotReferenceUser
+   *  Defaults to FALSE. If set to TRUE, the default users fields (coordinator,
+   * assessor, reviewers and references reviewer) will be left empty.
+   *
+   * @return \Drupal\node\NodeInterface|null
+   */
+  protected function createMockAssessmentNode($state, array $values = [], $doNotReferenceUser = FALSE) {
+    $assessment = TestSupport::createAssessment();
+    TestSupport::populateAllFieldsData($assessment, 1);
+
+    if ($doNotReferenceUser === FALSE) {
+      /** @var \Drupal\user\UserInterface $coordinator */
+      $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
+      /** @var \Drupal\user\UserInterface $assessor */
+      $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
+      /** @var \Drupal\user\UserInterface $reviewer1 */
+      $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
+      /** @var \Drupal\user\UserInterface $reviewer2 */
+      $reviewer2 = user_load_by_mail(TestSupport::REVIEWER2);
+      /** @var \Drupal\user\UserInterface $referencesReviewer */
+      $referencesReviewer = user_load_by_mail(TestSupport::REFERENCES_REVIEWER1);
+      $values += [
+        'field_coordinator' => $coordinator->id(),
+        'field_assessor' => $assessor->id(),
+        'field_reviewers' => [
+          $reviewer1->id(),
+          $reviewer2->id(),
+        ],
+        'field_references_reviewer' => $referencesReviewer->id(),
+      ];
+    }
+
+    try {
+      $assessment->save();
+      return $this->setAssessmentState($assessment, $state, $values);
+    }
+    catch (EntityStorageException $e) {
+      return NULL;
+    }
   }
 
   /**

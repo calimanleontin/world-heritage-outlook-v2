@@ -86,7 +86,7 @@ iucn_who_core.administration.dashboard:
   route_name: who.user-dashboard
   menu_name: admin
   parent: system.admin
-  weight: -100
+  weight: -99
 
 # Tools
 iucn_who_core.dashboard.cm:

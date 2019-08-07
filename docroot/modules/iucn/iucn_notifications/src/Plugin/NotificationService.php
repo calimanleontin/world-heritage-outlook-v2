@@ -3,11 +3,14 @@
 namespace Drupal\iucn_notifications\Plugin;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\pet\Entity\Pet;
+use Drupal\pet\PetInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -18,6 +21,9 @@ class NotificationService {
   const USER_ACCOUNT_ACTIVATED = 'user_account_activated';
 
   const USER_PASSWORD_RESET = 'user_password_reset';
+
+  /** @var \Drupal\Core\Database\Connection */
+  protected $database;
 
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
@@ -40,7 +46,8 @@ class NotificationService {
   /** @var \Drupal\Core\Session\AccountInterface */
   protected $currentUser;
 
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory, Token $token, LoggerChannelFactoryInterface $loggerFactory, AccountInterface $currentUser) {
+  public function __construct(Connection $database, EntityTypeManagerInterface $entityTypeManager, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory, Token $token, LoggerChannelFactoryInterface $loggerFactory, AccountInterface $currentUser) {
+    $this->database = $database;
     $this->entityTypeManager = $entityTypeManager;
     $this->petStorage = $this->entityTypeManager->getStorage('pet');
     $this->mailManager = $mailManager;
@@ -59,6 +66,10 @@ class NotificationService {
    */
   public function sendNotificationToUser($notificationType, $userId, $options = []) {
     $user = User::load($userId);
+    if (empty($user)) {
+      $this->logger->error("NotificationService::sendNotificationToUser: invalid user id {$userId}, notification could not be sent.");
+      return FALSE;
+    }
     return $this->sendNotification($notificationType, $user->getEmail(), $options);
   }
 
@@ -74,11 +85,10 @@ class NotificationService {
    * @return bool
    */
   public function sendNotification($notificationType, $to, $options = []) {
-    $pets = $this->petStorage->loadByProperties(['title' => $notificationType]);
-    if (empty($pets)) {
+    $pet = $this->getPetByTitle($notificationType);
+    if (!$pet instanceof PetInterface) {
       throw new \InvalidArgumentException('Invalid notification type');
     }
-    $pet = reset($pets);
 
     if (!is_array($to)) {
       $to = [$to];
@@ -150,5 +160,23 @@ class NotificationService {
       '@key' => $key,
     ]);
     return TRUE;
+  }
+
+  /**
+   * Helper function because loading pets using entity query no longer works
+   * after 8.7.x core update.
+   *
+   * @param $title
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|\Drupal\pet\Entity\Pet|null
+   */
+  protected function getPetByTitle($title) {
+    /** @var \Drupal\Core\Database\Statement $statement */
+    $statement = $this->database->select('pet_field_data', 'pfd')
+      ->fields('pfd', ['id'])
+      ->condition('pfd.title', $title)
+      ->execute();
+    $id = $statement->fetchField();
+    return !empty($id) ? Pet::load($id) : NULL;
   }
 }

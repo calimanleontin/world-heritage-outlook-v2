@@ -3,6 +3,8 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 
 abstract class IucnModalDiffForm extends IucnModalParagraphForm {
 
@@ -201,5 +203,21 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
       $value = reset($value);
     }
     return $value;
+  }
+
+  protected function getFinalVersionLabel(Node $nodeRevision) {
+    $helpText = 'Initial text in this row is the assessor\'s version';
+
+    if ($nodeRevision->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
+      $helpText = 'Initial text in this row is the coordinator\'s version sent out for review';
+    }
+
+    $title = [
+      '#theme' => 'topic_tooltip',
+      '#label' => t('Final version'),
+      '#help_text' => t($helpText),
+    ];
+
+    return render($title);
   }
 }
