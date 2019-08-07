@@ -11,7 +11,7 @@
          beStrictAboutChangesToGlobalState="true"
          printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 >
-<!-- Remove printerClass if you don't want the HTML output to be saved, or if you are running tests with PHPStorm  -->
+<!-- Remove printerClass if you don't want the HTML output to be saved -->
 
   <php>
     <!-- Set error reporting to E_ALL. -->
