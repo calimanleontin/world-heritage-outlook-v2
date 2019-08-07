@@ -11,22 +11,13 @@
          beStrictAboutChangesToGlobalState="true"
          printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 >
-<!-- Remove printerClass if you don't want the HTML output to be saved, or if you are running tests with PHPStorm  -->
-<!-- TODO set printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter" once
- https://youtrack.jetbrains.com/issue/WI-24808 is resolved. Drupal provides a
- result printer that links to the html output results for functional tests.
- Unfortunately, this breaks the output of PHPStorm's PHPUnit runner. However, if
- using the command line you can add
- - -printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" to use it (note there
- should be no spaces between the hyphens).
--->
+<!-- Remove printerClass if you don't want the HTML output to be saved -->
 
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
     <!-- Do not limit the amount of memory tests take to run. -->
     <ini name="memory_limit" value="-1"/>
-
 
     <!--EDIT THIS-->
     <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
@@ -38,11 +29,12 @@
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="sites/default/files/phpunit"/>
     <!-- To disable deprecation testing completely uncomment the next line. -->
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
-    <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
-    <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
-    <!-- Example for changing the driver args to phantomjs tests MINK_DRIVER_ARGS_PHANTOMJS value: '["http://127.0.0.1:8510"]' -->
-    <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["firefox", null, "http://localhost:4444/wd/hub"]' -->
-    <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", null, "http://localhost:4444/wd/hub"]' />
+
+    <!--Headless Chrome for WebDriver tests-->
+    <env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu","--headless", "--no-sandbox", "--disable-dev-shm-usage"]}}, "http://localhost:9515"]'/>
+
+    <!--Selenium + chromedriver -->
+    <!--<env name="MINK_DRIVER_ARGS_WEBDRIVER" value='["chrome", null, "http://localhost:4444/wd/hub"]' />-->
   </php>
   <testsuites>
     <testsuite name="unit">
