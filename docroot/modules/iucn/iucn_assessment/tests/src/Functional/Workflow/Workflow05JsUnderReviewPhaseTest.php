@@ -23,20 +23,14 @@ class Workflow05JsUnderReviewPhaseTest extends IucnAssessmentWebDriverTestBase {
     $this->drupalGet($this->stateChangeUrl);
     $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
     $this->click("[value=\"{$label}\"]");
-   // $assessment = Node::load($assessment->id());
-    $label = t('Force finish reviewing');
-    $this->getSession()->getDriver()->click($this->cssSelectToXpath("[value=\"{$label}\"]"));
-    $this->getSession()->wait(10000, "document.readyState === 'complete'");
     $this->drupalGet($this->stateChangeUrl);
     /** @var \Behat\Mink\Driver\Selenium2Driver $driver */
     $driver = $this->getSession()->getDriver();
     $label = t('Force finish reviewing');
     $this->getSession()->getDriver()->click($this->cssSelectToXpath("[value=\"{$label}\"]"));
-
     sleep(1);
     $driver->getWebDriverSession()->accept_alert();
     $this->getSession()->wait(10000, "document.readyState === 'complete'");
-
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
