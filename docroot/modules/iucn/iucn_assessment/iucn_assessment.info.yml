@@ -15,6 +15,7 @@ dependencies:
   - field
   - field_group
   - image
+  - iucn_fields
   - iucn_site
   - language
   - menu_ui
