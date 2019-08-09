@@ -561,13 +561,11 @@ class AssessmentWorkflow {
     foreach ($assessment_revisions_ids as $rid) {
       /** @var \Drupal\node\Entity\Node $node_revision */
       $node_revision = $this->getAssessmentRevision($rid);
-
       // We are not interested in reviewer revisions.
       if ($state == self::STATUS_UNDER_REVIEW
         && in_array($reviewers, $node_revision->getRevisionUserId())) {
         continue;
       }
-
       if ($node_revision->field_state->value == $state) {
         return $node_revision;
       }

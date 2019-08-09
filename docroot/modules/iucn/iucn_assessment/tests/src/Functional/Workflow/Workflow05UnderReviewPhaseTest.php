@@ -161,10 +161,10 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::REVIEWER1);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
 
+
     $this->userLogIn(TestSupport::REVIEWER3);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
   }
-
 
   public function testReadOnlyAccessFoReviewers(){
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
@@ -173,11 +173,13 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalPostForm($this->stateChangeUrl, [], t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]));
     $reviewer1Revision = $this->workflowService->getReviewerRevision($assessment,$reviewer1->id());;
+
     $this->editUrl = Url::fromRoute('node.revision_edit', [
       'node' => $reviewer1Revision->id(),
       'node_revision' => $reviewer1Revision->getRevisionId(),
     ]);
     $this->userLogIn(TestSupport::REVIEWER1);
+
     $this->drupalGet($this->editUrl);
     $this->checkReadOnlyAccess();
   }
