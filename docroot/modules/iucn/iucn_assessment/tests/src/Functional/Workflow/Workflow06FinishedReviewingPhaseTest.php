@@ -10,6 +10,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * Phase: Feedback from all reviewers received (assessment_finished_reviewing)
  *
  * @group iucn_assessment_workflow
+ * @group edw_tests
  */
 class Workflow06FinishedReviewingPhaseTest extends WorkflowTestBase {
 

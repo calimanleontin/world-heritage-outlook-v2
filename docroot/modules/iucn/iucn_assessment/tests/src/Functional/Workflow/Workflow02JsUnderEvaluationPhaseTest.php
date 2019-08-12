@@ -13,6 +13,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * Phase: Pre-assessment edits (assessment_under_evaluation)
  *
  * @group iucn_assessment_workflow
+ * @group edw_tests
  */
 class Workflow02JsUnderEvaluationPhaseTest extends IucnAssessmentWebDriverTestBase {
 

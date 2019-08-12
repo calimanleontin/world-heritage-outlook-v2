@@ -10,6 +10,7 @@ use Drupal\taxonomy\Entity\Term;
 
 /**
  * @group iucn_assessment_forms
+ * @group edw_tests
  */
 class CommentsTest extends IucnAssessmentTestBase {
 

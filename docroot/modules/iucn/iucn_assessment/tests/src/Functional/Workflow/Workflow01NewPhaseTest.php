@@ -13,6 +13,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * Phase: New (assessment_creation, assessment_new)
  *
  * @group iucn_assessment_workflow
+ * @group edw_tests
  */
 class Workflow01NewPhaseTest extends WorkflowTestBase {
 

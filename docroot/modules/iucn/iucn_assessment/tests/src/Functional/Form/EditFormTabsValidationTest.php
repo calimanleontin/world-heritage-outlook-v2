@@ -12,6 +12,7 @@ use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
 /**
  * @group iucn_assessment_forms
+ * @group edw_tests
  */
 class EditFormTabsValidationTest extends IucnAssessmentTestBase {
 

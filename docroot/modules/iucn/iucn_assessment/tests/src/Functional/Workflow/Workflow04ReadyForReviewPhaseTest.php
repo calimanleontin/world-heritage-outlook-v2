@@ -10,6 +10,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * Phase: Pre-review edits (assessment_ready_for_review)
  *
  * @group iucn_assessment_workflow
+ * @group edw_tests
  */
 class Workflow04ReadyForReviewPhaseTest extends WorkflowTestBase {
 

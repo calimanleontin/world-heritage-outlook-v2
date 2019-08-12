@@ -11,6 +11,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * Phase: Reference standardisation (assessment_reviewing_references)
  *
  * @group iucn_assessment_workflow
+ * @group edw_tests
  */
 class Workflow08ReviewingReferencesPhaseTest extends WorkflowTestBase {
 
