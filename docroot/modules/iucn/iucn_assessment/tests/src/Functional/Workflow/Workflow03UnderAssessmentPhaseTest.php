@@ -36,13 +36,8 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $this->userLogIn(TestSupport::ASSESSOR1);
-    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
-  }
-
-  public function testReadOnlyAccessForAssessor() {
-    $this->userLogIn(TestSupport::ASSESSOR1);
-    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, []);
-    $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab'  => 'values']]));
+    $this->drupalGet($this->editUrl);
     $this->checkReadOnlyAccess();
+    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
   }
 }
