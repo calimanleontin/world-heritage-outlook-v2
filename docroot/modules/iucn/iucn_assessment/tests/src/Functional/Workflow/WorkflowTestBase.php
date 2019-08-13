@@ -40,17 +40,17 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
    */
   protected $stateChangeUrl;
 
-  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
-    $this->userLogIn($user);
-    $this->drupalGet($url);
-    $this->assertSession()->statusCodeEquals($expectedResponseCode);
-  }
-
   public function setUp() {
     parent::setUp();
     $this->assessment = $this->createMockAssessmentNode(static::WORKFLOW_STATE);
     $this->editUrl = $this->assessment->toUrl('edit-form');
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]);
+  }
+
+  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
+    $this->userLogIn($user);
+    $this->drupalGet($url);
+    $this->assertSession()->statusCodeEquals($expectedResponseCode);
   }
 
   public function checkReadOnlyAccess() {
