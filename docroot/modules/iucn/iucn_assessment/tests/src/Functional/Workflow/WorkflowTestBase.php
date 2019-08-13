@@ -40,12 +40,6 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
    */
   protected $stateChangeUrl;
 
-  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
-    $this->userLogIn($user);
-    $this->drupalGet($url);
-    $this->assertSession()->statusCodeEquals($expectedResponseCode);
-  }
-
   public function setUp() {
     parent::setUp();
     $this->assessment = $this->createMockAssessmentNode(static::WORKFLOW_STATE);
@@ -53,14 +47,26 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]);
   }
 
-  public function checkReadOnlyAccess() {
+  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
+    $this->userLogIn($user);
+    $this->drupalGet($url);
+    $this->assertSession()->statusCodeEquals($expectedResponseCode);
+  }
+
+  public function checkReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
     $this->assertNoLinkByHref('/node/edit_paragraph');
     $this->assertNoLinkByHref('/node/delete_paragraph');
     $this->assertNoLinkByHref('/node/add_paragraph');
     $this->assertSession()->responseNotContains('field-multiple-drag');
   }
 
-  public function checkNoReadOnlyAccess() {
+  public function checkNoReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
     $this->assertLinkByHref('/node/edit_paragraph');
     $this->assertLinkByHref('/node/delete_paragraph');
     $this->assertLinkByHref('/node/add_paragraph');

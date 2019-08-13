@@ -3,7 +3,11 @@
 namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Url;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
 trait AssessmentTestTrait {
 
@@ -29,8 +33,7 @@ trait AssessmentTestTrait {
     $state = $assessment->field_state->value;
     try {
       return $this->workflowService->createRevision($assessment, $newState, NULL, "{$state} ({$assessment->getRevisionId()}) => {$newState}", TRUE);
-    }
-    catch (EntityStorageException $e) {
+    } catch (EntityStorageException $e) {
       return NULL;
     }
   }
@@ -74,11 +77,41 @@ trait AssessmentTestTrait {
       ];
     }
 
+    $states = [
+      AssessmentWorkflow::STATUS_NEW,
+      AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+      AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
+      AssessmentWorkflow::STATUS_UNDER_REVIEW,
+      AssessmentWorkflow::STATUS_FINISHED_REVIEWING,
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON,
+      AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
+      AssessmentWorkflow::STATUS_FINAL_CHANGES,
+      AssessmentWorkflow::STATUS_APPROVED,
+      AssessmentWorkflow::STATUS_PUBLISHED,
+      AssessmentWorkflow::STATUS_DRAFT,
+    ];
+    $currentState = current($states);
+
     try {
       $assessment->save();
-      return $this->setAssessmentState($assessment, $state, $values);
-    }
-    catch (EntityStorageException $e) {
+      $assessment = $this->setAssessmentState($assessment, $currentState, $values);
+
+      $this->userLogIn(TestSupport::ADMINISTRATOR);
+      $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+
+      while ($currentState != $state) {
+        $currentState = next($states);
+        if (empty($currentState)) {
+          break;
+        }
+
+        $label = WorkflowTestBase::TRANSITION_LABELS[$currentState];
+        $this->drupalPostForm($stateChangeUrl, [], $label);
+      }
+
+      return Node::load($assessment->id());
+    } catch (\Exception $e) {
       return NULL;
     }
   }
