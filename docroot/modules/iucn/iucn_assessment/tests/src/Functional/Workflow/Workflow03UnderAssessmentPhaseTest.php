@@ -9,8 +9,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Being assessed (assessment_under_assessment)
  *
- * @group iucn_assessment_workflow
- * @group edw_tests
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
 

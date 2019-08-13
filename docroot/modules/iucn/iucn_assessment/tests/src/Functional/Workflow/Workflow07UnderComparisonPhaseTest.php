@@ -9,8 +9,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Post-review edits (assessment_under_comparison)
  *
- * @group iucn_assessment_workflow
- * @group edw_tests
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow07UnderComparisonPhaseTest extends WorkflowTestBase {
 

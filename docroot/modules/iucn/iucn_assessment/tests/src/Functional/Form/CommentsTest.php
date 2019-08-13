@@ -9,8 +9,9 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\taxonomy\Entity\Term;
 
 /**
- * @group iucn_assessment_forms
- * @group edw_tests
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentForms
  */
 class CommentsTest extends IucnAssessmentTestBase {
 

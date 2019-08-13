@@ -10,8 +10,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Under review (assessment_under_review)
  *
- * @group iucn_assessment_workflow
- * @group edw_tests
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
 

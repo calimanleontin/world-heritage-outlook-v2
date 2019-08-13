@@ -8,8 +8,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
 /**
- * @group iucn_assessment_forms
- * @group edw_tests
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentForms
  */
 class ChangeStateFormTest extends WorkflowTestBase  {
 

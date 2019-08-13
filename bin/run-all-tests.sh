@@ -8,11 +8,8 @@ cd "$SCRIPT_DIR/"
 
 RESULTS_FILE="$SCRIPT_DIR/results_`date '+%Y%m%d_%H%M%S'`.txt"
 
-echo -e "--- Group iucn_assessment_forms ---\n";
-./run-test.sh --group iucn_assessment_forms | tee -a $RESULTS_FILE
-
-echo -e "--- Group iucn_assessment_workflow ---\n";
-./run-test.sh --group iucn_assessment_workflow | tee -a $RESULTS_FILE
+echo -e "--- Group edw ---\n";
+./run-test.sh --group edw | tee -a $RESULTS_FILE
 
 END_TIME=`date +%s`
 RUN_TIME=$((END_TIME-START_TIME))

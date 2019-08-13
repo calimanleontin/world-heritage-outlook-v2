@@ -13,8 +13,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: New (assessment_creation, assessment_new)
  *
- * @group iucn_assessment_workflow
- * @group edw_tests
+ * @group edw
+ * @group edwWebDriver
+ * @group assessmentWorkflow
  */
 class Workflow01JsNewPhaseTest extends IucnAssessmentWebDriverTestBase {
 
