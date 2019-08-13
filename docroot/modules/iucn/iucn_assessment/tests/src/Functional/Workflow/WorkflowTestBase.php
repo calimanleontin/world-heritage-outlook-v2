@@ -53,14 +53,20 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->assertSession()->statusCodeEquals($expectedResponseCode);
   }
 
-  public function checkReadOnlyAccess() {
+  public function checkReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
     $this->assertNoLinkByHref('/node/edit_paragraph');
     $this->assertNoLinkByHref('/node/delete_paragraph');
     $this->assertNoLinkByHref('/node/add_paragraph');
     $this->assertSession()->responseNotContains('field-multiple-drag');
   }
 
-  public function checkNoReadOnlyAccess() {
+  public function checkNoReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
     $this->assertLinkByHref('/node/edit_paragraph');
     $this->assertLinkByHref('/node/delete_paragraph');
     $this->assertLinkByHref('/node/add_paragraph');
