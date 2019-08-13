@@ -120,7 +120,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
 
     // Remove reviewer2 and add reviewer 3.
     $this->userLogIn(TestSupport::COORDINATOR1);
-    $this->drupalPostForm($this->stateChangeUrl, [
+    $this->drupalPostForm(Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]), [
       'field_reviewers[]' => [
         $reviewer1->id(),
         $reviewer3->id(),
@@ -161,10 +161,17 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $this->userLogIn(TestSupport::REVIEWER1);
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+      'node' => $reviewer1Revision->id(),
+      'node_revision' => $reviewer1Revision->getRevisionId(),
+    ]);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
 
-
     $this->userLogIn(TestSupport::REVIEWER3);
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+      'node' => $reviewer3Revision->id(),
+      'node_revision' => $reviewer3Revision->getRevisionId(),
+    ]);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
   }
 
