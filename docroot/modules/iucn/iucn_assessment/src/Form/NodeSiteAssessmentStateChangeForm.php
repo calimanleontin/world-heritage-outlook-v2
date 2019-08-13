@@ -145,7 +145,6 @@ class NodeSiteAssessmentStateChangeForm {
       if (!static::isAssessmentFieldVisible($fieldName)) {
         continue;
       }
-
       // First we do custom validation for some fields.
       switch ($fieldName) {
         case 'field_as_vass_bio_text':
@@ -170,6 +169,7 @@ class NodeSiteAssessmentStateChangeForm {
       if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
+
       if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
         $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
         continue;
@@ -186,8 +186,8 @@ class NodeSiteAssessmentStateChangeForm {
           }
 
           if ($paragraph->bundle() == 'as_site_benefit') {
-            $categoryError =  static::validateTaxonomyReferenceFieldWithTwoLevels($paragraph->field_as_threats_categories);
-            if (!$categoryError !== FALSE) {
+            $categoryError =  static::validateTaxonomyReferenceFieldWithTwoLevels($paragraph->field_as_benefits_category);
+            if (!empty($categoryError)) {
               $errors[$fieldName][$categoryError] = ($categoryError == 'main') ? t('Benefit type') : t('Specific benefits');
             }
           }
@@ -247,12 +247,12 @@ class NodeSiteAssessmentStateChangeForm {
 
     foreach ($form_modes as $form_mode) {
       $hidden_fields = \Drupal::configFactory()->getEditable("core.entity_form_display.node.site_assessment.$form_mode")->get('hidden');
-      if (in_array($field, array_keys($hidden_fields))) {
-        return FALSE;
+      if (!in_array($field, array_keys($hidden_fields))) {
+        return TRUE;
       }
     }
 
-    return TRUE;
+    return FALSE;
   }
 
   private static function validateThreat(&$form, ParagraphInterface $paragraph) {

@@ -256,6 +256,12 @@ class TestSupport {
           reset($ids);
           $newValue = key($ids);
         }
+
+        if (in_array($fieldName, ['field_as_threats_categories', 'field_as_benefits_category']) && empty(Term::load($newValue)->parent->target_id)) {
+          $sampleChild = self::createSampleEntity($targetType, $targetBundle, ['parent' => $newValue, 'name' => "{$newValue} subcategory"]);
+          $newValue = [$newValue, $sampleChild->id()];
+        }
+
         break;
 
       case 'entity_reference_revisions':
