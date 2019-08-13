@@ -18,4 +18,4 @@ else
 fi
 
 echo -e "\n";
-../vendor/bin/phpunit "$@"
+../vendor/bin/phpunit --verbose "$@"

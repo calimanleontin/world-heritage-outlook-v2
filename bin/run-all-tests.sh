@@ -9,7 +9,7 @@ cd "$SCRIPT_DIR/"
 RESULTS_FILE="$SCRIPT_DIR/results_`date '+%Y%m%d_%H%M%S'`.txt"
 
 echo -e "--- Group edw ---\n";
-./run-test.sh --group edw | tee -a $RESULTS_FILE
+./run-test.sh --verbose --group edw | tee -a $RESULTS_FILE
 
 END_TIME=`date +%s`
 RUN_TIME=$((END_TIME-START_TIME))
