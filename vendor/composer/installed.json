@@ -8623,6 +8623,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074938-test-error-D8.patch"
             }
         },
         "installation-source": "dist",
