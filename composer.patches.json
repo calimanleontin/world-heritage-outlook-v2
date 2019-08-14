@@ -55,6 +55,9 @@
     },
     "drupal/pet": {
       "Fields definition": "patches/pet/pet.patch"
+    },
+	"drupal/search_autocomplete": {
+      "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074934-test-fail-D8.patch"
     }
   }
 }
