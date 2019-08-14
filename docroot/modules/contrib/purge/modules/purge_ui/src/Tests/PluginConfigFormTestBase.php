@@ -91,8 +91,8 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp($switch_to_memory_queue = TRUE) {
-    parent::setUp($switch_to_memory_queue);
+  public function setUp() {
+    parent::setUp();
     $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
 
     // Initialize the plugin, form arguments and the form builder.

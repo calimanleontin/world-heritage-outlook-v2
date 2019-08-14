@@ -50,8 +50,8 @@ abstract class PluginTestBase extends KernelTestBase {
   /**
    * Set up the test.
    */
-  public function setUp($switch_to_memory_queue = TRUE) {
-    parent::setUp($switch_to_memory_queue);
+  public function setUp() {
+    parent::setUp();
     $this->initializeInvalidationFactoryService();
   }
 

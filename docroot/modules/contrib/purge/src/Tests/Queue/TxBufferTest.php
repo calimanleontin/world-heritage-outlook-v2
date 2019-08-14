@@ -28,8 +28,8 @@ class TxBufferTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp($switch_to_memory_queue = TRUE) {
-    parent::setUp($switch_to_memory_queue);
+  public function setUp() {
+    parent::setUp();
     $this->purgeQueueTxbuffer = new TxBuffer();
   }
 

@@ -43,8 +43,8 @@ class PurgerMoveFormTest extends WebTestBase {
   /**
    * Setup the test.
    */
-  public function setUp($switch_to_memory_queue = TRUE) {
-    parent::setUp($switch_to_memory_queue);
+  public function setUp() {
+    parent::setUp();
     $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
   }
 

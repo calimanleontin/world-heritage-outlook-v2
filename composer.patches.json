@@ -27,9 +27,6 @@
     "drupal/role_hierarchy": {
       "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
     },
-    "drupal/purge": {
-      "setUp() methods from Tests are not compatible with respective parent setUp() method" : "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
-    },
     "drupal/workflow": {
       "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
       "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
