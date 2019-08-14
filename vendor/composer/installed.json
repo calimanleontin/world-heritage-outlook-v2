@@ -7105,6 +7105,7 @@
         "require": {
             "drupal/core": "~8.0"
         },
+        "time": "2019-06-07T13:11:32+00:00",
         "type": "drupal-module",
         "extra": {
             "branch-alias": {
@@ -7117,6 +7118,9 @@
                     "status": "not-covered",
                     "message": "Dev releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "setUp() methods from Tests are not compatible with respective parent setUp() method": "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
             }
         },
         "installation-source": "source",
