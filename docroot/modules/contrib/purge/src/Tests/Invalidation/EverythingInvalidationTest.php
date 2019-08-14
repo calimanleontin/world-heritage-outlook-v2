@@ -2,6 +2,8 @@
 
 namespace Drupal\purge\Tests\Invalidation;
 
+use Drupal\purge\Tests\Invalidation\PluginTestBase;
+
 /**
  * Tests \Drupal\purge\Plugin\Purge\Invalidation\EverythingInvalidation.
  *
@@ -9,7 +11,7 @@ namespace Drupal\purge\Tests\Invalidation;
  * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface
  */
 class EverythingInvalidationTest extends PluginTestBase {
-  protected $pluginId = 'everything';
+  protected $plugin_id = 'everything';
   protected $expressions = [NULL];
   protected $expressionsInvalid = ['', 'foobar'];
 

@@ -16,11 +16,9 @@ use Drupal\purge\Tests\WebTestBase;
 class PurgerConfigFormTest extends WebTestBase {
 
   /**
-   * The Drupal user entity.
-   *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $admin_user;
 
   /**
    * Name of the purger plugin that does have a form configured.
@@ -41,7 +39,7 @@ class PurgerConfigFormTest extends WebTestBase {
    *
    * @var string
    */
-  protected $routeDialog = 'purge_ui.purger_config_dialog_form';
+  protected $route_dialog = 'purge_ui.purger_config_dialog_form';
 
   /**
    * The URL object constructed from $this->route.
@@ -51,7 +49,7 @@ class PurgerConfigFormTest extends WebTestBase {
   protected $urlValid = NULL;
 
   /**
-   * The URL object constructed from $this->routeDialog.
+   * The URL object constructed from $this->route_dialog.
    *
    * @var \Drupal\Core\Url
    */
@@ -78,9 +76,9 @@ class PurgerConfigFormTest extends WebTestBase {
     parent::setUp();
     $this->initializePurgersService(['c', $this->purger]);
     $this->urlValid = Url::fromRoute($this->route, ['id' => 'id1']);
-    $this->urlValidDialog = Url::fromRoute($this->routeDialog, ['id' => 'id1']);
+    $this->urlValidDialog = Url::fromRoute($this->route_dialog, ['id' => 'id1']);
     $this->urlInvalid = Url::fromRoute($this->route, ['id' => 'id0']);
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
   }
 
   /**
@@ -89,7 +87,7 @@ class PurgerConfigFormTest extends WebTestBase {
   public function testForm() {
     $this->drupalGet($this->urlValid);
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->urlInvalid);
     $this->assertResponse(404);
     // Test the plain version of the form.

@@ -8,9 +8,7 @@ namespace Drupal\purge;
 trait ModifiableServiceBaseTrait {
 
   /**
-   * Retrieve the plugin IDs of plugins that can be enabled.
-   *
-   * @see \Drupal\purge\ModifiableServiceInterface::getPluginsAvailable()
+   * @see \Drupal\purge\ModifiableServiceInterface::getPluginsAvailable().
    */
   public function getPluginsAvailable() {
     $enabled = $this->getPluginsEnabled();

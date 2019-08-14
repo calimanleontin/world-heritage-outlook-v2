@@ -3,8 +3,7 @@
 namespace Drupal\purge\Plugin\Purge\DiagnosticCheck\Exception;
 
 /**
- * Thrown when ::run() is not returning a severity as mandated by the API.
- *
- * @see \Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticCheckInterface
+ * Thrown when \Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticCheckInterface::run is not
+ * returning a severity integer as mandated by the API.
  */
 class CheckNotImplementedCorrectly extends \Exception {}

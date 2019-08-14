@@ -3,6 +3,7 @@
 namespace Drupal\purge\Logger;
 
 use Psr\Log\LoggerInterface;
+use Drupal\Core\Logger\RfcLogLevel;
 
 /**
  * Describes a subchannel whichs logs to a single main channel with permissions.
@@ -29,7 +30,7 @@ interface LoggerChannelPartInterface extends LoggerInterface {
    *    - \Drupal\Core\Logger\RfcLogLevel::WARNING
    *    - \Drupal\Core\Logger\RfcLogLevel::NOTICE
    *    - \Drupal\Core\Logger\RfcLogLevel::INFO
-   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG.
+   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG
    */
   public function __construct(LoggerInterface $logger_channel_purge, $id, array $grants = []);
 
@@ -45,7 +46,7 @@ interface LoggerChannelPartInterface extends LoggerInterface {
    *    - \Drupal\Core\Logger\RfcLogLevel::WARNING
    *    - \Drupal\Core\Logger\RfcLogLevel::NOTICE
    *    - \Drupal\Core\Logger\RfcLogLevel::INFO
-   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG.
+   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG
    */
   public function getGrants();
 
@@ -53,7 +54,6 @@ interface LoggerChannelPartInterface extends LoggerInterface {
    * Determine whether this channel has a RfcLogLevel::DEBUG grant.
    *
    * @return bool
-   *   Whether debugging is enabled.
    */
   public function isDebuggingEnabled();
 
@@ -62,62 +62,62 @@ interface LoggerChannelPartInterface extends LoggerInterface {
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::EMERGENCY.
    */
-  public function emergency($message, array $context = []);
+  public function emergency($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::EMERGENCY.
    */
-  public function alert($message, array $context = []);
+  public function alert($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::CRITICAL.
    */
-  public function critical($message, array $context = []);
+  public function critical($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::ERROR.
    */
-  public function error($message, array $context = []);
+  public function error($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::WARNING.
    */
-  public function warning($message, array $context = []);
+  public function warning($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::NOTICE.
    */
-  public function notice($message, array $context = []);
+  public function notice($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::INFO.
    */
-  public function info($message, array $context = []);
+  public function info($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Logs only when granted \Drupal\Core\Logger\RfcLogLevel::DEBUG.
    */
-  public function debug($message, array $context = []);
+  public function debug($message, array $context = array());
 
   /**
    * {@inheritdoc}
    *
    * Prefixes messages with the channel ID so that the origin can be traced.
    */
-  public function log($level, $message, array $context = []);
+  public function log($level, $message, array $context = array());
 
 }

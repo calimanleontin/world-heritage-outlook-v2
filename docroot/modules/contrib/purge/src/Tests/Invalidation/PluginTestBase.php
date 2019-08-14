@@ -3,12 +3,15 @@
 namespace Drupal\purge\Tests\Invalidation;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\purge\Plugin\Purge\Purger\Exception\BadPluginBehaviorException;
 use Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidationInterface;
 use Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidationBase;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationBase;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\TypeUnsupportedException;
+use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidPropertyException;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidExpressionException;
+use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidStateException;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\MissingExpressionException;
 use Drupal\purge\Tests\KernelTestBase;
 
@@ -24,7 +27,7 @@ abstract class PluginTestBase extends KernelTestBase {
    *
    * @var string
    */
-  protected $pluginId;
+  protected $plugin_id;
 
   /**
    * String expressions valid to the invalidation type being tested.
@@ -59,7 +62,7 @@ abstract class PluginTestBase extends KernelTestBase {
    * Retrieve a invalidation object provided by the plugin.
    */
   public function getInstance() {
-    return $this->getInvalidations(1, $this->pluginId, $this->expressions[0]);
+    return $this->getInvalidations(1, $this->plugin_id, $this->expressions[0]);
   }
 
   /**
@@ -67,7 +70,7 @@ abstract class PluginTestBase extends KernelTestBase {
    */
   public function getImmutableInstance() {
     return $this->purgeInvalidationFactory->getImmutable(
-      $this->pluginId,
+      $this->plugin_id,
       $this->expressions[0]
     );
   }
@@ -87,16 +90,15 @@ abstract class PluginTestBase extends KernelTestBase {
   }
 
   /**
-   * Tests TypeUnsupportedException.
+   * Tests \Drupal\purge\Plugin\Purge\Invalidation\Exception\TypeUnsupportedException
    */
   public function testTypeUnsupportedException() {
     $this->initializePurgersService([], TRUE);
     $thrown = FALSE;
     try {
-      $this->getInvalidations(1, $this->pluginId, $this->expressions[0], FALSE);
+      $this->getInvalidations(1, $this->plugin_id, $this->expressions[0], FALSE);
       $this->getInstance(FALSE);
-    }
-    catch (TypeUnsupportedException $e) {
+    } catch (TypeUnsupportedException $e) {
       $thrown = TRUE;
     }
     $this->assertTrue($thrown);
@@ -175,12 +177,8 @@ abstract class PluginTestBase extends KernelTestBase {
     $i->setState(InvalidationInterface::FAILED);
     $i->setStateContext(NULL);
     // Verify that setting state in general context throws exceptions.
-    $this->assertException(
-      '\LogicException',
-      [$i, 'setState'],
-      [InvalidationInterface::FAILED]
-    );
-    // Test InvalidationInterface::setState catches bad input.
+    $this->assertException('\LogicException', [$i, 'setState'], [InvalidationInterface::FAILED]);
+    // Test \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface::setState catches bad input.
     foreach (['2', 'FRESH', -1, 5, 100] as $badstate) {
       $this->assertException('\Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidStateException', [$i, 'setState'], [$badstate]);
     }
@@ -208,11 +206,8 @@ abstract class PluginTestBase extends KernelTestBase {
    * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface::__toString
    */
   public function testStringExpression() {
-    $this->assertEqual(
-      (string) $this->getInstance(),
-      $this->expressions[0],
-      'The __toString method returns $expression.'
-    );
+    $this->assertEqual( (string) $this->getInstance(), $this->expressions[0],
+      'The __toString method returns $expression.');
   }
 
   /**
@@ -222,11 +217,11 @@ abstract class PluginTestBase extends KernelTestBase {
    */
   public function testValidExpressions() {
     if (is_null($this->expressions)) {
-      $this->purgeInvalidationFactory->get($this->pluginId);
+      $this->purgeInvalidationFactory->get($this->plugin_id);
     }
     else {
       foreach ($this->expressions as $e) {
-        $this->purgeInvalidationFactory->get($this->pluginId, $e);
+        $this->purgeInvalidationFactory->get($this->plugin_id, $e);
       }
     }
   }
@@ -240,7 +235,7 @@ abstract class PluginTestBase extends KernelTestBase {
     foreach ($this->expressionsInvalid as $exp) {
       $thrown = FALSE;
       try {
-        $this->purgeInvalidationFactory->get($this->pluginId, $exp);
+        $this->purgeInvalidationFactory->get($this->plugin_id, $exp);
       }
       catch (\Exception $e) {
         $thrown = $e;
@@ -264,8 +259,8 @@ abstract class PluginTestBase extends KernelTestBase {
   public function testPluginIdAndDefinition() {
     // Test mutable objects.
     $mutable = $this->getInstance();
-    $this->assertEqual($this->pluginId, $mutable->getPluginId());
-    $this->assertEqual($this->pluginId, $mutable->getType());
+    $this->assertEqual($this->plugin_id, $mutable->getPluginId());
+    $this->assertEqual($this->plugin_id, $mutable->getType());
     $d = $mutable->getPluginDefinition();
     $this->assertTrue(is_array($d));
     $this->assertTrue(is_array($d['examples']));
@@ -281,8 +276,8 @@ abstract class PluginTestBase extends KernelTestBase {
     }
     // Test the immutable objects.
     $immutable = $this->getImmutableInstance();
-    $this->assertEqual($this->pluginId, $immutable->getPluginId());
-    $this->assertEqual($this->pluginId, $immutable->getType());
+    $this->assertEqual($this->plugin_id, $immutable->getPluginId());
+    $this->assertEqual($this->plugin_id, $immutable->getType());
     $d = $immutable->getPluginDefinition();
     $this->assertTrue(is_array($d));
     $this->assertTrue(is_array($d['examples']));

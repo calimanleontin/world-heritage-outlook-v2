@@ -5,6 +5,8 @@ namespace Drupal\purge\Plugin\Purge\Invalidation;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\purge\ServiceBase;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\TypeUnsupportedException;
+use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface;
+use Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidation;
 use Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface;
 use Drupal\purge\Plugin\Purge\Queue\ProxyItemInterface;
 
@@ -14,33 +16,27 @@ use Drupal\purge\Plugin\Purge\Queue\ProxyItemInterface;
 class InvalidationsService extends ServiceBase implements InvalidationsServiceInterface {
 
   /**
-   * Instance counter.
-   *
    * Incremental ID counter for handing out unique instance IDs.
    *
    * @var int
    */
-  protected $instanceCounter = 0;
+  protected $instance_counter = 0;
 
   /**
-   * Immutable instance counter.
-   *
    * As immutable instances cannot change the queue, they are counted negative
    * and the counter only decrements. Its IDs can never clash with real ones.
    *
    * @var int
    */
-  protected $instanceCounterImmutables = -1;
+  protected $instance_counter_immutables = -1;
 
   /**
-   * The 'purge.purgers' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface
    */
   protected $purgePurgers;
 
   /**
-   * Construct the invalidation service.
+   * Instantiates a \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsService.
    *
    * @param \Drupal\Component\Plugin\PluginManagerInterface $pluginManager
    *   The plugin manager for this service.
@@ -65,13 +61,12 @@ class InvalidationsService extends ServiceBase implements InvalidationsServiceIn
    *   The numeric identifier of this instance.
    *
    * @return \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface
-   *   The invalidation object.
    */
   protected function createInstance($plugin_id, $expression, $id) {
     return $this->pluginManager->createInstance(
       $plugin_id, [
         'expression' => $expression,
-        'id' => $id,
+        'id' => $id
       ]
     );
   }
@@ -83,7 +78,7 @@ class InvalidationsService extends ServiceBase implements InvalidationsServiceIn
     if (!in_array($plugin_id, $this->purgePurgers->getTypes())) {
       throw new TypeUnsupportedException($plugin_id);
     }
-    $id = $this->instanceCounter++;
+    $id = $this->instance_counter++;
     return $this->createInstance($plugin_id, $expression, $id);
   }
 
@@ -91,7 +86,7 @@ class InvalidationsService extends ServiceBase implements InvalidationsServiceIn
    * {@inheritdoc}
    */
   public function getImmutable($plugin_id, $expression = NULL) {
-    $id = $this->instanceCounterImmutables--;
+    $id = $this->instance_counter_immutables--;
     return new ImmutableInvalidation($this->createInstance($plugin_id, $expression, $id));
   }
 
@@ -102,7 +97,7 @@ class InvalidationsService extends ServiceBase implements InvalidationsServiceIn
     $instance = $this->createInstance(
       $item_data[ProxyItemInterface::DATA_INDEX_TYPE],
       $item_data[ProxyItemInterface::DATA_INDEX_EXPRESSION],
-      $this->instanceCounter++
+      $this->instance_counter++
     );
 
     // Replay stored purger states.
@@ -135,7 +130,7 @@ class InvalidationsService extends ServiceBase implements InvalidationsServiceIn
     $instance = $this->createInstance(
       $item_data[ProxyItemInterface::DATA_INDEX_TYPE],
       $item_data[ProxyItemInterface::DATA_INDEX_EXPRESSION],
-      $this->instanceCounterImmutables--
+      $this->instance_counter_immutables--
     );
 
     // Replay stored purger states.

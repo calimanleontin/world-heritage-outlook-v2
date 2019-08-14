@@ -3,9 +3,7 @@
 namespace Drupal\purge\Plugin\Purge\Queue\Exception;
 
 /**
- * Invalid property.
- *
- * Thrown by \Drupal\purge\Plugin\Purge\Queue\ProxyItemInterface::__get() when
- * a property is called that doesn't exists, e.g.: $proxyitem->invalidprop.
+ * Exception thrown when a data property on a ProxyItem object is called
+ * that does not exist, e.g. $proxyitem->idontexist.
  */
 class InvalidPropertyException extends \Exception {}

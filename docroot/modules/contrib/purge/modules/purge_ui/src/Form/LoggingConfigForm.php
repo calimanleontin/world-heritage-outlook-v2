@@ -9,6 +9,8 @@ use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\purge\Logger\LoggerServiceInterface;
+use Drupal\purge_ui\Form\CloseDialogTrait;
+use Drupal\purge_ui\Form\ReloadConfigFormCommand;
 
 /**
  * Configure logging behavior.
@@ -17,17 +19,17 @@ class LoggingConfigForm extends FormBase {
   use CloseDialogTrait;
 
   /**
-   * The 'purge.logger' service.
-   *
    * @var \Drupal\purge\Logger\LoggerServiceInterface
    */
   protected $purgeLogger;
 
   /**
-   * Construct a LoggingConfigForm object.
+   * Constructs a LoggingConfigForm object.
    *
    * @param \Drupal\purge\Logger\LoggerServiceInterface $purge_logger
    *   Logging services for the purge module and its submodules.
+   *
+   * @return void
    */
   public function __construct(LoggerServiceInterface $purge_logger) {
     $this->purgeLogger = $purge_logger;
@@ -43,7 +45,7 @@ class LoggingConfigForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormID() {
     return 'purge_ui.logging_config_form';
   }
 

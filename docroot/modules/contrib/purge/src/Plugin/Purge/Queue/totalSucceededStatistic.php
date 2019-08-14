@@ -9,7 +9,7 @@ use Drupal\purge\Counter\ExplainedCounterInterface;
 /**
  * Total number of succeeded queue items.
  */
-class TotalSucceededStatistic extends Counter implements ExplainedCounterInterface {
+class totalSucceededStatistic extends Counter implements ExplainedCounterInterface {
   use StringTranslationTrait;
 
   /**
@@ -41,7 +41,9 @@ class TotalSucceededStatistic extends Counter implements ExplainedCounterInterfa
    */
   public function getDescription() {
     return $this->t(
-      'When queue items are successfully processed, they are deleted from the queue to make space for new items. This statistic represents all of the successful cache invalidations that happened over time.'
+        'When queue items are successfully processed, they are deleted from the'
+      . ' queue to make space for new items. This statistic represents all of'
+      . ' the successful cache invalidations that happened over time.'
     );
   }
 

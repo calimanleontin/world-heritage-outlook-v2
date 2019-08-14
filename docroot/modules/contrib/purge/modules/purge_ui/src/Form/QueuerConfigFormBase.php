@@ -2,6 +2,8 @@
 
 namespace Drupal\purge_ui\Form;
 
+use Drupal\purge_ui\Form\PluginConfigFormBase;
+
 /**
  * Provides a base class for queuer configuration forms.
  *
@@ -15,6 +17,6 @@ abstract class QueuerConfigFormBase extends PluginConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected $parentId = 'edit-queue';
+  protected $parent_id = 'edit-queue';
 
 }

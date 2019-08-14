@@ -2,6 +2,8 @@
 
 namespace Drupal\purge_ui\Form;
 
+use Drupal\purge_ui\Form\PluginConfigFormBase;
+
 /**
  * Provides a base class for purger configuration forms.
  *
@@ -15,6 +17,6 @@ abstract class PurgerConfigFormBase extends PluginConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  protected $parentId = 'edit-purgers';
+  protected $parent_id = 'edit-purgers';
 
 }

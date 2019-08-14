@@ -16,11 +16,9 @@ use Drupal\purge\Tests\WebTestBase;
 class ProcessorConfigFormTest extends WebTestBase {
 
   /**
-   * The Drupal user entity.
-   *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $admin_user;
 
   /**
    * Name of the processor plugin that does have a form configured.
@@ -37,11 +35,11 @@ class ProcessorConfigFormTest extends WebTestBase {
   protected $route = 'purge_ui.processor_config_form';
 
   /**
-   * The route to a processors config form (takes argument 'id') - dialog.
+   * The route to a processors configuration form (takes argument 'id') - dialog.
    *
    * @var string
    */
-  protected $routeDialog = 'purge_ui.processor_config_dialog_form';
+  protected $route_dialog = 'purge_ui.processor_config_dialog_form';
 
   /**
    * The URL object constructed from $this->route.
@@ -51,7 +49,7 @@ class ProcessorConfigFormTest extends WebTestBase {
   protected $urlValid = NULL;
 
   /**
-   * The URL object constructed from $this->routeDialog.
+   * The URL object constructed from $this->route_dialog.
    *
    * @var \Drupal\Core\Url
    */
@@ -78,9 +76,9 @@ class ProcessorConfigFormTest extends WebTestBase {
     parent::setUp();
     $this->initializeProcessorsService(['c', $this->processor]);
     $this->urlValid = Url::fromRoute($this->route, ['id' => $this->processor]);
-    $this->urlValidDialog = Url::fromRoute($this->routeDialog, ['id' => $this->processor]);
+    $this->urlValidDialog = Url::fromRoute($this->route_dialog, ['id' => $this->processor]);
     $this->urlInvalid = Url::fromRoute($this->route, ['id' => 'c']);
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
   }
 
   /**
@@ -89,7 +87,7 @@ class ProcessorConfigFormTest extends WebTestBase {
   public function testForm() {
     $this->drupalGet($this->urlValid);
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->urlInvalid);
     $this->assertResponse(404);
     // Test the plain version of the form.

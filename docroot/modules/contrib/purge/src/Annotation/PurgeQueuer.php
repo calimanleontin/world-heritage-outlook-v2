@@ -21,16 +21,18 @@ class PurgeQueuer extends Plugin {
   /**
    * The human-readable name of the queuer plugin.
    *
-   * @var \Drupal\Core\Annotation\Translation
    * @ingroup plugin_translatable
+   *
+   * @var \Drupal\Core\Annotation\Translation
    */
   public $label;
 
   /**
    * The description of the queuer plugin.
    *
-   * @var \Drupal\Core\Annotation\Translation
    * @ingroup plugin_translatable
+   *
+   * @var \Drupal\Core\Annotation\Translation
    */
   public $description;
 
@@ -39,11 +41,9 @@ class PurgeQueuer extends Plugin {
    *
    * @var bool
    */
-  public $enable_by_default = FALSE; // phpcs:ignore -- annotation property!
+  public $enable_by_default = FALSE;
 
   /**
-   * Class name of the configuration form of your queuer.
-   *
    * Full class name of the configuration form of your queuer, with leading
    * backslash. Class must extend \Drupal\purge_ui\Form\QueuerConfigFormBase.
    *

@@ -4,14 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ffbba9b18e797b6d112cdea048dd2bf",
+    "content-hash": "4e312a38fbd02666da3566e9cd7a1ed1",
     "packages": [
         {
             "name": "adamwulf/columnizer",
             "version": "1.6.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
+                "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -1603,7 +1605,9 @@
             "version": "4.1.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
+                "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -1612,7 +1616,9 @@
             "version": "4.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
+                "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -1792,7 +1798,9 @@
             "version": "1.8.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
+                "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -4432,6 +4440,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6804,9 +6815,7 @@
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
                 },
-                "patches_applied": {
-                    "Fields definition": "patches/pet/pet.patch"
-                }
+                "patches_applied": []
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
@@ -6834,11 +6843,17 @@
         },
         {
             "name": "drupal/purge",
-            "version": "dev-3.x",
+            "version": "3.0.0-beta8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/purge.git",
-                "reference": "73869a5af4b66b88bcafc7c6ec7f8fd17a485b91"
+                "reference": "8.x-3.0-beta8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/purge-8.x-3.0-beta8.zip",
+                "reference": "8.x-3.0-beta8",
+                "shasum": "5b6a53d6adcfa0d4e081edf2563d366fc7205bc4"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -6849,11 +6864,11 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-beta8+20-dev",
-                    "datestamp": "1552396089",
+                    "version": "8.x-3.0-beta8",
+                    "datestamp": "1502719311",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -6878,9 +6893,8 @@
             "description": "Provides a generic external cache invalidation API and queue service.",
             "homepage": "https://www.drupal.org/project/purge",
             "support": {
-                "source": "https://git.drupalcode.org/project/purge"
-            },
-            "time": "2019-06-07T13:11:32+00:00"
+                "source": "http://cgit.drupalcode.org/purge"
+            }
         },
         {
             "name": "drupal/raven",
@@ -9204,7 +9218,9 @@
             "version": "4.3.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
+                "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -9597,7 +9613,9 @@
             "version": "1.6.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
+                "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "composer/installers": "^1.2.0"
@@ -9673,7 +9691,9 @@
             "version": "1.6.4",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
+                "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -9770,7 +9790,9 @@
             "version": "1.6.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
+                "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
+                "reference": null,
+                "shasum": null
             },
             "type": "drupal-library"
         },
@@ -13576,7 +13598,9 @@
             "version": "5.3.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
+                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+                "reference": null,
+                "shasum": null
             },
             "require": {
                 "composer/installers": "^1.2.0"
@@ -15233,7 +15257,7 @@
         "drupal/inline_entity_form": 5,
         "drupal/maxlength": 10,
         "drupal/pet": 10,
-        "drupal/purge": 20,
+        "drupal/purge": 10,
         "drupal/rules": 15,
         "drupal/search_api_autocomplete": 15,
         "drupal/search_api_sorts": 10,

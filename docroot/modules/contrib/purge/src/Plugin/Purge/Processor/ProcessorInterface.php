@@ -13,7 +13,6 @@ interface ProcessorInterface extends PluginInspectionInterface {
    * Retrieve the title of this processor.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The translated label.
    */
   public function getLabel();
 
@@ -21,7 +20,6 @@ interface ProcessorInterface extends PluginInspectionInterface {
    * Retrieve the description of this processor.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The translated description.
    */
   public function getDescription();
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\purge\Tests;
 
+use Drupal\purge\Tests\TestTrait;
 use Drupal\simpletest\WebTestBase as RealWebTestBase;
 
 /**
@@ -25,6 +26,7 @@ abstract class WebTestBase extends RealWebTestBase {
    *
    * @param bool $switch_to_memory_queue
    *   Whether to switch the default queue to the memory backend or not.
+   *
    */
   public function setUp($switch_to_memory_queue = TRUE) {
     parent::setUp();

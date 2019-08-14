@@ -2,8 +2,11 @@
 
 namespace Drupal\purge_ui\Tests;
 
+use Drupal\Core\Url;
+use Drupal\purge_ui\Tests\DashboardTestBase;
+
 /**
- * Tests \Drupal\purge_ui\Controller\DashboardController in no modules state.
+ * Tests \Drupal\purge_ui\Controller\DashboardController in almost default (no modules state).
  *
  * @group purge_ui
  */
@@ -22,7 +25,7 @@ class DashboardEmptyTest extends DashboardTestBase {
    * @see \Drupal\purge_ui\Controller\DashboardController::buildLoggingSection
    */
   public function testFormLoggingSection() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->route);
     $this->assertRaw('Logging');
     $this->assertRaw('Configure logging behavior');
@@ -34,7 +37,7 @@ class DashboardEmptyTest extends DashboardTestBase {
    * @see \Drupal\purge_ui\Controller\DashboardController::buildDiagnosticReport
    */
   public function testFormDiagnosticReport() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->route);
     $this->assertRaw('You have no queuers populating the queue!');
     $this->assertRaw('There is no purging capacity available.');

@@ -50,47 +50,40 @@ interface StatsTrackerInterface extends DestructableInterface, \Iterator, \Count
   /**
    * The number of items currently in the queue.
    *
-   * @return \Drupal\purge\Plugin\Purge\Queue\NumberOfItemsStatistic
-   *   The \Drupal\purge\CounterExplainedCounterInterface compliant statistic.
+   * @return \Drupal\purge\Plugin\Purge\Queue\numberOfItemsStatistic
    */
   public function numberOfItems();
 
   /**
    * Total number of failed queue items.
    *
-   * @return \Drupal\purge\Plugin\Purge\Queue\TotalFailedStatistic
-   *   The \Drupal\purge\CounterExplainedCounterInterface compliant statistic.
+   * @return \Drupal\purge\Plugin\Purge\Queue\totalFailedStatistic
    */
   public function totalFailed();
 
   /**
    * Total number of multi-step cache invalidations.
    *
-   * @return \Drupal\purge\Plugin\Purge\Queue\TotalProcessingStatistic
-   *   The \Drupal\purge\CounterExplainedCounterInterface compliant statistic.
+   * @return \Drupal\purge\Plugin\Purge\Queue\totalProcessingStatistic
    */
   public function totalProcessing();
 
   /**
    * Total number of succeeded queue items.
    *
-   * @return \Drupal\purge\Plugin\Purge\Queue\TotalSucceededStatistic
-   *   The \Drupal\purge\CounterExplainedCounterInterface compliant statistic.
+   * @return \Drupal\purge\Plugin\Purge\Queue\totalSucceededStatistic
    */
   public function totalSucceeded();
 
   /**
    * Total number of not supported invalidations.
    *
-   * @return \Drupal\purge\Plugin\Purge\Queue\TotalNotSupportedStatistic
-   *   The \Drupal\purge\CounterExplainedCounterInterface compliant statistic.
+   * @return \Drupal\purge\Plugin\Purge\Queue\totalNotSupportedStatistic
    */
   public function totalNotSupported();
 
   /**
-   * Reset the total counters.
-   *
-   * This is a shorthand for these calls:
+   * Reset the total counters, short-hand for:
    *  - ::totalFailed()->set(0)
    *  - ::totalProcessing()->set(0)
    *  - ::totalSucceeded()->set(0)

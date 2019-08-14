@@ -3,6 +3,8 @@
 namespace Drupal\purge\Plugin\Purge\DiagnosticCheck;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticCheckInterface;
+use Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticCheckBase;
 use Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface;
 
 /**
@@ -19,14 +21,12 @@ use Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface;
 class ProcessorsAvailableDiagnosticCheck extends DiagnosticCheckBase implements DiagnosticCheckInterface {
 
   /**
-   * The 'purge.processors' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface
    */
   protected $purgeProcessors;
 
   /**
-   * Construct a ProcessorsAvailableCheck object.
+   * Constructs a ProcessorsAvailableCheck object.
    *
    * @param \Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface $purge_processors
    *   The purge processors service.
@@ -61,14 +61,14 @@ class ProcessorsAvailableDiagnosticCheck extends DiagnosticCheckBase implements 
     if (count($this->purgeProcessors) === 0) {
       $this->value = '';
       $this->recommendation = $this->t("You have no processors, the queue can now build up because of this.");
-      return self::SEVERITY_WARNING;
+      return SELF::SEVERITY_WARNING;
     }
     elseif (count($this->purgeProcessors) === 1) {
       $plugin_id = current($this->purgeProcessors->getPluginsEnabled());
       $processor = $this->purgeProcessors->get($plugin_id);
       $this->value = $processor->getLabel();
       $this->recommendation = $processor->getDescription();
-      return self::SEVERITY_OK;
+      return SELF::SEVERITY_OK;
     }
     else {
       $this->value = [];
@@ -77,7 +77,7 @@ class ProcessorsAvailableDiagnosticCheck extends DiagnosticCheckBase implements 
       }
       $this->value = implode(', ', $this->value);
       $this->recommendation = $this->t("You have multiple processors working the queue.");
-      return self::SEVERITY_OK;
+      return SELF::SEVERITY_OK;
     }
   }
 

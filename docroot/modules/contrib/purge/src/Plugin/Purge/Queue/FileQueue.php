@@ -4,6 +4,8 @@ namespace Drupal\purge\Plugin\Purge\Queue;
 
 use Drupal\Core\DestructableInterface;
 use Drupal\Core\StreamWrapper\PublicStream;
+use Drupal\purge\Plugin\Purge\Queue\MemoryQueue;
+use Drupal\purge\Plugin\Purge\Queue\QueueInterface;
 
 /**
  * A \Drupal\purge\Plugin\Purge\Queue\QueueInterface compliant file-based queue.
@@ -18,8 +20,6 @@ class FileQueue extends MemoryQueue implements QueueInterface, DestructableInter
 
   /**
    * The file under public:// to which the queue buffer gets written to.
-   *
-   * @var string
    */
   protected $file = 'purge-file.queue';
 
@@ -29,7 +29,7 @@ class FileQueue extends MemoryQueue implements QueueInterface, DestructableInter
   const SEPARATOR = '|';
 
   /**
-   * Construct a FileQueue object.
+   * Constructs a \Drupal\purge\Plugin\Purge\Queue\File object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -83,8 +83,8 @@ class FileQueue extends MemoryQueue implements QueueInterface, DestructableInter
       throw new \Exception('Unable to open file resource to ' . $this->file);
     }
     foreach ($this->buffer as $item_id => $line) {
-      $ob .= $item_id . self::SEPARATOR . $line[self::DATA] . self::SEPARATOR
-        . $line[self::EXPIRE] . self::SEPARATOR . $line[self::CREATED] . "\n";
+      $ob .= $item_id . SELF::SEPARATOR . $line[SELF::DATA] . SELF::SEPARATOR
+        . $line[SELF::EXPIRE] . SELF::SEPARATOR . $line[SELF::CREATED] . "\n";
     }
     fwrite($fh, $ob);
     fclose($fh);

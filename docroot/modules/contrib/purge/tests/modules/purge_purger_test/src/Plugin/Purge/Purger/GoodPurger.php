@@ -3,6 +3,7 @@
 namespace Drupal\purge_purger_test\Plugin\Purge\Purger;
 
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
+use Drupal\purge_purger_test\Plugin\Purge\Purger\NullPurgerBase;
 
 /**
  * A purger that always succeeds.
@@ -14,8 +15,7 @@ use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
  *   cooldown_time = 1.0,
  *   description = @Translation("A purger that always succeeds."),
  *   multi_instance = FALSE,
- *   types = {"tag", "regex", "url", "path", "domain", "everything",
- *            "wildcardpath", "wildcardurl"},
+ *   types = {"tag", "regex", "url", "path", "domain", "everything", "wildcardpath", "wildcardurl"},
  * )
  */
 class GoodPurger extends NullPurgerBase {

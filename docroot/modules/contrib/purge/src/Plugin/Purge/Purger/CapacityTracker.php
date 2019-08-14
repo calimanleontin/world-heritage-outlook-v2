@@ -4,6 +4,7 @@ namespace Drupal\purge\Plugin\Purge\Purger;
 
 use Drupal\purge\Plugin\Purge\Purger\Exception\BadPluginBehaviorException;
 use Drupal\purge\Plugin\Purge\Purger\Exception\BadBehaviorException;
+use Drupal\purge\Plugin\Purge\Purger\CapacityTrackerInterface;
 use Drupal\purge\Counter\Counter;
 
 /**
@@ -40,8 +41,6 @@ class CapacityTracker implements CapacityTrackerInterface {
   protected $leaseTimeHints = [];
 
   /**
-   * Maximum execution time.
-   *
    * The maximum number of seconds available to cache invalidation. Zero means
    * that PHP has no fixed execution time limit, for instance on the CLI.
    *
@@ -57,8 +56,6 @@ class CapacityTracker implements CapacityTrackerInterface {
   protected $purgers = NULL;
 
   /**
-   * Remaining invalidations limit.
-   *
    * Holds all calculated invalidations limits during runtime, this allows
    * ::getRemainingInvalidationsLimit() to calculate the least as possible.
    *
@@ -81,8 +78,6 @@ class CapacityTracker implements CapacityTrackerInterface {
   protected $spentInvalidations;
 
   /**
-   * Gathered list of time hints per purger.
-   *
    * The maximum number of seconds - as a float - it takes each purger to
    * process a single cache invalidation.
    *
@@ -91,11 +86,8 @@ class CapacityTracker implements CapacityTrackerInterface {
   protected $timeHints;
 
   /**
-   * The maximum number of seconds a single invalidation can take.
-   *
-   * This value is established after ::getTimeHintTotal() questioned all purgers
-   * on their typehints and takes the highest value, reducing system stability
-   * risk.
+   * The maximum number of seconds - as a float - it takes all purgers to
+   * process a single cache invalidation (regardless of type).
    *
    * @var float
    */
@@ -145,8 +137,8 @@ class CapacityTracker implements CapacityTrackerInterface {
         foreach ($this->purgers as $id => $purger) {
           $hint = $purger->getTimeHint();
 
-          // Be strict about what values are accepted, better throwing
-          // exceptions than having a crashing web application.
+          // Be strict about what values are accepted, better throwing exceptions
+          // than having a crashing website because it is trashing.
           if (!is_float($hint)) {
             $method = sprintf("%s::getTimeHint()", get_class($purger));
             throw new BadPluginBehaviorException(
@@ -279,8 +271,8 @@ class CapacityTracker implements CapacityTrackerInterface {
         return (int) ($this->getIdealConditionsLimit() - $spent_inv);
       }
 
-      // Calculate how much execution time is left, by subtracting the spent
-      // execution time and waiting time, from the time max.
+      // We do operate on a time-based limit. Calculate how much time there is
+      // left, to base our estimate on by subtracting time spent and waiting time.
       $time_left = $time_max - $this->spentExecutionTime()->get() - $this->getCooldownTimeTotal();
 
       // Calculate how many invaldiations can still be processed with the time

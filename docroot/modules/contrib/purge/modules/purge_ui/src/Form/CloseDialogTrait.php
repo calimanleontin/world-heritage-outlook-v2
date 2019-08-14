@@ -24,7 +24,6 @@ trait CloseDialogTrait {
    *   The current state of the form.
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
-   *   The AJAX response object.
    */
   public function closeDialog(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();

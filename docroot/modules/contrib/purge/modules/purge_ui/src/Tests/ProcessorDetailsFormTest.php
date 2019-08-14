@@ -6,9 +6,7 @@ use Drupal\Core\Url;
 use Drupal\purge\Tests\WebTestBase;
 
 /**
- * Tests the processor details form.
- *
- * The following classes are covered:
+ * Tests:
  *   - \Drupal\purge_ui\Form\PluginDetailsForm.
  *   - \Drupal\purge_ui\Controller\ProcessorFormController::detailForm().
  *   - \Drupal\purge_ui\Controller\ProcessorFormController::detailFormTitle().
@@ -18,11 +16,9 @@ use Drupal\purge\Tests\WebTestBase;
 class ProcessorDetailsFormTest extends WebTestBase {
 
   /**
-   * The Drupal user entity.
-   *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $admin_user;
 
   /**
    * The route that renders the form.
@@ -43,7 +39,7 @@ class ProcessorDetailsFormTest extends WebTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
   }
 
   /**
@@ -54,7 +50,7 @@ class ProcessorDetailsFormTest extends WebTestBase {
     $this->initializeProcessorsService(['a']);
     $this->drupalGet(Url::fromRoute($this->route, $args));
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet(Url::fromRoute($this->route, $args));
     $this->assertResponse(200);
     $args = ['id' => 'doesnotexist'];
@@ -71,7 +67,7 @@ class ProcessorDetailsFormTest extends WebTestBase {
   public function testDetailForm() {
     $args = ['id' => 'a'];
     $this->initializeProcessorsService(['a']);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet(Url::fromRoute($this->route, $args));
     $this->assertRaw('Processor A');
     $this->assertRaw('Test processor A.');

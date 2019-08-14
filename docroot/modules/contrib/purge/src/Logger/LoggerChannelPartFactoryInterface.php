@@ -28,10 +28,9 @@ interface LoggerChannelPartFactoryInterface extends ServiceProviderInterface, Se
    *    - \Drupal\Core\Logger\RfcLogLevel::WARNING
    *    - \Drupal\Core\Logger\RfcLogLevel::NOTICE
    *    - \Drupal\Core\Logger\RfcLogLevel::INFO
-   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG.
+   *    - \Drupal\Core\Logger\RfcLogLevel::DEBUG
    *
-   * @return \Drupal\purge\Logger\LoggerChannelPartInterface
-   *   The channel part instance.
+   * @return \Drupal\purge\Logger\LoggerChannelPartInterface.
    */
   public function create($id, array $grants = []);
 

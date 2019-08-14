@@ -4,6 +4,7 @@ namespace Drupal\purge\Plugin\Purge\Processor;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface;
 use Drupal\purge\IteratingServiceBaseTrait;
 use Drupal\purge\ModifiableServiceBaseTrait;
 use Drupal\purge\ServiceBase;
@@ -16,14 +17,19 @@ class ProcessorsService extends ServiceBase implements ProcessorsServiceInterfac
   use ModifiableServiceBaseTrait;
 
   /**
-   * The factory for configuration objects.
-   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
   /**
-   * Construct the processors service.
+   * The plugin manager for processors.
+   *
+   * @var \Drupal\purge\Plugin\Purge\Queuer\PluginManager
+   */
+  protected $pluginManager;
+
+  /**
+   * Construct \Drupal\purge\Plugin\Purge\Processor\ProcessorsService.
    *
    * @param \Drupal\Component\Plugin\PluginManagerInterface $pluginManager
    *   The plugin manager for this service.
@@ -37,7 +43,6 @@ class ProcessorsService extends ServiceBase implements ProcessorsServiceInterfac
 
   /**
    * {@inheritdoc}
-   *
    * @ingroup countable
    */
   public function count() {
@@ -62,13 +67,13 @@ class ProcessorsService extends ServiceBase implements ProcessorsServiceInterfac
    * {@inheritdoc}
    */
   public function getPluginsEnabled() {
-    if (is_null($this->pluginsEnabled)) {
+    if (is_null($this->plugins_enabled)) {
 
       // Build a mapping of all plugins and whether they are enabled by default.
-      $this->pluginsEnabled = [];
+      $this->plugins_enabled = [];
       foreach ($this->getPlugins() as $plugin_id => $definition) {
         $enable_by_default = ($definition['enable_by_default'] === TRUE);
-        $this->pluginsEnabled[$plugin_id] = $enable_by_default;
+        $this->plugins_enabled[$plugin_id] = $enable_by_default;
       }
 
       // Override the mapping with information stored in CMI, then filter out
@@ -76,19 +81,19 @@ class ProcessorsService extends ServiceBase implements ProcessorsServiceInterfac
       $processors = $this->configFactory->get('purge.plugins')->get('processors');
       if (!is_null($processors)) {
         foreach ($processors as $setting) {
-          if (isset($this->pluginsEnabled[$setting['plugin_id']])) {
-            $this->pluginsEnabled[$setting['plugin_id']] = $setting['status'];
+          if (isset($this->plugins_enabled[$setting['plugin_id']])) {
+            $this->plugins_enabled[$setting['plugin_id']] = $setting['status'];
           }
         }
       }
-      foreach ($this->pluginsEnabled as $plugin_id => $status) {
+      foreach ($this->plugins_enabled as $plugin_id => $status) {
         if (!$status) {
-          unset($this->pluginsEnabled[$plugin_id]);
+          unset($this->plugins_enabled[$plugin_id]);
         }
       }
-      $this->pluginsEnabled = array_keys($this->pluginsEnabled);
+      $this->plugins_enabled = array_keys($this->plugins_enabled);
     }
-    return $this->pluginsEnabled;
+    return $this->plugins_enabled;
   }
 
   /**

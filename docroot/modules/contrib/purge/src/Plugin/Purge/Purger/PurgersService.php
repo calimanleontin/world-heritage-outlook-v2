@@ -10,10 +10,13 @@ use Drupal\purge\Logger\LoggerServiceInterface;
 use Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticsServiceInterface;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
 use Drupal\purge\Plugin\Purge\Processor\ProcessorInterface;
+use Drupal\purge\Plugin\Purge\Purger\Exception\BadPluginBehaviorException;
 use Drupal\purge\Plugin\Purge\Purger\Exception\BadBehaviorException;
 use Drupal\purge\Plugin\Purge\Purger\Exception\CapacityException;
 use Drupal\purge\Plugin\Purge\Purger\Exception\DiagnosticsException;
 use Drupal\purge\Plugin\Purge\Purger\Exception\LockException;
+use Drupal\purge\Plugin\Purge\Purger\CapacityTrackerInterface;
+use Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface;
 
 /**
  * Provides the service that distributes access to one or more purgers.
@@ -35,15 +38,11 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
   const LOGGER_PURGERS_FORMAT = 'purger_%s_%s';
 
   /**
-   * The 'purge.purgers.tracker.capacity' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Purger\CapacityTrackerInterface
    */
   protected $capacityTracker;
 
   /**
-   * The factory for configuration objects.
-   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
@@ -77,22 +76,16 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
   protected $purgers;
 
   /**
-   * The 'purge.diagnostics' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticsServiceInterface
    */
   protected $purgeDiagnostics;
 
   /**
-   * The 'purge.logger' service.
-   *
    * @var \Drupal\purge\Logger\LoggerServiceInterface
    */
   protected $purgeLogger;
 
   /**
-   * The 'purge.purgers.tracker.runtime_measurement' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Purger\RuntimeMeasurementTrackerInterface
    */
   protected $runtimeMeasurementTracker;
@@ -109,10 +102,10 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
    *
    * @var null|array[]
    */
-  protected $typesByPurger = NULL;
+  protected $types_by_purger = NULL;
 
   /**
-   * Construct the purgers service.
+   * Instantiate the purgers service.
    *
    * @param \Drupal\Component\Plugin\PluginManagerInterface $pluginManager
    *   The plugin manager for this service.
@@ -194,7 +187,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
 
     // Attempt to claim the lock to guard that we're the only one processing.
     $lease = $this->capacityTracker()->getLeaseTimeHint(count($invalidations));
-    if (!$this->lock->acquire(self::LOCKNAME, (float) $lease)) {
+    if (!$this->lock->acquire(SELF::LOCKNAME, (float) $lease)) {
       $this->logger->debug("could not acquire processing lock.");
       throw new LockException("Could not acquire processing lock.");
     }
@@ -230,8 +223,8 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
    *   Associative array with enabled purgers: id => plugin_id.
    */
   public function getPluginsEnabled() {
-    if (is_null($this->pluginsEnabled)) {
-      $this->pluginsEnabled = [];
+    if (is_null($this->plugins_enabled)) {
+      $this->plugins_enabled = [];
       $plugins = $this->configFactory->get('purge.plugins')->get('purgers');
       $plugin_ids = array_keys($this->getPlugins());
 
@@ -253,11 +246,11 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
         // Recreate the plugin ordering and propagate the enabled plugins array.
         ksort($setting);
         foreach ($setting as $inst) {
-          $this->pluginsEnabled[$inst['instance_id']] = $inst['plugin_id'];
+          $this->plugins_enabled[$inst['instance_id']] = $inst['plugin_id'];
         }
       }
     }
-    return $this->pluginsEnabled;
+    return $this->plugins_enabled;
   }
 
   /**
@@ -306,14 +299,14 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
    * {@inheritdoc}
    */
   public function getTypesByPurger() {
-    if (is_null($this->typesByPurger)) {
+    if (is_null($this->types_by_purger)) {
       $this->initializePurgers();
-      $this->typesByPurger = [];
+      $this->types_by_purger = [];
       foreach ($this->getPluginsEnabled(FALSE) as $id => $plugin_id) {
-        $this->typesByPurger[$id] = $this->purgers[$id]->getTypes();
+        $this->types_by_purger[$id] = $this->purgers[$id]->getTypes();
       }
     }
-    return $this->typesByPurger;
+    return $this->types_by_purger;
   }
 
   /**
@@ -337,7 +330,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     foreach ($this->getPluginsEnabled() as $instance_id => $plugin_id) {
       if (!isset($plugin_ids[$instance_id])) {
         $this->purgers[$instance_id]->delete();
-        $this->purgeLogger->deleteChannel(sprintf(self::LOGGER_PURGERS_FORMAT, $plugin_id, $instance_id));
+        $this->purgeLogger->deleteChannel(sprintf(SELF::LOGGER_PURGERS_FORMAT, $plugin_id, $instance_id));
       }
     }
 
@@ -345,7 +338,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     $order_index = 1;
     $setting = [];
     foreach ($plugin_ids as $instance_id => $plugin_id) {
-      $order_index = $order_index + 1;
+      $order_index = $order_index+1;
       $setting[] = [
         'order_index' => $order_index,
         'instance_id' => $instance_id,
@@ -376,7 +369,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     $this->purgers = NULL;
     $this->labels = NULL;
     $this->types = NULL;
-    $this->typesByPurger = NULL;
+    $this->types_by_purger = NULL;
   }
 
   /**
@@ -391,7 +384,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     $this->purgers = [];
     foreach ($this->getPluginsEnabled() as $id => $plugin_id) {
       $this->purgers[$id] = $this->pluginManager->createInstance($plugin_id, ['id' => $id]);
-      $this->purgers[$id]->setLogger($this->purgeLogger->get(sprintf(self::LOGGER_PURGERS_FORMAT, $plugin_id, $id)));
+      $this->purgers[$id]->setLogger($this->purgeLogger->get(sprintf(SELF::LOGGER_PURGERS_FORMAT, $plugin_id, $id)));
       $this->logger->debug("loading purger @id (@plugin_id).",
         ['@id' => $id, '@plugin_id' => $plugin_id]);
     }
@@ -430,7 +423,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     }
 
     // Iterate the purgers and start invalidating the items each one supports.
-    $typesByPurger = $this->getTypesByPurger();
+    $types_by_purger = $this->getTypesByPurger();
     foreach ($this->purgers as $id => $purger) {
       $groups = [];
 
@@ -440,14 +433,14 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
         if ($invalidation->getState() == InvalidationInterface::SUCCEEDED) {
           continue;
         }
-        if (!in_array($types[$i], $typesByPurger[$id])) {
+        if (!in_array($types[$i], $types_by_purger[$id])) {
           $invalidation->setState(InvalidationInterface::NOT_SUPPORTED);
           continue;
         }
       }
 
       // Filter supported objects and group them by the right purger methods.
-      foreach ($typesByPurger[$id] as $type) {
+      foreach ($types_by_purger[$id] as $type) {
         $method = $purger->routeTypeToMethod($type);
         if (!isset($groups[$method])) {
           $groups[$method] = [];
@@ -470,8 +463,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
           '@no' => count($offers),
           '@id' => $id,
           '@plugin' => $purger->getPluginId(),
-          '@method' => $method,
-        ]);
+          '@method' => $method]);
 
         // Feed the offers either with runtime measurement running or without.
         $has_runtime_measurement = $purger->hasRuntimeMeasurement();
@@ -501,7 +493,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     // Update the counters with runtime information and release the lock.
     $this->capacityTracker()->spentInvalidations()->increment(count($invalidations));
     $this->capacityTracker()->spentExecutionTime()->increment(microtime(TRUE) - $execution_time_start);
-    $this->lock->release(self::LOCKNAME);
+    $this->lock->release(SELF::LOCKNAME);
   }
 
   /**
@@ -518,9 +510,9 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     $ordered = [];
     $index = 0;
     foreach ($enabled as $instance_id => $plugin_id) {
-      $index = $index + 2;
+      $index = $index+2;
       if ($instance_id === $purger_instance_id) {
-        $ordered[$index + 3] = [$instance_id, $plugin_id];
+        $ordered[$index+3] = [$instance_id, $plugin_id];
       }
       else {
         $ordered[$index] = [$instance_id, $plugin_id];
@@ -550,9 +542,9 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
     $ordered = [];
     $index = 0;
     foreach ($enabled as $instance_id => $plugin_id) {
-      $index = $index + 2;
+      $index = $index+2;
       if ($instance_id === $purger_instance_id) {
-        $ordered[$index - 3] = [$instance_id, $plugin_id];
+        $ordered[$index-3] = [$instance_id, $plugin_id];
       }
       else {
         $ordered[$index] = [$instance_id, $plugin_id];

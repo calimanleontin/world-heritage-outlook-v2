@@ -11,78 +11,56 @@ namespace Drupal\purge\Tests;
 trait TestTrait {
 
   /**
-   * The factory for configuration objects.
-   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
   /**
-   * The 'purge.logger' service.
-   *
    * @var \Drupal\purge\Logger\LoggerServiceInterface
    */
   protected $purgeLogger;
 
   /**
-   * The 'purge.processors' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Processor\ProcessorsServiceInterface
    */
   protected $purgeProcessors;
 
   /**
-   * The 'purge.purgers' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface
    */
   protected $purgePurgers;
 
   /**
-   * The 'purge.invalidation.factory' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface
    */
   protected $purgeInvalidationFactory;
 
   /**
-   * The 'purge.queue' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
    */
   protected $purgeQueue;
 
   /**
-   * The 'purge.queue.stats' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queue\StatsTrackerInterface
    */
   protected $purgeQueueStats;
 
   /**
-   * The 'purge.queue.txbuffer' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queue\TxBufferInterface
    */
   protected $purgeQueueTxbuffer;
 
   /**
-   * The 'purge.queuers' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queuer\QueuersServiceInterface
    */
   protected $purgeQueuers;
 
   /**
-   * The 'purge.diagnostics' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\DiagnosticCheck\DiagnosticsServiceInterface
    */
   protected $purgeDiagnostics;
 
   /**
-   * The 'purge.tagsheaders' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\TagsHeader\TagsHeadersServiceInterface
    */
   protected $purgeTagsHeaders;
@@ -96,8 +74,10 @@ trait TestTrait {
    *   The callable to call from within the try statement.
    * @param mixed[] $args
    *   Arguments to be passed to the callable.
+   *
+   * @return void
    */
-  protected function assertException($exception, callable $call, array $args = []) {
+  protected function assertException($exception, callable $call, $args = []) {
     $thrown = FALSE;
     eval("
       try {
@@ -118,8 +98,10 @@ trait TestTrait {
    *   The callable to call from within the try statement.
    * @param mixed[] $args
    *   Arguments to be passed to the callable.
+   *
+   * @return void
    */
-  protected function assertNoException($exception, callable $call, array $args = []) {
+  protected function assertNoException($exception, callable $call, $args = []) {
     $thrown = FALSE;
     eval("
       try {
@@ -148,7 +130,7 @@ trait TestTrait {
    * @param bool $write_empty
    *   Write empty plugin configurations.
    */
-  protected function initializeProcessorsService(array $plugin_ids = [], $write_empty = FALSE) {
+  protected function initializeProcessorsService($plugin_ids = [], $write_empty = FALSE) {
     if (is_null($this->purgeProcessors)) {
       $this->purgeProcessors = $this->container->get('purge.processors');
     }
@@ -166,7 +148,7 @@ trait TestTrait {
    * @param bool $write_empty
    *   Write empty plugin configurations.
    */
-  protected function initializePurgersService(array $plugin_ids = [], $write_empty = FALSE) {
+  protected function initializePurgersService($plugin_ids = [], $write_empty = FALSE) {
     if (is_null($this->purgePurgers)) {
       $this->purgePurgers = $this->container->get('purge.purgers');
     }
@@ -216,7 +198,7 @@ trait TestTrait {
    * @param bool $write_empty
    *   Write empty plugin configurations.
    */
-  protected function initializeQueuersService(array $plugin_ids = [], $write_empty = FALSE) {
+  protected function initializeQueuersService($plugin_ids = [], $write_empty = FALSE) {
     if (is_null($this->purgeQueuers)) {
       $this->purgeQueuers = $this->container->get('purge.queuers');
     }
@@ -266,7 +248,6 @@ trait TestTrait {
    *   passed, expect a \Drupal\purge\Plugin\Purge\Invalidation\Exception\TypeUnsupportedException.
    *
    * @return array|\Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface
-   *   Array of InvalidationInterface objects or a single InvalidationInterface.
    */
   public function getInvalidations($amount, $plugin_id = 'everything', $expression = NULL, $initialize_purger = TRUE) {
     $this->initializeInvalidationFactoryService();

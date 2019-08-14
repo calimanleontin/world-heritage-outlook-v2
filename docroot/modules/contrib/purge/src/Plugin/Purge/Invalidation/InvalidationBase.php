@@ -4,6 +4,8 @@ namespace Drupal\purge\Plugin\Purge\Invalidation;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\purge\Plugin\Purge\Purger\Exception\BadPluginBehaviorException;
+use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
+use Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidationBase;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidExpressionException;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\MissingExpressionException;
 use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidStateException;
@@ -140,7 +142,7 @@ abstract class InvalidationBase extends ImmutableInvalidationBase implements Inv
     $both_strings = $old_is_string && $new_is_string;
     $transferring = $both_strings && ($this->context != $purger_instance_id);
     if ($transferring || ($old_is_string && $new_is_null)) {
-      if (!in_array($this->getState(), $this->statesAfterProcessing)) {
+      if (!in_array($this->getState(), $this->states_after_processing)) {
         throw new BadPluginBehaviorException("Only NOT_SUPPORTED, PROCESSING, SUCCEEDED and FAILED are valid outbound states.");
       }
     }

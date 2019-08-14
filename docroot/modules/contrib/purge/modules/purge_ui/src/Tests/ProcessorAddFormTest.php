@@ -13,11 +13,9 @@ use Drupal\purge\Tests\WebTestBase;
 class ProcessorAddFormTest extends WebTestBase {
 
   /**
-   * The Drupal user entity.
-   *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $admin_user;
 
   /**
    * The route that renders the form.
@@ -38,7 +36,7 @@ class ProcessorAddFormTest extends WebTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
   }
 
   /**
@@ -47,22 +45,14 @@ class ProcessorAddFormTest extends WebTestBase {
   public function testAccess() {
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->initializeProcessorsService([]);
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertResponse(200);
     $this->initializeProcessorsService(['a', 'b', 'c']);
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertResponse(200);
-    $this->initializeProcessorsService(
-      [
-        'a',
-        'b',
-        'c',
-        'withform',
-        'purge_ui_block_processor',
-      ]
-    );
+    $this->initializeProcessorsService(['a', 'b', 'c', 'withform', 'purge_ui_block_processor']);
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertResponse(404);
     $this->initializeProcessorsService(['a', 'b']);
@@ -75,7 +65,7 @@ class ProcessorAddFormTest extends WebTestBase {
    * @see \Drupal\purge_ui\Form\CloseDialogTrait::closeDialog
    */
   public function testCancel() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertRaw(t('Cancel'));
     $json = $this->drupalPostAjaxForm(Url::fromRoute($this->route)->toString(), [], ['op' => t('Cancel')]);
@@ -90,7 +80,7 @@ class ProcessorAddFormTest extends WebTestBase {
    * @see \Drupal\purge_ui\Form\CloseDialogTrait::addPurger
    */
   public function testAdd() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet(Url::fromRoute($this->route));
     $this->assertRaw(t('Add'));
     $this->assertNoRaw(t('Processor A'));

@@ -4,6 +4,8 @@ namespace Drupal\purge\Plugin\Purge\Queue;
 
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
 use Drupal\purge\Plugin\Purge\Queue\Exception\InvalidPropertyException;
+use Drupal\purge\Plugin\Purge\Queue\ProxyItemInterface;
+use Drupal\purge\Plugin\Purge\Queue\TxBufferInterface;
 
 /**
  * Provides a proxy item.
@@ -25,7 +27,7 @@ class ProxyItem implements ProxyItemInterface {
   protected $invalidation;
 
   /**
-   * The 'purge.queue.txbuffer' service.
+   * The actively used TxBuffer object by \Drupal\purge\Plugin\Purge\Queue\QueueService.
    *
    * @var \Drupal\purge\Plugin\Purge\Queue\TxBufferInterface
    */
@@ -46,17 +48,15 @@ class ProxyItem implements ProxyItemInterface {
    * The unique ID from \Drupal\Core\Queue\QueueInterface::createItem().
    *
    * @var mixed|null
-   *
    * @see \Drupal\Core\Queue\QueueInterface::createItem
    * @see \Drupal\Core\Queue\QueueInterface::claimItem
    */
-  private $item_id; // phpcs:ignore -- property matching Drupal core naming!
+  private $item_id;
 
   /**
    * Purge specific data to be associated with the new task in the queue.
    *
    * @var mixed
-   *
    * @see \Drupal\Core\Queue\QueueInterface::createItem
    * @see \Drupal\Core\Queue\QueueInterface::claimItem
    */
@@ -66,7 +66,6 @@ class ProxyItem implements ProxyItemInterface {
    * Timestamp when the item was put into the queue.
    *
    * @var mixed|null
-   *
    * @see \Drupal\Core\Queue\QueueInterface::createItem
    * @see \Drupal\Core\Queue\QueueInterface::claimItem
    */
@@ -89,14 +88,13 @@ class ProxyItem implements ProxyItemInterface {
     }
 
     // The 'data' property describes the purge queue item in such a way that
-    // \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface is
-    // able to recreate it easily.
+    // \Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface is able to recreate it.
     if ($name === 'data') {
       return [
-        self::DATA_INDEX_TYPE => $this->invalidation->getType(),
-        self::DATA_INDEX_STATES => $this->invalidation->getStates(),
-        self::DATA_INDEX_EXPRESSION => $this->invalidation->getExpression(),
-        self::DATA_INDEX_PROPERTIES => $this->invalidation->getProperties(),
+        SELF::DATA_INDEX_TYPE => $this->invalidation->getType(),
+        SELF::DATA_INDEX_STATES => $this->invalidation->getStates(),
+        SELF::DATA_INDEX_EXPRESSION => $this->invalidation->getExpression(),
+        SELF::DATA_INDEX_PROPERTIES => $this->invalidation->getProperties(),
       ];
     }
 

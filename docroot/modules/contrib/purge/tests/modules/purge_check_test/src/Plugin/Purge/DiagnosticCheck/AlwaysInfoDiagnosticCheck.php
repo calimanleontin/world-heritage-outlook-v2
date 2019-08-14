@@ -23,7 +23,7 @@ class AlwaysInfoDiagnosticCheck extends DiagnosticCheckBase implements Diagnosti
    */
   public function run() {
     $this->recommendation = $this->t("This is info for testing.");
-    return self::SEVERITY_INFO;
+    return SELF::SEVERITY_INFO;
   }
 
 }

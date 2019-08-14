@@ -31,15 +31,11 @@ class CacheTagsQueuer implements CacheTagsInvalidatorInterface, ContainerAwareIn
   protected $invalidatedTags = [];
 
   /**
-   * The 'purge.invalidation.factory' service.
-   *
    * @var null|\Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface
    */
   protected $purgeInvalidationFactory;
 
   /**
-   * The 'purge.queue' service.
-   *
    * @var null|\Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
    */
   protected $purgeQueue;

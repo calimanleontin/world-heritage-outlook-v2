@@ -2,6 +2,9 @@
 
 namespace Drupal\purge\Plugin\Purge\Queue;
 
+use Drupal\purge\Plugin\Purge\Queue\QueueInterface;
+use Drupal\purge\Plugin\Purge\Queue\MemoryQueue;
+
 /**
  * API-compliant null queue back-end.
  *

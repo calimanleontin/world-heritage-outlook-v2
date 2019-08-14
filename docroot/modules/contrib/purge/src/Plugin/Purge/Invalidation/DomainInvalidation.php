@@ -2,6 +2,10 @@
 
 namespace Drupal\purge\Plugin\Purge\Invalidation;
 
+use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
+use Drupal\purge\Plugin\Purge\Invalidation\InvalidationBase;
+use Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidExpressionException;
+
 /**
  * Describes an entire domain to be invalidated.
  *

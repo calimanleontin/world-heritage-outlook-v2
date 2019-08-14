@@ -4,6 +4,7 @@ namespace Drupal\purge\Tests\Queuer;
 
 use Drupal\purge\Tests\KernelTestBase;
 use Drupal\purge\Tests\KernelServiceTestBase;
+use Drupal\purge\Plugin\Purge\Queuer\QueuersServiceInterface;
 use Drupal\purge\Plugin\Purge\Queuer\QueuerInterface;
 
 /**
@@ -28,7 +29,7 @@ class ServiceTest extends KernelServiceTestBase {
   }
 
   /**
-   * Tests \Drupal\purge\Plugin\Purge\Queuer\QueuersService::count.
+   * Tests \Drupal\purge\Plugin\Purge\Queuer\QueuersService::count
    */
   public function testCount() {
     $this->initializeService();
@@ -37,7 +38,7 @@ class ServiceTest extends KernelServiceTestBase {
   }
 
   /**
-   * Tests \Drupal\purge\Plugin\Purge\Processor\QueuersService::get.
+   * Tests \Drupal\purge\Plugin\Purge\Processor\QueuersService::get
    */
   public function testGet() {
     $this->initializeService();
@@ -59,9 +60,8 @@ class ServiceTest extends KernelServiceTestBase {
    */
   public function testIteration() {
     $this->initializeService();
-    $this->assertIterator(
-      ['a', 'b'],
-      '\Drupal\purge\Plugin\Purge\Queuer\QueuerInterface'
+    $this->assertIterator('\Drupal\purge\Plugin\Purge\Queuer\QueuerInterface',
+      ['a', 'b']
     );
   }
 

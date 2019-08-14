@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
+use Drupal\purge_ui\Form\CloseDialogTrait;
 
 /**
  * The queue data browser.
@@ -16,8 +17,6 @@ class QueueBrowserForm extends FormBase {
   use CloseDialogTrait;
 
   /**
-   * The 'purge.queue' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
    */
   protected $purgeQueue;
@@ -27,13 +26,15 @@ class QueueBrowserForm extends FormBase {
    *
    * @var int
    */
-  protected $numberOfItems = 15;
+  protected $number_of_items = 15;
 
   /**
-   * Construct a QueueBrowserForm object.
+   * Constructs a QueueBrowserForm object.
    *
    * @param \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface $purge_queue
    *   The purge queue service.
+   *
+   * @return void
    */
   public function __construct(QueueServiceInterface $purge_queue) {
     $this->purgeQueue = $purge_queue;
@@ -49,7 +50,7 @@ class QueueBrowserForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormID() {
     return 'purge_ui.queue_browser_form';
   }
 
@@ -92,7 +93,7 @@ class QueueBrowserForm extends FormBase {
       '#header' => $header,
       '#rows' => [],
     ];
-    $this->purgeQueue->selectPageLimit($this->numberOfItems);
+    $this->purgeQueue->selectPageLimit($this->number_of_items);
     foreach ($this->purgeQueue->selectPage($page) as $immutable) {
       $form['wrapper']['table']['#rows'][] = [
         'data' => [
@@ -125,7 +126,7 @@ class QueueBrowserForm extends FormBase {
     }
     $form['pager']['page']['last'] = $button([
       '#value' => ">> $pages",
-      '#access' => $page < ($pages - 4),
+      '#access' => $page < ($pages-4),
     ]);
     if (count($form['pager']['page']) === 3) {
       unset($form['pager']);

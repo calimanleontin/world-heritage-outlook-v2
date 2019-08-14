@@ -34,8 +34,7 @@ interface ServiceInterface extends ServiceProviderInterface, ServiceModifierInte
    * @param string $plugin_id
    *   The plugin_id of the plugin you want to check for.
    *
-   * @return bool
-   *   Whether the plugin is enabled.
+   * @return true|false
    */
   public function isPluginEnabled($plugin_id);
 

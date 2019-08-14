@@ -6,6 +6,9 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DestructableInterface;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\purge\Logger\LoggerChannelPartFactoryInterface;
+use Drupal\purge\Logger\LoggerServiceInterface;
+use Drupal\purge\Logger\LoggerChannelPart;
 
 /**
  * Provides logging services to purge and its submodules, via a single channel.
@@ -75,7 +78,7 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
    *
    * @var false|true
    */
-  protected $write = FALSE;
+  protected $write_config = FALSE;
 
   /**
    * Construct \Drupal\purge\Logger\LoggerService.
@@ -90,7 +93,7 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
     $this->purgeLoggerPartsFactory = $purge_logger_parts_factory;
 
     // Set configuration when CMI has it.
-    if (is_array($c = $config_factory->get(self::CONFIG)->get(self::CKEY))) {
+    if (is_array($c = $config_factory->get(SELF::CONFIG)->get(SELF::CKEY))) {
       $this->config = $c;
     }
   }
@@ -99,12 +102,12 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
    * {@inheritdoc}
    */
   public function destruct() {
-    if ($this->write) {
+    if ($this->write_config) {
       $this->configFactory
-        ->getEditable(self::CONFIG)
-        ->set(self::CKEY, $this->config)
+        ->getEditable(SELF::CONFIG)
+        ->set(SELF::CKEY, $this->config)
         ->save();
-      $this->write = FALSE;
+      $this->write_config = FALSE;
     }
   }
 
@@ -115,7 +118,7 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
     foreach ($this->config as $i => $channel) {
       if ($channel['id'] === $id) {
         unset($this->config[$i]);
-        $this->write = TRUE;
+        $this->write_config = TRUE;
         return;
       }
     }
@@ -128,8 +131,8 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
     foreach ($this->config as $i => $channel) {
       if (strpos($channel['id'], $id_starts_with) === 0) {
         unset($this->config[$i]);
-        if (!$this->write) {
-          $this->write = TRUE;
+        if (!$this->write_config) {
+          $this->write_config = TRUE;
         }
       }
     }
@@ -203,7 +206,7 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
 
     // (Over)write the channel and its grants.
     $this->config[$i] = ['id' => $id, 'grants' => $grants];
-    $this->write = TRUE;
+    $this->write_config = TRUE;
   }
 
 }

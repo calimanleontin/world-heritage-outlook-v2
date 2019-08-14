@@ -15,8 +15,7 @@ interface PurgerSettingsInterface extends ConfigEntityInterface {
    * @param string $id
    *   Unique instance ID of the purger.
    *
-   * @return \Drupal\purge\Plugin\Purge\Purger\PurgerSettingsInterface
-   *   The settings object.
+   * @return \Drupal\purge\Plugin\Purge\Purger\PurgerSettingsInterface.
    */
   public static function load($id);
 

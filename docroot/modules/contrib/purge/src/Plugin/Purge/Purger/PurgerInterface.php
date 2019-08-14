@@ -4,6 +4,7 @@ namespace Drupal\purge\Plugin\Purge\Purger;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\purge\Logger\PurgeLoggerAwareInterface;
+use Drupal\purge\Plugin\Purge\Purger\PurgerCapacityDataInterface;
 
 /**
  * Describes a purger - the cache invalidation executor.
@@ -19,6 +20,8 @@ interface PurgerInterface extends ContainerFactoryPluginInterface, PurgerCapacit
    * prior to when the instance gets uninstalled.
    *
    * @see \Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface::setPluginsEnabled()
+   *
+   * @return void
    */
   public function delete();
 
@@ -43,14 +46,13 @@ interface PurgerInterface extends ContainerFactoryPluginInterface, PurgerCapacit
    * @see \Drupal\purge\Annotation\PurgePurger::$label
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup
-   *   The translated label.
    */
   public function getLabel();
 
   /**
    * Retrieve the list of supported invalidation types.
    *
-   * @see \Drupal\purge\Annotation\PurgePurger::$types
+   * @see \Drupal\purge\Annotation\PurgePurger::$types.
    *
    * @return string[]
    *   List of supported invalidation type plugins.
@@ -98,6 +100,8 @@ interface PurgerInterface extends ContainerFactoryPluginInterface, PurgerCapacit
    *
    * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface::setState()
    * @see \Drupal\purge\Plugin\Purge\Purger\PurgerCapacityDataInterface::getTimeHint()
+   *
+   * @return void
    */
   public function invalidate(array $invalidations);
 

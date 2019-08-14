@@ -11,11 +11,9 @@ use Drupal\purge\Tests\WebTestBase;
 abstract class DashboardTestBase extends WebTestBase {
 
   /**
-   * The Drupal user entity.
-   *
    * @var \Drupal\user\Entity\User
    */
-  protected $adminUser;
+  protected $admin_user;
 
   /**
    * Route providing the main configuration form of the purge module.
@@ -36,7 +34,7 @@ abstract class DashboardTestBase extends WebTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
     if (is_string($this->route)) {
       $this->route = Url::fromRoute($this->route);
     }
@@ -48,7 +46,7 @@ abstract class DashboardTestBase extends WebTestBase {
   public function testFormAccess() {
     $this->drupalGet($this->route);
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->route);
     $this->assertRaw('When content on your website changes, your purge setup will take care of refreshing external caching systems and CDNs.');
     $this->assertResponse(200);

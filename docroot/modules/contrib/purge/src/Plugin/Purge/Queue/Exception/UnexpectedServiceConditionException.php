@@ -3,10 +3,7 @@
 namespace Drupal\purge\Plugin\Purge\Queue\Exception;
 
 /**
- * Unexpected service condition.
- *
- * This exception is only thrown from within the queue service, in case of
- * severe conditions it didn't expect. The most common use case is when the
- * loaded queue fails ::createItem() or ::createItemMultiple() calls.
+ * Exception thrown when the queue plugin is not acting in the way that was
+ * expected to the QueueService. Usually when a item failed creation, etc.
  */
 class UnexpectedServiceConditionException extends \Exception {}

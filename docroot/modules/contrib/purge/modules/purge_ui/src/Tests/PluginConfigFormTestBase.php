@@ -12,11 +12,11 @@ use Drupal\purge\Tests\WebTestBase;
 abstract class PluginConfigFormTestBase extends WebTestBase {
 
   /**
-   * The Drupal user entity.
+   * User account with suitable permission to access the form.
    *
-   * @var \Drupal\user\Entity\User
+   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $adminUser;
+  public $admin_user;
 
   /**
    * Modules to enable.
@@ -93,7 +93,7 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
+    $this->admin_user = $this->drupalCreateUser(['administer site configuration']);
 
     // Initialize the plugin, form arguments and the form builder.
     $this->formArgs['id'] = $this->formArgsDialog['id'] = $this->getId();
@@ -114,8 +114,7 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
   /**
    * Return a new instance of the form being tested.
    *
-   * @return \Drupal\purge_ui\Form\PluginConfigFormBase
-   *   The form instance.
+   * @return \Drupal\purge_ui\Form\PluginConfigFormBase derivative.
    */
   protected function getFormInstance() {
     $class = $this->formClass;
@@ -126,7 +125,6 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
    * Retrieve a new formstate instance.
    *
    * @return \Drupal\Core\Form\FormStateInterface
-   *   The form state instance.
    */
   protected function getFormStateInstance() {
     return new FormState();
@@ -163,7 +161,7 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
   public function testFormAccess() {
     $this->drupalGet($this->route);
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->route);
     $this->assertResponse(200);
     $this->assertFormTitle();
@@ -178,7 +176,7 @@ abstract class PluginConfigFormTestBase extends WebTestBase {
   public function testFormAccessDialog() {
     $this->drupalGet($this->routeDialog);
     $this->assertResponse(403);
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->routeDialog);
     $this->assertResponse(200);
     $this->assertFormTitle();

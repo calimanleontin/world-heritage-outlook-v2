@@ -9,7 +9,7 @@ use Drupal\purge\Counter\ExplainedCounterInterface;
 /**
  * Total number of not supported invalidations.
  */
-class TotalNotSupportedStatistic extends Counter implements ExplainedCounterInterface {
+class totalNotSupportedStatistic extends Counter implements ExplainedCounterInterface {
   use StringTranslationTrait;
 
   /**
@@ -41,7 +41,13 @@ class TotalNotSupportedStatistic extends Counter implements ExplainedCounterInte
    */
   public function getDescription() {
     return $this->t(
-      'Queue items can be unsupported at any point in time when no configured purgers supported the type of cache invalidation requested. For example, when your purger only supports "tag" but a "url" item ended up in the queue and got offered to the purger, this statistic is updated. However, it is totally possible that this same queue item later succeeds because a new version of the purger now suddenly supports this type of cache invalidation.'
+        'Queue items can be unsupported at any point in time when no configured'
+      . ' purgers supported the type of cache invalidation requested. For'
+      . ' example, when your purger only supports "tag" but a "url" item ended'
+      . ' up in the queue and got offered to the purger, this statistic is'
+      . ' updated. However, it is totally possible that this same queue item'
+      . ' later succeeds because a new version of the purger now suddenly'
+      . ' supports this type of cache invalidation.'
     );
   }
 

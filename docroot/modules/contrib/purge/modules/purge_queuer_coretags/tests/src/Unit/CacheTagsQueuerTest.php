@@ -20,6 +20,29 @@ use Drupal\Tests\UnitTestCase;
 class CacheTagsQueuerTest extends UnitTestCase {
 
   /**
+   * Propagated blacklist.
+   *
+   * @var array[]
+   */
+  protected $blacklist = [
+    'purge_queuer_coretags.settings' => [
+      'blacklist' => [
+        'menu',
+        'node',
+      ],
+    ],
+  ];
+
+  /**
+   * Blacklist without any items.
+   *
+   * @var array[]
+   */
+  protected $blacklistEmpty = [
+    'purge_queuer_coretags.settings' => ['blacklist' => []],
+  ];
+
+  /**
    * The tested cache tags queuer.
    *
    * @var \Drupal\purge_queuer_coretags\CacheTagsQueuer
@@ -88,8 +111,7 @@ class CacheTagsQueuerTest extends UnitTestCase {
   public function testInitializeDoesntLoadWhenQueuerDisabled() {
     $this->purgeInvalidationFactory->expects($this->never())->method('get');
     $this->purgeQueue->expects($this->never())->method('add');
-    $this->purgeQueuers
-      ->expects($this->once())
+    $this->purgeQueuers->expects($this->once())
       ->method('get')
       ->with('coretags')
       ->willReturn(FALSE);
@@ -101,59 +123,34 @@ class CacheTagsQueuerTest extends UnitTestCase {
    *
    * @dataProvider providerTestInvalidateTags()
    */
-  public function testInvalidateTags($config, array $sets) {
+  public function testInvalidateTags($config, array $sets, array $adds, $queue_calls) {
     $this->container->set('config.factory', $this->getConfigFactoryStub($config));
-    // Assert that the queuer plugin is loaded exactly once.
-    $this->purgeQueuers
-      ->expects($this->once())
+    $this->purgeQueuers->expects($this->once())
       ->method('get')
       ->with('coretags')
-      ->willReturn($this->getMockBuilder(QueuerBase::class)->disableOriginalConstructor()->getMock()
-    );
-    // Assert how InvalidationsServiceInterface::get() is called.
-    $invs_added_total = array_sum(array_map(
-      function ($set) {
-        return $set[1];
-      },
-      $sets
-    ));
-    $this->purgeInvalidationFactory
-      ->expects($this->exactly($invs_added_total))
-      ->method('get')
-      ->with('tag')
-      ->willReturn($this->getMock(InvalidationInterface::class)
-    );
-    // Assert the precise calls to QueueServiceInterface::add().
-    $number_queue_add_calls = count(array_filter($sets, function ($set) {
-      list($tags, $invs_added) = $set;
-      return $invs_added !== 0;
-    }));
-    reset($sets);
-    $this->purgeQueue
-      ->expects($this->exactly($number_queue_add_calls))
+      ->willReturn($this->getMockBuilder(QueuerBase::class)->disableOriginalConstructor()->getMock());
+    $this->purgeInvalidationFactory->expects($this->exactly(array_sum($adds)))
+      ->method('get')->with('tag')
+      ->willReturn($this->getMock(InvalidationInterface::class));
+
+    // Configure the QueueServiceInterface::add() expectation very accurately.
+    $adds = array_filter($adds, function ($v) {return $v !== 0;});
+    $this->purgeQueue->expects($this->exactly($queue_calls))
       ->method('add')
       ->with(
-        $this->callback(
-          function ($queuer) {
-            return $queuer instanceof QueuerBase;
+        $this->callback(function ($queuer) {
+          return $queuer instanceof QueuerBase;
+        }),
+        $this->callback(function (array $invs) use (&$adds, $sets) {
+          if (is_null($expected = each($adds)['value'])) {
+            return TRUE;
           }
-        ),
-        $this->callback(
-          function (array $invs) use (&$sets) {
-            list($tags, $invs_added) = current($sets);
-            // Sets with 0 shouldn't call ::add() at all, so skip over them.
-            if ($invs_added === 0) {
-              next($sets);
-              list($tags, $invs_added) = current($sets);
-            }
-            next($sets);
-            return is_array($invs) && (count($invs) === $invs_added);
-          }
-        )
+          return is_array($invs) && (count($invs) == $expected);
+        })
       );
-    // Trigger the entire chain by feeding the sets of tags.
-    foreach ($sets as $set) {
-      list($tags, $invs_added) = $set;
+
+    // Perform the provided tag invalidations.
+    foreach ($sets as $tags) {
       $this->cacheTagsQueuer->invalidateTags($tags);
     }
   }
@@ -162,50 +159,24 @@ class CacheTagsQueuerTest extends UnitTestCase {
    * Provides test data for testInvalidateTags().
    */
   public function providerTestInvalidateTags() {
-    $blacklist = [
-      'purge_queuer_coretags.settings' => [
-        'blacklist' => [
-          'menu',
-          'node',
-        ],
-      ],
-    ];
     return [
-      // Two calls to ::invalidateTags(), 'node:5' should get blacklisted.
+      // Three calls to ::invalidateTags(), 'node:5' should get blacklisted.
       [
-        $blacklist,
-        [
-          [['block:1'], 1],
-          [['node:5'], 0],
-          [['extension:views', 'baz'], 2],
-        ],
-      ],
+        $this->blacklist,
+        [['block:1'], ['node:5'], ['extension:views', 'baz']], [1, 0, 2], 2],
       // One call to ::invalidateTags(), with 1 and 3 tags respectively.
       [
-        $blacklist,
-        [
-          [['menu:main'], 0],
-          [['NODE:5', 'foo', 'bar', 'bar'], 3],
-        ],
-      ],
+        $this->blacklist,
+        [['menu:main'], ['NODE:5', 'foo', 'bar', 'bar']], [0, 3], 1],
       // One call to ::invalidateTags() with 4 tags.
       [
-        ['purge_queuer_coretags.settings' => ['blacklist' => []]],
-        [
-          [['node:5', 'foo:2', 'foo:3', 'bar:baz'], 4],
-        ],
-      ],
+        $this->blacklistEmpty,
+        [['node:5', 'foo:2', 'foo:3', 'bar:baz']], [4], 1],
       // Five calls to ::invalidateTags() with varying number of tags.
       [
-        ['purge_queuer_coretags.settings' => ['blacklist' => []]],
-        [
-          [['a', 'b'], 2],
-          [['c', 'd'], 2],
-          [['e', 'f'], 2],
-          [['g', 'h', 'i'], 3],
-          [['j'], 1],
-        ],
-      ],
+        $this->blacklistEmpty,
+        [['a', 'b'], ['c', 'd'], ['e', 'f'], ['g', 'h', 'i'], ['j']],
+        [2,2,2,3,1], 5],
     ];
   }
 

@@ -5,9 +5,12 @@ namespace Drupal\purge\Plugin\Purge\Queue;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Queue\DatabaseQueue as CoreDatabaseQueue;
+use Drupal\purge\Plugin\Purge\Queue\QueueInterface;
+use Drupal\purge\Plugin\Purge\Queue\QueueBasePageTrait;
+use Drupal\purge\Plugin\Purge\Queue\QueueBase;
 
 /**
- * A QueueInterface compliant database backed queue.
+ * A \Drupal\purge\Plugin\Purge\Queue\QueueInterface compliant database backed queue.
  *
  * @PurgeQueue(
  *   id = "database",
@@ -28,10 +31,10 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
    *
    * @var bool
    */
-  protected $tableExists = FALSE;
+  protected $table_exists = FALSE;
 
   /**
-   * Construct a DatabaseQueue object.
+   * Constructs a \Drupal\purge\Plugin\Purge\Queue\Database object.
    *
    * @param \Drupal\Core\Database\Connection $connection
    *   The Connection object containing the key-value tables.
@@ -53,10 +56,10 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
    */
   public function createItem($data) {
     $query = $this->connection->insert(static::TABLE_NAME)
-      ->fields([
+      ->fields(array(
         'data' => serialize($data),
         'created' => time(),
-      ]);
+      ));
     if ($id = $query->execute()) {
       return (int) $id;
     }
@@ -105,9 +108,8 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
    * {@inheritdoc}
    */
   public function numberOfItems() {
-    $query = $this->connection->select(static::TABLE_NAME);
-    $query->addExpression('COUNT(*)');
-    return (int) $query->execute()->fetchField();
+    return (int) $this->connection->query('SELECT COUNT(*) FROM {' . static::TABLE_NAME . '}')
+      ->fetchField();
   }
 
   /**
@@ -169,9 +171,7 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
 
     // Iterate all returned items and unpack them.
     foreach ($items as $item) {
-      if (!$item) {
-        continue;
-      }
+      if (!$item) continue;
       $item_ids[] = $item->item_id;
       $item->item_id = (int) $item->item_id;
       $item->expire = (int) $item->expire;
@@ -248,6 +248,13 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
   /**
    * {@inheritdoc}
    */
+  public function deleteItem($item) {
+    return parent::deleteItem($item);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function deleteItemMultiple(array $items) {
     $item_ids = [];
     foreach ($items as $item) {
@@ -281,13 +288,13 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
    */
   protected function ensureTableExists() {
     // Wrap ::ensureTableExists() to prevent expensive duplicate code paths.
-    if (!$this->tableExists) {
+    if (!$this->table_exists) {
       if (parent::ensureTableExists()) {
-        $this->tableExists = TRUE;
+        $this->table_exists = TRUE;
         return TRUE;
       }
     }
-    return $this->tableExists;
+    return $this->table_exists;
   }
 
   /**
@@ -322,9 +329,7 @@ class DatabaseQueue extends CoreDatabaseQueue implements QueueInterface {
       ->range((($page - 1) * $limit), $limit)
       ->execute();
     foreach ($resultset as $item) {
-      if (!$item) {
-        continue;
-      }
+      if (!$item) continue;
       $item->item_id = (int) $item->item_id;
       $item->expire = (int) $item->expire;
       $item->data = unserialize($item->data);

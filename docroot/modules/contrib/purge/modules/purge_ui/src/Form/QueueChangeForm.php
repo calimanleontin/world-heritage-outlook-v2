@@ -8,6 +8,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
+use Drupal\purge_ui\Form\CloseDialogTrait;
+use Drupal\purge_ui\Form\ReloadConfigFormCommand;
 
 /**
  * The queue data browser.
@@ -16,17 +18,17 @@ class QueueChangeForm extends FormBase {
   use CloseDialogTrait;
 
   /**
-   * The 'purge.queue' service.
-   *
    * @var \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
    */
   protected $purgeQueue;
 
   /**
-   * Construct a QueueChangeForm object.
+   * Constructs a QueueChangeForm object.
    *
    * @param \Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface $purge_queue
    *   The purge queue service.
+   *
+   * @return void
    */
   public function __construct(QueueServiceInterface $purge_queue) {
     $this->purgeQueue = $purge_queue;
@@ -42,7 +44,7 @@ class QueueChangeForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormID() {
     return 'purge_ui.queue_change_form';
   }
 

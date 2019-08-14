@@ -3,6 +3,7 @@
 namespace Drupal\purge\Plugin\Purge\Invalidation;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidationInterface;
 
 /**
  * Desribes the invalidation object.
@@ -27,6 +28,8 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *
    * @throws \LogicException
    *   Thrown when operating in general context, call ::setStateContext() first.
+   *
+   * @return void
    */
   public function deleteProperty($key);
 
@@ -45,7 +48,9 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *   The instance ID of the purger to wipe from the invalidation.
    *
    * @throws \LogicException
-   *   Thrown when the value is incorrect or when NOT operating in NULL context.
+   *   Thrown when the value isn't correct or when NOT operating in NULL context.
+   *
+   * @return void
    */
   public function removeStateContext($purger_instance_id);
 
@@ -64,6 +69,8 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *
    * @throws \LogicException
    *   Thrown when operating in general context, call ::setStateContext() first.
+   *
+   * @return void
    */
   public function setProperty($key, $value);
 
@@ -76,16 +83,18 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *
    * @param int $state
    *   One of the following states:
-   *   - InvStatesInterface::SUCCEEDED
-   *   - InvStatesInterface::FAILED
-   *   - InvStatesInterface::PROCESSING
-   *   - InvStatesInterface::NOT_SUPPORTED.
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::SUCCEEDED
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::FAILED
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::PROCESSING
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::NOT_SUPPORTED
    *
    * @throws \Drupal\purge\Plugin\Purge\Invalidation\Exception\InvalidStateException
    *   Thrown when the $state parameter doesn't match any of the constants
    *   defined in \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface.
    * @throws \LogicException
    *   Thrown when the state is being set in general context.
+   *
+   * @return void
    */
   public function setState($state);
 
@@ -113,14 +122,16 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *   Thrown when the given parameter is empty, not a string or NULL.
    * @throws \Drupal\purge\Plugin\Purge\Purger\Exception\BadPluginBehaviorException
    *   Thrown when the last set state was not any of:
-   *   - InvStatesInterface::SUCCEEDED
-   *   - InvStatesInterface::FAILED
-   *   - InvStatesInterface::PROCESSING
-   *   - InvStatesInterface::NOT_SUPPORTED.
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::SUCCEEDED
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::FAILED
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::PROCESSING
+   *   - \Drupal\purge\Plugin\Purge\Invalidation\InvStatesInterface::NOT_SUPPORTED
    *
    * @see \Drupal\purge\Plugin\Purge\Purger\PurgersServiceInterface::invalidate()
    * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface::setState()
    * @see \Drupal\purge\Plugin\Purge\Invalidation\ImmutableInvalidationInterface::getState()
+   *
+   * @return void
    */
   public function setStateContext($purger_instance_id);
 
@@ -136,6 +147,8 @@ interface InvalidationInterface extends ImmutableInvalidationInterface, Containe
    *
    * @see \Drupal\purge\Annotation\PurgeInvalidation::$expression_required
    * @see \Drupal\purge\Annotation\PurgeInvalidation::$expression_can_be_empty
+   *
+   * @return void
    */
   public function validateExpression();
 

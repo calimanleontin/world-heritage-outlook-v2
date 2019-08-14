@@ -22,6 +22,7 @@ class PurgeDiagnosticCheck extends Plugin {
    * The title of the check.
    *
    * @var \Drupal\Core\Annotation\Translation
+   *
    * @ingroup plugin_translatable
    */
   public $title;
@@ -29,39 +30,36 @@ class PurgeDiagnosticCheck extends Plugin {
   /**
    * The description of what the check does.
    *
-   * @var \Drupal\Core\Annotation\Translation
    * @ingroup plugin_translatable
+   *
+   * @var \Drupal\Core\Annotation\Translation
    */
   public $description;
 
   /**
-   * Required queue plugins.
-   *
    * When your diagnostic check is specific for a certain queue plugin(s) you
    * can bind it to these plugins. This check will then only get loaded when
    * any of these specified queues are in active use.
    *
-   * @var array
-   *
    * @code
    * dependent_queue_plugins = {"memory", "file"}
    * @endcode
+   *
+   * @var array
    */
-  public $dependent_queue_plugins = []; // phpcs:ignore -- annotation property!
+  public $dependent_queue_plugins = [];
 
   /**
-   * Required purger plugins.
-   *
    * When your diagnostic check is specific for a certain purger plugin(s) you
    * can bind it to these plugins. This check will then only get loaded when
    * any of these specified purgers are in active use.
    *
-   * @var array
-   *
    * @code
    * dependent_purger_plugins = {"mypurger"}
    * @endcode
+   *
+   * @var array
    */
-  public $dependent_purger_plugins = []; // phpcs:ignore -- annotation property!
+  public $dependent_purger_plugins = [];
 
 }

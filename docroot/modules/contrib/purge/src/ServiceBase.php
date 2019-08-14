@@ -3,6 +3,7 @@
 namespace Drupal\purge;
 
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
+use Drupal\purge\ServiceInterface;
 
 /**
  * Provides a generic service for all DIC-registered service classes by Purge.
@@ -28,7 +29,7 @@ abstract class ServiceBase extends ServiceProviderBase implements ServiceInterfa
    *
    * @var null|array
    */
-  protected $pluginsEnabled = NULL;
+  protected $plugins_enabled = NULL;
 
   /**
    * {@inheritdoc}
@@ -44,10 +45,10 @@ abstract class ServiceBase extends ServiceProviderBase implements ServiceInterfa
    * {@inheritdoc}
    */
   public function getPluginsEnabled() {
-    if (is_null($this->pluginsEnabled)) {
-      $this->pluginsEnabled = array_keys($this->getPlugins());
+    if (is_null($this->plugins_enabled)) {
+      $this->plugins_enabled = array_keys($this->getPlugins());
     }
-    return $this->pluginsEnabled;
+    return $this->plugins_enabled;
   }
 
   /**
@@ -62,7 +63,7 @@ abstract class ServiceBase extends ServiceProviderBase implements ServiceInterfa
    */
   public function reload() {
     $this->plugins = NULL;
-    $this->pluginsEnabled = NULL;
+    $this->plugins_enabled = NULL;
   }
 
 }

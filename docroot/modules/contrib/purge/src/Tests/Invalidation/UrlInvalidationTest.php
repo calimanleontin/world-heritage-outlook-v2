@@ -2,6 +2,8 @@
 
 namespace Drupal\purge\Tests\Invalidation;
 
+use Drupal\purge\Tests\Invalidation\PluginTestBase;
+
 /**
  * Tests \Drupal\purge\Plugin\Purge\Invalidation\UrlInvalidation.
  *
@@ -9,7 +11,7 @@ namespace Drupal\purge\Tests\Invalidation;
  * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface
  */
 class UrlInvalidationTest extends PluginTestBase {
-  protected $pluginId = 'url';
+  protected $plugin_id = 'url';
   protected $expressions = [
     'http://www.test.com',
     'https://domain/path',

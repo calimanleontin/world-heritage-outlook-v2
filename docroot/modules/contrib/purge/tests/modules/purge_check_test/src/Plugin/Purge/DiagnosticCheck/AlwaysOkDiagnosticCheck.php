@@ -23,7 +23,7 @@ class AlwaysOkDiagnosticCheck extends DiagnosticCheckBase implements DiagnosticC
    */
   public function run() {
     $this->recommendation = $this->t("This is an ok for testing.");
-    return self::SEVERITY_OK;
+    return SELF::SEVERITY_OK;
   }
 
 }

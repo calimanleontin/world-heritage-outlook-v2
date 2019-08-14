@@ -36,7 +36,7 @@ class ConfigurationFormTest extends QueuerConfigFormTestBase {
    * Test the blacklist section.
    */
   public function testFieldExistence() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet($this->route);
     // Assert its standard fields and values.
     $this->assertField('edit-blacklist-0');

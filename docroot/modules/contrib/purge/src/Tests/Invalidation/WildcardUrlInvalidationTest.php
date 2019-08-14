@@ -2,6 +2,8 @@
 
 namespace Drupal\purge\Tests\Invalidation;
 
+use Drupal\purge\Tests\Invalidation\PluginTestBase;
+
 /**
  * Tests \Drupal\purge\Plugin\Purge\Invalidation\WildcardUrlInvalidation.
  *
@@ -9,7 +11,7 @@ namespace Drupal\purge\Tests\Invalidation;
  * @see \Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface
  */
 class WildcardUrlInvalidationTest extends PluginTestBase {
-  protected $pluginId = 'wildcardurl';
+  protected $plugin_id = 'wildcardurl';
   protected $expressions = ['http://www.test.com/*', 'https://domain/path/*'];
   protected $expressionsInvalid = [
     NULL,

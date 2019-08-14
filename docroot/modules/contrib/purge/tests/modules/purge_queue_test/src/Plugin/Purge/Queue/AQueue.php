@@ -6,7 +6,7 @@ use Drupal\purge\Plugin\Purge\Queue\MemoryQueue;
 use Drupal\purge\Plugin\Purge\Queue\QueueInterface;
 
 /**
- * A \Drupal\purge\Plugin\Purge\Queue\QueueInterface compliant memory queue.
+ * A \Drupal\purge\Plugin\Purge\Queue\QueueInterface compliant memory queue for testing.
  *
  * @PurgeQueue(
  *   id = "a",

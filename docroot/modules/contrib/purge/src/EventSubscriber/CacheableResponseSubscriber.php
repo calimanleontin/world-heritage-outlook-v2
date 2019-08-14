@@ -21,7 +21,7 @@ class CacheableResponseSubscriber implements EventSubscriberInterface {
   protected $purgeTagsHeaders;
 
   /**
-   * Construct a CacheableResponseSubscriber object.
+   * Constructs a CacheableResponseSubscriber object.
    *
    * @param \Drupal\purge\Plugin\Purge\TagsHeader\TagsHeadersServiceInterface $purge_tagsheaders
    *   The tagsheaders service for iterating the available header plugins.

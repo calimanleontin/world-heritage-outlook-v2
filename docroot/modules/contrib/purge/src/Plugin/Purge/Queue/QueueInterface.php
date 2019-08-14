@@ -2,6 +2,7 @@
 
 namespace Drupal\purge\Plugin\Purge\Queue;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\ReliableQueueInterface;
 
@@ -60,6 +61,7 @@ interface QueueInterface extends ReliableQueueInterface, ContainerFactoryPluginI
    * @param array $items
    *   Non-associative array with item objects as returned by
    *   claimItemMultiple() or \Drupal\Core\Queue\QueueInterface::claimItem().
+   * @return void
    */
   public function deleteItemMultiple(array $items);
 

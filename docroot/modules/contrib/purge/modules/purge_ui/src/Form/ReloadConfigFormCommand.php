@@ -21,7 +21,7 @@ class ReloadConfigFormCommand extends RedirectCommand implements CommandInterfac
   protected $route = 'purge_ui.dashboard';
 
   /**
-   * Construct a ReloadConfigFormCommand object.
+   * Constructs an ReloadConfigFormCommand object.
    *
    * @param string $fragment
    *   The fragment to jump to in the main config form.
