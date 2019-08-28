@@ -209,7 +209,7 @@ iucn_assessment.node.word_export:
     _title: 'Export to Word'
     _controller: '\Drupal\iucn_assessment\Controller\IucnExportController::docExport'
   requirements:
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentExportAccess'
     _permission: 'export nodes to word'
   options:
     _node_operation_route: TRUE
