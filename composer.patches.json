@@ -5,8 +5,7 @@
       "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
       "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
       "Fix states api or condition": "patches/core/states-api-or.patch",
-      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
-      "Basic Auth module conflicts with server-level \"Site Lock\" implementations": "https://www.drupal.org/files/issues/basic_auth_0.patch"
+      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
     },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
@@ -30,7 +29,9 @@
     },
     "drupal/workflow": {
       "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
-      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
+      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch",
+      "Check if a transition was already executed only for default revisions": "https://www.drupal.org/files/issues/2019-08-29/change-static-info-for-non-default-revision_0.patch",
+      "Correctly calculate old state id when changing older revisions": "https://www.drupal.org/files/issues/2019-08-29/get-previous-state-from-original-entity.patch"
     },
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"

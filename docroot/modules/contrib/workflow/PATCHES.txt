@@ -9,3 +9,11 @@ Fix executeTransitionsOfEntity throw an error
 Source: https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch
 
 
+Check if a transition was already executed only for default revisions
+Source: https://www.drupal.org/files/issues/2019-08-29/change-static-info-for-non-default-revision_0.patch
+
+
+Correctly calculate old state id when changing older revisions
+Source: https://www.drupal.org/files/issues/2019-08-29/get-previous-state-from-original-entity.patch
+
+
