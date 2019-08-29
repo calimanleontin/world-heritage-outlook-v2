@@ -21,3 +21,7 @@ Error when saving settings of an entity reference field
 Source: https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch
 
 
+Basic Auth module conflicts with server-level "Site Lock" implementations
+Source: https://www.drupal.org/files/issues/basic_auth_0.patch
+
+

@@ -5,9 +5,7 @@
         "version_normalized": "1.6.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1649,9 +1647,7 @@
         "version_normalized": "4.1.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1662,9 +1658,7 @@
         "version_normalized": "4.2.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1852,9 +1846,7 @@
         "version_normalized": "1.8.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -4135,7 +4127,8 @@
                 "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
                 "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
                 "Fix states api or condition": "patches/core/states-api-or.patch",
-                "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
+                "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
+                "Basic Auth module conflicts with server-level \"Site Lock\" implementations": "https://www.drupal.org/files/issues/basic_auth_0.patch"
             }
         },
         "installation-source": "dist",
@@ -9556,9 +9549,7 @@
         "version_normalized": "4.3.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -9967,9 +9958,7 @@
         "version_normalized": "1.6.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
@@ -10049,9 +10038,7 @@
         "version_normalized": "1.6.4.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10154,9 +10141,7 @@
         "version_normalized": "1.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -15503,9 +15488,7 @@
         "version_normalized": "5.3.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
