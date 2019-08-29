@@ -5,9 +5,7 @@
         "version_normalized": "1.6.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1591,9 +1589,7 @@
         "version_normalized": "4.1.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1604,9 +1600,7 @@
         "version_normalized": "4.2.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1794,9 +1788,7 @@
         "version_normalized": "1.8.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -6033,18 +6025,18 @@
     },
     {
         "name": "drupal/metatag",
-        "version": "1.8.0",
-        "version_normalized": "1.8.0.0",
+        "version": "1.9.0",
+        "version_normalized": "1.9.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/metatag.git",
-            "reference": "8.x-1.8"
+            "reference": "8.x-1.9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.8.zip",
-            "reference": "8.x-1.8",
-            "shasum": "fb5d31aa08c8c2e175f096f9917e9741db152ea8"
+            "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.9.zip",
+            "reference": "8.x-1.9",
+            "shasum": "230960752c5afa17337fb69bae853bccb1a26ecd"
         },
         "require": {
             "drupal/core": "*",
@@ -6066,8 +6058,8 @@
                 "dev-1.x": "1.x-dev"
             },
             "drupal": {
-                "version": "8.x-1.8",
-                "datestamp": "1550692511",
+                "version": "8.x-1.9",
+                "datestamp": "1564708406",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -8342,9 +8334,7 @@
         "version_normalized": "4.3.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -8704,9 +8694,7 @@
         "version_normalized": "1.6.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
@@ -8786,9 +8774,7 @@
         "version_normalized": "1.6.4.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -8891,9 +8877,7 @@
         "version_normalized": "1.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
