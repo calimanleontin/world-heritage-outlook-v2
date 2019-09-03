@@ -111,6 +111,7 @@ permissions:
   - 'edit field_as_vass_wh_text'
   - 'edit field_as_vass_wh_trend'
   - 'edit new assessments'
+  - 'edit own profile'
   - 'edit terms in assessment_benefits_category'
   - 'edit terms in assessment_benefits_impact_level'
   - 'edit terms in assessment_benefits_impact_trend'

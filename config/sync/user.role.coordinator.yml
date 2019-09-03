@@ -69,6 +69,7 @@ permissions:
   - 'edit field_as_vass_wh_text'
   - 'edit field_as_vass_wh_trend'
   - 'edit new assessments'
+  - 'edit own profile'
   - 'edit own site_assessment content'
   - 'export nodes to word'
   - 'force finish reviewing'

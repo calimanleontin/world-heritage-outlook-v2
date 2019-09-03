@@ -1,3 +1,7 @@
 create content unpublished:
   title: Create content as unpublished
   description: Users having this permission will create content as unpublished by default without the option to publish it
+
+edit own profile:
+  title: Edit own profile
+  description: Users having this permission will be able to change their own email and title
