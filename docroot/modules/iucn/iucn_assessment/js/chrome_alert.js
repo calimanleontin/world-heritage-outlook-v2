@@ -9,13 +9,12 @@
 
   Drupal.behaviors.chromeAlert = {
     attach: function (context) {
-      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-      if (isChrome) {
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ||
+        navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
         return;
       }
 
-      var cookieName = 'site_assessment_chrome_alert';
+      var cookieName = 'site_assessment_chrome_firefox_alert';
       if (jQuery.cookie(cookieName)) {
         return;
       }
