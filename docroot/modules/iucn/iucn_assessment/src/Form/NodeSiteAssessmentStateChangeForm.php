@@ -126,8 +126,14 @@ class NodeSiteAssessmentStateChangeForm {
 
     $titlePlaceholder = 'Change state of @type @assessment';
 
-    if (in_array('reviewer', $currentUser->getRoles())) {
-      $titlePlaceholder = 'Submit review of @assessment @type';
+    $titlePlaceholders = [
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Submit assessment of @assessment',
+      AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Submit review of @assessment @type',
+      AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Submit review of @assessment @type',
+    ];
+
+    if (!empty($titlePlaceholders[$state])) {
+      $titlePlaceholder = $titlePlaceholders[$state];
     }
 
     $form['#title'] = t($titlePlaceholder, [
