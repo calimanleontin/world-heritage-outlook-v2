@@ -34,6 +34,9 @@ view home button:
 force finish reviewing:
   title: 'Force finish reviewing'
 
+force finish assessment:
+  title: 'Force finish assessment'
+
 export nodes to word:
   title: 'Export nodes to Word'
 

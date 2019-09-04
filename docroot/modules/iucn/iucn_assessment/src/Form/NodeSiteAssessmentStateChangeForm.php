@@ -87,6 +87,16 @@ class NodeSiteAssessmentStateChangeForm {
       $form['actions']['workflow_' . $state]['#access'] = FALSE;
     }
 
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT && $currentUser->hasPermission('force finish assessment')) {
+      $form['actions']['workflow_' . $state]['#access'] = TRUE;
+      $form['actions']['workflow_assessment_ready_for_review']['#access'] = TRUE;
+      $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
+      $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the assessment phase? The assessor will no longer be able to edit this assessment.")){return false;}',
+      ];
+    }
+
     if (in_array('coordinator', $currentUser->getRoles())
       && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE
       && empty($form['field_coordinator']['widget']['#default_value'])) {
@@ -98,7 +108,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
-    $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+    $form['field_assessor']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
     $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
     $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
@@ -515,7 +525,23 @@ class NodeSiteAssessmentStateChangeForm {
       $workflowService->clearKeyFromFieldSettings($node, 'diff');
     }
 
+    $underAssessmentRevisionOld = NULL;
     switch ($oldState . '>' . $newState) {
+      case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
+        $underAssessmentRevisionOld = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
+        if ($underAssessmentRevisionOld->get('field_assessor')->target_id == $node->get('field_assessor')->target_id) {
+          $underAssessmentRevisionOld = NULL;
+          break;
+        }
+
+        $workflowService->clearKeyFromFieldSettings($node, 'comments');
+        $nodeClone = $node;
+        $node = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+        $node->set('field_assessor', $nodeClone->get('field_assessor')->target_id);
+        $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+        $createNewRevision = true;
+        break;
+
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
         $underEvaluationRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
         $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
@@ -523,7 +549,7 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
       case AssessmentWorkflow::STATUS_UNDER_COMPARISON . '>' . AssessmentWorkflow::STATUS_REVIEWING_REFERENCES:
-        $workflowService->removeCommentsFromFieldSettings($node);
+        $workflowService->clearKeyFromFieldSettings($node, 'comments');
         break;
 
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
@@ -569,6 +595,10 @@ class NodeSiteAssessmentStateChangeForm {
       }
     }
 
+    if ($underAssessmentRevisionOld instanceof Node) {
+      \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($underAssessmentRevisionOld->getRevisionId());
+    }
+
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
     $currentUser = \Drupal::currentUser();
@@ -584,10 +614,6 @@ class NodeSiteAssessmentStateChangeForm {
   private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
     if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
       $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
-    }
-
-    if (!empty($form['actions']['workflow_assessment_ready_for_review']['#access']) && in_array('coordinator', $currentUser->getRoles())) {
-      $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
     }
   }
 }

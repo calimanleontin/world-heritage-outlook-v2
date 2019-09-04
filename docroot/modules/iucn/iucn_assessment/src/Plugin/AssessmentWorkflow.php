@@ -370,17 +370,6 @@ class AssessmentWorkflow {
     $node->get('field_settings')->setValue($field_settings_json);
   }
 
-  public function removeCommentsFromFieldSettings(NodeInterface $node) {
-    $field_settings = json_decode($node->field_settings->value, TRUE);
-    if (empty($field_settings['comments'])) {
-      return;
-    }
-
-    $field_settings['comments'] = [];
-    $field_settings_json = json_encode($field_settings);
-    $node->get('field_settings')->setValue($field_settings_json);
-  }
-
   /**
    * Create a revision for an assessment.
    *

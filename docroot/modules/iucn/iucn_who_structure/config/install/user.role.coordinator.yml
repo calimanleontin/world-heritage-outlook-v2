@@ -71,6 +71,7 @@ permissions:
   - 'edit own site_assessment content'
   - 'export nodes to word'
   - 'force finish reviewing'
+  - 'force finish assessment'
   - 'reorder field field_as_benefits'
   - 'reorder field_as_benefits'
   - 'reorder field_as_key_cons'
