@@ -8,11 +8,18 @@ function _iucn_fields_get_assessment_year($assessment = NULL) {
   if (empty($assessment)) {
     $assessment = \Drupal::routeMatch()->getParameter('node');
   }
-  if (!$assessment instanceof NodeInterface || $assessment->getType() != 'site_assessment') {
-    return \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
+
+  if ($assessment instanceof NodeInterface) {
+    if ($assessment->getType() == 'site') {
+      $assessment = $assessment->get('field_current_assessment')->entity;
+    }
+
+    if ($assessment instanceof NodeInterface && $assessment->getType() == 'site_assessment') {
+      return $assessment->field_as_cycle->value;
+    }
   }
 
-  return $assessment->field_as_cycle->value;
+  return \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
 }
 
 /**
