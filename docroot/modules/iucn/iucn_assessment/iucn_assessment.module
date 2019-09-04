@@ -665,8 +665,12 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'user_form':
+      checkRolePermissions($form, 'change own roles');
+      break;
+
     case 'user_register_form':
-      $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      checkRolePermissions($form, 'administer users');
+
       break;
 
     case 'views_exposed_form':
@@ -680,6 +684,16 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     // Call the alter method after all other methods above have already altered
     // the form.
     IucnModalParagraphDiffForm::alter($form, $form_state);
+  }
+}
+
+function checkRolePermissions(&$form, $permissionAccess) {
+  $currentUser = \Drupal::currentUser();
+  $form['account']['roles']['#access'] = $currentUser->hasPermission($permissionAccess);
+  foreach ($form['account']['roles']['#options'] as $roleId => $roleName) {
+    if (!$currentUser->hasPermission("change user role {$roleId}")) {
+      unset($form['account']['roles']['#options'][$roleId]);
+    }
   }
 }
 
