@@ -585,5 +585,9 @@ class NodeSiteAssessmentStateChangeForm {
     if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
       $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
     }
+
+    if (!empty($form['actions']['workflow_assessment_ready_for_review']['#access']) && in_array('coordinator', $currentUser->getRoles())) {
+      $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
+    }
   }
 }

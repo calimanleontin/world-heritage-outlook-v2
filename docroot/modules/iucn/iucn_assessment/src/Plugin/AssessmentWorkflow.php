@@ -177,6 +177,11 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
           break;
 
+        case self::STATUS_UNDER_ASSESSMENT:
+          // In this state, assessments can be submitted by coordinator if assessor is not responding.
+          $access = AccessResult::allowedIf($accountIsAssessor || $accountIsCoordinator);
+          break;
+
         case self::STATUS_UNDER_REVIEW:
           $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
@@ -189,6 +194,7 @@ class AssessmentWorkflow {
           return $this->checkAssessmentAccess($node, 'edit', $account);
       }
     }
+
     $access->addCacheableDependency($node);
     return $access;
   }
