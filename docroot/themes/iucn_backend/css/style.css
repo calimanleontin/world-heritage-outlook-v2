@@ -1686,9 +1686,6 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td select {
   width: 100%;
 }
-.diff-modal table.diff-table > tbody > tr > td.widget-type--text_format table tr td {
-  background: none;
-}
 .diff-modal table.diff-table > tbody > tr > td table tr {
   border-bottom: none;
 }
@@ -1736,19 +1733,34 @@ table.diff-context-wrapper {
 .diff-modal td.diff-marker {
   width: 1%;
 }
-.diff-modal td.diff-addedline,
-.diff-modal td.diff-addedline.diff-full-bg,
-.diff-modal td.diff-addedline span.diffchange {
+.diff-modal td.diff-section-title,
+.diff-modal div.diff-section-title {
+  background-color: #f0f0ff;
+}
+.diff-modal td.diff-deletedline {
+  background-color: #fdd;
+}
+.diff-modal td.diff-addedline {
+  background-color: #dfd;
+}
+.diff-modal td.field-name {
+  background-color: #f7fcff;
+}
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal td.diff-deletedline span.diffchange {
+  background: none;
+}
+.diff-modal .widget-type--textfield td.diff-addedline span.diffchange,
+.diff-modal .widget-type--text_format td.diff-addedline span.diffchange {
   background-color: #77f177;
 }
-.diff-modal td.diff-deletedline,
-.diff-modal td.diff-addedline.diff-tick-false .diffchange,
-.diff-modal td.diff-deletedline.diff-full-bg,
-.diff-modal td.diff-deletedline span.diffchange {
-  background-color: #ffaaaa;
+.diff-modal .widget-type--textfield td.diff-deletedline span.diffchange,
+.diff-modal .widget-type--text_format td.diff-deletedline span.diffchange {
+  background-color: #faa;
 }
-.diff-modal td.diff-addedline.diff-tick-false {
-  background: none;
+.diff-modal td.diff-addedline.diff-tick-false,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange {
+  background: none !important;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;
