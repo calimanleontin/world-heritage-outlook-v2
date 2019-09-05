@@ -1092,9 +1092,3 @@ function iucn_assessment_entity_presave(Drupal\Core\Entity\EntityInterface $enti
     $entity->set($field->getName(), strip_tags($entity->{$fieldName}->value));
   }
 }
-
-function xd() {
-  /** @var \Drupal\Core\Entity\EntityViewBuilder $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
-  $build = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
-}
