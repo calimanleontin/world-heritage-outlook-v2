@@ -392,6 +392,14 @@ class NodeSiteAssessmentForm {
 
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
+
+    if (\Drupal::routeMatch()->getRouteName() == 'iucn_assessment.node.revision_view') {
+      self::setReadonly($form);
+    }
+  }
+
+  public static function setReadonly(&$form) {
+    $form['actions']['#access'] = FALSE;
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {

@@ -217,3 +217,18 @@ iucn_assessment.node.word_export:
     parameters:
       node:
         type: entity:node
+
+iucn_assessment.node.revision_view:
+  path: '/node/{node}/revisions/{node_revision}/module_view'
+  defaults:
+    _entity_form: node.edit
+    _title: 'View revision'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::revisionAccess'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node
