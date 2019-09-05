@@ -1686,6 +1686,10 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td select {
   width: 100%;
 }
+.diff-modal table.diff-table > tbody > tr > td.widget-type--text_format table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield table tr td {
+  background: none;
+}
 .diff-modal table.diff-table > tbody > tr > td table tr {
   border-bottom: none;
 }
@@ -1738,10 +1742,10 @@ table.diff-context-wrapper {
   background-color: #f0f0ff;
 }
 .diff-modal td.diff-deletedline {
-  background-color: #fdd;
+  background-color: #faa;
 }
 .diff-modal td.diff-addedline {
-  background-color: #dfd;
+  background-color: #77f177;
 }
 .diff-modal td.field-name {
   background-color: #f7fcff;
