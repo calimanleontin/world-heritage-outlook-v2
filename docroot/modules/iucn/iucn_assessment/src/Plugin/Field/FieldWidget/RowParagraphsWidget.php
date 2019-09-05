@@ -7,6 +7,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -823,33 +824,37 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             'field_as_threats_categories',
           ];
           if (in_array($fieldName, $fieldsWithParents)) {
-            // For these fields we insert an extra column for term parents because
-            // categories have sub-categories.
             $insertedParents = [];
+            $childrenItemList = new FieldItemList($fieldItemList->getDataDefinition());
             for ($i = 0; $i < $fieldItemList->count(); $i++) {
               /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $childEntityValue */
               $childEntityValue = $fieldItemList->get($i);
               /** @var \Drupal\taxonomy\TermStorageInterface $termStorage */
               $termStorage = $this->entityTypeManager->getStorage('taxonomy_term');
               $parents = $termStorage->loadParents($childEntityValue->target_id);
-              if (!empty($parents) && !in_array(key($parents), $insertedParents)) {
-                $insertedParents [] = key($parents);
-                $childEntityValue->setValue(key($parents));
-              }
-              else {
-                $fieldItemList->removeItem($i);
-                $i--;
+
+              if (!empty($parents)) {
+                $childrenItemList->appendItem($childEntityValue->getValue());
+                if (!in_array(key($parents), $insertedParents)) {
+                  $insertedParents [] = key($parents);
+                  $childEntityValue->setValue(key($parents));
+                }
+                else {
+                  $fieldItemList->removeItem($i);
+                  $i--;
+                }
               }
             }
+            $childrenRender = $this->renderEntityReferenceField($childrenItemList);
             $childrenCell = [
               "{$fieldName}_child_category" => [
-                'value' => [$value],
+                'value' => [$childrenRender],
                 'span' => $this->getFieldSpan($fieldDefinition),
               ],
             ];
             $row = $row + $childrenCell;
             if ($fieldName == 'field_as_threats_categories') {
-              $value = $this->renderEntityReferenceField($fieldItemList) . '<div class="subcategories">' . $value . '</div>';
+              $value = !$childrenItemList->isEmpty() ? $this->renderEntityReferenceField($fieldItemList) . '<div class="subcategories">' . $childrenRender . '</div>' : $this->renderEntityReferenceField($fieldItemList);
             }
             else {
               $value = $this->renderEntityReferenceField($fieldItemList);
