@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Commands;
 
+use Drupal\Core\Url;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -301,9 +302,11 @@ class IucnAssessmentCommands extends DrushCommands {
   }
 
   /**
-   * Remove paragraphs from assessments that references a hidden term for a cycle
+   * Remove paragraphs from assessments that references a hidden term for a
+   * cycle
    *
    * @param $cycle
+   *
    * @options dry-run Option to make command run without doing any changes
    *
    * @command iucn_assessment:remove-hidden-terms-references
@@ -332,8 +335,9 @@ class IucnAssessmentCommands extends DrushCommands {
 
     //Condition to exclude assessment that have been excluded by other paragraphs
     $verifiedAssessments = $deletedEntities = [];
-    $count = 0;
+    $paragraphCount = 0;
 
+    $brokenTerms = [];
     foreach ($terms as $term) {
       foreach ($fieldStorageConfigs as $fieldStorageConfig) {
         if (empty($fieldStorageConfig->getSetting('handler_settings'))) {
@@ -375,18 +379,31 @@ class IucnAssessmentCommands extends DrushCommands {
             $fieldValues = array_column($field->getValue(), 'target_id');
             $index = array_search($paragraph->id(), $fieldValues);
             if ($index !== FALSE) {
-              $count++;
+              $brokenTerms[$term->id()] = $term->label();
+              $paragraphCount++;
               if (!$dryRun) {
                 $node->get($field->getName())->removeItem($index);
                 $node->save();
                 $this->logger->warning("Deleted paragraph \"{$paragraph->id()}\" from node \"{$node->id()}\" and field \"{$field->getName()}\" at position {$index} !");
-              } else {
-                $nodeKey = "\"{$node->label()} ({$node->id()})\"";
-                if (empty($deletedEntities[$nodeKey][$field->getName()])) {
-                  $deletedEntities[$nodeKey][$field->getName()] = [];
+              }
+              else {
+                if (empty($deletedEntities[$node->id()])) {
+                  $deletedEntities[$node->id()] = [
+                    'name' => $node->label(),
+                    'url' => Url::fromRoute('entity.node.edit_form', ['node' => $node->id()], ['absolute' => TRUE])
+                      ->toString(),
+                    'paragraphs' => [],
+                    'terms' => [],
+                    'termIds' => [],
+                  ];
+                }
+                if (empty($deletedEntities[$node->id()]['paragraphs'][$field->getName()])) {
+                  $deletedEntities[$node->id()]['paragraphs'][$field->getName()] = [];
                 }
 
-                $deletedEntities[$nodeKey][$field->getName()][] = $paragraphId;
+                $deletedEntities[$node->id()]['paragraphs'][$field->getName()][] = $paragraphId;
+                $deletedEntities[$node->id()]['terms'][] = $term->label();
+                $deletedEntities[$node->id()]['termIds'][] = $term->id();
               }
             }
           }
@@ -395,20 +412,30 @@ class IucnAssessmentCommands extends DrushCommands {
     }
 
     if (!empty($deletedEntities)) {
-      foreach ($deletedEntities as $nodeKey => $deletedParagraphs) {
-        $brokenParagraphs = [];
-        foreach ($deletedParagraphs as $field => $paragraphIds) {
+      $this->logger->warning("Name;Edit URL;Summary;Terms;Term ids");
+      foreach ($deletedEntities as $nodeId => $nodeData) {
+        $brokenParagraphSummary = $brokenParagraphs = [];
+        foreach ($nodeData['paragraphs'] as $field => $paragraphIds) {
           $paragraphIds = array_unique($paragraphIds);
           $brokenIds = implode(', ', $paragraphIds);
-          $brokenParagraphs[] = count($paragraphIds) . " broken paragraphs of type $field: ({$brokenIds})";
+          $brokenParagraphSummary[] = count($paragraphIds) . " broken row(s) of type $field: ({$brokenIds})";
         }
 
-        $brokenParagraphsValue = implode("and ", $brokenParagraphs);
-
-        $this->logger->warning("On node {$nodeKey} found: {$brokenParagraphsValue}");
+        $brokenParagraphsValue = implode(", ", $brokenParagraphSummary);
+        sort($nodeData['termIds']);
+        $row = sprintf("%s; %s; %s; %s; %s",
+          $nodeData['name'],
+          $nodeData['url'],
+          $brokenParagraphsValue,
+          implode(', ', array_unique($nodeData['terms'])),
+          implode(', ', array_unique($nodeData['termIds']))
+        );
+        $this->logger->warning($row);
       }
+      $this->logger->warning("\n");
+      $this->logger->warning(sprintf("Found %s broken terms: %s", count($brokenTerms), implode(',', $brokenTerms)));
     }
 
-    $this->logger->warning("Found $count broken paragraphs!");
+    $this->logger->warning("Found $paragraphCount broken paragraphs!");
   }
 }
