@@ -41,6 +41,13 @@ class AssessmentAccess implements ContainerInjectionInterface {
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
   }
 
+  public function assessmentExportAccess(AccountInterface $account, NodeInterface $node) {
+    if ($node->bundle() != 'site_assessment') {
+      return AccessResult::forbidden();
+    }
+    return $this->assessmentEditAccess($account, $node);
+  }
+
   public function translationOverviewAccess(AccountInterface $account, NodeInterface $node) {
     // Assessments are only translatable in the published state.
     if ($node->bundle() == 'site_assessment' && $node->field_state->value != AssessmentWorkflow::STATUS_PUBLISHED) {
