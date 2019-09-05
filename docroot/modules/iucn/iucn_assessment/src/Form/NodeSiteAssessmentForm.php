@@ -395,11 +395,50 @@ class NodeSiteAssessmentForm {
 
     if (\Drupal::routeMatch()->getRouteName() == 'iucn_assessment.node.revision_view') {
       self::setReadonly($form);
+      self::setReadonly($form['main_data_container']['data']);
     }
   }
 
   public static function setReadonly(&$form) {
     $form['actions']['#access'] = FALSE;
+    foreach (Element::children($form) as $element) {
+      if (empty($form[$element]['widget'])) {
+        continue;
+      }
+
+      if (!empty($form[$element]['widget'][0])) {
+        foreach (Element::children($form[$element]['widget']) as $child) {
+          $form[$element]['widget'][$child]['#attributes']['disabled'] = 'disabled';
+          $form[$element]['widget'][$child]['#attributes']['readonly'] = 'readonly';
+
+          if (!empty($form[$element]['widget'][$child]['value'])) {
+            $form[$element]['widget'][$child]['value']['#attributes']['disabled'] = 'disabled';
+            $form[$element]['widget'][$child]['value']['#attributes']['readonly'] = 'readonly';
+          }
+        }
+      }
+      $form[$element]['widget']['#attributes']['disabled'] = 'disabled';
+      $form[$element]['#attributes']['disabled'] = 'disabled';
+      $form[$element]['widget']['#attributes']['readonly'] = 'readonly';
+      $form[$element]['#attributes']['readonly'] = 'readonly';
+
+      if (empty($form[$element]['widget']['#paragraphs_widget'])) {
+        continue;
+      }
+
+      if (!empty($form[$element]['widget']['add_more'])) {
+        $form[$element]['widget']['add_more']['#access'] = FALSE;
+      }
+
+      foreach (Element::children($form[$element]['widget']) as $paragraph) {
+        if (!empty($form[$element]['widget'][$paragraph]['top']['actions'])) {
+          $form[$element]['widget'][$paragraph]['top']['actions']['#access'] = FALSE;
+        }
+        if (!empty($form[$element]['widget'][$paragraph]['top']['summary']['actions'])) {
+          $form[$element]['widget'][$paragraph]['top']['summary']['actions']['#access'] = FALSE;
+        }
+      }
+    }
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {

@@ -1108,7 +1108,8 @@ function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
       $siteAssessment = \Drupal::routeMatch()->getParameter('node');
       if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
         $state = $siteAssessment->get('field_state')->value;
-        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+          && \Drupal::routeMatch()->getRouteName() != 'iucn_assessment.node.revision_view';
         if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
           _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
         }
