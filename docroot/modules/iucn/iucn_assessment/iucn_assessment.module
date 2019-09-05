@@ -1092,3 +1092,116 @@ function iucn_assessment_entity_presave(Drupal\Core\Entity\EntityInterface $enti
     $entity->set($field->getName(), strip_tags($entity->{$fieldName}->value));
   }
 }
+
+/**
+ * Implements hook_preprocess_field_multiple_value_form().
+ */
+function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
+  if (!empty($variables['table']['#header']) && !empty($variables['element']['#field_name'])) {
+    $field_name = $variables['element']['#field_name'];
+    $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
+    if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
+      && $field_entity->getSetting('handler') == 'default:paragraph') {
+
+
+      $siteAssessment = \Drupal::routeMatch()->getParameter('node');
+      if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
+        $state = $siteAssessment->get('field_state')->value;
+        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+        if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
+          _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+        }
+      }
+
+      unset($variables['table']['#header'][1]);
+      if (empty($variables['element']['#is_diff_form'])) {
+        $variables['paragraph_header'] = [
+          '#type' => 'table',
+          '#header' => $variables['table']['#header'],
+          '#rows' => [],
+        ];
+      }
+      unset($variables['table']['#header']);
+    }
+  }
+}
+
+/**
+ * Helper function used to remove the tabledrag from a multiple value form.
+ */
+function _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag(&$variables) {
+  if (isset($variables['table']['#tabledrag'])) {
+    unset($variables['table']['#tabledrag']);
+    array_pop($variables['table']['#header']);
+    foreach ($variables['table']['#rows'] as &$row) {
+      foreach (array_keys($row['data']) as $key) {
+        if (!empty($row['data'][$key]['class']) && array_intersect($row['data'][$key]['class'], [
+            'field-multiple-drag',
+            'delta-order',
+          ])) {
+          unset($row['data'][$key]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function iucn_assessment_preprocess_views_view_table(&$variables) {
+  // Bold the names of the users that need to act on an assessment.
+  if ($variables['view']->storage->id() == 'account_assignments'
+    && $variables['view']->current_display == 'block_1') {
+    foreach ($variables['view']->result as $id => $row) {
+      /** @var \Drupal\node\Entity\Node $entity */
+      $entity = $row->_entity;
+      $bold = NULL;
+      if ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+        $bold = 'field_assessor';
+      }
+      elseif ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        $bold = 'field_reviewers';
+      }
+      if (!empty($bold) && !empty($variables['rows'][$id]['columns'][$bold])) {
+        if ($bold != 'field_reviewers') {
+          $attributes = new \Drupal\Core\Template\Attribute();
+          $attributes->addClass("bold-cell");
+          $variables['rows'][$id]['columns'][$bold]['attributes'] = $attributes;
+        }
+        else {
+          /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+          $workflow_service = \Drupal::service('iucn_assessment.workflow');
+          $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($entity);
+          foreach ($unfinished_reviews as $unfinished_review) {
+            $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup'] = str_replace(
+              '>' . $unfinished_review->getRevisionUser()->getDisplayName() . '<',
+              '><b>' . $unfinished_review->getRevisionUser()->getDisplayName() . '</b><',
+              $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup']
+            );
+          }
+        }
+      }
+    }
+  }
+}
+
+function iucn_assessment_preprocess_taxonomy_term(&$variables) {
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  $viewMode = $variables['view_mode'];
+
+  if ($viewMode == 'teaser') {
+    if ($term->bundle() == 'assessment_benefits_impact_level') {
+      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('level'));
+    }
+
+    if ($term->bundle() == 'assessment_benefits_impact_trend') {
+      $variables['name'][0]['#context']['value'] .= sprintf(" %s", (string) t('trend'));
+    }
+  }
+
+  if (in_array($term->id(), [1330, 1332 ,1333])) {
+    $variables['name'][0]['#context']['value'] .= sprintf(" %s", strip_tags($term->getDescription()));
+  }
+}
