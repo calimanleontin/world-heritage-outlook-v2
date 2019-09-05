@@ -970,6 +970,9 @@ function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operat
         break;
     }
   }
+  elseif ($operation == 'update' && \Drupal::routeMatch()->getRouteName() == 'iucn_assessment.node.revision_view') {
+    return AccessResult::forbidden();
+  }
   return AccessResult::neutral();
 }
 

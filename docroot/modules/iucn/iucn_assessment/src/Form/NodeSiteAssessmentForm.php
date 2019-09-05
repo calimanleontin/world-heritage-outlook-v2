@@ -399,6 +399,11 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  /**
+   * Make an assessment form readonly.
+   *
+   * @param $form
+   */
   public static function setReadonly(&$form) {
     $form['actions']['#access'] = FALSE;
     foreach (Element::children($form) as $element) {
@@ -417,26 +422,15 @@ class NodeSiteAssessmentForm {
           }
         }
       }
+
       $form[$element]['widget']['#attributes']['disabled'] = 'disabled';
       $form[$element]['#attributes']['disabled'] = 'disabled';
       $form[$element]['widget']['#attributes']['readonly'] = 'readonly';
       $form[$element]['#attributes']['readonly'] = 'readonly';
 
-      if (empty($form[$element]['widget']['#paragraphs_widget'])) {
-        continue;
-      }
-
-      if (!empty($form[$element]['widget']['add_more'])) {
+      if (!empty($form[$element]['widget']['#paragraphs_widget'])
+        && !empty($form[$element]['widget']['add_more'])) {
         $form[$element]['widget']['add_more']['#access'] = FALSE;
-      }
-
-      foreach (Element::children($form[$element]['widget']) as $paragraph) {
-        if (!empty($form[$element]['widget'][$paragraph]['top']['actions'])) {
-          $form[$element]['widget'][$paragraph]['top']['actions']['#access'] = FALSE;
-        }
-        if (!empty($form[$element]['widget'][$paragraph]['top']['summary']['actions'])) {
-          $form[$element]['widget'][$paragraph]['top']['summary']['actions']['#access'] = FALSE;
-        }
       }
     }
   }
