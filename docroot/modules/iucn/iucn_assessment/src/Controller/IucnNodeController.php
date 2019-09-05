@@ -26,27 +26,17 @@ class IucnNodeController extends NodeController {
    */
   public function revisionOverview(NodeInterface $node) {
     $build = parent::revisionOverview($node);
-    foreach ($build['node_revisions_table']['#rows'] as &$row) {
-      foreach ($row as &$column) {
-        if (!empty($column['data']) && !empty($column['data']['#type']) && $column['data']['#type'] == 'operations') {
-          /** @var \Drupal\Core\Url $delete_route */
-          $delete_route = $column['data']['#links']['delete']['url'];
-          $vid = $delete_route->getRouteParameters()['node_revision'];
-          $revision = $node_revision = \Drupal::entityTypeManager()
-            ->getStorage('node')
-            ->loadRevision($vid);
-          if ($revision->field_state->value != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
-            continue;
-          }
-          $edit_route = Url::fromRoute('node.revision_edit', ['node' => $node->id(), 'node_revision' => $vid]);
-          $column['data']['#links']['edit'] = [
-            'title' => $this->t('Edit'),
-            'url' => $edit_route,
-          ];
-        }
+    $node_storage = $this->entityTypeManager()->getStorage('node');
+    $ids = $this->getRevisionIds($node, $node_storage);
+    for ($i = 0; $i < count($ids); $i++) {
+      if (empty($build['node_revisions_table']['#rows'][$i][1]['data'])) {
+        continue;
       }
+      $build['node_revisions_table']['#rows'][$i][1]['data']['#links']['module_view'] = [
+        'title' => $this->t('View data'),
+        'url' => Url::fromRoute('iucn_assessment.node.revision_view', ['node' => $node->id(), 'node_revision' => $ids[$i]])
+      ];
     }
-
     return $build;
   }
 
