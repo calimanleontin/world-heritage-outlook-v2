@@ -823,7 +823,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
             'field_as_benefits_category',
             'field_as_threats_categories',
           ];
-          $childrenCell = [];
           if (in_array($fieldName, $fieldsWithParents)) {
             $insertedParents = [];
             $childrenItemList = new FieldItemList($fieldItemList->getDataDefinition());
