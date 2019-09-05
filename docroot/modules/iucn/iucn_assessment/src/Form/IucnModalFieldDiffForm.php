@@ -86,6 +86,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
             '#prefix' => '<div class="diff-wrapper">',
             '#suffix' => $diff['copy'] . '</div>',
           ],
+          'class' => ['widget-type--' . Html::cleanCssIdentifier($fieldWidgetType)],
         ],
       ];
     }
