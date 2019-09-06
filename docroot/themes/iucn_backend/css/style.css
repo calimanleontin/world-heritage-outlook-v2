@@ -1586,6 +1586,9 @@ table.diff-context-wrapper {
 .diff-modal textarea {
   min-height: 5em;
 }
+.diff-modal table td {
+  vertical-align: top;
+}
 .diff-modal .messages--info {
   display: flex;
   flex-wrap: wrap;
@@ -1742,13 +1745,15 @@ table.diff-context-wrapper {
 }
 .diff-modal td.diff-addedline,
 .diff-modal td.diff-addedline.diff-full-bg,
-.diff-modal td.diff-addedline span.diffchange {
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-addedline.diff-full-bg {
   background-color: #77f177;
 }
 .diff-modal td.diff-deletedline,
 .diff-modal td.diff-addedline.diff-tick-false .diffchange,
 .diff-modal td.diff-deletedline.diff-full-bg,
-.diff-modal td.diff-deletedline span.diffchange {
+.diff-modal td.diff-deletedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-deletedline.diff-full-bg {
   background-color: #ffaaaa;
 }
 .diff-modal td.diff-addedline.diff-tick-false {
