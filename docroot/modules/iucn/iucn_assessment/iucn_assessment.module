@@ -790,7 +790,8 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
 
     foreach ($transitions as $transition) {
       if ($transition->getFromSid() == $transition->getToSid()
-        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW
+        || $transition->getToSid() == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES) {
         continue;
       }
 
