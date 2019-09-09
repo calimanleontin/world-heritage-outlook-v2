@@ -1694,7 +1694,8 @@ table.diff-context-wrapper {
   width: 100%;
 }
 .diff-modal table.diff-table > tbody > tr > td.widget-type--text-format table tr td,
-.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield table tr td {
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea table tr td {
   background: none;
 }
 .diff-modal table.diff-table > tbody > tr > td table tr {
