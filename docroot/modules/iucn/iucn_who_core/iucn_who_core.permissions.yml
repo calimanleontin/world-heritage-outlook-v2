@@ -1,3 +1,10 @@
 create content unpublished:
   title: Create content as unpublished
   description: Users having this permission will create content as unpublished by default without the option to publish it
+
+change own roles:
+  title: Change own roles
+  description: Users having this permission will be allowed to change their own roles
+
+permission_callbacks:
+  - Drupal\iucn_who_core\ChangeRolePermissions::getPermissions

@@ -1185,7 +1185,7 @@ display:
           exposed: true
           expose:
             operator_id: field_state_value_op
-            label: State
+            label: Stage
             description: ''
             use_operator: false
             operator: field_state_value_op
@@ -1336,47 +1336,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: numeric
-        field_state_value_1:
-          id: field_state_value_1
-          table: node__field_state
-          field: field_state_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: not
-          value:
-            assessment_approved: assessment_approved
-            assessment_published: assessment_published
-            assessment_draft: assessment_draft
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          plugin_id: workflow_state
         field_iucn_region_target_id:
           id: field_iucn_region_target_id
           table: taxonomy_term__field_iucn_region
@@ -3361,7 +3320,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Submit review" button.'
+            value: 'To begin reviewing an assessment, click the “Review” button under the Actions column. When you have finished reviewing the assessment, click the "Submit review” button under the Actions column.'
             format: html
           plugin_id: text
       sorts:
@@ -4997,7 +4956,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Submit review" button.'
+            value: 'To begin checking references for an assessment, click the “Review” button under the Actions column. When you have finished editing the assessment, click the "Submit” button under the Actions column.'
             format: html
           plugin_id: text
       sorts:

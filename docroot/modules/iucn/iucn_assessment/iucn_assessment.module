@@ -2,6 +2,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
@@ -665,8 +666,12 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'user_form':
+      _iucn_user_form_check_role_permissions($form, 'change own roles');
+      break;
+
     case 'user_register_form':
-      $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      _iucn_user_form_check_role_permissions($form, 'administer users');
+
       break;
 
     case 'views_exposed_form':
@@ -680,6 +685,16 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     // Call the alter method after all other methods above have already altered
     // the form.
     IucnModalParagraphDiffForm::alter($form, $form_state);
+  }
+}
+
+function _iucn_user_form_check_role_permissions(&$form, $permissionAccess) {
+  $currentUser = \Drupal::currentUser();
+  $form['account']['roles']['#access'] = $currentUser->hasPermission($permissionAccess);
+  foreach ($form['account']['roles']['#options'] as $roleId => $roleName) {
+    if (!$currentUser->hasPermission("change user role {$roleId}")) {
+      unset($form['account']['roles']['#options'][$roleId]);
+    }
   }
 }
 
@@ -789,7 +804,8 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
 
     foreach ($transitions as $transition) {
       if ($transition->getFromSid() == $transition->getToSid()
-        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW
+        || $transition->getToSid() == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES) {
         continue;
       }
 
@@ -1093,8 +1109,55 @@ function iucn_assessment_entity_presave(Drupal\Core\Entity\EntityInterface $enti
   }
 }
 
-function xd() {
-  /** @var \Drupal\Core\Entity\EntityViewBuilder $viewBuilder */
-  $viewBuilder = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId());
-  $build = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
+/**
+ * Implements hook_preprocess_field_multiple_value_form().
+ */
+function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
+  if (!empty($variables['table']['#header']) && !empty($variables['element']['#field_name'])) {
+    $field_name = $variables['element']['#field_name'];
+    $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
+    if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
+      && $field_entity->getSetting('handler') == 'default:paragraph') {
+
+
+      $siteAssessment = \Drupal::routeMatch()->getParameter('node');
+      if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
+        $state = $siteAssessment->get('field_state')->value;
+        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+        if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
+          _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
+        }
+      }
+
+      unset($variables['table']['#header'][1]);
+      if (empty($variables['element']['#is_diff_form'])) {
+        $variables['paragraph_header'] = [
+          '#type' => 'table',
+          '#header' => $variables['table']['#header'],
+          '#rows' => [],
+        ];
+      }
+      unset($variables['table']['#header']);
+    }
+  }
+}
+
+/**
+ * Helper function used to remove the tabledrag from a multiple value form.
+ */
+function _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag(&$variables) {
+  if (isset($variables['table']['#tabledrag'])) {
+    unset($variables['table']['#tabledrag']);
+    array_pop($variables['table']['#header']);
+    foreach ($variables['table']['#rows'] as &$row) {
+      foreach (array_keys($row['data']) as $key) {
+        if (!empty($row['data'][$key]['class']) && array_intersect($row['data'][$key]['class'], [
+            'field-multiple-drag',
+            'delta-order',
+          ])) {
+          unset($row['data'][$key]);
+        }
+      }
+    }
+  }
 }
