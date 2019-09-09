@@ -227,6 +227,7 @@ iucn_assessment.node.revision_view:
     _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::revisionAccess'
   options:
     _node_operation_route: TRUE
+    _read_only_form: TRUE
     parameters:
       node:
         type: entity:node

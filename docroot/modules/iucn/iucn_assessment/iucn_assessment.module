@@ -970,7 +970,7 @@ function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operat
         break;
     }
   }
-  elseif ($operation == 'update' && \Drupal::routeMatch()->getRouteName() == 'iucn_assessment.node.revision_view') {
+  elseif ($operation == 'update' && !empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'))) {
     return AccessResult::forbidden();
   }
   return AccessResult::neutral();
@@ -1112,7 +1112,7 @@ function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
       if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
         $state = $siteAssessment->get('field_state')->value;
         $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-          && \Drupal::routeMatch()->getRouteName() != 'iucn_assessment.node.revision_view';
+          && empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'));
         if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
           _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
         }

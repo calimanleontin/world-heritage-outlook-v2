@@ -392,47 +392,6 @@ class NodeSiteAssessmentForm {
 
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
-
-    if (\Drupal::routeMatch()->getRouteName() == 'iucn_assessment.node.revision_view') {
-      self::setReadonly($form);
-      self::setReadonly($form['main_data_container']['data']);
-    }
-  }
-
-  /**
-   * Make an assessment form readonly.
-   *
-   * @param $form
-   */
-  public static function setReadonly(&$form) {
-    $form['actions']['#access'] = FALSE;
-    foreach (Element::children($form) as $element) {
-      if (empty($form[$element]['widget'])) {
-        continue;
-      }
-
-      if (!empty($form[$element]['widget'][0])) {
-        foreach (Element::children($form[$element]['widget']) as $child) {
-          $form[$element]['widget'][$child]['#attributes']['disabled'] = 'disabled';
-          $form[$element]['widget'][$child]['#attributes']['readonly'] = 'readonly';
-
-          if (!empty($form[$element]['widget'][$child]['value'])) {
-            $form[$element]['widget'][$child]['value']['#attributes']['disabled'] = 'disabled';
-            $form[$element]['widget'][$child]['value']['#attributes']['readonly'] = 'readonly';
-          }
-        }
-      }
-
-      $form[$element]['widget']['#attributes']['disabled'] = 'disabled';
-      $form[$element]['#attributes']['disabled'] = 'disabled';
-      $form[$element]['widget']['#attributes']['readonly'] = 'readonly';
-      $form[$element]['#attributes']['readonly'] = 'readonly';
-
-      if (!empty($form[$element]['widget']['#paragraphs_widget'])
-        && !empty($form[$element]['widget']['add_more'])) {
-        $form[$element]['widget']['add_more']['#access'] = FALSE;
-      }
-    }
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -565,7 +524,8 @@ class NodeSiteAssessmentForm {
       }
 
       $widget = &$form[$field]['widget'];
-      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+        && empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'));
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
