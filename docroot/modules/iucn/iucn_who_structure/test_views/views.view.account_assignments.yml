@@ -3361,7 +3361,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Submit review" button.'
+            value: 'To begin reviewing an assessment, click the “Review” button under the Actions column. When you have finished reviewing the assessment, click the "Submit review” button under the Actions column.'
             format: html
           plugin_id: text
       sorts:
