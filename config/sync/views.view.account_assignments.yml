@@ -4956,7 +4956,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'When you have finished working on an assessment, press "Submit review" button.'
+            value: 'To begin checking references for an assessment, click the “Review” button under the Actions column. When you have finished editing the assessment, click the "Submit” button under the Actions column.'
             format: html
           plugin_id: text
       sorts:
