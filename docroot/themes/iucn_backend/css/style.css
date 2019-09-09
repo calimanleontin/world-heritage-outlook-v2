@@ -632,6 +632,9 @@
 .comments-container textarea {
   background-color: #ffff99;
 }
+.comments-container .fieldset-wrapper {
+  margin-top: 20px;
+}
 .paragraph-comments-textarea .comments-container {
   display: flex;
   margin-bottom: 10px;

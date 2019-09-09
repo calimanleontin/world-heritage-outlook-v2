@@ -1185,7 +1185,7 @@ display:
           exposed: true
           expose:
             operator_id: field_state_value_op
-            label: State
+            label: Stage
             description: ''
             use_operator: false
             operator: field_state_value_op
