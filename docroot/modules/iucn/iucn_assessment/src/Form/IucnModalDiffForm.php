@@ -29,7 +29,26 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     return $form;
   }
 
-  public function getDiffMarkup($diff) {
+  public function getDiffMarkupSideBySide($diff) {
+    $diffRows[0][0]['data'] = ['#type' => 'table', '#rows' => []];
+    $diffRows[0][1]['data'] = ['#type' => 'table', '#rows' => []];
+    foreach ($diff as $idx => $diff_group) {
+      foreach ([0,2] as $i) {
+        if (empty($diff_group[$i]) || empty($diff_group[$i + 1]) || $diff_group[$i + 1] == ' ') {
+          continue;
+        }
+        $diffRows[0][$i / 2]['data']['#rows'][$idx] = [$diff_group[$i], $diff_group[$i + 1]];
+      }
+    }
+
+    return $diffRows;
+  }
+
+  public function getDiffMarkup($diff, $sideBySide = FALSE) {
+    if ($sideBySide) {
+      return $this->getDiffMarkupSideBySide($diff);
+    }
+
     $diff_rows = [];
     foreach ($diff as $diff_group) {
       foreach ([0,2] as $i) {
@@ -208,8 +227,14 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
   protected function getFinalVersionLabel(Node $nodeRevision) {
     $helpText = 'Initial text in this row is the assessor\'s version';
 
-    if ($nodeRevision->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
-      $helpText = 'Initial text in this row is the coordinator\'s version sent out for review';
+    $helpTexts = [
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Initial text in this row is the coordinator\'s version sent out for review',
+      AssessmentWorkflow::STATUS_FINAL_CHANGES => 'Initial text in this row is the references reviewer\'s version',
+    ];
+
+    $state = $nodeRevision->get('field_state')->value;
+    if (!empty($helpTexts[$state])) {
+      $helpText = $helpTexts[$state];
     }
 
     $title = [
