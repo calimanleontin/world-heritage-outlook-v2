@@ -23,11 +23,10 @@ class IucnUserPasswordForm extends UserPasswordForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     if ($account = $form_state->getValue('account')) {
       parent::submitForm($form, $form_state);
+      return;
     }
-    else {
-      // Trick the user into believing the email was valid
-      drupal_set_message($this->t('If you have registered an account, we\'ve sent you an email with further information to recover your password. Check your Inbox (and Spam folder)'));
-      $form_state->setRedirect('user.page');
-    }
+
+    drupal_set_message($this->t('If you have registered an account, we\'ve sent you an email with further information to recover your password. Check your Inbox (and Spam folder)'));
+    $form_state->setRedirect('user.page');
   }
 }
