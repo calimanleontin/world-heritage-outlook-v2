@@ -172,3 +172,12 @@ function iucn_assessment_update_8003() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
   \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
 }
+
+/**
+ * refs #7209 - Change the label of "Effective" to "Mostly Effective"
+ */
+function iucn_assessment_update_8004() {
+  $term = Term::load(1326);
+  $term->setName('Mostly Effective');
+  $term->save();
+}
