@@ -117,6 +117,11 @@ class NodeSiteAssessmentForm {
     self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
+    $readOnly = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
+    if ($readOnly) {
+      self::setReadOnly($form);
+    }
+
     self::hideParagraphsActions($form, $node);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       $form['title']['#disabled'] = TRUE;
@@ -401,6 +406,11 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  public static function setReadOnly(array &$form) {
+    $form['actions']['#access'] = FALSE;
+    $form['langcode']['#disabled'] = TRUE;
+  }
+
   public static function setTabsDrupalSettings(&$form, $node) {
     $diff = static::getNodeSettings($node, 'diff');
     $diff_tabs = [];
@@ -613,7 +623,7 @@ class NodeSiteAssessmentForm {
    *   The widget.
    **/
   public static function disableWidget(array &$widget) {
-    $disabledInputs = ['select', 'text_format', 'entity_autocomplete'];
+    $disabledInputs = ['select', 'text_format', 'entity_autocomplete', 'managed_file'];
 
     if (!empty($widget['#type']) && in_array($widget['#type'], $disabledInputs)) {
       $widget['#disabled'] = true;
