@@ -227,8 +227,14 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
   protected function getFinalVersionLabel(Node $nodeRevision) {
     $helpText = 'Initial text in this row is the assessor\'s version';
 
-    if ($nodeRevision->get('field_state')->value == AssessmentWorkflow::STATUS_UNDER_COMPARISON) {
-      $helpText = 'Initial text in this row is the coordinator\'s version sent out for review';
+    $helpTexts = [
+      AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Initial text in this row is the coordinator\'s version sent out for review',
+      AssessmentWorkflow::STATUS_FINAL_CHANGES => 'Initial text in this row is the references reviewer\'s version',
+    ];
+
+    $state = $nodeRevision->get('field_state')->value;
+    if (!empty($helpTexts[$state])) {
+      $helpText = $helpTexts[$state];
     }
 
     $title = [
