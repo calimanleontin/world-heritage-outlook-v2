@@ -9,19 +9,18 @@
 
   Drupal.behaviors.chromeAlert = {
     attach: function (context) {
-      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-      if (isChrome) {
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ||
+        navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
         return;
       }
 
-      var cookieName = 'site_assessment_chrome_alert';
+      var cookieName = 'site_assessment_chrome_firefox_alert';
       if (jQuery.cookie(cookieName)) {
         return;
       }
 
       var title = 'Warning!';
-      var message = '<h6>This interface is not optimized for your browser. Please use Chrome!</h6>';
+      var message = '<h6>This interface is not optimized for your browser. Please use Chrome or Firefox!</h6>';
 
       $('<div></div>').appendTo('body')
         .html(message)

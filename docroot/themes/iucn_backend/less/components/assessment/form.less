@@ -167,6 +167,12 @@
   width: 100%;
   > .form-wrapper {
     padding-bottom: 10px;
+
+    > div.as-checkboxes {
+      fieldset {
+        display: block;
+      }
+    }
   }
 
   fieldset.error {
@@ -281,20 +287,17 @@
     padding: 0;
   }
 }
-
-
 .field--name-field-as-threats-categories.field--widget-assessment-options-buttons {
   .form-checkboxes {
-     > div:first-child {
-       margin-bottom: 10px;
-     }
+    > div:first-child {
+      margin-bottom: 10px;
+    }
     label {
       display: inline;
       padding-left: 5px;
     }
   }
 }
-
 .required-fields {
   .fieldset-legend:after {
     .form-required();
