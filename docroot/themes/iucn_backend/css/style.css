@@ -395,6 +395,10 @@
 .edit-paragraph-form-modal .paragraph-form > .form-wrapper {
   padding-bottom: 10px;
 }
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset {
+  display: block;
+}
 .add-paragraph-form-modal .paragraph-form fieldset.error,
 .edit-paragraph-form-modal .paragraph-form fieldset.error {
   border: 1px solid #e62600;
