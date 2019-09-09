@@ -514,6 +514,7 @@ class NodeSiteAssessmentForm {
 
     $actions = ['add more', 'edit', 'delete',];
 
+    $readOnlyForm = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
     foreach ($fieldDefinitions as $field => $fieldDefinition) {
       if (!$fieldDefinition instanceof ConfigEntityBase) {
         continue;
@@ -525,7 +526,7 @@ class NodeSiteAssessmentForm {
 
       $widget = &$form[$field]['widget'];
       $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-        && empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'));
+        && !$readOnlyForm;
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
