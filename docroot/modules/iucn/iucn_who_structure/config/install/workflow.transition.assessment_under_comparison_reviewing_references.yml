@@ -5,7 +5,7 @@ dependencies:
     - workflow.state.assessment_reviewing_references
     - workflow.state.assessment_under_comparison
 id: assessment_under_comparison_reviewing_references
-label: 'Send references to reviewer'
+label: 'Send to reference reviewer'
 module: workflow
 from_sid: assessment_under_comparison
 to_sid: assessment_reviewing_references

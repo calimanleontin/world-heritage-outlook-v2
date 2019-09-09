@@ -165,25 +165,19 @@ class NodeSiteAssessmentForm {
           '#parents' => ['comments'],
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
-          $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
-          $form['#attached']['library'][] = 'iucn_backend/font-awesome';
-          $form['comments']['comment']['#prefix'] = '<div class="paragraph-comments-textarea bubble">';
+          $form['comments']['#type'] = 'fieldset';
+          $form['comments']['#title'] = t('Comments');
 
-          $form['comments']['comment']['#attributes'] = ['readonly' => 'readonly'];
-          unset($form['comments']['#description']);
-          $comments = '';
+          $form['comments']['comment']['#type'] = 'markup';
+          $form['comments']['comment']['#markup'] = t('No comments added yet');
           if (!empty($settings['comments'][$tab])) {
+            $comments = '';
             foreach ($settings['comments'][$tab] as $uid => $comment) {
               $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
               $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
-
               $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
-            $form['comments']['comment']['#type'] = 'markup';
             $form['comments']['comment']['#markup'] = $comments;
-          }
-          else {
-            $form['comments']['comment']['#access'] = FALSE;
           }
         }
         else {
