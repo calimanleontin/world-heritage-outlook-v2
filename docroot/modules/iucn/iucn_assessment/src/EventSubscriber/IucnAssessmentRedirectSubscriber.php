@@ -117,11 +117,7 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       $node = Node::load($node);
     }
 
-    if (!$node instanceof NodeInterface) {
-      return;
-    }
-
-    if ($node->bundle() !== 'site_assessment') {
+    if (!$node instanceof NodeInterface || $node->bundle() != 'site_assessment') {
       return;
     }
 
