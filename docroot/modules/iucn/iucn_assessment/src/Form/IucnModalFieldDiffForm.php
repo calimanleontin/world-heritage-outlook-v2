@@ -27,11 +27,12 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
 
       $rowDiff = $diff['node'][$this->nodeRevision->id()];
       $revision = $this->workflowService->getAssessmentRevision($vid);
+      $fieldType = $revision->get($this->fieldName)->getFieldDefinition()->getType();
       $fieldDiff[] = [
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $revision->getRevisionUser()->getDisplayName(),
-        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName]),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName], $fieldType == 'string_long'),
         'copy' => $this->getCopyValueButton($vid, $fieldWidgetType, $this->fieldName, $revision->get($this->fieldName)->getValue()),
       ];
 

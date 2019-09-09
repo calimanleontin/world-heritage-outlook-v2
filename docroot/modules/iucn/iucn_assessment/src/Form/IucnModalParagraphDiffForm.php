@@ -101,8 +101,9 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
             $rowDiff['diff'][$fieldName] = [];
           }
 
+          $fieldType = $this->paragraphRevision->get($fieldName)->getFieldDefinition()->getType();
           $row[$fieldName] = [
-            'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName]),
+            'markup' => $this->getDiffMarkup($rowDiff['diff'][$fieldName], $fieldType == 'string_long'),
             'copy' => $this->getCopyValueButton($vid, $this->fieldWidgetTypes[$fieldName], $fieldName, $fieldValue),
             'widget_type' => $this->fieldWidgetTypes[$fieldName],
           ];

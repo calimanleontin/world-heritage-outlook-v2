@@ -41,7 +41,7 @@ class NodeSiteAssessmentStateChangeForm {
     $coordinator = !empty($node->field_coordinator->target_id)
       ? $node->field_coordinator->target_id
       : NULL;
-    $currentUserIsCoordinator = $currentUser->id() === $coordinator;
+    $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {

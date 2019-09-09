@@ -28,7 +28,9 @@ class StripTagsBuilder extends FieldDiffBuilderBase {
     foreach ($field_items as $field_key => $field_item) {
       /** @var \Drupal\Core\Field\FieldItemInterface $field_item */
       if ($field_item->isEmpty() == FALSE) {
-        $result[$field_key][] = trim(strip_tags(html_entity_decode($field_item->value), " \t\n\r\0\x0B\xC2\xA0"));
+        $data = trim(strip_tags(html_entity_decode($field_item->value), " \t\n\0\x0B\xC2\xA0"));
+        $data = str_replace("\r\n", "\n", $data);
+        $result[$field_key][] = $data;
       }
     }
 
