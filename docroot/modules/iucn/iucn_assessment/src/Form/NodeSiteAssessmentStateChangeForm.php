@@ -46,7 +46,9 @@ class NodeSiteAssessmentStateChangeForm {
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
       self::validateNode($form, $node);
-      self::addStateChangeWarning($form, $node, $currentUser);
+      if (empty($form['error'])) {
+        self::addStateChangeWarning($form, $node, $currentUser);
+      }
     }
     self::hideUnnecessaryFields($form);
 
@@ -406,13 +408,9 @@ class NodeSiteAssessmentStateChangeForm {
       && $node->field_assessor->target_id == $current_user->id()) {
       self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
-    elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
-      && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
-    }
-    elseif ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES
-      && $current_user->id() == $node->field_references_reviewer->target_id) {
-      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit below'));
+    elseif (($state == AssessmentWorkflow::STATUS_UNDER_REVIEW && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node)))
+      || ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES && $current_user->id() == $node->field_references_reviewer->target_id)) {
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below.'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
