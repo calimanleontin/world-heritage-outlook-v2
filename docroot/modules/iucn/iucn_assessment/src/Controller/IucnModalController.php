@@ -49,7 +49,7 @@ class IucnModalController extends ControllerBase {
       'field_as_threats_current' => 'current threat',
       'field_as_threats_potential' => 'potential threat',
       'field_as_protection' => 'protection and management topic',
-      'field_as_values_wh' => 'state and trend of World Heritage value',
+      'field_as_values_wh' => 'World Heritage value',
     ];
     if (isset($map[$field])) {
       return $map[$field];

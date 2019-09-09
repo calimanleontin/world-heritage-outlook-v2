@@ -21,10 +21,10 @@ third_party_settings:
       assessment_under_review: assessment_under_review
       assessment_finished_reviewing: assessment_finished_reviewing
       assessment_under_comparison: assessment_under_comparison
+      assessment_reviewing_references: assessment_reviewing_references
       assessment_final_changes: assessment_final_changes
       assessment_approved: assessment_approved
       assessment_draft: assessment_draft
-      assessment_reviewing_references: 0
       assessment_published: 0
   disable_field:
     add_disable: none
