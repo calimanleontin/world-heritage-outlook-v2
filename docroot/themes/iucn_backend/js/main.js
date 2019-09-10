@@ -23,4 +23,18 @@
     }
   }
 
+  Drupal.behaviors.fixParagraphResize = {
+    attach: function (context) {
+      // Workaround for Chrome breaking long paragraph summary components on resize.
+      $(window).resize(function () {
+        $('.paragraph-summary-component', context).each(function () {
+          $(this).css('overflow', 'auto');
+          setTimeout(function (element) {
+            element.css('overflow', 'hidden');
+          }, 0, $(this));
+        });
+      });
+    }
+  }
+
 })(jQuery, Drupal, _);
