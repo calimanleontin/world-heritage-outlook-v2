@@ -666,8 +666,12 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'user_form':
+      _iucn_user_form_check_role_permissions($form, 'change own roles');
+      break;
+
     case 'user_register_form':
-      $form['account']['roles']['#access'] = \Drupal::currentUser()->hasPermission('administer users');
+      _iucn_user_form_check_role_permissions($form, 'administer users');
+
       break;
 
     case 'views_exposed_form':
@@ -681,6 +685,16 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
     // Call the alter method after all other methods above have already altered
     // the form.
     IucnModalParagraphDiffForm::alter($form, $form_state);
+  }
+}
+
+function _iucn_user_form_check_role_permissions(&$form, $permissionAccess) {
+  $currentUser = \Drupal::currentUser();
+  $form['account']['roles']['#access'] = $currentUser->hasPermission($permissionAccess);
+  foreach ($form['account']['roles']['#options'] as $roleId => $roleName) {
+    if (!$currentUser->hasPermission("change user role {$roleId}")) {
+      unset($form['account']['roles']['#options'][$roleId]);
+    }
   }
 }
 
@@ -790,7 +804,8 @@ function iucn_assessment_entity_operation(EntityInterface $entity) {
 
     foreach ($transitions as $transition) {
       if ($transition->getFromSid() == $transition->getToSid()
-        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        && $transition->getFromSid() != AssessmentWorkflow::STATUS_UNDER_REVIEW
+        || $transition->getToSid() == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES) {
         continue;
       }
 
@@ -970,6 +985,9 @@ function iucn_assessment_paragraph_access(ParagraphInterface $paragraph, $operat
         break;
     }
   }
+  elseif ($operation == 'update' && !empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'))) {
+    return AccessResult::forbidden();
+  }
   return AccessResult::neutral();
 }
 
@@ -1108,7 +1126,8 @@ function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
       $siteAssessment = \Drupal::routeMatch()->getParameter('node');
       if ($siteAssessment instanceof \Drupal\node\NodeInterface) {
         $state = $siteAssessment->get('field_state')->value;
-        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+        $editableField = !empty($field_entity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+          && empty(\Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form'));
         if ($editableField === FALSE || \Drupal::currentUser()->hasPermission("reorder {$field_name}") === FALSE) {
           _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
         }

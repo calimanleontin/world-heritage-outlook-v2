@@ -13,5 +13,6 @@ permissions:
   - 'access webform submission log'
   - 'administer webform submission'
   - 'delete any webform submission'
+  - 'edit own profile'
   - 'use text format assessment_text_format'
   - 'view home button'

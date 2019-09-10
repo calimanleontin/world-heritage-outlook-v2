@@ -41,12 +41,14 @@ class NodeSiteAssessmentStateChangeForm {
     $coordinator = !empty($node->field_coordinator->target_id)
       ? $node->field_coordinator->target_id
       : NULL;
-    $currentUserIsCoordinator = $currentUser->id() === $coordinator;
+    $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
       self::validateNode($form, $node);
-      self::addStateChangeWarning($form, $node, $currentUser);
+      if (empty($form['error'])) {
+        self::addStateChangeWarning($form, $node, $currentUser);
+      }
     }
     self::hideUnnecessaryFields($form);
 
@@ -136,8 +138,14 @@ class NodeSiteAssessmentStateChangeForm {
 
     $titlePlaceholder = 'Change state of @type @assessment';
 
-    if (in_array('reviewer', $currentUser->getRoles())) {
-      $titlePlaceholder = 'Submit review of @assessment @type';
+    $titlePlaceholders = [
+      AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Submit assessment of @assessment',
+      AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Submit review of @assessment @type',
+      AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Submit review of @assessment @type',
+    ];
+
+    if (!empty($titlePlaceholders[$state])) {
+      $titlePlaceholder = $titlePlaceholders[$state];
     }
 
     $form['#title'] = t($titlePlaceholder, [
@@ -410,9 +418,9 @@ class NodeSiteAssessmentStateChangeForm {
       && $node->field_assessor->target_id == $current_user->id()) {
       self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
-    elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
-      && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
+    elseif (($state == AssessmentWorkflow::STATUS_UNDER_REVIEW && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node)))
+      || ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES && $current_user->id() == $node->field_references_reviewer->target_id)) {
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below.'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
@@ -604,7 +612,7 @@ class NodeSiteAssessmentStateChangeForm {
     $currentUser = \Drupal::currentUser();
 
     $message = t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]);
-    if (in_array('assessor', $currentUser->getRoles())) {
+    if (in_array($currentUser->id(), [$node->field_references_reviewer->target_id, $node->field_assessor->target_id])) {
       $message = t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]);
     }
 

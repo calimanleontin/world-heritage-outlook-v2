@@ -36,5 +36,11 @@ class RouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setRequirement('_access', 'FALSE');
     }
+
+    // Alter the revision page so we can add the view revision button.
+    $route = $collection->get('entity.node.version_history');
+    if ($route) {
+      $route->setDefault('_controller','\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview');
+    }
   }
 }

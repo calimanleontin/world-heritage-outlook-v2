@@ -21,6 +21,7 @@ permissions:
   - 'delete news revisions'
   - 'delete page revisions'
   - 'delete publication revisions'
+  - 'edit own profile'
   - 'revert benefit revisions'
   - 'use text format assessment_text_format'
   - 'view home button'
