@@ -4,16 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74dcf2b64c9bab71b9b84001e8d888d1",
+    "content-hash": "f32424e7e50631fcaaf947bd7c228ca1",
     "packages": [
         {
             "name": "adamwulf/columnizer",
             "version": "1.6.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
             },
             "type": "drupal-library"
         },
@@ -1607,9 +1605,7 @@
             "version": "4.1.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
             },
             "type": "drupal-library"
         },
@@ -1618,9 +1614,7 @@
             "version": "4.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
             },
             "type": "drupal-library"
         },
@@ -1800,9 +1794,7 @@
             "version": "1.8.2",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
             },
             "type": "drupal-library"
         },
@@ -5450,17 +5442,17 @@
         },
         {
             "name": "drupal/field_group",
-            "version": "3.0.0-rc1",
+            "version": "3.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_group.git",
-                "reference": "8.x-3.0-rc1"
+                "reference": "8.x-3.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-3.0-rc1.zip",
-                "reference": "8.x-3.0-rc1",
-                "shasum": "e291b5468c834a344e9aa6cafd3a76171d473a22"
+                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-3.0-beta1.zip",
+                "reference": "8.x-3.0-beta1",
+                "shasum": "a5dfb66385be7a1b3db232e49779d5bc530a048e"
             },
             "require": {
                 "drupal/core": "*"
@@ -5471,11 +5463,11 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-rc1",
+                    "version": "8.x-3.0-beta1",
                     "datestamp": "1558647185",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -9278,9 +9270,7 @@
             "version": "4.3.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
             },
             "type": "drupal-library"
         },
@@ -9673,9 +9663,7 @@
             "version": "1.6.1",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
             },
             "require": {
                 "composer/installers": "^1.2.0"
@@ -9751,9 +9739,7 @@
             "version": "1.6.4",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
             },
             "type": "drupal-library"
         },
@@ -9850,9 +9836,7 @@
             "version": "1.6.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
             },
             "type": "drupal-library"
         },
@@ -13660,9 +13644,7 @@
             "version": "5.3.2.0",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
             },
             "require": {
                 "composer/installers": "^1.2.0"

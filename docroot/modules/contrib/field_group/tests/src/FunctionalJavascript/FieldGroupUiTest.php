@@ -2,8 +2,9 @@
 
 namespace Drupal\Tests\field_group\FunctionalJavascript;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
-use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\field_group\Functional\FieldGroupTestTrait;
 
@@ -12,7 +13,7 @@ use Drupal\Tests\field_group\Functional\FieldGroupTestTrait;
  *
  * @group field_group
  */
-class FieldGroupUiTest extends WebDriverTestBase {
+class FieldGroupUiTest extends JavascriptTestBase {
 
   use FieldGroupTestTrait;
 
@@ -21,18 +22,13 @@ class FieldGroupUiTest extends WebDriverTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'field_ui', 'field_group'];
+  public static $modules = array('node', 'field_ui', 'field_group');
 
   /**
-   * The current tested node type
-   *
    * @var string
    */
   protected $nodeType;
 
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp();
 
@@ -48,7 +44,7 @@ class FieldGroupUiTest extends WebDriverTestBase {
     $this->drupalLogin($admin_user);
 
     // Create content type, with underscores.
-    $type_name = mb_strtolower($this->randomMachineName(8)) . '_test';
+    $type_name =  Unicode::strtolower($this->randomMachineName(8)) . '_test';
     $type = NodeType::create([
       'name' => $type_name,
       'type' => $type_name,
@@ -62,18 +58,18 @@ class FieldGroupUiTest extends WebDriverTestBase {
    */
   public function testCreateAndEdit() {
     foreach (['test_1', 'test_2'] as $name) {
-      $group = [
+      $group = array(
         'group_formatter' => 'details',
         'label' => 'Test 1',
         'group_name' => $name,
-      ];
+      );
 
       // Add new group on the 'Manage form display' page.
       $this->drupalPostForm('admin/structure/types/manage/' . $this->nodeType . '/form-display/add-group', $group, 'Save and continue');
       $this->drupalPostForm(NULL, [], 'Create group');
     }
 
-    // Update title in group 1.
+    // Update title in group 1
     $page = $this->getSession()->getPage();
     $page->pressButton('group_test_1_group_settings_edit');
     $this->assertSession()->assertWaitOnAjaxRequest();
@@ -81,14 +77,14 @@ class FieldGroupUiTest extends WebDriverTestBase {
     $page->pressButton('Update');
     $this->assertSession()->assertWaitOnAjaxRequest();
 
-    // Update title in group 2.
+    // Update title in group 2
     $page->pressButton('group_test_2_group_settings_edit');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $page->fillField('fields[group_test_2][settings_edit_form][settings][label]', 'Test 2 - Update');
     $page->pressButton('Update');
     $this->assertSession()->assertWaitOnAjaxRequest();
 
-    // Open group 1 again.
+    // Open group 1 again
     $page->pressButton('group_test_1_group_settings_edit');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->assertSession()->fieldValueEquals('fields[group_test_1][settings_edit_form][settings][label]', 'Test 1 - Update');
