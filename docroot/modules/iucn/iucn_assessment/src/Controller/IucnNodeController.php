@@ -32,10 +32,10 @@ class IucnNodeController extends NodeController {
       if (empty($build['node_revisions_table']['#rows'][$i][1]['data'])) {
         continue;
       }
-      $build['node_revisions_table']['#rows'][$i][1]['data']['#links']['module_view'] = [
+      array_unshift($build['node_revisions_table']['#rows'][$i][1]['data']['#links'], [
         'title' => $this->t('View revision'),
         'url' => Url::fromRoute('iucn_assessment.node.revision_view', ['node' => $node->id(), 'node_revision' => $ids[$i]])
-      ];
+      ]);
     }
     return $build;
   }
