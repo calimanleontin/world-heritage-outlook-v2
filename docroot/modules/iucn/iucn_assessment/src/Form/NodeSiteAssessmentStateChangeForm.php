@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -126,11 +127,14 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_references_reviewer']['#disabled'] = TRUE;
     }
 
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
-      && $node->field_assessor->target_id == $currentUser->id()
-      && !self::assessmentHasNewReferences($node)) {
-
-      self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      if ($node->field_assessor->target_id == $currentUser->id() && !self::assessmentHasNewReferences($node)) {
+        self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+      }
+      if ($currentUserIsCoordinator) {
+        self::addStatusMessage($form, t("If you change the assessor, the current revision will be deleted and a new one will be created from scratch for the new assessor. "));
+        self::addStatusMessage($form, t("If you want to preserve the current assessor's changes, but move further with the assessment workflow, press \"Force finish assessment\" button."));
+      }
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
