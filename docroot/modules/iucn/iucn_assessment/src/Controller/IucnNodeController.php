@@ -33,7 +33,7 @@ class IucnNodeController extends NodeController {
         continue;
       }
       $build['node_revisions_table']['#rows'][$i][1]['data']['#links']['module_view'] = [
-        'title' => $this->t('View data'),
+        'title' => $this->t('View revision'),
         'url' => Url::fromRoute('iucn_assessment.node.revision_view', ['node' => $node->id(), 'node_revision' => $ids[$i]])
       ];
     }
