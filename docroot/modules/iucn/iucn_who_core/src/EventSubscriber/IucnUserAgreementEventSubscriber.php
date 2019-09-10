@@ -114,6 +114,7 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
       'user.cancel_confirm',
       'entity.user.cancel_form',
       'contextual.render',
+      'entity.user.edit_form',
     ];
   }
 

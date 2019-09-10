@@ -51,6 +51,13 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
   protected $groups;
 
   /**
+   * The groups with no children.
+   *
+   * @var array
+   */
+  protected $emptyGroups;
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
@@ -150,6 +157,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
     $states = [];
     $current_id = NULL;
     $last_parent_title = '';
+    $empty_groups = [];
 
     foreach ($all_options as $tid => $title) {
       // Hidden child term.
@@ -161,15 +169,19 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
       if ($this->isParentTerm($tid)) {
         $current_id = $tid;
         $last_parent_title = $title;
+        $this->groups[$current_id] = $last_parent_title;
+        $this->emptyGroups[$current_id] = $current_id;
       }
       else {
         // Hidden parent term so we ignore the child.
         if ($last_parent_title == '') {
           continue;
         }
-        // At least one child was found for a parent category, we can now list it as an option.
-        $this->groups[$current_id] = $last_parent_title;
         $states[$tid] = $current_id;
+
+        if (!empty($this->emptyGroups[$current_id])) {
+          unset($this->emptyGroups[$current_id]);
+        }
       }
       $options[$tid] = ltrim($title, '-');
     }
@@ -209,6 +221,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
         'data-id' => 'options-groups',
       ],
       '#states' => $states,
+      '#empty_groups' => $this->emptyGroups,
     ];
 
     $element['options_groups']['#prefix'] = '<div>' .
@@ -237,7 +250,7 @@ class AsOptionsButtonsWidget extends OptionsWidgetBase implements ContainerFacto
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $key => $value) {
-      if (isset($this->groups[$value['target_id']])) {
+      if (isset($this->groups[$value['target_id']]) && empty($this->emptyGroups[$value['target_id']])) {
         unset($values[$key]);
       }
     }
