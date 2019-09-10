@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -41,12 +42,14 @@ class NodeSiteAssessmentStateChangeForm {
     $coordinator = !empty($node->field_coordinator->target_id)
       ? $node->field_coordinator->target_id
       : NULL;
-    $currentUserIsCoordinator = $currentUser->id() === $coordinator;
+    $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
       self::validateNode($form, $node);
-      self::addStateChangeWarning($form, $node, $currentUser);
+      if (empty($form['error'])) {
+        self::addStateChangeWarning($form, $node, $currentUser);
+      }
     }
     self::hideUnnecessaryFields($form);
 
@@ -87,6 +90,16 @@ class NodeSiteAssessmentStateChangeForm {
       $form['actions']['workflow_' . $state]['#access'] = FALSE;
     }
 
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT && $currentUser->hasPermission('force finish assessment')) {
+      $form['actions']['workflow_' . $state]['#access'] = TRUE;
+      $form['actions']['workflow_assessment_ready_for_review']['#access'] = TRUE;
+      $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
+      $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the assessment phase? The assessor will no longer be able to edit this assessment.")){return false;}',
+      ];
+    }
+
     if (in_array('coordinator', $currentUser->getRoles())
       && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE
       && empty($form['field_coordinator']['widget']['#default_value'])) {
@@ -98,7 +111,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
-    $form['field_assessor']['widget']['#required'] = $state == AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+    $form['field_assessor']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
     $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
     $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
@@ -114,11 +127,14 @@ class NodeSiteAssessmentStateChangeForm {
       $form['field_references_reviewer']['#disabled'] = TRUE;
     }
 
-    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT
-      && $node->field_assessor->target_id == $currentUser->id()
-      && !self::assessmentHasNewReferences($node)) {
-
-      self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+    if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+      if ($node->field_assessor->target_id == $currentUser->id() && !self::assessmentHasNewReferences($node)) {
+        self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
+      }
+      if ($currentUserIsCoordinator) {
+        self::addStatusMessage($form, t("If you change the assessor, the current revision will be deleted and a new one will be created from scratch for the new assessor. "));
+        self::addStatusMessage($form, t("If you want to preserve the current assessor's changes, but move further with the assessment workflow, press \"Force finish assessment\" button."));
+      }
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
@@ -406,9 +422,9 @@ class NodeSiteAssessmentStateChangeForm {
       && $node->field_assessor->target_id == $current_user->id()) {
       self::addStatusMessage($form, t('You are about to submit your assessment. You will no longer be able to edit the assessment. To proceed and submit to IUCN, please press submit below.'));
     }
-    elseif ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW
-      && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node))) {
-      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below'));
+    elseif (($state == AssessmentWorkflow::STATUS_UNDER_REVIEW && in_array($current_user->id(), $assessment_workflow->getReviewersArray($node)))
+      || ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES && $current_user->id() == $node->field_references_reviewer->target_id)) {
+      self::addStatusMessage($form, t('You are about to submit your review. You will no longer be able to edit the assessment. To proceed and submit your review to IUCN, please press submit review below.'));
     }
     elseif ($node->field_coordinator->target_id == $current_user->id()) {
       if ($state == AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
@@ -521,7 +537,23 @@ class NodeSiteAssessmentStateChangeForm {
       $workflowService->clearKeyFromFieldSettings($node, 'diff');
     }
 
+    $underAssessmentRevisionOld = NULL;
     switch ($oldState . '>' . $newState) {
+      case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
+        $underAssessmentRevisionOld = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
+        if ($underAssessmentRevisionOld->get('field_assessor')->target_id == $node->get('field_assessor')->target_id) {
+          $underAssessmentRevisionOld = NULL;
+          break;
+        }
+
+        $workflowService->clearKeyFromFieldSettings($node, 'comments');
+        $nodeClone = $node;
+        $node = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+        $node->set('field_assessor', $nodeClone->get('field_assessor')->target_id);
+        $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+        $createNewRevision = true;
+        break;
+
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
         $underEvaluationRevision = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
         $workflowService->appendDiffToFieldSettings($node, $underEvaluationRevision->getRevisionId(), $original->getRevisionId());
@@ -529,7 +561,7 @@ class NodeSiteAssessmentStateChangeForm {
 
       case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
       case AssessmentWorkflow::STATUS_UNDER_COMPARISON . '>' . AssessmentWorkflow::STATUS_REVIEWING_REFERENCES:
-        $workflowService->removeCommentsFromFieldSettings($node);
+        $workflowService->clearKeyFromFieldSettings($node, 'comments');
         break;
 
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
@@ -575,12 +607,16 @@ class NodeSiteAssessmentStateChangeForm {
       }
     }
 
+    if ($underAssessmentRevisionOld instanceof Node) {
+      \Drupal::entityTypeManager()->getStorage('node')->deleteRevision($underAssessmentRevisionOld->getRevisionId());
+    }
+
     $nodeForm->setEntity($entity);
     $form_state->setFormObject($nodeForm);
     $currentUser = \Drupal::currentUser();
 
     $message = t('The assessment "%assessment" was successfully updated.', ['%assessment' => $entity->getTitle()]);
-    if (in_array('assessor', $currentUser->getRoles())) {
+    if (in_array($currentUser->id(), [$node->field_references_reviewer->target_id, $node->field_assessor->target_id])) {
       $message = t('The assessment "%assessment" was successfully submitted!', ['%assessment' => $entity->getTitle()]);
     }
 

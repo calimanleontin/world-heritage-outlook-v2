@@ -117,6 +117,11 @@ class NodeSiteAssessmentForm {
     self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
+    $readOnly = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
+    if ($readOnly) {
+      self::setReadOnly($form);
+    }
+
     self::hideParagraphsActions($form, $node);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
       $form['title']['#disabled'] = TRUE;
@@ -165,25 +170,19 @@ class NodeSiteAssessmentForm {
           '#parents' => ['comments'],
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
-          $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
-          $form['#attached']['library'][] = 'iucn_backend/font-awesome';
-          $form['comments']['comment']['#prefix'] = '<div class="paragraph-comments-textarea bubble">';
+          $form['comments']['#type'] = 'fieldset';
+          $form['comments']['#title'] = t('Comments');
 
-          $form['comments']['comment']['#attributes'] = ['readonly' => 'readonly'];
-          unset($form['comments']['#description']);
-          $comments = '';
+          $form['comments']['comment']['#type'] = 'markup';
+          $form['comments']['comment']['#markup'] = t('No comments added yet');
           if (!empty($settings['comments'][$tab])) {
+            $comments = '';
             foreach ($settings['comments'][$tab] as $uid => $comment) {
               $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
               $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
-
               $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
-            $form['comments']['comment']['#type'] = 'markup';
             $form['comments']['comment']['#markup'] = $comments;
-          }
-          else {
-            $form['comments']['comment']['#access'] = FALSE;
           }
         }
         else {
@@ -401,6 +400,11 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  public static function setReadOnly(array &$form) {
+    $form['actions']['#access'] = FALSE;
+    $form['langcode']['#disabled'] = TRUE;
+  }
+
   public static function setTabsDrupalSettings(&$form, $node) {
     $diff = static::getNodeSettings($node, 'diff');
     $diff_tabs = [];
@@ -514,6 +518,7 @@ class NodeSiteAssessmentForm {
 
     $actions = ['add more', 'edit', 'delete',];
 
+    $readOnlyForm = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
     foreach ($fieldDefinitions as $field => $fieldDefinition) {
       if (!$fieldDefinition instanceof ConfigEntityBase) {
         continue;
@@ -524,7 +529,8 @@ class NodeSiteAssessmentForm {
       }
 
       $widget = &$form[$field]['widget'];
-      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+        && !$readOnlyForm;
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
@@ -611,7 +617,7 @@ class NodeSiteAssessmentForm {
    *   The widget.
    **/
   public static function disableWidget(array &$widget) {
-    $disabledInputs = ['select', 'text_format', 'entity_autocomplete'];
+    $disabledInputs = ['select', 'text_format', 'entity_autocomplete', 'managed_file'];
 
     if (!empty($widget['#type']) && in_array($widget['#type'], $disabledInputs)) {
       $widget['#disabled'] = true;

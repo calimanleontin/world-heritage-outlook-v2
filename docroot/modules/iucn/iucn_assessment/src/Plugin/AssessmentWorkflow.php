@@ -177,6 +177,11 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIfHasPermission($account, 'assign coordinator to assessment');
           break;
 
+        case self::STATUS_UNDER_ASSESSMENT:
+          // In this state, assessments can be submitted by coordinator if assessor is not responding.
+          $access = AccessResult::allowedIf($accountIsAssessor || $accountIsCoordinator);
+          break;
+
         case self::STATUS_UNDER_REVIEW:
           $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
           break;
@@ -189,6 +194,7 @@ class AssessmentWorkflow {
           return $this->checkAssessmentAccess($node, 'edit', $account);
       }
     }
+
     $access->addCacheableDependency($node);
     return $access;
   }
@@ -360,17 +366,6 @@ class AssessmentWorkflow {
         $field_settings['comments'][$tab][$revision->getRevisionUserId()] = $revision_comment[$revision->getRevisionUserId()];
       }
     }
-    $field_settings_json = json_encode($field_settings);
-    $node->get('field_settings')->setValue($field_settings_json);
-  }
-
-  public function removeCommentsFromFieldSettings(NodeInterface $node) {
-    $field_settings = json_decode($node->field_settings->value, TRUE);
-    if (empty($field_settings['comments'])) {
-      return;
-    }
-
-    $field_settings['comments'] = [];
     $field_settings_json = json_encode($field_settings);
     $node->get('field_settings')->setValue($field_settings_json);
   }

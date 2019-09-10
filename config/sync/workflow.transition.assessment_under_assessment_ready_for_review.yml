@@ -13,8 +13,8 @@ to_sid: assessment_ready_for_review
 roles:
   administrator: administrator
   iucn_manager: iucn_manager
+  coordinator: coordinator
   assessor: assessor
   workflow_author: '0'
-  coordinator: '0'
   reviewer: '0'
   references_reviewer: '0'
