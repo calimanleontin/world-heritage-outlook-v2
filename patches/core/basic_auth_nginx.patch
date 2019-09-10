@@ -1,7 +1,20 @@
-diff --git a/docroot/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php b/docroot/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
+diff --git a/core/modules/basic_auth/basic_auth.services.yml b/core/modules/basic_auth/basic_auth.services.yml
+index e1340489d..7855fb053 100644
+--- a/core/modules/basic_auth/basic_auth.services.yml
++++ b/core/modules/basic_auth/basic_auth.services.yml
+@@ -1,7 +1,7 @@
+ services:
+   basic_auth.authentication.basic_auth:
+     class: Drupal\basic_auth\Authentication\Provider\BasicAuth
+-    arguments: ['@config.factory', '@user.auth', '@flood', '@entity_type.manager']
++    arguments: ['@config.factory', '@user.auth', '@flood', '@entity_type.manager', '@router.no_access_checks']
+     tags:
+       - { name: authentication_provider, provider_id: 'basic_auth', priority: 100 }
+   basic_auth.page_cache_request_policy.disallow_basic_auth_requests:
+diff --git a/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php b/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
 index 8e50c13de..99fe43aeb 100644
---- a/docroot/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
-+++ b/docroot/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
+--- a/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
++++ b/core/modules/basic_auth/src/Authentication/Provider/BasicAuth.php
 @@ -11,9 +11,11 @@
  use Drupal\Core\Entity\EntityTypeManagerInterface;
  use Drupal\Core\Flood\FloodInterface;
@@ -64,19 +77,3 @@ index 8e50c13de..99fe43aeb 100644
    }
  
    /**
-diff --git a/docroot/modules/iucn/iucn_assessment/src/Routing/RouteSubscriber.php b/docroot/modules/iucn/iucn_assessment/src/Routing/RouteSubscriber.php
-index f100eff75..0eda30829 100644
---- a/docroot/modules/iucn/iucn_assessment/src/Routing/RouteSubscriber.php
-+++ b/docroot/modules/iucn/iucn_assessment/src/Routing/RouteSubscriber.php
-@@ -36,5 +36,11 @@ protected function alterRoutes(RouteCollection $collection) {
-     if ($route) {
-       $route->setRequirement('_access', 'FALSE');
-     }
-+
-+    // Alter the revision page so we can add the view revision button.
-+    $route = $collection->get('entity.node.version_history');
-+    if ($route) {
-+      $route->setDefault('_controller','\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview');
-+    }
-   }
- }
