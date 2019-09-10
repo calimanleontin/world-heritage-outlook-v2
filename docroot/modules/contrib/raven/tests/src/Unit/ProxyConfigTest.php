@@ -16,6 +16,34 @@ use Drupal\Tests\UnitTestCase;
 class ProxyConfigTest extends UnitTestCase {
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Environment.
+   *
+   * @var string
+   */
+  protected $environment;
+
+  /**
+   * The module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * The message's placeholders parser.
+   *
+   * @var \Drupal\Core\Logger\LogMessageParserInterface
+   */
+  protected $parser;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {

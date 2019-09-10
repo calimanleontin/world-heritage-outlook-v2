@@ -22,9 +22,6 @@
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     },
-    "drupal/paragraphs": {
-      "LogicException Form errors cannot be set after form validation has finished": "https://www.drupal.org/files/issues/2018-11-13/3013171-5.patch"
-    },
     "drupal/role_hierarchy": {
       "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
     },
