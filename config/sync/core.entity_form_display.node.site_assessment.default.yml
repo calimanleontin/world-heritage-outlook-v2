@@ -74,6 +74,7 @@ third_party_settings:
         classes: ''
         direction: horizontal
       label: Tabs
+      region: content
     group_as_values:
       children:
         - field_as_values_wh
@@ -88,6 +89,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Values
+      region: content
     group_as_threats:
       children:
         - field_as_threats_current
@@ -103,6 +105,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Threats
+      region: content
     group_as_protection_management:
       children:
         - field_as_protection
@@ -118,6 +121,7 @@ third_party_settings:
         id: protection_management
         classes: ''
       label: 'Protection and management'
+      region: content
     group_as_assessing_values:
       children:
         - group_summary_of_the_values
@@ -131,6 +135,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Assessing values'
+      region: content
     group_as_conservation_outlook:
       children:
         - group_conservation_overall_container
@@ -144,6 +149,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Conservation Outlook'
+      region: content
     group_as_benefits:
       children:
         - field_as_benefits
@@ -158,6 +164,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Benefits
+      region: content
     group_as_projects:
       children:
         - field_as_projects
@@ -171,6 +178,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Projects
+      region: content
     group_as_references:
       children:
         - field_as_references_p
@@ -184,6 +192,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: References
+      region: content
     group_as_key_cons:
       children:
         - field_as_key_cons
@@ -197,6 +206,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
+      region: content
     group_threats_overall_current:
       children:
         - field_as_threats_current_text
@@ -216,6 +226,7 @@ third_party_settings:
         classes: overall-row
         required_fields: false
       label: 'Threats overall current'
+      region: content
     group_threats_overall_potential:
       children:
         - field_as_threats_potent_text
@@ -235,6 +246,7 @@ third_party_settings:
         classes: overall-row
         required_fields: false
       label: 'Threats overall potential'
+      region: content
     group_threats_overall_all:
       children:
         - field_as_threats_text
@@ -254,6 +266,7 @@ third_party_settings:
         classes: overall-row
         required_fields: false
       label: 'Threats overall all'
+      region: content
     group_threats_overall_container:
       children:
         - group_threats_overall_current
@@ -268,6 +281,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Overall Assessment of Threats'
+      region: content
     group_protection_overall_container:
       children:
         - group_protection_overall_effecti
@@ -282,6 +296,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Overall assessment of protection and management'
+      region: content
     group_protection_overall_effecti:
       children:
         - field_as_protection_ov_text
@@ -300,6 +315,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Protection overall effectiveness'
+      region: content
     group_protection_overall_assessm:
       children:
         - field_as_protection_ov_out_text
@@ -318,6 +334,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Protection overall assessment'
+      region: content
     group_protection_best_practice:
       children:
         - field_as_protection_ov_practices
@@ -335,6 +352,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Protection Best Practice'
+      region: content
     group_summary_of_the_values:
       children:
         - group_assessing_values_current_o
@@ -348,6 +366,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Summary of the Values'
+      region: content
     group_assessing_values_current_o:
       children:
         - field_as_vass_wh_text
@@ -367,6 +386,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessing values current overall'
+      region: content
     group_assessing_values_other:
       children:
         - field_as_vass_bio_text
@@ -386,6 +406,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessing values other'
+      region: content
     group_assessment_of_conservation:
       children:
         - field_as_global_assessment_text
@@ -404,6 +425,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessment of Conservation Outlook'
+      region: content
     group_conservation_overall_container:
       children:
         - group_assessment_of_conservation
@@ -417,6 +439,7 @@ third_party_settings:
         classes: overall-container
         required_fields: false
       label: 'Assessment of Conservation Outlook'
+      region: content
     group_summary_of_benefits:
       children:
         - field_as_benefits_summary
@@ -430,6 +453,7 @@ third_party_settings:
         fields_titles: ''
         required_fields: 1
       label: 'Summary of benefits'
+      region: content
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
