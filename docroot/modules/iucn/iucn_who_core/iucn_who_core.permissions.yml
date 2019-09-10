@@ -5,3 +5,10 @@ create content unpublished:
 edit own profile:
   title: Edit own profile
   description: Users having this permission will be able to change their own email and title
+  
+change own roles:
+  title: Change own roles
+  description: Users having this permission will be allowed to change their own roles
+
+permission_callbacks:
+  - Drupal\iucn_who_core\ChangeRolePermissions::getPermissions
