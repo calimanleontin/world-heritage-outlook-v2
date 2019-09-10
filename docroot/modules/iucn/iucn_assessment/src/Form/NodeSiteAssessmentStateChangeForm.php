@@ -112,13 +112,13 @@ class NodeSiteAssessmentStateChangeForm {
 
     $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
     $form['field_assessor']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
-    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]) && $node->isDefaultRevision();
     $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
       $form['field_coordinator']['#disabled'] = !$form['field_coordinator']['widget']['#required'];
-      $form['field_assessor']['#disabled'] = !$form['field_assessor']['widget']['#required'] || !$currentUserIsCoordinator;
-      $form['field_reviewers']['#disabled'] = !$form['field_reviewers']['widget']['#required'] || !$currentUserIsCoordinator;
-      $form['field_references_reviewer']['#disabled'] = !$form['field_references_reviewer']['widget']['#required'] || !$currentUserIsCoordinator;
+      $form['field_assessor']['#disabled'] = !$form['field_assessor']['widget']['#required'];
+      $form['field_reviewers']['#disabled'] = !$form['field_reviewers']['widget']['#required'];
+      $form['field_references_reviewer']['#disabled'] = !$form['field_references_reviewer']['widget']['#required'];
     }
     else {
       $form['field_coordinator']['#disabled'] = TRUE;
