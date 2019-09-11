@@ -387,6 +387,10 @@
 .node-site-assessment-state-change-form .field--name-field-references-reviewer .form-item.form-disabled {
   display: none;
 }
+.add-paragraph-form-modal,
+.edit-paragraph-form-modal {
+  top: 10% !important;
+}
 .add-paragraph-form-modal .paragraph-form,
 .edit-paragraph-form-modal .paragraph-form {
   width: 100%;
@@ -394,6 +398,10 @@
 .add-paragraph-form-modal .paragraph-form > .form-wrapper,
 .edit-paragraph-form-modal .paragraph-form > .form-wrapper {
   padding-bottom: 10px;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset {
+  display: block;
 }
 .add-paragraph-form-modal .paragraph-form fieldset.error,
 .edit-paragraph-form-modal .paragraph-form fieldset.error {
@@ -627,6 +635,9 @@
 }
 .comments-container textarea {
   background-color: #ffff99;
+}
+.comments-container .fieldset-wrapper {
+  margin-top: 20px;
 }
 .paragraph-comments-textarea .comments-container {
   display: flex;
@@ -1582,6 +1593,9 @@ table.diff-context-wrapper {
 .diff-modal textarea {
   min-height: 5em;
 }
+.diff-modal table td {
+  vertical-align: top;
+}
 .diff-modal .messages--info {
   display: flex;
   flex-wrap: wrap;
@@ -1686,7 +1700,9 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table > tbody > tr > td select {
   width: 100%;
 }
-.diff-modal table.diff-table > tbody > tr > td.widget-type--text_format table tr td {
+.diff-modal table.diff-table > tbody > tr > td.widget-type--text-format table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea table tr td {
   background: none;
 }
 .diff-modal table.diff-table > tbody > tr > td table tr {
@@ -1736,19 +1752,47 @@ table.diff-context-wrapper {
 .diff-modal td.diff-marker {
   width: 1%;
 }
+.diff-modal td.diff-section-title,
+.diff-modal div.diff-section-title {
+  background-color: #f0f0ff;
+}
+.diff-modal td.diff-deletedline {
+  background-color: #faa;
+}
+.diff-modal td.diff-addedline {
+  background-color: #77f177;
+}
+.diff-modal td.field-name {
+  background-color: #f7fcff;
+}
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal td.diff-deletedline span.diffchange {
+  background: none;
+}
+.diff-modal .widget-type--textfield td.diff-addedline span.diffchange,
+.diff-modal .widget-type--text-format td.diff-addedline span.diffchange {
+  background-color: #77f177;
+}
+.diff-modal .widget-type--textfield td.diff-deletedline span.diffchange,
+.diff-modal .widget-type--text-format td.diff-deletedline span.diffchange {
+  background-color: #faa;
+}
 .diff-modal td.diff-addedline,
 .diff-modal td.diff-addedline.diff-full-bg,
-.diff-modal td.diff-addedline span.diffchange {
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-addedline.diff-full-bg {
   background-color: #77f177;
 }
 .diff-modal td.diff-deletedline,
 .diff-modal td.diff-addedline.diff-tick-false .diffchange,
 .diff-modal td.diff-deletedline.diff-full-bg,
-.diff-modal td.diff-deletedline span.diffchange {
+.diff-modal td.diff-deletedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-deletedline.diff-full-bg {
   background-color: #ffaaaa;
 }
-.diff-modal td.diff-addedline.diff-tick-false {
-  background: none;
+.diff-modal td.diff-addedline.diff-tick-false,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange {
+  background: none !important;
 }
 .paragraph-diff-form-modal .responsive-wrapper {
   overflow: auto hidden;

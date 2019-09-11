@@ -5,7 +5,8 @@
       "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
       "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
       "Fix states api or condition": "patches/core/states-api-or.patch",
-      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch"
+      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
+      "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch"
     },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
@@ -20,9 +21,6 @@
     },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
-    },
-    "drupal/paragraphs": {
-      "LogicException Form errors cannot be set after form validation has finished": "https://www.drupal.org/files/issues/2018-11-13/3013171-5.patch"
     },
     "drupal/role_hierarchy": {
       "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"

@@ -282,6 +282,10 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   $cache_context = $breadcrumb->getCacheContexts();
   $cache_max = $breadcrumb->getCacheMaxAge();
 
+  if ($route_match->getRouteName() == 'who.user-dashboard') {
+    $breadcrumb = new Breadcrumb();
+  }
+
   // Custom breadcrumb for Webforms.
   if (isset($parameters['webform']) && gettype($parameters['webform']) == 'object' && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
     $new_breadcrumb = new Breadcrumb();
@@ -467,6 +471,17 @@ function mymodule_get_menu_items($menu_name) {
   return $menu;
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function iucn_who_core_form_user_form_alter(array &$form, FormStateInterface $form_state) {
+  $currentUser = \Drupal::currentUser();
+  if (!$currentUser->hasPermission('edit own profile')) {
+    $form['account']['mail']['#disabled'] = 'disabled';
+    $form['field_user_title']['#access'] = FALSE;
+  }
+}
+
 function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'user_login_form') {
     $form['reset_password'] = [
@@ -480,12 +495,13 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
 
   if ($form_id == 'user_form') {
     $currentUser = \Drupal::currentUser();
-    if (!$currentUser->hasPermission('change other users agreement settings')) {
+    $formObject = $form_state->getFormObject();
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $formObject->getEntity();
+    if (!$currentUser->hasPermission('change other users agreement settings')
+      || $user->id() === $currentUser->id()) {
       return;
     }
-
-    $formObject = $form_state->getFormObject();
-    $user = $formObject->getEntity();
 
     $disabled = $user->field_user_agreement_disabled->value;
 

@@ -162,11 +162,22 @@
   }
 }
 
+.add-paragraph-form-modal,
+.edit-paragraph-form-modal {
+  top: 10% !important;
+}
+
 .add-paragraph-form-modal .paragraph-form,
 .edit-paragraph-form-modal .paragraph-form {
   width: 100%;
   > .form-wrapper {
     padding-bottom: 10px;
+
+    > div.as-checkboxes {
+      fieldset {
+        display: block;
+      }
+    }
   }
 
   fieldset.error {
@@ -281,20 +292,17 @@
     padding: 0;
   }
 }
-
-
 .field--name-field-as-threats-categories.field--widget-assessment-options-buttons {
   .form-checkboxes {
-     > div:first-child {
-       margin-bottom: 10px;
-     }
+    > div:first-child {
+      margin-bottom: 10px;
+    }
     label {
       display: inline;
       padding-left: 5px;
     }
   }
 }
-
 .required-fields {
   .fieldset-legend:after {
     .form-required();
@@ -312,6 +320,9 @@
   }
   textarea {
     background-color: #ffff99;
+  }
+  .fieldset-wrapper {
+    margin-top: 20px;
   }
 }
 

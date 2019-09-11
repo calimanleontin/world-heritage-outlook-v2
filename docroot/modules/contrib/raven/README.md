@@ -17,11 +17,13 @@ INTRODUCTION
 ------------
 
 Raven module provides integration with [Sentry](https://sentry.io/), an open
-source exception logging, aggregation and notification platform.
+source error tracking platform.
 
-This module allows your Drupal site to send errors, warnings and notices to a
-Sentry server, including fatal PHP and JavaScript errors that typically are not
-logged by Drupal.
+This module can capture all (or a subset of) Drupal log messages as well as
+errors that typically are not logged by Drupal: fatal PHP errors such as memory
+limit exceeded, fatal JavaScript errors, and exceptions thrown by Drush
+commands, and provides a full stacktrace and customizable metadata for each
+event.
 
  * For a full description of the module, visit the project page:
    https://www.drupal.org/project/raven
@@ -53,6 +55,7 @@ This module logs errors to Sentry in a few ways:
  * Register a Drupal logger implementation (for uncaught exceptions, PHP errors,
    and Drupal log messages),
  * Record Sentry breadcrumbs for system events,
+ * Register an error handler for Drush command exceptions,
  * Register an error handler for fatal errors, and
  * Handle JavaScript exceptions via Sentry browser client (if user has the "Send
    JavaScript errors to Sentry" permission).
@@ -80,7 +83,7 @@ configuration is added early enough), for example:
 
 ```
 drupalSettings.raven.options.beforeSend = function(event) {
-  var isUnsupportedBrowser = Boolean(navigator.userAgent.match(/Trident.*rv:11\./));
+  var isUnsupportedBrowser = navigator.userAgent.match(/Trident.*rv:11\./);
   if (isUnsupportedBrowser) {
     // Do not log the event to Sentry.
     return null;
@@ -116,6 +119,8 @@ catch (\Exception $e) {
   watchdog_exception('oops', $e);
   // Capture event via PHP user notice:
   trigger_error($e);
+  // Capture event via Drupal exception handler (or Drush console error event):
+  throw $e;
 }
 ```
 
@@ -147,6 +152,9 @@ DRUSH INTEGRATION
 -----------------
 
 The `drush raven:captureMessage` command sends a message to Sentry.
+
+If the Drush error handler configuration option is enabled, exceptions thrown by
+Drush commands will be sent to Sentry.
 
 
 MAINTAINERS

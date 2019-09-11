@@ -77,6 +77,7 @@ return array(
     'EauDeWeb\\' => array($vendorDir . '/eaudeweb/heavy-lifter/src'),
     'Drush\\Internal\\' => array($vendorDir . '/drush/drush/src/internal-forks'),
     'Drush\\' => array($vendorDir . '/drush/drush/src'),
+    'Drupal\\facets_pretty_paths\\' => array($baseDir . '/docroot/modules/contrib/facets_pretty_paths/src'),
     'Drupal\\Driver\\' => array($baseDir . '/docroot/drivers/lib/Drupal/Driver'),
     'Drupal\\Core\\' => array($baseDir . '/docroot/core/lib/Drupal/Core'),
     'Drupal\\Console\\Core\\' => array($vendorDir . '/drupal/console-core/src'),

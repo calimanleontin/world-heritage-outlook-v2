@@ -152,7 +152,7 @@ function _ief_table_view_mode_add_extra_field(array &$element, $field_id, array 
   $display_options = $entity->getComponent($field_id);
   $regions = array_keys($formObject->getRegions());
   $regions_options = $formObject->getRegionOptions();
-  $label = $extra_field['label']->render();
+  $label = is_string($extra_field['label']) ? $extra_field['label'] : $extra_field['label']->render();
   $element[$field_id] = [
     '#attributes' => ['class' => ['draggable', 'tabledrag-leaf']],
     '#row_type' => 'extra_field',

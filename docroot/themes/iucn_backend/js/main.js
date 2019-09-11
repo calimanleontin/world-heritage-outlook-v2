@@ -17,9 +17,25 @@
   Drupal.behaviors.markFullyChangedDiffFields = {
     attach: function (context) {
       var diffContext = $(context).find('.diff-context');
-      if(diffContext.find('.diffchange').length == 0) {
-        diffContext.addClass('diff-full-bg');
-      }
+      diffContext.once('setDiffFullBg').each(function () {
+        if ($(this).find('.diffchange').length == 0) {
+          $(this).addClass('diff-full-bg');
+        }
+      })
+    }
+  }
+
+  Drupal.behaviors.fixParagraphResize = {
+    attach: function (context) {
+      // Workaround for Chrome breaking long paragraph summary components on resize.
+      $(window).resize(function () {
+        $('.paragraph-summary-component', context).each(function () {
+          $(this).css('overflow', 'auto');
+          setTimeout(function (element) {
+            element.css('overflow', 'hidden');
+          }, 0, $(this));
+        });
+      });
     }
   }
 
