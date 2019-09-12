@@ -39,9 +39,22 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
         }
         $diffRows[0][$i / 2]['data']['#rows'][$idx] = [$diff_group[$i], $diff_group[$i + 1]];
       }
+
+      if (!empty($diffRows[0][0]['data']['#rows'][$idx][1]['data']) && $diffRows[0][1]['data']['#rows'][$idx][1]['data']) {
+        if ($this->isSubstring($diffRows[0][0]['data']['#rows'][$idx][1]['data'], $diffRows[0][1]['data']['#rows'][$idx][1]['data'])) {
+          $diffRows[0][0]['data']['#rows'][$idx][1]['class'] = 'diff-context';
+        }
+        elseif ($this->isSubstring($diffRows[0][1]['data']['#rows'][$idx][1]['data'], $diffRows[0][0]['data']['#rows'][$idx][1]['data'])) {
+          $diffRows[0][1]['data']['#rows'][$idx][1]['class'] = 'diff-context';
+        }
+      }
     }
 
     return $diffRows;
+  }
+
+  protected function isSubstring($needle, $haystack) {
+    return strpos($haystack, $needle) !== FALSE;
   }
 
   public function getDiffMarkup($diff, $sideBySide = FALSE) {
