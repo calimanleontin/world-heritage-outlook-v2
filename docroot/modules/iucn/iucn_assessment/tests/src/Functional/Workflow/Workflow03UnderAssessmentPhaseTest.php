@@ -23,7 +23,7 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->editUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::IUCN_MANAGER, 200);
     $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR1, 403);
-    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR1, 403);
+    $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR1, 200);
     $this->checkUserAccess($this->editUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::COORDINATOR2, 403);
     $this->checkUserAccess($this->editUrl, TestSupport::ASSESSOR1, 200);
