@@ -178,7 +178,11 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $this->nodeFormDisplay->setComponent('field_as_values_wh', $content['field_as_values_wh']);
     }
 
-    $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
+    $translation = $this->nodeRevision->hasTranslation($this->currentLanguage)
+      ? $this->nodeRevision->getTranslation($this->currentLanguage)
+      : $this->nodeRevision->addTranslation($this->currentLanguage);
+
+    $nodeForm = $this->entityFormBuilder->getForm($translation, 'default', [
       'form_display' => $this->nodeFormDisplay,
       'entity_form_initialized' => TRUE,
       'langcode' => $this->currentLanguage,
