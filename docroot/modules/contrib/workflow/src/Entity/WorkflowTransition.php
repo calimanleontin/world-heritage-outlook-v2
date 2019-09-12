@@ -4,6 +4,7 @@ namespace Drupal\workflow\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Language\Language;
 use Drupal\user\Entity\User;
@@ -427,7 +428,14 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
 
     static $static_info = NULL;
 
-    if (isset($static_info[$entity_id][$field_name][$label]) && !$this->isEmpty()) {
+    $entity_identifier = $entity_id;
+    // For non-default revisions, there is no way of executing the same transition twice in one call.
+    // Set a random identifier since we won't be needing to access this variable later.
+    if ($entity instanceof RevisionableInterface && !$entity->isDefaultRevision()) {
+      $entity_identifier = $entity_id . microtime();
+    }
+
+    if (isset($static_info[$entity_identifier][$field_name][$label]) && !$this->isEmpty()) {
       // Error: this Transition is already executed.
       // On the development machine, execute() is called twice, when
       // on an Edit Page, the entity has a scheduled transition, and
@@ -442,11 +450,11 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
       $this->logError($message);
 
       // Return the result of the last call.
-      return $static_info[$entity_id][$field_name][$label]; // <-- exit !!!
+      return $static_info[$entity_identifier][$field_name][$label]; // <-- exit !!!
     }
 
     // OK. Prepare for next round. Do not set last_sid!!
-    $static_info[$entity_id][$field_name][$label] = $from_sid;
+    $static_info[$entity_identifier][$field_name][$label] = $from_sid;
 
     // Make sure $force is set in the transition, too.
     if ($force) {
@@ -548,7 +556,7 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
     }
 
     // Save value in static from top of this function.
-    $static_info[$entity_id][$field_name][$label] = $to_sid;
+    $static_info[$entity_identifier][$field_name][$label] = $to_sid;
 
     return $to_sid;
   }

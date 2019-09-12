@@ -158,7 +158,7 @@ class NodeSiteAssessmentStateChangeForm {
     ]);
   }
 
-  public static function validateNode(&$form, NodeInterface $node) {
+  public static function validateNode(&$form, NodeInterface $node) {return;
     /** @var \Drupal\Core\Field\FieldConfigInterface[] $siteAssessmentFields */
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
     $errors = [];
