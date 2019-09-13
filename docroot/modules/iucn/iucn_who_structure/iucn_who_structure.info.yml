@@ -7,11 +7,14 @@ dependencies:
   - blazy
   - block
   - content_translation
+  - ckeditor
   - crop
   - datetime
   - diff
   - disable_field
   - ds
+  - editor
+  - editor_file
   - entity_reference_revisions
   - facets
   - field
@@ -21,12 +24,14 @@ dependencies:
   - image
   - image_effects
   - image_widget_crop
+  - inline_responsive_images
   - iucn_assessment
   - iucn_pdf
   - iucn_site
   - iucn_who_core
   - language
   - link
+  - linkit
   - maxlength
   - menu_link_content
   - menu_ui
@@ -42,6 +47,7 @@ dependencies:
   - search_autocomplete
   - serialization
   - smart_trim
+  - spamspan
   - string_field_formatter
   - system
   - taxonomy
