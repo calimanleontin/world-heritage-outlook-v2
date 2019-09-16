@@ -5,3 +5,7 @@ Translate labels admin
 Source: https://www.drupal.org/files/issues/2768711-1.patch
 
 
+Update yarn packages to fix 19 vulnerabilities by updating nightwatch
+Source: https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch
+
+

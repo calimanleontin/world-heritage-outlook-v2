@@ -1,7 +1,8 @@
 {
   "patches": {
     "drupal/core": {
-      "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch"
+      "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
+      "Update yarn packages to fix 19 vulnerabilities by updating nightwatch": "https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch"
     },
     "drupal/display_field_copy": {
       "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
