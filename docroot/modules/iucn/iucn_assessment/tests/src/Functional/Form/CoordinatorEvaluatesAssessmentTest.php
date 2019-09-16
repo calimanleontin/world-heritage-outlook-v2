@@ -4,6 +4,7 @@ namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
@@ -14,7 +15,7 @@ use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
  * @group edwBrowser
  * @group assessmentWorkflow
  */
-class CoordinatorEvaluatesAssessmentTest extends WorkflowTestBase {
+class CoordinatorEvaluatesAssessmentTest extends IucnAssessmentTestBase {
 
   protected function cleanupEnvironment() {
     return;
@@ -29,7 +30,6 @@ class CoordinatorEvaluatesAssessmentTest extends WorkflowTestBase {
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
 
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, ['field_assessor' => $assessor1->id(), 'field_coordinator' => $coordinator->id()]);
-    $assessment->save();
 
     $this->userLogIn(TestSupport::COORDINATOR1);
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
