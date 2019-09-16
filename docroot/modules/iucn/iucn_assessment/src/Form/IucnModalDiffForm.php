@@ -41,20 +41,16 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
       }
 
       if (!empty($diffRows[0][0]['data']['#rows'][$idx][1]['data']) && $diffRows[0][1]['data']['#rows'][$idx][1]['data']) {
-        if ($this->isSubstring($diffRows[0][0]['data']['#rows'][$idx][1]['data'], $diffRows[0][1]['data']['#rows'][$idx][1]['data'])) {
+        if (strpos($diffRows[0][0]['data']['#rows'][$idx][1]['data'], $diffRows[0][1]['data']['#rows'][$idx][1]['data']) !== FALSE) {
           $diffRows[0][0]['data']['#rows'][$idx][1]['class'] = 'diff-context';
         }
-        elseif ($this->isSubstring($diffRows[0][1]['data']['#rows'][$idx][1]['data'], $diffRows[0][0]['data']['#rows'][$idx][1]['data'])) {
+        elseif (strpos($diffRows[0][1]['data']['#rows'][$idx][1]['data'], $diffRows[0][0]['data']['#rows'][$idx][1]['data']) !== FALSE) {
           $diffRows[0][1]['data']['#rows'][$idx][1]['class'] = 'diff-context';
         }
       }
     }
 
     return $diffRows;
-  }
-
-  protected function isSubstring($needle, $haystack) {
-    return strpos($haystack, $needle) !== FALSE;
   }
 
   public function getDiffMarkup($diff, $sideBySide = FALSE) {
