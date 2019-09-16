@@ -15,3 +15,12 @@ prod:
     drush-script: /var/www/html/who/prod/vendor/bin/drush
     files: /var/www/html/who/prod/docroot/sites/default/files
   user: USER
+
+prod:
+  host: 116.203.7.158
+  uri: www.worldheritageoutlook.iucn.org
+  root: /var/www/html/who/prod/docroot
+  paths:
+    drush-script: /var/www/html/who/prod/docroot/vendor/bin/drush
+    files: /var/www/html/who/prod/docroot/sites/default/files
+  user: USER
