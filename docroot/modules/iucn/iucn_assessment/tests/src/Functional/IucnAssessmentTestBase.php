@@ -94,6 +94,8 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    module_set_weight('iucn_assessment', 1);
+    drupal_flush_all_caches();
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->entityFieldManager = $this->container->get('entity_field.manager');

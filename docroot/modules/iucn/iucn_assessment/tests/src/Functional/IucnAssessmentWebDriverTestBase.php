@@ -35,6 +35,8 @@ abstract class IucnAssessmentWebDriverTestBase extends WebDriverTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    module_set_weight('iucn_assessment', 1);
+    drupal_flush_all_caches();
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
     TestSupport::createTestData();
