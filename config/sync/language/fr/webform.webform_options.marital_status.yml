@@ -1,1 +1,2 @@
 label: 'Statut marital'
+options: "Single: Single\nMarried: Married\nDivorced: Divorced\nWidowed: Widowed\n"
