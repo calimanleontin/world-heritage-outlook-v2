@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -16,6 +17,11 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * @group assessmentWorkflow
  */
 class Workflow05JsUnderReviewPhaseTest extends IucnAssessmentWebDriverTestBase {
+
+  public static $modules = [
+    'iucn_who_structure',
+    'dblog',
+  ];
 
   public function testStateAssessmentChangeToFinishedReviewing() {
     // Coordinator forced finish review
@@ -36,6 +42,15 @@ class Workflow05JsUnderReviewPhaseTest extends IucnAssessmentWebDriverTestBase {
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
-  }
 
+    $errors = Database::getConnection()
+      ->select('watchdog', 'w')
+      ->fields('w')
+      ->condition('severity', 3)
+      ->condition('type', 'workflow')
+      ->execute()
+      ->fetchAll();
+
+    $this->assertEquals(count($errors), 0);
+  }
 }

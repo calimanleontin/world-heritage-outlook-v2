@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -17,6 +18,11 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
 
   const WORKFLOW_STATE = AssessmentWorkflow::STATUS_READY_FOR_REVIEW;
+
+  static $modules = [
+    'iucn_who_structure',
+    'dblog',
+  ];
 
   public function testUnderReviewPhaseAccess() {
     /** @var \Drupal\user\UserInterface $reviewer1 */
@@ -260,5 +266,32 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
 
+  }
+
+  public function testStateAssessmentForceChangeToFinishedReviewing() {
+    // Coordinator forced finish review
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
+    $this->userLogIn(TestSupport::COORDINATOR1);
+    $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+    $this->drupalGet($this->stateChangeUrl);
+    $label = t(WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+    $this->click("[value=\"{$label}\"]");
+    $this->drupalGet($this->stateChangeUrl);
+    $label = t('Force finish reviewing');
+    $this->click("[value=\"{$label}\"]");
+
+    drupal_flush_all_caches();
+    $assessment = Node::load($assessment->id());
+    $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
+
+    $errors = Database::getConnection()
+      ->select('watchdog', 'w')
+      ->fields('w')
+      ->condition('severity', 3)
+      ->condition('type', 'workflow')
+      ->execute()
+      ->fetchAll();
+
+    $this->assertEquals(count($errors), 0);
   }
 }

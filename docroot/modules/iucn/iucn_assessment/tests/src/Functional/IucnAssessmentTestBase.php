@@ -83,6 +83,7 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
 
   public static $modules = [
     'iucn_who_structure',
+    'dblog',
   ];
 
   public static $testViews = [
@@ -99,7 +100,7 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
     $this->workflowService = $this->container->get('iucn_assessment.workflow');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->entityFieldManager = $this->container->get('entity_field.manager');
-    ViewTestData::createTestViews(self::class, ['iucn_who_structure']);
+    ViewTestData::createTestViews(self::class, static::$modules);
     TestSupport::createTestData();
   }
 

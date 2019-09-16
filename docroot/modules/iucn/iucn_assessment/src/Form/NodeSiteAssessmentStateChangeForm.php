@@ -92,7 +92,6 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT && $currentUser->hasPermission('force finish assessment')) {
       $form['actions']['workflow_' . $state]['#access'] = TRUE;
-      $form['actions']['workflow_assessment_ready_for_review']['#access'] = TRUE;
       $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
       $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
         'class' => ['button--danger'],
