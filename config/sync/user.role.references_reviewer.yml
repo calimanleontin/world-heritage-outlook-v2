@@ -49,3 +49,5 @@ permissions:
   - 'edit field_as_vass_wh_state'
   - 'edit field_as_vass_wh_text'
   - 'edit field_as_vass_wh_trend'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'

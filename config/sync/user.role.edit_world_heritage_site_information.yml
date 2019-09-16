@@ -21,5 +21,7 @@ permissions:
   - 'translate site node'
   - 'update content translations'
   - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
   - 'view home button'
   - 'view site revisions'

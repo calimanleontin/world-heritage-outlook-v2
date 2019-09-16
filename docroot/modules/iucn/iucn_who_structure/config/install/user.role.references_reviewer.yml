@@ -1,4 +1,3 @@
-uuid: a8c9d619-82ca-451c-937e-75e67fd03569
 langcode: en
 status: true
 dependencies: {  }
@@ -49,3 +48,5 @@ permissions:
   - 'edit field_as_vass_wh_state'
   - 'edit field_as_vass_wh_text'
   - 'edit field_as_vass_wh_trend'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
