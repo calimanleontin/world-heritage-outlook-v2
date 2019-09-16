@@ -8,12 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
-    'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src'),
     'Stack' => array($vendorDir . '/stack/builder/src'),
     'Solarium\\' => array($vendorDir . '/solarium/solarium/library'),
     'Sabberworm\\CSS' => array($vendorDir . '/sabberworm/php-css-parser/lib'),
     'Raven_' => array($vendorDir . '/sentry/sentry/lib'),
-    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
     'EasyRdf_' => array($vendorDir . '/easyrdf/easyrdf/lib'),
     'Dflydev\\PlaceholderResolver' => array($vendorDir . '/dflydev/placeholder-resolver/src'),

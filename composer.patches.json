@@ -4,7 +4,6 @@
       "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch"
     },
     "drupal/display_field_copy": {
-      "Widget ": "patches/display_field_copy/display_field_copy-no-widget-field-settings-2822398-7.patch",
       "formatter warning on disabled fields": "https://www.drupal.org/files/issues/display_field_copy-2910523-undefined-index-formatter.patch"
     },
     "drupal/linkit": {

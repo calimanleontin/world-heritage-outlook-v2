@@ -17,11 +17,13 @@ INTRODUCTION
 ------------
 
 Raven module provides integration with [Sentry](https://sentry.io/), an open
-source exception logging, aggregation and notification platform.
+source error tracking platform.
 
-This module allows your Drupal site to send errors, warnings and notices to a
-Sentry server, including fatal PHP and JavaScript errors that typically are not
-logged by Drupal.
+This module can capture all (or a subset of) Drupal log messages as well as
+errors that typically are not logged by Drupal: fatal PHP errors such as memory
+limit exceeded, fatal JavaScript errors, and exceptions thrown by Drush
+commands, and provides a full stacktrace and customizable metadata for each
+event.
 
  * For a full description of the module, visit the project page:
    https://www.drupal.org/project/raven
@@ -53,6 +55,7 @@ This module logs errors to Sentry in a few ways:
  * Register a Drupal logger implementation (for uncaught exceptions, PHP errors,
    and Drupal log messages),
  * Record Sentry breadcrumbs for system events,
+ * Register an error handler for Drush command exceptions,
  * Register an error handler for fatal errors, and
  * Handle JavaScript exceptions via Sentry browser client (if user has the "Send
    JavaScript errors to Sentry" permission).
@@ -74,7 +77,27 @@ suppress breadcrumbs, you may implement hook_raven_breadcrumb_alter().
 
 The Sentry browser client configuration can be modified via the
 `$page['#attached']['drupalSettings']['raven']['options']` object in PHP or the
-`drupalSettings.raven.options` object in JavaScript.
+`drupalSettings.raven.options` object in JavaScript. Sentry callbacks can be
+configured via custom JavaScript (using library weight to ensure your custom
+configuration is added early enough), for example:
+
+```
+drupalSettings.raven.options.beforeSend = function(event) {
+  var isUnsupportedBrowser = navigator.userAgent.match(/Trident.*rv:11\./);
+  if (isUnsupportedBrowser) {
+    // Do not log the event to Sentry.
+    return null;
+  }
+  else {
+    // Do not alter the event.
+    return event;
+  }
+};
+```
+
+If desired, the SENTRY_DSN, SENTRY_ENVIRONMENT and SENTRY_RELEASE environment
+variables can be used to configure this module, overriding the corresponding
+settings at admin/config/development/logging.
 
 
 USAGE
@@ -96,6 +119,8 @@ catch (\Exception $e) {
   watchdog_exception('oops', $e);
   // Capture event via PHP user notice:
   trigger_error($e);
+  // Capture event via Drupal exception handler (or Drush console error event):
+  throw $e;
 }
 ```
 
@@ -127,6 +152,9 @@ DRUSH INTEGRATION
 -----------------
 
 The `drush raven:captureMessage` command sends a message to Sentry.
+
+If the Drush error handler configuration option is enabled, exceptions thrown by
+Drush commands will be sent to Sentry.
 
 
 MAINTAINERS

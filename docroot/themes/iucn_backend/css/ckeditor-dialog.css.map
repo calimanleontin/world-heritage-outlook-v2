@@ -1,1 +1,0 @@
-{"version":3,"sources":["less/ckeditor-dialog.less"],"names":[],"mappings":"AAAA,cAAe;EACb,sBAAA;EACA,kBAAA","sourcesContent":[".cke_reset_all .cke_dialog_body {\n  background-color: #fff;\n  border-radius: 5px;\n}\n\n"]}

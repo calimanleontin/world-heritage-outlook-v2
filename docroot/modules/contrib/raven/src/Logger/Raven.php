@@ -11,10 +11,14 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
+use Drush\Drush;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Raven_Client;
 use Raven_ErrorHandler;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -58,6 +62,13 @@ class Raven implements LoggerInterface {
   protected $currentUser;
 
   /**
+   * Environment.
+   *
+   * @var string
+   */
+  protected $environment;
+
+  /**
    * The module handler.
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
@@ -79,6 +90,13 @@ class Raven implements LoggerInterface {
   protected $requestStack;
 
   /**
+   * The settings array.
+   *
+   * @var \Drupal\Core\Site\Settings
+   */
+  protected $settings;
+
+  /**
    * Constructs a Raven log object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -93,8 +111,10 @@ class Raven implements LoggerInterface {
    *   The current user (optional).
    * @param \Symfony\Component\HttpFoundation\RequestStack|null $request_stack
    *   The request stack (optional).
+   * @param \Drupal\Core\Site\Settings $settings
+   *   The settings array (optional).
    */
-  public function __construct(ConfigFactoryInterface $config_factory, LogMessageParserInterface $parser, ModuleHandlerInterface $module_handler, $environment, AccountInterface $current_user = NULL, RequestStack $request_stack = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, LogMessageParserInterface $parser, ModuleHandlerInterface $module_handler, $environment, AccountInterface $current_user = NULL, RequestStack $request_stack = NULL, Settings $settings = NULL) {
     $this->configFactory = $config_factory;
     $this->config = $this->configFactory->get('raven.settings');
     $this->currentUser = $current_user;
@@ -102,12 +122,17 @@ class Raven implements LoggerInterface {
     $this->moduleHandler = $module_handler;
     $this->parser = $parser;
     $this->environment = $this->config->get('environment') ?: $environment;
+    $this->settings = $settings ?: Settings::getInstance();
     $this->setClient();
     // Raven can catch fatal errors which are not caught by the Drupal logger.
     if ($this->client && $this->config->get('fatal_error_handler')) {
       $error_handler = new Raven_ErrorHandler($this->client);
       $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
       register_shutdown_function([$this->client, 'onShutdown']);
+    }
+    // Add Drush console error event listener.
+    if (function_exists('drush_main') && $this->config->get('drush_error_handler') && method_exists('Drush\Drush', 'service')) {
+      Drush::service('eventDispatcher')->addListener(ConsoleEvents::ERROR, [$this, 'onConsoleError']);
     }
   }
 
@@ -122,8 +147,8 @@ class Raven implements LoggerInterface {
     $options = [
       'auto_log_stacks' => $this->config->get('stack'),
       'curl_method' => 'async',
-      'dsn' => $this->config->get('client_key'),
-      'environment' => $this->environment,
+      'dsn' => empty($_SERVER['SENTRY_DSN']) ? $this->config->get('client_key') : $_SERVER['SENTRY_DSN'],
+      'environment' => empty($_SERVER['SENTRY_ENVIRONMENT']) ? $this->environment : $_SERVER['SENTRY_ENVIRONMENT'],
       'processors' => ['Drupal\raven\Processor\SanitizeDataProcessor'],
       'timeout' => $this->config->get('timeout'),
       'message_limit' => $this->config->get('message_limit'),
@@ -141,8 +166,24 @@ class Raven implements LoggerInterface {
       $options['verify_ssl'] = FALSE;
     }
 
-    if (!empty($this->config->get('release'))) {
+    if (!empty($_SERVER['SENTRY_RELEASE'])) {
+      $options['release'] = $_SERVER['SENTRY_RELEASE'];
+    }
+    elseif (!empty($this->config->get('release'))) {
       $options['release'] = $this->config->get('release');
+    }
+
+    // Proxy configuration.
+    $parsed_dsn = parse_url($options['dsn']);
+    if (!empty($parsed_dsn['host']) && !empty($parsed_dsn['scheme'])) {
+      $http_client_config = $this->settings->get('http_client_config', []);
+      if (!empty($http_client_config['proxy'][$parsed_dsn['scheme']])) {
+        $no_proxy = isset($http_client_config['proxy']['no']) ? $http_client_config['proxy']['no'] : [];
+        // No need to configure proxy if Sentry host is on proxy bypass list.
+        if (!in_array($parsed_dsn['host'], $no_proxy, TRUE)) {
+          $options['http_proxy'] = $http_client_config['proxy'][$parsed_dsn['scheme']];
+        }
+      }
     }
 
     // Disable the default breadcrumb handler because Drupal error handler
@@ -285,6 +326,16 @@ class Raven implements LoggerInterface {
     if ($this->client) {
       $this->client->onShutdown();
     }
+  }
+
+  /**
+   * Captures console error events.
+   */
+  public function onConsoleError(ConsoleErrorEvent $event) {
+    if (!$this->client) {
+      return;
+    }
+    $this->client->captureException($event->getError());
   }
 
 }

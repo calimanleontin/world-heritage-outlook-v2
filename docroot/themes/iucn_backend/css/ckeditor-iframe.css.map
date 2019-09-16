@@ -1,1 +1,0 @@
-{"version":3,"sources":["less/ckeditor-iframe.less"],"names":[],"mappings":"AACA;EACE,oBAAA;EACA,kBAAA;EACA,kBAAA;;AAGF;EACE,kBAAA","sourcesContent":["//this file is only included in iframe ckeditor\nhtml {\n  font-family: inherit;\n  font-size: inherit;\n  overflow-y: hidden;\n}\n\nbody {\n  font-size: inherit;\n}\n"]}

@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\Functional;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -10,6 +11,8 @@ use Drupal\Tests\BrowserTestBase;
  * @group raven
  */
 class RavenTest extends BrowserTestBase {
+
+  use StringTranslationTrait;
 
   /**
    * Modules to install.
@@ -29,7 +32,7 @@ class RavenTest extends BrowserTestBase {
     foreach (range(1, 8) as $level) {
       $config["raven[php][log_levels][$level]"] = '1';
     }
-    $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
+    $this->drupalPostForm('admin/config/development/logging', $config, $this->t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', 'Logged');
     $this->assertSession()->responseHeaderEquals('X-Not-Logged', NULL);
     $this->assertSession()->responseHeaderEquals('X-Stacktrace-File', drupal_get_path('module', 'raven_test') . '/raven_test.module');
@@ -42,7 +45,7 @@ class RavenTest extends BrowserTestBase {
 
     // Test ignored channels.
     $config = ['raven[php][ignored_channels]' => "X-Logged\r\n"];
-    $this->drupalPostForm('admin/config/development/logging', $config, t('Save configuration'));
+    $this->drupalPostForm('admin/config/development/logging', $config, $this->t('Save configuration'));
     $this->assertSession()->responseHeaderEquals('X-Logged', NULL);
 
     // Test client functionality after logger is serialized and unserialized.

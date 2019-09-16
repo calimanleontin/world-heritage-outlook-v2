@@ -89,6 +89,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             'Symfony\\Component\\BrowserKit\\' => 29,
             'Symfony\\Cmf\\Component\\Routing\\' => 30,
             'Symfony\\Bridge\\PsrHttpMessage\\' => 30,
+            'Svg\\' => 4,
             'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
             'SelfUpdate\\' => 11,
         ),
@@ -102,6 +103,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'Prophecy\\' => 9,
             'PhpParser\\' => 10,
         ),
         'M' => 
@@ -144,6 +146,7 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         array (
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
+            'Drupal\\facets_pretty_paths\\' => 27,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Console\\Core\\' => 20,
@@ -342,6 +345,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         array (
             0 => __DIR__ . '/..' . '/symfony/psr-http-message-bridge',
         ),
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
+        ),
         'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
         array (
             0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
@@ -369,6 +376,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Prophecy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
         ),
         'PhpParser\\' => 
         array (
@@ -441,6 +452,10 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         'Drush\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/src',
+        ),
+        'Drupal\\facets_pretty_paths\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/docroot/modules/contrib/facets_pretty_paths/src',
         ),
         'Drupal\\Driver\\' => 
         array (
@@ -591,10 +606,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'S' => 
         array (
-            'Svg\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src',
-            ),
             'Stack' => 
             array (
                 0 => __DIR__ . '/..' . '/stack/builder/src',
@@ -617,10 +628,6 @@ class ComposerStaticInit1170f55eb7c46bd959822fd2310bd1be
         ),
         'P' => 
         array (
-            'Prophecy\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
             'PEAR' => 
             array (
                 0 => __DIR__ . '/..' . '/pear/pear_exception',

@@ -4,7 +4,7 @@ raven.settings:
   mapping:
     client_key:
       type: string
-      label: 'Sentry DSN'
+      label: 'Sentry DSN (PHP)'
     environment:
       type: string
       label: 'Environment'
@@ -60,9 +60,12 @@ raven.settings:
     javascript_error_handler:
       type: boolean
       label: 'JavaScript error handler'
+    drush_error_handler:
+      type: boolean
+      label: 'Drush error handler'
     public_dsn:
       type: string
-      label: 'Sentry public DSN'
+      label: 'Sentry DSN (JavaScript)'
     ssl:
       type: string
       label: 'Options to Verify SSL'

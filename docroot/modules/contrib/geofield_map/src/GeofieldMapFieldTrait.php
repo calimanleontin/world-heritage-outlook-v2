@@ -5,6 +5,7 @@ namespace Drupal\geofield_map;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\geofield\Plugin\Field\FieldType\GeofieldItem;
 
 /**
  * Class GeofieldMapFieldTrait.
@@ -40,7 +41,33 @@ trait GeofieldMapFieldTrait {
     "text_with_summary",
   ];
 
+  /**
+   * Custom Map Style Placeholder.
+   *
+   * @var string
+   */
   protected $customMapStylePlaceholder = '[{"elementType":"geometry","stylers":[{"color":"#1d2c4d"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#8ec3b9"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#1a3646"}]},{"featureType":"administrative.country","elementType":"geometry.stroke","stylers":[{"color":"#4b6878"}]},{"featureType":"administrative.province","elementType":"geometry.stroke","stylers":[{"color":"#4b6878"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#0e1626"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"color":"#4e6d70"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]}]';
+
+  /**
+   * The FieldDefinition.
+   *
+   * @var \Drupal\Core\Field\FieldDefinitionInterface
+   */
+  protected $fieldDefinition;
+
+  /**
+   * The geoPhpWrapper service.
+   *
+   * @var \Drupal\geofield\GeoPHP\GeoPHPInterface
+   */
+  protected $geoPhpWrapper;
+
+  /**
+   * The Link generator Service.
+   *
+   * @var \Drupal\Core\Utility\LinkGeneratorInterface
+   */
+  protected $link;
 
   /**
    * Get the GMap Api Key from the geofield_map.google_maps service.
@@ -80,6 +107,7 @@ trait GeofieldMapFieldTrait {
           'force' => 0,
           'min' => 1,
           'max' => 22,
+          'finer' => 0,
         ],
         'scrollwheel' => 1,
         'draggable' => 1,
@@ -107,6 +135,7 @@ trait GeofieldMapFieldTrait {
           'icon_file' => '',
         ],
         'infowindow_field' => 'title',
+        'view_mode' => 'full',
         'multivalue_split' => 0,
         'force_open' => 0,
         'tooltip_field' => '',
@@ -116,6 +145,7 @@ trait GeofieldMapFieldTrait {
         'map_oms_options' => '{"markersWontMove": "true", "markersWontHide": "true", "basicFormatEvents": "true", "nearbyDistance": 3}',
       ],
       'map_additional_options' => '',
+      'map_additional_libraries' => [],
       'map_geometries_options' => '{"strokeColor":"black","strokeOpacity":"0.8","strokeWeight":2,"fillColor":"blue","fillOpacity":"0.1", "clickable": false}',
       'custom_style_map' => [
         'custom_style_control' => 0,
@@ -261,16 +291,18 @@ trait GeofieldMapFieldTrait {
    */
   protected function getGeoJsonData($items, $entity_id, $description = NULL, $tooltip = NULL, array $additional_data = NULL) {
     $data = [];
-    foreach ($items as $delta => $item) {
 
-      /* @var \Point $geometry */
-      if (is_a($item, '\Drupal\geofield\Plugin\Field\FieldType\GeofieldItem') && isset($item->value)) {
-        $geometry = $this->geoPhpWrapper->load($item->value);
+    foreach ($items as $delta => $item) {
+      $value = ($item instanceof GeofieldItem) ? $item->value : $item;
+
+      try {
+        $geometry = $this->geoPhpWrapper->load($value);
       }
-      elseif (preg_match('/^(POINT|LINESTRING|POLYGON|MULTIPOINT|MULTILINESTRING|MULTIPOLYGON|GEOMETRYCOLLECTION).*\(.*.*\)$/', $item)) {
-        $geometry = $this->geoPhpWrapper->load($item);
+      catch (\Exception $exception) {
+        $geometry = FALSE;
       }
-      if (isset($geometry)) {
+
+      if ($geometry instanceof \Geometry) {
         $datum = [
           "type" => "Feature",
           "geometry" => json_decode($geometry->out('json')),
@@ -287,6 +319,7 @@ trait GeofieldMapFieldTrait {
         $data[] = $datum;
       }
     }
+
     return $data;
   }
 
@@ -454,6 +487,13 @@ trait GeofieldMapFieldTrait {
       $force_center_selector = ':input[name="style_options[map_center][center_force]"]';
     }
 
+    if (isset($this->fieldDefinition)) {
+      $force_zoom_selector = ':input[name="fields[' . $this->fieldDefinition->getName() . '][settings_edit_form][settings][map_zoom_and_pan][zoom][force]"]';
+    }
+    else {
+      $force_zoom_selector = ':input[name="style_options[map_zoom_and_pan][zoom][force]"]';
+    }
+
     $elements['map_zoom_and_pan'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Map Zoom and Pan'),
@@ -497,6 +537,20 @@ trait GeofieldMapFieldTrait {
         '#description' => $this->t('The Maximum Zoom level for the Map.'),
         '#element_validate' => [[get_class($this), 'maxZoomLevelValidate']],
       ],
+      'finer' => [
+        '#title' => $this->t('Zoom Finer'),
+        '#type' => 'number',
+        '#max' => 3,
+        '#min' => -3,
+        '#step' => 0,
+        '#description' => $this->t('Value that might/will be added to default Fit Markers Bounds Zoom. (-3 / +3)'),
+        '#default_value' => $settings['map_zoom_and_pan']['zoom']['finer'] ?? $this->defaultSettings['map_zoom_and_pan']['zoom']['finer'],
+        '#states' => [
+          'invisible' => [
+            $force_zoom_selector => ['checked' => TRUE],
+          ],
+        ],
+      ],
     ];
     $elements['map_zoom_and_pan']['gestureHandling'] = [
       '#type' => 'select',
@@ -504,7 +558,7 @@ trait GeofieldMapFieldTrait {
       '#options' => [
         'auto' => 'auto',
         'greedy' => 'greedy',
-        'cooperative' => 'cooperative' ,
+        'cooperative' => 'cooperative',
         'none' => 'none',
       ],
       '#default_value' => isset($settings['map_zoom_and_pan']['gestureHandling']) ? $settings['map_zoom_and_pan']['gestureHandling'] : 'auto',
@@ -694,14 +748,6 @@ trait GeofieldMapFieldTrait {
       '#weight' => -10,
     ];
 
-    // Add SVG UI file support.
-    $elements['map_marker_and_infowindow']['icon_image_path']['#description'] .= !$this->moduleHandler->moduleExists('svg_image') ? '<br>' . $this->t('SVG Files support is disabled. Enabled it with @svg_image_link', [
-      '@svg_image_link' => $this->link->generate('SVG Image Module', Url::fromUri('https://www.drupal.org/project/svg_image', [
-        'absolute' => TRUE,
-        'attributes' => ['target' => 'blank'],
-      ])),
-    ]) : '<br>' . $this->t('SVG Files support enabled.');
-
     $multivalue_fields_states = [];
 
     $infowindow_fields_options = [];
@@ -712,7 +758,12 @@ trait GeofieldMapFieldTrait {
     // Setup the tokens for views fields.
     // Code is snatched from Drupal\views\Plugin\views\field\FieldPluginBase.
     if (!isset($this->fieldDefinition)) {
-      $elements['map_marker_and_infowindow']['icon_image_path']['#description'] .= '<br>' . $this->t('You may enter data from this view as per the "Replacement patterns" below.');
+      $elements['map_marker_and_infowindow']['icon_image_path']['#description'] .= '<br>' . $this->t('You may enter dynamic data from this View Display Fields via "Replacement patterns" below. Note: Twig notation allows you to define per-row icons (@see this @icon_image_path_issue).', [
+        '@icon_image_path_issue' => $this->link->generate('Geofield Map drupal.org issue', Url::fromUri('https://www.drupal.org/project/geofield_map/issues/3074255', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]);
 
       $options = [];
       $optgroup_fields = (string) t('Fields');
@@ -730,14 +781,14 @@ trait GeofieldMapFieldTrait {
         ];
         foreach (array_keys($options) as $type) {
           if (!empty($options[$type])) {
-            $items = array();
+            $items = [];
             foreach ($options[$type] as $key => $value) {
               $items[] = $key;
             }
-            $item_list = array(
+            $item_list = [
               '#theme' => 'item_list',
               '#items' => $items,
-            );
+            ];
             $replacement_output[] = $item_list;
           }
         }
@@ -749,6 +800,14 @@ trait GeofieldMapFieldTrait {
         '#value' => $replacement_output,
       ];
     }
+
+    // Add SVG UI file support.
+    $elements['map_marker_and_infowindow']['icon_image_path']['#description'] .= !$this->moduleHandler->moduleExists('svg_image') ? '<br>' . $this->t('SVG Files support is disabled. Enabled it with @svg_image_link', [
+      '@svg_image_link' => $this->link->generate('SVG Image Module', Url::fromUri('https://www.drupal.org/project/svg_image', [
+        'absolute' => TRUE,
+        'attributes' => ['target' => 'blank'],
+      ])),
+    ]) : '<br>' . $this->t('SVG Files support enabled.');
 
     // In case it is a Field Formatter.
     if (isset($this->fieldDefinition)) {
@@ -767,7 +826,7 @@ trait GeofieldMapFieldTrait {
       $field_cardinality = $this->fieldDefinition->getFieldStorageDefinition()
         ->getCardinality();
 
-      foreach ($infowindow_fields_options[$form['#entity_type']] as $k => $field) {
+      foreach ($infowindow_fields_options[$this->fieldDefinition->getTargetEntityTypeId()] as $k => $field) {
         if (!empty(array_intersect($field['bundles'], [$form['#bundle']])) &&
           !in_array($k, ['title', 'revision_log'])) {
           $desc_options[$k] = $k;
@@ -778,7 +837,7 @@ trait GeofieldMapFieldTrait {
         }
       }
 
-      $desc_options['#rendered_entity'] = $this->t('- Rendered @entity entity -', ['@entity' => $form['#entity_type']]);
+      $desc_options['#rendered_entity'] = $this->t('- Rendered @entity entity -', ['@entity' => $this->fieldDefinition->getTargetEntityTypeId()]);
 
       $info_window_source_options = $desc_options;
       $info_window_source_description = $this->t('Choose an existing string/text type field from which populate the Marker Infowindow.');
@@ -833,10 +892,14 @@ trait GeofieldMapFieldTrait {
       ];
     }
 
+    // Assure the view_mode to eventually fallback into the (initially defined)
+    // $settings['view_mode'].
+    $default_view_mode = !empty($settings['view_mode']) ? $settings['view_mode'] : (!empty($settings['map_marker_and_infowindow']['view_mode']) ? $settings['map_marker_and_infowindow']['view_mode'] : NULL);
+
     if (isset($this->fieldDefinition)) {
       // Get the human readable labels for the entity view modes.
       $view_mode_options = [];
-      foreach ($this->entityDisplayRepository->getViewModes($form['#entity_type']) as $key => $view_mode) {
+      foreach ($this->entityDisplayRepository->getViewModes($this->fieldDefinition->getTargetEntityTypeId()) as $key => $view_mode) {
         $view_mode_options[$key] = $view_mode['label'];
       }
       // The View Mode drop-down is visible conditional on "#rendered_entity"
@@ -846,11 +909,37 @@ trait GeofieldMapFieldTrait {
         '#title' => $this->t('View mode'),
         '#description' => $this->t('View mode the entity will be displayed in the Infowindow.'),
         '#options' => $view_mode_options,
-        '#default_value' => !empty($settings['map_marker_and_infowindow']['view_mode']) ? $settings['map_marker_and_infowindow']['view_mode'] : NULL,
+        '#default_value' => $default_view_mode,
         '#states' => [
           'visible' => [
             ':input[name$="[settings][map_marker_and_infowindow][infowindow_field]"]' => [
               'value' => '#rendered_entity',
+            ],
+          ],
+        ],
+      ];
+    }
+
+    elseif ($this->entityType) {
+      // Get the human readable labels for the entity view modes.
+      $view_mode_options = [];
+      foreach ($this->entityDisplay->getViewModes($this->entityType) as $key => $view_mode) {
+        $view_mode_options[$key] = $view_mode['label'];
+      }
+      // The View Mode drop-down is visible conditional on "#rendered_entity"
+      // being selected in the Description drop-down above.
+      $elements['map_marker_and_infowindow']['view_mode'] = [
+        '#fieldset' => 'map_marker_and_infowindow',
+        '#type' => 'select',
+        '#title' => $this->t('View mode'),
+        '#description' => $this->t('View mode the entity will be displayed in the Infowindow.'),
+        '#options' => $view_mode_options,
+        '#default_value' => $default_view_mode,
+        '#states' => [
+          'visible' => [
+            ':input[name="style_options[map_marker_and_infowindow][infowindow_field]"]' => [
+              ['value' => '#rendered_entity'],
+              ['value' => '#rendered_entity_ajax'],
             ],
           ],
         ],
@@ -898,6 +987,25 @@ trait GeofieldMapFieldTrait {
 }',
       '#element_validate' => [[get_class($this), 'jsonValidate']],
     ];
+
+    $elements['map_additional_libraries'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Map additional Libraries'),
+      '#description' => $this->t('Select the additional @libraries_link that should be included with the Google Maps library request.', [
+        '@libraries_link' => $this->link->generate('Google Map Libraries', Url::fromUri('https://developers.google.com/maps/documentation/javascript/drawinglayer', [
+          'absolute' => TRUE,
+          'attributes' => ['target' => 'blank'],
+        ])),
+      ]),
+      '#default_value' => $settings['map_additional_libraries'],
+      '#options' => [
+        'places' => $this->t('Places'),
+        'drawing' => $this->t('Drawing'),
+        'geometry' => $this->t('Geometry'),
+        'visualization' => $this->t('Visualization'),
+      ],
+    ];
+
   }
 
   /**
@@ -1111,7 +1219,7 @@ trait GeofieldMapFieldTrait {
       '#rows' => 4,
       '#title' => $this->t('Marker Cluster Additional Options'),
       '#description' => $this->t('An object literal of additional marker cluster options, that comply with the Marker Clusterer Google Maps JavaScript Library.<br>The syntax should respect the javascript object notation (json) format.<br>As suggested in the field placeholder, always use double quotes (") both for the indexes and the string values.'),
-      '#default_value' => isset($settings['map_markercluster']['markercluster_additional_options']) ? $settings['map_markercluster']['markercluster_additional_options']: $default_settings['map_markercluster']['markercluster_additional_options'],
+      '#default_value' => isset($settings['map_markercluster']['markercluster_additional_options']) ? $settings['map_markercluster']['markercluster_additional_options'] : $default_settings['map_markercluster']['markercluster_additional_options'],
       '#placeholder' => '{"maxZoom":12,"gridSize":50}',
       '#element_validate' => [[get_class($this), 'jsonValidate']],
     ];

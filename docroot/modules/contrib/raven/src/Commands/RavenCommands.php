@@ -14,7 +14,7 @@ class RavenCommands extends DrushCommands {
   /**
    * The @logger.raven service.
    *
-   * @var Drupal\raven\Logger\Raven|null
+   * @var \Drupal\raven\Logger\Raven|null
    */
   protected $ravenLogger;
 

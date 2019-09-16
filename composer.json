@@ -148,7 +148,7 @@
     "drupal/facets": "^1.1",
     "drupal/facets_pretty_paths": "^1.0",
     "drupal/features": "^3.8",
-    "drupal/field_group": "^1.0",
+    "drupal/field_group": "3.0-beta1",
     "drupal/file_browser": "^1.1",
     "drupal/geofield": "^1.0@alpha",
     "drupal/geofield_map": "*",
