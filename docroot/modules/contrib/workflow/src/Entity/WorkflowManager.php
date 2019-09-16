@@ -222,10 +222,9 @@ class WorkflowManager implements WorkflowManagerInterface {
       // Return the initial value.
       return $sid;
     }
-
     // If we have access to the original entity, retrieve the previous state from it.
-    if (!empty($entity->original)) {
-      return $entity->original->{$field_name}->value ?: self::getCreationStateId($entity, $field_name);
+    if (!empty($entity->original) && !empty($entity->original->{$field_name}->value)) {
+      return $entity->original->{$field_name}->value;
     }
 
     // A node may not have a Workflow attached.
