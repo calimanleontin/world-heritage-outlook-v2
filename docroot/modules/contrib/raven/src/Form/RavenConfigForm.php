@@ -37,14 +37,14 @@ class RavenConfigForm {
     ];
     $form['raven']['js']['public_dsn'] = [
       '#type'           => 'textfield',
-      '#title'          => t('Sentry public DSN'),
+      '#title'          => t('Sentry DSN'),
       '#default_value'  => $config->get('public_dsn'),
-      '#description'    => t('Sentry public client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
+      '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
     ];
     $form['raven']['js']['polyfill_promise'] = [
       '#type'           => 'checkbox',
       '#title'          => t('Load Polyfill'),
-      '#description'    => t('Capturing JavaScript errors on IE &lt;= 11 requires the Polyfill library. Enable to load Polyfill from <a href="https://cdn.polyfill.io" rel="noreferrer" target="_blank">https://cdn.polyfill.io</a>.'),
+      '#description'    => t('Capturing JavaScript errors on IE ≤ 11 requires the Polyfill library. Enable to load Polyfill from <a href="https://cdn.polyfill.io" rel="noreferrer" target="_blank">https://cdn.polyfill.io</a>.'),
       '#default_value'  => $config->get('polyfill_promise'),
     ];
     $form['raven']['php'] = [
@@ -59,6 +59,7 @@ class RavenConfigForm {
       '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
     ];
     // "0" is not a valid checkbox option.
+    $log_levels = [];
     foreach (RfcLogLevel::getLevels() as $key => $value) {
       $log_levels[$key + 1] = $value;
     }
@@ -88,6 +89,12 @@ class RavenConfigForm {
       '#default_value'  => $config->get('fatal_error_handler_memory'),
       '#size'           => 10,
       '#min'            => 0,
+    ];
+    $form['raven']['php']['drush_error_handler'] = [
+      '#type'           => 'checkbox',
+      '#title'          => t('Enable Drush error handler'),
+      '#description'    => t('Check to capture errors thrown by Drush commands.'),
+      '#default_value'  => $config->get('drush_error_handler'),
     ];
     $form['raven']['php']['message_limit'] = [
       '#type'           => 'number',
@@ -167,6 +174,8 @@ class RavenConfigForm {
         $form_state->getValue(['raven', 'php', 'fatal_error_handler']))
       ->set('fatal_error_handler_memory',
         $form_state->getValue(['raven', 'php', 'fatal_error_handler_memory']))
+      ->set('drush_error_handler',
+        $form_state->getValue(['raven', 'php', 'drush_error_handler']))
       ->set('log_levels',
         $form_state->getValue(['raven', 'php', 'log_levels']))
       ->set('stack',

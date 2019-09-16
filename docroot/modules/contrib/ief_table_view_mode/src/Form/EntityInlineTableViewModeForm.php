@@ -18,9 +18,7 @@ class EntityInlineTableViewModeForm extends EntityInlineForm {
   public function getTableFields($bundles) {
     $fields = parent::getTableFields($bundles);
     $entity_type = $this->entityType->id();
-    $old_fields = [];
     $entityFieldManager = \Drupal::service('entity_field.manager');
-
     foreach ($bundles as $bundle) {
       $display = EntityViewDisplay::load($entity_type . '.' . $bundle . '.' . self::IEF_TABLE_VIEW_MODE_NAME);
       if (!$display || !$display->status()) {
@@ -60,8 +58,6 @@ class EntityInlineTableViewModeForm extends EntityInlineForm {
         $fields[$old_field_name] = $old_field;
         $fields[$old_field_name]['weight'] = $display_options['weight'];
       }
-
-      $old_fields = [];
 
       $extra_fields = $entityFieldManager->getExtraFields($entity_type, $bundle);
       $extra_fields = isset($extra_fields['display']) ? $extra_fields['display'] : [];

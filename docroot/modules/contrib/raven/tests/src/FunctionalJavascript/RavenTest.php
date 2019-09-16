@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\FunctionalJavascript;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 
 /**
@@ -10,6 +11,8 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
  * @group raven
  */
 class RavenTest extends WebDriverTestBase {
+
+  use StringTranslationTrait;
 
   /**
    * Modules to install.
@@ -24,7 +27,7 @@ class RavenTest extends WebDriverTestBase {
   public function testRavenJavascriptConfig() {
     $admin_user = $this->drupalCreateUser(['administer site configuration', 'send javascript errors to sentry']);
     $this->drupalLogin($admin_user);
-    $this->drupalPostForm('admin/config/development/logging', ['raven[js][javascript_error_handler]' => TRUE], t('Save configuration'));
+    $this->drupalPostForm('admin/config/development/logging', ['raven[js][javascript_error_handler]' => TRUE], $this->t('Save configuration'));
   }
 
 }

@@ -31,6 +31,7 @@ class ComposerStaticInit75a77e2287789eaea7018def476f4d7d
         '96f8d8288528d52059397cad6ec61f17' => __DIR__ . '/..' . '/mkalkbrenner/php-htmldiff-advanced/src/HtmlDiffAdvanced.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
+        '5a12a5271c58108e0aa33355e6ac54ea' => __DIR__ . '/..' . '/drupal/console-core/src/functions.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -89,7 +90,6 @@ class ComposerStaticInit75a77e2287789eaea7018def476f4d7d
         'aa53dcba601214d17ad405b7c291b7e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/multiply.php',
         '75c79eb1b25749b05a47976f32b0d8a2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideby.php',
         '6ab8ad87a734f276a6bcd5a0fe1289be' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideinto.php',
-        '5a12a5271c58108e0aa33355e6ac54ea' => __DIR__ . '/..' . '/drupal/console-core/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -214,6 +214,7 @@ class ComposerStaticInit75a77e2287789eaea7018def476f4d7d
         array (
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
+            'Drupal\\facets_pretty_paths\\' => 27,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Console\\Core\\' => 20,
@@ -545,6 +546,10 @@ class ComposerStaticInit75a77e2287789eaea7018def476f4d7d
         'Drush\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/src',
+        ),
+        'Drupal\\facets_pretty_paths\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/docroot/modules/contrib/facets_pretty_paths/src',
         ),
         'Drupal\\Driver\\' => 
         array (

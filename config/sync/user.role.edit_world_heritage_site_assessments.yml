@@ -15,6 +15,7 @@ permissions:
   - 'delete any site_assessment content'
   - 'delete own site_assessment content'
   - 'edit any site_assessment content'
+  - 'edit own profile'
   - 'edit own site_assessment content'
   - 'revert site_assessment revisions'
   - 'translate site_assessment node'

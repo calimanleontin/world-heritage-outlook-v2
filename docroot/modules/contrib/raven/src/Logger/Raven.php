@@ -12,10 +12,13 @@ use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
+use Drush\Drush;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Raven_Client;
 use Raven_ErrorHandler;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -57,6 +60,13 @@ class Raven implements LoggerInterface {
    * @var \Drupal\Core\Session\AccountInterface|null
    */
   protected $currentUser;
+
+  /**
+   * Environment.
+   *
+   * @var string
+   */
+  protected $environment;
 
   /**
    * The module handler.
@@ -119,6 +129,10 @@ class Raven implements LoggerInterface {
       $error_handler = new Raven_ErrorHandler($this->client);
       $error_handler->registerShutdownFunction($this->config->get('fatal_error_handler_memory'));
       register_shutdown_function([$this->client, 'onShutdown']);
+    }
+    // Add Drush console error event listener.
+    if (function_exists('drush_main') && $this->config->get('drush_error_handler') && method_exists('Drush\Drush', 'service')) {
+      Drush::service('eventDispatcher')->addListener(ConsoleEvents::ERROR, [$this, 'onConsoleError']);
     }
   }
 
@@ -312,6 +326,16 @@ class Raven implements LoggerInterface {
     if ($this->client) {
       $this->client->onShutdown();
     }
+  }
+
+  /**
+   * Captures console error events.
+   */
+  public function onConsoleError(ConsoleErrorEvent $event) {
+    if (!$this->client) {
+      return;
+    }
+    $this->client->captureException($event->getError());
   }
 
 }

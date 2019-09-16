@@ -13,6 +13,7 @@ permissions:
   - 'delete any site_assessment content'
   - 'delete content translations'
   - 'delete site_assessment revisions'
+  - 'edit own profile'
   - 'revert site_assessment revisions'
   - 'use text format assessment_text_format'
   - 'view home button'
