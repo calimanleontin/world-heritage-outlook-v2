@@ -107,6 +107,12 @@ trait AssessmentTestTrait {
         }
 
         $label = WorkflowTestBase::TRANSITION_LABELS[$currentState];
+        if ($currentState == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+          $label = 'Force finish assessment';
+        }
+        if ($currentState == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+          $label = 'Force finish reviewing';
+        }
         $this->drupalPostForm($stateChangeUrl, [], $label);
       }
 
