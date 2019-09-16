@@ -40,11 +40,11 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
         $diffRows[0][$i / 2]['data']['#rows'][$idx] = [$diff_group[$i], $diff_group[$i + 1]];
       }
 
-      if (!empty($diffRows[0][0]['data']['#rows'][$idx][1]['data']) && $diffRows[0][1]['data']['#rows'][$idx][1]['data']) {
-        if (strpos($diffRows[0][0]['data']['#rows'][$idx][1]['data'], $diffRows[0][1]['data']['#rows'][$idx][1]['data']) !== FALSE) {
+      if (!empty($diffRows[0][0]['data']['#rows'][$idx][1]['data']['#markup']) && $diffRows[0][1]['data']['#rows'][$idx][1]['data']['#markup']) {
+        if (strpos($diffRows[0][1]['data']['#rows'][$idx][1]['data']['#markup'], $diffRows[0][0]['data']['#rows'][$idx][1]['data']['#markup']) !== FALSE) {
           $diffRows[0][0]['data']['#rows'][$idx][1]['class'] = 'diff-context';
         }
-        elseif (strpos($diffRows[0][1]['data']['#rows'][$idx][1]['data'], $diffRows[0][0]['data']['#rows'][$idx][1]['data']) !== FALSE) {
+        elseif (strpos($diffRows[0][0]['data']['#rows'][$idx][1]['data']['#markup'], $diffRows[0][1]['data']['#rows'][$idx][1]['data']['#markup']) !== FALSE) {
           $diffRows[0][1]['data']['#rows'][$idx][1]['class'] = 'diff-context';
         }
       }
