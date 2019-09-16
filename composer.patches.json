@@ -27,7 +27,9 @@
     },
     "drupal/workflow": {
       "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
-      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
+      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch",
+      "Check if a transition was already executed only for default revisions": "patches/workflow/change-static-info-for-non-default-revision_0.patch",
+      "Correctly calculate old state id when changing older revisions": "https://www.drupal.org/files/issues/2019-09-16/get-previous-state-from-original-entity-3078046-02.patch"
     },
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"
