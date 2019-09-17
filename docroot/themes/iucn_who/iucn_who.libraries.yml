@@ -2,10 +2,6 @@ headroom:
     js:
       libraries/node_modules/headroom.js/dist/headroom.min.js: { minified: true }
 
-bootstrap-js:
-    js:
-      libraries/bootstrap/bootstrap.min.js: { minified: true }
-
 simplebar:
     js:
       libraries/node_modules/simplebar/dist/simplebar.js: { minified: true }
@@ -40,12 +36,24 @@ maps:
       - core/matchmedia
       - iucn_who/simplebar
 
-global-styling:
+framework:
     css:
       theme:
         css/style.css: {}
         css/temporary-style.css: {}
     js:
+      bootstrap/js/affix.js: {}
+      bootstrap/js/alert.js: {}
+      bootstrap/js/button.js: {}
+      bootstrap/js/carousel.js: {}
+      bootstrap/js/collapse.js: {}
+      bootstrap/js/dropdown.js: {}
+      bootstrap/js/modal.js: {}
+      bootstrap/js/tooltip.js: {}
+      bootstrap/js/popover.js: {}
+      bootstrap/js/scrollspy.js: {}
+      bootstrap/js/tab.js: {}
+      bootstrap/js/transition.js: {}
       js/main.js: {}
       js/navbar-headroom.js: {}
       js/social_media.js: {}
@@ -55,7 +63,6 @@ global-styling:
     dependencies:
       - core/jquery
       - core/underscore
-      - iucn_who/bootstrap-js
       - iucn_who/flexibility
       - iucn_who/headroom
 
