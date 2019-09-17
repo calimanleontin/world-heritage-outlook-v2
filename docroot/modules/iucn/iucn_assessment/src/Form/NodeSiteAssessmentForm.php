@@ -435,8 +435,6 @@ class NodeSiteAssessmentForm {
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
     $currentUser = \Drupal::currentUser();
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
-    $workflowService = \Drupal::service('iucn_assessment.workflow');
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -455,6 +453,15 @@ class NodeSiteAssessmentForm {
     $form_state->setFormObject($nodeForm);
   }
 
+  /**
+   * Sets the current user as a coordinator if he has the coordinator role and
+   * is the first one who edits the assessment.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
   public static function createCoordinatorRevision(&$form, FormStateInterface $form_state) {
     $currentUser = \Drupal::currentUser();
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
@@ -469,12 +476,10 @@ class NodeSiteAssessmentForm {
       && $workflowService->isNewAssessment($node)
       && empty($node->field_coordinator->target_id)
       && in_array('coordinator', $currentUser->getRoles())) {
-      // Sets the current user as a coordinator if he has the coordinator role
-      // and edits the assessment.
       $oldState = $node->field_state->value;
       $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
       $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
-      $node = $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
   }
 
