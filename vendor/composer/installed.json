@@ -5,7 +5,9 @@
         "version_normalized": "1.6.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1649,7 +1651,9 @@
         "version_normalized": "4.1.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
+            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1660,7 +1664,9 @@
         "version_normalized": "4.2.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
+            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1848,7 +1854,9 @@
         "version_normalized": "1.8.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -4141,7 +4149,8 @@
                 "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
                 "Fix states api or condition": "patches/core/states-api-or.patch",
                 "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
-                "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch"
+                "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch",
+                "Update yarn packages to fix 19 vulnerabilities by updating nightwatch": "https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch"
             }
         },
         "installation-source": "dist",
@@ -4408,7 +4417,7 @@
                 }
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
         "license": [
             "GPL-2.0+"
@@ -4633,7 +4642,8 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
-            }
+            },
+            "patches_applied": []
         },
         "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
@@ -9043,7 +9053,9 @@
             },
             "patches_applied": {
                 "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
-                "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch"
+                "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch",
+                "Check if a transition was already executed only for default revisions": "patches/workflow/change-static-info-for-non-default-revision_0.patch",
+                "Correctly calculate old state id when changing older revisions": "https://www.drupal.org/files/issues/2019-09-16/get-previous-state-from-original-entity-3078046-02.patch"
             }
         },
         "installation-source": "dist",
@@ -9606,7 +9618,9 @@
         "version_normalized": "4.3.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
+            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10015,7 +10029,9 @@
         "version_normalized": "1.6.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
+            "reference": null,
+            "shasum": null
         },
         "require": {
             "composer/installers": "^1.2.0"
@@ -10095,7 +10111,9 @@
         "version_normalized": "1.6.4.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
+            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10198,7 +10216,9 @@
         "version_normalized": "1.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
+            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
+            "reference": null,
+            "shasum": null
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -15547,7 +15567,9 @@
         "version_normalized": "5.3.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
+            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
+            "reference": null,
+            "shasum": null
         },
         "require": {
             "composer/installers": "^1.2.0"
