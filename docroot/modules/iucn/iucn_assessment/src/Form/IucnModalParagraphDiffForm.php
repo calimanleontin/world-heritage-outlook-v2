@@ -37,7 +37,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
   ];
 
   public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager = NULL, RequestStack $requestStack) {
-    parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entity_form_builder, $entityTypeManager, $temp_store_factory, $assessmentWorkflow, $languageManager);
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entity_form_builder, $entityTypeManager, $temp_store_factory, $assessmentWorkflow, $languageManager, $requestStack);
     $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
 
     // We want to render the diff forms using the form widget configured for the
