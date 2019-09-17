@@ -39,9 +39,10 @@ class EditRevisionFormTest extends IucnAssessmentTestBase {
     $this->checkReadOnlyAccess();
 
     $tabs = [
-      'assessing-values',
       'threats',
       'protection-management',
+      'assessing-values',
+      'conservation-outlook',
       'benefits',
       'projects',
       'references',
