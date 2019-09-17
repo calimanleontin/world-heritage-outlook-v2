@@ -3,6 +3,7 @@
 namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
@@ -103,5 +104,26 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
     ViewTestData::createTestViews(self::class, static::$modules);
     TestSupport::createTestData();
   }
+
+  public function checkReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
+    $this->assertNoLinkByHref('/node/edit_paragraph');
+    $this->assertNoLinkByHref('/node/delete_paragraph');
+    $this->assertNoLinkByHref('/node/add_paragraph');
+    $this->assertSession()->responseNotContains('field-multiple-drag');
+  }
+
+  public function checkNoReadOnlyAccess(Url $url = NULL) {
+    if (!empty($url)) {
+      $this->drupalGet($url);
+    }
+    $this->assertLinkByHref('/node/edit_paragraph');
+    $this->assertLinkByHref('/node/delete_paragraph');
+    $this->assertLinkByHref('/node/add_paragraph');
+    $this->assertSession()->responseContains('field-multiple-drag');
+  }
+
 
 }
