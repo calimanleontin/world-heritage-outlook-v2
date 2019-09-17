@@ -90,6 +90,13 @@ function iucn_notifications_node_update(NodeInterface $node) {
       $recipients[] = $assessorId;
       break;
 
+    case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
+      if ($original->field_assessor->target_id != $assessorId) {
+        // The assessor was changed and we need to notify the new one.
+        $recipients[] = $assessorId;
+      }
+      break;
+
     case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
       $recipients[] = $coordinatorId;
       break;
@@ -117,12 +124,6 @@ function iucn_notifications_node_update(NodeInterface $node) {
         ->execute();
       foreach ($managersIds as $managerId) {
         $recipients[] = $managerId;
-      }
-      break;
-
-    case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
-      if ($original->get('field_assessor')->target_id != $assessorId) {
-        $recipients[] = $assessorId;
       }
       break;
   }
