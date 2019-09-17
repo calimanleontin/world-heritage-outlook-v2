@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
 use Drupal\Core\Url;
@@ -10,6 +9,7 @@ use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 class EditRevisionFormTest extends IucnAssessmentTestBase {
 
   public function testRevisionReadonlyAccess() {
+    //Check that the assessment revision edit form is available but readonly
     $assessment = $this->createMockAssessmentNode(
       AssessmentWorkflow::STATUS_READY_FOR_REVIEW,
       [],
