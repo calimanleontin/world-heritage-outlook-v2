@@ -1,10 +1,12 @@
-.node-site-assessment-edit-form fieldset.overall-container {
+.node-site-assessment-edit-form fieldset.overall-container,
+.node-site-assessment-form fieldset.overall-container {
   margin: 0!important;
   padding: 0!important;
   border: none!important;
   display: grid;
 }
-.node-site-assessment-edit-form fieldset.overall-container > legend .fieldset-legend {
+.node-site-assessment-edit-form fieldset.overall-container > legend .fieldset-legend,
+.node-site-assessment-form fieldset.overall-container > legend .fieldset-legend {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -14,53 +16,64 @@
   color: #333;
   text-transform: uppercase;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper {
   width: calc(100% - 1px);
   border-top: 1px solid #e6e4df;
   border-left: 1px solid #e6e4df;
   overflow: auto;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row {
   display: grid;
   grid-auto-columns: 150px;
   grid-auto-flow: column;
   grid-template-columns: auto;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
   font-weight: bold;
   background: #ececec;
   border-bottom: 1px solid #bfbfba!important;
   height: 38px;
   box-sizing: border-box;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label {
   font-weight: bold;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"],
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
   grid-template-columns: 300px auto;
 }
 @media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"],
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
     grid-template-columns: 150px auto;
   }
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
   margin: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
   display: block;
   padding: 10px 12px;
   border-right: 1px solid #e6e4df;
   border-bottom: 1px solid #e6e4df;
   font-weight: normal;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
   position: relative;
   padding-right: 60px;
   background-color: #fcf8e3 !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
   margin: 10px 3px !important;
   position: absolute !important;
   right: 0;
@@ -76,41 +89,52 @@
   text-indent: -9999em;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare {
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare {
   background-image: url(../images/compare.svg);
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
   padding-right: 12px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select {
   margin-right: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button {
   float: right;
   margin-right: 0 !important;
   position: relative !important;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"],
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
   display: grid;
   width: 100%;
   padding: 0;
   border-right: none;
   border-bottom: none;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
   display: grid;
   grid-template-columns: 300px auto;
 }
 @media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea,
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
     grid-template-columns: 150px auto;
   }
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
   display: block;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -118,36 +142,46 @@
   border-right: 1px solid #e6e4df;
   margin: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
   display: flex;
   flex-direction: column;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter {
   order: 1;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
   font-weight: normal;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
   display: none;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .description-wrapper {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .description-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .description-wrapper {
   display: table-caption;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
   background: #ececec!important;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
   border-top: 1px solid #e6e4df;
   font-weight: bold;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view {
   display: table-row;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item {
   margin: 0;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
   border-bottom: 1px solid #e6e4df;
   border-right: 1px solid #e6e4df;
   box-sizing: border-box;
@@ -155,26 +189,31 @@
   font-weight: normal;
   padding: 10px 12px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
   border-left: none;
   width: 300px;
 }
-.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
   border-right: none;
   width: 150px;
 }
 @media screen and (max-width: 1024px) {
-  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child,
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
     width: 150px;
   }
 }
-.node-site-assessment-edit-form #group-summary-of-benefits {
+.node-site-assessment-edit-form #group-summary-of-benefits,
+.node-site-assessment-form #group-summary-of-benefits {
   border: none;
   padding: 0;
   margin: 0;
   display: grid;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits > legend .fieldset-legend {
+.node-site-assessment-edit-form #group-summary-of-benefits > legend .fieldset-legend,
+.node-site-assessment-form #group-summary-of-benefits > legend .fieldset-legend {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -184,19 +223,23 @@
   color: #333;
   text-transform: uppercase;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits .description-wrapper {
+.node-site-assessment-edit-form #group-summary-of-benefits .description-wrapper,
+.node-site-assessment-form #group-summary-of-benefits .description-wrapper {
   border-bottom: 1px solid #e6e4df;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper {
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper {
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
   position: relative;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
   display: none;
 }
-.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
   padding: 10px 12px;
 }
 .node-site-assessment-edit-form .current-state,

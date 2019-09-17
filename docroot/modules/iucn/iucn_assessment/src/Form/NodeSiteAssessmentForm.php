@@ -518,6 +518,10 @@ class NodeSiteAssessmentForm {
    *   The form.
    */
   public static function hideParagraphsActions(array &$form, NodeInterface $siteAssessment) {
+    if (!$siteAssessment->isDefaultTranslation()) {
+      return;
+    }
+
     $state = $siteAssessment->get('field_state')->value;
 
     /** @var \Drupal\Core\Session\AccountProxy $currentUser */
