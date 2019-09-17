@@ -15,6 +15,7 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class IucnModalParagraphDiffForm extends IucnModalDiffForm {
 
@@ -35,7 +36,7 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
     'author', // Revision author is always rendered.
   ];
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager = NULL) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager = NULL, RequestStack $requestStack) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time, $entity_form_builder, $entityTypeManager, $temp_store_factory, $assessmentWorkflow, $languageManager);
     $this->paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
 
