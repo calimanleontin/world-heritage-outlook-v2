@@ -432,7 +432,17 @@ class WorkflowTransition extends ContentEntityBase implements WorkflowTransition
     // For non-default revisions, there is no way of executing the same transition twice in one call.
     // Set a random identifier since we won't be needing to access this variable later.
     if ($entity instanceof RevisionableInterface && !$entity->isDefaultRevision()) {
-      $entity_identifier = $entity_id . microtime();
+      if ($entity->isNewRevision()) {
+        $i = 0;
+        $entity_identifier = $entity_id . '_revision_' . $i;
+        while (isset($static_info[$entity_identifier][$field_name][$label])) {
+          $i++;
+          $entity_identifier = $entity_id . '_revision_' . $i;
+        }
+      }
+      else {
+        $entity_identifier = $entity_id . '_' . $entity->getRevisionId();
+      }
     }
 
     if (isset($static_info[$entity_identifier][$field_name][$label]) && !$this->isEmpty()) {
