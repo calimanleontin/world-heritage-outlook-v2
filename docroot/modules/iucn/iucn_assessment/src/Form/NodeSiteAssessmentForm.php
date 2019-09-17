@@ -388,6 +388,7 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+    $form['actions']['submit']['#submit'][] = [self::class, 'createCoordinatorRevision'];
 
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
@@ -443,6 +444,27 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $values = $form_state->getValues();
 
+    $settings = json_decode($node->field_settings->value, TRUE);
+
+    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
+      $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
+    }
+
+    $node->field_settings->setValue(json_encode($settings));
+    $nodeForm->setEntity($node);
+    $form_state->setFormObject($nodeForm);
+  }
+
+  public static function createCoordinatorRevision(&$form, FormStateInterface $form_state) {
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+
     if ($node->isDefaultRevision()
       && $workflowService->isNewAssessment($node)
       && empty($node->field_coordinator->target_id)
@@ -454,16 +476,6 @@ class NodeSiteAssessmentForm {
       $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
       $node = $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
     }
-
-    $settings = json_decode($node->field_settings->value, TRUE);
-
-    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
-      $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
-    }
-
-    $node->field_settings->setValue(json_encode($settings));
-    $nodeForm->setEntity($node);
-    $form_state->setFormObject($nodeForm);
   }
 
   /**
