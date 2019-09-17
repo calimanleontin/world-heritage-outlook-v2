@@ -14,7 +14,7 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Send to assessor',
     AssessmentWorkflow::STATUS_READY_FOR_REVIEW => 'Submit assessment',
     AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Send assessment to reviewers',
-    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Finish reviewing',
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Submit review',
     AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Start comparing reviews',
     AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Send to reference reviewer',
     AssessmentWorkflow::STATUS_FINAL_CHANGES => 'Submit',

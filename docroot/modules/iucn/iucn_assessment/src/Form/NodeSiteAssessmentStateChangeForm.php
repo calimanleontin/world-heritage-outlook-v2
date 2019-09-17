@@ -137,7 +137,6 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
-    static::changeWorkflowButtons($form, $currentUser);
 
     $titlePlaceholder = 'Change state of @type @assessment';
 
@@ -620,11 +619,5 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     \Drupal::messenger()->addMessage($message);
-  }
-
-  private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
-    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
-      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
-    }
   }
 }
