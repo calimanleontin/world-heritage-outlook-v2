@@ -136,27 +136,6 @@ class DisplayFieldCopy extends DsFieldBase {
   /**
    * {@inheritdoc}
    */
-  public function settingsSummary($settings) {
-    // When field is disabled the formatter index is not available.
-    if (!isset($this->getFieldConfiguration()['formatter'])) {
-      return [];
-    }
-    /** @var \Drupal\Core\Field\FormatterInterface $formatter */
-    $formatter = $this->getFormatter([
-      'type' => $this->getFieldConfiguration()['formatter'],
-    ]);
-
-    if ($formatter) {
-      return $formatter->settingsSummary();
-    }
-    else {
-      return [];
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formatters() {
     return $this->formatterPluginManager->getOptions($this->getFieldDefinition()->getType());
   }
