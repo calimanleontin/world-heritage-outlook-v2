@@ -132,44 +132,56 @@ class AssessmentCycleCreator {
    * Duplicate all child entities.
    *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   * @param int $cycle
+   * @param $cycle
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   protected function createDuplicateReferencedEntities(FieldableEntityInterface $entity, $cycle) {
     $this->logger->info("Creating child duplicates for {$entity->getEntityTypeId()} {$entity->id()}");
     foreach ($entity->getFieldDefinitions() as $fieldName => $fieldSettings) {
-      if (!$fieldSettings instanceof BaseFieldDefinition && $fieldSettings->getType() == 'entity_reference_revisions') {
-        foreach ($entity->{$fieldName} as $idx => &$value) {
-          $childEntity = $value->entity;
-          if ($childEntity instanceof FieldableEntityInterface) {
-            $this->createDuplicateReferencedEntities($childEntity);
-          }
-          /** @var \Drupal\paragraphs\ParagraphInterface $childEntityClone */
-          $childEntityClone = $childEntity->createDuplicate();
+      if ($fieldSettings instanceof BaseFieldDefinition || $fieldSettings->getType() != 'entity_reference_revisions') {
+        continue;
+      }
 
-          // Remove paragraphs that reference term "Is the protected area valued for its nature conservation values?"
-          if ($cycle == 2020 && $childEntityClone->bundle() == 'as_site_benefit'
-            && $childEntityClone->get('field_as_benefits_category')->target_id == 1263
-            && $childEntityClone->get('field_as_benefits_category')->count() == 1) {
-            $entity->get($fieldName)->removeItem($idx);
-          }
+      for ($i = 0; $i < $entity->get($fieldName)->count(); $i++) {
+        $childEntity = $entity->get($fieldName)->get($i)->entity;
 
-          // Replace references to some terms.
-          if (in_array($cycle, array_keys(self::TERM_REPLACEMENTS))) {
-            if ($childEntityClone->bundle() == 'as_site_threat') {
-              $this->replaceTermReferences($childEntityClone, 'field_as_threats_categories', $cycle);
-            }
-            elseif ($childEntityClone->bundle() == 'as_site_benefit') {
-              $this->replaceTermReferences($childEntityClone, 'field_as_benefits_category', $cycle);
-            }
-          }
-
-          $value->entity = $childEntityClone;
+        // Remove paragraphs that reference term "Is the protected area valued for its nature conservation values?"
+        if ($cycle == 2020 && $childEntity->bundle() == 'as_site_benefit'
+          && $childEntity->get('field_as_benefits_category')->target_id == 1263
+          && $childEntity->get('field_as_benefits_category')->count() == 1) {
+          $entity->get($fieldName)->removeItem($i);
+          $i--;
+          continue;
         }
+
+        if ($childEntity instanceof FieldableEntityInterface) {
+          $this->createDuplicateReferencedEntities($childEntity, $cycle);
+        }
+
+        /** @var \Drupal\paragraphs\ParagraphInterface $childEntityClone */
+        $childEntityClone = $childEntity->createDuplicate();
+
+        // Replace references to some terms.
+        if (in_array($cycle, array_keys(self::TERM_REPLACEMENTS))) {
+          if ($childEntityClone->bundle() == 'as_site_threat') {
+            $this->replaceTermReferences($childEntityClone, 'field_as_threats_categories', $cycle);
+          }
+          elseif ($childEntityClone->bundle() == 'as_site_benefit') {
+            $this->replaceTermReferences($childEntityClone, 'field_as_benefits_category', $cycle);
+          }
+        }
+
+        $entity->get($fieldName)->set($i, $childEntityClone);
       }
     }
   }
 
   /**
+   * When creating new cycles, some term references can be migrated. (e.g. “Crop
+   * production” => “Crops”.
+   *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    * @param $field
    * @param int $cycle
