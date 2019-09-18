@@ -4,12 +4,17 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
  * Phase: New (assessment_creation, assessment_new)
  *
- * @group iucn_assessment_workflow
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow01NewPhaseTest extends WorkflowTestBase {
 
@@ -37,4 +42,5 @@ class Workflow01NewPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
   }
+
 }

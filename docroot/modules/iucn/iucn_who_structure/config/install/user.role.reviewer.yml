@@ -52,5 +52,7 @@ permissions:
   - 'use assessment transition under_review_reviewed'
   - 'use assessment transition under_review_under_review'
   - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
   - 'view any unpublished content'
   - 'view latest version'

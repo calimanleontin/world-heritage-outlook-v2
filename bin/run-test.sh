@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # How to use it:
-# ../bin/run-test.sh --group iucn_assessment_forms
+# ../bin/run-test.sh --group assessmentForms
 # OR
 # ../bin/run-test.sh modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php
 
@@ -18,4 +18,4 @@ else
 fi
 
 echo -e "\n";
-../vendor/bin/phpunit "$@"
+../vendor/bin/phpunit --verbose "$@"

@@ -52,7 +52,7 @@ class CallbackViewsTest extends ViewTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp($import_test_views = TRUE) {
     parent::setUp();
 
     // Log with admin permissions.

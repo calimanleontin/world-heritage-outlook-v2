@@ -9,7 +9,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Draft (assessment_draft)
  *
- * @group iucn_assessment_workflow
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow12DraftPhaseTest extends WorkflowTestBase {
 

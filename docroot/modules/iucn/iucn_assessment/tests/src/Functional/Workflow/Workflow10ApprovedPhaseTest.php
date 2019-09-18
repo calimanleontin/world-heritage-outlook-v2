@@ -9,12 +9,14 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Approved (assessment_approved)
  *
- * @group iucn_assessment_workflow
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow10ApprovedPhaseTest extends WorkflowTestBase {
 
   const WORKFLOW_STATE = AssessmentWorkflow::STATUS_APPROVED;
-  
+
   public function testApprovedPhaseAccess() {
     $this->checkUserAccess($this->editUrl, TestSupport::ADMINISTRATOR, 200);
     $this->assertSession()->pageTextContains('Current workflow state: Approved');

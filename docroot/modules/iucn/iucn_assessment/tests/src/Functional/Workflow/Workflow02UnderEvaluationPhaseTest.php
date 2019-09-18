@@ -4,12 +4,16 @@ namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
  * Phase: Pre-assessment edits (assessment_under_evaluation)
  *
- * @group iucn_assessment_workflow
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow02UnderEvaluationPhaseTest extends WorkflowTestBase {
 
@@ -38,4 +42,5 @@ class Workflow02UnderEvaluationPhaseTest extends WorkflowTestBase {
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($this->stateChangeUrl, ['field_assessor' => $assessor->id()], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
   }
+
 }

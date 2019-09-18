@@ -17,6 +17,11 @@ function iucn_fields_install() {
   ];
   foreach ($term_names_2014 as $tid => $name) {
     $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    if (empty($term)) {
+      // When running tests, these terms don't exist.
+      continue;
+    }
+
     $term->setName($name);
     $term->save();
   }
