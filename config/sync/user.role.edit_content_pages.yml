@@ -56,6 +56,8 @@ permissions:
   - 'translate publication node'
   - 'update content translations'
   - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
   - 'view benefit revisions'
   - 'view faq revisions'
   - 'view home button'

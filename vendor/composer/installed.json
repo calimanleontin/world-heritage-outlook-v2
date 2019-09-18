@@ -7170,37 +7170,35 @@
     },
     {
         "name": "drupal/purge",
-        "version": "3.0.0-beta8",
-        "version_normalized": "3.0.0.0-beta8",
+        "version": "dev-3.x",
+        "version_normalized": "dev-3.x",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/purge.git",
-            "reference": "8.x-3.0-beta8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/purge-8.x-3.0-beta8.zip",
-            "reference": "8.x-3.0-beta8",
-            "shasum": "5b6a53d6adcfa0d4e081edf2563d366fc7205bc4"
+            "reference": "73869a5af4b66b88bcafc7c6ec7f8fd17a485b91"
         },
         "require": {
             "drupal/core": "~8.0"
         },
+        "time": "2019-06-07T13:11:32+00:00",
         "type": "drupal-module",
         "extra": {
             "branch-alias": {
                 "dev-3.x": "3.x-dev"
             },
             "drupal": {
-                "version": "8.x-3.0-beta8",
-                "datestamp": "1502719311",
+                "version": "8.x-3.0-beta8+20-dev",
+                "datestamp": "1552396089",
                 "security-coverage": {
                     "status": "not-covered",
-                    "message": "Beta releases are not covered by Drupal security advisories."
+                    "message": "Dev releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "setUp() methods from Tests are not compatible with respective parent setUp() method": "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "notification-url": "https://packages.drupal.org/8/downloads",
         "license": [
             "GPL-2.0-or-later"
@@ -7222,7 +7220,7 @@
         "description": "Provides a generic external cache invalidation API and queue service.",
         "homepage": "https://www.drupal.org/project/purge",
         "support": {
-            "source": "http://cgit.drupalcode.org/purge"
+            "source": "https://git.drupalcode.org/project/purge"
         }
     },
     {
@@ -8017,6 +8015,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074934-test-fail-D8.patch"
             }
         },
         "installation-source": "dist",
@@ -8684,6 +8685,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074938-test-error-D8.patch"
             }
         },
         "installation-source": "dist",

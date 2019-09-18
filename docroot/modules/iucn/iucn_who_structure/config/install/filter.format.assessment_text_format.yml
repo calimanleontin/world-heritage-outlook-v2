@@ -1,0 +1,115 @@
+uuid: 45fa182b-b36b-420e-960d-9a0e942ca9a6
+langcode: en
+status: false
+dependencies:
+  module:
+    - editor
+    - inline_responsive_images
+    - linkit
+    - spamspan
+name: 'Assessment text format'
+format: assessment_text_format
+weight: 0
+filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: false
+    weight: -48
+    settings: {  }
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: false
+    weight: -44
+    settings:
+      filter_url_length: 72
+  filter_autop:
+    id: filter_autop
+    provider: filter
+    status: false
+    weight: -46
+    settings: {  }
+  filter_html_escape:
+    id: filter_html_escape
+    provider: filter
+    status: true
+    weight: -50
+    settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: false
+    weight: -38
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: false
+    weight: -45
+    settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: false
+    weight: -49
+    settings:
+      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <img src alt data-entity-type data-entity-uuid>'
+      filter_html_help: true
+      filter_html_nofollow: false
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: false
+    weight: -47
+    settings: {  }
+  filter_html_image_secure:
+    id: filter_html_image_secure
+    provider: filter
+    status: false
+    weight: -39
+    settings: {  }
+  filter_responsive_image_style:
+    id: filter_responsive_image_style
+    provider: inline_responsive_images
+    status: false
+    weight: -42
+    settings: {  }
+  filter_imagestyle:
+    id: filter_imagestyle
+    provider: inline_responsive_images
+    status: false
+    weight: -43
+    settings:
+      image_style_crop_thumbnail: '0'
+      image_style_free_crop_thumbnail: '0'
+      image_style_free_crop_thumbnail_100: '0'
+      image_style_large: '0'
+      image_style_large_image: '0'
+      image_style_linkit_result_thumbnail: '0'
+      image_style_medium: '0'
+      image_style_page_teaser: '0'
+      image_style_site_map_detail: '0'
+      image_style_sites_thumbnail: '0'
+      image_style_thumbnail: '0'
+  linkit:
+    id: linkit
+    provider: linkit
+    status: false
+    weight: -41
+    settings:
+      title: true
+  filter_spamspan:
+    id: filter_spamspan
+    provider: spamspan
+    status: false
+    weight: -40
+    settings:
+      spamspan_at: ' [at] '
+      spamspan_use_graphic: '0'
+      spamspan_dot_enable: '0'
+      spamspan_dot: ' [dot] '
+      spamspan_use_form: '0'
+      spamspan_form_pattern: '<a href="%url?goto=%email">%displaytext</a>'
+      spamspan_form_default_url: contact
+      spamspan_form_default_displaytext: 'contact form'

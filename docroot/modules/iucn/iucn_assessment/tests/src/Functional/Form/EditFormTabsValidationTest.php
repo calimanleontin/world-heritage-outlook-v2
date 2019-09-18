@@ -11,7 +11,9 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\iucn_assessment\Functional\Workflow\WorkflowTestBase;
 
 /**
- * @group iucn_assessment_forms
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentForms
  */
 class EditFormTabsValidationTest extends IucnAssessmentTestBase {
 

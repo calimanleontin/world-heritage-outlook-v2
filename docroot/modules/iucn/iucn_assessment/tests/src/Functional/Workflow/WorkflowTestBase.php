@@ -14,7 +14,7 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Send to assessor',
     AssessmentWorkflow::STATUS_READY_FOR_REVIEW => 'Submit assessment',
     AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Send assessment to reviewers',
-    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Finish reviewing',
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Submit review',
     AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Start comparing reviews',
     AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Send to reference reviewer',
     AssessmentWorkflow::STATUS_FINAL_CHANGES => 'Submit',
@@ -40,12 +40,6 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
    */
   protected $stateChangeUrl;
 
-  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
-    $this->userLogIn($user);
-    $this->drupalGet($url);
-    $this->assertSession()->statusCodeEquals($expectedResponseCode);
-  }
-
   public function setUp() {
     parent::setUp();
     $this->assessment = $this->createMockAssessmentNode(static::WORKFLOW_STATE);
@@ -53,4 +47,9 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $this->assessment->id()]);
   }
 
+  public function checkUserAccess(Url $url, $user, $expectedResponseCode) {
+    $this->userLogIn($user);
+    $this->drupalGet($url);
+    $this->assertSession()->statusCodeEquals($expectedResponseCode);
+  }
 }

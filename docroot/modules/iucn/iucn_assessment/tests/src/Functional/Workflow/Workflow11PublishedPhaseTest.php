@@ -9,7 +9,9 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 /**
  * Phase: Published (assessment_published)
  *
- * @group iucn_assessment_workflow
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentWorkflow
  */
 class Workflow11PublishedPhaseTest extends WorkflowTestBase {
 
