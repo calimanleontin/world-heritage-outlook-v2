@@ -14,7 +14,7 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => 'Send to assessor',
     AssessmentWorkflow::STATUS_READY_FOR_REVIEW => 'Submit assessment',
     AssessmentWorkflow::STATUS_UNDER_REVIEW => 'Send assessment to reviewers',
-    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Finish reviewing',
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => 'Submit review',
     AssessmentWorkflow::STATUS_UNDER_COMPARISON => 'Start comparing reviews',
     AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => 'Send to reference reviewer',
     AssessmentWorkflow::STATUS_FINAL_CHANGES => 'Submit',
@@ -52,26 +52,4 @@ class WorkflowTestBase extends IucnAssessmentTestBase {
     $this->drupalGet($url);
     $this->assertSession()->statusCodeEquals($expectedResponseCode);
   }
-
-  public function checkReadOnlyAccess(Url $url = NULL) {
-    if (!empty($url)) {
-      $this->drupalGet($url);
-    }
-    $this->assertNoLinkByHref('/node/edit_paragraph');
-    $this->assertNoLinkByHref('/node/delete_paragraph');
-    $this->assertNoLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseNotContains('field-multiple-drag');
-  }
-
-  public function checkNoReadOnlyAccess(Url $url = NULL) {
-    if (!empty($url)) {
-      $this->drupalGet($url);
-    }
-    $this->assertLinkByHref('/node/edit_paragraph');
-    $this->assertLinkByHref('/node/delete_paragraph');
-    $this->assertLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseContains('field-multiple-drag');
-  }
-
-
 }

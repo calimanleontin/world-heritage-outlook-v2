@@ -2,9 +2,11 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
+use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
 /**
@@ -40,36 +42,32 @@ class Workflow08ReviewingReferencesPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
     $this->userLogIn(TestSupport::REFERENCES_REVIEWER1);
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form'));
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'threats']]));
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'protection-management']]));
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'assessing-values']]));
-//    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'conservation-outlook']]));
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'benefits']]));
-    $this->checkReferencesReviewerParagraphEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'projects']]));
-    $this->checkReferencesReviewerReferencesEditAccess($this->assessment->toUrl('edit-form', ['query' => ['tab'  => 'references']]));
-    $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINAL_CHANGES]);
-  }
-  
-  protected function checkReferencesReviewerParagraphEditAccess(Url $url) {
-    if (!empty($url)) {
-      $this->drupalGet($url);
-    }
-    $this->assertLinkByHref('/node/edit_paragraph');
-    // @TODO: uncomment this when #7330 is done.
-//    $this->assertNoLinkByHref('/node/delete_paragraph');
-//    $this->assertNoLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseNotContains('field-multiple-drag');
-  }
 
-  protected function checkReferencesReviewerReferencesEditAccess(Url $url) {
-    if (!empty($url)) {
+    foreach ($this->tabs as $tab => $fields) {
+      $url = $this->assessment->toUrl('edit-form', ['query' => ['tab'  => $tab]]);
       $this->drupalGet($url);
+      foreach ($fields as $field) {
+        $cssField = Html::cleanCssIdentifier($field);
+        if ($this->assessment->get($field)->getSetting('handler') == 'default:paragraph') {
+          if ($field == 'field_as_references_p') {
+            $this->assertElementPresent(".field--name-field-as-references-p .field-multiple-drag");
+            $this->assertElementPresent(".field--name-field-as-references-p .paragraphs-icon-button-edit");
+            $this->assertElementPresent(".field--name-field-as-references-p .paragraphs-icon-button-delete");
+            $this->assertElementPresent(".field--name-field-as-references-p .paragraphs-add-more-button");
+          }
+          else {
+            $this->assertElementNotPresent(".field--name-$cssField .field-multiple-drag");
+            $this->assertElementPresent(".field--name-$cssField .paragraphs-icon-button-edit");
+            $this->assertElementNotPresent(".field--name-$cssField .paragraphs-icon-button-delete");
+            $this->assertElementNotPresent(".field--name-$cssField .paragraphs-add-more-button");
+          }
+        }
+        else {
+          $this->assertElementPresent(".field--name-$cssField");
+          $this->assertElementNotPresent(".field--name-$cssField *:disabled");
+        }
+      }
     }
-    $this->assertLinkByHref('/node/edit_paragraph');
-    $this->assertLinkByHref('/node/delete_paragraph');
-    $this->assertLinkByHref('/node/add_paragraph');
-    $this->assertSession()->responseContains('field-multiple-drag');
   }
 
 }

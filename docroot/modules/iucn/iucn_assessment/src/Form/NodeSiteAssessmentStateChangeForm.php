@@ -92,7 +92,6 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT && $currentUser->hasPermission('force finish assessment')) {
       $form['actions']['workflow_' . $state]['#access'] = TRUE;
-      $form['actions']['workflow_assessment_ready_for_review']['#access'] = TRUE;
       $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
       $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
         'class' => ['button--danger'],
@@ -138,7 +137,6 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $form['#title'] = t('Submit @assessment', ['@assessment' => $node->getTitle()]);
-    static::changeWorkflowButtons($form, $currentUser);
 
     $titlePlaceholder = 'Change state of @type @assessment';
 
@@ -621,11 +619,5 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     \Drupal::messenger()->addMessage($message);
-  }
-
-  private static function changeWorkflowButtons(&$form, AccountProxyInterface $currentUser) {
-    if (!empty($form['actions']['workflow_assessment_finished_reviewing']['#access'])) {
-      $form['actions']['workflow_assessment_finished_reviewing']['#value'] = t('Submit review');
-    }
   }
 }

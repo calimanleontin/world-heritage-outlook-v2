@@ -45,17 +45,17 @@ trait AssessmentTestTrait {
    *  Assessment workflow state.
    * @param array $values
    *  Extra fields values.
-   * @param bool $doNotReferenceUser
-   *  Defaults to FALSE. If set to TRUE, the default users fields (coordinator,
+   * @param bool $referenceUser
+   *  Defaults to TRUE. If set to FALSE, the default users fields (coordinator,
    * assessor, reviewers and references reviewer) will be left empty.
    *
    * @return \Drupal\node\NodeInterface|null
    */
-  protected function createMockAssessmentNode($state, array $values = [], $doNotReferenceUser = FALSE) {
+  protected function createMockAssessmentNode($state, array $values = [], $referenceUser = TRUE) {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
 
-    if ($doNotReferenceUser === FALSE) {
+    if ($referenceUser) {
       /** @var \Drupal\user\UserInterface $coordinator */
       $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
       /** @var \Drupal\user\UserInterface $assessor */
