@@ -1,3 +1,4 @@
+uuid: 29c9c399-4475-4cc8-b130-0317c3f4c87e
 langcode: en
 status: true
 dependencies: {  }
@@ -14,6 +15,7 @@ permissions:
   - 'delete any site content'
   - 'delete own site content'
   - 'edit any site content'
+  - 'edit own profile'
   - 'edit own site content'
   - 'revert site revisions'
   - 'translate site node'
