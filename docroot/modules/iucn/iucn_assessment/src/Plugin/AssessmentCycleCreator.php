@@ -147,19 +147,19 @@ class AssessmentCycleCreator {
           $childEntityClone = $childEntity->createDuplicate();
 
           // Remove paragraphs that reference term "Is the protected area valued for its nature conservation values?"
-          if ($cycle == 2020 && $childEntity->bundle() == 'as_site_benefit'
-            && $childEntity->get('field_as_benefits_category')->target_id == 1263
-            && $childEntity->get('field_as_benefits_category')->count() == 1) {
+          if ($cycle == 2020 && $childEntityClone->bundle() == 'as_site_benefit'
+            && $childEntityClone->get('field_as_benefits_category')->target_id == 1263
+            && $childEntityClone->get('field_as_benefits_category')->count() == 1) {
             $entity->get($fieldName)->removeItem($idx);
           }
 
           // Replace references to some terms.
           if (in_array($cycle, array_keys(self::TERM_REPLACEMENTS))) {
-            if ($childEntity->bundle() == 'as_site_threat') {
-              $this->replaceTermReferences($childEntity, 'field_as_threats_categories', $cycle);
+            if ($childEntityClone->bundle() == 'as_site_threat') {
+              $this->replaceTermReferences($childEntityClone, 'field_as_threats_categories', $cycle);
             }
-            elseif ($childEntity->bundle() == 'as_site_benefit') {
-              $this->replaceTermReferences($childEntity, 'field_as_benefits_category', $cycle);
+            elseif ($childEntityClone->bundle() == 'as_site_benefit') {
+              $this->replaceTermReferences($childEntityClone, 'field_as_benefits_category', $cycle);
             }
           }
 
