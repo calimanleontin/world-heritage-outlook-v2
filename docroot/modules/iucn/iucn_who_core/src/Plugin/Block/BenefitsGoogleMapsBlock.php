@@ -3,15 +3,10 @@
 namespace Drupal\iucn_who_core\Plugin\Block;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\iucn_who_core\Plugin\Block\GoogleMapsBaseBlock;
 use Drupal\iucn_who_core\Sites\SitesQueryUtil;
 use Drupal\iucn_who_core\SiteStatus;
-use Drupal\website_utilities\DrupalInstance;
-use Drupal\file\Entity\File;
-
 
 
 /**
@@ -90,7 +85,7 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
           'label' => $this->getSiteCountryLabel($node),
         ],
         '#inscription' => $this->getSiteInscriptionYear($node),
-        '#link' => Url::fromRoute('entity.node.canonical', array('node' => $node->id())),
+        '#link' => Url::fromRoute('entity.node.canonical', ['node' => $node->id()]),
       ];
 
       $ret[] = [
@@ -112,13 +107,6 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
       $ret = $status->id();
     }
-    else {
-      if (!DrupalInstance::isProductionInstance()) {
-        $array = SitesQueryUtil::getSiteConservationRatings();
-        $k = array_rand($array);
-        $ret = $array[$k]->id();
-      }
-    }
     return $ret;
   }
 
@@ -131,8 +119,7 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
           $countries[] = $ob->entity->name->value;
         }
       }
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       // @todo log
     }
     return implode(', ', $countries);
@@ -155,7 +142,7 @@ class BenefitsGoogleMapsBlock extends GoogleMapsBaseBlock {
     }
   }
 
-  private function getSiteBenefits($node){
+  private function getSiteBenefits($node) {
     $categories = [];
     if (!empty($node->field_current_assessment)) {
       $current_assesment = $node->field_current_assessment->entity;
