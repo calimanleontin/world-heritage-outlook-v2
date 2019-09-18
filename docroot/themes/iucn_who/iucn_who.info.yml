@@ -25,9 +25,9 @@ regions:
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
-libraries:
-  - 'iucn_who/global-styling'
-  - 'iucn_who/bootstrap-scripts'
+libraries-extend:
+  bootstrap/framework:
+    - 'iucn_who/framework'
 
 ckeditor_stylesheets:
   - css/style.css

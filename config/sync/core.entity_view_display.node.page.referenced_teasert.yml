@@ -4,7 +4,9 @@ status: false
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
+    - field.field.node.page.field_metatags
     - field.field.node.page.field_page_elements
+    - field.field.node.page.field_page_teasers
     - node.type.page
   module:
     - ds
