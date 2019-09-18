@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\iucn_assessment\Functional\Form;
+namespace Drupal\Tests\iucn_assessmentFunctional\Form;
 
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
