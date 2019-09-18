@@ -25,6 +25,15 @@
     }
   }
 
+  Drupal.behaviors.diffBorder = {
+    attach: function (context) {
+      var diffFinal = $(context).find('.initial-row + .final-row');
+      diffFinal.once('setDiffBorder').each(function () {
+        $(this).before('<tr class="diff-separator"><td colspan="10"><div style="border-top: 1px dashed black; margin-bottom: 5px;"></div></td></tr>');
+      });
+    }
+  }
+
   Drupal.behaviors.fixParagraphResize = {
     attach: function (context) {
       // Workaround for Chrome breaking long paragraph summary components on resize.
