@@ -1,9 +1,7 @@
-uuid: 52854acf-12d0-4864-bc66-517ecd32e91c
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment key conservation scale'
 vid: assessment_key_conservation_scal
 description: ''
-hierarchy: 0
 weight: 0

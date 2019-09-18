@@ -1,4 +1,3 @@
-uuid: cfb63678-9b67-4c64-b10c-5edbfae03d8d
 langcode: en
 status: true
 dependencies:
@@ -7,12 +6,19 @@ dependencies:
     - paragraphs.paragraphs_type.as_site_threat
     - paragraphs.paragraphs_type.as_site_value_bio
   module:
+    - disable_field
     - entity_reference_revisions
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_threat.field_as_threats_values_bio
 field_name: field_as_threats_values_bio
 entity_type: paragraph
 bundle: as_site_threat
-label: 'Other affected values '
+label: 'Other important biodiversity values affected by threat'
 description: ''
 required: false
 translatable: false
@@ -21,6 +27,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_value_bio: as_site_value_bio
     target_bundles_drag_drop:
@@ -29,9 +36,6 @@ settings:
         enabled: false
       as_site_benefit:
         weight: 14
-        enabled: false
-      as_site_conservation:
-        weight: 15
         enabled: false
       as_site_project:
         weight: 16
@@ -42,14 +46,23 @@ settings:
       as_site_value_wh:
         weight: 18
         enabled: false
+      as_site_key_conservation:
+        weight: 19
+        enabled: false
       content_html:
         weight: 19
         enabled: false
       content_teasers:
         weight: 20
         enabled: false
+      as_site_protection:
+        weight: 21
+        enabled: false
       danger_list:
         weight: 21
+        enabled: false
+      as_site_reference:
+        weight: 22
         enabled: false
       number_heading_list:
         weight: 22
@@ -59,5 +72,14 @@ settings:
         enabled: false
       teaser:
         weight: 24
+        enabled: false
+      decision:
+        weight: 29
+        enabled: false
+      image_grid:
+        weight: 30
+        enabled: false
+      image_link:
+        weight: 31
         enabled: false
 field_type: entity_reference_revisions

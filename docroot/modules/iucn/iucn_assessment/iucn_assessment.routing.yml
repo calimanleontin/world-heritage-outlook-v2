@@ -78,25 +78,46 @@ iucn_assessment.user_self_assign:
     _role: 'coordinator'
 
 iucn_assessment.revert_paragraph:
-  path: 'revert_paragraph/{node}/{field}/{field_wrapper_id}/{paragraph}'
+  path: 'revert_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
   defaults:
     _title: 'Revert paragraph'
-    _controller: '\Drupal\iucn_assessment\Controller\IucnNodeController::revertParagraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::revertParagraph'
   requirements:
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
   options:
     _admin_route: TRUE
     parameters:
-      paragraph:
-        type: 'entity:paragraph'
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
+
+iucn_assessment.accept_paragraph:
+  path: 'accept_paragraph/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  defaults:
+    _title: 'Revert paragraph'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnModalController::acceptParagraph'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
+  options:
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node
+      paragraph_revision:
+        type: 'entity_revision:paragraph'
 
 iucn_assessment.paragraph_diff_form:
-  path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}'
+  path: 'node/paragraph_diff/{node}/{node_revision}/{field}/{field_wrapper_id}/{paragraph_revision}/{form_display_mode}'
   defaults:
     _title: 'See differences'
     _controller: '\Drupal\iucn_assessment\Controller\ModalDiffController::paragraphDiffForm'
   requirements:
-    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess'
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::paragraphDiffAccess'
   options:
     _admin_route: TRUE
     parameters:
@@ -181,3 +202,34 @@ iucn_assessment.modal_paragraph_edit:
         type: entity_revision:node
       paragraph_revision:
         type: 'entity_revision:paragraph'
+
+iucn_assessment.node.word_export:
+  path: 'node/{node}/word-export'
+  defaults:
+    _title: 'Export to Word'
+    _controller: '\Drupal\iucn_assessment\Controller\IucnExportController::docExport'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentExportAccess'
+    _permission: 'export nodes to word'
+  options:
+    _node_operation_route: TRUE
+    _admin_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+
+iucn_assessment.node.revision_view:
+  path: '/node/{node}/revisions/{node_revision}/module_view'
+  defaults:
+    _entity_form: node.edit
+    _title: 'View revision'
+  requirements:
+    _custom_access: '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::revisionAccess'
+  options:
+    _node_operation_route: TRUE
+    _read_only_form: TRUE
+    parameters:
+      node:
+        type: entity:node
+      node_revision:
+        type: entity_revision:node

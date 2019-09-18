@@ -1,9 +1,7 @@
-uuid: 0fb61240-0139-4429-ae4c-64101d22c34b
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment threat extent'
 vid: assessment_threat_extent
 description: 'The extent of which the threat is affecting the site'
-hierarchy: 0
 weight: 0

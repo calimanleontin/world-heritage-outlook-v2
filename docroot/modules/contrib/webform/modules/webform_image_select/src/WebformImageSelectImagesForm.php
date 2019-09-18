@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
+use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Utility\WebformArrayHelper;
 
@@ -72,7 +73,7 @@ class WebformImageSelectImagesForm extends EntityForm {
         'label' => '<br/>' . $this->t('Machine name'),
       ],
       '#maxlength' => 32,
-      '#field_suffix' => ' (' . $this->t('Maximum @max characters', ['@max' => 32]) . ')',
+      '#field_suffix' => ($webform_images->isNew()) ? ' (' . $this->t('Maximum @max characters', ['@max' => 32]) . ')' : '',
       '#required' => TRUE,
       '#disabled' => !$webform_images->isNew(),
       '#default_value' => $webform_images->id(),
@@ -99,7 +100,7 @@ class WebformImageSelectImagesForm extends EntityForm {
         '#title' => $this->t('Images'),
         '#title_display' => 'invisible',
         '#empty_options' => 10,
-        '#add_more' => 10,
+        '#add_more_items' => 10,
         '#default_value' => $this->getImages(),
       ];
     }
@@ -125,6 +126,21 @@ class WebformImageSelectImagesForm extends EntityForm {
     }
 
     return parent::form($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function actions(array $form, FormStateInterface $form_state) {
+    $actions = parent::actions($form, $form_state);
+
+    // Open delete button in a modal dialog.
+    if (isset($actions['delete'])) {
+      $actions['delete']['#attributes'] = WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW, $actions['delete']['#attributes']['class']);
+      WebformDialogHelper::attachLibraries($actions['delete']);
+    }
+
+    return $actions;
   }
 
   /**

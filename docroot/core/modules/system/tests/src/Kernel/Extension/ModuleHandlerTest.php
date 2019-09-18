@@ -20,22 +20,6 @@ class ModuleHandlerTest extends KernelTestBase {
   public static $modules = ['system'];
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-
-    // @todo ModuleInstaller calls system_rebuild_module_data which is part of
-    //   system.module, see https://www.drupal.org/node/2208429.
-    include_once $this->root . '/core/modules/system/system.module';
-
-    // Set up the state values so we know where to find the files when running
-    // drupal_get_filename().
-    // @todo Remove as part of https://www.drupal.org/node/2186491
-    system_rebuild_module_data();
-  }
-
-  /**
    * The basic functionality of retrieving enabled modules.
    */
   public function testModuleList() {
@@ -233,11 +217,11 @@ class ModuleHandlerTest extends KernelTestBase {
     $result = $this->moduleInstaller()->uninstall([$non_dependency]);
     $this->assertTrue($result, 'ModuleInstaller::uninstall() returns TRUE.');
     $this->assertFalse($this->moduleHandler()->moduleExists($non_dependency));
-    $this->assertEquals(drupal_get_installed_schema_version($non_dependency), SCHEMA_UNINSTALLED, "$dependency module was uninstalled.");
+    $this->assertEquals(drupal_get_installed_schema_version($non_dependency), SCHEMA_UNINSTALLED, "$non_dependency module was uninstalled.");
 
     // Verify that the installation profile itself was not uninstalled.
     $uninstalled_modules = \Drupal::state()->get('module_test.uninstall_order') ?: [];
-    $this->assertContains($non_dependency, $uninstalled_modules, "$dependency module is in the list of uninstalled modules.");
+    $this->assertContains($non_dependency, $uninstalled_modules, "$non_dependency module is in the list of uninstalled modules.");
     $this->assertNotContains($profile, $uninstalled_modules, 'The installation profile is not in the list of uninstalled modules.');
 
     // Try uninstalling the required module.

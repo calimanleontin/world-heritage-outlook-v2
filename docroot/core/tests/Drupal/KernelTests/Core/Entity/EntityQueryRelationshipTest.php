@@ -4,9 +4,9 @@ namespace Drupal\KernelTests\Core\Entity;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\entity_test\Entity\EntityTest;
-use Drupal\field\Tests\EntityReference\EntityReferenceTestTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
 
 /**
  * Tests the Entity Query relationship API.
@@ -114,12 +114,12 @@ class EntityQueryRelationshipTest extends EntityKernelTestBase {
     // This returns the 0th entity as that's the only one pointing to the 0th
     // account.
     $this->queryResults = $storage->getQuery()
-      ->condition("user_id.entity.name", $this->accounts[0]->getUsername())
+      ->condition("user_id.entity.name", $this->accounts[0]->getAccountName())
       ->execute();
     $this->assertResults([0]);
     // This returns the 1st and 2nd entity as those point to the 1st account.
     $this->queryResults = $storage->getQuery()
-      ->condition("user_id.entity.name", $this->accounts[0]->getUsername(), '<>')
+      ->condition("user_id.entity.name", $this->accounts[0]->getAccountName(), '<>')
       ->execute();
     $this->assertResults([1, 2]);
     // This returns all three entities because all of them point to an
@@ -153,12 +153,12 @@ class EntityQueryRelationshipTest extends EntityKernelTestBase {
     // This returns the 0th entity as that's only one pointing to the 0th
     // account.
     $this->queryResults = $storage->getQuery()
-      ->condition("user_id.entity:user.name", $this->accounts[0]->getUsername())
+      ->condition("user_id.entity:user.name", $this->accounts[0]->getAccountName())
       ->execute();
     $this->assertResults([0]);
     // This returns the 1st and 2nd entity as those point to the 1st account.
     $this->queryResults = $storage->getQuery()
-      ->condition("user_id.entity:user.name", $this->accounts[0]->getUsername(), '<>')
+      ->condition("user_id.entity:user.name", $this->accounts[0]->getAccountName(), '<>')
       ->execute();
     $this->assertResults([1, 2]);
     // This returns all three entities because all of them point to an

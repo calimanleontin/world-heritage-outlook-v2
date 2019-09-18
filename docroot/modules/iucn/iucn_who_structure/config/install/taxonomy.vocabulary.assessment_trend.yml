@@ -1,9 +1,7 @@
-uuid: f7a2c09f-555c-48e1-a5ef-d4c312da1f4b
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment trend'
 vid: assessment_trend
 description: Trend
-hierarchy: 0
 weight: 0

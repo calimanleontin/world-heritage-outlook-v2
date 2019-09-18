@@ -1,16 +1,17 @@
 iucn_assessment.row_paragraph:
   version: VERSION
-  css:
-    theme:
-      css/row_paragraph_widget.css: {}
   js:
     js/row_paragraph_widget.js: {}
-    js/paragraph_comments.js: {}
 
 iucn_assessment.option_buttons:
   version: VERSION
   js:
     js/as_option_buttons.js: {}
+
+iucn_assessment.select_options_colors:
+  version: VERSION
+  js:
+    js/select_options_colors.js: {}
 
 element.assessment_horizontal_tabs:
   version: VERSION
@@ -28,14 +29,17 @@ paragraph_comments:
   js:
     js/paragraph_comments.js: {}
 
-iucn_assessment.table_field_group:
+iucn_assessment.paragraph_diff:
   version: 1.x
-  css:
-    theme:
-      css/table_field_group.css: {}
+  js:
+    js/paragraph_diff.js: {}
 
-iucn_assessment.field_diff:
+iucn_assessment.chrome_alert:
   version: 1.x
-  css:
-    theme:
-      css/field_diff.css: {}
+  js:
+    js/chrome_alert.js: {}
+
+iucn_assessment.unsaved_warning:
+  version: 1.x
+  js:
+    js/unsaved_warning.js: {}

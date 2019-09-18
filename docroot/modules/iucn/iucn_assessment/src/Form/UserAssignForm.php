@@ -25,19 +25,24 @@ class UserAssignForm extends FormBase {
   /** @var int */
   protected $currentWorkflowCycle;
 
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow */
+  protected $workflowService;
+
   /**
    * Constructs a new UserAssignForm object.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, StateInterface $state) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, StateInterface $state, AssessmentWorkflow $workflowService) {
     $this->nodeStorage = $entityTypeManager->getStorage('node');
     $this->state = $state;
     $this->currentWorkflowCycle = $this->state->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
+    $this->workflowService = $workflowService;
   }
 
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('state')
+      $container->get('state'),
+      $container->get('iucn_assessment.workflow')
     );
   }
 
@@ -166,10 +171,13 @@ class UserAssignForm extends FormBase {
           AssessmentWorkflow::STATUS_CREATION,
           AssessmentWorkflow::STATUS_NEW,
         ]) && !empty($assessment->field_coordinator->getValue())) {
-        // If the coordinator was set, set assessment status to UNDER EVALUATION.
-        \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($assessment, AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+        // If the coordinator was set, set assessment status to PRE-ASSESSMENT EDITS.
+        $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+        $this->workflowService->createRevision($assessment, $newState, NULL, "{$state} ({$assessment->getRevisionId()}) => {$newState}", TRUE);
       }
-      $assessment->save();
+      else {
+        $assessment->save();
+      }
       $context['results']['count']++;
     }
     catch (\Exception $e) {

@@ -84,6 +84,7 @@ hidden:
   field_as_protection_ov_rating: true
   field_as_protection_ov_text: true
   field_as_references: true
+  field_as_references_p: true
   field_as_start_date: true
   field_as_threats_current: true
   field_as_threats_current_rating: true
@@ -103,9 +104,15 @@ hidden:
   field_as_vass_wh_trend: true
   field_as_version: true
   field_assessment_file: true
+  field_assessor: true
+  field_coordinator: true
   field_date_published: true
   field_field_as_cycle: true
+  field_references_reviewer: true
+  field_reviewers: true
+  field_settings: true
   field_site: true
+  field_state: true
   langcode: true
   site_assessments_link: true
   site_assessments_rating: true

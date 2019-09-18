@@ -1,4 +1,3 @@
-uuid: 358768ec-7a4f-407b-b443-66a00b80fba3
 langcode: en
 status: true
 dependencies:
@@ -18,6 +17,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: 'Yes'
-  off_label: 'No'
+  on_label: ✔
+  off_label: ✘
 field_type: boolean

@@ -10,7 +10,7 @@ field_name: field_tags
 entity_type: node
 bundle: recipe
 label: Tags
-description: ''
+description: 'Enter a comma-separated list. For example: Vegetarian, Chocolate brownies, Appetizers'
 required: false
 translatable: true
 default_value: {  }
@@ -24,4 +24,5 @@ settings:
       field: name
       direction: asc
     auto_create: true
+    auto_create_bundle: ''
 field_type: entity_reference

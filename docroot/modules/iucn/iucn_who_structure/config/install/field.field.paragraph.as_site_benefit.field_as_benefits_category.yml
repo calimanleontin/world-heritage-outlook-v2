@@ -1,4 +1,3 @@
-uuid: 33886663-b553-4ba1-a503-51ec4e2baf94
 langcode: en
 status: true
 dependencies:
@@ -6,11 +5,19 @@ dependencies:
     - field.storage.paragraph.field_as_benefits_category
     - paragraphs.paragraphs_type.as_site_benefit
     - taxonomy.vocabulary.assessment_benefits_category
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_benefit.field_as_benefits_category
 field_name: field_as_benefits_category
 entity_type: paragraph
 bundle: as_site_benefit
-label: Category
+label: 'Specific benefits'
 description: ''
 required: true
 translatable: false

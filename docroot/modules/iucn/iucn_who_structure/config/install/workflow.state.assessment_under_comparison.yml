@@ -1,11 +1,10 @@
-uuid: cd9102a1-ac4b-4c05-b96e-c8b2f4cf2218
 langcode: en
 status: true
 dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_under_comparison
-label: 'Under comparison'
+label: 'Post-review edits'
 module: workflow
 wid: assessment
 weight: -3

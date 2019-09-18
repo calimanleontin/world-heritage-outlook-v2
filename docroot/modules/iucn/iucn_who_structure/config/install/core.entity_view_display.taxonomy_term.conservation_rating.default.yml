@@ -1,4 +1,3 @@
-uuid: 7c1b2d0e-0f79-4533-97a2-ce7fe17cce7b
 langcode: en
 status: true
 dependencies:
@@ -7,8 +6,6 @@ dependencies:
     - taxonomy.vocabulary.conservation_rating
   module:
     - text
-_core:
-  default_config_hash: Px1GFy68e4D99GOi_R-u1xhNXDOchAZTSr_GeY3v5ds
 id: taxonomy_term.conservation_rating.default
 targetEntityType: taxonomy_term
 bundle: conservation_rating
@@ -22,5 +19,8 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_css_identifier: true
   langcode: true

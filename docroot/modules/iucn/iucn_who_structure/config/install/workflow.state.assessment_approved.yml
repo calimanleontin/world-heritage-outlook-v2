@@ -1,4 +1,3 @@
-uuid: 5f9f810e-1e76-425d-8f16-33a1e25d3f4a
 langcode: en
 status: true
 dependencies:
@@ -8,5 +7,5 @@ id: assessment_approved
 label: Approved
 module: workflow
 wid: assessment
-weight: -1
+weight: 0
 sysid: 0

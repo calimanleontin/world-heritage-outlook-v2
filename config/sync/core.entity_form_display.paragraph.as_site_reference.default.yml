@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.paragraph.as_site_reference.field_reference
     - paragraphs.paragraphs_type.as_site_reference
+  module:
+    - iucn_assessment
 id: paragraph.as_site_reference.default
 targetEntityType: paragraph
 bundle: as_site_reference
@@ -16,13 +18,13 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   translation:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   status: true

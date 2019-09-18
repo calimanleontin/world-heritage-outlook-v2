@@ -86,13 +86,13 @@ iucn_who_core.administration.dashboard:
   route_name: who.user-dashboard
   menu_name: admin
   parent: system.admin
-  weight: -100
+  weight: -99
 
 # Tools
 iucn_who_core.dashboard.cm:
-  title: 'Content Management'
+  title: 'Resources'
   description: 'Content management tasks'
-  route_name: system.admin_content
+  route_name: '<nolink>'
   menu_name: tools
   weight: -50
 
@@ -136,7 +136,7 @@ iucn_who_core.dashboard.cm.trans_ui:
   weight: -20
 
 iucn_who_core.dashboard.cm.workflow_help:
-  title: 'Workflow help page'
+  title: 'Worksheet guidelines'
   parent: iucn_who_core.dashboard.cm
   route_name: who.workflow_help
   menu_name: tools
@@ -222,3 +222,57 @@ iucn_who_core.main_menu.log_out:
   class: Drupal\user\Plugin\Menu\LoginLogoutMenuLink
   menu_name: main
 
+iucn_who_core.dashboard.reports:
+  title: 'Reports / statistics'
+  route_name: '<nolink>'
+  menu_name: tools
+  weight: 80
+
+iucn_who_core.dashboard.reports.overall_summary:
+  title: 'Overall summary'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.overall_summary
+  menu_name: tools
+  weight: 0
+
+iucn_who_core.dashboard.reports.values:
+  title: 'Values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.values
+  menu_name: tools
+  weight: 1
+
+iucn_who_core.dashboard.reports.current_threats:
+  title: 'Current threats'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.current_threats
+  menu_name: tools
+  weight: 2
+
+iucn_who_core.dashboard.reports.potential_threats:
+  title: 'Potential threats'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.potential_threats
+  menu_name: tools
+  weight: 3
+
+iucn_who_core.dashboard.reports.threats_affected_values:
+  title: 'Current threats and affected values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.threats_affected_values
+  menu_name: tools
+  weight: 4
+
+iucn_who_core.dashboard.reports.protection_and_management:
+  title: 'Protection and management'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.protection_and_management
+  menu_name: tools
+  weight: 5
+
+iucn_who_core.dashboard.reports.projects:
+  title: 'Projects'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.projects
+  menu_name: tools
+  weight: 6

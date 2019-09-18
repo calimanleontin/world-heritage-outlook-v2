@@ -15,8 +15,8 @@
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\WebformInterface;
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Component\Utility\Html;
 
 /******************************************************************************/
@@ -164,11 +164,14 @@ function _webform_record_file_usage(array $uuids, $type, $id) {
     return;
   }
 
+  /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+  $entity_repository = \Drupal::service('entity.repository');
+
   /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
   $file_usage = \Drupal::service('file.usage');
 
   foreach ($uuids as $uuid) {
-    if ($file = \Drupal::entityManager()->loadEntityByUuid('file', $uuid)) {
+    if ($file = $entity_repository->loadEntityByUuid('file', $uuid)) {
       if ($file->status !== FILE_STATUS_PERMANENT) {
         $file->status = FILE_STATUS_PERMANENT;
         $file->save();
@@ -201,12 +204,15 @@ function _webform_delete_file_usage(array $uuids, $type, $id, $count) {
     return;
   }
 
+  /** @var \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository */
+  $entity_repository = \Drupal::service('entity.repository');
+
   /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
   $file_usage = \Drupal::service('file.usage');
 
   $make_unused_managed_files_temporary = \Drupal::config('webform.settings')->get('html_editor.make_unused_managed_files_temporary');
   foreach ($uuids as $uuid) {
-    if ($file = \Drupal::entityManager()->loadEntityByUuid('file', $uuid)) {
+    if ($file = $entity_repository->loadEntityByUuid('file', $uuid)) {
       $file_usage->delete($file, 'editor', $type, $id, $count);
       // Make unused files temporary.
       if ($make_unused_managed_files_temporary && empty($file_usage->listUsage($file)) && !$file->isTemporary()) {
@@ -238,12 +244,29 @@ function _webform_parse_file_uuids($text) {
     return [];
   }
 
-  $dom = Html::load($text);
-  $xpath = new \DOMXPath($dom);
   $uuids = [];
-  foreach ($xpath->query('//*[@data-entity-type="file" and @data-entity-uuid]') as $node) {
-    $uuids[] = $node->getAttribute('data-entity-uuid');
+  // Get all images using a regex.
+  if (preg_match_all('/<img[^>]+>/', $text, $matches)) {
+    foreach ($matches[0] as $img) {
+      // Cleanup quotes escaped via YAML.
+      // Please note, calling stripslashes() twice because elements are
+      // double escaped.
+      $img = stripslashes(stripslashes($img));
+
+      // Create a DomElement so that we can parse the image's attributes.
+      $dom_node = Html::load($img)->getElementsByTagName('img')->item(0);
+
+      // Get the entity type and uuid.
+      $type = $dom_node->getAttribute('data-entity-type');
+      $uuid = $dom_node->getAttribute('data-entity-uuid');
+
+      // Check the image is a file entity with a uuid.
+      if ($type === 'file' && $uuid) {
+        $uuids[] = $uuid;
+      }
+    }
   }
+
   // Use array_unique() to collect one uuid per uploaded file.
   // This prevents cut-n-pasted uploaded files from having multiple usages.
   return array_unique($uuids);

@@ -26,16 +26,21 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::assessmentEditAccess');
     }
 
+    $route = $collection->get('entity.node.content_translation_overview');
+    if ($route) {
+      $route->setRequirement('_custom_access', '\Drupal\iucn_assessment\Plugin\Access\AssessmentAccess::translationOverviewAccess');
+    }
+
     // Hide unnecessary workflow tab.
     $route = $collection->get('entity.node.workflow_history');
     if ($route) {
       $route->setRequirement('_access', 'FALSE');
     }
 
+    // Alter the revision page so we can add the view revision button.
     $route = $collection->get('entity.node.version_history');
     if ($route) {
-      $route->setRequirement('_role', 'administrator');
+      $route->setDefault('_controller','\Drupal\iucn_assessment\Controller\IucnNodeController::revisionOverview');
     }
   }
-
 }

@@ -26,33 +26,31 @@ class CookieTest extends TestCase
 {
     public function invalidNames()
     {
-        return array(
-            array(''),
-            array(',MyName'),
-            array(';MyName'),
-            array(' MyName'),
-            array("\tMyName"),
-            array("\rMyName"),
-            array("\nMyName"),
-            array("\013MyName"),
-            array("\014MyName"),
-        );
+        return [
+            [''],
+            [',MyName'],
+            [';MyName'],
+            [' MyName'],
+            ["\tMyName"],
+            ["\rMyName"],
+            ["\nMyName"],
+            ["\013MyName"],
+            ["\014MyName"],
+        ];
     }
 
     /**
      * @dataProvider invalidNames
-     * @expectedException \InvalidArgumentException
      */
     public function testInstantiationThrowsExceptionIfCookieNameContainsInvalidCharacters($name)
     {
+        $this->expectException('InvalidArgumentException');
         new Cookie($name);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidExpiration()
     {
+        $this->expectException('InvalidArgumentException');
         new Cookie('MyCookie', 'foo', 'bar');
     }
 
@@ -121,7 +119,7 @@ class CookieTest extends TestCase
         $cookie = new Cookie('foo', 'bar', $value);
         $expire = strtotime($value);
 
-        $this->assertEquals($expire, $cookie->getExpiresTime(), '->getExpiresTime() returns the expire date', 1);
+        $this->assertEqualsWithDelta($expire, $cookie->getExpiresTime(), 1, '->getExpiresTime() returns the expire date');
     }
 
     public function testGetDomain()

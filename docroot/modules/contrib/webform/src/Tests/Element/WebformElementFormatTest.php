@@ -79,11 +79,11 @@ class WebformElementFormatTest extends WebformElementTestBase {
 //      'Entity autocomplete (Label (ID))' => 'admin (1)',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains($body, '<b>' . $label . '</b><br />' . $value, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check code format.
-    $this->assertContains($body, '<pre class="js-webform-codemirror-runmode webform-codemirror-runmode" data-webform-codemirror-mode="text/x-yaml">message: \'Hello World\'</pre>');
+    $this->assertContains('<pre class="js-webform-codemirror-runmode webform-codemirror-runmode" data-webform-codemirror-mode="text/x-yaml">message: \'Hello World\'</pre>', $body);
 
     // Check elements formatted as text.
     $body = $this->getMessageBody($submission, 'email_text');
@@ -110,7 +110,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'Time (Raw value): 09:00:00',
     ];
     foreach ($elements as $value) {
-      $this->assertContains($body, $value, new FormattableMarkup('Found @value', ['@value' => $value]));
+      $this->assertContains($value, $body, new FormattableMarkup('Found @value', ['@value' => $value]));
     }
 
     /**************************************************************************/
@@ -133,10 +133,11 @@ class WebformElementFormatTest extends WebformElementTestBase {
 <span class="file file--mime-text-plain file--text"> <a href="' . $this->getSubmissionFileUrl($submission, 'managed_file_link') . '" type="text/plain; length=43">managed_file_link.txt</a></span>',
       'File (File ID)' => $submission->getElementData('managed_file_id'),
       'File (File name)' => 'managed_file_name.txt',
+      'File (File extension)' => 'txt',
       'File (URL)' => $this->getSubmissionFileUrl($submission, 'managed_file_url'),
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains($body, '<b>' . $label . '</b><br />' . $value, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check managed file element formatted as text.
@@ -149,9 +150,12 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'File (File ID): ' . $submission->getElementData('managed_file_id'),
       'File (File name): managed_file_name.txt',
       'File (URL): ' . $this->getSubmissionFileUrl($submission, 'managed_file_url'),
+      'File (File mime type)' => 'text/plain',
+      'File (File size (Bytes))' => '43',
+      'File (File content (Base64))' => 'dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==',
     ];
     foreach ($elements as $value) {
-      $this->assertContains($body, $value, new FormattableMarkup('Found @value', ['@value' => $value]));
+      $this->assertContains($value, $body, new FormattableMarkup('Found @value', ['@value' => $value]));
     }
 
     /**************************************************************************/
@@ -178,7 +182,10 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'Checkboxes (Unordered list)' => '<div class="item-list"><ul><li>One</li><li>Two</li><li>Three</li></ul>',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains($body, '<b>' . $label . '</b><br />' . $value, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', [
+        '@label' => $label,
+        '@value' => $value,
+      ]));
     }
 
     // Check elements formatted as text.
@@ -208,7 +215,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
 - Three',
     ];
     foreach ($elements as $value) {
-      $this->assertContains($body, $value, new FormattableMarkup('Found @value', ['@value' => $value]));
+      $this->assertContains($value, $body, new FormattableMarkup('Found @value', ['@value' => $value]));
     }
 
     /**************************************************************************/
@@ -232,7 +239,10 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'raw:' => '1, 2, 3',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains($body, '<h3>' . $label . '</h3>' . $value . '<hr />', new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
+      $this->assertContains('<h3>' . $label . '</h3>' . $value . '<hr />', $body, new FormattableMarkup('Found @label: @value', [
+        '@label' => $label,
+        '@value' => $value,
+      ]));
     }
 
     // Check elements tokens formatted as text.
@@ -247,7 +257,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
       "raw:\n1, 2, 3",
     ];
     foreach ($elements as $value) {
-      $this->assertContains($body, $value, new FormattableMarkup('Found @value', ['@value' => $value]));
+      $this->assertContains($value, $body, new FormattableMarkup('Found @value', ['@value' => $value]));
     }
 
     // Check element default format item global setting.
@@ -255,14 +265,14 @@ class WebformElementFormatTest extends WebformElementTestBase {
       ->set('format.checkboxes.item', 'raw')
       ->save();
     $body = $this->getMessageBody($webform_format_token_submission, 'email_text');
-    $this->assertContains($body, "default:\n1, 2, 3");
+    $this->assertContains("default:\n1, 2, 3", $body);
 
     // Check element default format items global setting.
     \Drupal::configFactory()->getEditable('webform.settings')
       ->set('format.checkboxes.items', 'and')
       ->save();
     $body = $this->getMessageBody($webform_format_token_submission, 'email_text');
-    $this->assertContains($body, "default:\n1, 2, and 3");
+    $this->assertContains("default:\n1, 2, and 3", $body);
   }
 
   /**

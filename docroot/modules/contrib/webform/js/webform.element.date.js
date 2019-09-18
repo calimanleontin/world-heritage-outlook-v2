@@ -32,7 +32,7 @@
 
         // Skip if date inputs are supported by the browser and input is not a text field.
         // @see \Drupal\webform\Element\WebformDatetime
-        if (window.Modernizr && Modernizr.inputtypes.date === true && $input.attr('type') !== 'text') {
+        if (window.Modernizr && Modernizr.inputtypes && Modernizr.inputtypes.date === true && $input.attr('type') !== 'text') {
           return;
         }
 
@@ -40,6 +40,16 @@
           changeMonth: true,
           changeYear: true
         }, Drupal.webform.datePicker.options);
+
+        // Add datepicker button.
+        if ($input.hasData('datepicker-button')) {
+          options = $.extend({
+            showOn: 'both',
+            buttonImage: settings.webform.datePicker.buttonImage,
+            buttonImageOnly: true,
+            buttonText: Drupal.t('Select date')
+          }, Drupal.webform.datePicker.options);
+        }
 
         var dateFormat = $input.data('drupalDateFormat');
 
@@ -72,11 +82,26 @@
 
         // Add min/max year to data range.
         if (!options.yearRange && $input.data('min-year') && $input.data('max-year')) {
-          options.yearRange = $input.data('min-year') + ':' + $input.attr('data-max-year')
+          options.yearRange = $input.data('min-year') + ':' + $input.attr('data-max-year');
         }
 
         // First day of the week.
         options.firstDay = settings.webform.dateFirstDay;
+
+        // Days of the week.
+        // @see https://stackoverflow.com/questions/2968414/disable-specific-days-of-the-week-on-jquery-ui-datepicker
+        if ($input.data('days')) {
+          var days = $input.data('days').split(',');
+          options.beforeShowDay = function (date) {
+            var day = date.getDay().toString();
+            return [(days.indexOf(day) !== -1) ? true : false];
+          };
+        }
+
+        // Disable autocomplete.
+        // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
+        var isChrome = (/chrom(e|ium)/.test(window.navigator.userAgent.toLowerCase()));
+        $input.attr('autocomplete', (isChrome) ? 'chrome-off' : 'off');
 
         $input.datepicker(options);
       });

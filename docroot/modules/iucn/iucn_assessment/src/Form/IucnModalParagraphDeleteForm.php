@@ -2,92 +2,66 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\Entity\Paragraph;
 
-class IucnModalParagraphDeleteForm extends FormBase {
+class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
-  /**
-   * @var \Drupal\Core\Entity\EntityInterface
-   */
-  protected $parent_entity;
-
-  /**
-   * @var \Drupal\paragraphs\ParagraphInterface
-   */
-  protected $paragraph;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'iucn_paragraph_delete_form';
-  }
+  protected $affectedValuesFields = [
+    'as_site_value_wh' => 'field_as_threats_values_wh',
+    'as_site_value_bio' => 'field_as_threats_values_bio',
+  ];
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = [];
+    $form = parent::buildForm($form, $form_state);
+    $form['#title'] = $this->t('Delete row');
+    $form['warning']['#value'] = $this->t('Are you sure you want to delete this row? This action cannot be reverted.');
+    $form['actions']['submit']['#value'] = $this->t('Delete');
+    $paragraph = $form_state->getFormObject()->getEntity();
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof Paragraph) {
+      $parent = $parent->getParentEntity();
+    }
 
-    $form['actions'] = ['#type' => 'actions'];
-
-    $this->paragraph = $this->getRouteMatch()->getParameter('paragraph_revision');
-    $this->parent_entity = $this->getRouteMatch()->getParameter('node_revision');
-
-    $can_delete = TRUE;
-    $blocking_threats = [];
-    // Values cannot be deleted if there is at least one threat
-    // with exactly one referenced value - this paragraph.
-    if (in_array($this->paragraph->bundle(), ['as_site_value_wh', 'as_site_value_bio'])) {
-      $threats = array_merge($this->parent_entity->get('field_as_threats_current')->getValue(), $this->parent_entity->get('field_as_threats_potential')->getValue());
-      $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
-      foreach ($threats as $threat) {
-        /** @var \Drupal\paragraphs\ParagraphInterface $threat_paragraph */
-        $threat_paragraph = $paragraph_storage->loadRevision($threat['target_revision_id']);
-        $affected_values = array_merge($threat_paragraph->get('field_as_threats_values_wh')->getValue(), $threat_paragraph->get('field_as_threats_values_bio')->getValue());
-        if (count($affected_values) != 1) {
-          continue;
-        }
-        $affected_value = $affected_values[0]['target_revision_id'];
-        if ($affected_value == $this->paragraph->getRevisionId()) {
-          $blocking_threats[] = $threat_paragraph->field_as_threats_threat->value;
-          $can_delete = FALSE;
-        }
+    if (!in_array($this->entity->bundle(), array_keys($this->affectedValuesFields))) {
+      // No more validation is required.
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+        return $this->ajaxSave($form, $form_state);
       }
+      return $form;
     }
 
-    if ($can_delete) {
-      $form['warning'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="delete-warning">' . $this->t('Are you sure you want to delete this row? This action cannot be reverted.') . '</div>',
-      ];
-
-      $form['actions']['submit'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Delete'),
-        '#ajax' => [
-          'callback' => '::ajaxDelete',
-          'event' => 'click',
-          'progress' => [
-            'type' => 'throbber',
-            'message' => NULL,
-          ],
-          'disable-refocus' => TRUE,
-        ],
-        '#attributes' => ['class' => ['button--primary']],
-      ];
+    // Values cannot be deleted if there is at least one threat with exactly one
+    // referenced value - this paragraph.
+    $blocking_threats = [];
+    $threats = array_merge($this->nodeRevision->get('field_as_threats_current')->getValue(), $this->nodeRevision->get('field_as_threats_potential')->getValue());
+    $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
+    foreach ($threats as $threat) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $threat_paragraph */
+      $threat_paragraph = $paragraph_storage->loadRevision($threat['target_revision_id']);
+      $affected_values = array_merge($threat_paragraph->get('field_as_threats_values_wh')->getValue(), $threat_paragraph->get('field_as_threats_values_bio')->getValue());
+      if (count($affected_values) != 1) {
+        continue;
+      }
+      $affected_value = $affected_values[0]['target_id'];
+      if ($affected_value != $this->entity->id()) {
+        continue;
+      }
+      $blocking_threats[] = $threat_paragraph->field_as_threats_threat->value;
     }
-    else {
-      $warning = $this->t('This value cannot be deleted because it is the only affected value for the some threats. Please edit or delete these threats first:');
-      $form['warning'] = [
-        '#type' => 'container',
-        '#prefix' => '<div role="contentinfo" aria-label="Warning message" class="messages messages--warning">',
-        '#suffix' => '</div>',
-      ];
+
+    if (!empty($blocking_threats)) {
+      unset($form['warning']['#value']);
+      unset($form['actions']);
+      $form['warning']['#attributes']['class'] = ['messages', 'messages--warning'];
       $form['warning']['message'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="delete-warning">' . $warning . '</div>',
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->t('This value cannot be deleted because it is the only affected value for the some threats. Please edit or delete these threats first:'),
       ];
       $form['warning']['threats'] = [
         '#items' => $blocking_threats,
@@ -96,60 +70,51 @@ class IucnModalParagraphDeleteForm extends FormBase {
       ];
       $form['actions']['go_to_threats'] = [
         '#type' => 'link',
-        '#title' => $this->t('Go to threats'),
-        '#url' => $this->parent_entity->toUrl('edit-form', ['query' => ['tab' => 'threats']]),
+        '#title' => $this->t('Go to threats tab'),
+        '#url' => $this->nodeRevision->toUrl('edit-form', ['query' => ['tab' => 'threats']]),
         '#attributes' => [
           'class' => ['button', 'button--primary'],
         ],
       ];
     }
-
-    IucnModalForm::buildCancelButton($form);
+    else {
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+        return $this->ajaxSave($form, $form_state);
+      }
+    }
 
     return $form;
   }
 
-  public function ajaxDelete(&$form, FormStateInterface $form_state) {
-    $field = $this->getRouteMatch()->getParameter('field');
-    $paragraph = $this->paragraph;
-    $parent_entity = $this->parent_entity;
+  public function ajaxSave($form, FormStateInterface $form_state) {
+    $paragraph = $this->entity;
 
-    $field_values = $this->parent_entity->get($field)->getValue();
-    $key = array_search($this->paragraph->id(), array_column($field_values, 'target_id'));
-    $this->parent_entity->get($field)->removeItem($key);
-    $this->parent_entity->save();
+    $field_values = $this->nodeRevision->get($this->fieldName)->getValue();
+    $key = array_search($this->entity->id(), array_column($field_values, 'target_id'));
+    $this->nodeRevision->get($this->fieldName)->removeItem($key);
 
-    $affected_value_fields = [
-      'as_site_value_wh' => 'field_as_threats_values_wh',
-      'as_site_value_bio' => 'field_as_threats_values_bio',
-    ];
+    $paragraph_storage = $this->entityTypeManager->getStorage('paragraph');
+    if (in_array($paragraph->bundle(), array_keys($this->affectedValuesFields))) {
+      foreach (['field_as_threats_current', 'field_as_threats_potential'] as $threatField) {
+        $threats = $this->nodeRevision->get($threatField)->getValue();
+        $threatIds = array_column($this->nodeRevision->get($threatField)->getValue(), 'target_id');
 
-    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
-    if (in_array($paragraph->bundle(), array_keys($affected_value_fields))) {
-      $threats = array_merge($parent_entity->get('field_as_threats_current')->getValue(), $parent_entity->get('field_as_threats_potential')->getValue());
-      foreach ($threats as $threat) {
-        $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
-        $field = $affected_value_fields[$paragraph->bundle()];
-        $affected_values = $threat->get($field)->getValue();
-        foreach ($affected_values as $idx => $affected_value) {
-          if ($affected_value['target_revision_id'] == $paragraph->getRevisionId()) {
-            unset($affected_values[$idx]);
-            $threat->set($field, $affected_values);
+        foreach ($threats as $threat) {
+          $threat = $paragraph_storage->loadRevision($threat['target_revision_id']);
+          $field = $this->affectedValuesFields[$paragraph->bundle()];
+          $affected_values = $threat->get($field)->getValue();
+          $key = array_search($this->entity->id(), array_column($affected_values, 'target_id'));
+          if ($key !== FALSE) {
+            $threat->get($field)->removeItem($key);
             $threat->save();
-            break;
+
+            $threatKey = array_search($threat->id(), $threatIds);
+            $this->nodeRevision->get($threatField)->set($threatKey, $threat);
           }
         }
       }
     }
 
-    return IucnModalForm::assessmentAjaxSave($form, $form_state);
+    return parent::ajaxSave($form, $form_state);
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    return [];
-  }
-
 }

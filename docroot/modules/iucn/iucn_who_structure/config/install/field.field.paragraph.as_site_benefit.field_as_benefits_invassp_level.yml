@@ -1,4 +1,3 @@
-uuid: 06d800b0-e2f2-4115-9140-dcfa5fff986a
 langcode: en
 status: true
 dependencies:
@@ -10,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_invassp_level
 field_name: field_as_benefits_invassp_level
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Invasive species level'
+label: 'Invasive species - level of impact'
 description: ''
 required: false
 translatable: false

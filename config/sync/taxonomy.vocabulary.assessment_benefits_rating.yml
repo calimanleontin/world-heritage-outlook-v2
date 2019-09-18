@@ -5,5 +5,4 @@ dependencies: {  }
 name: 'Assessment benefits rating'
 vid: assessment_benefits_rating
 description: 'Rating of benefit for a site assessment'
-hierarchy: 0
 weight: 0

@@ -1,0 +1,18 @@
+uuid: 0295ff8c-a835-4783-9181-7f437ac636e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.theme
+id: taxonomy_term.theme.teaser
+targetEntityType: taxonomy_term
+bundle: theme
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

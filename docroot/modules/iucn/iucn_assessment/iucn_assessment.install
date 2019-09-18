@@ -6,6 +6,7 @@ use Drupal\paragraphs\ParagraphInterface;
 use Psr\Log\LoggerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Update the field_css_identifier for some terms.
@@ -24,7 +25,7 @@ function iucn_assessment_update_8001() {
   foreach ($taxonomies as $vid) {
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
     foreach ($terms as $term) {
-      $term = \Drupal\taxonomy\Entity\Term::load($term->tid);
+      $term = Term::load($term->tid);
       $class = NULL;
       foreach ($css_identifiers as $css_id => $values) {
         if (in_array($term->getName(), $values)) {
@@ -40,221 +41,152 @@ function iucn_assessment_update_8001() {
   }
 }
 
+function _iucn_assessment_update_terms_weights(array $tids) {
+  foreach($tids as $weight => $tid) {
+    $term = Term::load($tid);
+    $term->setWeight($weight);
+    $term->save();
+  }
+}
+
+/**
+ * Refs #5902 #5903 #5904 #5905 #5906 #6108. Taxonomy terms weight.
+ */
+function iucn_assessment_update_8002() {
+  $term = Term::load(1433);
+  $term->setName('Collection of non-timber forest products (NTFPs)');
+  $term->save();
+
+  // Threats categories weights.
+  _iucn_assessment_update_terms_weights([
+    1351, // Residential and Commercial Development
+    1352, // Agriculture and Aquaculture
+    1353, // Energy Production and Mining
+    1354, // Transportation and Service Corridors
+    1355, // Biological Resource Use
+    1356, // Human Intrusions & Disturbance
+    1357, // Natural System Modifications
+    1358, // Invasive and Other Problematic Species & Genes
+    1359, // Pollution
+    1360, // Geological Events
+    1361, // Climate Change & Severe Weather
+    1362, // Social/ Cultural Changes
+    1363, // Other
+  ]);
+
+  // Threat levels weights.
+  _iucn_assessment_update_terms_weights([
+    1364, // Very Low Threat
+    1365, // Low Threat
+    1366, // High Threat
+    1367, // Very High Threat
+    1368, // Data Deficient
+  ]);
+
+  // Protection rating.
+  _iucn_assessment_update_terms_weights([
+    1325, // Highly Effective
+    1326, // Effective
+    1327, // Some Concern
+    1328, // Serious Concern
+    1329, // Data Deficient
+  ]);
+
+  // Value states.
+  _iucn_assessment_update_terms_weights([
+    1346, // Good
+    1347, // Low Concern
+    1348, // High Concern
+    1349, // Critical
+    1350, // Data Deficient
+  ]);
+
+  // Value trend.
+  _iucn_assessment_update_terms_weights([
+    1416, // Improving
+    1417, // Stable
+    1418, // Deteriorating
+    1419, // Data Deficient
+  ]);
+
+  // Benefits impact level.
+  _iucn_assessment_update_terms_weights([
+    1318, // Very High
+    1319, // High
+    1320, // Moderate
+    1321, // Low
+  ]);
+
+  // Benefits impact trend.
+  _iucn_assessment_update_terms_weights([
+    1322, // Increasing
+    1323, // Continuing
+    1324, // Decreasing
+  ]);
+
+  // Benefits categories.
+  _iucn_assessment_update_terms_weights([
+    1298, // Food
+    1299, // Water
+    1300, // Cultural and spiritual values
+    1301, // Health and recreation
+    1302, // Knowledge
+    1303, // Environmental services
+    1304, // Materials
+    1305, // Contribution to local economy
+  ]);
+
+  // Benefits categories.
+  _iucn_assessment_update_terms_weights([
+    1272, // History and tradition
+    1273, // Wilderness and iconic features
+    1274, // Sacred natural sites or landscapes
+    1294, // Sacred or symbolic plants or animals
+    1295, // Cultural identity and sense of belonging
+  ]);
+
+  // Topics.
+  _iucn_assessment_update_terms_weights([
+    1333, // Management system (for transboundary/serial properties, integrated management system should also be described/evaluated)
+    1334, // Effectiveness of management system
+    1336, // Boundaries
+    1332, // Integration into regional and national planning systems (including sea/landscape connectivity)
+    1330, // Relationships with local people (including stakeholder relationships, participatory management, rights, and access to benefits and equity)
+    1331, // Legal framework
+    1345, // Law enforcement
+    1335, // Implementation of Committee decisions and recommendations
+    1339, // Sustainable use
+    1337, // Sustainable finance
+    1338, // Staff capacity, training and development
+    1340, // Education and interpretation programs
+    1341, // Tourism and visitation management
+    1342, // Monitoring
+    1343, // Research
+  ]);
+}
+
 /**
  * Set 2014 and 2017 cycles as "created".
  * Create 2020 assessments.
  */
-function iucn_assessment_update_8002() {
+function iucn_assessment_update_8003() {
   \Drupal::state()->set(AssessmentCycleCreator::CREATED_CYCLES_STATE, [2014, 2017]);
   \Drupal::state()->set(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
-  \Drupal::service('iucn_assessment.cycle_creator')->createAssessments(2020, 2017);
-}
-
-function _iucn_assessment_fix_references(ParagraphInterface $threat, $field, array $values, $assessment_id, LoggerInterface $logger) {
-  $referenced_values = $threat->get($field)->getValue();
-  if (!empty($referenced_values)) {
-    $update = FALSE;
-    foreach ($referenced_values as &$referenced_value) {
-      $referenced_paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($referenced_value['target_revision_id']);
-      foreach ($values as $value) {
-        $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($value['target_revision_id']);
-        if ($referenced_paragraph->field_as_values_value->value == $paragraph->field_as_values_value->value
-          && $referenced_paragraph->getRevisionId() != $paragraph->getRevisionId()) {
-          $update = TRUE;
-          $referenced_value = $value;
-          break;
-        }
-      }
-    }
-    if ($update) {
-      $logger->info("Fixed threat '{$threat->field_as_threats_threat->value}' (assessment id = $assessment_id)");
-      $threat->get($field)->setValue($referenced_values);
-      $threat->save();
-    }
-  }
-}
-
-function _iucn_assessment_migrate_references(\Drupal\node\NodeInterface $node, $logger) {
-  $default_language = \Drupal::languageManager()->getDefaultLanguage()->getId();
-  $languages = \Drupal::languageManager()->getLanguages();
-
-  $references = $node->get('field_as_references')->getValue();
-  if (empty($references)) {
-    return;
-  }
-  foreach ($references as $idx => $reference) {
-    $reference = $reference['value'];
-    if (empty($reference)) {
-      continue;
-    }
-    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-    $paragraph = \Drupal\paragraphs\Entity\Paragraph::create([
-      'type' => 'as_site_reference',
-      'field_reference' => $reference,
-    ]);
-
-    // Add translation.
-    foreach ($languages as $language) {
-      $lang_id = $language->getId();
-      if ($lang_id == $default_language) {
-        continue;
-      }
-      if ($node->hasTranslation($lang_id)) {
-        $translated_reference = $node->getTranslation($lang_id)->field_as_references->getValue()[$idx]['value'];
-        $paragraph->addTranslation($lang_id, [
-          'field_reference' => $translated_reference,
-        ]);
-      }
-    }
-
-    $paragraph->save();
-    $node->get('field_as_references_p')->appendItem([
-      'target_id' => $paragraph->id(),
-      'target_revision_id' => $paragraph->getRevisionId(),
-    ]);
-  }
-  $logger->info("Migrated references for assessment: {$node->getTitle()}");
 }
 
 /**
- *  Delete all revisions for old assessments.
- *  Set "Published" status to all existing assessments.Force workflow status for
- * old assessments.
- *  Fix broken values references.
- *  Delete all protection maangement paragraphs with no values.
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
- */
-function iucn_assessment_update_8003() {
-  $logger = \Drupal::logger('iucn_assessment');
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-  $workflow_service = \Drupal::service('iucn_assessment.workflow');
-  $entityTypeManager = \Drupal::entityTypeManager();
-  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
-  $nodeStorage = $entityTypeManager->getStorage('node');
-  $paragraphStorage = $entityTypeManager->getStorage('paragraph');
-
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
-
-  foreach ($nodesIds as $nid) {
-    $node = Node::load($nid);
-    $cycle = $node->field_as_cycle->value;
-    if ($cycle != 2020) {
-      // Delete all revisions for old assessments.
-      $defaultVid = $node->getRevisionId();
-      $vids = $nodeStorage->revisionIds($node);
-      foreach ($vids as $vid) {
-        if ($vid != $defaultVid) {
-          $logger->info("Deleting revision vid={$vid} for assessment {$node->getTitle()} ({$node->id()})");
-          $nodeStorage->deleteRevision($vid);
-        }
-      }
-
-      // Force workflow status for old assessments.
-      $new_state = $node->isPublished()
-        ? AssessmentWorkflow::STATUS_PUBLISHED
-        : AssessmentWorkflow::STATUS_DRAFT;
-      $workflow_service->forceAssessmentState($node, $new_state, FALSE);
-      $logger->info("Force workflow status \"{$new_state}\" for assessment \"{$node->getTitle()} ({$node->id()})\"");
-    }
-
-    // Fix broken values references.
-    $wh_values = $node->get('field_as_values_wh')->getValue();
-    $other_values = $node->get('field_as_values_bio')->getValue();
-
-    $threats = array_merge($node->get('field_as_threats_current')->getValue(), $node->get('field_as_threats_potential')->getValue());
-
-    foreach ($threats as $threat) {
-      /** @var \Drupal\paragraphs\ParagraphInterface $threat_paragraph */
-      $threat_paragraph = $paragraphStorage->loadRevision($threat['target_revision_id']);
-      _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_wh', $wh_values, $node->id(), $logger);
-      _iucn_assessment_fix_references($threat_paragraph, 'field_as_threats_values_bio', $other_values, $node->id(), $logger);
-    }
-
-    // Delete all protection and management paragraphs with no values.
-    $protection_paragraphs = $node->get('field_as_protection')->getValue();
-    $update_protection = FALSE;
-    foreach ($protection_paragraphs as $idx => &$protection_paragraph) {
-      $paragraph = $paragraphStorage->loadRevision($protection_paragraph['target_revision_id']);
-      $delete = TRUE;
-      if (!empty($paragraph)) {
-        $fields = ['field_as_description', 'field_as_protection_rating', 'field_as_protection_topic'];
-        foreach ($fields as $field) {
-          if (!empty($paragraph->get($field)->getValue())) {
-            $delete = FALSE;
-            break;
-          }
-        }
-      }
-      if ($delete) {
-        unset($protection_paragraphs[$idx]);
-        $update_protection = TRUE;
-      }
-    }
-    if ($update_protection) {
-      $node->get('field_as_protection')->setValue($protection_paragraphs);
-      $logger->info("Removed empty protection paragraph for assessment {$node->id()}");
-    }
-
-    // Migrate references from text field to paragraph.
-    _iucn_assessment_migrate_references($node, $logger);
-
-    $node->save();
-
-    \Drupal::state()->set($stateKey, $nid);
-  }
-}
-
-/**
- * Delete assessment_child entities.
+ * refs #7209 - Change the label of "Effective" to "Mostly Effective"
  */
 function iucn_assessment_update_8004() {
-  try {
-    $storage = \Drupal::entityTypeManager()->getStorage('assessment_child');
-    $entities = $storage->loadMultiple();
-    $storage->delete($entities);
-  }
-  catch (\Exception $e) {
-    // Entity type has already been deleted. Do nothing.
-  }
-}
-
-/**
- * Make sure the 8003 update finished successfully.
- */
-function iucn_assessment_update_8005() {
-  $entityTypeManager = \Drupal::entityTypeManager();
-  /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
-  $nodeStorage = $entityTypeManager->getStorage('node');
-  // This update could exit with "Out of memory" error, so when we run it next
-  // time we will load only the nodes with bigger nids than latest updated one.
-  $stateKey = 'iucn_assessment_update_8003_latest_nid';
-  $latestNid = \Drupal::state()->get($stateKey, 0);
-  $nodesIds = $nodeStorage->getQuery()
-    ->condition('type', 'site_assessment')
-    ->condition('nid', $latestNid, '>')
-    ->execute();
-  if (!empty($nodesIds)) {
-    // Run the update again because it failed.
-    drupal_set_installed_schema_version('iucn_assessment', 8002);
-  }
-}
-
-function iucn_assessment_update_8006() {
+  $term = Term::load(1326);
+  $term->setName('Mostly Effective');
+  $term->save();
 }
 
 /**
  * 5734 Delete projects ending before 2020.
  */
-function iucn_assessment_update_8007() {
+function iucn_assessment_update_8005() {
   $cycle = 2020;
   $entityTypeManager = \Drupal::entityTypeManager();
   /** @var \Drupal\node\NodeStorageInterface $nodeStorage */

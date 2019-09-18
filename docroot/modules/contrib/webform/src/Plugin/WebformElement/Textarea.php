@@ -36,6 +36,7 @@ class Textarea extends TextBase {
       // Form display.
       'title_display' => '',
       'description_display' => '',
+      'help_display' => '',
       'field_prefix' => '',
       'field_suffix' => '',
       'placeholder' => '',
@@ -66,21 +67,8 @@ class Textarea extends TextBase {
       'format_items' => $this->getItemsDefaultFormat(),
       'format_items_html' => '',
       'format_items_text' => '',
+      'format_attributes' => [],
     ] + parent::getDefaultProperties() + $this->getDefaultMultipleProperties();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    parent::prepare($element, $webform_submission);
-
-    // @todo Remove once Drupal 8.4.x+ is a dependency.
-    // Textarea Form API element now supports #maxlength attribute
-    // @see https://www.drupal.org/node/2887280
-    if (!empty($element['#maxlength'])) {
-      $element['#attributes']['maxlength'] = $element['#maxlength'];
-    }
   }
 
   /**

@@ -4,7 +4,9 @@ status: false
 dependencies:
   config:
     - core.entity_view_mode.node.referenced_teasert
+    - field.field.node.page.field_metatags
     - field.field.node.page.field_page_elements
+    - field.field.node.page.field_page_teasers
     - node.type.page
   module:
     - ds
@@ -42,6 +44,11 @@ bundle: page
 mode: referenced_teasert
 content: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_metatags: true
   field_page_elements: true
+  field_page_teasers: true
   langcode: true
   links: true

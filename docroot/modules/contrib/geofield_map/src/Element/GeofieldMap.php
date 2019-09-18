@@ -82,7 +82,7 @@ class GeofieldMap extends GeofieldElementBase {
 
     if (strlen($element['#gmap_api_key']) > 0) {
       $element['map']['geocode'] = [
-        '#prefix' => '<label>' . t("Geocode address") . '</label>',
+        '#title' => t("Geocode address"),
         '#type' => 'textfield',
         '#description' => t("Use this to geocode your search location."),
         '#size' => 60,
@@ -95,9 +95,9 @@ class GeofieldMap extends GeofieldElementBase {
 
       if (\Drupal::currentUser()->hasPermission('configure geofield_map')) {
         $element['map']['geocode']['#description'] .= '<div class="geofield-map-message">' . t('@google_places_autocomplete_message<br>@message_recipient', [
-            '@google_places_autocomplete_message' => !$element['#gmap_places'] ? 'Google Places Autocomplete Service disabled. Might be enabled in the Geofield Widget configuration.' : 'Google Places Autocomplete Service enabled.',
-            '@message_recipient' => t('(This message is only shown to the Geofield Map module administrator).'),
-          ]) . '</div>';
+          '@google_places_autocomplete_message' => !$element['#gmap_places'] ? 'Google Places Autocomplete Service disabled. Might be enabled in the Geofield Widget configuration.' : 'Google Places Autocomplete Service enabled.',
+          '@message_recipient' => t('(This message is only shown to the Geofield Map module administrator).'),
+        ]) . '</div>';
       }
 
     }
@@ -169,6 +169,13 @@ class GeofieldMap extends GeofieldElementBase {
 
     $element['lat']['#attributes']['id'] = 'lat-' . $element['#id'];
     $element['lon']['#attributes']['id'] = 'lon-' . $element['#id'];
+
+    if ($element['#hide_coordinates']) {
+      $element['lat']['#attributes']['class'][] = 'visually-hidden';
+      $element['lat']['#title_display'] = 'invisible';
+      $element['lon']['#attributes']['class'][] = 'visually-hidden';
+      $element['lon']['#title_display'] = 'invisible';
+    }
 
     $address_field_exists = FALSE;
     if (!empty($element['#geoaddress_field']['field'])) {
@@ -259,7 +266,6 @@ class GeofieldMap extends GeofieldElementBase {
     $element['#attached']['drupalSettings'] = [
       'geofield_map' => $settings,
     ];
-
 
     return $element;
   }

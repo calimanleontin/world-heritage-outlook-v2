@@ -1,0 +1,18 @@
+uuid: 4b3b9374-211a-42a6-90cf-104069ea780f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.assessment_threat_extent
+id: taxonomy_term.assessment_threat_extent.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_threat_extent
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

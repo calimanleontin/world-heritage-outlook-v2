@@ -3,10 +3,10 @@
 namespace Drupal\Tests\system\Kernel\Entity;
 
 use Drupal\Component\Utility\Html;
-use Drupal\field\Tests\EntityReference\EntityReferenceTestTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\node\Entity\NodeType;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
 
 /**
  * Tests entity reference selection plugins.
@@ -50,6 +50,7 @@ class EntityReferenceSelectionReferenceableTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('entity_test_no_label');
+    $this->installEntitySchema('node');
 
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get('entity.manager')

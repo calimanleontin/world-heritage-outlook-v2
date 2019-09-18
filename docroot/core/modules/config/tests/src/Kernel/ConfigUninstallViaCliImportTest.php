@@ -38,8 +38,7 @@ class ConfigUninstallViaCliImportTest extends KernelTestBase {
     // Set up the ConfigImporter object for testing.
     $storage_comparer = new StorageComparer(
       $this->container->get('config.storage.sync'),
-      $this->container->get('config.storage'),
-      $this->container->get('config.manager')
+      $this->container->get('config.storage')
     );
     $this->configImporter = new ConfigImporter(
       $storage_comparer->createChangelist(),
@@ -55,7 +54,7 @@ class ConfigUninstallViaCliImportTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the config mopdule can be uninstalled via CLI config import.
+   * Tests that the config module can be uninstalled via CLI config import.
    *
    * @see \Drupal\config\ConfigSubscriber
    */

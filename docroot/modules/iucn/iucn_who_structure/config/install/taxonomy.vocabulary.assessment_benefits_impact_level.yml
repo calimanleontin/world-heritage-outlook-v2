@@ -1,9 +1,7 @@
-uuid: 4dce005f-f48a-4a5a-8994-5448427e2713
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment benefits impact level'
 vid: assessment_benefits_impact_level
 description: 'Level of impact for a benefit'
-hierarchy: 0
 weight: 0

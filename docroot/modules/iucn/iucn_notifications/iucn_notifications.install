@@ -1,0 +1,81 @@
+<?php
+
+use Drupal\pet\Entity\Pet;
+use Drupal\iucn_notifications\Plugin\NotificationService;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+
+/**
+ * Install defualt pet templates.
+ */
+function iucn_notifications_install() {
+  $petsConfig = [
+    NotificationService::USER_ACCOUNT_ACTIVATED => [
+      'subject' => 'Account details for [user:display-name] at [site:name] (approved)',
+      'body' => '<p>[user:display-name],<br />
+<br />
+Your account at [site:name] has been activated.<br />
+<br />
+You may now log in by clicking this link or copying and pasting it into your browser:<br />
+<br />
+<a href="[user:one-time-login-url]">[user:one-time-login-url]</a><br />
+<br />
+This link can only be used once to log in and will lead you to a page where you can set your password.<br />
+<br />
+After setting your password, you will be able to log in at <a href="[site:login-url]">[site:login-url]</a> in the future using:<br />
+<br />
+username: [user:account-name]<br />
+password: Your password<br />
+<br />
+-- [site:name] team</p>
+',
+    ],
+    NotificationService::USER_PASSWORD_RESET => [
+      'subject' => 'Replacement login information for [user:display-name] at [site:name]',
+      'body' => '<p>[user:display-name],<br />
+<br />
+A request to reset the password for your account has been made at [site:name].<br />
+<br />
+You may now log in by clicking this link or copying and pasting it into your browser:<br />
+<br />
+<a href="[user:one-time-login-url]">[user:one-time-login-url]</a><br />
+<br />
+This link can only be used once to log in and will lead you to a page where you can set your password. It expires after one day and nothing will happen if it\'s not used.<br />
+<br />
+-- [site:name] team</p>
+',
+    ],
+    AssessmentWorkflow::STATUS_UNDER_EVALUATION => [
+      'subject' => 'Coordinator has been assigned to an assessment',
+      'body' => '<p>You have been assigned to coordinate the following site assessment [node:edit-link]</p>',
+    ],
+    AssessmentWorkflow::STATUS_UNDER_ASSESSMENT => [
+      'subject' => 'Assessor has been assigned to an assessment',
+      'body' => '<p>You have been assigned to assess the following site assessment [node:edit-link]</p>',
+    ],
+    AssessmentWorkflow::STATUS_READY_FOR_REVIEW => [
+      'subject' => 'Assessor has finished working on an assessment',
+      'body' => '<p>You have been assigned to review the following site assessment [node:edit-link]</p>',
+    ],
+    AssessmentWorkflow::STATUS_UNDER_REVIEW => [
+      'subject' => 'Reviewer has been assigned to an assessment',
+      'body' => '<p>You have been assigned to review the following site assessment [node:edit-link]</p>',
+    ],
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => [
+      'subject' => 'Review phase finished',
+      'body' => '<p>All reviewers finished their work on the following site assessment [node:edit-link]</p>',
+    ],
+    AssessmentWorkflow::STATUS_APPROVED => [
+      'subject' => 'Ready to publish',
+      'body' => '<p>The following site assessment [node:edit-link] is ready to be published</p>',
+    ],
+  ];
+
+  foreach ($petsConfig as $key => $config) {
+    $pet = Pet::create([
+      'title' => $key,
+      'subject' => $config['subject'],
+      'mail_body' => $config['body'],
+    ]);
+    $pet->save();
+  }
+}

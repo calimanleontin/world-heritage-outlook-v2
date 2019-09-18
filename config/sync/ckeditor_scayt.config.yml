@@ -1,0 +1,5 @@
+library_path: libraries/ckeditor-plugin-scayt
+language: en_GB
+auto_startup: true
+_core:
+  default_config_hash: xmkCh2LNIt8HL-RZltbzNbMlM1z2VYwSZU5Jmoz2KQY

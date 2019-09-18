@@ -1,9 +1,7 @@
-uuid: b83f0e6f-dfc5-4e77-89da-6807d19eb572
 langcode: en
 status: true
 dependencies: {  }
 name: 'Inscription criteria'
 vid: inscription_criteria
 description: ''
-hierarchy: 0
 weight: 0

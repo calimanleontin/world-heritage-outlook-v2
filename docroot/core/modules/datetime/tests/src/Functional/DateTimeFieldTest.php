@@ -113,8 +113,10 @@ class DateTimeFieldTest extends DateTestBase {
             case 'format_type':
               // Verify that a date is displayed. Since this is a date-only
               // field, it is expected to display the time as 00:00:00.
-              $expected = format_date($date->getTimestamp(), $new_value, '', DateTimeItemInterface::STORAGE_TIMEZONE);
-              $expected_iso = format_date($date->getTimestamp(), 'custom', 'Y-m-d\TH:i:s\Z', DateTimeItemInterface::STORAGE_TIMEZONE);
+              /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+              $date_formatter = $this->container->get('date.formatter');
+              $expected = $date_formatter->format($date->getTimestamp(), $new_value, '', DateTimeItemInterface::STORAGE_TIMEZONE);
+              $expected_iso = $date_formatter->format($date->getTimestamp(), 'custom', 'Y-m-d\TH:i:s\Z', DateTimeItemInterface::STORAGE_TIMEZONE);
               $output = $this->renderTestEntity($id);
               $expected_markup = '<time datetime="' . $expected_iso . '" class="datetime">' . $expected . '</time>';
               $this->assertContains($expected_markup, $output, new FormattableMarkup('Formatted date field using %value format displayed as %expected with %expected_iso attribute in %timezone.', [
@@ -171,7 +173,7 @@ class DateTimeFieldTest extends DateTestBase {
       // past.  First update the test entity so that the date difference always
       // has the same interval.  Since the database always stores UTC, and the
       // interval will use this, force the test date to use UTC and not the local
-      // or user timezome.
+      // or user timezone.
       $timestamp = REQUEST_TIME - 87654321;
       $entity = EntityTest::load($id);
       $field_name = $this->fieldStorage->getName();
@@ -201,7 +203,7 @@ class DateTimeFieldTest extends DateTestBase {
       // future.  First update the test entity so that the date difference always
       // has the same interval.  Since the database always stores UTC, and the
       // interval will use this, force the test date to use UTC and not the local
-      // or user timezome.
+      // or user timezone.
       $timestamp = REQUEST_TIME + 87654321;
       $entity = EntityTest::load($id);
       $field_name = $this->fieldStorage->getName();
@@ -279,8 +281,9 @@ class DateTimeFieldTest extends DateTestBase {
         switch ($setting) {
           case 'format_type':
             // Verify that a date is displayed.
-            $expected = format_date($date->getTimestamp(), $new_value);
-            $expected_iso = format_date($date->getTimestamp(), 'custom', 'Y-m-d\TH:i:s\Z', 'UTC');
+            $date_formatter = $this->container->get('date.formatter');
+            $expected = $date_formatter->format($date->getTimestamp(), $new_value);
+            $expected_iso = $date_formatter->format($date->getTimestamp(), 'custom', 'Y-m-d\TH:i:s\Z', 'UTC');
             $output = $this->renderTestEntity($id);
             $expected_markup = '<time datetime="' . $expected_iso . '" class="datetime">' . $expected . '</time>';
             $this->assertContains($expected_markup, $output, new FormattableMarkup('Formatted date field using %value format displayed as %expected with %expected_iso attribute.', ['%value' => $new_value, '%expected' => $expected, '%expected_iso' => $expected_iso]));
@@ -323,7 +326,7 @@ class DateTimeFieldTest extends DateTestBase {
     // past.  First update the test entity so that the date difference always
     // has the same interval.  Since the database always stores UTC, and the
     // interval will use this, force the test date to use UTC and not the local
-    // or user timezome.
+    // or user timezone.
     $timestamp = REQUEST_TIME - 87654321;
     $entity = EntityTest::load($id);
     $field_name = $this->fieldStorage->getName();
@@ -350,7 +353,7 @@ class DateTimeFieldTest extends DateTestBase {
     // future.  First update the test entity so that the date difference always
     // has the same interval.  Since the database always stores UTC, and the
     // interval will use this, force the test date to use UTC and not the local
-    // or user timezome.
+    // or user timezone.
     $timestamp = REQUEST_TIME + 87654321;
     $entity = EntityTest::load($id);
     $field_name = $this->fieldStorage->getName();

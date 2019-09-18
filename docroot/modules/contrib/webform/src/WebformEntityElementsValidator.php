@@ -2,11 +2,11 @@
 
 namespace Drupal\webform;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Serialization\Yaml;
-use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
@@ -57,6 +57,13 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
   protected $originalElements;
 
   /**
+   * An array of element keys.
+   *
+   * @var array
+   */
+  protected $elementKeys;
+
+  /**
    * The 'renderer' service.
    *
    * @var \Drupal\Core\Render\RendererInterface
@@ -85,6 +92,26 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
   protected $formBuilder;
 
   /**
+   * The configuration object factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Element keys/names that are reserved.
+   *
+   * @var array
+   */
+  public static $reservedNames = [
+    'add',
+    'form_build_id',
+    'form_id',
+    'form_token',
+    'op',
+  ];
+
+  /**
    * Constructs a WebformEntityElementsValidator object.
    *
    * @param \Drupal\Core\Render\RendererInterface $renderer
@@ -95,12 +122,17 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
    *   The 'entity_type.manager' service.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   The 'form_builder' service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration object factory.
+   *
+   * @todo Webform 8.x-6.x: Move $config_factory before $renderer.
    */
-  public function __construct(RendererInterface $renderer, WebformElementManagerInterface $element_manager, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder) {
+  public function __construct(RendererInterface $renderer, WebformElementManagerInterface $element_manager, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder, ConfigFactoryInterface $config_factory = NULL) {
     $this->renderer = $renderer;
     $this->elementManager = $element_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->formBuilder = $form_builder;
+    $this->configFactory = $config_factory ?: \Drupal::configFactory();
   }
 
   /**
@@ -136,14 +168,24 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
     $this->elements = Yaml::decode($this->elementsRaw);
     $this->originalElements = Yaml::decode($this->originalElementsRaw);
 
+    $this->elementKeys = [];
+    if (is_array($this->elements)) {
+      $this->getElementKeysRecursive($this->elements, $this->elementKeys);
+    }
+
     // Validate elements are an array.
     if ($options['array'] && ($message = $this->validateArray())) {
       return [$message];
     }
 
     // Validate duplicate element name.
-    if ($options['names'] && ($messages = $this->validateDuplicateNames())) {
-      return $messages;
+    if ($options['names']) {
+      if ($messages = $this->validateNames()) {
+        return $messages;
+      }
+      elseif ($messages = $this->validateDuplicateNames()) {
+        return $messages;
+      }
     }
 
     // Validate ignored properties.
@@ -206,6 +248,56 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
       return $this->t('Elements are not valid. YAML must contain an associative array of elements.');
     }
     return NULL;
+  }
+
+  /**
+   * Validate elements names.
+   *
+   * @return array|null
+   *   If not valid, an array of error messages.
+   */
+  protected function validateNames() {
+    // @see \Drupal\webform_ui\Form\WebformUiElementFormBase::buildForm
+    $machine_name_pattern = $this->configFactory->get('webform.settings')->get('element.machine_name_pattern') ?: 'a-z0-9_';
+    switch ($machine_name_pattern) {
+      case 'a-z0-9_':
+        $machine_name_requirement = $this->t('lowercase letters, numbers, and underscores');
+        break;
+
+      case 'a-zA-Z0-9_':
+        $machine_name_requirement = $this->t('letters, numbers, and underscores');
+        break;
+
+      case 'a-z0-9_-':
+        $machine_name_requirement = $this->t('lowercase letters, numbers, and underscores');
+        break;
+
+      case 'a-zA-Z0-9_-':
+        $machine_name_requirement = $this->t('letters, numbers, underscores, and dashes');
+        break;
+    }
+
+    $messages = [];
+    foreach ($this->elementKeys as $name) {
+      if (!preg_match('/^[' . $machine_name_pattern . ']+$/', $name)) {
+        $line_numbers = $this->getLineNumbers('/^\s*(["\']?)' . preg_quote($name, '/') . '\1\s*:/');
+        $t_args = [
+          '%name' => $name,
+          '@line_number' => WebformArrayHelper::toString($line_numbers),
+          '@requirement' => $machine_name_requirement,
+        ];
+        $messages[] = $this->t('The element key %name on line @line_number must contain only @requirement.', $t_args);
+      }
+      elseif (in_array($name, static::$reservedNames)) {
+        $line_numbers = $this->getLineNumbers('/^\s*(["\']?)' . preg_quote($name, '/') . '\1\s*:/');
+        $t_args = [
+          '%name' => $name,
+          '@line_number' => WebformArrayHelper::toString($line_numbers),
+        ];
+        $messages[] = $this->t('The element key %name on line @line_number is a reserved key.', $t_args);
+      }
+    }
+    return $messages;
   }
 
   /**
@@ -346,26 +438,6 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
   }
 
   /**
-   * Recurse through elements and collect an associative array of deleted element keys.
-   *
-   * @param array $elements
-   *   An array of elements.
-   * @param array $names
-   *   An array tracking deleted element keys.
-   */
-  protected function getElementKeysRecursive(array $elements, array &$names) {
-    foreach ($elements as $key => &$element) {
-      if (!WebformElementHelper::isElement($element, $key)) {
-        continue;
-      }
-      if (isset($element['#type'])) {
-        $names[$key] = $key;
-      }
-      $this->getElementKeysRecursive($element, $names);
-    }
-  }
-
-  /**
    * Validate element hierarchy.
    *
    * @return array|null
@@ -449,6 +521,30 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
     }
 
     return $message;
+  }
+
+  /****************************************************************************/
+  // Helper methods.
+  /****************************************************************************/
+
+  /**
+   * Recurse through elements and collect an associative array of deleted element keys.
+   *
+   * @param array $elements
+   *   An array of elements.
+   * @param array $names
+   *   An array tracking deleted element keys.
+   */
+  protected function getElementKeysRecursive(array $elements, array &$names) {
+    foreach ($elements as $key => &$element) {
+      if (!WebformElementHelper::isElement($element, $key)) {
+        continue;
+      }
+      if (isset($element['#type'])) {
+        $names[$key] = $key;
+      }
+      $this->getElementKeysRecursive($element, $names);
+    }
   }
 
   /**

@@ -3,12 +3,14 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,25 +18,20 @@ use Drupal\Core\Field\FieldFilteredMarkup;
 
 class NodeSiteAssessmentForm {
 
-  public static function hideUnnecessaryFields(array &$form) {
-    // Hide unnecessary fields.
-    unset($form['actions']['delete']);
-    unset($form['advanced']);
-    unset($form['revision']);
-    unset($form['revision_log']);
-    unset($form['author']);
-    unset($form['meta']);
-    $form['field_state']['#access'] = FALSE;
-  }
+  use AssessmentEntityFormTrait;
 
-  public static function addRedirectToAllActions(array &$form) {
-    // Redirect to node edit on form submit.
-    foreach ($form['actions'] as $key => &$action) {
-      if (strpos($key, 'workflow_') !== FALSE || $key == 'submit') {
-        $action['#submit'][] = [self::class, 'assessmentSubmitRedirect'];
-      }
-    }
-  }
+  const PARAGRAPH_FIELDS = [
+    'field_as_benefits',
+    'field_as_key_cons',
+    'field_as_projects',
+    'field_as_projects_needs',
+    'field_as_protection',
+    'field_as_references_p',
+    'field_as_threats_current',
+    'field_as_threats_potential',
+    'field_as_values_bio',
+    'field_as_values_wh',
+  ];
 
   public static function setValidationErrors(&$form, $element, $parents) {
     $children = Element::children($element);
@@ -49,39 +46,52 @@ class NodeSiteAssessmentForm {
     }
   }
 
+  public static function prepareForm(NodeInterface $node, $operation, FormStateInterface $form_state) {
+    /** @var \Drupal\node\NodeForm $formObject */
+    $formObject = $form_state->getFormObject();
+
+    // The revision edit page is actually the node edit page.
+    // We need to change the form entity to the selected revision.
+    $node_revision = \Drupal::routeMatch()->getParameter('node_revision');
+    if (!empty($node_revision)) {
+      $node = $node_revision;
+    }
+
+    $formDisplay = $formObject->getFormDisplay($form_state);
+
+    $group_as_tabs = $formDisplay->getThirdPartySetting('field_group', 'group_as_tabs');
+    if (!empty($group_as_tabs['children'])) {
+      $tab = \Drupal::request()->get('tab') ?: 'values';
+      foreach ($group_as_tabs['children'] as $group_tab) {
+        $fieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $group_tab);
+        $tab_id = str_replace('_', '-', $fieldGroupTab['format_settings']['id']);
+        if ($tab_id == $tab) {
+          continue;
+        }
+        self::removeGroupFields($formDisplay, $fieldGroupTab);
+      }
+    }
+    $formObject->setFormDisplay($formDisplay, $form_state);
+    $formObject->setEntity($node);
+    $form_state->setFormObject($formObject);
+  }
+
   /**
    * Recursive function used to used to unset the fields of a fieldgroup.
    */
-  public static function removeGroupFields(&$form, $group) {
-    foreach ($form['#fieldgroups'][$group]->children as $nested_field) {
-      if (!empty($form[$nested_field]) && substr($nested_field, 0, 6) === 'field_') {
-        if (FieldConfig::loadByName('node', 'site_assessment', $nested_field)->getSetting('target_type') == 'paragraph') {
-          unset($form[$nested_field]);
-        }
-        else {
-          $form[$nested_field]['#access'] = FALSE;
-        }
-      }
-      elseif (!empty($form['#fieldgroups'][$nested_field])) {
-        self::removeGroupFields($form, $nested_field);
+  public static function removeGroupFields(EntityFormDisplayInterface $formDisplay, $fieldGroupTab) {
+    foreach ($fieldGroupTab['children'] as $child) {
+      $formDisplay->removeComponent($child);
+
+      $childFieldGroupTab = $formDisplay->getThirdPartySetting('field_group', $child);
+      if (!empty($childFieldGroupTab)) {
+        self::removeGroupFields($formDisplay, $childFieldGroupTab);
       }
     }
   }
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
     $tab = \Drupal::request()->get('tab') ?: 'values';
-    if (empty(\Drupal::request()->get('_wrapper_format'))
-      || \Drupal::request()->get('_wrapper_format') != 'drupal_ajax') {
-      // Unset the fields that are only present on other tabs.
-      $group_tabs = $form['#fieldgroups']['group_as_tabs']->children;
-      foreach ($group_tabs as $group_tab) {
-        $fieldgroup_tab = $form['#fieldgroups'][$group_tab];
-        $tab_id = str_replace('_', '-', $fieldgroup_tab->format_settings['id']);
-        if ($tab_id != $tab) {
-          self::removeGroupFields($form, $group_tab);
-        }
-      }
-    }
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
     $workflow_service = \Drupal::service('iucn_assessment.workflow');
@@ -91,7 +101,7 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
 
-    if ($state == AssessmentWorkflow::STATUS_PUBLISHED) {
+    if ($node->isDefaultTranslation() && $state == AssessmentWorkflow::STATUS_PUBLISHED) {
       // Redirect the user to edit form of the draft assessment.
       $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
       if (!empty($draft_revision)) {
@@ -107,11 +117,13 @@ class NodeSiteAssessmentForm {
     self::hideUnnecessaryFields($form);
     self::addRedirectToAllActions($form);
 
-    // On the values tab, only coordinators and above can edit the values.
+    $readOnly = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
+    if ($readOnly) {
+      self::setReadOnly($form);
+    }
+
+    self::hideParagraphsActions($form, $node);
     if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE) {
-      if ($tab == 'values') {
-        self::hideParagraphsActions($form);
-      }
       $form['title']['#disabled'] = TRUE;
       $form['langcode']['#disabled'] = TRUE;
       $form['field_as_start_date']['#access'] = FALSE;
@@ -133,75 +145,51 @@ class NodeSiteAssessmentForm {
     if (!empty($node->id()) && !empty($state)) {
       $form['current_state'] = self::getCurrentStateMarkup($node);
 
-      $form['main_data_container'] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['main-data-container']],
-        '#weight' => -999,
-        'data' => [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['data-fields']],
-          'title' => $form['title'],
-          'langcode' => $form['langcode'],
-          'field_assessment_file' => $form['field_assessment_file'],
-        ],
-      ];
-      unset($form['title']);
-      unset($form['langcode']);
-      unset($form['field_assessment_file']);
-
-      $blockContent = BlockContent::load(8);
-      if (!empty($blockContent)) {
-        $form['main_data_container']['help'] = [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['help-text']],
-          'title' => [
-            '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => t('Help'),
-          ],
-          'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
-        ];
-      }
-
       $settings = json_decode($node->field_settings->value, TRUE);
-      if (in_array($state, [AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, AssessmentWorkflow::STATUS_UNDER_REVIEW])
-        || !empty($settings['comments'][$tab])) {
+      if (in_array($state, [
+          AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+          AssessmentWorkflow::STATUS_UNDER_REVIEW,
+          AssessmentWorkflow::STATUS_REVIEWING_REFERENCES,
+        ]) || !empty($settings['comments'][$tab])) {
         $current_user = \Drupal::currentUser();
 
+        $form['comments'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['comments-container']],
+        ];
+
         $fieldgroup_key = 'group_as_' . str_replace('-', '_', $tab);
-        $comment_title = !empty($form['#fieldgroups'][$fieldgroup_key]->label)
-          ? t('Comment about "@group"', ['@group' => $form['#fieldgroups'][$fieldgroup_key]->label])
-          : t('Comment about current tab');
-        $form["comment_$tab"] = [
+        $form['comments']['comment'] = [
           '#type' => 'textarea',
-          '#title' => $comment_title,
-          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight - 1 : 0,
+          '#weight' => !empty($form['#fieldgroups'][$fieldgroup_key]->weight) ? $form['#fieldgroups'][$fieldgroup_key]->weight + 1 : 0,
           '#default_value' => !empty($settings['comments'][$tab][$current_user->id()]) ? $settings['comments'][$tab][$current_user->id()] : '',
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
-          '#description' => t('If you have any suggestions on this worksheet, leave a comment for the coordinator'),
           '#maxlength' => 255,
+          '#tab' => $tab,
+          '#parents' => ['comments'],
         ];
         if (\Drupal::currentUser()->hasPermission('edit assessment main data')) {
-          $form["comment_$tab"]['#attributes'] = ['readonly' => 'readonly'];
-          unset($form["comment_$tab"]['#description']);
-          $comments = '';
+          $form['comments']['#type'] = 'fieldset';
+          $form['comments']['#title'] = t('Comments');
+
+          $form['comments']['comment']['#type'] = 'markup';
+          $form['comments']['comment']['#markup'] = t('No comments added yet');
           if (!empty($settings['comments'][$tab])) {
+            $comments = '';
             foreach ($settings['comments'][$tab] as $uid => $comment) {
               $comment = '<div class="comment-comments"><div class="comment-text">' . $comment . '</div></div>';
               $comment = str_replace("\r\n", '</div><div class="comment-text">', $comment);
-
               $comments .= '<div class="comments-container"><div class="comment-author">' . User::load($uid)->getDisplayName() . ':</div>' . $comment . '</div>';
             }
-            $form["comment_$tab"]['#type'] = 'markup';
-            $form["comment_$tab"]['#markup'] = $comments;
-          }
-          else {
-            $form["comment_$tab"]['#access'] = FALSE;
+            $form['comments']['comment']['#markup'] = $comments;
           }
         }
-        $form['#attached']['library'][] = 'iucn_assessment/paragraph_comments';
-        $form['#attached']['library'][] = 'iucn_backend/font-awesome';
+        else {
+          $form['comments']['help'] = [
+            '#markup' => '<div class="comments-help"><div><b>' . t('Internal comments on worksheet changes for IUCN?') .  '</b></div><div>' . t('Use the space below if you wish to provide comments on your worksheet changes to IUCN. These comments will be visible to IUCN but are not part of the conservation outlook assessment/will not be made publicly available.') . '</div></div>',
+          ];
+        }
       }
     }
 
@@ -215,6 +203,13 @@ class NodeSiteAssessmentForm {
       hide($form['field_as_vass_bio_state']);
       hide($form['field_as_vass_bio_text']);
       hide($form['field_as_vass_bio_trend']);
+    }
+    if (!empty($form['field_as_global_assessment_level'])) {
+      // Exclude coming soon.
+      $tid = 1420;
+      if (!in_array($tid, $form['field_as_global_assessment_level']['widget']['#default_value'])) {
+        unset($form['field_as_global_assessment_level']['widget']['#options'][$tid]);
+      }
     }
 
     if (in_array($tab, ['threats', 'protection-management', 'assessing-values', 'conservation-outlook'])) {
@@ -239,7 +234,7 @@ class NodeSiteAssessmentForm {
             'title' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => t('Justification'),
+              '#value' => t('Justification of assessment'),
             ],
           ],
         ],
@@ -259,6 +254,32 @@ class NodeSiteAssessmentForm {
           '#value' => t('Trend'),
         ];
       }
+      elseif ($tab == 'protection-management') {
+        $fieldAsProtectionWidget = &$form['field_as_protection']['widget'];
+        foreach (Element::children($fieldAsProtectionWidget) as $child) {
+          if (empty($fieldAsProtectionWidget[$child]['#paragraph_id'])) {
+            continue;
+          }
+          $paragraph = Paragraph::load($fieldAsProtectionWidget[$child]['#paragraph_id']);
+          /** @var \Drupal\taxonomy\TermInterface $protectionTopic */
+          $protectionTopic = $paragraph->field_as_protection_topic->entity;
+          if (empty($protectionTopic)) {
+            continue;
+          }
+          $fieldAsProtectionWidget[$child]['#delta'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['#weight'] = $protectionTopic->getWeight();
+          $fieldAsProtectionWidget[$child]['_weight']['#default_value'] = $protectionTopic->getWeight();
+        }
+
+        $fieldAsProtectionBestPracticeWidget = &$form['field_as_protection_ov_practices']['widget'][0];
+        $title = [
+          '#theme' => 'topic_tooltip',
+          '#label' => t('Best Practice Examples'),
+          '#help_text' => t('Tooltip. Text needs to be provided.'),
+        ];
+        $fieldAsProtectionBestPracticeWidget['#title'] = render($title);
+
+      }
     }
 
     if (!empty($form['overall_table_thead'])) {
@@ -268,8 +289,6 @@ class NodeSiteAssessmentForm {
         $form['#group_children']['overall_table_thead'] = $container_group;
       }
     }
-
-    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
 
     // Hide these fields if there are no other biodiversity values.
     if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
@@ -283,6 +302,8 @@ class NodeSiteAssessmentForm {
       }
     }
 
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
+    $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     // Validation.
     if ($tab == 'benefits') {
       $form['#validate'][] = [self::class, 'benefitsValidation'];
@@ -292,9 +313,24 @@ class NodeSiteAssessmentForm {
     }
     elseif ($tab == 'assessing-values') {
       if (!empty($node->field_as_values_bio->getValue())) {
-        $required_fields = ['field_as_vass_bio_text', 'field_as_vass_bio_state', 'field_as_vass_bio_trend'];
+        $required_fields = [
+          'field_as_vass_bio_text',
+          'field_as_vass_bio_state',
+          'field_as_vass_bio_trend',
+        ];
         foreach ($required_fields as $field) {
-          $form[$field]['widget'][0]['value']['#required'] = TRUE;
+          if (!empty($form[$field]['widget'][0]['value'])) {
+            $form[$field]['widget'][0]['value']['#required'] = TRUE;
+          }
+          elseif (!empty($form[$field]['widget'][0])) {
+            $form[$field]['widget'][0]['#required'] = TRUE;
+          }
+          elseif (!empty($form[$field]['widget'])) {
+            $form[$field]['widget']['#required'] = TRUE;
+          }
+          else {
+            $form[$field]['#required'] = TRUE;
+          }
         }
       }
     }
@@ -305,20 +341,73 @@ class NodeSiteAssessmentForm {
     }
 
     self::setValidationErrors($form, $form, []);
+
+    if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
+      $form['main_data_container'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['main-data-container']],
+        '#weight' => -999,
+        'data' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['data-fields']],
+          'title' => $form['title'],
+          'langcode' => $form['langcode'],
+          'field_assessment_file' => $form['field_assessment_file'],
+        ],
+      ];
+      unset($form['title']);
+      unset($form['langcode']);
+      unset($form['field_assessment_file']);
+    }
+
+    $blockContent = BlockContent::load(8);
+    if (!empty($blockContent)) {
+      $form['main_data_container']['help'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['help-text']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => t('Help'),
+        ],
+        'help' => \Drupal::entityTypeManager()->getViewBuilder('block_content')->view($blockContent),
+      ];
+    }
+
+    if (empty($node->id())) {
+      // We allow users to create nodes without child paragraphs.
+      $allowedFields = ['field_as_site', 'field_assessment_file'];
+      $form = array_filter($form, function ($key) use ($allowedFields) {
+        return !preg_match('/^field\_/', $key) || in_array($key, $allowedFields);
+      }, ARRAY_FILTER_USE_KEY);
+      unset($form['#fieldgroups']);
+    }
+    else {
+      // Hide the site field because it is in the title.
+      unset($form['field_as_site']);
+    }
+
+    array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+    $form['actions']['submit']['#submit'][] = [self::class, 'createCoordinatorRevision'];
+
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
     $node = $form_state->getFormObject()->getEntity();
-    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')['value'])) {
-      $form_state->setErrorByName('summary_of_benefits', t('Summary of benefits field is required'));
+    if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')[0]['value'])) {
+      $form_state->setErrorByName('field_as_benefits_summary', t('Summary of benefits field is required'));
     }
   }
 
+  public static function setReadOnly(array &$form) {
+    $form['actions']['#access'] = FALSE;
+    $form['langcode']['#disabled'] = TRUE;
+  }
+
   public static function setTabsDrupalSettings(&$form, $node) {
-    $diff = self::getNodeDiff($node);
-    if (empty($diff)) {
-      return;
-    }
+    $diff = static::getNodeSettings($node, 'diff');
     $diff_tabs = [];
     foreach ($diff as $vid => $diff_data) {
       if (empty($diff_data['fieldgroups'])) {
@@ -326,18 +415,26 @@ class NodeSiteAssessmentForm {
       }
       $diff_tabs += $diff_data['fieldgroups'];
     }
+
+    $comments = static::getNodeSettings($node, 'comments');
+
+    foreach ($comments as $tab => $comment) {
+      $diff_tabs += [$tab => $tab];
+    }
+
     $form['#attached']['drupalSettings']['iucn_assessment']['diff_tabs'] = $diff_tabs;
   }
 
-  /*
-   *
-   * Store comments on node.
+  /**
+   * Store comments on node and set the current user as coordinator for NEW assessments.
    *
    * @param $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
-    $current_user = \Drupal::currentUser();
+    $currentUser = \Drupal::currentUser();
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
@@ -346,15 +443,44 @@ class NodeSiteAssessmentForm {
     $values = $form_state->getValues();
 
     $settings = json_decode($node->field_settings->value, TRUE);
-    foreach ($values as $key => $value) {
-      if (preg_match('/^comment\_(.+)$/', $key, $matches) && !empty(trim($value))) {
-        $commented_tab = $matches[1];
-        $settings['comments'][$commented_tab][$current_user->id()] = $value;
-      }
+
+    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
+      $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
     }
+
     $node->field_settings->setValue(json_encode($settings));
     $nodeForm->setEntity($node);
     $form_state->setFormObject($nodeForm);
+  }
+
+  /**
+   * Sets the current user as a coordinator if he has the coordinator role and
+   * is the first one who edits the assessment.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public static function createCoordinatorRevision(&$form, FormStateInterface $form_state) {
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+
+    if ($node->isDefaultRevision()
+      && $workflowService->isNewAssessment($node)
+      && empty($node->field_coordinator->target_id)
+      && in_array('coordinator', $currentUser->getRoles())) {
+      $oldState = $node->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    }
   }
 
   /**
@@ -390,55 +516,69 @@ class NodeSiteAssessmentForm {
   }
 
   /**
-   * Submit callback for the state change form.
-   *
-   * Redirects the user to the assessment edit page if he can access it.
-   * Otherwise, this will redirect the user to /user.
-   *
-   * @param $form
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
-   */
-  public static function assessmentSubmitRedirect(&$form, FormStateInterface $form_state) {
-    /** @var \Drupal\node\NodeForm $nodeForm */
-    $nodeForm = $form_state->getFormObject();
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $nodeForm->getEntity();
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
-    $workflow_service = \Drupal::service('iucn_assessment.workflow');
-    $tab = \Drupal::request()->query->get('tab');
-    $options = [];
-    if (!empty($tab)) {
-      $options = ['query' => ['tab' => $tab]];
-    }
-    if ($workflow_service->checkAssessmentAccess($node, 'edit')->isAllowed()) {
-      if (!$node->isDefaultRevision()) {
-        $form_state->setRedirect('node.revision_edit', ['node' => $node->id(), 'node_revision' => $node->getRevisionId()], $options);
-      }
-      else {
-        $form_state->setRedirectUrl($node->toUrl('edit-form', $options));
-      }
-    }
-    elseif ($workflow_service->checkAssessmentAccess($node, 'change_state')->isAllowed()) {
-      $form_state->setRedirect('iucn_assessment.node.state_change', ['node' => $node->id()]);
-    }
-    else {
-      $form_state->setRedirect('who.user-dashboard');
-    }
-  }
-
-  /**
-   * Hide all paragraphs actions on a form.
+   * Hide paragraphs actions based on user permissions and field settings.
    *
    * @param array $form
+   * @param NodeInterface $siteAssessment
    *   The form.
    */
-  public static function hideParagraphsActions(array &$form) {
-    $read_only_paragraph_fields = ['field_as_values_bio', 'field_as_values_wh'];
-    foreach ($read_only_paragraph_fields as $field) {
-      if (!empty($form[$field]['widget'])) {
-        self::hideParagraphsActionsFromWidget($form[$field]['widget']);
+  public static function hideParagraphsActions(array &$form, NodeInterface $siteAssessment) {
+    if (!$siteAssessment->isDefaultTranslation()) {
+      return;
+    }
+
+    $state = $siteAssessment->get('field_state')->value;
+
+    /** @var \Drupal\Core\Session\AccountProxy $currentUser */
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\Core\Entity\EntityFieldManager $entityFieldManager */
+    $entityFieldManager = \Drupal::service('entity_field.manager');
+
+    /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $fieldDefinitions */
+    $fieldDefinitions = $entityFieldManager->getFieldDefinitions('node', 'site_assessment');
+
+    $actions = ['add more', 'edit', 'delete',];
+
+    $readOnlyForm = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
+    foreach ($fieldDefinitions as $field => $fieldDefinition) {
+      if (!$fieldDefinition instanceof ConfigEntityBase) {
+        continue;
+      }
+
+      if (empty($form[$field]['widget'])) {
+        continue;
+      }
+
+      $widget = &$form[$field]['widget'];
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+        && !$readOnlyForm;
+      $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
+
+      $disabledActions = [];
+      foreach ($actions as $action) {
+        if (!$editableField) {
+          $disabledActions[] = $action;
+          continue;
+        }
+
+        if ($cardinality == 1 and $action != 'edit') {
+          continue;
+        }
+
+        $permission = "$action $field";
+        if ($currentUser->hasPermission($permission)) {
+          continue;
+        }
+
+        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE))) {
+          continue;
+        }
+
+        $disabledActions[] = $action;
+      }
+
+      if ($disabledActions) {
+        static::hideParagraphsActionFromWidget($widget, $disabledActions);
       }
     }
   }
@@ -448,51 +588,80 @@ class NodeSiteAssessmentForm {
    *
    * @param array $widget
    *   The widget.
-   * @param bool $alter_colspan
-   *   Is the colspan of the table altered.
-   */
-  public static function hideParagraphsActionsFromWidget(array &$widget, $alter_colspan = TRUE) {
-    $widget['add_more']['#access'] = FALSE;
-    if (!empty($widget['header']['data']['actions'])) {
-      $widget['header']['data']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$widget['header']['#attributes']['class'];
-        foreach ($classes as &$class) {
-          if (preg_match('/paragraph-top-col-(.*)/', $class, $matches)) {
-            $col_number = $matches[1];
-            $col_class = $class;
-            $new_col_number = $col_number - 1;
-            $new_col_class = "paragraph-top-col-$new_col_number";
-            $class = $new_col_class;
-          }
+   * @param array $actions
+   *   The action to hide
+   **/
+  public static function hideParagraphsActionFromWidget(array &$widget, array $actions) {
+    static::disableWidget($widget);
+
+    foreach ($actions as $action) {
+      if ($action == 'add more') {
+        if (!empty($widget['add more'])) {
+          $widget['add more']['#access'] = FALSE;
         }
+        if (!empty($widget['add_more'])) {
+          $widget['add_more']['#access'] = FALSE;
+        }
+      }
+
+      foreach (Element::children($widget) as $child) {
+        unset($widget[$child]['top']['actions']['buttons'][$action]);
       }
     }
-    foreach ($widget as $key => &$paragraph) {
-      if (!is_int($key)) {
+
+    foreach (Element::children($widget) as $child) {
+      if (empty($widget[$child]['top']['actions']['buttons'])) {
+
+        unset($widget[$child]['top']['actions']);
+        unset($widget[$child]['top']['summary']['actions']);
         continue;
       }
-      $paragraph['top']['actions']['#access'] = FALSE;
-      if ($alter_colspan) {
-        $classes = &$paragraph['top']['#attributes']['class'];
-        if (!empty($new_col_class)) {
-          foreach ($classes as &$class) {
-            if ($class == $col_class) {
-              $class = $new_col_class;
-            }
-          }
+
+      foreach ($widget[$child]['top']['actions']['buttons'] as $button) {
+        if (!is_array($button)) {
+          continue;
         }
+
+        if (!empty($button['#access'])) {
+          continue 2;
+        }
+      }
+
+      unset($widget[$child]['top']['actions']);
+      unset($widget[$child]['top']['summary']['actions']);
+    }
+  }
+  /**
+   * Disable a widget.
+   *
+   * @param array $widget
+   *   The widget.
+   **/
+  public static function disableWidget(array &$widget) {
+    $disabledInputs = ['select', 'text_format', 'entity_autocomplete', 'managed_file'];
+
+    if (!empty($widget['#type']) && in_array($widget['#type'], $disabledInputs)) {
+      $widget['#disabled'] = true;
+    }
+
+    foreach (Element::children($widget) as $child) {
+      if (!empty($widget[$child]['#type']) && in_array($widget[$child]['#type'], $disabledInputs)) {
+        $widget[$child]['#disabled'] = true;
+      }
+
+      if (!empty($widget[$child]['target_id']['#type']) && in_array($widget[$child]['target_id']['#type'], $disabledInputs)) {
+        $widget['#disabled'] = true;
       }
     }
   }
 
   public static function buildDiffButtons(&$form, $node) {
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.field_diff';
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    $diff = self::getNodeDiff($node);
+    $diff = self::getNodeSettings($node, 'diff');
     if (empty($diff)) {
       return;
     }
+
     foreach ($form as $field => &$form_item) {
       if (!self::isFieldWithDiff($node, $field, $diff)) {
         continue;
@@ -503,16 +672,18 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  public static function getNodeDiff($node) {
+  public static function getNodeSettings($node, $settingsKey) {
     $settings = $node->field_settings->value;
     if (empty($settings)) {
-      return NULL;
+      return [];
     }
+
     $settings = json_decode($settings, TRUE);
-    if (empty($settings['diff'])) {
-      return NULL;
+    if (empty($settings[$settingsKey])) {
+      return [];
     }
-    return $settings['diff'];
+
+    return $settings[$settingsKey];
   }
 
   public static function isFieldWithDiff($node, $field, $diff) {
@@ -529,32 +700,46 @@ class NodeSiteAssessmentForm {
 
   public static function getFieldDiffButton(NodeInterface $node, $field) {
     return [
-      '#type' => 'submit',
-      '#value' => 'See differences',
+      '#type' => 'link',
+      '#title' => t('See differences'),
       '#weight' => 2,
-      '#ajax' => [
-        'event' => 'click',
-        'url' => Url::fromRoute('iucn_assessment.field_diff_form', [
-          'node' => $node->id(),
-          'node_revision' => $node->getRevisionId(),
-          'field' => $field,
-          'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
-        ]),
-        'progress' => [
-          'type' => 'fullscreen',
-          'message' => NULL,
-        ],
-      ],
+      '#url' => Url::fromRoute('iucn_assessment.field_diff_form', [
+        'node' => $node->id(),
+        'node_revision' => $node->getRevisionId(),
+        'field' => $field,
+        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
+      ]),
       '#attributes' => [
         'class' => [
-          'paragraphs-icon-button',
-          'paragraphs-icon-button-compare',
           'use-ajax',
-          'field-diff',
+          'button',
+          'field-icon-button',
+          'field-icon-button-compare',
         ],
+        'data-dialog-type' => 'modal',
         'title' => t('See differences'),
       ],
     ];
   }
 
+  public static function changeTabLabel(&$tab) {
+    if (in_array('reviewer', \Drupal::currentUser()->getRoles())) {
+      if (!empty($tab['#link']['title'])) {
+        $tab['#link']['title'] = t('Submit review');
+      }
+    }
+  }
+
+  private static function isPermissionException($field, $action, array $roles) {
+    switch ([$field, $action, TRUE]) {
+      case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
+      case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
+        if (\Drupal::request()->query->get('tab') == 'assessing-values') {
+          return true;
+        }
+      break;
+    }
+
+    return false;
+  }
 }

@@ -1,4 +1,3 @@
-uuid: 6ae8b008-8cc2-4263-949f-f065edcafe52
 langcode: en
 status: true
 dependencies:
@@ -10,7 +9,7 @@ id: paragraph.as_site_benefit.field_as_benefits_pollut_trend
 field_name: field_as_benefits_pollut_trend
 entity_type: paragraph
 bundle: as_site_benefit
-label: 'Pollution trend'
+label: 'Pollution - trend'
 description: ''
 required: false
 translatable: false

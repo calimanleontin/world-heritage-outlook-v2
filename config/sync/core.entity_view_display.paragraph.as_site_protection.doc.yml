@@ -1,0 +1,42 @@
+uuid: 64aebd79-2a58-4ab6-8ca6-e3cbf248bec8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.doc
+    - field.field.paragraph.as_site_protection.field_as_description
+    - field.field.paragraph.as_site_protection.field_as_protection_rating
+    - field.field.paragraph.as_site_protection.field_as_protection_topic
+    - paragraphs.paragraphs_type.as_site_protection
+id: paragraph.as_site_protection.doc
+targetEntityType: paragraph
+bundle: as_site_protection
+mode: doc
+content:
+  field_as_description:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_protection_rating:
+    weight: 1
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_as_protection_topic:
+    weight: 0
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true

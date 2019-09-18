@@ -7,7 +7,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\Mail\MailInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\smtp\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -102,7 +102,7 @@ class SMTPMailSystem implements MailInterface, ContainerFactoryPluginInterface {
     $headers = $message['headers'];
     $subject = $message['subject'];
 
-    // Create a new PHPMailer object - autoloaded from registry.
+    // Create a new PHPMailer object - autoloaded from composer.
     $mailer = new PHPMailer();
 
     // Turn on debugging, if requested.

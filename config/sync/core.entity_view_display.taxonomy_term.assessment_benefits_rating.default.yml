@@ -1,0 +1,25 @@
+uuid: ebc93439-2bd1-403b-ac61-92f50dc8ae6f
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_benefits_rating
+  module:
+    - text
+id: taxonomy_term.assessment_benefits_rating.default
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_rating
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

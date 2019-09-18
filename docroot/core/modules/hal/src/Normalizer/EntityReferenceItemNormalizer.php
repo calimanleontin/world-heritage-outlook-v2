@@ -19,11 +19,9 @@ class EntityReferenceItemNormalizer extends FieldItemNormalizer implements UuidR
   use EntityReferenceFieldItemNormalizerTrait;
 
   /**
-   * The interface or class that this Normalizer supports.
-   *
-   * @var string
+   * {@inheritdoc}
    */
-  protected $supportedInterfaceOrClass = 'Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem';
+  protected $supportedInterfaceOrClass = EntityReferenceItem::class;
 
   /**
    * The hypermedia link manager.
@@ -127,7 +125,7 @@ class EntityReferenceItemNormalizer extends FieldItemNormalizer implements UuidR
     $target_entity_type_id = $item->getFieldDefinition()->getSetting('target_type');
 
     // If the entity type is the same as the parent, we can check that. This is
-    // just a shortcut to avoid getting the entity type defintition and checking
+    // just a shortcut to avoid getting the entity type definition and checking
     // the class.
     if ($target_entity_type_id === $referencing_entity->getEntityTypeId()) {
       return $referencing_entity instanceof FieldableEntityInterface;

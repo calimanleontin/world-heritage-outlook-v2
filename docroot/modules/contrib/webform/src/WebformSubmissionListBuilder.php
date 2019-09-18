@@ -253,8 +253,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
-      $container->get('entity.manager'),
+      $container->get('entity_type.manager')->getStorage($entity_type->id()),
+      $container->get('entity_type.manager'),
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('current_user'),
@@ -848,7 +848,11 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       case 'created':
       case 'completed':
       case 'changed':
-        return ($is_raw) ? $entity->{$name}->value : $entity->{$name}->value ? \Drupal::service('date.formatter')->format($entity->{$name}->value) : '';
+        /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+        $date_formatter = \Drupal::service('date.formatter');
+        return ($is_raw ? $entity->{$name}->value :
+          ($entity->{$name}->value ? $date_formatter->format($entity->{$name}->value) : '')
+        );
 
       case 'entity':
         $source_entity = $entity->getSourceEntity();
@@ -992,9 +996,9 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    */
   public function buildOperations(EntityInterface $entity) {
     return parent::buildOperations($entity) + [
-        '#prefix' => '<div class="webform-dropbutton">',
-        '#suffix' => '</div>',
-      ];
+      '#prefix' => '<div class="webform-dropbutton">',
+      '#suffix' => '</div>',
+    ];
   }
 
   /**
@@ -1036,6 +1040,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
           'title' => $this->t('Delete'),
           'weight' => 100,
           'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission.delete'),
+          'attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
         ];
       }
     }
@@ -1084,10 +1089,14 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
           'title' => $this->t('Delete'),
           'weight' => 100,
           'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.delete_form'),
+          'attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
         ];
       }
 
-      if ($entity->access('view_any') && $this->currentUser->hasPermission('access webform submission log')) {
+      if ($entity->access('view_any')
+        && $this->currentUser->hasPermission('access webform submission log')
+        && $webform->hasSubmissionLog()
+        && $this->moduleHandler->moduleExists('webform_submission_log')) {
         $operations['log'] = [
           'title' => $this->t('Log'),
           'weight' => 100,
@@ -1268,14 +1277,15 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $direction = tablesort_get_sort($header);
 
     // If query is order(ed) by 'element__*' we need to build a custom table
-    // sort using hook_query_alter().
-    // @see: webform_query_alter()
+    // sort using hook_query_TAG_alter().
+    // @see webform_query_webform_submission_list_builder_alter()
     if ($order && strpos($order['sql'], 'element__') === 0) {
       $name = $order['sql'];
       $column = $this->columns[$name];
-      $query->addMetaData('webform_submission_element_name', $column['key']);
-      $query->addMetaData('webform_submission_element_property_name', $column['property_name']);
-      $query->addMetaData('webform_submission_element_direction', $direction);
+      $query->addTag('webform_submission_list_builder')
+        ->addMetaData('webform_submission_element_name', $column['key'])
+        ->addMetaData('webform_submission_element_property_name', $column['property_name'])
+        ->addMetaData('webform_submission_element_direction', $direction);
       $result = $query->execute();
       // Must manually initialize the pager because the DISTINCT clause in the
       // query is breaking the row counting.
@@ -1284,7 +1294,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       return $result;
     }
     else {
-      $order = $this->request->query->get('order', '');
+      $order = $this->request->query->get('order', $order);
       if ($order) {
         $query->tableSort($header);
       }
@@ -1402,7 +1412,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
     // Filter by draft. (Only applies to user submissions and drafts)
     if (isset($this->draft)) {
-      $query->condition('in_draft', $this->draft);
+      // Cast boolean to integer to support SQLite.
+      $query->condition('in_draft', (int) $this->draft);
     }
 
     return $query;

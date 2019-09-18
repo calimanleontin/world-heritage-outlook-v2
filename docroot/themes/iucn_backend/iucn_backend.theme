@@ -3,6 +3,28 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Serialization\Json;
+
+/**
+ * Implements hook_preprocess_links.
+ */
+function iucn_backend_preprocess_links(&$variables) {
+  if ($variables["theme_hook_original"] != "links__dropbutton__operations") {
+    return;
+  }
+  $links = $variables['links'];
+  if (!empty($links)) {
+    foreach ($links as $key => $link) {
+      if (!empty($link['link']['#title']) && is_object($link['link']['#title'])) {
+        $variables['links'][$key]['attributes'] = new Attribute(['title' => $link['link']['#title']->render()]);
+      }
+      if (!empty($link['link']['#title']) && is_string($link['link']['#title'])) {
+        $variables['links'][$key]['attributes'] = new Attribute(['title' => $link['link']['#title']]);
+      }
+    }
+  }
+}
 
 function iucn_backend_theme($existing, $type, $theme, $path) {
   return [
@@ -22,71 +44,14 @@ function iucn_backend_theme_suggestions_block_alter(&$suggestions, $variables) {
     $suggestion = str_replace('iucn_backend_', 'seven_', $suggestion);
   }
 }
-
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
  *
  * Changes vertical tabs to container.
  */
 function iucn_backend_theme_suggestions_node_edit_form_alter(&$suggestions, $variables) {
-  if ($variables['form']['#form_id'] = 'site_assessment') {
+  if (!empty($variables['form']['#form_id']) && $variables['form']['#form_id'] == 'node_site_assessment_edit_form') {
     $suggestions[] = 'site_assessment_edit_form';
-  }
-}
-
-function iucn_backend_form_node_form_alter(&$form, FormStateInterface $form_state) {
-  if($form['#form_id'] == 'site_assessment') {
-    $form['#theme'] = ['site_assessment_edit_form'];
-  }
-}
-
-/**
- * Implements hook_preprocess_field_multiple_value_form().
- */
-function iucn_backend_preprocess_field_multiple_value_form(&$variables) {
-  if (!empty($variables['table']['#header']) && !empty($variables['element']['#field_name'])) {
-    $field_name = $variables['element']['#field_name'];
-    $field_entity = FieldConfig::loadByName('node', 'site_assessment', $field_name);
-    if (!empty($field_entity) && $field_entity->getType() == 'entity_reference_revisions'
-      && $field_entity->getSetting('handler') == 'default:paragraph') {
-
-      $tab = \Drupal::request()->get('tab') ?: 'values';
-      if (\Drupal::currentUser()->hasPermission('edit assessment main data') === FALSE
-        && in_array($tab, ['values', 'assessing-values']) || !empty($variables['element']['#hide_draggable'])) {
-        _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag($variables);
-      }
-
-      $title = $variables['element']['#title'];
-      unset($variables['table']['#header'][1]);
-      if (empty($variables['element']['#is_diff_form'])) {
-        $variables['paragraph_header'] = [
-          '#type' => 'table',
-          '#header' => $variables['table']['#header'],
-          '#rows' => [],
-        ];
-      }
-      unset($variables['table']['#header']);
-    }
-  }
-}
-
-/**
- * Helper function used to remove the tabledrag from a multiple value form.
- */
-function _iucn_backend_preprocess_field_multiple_value_form_remove_tabledrag(&$variables) {
-  if (isset($variables['table']['#tabledrag'])) {
-    unset($variables['table']['#tabledrag']);
-    array_pop($variables['table']['#header']);
-    foreach ($variables['table']['#rows'] as &$row) {
-      foreach (array_keys($row['data']) as $key) {
-        if (!empty($row['data'][$key]['class']) && array_intersect($row['data'][$key]['class'], [
-          'field-multiple-drag',
-          'delta-order',
-        ])) {
-          unset($row['data'][$key]);
-        }
-      }
-    }
   }
 }
 
@@ -127,5 +92,25 @@ function iucn_backend_preprocess_views_view_table(&$variables) {
         }
       }
     }
+  }
+}
+
+function iucn_backend_preprocess_taxonomy_term(&$variables) {
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  $viewMode = $variables['view_mode'];
+
+  if ($viewMode == 'teaser') {
+    if ($term->bundle() == 'assessment_benefits_impact_level') {
+      $variables['name'][0]['#context']['value'] = t('Level of impact: @level', ['@level' => $variables['name'][0]['#context']['value']]);
+    }
+
+    if ($term->bundle() == 'assessment_benefits_impact_trend') {
+      $variables['name'][0]['#context']['value'] = t('Trend: @trend', ['@trend' => $variables['name'][0]['#context']['value']]);
+    }
+  }
+
+  if (in_array($term->id(), [1330, 1332 ,1333])) {
+    $variables['name'][0]['#context']['value'] .= sprintf(" %s", strip_tags($term->getDescription()));
   }
 }

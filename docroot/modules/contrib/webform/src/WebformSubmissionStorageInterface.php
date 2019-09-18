@@ -556,10 +556,22 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   A webform submission.
-   * @param array $values
-   *   The value to be logged includes 'handler_id', 'operation', 'message', and 'data'.
+   * @param array $context
+   *   The values/context to be logged includes 'handler_id', 'operation', 'message', and 'data'.
+   *
+   * @deprecated Instead call the 'webform_submission' logger channel directly.
+   *
+   *  $message = 'Some message with an %argument.'
+   *  $context = [
+   *    '%argument' => 'Some value'
+   *    'link' => $webform_submission->toLink($this->t('Edit'), 'edit-form')->toString(),
+   *    'webform_submission' => $webform_submission,
+   *    'handler_id' => NULL,
+   *    'data' => [],
+   *  ];
+   *  \Drupal::logger('webform_submission')->notice($message, $context);
    */
-  public function log(WebformSubmissionInterface $webform_submission, array $values = []);
+  public function log(WebformSubmissionInterface $webform_submission, array $context = []);
 
   /****************************************************************************/
   // Draft methods.
@@ -580,6 +592,10 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    */
   public function loadDraft(WebformInterface $webform, EntityInterface $source_entity = NULL, AccountInterface $account = NULL);
 
+  /****************************************************************************/
+  // Anonymous submission methods.
+  /****************************************************************************/
+
   /**
    * React to an event when a user logs in.
    *
@@ -587,5 +603,17 @@ interface WebformSubmissionStorageInterface extends ContentEntityStorageInterfac
    *   Account that has just logged in.
    */
   public function userLogin(UserInterface $account);
+
+  /**
+   * Get anonymous user's submission ids.
+   *
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   A user account.
+   *
+   * @return array|
+   *   A array of submission ids or NULL if the user us not anonymous or has
+   *   not saved submissions.
+   */
+  public function getAnonymousSubmissionIds(AccountInterface $account);
 
 }

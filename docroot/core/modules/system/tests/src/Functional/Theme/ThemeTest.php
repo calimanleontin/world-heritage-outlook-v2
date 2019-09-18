@@ -81,6 +81,20 @@ class ThemeTest extends BrowserTestBase {
   }
 
   /**
+   * Tests theme can provide classes.
+   */
+  public function testClassLoading() {
+    // Install test theme and set it as default.
+    $this->config('system.theme')
+      ->set('default', 'test_theme')
+      ->save();
+    $this->resetAll();
+    // Visit page controller and confirm that the theme class is loaded.
+    $this->drupalGet('/theme-test/test-theme-class');
+    $this->assertText('Loading ThemeClass was successful.');
+  }
+
+  /**
    * Ensures a theme's .info.yml file is able to override a module CSS file from being added to the page.
    *
    * @see test_theme.info.yml
@@ -94,7 +108,11 @@ class ThemeTest extends BrowserTestBase {
     $config->set('css.preprocess', 0);
     $config->save();
     $this->drupalGet('theme-test/suggestion');
-    $this->assertNoText('js.module.css', 'The theme\'s .info.yml file is able to override a module CSS file from being added to the page.');
+    // We add a "?" to the assertion, because drupalSettings may include
+    // information about the file; we only really care about whether it appears
+    // in a LINK or STYLE tag, for which Drupal always adds a query string for
+    // cache control.
+    $this->assertSession()->responseNotContains('js.module.css?');
 
     // Also test with aggregation enabled, simply ensuring no PHP errors are
     // triggered during drupal_build_css_cache() when a source file doesn't

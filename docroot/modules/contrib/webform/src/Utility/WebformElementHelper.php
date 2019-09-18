@@ -76,7 +76,7 @@ class WebformElementHelper {
    *
    * @param array|mixed $element
    *   An element.
-   * @param string
+   * @param string $key
    *   The element key.
    *
    * @return bool
@@ -84,6 +84,26 @@ class WebformElementHelper {
    */
   public static function isElement($element, $key) {
     return (Element::child($key) && is_array($element));
+  }
+
+  /**
+   * Determine if an element has children.
+   *
+   * @param array|mixed $element
+   *   An element.
+   *
+   * @return bool
+   *   TRUE if an element has children.
+   *
+   * @see \Drupal\Core\Render\Element::children
+   */
+  public static function hasChildren($element) {
+    foreach ($element as $key => $value) {
+      if ($key === '' || $key[0] !== '#') {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -142,6 +162,50 @@ class WebformElementHelper {
    */
   public static function isTitleDisplayed(array $element) {
     return (!empty($element['#title']) && (empty($element['#title_display']) || !in_array($element['#title_display'], ['invisible', 'attribute']))) ? TRUE : FALSE;
+  }
+
+  /**
+   * Determine if element or sub-element has properties.
+   *
+   * @param array $element
+   *   An element.
+   * @param array $property
+   *   Element properties.
+   *
+   * @return bool
+   *   TRUE if element or sub-element has any property.
+   */
+  public static function hasProperties(array $element, array $properties) {
+    foreach ($element as $key => $value) {
+      // Recurse through sub-elements.
+      if (static::isElement($value, $key)) {
+        if (static::hasProperties($value, $properties)) {
+          return TRUE;
+        }
+      }
+      // Return TRUE if property exists and property value is NULL or equal.
+      elseif (array_key_exists($key, $properties) && ($properties[$key] === NULL || $properties[$key] === $value)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Determine if element or sub-element has property and value.
+   *
+   * @param array $element
+   *   An element.
+   * @param string $property
+   *   An element property.
+   * @param mixed|null $value
+   *   An element value.
+   *
+   * @return bool
+   *   TRUE if element or sub-element has property and value.
+   */
+  public static function hasProperty(array $elements, $property, $value = NULL) {
+    return static::hasProperties($elements, [$property => $value]);
   }
 
   /**
@@ -229,7 +293,23 @@ class WebformElementHelper {
     }
 
     $attributes = [];
+
+    // Set .js-form-wrapper which is targeted by states.js hide/show logic.
     $attributes['class'][] = 'js-form-wrapper';
+
+    // Add .js-webform-states-hidden to hide elements when they are being rendered.
+    $attributes_properties = ['#wrapper_attributes', '#attributes'];
+    foreach ($attributes_properties as $attributes_property) {
+      if (isset($element[$attributes_property]) && isset($element[$attributes_property]['class'])) {
+        $index = array_search('js-webform-states-hidden', $element[$attributes_property]['class']);
+        if ($index !== FALSE) {
+          unset($element[$attributes_property]['class'][$index]);
+          $attributes['class'][] = 'js-webform-states-hidden';
+          break;
+        }
+      }
+    }
+
     $attributes['data-drupal-states'] = Json::encode($element['#states']);
 
     $element += ['#prefix' => '', '#suffix' => ''];
@@ -383,6 +463,11 @@ class WebformElementHelper {
    *   An associative array of translated element properties.
    */
   public static function applyTranslation(array &$element, array $translation) {
+    // Apply all translated properties to the element.
+    // This allows default properties to be translated, which includes
+    // composite element titles.
+    $element += $translation;
+
     foreach ($element as $key => &$value) {
       // Make sure to only merge properties.
       if (!Element::property($key) || empty($translation[$key])) {
@@ -423,6 +508,33 @@ class WebformElementHelper {
       $flattened_elements += self::getFlattened($element);
     }
     return $flattened_elements;
+  }
+
+  /**
+   * Get reference to first element by name.
+   *
+   * @param array $elements
+   *   An associative array of elements.
+   * @param string $name
+   *   The element's name.
+   *
+   * @return array|null
+   *   Reference to found element.
+   */
+  public static function &getElement(array &$elements, $name) {
+    foreach (Element::children($elements) as $element_name) {
+      if ($element_name == $name) {
+        return $elements[$element_name];
+      }
+      elseif (is_array($elements[$element_name])) {
+        $child_elements =& $elements[$element_name];
+        if ($element = &static::getElement($child_elements, $name)) {
+          return $element;
+        }
+      }
+    }
+    $element = NULL;
+    return $element;
   }
 
   /**
@@ -586,9 +698,12 @@ class WebformElementHelper {
    * @return array
    *   An associative array containing an element's states.
    */
-  public static function getStates(array $element) {
-    // Composite and multiple elements use use a custom states wrapper
-    // which will changes '#states' to '#_webform_states'.
+  public static function &getStates(array &$element) {
+    // Processed elements store the original #states in '#_webform_states'.
+    // @see \Drupal\webform\WebformSubmissionConditionsValidator::buildForm
+    //
+    // Composite and multiple elements use a custom states wrapper
+    // which will change '#states' to '#_webform_states'.
     // @see \Drupal\webform\Utility\WebformElementHelper::fixStatesWrapper
     if (!empty($element['#_webform_states'])) {
       return $element['#_webform_states'];
@@ -597,7 +712,10 @@ class WebformElementHelper {
       return $element['#states'];
     }
     else {
-      return [];
+      // Return empty states variable to prevent the below notice.
+      // 'Only variable references should be returned by reference'.
+      $empty_states = [];
+      return $empty_states;
     }
   }
 
@@ -630,7 +748,7 @@ class WebformElementHelper {
    * Randomoize an associative array of element values and disable page caching.
    *
    * @param array $values
-   *   An associative array of element values,
+   *   An associative array of element values.
    *
    * @return array
    *   Randomized associative array of element values.

@@ -3,6 +3,7 @@
 use \Drupal\iucn_who_core\ToolbarHandler;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -11,6 +12,7 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
 
@@ -58,6 +60,21 @@ function iucn_who_core_toolbar() {
   return \Drupal::service('class_resolver')
     ->getInstanceFromDefinition(ToolbarHandler::class)
     ->toolbar();
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function iucn_who_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() == 'content' && $display_id == 'page_2') {
+    $account = \Drupal::currentUser();
+    $is_iucn_manager = in_array('iucn_manager', $account->getRoles());
+    $is_administrator = in_array('administrator', $account->getRoles());
+    if ($is_iucn_manager || $is_administrator) {
+      return;
+    }
+    $view->removeHandler($view->current_display, 'field', 'views_bulk_operations_bulk_form');
+  }
 }
 
 /**
@@ -265,6 +282,10 @@ function iucn_who_core_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrum
   $cache_context = $breadcrumb->getCacheContexts();
   $cache_max = $breadcrumb->getCacheMaxAge();
 
+  if ($route_match->getRouteName() == 'who.user-dashboard') {
+    $breadcrumb = new Breadcrumb();
+  }
+
   // Custom breadcrumb for Webforms.
   if (isset($parameters['webform']) && gettype($parameters['webform']) == 'object' && in_array($parameters['webform']->id(), ['site_feedback', 'ask_a_question'])) {
     $new_breadcrumb = new Breadcrumb();
@@ -450,6 +471,17 @@ function mymodule_get_menu_items($menu_name) {
   return $menu;
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function iucn_who_core_form_user_form_alter(array &$form, FormStateInterface $form_state) {
+  $currentUser = \Drupal::currentUser();
+  if (!$currentUser->hasPermission('edit own profile')) {
+    $form['account']['mail']['#disabled'] = 'disabled';
+    $form['field_user_title']['#access'] = FALSE;
+  }
+}
+
 function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
   if ($form_id == 'user_login_form') {
     $form['reset_password'] = [
@@ -460,8 +492,68 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
       '#weight' => '200',
     ];
   }
+
+  if ($form_id == 'user_form') {
+    $currentUser = \Drupal::currentUser();
+    $formObject = $form_state->getFormObject();
+    /** @var \Drupal\user\UserInterface $user */
+    $user = $formObject->getEntity();
+    if (!$currentUser->hasPermission('change other users agreement settings')
+      || $user->id() === $currentUser->id()) {
+      return;
+    }
+
+    $disabled = $user->field_user_agreement_disabled->value;
+
+    array_unshift($form['actions']['submit']['#submit'], 'saveAgreement');
+    $form['user_agreement_disabled'] = [
+      '#type' => 'checkbox',
+      '#title' => t('@agree_checkbox', ['@agree_checkbox' => t('Remove standard user agreement')]),
+      '#default_value' => $disabled,
+      '#weight' => 10,
+    ];
+  }
+
+  if ($form_id == 'user_register_form') {
+    $form['account']['pass']['#required'] = FALSE;
+    $form['account']['mail']['#required'] = TRUE;
+    $form['account']['name']['#title'] = t('Username (First name Last name)');
+    $form['account']['field_user_title'] = $form['field_user_title'];
+    unset($form['field_user_title']);
+
+    $form['account']['notify_container'] = [
+      '#type' => 'container',
+      'notify_title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'b',
+        '#value' => t('Email notification'),
+      ],
+      'notify' => $form['account']['notify'],
+    ];
+
+    $form['actions']['submit']['#submit'][] = 'addRegisterFormSuccessMessage';
+    unset($form['account']['notify']);
+  }
 }
 
+function addRegisterFormSuccessMessage(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  if ($form_state->getValue('notity')) {
+    return;
+  }
+
+  $account = $form_state->getFormObject()->getEntity();
+  \Drupal::messenger()->addStatus(t('Created a new user account for <a href=":url">%name</a>.', [':url' => $account->url(), '%name' => $account->getUsername()]));
+}
+
+function saveAgreement(array $form, FormStateInterface $form_state) {
+  $formObject = $form_state->getFormObject();
+
+  $user = $formObject->getEntity();
+  $user->set('field_user_agreement_disabled', $form_state->getValue('user_agreement_disabled'));
+
+  $formObject->setEntity($user);
+  $form_state->setFormObject($formObject);
+}
 
 /**
  * Implements hook_preprocess_menu().

@@ -9,7 +9,7 @@ use Drupal\webform\WebformInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the webform filter webform.
+ * Provides the webform filter form.
  */
 class WebformEntityFilterForm extends FormBase {
 
@@ -63,7 +63,8 @@ class WebformEntityFilterForm extends FormBase {
       '#title_display' => 'invisible',
       '#autocomplete_route_name' => 'entity.webform.autocomplete' . ($state === WebformInterface::STATUS_ARCHIVED ? '.archived' : ''),
       '#placeholder' => $this->t('Filter by title, description, elements, user name, or role'),
-      '#maxlength' => 128,
+      // Allow autocomplete to use long webform titles.
+      '#maxlength' => 500,
       '#size' => 45,
       '#default_value' => $search,
     ];
@@ -75,6 +76,9 @@ class WebformEntityFilterForm extends FormBase {
       '#empty_option' => ($category) ? $this->t('Show all webforms') : $this->t('Filter by category'),
       '#default_value' => $category,
     ];
+    if (empty($form['filter']['category']['#options'])) {
+      $form['filter']['category']['#access'] = FALSE;
+    }
     $form['filter']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),

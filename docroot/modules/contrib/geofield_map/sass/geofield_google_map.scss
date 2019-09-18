@@ -5,12 +5,21 @@
   max-width: none;
 }
 
+/**
+ * Styles for geofield gmap views AJAX popup.
+ */
+.geofield-google-map-ajax-popup {
+  height: 140px;
+  width: 180px;
+  background: center no-repeat url('../assets/spin.gif');
+}
 
 // Map Infowindow Styling
-.gm-style-iw {
-  max-width: 220px;
+.gm-style .gm-style-iw {
+  max-width: 440px;
   img {
-    padding: 4px;
+    margin: 4px 0;
+    max-width: 100%
   }
   h1 {
     font-size: 22px;
@@ -33,5 +42,11 @@
   }
   .geofield-google-map {
     display: none;
+  }
+}
+
+@media (max-device-width:480px) {
+  .gm-style .gm-style-iw {
+    max-width: 240px;
   }
 }

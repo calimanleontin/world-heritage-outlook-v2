@@ -28,6 +28,8 @@ class WebformEmailConfirm extends Email {
       'confirm__title' => '',
       'confirm__description' => '',
       'confirm__placeholder' => '',
+      // Wrapper.
+      'wrapper_type' => 'fieldset',
     ];
     unset(
       $properties['multiple'],
@@ -52,9 +54,8 @@ class WebformEmailConfirm extends Email {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
     $form['email_confirm'] = [
-      '#type' => 'details',
+      '#type' => 'fieldset',
       '#title' => $this->t('Email confirm settings'),
-      '#open' => TRUE,
     ];
     $form['email_confirm']['confirm__title'] = [
       '#type' => 'textfield',

@@ -170,9 +170,9 @@ class DefaultFacetManager {
       }
     }
 
-    $unprocessedFacets = array_filter($this->facets, function ($item) {
+    $unprocessedFacets = array_filter($this->facets, function ($item) use ($facetsource_id) {
       /* @var \Drupal\facets\FacetInterface $item */
-      return !isset($this->processedFacets[$item->id()]);
+      return !isset($this->processedFacets[$facetsource_id][$item->id()]);
     });
 
     // All facets were already processed on a previous run, so no need to do so
@@ -192,7 +192,7 @@ class DefaultFacetManager {
         }
         $post_query_processor->postQuery($facet);
       }
-      $this->processedFacets[$facet->id()] = $facet;
+      $this->processedFacets[$facetsource_id][$facet->id()] = $facet;
     }
   }
 
@@ -313,6 +313,11 @@ class DefaultFacetManager {
 
     $facet->setResults($results);
 
+    // We include this build even if empty, it may contain attached libraries.
+    /** @var \Drupal\facets\Widget\WidgetPluginInterface $widget */
+    $widget = $facet->getWidgetInstance();
+    $build = $widget->build($facet);
+
     // No results behavior handling. Return a custom text or false depending on
     // settings.
     if (empty($facet->getResults())) {
@@ -320,6 +325,7 @@ class DefaultFacetManager {
       if ($empty_behavior['behavior'] == 'text') {
         return [
           [
+            $build,
             '#type' => 'container',
             '#attributes' => [
               'data-drupal-facet-id' => $facet->id(),
@@ -340,6 +346,7 @@ class DefaultFacetManager {
         // content.
         return [
           [
+            $build,
             '#type' => 'container',
             '#attributes' => [
               'data-drupal-facet-id' => $facet->id(),
@@ -350,10 +357,7 @@ class DefaultFacetManager {
       }
     }
 
-    /** @var \Drupal\facets\Widget\WidgetPluginInterface $widget */
-    $widget = $facet->getWidgetInstance();
-
-    return [$widget->build($facet)];
+    return [$build];
   }
 
   /**

@@ -1,9 +1,7 @@
-uuid: 535affcd-c28f-42c7-bc2e-0e2560b5127a
 langcode: en
 status: true
 dependencies: {  }
 name: Theme
 vid: theme
 description: ''
-hierarchy: 0
 weight: 0

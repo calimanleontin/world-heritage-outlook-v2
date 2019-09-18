@@ -1,9 +1,7 @@
-uuid: 1ecf4ec3-7648-47ea-91c6-037759079c63
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment benefits impact trend'
 vid: assessment_benefits_impact_trend
 description: 'Trend impact for a site benefit'
-hierarchy: 0
 weight: 0

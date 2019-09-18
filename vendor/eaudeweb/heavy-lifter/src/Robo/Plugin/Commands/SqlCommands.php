@@ -3,54 +3,42 @@
 namespace EauDeWeb\Robo\Plugin\Commands;
 
 
-
-use EauDeWeb\Robo\InvalidConfigurationException;
+use EauDeWeb\Robo\Task\Curl\loadTasks;
+use machbarmacher\GdprDump\MysqldumpGdpr;
 use Robo\Exception\TaskException;
+use Symfony\Component\Yaml\Yaml;
+
 
 class SqlCommands extends CommandBase {
 
   use \Boedah\Robo\Task\Drush\loadTasks;
+  use \EauDeWeb\Robo\Task\Curl\loadTasks;
 
   /**
-   * @inheritdoc
-   */
-  protected function validateConfig() {
-    parent::validateConfig();
-    $url =  $this->configSite('sync.sql.url');
-    if (!empty($url) && strpos($url, 'https://') !== 0) {
-      throw new InvalidConfigurationException(
-        'SQL sync URL is not HTTPS, cannot send credentials over unencrypted connection to: ' . $url
-      );
-    }
-  }
-
-  /**
-   * Only download the database dump from the remote storage, without importing it.
+   * Download the database dump from the remote storage, without importing it.
    *
    * @command sql:download
    *
+   * @param string $destination
+   *   Destination path to save the SQL database dump.
+   *
    * @return null|\Robo\Result
-   * @throws \EauDeWeb\Robo\InvalidConfigurationException
+   * @throws \Robo\Exception\TaskException
    *
    */
-  public function sqlDownload() {
-    $this->validateConfig();
-    $url =  $this->configSite('sync.sql.url');
+  public function sqlDownload($destination) {
+    $url =  $this->configSite('sql.sync.source');
     $username = $this->configSite('sync.username');
     $password = $this->configSite('sync.password');
-    $sql_dump = $this->tmpDir() . '/database.sql';
-    $sql_dump_gz = $sql_dump . '.gz';
-
-    $build = $this->collectionBuilder()->addTask(
-      $this->taskFilesystemStack()->remove($sql_dump)->remove($sql_dump_gz)
-    );
-    $curl = $this->taskExec('curl');
-    $curl->option('-fL')->option('--location-trusted')->option('--create-dirs');
-    $curl->option('-o', $sql_dump_gz);
-    $curl->option('-u', $username . ':' . $password);
-    $curl->arg($url);
-    $build->addTask($curl);
-    return $build->run();
+    $this->validateHttpsUrl($url);
+    return $this->taskCurl($url)
+      ->followRedirects()
+      ->failOnHttpError()
+      ->locationTrusted()
+      ->output($destination)
+      ->basicAuth($username, $password)
+      ->option('--create-dirs')
+      ->run();
   }
 
   /**
@@ -63,61 +51,115 @@ class SqlCommands extends CommandBase {
    * @option $anonymize Anonymize data after importing the SQL dump
    *
    * @return null|\Robo\Result
-   * @throws \EauDeWeb\Robo\InvalidConfigurationException
+   * @throws \Robo\Exception\TaskException
    */
   public function sqlSync($options = ['anonymize' => FALSE]) {
-    $this->validateConfig();
-    if (($download = $this->sqlDownload()) && $download->wasSuccessful()) {
-      // @TODO How can we retrieve the downloaded file path from sqlDownload()?
-      $sql_dump = $this->tmpDir() . '/database.sql';
-      $sql_dump_gz = $sql_dump . '.gz';
+    $this->allowOnlyOnLinux();
 
-      $build = $this->collectionBuilder();
-      $build->addTask(
-        $this->taskExec('gzip')
-          ->option('-d')
-          ->option('--keep')
-          ->arg($sql_dump_gz)
-      );
+    $url = $this->configSite('sql.sync.source');
+    $this->validateHttpsUrl($url);
+    $commands = [];
 
+    $dir = $this->taskTmpDir('heavy-lifter')->run();
+    $dest = $dir->getData()['path'] . '/database.sql';
+    $dest_gz = $dest . '.gz';
+    $download = $this->sqlDownload($dest_gz);
+    if ($download->wasSuccessful()) {
       $drush = $this->drushExecutable();
-      $drush = $this->taskDrushStack($drush)
-        ->drush('sql:drop')
-        ->drush(['sql:query','--file', $sql_dump]);
+      $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+      $execStack->exec("gzip -d $dest_gz");
 
-      if ($options['anonymize']) {
-        $drush->drush("project:anonymize -y");
+      if ($this->isDrush9()) {
+        $commands[] = 'sql:drop -y';
+        $commands[] = 'sql:query --file ' . $dest;
       }
-      $build->addTask($drush);
-      return $build->run();
+      else {
+        //Drupal 7
+        $execStack->dir('docroot');
+        $commands[] = 'sql-drop -y';
+        $commands[] = 'sql-query --file=' . $dest;
+      }
+
+      // Add the anonymize command if required
+      if ($options['anonymize']) {
+        $commands[] = 'project:anonymize -y';
+      }
+
+      $excludedCommandsArray = $this->configSite('sql.sync.excluded_commands');
+      $extraCommandsArray = $this->configSite('sql.sync.extra_commands');
+
+      $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+
+      $execStack->run();
     }
     return $download;
   }
-
 
   /**
    * Create archive with database dump directory to the given path
    *
    * @command sql:dump
    * @option gzip Create a gzipped archive dump. Default TRUE.
+   * @option anonymize Anonymize sensitive data according to your robo.yml configuration. Default FALSE.
    *
    * @param string $output Absolute path to the resulting archive
    * @param array $options Command line options
    *
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException when output path is not absolute
-   * @throws \EauDeWeb\Robo\InvalidConfigurationException
    */
-  public function sqlDump($output, $options = ['gzip' => true]) {
-    if ($output[0] != '/') {
-      throw new TaskException($this,'Output must be an absolute path');
+  public function sqlDump($output = NULL, $options = ['gzip' => true, 'anonymize' => false]) {
+    if (empty($output)) {
+      $output = $this->configSite('sql.dump.location');
+      if (empty($output)) {
+        throw new TaskException(get_class($this), 'Dump location was not set. Please add the path parameter or add default_dump_location in your robo.yml.');
+      }
     }
+    $output = preg_replace('/.gz$/', '', $output);
+    $separator = $this->isLinuxServer() ? '/' : '\\';
+    if ($output[0] != $separator) {
+      $output = getcwd() . $separator . $output;
+    }
+
     $drush = $this->drushExecutable();
-    $task = $this->taskExec($drush)->rawArg('sql:dump')->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history');
-    $task->option('result-file', $output);
+
+    if ($options['anonymize']) {
+      $anonSchema = $this->projectDir() . '/anonymize.schema.yml';
+      if (!file_exists($anonSchema)) {
+        throw new TaskException(get_class($this), 'The anonymize.schema.yml file is missing.');
+      }
+
+      if (!class_exists(MysqldumpGdpr::class)) {
+        throw new TaskException(get_class($this), 'You cannot anonymize data without package "eaudeweb/gdpr-dump" being installed! Please run "composer require eaudeweb/gdpr-dump:1.0.6" !');
+      }
+      $exportPath = 'export PATH=' . $this->projectDir() . '/vendor/bin:$PATH; ';
+      $drush = $exportPath . $drush;
+    }
+
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    if ($this->isDrush9()) {
+      $task = $this->taskExec($drush)
+        ->rawArg('sql:dump')
+        ->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history')
+        ->option('result-file', $output);
+
+    } else { // Drupal 7
+      $task = $this->taskExec($drush)
+        ->rawArg('sql-dump')
+        ->rawArg('--structure-tables-list=cache,cache_*,watchdog,sessions,history')
+        ->rawArg("--result-file=$output")
+        ->dir('docroot');
+    }
+
     if ($options['gzip']) {
       $task->arg('--gzip');
     }
+
+    if ($options['anonymize']) {
+      $anonArgs = json_encode(Yaml::parseFile($anonSchema));
+      $task->rawArg(" --extra-dump=\'--gdpr-replacements='{$anonArgs}'\'");
+    }
+
     return $task->run();
   }
 }

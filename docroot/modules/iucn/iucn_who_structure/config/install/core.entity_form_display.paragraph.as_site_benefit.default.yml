@@ -1,4 +1,3 @@
-uuid: fc7bff22-9299-4c68-ab00-817b50d3a237
 langcode: en
 status: true
 dependencies:
@@ -30,7 +29,6 @@ third_party_settings:
       children:
         - field_as_benefits_category
         - field_as_description
-        - field_as_benefits_datadeficient
         - field_as_benefits_hab_level
         - field_as_benefits_hab_trend
         - field_as_benefits_pollut_level
@@ -63,8 +61,8 @@ content:
   field_as_benefits_category:
     weight: 2
     settings:
-      select_title: 'Select Benefit type'
-      select_label: 'Select Benefit type'
+      select_title: ''
+      select_label: 'Select benefit type'
       checkboxes_label: 'Select specific benefits'
     third_party_settings: {  }
     type: assessment_options_buttons
@@ -80,13 +78,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_as_benefits_datadeficient:
-    weight: 4
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
     region: content
   field_as_benefits_hab_level:
     weight: 5
@@ -142,7 +133,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_description:
     weight: 3
@@ -150,7 +141,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   translation:
     weight: 16
@@ -162,5 +153,6 @@ hidden:
   field_as_benefits_commun_in: true
   field_as_benefits_commun_out: true
   field_as_benefits_commun_wide: true
+  field_as_benefits_datadeficient: true
   status: true
   uid: true

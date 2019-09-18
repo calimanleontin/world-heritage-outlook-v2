@@ -3,6 +3,7 @@
 /**
  * @file
  */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldConfig;
 
@@ -21,7 +22,7 @@ function disable_field_form_field_config_edit_form_alter(&$form, FormStateInterf
       ->getEntity()
       ->getThirdPartySettings('disable_field');
     // Prepare group with fields for settings.
-    $form['disable_field'] = array(
+    $form['disable_field'] = [
       '#type' => 'details',
       '#title' => t('Disable Field Settings'),
       '#open' => TRUE,
@@ -33,51 +34,78 @@ function disable_field_form_field_config_edit_form_alter(&$form, FormStateInterf
       'edit' => [
         '#type' => 'fieldset',
         '#title' => t('Disable this field on edit content form?'),
-      ]
-    );
-    $form['disable_field']['add']['add_disable'] = array(
+      ],
+    ];
+    $form['disable_field']['add']['add_disable'] = [
       '#type' => 'select',
       '#options' => [
         'none' => t('Enable for all users'),
         'all' => t('Disable for all users'),
         'roles' => t('Disable for certain roles'),
+        'roles_enable' => t('Enable for certain roles'),
       ],
       '#default_value' => !empty($settings['add_disable']) ? $settings['add_disable'] : 'none',
-    );
-    $form['disable_field']['add']['add_disable_roles'] = array(
+    ];
+    $form['disable_field']['add']['add_enable_roles'] = [
+      '#type' => 'select',
+      '#options' => $roles,
+      '#title' => t('Enable field on the add content form for next roles:'),
+      '#multiple' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="add_disable"]' => ['value' => 'roles_enable'],
+        ],
+      ],
+      '#default_value' => !empty($settings['add_enable_roles']) ? $settings['add_enable_roles'] : [],
+    ];
+    $form['disable_field']['add']['add_disable_roles'] = [
       '#type' => 'select',
       '#options' => $roles,
       '#title' => t('Disable field on the add content form for next roles:'),
       '#multiple' => TRUE,
-      '#states' => array(
-        'visible' => array(
+      '#states' => [
+        'visible' => [
           ':input[name="add_disable"]' => ['value' => 'roles'],
-        ),
-      ),
+        ],
+      ],
       '#default_value' => !empty($settings['add_disable_roles']) ? $settings['add_disable_roles'] : [],
-    );
-    $form['disable_field']['edit']['edit_disable'] = array(
+    ];
+    $form['disable_field']['edit']['edit_disable'] = [
       '#type' => 'select',
       '#options' => [
         'none' => t('Enable for all users'),
         'all' => t('Disable for all users'),
         'roles' => t('Disable for certain roles'),
+        'roles_enable' => t('Enable for certain roles'),
       ],
       '#default_value' => !empty($settings['edit_disable']) ? $settings['edit_disable'] : 'none',
-    );
-    $form['disable_field']['edit_disable_roles'] = array(
+    ];
+    $form['disable_field']['edit_disable_roles'] = [
       '#type' => 'select',
       '#options' => $roles,
       '#title' => t('Disable field on the edit content form for next roles:'),
       '#multiple' => TRUE,
       '#weight' => 4,
-      '#states' => array(
-        'visible' => array(
+      '#states' => [
+        'visible' => [
           ':input[name="edit_disable"]' => ['value' => 'roles'],
-        ),
-      ),
+        ],
+      ],
       '#default_value' => !empty($settings['edit_disable_roles']) ? $settings['edit_disable_roles'] : [],
-    );
+    ];
+    $form['disable_field']['edit_enable_roles'] = [
+      '#type' => 'select',
+      '#options' => $roles,
+      '#title' => t('Enable field on the edit content form for next roles:'),
+      '#multiple' => TRUE,
+      '#weight' => 4,
+      '#states' => [
+        'visible' => [
+          ':input[name="edit_disable"]' => ['value' => 'roles_enable'],
+        ],
+      ],
+      '#default_value' => !empty($settings['edit_enable_roles']) ? $settings['edit_enable_roles'] : [],
+    ];
     $form['#attached']['library'][] = 'disable_field/disable_field';
     // Add validate and submit handlers.
     array_unshift($form['#validate'], 'disable_field_disable_validate');
@@ -103,6 +131,22 @@ function disable_field_form_field_config_form_builder($entity_type, FieldConfig 
     'disable_field', 'edit_disable', $form_state->getValue('edit_disable')
   );
   $type->setThirdPartySetting('disable_field', 'edit_disable_roles', $roles);
+
+  // Save settings for "add enable".
+  $roles_enable = $form_state->getValue('add_disable') == 'roles_enable' ? $form_state->getValue('add_enable_roles') : [];
+  $type->setThirdPartySetting(
+    'disable_field', 'add_disable', $form_state->getValue('add_disable')
+  );
+  $type->setThirdPartySetting(
+    'disable_field', 'add_enable_roles', $roles_enable
+  );
+  // Save settings for "edit disable".
+  $roles_enable = $form_state->getValue('edit_disable') == 'roles_enable' ? $form_state->getValue('edit_enable_roles') : [];
+  $type->setThirdPartySetting(
+    'disable_field', 'edit_disable', $form_state->getValue('edit_disable')
+  );
+  $type->setThirdPartySetting('disable_field', 'edit_enable_roles', $roles_enable);
+
 }
 
 /**
@@ -124,6 +168,21 @@ function disable_field_disable_validate(array &$form, FormStateInterface $form_s
       $form_state->setErrorByName('roles_edit', t('Please, choose at least one role.'));
     }
   }
+
+  $add_enable = $values['add_enable'];
+  $edit_enable = $values['edit_enable'];
+  // For add checkbox;
+  if ($add_enable == 'roles_enable') {
+    if (empty($values['add_enable_roles'])) {
+      $form_state->setErrorByName('roles_add', t('Please, choose at least one role.'));
+    }
+  }
+  // For Edit checkbox.
+  if ($edit_enable == 'roles_enable') {
+    if (empty($values['edit_enable_roles'])) {
+      $form_state->setErrorByName('roles_edit', t('Please, choose at least one role.'));
+    }
+  }
 }
 
 /**
@@ -134,16 +193,19 @@ function disable_field_form_alter(&$form, FormStateInterface $form_state, $form_
 
   // Disable Field.
   if (!empty($form_entity_type_id) && !empty($bundle)) {
-    $entity_type = \Drupal::service('entity_type.manager')->getDefinition($form_entity_type_id);
+    $entity_type = \Drupal::service('entity_type.manager')
+      ->getDefinition($form_entity_type_id);
     // Check that current entity is fieldable before process it's fields.
     if ($entity_type->isSubclassOf(\Drupal\Core\Entity\FieldableEntityInterface::class)) {
-      $fields = \Drupal::service('entity_field.manager')->getFieldDefinitions($form_entity_type_id, $bundle);
+      $fields = \Drupal::service('entity_field.manager')
+        ->getFieldDefinitions($form_entity_type_id, $bundle);
       $user_roles = \Drupal::currentUser()->getRoles();
       foreach ($fields as $field_name => $field_definition) {
         if (method_exists($field_definition, 'getThirdPartySettings')) {
           if ($settings = $field_definition->getThirdPartySettings('disable_field')) {
             if ($field_definition->getType() == 'field_collection') {
-              $bundle_fields = \Drupal::entityManager()->getFieldDefinitions('field_collection_item', $field_name);
+              $bundle_fields = \Drupal::entityManager()
+                ->getFieldDefinitions('field_collection_item', $field_name);
               foreach ($bundle_fields as $field_collection_name => $field_collection_definition) {
                 if (strpos($field_collection_name, 'field_') !== FALSE && $field_collection_name != 'field_name') {
                   $field_collection_settings = $field_collection_definition->getThirdPartySettings('disable_field');
@@ -153,11 +215,21 @@ function disable_field_form_alter(&$form, FormStateInterface $form_state, $form_
                       $form[$field_name]['widget'][0][$field_collection_name]['#disabled'] = TRUE;
                     }
                     // Field is disabled for some roles.
-                    else if ($field_collection_settings["{$operation}_disable"] == 'roles') {
-                      // @todo seems it's not the best way to check permission. What if user has several roles?
-                      $disable_check = array_diff($field_collection_settings["{$operation}_disable_roles"], $user_roles);
-                      if (count($disable_check) < count($field_collection_settings["{$operation}_disable_roles"])) {
-                        $form[$field_name]['widget'][0][$field_collection_name]['#disabled'] = TRUE;
+                    else {
+                      if ($field_collection_settings["{$operation}_disable"] == 'roles') {
+                        // @todo seems it's not the best way to check permission. What if user has several roles?
+                        $disable_check = array_diff($field_collection_settings["{$operation}_disable_roles"], $user_roles);
+                        if (count($disable_check) < count($field_collection_settings["{$operation}_disable_roles"])) {
+                          $form[$field_name]['widget'][0][$field_collection_name]['#disabled'] = TRUE;
+                        }
+                      }
+                      else {
+                        if ($field_collection_settings["{$operation}_disable"] == 'roles_enable') {
+                          $enable_check = array_intersect($field_collection_settings["{$operation}_enable_roles"], $user_roles);
+                          if (empty($enable_check)) {
+                            $form[$field_name]['widget'][0][$field_collection_name]['#disabled'] = TRUE;
+                          }
+                        }
                       }
                     }
                   }
@@ -172,12 +244,23 @@ function disable_field_form_alter(&$form, FormStateInterface $form_state, $form_
                 disable_field_add_validator($form, $field_name);
               }
               // Field is disabled for some roles.
-              else if ($settings["{$operation}_disable"] == 'roles') {
-                // @todo seems it's not the best way to check permission. What if user has several roles?
-                $disable_check = array_diff($settings["{$operation}_disable_roles"], $user_roles);
-                if (count($disable_check) < count($settings["{$operation}_disable_roles"])) {
-                  $form[$field_name]['#disabled'] = TRUE;
-                  disable_field_add_validator($form, $field_name);
+              else {
+                if ($settings["{$operation}_disable"] == 'roles') {
+                  // @todo seems it's not the best way to check permission. What if user has several roles?
+                  $disable_check = array_diff($settings["{$operation}_disable_roles"], $user_roles);
+                  if (count($disable_check) < count($settings["{$operation}_disable_roles"])) {
+                    $form[$field_name]['#disabled'] = TRUE;
+                    disable_field_add_validator($form, $field_name);
+                  }
+                }
+                else {
+                  if ($settings["{$operation}_disable"] == 'roles_enable') {
+                    $enable_check = array_intersect($settings["{$operation}_enable_roles"], $user_roles);
+                    if (empty($enable_check)) {
+                      $form[$field_name]['#disabled'] = TRUE;
+                      disable_field_add_validator($form, $field_name);
+                    }
+                  }
                 }
               }
             }
@@ -216,7 +299,7 @@ function disable_field_get_entity_data($form_state) {
   return [
     $form_entity_type_id,
     $bundle,
-    $operation
+    $operation,
   ];
 }
 

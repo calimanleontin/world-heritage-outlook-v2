@@ -87,7 +87,7 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    * Get the URL for the element's API documentation.
    *
    * @return \Drupal\Core\Url|null
-   *   The the URL for the element's API documentation.
+   *   The URL for the element's API documentation.
    */
   public function getPluginApiUrl();
 
@@ -259,6 +259,17 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
   public function hasMultipleValues(array $element);
 
   /**
+   * Determine if the element is or includes a managed_file upload element.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return bool
+   *   TRUE if the element is or includes a managed_file upload element.
+   */
+  public function hasManagedFiles(array $element);
+
+  /**
    * Retrieves the default properties for the defined element type.
    *
    * @return array
@@ -320,6 +331,18 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    * @see \Drupal\webform\Element\WebformCompositeBase::processWebformComposite
    */
   public function finalize(array &$element, WebformSubmissionInterface $webform_submission = NULL);
+
+  /**
+   * Alter an element's associated form.
+   *
+   * @param array $element
+   *   An element.
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function alterForm(array &$element, array &$form, FormStateInterface $form_state);
 
   /**
    * Check element access (rules).
@@ -567,6 +590,19 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    */
   public function getItemsFormat(array $element);
 
+  /**
+   * Checks if an empty element is excluded.
+   *
+   * @param array $element
+   *   An element.
+   * @param array $options
+   *   An array of options.
+   *
+   * @return bool
+   *   TRUE if an empty element is excluded.
+   */
+  public function isEmptyExcluded(array $element, array $options);
+
   /****************************************************************************/
   // Preview method.
   /****************************************************************************/
@@ -720,8 +756,23 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    *
    * @return array
    *   An array of element selectors.
+   *
+   * @see \Drupal\webform\Entity\Webform::getElementsSelectorSourceOption
    */
   public function getElementSelectorOptions(array $element);
+
+  /**
+   * Get an element's selectors source values.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   An array of element selectors source values.
+   *
+   * @see \Drupal\webform\Entity\Webform::getElementsSelectorSourceValues
+   */
+  public function getElementSelectorSourceValues(array $element);
 
   /**
    * Get an element's (sub)input selector value.
@@ -749,10 +800,10 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    *
    * @param array $element
    *   An element.
-   * @param mixed[] $values
+   * @param mixed[] &$values
    *   An array of values to set, keyed by property name.
    */
-  public function preCreate(array &$element, array $values);
+  public function preCreate(array &$element, array &$values);
 
   /**
    * Acts on a webform submission element after it is created.

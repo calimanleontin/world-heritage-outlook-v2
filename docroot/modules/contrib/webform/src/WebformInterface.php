@@ -13,6 +13,26 @@ use Drupal\webform\Plugin\WebformHandlerInterface;
 interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollectionInterface, EntityOwnerInterface {
 
   /**
+   * Webform title.
+   */
+  const TITLE_WEBFORM = 'webform';
+
+  /**
+   * Source entity title.
+   */
+  const TITLE_SOURCE_ENTITY = 'source_entity';
+
+  /**
+   * Both source entity and webform title.
+   */
+  const TITLE_SOURCE_ENTITY_WEBFORM = 'source_entity_webform';
+
+  /**
+   * Both webform and source entity title.
+   */
+  const TITLE_WEBFORM_SOURCE_ENTITY = 'webform_source_entity';
+
+  /**
    * Denote drafts are not allowed.
    *
    * @var string
@@ -148,6 +168,22 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function hasManagedFile();
 
   /**
+   * Determine if the webform's elements include attachments.
+   *
+   * @return bool
+   *   TRUE if the webform's elements include attachments.
+   */
+  public function hasAttachments();
+
+  /**
+   * Determine if the webform's elements include computed values.
+   *
+   * @return bool
+   *   TRUE if the webform's elements include computed values.
+   */
+  public function hasComputed();
+
+  /**
    * Determine if the webform is using a Flexbox layout.
    *
    * @return bool
@@ -218,6 +254,34 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    *   The number of wizard pages.
    */
   public function getNumberOfWizardPages();
+
+  /**
+   * Returns the webform's current operation.
+   *
+   * @return string
+   *   The webform's operation.
+   */
+  public function getOperation();
+
+  /**
+   * Sets the webform's current operation .
+   *
+   * @param string $operation
+   *   The webform's operation.
+   *
+   * @return $this
+   *
+   * @see \Drupal\webform\WebformSubmissionForm
+   */
+  public function setOperation($operation);
+
+  /**
+   * Determine if the webform is being tested.
+   *
+   * @return bool
+   *   TRUE if the webform is being tested.
+   */
+  public function isTest();
 
   /**
    * Sets the webform settings and properties override state.
@@ -309,9 +373,17 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    * Returns the webform confidential indicator.
    *
    * @return bool
-   *   TRUE if the webform is confidential .
+   *   TRUE if the webform is confidential.
    */
   public function isConfidential();
+
+  /**
+   * Determine if remote IP address is being stored.
+   *
+   * @return bool
+   *   TRUE if remote IP address is being stored.
+   */
+  public function hasRemoteAddr();
 
   /**
    * Determine if the saving of submissions is disabled.
@@ -639,7 +711,7 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function getElementsInitializedFlattenedAndHasValue($operation = NULL);
 
   /**
-   * Get webform manager file elements.
+   * Get webform managed file elements.
    *
    * @return array
    *   Webform managed file elements.
@@ -647,12 +719,39 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function getElementsManagedFiles();
 
   /**
-   * Get webform elements selectors as options.
+   * Get webform attachment elements.
+   *
+   * @return array
+   *   Webform attachment elements.
+   */
+  public function getElementsAttachments();
+
+  /**
+   * Get webform computed elements.
+   *
+   * @return array
+   *   Webform computed elements.
+   */
+  public function getElementsComputed();
+
+  /**
+   * Get webform element's selectors as options.
+   *
+   * @param array $options
+   *   (Optional) Options to be appled to element selectors.
    *
    * @return array
    *   Webform elements selectors as options.
    */
-  public function getElementsSelectorOptions();
+  public function getElementsSelectorOptions(array $options = []);
+
+  /**
+   * Get webform element options as autocomplete source values.
+   *
+   * @return array
+   *   Webform element options as autocomplete source values.
+   */
+  public function getElementsSelectorSourceValues();
 
   /**
    * Get webform elements that can be prepopulated.

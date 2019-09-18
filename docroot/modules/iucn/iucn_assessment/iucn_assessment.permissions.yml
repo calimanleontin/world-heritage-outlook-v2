@@ -18,3 +18,27 @@ edit new assessments:
 
 edit assessment main data:
   title: 'Edit assessment main data (values entities, published date, etc)'
+
+change other users agreement settings:
+  title: 'Can change other user agreement settings'
+
+view assessment differences:
+  title: 'View assessment differences'
+
+view assessment reports:
+  title: 'View assessment reports'
+
+view home button:
+  title: 'View home button'
+
+force finish reviewing:
+  title: 'Force finish reviewing'
+
+force finish assessment:
+  title: 'Force finish assessment'
+
+export nodes to word:
+  title: 'Export nodes to Word'
+
+permission_callbacks:
+  - Drupal\iucn_assessment\AssessmentFieldsPermissions::getPermissions

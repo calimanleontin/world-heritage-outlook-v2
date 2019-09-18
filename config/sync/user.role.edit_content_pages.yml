@@ -4,12 +4,13 @@ status: true
 dependencies: {  }
 id: edit_content_pages
 label: 'Edit content pages'
-weight: -1
+weight: -2
 is_admin: null
 permissions:
   - 'access content'
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'administer blocks'
-  - 'create assessment workflow_transition'
   - 'create benefit content'
   - 'create content translations'
   - 'create content unpublished'
@@ -37,6 +38,7 @@ permissions:
   - 'edit own faq content'
   - 'edit own news content'
   - 'edit own page content'
+  - 'edit own profile'
   - 'edit own publication content'
   - 'revert benefit revisions'
   - 'revert faq revisions'
@@ -53,8 +55,12 @@ permissions:
   - 'translate paragraph'
   - 'translate publication node'
   - 'update content translations'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
   - 'view benefit revisions'
   - 'view faq revisions'
+  - 'view home button'
   - 'view news revisions'
   - 'view own unpublished content'
   - 'view page revisions'

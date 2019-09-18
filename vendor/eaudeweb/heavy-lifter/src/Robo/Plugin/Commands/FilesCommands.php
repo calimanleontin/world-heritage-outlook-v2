@@ -2,9 +2,6 @@
 
 namespace EauDeWeb\Robo\Plugin\Commands;
 
-
-
-use EauDeWeb\Robo\InvalidConfigurationException;
 use Robo\Exception\TaskException;
 
 class FilesCommands extends CommandBase {
@@ -14,14 +11,14 @@ class FilesCommands extends CommandBase {
    */
   protected function validateConfig() {
     parent::validateConfig();
-    $url =  $this->configSite('sync.files.url');
+    $url =  $this->configSite('files.sync.source');
     if (!empty($url) && strpos($url, 'https://') !== 0) {
-      throw new InvalidConfigurationException(
+      throw new TaskException(
+        $this,
         'Files sync URL is not HTTPS, cannot send credentials over unencrypted connection to: ' . $url
       );
     }
   }
-
 
   /**
    * Sync public files from staging server.
@@ -32,10 +29,11 @@ class FilesCommands extends CommandBase {
    * @throws \Exception when cannot find the Drupal installation folder.
    */
   public function filesSync() {
+    $this->allowOnlyOnLinux();
     $site = 'default';
 
     $this->validateConfig();
-    $url =  $this->configSite('sync.files.url');
+    $url =  $this->configSite('files.sync.source');
     $username = $this->configSite('sync.username');
     $password = $this->configSite('sync.password');
     $files_tar_gz = 'files.tar.gz';
@@ -43,7 +41,7 @@ class FilesCommands extends CommandBase {
     $root = $this->drupalRoot();
     $files_dir = $root . '/sites/' . $site . '/files';
     if (!is_writable($files_dir)) {
-      throw new \Exception("{$files_dir} does not exists or is not writable");
+      throw new TaskException($this, "{$files_dir} does not exist or it is not writable");
     }
 
     $download = $this->tmpDir() . '/' . $files_tar_gz;
@@ -65,21 +63,23 @@ class FilesCommands extends CommandBase {
     return $result;
   }
 
-
   /**
    * Create archive with files directory to the given path.
-   *
-   * @param string $output Absolute path to the resulting archive
    *
    * @command files:archive
    *
    * @return null|\Robo\Result
    * @throws \Robo\Exception\TaskException when output path is not absolute
-   * @throws \EauDeWeb\Robo\InvalidConfigurationException
    */
-  public function filesDump($output) {
+  public function filesDump($output = '') {
+    $this->allowOnlyOnLinux();
+
+    if (empty($output)) {
+      $output = $this->configSite('files.dump.location');
+    }
+
     if ($output[0] != '/') {
-      throw new TaskException($this,'Output must be an absolute path');
+      $output = getcwd() . '/' . $output;
     }
 
     $site = 'default';

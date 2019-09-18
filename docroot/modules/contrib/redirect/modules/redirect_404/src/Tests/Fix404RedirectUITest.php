@@ -2,6 +2,7 @@
 
 namespace Drupal\redirect_404\Tests;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 
 /**
@@ -26,14 +27,14 @@ class Fix404RedirectUITest extends Redirect404TestBase {
     // Check if we generate correct Add redirect url and if the form is
     // pre-filled.
     $destination = Url::fromRoute('redirect_404.fix_404')->getInternalPath();
-    $options = [
-      'query' => [
-        'source' => 'non-existing0',
-        'language' => 'en',
-        'destination' => $destination,
-      ]
+    $expected_query = [
+      'destination' => $destination,
+      'language' => 'en',
+      'source' => 'non-existing0',
     ];
-    $this->assertUrl('admin/config/search/redirect/add', $options);
+    $parsed_url = UrlHelper::parse($this->getUrl());
+    $this->assertEqual(Url::fromRoute('redirect.add')->setAbsolute()->toString(), $parsed_url['path']);
+    $this->assertEqual($expected_query, $parsed_url['query']);
     $this->assertFieldByName('redirect_source[0][path]', 'non-existing0');
     // Save the redirect.
     $edit = ['redirect_redirect[0][uri]' => '/node'];
@@ -97,14 +98,14 @@ class Fix404RedirectUITest extends Redirect404TestBase {
 
     // Assign a redirect to 'non-existing2'.
     $this->clickLink('Add redirect');
-    $options = [
-      'query' => [
-        'source' => 'non-existing2',
-        'language' => 'en',
-        'destination' => $destination,
-      ]
+    $expected_query = [
+      'source' => 'non-existing2',
+      'language' => 'en',
+      'destination' => $destination,
     ];
-    $this->assertUrl('admin/config/search/redirect/add', $options);
+    $parsed_url = UrlHelper::parse($this->getUrl());
+    $this->assertEqual(Url::fromRoute('redirect.add')->setAbsolute()->toString(), $parsed_url['path']);
+    $this->assertEqual($expected_query, $parsed_url['query']);
     $this->assertFieldByName('redirect_source[0][path]', 'non-existing2');
     $this->drupalPostForm(NULL, $edit, t('Save'));
     $this->assertUrl('admin/config/search/redirect/404');
@@ -168,7 +169,7 @@ class Fix404RedirectUITest extends Redirect404TestBase {
     $this->drupalPostForm(NULL, $edit, 'Save configuration');
     // Should redirect to 'Fix 404'. Check the 404 entry is not shown anymore.
     $this->assertUrl('admin/config/search/redirect/404');
-    $this->assertText('Configuration was saved.');
+    $this->assertText('The configuration options have been saved.');
     $this->assertNoText('node/' . $node2->id() . '/test');
     $this->assertText('There are no 404 errors to fix.');
 

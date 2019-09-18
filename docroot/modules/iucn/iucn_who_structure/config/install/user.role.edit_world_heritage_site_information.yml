@@ -1,13 +1,13 @@
-uuid: 29c9c399-4475-4cc8-b130-0317c3f4c87e
 langcode: en
 status: true
 dependencies: {  }
 id: edit_world_heritage_site_information
 label: 'Edit World Heritage site information'
-weight: 2
+weight: 1
 is_admin: null
 permissions:
-  - 'create assessment workflow_transition'
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'create content translations'
   - 'create content unpublished'
   - 'create site content'
@@ -18,4 +18,8 @@ permissions:
   - 'revert site revisions'
   - 'translate site node'
   - 'update content translations'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'
   - 'view site revisions'

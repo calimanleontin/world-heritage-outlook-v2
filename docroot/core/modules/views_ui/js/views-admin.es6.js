@@ -642,7 +642,7 @@
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attach handlers to make it possible to rearange the filters in the form
+   *   Attach handlers to make it possible to rearrange the filters in the form
    *   in question.
    *   @see Drupal.viewsUi.RearrangeFilterHandler
    */
@@ -999,12 +999,7 @@
             'select.views-group-select',
             this.rowObject.element,
           );
-          if (
-            $(this.rowObject.element)
-              .prev('tr')
-              .is('.group-message') &&
-            !groupField.is(`.views-group-select-${groupName}`)
-          ) {
+          if (!groupField.is(`.views-group-select-${groupName}`)) {
             const oldGroupName = groupField
               .attr('class')
               .replace(

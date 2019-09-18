@@ -12,15 +12,14 @@ use Symfony\Component\Console\Output\NullOutput;
  */
 class SiteCommands extends CommandBase {
 
+  use \Boedah\Robo\Task\Drush\loadTasks;
+  use \EauDeWeb\Robo\Task\Curl\loadTasks;
+
   /**
    * @inheritdoc
    */
   protected function validateConfig() {
     parent::validateConfig();
-    $username =  $this->configSite('develop.admin_username');
-    if (empty($username)) {
-      $this->yell('project.sites.default.develop.admin_username not set, password will not be reset');
-    }
   }
 
   /**
@@ -32,27 +31,148 @@ class SiteCommands extends CommandBase {
    * @throws \Exception when cannot find the Drupal installation folder.
    */
   public function siteDevelop($newPassword = 'password') {
+    $this->allowOnlyOnLinux();
     $this->validateConfig();
-    $drush = $this->drushExecutable();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $commands = [];
 
     // Reset admin password if available.
-    $username = $this->configSite('develop.admin_username');
+    $username = $this->configSite('site.develop.admin_username');
+    if (empty($username)) {
+      $this->yell('sites.default.site.develop.admin_username not set, password will not be reset');
+    }
+    $modules = $this->configSite('site.develop.modules');
     if ($this->isDrush9()) {
-      $this->taskExec($drush)->arg('user:password')->arg($username)->arg($newPassword)->run();
+      if (!empty($username)) {
+        $commands[] = 'user:password ' . $username . ' ' . $newPassword;
+      }
+
+      $root = $this->projectDir();
+      if ($dev = realpath($root . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'dev')) {
+        $commands[] = 'config:import dev --partial -y';
+      }
+      else {
+        $this->yell("Skipping import of 'dev' profile because it's missing");
+      }
+
+      if (!empty($modules)) {
+        foreach ($modules as $module) {
+          $commands[] = 'pm:enable ' . $module . ' -y';
+        }
+      }
     }
     else {
-      $this->taskExec($drush)->arg('user:password')->arg('--password=' . $newPassword)->arg($username)->run();
+      $execStack->dir('docroot');
+      if (!empty($username)) {
+        $commands[] = 'user-password ' . $username . ' --password=' . $newPassword;
+      }
+      if (!empty($modules)) {
+        foreach ($modules as $module) {
+          $commands[] = 'pm-enable ' . $module . ' -y';
+        }
+      }
     }
 
-    $this->taskExec($drush)->arg('pm:enable')->arg('devel')->run();
-    $this->taskExec($drush)->arg('pm:enable')->arg('webprofiler')->run();
+    $excludedCommandsArray = $this->configSite('site.develop.excluded_commands');
+    $extraCommandsArray = $this->configSite('site.develop.extra_commands');
 
-    $root = $this->projectDir();
-    if ($dev = realpath($root . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'dev')) {
-      $this->taskExec($drush)->arg('config:import')->arg('dev')->arg('--partial')->rawArg('-y')->run();
-    } else {
-      $this->yell("Skipping import of 'dev' profile because it's missing");
+    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+    $this->addDrushScriptsToExecStack($execStack, 'develop');
+    $execStack->run();
+  }
+
+  /**
+   * @return \Robo\Result
+   * @throws \Robo\Exception\TaskException
+   */
+  public function siteInstall() {
+    $this->allowOnlyOnLinux();
+    $url =  $this->configSite('sql.sync.source');
+    $this->validateHttpsUrl($url);
+
+    $dir = $this->taskTmpDir('heavy-lifter')->run();
+    $dest = $dir->getData()['path'] . '/database.sql';
+    $dest_gz = $dest . '.gz';
+
+    $url =  $this->configSite('sql.sync.source');
+    $username = $this->configSite('sync.username');
+    $password = $this->configSite('sync.password');
+    $this->validateHttpsUrl($url);
+    $download = $this->taskCurl($url)
+      ->followRedirects()
+      ->failOnHttpError()
+      ->locationTrusted()
+      ->output($dest_gz)
+      ->basicAuth($username, $password)
+      ->option('--create-dirs')
+      ->run();
+
+    if ($download->wasSuccessful()) {
+      $build = $this->collectionBuilder();
+      $build->addTask(
+        $this->taskExec('gzip')->option('-d')->arg($dest_gz)
+      );
+      $drush = $this->drushExecutable();
+      $drush = $this->taskDrushStack($drush)
+        ->drush('sql:drop')
+        ->drush(['sql:query','--file', $dest]);
+      $build->addTask($drush);
+      $sync = $build->run();
+      if ($sync->wasSuccessful()) {
+        return $this->siteUpdate();
+      }
+      return $sync;
     }
+    return $download;
+  }
+
+  /**
+   * Update Drupal core. Check that "drupal/core:^8.7" and
+   * "webflo/drupal-core-require-dev:^8.7" exist in composer.json declaration.
+   *
+   * @command core:update
+   */
+  public function coreUpdate() {
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("composer update drupal/core webflo/drupal-core-require-dev --with-dependencies")
+      ->run();
+  }
+  /**
+   * Setup for a new project
+   *
+   * @command project:create
+   */
+  public function createProject($name = 'name') {
+    // create name.conf
+    $docroot = $this->configSite('work.dir');
+    $conf = "<VirtualHost *:80" . "> \n"
+      . "     DocumentRoot ". $docroot . "/" . $name . ".local/web" . "/ \n"
+      . "     ServerName " . $name . ".local \n"
+      . "     <Directory  ". $docroot  . "/" . $name . ".local/web/> \n"
+      . "          AllowOverride All \n"
+      . "          Require all granted \n"
+      . "     </Directory" . "> \n"
+      . "</VirtualHost" . ">";
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("sudo  touch /etc/apache2/sites-available/" . $name . ".conf")
+      ->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('echo "' . $conf . '" | sudo tee /etc/apache2/sites-available/' . $name . '.conf')
+      ->run();
+    // modify hosts
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("cat /etc/hosts | sudo tee /etc/copy.txt")->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('sed "1 s/^/127.0.0.1   "' . $name . '".local \n/" /etc/copy.txt | sudo tee /etc/hosts')
+      ->run();
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec('sudo rm /etc/copy.txt')->run();
+    // enable name.conf
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("sudo a2ensite " . $name . ".conf")->run();
+    // restart apache2
+    $execStack = $this->taskExecStack()->stopOnFail(TRUE);
+    $execStack->exec("systemctl restart apache2")->run();
   }
 
   /**
@@ -62,25 +182,61 @@ class SiteCommands extends CommandBase {
    * @command site:update
    *
    * @return null|\Robo\Result
-   * @throws \EauDeWeb\Robo\InvalidConfigurationException
    * @throws \Robo\Exception\TaskException
    */
   public function siteUpdate() {
+    $this->allowOnlyOnLinux();
     $this->validateConfig();
-    $drush = $this->drushExecutable();
-    // Allow updatedb to fail once and execute it again after config:import.
-    $this->taskExec("{$drush} updatedb -y")->run();
     $execStack = $this->taskExecStack()->stopOnFail(TRUE);
-    $execStack->exec("{$drush} cr");
-    if ($this->configSite('develop.config_split') === TRUE) {
-      $execStack->exec("{$drush} csim -y");
+    $commands = [];
+
+    if ($this->isDrush9()) {
+      $commands[] = "state-set system.maintenance_mode TRUE";
+
+      // Allow updatedb to fail once and execute it again after config:import.
+      $commands[] = "updatedb -y";
+
+      $commands[] = 'cache:rebuild';
+      if ($this->configSite('site.develop.config_split') === TRUE) {
+        $commands[] = 'config-split-import -y';
+      }
+      else {
+        $commands[] = 'config-import -y';
+      }
+      $commands[] = 'updatedb -y';
+
+      if ($this->isModuleEnabled('locale')) {
+        $commands[] = 'locale:check';
+        $commands[] = 'locale:update';
+      }
+
+      if ($this->isModuleEnabled('pathauto') && floatval(substr(trim($this->getModuleInfo('pathauto')), -3)) >= 1.4) {
+        $commands[] = 'pathauto:aliases-generate create all';
+      }
+
+      $commands[] = 'cache:rebuild';
+      $commands[] = 'state-set system.maintenance_mode FALSE';
+
     }
     else {
-      $execStack->exec("{$drush} cim sync -y");
+      // Drupal 7
+      $execStack->dir('docroot');
+      $commands[] = 'vset maintenance_mode 1';
+      // Execute the update commands
+      $commands[] = 'updatedb -y';
+
+      // The 'drush locale:check' and 'drush locale:update' don't have equivalents in Drupal 7
+
+      // Clear the cache
+      $commands[] = 'cc all';
+      $commands[] = 'vset maintenance_mode 0';
     }
-    $execStack->exec("{$drush} updatedb -y");
-    $execStack->exec("{$drush} entup -y");
-    $execStack->exec("{$drush} cr");
+
+    $excludedCommandsArray = $this->configSite('site.update.excluded_commands');
+    $extraCommandsArray = $this->configSite('site.update.extra_commands');
+
+    $execStack = $this->updateDrushCommandStack($execStack, $commands, $excludedCommandsArray, $extraCommandsArray);
+
     return $execStack->run();
   }
 
@@ -140,3 +296,4 @@ class SiteCommands extends CommandBase {
     }
   }
 }
+

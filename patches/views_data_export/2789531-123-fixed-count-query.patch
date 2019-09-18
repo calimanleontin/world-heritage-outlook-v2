@@ -1,0 +1,21 @@
+diff --git a/src/Plugin/views/display/DataExport.php b/src/Plugin/views/display/DataExport.php
+index 148a595..87a66c8 100644
+--- a/src/Plugin/views/display/DataExport.php
++++ b/src/Plugin/views/display/DataExport.php
+@@ -66,15 +66,7 @@ protected static function buildBatch(ViewExecutable $view, $args) {
+     $view->preExecute($args);
+     $view->build();
+     $count_query = clone $view->query;
+-    $count_query_results = $count_query->query(true)->execute();
+-
+-    $total_rows = 0;
+-    if ($count_query_results instanceof \Drupal\search_api\Query\ResultSetInterface) {
+-      $total_rows = $count_query_results->getResultCount();
+-    }
+-    else {
+-      $total_rows = $count_query_results->fetchField();
+-    }
++    $total_rows = $count_query->query()->countQuery()->execute()->fetchField();
+ 
+     // Don't load and instantiate so many entities.
+     $view->query->setLimit(1);

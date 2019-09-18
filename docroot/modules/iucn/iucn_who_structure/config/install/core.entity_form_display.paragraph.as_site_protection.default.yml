@@ -1,4 +1,3 @@
-uuid: c98d3082-7dca-4de3-8a13-dfbfdfd78647
 langcode: en
 status: true
 dependencies:
@@ -7,6 +6,8 @@ dependencies:
     - field.field.paragraph.as_site_protection.field_as_protection_rating
     - field.field.paragraph.as_site_protection.field_as_protection_topic
     - paragraphs.paragraphs_type.as_site_protection
+  module:
+    - iucn_assessment
 id: paragraph.as_site_protection.default
 targetEntityType: paragraph
 bundle: as_site_protection
@@ -18,7 +19,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_protection_rating:
     weight: 3

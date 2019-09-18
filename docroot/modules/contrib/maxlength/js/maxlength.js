@@ -51,8 +51,17 @@
    *    be passed with the number of characters.
    */
   ml.calculate = function(obj, options, count, wysiwyg, getter, setter) {
+    if (jQuery(obj['0']).hasClass('ckeditor-mod') && wysiwyg === undefined) {return;};
     var counter = $('#' + obj.attr('id') + '-' + options.css);
     var limit = parseInt(obj.attr('maxlength'));
+    var maxDisplayLimit = parseInt(obj.attr('maxDisplayLimit'));
+
+    //Display the number of characters remaining
+    // only when there are less then maxDisplayLimit characters
+    // or maxDisplayLimit is not defined
+    if (isNaN(maxDisplayLimit) || maxDisplayLimit === undefined) {
+        maxDisplayLimit = -1;
+    }
 
     if (count == undefined) {
       if (options.truncateHtml) {
@@ -106,7 +115,11 @@
       counter.removeClass(options.cssExceeded);
     }
 
-    counter.html(options.counterText.replace('@limit', limit).replace('@remaining', available).replace('@count', count));
+    if (maxDisplayLimit === -1 || available <= maxDisplayLimit) {
+        counter.html(options.counterText.replace('@limit', limit).replace('@remaining', available).replace('@count', count));
+    } else {
+        counter.html('</br>');
+    }
   };
 
   /**
@@ -116,16 +129,19 @@
    * @see http://www.sitepoint.com/blogs/2004/02/16/line-endings-in-javascript/
    */
   ml.twochar_lineending = function(str) {
-    return str.replace(/(\r\n|\r|\n)/g, "\r\n");
+    return str.replace(/(\r\n|\r|\n)/g, "\n");
   };
 
   ml.strip_tags = function(input, allowed) {
     // Remove all newlines, spaces and tabs from the beginning and end of html.
     input = $.trim(input);
+    input = input.replace(/<[^>]+>/g, '');
+
     // making the lineendings with two chars
     input = ml.twochar_lineending(input);
     // We do want that the space characters to count as 1, not 6...
-    input = input.replace('&nbsp;', ' ');
+    input = input.replace(/\&nbsp;/g, ' ');
+    input = input.replace(/(\n )/g, '\n');
     //input = input.split(' ').join('');
     // Strips HTML and PHP tags from a string
     allowed = (((allowed || "") + "")
@@ -314,10 +330,75 @@
           }
           // Add the events on the editor.
           e.editor.on('key', function(e) {
+            var keyEvent = e.data.domEvent.$;
+            if (keyEvent !== undefined) {
+              if (ml.isCharacterKeyPressed(keyEvent)) {
+                var obj = $('#' + e.editor.element.getId());
+                var content = ml.ckeditorGetData(e);
+                var limit = parseInt(obj.attr('maxlength'));
+                var options = ml.options[e.editor.element.getId()];
+                var count;
+                if (options.truncateHtml) {
+                  count = ml.strip_tags(content).length;
+                }
+                else {
+                  count = ml.twochar_lineending(content).length;
+                }
+
+                //Enter fills 2 characters
+                if (keyEvent.keyCode === 13) {
+                  count++;
+                }
+
+                var available = limit - count;
+                if (available <= 0) {
+                  e.cancel();
+                  e.stop();
+                  return false;
+                }
+              }
+            }
             setTimeout(function(){ml.ckeditorChange(e)}, 100);
           });
           e.editor.on('paste', function(e) {
-            setTimeout(function(){ml.ckeditorChange(e)}, 500);
+            var obj = $('#' + e.editor.element.getId());
+            var blockPaste = parseInt(obj.attr('blockPaste'));
+            var blockPasteLabel = obj.attr('blockPasteLabel');
+            if (isNaN(blockPaste) || blockPaste === undefined) {
+              blockPaste = false;
+            }
+
+            if (isNaN(blockPasteLabel) || blockPasteLabel === undefined) {
+              blockPasteLabel = 'The text cannot be pasted because the characters limit of @limit is exceeded.';
+            }
+
+            if (blockPaste) {
+              var content = ml.ckeditorGetData(e);
+              var limit = parseInt(obj.attr('maxlength'));
+              var options = ml.options[e.editor.element.getId()];
+              var count;
+              var countSelected;
+              var selected = e.editor.getSelection().getSelectedText();
+              if (options.truncateHtml) {
+                count = ml.strip_tags(content).length;
+                countSelected = ml.strip_tags(selected).length;
+              }
+              else {
+                count = ml.twochar_lineending(content).length;
+                countSelected = ml.twochar_lineending(selected).length;
+              }
+              var available = limit - count + countSelected;
+              if (available < ml.strip_tags(e.data.dataValue).length) {
+                blockPasteLabel = blockPasteLabel.replace('@limit', limit);
+                e.cancel();
+                e.stop();
+                alert(blockPasteLabel);
+                return false;
+              }
+            }
+
+            setTimeout(function () {
+              ml.ckeditorChange(e)}, 500);
           });
           e.editor.on('elementsPathUpdate', function(e) {
             setTimeout(function(){ml.ckeditorChange(e)}, 100);
@@ -355,5 +436,17 @@
       e.editor.getSelection().selectRanges([range]);
     }});
   }
+
+  ml.isCharacterKeyPressed = function(evt) {
+    if (typeof evt.which === "undefined") {
+      return false;
+    } else if (typeof evt.which === "number" && evt.which > 0) {
+      return !evt.ctrlKey && !evt.metaKey && !evt.altKey &&
+        evt.which !== 8 && evt.which !== 37 && evt.which !== 38 && evt.which !== 39 && evt.which !== 40 &&
+        evt.which !== 46;
+    }
+
+    return false;
+  };
 
 })(jQuery);

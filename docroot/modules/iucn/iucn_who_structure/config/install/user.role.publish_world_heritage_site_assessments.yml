@@ -1,15 +1,19 @@
-uuid: f97cff5d-0bcd-46bc-bc17-378b5fc365ea
 langcode: en
 status: true
 dependencies: {  }
 id: publish_world_heritage_site_assessments
 label: 'Publish World Heritage site assessments'
-weight: -7
+weight: -3
 is_admin: null
 permissions:
-  - 'create assessment workflow_transition'
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'create site_assessment content'
   - 'delete any site_assessment content'
   - 'delete content translations'
   - 'delete site_assessment revisions'
   - 'revert site_assessment revisions'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'

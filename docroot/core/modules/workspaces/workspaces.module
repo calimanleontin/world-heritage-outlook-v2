@@ -57,12 +57,21 @@ function workspaces_form_alter(&$form, FormStateInterface $form_state, $form_id)
 }
 
 /**
- * Implements hook_entity_load().
+ * Implements hook_field_info_alter().
  */
-function workspaces_entity_load(array &$entities, $entity_type_id) {
+function workspaces_field_info_alter(&$definitions) {
+  \Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(EntityTypeInfo::class)
+    ->fieldInfoAlter($definitions);
+}
+
+/**
+ * Implements hook_entity_preload().
+ */
+function workspaces_entity_preload(array $ids, $entity_type_id) {
   return \Drupal::service('class_resolver')
     ->getInstanceFromDefinition(EntityOperations::class)
-    ->entityLoad($entities, $entity_type_id);
+    ->entityPreload($ids, $entity_type_id);
 }
 
 /**
@@ -143,7 +152,6 @@ function workspaces_cron() {
  * Implements hook_toolbar().
  */
 function workspaces_toolbar() {
-  $items = [];
   $items['workspace'] = [
     '#cache' => [
       'contexts' => [
@@ -151,23 +159,22 @@ function workspaces_toolbar() {
       ],
     ],
   ];
-
   $current_user = \Drupal::currentUser();
   if (!$current_user->hasPermission('administer workspaces')
-    || !$current_user->hasPermission('view own workspace')
-    || !$current_user->hasPermission('view any workspace')) {
+    && !$current_user->hasPermission('view own workspace')
+    && !$current_user->hasPermission('view any workspace')) {
     return $items;
   }
 
   /** @var \Drupal\workspaces\WorkspaceInterface $active_workspace */
   $active_workspace = \Drupal::service('workspaces.manager')->getActiveWorkspace();
 
-  $items['workspace'] = [
+  $items['workspace'] += [
     '#type' => 'toolbar_item',
     'tab' => [
       '#type' => 'link',
       '#title' => $active_workspace->label(),
-      '#url' => $active_workspace->toUrl('collection'),
+      '#url' => $active_workspace->toUrl('collection', ['query' => \Drupal::destination()->getAsArray()]),
       '#attributes' => [
         'title' => t('Switch workspace'),
         'class' => ['use-ajax', 'toolbar-icon', 'toolbar-icon-workspace'],
@@ -180,6 +187,7 @@ function workspaces_toolbar() {
           ],
         ]),
       ],
+      '#cache' => ['tags' => $active_workspace->getCacheTags()],
     ],
     '#wrapper_attributes' => [
       'class' => ['workspaces-toolbar-tab'],

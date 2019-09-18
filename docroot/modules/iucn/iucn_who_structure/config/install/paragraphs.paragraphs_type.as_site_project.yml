@@ -1,7 +1,8 @@
-uuid: c55ad15b-fdb1-4dcb-a9de-f2e8398eba53
 langcode: en
 status: true
 dependencies: {  }
 id: as_site_project
-label: 'Assessment project'
+label: 'active conservation project'
+icon_uuid: null
+description: ''
 behavior_plugins: {  }

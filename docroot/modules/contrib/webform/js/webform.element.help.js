@@ -21,9 +21,9 @@
           $(this).stop(true).fadeTo(400, 1);
         },
         function () {
-          $(this).fadeOut("400", function () {
+          $(this).fadeOut('400', function () {
             $(this).remove();
-          })
+          });
         });
     }
   };
@@ -39,15 +39,20 @@
         var $link = $(this);
 
         var options = $.extend({
-            // Use 'data-webform-help' attribute which can include HTML markup.
-            content: $link.attr('data-webform-help'),
-            items: '[data-webform-help]'
-          }, Drupal.webform.elementHelpIcon.options);
+          // Use 'data-webform-help' attribute which can include HTML markup.
+          content: $link.attr('data-webform-help'),
+          items: '[data-webform-help]'
+        }, Drupal.webform.elementHelpIcon.options);
 
         $link.tooltip(options)
           .on('click', function (event) {
             // Prevent click from toggling <label>s wrapped around help.
             event.preventDefault();
+          }).on('keydown', function (event) {
+            // Prevent ESC from from closing dialogs.
+            if (event.keyCode === $.ui.keyCode.ESCAPE) {
+              event.stopPropagation();
+            }
           });
 
         // Help tooltips are generally placed with <label> tags.

@@ -21,9 +21,12 @@ use Drupal\node\NodeInterface;
 class PublishSiteAssessment extends ActionBase {
 
   public function execute($node = NULL) {
-    if ($node instanceof NodeInterface) {
-      \Drupal::service('iucn_assessment.workflow')->forceAssessmentState($node, AssessmentWorkflow::STATUS_PUBLISHED);
+    if (!$node instanceof NodeInterface) {
+      return;
     }
+    $state = $node->field_state->value;
+    $newState = AssessmentWorkflow::STATUS_PUBLISHED;
+    \Drupal::service('iucn_assessment.workflow')->createRevision($node, $newState, NULL, "{$state} ({$node->getRevisionId()}) => {$newState}", TRUE);
   }
 
   public function access($node, AccountInterface $account = NULL, $return_as_object = FALSE) {

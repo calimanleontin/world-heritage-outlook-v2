@@ -5,23 +5,31 @@
 
 # If a term is no longer available, set it's label to <hidden>
 
-2023:
-#  1384: '<hidden>'
+# Note: if you want to hide a parent term, list all of its children as well.
+
 2020:
   1414: 'Changes in traditional ways of life and knowledge systems that result in negative impact'
   1415: 'Identity/social cohesion/ changes in local population and community that result in negative impact'
   1404: 'Volcanic activity'
-#  1358: '',
+  1385: '<hidden>'
+  1384: 'Hunting and trapping'
   1345: 'Law enforcement'
-  1333: 'Management system/plan'
-  1334: 'Effectiveness of management system/plan'
+#  1333: 'Management system/plan'
+  1334: 'Effectiveness of management system'
   1338: 'Staff capacity, training, and development'
+  1297: '<hidden>'
+  1289: '<hidden>'
+  1290: '<hidden>'
+  1396: 'Problematic Native Species'
+  1397: 'Introduced Modified Genetic Material'
+  1264: '<hidden>'
+  1263: '<hidden>'
 
 2017:
-  1331: 'Legal framework'
-  1341: 'Tourism and visitation management'
+  1412: 'Temperature extremes'
+  1411: 'Ocean acidification'
+  1385: 'Poaching'
   1384: 'Hunting (commercial/subsistence)'
 #  1384: '<hidden>'
-  1385: 'Poaching'
-  1411: 'Ocean acidification'
-  1412: 'Temperature extremes'
+  1341: 'Tourism and visitation management'
+  1331: 'Legal framework'

@@ -1,0 +1,215 @@
+uuid: e90d915f-8602-4a12-a0c6-4312a919869e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.doc
+    - field.field.paragraph.as_site_threat.field_as_description
+    - field.field.paragraph.as_site_threat.field_as_legality
+    - field.field.paragraph.as_site_threat.field_as_targeted_species
+    - field.field.paragraph.as_site_threat.field_as_threats_categories
+    - field.field.paragraph.as_site_threat.field_as_threats_extent
+    - field.field.paragraph.as_site_threat.field_as_threats_in
+    - field.field.paragraph.as_site_threat.field_as_threats_out
+    - field.field.paragraph.as_site_threat.field_as_threats_rating
+    - field.field.paragraph.as_site_threat.field_as_threats_threat
+    - field.field.paragraph.as_site_threat.field_as_threats_values_bio
+    - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - field.field.paragraph.as_site_threat.field_invasive_species_names
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - ds
+    - entity_reference_revisions
+    - field_group
+    - iucn_assessment
+    - iucn_site
+    - options
+third_party_settings:
+  field_group:
+    group_as_threats_in_extent:
+      children:
+        - field_as_threats_in
+        - field_as_threats_extent
+      parent_name: ''
+      weight: 9
+      format_type: html_list
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: '0'
+        label_element: h3
+        attributes: ''
+      label: 'Inside site + extent'
+    group_as_threats_values:
+      children:
+        - field_as_threats_values_wh
+        - field_as_threats_values_bio
+      parent_name: ''
+      weight: 10
+      format_type: html_list
+      format_settings:
+        id: ''
+        classes: ''
+        element: div
+        show_label: '0'
+        label_element: h3
+        attributes: ''
+      label: 'Values affected'
+  ds:
+    layout:
+      id: ds_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          ds_content: div
+        outer_wrapper: div
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          ds_content: {  }
+    regions:
+      ds_content:
+        - field_as_threats_out
+        - field_as_description
+        - field_as_threats_in
+        - field_as_threats_values_wh
+        - field_as_threats_categories
+        - field_as_threats_values_bio
+        - field_as_threats_rating
+        - field_as_threats_extent
+        - field_invasive_species_names
+        - field_as_legality
+        - field_as_targeted_species
+        - field_as_threats_threat
+        - 'display_field_copy:paragraph-parent_category'
+        - group_as_threats_in_extent
+        - group_as_threats_values
+    fields:
+      'display_field_copy:paragraph-parent_category':
+        plugin_id: 'display_field_copy:paragraph-parent_category'
+        weight: 8
+        label: hidden
+        formatter: parent_category
+id: paragraph.as_site_threat.doc
+targetEntityType: paragraph
+bundle: as_site_threat
+mode: doc
+content:
+  field_as_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: ds_content
+  field_as_legality:
+    type: list_default
+    weight: 5
+    region: ds_content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_targeted_species:
+    type: string
+    weight: 6
+    region: ds_content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_as_threats_categories:
+    type: entity_reference_list
+    weight: 2
+    region: ds_content
+    label: hidden
+    settings:
+      link: 0
+      separator: ','
+      override_label: 0
+      singular: ''
+      plural: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_as_threats_extent:
+    type: entity_reference_label
+    weight: 4
+    region: ds_content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_in:
+    type: boolean
+    weight: 1
+    region: ds_content
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Yes'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_threats_out:
+    type: boolean
+    weight: 0
+    region: ds_content
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Yes'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_threats_rating:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: parent_category
+    region: ds_content
+  field_as_threats_threat:
+    type: basic_string
+    weight: 7
+    region: ds_content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_values_bio:
+    type: entity_reference_revisions_entity_view
+    weight: 3
+    region: ds_content
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_as_threats_values_wh:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    region: ds_content
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_invasive_species_names:
+    weight: 4
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: ds_content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

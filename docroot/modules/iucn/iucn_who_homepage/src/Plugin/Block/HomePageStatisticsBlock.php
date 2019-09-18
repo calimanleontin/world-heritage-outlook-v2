@@ -11,7 +11,6 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_who_core\SiteStatus;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\website_utilities\DrupalInstance;
 
 /**
  * @Block(

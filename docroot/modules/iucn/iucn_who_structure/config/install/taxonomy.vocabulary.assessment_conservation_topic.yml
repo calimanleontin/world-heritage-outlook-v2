@@ -1,9 +1,7 @@
-uuid: b85d97f9-a208-4607-bf98-a6cb593e8e31
 langcode: en
 status: true
 dependencies: {  }
 name: 'Assessment conservation topic'
 vid: assessment_conservation_topic
 description: 'Conservation outlook assessment topic'
-hierarchy: 0
 weight: 0

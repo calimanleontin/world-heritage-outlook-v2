@@ -162,11 +162,18 @@ class DbDumpCommand extends DbCommandBase {
         $definition['fields'][$name]['precision'] = $matches[2];
         $definition['fields'][$name]['scale'] = $matches[3];
       }
-      elseif ($type === 'time' || $type === 'datetime') {
+      elseif ($type === 'time') {
         // @todo Core doesn't support these, but copied from `migrate-db.sh` for now.
         // Convert to varchar.
         $definition['fields'][$name]['type'] = 'varchar';
         $definition['fields'][$name]['length'] = '100';
+      }
+      elseif ($type === 'datetime') {
+        // Adjust for other database types.
+        $definition['fields'][$name]['mysql_type'] = 'datetime';
+        $definition['fields'][$name]['pgsql_type'] = 'timestamp without time zone';
+        $definition['fields'][$name]['sqlite_type'] = 'varchar';
+        $definition['fields'][$name]['sqlsrv_type'] = 'smalldatetime';
       }
       elseif (!isset($definition['fields'][$name]['size'])) {
         // Try use the provided length, if it doesn't exist default to 100. It's
@@ -418,10 +425,13 @@ ENDOFSCRIPT;
       foreach ($data as $record) {
         $insert .= "->values(" . Variable::export($record) . ")\n";
       }
-      $output .= "\$connection->insert('" . $table . "')\n"
-        . "->fields(" . Variable::export(array_keys($schema['fields'])) . ")\n"
-        . $insert
-        . "->execute();\n\n";
+      $fields = Variable::export(array_keys($schema['fields']));
+      $output .= <<<EOT
+\$connection->insert('$table')
+->fields($fields)
+{$insert}->execute();
+
+EOT;
     }
     return $output;
   }

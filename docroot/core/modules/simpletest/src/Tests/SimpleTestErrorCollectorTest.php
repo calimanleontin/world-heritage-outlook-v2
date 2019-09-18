@@ -24,7 +24,7 @@ class SimpleTestErrorCollectorTest extends WebTestBase {
    * Errors are intercepted by the overridden implementation
    * of Drupal\simpletest\WebTestBase::error() below.
    *
-   * @var Array
+   * @var array
    */
   protected $collectedErrors = [];
 
@@ -85,7 +85,7 @@ class SimpleTestErrorCollectorTest extends WebTestBase {
   public function assertError($error, $group, $function, $file, $message = NULL) {
     $this->assertEqual($error['group'], $group, format_string("Group was %group", ['%group' => $group]));
     $this->assertEqual($error['caller']['function'], $function, format_string("Function was %function", ['%function' => $function]));
-    $this->assertEqual(drupal_basename($error['caller']['file']), $file, format_string("File was %file", ['%file' => $file]));
+    $this->assertEqual(\Drupal::service('file_system')->basename($error['caller']['file']), $file, format_string("File was %file", ['%file' => $file]));
     if (isset($message)) {
       $this->assertEqual($error['message'], $message, format_string("Message was %message", ['%message' => $message]));
     }

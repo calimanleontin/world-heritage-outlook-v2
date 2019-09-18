@@ -13,7 +13,19 @@ Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal sub
 Source: https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch
 
 
-EntityRevisionParamConverter doesn't check if the entity revision actually exists
-Source: https://www.drupal.org/files/issues/2018-12-18/entity-revision-param-converter.patch
+Fix states api or condition
+Source: patches/core/states-api-or.patch
+
+
+Error when saving settings of an entity reference field
+Source: https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch
+
+
+Fix basic_auth when combined with nginx/apache basic auth settings
+Source: patches/core/basic_auth_nginx.patch
+
+
+Update yarn packages to fix 19 vulnerabilities by updating nightwatch
+Source: https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch
 
 

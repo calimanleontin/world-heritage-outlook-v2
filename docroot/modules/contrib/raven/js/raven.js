@@ -1,11 +1,17 @@
 /**
  * @file
- * Configures Raven.js with the public DSN and extra options.
+ * Configures @sentry/browser with the public DSN and extra options.
  */
-(function (drupalSettings, Raven) {
+(function (drupalSettings, Sentry) {
 
   'use strict';
 
-  Raven.config(drupalSettings.raven.dsn, drupalSettings.raven.options).install();
+  // Additional Sentry configuration can be applied by modifying
+  // drupalSettings.raven.options in custom PHP or JavaScript. Use the latter
+  // for Sentry callback functions; library weight can be used to ensure your
+  // custom settings are added before this file executes.
+  Sentry.init(drupalSettings.raven.options);
 
-})(drupalSettings, Raven);
+  Sentry.setUser({'id': drupalSettings.user.uid});
+
+})(window.drupalSettings, window.Sentry);

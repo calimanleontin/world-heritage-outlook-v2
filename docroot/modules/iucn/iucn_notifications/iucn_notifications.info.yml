@@ -1,0 +1,8 @@
+name: iucn_notifications
+type: module
+description: Email notifications
+core: 8.x
+package: Other
+dependencies:
+  - iucn_who_core
+  - pet

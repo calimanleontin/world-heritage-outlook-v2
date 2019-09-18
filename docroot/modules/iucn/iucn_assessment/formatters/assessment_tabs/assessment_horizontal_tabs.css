@@ -59,6 +59,10 @@
   padding: 0.5em 0.6em;
 }
 
+.horizontal-tabs .horizontal-tab-button a[disabled="disabled"] {
+  cursor: default;
+}
+
 .horizontal-tabs .horizontal-tab-button a:hover {
   outline: none;
   background-color: #ededdd;

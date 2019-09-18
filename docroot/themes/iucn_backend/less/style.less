@@ -5,12 +5,16 @@
 @background_color_3: #f5f5f2;
 @table-border-color: rgb(230, 228, 223);
 
+@import "mixins";
 @import "components/assessment";
 @import "components/blocks";
 @import "components/dashboard";
-@import "components/horizontal-tabs";
-@import "components/node-form";
 @import "components/toolbar";
+@import "components/views";
+@import "components/row_paragraph_widget";
+@import "components/diff";
+@import "components/ckeditor";
+@import "components/tooltip";
 
 @media all and (min-width: 851px) {
   .sidebar {
@@ -21,6 +25,10 @@
       width: 75%;
     }
   }
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 .js {
@@ -42,7 +50,7 @@
   .field--widget-row-entity-reference-paragraphs {
     .paragraph-header {
       .paragraph-summary-component.processed {
-        .paragraphs-actions {
+        .paragraph-summary-component-actions {
           background-color: @background_color_2;
         }
       }
@@ -70,7 +78,7 @@
   z-index: 9999;
 }
 
-.paragraph-comments-textarea {
+.paragraph-comments-textarea.bubble {
   z-index: 50;
   position: absolute;
   background-color: @background_color_1;
@@ -85,19 +93,7 @@
     display: none;
   }
   .label:after {
-    content: '';
-    vertical-align: super;
-    display: inline-block;
-    background-image: url(../../../core/misc/icons/ee0000/required.svg);
-    background-repeat: no-repeat;
-    background-size: 6px 6px;
-    width: 6px;
-    height: 6px;
-    margin: 0 0.3em;
-  }
-
-  .form-required:after {
-
+    .form-required();
   }
 }
 
@@ -113,5 +109,62 @@
     li {
       margin: 0;
     }
+  }
+}
+
+.js-form-item-field-as-threats-categories-options-groups {
+    .chosen-container {
+        .chosen-results {
+            max-height: fit-content;
+        }
+    }
+}
+
+.field--name-field-as-threats-in {
+    float: left;
+}
+
+.field--name-field-as-threats-out {
+    clear: both;
+}
+
+.field_as_threats_values_wh_checkboxes {
+    legend {
+        float: left;
+    }
+    > .fieldset-wrapper {
+        float: left;
+        display: block;
+        width: auto;
+    }
+}
+
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field_as_threats_values_wh_checkboxes .form-item label {
+        display: inline;
+        width: auto;
+        max-width: none;
+        padding-left: 5px;
+}
+
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper.field--name-field-as-threats-in  .form-item label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field--name-field-as-threats-in  .form-item label {
+    width: 188px;
+    min-width: 188px;
+}
+
+.horizontal-tab-button a strong {
+  &.values,
+  &.threats,
+  &.protection-and-management,
+  &.assessing-values,
+  &.conservation-outlook,
+  &.references {
+    &:after {
+      .form-required();
+    }
+  }
+  &.benefits,
+  &.projects {
+    color: #92d050;
   }
 }

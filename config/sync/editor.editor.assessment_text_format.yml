@@ -1,0 +1,43 @@
+uuid: 065f311c-ddb6-4a7f-ae56-4228eadc8e9a
+langcode: en
+status: false
+dependencies:
+  config:
+    - filter.format.assessment_text_format
+  module:
+    - ckeditor
+    - editor_file
+third_party_settings:
+  editor_file:
+    status: true
+    scheme: public
+    directory: inline-files
+    extensions: txt
+    max_size: ''
+format: assessment_text_format
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Scayt
+          items:
+            - '-'
+            - Scayt
+  plugins:
+    language:
+      language_list: un
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
+    stylescombo:
+      styles: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

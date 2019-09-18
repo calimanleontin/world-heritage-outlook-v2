@@ -90,7 +90,7 @@ class BlockListBuilder extends ConfigEntityListBuilder implements FormInterface 
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('entity_type.manager')->getStorage($entity_type->id()),
       $container->get('theme.manager'),
       $container->get('form_builder'),
       $container->get('messenger')
@@ -193,6 +193,9 @@ class BlockListBuilder extends ConfigEntityListBuilder implements FormInterface 
     if ($this->request->query->has('block-placement')) {
       $placement = $this->request->query->get('block-placement');
       $form['#attached']['drupalSettings']['blockPlacement'] = $placement;
+      // Remove the block placement from the current request so that it is not
+      // passed on to any redirect destinations.
+      $this->request->query->remove('block-placement');
     }
 
     // Loop over each region and build blocks.
@@ -378,9 +381,6 @@ class BlockListBuilder extends ConfigEntityListBuilder implements FormInterface 
       $entity->save();
     }
     $this->messenger->addStatus($this->t('The block settings have been updated.'));
-
-    // Remove any previously set block placement.
-    $this->request->query->remove('block-placement');
   }
 
   /**

@@ -51,7 +51,7 @@ use Drupal\Core\Access\AccessResult;
  *   'grant_update' => 0,
  *   'grant_delete' => 0,
  * );
- * db_insert('node_access')->fields($record)->execute();
+ * \Drupal::database()->insert('node_access')->fields($record)->execute();
  * @endcode
  * And then in its hook_node_grants() implementation, it would need to return:
  * @code
@@ -338,19 +338,19 @@ function hook_node_access(\Drupal\node\NodeInterface $node, $op, \Drupal\Core\Se
       return AccessResult::allowedIfHasPermission($account, 'create ' . $type . ' content');
 
     case 'update':
-      if ($account->hasPermission('edit any ' . $type . ' content', $account)) {
+      if ($account->hasPermission('edit any ' . $type . ' content')) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' content', $account) && ($account->id() == $node->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($node);
+        return AccessResult::allowedIf($account->hasPermission('edit own ' . $type . ' content') && ($account->id() == $node->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($node);
       }
 
     case 'delete':
-      if ($account->hasPermission('delete any ' . $type . ' content', $account)) {
+      if ($account->hasPermission('delete any ' . $type . ' content')) {
         return AccessResult::allowed()->cachePerPermissions();
       }
       else {
-        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' content', $account) && ($account->id() == $node->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($node);
+        return AccessResult::allowedIf($account->hasPermission('delete own ' . $type . ' content') && ($account->id() == $node->getOwnerId()))->cachePerPermissions()->cachePerUser()->addCacheableDependency($node);
       }
 
     default:

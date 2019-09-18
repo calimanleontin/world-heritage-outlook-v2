@@ -1,14 +1,27 @@
-project:
-  version: "2.1"
-  sites:
-    default:
+version: "3.0"
+
+sites:
+  default:
+    sync:
+      username: username
+      password: password
+    sql:
+      dump:
+        location: docroot/sync/database.sql
       sync:
-        username: username
-        password: password
-        sql:
-          url: https://iucn-who.edw.ro/sync/database.sql.gz
-        files:
-          url: https://iucn-who.edw.ro/sync/files.tar.gz
+        source: https://iucn-who.edw.ro/sync/database.sql.gz
+    files:
+      dump:
+        location: docroot/sync/files.tar.gz
+      sync:
+        source: https://iucn-who.edw.ro/sync/files.tar.gz
+    site:
+      update:
+        excluded_commands: []
+        extra_commands: []
       develop:
-        admin_username: iucn
-        config_split: TRUE
+        admin_username: username
+        config_split: FALSE
+        modules:
+          - devel
+          - webprofiler

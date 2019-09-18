@@ -5,7 +5,7 @@ dependencies:
   config:
     - workflow.workflow.assessment
 id: assessment_under_comparison
-label: 'Under comparison'
+label: 'Post-review edits'
 module: workflow
 wid: assessment
 weight: -3

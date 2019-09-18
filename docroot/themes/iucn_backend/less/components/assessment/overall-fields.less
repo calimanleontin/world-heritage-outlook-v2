@@ -1,4 +1,5 @@
-.node-site-assessment-edit-form {
+.node-site-assessment-edit-form,
+.node-site-assessment-form {
   fieldset.overall-container {
     margin: 0!important;
     padding: 0!important;
@@ -15,12 +16,20 @@
       text-transform: uppercase;
     }
     .fieldset-wrapper {
-      display: table;
+      // display: table;
       width: calc(~'100% - 1px');
       border-top: 1px solid @table-border-color;
       border-left: 1px solid @table-border-color;
+      overflow: auto;
       .overall-row {
-        display: table-row;
+        // display: table-row;
+        display: grid;
+        grid-auto-columns: 150px;
+        grid-auto-flow: column;
+        grid-template-columns: auto;
+        // @media screen and (max-width: 1024px) {
+        //   grid-template-columns: 550px;
+        // }
         &.overall-thead-row {
           .overall-cell {
             font-weight: bold;
@@ -32,43 +41,103 @@
               font-weight: bold;
             }
           }
+          > div[class*="-textarea"] {
+            grid-template-columns: 300px auto;
+            @media screen and (max-width: 1024px) {
+              grid-template-columns: 150px auto;
+            }
+          }
         }
         .form-item {
           margin: 0;
         }
         > div {
-          display: table-cell;
+          display: block;
           padding: 10px 12px;
           border-right: 1px solid @table-border-color;
           border-bottom: 1px solid @table-border-color;
           font-weight: normal;
+
+
+          &.field-with-diff {
+            position: relative;
+            padding-right: 60px;
+            background-color: #fcf8e3 !important;
+
+            .field-icon-button {
+              margin: 10px 3px !important;
+              position: absolute !important;
+              right: 0;
+              top: 0;
+              padding: 0;
+              min-width: 36px;
+              width: 36px !important;
+              height: 36px;
+              background-position: center !important;
+              background-repeat: no-repeat !important;
+              background-size: 24px 24px;
+              border-radius: 4px;
+              text-indent: -9999em;
+
+              &.field-icon-button-compare {
+                background-image: url(../images/compare.svg);
+              }
+            }
+
+            &.field--widget-options-select {
+              padding-right: 12px;
+              select {
+                margin-right: 0;
+              }
+              .field-icon-button {
+                float: right;
+                margin-right: 0 !important;
+                position: relative !important;
+              }
+            }
+
+
+          }
           .form-item {
             width: 100%;
-            display: table-row;
           }
-          &:last-child {
-            width: 150px;
-          }
+
           &[class*="-textarea"] {
-            display: table;
+            display: grid;
             width: 100%;
             padding: 0;
             border-right: none;
             border-bottom: none;
+            .form-type-textarea {
+              display: grid;
+              grid-template-columns: 300px auto;
+              @media screen and (max-width: 1024px) {
+                grid-template-columns: 150px auto;
+              }
+
+            }
+
+
             label,
             .form-textarea-wrapper {
-              display: table-cell;
+              display: block;
               box-sizing: border-box;
               padding: 10px 12px;
               border-bottom: 1px solid @table-border-color;
               border-right: 1px solid @table-border-color;
+              margin: 0;
             }
+
+            .form-textarea-wrapper {
+              display: flex;
+              flex-direction: column;
+              .counter {
+                order: 1;
+              }
+            }
+
             label {
               font-weight: normal;
-              width: 300px;
-              @media screen and (max-width: 1024px) {
-                width: 150px;
-              }
             }
           }
           label {
@@ -95,16 +164,19 @@
         margin: 0;
       }
       .overall-row-view > div {
-        display: table-cell;
-        padding: 10px 12px;
-        border-right: 1px solid #e6e4df;
         border-bottom: 1px solid #e6e4df;
+        border-right: 1px solid #e6e4df;
+        box-sizing: border-box;
+        display: table-cell;
         font-weight: normal;
+        padding: 10px 12px;
       }
       .overall-row-view > div:first-child {
+        border-left: none;
         width: 300px;
       }
       .overall-row-view > div:last-child {
+        border-right: none;
         width: 150px;
       }
 
@@ -138,6 +210,7 @@
       margin: 0 !important;
       padding: 0 !important;
       border: none !important;
+      position: relative;
 
       label {
         display: none;
@@ -147,9 +220,10 @@
         padding: 10px 12px;
       }
 
-      .button.paragraphs-icon-button {
-        margin-top: 48px !important;
+      .field-icon-button-compare {
+        &:extend(.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button all) ;
       }
     }
   }
 }
+

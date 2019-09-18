@@ -99,6 +99,8 @@ class RedirectRepository {
       return $redirect;
     }
 
+    // Reset found redirects.
+    $this->foundRedirects = [];
     return NULL;
   }
 
@@ -112,10 +114,12 @@ class RedirectRepository {
    */
   protected function findByRedirect(Redirect $redirect, $language) {
     $uri = $redirect->getRedirectUrl();
-    $baseUrl = \Drupal::request()->getBaseUrl();
-    $path = ltrim(substr($uri->toString(), strlen($baseUrl)), '/');
+    $base_url = \Drupal::request()->getBaseUrl();
+    $generated_url = $uri->toString(TRUE);
+    $path = ltrim(substr($generated_url->getGeneratedUrl(), strlen($base_url)), '/');
     $query = $uri->getOption('query') ?: [];
-    return $this->findMatchingRedirect($path, $query, $language);
+    $return_value = $this->findMatchingRedirect($path, $query, $language);
+    return $return_value ? $return_value->addCacheableDependency($generated_url) : $return_value;
   }
 
   /**

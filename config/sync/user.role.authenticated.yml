@@ -6,19 +6,17 @@ _core:
   default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
 id: authenticated
 label: 'Authenticated user'
-weight: -2
+weight: 5
 is_admin: false
 permissions:
   - 'access administration pages'
   - 'access content'
-  - 'access content overview'
   - 'access contextual links'
   - 'access files overview'
-  - 'access site in maintenance mode'
   - 'access toolbar'
-  - 'create assessment workflow_transition'
   - 'search content'
   - 'use search autocomplete'
   - 'use search_api_autocomplete for search_api_views_sites_search'
   - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
   - 'view the administration theme'

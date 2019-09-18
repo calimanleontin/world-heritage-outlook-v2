@@ -19,12 +19,11 @@
     attach: function (context) {
       // Make sure on page load or Ajax refresh the location ?page is correct
       // since conditional logic can skip pages.
-      // Note: window.history is only supported by IE 10+ and all other browsers.
-      if (window.history && history.replaceState) {
-        $('form[data-webform-wizard-current-page]', context).once('webform-wizard-current-page').each(function () {
-          var page = $(this).attr('data-webform-wizard-current-page');
-          history.replaceState(null, null, window.location.toString().replace(/\?.+$/, '') + '?page=' + page);
-        });
+      // Note: window.history is only supported by IE 10+.
+      if (window.history && window.history.replaceState) {
+        if ($(context).hasData('webform-wizard-current-page')) {
+          trackPage(context);
+        }
       }
 
       // When paging next and back update the URL so that Drupal knows what
@@ -35,6 +34,23 @@
         var page = $(this).attr('data-webform-wizard-page');
         this.form.action = this.form.action.replace(/\?.+$/, '') + '?page=' + page;
       });
+
+      /**
+       * Append the form's current page data attribute to the browser's URL.
+       *
+       * @param {HTMLElement} form
+       *   The form element.
+       */
+      function trackPage(form) {
+        var $form = $(form);
+        // Make sure the form is visible before updating the URL.
+        if ($form.is(':visible')) {
+          var page = $form.attr('data-webform-wizard-current-page');
+          var url = window.location.toString().replace(/\?.+$/, '') +
+            '?page=' + page;
+          window.history.replaceState(null, null, url);
+        }
+      }
     }
   };
 

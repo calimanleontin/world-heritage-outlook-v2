@@ -92,10 +92,11 @@
       }
     },
     triggerUploadButton: function triggerUploadButton(event) {
-      $(event.target).closest('.js-form-managed-file').find('.js-form-submit').trigger('mousedown');
+      $(event.target).closest('.js-form-managed-file').find('.js-form-submit[data-drupal-selector$="upload-button"]').trigger('mousedown');
     },
     disableFields: function disableFields(event) {
       var $clickedButton = $(this);
+      $clickedButton.trigger('formUpdated');
 
       var $enabledFields = [];
       if ($clickedButton.closest('div.js-form-managed-file').length > 0) {

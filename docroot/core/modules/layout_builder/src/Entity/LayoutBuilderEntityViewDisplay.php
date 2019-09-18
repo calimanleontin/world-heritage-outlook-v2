@@ -2,28 +2,34 @@
 
 namespace Drupal\layout_builder\Entity;
 
+use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\DerivativeInspectionInterface;
+use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Entity\EntityViewDisplay as BaseEntityViewDisplay;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Plugin\Context\Context;
+use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\Plugin\Context\EntityContext;
+use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\layout_builder\LayoutEntityHelperTrait;
+use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
+use Drupal\layout_builder\QuickEditIntegration;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\layout_builder\SectionStorage\SectionStorageTrait;
 
 /**
  * Provides an entity view display entity that has a layout.
- *
- * @internal
- *   Layout Builder is currently experimental and should only be leveraged by
- *   experimental modules and development releases of contributed modules.
- *   See https://www.drupal.org/core/experimental for more information.
  */
 class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements LayoutEntityDisplayInterface {
 
   use SectionStorageTrait;
+  use LayoutEntityHelperTrait;
 
   /**
    * The entity field manager.
@@ -47,7 +53,7 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
    * {@inheritdoc}
    */
   public function isOverridable() {
-    return $this->getThirdPartySetting('layout_builder', 'allow_custom', FALSE);
+    return $this->isLayoutBuilderEnabled() && $this->getThirdPartySetting('layout_builder', 'allow_custom', FALSE);
   }
 
   /**
@@ -55,6 +61,10 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
    */
   public function setOverridable($overridable = TRUE) {
     $this->setThirdPartySetting('layout_builder', 'allow_custom', $overridable);
+    // Enable Layout Builder if it's not already enabled and overriding.
+    if ($overridable && !$this->isLayoutBuilderEnabled()) {
+      $this->enableLayoutBuilder();
+    }
     return $this;
   }
 
@@ -62,6 +72,11 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
    * {@inheritdoc}
    */
   public function isLayoutBuilderEnabled() {
+    // Layout Builder must not be enabled for the '_custom' view mode that is
+    // used for on-the-fly rendering of fields in isolation from the entity.
+    if ($this->isCustomMode()) {
+      return FALSE;
+    }
     return (bool) $this->getThirdPartySetting('layout_builder', 'enabled');
   }
 
@@ -93,7 +108,14 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
    * {@inheritdoc}
    */
   protected function setSections(array $sections) {
-    $this->setThirdPartySetting('layout_builder', 'sections', array_values($sections));
+    // Third-party settings must be completely unset instead of stored as an
+    // empty array.
+    if (!$sections) {
+      $this->unsetThirdPartySetting('layout_builder', 'sections');
+    }
+    else {
+      $this->setThirdPartySetting('layout_builder', 'sections', array_values($sections));
+    }
     return $this;
   }
 
@@ -110,10 +132,10 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
       $bundle = $this->getTargetBundle();
 
       if ($new_value) {
-        $this->addSectionField($entity_type_id, $bundle, 'layout_builder__layout');
+        $this->addSectionField($entity_type_id, $bundle, OverridesSectionStorage::FIELD_NAME);
       }
-      elseif ($field = FieldConfig::loadByName($entity_type_id, $bundle, 'layout_builder__layout')) {
-        $field->delete();
+      else {
+        $this->removeSectionField($entity_type_id, $bundle, OverridesSectionStorage::FIELD_NAME);
       }
     }
 
@@ -132,10 +154,33 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
       }
       else {
         // When being disabled, remove all existing section data.
-        while (count($this) > 0) {
-          $this->removeSection(0);
-        }
+        $this->removeAllSections();
       }
+    }
+  }
+
+  /**
+   * Removes a layout section field if it is no longer needed.
+   *
+   * Because the field is shared across all view modes, the field will only be
+   * removed if no other view modes are using it.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID.
+   * @param string $bundle
+   *   The bundle.
+   * @param string $field_name
+   *   The name for the layout section field.
+   */
+  protected function removeSectionField($entity_type_id, $bundle, $field_name) {
+    $query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery()
+      ->condition('targetEntityType', $this->getTargetEntityTypeId())
+      ->condition('bundle', $this->getTargetBundle())
+      ->condition('mode', $this->getMode(), '<>')
+      ->condition('third_party_settings.layout_builder.allow_custom', TRUE);
+    $enabled = (bool) $query->count()->execute();
+    if (!$enabled && $field = FieldConfig::loadByName($entity_type_id, $bundle, $field_name)) {
+      $field->delete();
     }
   }
 
@@ -160,6 +205,7 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
           'type' => 'layout_section',
           'locked' => TRUE,
         ]);
+        $field_storage->setTranslatable(FALSE);
         $field_storage->save();
       }
 
@@ -168,8 +214,19 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
         'bundle' => $bundle,
         'label' => t('Layout'),
       ]);
+      $field->setTranslatable(FALSE);
       $field->save();
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createCopy($mode) {
+    // Disable Layout Builder and remove any sections copied from the original.
+    return parent::createCopy($mode)
+      ->setSections([])
+      ->disableLayoutBuilder();
   }
 
   /**
@@ -194,39 +251,94 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
   }
 
   /**
+   * Indicates if this display is using the '_custom' view mode.
+   *
+   * @return bool
+   *   TRUE if this display is using the '_custom' view mode, FALSE otherwise.
+   */
+  protected function isCustomMode() {
+    return $this->getOriginalMode() === static::CUSTOM_MODE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildMultiple(array $entities) {
     $build_list = parent::buildMultiple($entities);
-    if (!$this->isLayoutBuilderEnabled()) {
+
+    // Layout Builder can not be enabled for the '_custom' view mode that is
+    // used for on-the-fly rendering of fields in isolation from the entity.
+    if ($this->isCustomMode()) {
       return $build_list;
     }
 
-    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     foreach ($entities as $id => $entity) {
-      $sections = $this->getRuntimeSections($entity);
-      if ($sections) {
+      $build_list[$id]['_layout_builder'] = $this->buildSections($entity);
+
+      // If there are any sections, remove all fields with configurable display
+      // from the existing build. These fields are replicated within sections as
+      // field blocks by ::setComponent().
+      if (!Element::isEmpty($build_list[$id]['_layout_builder'])) {
         foreach ($build_list[$id] as $name => $build_part) {
           $field_definition = $this->getFieldDefinition($name);
           if ($field_definition && $field_definition->isDisplayConfigurable($this->displayContext)) {
             unset($build_list[$id][$name]);
           }
         }
-
-        // Bypass ::getContexts() in order to use the runtime entity, not a
-        // sample entity.
-        $contexts = $this->contextRepository()->getAvailableContexts();
-        $label = new TranslatableMarkup('@entity being viewed', [
-          '@entity' => $entity->getEntityType()->getSingularLabel(),
-        ]);
-        $contexts['layout_builder.entity'] = EntityContext::fromEntity($entity, $label);
-        foreach ($sections as $delta => $section) {
-          $build_list[$id]['_layout_builder'][$delta] = $section->toRenderArray($contexts);
-        }
       }
     }
 
     return $build_list;
+  }
+
+  /**
+   * Builds the render array for the sections of a given entity.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity.
+   *
+   * @return array
+   *   The render array representing the sections of the entity.
+   */
+  protected function buildSections(FieldableEntityInterface $entity) {
+    $contexts = $this->getContextsForEntity($entity);
+    // @todo Remove in https://www.drupal.org/project/drupal/issues/3018782.
+    $label = new TranslatableMarkup('@entity being viewed', [
+      '@entity' => $entity->getEntityType()->getSingularLabel(),
+    ]);
+    $contexts['layout_builder.entity'] = EntityContext::fromEntity($entity, $label);
+
+    $cacheability = new CacheableMetadata();
+    $storage = $this->sectionStorageManager()->findByContext($contexts, $cacheability);
+
+    $build = [];
+    if ($storage) {
+      foreach ($storage->getSections() as $delta => $section) {
+        $build[$delta] = $section->toRenderArray($contexts);
+      }
+    }
+    // The render array is built based on decisions made by @SectionStorage
+    // plugins and therefore it needs to depend on the accumulated
+    // cacheability of those decisions.
+    $cacheability->applyTo($build);
+    return $build;
+  }
+
+  /**
+   * Gets the available contexts for a given entity.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity.
+   *
+   * @return \Drupal\Core\Plugin\Context\ContextInterface[]
+   *   An array of context objects for a given entity.
+   */
+  protected function getContextsForEntity(FieldableEntityInterface $entity) {
+    return [
+      'view_mode' => new Context(ContextDefinition::create('string'), $this->getMode()),
+      'entity' => EntityContext::fromEntity($entity),
+      'display' => EntityContext::fromEntity($this),
+    ] + $this->contextRepository()->getAvailableContexts();
   }
 
   /**
@@ -237,13 +349,20 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
    *
    * @return \Drupal\layout_builder\Section[]
    *   The sections.
+   *
+   * @deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0.
+   *   \Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface::findByContext()
+   *   should be used instead. See https://www.drupal.org/node/3022574.
    */
   protected function getRuntimeSections(FieldableEntityInterface $entity) {
-    if ($this->isOverridable() && !$entity->get('layout_builder__layout')->isEmpty()) {
-      return $entity->get('layout_builder__layout')->getSections();
-    }
-
-    return $this->getSections();
+    @trigger_error('\Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay::getRuntimeSections() is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. \Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface::findByContext() should be used instead. See https://www.drupal.org/node/3022574.', E_USER_DEPRECATED);
+    // For backwards compatibility, mimic the functionality of ::buildSections()
+    // by constructing a cacheable metadata object and retrieving the
+    // entity-based contexts.
+    $cacheability = new CacheableMetadata();
+    $contexts = $this->getContextsForEntity($entity);
+    $storage = $this->sectionStorageManager()->findByContext($contexts, $cacheability);
+    return $storage ? $storage->getSections() : [];
   }
 
   /**
@@ -361,6 +480,96 @@ class LayoutBuilderEntityViewDisplay extends BaseEntityViewDisplay implements La
 
     // Return the first section.
     return $this->getSection(0);
+  }
+
+  /**
+   * Gets the section storage manager.
+   *
+   * @return \Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface
+   *   The section storage manager.
+   */
+  private function sectionStorageManager() {
+    return \Drupal::service('plugin.manager.layout_builder.section_storage');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getComponent($name) {
+    if ($this->isLayoutBuilderEnabled() && $section_component = $this->getQuickEditSectionComponent() ?: $this->getSectionComponentForFieldName($name)) {
+      $plugin = $section_component->getPlugin();
+      if ($plugin instanceof ConfigurableInterface) {
+        $configuration = $plugin->getConfiguration();
+        if (isset($configuration['formatter'])) {
+          return $configuration['formatter'];
+        }
+      }
+    }
+    return parent::getComponent($name);
+  }
+
+  /**
+   * Returns the Quick Edit formatter settings.
+   *
+   * @return \Drupal\layout_builder\SectionComponent|null
+   *   The section component if it is available.
+   *
+   * @see \Drupal\layout_builder\QuickEditIntegration::entityViewAlter()
+   * @see \Drupal\quickedit\MetadataGenerator::generateFieldMetadata()
+   */
+  private function getQuickEditSectionComponent() {
+    // To determine the Quick Edit view_mode ID we need an originalMode set.
+    if ($original_mode = $this->getOriginalMode()) {
+      $parts = explode('-', $original_mode);
+      // The Quick Edit view mode ID is created by
+      // \Drupal\layout_builder\QuickEditIntegration::entityViewAlter()
+      // concatenating together the information we need to retrieve the Layout
+      // Builder component. It follows the structure prescribed by the
+      // documentation of hook_quickedit_render_field().
+      if (count($parts) === 6 && $parts[0] === 'layout_builder') {
+        list(, $delta, $component_uuid, $entity_id) = QuickEditIntegration::deconstructViewModeId($original_mode);
+        $entity = $this->entityTypeManager()->getStorage($this->getTargetEntityTypeId())->load($entity_id);
+        $sections = $this->getEntitySections($entity);
+        if (isset($sections[$delta])) {
+          $component = $sections[$delta]->getComponent($component_uuid);
+          $plugin = $component->getPlugin();
+          // We only care about FieldBlock because these are only components
+          // that provide Quick Edit integration: Quick Edit enables in-place
+          // editing of fields of entities, not of anything else.
+          if ($plugin instanceof DerivativeInspectionInterface && $plugin->getBaseId() === 'field_block') {
+            return $component;
+          }
+        }
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Gets the component for a given field name if any.
+   *
+   * @param string $field_name
+   *   The field name.
+   *
+   * @return \Drupal\layout_builder\SectionComponent|null
+   *   The section component if it is available.
+   */
+  private function getSectionComponentForFieldName($field_name) {
+    // Loop through every component until the first match is found.
+    foreach ($this->getSections() as $section) {
+      foreach ($section->getComponents() as $component) {
+        $plugin = $component->getPlugin();
+        if ($plugin instanceof DerivativeInspectionInterface && $plugin->getBaseId() === 'field_block') {
+          // FieldBlock derivative IDs are in the format
+          // [entity_type]:[bundle]:[field].
+          list(, , $field_block_field_name) = explode(PluginBase::DERIVATIVE_SEPARATOR, $plugin->getDerivativeId());
+          if ($field_block_field_name === $field_name) {
+            return $component;
+          }
+        }
+      }
+    }
+    return NULL;
   }
 
 }

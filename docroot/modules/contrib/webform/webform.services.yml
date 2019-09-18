@@ -25,6 +25,12 @@ services:
     factory: logger.factory:get
     arguments: ['webform']
 
+  logger.channel.webform_submission:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['webform_submission']
+
+
   # Services.
 
   webform.addons_manager:
@@ -33,13 +39,9 @@ services:
   webform.cli_service:
     class: Drupal\webform\Commands\WebformCliService
 
-  webform.contribute_manager:
-    class: Drupal\webform\WebformContributeManager
-    arguments: ['@cache.default', '@http_client', '@date.formatter', '@config.factory']
-
   webform.elements_validator:
     class: Drupal\webform\WebformEntityElementsValidator
-    arguments: ['@renderer', '@plugin.manager.webform.element', '@entity_type.manager', '@form_builder']
+    arguments: ['@renderer', '@plugin.manager.webform.element', '@entity_type.manager', '@form_builder', '@config.factory']
 
   webform.email_provider:
     class: Drupal\webform\WebformEmailProvider
@@ -75,7 +77,7 @@ services:
 
   webform_submission.exporter:
     class: Drupal\webform\WebformSubmissionExporter
-    arguments: ['@config.factory', '@file_system', '@entity_type.manager', '@stream_wrapper_manager', '@plugin.manager.webform.element', '@plugin.manager.webform.exporter']
+    arguments: ['@config.factory', '@file_system', '@entity_type.manager', '@stream_wrapper_manager', '@plugin.manager.archiver', '@plugin.manager.webform.element', '@plugin.manager.webform.exporter']
 
   webform.third_party_settings_manager:
     class: Drupal\webform\WebformThirdPartySettingsManager
@@ -138,13 +140,13 @@ services:
 
   webform.theme_negotiator:
     class: Drupal\webform\Theme\WebformThemeNegotiator
-    arguments: ['@current_user', '@config.factory']
+    arguments: ['@current_user', '@config.factory', '@webform.request']
     tags:
       - { name: theme_negotiator, priority: -41 }
 
   # Twig extension.
 
   webform.twig_extension:
-    class: Drupal\webform\Twig\TwigExtension
+    class: Drupal\webform\Twig\WebformTwigExtension
     tags:
       - { name: twig.extension }

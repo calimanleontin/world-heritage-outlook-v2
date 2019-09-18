@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_programmatically_fixed
+    - node.type.site_assessment
+  module:
+    - disable_field
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: 0
+      assessment_new: 0
+      assessment_under_evaluation: 0
+      assessment_under_assessment: 0
+      assessment_ready_for_review: 0
+      assessment_under_review: 0
+      assessment_finished_reviewing: 0
+      assessment_under_comparison: 0
+      assessment_reviewing_references: 0
+      assessment_final_changes: 0
+      assessment_approved: 0
+      assessment_published: 0
+      assessment_draft: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
+id: node.site_assessment.field_programmatically_fixed
+field_name: field_programmatically_fixed
+entity_type: node
+bundle: site_assessment
+label: 'Programmatically fixed'
+description: 'This field is used by <i>drush iucn_assessment:fix-assessments</i> command. Do not show it or manually modify it.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -7,7 +7,30 @@ dependencies:
     - node.type.site_assessment
     - paragraphs.paragraphs_type.as_site_threat
   module:
+    - disable_field
     - entity_reference_revisions
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
+      assessment_ready_for_review: assessment_ready_for_review
+      assessment_under_review: assessment_under_review
+      assessment_finished_reviewing: assessment_finished_reviewing
+      assessment_under_comparison: assessment_under_comparison
+      assessment_reviewing_references: assessment_reviewing_references
+      assessment_final_changes: assessment_final_changes
+      assessment_approved: assessment_approved
+      assessment_draft: assessment_draft
+      assessment_published: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_threats_potential
 field_name: field_as_threats_potential
 entity_type: node
@@ -21,6 +44,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_threat: as_site_threat
     target_bundles_drag_drop:
@@ -29,9 +53,6 @@ settings:
         weight: 13
       as_site_benefit:
         weight: 14
-        enabled: false
-      as_site_conservation:
-        weight: 15
         enabled: false
       as_site_project:
         weight: 16
@@ -42,14 +63,23 @@ settings:
       as_site_value_wh:
         weight: 18
         enabled: false
+      as_site_key_conservation:
+        weight: 19
+        enabled: false
       content_html:
         weight: 19
         enabled: false
       content_teasers:
         weight: 20
         enabled: false
+      as_site_protection:
+        weight: 21
+        enabled: false
       danger_list:
         weight: 21
+        enabled: false
+      as_site_reference:
+        weight: 22
         enabled: false
       number_heading_list:
         weight: 22
@@ -59,5 +89,14 @@ settings:
         enabled: false
       teaser:
         weight: 24
+        enabled: false
+      decision:
+        weight: 29
+        enabled: false
+      image_grid:
+        weight: 30
+        enabled: false
+      image_link:
+        weight: 31
         enabled: false
 field_type: entity_reference_revisions

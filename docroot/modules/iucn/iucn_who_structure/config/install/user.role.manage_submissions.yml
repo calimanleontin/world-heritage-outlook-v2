@@ -1,4 +1,3 @@
-uuid: f1a45441-4a1d-411e-8851-47b80961d1a0
 langcode: en
 status: true
 dependencies: {  }
@@ -7,8 +6,13 @@ label: 'Webforms manager'
 weight: 4
 is_admin: null
 permissions:
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'access webform overview'
   - 'access webform submission log'
   - 'administer webform submission'
-  - 'create assessment workflow_transition'
   - 'delete any webform submission'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'

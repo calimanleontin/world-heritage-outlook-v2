@@ -24,6 +24,17 @@
     return typeof a === 'undefined' || typeof b === 'undefined';
   }
 
+  function ternary(a, b) {
+    if (typeof a === 'undefined') {
+      return b;
+    }
+    if (typeof b === 'undefined') {
+      return a;
+    }
+
+    return a && b;
+  }
+
   Drupal.behaviors.states = {
     attach: function attach(context, settings) {
       var $states = $(context).find('[data-drupal-states]');
@@ -98,6 +109,9 @@
       });
     },
     compare: function compare(reference, selector, state) {
+      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
+        return false;
+      }
       var value = this.values[selector][state.name];
       if (reference.constructor.name in states.Dependent.comparisons) {
         return states.Dependent.comparisons[reference.constructor.name](reference, value);
@@ -127,28 +141,30 @@
       }
     },
     verifyConstraints: function verifyConstraints(constraints, selector) {
-      var _this3 = this;
-
       var result = void 0;
       if ($.isArray(constraints)) {
-        var hasXor = $.inArray('xor', constraints) === -1;
+        var hasXor = $.inArray('xor', constraints) !== -1;
         var len = constraints.length;
         for (var i = 0; i < len; i++) {
           if (constraints[i] !== 'xor') {
             var constraint = this.checkConstraints(constraints[i], selector, i);
 
-            if (constraint && (hasXor || result)) {
-              return hasXor;
+            if (hasXor && constraint && result) {
+              return hasXor;  return false;
             }
             result = result || constraint;
           }
         }
       } else if ($.isPlainObject(constraints)) {
-          result = Object.keys(constraints).every(function (constraint) {
-            var check = _this3.checkConstraints(constraints[constraint], selector, constraint);
+          for (var n in constraints) {
+            if (constraints.hasOwnProperty(n)) {
+              result = ternary(result, this.checkConstraints(constraints[n], selector, n));
 
-            return typeof check === 'undefined' ? true : check;
-          });
+              if (result === false) {
+                return false;
+              }
+            }
+          }
         }
       return result;
     },
@@ -197,7 +213,7 @@
 
   states.Trigger.prototype = {
     initialize: function initialize() {
-      var _this4 = this;
+      var _this3 = this;
 
       var trigger = states.Trigger.states[this.state];
 
@@ -205,7 +221,7 @@
         trigger.call(window, this.element);
       } else {
         Object.keys(trigger || {}).forEach(function (event) {
-          _this4.defaultTrigger(event, trigger[event]);
+          _this3.defaultTrigger(event, trigger[event]);
         });
       }
 
@@ -339,7 +355,7 @@
     if (e.trigger) {
       if (e.value) {
         var label = 'label' + (e.target.id ? '[for=' + e.target.id + ']' : '');
-        var $label = $(e.target).attr({ required: 'required', 'aria-required': 'aria-required' }).closest('.js-form-item, .js-form-wrapper').find(label);
+        var $label = $(e.target).attr({ required: 'required', 'aria-required': 'true' }).closest('.js-form-item, .js-form-wrapper').find(label);
 
         if (!$label.hasClass('js-form-required').length) {
           $label.addClass('js-form-required form-required');

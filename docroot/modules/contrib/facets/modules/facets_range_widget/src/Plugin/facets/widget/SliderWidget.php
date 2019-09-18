@@ -36,6 +36,8 @@ class SliderWidget extends WidgetPluginBase {
    * {@inheritdoc}
    */
   public function build(FacetInterface $facet) {
+    $build = parent::build($facet);
+
     $results = $facet->getResults();
     ksort($results);
 
@@ -53,12 +55,14 @@ class SliderWidget extends WidgetPluginBase {
     $min = (float) reset($results)->getRawValue();
     $max = (float) end($results)->getRawValue();
 
-    $build['slider'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => ['facet-slider'],
-        'id' => $facet->id(),
+    $build['#items'] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => ['facet-slider'],
+          'id' => $facet->id(),
+        ],
       ],
     ];
 

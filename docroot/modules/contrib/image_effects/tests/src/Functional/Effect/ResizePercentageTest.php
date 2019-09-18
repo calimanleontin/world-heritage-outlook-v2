@@ -136,7 +136,7 @@ class ResizePercentageTest extends ImageEffectsTestBase {
       ],
     ];
 
-    foreach ($test_data as $test) {
+    foreach ($test_data as $test_description => $test) {
       // Add Resize percentage effect to the test image style.
       $effect = [
         'id' => 'image_effects_resize_percentage',
@@ -146,8 +146,8 @@ class ResizePercentageTest extends ImageEffectsTestBase {
 
       // Check that ::transformDimensions returns expected dimensions.
       $image = $this->imageFactory->get($original_uri);
-      $this->assertEqual(40, $image->getWidth());
-      $this->assertEqual(20, $image->getHeight());
+      $this->assertEquals(40, $image->getWidth());
+      $this->assertEquals(20, $image->getHeight());
       $derivative_url = file_url_transform_relative($this->testImageStyle->buildUrl($original_uri));
       $variables = [
         '#theme' => 'image_style',
@@ -156,13 +156,13 @@ class ResizePercentageTest extends ImageEffectsTestBase {
         '#width' => $image->getWidth(),
         '#height' => $image->getHeight(),
       ];
-      $this->assertEqual('<img src="' . $derivative_url . '" width="' . $test['expected_width'] . '" height="' . $test['expected_height'] . '" alt="" class="image-style-image-effects-test" />', $this->getImageTag($variables));
+      $this->assertEquals('<img src="' . $derivative_url . '" width="' . $test['expected_width'] . '" height="' . $test['expected_height'] . '" alt="" class="image-style-image-effects-test" />', $this->getImageTag($variables), $test_description);
 
       // Check that ::applyEffect generates image with expected dimensions.
       $this->testImageStyle->createDerivative($original_uri, $derivative_uri);
       $image = $this->imageFactory->get($derivative_uri, 'gd');
-      $this->assertEqual($test['expected_width'], $image->getWidth());
-      $this->assertEqual($test['expected_height'], $image->getHeight());
+      $this->assertEquals($test['expected_width'], $image->getWidth());
+      $this->assertEquals($test['expected_height'], $image->getHeight());
 
       // Remove effect.
       $uuid = $this->removeEffectFromTestStyle($uuid);

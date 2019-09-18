@@ -15,17 +15,6 @@ title: 'Test: Example: Elements: Composite'
 description: 'Examples of composite elements, includes address, and contact.'
 category: 'Test: Example'
 elements: |
-  address_example:
-    '#type': details
-    '#title': 'Advanced address'
-    '#open': true
-    address:
-      '#type': address
-      '#title': 'Advanced address'
-    address_multiple:
-      '#type': address
-      '#title': 'Advanced address multiple'
-      '#multiple': true
   webform_address_example:
     '#type': details
     '#title': 'Basic address'
@@ -38,6 +27,17 @@ elements: |
       '#title': 'Basic address multiple'
       '#multiple': true
       '#multiple__header': true
+  address_example:
+    '#type': details
+    '#title': 'Advanced address'
+    '#open': true
+    address:
+      '#type': address
+      '#title': 'Advanced address'
+    address_multiple:
+      '#type': address
+      '#title': 'Advanced address multiple'
+      '#multiple': true
   webform_contact_example:
     '#type': details
     '#title': Contact
@@ -112,19 +112,30 @@ elements: |
       '#title': 'Link multiple'
       '#multiple': true
       '#multiple__header': true
+  webform_location_places_example:
+    '#type': details
+    '#title': 'Location (Algolia Places)'
+    '#open': true
+    webform_location_places:
+      '#type': webform_location_places
+      '#title': 'Location (Algolia Places)'
+    webform_location_places_multiple:
+      '#type': webform_location_places
+      '#title': 'Location (Algolia Places) multiple'
+      '#multiple': true
   webform_location_geocomplete_example:
     '#type': details
-    '#title': Location
+    '#title': 'Location (Geocomplete)'
     '#open': true
     webform_location_geocomplete:
-      '#type': webform_location_places
-      '#title': Location
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete)'
       '#map': true
       '#geolocation': true
       '#format': map
     webform_location_geocomplete_multiple:
-      '#type': webform_location_places
-      '#title': 'Location multiple'
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete) multiple'
       '#map': true
       '#geolocation': true
       '#format': map
@@ -182,9 +193,14 @@ javascript: ''
 settings:
   ajax: false
   ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
   page: true
   page_submit_path: ''
   page_confirm_path: ''
+  page_admin_theme: false
+  form_title: source_entity_webform
   form_submit_once: false
   form_exception_message: ''
   form_open_message: ''
@@ -192,6 +208,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -224,6 +241,9 @@ settings:
   submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -251,6 +271,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
@@ -261,12 +283,15 @@ settings:
   confirmation_back_attributes: {  }
   confirmation_exclude_query: false
   confirmation_exclude_token: false
+  confirmation_update: false
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: null
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: null
   entity_limit_total_interval: null
   entity_limit_user: null
@@ -316,6 +341,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }

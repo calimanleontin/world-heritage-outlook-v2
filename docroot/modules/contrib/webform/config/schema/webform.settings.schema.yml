@@ -12,6 +12,18 @@ webform.settings:
         default_page_base_path:
           type: string
           label: 'Default base path'
+        default_ajax:
+          type: boolean
+          label: 'Use Ajax'
+        default_ajax_progress_type:
+          type: string
+          label: 'Default Ajax progress type'
+        default_ajax_effect:
+          type: string
+          label: 'Default Ajax effect'
+        default_ajax_speed:
+          type: integer
+          label: 'Default Ajax speed'
         default_submit_button_label:
           type: label
           label: 'Default submit button label'
@@ -99,6 +111,12 @@ webform.settings:
         default_draft_loaded_message:
           type: text
           label: 'Default draft load message'
+        default_draft_pending_single_message:
+          type: text
+          label: 'Default draft pending single draft message'
+        default_draft_pending_multiple_message:
+          type: text
+          label: 'Default drafts pending multiple drafts message'
         default_confirmation_message:
           type: text
           label: 'Default confirmation message'
@@ -122,11 +140,11 @@ webform.settings:
           label: 'Default submission views'
           sequence:
             type: mapping
-            label:  'Submission view'
+            label: 'Submission view'
             mapping:
               title:
                 type: text
-                label: 'Title'
+                label: Title
               view:
                 type: string
                 label: 'View name / Display ID'
@@ -135,19 +153,19 @@ webform.settings:
                 label: 'Apply to global'
                 sequence:
                   type: string
-                  label: 'Route'
+                  label: Route
               webform_routes:
                 type: sequence
                 label: 'Apply to webform'
                 sequence:
                   type: string
-                  label: 'Route'
+                  label: Route
               node_routes:
                 type: sequence
                 label: 'Apply to node'
                 sequence:
                   type: string
-                  label: 'Route'
+                  label: Route
         default_submission_views_replace:
           type: mapping
           label: 'Default submission view replace'
@@ -157,19 +175,19 @@ webform.settings:
               label: 'Replace to global'
               sequence:
                 type: string
-                label: 'Route'
+                label: Route
             webform_routes:
               type: sequence
               label: 'Replace to webform'
               sequence:
                 type: string
-                label: 'Route'
+                label: Route
             node_routes:
               type: sequence
               label: 'Replace to node'
               sequence:
                 type: string
-                label: 'Route'
+                label: Route
         default_submission_access_denied_message:
           type: text
           label: 'Default submission access denied message'
@@ -234,11 +252,14 @@ webform.settings:
           label: 'CSS (Cascading Style Sheets)'
         javascript:
           type: string
-          label: 'JavaScript'
+          label: JavaScript
     element:
       type: mapping
       label: 'Element default settings'
       mapping:
+        machine_name_pattern:
+          type: string
+          label: 'Element key pattern'
         empty_message:
           type: label
           label: 'Empty element message/placeholder'
@@ -382,10 +403,10 @@ webform.settings:
           label: 'Default email body (HTML)'
         roles:
           type: sequence
-          label: 'Roles'
+          label: Roles
           sequence:
             type: string
-            label: 'Role'
+            label: Role
     export:
       type: mapping
       label: 'Export default settings'
@@ -461,6 +482,9 @@ webform.settings:
         default_batch_export_size:
           type: integer
           label: 'Batch export size'
+        default_batch_import_size:
+          type: integer
+          label: 'Batch import size'
         default_batch_update_size:
           type: integer
           label: 'Batch update size'
@@ -500,9 +524,6 @@ webform.settings:
         dialog_disabled:
           type: boolean
           label: 'Disable dialogs'
-        contribute_disabled:
-          type: boolean
-          label: 'Disable contribute'
         offcanvas_disabled:
           type: boolean
           label: 'Disable system tray'
@@ -527,7 +548,7 @@ webform.settings:
           label: 'Use CDN'
     requirements:
       type: mapping
-      label: 'Requirements'
+      label: Requirements
       mapping:
         cdn:
           type: boolean
@@ -538,18 +559,8 @@ webform.settings:
         spam:
           type: boolean
           label: 'Check if SPAM protection module is installed'
-    contribute:
-      type: mapping
-      label: 'Contribute'
-      mapping:
-        account_type:
-          type: string
-          label: 'Account type'
-        account_id:
-          type: string
-          label: 'Account ID'
     third_party_settings:
       type: sequence
       label: 'Third party settings'
       sequence:
-        type: webform.admin_settings.third_party.[%key]
+        type: 'webform.admin_settings.third_party.[%key]'

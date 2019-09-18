@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_protection_rating.field_css_identifier
+    - taxonomy.vocabulary.assessment_protection_rating
+id: taxonomy_term.assessment_protection_rating.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_protection_rating
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_css_identifier: true
+  langcode: true

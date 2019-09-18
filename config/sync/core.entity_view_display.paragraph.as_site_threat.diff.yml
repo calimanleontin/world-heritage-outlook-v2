@@ -1,0 +1,144 @@
+uuid: f8328669-e5c3-4bd6-9a50-57f05b827c00
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.diff
+    - field.field.paragraph.as_site_threat.field_as_description
+    - field.field.paragraph.as_site_threat.field_as_legality
+    - field.field.paragraph.as_site_threat.field_as_targeted_species
+    - field.field.paragraph.as_site_threat.field_as_threats_categories
+    - field.field.paragraph.as_site_threat.field_as_threats_extent
+    - field.field.paragraph.as_site_threat.field_as_threats_in
+    - field.field.paragraph.as_site_threat.field_as_threats_out
+    - field.field.paragraph.as_site_threat.field_as_threats_rating
+    - field.field.paragraph.as_site_threat.field_as_threats_threat
+    - field.field.paragraph.as_site_threat.field_as_threats_values_bio
+    - field.field.paragraph.as_site_threat.field_as_threats_values_wh
+    - field.field.paragraph.as_site_threat.field_invasive_species_names
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - ds
+    - entity_reference_revisions
+    - iucn_assessment
+    - iucn_site
+    - options
+    - string_field_formatter
+id: paragraph.as_site_threat.diff
+targetEntityType: paragraph
+bundle: as_site_threat
+mode: diff
+content:
+  field_as_description:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_legality:
+    type: list_key
+    weight: 5
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_targeted_species:
+    type: plain_string_formatter
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      wrap_tag: _none
+      wrap_class: ''
+    third_party_settings: {  }
+  field_as_threats_categories:
+    type: entity_reference_list
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: false
+      separator: ','
+      override_label: 0
+      singular: ''
+      plural: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_as_threats_extent:
+    type: entity_reference_label
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_threats_in:
+    type: boolean
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Inside site'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_threats_out:
+    type: boolean
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      format: custom
+      format_custom_true: 'Outside site'
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_as_threats_rating:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: parent_category
+    region: content
+  field_as_threats_threat:
+    type: basic_string
+    weight: 10
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_threats_values_bio:
+    type: entity_reference_revisions_entity_view
+    weight: 11
+    region: content
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_as_threats_values_wh:
+    type: entity_reference_revisions_entity_view
+    weight: 12
+    region: content
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_invasive_species_names:
+    type: string
+    weight: 9
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true

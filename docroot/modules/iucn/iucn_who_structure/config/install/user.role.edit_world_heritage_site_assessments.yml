@@ -1,13 +1,13 @@
-uuid: 9efc1919-b007-4335-bfb8-b3d7b13e20b9
 langcode: en
 status: true
 dependencies: {  }
 id: edit_world_heritage_site_assessments
 label: 'Edit World Heritage site assessments'
-weight: -8
+weight: -4
 is_admin: null
 permissions:
-  - 'create assessment workflow_transition'
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'create content translations'
   - 'create content unpublished'
   - 'create site_assessment content'
@@ -36,4 +36,8 @@ permissions:
   - 'use assessment transition under_review_reviewed'
   - 'use assessment transition under_review_under_comparison'
   - 'use assessment transition under_review_under_review'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'
   - 'view site_assessment revisions'

@@ -159,7 +159,7 @@ class WidgetIntegrationTest extends FacetsTestBase {
     $id = 'masked_owl';
     $this->createFacet('Australian masked owl', $id);
 
-    // Go the the facet edit page and check to see if the custom widget shows
+    // Go to the facet edit page and check to see if the custom widget shows
     // up.
     $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
     $this->assertSession()->pageTextContains('Custom widget');
@@ -171,6 +171,55 @@ class WidgetIntegrationTest extends FacetsTestBase {
     // hidden.
     $this->drupalGet('admin/config/search/facets/' . $id . '/edit');
     $this->assertSession()->pageTextNotContains('Custom widget');
+  }
+
+  /**
+   * Tests the all link.
+   */
+  public function testAllLink() {
+    $id = 'kepler_16b';
+    $this->createFacet('Kepler 16b', $id);
+    $editUrl = 'admin/config/search/facets/' . $id . '/edit';
+    $this->drupalPostForm($editUrl, ['widget' => 'links'], 'Save');
+
+    $this->drupalGet('search-api-test-fulltext');
+    $this->assertFacetLabel('item');
+    $this->assertFacetLabel('article');
+
+    $this->clickLink('item');
+    $this->checkFacetIsActive('item');
+
+    // Enable the all (reset) link.
+    $this->drupalPostForm($editUrl, ['widget_config[show_reset_link]' => TRUE], 'Save');
+
+    $this->drupalGet('search-api-test-fulltext');
+    $this->assertFacetLabel('item');
+    $this->assertFacetLabel('article');
+    $this->findFacetLink('Show all');
+
+    // Change the text.
+    $edit = [
+      'widget_config[show_reset_link]' => TRUE,
+      'widget_config[reset_text]' => 'Planets',
+    ];
+    $this->drupalPostForm($editUrl, $edit, 'Save');
+
+    // Check that the new text appears and no facets are active.
+    $this->drupalGet('search-api-test-fulltext');
+    $this->assertFacetLabel('item');
+    $this->assertFacetLabel('article');
+    $this->findFacetLink('Planets (5)');
+    $this->checkFacetIsNotActive('item');
+    $this->checkFacetIsNotActive('article');
+
+    // Click one of the facets.
+    $this->clickLink('item');
+    $this->checkFacetIsActive('item');
+
+    // Click the rest link.
+    $this->clickLink('Planets');
+    $this->checkFacetIsNotActive('item');
+    $this->checkFacetIsNotActive('article');
   }
 
 }

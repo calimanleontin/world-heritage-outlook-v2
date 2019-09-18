@@ -60,6 +60,7 @@ content:
     label: hidden
     settings:
       wrap_tag: h4
+      wrap_class: ''
     third_party_settings: {  }
     type: plain_string_formatter
     region: title

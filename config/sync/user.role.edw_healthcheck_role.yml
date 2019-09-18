@@ -1,0 +1,12 @@
+uuid: 1027cd3f-a52a-4e0f-bd2b-f5cd8a9edc7c
+langcode: en
+status: true
+dependencies: {  }
+id: edw_healthcheck_role
+label: 'EDW HealthCheck Access Role'
+weight: 2
+is_admin: null
+permissions:
+  - 'edw healthcheck access'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'

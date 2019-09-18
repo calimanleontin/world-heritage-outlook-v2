@@ -69,7 +69,9 @@ interface WebformSubmissionConditionsValidatorInterface {
    *   A webform submission.
    *
    * @return bool|null
-   *   TRUE if conditions validate. NULL if conditions can't be processed.
+   *   TRUE if the conditions validate. NULL if the conditions can't be
+   *   processed. NULL is returned when there is an invalid selector or a
+   *   missing element in the conditions.
    *
    * @see drupal_process_states()
    */
@@ -87,5 +89,18 @@ interface WebformSubmissionConditionsValidatorInterface {
    *   TRUE if the element is visible.
    */
   public function isElementVisible(array $element, WebformSubmissionInterface $webform_submission);
+
+  /**
+   * Determine if an element is enabled.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   *
+   * @return bool
+   *   TRUE if the element is enabled.
+   */
+  public function isElementEnabled(array $element, WebformSubmissionInterface $webform_submission);
 
 }

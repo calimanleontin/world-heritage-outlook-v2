@@ -1,12 +1,12 @@
 services:
   workspaces.manager:
     class: Drupal\workspaces\WorkspaceManager
-    arguments: ['@request_stack', '@entity_type.manager', '@current_user', '@state', '@logger.channel.workspaces', '@class_resolver']
+    arguments: ['@request_stack', '@entity_type.manager', '@entity.memory_cache', '@current_user', '@state', '@logger.channel.workspaces', '@class_resolver']
     tags:
       - { name: service_id_collector, tag: workspace_negotiator }
   workspaces.operation_factory:
     class: Drupal\workspaces\WorkspaceOperationFactory
-    arguments: ['@entity_type.manager', '@database']
+    arguments: ['@entity_type.manager', '@database', '@workspaces.manager']
 
   workspaces.negotiator.default:
     class: Drupal\workspaces\Negotiator\DefaultWorkspaceNegotiator

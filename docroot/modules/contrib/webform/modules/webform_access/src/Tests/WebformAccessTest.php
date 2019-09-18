@@ -12,6 +12,13 @@ use Drupal\field\Entity\FieldConfig;
 class WebformAccessTest extends WebformAccessTestBase {
 
   /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = ['field_ui'];
+
+  /**
    * Tests webform access.
    */
   public function testWebformAccess() {
@@ -34,18 +41,20 @@ class WebformAccessTest extends WebformAccessTestBase {
       $this->assertResponse(403);
     }
 
-    // Assign users to groups via the UI.
     $this->drupalLogin($this->rootUser);
+
+    // Assign users to groups via the UI.
     foreach ($this->groups as $name => $group) {
       $this->drupalPostForm(
-        "/admin/structure/webform/access/group/manage/$name/edit",
+        "/admin/structure/webform/access/group/manage/$name",
         ['users[]' => $this->users[$name]->id()],
         t('Save')
       );
     }
 
-    // Check that employee and manager users can access webform results.
-    foreach ($this->users as $account) {
+    // Check that manager and employee users can access webform results.
+    foreach (['manager', 'employee'] as $name) {
+      $account = $this->users[$name];
       $this->drupalLogin($account);
       $this->drupalGet("/node/$nid/webform/results/submissions");
       $this->assertResponse(200);
@@ -64,7 +73,7 @@ class WebformAccessTest extends WebformAccessTestBase {
     // Unassign employee user from employee group via the UI.
     $this->drupalLogin($this->rootUser);
     $this->drupalPostForm(
-      '/admin/structure/webform/access/group/manage/employee/edit',
+      '/admin/structure/webform/access/group/manage/employee',
       ['users[]' => 1],
       t('Save')
     );
@@ -77,6 +86,22 @@ class WebformAccessTest extends WebformAccessTestBase {
       t('Save')
     );
 
+    // Check defining webform field's access groups default value.
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet('/admin/structure/types');
+    $this->drupalGet('/admin/structure/types/manage/webform/fields');
+    $this->drupalPostForm(
+      '/admin/structure/types/manage/webform/fields/node.webform.webform',
+      [
+        'default_value_input[webform][0][target_id]' => 'contact',
+        'default_value_input[webform][0][settings][default_data]' => 'test: test',
+        'default_value_input[webform][0][settings][webform_access_group][]' => 'manager',
+      ],
+      t('Save settings')
+    );
+    $this->drupalGet('/node/add/webform');
+    $this->assertFieldByName('webform[0][settings][webform_access_group][]', 'manager');
+
     // Check that employee can now delete results.
     $this->drupalLogin($this->users['employee']);
     $this->drupalGet("/node/$nid/webform/results/clear");
@@ -86,7 +111,7 @@ class WebformAccessTest extends WebformAccessTestBase {
     $this->drupalLogin($this->rootUser);
     foreach ($this->groups as $name => $group) {
       $this->drupalPostForm(
-        "/admin/structure/webform/access/group/manage/$name/edit",
+        "/admin/structure/webform/access/group/manage/$name",
         ['entities[]' => 'node:' . $this->nodes['contact_02']->id() . ':webform:contact'],
         t('Save')
       );
@@ -159,6 +184,62 @@ class WebformAccessTest extends WebformAccessTestBase {
     // Check that contact_02 has been removed.
     $this->drupalGet('/admin/structure/webform/access/group/manage');
     $this->assertNoLink('contact_02');
+  }
+
+  /**
+   * Tests webform administrator access.
+   */
+  public function testWebformAdministratorAccess() {
+    // Check root user access to group edit form.
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet('/admin/structure/webform/access/group/manage/manager');
+    $this->assertFieldByName('label');
+    $this->assertFieldByName('description[value]');
+    $this->assertFieldByName('type');
+    $this->assertFieldByName('admins[]');
+    $this->assertFieldByName('users[]');
+    $this->assertFieldByName('entities[]');
+    $this->assertFieldByName('permissions[administer]');
+
+    // Logout.
+    $this->drupalLogout();
+
+    // Check access denied to 'Access' tab for anonymous user.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(403);
+
+    // Login as administrator.
+    $administrator = $this->drupalCreateUser();
+    $this->drupalLogin($administrator);
+
+    // Check access denied to 'Access' tab for administrator.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(403);
+
+    // Assign administrator to the 'manager' access group.
+    $this->groups['manager']->addAdminId($administrator->id());
+    $this->groups['manager']->save();
+
+    // Check access allowed to 'Access' tab for administrator.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(200);
+    $this->assertLink('Manage');
+    $this->assertNoLink('Edit');
+
+    // Click 'manager_group' link and move to the group edit form.
+    $this->clickLink('manager_group');
+
+    // Check that details information exists.
+    $this->assertRaw('<details data-drupal-selector="edit-information" id="edit-information" class="js-form-wrapper form-wrapper">');
+
+    // Check that users element exists.
+    $this->assertNoFieldByName('label');
+    $this->assertNoFieldByName('description[value]');
+    $this->assertNoFieldByName('type');
+    $this->assertNoFieldByName('admins[]');
+    $this->assertFieldByName('users[]');
+    $this->assertNoFieldByName('entities[]');
+    $this->assertNoFieldByName('permissions[administer]');
   }
 
 }

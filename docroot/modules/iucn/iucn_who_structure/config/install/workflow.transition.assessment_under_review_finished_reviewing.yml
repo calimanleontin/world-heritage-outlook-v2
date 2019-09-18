@@ -1,4 +1,3 @@
-uuid: 80f3fbfb-4782-4f4b-8255-4b35219689a2
 langcode: en
 status: true
 dependencies:
@@ -6,7 +5,7 @@ dependencies:
     - workflow.state.assessment_finished_reviewing
     - workflow.state.assessment_under_review
 id: assessment_under_review_finished_reviewing
-label: 'Finish reviewing'
+label: 'Submit review'
 module: workflow
 from_sid: assessment_under_review
 to_sid: assessment_finished_reviewing
@@ -15,15 +14,6 @@ roles:
   iucn_manager: iucn_manager
   reviewer: reviewer
   workflow_author: '0'
-  edit_world_heritage_site_assessments: '0'
-  publish_world_heritage_site_assessments: '0'
   coordinator: '0'
   assessor: '0'
-  anonymous: '0'
-  authenticated: '0'
-  edit_content_pages: '0'
-  publish_content_pages: '0'
-  menu_editor: '0'
-  edit_world_heritage_site_information: '0'
-  publish_world_heritage_site_information: '0'
-  manage_submissions: '0'
+  references_reviewer: '0'

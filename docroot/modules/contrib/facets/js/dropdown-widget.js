@@ -38,10 +38,14 @@
       $dropdown.removeClass('js-facets-dropdown-links');
 
       $dropdown.addClass('facets-dropdown');
+      $dropdown.addClass('js-facets-widget');
       $dropdown.addClass('js-facets-dropdown');
 
       var id = $(this).data('drupal-facet-id');
+      // Add aria-labelledby attribute to reference label.
+      $dropdown.attr('aria-labelledby', "facet_"+id+"_label");
       var default_option_label = settings.facets.dropdown_widget[id]['facet-default-option-label'];
+
       // Add empty text option first.
       var $default_option = $('<option />')
         .attr('value', '')
@@ -65,19 +69,17 @@
           $option.attr('selected', 'selected');
           $link.find('.js-facet-deactivate').remove();
         }
-        $option.html($link.text());
+        $option.text($link.text());
         $dropdown.append($option);
       });
 
       // Go to the selected option when it's clicked.
       $dropdown.on('change.facets', function () {
         var anchor = $($ul).find("[data-drupal-facet-item-id='" + $(this).find(':selected').data('drupalFacetItemId') + "']");
-        if ( anchor.length  > 0) {
-          $(anchor)[0].click();
-        }
-        else {
-          $ul.find('.default-option a')[0].click();
-        }
+        var $linkElement = (anchor.length > 0) ? $(anchor) : $ul.find('.default-option a');
+        var url = $linkElement.attr('href');
+
+        $(this).trigger('facets_filter', [ url ]);
       });
 
       // Append empty text option.

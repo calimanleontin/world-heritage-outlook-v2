@@ -287,7 +287,7 @@ class FormStateDecoratorBaseTest extends UnitTestCase {
    * @dataProvider providerLimitValidationErrors
    *
    * @param array[]|null $limit_validation_errors
-   *   Any valid vlaue for
+   *   Any valid value for
    *   \Drupal\Core\Form\FormStateInterface::getLimitValidationErrors()'s
    *   return value;
    */
@@ -1477,7 +1477,7 @@ class FormStateDecoratorBaseTest extends UnitTestCase {
     $form = $this->getMock(FormInterface::class);
 
     $this->decoratedFormState->setFormObject($form)
-      ->shouldBeCalled();;
+      ->shouldBeCalled();
 
     $this->assertSame($this->formStateDecoratorBase, $this->formStateDecoratorBase->setFormObject($form));
   }

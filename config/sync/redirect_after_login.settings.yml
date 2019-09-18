@@ -12,5 +12,8 @@ login_redirection:
   publish_content_pages: /
   menu_editor: /
   edit_world_heritage_site_information: /
+  edw_healthcheck_role: /
   publish_world_heritage_site_information: /
   manage_submissions: /
+  references_reviewer: /admin/dashboard
+exclude_urls: ''

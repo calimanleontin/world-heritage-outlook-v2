@@ -1,0 +1,4 @@
+services:
+  iucn.notifications:
+    class: Drupal\iucn_notifications\Plugin\NotificationService
+    arguments: ['@database', '@entity_type.manager', '@plugin.manager.mail', '@config.factory', '@token', '@logger.factory', '@current_user']

@@ -1,0 +1,25 @@
+uuid: 7154c74b-7e4b-4aeb-b6fd-aa3dee1d02e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.designation
+  module:
+    - text
+id: taxonomy_term.designation.default
+targetEntityType: taxonomy_term
+bundle: designation
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

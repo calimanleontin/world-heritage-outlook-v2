@@ -1,15 +1,22 @@
-uuid: 0ef287fc-16b9-41b8-8634-7a14671fb751
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_as_threats_threat
     - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_threat.field_as_threats_threat
 field_name: field_as_threats_threat
 entity_type: paragraph
 bundle: as_site_threat
-label: 'Specific threat'
+label: 'Specific threat affecting site'
 description: ''
 required: true
 translatable: true

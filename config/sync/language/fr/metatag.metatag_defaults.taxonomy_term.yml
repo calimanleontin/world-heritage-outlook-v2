@@ -1,1 +1,5 @@
 label: 'Terme de taxonomie'
+tags:
+  canonical_url: '/taxonomy/term/[term:tid]'
+  description: '[term:description]'
+  title: '[term:name] | [site:name]'

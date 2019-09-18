@@ -1,0 +1,18 @@
+uuid: 27a5f90f-341b-4df9-bb92-8a8d2cb15b4e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.iucn_region
+id: taxonomy_term.iucn_region.teaser
+targetEntityType: taxonomy_term
+bundle: iucn_region
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true

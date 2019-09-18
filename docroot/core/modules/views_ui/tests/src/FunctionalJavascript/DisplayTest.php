@@ -3,9 +3,9 @@
 namespace Drupal\Tests\views_ui\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\simpletest\NodeCreationTrait;
 use Drupal\views\Entity\View;
 use Drupal\views\Tests\ViewTestData;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests the display UI.
@@ -63,7 +63,7 @@ class DisplayTest extends WebDriverTestBase {
     // Wait for the animation to complete.
     $this->assertSession()->assertWaitOnAjaxRequest();
 
-    // Add the diplay.
+    // Add the display.
     $page->find('css', '#edit-displays-top-add-display-block')->click();
 
     $element = $page->findById('views-display-menu-tabs')->findLink('Block');

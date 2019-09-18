@@ -3,11 +3,14 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorage;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,6 +26,13 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * Associative array container total results for all webforms.
@@ -44,10 +54,17 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
    *   The language manager.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection to be used.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface $memory_cache
+   *   The memory cache.
+   *
+   * @todo Webform 8.x-6.x: Move $memory_cache right after $language_manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory, UuidInterface $uuid_service, LanguageManagerInterface $language_manager, Connection $database) {
-    parent::__construct($entity_type, $config_factory, $uuid_service, $language_manager);
+  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory, UuidInterface $uuid_service, LanguageManagerInterface $language_manager, Connection $database, EntityTypeManagerInterface $entity_type_manager, MemoryCacheInterface $memory_cache = NULL) {
+    parent::__construct($entity_type, $config_factory, $uuid_service, $language_manager, $memory_cache);
     $this->database = $database;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -59,7 +76,9 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
       $container->get('config.factory'),
       $container->get('uuid'),
       $container->get('language_manager'),
-      $container->get('database')
+      $container->get('database'),
+      $container->get('entity_type.manager'),
+      $container->get('entity.memory_cache')
     );
   }
 
@@ -73,10 +92,26 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
     // @see '_webform_ui_temp_form'
     // @see \Drupal\webform_ui\Form\WebformUiElementTestForm
     // @see \Drupal\webform_ui\Form\WebformUiElementTypeFormBase
-    if ($id = $entity->id()) {
+    $id = $entity->id();
+    if ($id && $id === '_webform_ui_temp_form') {
       $this->setStaticCache([$id => $entity]);
     }
     return $entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doPostSave(EntityInterface $entity, $update) {
+    if ($update && $entity->getAccessRules() != $entity->original->getAccessRules()) {
+      // Invalidate webform_submission listing cache tags because due to the
+      // change in access rules of this webform, some listings might have
+      // changed for users.
+      $cache_tags = $this->entityTypeManager->getDefinition('webform_submission')->getListCacheTags();
+      Cache::invalidateTags($cache_tags);
+    }
+
+    parent::doPostSave($entity, $update);
   }
 
   /**
@@ -111,9 +146,6 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
     foreach ($entities as $entity) {
       $webform_ids[] = $entity->id();
     }
-    $this->database->delete('webform_submission_log')
-      ->condition('webform_id', $webform_ids, 'IN')
-      ->execute();
 
     // Delete all webform records used to track next serial.
     $this->database->delete('webform')

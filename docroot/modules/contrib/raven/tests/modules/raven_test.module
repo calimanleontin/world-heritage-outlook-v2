@@ -13,10 +13,16 @@ use PHPUnit\Framework\Assert;
 function raven_test_page_attachments(array &$attachments) {
   $client = \Drupal::service('logger.raven')->client;
   $client->setSendCallback(function ($data) use (&$attachments) {
-    if (!empty($data['tags']['channel']) && !empty($data['message'])) {
+    if (!empty($data['logger']) && !empty($data['sentry.interfaces.Message']['formatted'])) {
       $attachments['#attached']['http_header'][] = [
-        $data['tags']['channel'],
-        $data['message'],
+        $data['logger'],
+        $data['sentry.interfaces.Message']['formatted'],
+        FALSE,
+      ];
+      $last_frame = end($data['stacktrace']['frames']);
+      $attachments['#attached']['http_header'][] = [
+        'X-Stacktrace-File',
+        $last_frame['filename'],
         FALSE,
       ];
     }

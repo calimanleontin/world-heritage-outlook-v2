@@ -48,12 +48,12 @@ class EmailSpamspanFormatter extends FormatterBase {
       $summary[] = $this->t('Link to a contact form instead of an email address');
     }
     else {
-      $summary[] = $this->t('Replacement for "@" is %1', array('%1' => $this->getSetting('spamspan_at')));
+      $summary[] = $this->t('Replacement for "@" is %1', ['%1' => $this->getSetting('spamspan_at')]);
       if ($this->getSetting('spamspan_use_graphic')) {
         $summary[] = $this->t('Use a graphical replacement for "@"');
       }
       if ($this->getSetting('spamspan_dot_enable')) {
-        $summary[] = $this->t('Replacement for "." is %1', array('%1' => $this->getSetting('spamspan_dot')));
+        $summary[] = $this->t('Replacement for "." is %1', ['%1' => $this->getSetting('spamspan_dot')]);
       }
     }
     return $summary;
@@ -77,7 +77,7 @@ class EmailSpamspanFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = array();
+    $elements = [];
 
     foreach ($items as $delta => $item) {
       $elements[$delta] = [

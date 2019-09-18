@@ -1,6 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: as_site_conservation
-label: 'Assessment site conservation'
-behavior_plugins: {  }

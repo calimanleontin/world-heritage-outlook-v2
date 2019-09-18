@@ -1,0 +1,20 @@
+uuid: 5544a9b1-681d-41e5-be1b-3d8f0c7c6027
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_final_changes
+id: assessment_final_changes_approved
+label: Approve
+module: workflow
+from_sid: assessment_final_changes
+to_sid: assessment_approved
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'
