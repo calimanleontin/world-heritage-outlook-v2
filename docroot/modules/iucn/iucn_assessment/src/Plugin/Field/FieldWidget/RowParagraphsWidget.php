@@ -844,6 +844,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
                   $i--;
                 }
               }
+              else {
+                $insertedParents[] = $childEntityValue->target_id;
+              }
             }
             $childrenRender = $this->renderEntityReferenceField($childrenItemList);
             $childrenCell = [
