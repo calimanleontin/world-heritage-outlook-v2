@@ -5,13 +5,11 @@ namespace Drupal\iucn_who_homepage\Plugin\Block;
 use Drupal\file\Entity\File;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\iucn_who_core\Plugin\Block\GoogleMapsBaseBlock;
 use Drupal\iucn_who_core\Sites\SitesQueryUtil;
 use Drupal\iucn_who_core\SiteStatus;
-use Drupal\website_utilities\DrupalInstance;
 
 
 /**
@@ -169,13 +167,6 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
     $ret = null;
     if ($status = SiteStatus::getOverallAssessmentLevel($node)) {
       $ret = $status->id();
-    }
-    else {
-      if (!DrupalInstance::isProductionInstance()) {
-        $array = SitesQueryUtil::getSiteConservationRatings();
-        $k = array_rand($array);
-        $ret = $array[$k]->id();
-      }
     }
     return $ret;
   }
