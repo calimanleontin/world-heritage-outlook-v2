@@ -45,6 +45,7 @@ module:
   inline_responsive_images: 0
   iucn_assessment: 0
   iucn_decision_tree: 0
+  iucn_fields: 0
   iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
