@@ -1,0 +1,80 @@
+<?php
+
+use Drupal\node\NodeInterface;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Core\Render\Element;
+
+function _iucn_fields_get_current_assessment_year() {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    if ($node->getType() == 'site') {
+      $assessment = $node->get('field_current_assessment')->entity;
+    }
+    elseif ($node->getType() == 'site_assessment') {
+      $assessment = $node;
+    }
+  }
+
+  return !empty($assessment)
+    ? $assessment->field_as_cycle->value
+    : \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function iucn_fields_taxonomy_term_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+  // Remove all the build components of a term if it's label is empty.
+  $is_hidden = empty($entity->label());
+  if (!$is_hidden) {
+    return;
+  }
+
+  foreach (Element::children($build) as $id) {
+    if ($id == 'name') {
+      continue;
+    }
+    unset($build[$id]);
+  }
+  $build['name'][0]['#context']['value'] = '';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_load().
+ */
+function iucn_fields_taxonomy_term_load(array $entities) {
+  $termAlterRoutes = [
+    'entity.node.canonical',
+    'entity.node.edit_form',
+    'node.revision_edit',
+    'node.add',
+    'iucn_assessment.paragraph_diff_form',
+    'iucn_assessment.field_diff_form',
+    'iucn_assessment.modal_paragraph_add',
+    'iucn_assessment.modal_paragraph_edit',
+    'iucn_assessment.modal_paragraph_delete',
+    'iucn_assessment.node.state_change',
+    'iucn_assessment.node_revision.state_change',
+  ];
+
+  if (!in_array(\Drupal::routeMatch()->getRouteName(), $termAlterRoutes)) {
+    return;
+  }
+
+  $assessment_year = _iucn_fields_get_current_assessment_year();
+  /** @var \Drupal\iucn_fields\Plugin\TermAlterService $term_alter_service */
+  $term_alter_service = \Drupal::service('iucn_fields.term_alter');
+  foreach ($entities as $term) {
+    /** @var \Drupal\taxonomy\TermInterface $term */
+    $is_hidden = $term_alter_service->isTermHiddenForYear($term, $assessment_year);
+    if ($is_hidden) {
+      $term->setName('');
+      continue;
+    }
+    $term_label = $term_alter_service->getTermLabelForYear($term, $assessment_year);
+    if (!empty($term_label)) {
+      $term->setName($term_label);
+    }
+  }
+}

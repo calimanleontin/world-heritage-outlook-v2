@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function iucn_fields_install() {
+  // These are the terms that have a different label for 2014 assessments.
+  // We need to change these terms to their 2014 name and then alter it
+  // for subsequent years using TermLabelService.
+  $term_names_2014 = [
+    1331 => 'Legal framework and enforcement',
+    1341 => 'Tourism and interpretation',
+    1384 => 'Commercial hunting',
+    1385 => 'Subsistence hunting',
+    1411 => 'Chemical changes in oceanic waters',
+    1412 => 'Temperature changes',
+  ];
+  foreach ($term_names_2014 as $tid => $name) {
+    $term = \Drupal\taxonomy\Entity\Term::load($tid);
+    if (empty($term)) {
+      // When running tests, these terms don't exist.
+      continue;
+    }
+
+    $term->setName($name);
+    $term->save();
+  }
+}
