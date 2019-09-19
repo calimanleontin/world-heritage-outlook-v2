@@ -12,8 +12,8 @@ to_sid: assessment_final_changes
 roles:
   administrator: administrator
   iucn_manager: iucn_manager
+  coordinator: coordinator
   references_reviewer: references_reviewer
   workflow_author: '0'
-  coordinator: '0'
   assessor: '0'
   reviewer: '0'

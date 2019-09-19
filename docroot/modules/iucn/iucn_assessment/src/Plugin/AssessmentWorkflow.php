@@ -187,6 +187,7 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_FINISHED_REVIEWING:
+        case self::STATUS_REVIEWING_REFERENCES:
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
 
