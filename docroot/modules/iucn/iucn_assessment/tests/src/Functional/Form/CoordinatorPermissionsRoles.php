@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
+use Drupal\Core\Url;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
@@ -31,33 +32,37 @@ class CoordinatorPermissionsRoles extends IucnAssessmentTestBase {
   public function testNotAllowedAssignRoles() {
     $this->userLogIn(TestSupport::COORDINATOR1);
 
-    $this->assertTrue($this->canNotAssignRole(TestSupport::IUCN_MANAGER));
-    $this->assertTrue($this->canNotAssignRole(TestSupport::ADMINISTRATOR));
-    $this->assertTrue($this->canNotAssignRole(TestSupport::ASSESSOR1));
-    $this->assertTrue($this->canNotAssignRole(TestSupport::REVIEWER1));
-    $this->assertTrue($this->canNotAssignRole(TestSupport::REFERENCES_REVIEWER1));
+    $this->canNotAssignRole(TestSupport::IUCN_MANAGER);
+    $this->canNotAssignRole(TestSupport::ADMINISTRATOR);
+    $this->canNotAssignRole(TestSupport::ASSESSOR1);
+    $this->canNotAssignRole(TestSupport::REVIEWER1);
+    $this->canNotAssignRole(TestSupport::REFERENCES_REVIEWER1);
+
+    $this->drupalGet(Url::fromRoute('user.admin_create'));
+    $this->canNotAssignRole();
   }
 
   /**
    * Check that coordinator cannot assign role for $user.
    * @param $userEmail
    *
-   * @return bool
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function canNotAssignRole($userEmail) {
-    $user = \Drupal::entityTypeManager()
-      ->getStorage('user')
-      ->loadByProperties(
-        [
-          'mail' => $userEmail,
-        ]
-      );
+  public function canNotAssignRole($userEmail = NULL) {
+    if (!empty($userEmail)) {
+      $user = \Drupal::entityTypeManager()
+        ->getStorage('user')
+        ->loadByProperties(
+          [
+            'mail' => $userEmail,
+          ]
+        );
 
-    $user = reset($user);
+      $user = reset($user);
+      $this->drupalGet($user->url('edit-form'));
+    }
 
-    $this->drupalGet($user->url('edit-form'));
     $this->assertElementNotPresent('.form-item-roles-edit-world-heritage-site-assessments');
     $this->assertElementNotPresent('.form-item-roles-publish-world-heritage-site-assessments');
     $this->assertElementNotPresent('.form-item-roles-edit-content-pages');
@@ -67,7 +72,5 @@ class CoordinatorPermissionsRoles extends IucnAssessmentTestBase {
     $this->assertElementNotPresent('.form-item-roles-edw-healthcheck-role');
     $this->assertElementNotPresent('.form-item-roles-publish-world-heritage-site-information');
     $this->assertElementNotPresent('.form-item-roles-manage-submissions');
-
-    return true;
   }
 }
