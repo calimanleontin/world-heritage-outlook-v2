@@ -1,3 +1,4 @@
+uuid: 7246b568-af39-4e36-b6d7-fb830497a6b4
 langcode: en
 status: true
 dependencies: {  }
@@ -73,6 +74,7 @@ permissions:
   - 'edit field_as_vass_wh_text'
   - 'edit field_as_vass_wh_trend'
   - 'edit new assessments'
+  - 'edit own profile'
   - 'edit own site_assessment content'
   - 'export nodes to word'
   - 'force finish reviewing'

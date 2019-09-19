@@ -1,3 +1,4 @@
+uuid: a4cb3afb-df9a-4dd4-a14d-6c6ed5b0f5d3
 langcode: en
 status: true
 dependencies: {  }
@@ -20,6 +21,7 @@ permissions:
   - 'delete news revisions'
   - 'delete page revisions'
   - 'delete publication revisions'
+  - 'edit own profile'
   - 'revert benefit revisions'
   - 'use text format assessment_text_format'
   - 'use text format html'

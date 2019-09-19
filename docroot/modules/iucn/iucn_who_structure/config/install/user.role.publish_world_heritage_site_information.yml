@@ -1,3 +1,4 @@
+uuid: ff380285-e82c-4a7f-876f-72af53beebbf
 langcode: en
 status: true
 dependencies: {  }
@@ -13,6 +14,7 @@ permissions:
   - 'delete any site content'
   - 'delete content translations'
   - 'delete site revisions'
+  - 'edit own profile'
   - 'revert site revisions'
   - 'use text format assessment_text_format'
   - 'use text format html'
