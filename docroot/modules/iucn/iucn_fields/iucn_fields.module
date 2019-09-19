@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\node\NodeInterface;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Core\Render\Element;
 
 function _iucn_fields_get_current_assessment_year() {
@@ -18,7 +17,7 @@ function _iucn_fields_get_current_assessment_year() {
 
   return !empty($assessment)
     ? $assessment->field_as_cycle->value
-    : \Drupal::state()->get(AssessmentWorkflow::CURRENT_WORKFLOW_CYCLE_STATE_KEY, 2020);
+    : \Drupal::state()->get('iucn_assessment_current_workflow_cycle_state', 2020);
 }
 
 /**
