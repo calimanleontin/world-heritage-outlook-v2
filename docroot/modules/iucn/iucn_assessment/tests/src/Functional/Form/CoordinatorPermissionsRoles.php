@@ -5,6 +5,7 @@ namespace Drupal\Tests\iucn_assessment\Functional\Form;
 use Drupal\Core\Url;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
+use Drupal\user\Entity\Role;
 
 /**
  * @group edw
@@ -13,43 +14,79 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  */
 class CoordinatorPermissionsRoles extends IucnAssessmentTestBase {
 
-  public function testNotAllowedEditHisRoles() {
+  public function testUserAllowedToEditRole() {
+    $invalidRoles = [
+      'administrator',
+      'edit_content_pages',
+      'edit_world_heritage_site_assessments',
+      'edit_world_heritage_site_information',
+      'edw_healthcheck_role',
+      'iucn_manager',
+      'manage_submissions',
+      'menu_editor',
+      'publish_content_pages',
+      'publish_world_heritage_site_assessments',
+      'publish_world_heritage_site_information',
+    ];
+
+    $validRoles = [
+      'assessor',
+      'reviewer',
+      'coordinator',
+      'references_reviewer',
+    ];
+
+    $allRoles = array_keys(Role::loadMultiple());
+
     $this->userLogIn(TestSupport::COORDINATOR1);
-
-    $user = \Drupal::entityTypeManager()
-      ->getStorage('user')
-      ->loadByProperties(
-        [
-          'mail' => TestSupport::COORDINATOR1,
-        ]
-      );
-
-    $user = reset($user);
-    $this->drupalGet($user->url('edit-form'));
-    $this->assertElementNotPresent(".form-checkboxes");
-  }
-
-  public function testNotAllowedAssignRoles() {
-    $this->userLogIn(TestSupport::COORDINATOR1);
-
-    $this->canNotAssignRole(TestSupport::IUCN_MANAGER);
-    $this->canNotAssignRole(TestSupport::ADMINISTRATOR);
-    $this->canNotAssignRole(TestSupport::ASSESSOR1);
-    $this->canNotAssignRole(TestSupport::REVIEWER1);
-    $this->canNotAssignRole(TestSupport::REFERENCES_REVIEWER1);
+    $this->checkRolesForEmail(
+      [],
+      $allRoles,
+      TestSupport::IUCN_MANAGER
+    );
+    $this->checkRolesForEmail(
+      [],
+      $allRoles,
+      TestSupport::ADMINISTRATOR
+    );
+    $this->checkRolesForEmail(
+      $validRoles,
+      $invalidRoles,
+      TestSupport::ASSESSOR1
+    );
+    $this->checkRolesForEmail(
+      $validRoles,
+      $invalidRoles,
+      TestSupport::REVIEWER1
+    );
+    $this->checkRolesForEmail(
+      $validRoles,
+      $invalidRoles,
+      TestSupport::REFERENCES_REVIEWER1
+    );
+    $this->checkRolesForEmail(
+      $validRoles,
+      $invalidRoles,
+      TestSupport::COORDINATOR2
+    );
 
     $this->drupalGet(Url::fromRoute('user.admin_create'));
-    $this->canNotAssignRole();
+    $this->checkRolesForEmail($validRoles, $invalidRoles);
   }
 
   /**
-   * Check that coordinator cannot assign role for $user.
-   * @param $userEmail
+   * @param $validRoles
+   * @param $invalidRoles
+   * @param string|null $userEmail
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function canNotAssignRole($userEmail = NULL) {
+  public function checkRolesForEmail(
+    $validRoles,
+    $invalidRoles,
+    $userEmail = NULL
+  ) {
     if (!empty($userEmail)) {
       $user = \Drupal::entityTypeManager()
         ->getStorage('user')
@@ -63,14 +100,14 @@ class CoordinatorPermissionsRoles extends IucnAssessmentTestBase {
       $this->drupalGet($user->url('edit-form'));
     }
 
-    $this->assertElementNotPresent('.form-item-roles-edit-world-heritage-site-assessments');
-    $this->assertElementNotPresent('.form-item-roles-publish-world-heritage-site-assessments');
-    $this->assertElementNotPresent('.form-item-roles-edit-content-pages');
-    $this->assertElementNotPresent('.form-item-roles-publish-content-pages');
-    $this->assertElementNotPresent('.form-item-roles-menu-editor');
-    $this->assertElementNotPresent('.form-item-roles-edit-world-heritage-site-information');
-    $this->assertElementNotPresent('.form-item-roles-edw-healthcheck-role');
-    $this->assertElementNotPresent('.form-item-roles-publish-world-heritage-site-information');
-    $this->assertElementNotPresent('.form-item-roles-manage-submissions');
+    foreach ($invalidRoles as $role) {
+      $cssSelector = "#edit-roles-" . str_replace('_', '-', $role);
+      $this->assertElementNotPresent($cssSelector);
+    }
+
+    foreach ($validRoles as $role) {
+      $cssSelector = "#edit-roles-" . str_replace('_', '-', $role);
+      $this->assertElementPresent($cssSelector);
+    }
   }
 }
