@@ -11,11 +11,9 @@ use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Http\Exception\CacheableUnauthorizedHttpException;
-use Drupal\Core\Routing\Router;
 use Drupal\user\UserAuthInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Symfony\Component\Routing\Route;
 
 /**
  * HTTP Basic authentication provider.
@@ -57,13 +55,6 @@ class BasicAuth implements AuthenticationProviderInterface, AuthenticationProvid
   protected $entityTypeManager;
 
   /**
-   * The router service.
-   *
-   * @var \Drupal\Core\Routing\Router
-   */
-  protected $router;
-
-  /**
    * Constructs a HTTP basic authentication provider object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -74,15 +65,12 @@ class BasicAuth implements AuthenticationProviderInterface, AuthenticationProvid
    *   The flood service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
-   * @param \Drupal\Core\Routing\Router $router
-   *   The router service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, UserAuthInterface $user_auth, FloodInterface $flood, EntityTypeManagerInterface $entity_type_manager, Router $router) {
+  public function __construct(ConfigFactoryInterface $config_factory, UserAuthInterface $user_auth, FloodInterface $flood, EntityTypeManagerInterface $entity_type_manager) {
     $this->configFactory = $config_factory;
     $this->userAuth = $user_auth;
     $this->flood = $flood;
     $this->entityTypeManager = $entity_type_manager;
-    $this->router = $router;
   }
 
   /**
@@ -91,17 +79,7 @@ class BasicAuth implements AuthenticationProviderInterface, AuthenticationProvid
   public function applies(Request $request) {
     $username = $request->headers->get('PHP_AUTH_USER');
     $password = $request->headers->get('PHP_AUTH_PW');
-
-    if (isset($username) && isset($password)) {
-      $parameters = $this->router->matchRequest($request);
-      if (empty($route = $parameters['_route_object']) || !$route instanceof Route) {
-        return FALSE;
-      }
-      /** @var \Symfony\Component\Routing\Route $route */
-      return (bool) in_array('basic_auth', $route->getOption('_auth'));
-    }
-
-    return FALSE;
+    return isset($username) && isset($password);
   }
 
   /**
