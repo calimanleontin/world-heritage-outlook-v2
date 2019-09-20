@@ -106,13 +106,7 @@ trait AssessmentTestTrait {
           break;
         }
 
-        $label = WorkflowTestBase::TRANSITION_LABELS[$currentState];
-        if ($currentState == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-          $label = 'Force finish assessment';
-        }
-        if ($currentState == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
-          $label = 'Force finish reviewing';
-        }
+        $label = $this->getAdminTransitionLabel($currentState);
         $this->drupalPostForm($stateChangeUrl, [], $label);
       }
 
@@ -132,6 +126,19 @@ trait AssessmentTestTrait {
     $user = user_load_by_mail($mail);
     $user->passRaw = 'password';
     $this->drupalLogin($user);
+  }
+
+  protected function getAdminTransitionLabel($state) {
+    switch ($state) {
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
+        return 'Force finish assessment';
+      case AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        return 'Force finish reviewing';
+      case AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        return 'Force finish reference standardisation';
+    }
+
+    return WorkflowTestBase::TRANSITION_LABELS[$state];
   }
 
 }
