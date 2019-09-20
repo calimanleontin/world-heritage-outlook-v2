@@ -666,12 +666,11 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'user_form':
-      _iucn_user_form_check_role_permissions($form, 'change own roles');
-      break;
-
     case 'user_register_form':
-      _iucn_user_form_check_role_permissions($form, 'administer users');
+      $currentUser = \Drupal::currentUser();
+      $form['account']['roles']['#access'] = $currentUser->hasPermission('administer users');
 
+      _iucn_user_form_check_role_permissions($form);
       break;
 
     case 'views_exposed_form':
@@ -688,9 +687,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   }
 }
 
-function _iucn_user_form_check_role_permissions(&$form, $permissionAccess) {
+function _iucn_user_form_check_role_permissions(&$form) {
   $currentUser = \Drupal::currentUser();
-  $form['account']['roles']['#access'] = $currentUser->hasPermission($permissionAccess);
   foreach ($form['account']['roles']['#options'] as $roleId => $roleName) {
     if (!$currentUser->hasPermission("change user role {$roleId}")) {
       unset($form['account']['roles']['#options'][$roleId]);

@@ -93,27 +93,23 @@ trait AssessmentTestTrait {
     ];
     $currentState = current($states);
 
-    try {
-      $assessment->save();
-      $assessment = $this->setAssessmentState($assessment, $currentState, $values);
+    $assessment->save();
+    $assessment = $this->setAssessmentState($assessment, $currentState, $values);
 
-      $this->userLogIn(TestSupport::ADMINISTRATOR);
-      $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+    $this->userLogIn(TestSupport::ADMINISTRATOR);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
 
-      while ($currentState != $state) {
-        $currentState = next($states);
-        if (empty($currentState)) {
-          break;
-        }
-
-        $label = $this->getAdminTransitionLabel($currentState);
-        $this->drupalPostForm($stateChangeUrl, [], $label);
+    while ($currentState != $state) {
+      $currentState = next($states);
+      if (empty($currentState)) {
+        break;
       }
 
-      return Node::load($assessment->id());
-    } catch (\Exception $e) {
-      return NULL;
+      $label = $this->getAdminTransitionLabel($currentState);
+      $this->drupalPostForm($stateChangeUrl, [], $label);
     }
+
+    return Node::load($assessment->id());
   }
 
   /**
@@ -128,6 +124,16 @@ trait AssessmentTestTrait {
     $this->drupalLogin($user);
   }
 
+  /**
+   * Some button labels are overwritten for administrators (e.g. "Submit assessment"
+   * for assessors becomes "Force finish assessment" for managers/administrators.
+   *
+   * @param $state
+   *  The assessment state.
+   *
+   * @return string
+   *  The button label.
+   */
   protected function getAdminTransitionLabel($state) {
     switch ($state) {
       case AssessmentWorkflow::STATUS_READY_FOR_REVIEW:

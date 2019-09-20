@@ -40,7 +40,6 @@ permissions:
   - 'bulk assign users to assessments'
   - 'bypass node access'
   - 'change other users agreement settings'
-  - 'change own roles'
   - 'change user role anonymous'
   - 'change user role assessor'
   - 'change user role authenticated'
