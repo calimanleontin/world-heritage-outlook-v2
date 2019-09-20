@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # How to use it:
-# ../bin/run-test.sh --group assessmentForms
+# ../bin/run-test.sh --group edwWebDriver
 # OR
 # ../bin/run-test.sh modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php
 
