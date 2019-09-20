@@ -21,6 +21,10 @@ Error when saving settings of an entity reference field
 Source: https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch
 
 
+Fix NULL array in basic_auth
+Source: patches/core/basic_auth_nginx01.patch
+
+
 Update yarn packages to fix 19 vulnerabilities by updating nightwatch
 Source: https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch
 
