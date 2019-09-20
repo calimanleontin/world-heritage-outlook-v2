@@ -18,7 +18,7 @@ class UserFormTest extends IucnAssessmentTestBase {
   /**
    * A new user can change the password before accepting the user agreement.
    */
-  public function testNewUserChangePassword() {
+  public function testNewUserCanChangePassword() {
     $userMail = 'test@test.test';
     TestSupport::createUser($userMail, ['coordinator']);
     $this->userLogIn($userMail);
@@ -28,9 +28,7 @@ class UserFormTest extends IucnAssessmentTestBase {
     /** @var \Drupal\user\UserInterface $user */
     $user = reset($user);
 
-    $this->drupalGet(Url::fromRoute('who.user-dashboard'), [], [
-      'allow_redirects' => FALSE,
-    ]);
+    $this->drupalGet(Url::fromRoute('who.user-dashboard'));
     $this->assertResponse(302);
 
     $this->drupalGet($user->toUrl('edit-form'));
