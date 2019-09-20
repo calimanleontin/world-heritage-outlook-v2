@@ -52,3 +52,4 @@ hidden:
   field_page_teasers: true
   langcode: true
   links: true
+  search_api_excerpt: true
