@@ -20,17 +20,11 @@ class NodeSiteAssessmentForm {
 
   use AssessmentEntityFormTrait;
 
-  const PARAGRAPH_FIELDS = [
-    'field_as_benefits',
-    'field_as_key_cons',
-    'field_as_projects',
-    'field_as_projects_needs',
-    'field_as_protection',
-    'field_as_references_p',
-    'field_as_threats_current',
-    'field_as_threats_potential',
-    'field_as_values_bio',
-    'field_as_values_wh',
+  const DEPENDENT_FIELDS = [
+    'field_as_threats_potential' => [
+      'field_as_threats_potent_text',
+      'field_as_threats_potent_rating',
+    ],
   ];
 
   public static function setValidationErrors(&$form, $element, $parents) {
@@ -305,35 +299,7 @@ class NodeSiteAssessmentForm {
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
     $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     // Validation.
-    if ($tab == 'benefits') {
-      $form['#validate'][] = [self::class, 'benefitsValidation'];
-      if (!empty($node->field_as_benefits->getValue())) {
-        $form['field_as_benefits_summary']['widget'][0]['value']['#required'] = TRUE;
-      }
-    }
-    elseif ($tab == 'assessing-values') {
-      if (!empty($node->field_as_values_bio->getValue())) {
-        $required_fields = [
-          'field_as_vass_bio_text',
-          'field_as_vass_bio_state',
-          'field_as_vass_bio_trend',
-        ];
-        foreach ($required_fields as $field) {
-          if (!empty($form[$field]['widget'][0]['value'])) {
-            $form[$field]['widget'][0]['value']['#required'] = TRUE;
-          }
-          elseif (!empty($form[$field]['widget'][0])) {
-            $form[$field]['widget'][0]['#required'] = TRUE;
-          }
-          elseif (!empty($form[$field]['widget'])) {
-            $form[$field]['widget']['#required'] = TRUE;
-          }
-          else {
-            $form[$field]['#required'] = TRUE;
-          }
-        }
-      }
-    }
+   static::addTabValidation($tab, $form, $node);
 
     if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
       self::buildDiffButtons($form, $node);
@@ -707,7 +673,7 @@ class NodeSiteAssessmentForm {
         'node' => $node->id(),
         'node_revision' => $node->getRevisionId(),
         'field' => $field,
-        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $field) . '-wrapper',
+        'field_wrapper_id' => static::buildWrapperForField($field),
       ]),
       '#attributes' => [
         'class' => [
@@ -742,4 +708,47 @@ class NodeSiteAssessmentForm {
 
     return false;
   }
+
+  protected static function addTabValidation($tab, array &$form, NodeInterface $node) {
+    switch ($tab) {
+      case 'benefits':
+        $form['#validate'][] = [self::class, 'benefitsValidation'];
+        if (!empty($node->get('field_as_benefits')->getValue())) {
+          $form['field_as_benefits_summary']['widget'][0]['value']['#required'] = TRUE;
+        }
+        break;
+      case 'assessing-values':
+        if (!empty($node->get('field_as_values_bio')->getValue())) {
+          $required_fields = [
+            'field_as_vass_bio_text',
+            'field_as_vass_bio_state',
+            'field_as_vass_bio_trend',
+          ];
+          foreach ($required_fields as $field) {
+            if (!empty($form[$field]['widget'][0]['value'])) {
+              $form[$field]['widget'][0]['value']['#required'] = TRUE;
+            }
+            elseif (!empty($form[$field]['widget'][0])) {
+              $form[$field]['widget'][0]['#required'] = TRUE;
+            }
+            elseif (!empty($form[$field]['widget'])) {
+              $form[$field]['widget']['#required'] = TRUE;
+            }
+            else {
+              $form[$field]['#required'] = TRUE;
+            }
+          }
+        }
+        break;
+      case 'threats':
+        if ($node->get('field_as_threats_potential')->isEmpty()) {
+          $form['field_as_threats_potent_text']['widget'][0]['#required'] = FALSE;
+          $form['field_as_threats_potent_text']['#attributes']['class'][] = 'visually-hidden';
+          $form['field_as_threats_potent_rating']['widget'][0]['#required'] = FALSE;
+          $form['field_as_threats_potent_rating']['#attributes']['class'][] = 'visually-hidden';
+        }
+        break;
+    }
+  }
+
 }

@@ -67,4 +67,8 @@ trait AssessmentEntityFormTrait {
     }
   }
 
+  protected static function buildWrapperForField($fieldName) {
+    return '#edit-' . str_replace('_', '-', $fieldName) . '-wrapper';
+  }
+
 }

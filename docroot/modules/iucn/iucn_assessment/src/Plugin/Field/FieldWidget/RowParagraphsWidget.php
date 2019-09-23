@@ -16,6 +16,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\field\FieldConfigInterface;
+use Drupal\iucn_assessment\Form\AssessmentEntityFormTrait;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
@@ -96,6 +97,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $container->get('iucn_assessment.workflow')
     );
   }
+  use AssessmentEntityFormTrait;
 
   /**
    * {@inheritdoc}
@@ -529,8 +531,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         'node' => $this->parentNode->id(),
         'node_revision' => $this->parentNode->getRevisionId(),
         'field' => $this->parentFieldName,
-        'field_wrapper_id' => '#edit-' . str_replace('_', '-', $this->parentFieldName) . '-wrapper',
+        'field_wrapper_id' =>  static::buildWrapperForField($this->parentFieldName),
         'bundle' => $this->getDefaultParagraphTypeMachineName(),
+        'tab' => $this->request->query->get('tab'),
       ]);
       $addMoreButtons = $elements['add_more'];
       foreach (Element::children($addMoreButtons) as $key) {

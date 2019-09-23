@@ -78,7 +78,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->nodeFormDisplay = $this->entityFormDisplay->load("{$this->nodeRevision->getEntityTypeId()}.{$this->nodeRevision->bundle()}.default");
     foreach ($this->nodeFormDisplay->getComponents() as $name => $component) {
       // Remove all other fields except the selected one.
-      if ($name != $this->fieldName) {
+      if (!in_array($name, array_merge([$this->fieldName], $this->getDependentFields()))) {
         $this->nodeFormDisplay->removeComponent($name);
       }
     }
@@ -142,7 +142,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $response->addCommand(new HtmlCommand('#drupal-modal', $form));
       return $response;
     }
-    
+
     // Update parent node change date.
     $this->nodeRevision->setChangedTime(time());
 
@@ -169,7 +169,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $this->nodeRevision->save();
     }
 
-
     $tab = \Drupal::request()->get('tab');
     if ($tab == 'assessing-values') {
       $content = $this->nodeFormDisplay->getComponents();
@@ -195,6 +194,18 @@ class IucnModalParagraphForm extends ContentEntityForm {
         $nodeForm[$this->fieldName]['widget']
       )
     );
+
+    foreach ($this->getDependentFields() as $dependentField) {
+      $wrapper = static::buildWrapperForField($dependentField);
+      $nodeForm[$dependentField]['#id'] = str_replace('#', '', $wrapper);
+      $response->addCommand(
+        new ReplaceCommand(
+          "{$wrapper}",
+          $nodeForm[$dependentField]
+        )
+      );
+    }
+
     $response->addCommand(new CloseModalDialogCommand());
 
     return $response;
@@ -233,6 +244,18 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $response = new AjaxResponse();
     $response->addCommand($command);
     return $response;
+  }
+
+  protected function getDependentFields() {
+    if (empty($this->fieldName)) {
+      return [];
+    }
+
+    if (empty(NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName])) {
+      return [];
+    }
+
+    return NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName];
   }
 
 }
