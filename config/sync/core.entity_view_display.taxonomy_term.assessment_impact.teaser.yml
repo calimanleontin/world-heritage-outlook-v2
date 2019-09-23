@@ -1,0 +1,19 @@
+uuid: e6b8a8f4-4cbd-483a-b2f5-9934a5c55e7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.assessment_impact
+id: taxonomy_term.assessment_impact.teaser
+targetEntityType: taxonomy_term
+bundle: assessment_impact
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

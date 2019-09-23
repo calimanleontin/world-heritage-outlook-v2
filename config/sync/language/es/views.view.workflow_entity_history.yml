@@ -1,0 +1,48 @@
+display:
+  default:
+    display_title: Máster
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Elementos por página'
+            items_per_page_options_all_label: '- Todo -'
+            offset_label: Desplazamiento
+          tags:
+            previous: ‹‹
+            next: ››
+      fields:
+        hid:
+          separator: ', '
+        timestamp:
+          label: 'Sello temporal'
+          separator: ', '
+        field_name:
+          label: 'Nombre del campo'
+          separator: ', '
+        from_sid:
+          label: 'Desde estado'
+          separator: ', '
+        to_sid:
+          label: 'Al estado'
+          separator: ', '
+        uid:
+          label: 'ID de Usuario'
+          separator: ', '
+        comment:
+          label: 'Mensaje de registro'
+          separator: ', '
+        operations:
+          label: Operaciones
+      arguments:
+        entity_id:
+          exception:
+            title: Todo
+      title: 'Historial de flujo de trabajo'

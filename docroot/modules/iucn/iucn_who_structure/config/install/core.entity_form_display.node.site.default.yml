@@ -4,15 +4,17 @@ dependencies:
   config:
     - field.field.node.site.body
     - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
-    - field.field.node.site.field_coordinate_x
-    - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
+    - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -27,6 +29,7 @@ dependencies:
     - node.type.site
   module:
     - field_group
+    - geofield
     - image
     - iucn_site
     - paragraphs
@@ -97,8 +100,6 @@ third_party_settings:
         - field_wdpa_id
         - field_unesco_id
         - title
-        - field_site_name_fr
-        - field_site_name_es
         - field_cultural_landscape
         - field_mixed_site
         - field_image
@@ -192,8 +193,7 @@ third_party_settings:
         - field_buffer_zone_area
         - field_transboundary
         - field_serial
-        - field_coordinate_x
-        - field_coordinate_y
+        - field_geolocation
       parent_name: group_physical
       weight: 20
       format_type: fieldset
@@ -219,7 +219,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -250,22 +250,6 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_coordinate_x:
-    weight: 12
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_coordinate_y:
-    weight: 13
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_country:
     weight: 13
     settings: {  }
@@ -288,7 +272,7 @@ content:
       edit_mode: open
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: _none
     third_party_settings: {  }
     region: content
   field_designation:
@@ -297,11 +281,18 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_geolocation:
+    weight: 14
+    settings:
+      html5_geolocation: false
+    third_party_settings: {  }
+    type: geofield_latlon
+    region: content
   field_image:
     weight: 18
     settings:
-      progress_indicator: throbber
       preview_image_style: thumbnail
+      progress_indicator: throbber
     third_party_settings: {  }
     type: image_image
     region: content
@@ -369,14 +360,22 @@ content:
     type: language_select
     weight: 2
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 121
+    third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 12
@@ -386,7 +385,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -399,6 +398,14 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    settings: {  }
+    third_party_settings: {  }
+    region: content
 hidden:
+  field_assessments: true
+  field_current_assessment: true
+  field_geojson: true
   promote: true
   sticky: true

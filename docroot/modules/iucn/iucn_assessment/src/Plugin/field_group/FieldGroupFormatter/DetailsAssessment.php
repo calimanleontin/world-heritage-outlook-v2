@@ -26,10 +26,6 @@ class DetailsAssessment extends Details {
   public function preRender(&$element, $rendering_object) {
     parent::preRender($element, $rendering_object);
     $field_names = $this->getSetting('terms');
-//    dpm($element['#title']);
-    if ($element['#title'] == 'Overall assessment of threats') {
-//      dpm($element);
-    }
     if (!empty($field_names)) {
       $field_names = explode('|', $field_names);
       foreach ($field_names as $field_name) {

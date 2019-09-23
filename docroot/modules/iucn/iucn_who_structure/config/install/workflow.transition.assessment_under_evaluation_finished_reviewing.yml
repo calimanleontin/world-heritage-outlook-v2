@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_under_evaluation
+id: assessment_under_evaluation_finished_reviewing
+label: ''
+module: workflow
+from_sid: assessment_under_evaluation
+to_sid: assessment_finished_reviewing
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

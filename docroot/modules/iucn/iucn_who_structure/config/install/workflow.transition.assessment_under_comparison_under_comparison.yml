@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_under_comparison
+id: assessment_under_comparison_under_comparison
+label: Save
+module: workflow
+from_sid: assessment_under_comparison
+to_sid: assessment_under_comparison
+roles: {  }

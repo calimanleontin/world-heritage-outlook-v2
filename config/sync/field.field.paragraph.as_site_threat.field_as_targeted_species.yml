@@ -1,0 +1,27 @@
+uuid: a26604a6-f744-4daa-b4c3-9052b57d9c65
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_as_targeted_species
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
+id: paragraph.as_site_threat.field_as_targeted_species
+field_name: field_as_targeted_species
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Name(s) of species targeted (please indicate genus and species names if known)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

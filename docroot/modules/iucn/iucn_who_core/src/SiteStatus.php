@@ -42,11 +42,19 @@ class SiteStatus {
   }
 
   public static function labels() {
+    $all = [
+      self::IUCN_OUTLOOK_STATUS_GOOD,
+      self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS,
+      self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS,
+      self::IUCN_OUTLOOK_STATUS_CRITICAL,
+      self::IUCN_OUTLOOK_STATUS_DATA_DEFICIENT,
+      self::IUCN_OUTLOOK_STATUS_DATA_COMING_SOON,
+    ];
     $ret = [];
     $terms = SitesQueryUtil::getSiteConservationRatings();
     foreach ($terms as $term) {
       $name = $term->field_css_identifier->value;
-      if (!empty($name)) {
+      if (!empty($name) && in_array($name, $all)) {
         $ret[$name] = $term->name->value;
       }
     }
@@ -64,12 +72,9 @@ class SiteStatus {
     // @todo - Optimize
     foreach ($terms as $term) {
       $name = $term->field_css_identifier->value;
-      if (!empty($name)) {
-        $ret[$name] = $term;
+      if (!empty($name) && $name == $identifier) {
+        $ret = $term;
       }
-    }
-    if(!empty($ret[$identifier])) {
-      $ret = $ret[$identifier];
     }
     return $ret;
   }
@@ -234,11 +239,6 @@ class SiteStatus {
     foreach($statuses as $status_id => $count) {
       $ret[$status_id] = number_format((100 * $count) / $total ,  2, '.', '');
     }
-
-    /*$ret[$good->id()] = 20;
-    $ret[$good_concerns->id()] = 44;
-    $ret[$significant->id()] = 29;
-    $ret[$critical->id()] = 7;*/
     return $ret;
   }
 
@@ -249,17 +249,20 @@ class SiteStatus {
    *   Array keyed by status
    */
   public static function getStatistictsTerms(){
-    $good = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD);
-    $good_concerns = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS);
-    $significant = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS);
-    $critical = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_CRITICAL);
-
-    return [
-      $good->id(),
-      $good_concerns->id(),
-      $significant->id(),
-      $critical->id(),
-    ];
+    $ret = [];
+    if($good = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD)){
+      $ret[] = $good->id();
+    }
+    if($good_concerns = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_GOOD_CONCERNS)){
+      $ret[] = $good_concerns->id();
+    }
+    if($significant = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_SIGNIFICANT_CONCERNS)){
+      $ret[] = $significant->id();
+    }
+    if($critical = self::getTermStatusByIdentifier(self::IUCN_OUTLOOK_STATUS_CRITICAL)){
+      $ret[] = $critical->id();
+    }
+    return $ret;
   }
 
   /**

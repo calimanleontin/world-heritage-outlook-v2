@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_approved
+label: Approved
+module: workflow
+wid: assessment
+weight: 0
+sysid: 0

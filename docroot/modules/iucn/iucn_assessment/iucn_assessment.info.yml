@@ -1,24 +1,32 @@
-name: iucn_assessment
+name: 'IUCN assessment'
 type: module
 description: 'IUCN assessment related functionality'
 core: 8.x
 package: IUCN
 dependencies:
   - blazy
+  - block_content
   - content_translation
   - datetime
   - ds
   - entity_reference_revisions
+  - disable_field
+  - diff
   - field
   - field_group
   - image
+  - iucn_fields
   - iucn_site
   - language
   - menu_ui
   - node
   - paragraphs
   - path
+  - role_hierarchy
   - smart_trim
   - taxonomy
   - text
   - user
+  - workflow
+  - workflow_access
+  - workflow_ui

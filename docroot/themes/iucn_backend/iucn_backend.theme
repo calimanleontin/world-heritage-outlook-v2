@@ -1,0 +1,116 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Serialization\Json;
+
+/**
+ * Implements hook_preprocess_links.
+ */
+function iucn_backend_preprocess_links(&$variables) {
+  if ($variables["theme_hook_original"] != "links__dropbutton__operations") {
+    return;
+  }
+  $links = $variables['links'];
+  if (!empty($links)) {
+    foreach ($links as $key => $link) {
+      if (!empty($link['link']['#title']) && is_object($link['link']['#title'])) {
+        $variables['links'][$key]['attributes'] = new Attribute(['title' => $link['link']['#title']->render()]);
+      }
+      if (!empty($link['link']['#title']) && is_string($link['link']['#title'])) {
+        $variables['links'][$key]['attributes'] = new Attribute(['title' => $link['link']['#title']]);
+      }
+    }
+  }
+}
+
+function iucn_backend_theme($existing, $type, $theme, $path) {
+  return [
+    'site_assessment_edit_form' => [
+      'render element' => 'form',
+      'template' => 'site-assessment-edit-form',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter for blocks.
+ */
+function iucn_backend_theme_suggestions_block_alter(&$suggestions, $variables) {
+  // Load theme suggestions for blocks from parent theme.
+  foreach ($suggestions as &$suggestion) {
+    $suggestion = str_replace('iucn_backend_', 'seven_', $suggestion);
+  }
+}
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
+ *
+ * Changes vertical tabs to container.
+ */
+function iucn_backend_theme_suggestions_node_edit_form_alter(&$suggestions, $variables) {
+  if (!empty($variables['form']['#form_id']) && $variables['form']['#form_id'] == 'node_site_assessment_edit_form') {
+    $suggestions[] = 'site_assessment_edit_form';
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function iucn_backend_preprocess_views_view_table(&$variables) {
+  // Bold the names of the users that need to act on an assessment.
+  if ($variables['view']->storage->id() == 'account_assignments'
+    && $variables['view']->current_display == 'block_1') {
+    foreach ($variables['view']->result as $id => $row) {
+      /** @var \Drupal\node\Entity\Node $entity */
+      $entity = $row->_entity;
+      $bold = NULL;
+      if ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
+        $bold = 'field_assessor';
+      }
+      elseif ($entity->field_state->value == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        $bold = 'field_reviewers';
+      }
+      if (!empty($bold) && !empty($variables['rows'][$id]['columns'][$bold])) {
+        if ($bold != 'field_reviewers') {
+          $attributes = new \Drupal\Core\Template\Attribute();
+          $attributes->addClass("bold-cell");
+          $variables['rows'][$id]['columns'][$bold]['attributes'] = $attributes;
+        }
+        else {
+          /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
+          $workflow_service = \Drupal::service('iucn_assessment.workflow');
+          $unfinished_reviews = $workflow_service->getUnfinishedReviewerRevisions($entity);
+          foreach ($unfinished_reviews as $unfinished_review) {
+            $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup'] = str_replace(
+              '>' . $unfinished_review->getRevisionUser()->getDisplayName() . '<',
+              '><b>' . $unfinished_review->getRevisionUser()->getDisplayName() . '</b><',
+              $variables['rows'][$id]['columns']['field_reviewers']['content'][0]['field_output']['#markup']
+            );
+          }
+        }
+      }
+    }
+  }
+}
+
+function iucn_backend_preprocess_taxonomy_term(&$variables) {
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  $viewMode = $variables['view_mode'];
+
+  if ($viewMode == 'teaser') {
+    if ($term->bundle() == 'assessment_benefits_impact_level') {
+      $variables['name'][0]['#context']['value'] = t('Level of impact: @level', ['@level' => $variables['name'][0]['#context']['value']]);
+    }
+
+    if ($term->bundle() == 'assessment_benefits_impact_trend') {
+      $variables['name'][0]['#context']['value'] = t('Trend: @trend', ['@trend' => $variables['name'][0]['#context']['value']]);
+    }
+  }
+
+  if (in_array($term->id(), [1330, 1332 ,1333])) {
+    $variables['name'][0]['#context']['value'] .= sprintf(" %s", strip_tags($term->getDescription()));
+  }
+}

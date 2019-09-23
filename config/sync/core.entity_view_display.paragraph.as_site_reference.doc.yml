@@ -1,0 +1,25 @@
+uuid: f82ef1e4-85e2-4361-8667-72bcb1e07804
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.doc
+    - field.field.paragraph.as_site_reference.field_reference
+    - paragraphs.paragraphs_type.as_site_reference
+id: paragraph.as_site_reference.doc
+targetEntityType: paragraph
+bundle: as_site_reference
+mode: doc
+content:
+  field_reference:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

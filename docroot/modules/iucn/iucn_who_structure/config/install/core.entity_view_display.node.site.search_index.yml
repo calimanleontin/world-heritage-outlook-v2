@@ -5,15 +5,17 @@ dependencies:
     - core.entity_view_mode.node.search_index
     - field.field.node.site.body
     - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
-    - field.field.node.site.field_coordinate_x
-    - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
+    - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -30,14 +32,65 @@ dependencies:
     - datetime
     - ds
     - image
+    - iucn_site
     - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_sites_search
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        wrappers:
+          left: div
+          right: div
+        outer_wrapper: article
+        attributes: ''
+        link_attribute: ''
+        link_custom: ''
+        classes:
+          layout_class: {  }
+          left:
+            left-content: left-content
+          right:
+            right-content: right-content
+    regions:
+      left:
+        - field_image
+      right:
+        - node_title
+        - field_country
+        - field_inscription_year
+        - field_inscription_criteria
+        - node_link
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 1
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
+      node_link:
+        plugin_id: node_link
+        weight: 5
+        label: hidden
+        formatter: default
+        settings:
+          'link text': 'Read more'
+          'link class': ''
+          wrapper: ''
+          class: ''
 id: node.site.search_index
 targetEntityType: node
 bundle: site
 mode: search_index
 content:
   field_country:
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       link: false
@@ -45,37 +98,57 @@ content:
       ds:
         ds_limit: ''
     type: entity_reference_label
-    region: content
+    region: right
   field_image:
+    type: image
     weight: 0
+    region: left
     label: hidden
     settings:
       image_style: sites_thumbnail
       image_link: content
-    third_party_settings: {  }
-    type: image
-    region: content
+    third_party_settings:
+      ds:
+        ds_limit: ''
+  field_inscription_criteria:
+    type: entity_reference_list
+    weight: 4
+    region: right
+    label: hidden
+    settings:
+      separator: ''
+      override_label: '1'
+      singular: Criterion
+      plural: Criteria
+      link: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
   field_inscription_year:
-    weight: 2
+    weight: 3
     label: inline
     settings:
       timezone_override: ''
       format_type: html_year
     third_party_settings: {  }
     type: datetime_default
-    region: content
+    region: right
 hidden:
   body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_area: true
+  field_assessments: true
   field_buffer_zone: true
   field_buffer_zone_area: true
   field_category: true
-  field_coordinate_x: true
-  field_coordinate_y: true
   field_cultural_landscape: true
+  field_current_assessment: true
   field_danger_list: true
   field_designation: true
-  field_inscription_criteria: true
+  field_geojson: true
+  field_geolocation: true
   field_mixed_site: true
   field_serial: true
   field_site_id: true

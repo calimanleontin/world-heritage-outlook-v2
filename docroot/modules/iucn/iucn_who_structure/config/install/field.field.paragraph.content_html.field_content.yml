@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content
+    - paragraphs.paragraphs_type.content_html
+  module:
+    - text
+id: paragraph.content_html.field_content
+field_name: field_content
+entity_type: paragraph
+bundle: content_html
+label: Content
+description: 'When having multiple items, they will be placed in up to 4 columns.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -6,6 +6,8 @@ dependencies:
     - field.field.paragraph.as_site_key_conservation.field_as_key_cons_scale
     - field.field.paragraph.as_site_key_conservation.field_as_key_cons_topic
     - paragraphs.paragraphs_type.as_site_key_conservation
+  module:
+    - iucn_assessment
 id: paragraph.as_site_key_conservation.default
 targetEntityType: paragraph
 bundle: as_site_key_conservation
@@ -17,7 +19,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_key_cons_scale:
     weight: 3

@@ -1,0 +1,37 @@
+.field--widget-text-textarea-with-scayt {
+  .cke_top {
+    // Refs #6330 - remove ckeditor top bar
+    display: none;
+
+    padding: 0;
+    .cke_toolgroup {
+      margin: 0;
+      a.cke_button {
+        border-top: none;
+        border-left: none;
+        border-bottom: none;
+        &:hover,
+        > span:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .cke_contents {
+    padding: 5px;
+  }
+  .cke_bottom {
+    display: none;
+  }
+
+  .counter.warning {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  html {
+    overflow-y: auto;
+  }
+}
+

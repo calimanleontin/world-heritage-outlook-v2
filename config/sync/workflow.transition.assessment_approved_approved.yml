@@ -1,0 +1,12 @@
+uuid: 1d103c20-3866-4ac0-bb13-1d9843081113
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+id: assessment_approved_approved
+label: Save
+module: workflow
+from_sid: assessment_approved
+to_sid: assessment_approved
+roles: {  }

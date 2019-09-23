@@ -1,0 +1,12 @@
+uuid: 2cb3c3c4-dbf8-47f5-b688-f70d35b5cce3
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_under_review
+label: 'Under review'
+module: workflow
+wid: assessment
+weight: -5
+sysid: 0

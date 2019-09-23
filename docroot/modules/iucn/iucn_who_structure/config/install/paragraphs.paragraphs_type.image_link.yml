@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: image_link
+label: 'Image link'
+behavior_plugins: {  }

@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: as_site_value_wh
 label: State
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

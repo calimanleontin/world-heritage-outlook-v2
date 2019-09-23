@@ -1,0 +1,20 @@
+uuid: 4c6e3306-f8d7-40a6-9cdf-7441b627a4ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_under_review
+id: assessment_under_review_approved
+label: ''
+module: workflow
+from_sid: assessment_under_review
+to_sid: assessment_approved
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

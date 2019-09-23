@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.assessment_protection_topic.field_help_text
+    - taxonomy.vocabulary.assessment_protection_topic
+  module:
+    - text
+id: taxonomy_term.assessment_protection_topic.default
+targetEntityType: taxonomy_term
+bundle: assessment_protection_topic
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_help_text: true
+  langcode: true

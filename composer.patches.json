@@ -2,19 +2,66 @@
   "patches": {
     "drupal/core": {
       "Translate labels admin": "https://www.drupal.org/files/issues/2768711-1.patch",
+      "Impossible to update an entity revision if the field value you are updating matches the default revision.": "https://www.drupal.org/files/issues/2018-07-30/entity_original_revision-2859042-26.patch",
+      "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
+      "Fix states api or condition": "patches/core/states-api-or.patch",
+      "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
+      "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch",
       "Update yarn packages to fix 19 vulnerabilities by updating nightwatch": "https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch"
     },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
     },
+    "drupal/metatag": {
+      "Fix test class that depends on another module to run": "patches/metatag/fix-test.patch"
+    },
+    "drupal/views_data_export": {
+      "2789531": "patches/views_data_export/2789531-123.patch",
+      "2789531-123": "patches/views_data_export/2789531-123-fixed-count-query.patch",
+      "2945252": "patches/views_data_export/2945252-5.patch"
+    },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
+    },
+    "drupal/role_hierarchy": {
+      "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
+    },
+    "drupal/purge": {
+      "setUp() methods from Tests are not compatible with respective parent setUp() method" : "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
+    },
+    "drupal/workflow": {
+      "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
+      "Fix executeTransitionsOfEntity throw an error": "https://www.drupal.org/files/issues/2018-06-21/2974268-5.patch",
+      "Check if a transition was already executed only for default revisions": "patches/workflow/change-static-info-for-non-default-revision_0.patch",
+      "Correctly calculate old state id when changing older revisions": "https://www.drupal.org/files/issues/2019-09-16/get-previous-state-from-original-entity-3078046-02.patch"
     },
     "harvesthq/chosen": {
       "transliteration fix": "patches/libraries/chosen_transliteration.patch"
     },
+    "drupal/smtp": {
+      "PHPMailer external library": "https://www.drupal.org/files/issues/2019-02-04/smtp-set-phpmailer-as-a-external-library-using-composer-2711559-38.patch",
+      "PHPMailer breaks AJAX response": "https://www.drupal.org/files/issues/2019-02-04/phpmailer-breaks-ajax-response.patch"
+    },
+    "drupal/maxlength": {
+      "Max length count html tags as characters when used with ckeditor": "https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch",
+      "Block paste when limit is exceeded":"https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
+      "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
+      "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
+    },
+    "webspellchecker/ckeditor-plugin-scayt": {
+      "Preserve language on all ckeditor instances for user": "patches/libraries/ckeditor-plugin-scayt/preserve-language-per-user.patch"
+    },
     "drupal/social_media": {
       "General error: 1271 Illegal mix of collations": "https://www.drupal.org/files/issues/2018-12-24/social_media-cache_tag_error-3022343-2.patch"
+    },
+    "drupal/pet": {
+      "Fields definition": "patches/pet/pet.patch"
+    },
+	"drupal/search_autocomplete": {
+      "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074934-test-fail-D8.patch"
+    },
+	"drupal/varnish_purge": {
+      "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074938-test-error-D8.patch"
     }
   }
 }

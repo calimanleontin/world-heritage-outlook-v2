@@ -1,0 +1,20 @@
+uuid: 692e727b-2943-4473-b7cb-460c9f3713c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_draft
+id: assessment_draft_approved
+label: ''
+module: workflow
+from_sid: assessment_draft
+to_sid: assessment_approved
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

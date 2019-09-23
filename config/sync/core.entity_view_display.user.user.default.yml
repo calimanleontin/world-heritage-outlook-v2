@@ -1,0 +1,29 @@
+uuid: e180095b-ca67-4fd2-bd8d-c457b0a117f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_accepted_agreement
+    - field.field.user.user.field_user_agreement_disabled
+    - field.field.user.user.field_user_title
+  module:
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  member_for:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_accepted_agreement: true
+  field_user_agreement_disabled: true
+  field_user_title: true
+  langcode: true
+  search_api_excerpt: true

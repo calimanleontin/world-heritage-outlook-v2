@@ -2,5 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: as_site_value_bio
-label: 'Assessment other biodiversity site value'
+label: 'other biodiversity value'
+icon_uuid: null
+description: ''
 behavior_plugins: {  }

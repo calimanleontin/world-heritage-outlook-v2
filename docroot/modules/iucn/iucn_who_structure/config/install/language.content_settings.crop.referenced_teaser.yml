@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - crop.type.referenced_teaser
+id: crop.referenced_teaser
+target_entity_type_id: crop
+target_bundle: referenced_teaser
+default_langcode: site_default
+language_alterable: false

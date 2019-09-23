@@ -1,0 +1,14 @@
+uuid: 51cc4ce1-ad11-4d8c-a437-64a26f8800ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.assessor
+  module:
+    - user
+id: user_remove_role_action.assessor
+label: 'Remove the Assessor role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: assessor

@@ -4,9 +4,11 @@ status: true
 dependencies: {  }
 id: publish_content_pages
 label: 'Publish content pages'
-weight: -7
+weight: -1
 is_admin: null
 permissions:
+  - 'access content overview'
+  - 'access site in maintenance mode'
   - 'administer nodes'
   - 'delete any benefit content'
   - 'delete any faq content'
@@ -19,4 +21,9 @@ permissions:
   - 'delete news revisions'
   - 'delete page revisions'
   - 'delete publication revisions'
+  - 'edit own profile'
   - 'revert benefit revisions'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'

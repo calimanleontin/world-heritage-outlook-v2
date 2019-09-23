@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: content_teasers
+label: Teasers
+behavior_plugins: {  }

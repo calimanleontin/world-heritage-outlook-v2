@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.inscription_criteria.field_description
     - field.field.taxonomy_term.inscription_criteria.field_title
     - field.field.taxonomy_term.inscription_criteria.field_type
     - taxonomy.vocabulary.inscription_criteria
@@ -20,6 +21,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_description:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   field_title:
     weight: 1
     label: above
@@ -36,4 +44,7 @@ content:
     type: list_default
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   langcode: true

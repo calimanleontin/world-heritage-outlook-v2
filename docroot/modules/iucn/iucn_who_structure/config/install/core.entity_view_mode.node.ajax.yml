@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.ajax
+label: Ajax
+targetEntityType: node
+cache: true

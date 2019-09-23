@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_new
+id: assessment_new_new
+label: Save
+module: workflow
+from_sid: assessment_new
+to_sid: assessment_new
+roles: {  }

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_accepted_agreement
+  module:
+    - datetime
+    - disable_field
+    - user
+third_party_settings:
+  disable_field:
+    add_disable: all
+    add_disable_roles: {  }
+    edit_disable: all
+    edit_disable_roles: {  }
+id: user.user.field_accepted_agreement
+field_name: field_accepted_agreement
+entity_type: user
+bundle: user
+label: 'Agreement accepted'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

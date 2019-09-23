@@ -1,0 +1,22 @@
+global-styling:
+  css:
+    component:
+      css/style.css: {}
+  js:
+    js/main.js: {}
+
+font-awesome:
+  remote: https://fontawesome.com
+  version: 5.3.1
+  license:
+    name: MIT
+    url: https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
+    gpl-compatible: true
+  css:
+    theme:
+      https://use.fontawesome.com/releases/v5.3.1/css/all.css: { type: external, minified: true }
+
+ckeditor-dialog:
+  css:
+    theme:
+      css/ckeditor-dialog.css: {}

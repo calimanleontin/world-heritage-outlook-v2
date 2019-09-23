@@ -3,5 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: as_site_value_wh
-label: 'Assessment World Heritage site value'
+label: 'World Heritage value'
+icon_uuid: null
+description: ''
 behavior_plugins: {  }

@@ -1,0 +1,20 @@
+uuid: d9a20d2b-e065-4372-8f1e-b987493c590f
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_reviewing_references
+    - workflow.state.assessment_under_comparison
+id: assessment_under_comparison_reviewing_references
+label: 'Send to reference reviewer'
+module: workflow
+from_sid: assessment_under_comparison
+to_sid: assessment_reviewing_references
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

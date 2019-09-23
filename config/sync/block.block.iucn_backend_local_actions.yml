@@ -1,0 +1,20 @@
+uuid: a33061f8-0290-4306-b0de-814357838cad
+langcode: en
+status: true
+dependencies:
+  theme:
+    - iucn_backend
+_core:
+  default_config_hash: ffxthelqQF8xcr4GTG4HlaNNsluiHftN0pujmQpW0bQ
+id: iucn_backend_local_actions
+theme: iucn_backend
+region: content
+weight: -5
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

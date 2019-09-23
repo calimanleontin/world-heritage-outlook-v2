@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.number_heading_list.field_headline_bg
+    - field.field.paragraph.number_heading_list.field_numbered_headings
+    - paragraphs.paragraphs_type.number_heading_list
+  module:
+    - ds
+    - entity_reference_revisions
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_numbered_headings
+id: paragraph.number_heading_list.default
+targetEntityType: paragraph
+bundle: number_heading_list
+mode: default
+content:
+  field_numbered_headings:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: inside_list
+      link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    region: content
+hidden:
+  field_headline_bg: true

@@ -1,0 +1,24 @@
+name: IUCN-BACKEND
+type: theme
+base theme: seven
+description: 'The default administration theme for Drupal 8 was designed with clean lines, simple blocks, and sans-serif font to emphasize the tools and tasks at hand. This theme extends it in order to overwrite some of the templates.'
+alt text: 'Custom theme that extends the default administration theme for Drupal 8.'
+package: Custom
+version: VERSION
+core: 8.x
+
+regions:
+  header: 'Header'
+  pre_content: 'Pre-content'
+  breadcrumb: Breadcrumb
+  highlighted: Highlighted
+  help: Help
+  sidebar_first: 'First sidebar'
+  content: Content
+
+libraries:
+ - iucn_backend/global-styling
+
+libraries-extend:
+  seven/ckeditor-dialog:
+    - iucn_backend/ckeditor-dialog

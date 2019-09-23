@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.assessing_values
+label: 'Assessing values'
+targetEntityType: node
+cache: true

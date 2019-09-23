@@ -1,0 +1,20 @@
+uuid: ef73c963-ccda-40ce-956b-d5f0432973bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+    - workflow.state.assessment_under_comparison
+id: assessment_finished_reviewing_under_comparison
+label: 'Start comparing reviews'
+module: workflow
+from_sid: assessment_finished_reviewing
+to_sid: assessment_under_comparison
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

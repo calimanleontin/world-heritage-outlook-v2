@@ -4,11 +4,19 @@ dependencies:
   config:
     - field.storage.paragraph.field_as_projects_contact
     - paragraphs.paragraphs_type.as_site_project
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: paragraph.as_site_project.field_as_projects_contact
 field_name: field_as_projects_contact
 entity_type: paragraph
 bundle: as_site_project
-label: Contact
+label: Website
 description: ''
 required: false
 translatable: false

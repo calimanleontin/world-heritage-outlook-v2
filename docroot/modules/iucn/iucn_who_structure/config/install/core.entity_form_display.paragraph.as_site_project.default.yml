@@ -9,7 +9,7 @@ dependencies:
     - field.field.paragraph.as_site_project.field_as_projects_to
     - paragraphs.paragraphs_type.as_site_project
   module:
-    - iucn_site
+    - iucn_assessment
 id: paragraph.as_site_project.default
 targetEntityType: paragraph
 bundle: as_site_project
@@ -21,7 +21,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+    type: text_textarea_with_scayt
     region: content
   field_as_projects_contact:
     weight: 3
@@ -29,13 +29,7 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
-  field_as_projects_from:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: year_date_field_widget
+    type: text_textarea_with_scayt
     region: content
   field_as_projects_organisation:
     weight: 1
@@ -45,12 +39,6 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_as_projects_to:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: year_date_field_widget
-    region: content
   translation:
     weight: 0
     region: content
@@ -58,5 +46,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_as_projects_from: true
+  field_as_projects_to: true
   status: true
   uid: true

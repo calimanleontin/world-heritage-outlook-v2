@@ -1,0 +1,12 @@
+uuid: 950d2ae5-cb97-4d12-a852-5bc31d8bf3e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_new
+id: assessment_new_new
+label: Save
+module: workflow
+from_sid: assessment_new
+to_sid: assessment_new
+roles: {  }

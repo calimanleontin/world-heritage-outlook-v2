@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.inside_list
+    - field.field.paragraph.numbered_heading.field_heading
+    - field.field.paragraph.numbered_heading.field_heading_icon
+    - field.field.paragraph.numbered_heading.field_heading_number
+    - field.field.paragraph.numbered_heading.field_wrapper
+    - paragraphs.paragraphs_type.numbered_heading
+id: paragraph.numbered_heading.inside_list
+targetEntityType: paragraph
+bundle: numbered_heading
+mode: inside_list
+content:
+  field_heading:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_heading_number:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_heading_icon: true
+  field_wrapper: true

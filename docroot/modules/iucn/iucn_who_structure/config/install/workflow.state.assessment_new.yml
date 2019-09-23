@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_new
+label: New
+module: workflow
+wid: assessment
+weight: -9
+sysid: 0

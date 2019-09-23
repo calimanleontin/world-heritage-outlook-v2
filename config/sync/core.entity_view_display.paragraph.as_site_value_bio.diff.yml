@@ -1,0 +1,60 @@
+uuid: de4272a6-4c03-4d8d-8442-9e09ec7aee47
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.diff
+    - field.field.paragraph.as_site_value_bio.field_as_description
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_bio.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_bio
+id: paragraph.as_site_value_bio.diff
+targetEntityType: paragraph
+bundle: as_site_value_bio
+mode: diff
+content:
+  field_as_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_as_values_curr_state:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_curr_text:
+    type: basic_string
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_as_values_curr_trend:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_as_values_value:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

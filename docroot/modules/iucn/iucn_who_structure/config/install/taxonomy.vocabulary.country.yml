@@ -4,5 +4,4 @@ dependencies: {  }
 name: Country
 vid: country
 description: ''
-hierarchy: 0
 weight: 0

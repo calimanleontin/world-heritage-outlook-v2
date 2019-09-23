@@ -5,15 +5,17 @@ dependencies:
     - core.entity_view_mode.node.full
     - field.field.node.site.body
     - field.field.node.site.field_area
+    - field.field.node.site.field_assessments
     - field.field.node.site.field_buffer_zone
     - field.field.node.site.field_buffer_zone_area
     - field.field.node.site.field_category
-    - field.field.node.site.field_coordinate_x
-    - field.field.node.site.field_coordinate_y
     - field.field.node.site.field_country
     - field.field.node.site.field_cultural_landscape
+    - field.field.node.site.field_current_assessment
     - field.field.node.site.field_danger_list
     - field.field.node.site.field_designation
+    - field.field.node.site.field_geojson
+    - field.field.node.site.field_geolocation
     - field.field.node.site.field_image
     - field.field.node.site.field_inscription_criteria
     - field.field.node.site.field_inscription_year
@@ -210,6 +212,11 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_coordinate_x: true
-  field_coordinate_y: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_assessments: true
+  field_current_assessment: true
+  field_geojson: true
+  field_geolocation: true
   langcode: true

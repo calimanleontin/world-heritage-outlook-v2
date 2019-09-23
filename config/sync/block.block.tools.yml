@@ -1,0 +1,33 @@
+uuid: adeac381-513f-463b-a230-3ab3c3d33828
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.tools
+  module:
+    - menu_block
+    - system
+  theme:
+    - iucn_backend
+id: tools
+theme: iucn_backend
+region: sidebar_first
+weight: -5
+provider: null
+plugin: 'menu_block:tools'
+settings:
+  id: 'menu_block:tools'
+  label: Tools
+  provider: menu_block
+  label_display: visible
+  level: 1
+  depth: 0
+  expand: 1
+  parent: 'tools:'
+  suggestion: tools
+visibility:
+  request_path:
+    id: request_path
+    pages: "/admin/dashboard\r\n/admin/help/workflow"
+    negate: false
+    context_mapping: {  }

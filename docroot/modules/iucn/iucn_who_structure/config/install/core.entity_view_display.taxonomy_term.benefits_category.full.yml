@@ -1,0 +1,27 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.full
+    - field.field.taxonomy_term.benefits_category.field_category_image
+    - taxonomy.vocabulary.benefits_category
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_news_teaser
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions: {  }
+id: taxonomy_term.benefits_category.full
+targetEntityType: taxonomy_term
+bundle: benefits_category
+mode: full
+content: {  }
+hidden:
+  description: true
+  field_category_image: true
+  langcode: true

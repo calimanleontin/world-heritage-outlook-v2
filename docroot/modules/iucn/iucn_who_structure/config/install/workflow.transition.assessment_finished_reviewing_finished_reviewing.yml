@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_finished_reviewing
+id: assessment_finished_reviewing_finished_reviewing
+label: Save
+module: workflow
+from_sid: assessment_finished_reviewing
+to_sid: assessment_finished_reviewing
+roles: {  }

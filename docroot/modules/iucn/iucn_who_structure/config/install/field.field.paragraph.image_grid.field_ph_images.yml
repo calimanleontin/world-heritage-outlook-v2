@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_ph_images
+    - paragraphs.paragraphs_type.image_grid
+    - paragraphs.paragraphs_type.image_link
+  module:
+    - entity_reference_revisions
+id: paragraph.image_grid.field_ph_images
+field_name: field_ph_images
+entity_type: paragraph
+bundle: image_grid
+label: Images
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      image_link: image_link
+    target_bundles_drag_drop:
+      image_link:
+        enabled: true
+        weight: 10
+      content_html:
+        weight: 11
+        enabled: false
+      content_teasers:
+        weight: 12
+        enabled: false
+      danger_list:
+        weight: 13
+        enabled: false
+      image_grid:
+        weight: 14
+        enabled: false
+      number_heading_list:
+        weight: 15
+        enabled: false
+      numbered_heading:
+        weight: 16
+        enabled: false
+      pdf_download_button:
+        weight: 17
+        enabled: false
+      teaser:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions

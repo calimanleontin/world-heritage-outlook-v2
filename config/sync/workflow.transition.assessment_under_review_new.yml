@@ -1,0 +1,20 @@
+uuid: cb22b3ff-24f1-4ece-ba7f-b26a8dc60456
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_new
+    - workflow.state.assessment_under_review
+id: assessment_under_review_new
+label: ''
+module: workflow
+from_sid: assessment_under_review
+to_sid: assessment_new
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

@@ -1,0 +1,95 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.publication.body
+    - field.field.node.publication.field_author
+    - field.field.node.publication.field_external_website
+    - field.field.node.publication.field_file
+    - field.field.node.publication.field_publication_image
+    - field.field.node.publication.field_publication_year
+    - image.style.large
+    - node.type.publication
+  module:
+    - datetime
+    - ds
+    - file
+    - image
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_publications_full
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - node_title
+        - field_author
+        - body
+        - field_publication_year
+      right_1:
+        - field_publication_image
+      right_2:
+        - field_file
+    fields:
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+id: node.publication.default
+targetEntityType: node
+bundle: publication
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_author:
+    type: text_trimmed
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  field_file:
+    type: file_default
+    weight: 5
+    region: right_2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_publication_image:
+    type: image
+    weight: 4
+    region: right_1
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+  field_publication_year:
+    weight: 6
+    label: inline
+    settings:
+      timezone_override: ''
+      date_format: 'Y'
+    third_party_settings: {  }
+    type: datetime_custom
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_external_website: true
+  langcode: true
+  links: true

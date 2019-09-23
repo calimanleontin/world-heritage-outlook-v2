@@ -1,0 +1,12 @@
+uuid: ec68573c-e7c4-4b5e-9ebd-8bb3e1577710
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_under_assessment
+label: 'Being assessed'
+module: workflow
+wid: assessment
+weight: -7
+sysid: 0

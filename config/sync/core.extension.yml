@@ -1,23 +1,33 @@
 module:
+  admin_toolbar: 0
+  admin_toolbar_links_access_filter: 0
+  admin_toolbar_tools: 0
   anchor_only: 0
   basic_auth: 0
   blazy: 0
   block: 0
   block_content: 0
+  block_exclude_pages: 0
   breakpoint: 0
   captcha: 0
   chosen: 0
   chosen_lib: 0
   ckeditor: 0
+  ckeditor_scayt: 0
+  ckeditorheight: 0
   colorbox: 0
   config: 0
   config_filter: 0
   config_translation: 0
+  config_update: 0
   contextual: 0
   crop: 0
+  csv_serialization: 0
   ctools: 0
   datetime: 0
   dblog: 0
+  diff: 0
+  disable_field: 0
   display_field_copy: 0
   ds: 0
   dynamic_page_cache: 0
@@ -26,9 +36,12 @@ module:
   editor_file: 0
   edw_healthcheck: 0
   entity_print: 0
+  entity_reference: 0
   entity_reference_revisions: 0
   facets: 0
   facets_pretty_paths: 0
+  features: 0
+  features_ui: 0
   field: 0
   field_group: 0
   field_ui: 0
@@ -39,24 +52,27 @@ module:
   google_analytics: 0
   google_maps_api: 0
   honeypot: 0
+  ief_table_view_mode: 0
   image: 0
   image_effects: 0
   image_widget_crop: 0
+  inline_entity_form: 0
   inline_responsive_images: 0
-  iucn_assessment: 0
   iucn_decision_tree: 0
   iucn_fields: 0
+  iucn_notifications: 0
   iucn_pdf: 0
   iucn_site: 0
   iucn_who_core: 0
   iucn_who_homepage: 0
-  kint: 0
   lang_dropdown: 0
   language: 0
   layout_discovery: 0
   link: 0
   linkit: 0
   locale: 0
+  mail_login: 0
+  maxlength: 0
   menu_block: 0
   menu_breadcrumb: 0
   menu_link_attributes: 0
@@ -66,6 +82,7 @@ module:
   options: 0
   page_cache: 0
   path: 0
+  pet: 0
   purge: 0
   purge_drush: 0
   purge_processor_cron: 0
@@ -76,13 +93,17 @@ module:
   raven: 0
   recaptcha: 0
   redirect: 0
+  redirect_after_login: 0
   responsive_favicons: 0
   responsive_image: 0
+  rest: 0
+  role_hierarchy: 0
   search_api: 0
   search_api_db: 0
   search_api_solr: 0
   search_api_sorts: 0
   search_autocomplete: 0
+  serialization: 0
   slick: 0
   slick_views: 0
   smart_trim: 0
@@ -102,10 +123,17 @@ module:
   varnish_purger: 0
   views: 0
   views_accordion: 0
+  views_bulk_operations: 0
+  views_data_export: 0
   views_ui: 0
   webform: 0
   webform_ui: 0
+  workflow: 0
+  workflow_access: 0
+  workflow_ui: 0
+  xls_serialization: 0
   xmlsitemap: 0
+  iucn_assessment: 1
   menu_link_content: 1
   pathauto: 1
   content_translation: 10
@@ -119,6 +147,7 @@ theme:
   seven: 0
   bootstrap: 0
   iucn_who: 0
+  iucn_backend: 0
 profile: minimal
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

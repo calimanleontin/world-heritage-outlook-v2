@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_assessment_file
+    - node.type.site_assessment
+  module:
+    - file
+id: node.site_assessment.field_assessment_file
+field_name: field_assessment_file
+entity_type: node
+bundle: site_assessment
+label: 'Assessesment PDF'
+description: "If there is a file uploaded, this file will be used as current conservation outlook assessment, available for download.\r\nIf you want the conservation outlook assessment PDF to be generated automatically, just remove this file. \r\n"
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: download_pdf/assessments
+  file_extensions: pdf
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

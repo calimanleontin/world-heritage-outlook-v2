@@ -1,0 +1,2052 @@
+.node-site-assessment-edit-form fieldset.overall-container,
+.node-site-assessment-form fieldset.overall-container {
+  margin: 0!important;
+  padding: 0!important;
+  border: none!important;
+  display: grid;
+}
+.node-site-assessment-edit-form fieldset.overall-container > legend .fieldset-legend,
+.node-site-assessment-form fieldset.overall-container > legend .fieldset-legend {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background: #f5f5f2;
+  border: solid #bfbfba;
+  border-width: 1px 0;
+  color: #333;
+  text-transform: uppercase;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper {
+  width: calc(100% - 1px);
+  border-top: 1px solid #e6e4df;
+  border-left: 1px solid #e6e4df;
+  overflow: auto;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row {
+  display: grid;
+  grid-auto-columns: 150px;
+  grid-auto-flow: column;
+  grid-template-columns: auto;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
+  font-weight: bold;
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba!important;
+  height: 38px;
+  box-sizing: border-box;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell label {
+  font-weight: bold;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"],
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+  grid-template-columns: 300px auto;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"],
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row > div[class*="-textarea"] {
+    grid-template-columns: 150px auto;
+  }
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row .form-item {
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
+  display: block;
+  padding: 10px 12px;
+  border-right: 1px solid #e6e4df;
+  border-bottom: 1px solid #e6e4df;
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff {
+  position: relative;
+  padding-right: 60px;
+  background-color: #fcf8e3 !important;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare {
+  margin: 10px 3px !important;
+  position: absolute !important;
+  right: 0;
+  top: 0;
+  padding: 0;
+  min-width: 36px;
+  width: 36px !important;
+  height: 36px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px;
+  border-radius: 4px;
+  text-indent: -9999em;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff .field-icon-button.field-icon-button-compare,
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .field-icon-button-compare.field-icon-button-compare {
+  background-image: url(../images/compare.svg);
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select {
+  padding-right: 12px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select select {
+  margin-right: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff.field--widget-options-select .field-icon-button {
+  float: right;
+  margin-right: 0 !important;
+  position: relative !important;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
+  width: 100%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"],
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  border-right: none;
+  border-bottom: none;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+  display: grid;
+  grid-template-columns: 300px auto;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea,
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-type-textarea {
+    grid-template-columns: 150px auto;
+  }
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+  display: block;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] .form-textarea-wrapper .counter {
+  order: 1;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] label {
+  font-weight: normal;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div label,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div label {
+  display: none;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .description-wrapper,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .description-wrapper {
+  display: table-caption;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
+  background: #ececec!important;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
+  border-top: 1px solid #e6e4df;
+  font-weight: bold;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view {
+  display: table-row;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view .form-item {
+  margin: 0;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div {
+  border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  box-sizing: border-box;
+  display: table-cell;
+  font-weight: normal;
+  padding: 10px 12px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+  border-left: none;
+  width: 300px;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:last-child {
+  border-right: none;
+  width: 150px;
+}
+@media screen and (max-width: 1024px) {
+  .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child,
+  .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view > div:first-child {
+    width: 150px;
+  }
+}
+.node-site-assessment-edit-form #group-summary-of-benefits,
+.node-site-assessment-form #group-summary-of-benefits {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits > legend .fieldset-legend,
+.node-site-assessment-form #group-summary-of-benefits > legend .fieldset-legend {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background: #f5f5f2;
+  border: solid #bfbfba;
+  border-width: 1px 0;
+  color: #333;
+  text-transform: uppercase;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits .description-wrapper,
+.node-site-assessment-form #group-summary-of-benefits .description-wrapper {
+  border-bottom: 1px solid #e6e4df;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  position: relative;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper label {
+  display: none;
+}
+.node-site-assessment-edit-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper,
+.node-site-assessment-form #group-summary-of-benefits #edit-field-as-benefits-summary-wrapper .form-textarea-wrapper {
+  padding: 10px 12px;
+}
+.node-site-assessment-edit-form .current-state,
+.node-site-assessment-form .current-state,
+.node-site-assessment-state-change-form .current-state {
+  margin: 10px 0;
+}
+.node-site-assessment-edit-form .form-item-title-0-value,
+.node-site-assessment-form .form-item-title-0-value,
+.node-site-assessment-state-change-form .form-item-title-0-value {
+  margin-top: 0;
+}
+.node-site-assessment-edit-form .main-data-container,
+.node-site-assessment-form .main-data-container,
+.node-site-assessment-state-change-form .main-data-container {
+  display: block;
+  widows: 100%;
+}
+.node-site-assessment-edit-form .main-data-container .data-fields,
+.node-site-assessment-form .main-data-container .data-fields,
+.node-site-assessment-state-change-form .main-data-container .data-fields,
+.node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-form .main-data-container .help-text,
+.node-site-assessment-state-change-form .main-data-container .help-text {
+  box-sizing: border-box;
+  padding-right: 5px;
+}
+@media screen and (min-width: 980px) {
+  .node-site-assessment-edit-form .main-data-container .data-fields,
+  .node-site-assessment-form .main-data-container .data-fields,
+  .node-site-assessment-state-change-form .main-data-container .data-fields,
+  .node-site-assessment-edit-form .main-data-container .help-text,
+  .node-site-assessment-form .main-data-container .help-text,
+  .node-site-assessment-state-change-form .main-data-container .help-text {
+    float: left;
+    width: 50%;
+  }
+}
+.node-site-assessment-edit-form .main-data-container .data-fields img,
+.node-site-assessment-form .main-data-container .data-fields img,
+.node-site-assessment-state-change-form .main-data-container .data-fields img,
+.node-site-assessment-edit-form .main-data-container .help-text img,
+.node-site-assessment-form .main-data-container .help-text img,
+.node-site-assessment-state-change-form .main-data-container .help-text img {
+  vertical-align: middle;
+}
+.node-site-assessment-edit-form .main-data-container .help-text,
+.node-site-assessment-form .main-data-container .help-text,
+.node-site-assessment-state-change-form .main-data-container .help-text {
+  background: #f5f5f2;
+  border: 1px solid #e6e4df;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+.node-site-assessment-edit-form .layout-region,
+.node-site-assessment-form .layout-region,
+.node-site-assessment-state-change-form .layout-region {
+  padding-right: 0!important;
+}
+.node-site-assessment-edit-form .layout-node-form .layout-region,
+.node-site-assessment-form .layout-node-form .layout-region,
+.node-site-assessment-state-change-form .layout-node-form .layout-region {
+  width: 100%;
+}
+.node-site-assessment-edit-form .layout-node-form .layout-region-node-footer__content,
+.node-site-assessment-form .layout-node-form .layout-region-node-footer__content,
+.node-site-assessment-state-change-form .layout-node-form .layout-region-node-footer__content {
+  border-top: none;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes details > .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-panes .horizontal-tabs-pane.field-group-assessment-tab .tabledrag-toggle-weight-wrapper {
+  padding: 5px 10px 5px 0;
+}
+.node-site-assessment-edit-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
+.node-site-assessment-form .layout-node-form #edit-group-as-key-cons .details-wrapper,
+.node-site-assessment-state-change-form .layout-node-form #edit-group-as-key-cons .details-wrapper {
+  padding: 0;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab .details-wrapper > .form-wrapper:not(.field--widget-row-entity-reference-paragraphs) {
+  padding: 0 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup),
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) {
+  margin: 10px;
+}
+.node-site-assessment-edit-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
+.node-site-assessment-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend,
+.node-site-assessment-state-change-form .layout-node-form .horizontal-tabs-pane.field-group-assessment-tab fieldset:not(.fieldgroup) > legend {
+  position: relative;
+  top: 0;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa,
+.node-site-assessment-form .horizontal-tab-button .fa,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa {
+  font-size: 1em;
+  margin: 0 2.1em 0 1em;
+  position: relative;
+  color: #fafafa;
+  -webkit-text-stroke: 1px #0074bd;
+  transition: color .1s;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:hover,
+.node-site-assessment-form .horizontal-tab-button .fa:hover,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:hover {
+  color: #0074bd;
+  cursor: pointer;
+  -webkit-text-stroke: initial;
+}
+.node-site-assessment-edit-form .horizontal-tab-button .fa:before,
+.node-site-assessment-form .horizontal-tab-button .fa:before,
+.node-site-assessment-state-change-form .horizontal-tab-button .fa:before {
+  font-size: 2em;
+  position: absolute;
+  right: -22px;
+  top: -30px;
+  z-index: 200;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected {
+  display: flex;
+  align-items: center;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected a,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a {
+  padding-left: 1em;
+}
+.node-site-assessment-edit-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
+.node-site-assessment-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover,
+.node-site-assessment-state-change-form .horizontal-tabs ul.horizontal-tabs-list li.selected a:hover {
+  background-color: initial;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description,
+.node-site-assessment-form .horizontal-tabs-panes .description,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description {
+  position: relative;
+  margin: 0;
+  padding: 5px 5px 5px 24px;
+  border: none;
+  background-image: linear-gradient(to bottom, white, #ffffbe);
+  font-style: italic;
+}
+.node-site-assessment-edit-form .horizontal-tabs-panes .description:before,
+.node-site-assessment-form .horizontal-tabs-panes .description:before,
+.node-site-assessment-state-change-form .horizontal-tabs-panes .description:before {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 14px;
+  height: 16px;
+  content: ' ';
+  background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+}
+.node-site-assessment-edit-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-coordinator .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-assessor .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-reviewers .form-item.form-disabled,
+.node-site-assessment-edit-form .field--name-field-references-reviewer .form-item.form-disabled,
+.node-site-assessment-form .field--name-field-references-reviewer .form-item.form-disabled,
+.node-site-assessment-state-change-form .field--name-field-references-reviewer .form-item.form-disabled {
+  display: none;
+}
+.add-paragraph-form-modal,
+.edit-paragraph-form-modal {
+  top: 10% !important;
+}
+.add-paragraph-form-modal .paragraph-form,
+.edit-paragraph-form-modal .paragraph-form {
+  width: 100%;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper {
+  padding-bottom: 10px;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > div.as-checkboxes fieldset {
+  display: block;
+}
+.add-paragraph-form-modal .paragraph-form fieldset.error,
+.edit-paragraph-form-modal .paragraph-form fieldset.error {
+  border: 1px solid #e62600;
+}
+.add-paragraph-form-modal .paragraph-form fieldset.error .form-item label,
+.edit-paragraph-form-modal .paragraph-form fieldset.error .form-item label {
+  color: #a51b00;
+}
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox input.error + label {
+  color: #a51b00;
+  font-weight: bold;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox,
+.add-paragraph-form-modal .paragraph-form .form-type-select,
+.edit-paragraph-form-modal .paragraph-form .form-type-select,
+.add-paragraph-form-modal .paragraph-form .form-composite,
+.edit-paragraph-form-modal .paragraph-form .form-composite {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .label,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .label,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .label,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .label,
+.add-paragraph-form-modal .paragraph-form .form-type-select .label,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .label,
+.add-paragraph-form-modal .paragraph-form .form-composite .label,
+.edit-paragraph-form-modal .paragraph-form .form-composite .label,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div label,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div label,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield label,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea label,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea label,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox label,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox label,
+.add-paragraph-form-modal .paragraph-form .form-type-select label,
+.edit-paragraph-form-modal .paragraph-form .form-type-select label,
+.add-paragraph-form-modal .paragraph-form .form-composite label,
+.edit-paragraph-form-modal .paragraph-form .form-composite label,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div legend,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div legend,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield legend,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea legend,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox legend,
+.add-paragraph-form-modal .paragraph-form .form-type-select legend,
+.edit-paragraph-form-modal .paragraph-form .form-type-select legend,
+.add-paragraph-form-modal .paragraph-form .form-composite legend,
+.edit-paragraph-form-modal .paragraph-form .form-composite legend {
+  order: -1;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-composite > .form-data,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .form-data,
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .form-text,
+.add-paragraph-form-modal .paragraph-form .form-composite > .form-text,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .form-text {
+  min-width: 0;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-composite .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
+  min-width: 0;
+  max-width: 100%;
+  width: 100% !important;
+}
+@media (min-width: 992px) {
+  .add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container,
+  .add-paragraph-form-modal .paragraph-form .form-composite .chosen-container,
+  .edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container {
+    min-width: 200px;
+  }
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-type-select .chosen-container .chosen-drop,
+.add-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop,
+.edit-paragraph-form-modal .paragraph-form .form-composite .chosen-container .chosen-drop {
+  width: 100%;
+  border-top: 1px solid #aaa;
+  min-width: 200px;
+}
+.add-paragraph-form-modal .paragraph-form .form-checkboxes > div > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-checkboxes > div > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textfield > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textfield > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-textarea > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-textarea > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-checkbox > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-checkbox > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-type-select > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-type-select > .chosen-container,
+.add-paragraph-form-modal .paragraph-form .form-composite > .chosen-container,
+.edit-paragraph-form-modal .paragraph-form .form-composite > .chosen-container {
+  width: auto !important;
+}
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textfield,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textarea,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-textarea,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-checkbox,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-checkbox,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-select,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-type-select,
+.add-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-composite,
+.edit-paragraph-form-modal .paragraph-form .fieldset-wrapper .form-composite {
+  display: block;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup {
+  display: table-row;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .label,
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > label,
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > legend,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > legend {
+  vertical-align: top;
+  display: table-cell;
+  width: 200px;
+  float: left;
+}
+.add-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper,
+.edit-paragraph-form-modal .paragraph-form > .form-wrapper > .fieldgroup > .fieldset-wrapper {
+  display: table-cell;
+}
+.add-paragraph-form-modal .paragraph-form td.description-row,
+.edit-paragraph-form-modal .paragraph-form td.description-row {
+  width: 164px;
+}
+.field-group-assessment-fieldset > legend,
+.overall-container > legend {
+  display: block;
+  width: 100%;
+}
+.field-group-assessment-fieldset > legend > .fieldset-legend,
+.overall-container > legend > .fieldset-legend {
+  display: block;
+}
+.paragraph-as-site-benefit-iucn-modal-paragraph-add-form > fieldset,
+.paragraph-as-site-benefit-iucn-modal-paragraph-edit-form > fieldset {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.field--name-field-as-threats-categories.field--widget-assessment-options-buttons .form-checkboxes > div:first-child {
+  margin-bottom: 10px;
+}
+.field--name-field-as-threats-categories.field--widget-assessment-options-buttons .form-checkboxes label {
+  display: inline;
+  padding-left: 5px;
+}
+.required-fields .fieldset-legend:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.hidden-container {
+  display: none !important;
+}
+.comments-container .comments-help {
+  background-color: #ffff99;
+  padding: 10px;
+}
+.comments-container textarea {
+  background-color: #ffff99;
+}
+.comments-container .fieldset-wrapper {
+  margin-top: 20px;
+}
+.paragraph-comments-textarea .comments-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+.paragraph-comments-textarea .comments-container .comment-author {
+  min-width: 120px;
+  width: 120px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div[aria-required="aria-required"] label:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal,
+.ui-dialog.field-diff-form-modal .ui-widget-content.ui-dialog-content,
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+  height: 100% !important;
+}
+.ui-dialog.field-diff-form-modal .ui-dialog-titlebar,
+.ui-dialog.paragraph-diff-form-modal .ui-dialog-titlebar,
+.ui-dialog.field-diff-form-modal .ui-widget-content.ui-dialog-buttonpane,
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-buttonpane {
+  border-radius: 0;
+}
+@media (min-width: 768px) {
+  .ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+    overflow-x: hidden;
+  }
+}
+#group-threat-extent {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  border: none;
+  background: none;
+}
+#group-threat-extent .form-item-field-as-threats-in-value {
+  margin-top: 0;
+}
+#group-threat-extent .fieldset-wrapper {
+  margin-top: 10px;
+}
+#group-threat-extent .field--name-field-as-threats-in {
+  width: 200px;
+}
+#group-threat-extent .form-item-field-as-threats-extent label {
+  float: left;
+}
+.assessment-level-1346,
+.assessment-level-1364,
+.assessment-level-1325,
+.assessment-level-1309,
+.assessment-level-good {
+  background-color: #92d050;
+  padding: 10px 12px;
+}
+.assessment-level-1347,
+.assessment-level-1365,
+.assessment-level-1326,
+.assessment-level-1310,
+.assessment-level-low-concern {
+  background-color: #acd373;
+  padding: 10px 12px;
+}
+.assessment-level-1348,
+.assessment-level-1366,
+.assessment-level-1327,
+.assessment-level-1311,
+.assessment-level-high-concern {
+  background-color: #ffc000;
+  padding: 10px 12px;
+}
+.assessment-level-1349,
+.assessment-level-1367,
+.assessment-level-1328,
+.assessment-level-1312,
+.assessment-level-critical {
+  background-color: #ff0000;
+  padding: 10px 12px;
+}
+.assessment-level-1350,
+.assessment-level-1368,
+.assessment-level-1329,
+.assessment-level-1420,
+.assessment-level-1313,
+.assessment-level-data-deficient {
+  background-color: none;
+  padding: 10px 12px;
+}
+.path-admin div[class*="block-views-"] {
+  margin-bottom: 40px;
+}
+.path-admin div[class*="block-views-"] table .views-field:not(.views-field-operations) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media screen and (min-width: 1024px) {
+  .path-admin div[class*="block-views-"] table {
+    table-layout: fixed;
+  }
+  .path-admin div[class*="block-views-"] table .views-field-title {
+    width: 150px;
+  }
+  .path-admin div[class*="block-views-"] table .views-field-operations {
+    width: 180px;
+  }
+}
+#block-tools > ul.menu {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 1em 0 0;
+}
+#block-tools > ul.menu > li.menu-item > a {
+  font-weight: bold;
+}
+#block-tools > ul.menu > li.menu-item > span {
+  color: #0074bd;
+  font-weight: bold;
+  position: relative;
+  display: block;
+  padding: .5rem 1rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+#block-tools > ul.menu li.menu-item {
+  list-style-type: none;
+  list-style-image: none;
+  padding: 0;
+}
+#block-tools > ul.menu li.menu-item > a {
+  position: relative;
+  display: block;
+  padding: .5rem 1rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+#block-tools > ul.menu li.menu-item > a:hover {
+  color: #495057;
+  text-decoration: none;
+  background-color: #f8f9fa;
+}
+#block-tools > ul.menu li.menu-item > a.is-active {
+  background: #f5f5f2;
+  color: #000!important;
+}
+#block-tools > ul.menu li.menu-item ul.menu {
+  margin: 0 0 0 2em;
+}
+#block-tools > ul.menu li.menu-item ul.menu li.menu-item a {
+  color: #009cf9;
+  padding: .25rem .75rem;
+}
+div[id^="block-views-block-account-assignments-block"] > h2,
+#block-views-block-people-assignments-block-1 > h2 {
+  display: inline-block;
+  border-bottom: 2px solid;
+  padding-bottom: 5px;
+}
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions {
+  float: none;
+  display: inline-block;
+  max-width: 200px;
+}
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item .chosen-container,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item .chosen-container,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions .chosen-container,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions .chosen-container,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item input,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item input,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions input,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions input,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-item button,
+#block-views-block-people-assignments-block-1 .form--inline > .form-item button,
+div[id^="block-views-block-account-assignments-block"] .form--inline > .form-actions button,
+#block-views-block-people-assignments-block-1 .form--inline > .form-actions button {
+  max-width: 100%;
+}
+#block-views-block-people-assignments-block-1 .views-field-user-assignments {
+  width: 40%;
+}
+#block-views-block-people-assignments-block-1 .views-field-user-assignments ol {
+  margin: 0;
+}
+.toolbar-icon-iucn-who-core-administration-dashboard:before {
+  background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);
+}
+.feed-icons {
+  margin: 10px 0;
+}
+.view-assessments-reports .attachment-before {
+  margin-bottom: 15px;
+}
+.field--widget-row-entity-reference-paragraphs table {
+  margin-bottom: 0;
+}
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child {
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba;
+}
+.field--widget-row-entity-reference-paragraphs table tbody tr:first-child:hover {
+  background: #ececec;
+  border-bottom: 1px solid #bfbfba;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr:hover {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs tbody tr:focus {
+  background-color: #fcfcfa;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
+  position: relative;
+  font-size: .9em;
+  grid-row: 1 / span 1;
+  padding: 5px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component:not(:last-child) {
+  border-right: 1px solid #e6e4df;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .group-label:not(:first-child) {
+  margin-top: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component select {
+  font-size: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .subcategories {
+  margin-left: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component .subcategories ul li {
+  list-style-type: disc;
+  margin-left: 0.5em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component ul li {
+  list-style-type: none;
+  margin-left: 0;
+  margin-bottom: 1em;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-negative_factors ul li {
+  margin-bottom: 0;
+}
+.field--widget-row-entity-reference-paragraphs .field-multiple-drag {
+  border-right: 1px solid #e6e4df;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top {
+  align-items: stretch;
+  display: grid;
+  grid-gap: 0;
+  z-index: 10000;
+  grid-auto-columns: 1fr;
+}
+.field--widget-row-entity-reference-paragraphs td {
+  padding: 0;
+}
+.field--widget-row-entity-reference-paragraphs .field-multiple-table .field-multiple-drag {
+  vertical-align: top;
+}
+.field--widget-row-entity-reference-paragraphs .draggable a.tabledrag-handle {
+  float: none;
+  margin-left: 0;
+}
+.field--widget-row-entity-reference-paragraphs .tabledrag-toggle-weight-wrapper {
+  display: none;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-1 {
+  grid-column-end: span 1;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-2 {
+  grid-column-end: span 2;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component-span-3 {
+  grid-column-end: span 3;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+  grid-template-columns: repeat(38, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-39 {
+    grid-template-columns: repeat(38, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+  grid-template-columns: repeat(37, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-38 {
+    grid-template-columns: repeat(37, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+  grid-template-columns: repeat(36, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-37 {
+    grid-template-columns: repeat(36, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+  grid-template-columns: repeat(35, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-36 {
+    grid-template-columns: repeat(35, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+  grid-template-columns: repeat(34, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-35 {
+    grid-template-columns: repeat(34, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+  grid-template-columns: repeat(33, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-34 {
+    grid-template-columns: repeat(33, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+  grid-template-columns: repeat(32, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-33 {
+    grid-template-columns: repeat(32, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+  grid-template-columns: repeat(31, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-32 {
+    grid-template-columns: repeat(31, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+  grid-template-columns: repeat(30, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-31 {
+    grid-template-columns: repeat(30, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+  grid-template-columns: repeat(29, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-30 {
+    grid-template-columns: repeat(29, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+  grid-template-columns: repeat(28, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-29 {
+    grid-template-columns: repeat(28, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+  grid-template-columns: repeat(27, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-28 {
+    grid-template-columns: repeat(27, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+  grid-template-columns: repeat(26, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-27 {
+    grid-template-columns: repeat(26, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+  grid-template-columns: repeat(25, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-26 {
+    grid-template-columns: repeat(25, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+  grid-template-columns: repeat(24, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-25 {
+    grid-template-columns: repeat(24, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+  grid-template-columns: repeat(23, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-24 {
+    grid-template-columns: repeat(23, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+  grid-template-columns: repeat(22, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+    grid-template-columns: repeat(22, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
+  grid-template-columns: repeat(21, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
+    grid-template-columns: repeat(21, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
+  grid-template-columns: repeat(20, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
+    grid-template-columns: repeat(20, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
+  grid-template-columns: repeat(19, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
+    grid-template-columns: repeat(19, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
+  grid-template-columns: repeat(18, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
+    grid-template-columns: repeat(18, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
+  grid-template-columns: repeat(17, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
+    grid-template-columns: repeat(17, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
+  grid-template-columns: repeat(16, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
+    grid-template-columns: repeat(16, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
+  grid-template-columns: repeat(15, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
+    grid-template-columns: repeat(15, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
+  grid-template-columns: repeat(14, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
+    grid-template-columns: repeat(14, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
+  grid-template-columns: repeat(13, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
+    grid-template-columns: repeat(13, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
+  grid-template-columns: repeat(12, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
+    grid-template-columns: repeat(12, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
+  grid-template-columns: repeat(11, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
+    grid-template-columns: repeat(11, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
+  grid-template-columns: repeat(10, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
+    grid-template-columns: repeat(10, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
+  grid-template-columns: repeat(9, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
+    grid-template-columns: repeat(9, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
+  grid-template-columns: repeat(8, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
+    grid-template-columns: repeat(8, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
+  grid-template-columns: repeat(7, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
+    grid-template-columns: repeat(7, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
+  grid-template-columns: repeat(6, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
+    grid-template-columns: repeat(6, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
+  grid-template-columns: repeat(5, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
+    grid-template-columns: repeat(5, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
+  grid-template-columns: repeat(4, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
+    grid-template-columns: repeat(4, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
+  grid-template-columns: repeat(3, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
+    grid-template-columns: repeat(3, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
+  grid-template-columns: repeat(2, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
+    grid-template-columns: repeat(2, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
+  grid-template-columns: repeat(1, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
+    grid-template-columns: repeat(1, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
+  grid-template-columns: repeat(0, 1fr) 150px;
+}
+@media (max-width: 999px) {
+  .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
+    grid-template-columns: repeat(0, minmax(6.5rem, 1fr)) 150px;
+  }
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
+  padding: 0;
+  min-width: 36px;
+  width: 36px !important;
+  height: 36px;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 24px 24px;
+  border-radius: 4px;
+  text-indent: -9999em;
+  margin: 0 5px 0 0;
+  position: relative;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-edit {
+  background-image: url("../images/icon-edit.svg");
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-delete {
+  background-image: url("../images/icon-delete.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-compare,
+.field--name-field-as-benefits-summary .field-icon-button-compare {
+  background-image: url(../images/compare.svg);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-revert {
+  background-image: url("../images/icon-revert.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-icon-button.paragraphs-icon-button-accept {
+  background-image: url("../images/icon-accept.svg") !important;
+}
+.field--widget-row-entity-reference-paragraphs .ajax-progress {
+  position: absolute;
+  z-index: 99999999;
+  display: block;
+  top: 14px;
+  left: calc(40%);
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-add-more-button {
+  margin: .75em 0 0 .75em!important;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header {
+  font-weight: bold;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions {
+  margin-left: 0;
+  margin-top: 0;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component-actions .inner {
+  justify-content: center;
+  right: 0;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-header {
+  margin-bottom: 0;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle {
+  float: right;
+}
+.field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle[disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
+  background: #ececec!important;
+  font-size: .9em;
+  text-transform: none;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
+  grid-template-columns: repeat(22, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-22 {
+  grid-template-columns: repeat(21, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-21 {
+  grid-template-columns: repeat(20, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-20 {
+  grid-template-columns: repeat(19, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-19 {
+  grid-template-columns: repeat(18, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-18 {
+  grid-template-columns: repeat(17, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-17 {
+  grid-template-columns: repeat(16, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-16 {
+  grid-template-columns: repeat(15, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-15 {
+  grid-template-columns: repeat(14, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-14 {
+  grid-template-columns: repeat(13, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-13 {
+  grid-template-columns: repeat(12, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-12 {
+  grid-template-columns: repeat(11, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-11 {
+  grid-template-columns: repeat(10, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-10 {
+  grid-template-columns: repeat(9, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-9 {
+  grid-template-columns: repeat(8, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-8 {
+  grid-template-columns: repeat(7, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-7 {
+  grid-template-columns: repeat(6, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-6 {
+  grid-template-columns: repeat(5, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-5 {
+  grid-template-columns: repeat(4, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-4 {
+  grid-template-columns: repeat(3, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-3 {
+  grid-template-columns: repeat(2, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-2 {
+  grid-template-columns: repeat(1, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-1 {
+  grid-template-columns: repeat(0, minmax(6rem, 1fr)) 9rem;
+}
+.diff-modal .chosen-container {
+  width: 100% !important;
+}
+.diff-modal .chosen-drop {
+  border: 1px solid grey;
+  width: 300px;
+}
+.diff-modal .paragraph-diff-row {
+  background-color: #fcfcfa !important;
+}
+.diff-modal .paragraph-diff-row .paragraph-summary-component-actions {
+  background-color: #fcfcfa !important;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
+  margin-top: 0;
+  position: relative;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item .field-add-more-submit {
+  margin: 10px;
+}
+.js .field--widget-row-entity-reference-paragraphs {
+  position: relative;
+}
+.js .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.processed .paragraph-summary-component-actions {
+  align-items: flex-start;
+  background: #fcfcfa;
+  border-left: 1px solid #dddddd;
+  display: flex;
+  flex-wrap: nowrap;
+  grid: none;
+  justify-content: flex-end;
+  margin-top: -10px;
+  min-height: min-content;
+  padding: 10px 12px;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: auto;
+  z-index: 1;
+}
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
+  border-top-color: #bfbfba;
+  justify-content: center;
+  right: 0;
+  text-align: center;
+}
+@media (max-width: 999px) {
+  .js .field--widget-row-entity-reference-paragraphs .responsive-wrapper {
+    overflow: auto hidden;
+  }
+  .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper {
+    background: #ececec;
+    border-bottom: 1px solid #e6e4df;
+    height: 14px;
+    overflow: auto hidden;
+  }
+  .js .field--widget-row-entity-reference-paragraphs .double-scrollbar-helper .inner {
+    background: #ececec;
+    border-bottom: 1px solid #e6e4df;
+    height: 14px;
+    overflow: hidden;
+  }
+}
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item {
+  position: static;
+}
+.js .field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.raw-paragraphs-tabs-wrapper .paragraphs-tabs {
+  display: none;
+}
+.raw-paragraphs-tabs-wrapper table {
+  margin-bottom: 0;
+}
+.raw-paragraphs-tabs-wrapper > .form-item {
+  margin-top: 0;
+  position: relative;
+}
+.field--widget-row-entity-reference-paragraphs > .paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.field--widget-row-entity-reference-paragraphs > .raw-paragraphs-tabs-wrapper > .form-item > .clearfix > input[type="submit"] {
+  margin: 10px;
+}
+.paragraph-diff-row {
+  background-color: #fcf8e3 !important;
+}
+.paragraph-diff-row .paragraph-summary-component-actions {
+  background-color: #fcf8e3 !important;
+}
+.paragraph-deleted-row {
+  background-color: #ffaaaa !important;
+}
+.paragraph-deleted-row .paragraph-summary-component-actions {
+  background-color: #ffaaaa !important;
+}
+.paragraph-new-row {
+  background-color: #77f177 !important;
+}
+.paragraph-new-row .paragraph-summary-component-actions {
+  background-color: #77f177 !important;
+}
+.paragraph-author {
+  margin-right: 10px;
+}
+.paragraph-summary-component {
+  hyphens: auto;
+  overflow: hidden;
+}
+.paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
+  overflow: visible;
+}
+#drupal-modal {
+  padding: 0;
+}
+#drupal-modal .layout-node-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+#drupal-modal .layout-node-form .layout-region {
+  padding-right: 0;
+  width: auto;
+}
+#drupal-modal .layout-node-form .layout-region-node-main,
+#drupal-modal .layout-node-form .layout-region-node-footer {
+  flex: 1 1 65%;
+}
+#drupal-modal .layout-node-form .layout-region-node-secondary {
+  flex: 0 1 auto;
+}
+#drupal-modal .diff-modal table.field-multiple-table > tbody > tr:first-child > td > div {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: -1px;
+  position: relative;
+}
+#drupal-modal .diff-modal table.diff-table > thead > tr > th {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: -1px;
+  position: relative;
+}
+#drupal-modal .diff-modal table.diff-table > thead > tr > th:first-child,
+#drupal-modal .diff-modal table.diff-table > tbody > tr > td:first-child {
+  width: 100px;
+}
+#drupal-modal .diff-modal .tabledrag-toggle-weight-wrapper {
+  visibility: hidden;
+}
+#drupal-modal > .paragraph-form {
+  box-sizing: border-box;
+  padding: 1em;
+}
+#drupal-modal > .diff-form {
+  padding: 0;
+}
+.paragraph-diff-final {
+  border-top: 3px solid black;
+}
+.diff-original-row {
+  border-bottom: 3px solid black;
+}
+.diff-original-row .paragraph-summary-component-author {
+  font-weight: bold;
+}
+span.field-boolean-tick {
+  font-size: 1.6rem;
+}
+.diff-tick-true {
+  font-size: 1.6rem;
+}
+.diff-tick-false {
+  font-size: 1.6rem;
+  color: #7f0000;
+}
+.diff-context-wrapper td.diff-tick-false {
+  background-color: #fcfcfa;
+  display: block;
+}
+.diff-context-wrapper td.diff-tick-false span.diffchange {
+  background-color: #ffdddd;
+}
+.diff-context-wrapper td.diff-tick-true {
+  background-color: #fcfcfa;
+  display: block;
+}
+.diff-context-wrapper td.diff-tick-true span.diffchange {
+  background-color: #ddffdd;
+}
+table.diff-context-wrapper {
+  display: block;
+}
+.diff-tick-marker {
+  display: block;
+}
+.paragraph-summary-component-field_as_threats_in {
+  min-width: 125px;
+}
+.diff-modal textarea {
+  min-height: 5em;
+}
+.diff-modal table td {
+  vertical-align: top;
+}
+.diff-modal .messages--info {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 5px;
+  border: none;
+  font-size: 0.8em;
+}
+.diff-modal .messages--info .pull-right {
+  margin-left: auto;
+}
+.diff-modal .legend-content-added,
+.diff-modal .legend-content-removed {
+  display: inline-flex;
+  align-items: center;
+}
+.diff-modal .legend-content-added:after,
+.diff-modal .legend-content-removed:after {
+  content: '';
+  display: block;
+  width: 1em;
+  height: 1em;
+  background-color: #faa;
+  margin-left: .5em;
+  margin-right: .5em;
+}
+.diff-modal .legend-content-added:after {
+  background-color: #77f177;
+}
+.diff-modal table.diff-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .9em;
+}
+.diff-modal table.diff-table .diff-context-wrapper td {
+  padding: 0;
+}
+.diff-modal table.diff-table td.widget-type--checkboxes,
+.diff-modal table.diff-table th.widget-type--checkboxes,
+.diff-modal table.diff-table td.widget-type--select,
+.diff-modal table.diff-table th.widget-type--select {
+  min-width: 150px;
+}
+.diff-modal table.diff-table td.widget-type--checkbox,
+.diff-modal table.diff-table th.widget-type--checkbox {
+  min-width: 50px;
+}
+.diff-modal table.diff-table td.widget-type--textarea,
+.diff-modal table.diff-table th.widget-type--textarea,
+.diff-modal table.diff-table td.widget-type--text-format,
+.diff-modal table.diff-table th.widget-type--text-format {
+  min-width: 300px;
+}
+.diff-modal table.diff-table td.field-name--author,
+.diff-modal table.diff-table th.field-name--author {
+  min-width: 100px;
+}
+.diff-modal table.diff-table td.widget-type--textfield,
+.diff-modal table.diff-table th.widget-type--textfield,
+.diff-modal table.diff-table td.widget-type--paragraph,
+.diff-modal table.diff-table th.widget-type--paragraph {
+  min-width: 250px;
+}
+.diff-modal table.diff-table td.field-name--field-as-threats-categories,
+.diff-modal table.diff-table th.field-name--field-as-threats-categories,
+.diff-modal table.diff-table td.field-name--field-as-threats-threat,
+.diff-modal table.diff-table th.field-name--field-as-threats-threat {
+  min-width: 100px;
+}
+.diff-modal table.diff-table > thead > tr > th {
+  background: #ececec !important;
+  font-size: .9em;
+  text-transform: none;
+  border-right: 1px solid #e6e4df;
+  padding: 10px 12px;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td {
+  border-top: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:last-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td {
+  border-bottom: 3px solid black;
+}
+.diff-modal table.diff-table > tbody > tr:first-child > td:first-child {
+  font-weight: bold;
+}
+.diff-modal table.diff-table > tbody > tr > td {
+  border-bottom: 1px solid #e6e4df;
+  border-right: 1px solid #e6e4df;
+  height: 45px;
+  padding: 3px 5px;
+  position: relative;
+  vertical-align: top;
+}
+.diff-modal table.diff-table > tbody > tr > td.diff-deletedline {
+  line-height: 45px;
+}
+.diff-modal table.diff-table > tbody > tr > td input[type="text"],
+.diff-modal table.diff-table > tbody > tr > td textarea,
+.diff-modal table.diff-table > tbody > tr > td select {
+  width: 100%;
+}
+.diff-modal table.diff-table > tbody > tr > td.widget-type--text-format table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textfield table tr td,
+.diff-modal table.diff-table > tbody > tr > td.widget-type--textarea table tr td {
+  background: none;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr {
+  border-bottom: none;
+}
+.diff-modal table.diff-table > tbody > tr > td table tr td {
+  padding: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper {
+  min-height: 34px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  border: 1px solid #dedede;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 12px;
+  min-width: 32px;
+  padding: 3px;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  text-align: center;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:hover {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button:active {
+  background-color: #ffffff;
+  border-color: #0074bd;
+  color: #0074bd;
+  text-decoration: none;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button i {
+  font-size: 1.5em;
+  margin-bottom: 3px;
+}
+.diff-modal table.diff-table > tbody > tr > td .diff-wrapper a.diff-button p {
+  font-size: 0.8em;
+  margin: 0;
+}
+.diff-modal td.diff-marker {
+  width: 1%;
+}
+.diff-modal td.diff-section-title,
+.diff-modal div.diff-section-title {
+  background-color: #f0f0ff;
+}
+.diff-modal td.diff-deletedline {
+  background-color: #faa;
+}
+.diff-modal td.diff-addedline {
+  background-color: #77f177;
+}
+.diff-modal td.field-name {
+  background-color: #f7fcff;
+}
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal td.diff-deletedline span.diffchange {
+  background: none;
+}
+.diff-modal .widget-type--textfield td.diff-addedline span.diffchange,
+.diff-modal .widget-type--text-format td.diff-addedline span.diffchange {
+  background-color: #77f177;
+}
+.diff-modal .widget-type--textfield td.diff-deletedline span.diffchange,
+.diff-modal .widget-type--text-format td.diff-deletedline span.diffchange {
+  background-color: #faa;
+}
+.diff-modal td.diff-addedline,
+.diff-modal td.diff-addedline.diff-full-bg,
+.diff-modal td.diff-addedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-addedline.diff-full-bg {
+  background-color: #77f177;
+}
+.diff-modal td.diff-deletedline,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange,
+.diff-modal td.diff-deletedline.diff-full-bg,
+.diff-modal td.diff-deletedline span.diffchange,
+.diff-modal table.diff-table > tbody > tr > td table tr td.diff-deletedline.diff-full-bg {
+  background-color: #ffaaaa;
+}
+.diff-modal td.diff-addedline.diff-tick-false,
+.diff-modal td.diff-addedline.diff-tick-false .diffchange {
+  background: none !important;
+}
+.paragraph-diff-form-modal .responsive-wrapper {
+  overflow: auto hidden;
+}
+.paragraph-diff-form-modal .double-scrollbar-helper {
+  height: 14px;
+  overflow: auto hidden;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.paragraph-diff-form-modal .double-scrollbar-helper .inner {
+  height: 14px;
+  overflow: hidden;
+}
+.field--widget-text-textarea-with-scayt .cke_top {
+  display: none;
+  padding: 0;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup {
+  margin: 0;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button {
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button:hover,
+.field--widget-text-textarea-with-scayt .cke_top .cke_toolgroup a.cke_button > span:hover {
+  cursor: pointer;
+}
+.field--widget-text-textarea-with-scayt .cke_contents {
+  padding: 5px;
+}
+.field--widget-text-textarea-with-scayt .cke_bottom {
+  display: none;
+}
+.field--widget-text-textarea-with-scayt .counter.warning {
+  color: red;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.field--widget-text-textarea-with-scayt html {
+  overflow-y: auto;
+}
+.tooltip {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  vertical-align: middle;
+}
+.tooltip .right {
+  min-width: 400px;
+  top: 50%;
+  left: 100%;
+  margin-left: 8px;
+  transform: translate(0, -50%);
+  padding: 10px 20px;
+  color: #444444;
+  background-color: #EEEEEE;
+  font-weight: normal;
+  font-size: 13px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+.tooltip .right:hover {
+  display: block;
+}
+.tooltip .right i {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -12px;
+  width: 12px;
+  height: 24px;
+  overflow: hidden;
+}
+.tooltip .right i:after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 0;
+  top: 50%;
+  transform: translate(50%, -50%) rotate(-45deg);
+  background-color: #EEEEEE;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+.tooltip:hover .right {
+  display: block;
+}
+@media all and (min-width: 851px) {
+  .sidebar {
+    float: left;
+    width: 25%;
+  }
+  .sidebar + .page-content {
+    float: left;
+    width: 75%;
+  }
+}
+body.modal-open {
+  overflow: hidden;
+}
+.js td .dropbutton-wrapper {
+  width: 157px;
+}
+.js .dropbutton-widget .dropbutton-action a {
+  max-width: 140px;
+  padding: 4px 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.js .field--widget-row-entity-reference-paragraphs .paragraph-header .paragraph-summary-component.processed .paragraph-summary-component-actions {
+  background-color: #ececec;
+}
+.views-field-operations .dropbutton a {
+  max-width: 140px;
+  padding: 4px 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.user-assign-form .form-submit {
+  margin-left: 0;
+}
+#autosave-notification {
+  z-index: 9999;
+}
+.paragraph-comments-textarea.bubble {
+  z-index: 50;
+  position: absolute;
+  background-color: #ffffff;
+  padding: 25px;
+  border: 1px solid black;
+  width: 40%;
+  display: none;
+}
+.field--widget-assessment-options-buttons .form-required:after {
+  display: none;
+}
+.field--widget-assessment-options-buttons .label:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.bold-cell {
+  font-weight: bold;
+}
+.views-field-field-assessor .item-list ul,
+.views-field-field-assessor .item-list li {
+  list-style-type: none;
+}
+.views-field-field-assessor .item-list li {
+  margin: 0;
+}
+.js-form-item-field-as-threats-categories-options-groups .chosen-container .chosen-results {
+  max-height: fit-content;
+}
+.field--name-field-as-threats-in {
+  float: left;
+}
+.field--name-field-as-threats-out {
+  clear: both;
+}
+.field_as_threats_values_wh_checkboxes legend {
+  float: left;
+}
+.field_as_threats_values_wh_checkboxes > .fieldset-wrapper {
+  float: left;
+  display: block;
+  width: auto;
+}
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field_as_threats_values_wh_checkboxes .form-item label {
+  display: inline;
+  width: auto;
+  max-width: none;
+  padding-left: 5px;
+}
+.paragraph-as-site-threat-iucn-modal-paragraph-add-form > .form-wrapper.field--name-field-as-threats-in .form-item label,
+.paragraph-as-site-threat-iucn-modal-paragraph-edit-form > .form-wrapper.field--name-field-as-threats-in .form-item label {
+  width: 188px;
+  min-width: 188px;
+}
+.horizontal-tab-button a strong.values:after,
+.horizontal-tab-button a strong.threats:after,
+.horizontal-tab-button a strong.protection-and-management:after,
+.horizontal-tab-button a strong.assessing-values:after,
+.horizontal-tab-button a strong.conservation-outlook:after,
+.horizontal-tab-button a strong.references:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.horizontal-tab-button a strong.benefits,
+.horizontal-tab-button a strong.projects {
+  color: #92d050;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,108 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.benefit.body
+    - field.field.node.benefit.field_author_name
+    - field.field.node.benefit.field_benefit_category
+    - field.field.node.benefit.field_benefit_image
+    - field.field.node.benefit.field_benefit_year
+    - field.field.node.benefit.field_links
+    - field.field.node.benefit.field_page_elements
+    - image.style.large_image
+    - node.type.benefit
+  module:
+    - ds
+    - entity_reference_revisions
+    - image
+    - link
+    - options
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_benefit_case_study
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      image:
+        - field_author_name
+        - field_benefit_year
+        - field_benefit_image
+      left:
+        - body
+      right:
+        - field_links
+      content:
+        - field_page_elements
+id: node.benefit.default
+targetEntityType: node
+bundle: benefit
+mode: default
+content:
+  body:
+    type: text_default
+    weight: 3
+    region: left
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_author_name:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: image
+  field_benefit_image:
+    weight: 2
+    label: hidden
+    settings:
+      image_style: large_image
+      image_link: ''
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: image
+    region: image
+  field_benefit_year:
+    weight: 1
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: image
+  field_links:
+    weight: 4
+    label: above
+    settings:
+      trim_length: null
+      target: _blank
+      url_only: false
+      url_plain: false
+      rel: '0'
+    third_party_settings:
+      ds:
+        ds_limit: ''
+    type: link
+    region: right
+  field_page_elements:
+    type: entity_reference_revisions_entity_view
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_benefit_category: true
+  langcode: true
+  links: true

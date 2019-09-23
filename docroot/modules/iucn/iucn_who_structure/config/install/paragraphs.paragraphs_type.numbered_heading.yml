@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: numbered_heading
+label: 'Numbered heading'
+behavior_plugins: {  }

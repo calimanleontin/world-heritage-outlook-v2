@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: number_heading_list
+label: 'Numbered heading list (not used)'
+behavior_plugins: {  }

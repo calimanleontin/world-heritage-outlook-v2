@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_creation
+    - workflow.state.assessment_new
+id: assessment_creation_new
+label: Save
+module: workflow
+from_sid: assessment_creation
+to_sid: assessment_new
+roles:
+  workflow_author: workflow_author
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

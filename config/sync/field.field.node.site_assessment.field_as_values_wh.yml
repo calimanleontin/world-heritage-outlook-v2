@@ -7,20 +7,44 @@ dependencies:
     - node.type.site_assessment
     - paragraphs.paragraphs_type.as_site_value_wh
   module:
+    - disable_field
     - entity_reference_revisions
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
+      assessment_ready_for_review: assessment_ready_for_review
+      assessment_under_review: assessment_under_review
+      assessment_finished_reviewing: assessment_finished_reviewing
+      assessment_under_comparison: assessment_under_comparison
+      assessment_reviewing_references: assessment_reviewing_references
+      assessment_final_changes: assessment_final_changes
+      assessment_approved: assessment_approved
+      assessment_draft: assessment_draft
+      assessment_published: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_values_wh
 field_name: field_as_values_wh
 entity_type: node
 bundle: site_assessment
 label: 'Identifying and describing values'
-description: ''
-required: false
+description: 'Define the values of this World Heritage site by clicking on the "Add Values" button on the right hand side. Each value requires a detailed description and cross-reference to the relevant World Heritage criterion/criteria. Each criterion can encompass a number of values and these should be broken down as relevant. The "Description" column must be systematically referenced, e.g. (SoOUV, 2010). Other important biodiversity values are described separately below.'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_value_wh: as_site_value_wh
     target_bundles_drag_drop:
@@ -54,6 +78,12 @@ settings:
       as_site_threat:
         weight: 21
         enabled: false
+      as_site_reference:
+        weight: 22
+        enabled: false
+      decision:
+        weight: 27
+        enabled: false
       image_grid:
         weight: 27
         enabled: false
@@ -65,9 +95,6 @@ settings:
         enabled: false
       number_heading_list:
         weight: 30
-        enabled: false
-      pdf_download_button:
-        weight: 31
         enabled: false
       teaser:
         weight: 32

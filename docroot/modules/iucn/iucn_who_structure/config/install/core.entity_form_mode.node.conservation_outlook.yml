@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.conservation_outlook
+label: 'Conservation Outlook'
+targetEntityType: node
+cache: true

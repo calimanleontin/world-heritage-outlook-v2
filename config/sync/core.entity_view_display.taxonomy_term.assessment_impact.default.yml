@@ -1,0 +1,26 @@
+uuid: 9f1296c7-ed7b-44d0-8583-187a798485b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_impact
+  module:
+    - text
+id: taxonomy_term.assessment_impact.default
+targetEntityType: taxonomy_term
+bundle: assessment_impact
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

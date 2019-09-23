@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_ready_for_review
+label: 'Pre-review edits'
+module: workflow
+wid: assessment
+weight: -6
+sysid: 0

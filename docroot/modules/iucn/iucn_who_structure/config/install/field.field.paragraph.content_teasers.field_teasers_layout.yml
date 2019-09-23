@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_teasers_layout
+    - paragraphs.paragraphs_type.content_teasers
+  module:
+    - options
+id: paragraph.content_teasers.field_teasers_layout
+field_name: field_teasers_layout
+entity_type: paragraph
+bundle: content_teasers
+label: Layout
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: list
+default_value_callback: ''
+settings: {  }
+field_type: list_string

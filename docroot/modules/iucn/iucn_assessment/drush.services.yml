@@ -1,0 +1,6 @@
+services:
+  iucn_assessment.commands:
+    class: \Drupal\iucn_assessment\Commands\IucnAssessmentCommands
+    arguments: ['@entity_type.manager', '@iucn_assessment.cycle_creator', '@iucn_fields.term_alter']
+    tags:
+      - { name: drush.command }

@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.content_html.field_content
+    - field.field.paragraph.content_html.field_grid_ratio
+    - field.field.paragraph.content_html.field_hide_on_mobile
+    - field.field.paragraph.content_html.field_paragraph_background
+    - paragraphs.paragraphs_type.content_html
+  module:
+    - ds
+    - options
+    - text
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_content
+id: paragraph.content_html.default
+targetEntityType: paragraph
+bundle: content_html
+mode: default
+content:
+  field_content:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_grid_ratio:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_hide_on_mobile:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+hidden:
+  field_paragraph_background: true

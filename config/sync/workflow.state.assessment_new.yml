@@ -1,0 +1,12 @@
+uuid: 2a864827-ec52-4b11-8591-b99eeeacbf7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_new
+label: New
+module: workflow
+wid: assessment
+weight: -9
+sysid: 0

@@ -1,0 +1,27 @@
+uuid: 71eaf8fc-7ac6-49f0-8dd0-b9bc4acaa01a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_invasive_species_names
+    - paragraphs.paragraphs_type.as_site_threat
+  module:
+    - disable_field
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
+id: paragraph.as_site_threat.field_invasive_species_names
+field_name: field_invasive_species_names
+entity_type: paragraph
+bundle: as_site_threat
+label: 'Name(s) of invasive or problematic species (please indicate genus and species names if known)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

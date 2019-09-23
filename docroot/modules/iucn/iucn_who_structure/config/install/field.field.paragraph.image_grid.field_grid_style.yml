@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_grid_style
+    - paragraphs.paragraphs_type.image_grid
+  module:
+    - options
+id: paragraph.image_grid.field_grid_style
+field_name: field_grid_style
+entity_type: paragraph
+bundle: image_grid
+label: 'Grid style'
+description: 'Select number of images to show on each row'
+required: true
+translatable: false
+default_value:
+  -
+    value: '3'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

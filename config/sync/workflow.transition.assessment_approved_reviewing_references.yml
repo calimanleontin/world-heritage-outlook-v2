@@ -1,0 +1,20 @@
+uuid: e9e095ed-00a2-4293-9043-77de527be4b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_reviewing_references
+id: assessment_approved_reviewing_references
+label: ''
+module: workflow
+from_sid: assessment_approved
+to_sid: assessment_reviewing_references
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

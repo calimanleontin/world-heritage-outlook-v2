@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.numbered_heading.field_heading
+    - field.field.paragraph.numbered_heading.field_heading_icon
+    - field.field.paragraph.numbered_heading.field_heading_number
+    - field.field.paragraph.numbered_heading.field_wrapper
+    - paragraphs.paragraphs_type.numbered_heading
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_1col
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      content:
+        - field_heading_number
+        - field_heading
+id: paragraph.numbered_heading.default
+targetEntityType: paragraph
+bundle: numbered_heading
+mode: default
+content:
+  field_heading:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_heading_number:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_heading_icon: true
+  field_wrapper: true

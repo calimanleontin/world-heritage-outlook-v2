@@ -6,13 +6,20 @@ dependencies:
     - node.type.site_assessment
     - paragraphs.paragraphs_type.as_site_project
   module:
+    - disable_field
     - entity_reference_revisions
+third_party_settings:
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_projects_needs
 field_name: field_as_projects_needs
 entity_type: node
 bundle: site_assessment
-label: 'Projects needs'
-description: ''
+label: 'Compilation of potential site needs'
+description: 'If information is available on site needs that could be addressed through future project work, please update/record this below, indicating each site need separately.'
 required: false
 translatable: false
 default_value: {  }
@@ -20,6 +27,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_project: as_site_project
     target_bundles_drag_drop:
@@ -41,7 +49,34 @@ settings:
       danger_list:
         weight: 13
         enabled: false
-      site_benefit:
-        weight: 14
+      as_site_benefit:
+        weight: 17
+        enabled: false
+      as_site_key_conservation:
+        weight: 18
+        enabled: false
+      as_site_protection:
+        weight: 20
+        enabled: false
+      as_site_threat:
+        weight: 21
+        enabled: false
+      decision:
+        weight: 27
+        enabled: false
+      image_grid:
+        weight: 28
+        enabled: false
+      image_link:
+        weight: 29
+        enabled: false
+      numbered_heading:
+        weight: 30
+        enabled: false
+      number_heading_list:
+        weight: 31
+        enabled: false
+      teaser:
+        weight: 32
         enabled: false
 field_type: entity_reference_revisions

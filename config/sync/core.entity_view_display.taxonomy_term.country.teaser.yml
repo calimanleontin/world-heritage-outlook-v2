@@ -1,0 +1,37 @@
+uuid: f01a7b5b-5fd5-4eb0-b52e-7046fc18b6c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.country.field_a2
+    - field.field.taxonomy_term.country.field_a3
+    - field.field.taxonomy_term.country.field_active
+    - field.field.taxonomy_term.country.field_currency
+    - field.field.taxonomy_term.country.field_idd
+    - field.field.taxonomy_term.country.field_iucn_region
+    - field.field.taxonomy_term.country.field_number
+    - field.field.taxonomy_term.country.field_unesco_region
+    - field.field.taxonomy_term.country.field_zip_required
+    - taxonomy.vocabulary.country
+id: taxonomy_term.country.teaser
+targetEntityType: taxonomy_term
+bundle: country
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_a2: true
+  field_a3: true
+  field_active: true
+  field_currency: true
+  field_idd: true
+  field_iucn_region: true
+  field_number: true
+  field_unesco_region: true
+  field_zip_required: true
+  langcode: true
+  search_api_excerpt: true

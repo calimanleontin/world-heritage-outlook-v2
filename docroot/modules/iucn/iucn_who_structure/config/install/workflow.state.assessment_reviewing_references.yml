@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.assessment
+id: assessment_reviewing_references
+label: 'Reference standardisation'
+module: workflow
+wid: assessment
+weight: -2
+sysid: 0

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.inside_list
+label: 'Inside list'
+targetEntityType: paragraph
+cache: true

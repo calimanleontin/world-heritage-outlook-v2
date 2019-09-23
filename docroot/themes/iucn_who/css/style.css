@@ -15380,6 +15380,12 @@ a[rel="bookmark"] {
 [dir] .field--name-field-teasers .field--name-node-title:first-child > * {
   margin-top: 0;
 }
+.field--name-field-as-references-p .paragraph a {
+  color: #134780;
+}
+.field--name-field-as-references-p .paragraph a:hover {
+  color: #03afdf;
+}
 [dir] .paragraph .field--type-text-long h1, [dir] .paragraph .field--type-text-long h2, [dir] .paragraph .field--type-text-long h3, [dir] .paragraph .field--type-text-long h4, [dir] .paragraph .field--type-text-long h5, [dir] .paragraph .field--type-text-long h6 {
   margin-top: 1.5em;
   margin-bottom: .75em;
@@ -19681,5 +19687,8 @@ a[rel="bookmark"] {
 .decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:before,
 .decision-wrapper:only-child > .iucn-who-decision-tree-group > .node--type-decision:after {
   display: none;
+}
+[dir] .toolbar-icon-iucn-who-core-administration-dashboard:before {
+  background-image: url(../../../core/themes/stable/images/core/icons/787878/barchart.svg);
 }
 /*# sourceMappingURL=style.css.map */

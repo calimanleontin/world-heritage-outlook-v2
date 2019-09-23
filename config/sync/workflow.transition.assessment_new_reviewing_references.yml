@@ -1,0 +1,20 @@
+uuid: d56f47b2-69eb-4bde-a43f-b6a4d763f7e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_new
+    - workflow.state.assessment_reviewing_references
+id: assessment_new_reviewing_references
+label: ''
+module: workflow
+from_sid: assessment_new
+to_sid: assessment_reviewing_references
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

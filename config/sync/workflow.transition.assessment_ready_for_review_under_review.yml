@@ -1,0 +1,20 @@
+uuid: e28d9711-5eb8-4a99-ab93-f426591c010d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_ready_for_review
+    - workflow.state.assessment_under_review
+id: assessment_ready_for_review_under_review
+label: 'Send assessment to reviewers'
+module: workflow
+from_sid: assessment_ready_for_review
+to_sid: assessment_under_review
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

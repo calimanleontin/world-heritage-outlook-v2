@@ -4,11 +4,35 @@ dependencies:
   config:
     - field.storage.node.field_as_vass_bio_text
     - node.type.site_assessment
+  module:
+    - disable_field
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
+      assessment_ready_for_review: assessment_ready_for_review
+      assessment_under_review: assessment_under_review
+      assessment_finished_reviewing: assessment_finished_reviewing
+      assessment_under_comparison: assessment_under_comparison
+      assessment_reviewing_references: assessment_reviewing_references
+      assessment_final_changes: assessment_final_changes
+      assessment_approved: assessment_approved
+      assessment_draft: assessment_draft
+      assessment_published: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_vass_bio_text
 field_name: field_as_vass_bio_text
 entity_type: node
 bundle: site_assessment
-label: 'Justification of assessment'
+label: 'Assessment of the current state and trend of other important biodiversity values'
 description: ''
 required: false
 translatable: true

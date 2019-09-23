@@ -4,5 +4,4 @@ dependencies: {  }
 name: 'Assessment protection rating'
 vid: assessment_protection_rating
 description: 'A list of level of effectiveness ratings assigned to protection measures taken'
-hierarchy: 0
 weight: 0

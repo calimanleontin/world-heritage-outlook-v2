@@ -1,0 +1,47 @@
+assign users to assessments:
+  title: 'Assign users to assessments'
+
+assign coordinator to assessment:
+  title: 'Assign coordinator to assessment'
+
+assign any coordinator to assessment:
+  title: 'Assign any coordinator to assessment'
+
+bulk assign users to assessments:
+  title: 'Bulk assign users to assessments'
+
+edit assessment in any state:
+  title: 'Edit assessment in any state'
+
+edit new assessments:
+  title: 'Edit new assessments'
+
+edit assessment main data:
+  title: 'Edit assessment main data (values entities, published date, etc)'
+
+change other users agreement settings:
+  title: 'Can change other user agreement settings'
+
+view assessment differences:
+  title: 'View assessment differences'
+
+view assessment reports:
+  title: 'View assessment reports'
+
+view home button:
+  title: 'View home button'
+
+force finish reviewing:
+  title: 'Force finish reviewing'
+
+force finish assessment:
+  title: 'Force finish assessment'
+
+force finish reference standardisation:
+  title: 'Force finish reference standardisation'
+
+export nodes to word:
+  title: 'Export nodes to Word'
+
+permission_callbacks:
+  - Drupal\iucn_assessment\AssessmentFieldsPermissions::getPermissions

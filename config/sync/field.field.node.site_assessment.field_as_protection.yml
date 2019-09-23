@@ -7,13 +7,36 @@ dependencies:
     - node.type.site_assessment
     - paragraphs.paragraphs_type.as_site_protection
   module:
+    - disable_field
     - entity_reference_revisions
+    - iucn_assessment
+third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
+      assessment_ready_for_review: assessment_ready_for_review
+      assessment_under_review: assessment_under_review
+      assessment_finished_reviewing: assessment_finished_reviewing
+      assessment_under_comparison: assessment_under_comparison
+      assessment_reviewing_references: assessment_reviewing_references
+      assessment_final_changes: assessment_final_changes
+      assessment_approved: assessment_approved
+      assessment_draft: assessment_draft
+      assessment_published: 0
+  disable_field:
+    add_disable: none
+    add_disable_roles: {  }
+    edit_disable: none
+    edit_disable_roles: {  }
 id: node.site_assessment.field_as_protection
 field_name: field_as_protection
 entity_type: node
 bundle: site_assessment
 label: 'Assessing Protection and Management'
-description: ''
+description: 'Assess the state of protection and management of the World Heritage site below. Determine the effectiveness of protection and management under each topic by selecting one of five ratings: Highly Effective, Mostly Effective, Some Concern, Serious Concern and Data Deficient. These ratings are defined in Table 3.1 of the Guidelines, and questions to help guide the assessment are provided in Table 3.2. The ''Justification for assessment'' must be systematically referenced, e.g. (SOC report, 2009).'
 required: false
 translatable: false
 default_value: {  }
@@ -21,6 +44,7 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
+    negate: 0
     target_bundles:
       as_site_protection: as_site_protection
     target_bundles_drag_drop:
@@ -48,6 +72,9 @@ settings:
       content_html:
         weight: 21
         enabled: false
+      as_site_reference:
+        weight: 22
+        enabled: false
       content_teasers:
         weight: 22
         enabled: false
@@ -63,13 +90,13 @@ settings:
       teaser:
         weight: 26
         enabled: false
+      decision:
+        weight: 27
+        enabled: false
       image_grid:
         weight: 27
         enabled: false
       image_link:
         weight: 28
-        enabled: false
-      pdf_download_button:
-        weight: 31
         enabled: false
 field_type: entity_reference_revisions

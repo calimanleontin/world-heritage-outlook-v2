@@ -1,0 +1,26 @@
+uuid: 51e83b3e-5b1e-4fe1-87be-337f9640afee
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_benefits_impact_level
+  module:
+    - text
+id: taxonomy_term.assessment_benefits_impact_level.default
+targetEntityType: taxonomy_term
+bundle: assessment_benefits_impact_level
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

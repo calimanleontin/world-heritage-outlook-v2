@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+name: free_crop_thumbnail_100
+label: 'Free crop thumbnail (100)'
+effects:
+  d0c9b17a-cff0-4a3f-84d8-5de1422b1bde:
+    uuid: d0c9b17a-cff0-4a3f-84d8-5de1422b1bde
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: free_crop
+  d4239a22-b6fd-4cb4-b4e6-089fc71f7319:
+    uuid: d4239a22-b6fd-4cb4-b4e6-089fc71f7319
+    id: image_scale
+    weight: 2
+    data:
+      width: 100
+      height: null
+      upscale: false

@@ -6,32 +6,52 @@ dependencies:
     - field.field.paragraph.as_site_protection.field_as_protection_rating
     - field.field.paragraph.as_site_protection.field_as_protection_topic
     - paragraphs.paragraphs_type.as_site_protection
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_protection_topic
+      terms:
+        - field_as_protection_rating
+      description:
+        - field_as_description
 id: paragraph.as_site_protection.default
 targetEntityType: paragraph
 bundle: as_site_protection
 mode: default
 content:
   field_as_description:
-    weight: 1
-    label: above
+    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
+    region: description
   field_as_protection_rating:
-    weight: 2
-    label: above
+    weight: 1
+    label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
+    region: terms
   field_as_protection_topic:
     weight: 0
-    label: above
+    label: hidden
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-hidden: {  }
+    region: title
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true

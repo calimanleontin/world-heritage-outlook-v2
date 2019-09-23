@@ -1,0 +1,85 @@
+#block-tools {
+  > ul.menu {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 0;
+    margin: 0 1em 0 0;
+    > li.menu-item {
+      > a {
+        font-weight: bold;
+      }
+      > span {
+        color: #0074bd;
+        font-weight: bold;
+        position: relative;
+        display: block;
+        padding: .5rem 1rem;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .125);
+      }
+    }
+    li.menu-item {
+      list-style-type: none;
+      list-style-image: none;
+      padding: 0;
+      > a {
+        position: relative;
+        display: block;
+        padding: .5rem 1rem;
+        margin-bottom: -1px;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, .125);
+        &:hover {
+          color: #495057;
+          text-decoration: none;
+          background-color: #f8f9fa;
+        }
+        &.is-active {
+          background: @background_color_3;
+          color: #000!important;
+        }
+      }
+      ul.menu {
+        margin: 0 0 0 2em;
+        li.menu-item {
+          a {
+            color: #009cf9;
+            padding: .25rem .75rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+div[id^="block-views-block-account-assignments-block"],
+#block-views-block-people-assignments-block-1 {
+  > h2 {
+    display: inline-block;
+    border-bottom: 2px solid;
+    padding-bottom: 5px;
+  }
+  .form--inline {
+    > .form-item, > .form-actions {
+      float: none;
+      display: inline-block;
+      max-width: 200px;
+      .chosen-container, input, button {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+#block-views-block-people-assignments-block-1 {
+  .views-field-user-assignments {
+    width: 40%;
+    ol {
+      margin: 0;
+    }
+  }
+}

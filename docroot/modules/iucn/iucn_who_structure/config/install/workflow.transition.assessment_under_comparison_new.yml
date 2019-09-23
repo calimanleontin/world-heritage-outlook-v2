@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_new
+    - workflow.state.assessment_under_comparison
+id: assessment_under_comparison_new
+label: ''
+module: workflow
+from_sid: assessment_under_comparison
+to_sid: assessment_new
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

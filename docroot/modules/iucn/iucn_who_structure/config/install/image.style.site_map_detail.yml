@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: site_map_detail
+label: 'Site map detail'
+effects:
+  85202afc-f482-474c-95d3-a1a38fb843c1:
+    uuid: 85202afc-f482-474c-95d3-a1a38fb843c1
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 213
+      anchor: center-center

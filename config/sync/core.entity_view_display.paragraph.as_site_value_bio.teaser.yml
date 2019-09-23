@@ -1,0 +1,34 @@
+uuid: e957c2d9-91cf-4545-8ffd-a2d866ded548
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.teaser
+    - field.field.paragraph.as_site_value_bio.field_as_description
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_state
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_text
+    - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
+    - field.field.paragraph.as_site_value_bio.field_as_values_value
+    - paragraphs.paragraphs_type.as_site_value_bio
+id: paragraph.as_site_value_bio.teaser
+targetEntityType: paragraph
+bundle: as_site_value_bio
+mode: teaser
+content:
+  field_as_values_value:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_as_description: true
+  field_as_values_curr_state: true
+  field_as_values_curr_text: true
+  field_as_values_curr_trend: true
+  search_api_excerpt: true

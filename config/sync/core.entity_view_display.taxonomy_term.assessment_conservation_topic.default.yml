@@ -1,0 +1,26 @@
+uuid: a2928de9-b01d-4e67-9f67-65acff269e59
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_conservation_topic
+  module:
+    - text
+id: taxonomy_term.assessment_conservation_topic.default
+targetEntityType: taxonomy_term
+bundle: assessment_conservation_topic
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

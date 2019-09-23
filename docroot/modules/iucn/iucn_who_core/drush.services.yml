@@ -1,0 +1,5 @@
+services:
+  iucn.test_data:
+    class: \Drupal\iucn_who_core\Commands\IucnTestDataCommands
+    tags:
+      - { name: drush.command }

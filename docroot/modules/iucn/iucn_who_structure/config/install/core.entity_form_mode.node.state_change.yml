@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.state_change
+label: 'State change'
+targetEntityType: node
+cache: true

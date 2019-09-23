@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_headline_bg
+    - paragraphs.paragraphs_type.number_heading_list
+  module:
+    - options
+id: paragraph.number_heading_list.field_headline_bg
+field_name: field_headline_bg
+entity_type: paragraph
+bundle: number_heading_list
+label: Background
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

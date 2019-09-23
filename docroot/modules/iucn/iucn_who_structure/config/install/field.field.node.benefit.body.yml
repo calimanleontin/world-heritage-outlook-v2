@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.benefit
+  module:
+    - text
+id: node.benefit.body
+field_name: body
+entity_type: node
+bundle: benefit
+label: 'Description (under image)'
+description: 'This is shown in the left area under the image, next to Links'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

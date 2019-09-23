@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_under_assessment
+    - workflow.state.assessment_under_evaluation
+id: assessment_under_evaluation_under_assessment
+label: 'Send to assessor'
+module: workflow
+from_sid: assessment_under_evaluation
+to_sid: assessment_under_assessment
+roles:
+  administrator: administrator
+  iucn_manager: iucn_manager
+  coordinator: coordinator
+  workflow_author: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

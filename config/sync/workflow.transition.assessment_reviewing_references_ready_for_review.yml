@@ -1,0 +1,20 @@
+uuid: 3eaaa41e-5737-44ed-a0aa-bc9176075f95
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_ready_for_review
+    - workflow.state.assessment_reviewing_references
+id: assessment_reviewing_references_ready_for_review
+label: ''
+module: workflow
+from_sid: assessment_reviewing_references
+to_sid: assessment_ready_for_review
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

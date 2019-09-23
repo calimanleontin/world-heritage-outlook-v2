@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.teaser.field_description
+    - field.field.paragraph.teaser.field_image
+    - field.field.paragraph.teaser.field_page_teaser_link
+    - field.field.paragraph.teaser.field_title
+    - image.style.page_teaser
+    - paragraphs.paragraphs_type.teaser
+  module:
+    - image
+    - string_field_formatter
+    - text
+id: paragraph.teaser.default
+targetEntityType: paragraph
+bundle: teaser
+mode: default
+content:
+  field_description:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    type: text_trimmed
+    region: content
+  field_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: page_teaser
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_title:
+    weight: 1
+    label: hidden
+    settings:
+      wrap_tag: h2
+    third_party_settings: {  }
+    type: plain_string_formatter
+    region: content
+hidden:
+  field_page_teaser_link: true

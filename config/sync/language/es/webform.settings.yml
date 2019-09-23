@@ -1,4 +1,5 @@
 settings:
+  default_form_close_message: 'Sorry...This form is closed to new submissions.'
   default_submit_button_label: Submit
   default_reset_button_label: Restablecer
   default_wizard_prev_button_label: '< Previous Page'

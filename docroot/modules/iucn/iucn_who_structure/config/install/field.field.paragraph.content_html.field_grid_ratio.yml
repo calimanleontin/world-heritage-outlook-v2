@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_grid_ratio
+    - paragraphs.paragraphs_type.content_html
+  module:
+    - options
+id: paragraph.content_html.field_grid_ratio
+field_name: field_grid_ratio
+entity_type: paragraph
+bundle: content_html
+label: 'Grid style'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

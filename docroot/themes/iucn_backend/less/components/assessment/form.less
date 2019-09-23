@@ -1,0 +1,394 @@
+.node-site-assessment-edit-form,
+.node-site-assessment-form,
+.node-site-assessment-state-change-form {
+  .current-state {
+    margin: 10px 0;
+  }
+  .form-item-title-0-value {
+    margin-top: 0;
+  }
+  .main-data-container {
+    display: block;
+    widows: 100%;
+    .data-fields,
+    .help-text {
+      box-sizing: border-box;
+      padding-right: 5px;
+      @media screen and (min-width: 980px) {
+        float: left;
+        width: 50%;
+      }
+      img {
+        vertical-align: middle;
+      }
+    }
+    .help-text {
+      background: #f5f5f2;
+      border: 1px solid rgb(230, 228, 223);
+      padding: 0 5px;
+      border-radius: 5px;
+    }
+  }
+  .layout-region {
+    padding-right: 0!important;
+  }
+  .layout-node-form {
+    .layout-region {
+      width: 100%;
+    }
+
+    .layout-region-node-footer__content {
+      border-top: none;
+    }
+
+    .horizontal-tabs-panes {
+      details {
+        > .details-wrapper {
+          padding: 0;
+        }
+      }
+
+      .horizontal-tabs-pane {
+        padding: 0;
+      }
+
+      .horizontal-tabs-pane.field-group-assessment-tab {
+        margin-top: 0;
+        margin-bottom: 0;
+        border-radius: 0;
+
+        .tabledrag-toggle-weight-wrapper {
+          padding: 5px 10px 5px 0;
+        }
+      }
+    }
+
+    #edit-group-as-key-cons {
+      .details-wrapper {
+        padding: 0;
+      }
+    }
+
+    .horizontal-tabs-pane.field-group-assessment-tab {
+      .details-wrapper {
+        > .form-wrapper {
+          &:not(.field--widget-row-entity-reference-paragraphs) {
+            padding: 0 10px;
+          }
+        }
+      }
+
+      fieldset {
+        &:not(.fieldgroup) {
+          margin: 10px;
+
+          > legend {
+            position: relative;
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+
+
+  .horizontal-tab-button {
+    .fa {
+      font-size: 1em;
+      margin: 0 2.1em 0 1em;
+      position: relative;
+      color: @color_1;
+      -webkit-text-stroke: 1px #0074bd;
+      transition: color .1s;
+      &:hover {
+        color: @color_2;
+        cursor: pointer;
+        -webkit-text-stroke: initial;
+      }
+      &:before {
+        font-size: 2em;
+        position: absolute;
+        right: -22px;
+        top: -30px;
+        z-index: 200;
+      }
+    }
+  }
+
+  .horizontal-tabs {
+    ul.horizontal-tabs-list {
+      li.selected {
+        display: flex;
+        align-items: center;
+        a {
+          padding-left: 1em;
+          &:hover {
+            background-color: initial;
+          }
+        }
+      }
+    }
+  }
+
+  .horizontal-tabs-panes {
+    .description {
+      position: relative;
+      margin: 0;
+      padding: 5px 5px 5px 24px;
+      border: none;
+      background-image: linear-gradient(to bottom, white, #ffffbe);
+      font-style: italic;
+      &:before {
+        display: block;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 14px;
+        height: 16px;
+        content: ' ';
+        background: transparent url(../images/tip-bulb.png) no-repeat 0 0;
+      }
+    }
+  }
+
+
+  .field--name-field-coordinator,
+  .field--name-field-assessor,
+  .field--name-field-reviewers,
+  .field--name-field-references-reviewer {
+    .form-item.form-disabled {
+      display: none;
+    }
+  }
+}
+
+.add-paragraph-form-modal,
+.edit-paragraph-form-modal {
+  top: 10% !important;
+}
+
+.add-paragraph-form-modal .paragraph-form,
+.edit-paragraph-form-modal .paragraph-form {
+  width: 100%;
+  > .form-wrapper {
+    padding-bottom: 10px;
+
+    > div.as-checkboxes {
+      fieldset {
+        display: block;
+      }
+    }
+  }
+
+  fieldset.error {
+    border: 1px solid #e62600;
+    .form-item {
+      label {
+        color: #a51b00;
+      }
+    }
+  }
+
+  .form-type-checkbox {
+    input.error + label {
+      color: #a51b00;
+      font-weight: bold;
+    }
+  }
+
+  .form-checkboxes > div,
+  .form-type-textfield,
+  .form-type-textarea,
+  .form-type-checkbox,
+  .form-type-select,
+  .form-composite {
+    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+
+    .label, label, legend {
+      order: -1;
+    }
+
+    > .form-data,
+    > .form-text {
+      min-width: 0;
+    }
+
+    .chosen-container {
+      min-width: 0;
+      max-width: 100%;
+      width: 100% !important;
+
+      @media (min-width: 992px) {
+        min-width: 200px;
+      }
+
+      .chosen-drop {
+        width: 100%;
+        border-top: 1px solid #aaa;
+        min-width: 200px;
+      }
+    }
+    > .chosen-container {
+      width: auto !important;
+    }
+
+  }
+  .fieldset-wrapper {
+    .form-type-textfield,
+    .form-type-textarea,
+    .form-type-checkbox,
+    .form-type-select,
+    .form-composite {
+      display: block;
+    }
+  }
+
+  > .form-wrapper > .fieldgroup {
+    display: table-row;
+    > .label, > label, > legend {
+      vertical-align: top;
+      display: table-cell;
+      width: 200px;
+      float: left;
+    }
+    > .fieldset-wrapper {
+      display: table-cell;
+    }
+  }
+
+  td.description-row {
+    width: (200px - 36px);
+  }
+}
+
+.field-group-assessment-fieldset,
+.overall-container {
+  > legend {
+    display: block;
+    width: 100%;
+    > .fieldset-legend {
+      display: block;
+    }
+  }
+}
+
+.field--name-field-as-values-criteria {
+  legend {
+    // display: contents !important;
+    .fieldset-legend {
+      // display: table-cell;
+      // width: 200px;
+    }
+  }
+}
+
+.paragraph-as-site-benefit-iucn-modal-paragraph-add-form,
+.paragraph-as-site-benefit-iucn-modal-paragraph-edit-form {
+  > fieldset {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+}
+.field--name-field-as-threats-categories.field--widget-assessment-options-buttons {
+  .form-checkboxes {
+    > div:first-child {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline;
+      padding-left: 5px;
+    }
+  }
+}
+.required-fields {
+  .fieldset-legend:after {
+    .form-required();
+  }
+}
+
+.hidden-container {
+  display: none !important;
+}
+
+.comments-container {
+  .comments-help {
+    background-color: #ffff99;
+    padding: 10px;
+  }
+  textarea {
+    background-color: #ffff99;
+  }
+  .fieldset-wrapper {
+    margin-top: 20px;
+  }
+}
+
+.paragraph-comments-textarea {
+  .comments-container {
+    display: flex;
+    margin-bottom: 10px;
+    .comment-author {
+      min-width: 120px;
+      width: 120px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+div[aria-required="aria-required"] {
+  label {
+    &:after {
+      .form-required();
+    }
+  }
+}
+
+.ui-dialog.field-diff-form-modal,
+.ui-dialog.paragraph-diff-form-modal {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+
+  &,
+  & .ui-widget-content.ui-dialog-content {
+    height: 100% !important;
+  }
+
+  .ui-dialog-titlebar,
+  .ui-widget-content.ui-dialog-buttonpane {
+    border-radius: 0;
+  }
+}
+
+.ui-dialog.paragraph-diff-form-modal .ui-widget-content.ui-dialog-content {
+  @media (min-width: 768px) {
+    overflow-x: hidden;
+  }
+}
+
+#group-threat-extent {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  .form-item-field-as-threats-in-value {
+    margin-top: 0;
+  }
+  .fieldset-wrapper {
+    margin-top: 10px;
+  }
+  .field--name-field-as-threats-in {
+    width: 200px;
+  }
+  .form-item-field-as-threats-extent {
+    label {
+      float: left;
+    }
+  }
+}

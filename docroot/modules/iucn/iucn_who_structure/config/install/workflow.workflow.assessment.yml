@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+id: assessment
+label: Assessment
+module: workflow
+options:
+  name_as_title: 0
+  fieldset: 0
+  options: buttons
+  schedule_timezone: 0
+  comment_log_node: 0
+  watchdog_log: 1

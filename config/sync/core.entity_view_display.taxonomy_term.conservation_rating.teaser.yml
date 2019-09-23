@@ -1,0 +1,23 @@
+uuid: 194b0080-ca6b-438d-bf3f-240ad1c9cc95
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.conservation_rating.field_css_identifier
+    - taxonomy.vocabulary.conservation_rating
+_core:
+  default_config_hash: Px1GFy68e4D99GOi_R-u1xhNXDOchAZTSr_GeY3v5ds
+id: taxonomy_term.conservation_rating.teaser
+targetEntityType: taxonomy_term
+bundle: conservation_rating
+mode: teaser
+content: {  }
+hidden:
+  description: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_css_identifier: true
+  langcode: true
+  search_api_excerpt: true

@@ -442,6 +442,7 @@
 
     // If no Ajax callback URL was given, use the link href or form action.
     if (!this.url) {
+      this.url = '';
       const $element = $(this.element);
       if ($element.is('a')) {
         this.url = $element.attr('href');

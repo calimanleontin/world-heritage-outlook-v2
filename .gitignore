@@ -11,6 +11,7 @@ acquia-files
 drush/sites/self.site.yml
 # Configs
 config/*/recaptcha.settings.yml
+docroot/phpunit.xml
 
 # Sensitive information #
 #########################
@@ -38,6 +39,7 @@ conf/config.json
 conf/apache.conf
 docroot/sites/local.services.yml
 docroot/core/phpunit.xml
+docroot/phpunit.xml
 docroot/core/install.php
 
 # Vagrant Files #

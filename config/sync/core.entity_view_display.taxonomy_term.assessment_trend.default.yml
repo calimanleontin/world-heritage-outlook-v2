@@ -1,0 +1,26 @@
+uuid: b102447c-106a-4c1a-8a29-936ca5c69326
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.assessment_trend
+  module:
+    - text
+id: taxonomy_term.assessment_trend.default
+targetEntityType: taxonomy_term
+bundle: assessment_trend
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

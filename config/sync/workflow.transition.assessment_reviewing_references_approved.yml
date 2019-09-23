@@ -1,0 +1,20 @@
+uuid: 3d41cf32-12a3-4a2a-b40c-bb421248febf
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_reviewing_references
+id: assessment_reviewing_references_approved
+label: Approve
+module: workflow
+from_sid: assessment_reviewing_references
+to_sid: assessment_approved
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

@@ -1,0 +1,12 @@
+uuid: 80e5078f-741c-4899-9681-e78ca2ff618b
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_under_assessment
+id: assessment_under_assessment_under_assessment
+label: Save
+module: workflow
+from_sid: assessment_under_assessment
+to_sid: assessment_under_assessment
+roles: {  }

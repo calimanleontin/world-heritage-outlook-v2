@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: as_site_reference
+label: 'Assessment reference'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

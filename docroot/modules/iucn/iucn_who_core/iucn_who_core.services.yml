@@ -3,3 +3,12 @@ services:
     class: Drupal\iucn_who_core\EventSubscriber\IucnWhoEventSubscriber
     tags:
       - { name: event_subscriber }
+  iucn_who_core.user_agreement_route_subscriber:
+    class: Drupal\iucn_who_core\EventSubscriber\IucnUserAgreementEventSubscriber
+    arguments:
+    - '@current_route_match'
+    - '@current_user'
+    - '@config.factory'
+    - '@messenger'
+    tags:
+    - { name: event_subscriber }

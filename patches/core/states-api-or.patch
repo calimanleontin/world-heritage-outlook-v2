@@ -1,0 +1,66 @@
+diff --git a/core/misc/states.es6.js b/core/misc/states.es6.js
+index 811a5112d..265c7b1fe 100644
+--- a/core/misc/states.es6.js
++++ b/core/misc/states.es6.js
+@@ -226,6 +226,9 @@
+      *   true or false.
+      */
+     compare(reference, selector, state) {
++      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
++        return false;
++      }
+       const value = this.values[selector][state.name];
+       if (reference.constructor.name in states.Dependent.comparisons) {
+         // Use a custom compare function for certain reference value types.
+@@ -306,7 +309,7 @@
+       let result;
+       if ($.isArray(constraints)) {
+         // This constraint is an array (OR or XOR).
+-        const hasXor = $.inArray('xor', constraints) === -1;
++        const hasXor = $.inArray('xor', constraints) !== -1;
+         const len = constraints.length;
+         for (let i = 0; i < len; i++) {
+           if (constraints[i] !== 'xor') {
+@@ -317,8 +320,8 @@
+             );
+             // Return if this is OR and we have a satisfied constraint or if
+             // this is XOR and we have a second satisfied constraint.
+-            if (constraint && (hasXor || result)) {
+-              return hasXor;
++            if (hasXor && constraint && result) {
++              return false;
+             }
+             result = result || constraint;
+           }
+diff --git a/core/misc/states.js b/core/misc/states.js
+index 7b451b07d..eccd6fe7e 100644
+--- a/core/misc/states.js
++++ b/core/misc/states.js
+@@ -109,6 +109,9 @@
+       });
+     },
+     compare: function compare(reference, selector, state) {
++      if (typeof this.values[selector] === 'undefined' || typeof this.values[selector][state.name] === 'undefined') {
++        return false;
++      }
+       var value = this.values[selector][state.name];
+       if (reference.constructor.name in states.Dependent.comparisons) {
+         return states.Dependent.comparisons[reference.constructor.name](reference, value);
+@@ -140,14 +143,14 @@
+     verifyConstraints: function verifyConstraints(constraints, selector) {
+       var result = void 0;
+       if ($.isArray(constraints)) {
+-        var hasXor = $.inArray('xor', constraints) === -1;
++        var hasXor = $.inArray('xor', constraints) !== -1;
+         var len = constraints.length;
+         for (var i = 0; i < len; i++) {
+           if (constraints[i] !== 'xor') {
+             var constraint = this.checkConstraints(constraints[i], selector, i);
+ 
+-            if (constraint && (hasXor || result)) {
+-              return hasXor;
++            if (hasXor && constraint && result) {
++              return hasXor;  return false;
+             }
+             result = result || constraint;
+           }

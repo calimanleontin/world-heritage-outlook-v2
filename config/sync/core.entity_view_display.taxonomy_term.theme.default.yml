@@ -1,0 +1,26 @@
+uuid: af59d42e-77f5-4da9-b325-7ca523db3ddd
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.theme
+  module:
+    - text
+id: taxonomy_term.theme.default
+targetEntityType: taxonomy_term
+bundle: theme
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

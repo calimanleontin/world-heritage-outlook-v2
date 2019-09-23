@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_approved
+    - workflow.state.assessment_published
+id: assessment_published_approved
+label: ''
+module: workflow
+from_sid: assessment_published
+to_sid: assessment_approved
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

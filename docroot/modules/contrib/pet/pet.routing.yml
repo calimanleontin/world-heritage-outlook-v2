@@ -1,0 +1,23 @@
+pet.settings:
+  path: 'admin/config/system/pet/settings'
+  defaults:
+    _form: '\Drupal\pet\Form\PetSettingsForm'
+    _title: 'Previewable Email Template Settings'
+  requirements:
+    _permission: 'administer PET entity'
+
+entity.pet.collection:
+  path: '/admin/structure/pets'
+  defaults:
+    _entity_list: 'pet'
+    _title: 'Previewable Email Templates'
+  requirements:
+    _permission: 'view PET entity'
+
+pet.preview:
+  path: '/pet/{pet}'
+  defaults:
+    _form: '\Drupal\pet\Form\PetPreviewForm'
+    _title: 'Previewable Email Template Preview'
+  requirements:
+    _permission: 'view PET entity'

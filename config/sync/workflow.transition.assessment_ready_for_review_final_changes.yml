@@ -1,0 +1,20 @@
+uuid: 51f37e66-5971-426d-9679-2787ce9cbf96
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_final_changes
+    - workflow.state.assessment_ready_for_review
+id: assessment_ready_for_review_final_changes
+label: null
+module: workflow
+from_sid: assessment_ready_for_review
+to_sid: assessment_final_changes
+roles:
+  workflow_author: '0'
+  administrator: '0'
+  iucn_manager: '0'
+  coordinator: '0'
+  assessor: '0'
+  reviewer: '0'
+  references_reviewer: '0'

@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.assessment_ready_for_review
+id: assessment_ready_for_review_ready_for_review
+label: Save
+module: workflow
+from_sid: assessment_ready_for_review
+to_sid: assessment_ready_for_review
+roles: {  }

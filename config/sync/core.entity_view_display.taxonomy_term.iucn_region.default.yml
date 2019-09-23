@@ -1,0 +1,26 @@
+uuid: 6f95bb33-3688-4d8b-af74-1adce7adb4b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.iucn_region
+  module:
+    - text
+id: taxonomy_term.iucn_region.default
+targetEntityType: taxonomy_term
+bundle: iucn_region
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true

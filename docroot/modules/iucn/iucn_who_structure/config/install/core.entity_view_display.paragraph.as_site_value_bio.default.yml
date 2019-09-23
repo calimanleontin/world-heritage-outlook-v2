@@ -8,47 +8,45 @@ dependencies:
     - field.field.paragraph.as_site_value_bio.field_as_values_curr_trend
     - field.field.paragraph.as_site_value_bio.field_as_values_value
     - paragraphs.paragraphs_type.as_site_value_bio
+  module:
+    - ds
+third_party_settings:
+  ds:
+    layout:
+      id: iucn_who_assessment_value
+      library: null
+      disable_css: false
+      entity_classes: all_classes
+      settings: {  }
+    regions:
+      title:
+        - field_as_values_value
+      description:
+        - field_as_description
 id: paragraph.as_site_value_bio.default
 targetEntityType: paragraph
 bundle: as_site_value_bio
 mode: default
 content:
   field_as_description:
-    weight: 2
-    label: above
+    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_as_values_curr_state:
-    weight: 4
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_as_values_curr_text:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
-  field_as_values_curr_trend:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
+    region: description
   field_as_values_value:
     weight: 0
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-hidden: {  }
+    region: title
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_as_values_curr_state: true
+  field_as_values_curr_text: true
+  field_as_values_curr_trend: true

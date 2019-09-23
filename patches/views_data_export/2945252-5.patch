@@ -1,0 +1,48 @@
+diff --git a/src/Plugin/views/display/DataExport.php b/src/Plugin/views/display/DataExport.php
+index d94c1f7..ec96e43 100644
+--- a/src/Plugin/views/display/DataExport.php
++++ b/src/Plugin/views/display/DataExport.php
+@@ -531,7 +531,8 @@ public static function processBatch($view_id, $display_id, array $args, array $e
+     }
+ 
+     // Workaround for XML
+-    if (reset($view->getStyle()->options['formats']) == 'xml') {
++    $outputFormat = reset($view->getStyle()->options['formats']);
++    if ($outputFormat == 'xml') {
+       $maximum = $export_limit ? $export_limit : $total_rows;
+       // Remove xml declaration and response opening tag.
+       if ($context['sandbox']['progress'] != 0) {
+@@ -544,8 +545,32 @@ public static function processBatch($view_id, $display_id, array $args, array $e
+       }
+     }
+ 
++    // Workaround for XLS/XLSX
++    if ($context['sandbox']['progress'] != 0 && ($outputFormat == 'xls' || $outputFormat == 'xlsx')) {
++      $vdeFileRealPath = \Drupal::service('file_system')->realpath($context['sandbox']['vde_file']);
++      $previousExcel = \PHPExcel_IOFactory::load($vdeFileRealPath);
++      file_put_contents($vdeFileRealPath, $string);
++      $currentExcel = \PHPExcel_IOFactory::load($vdeFileRealPath);
++
++      // Append all rows to previous created excel.
++      $rowIndex = $previousExcel->getActiveSheet()->getHighestRow();
++      foreach ($currentExcel->getActiveSheet()->getRowIterator() as $row) {
++        if ($row->getRowIndex() == 1) {
++          // Skip header.
++          continue;
++        }
++        $rowIndex++;
++        $colIndex = 0;
++        foreach ($row->getCellIterator() as $cell) {
++          $previousExcel->getActiveSheet()->setCellValueByColumnAndRow($colIndex++, $rowIndex, $cell->getValue());
++        }
++      }
++
++      $objWriter = new \PHPExcel_Writer_Excel2007($previousExcel);
++      $objWriter->save($vdeFileRealPath);
++    }
+     // Write rendered rows to output file.
+-    if (file_put_contents($context['sandbox']['vde_file'], $string, FILE_APPEND) === FALSE) {
++    elseif (file_put_contents($context['sandbox']['vde_file'], $string, FILE_APPEND) === FALSE) {
+       // Write to output file failed - log in logger and in ResponseText on
+       // batch execution page user will end up on if write to file fails.
+       $message = t('Could not write to temporary output file for result export (@file). Check permissions.', ['@file' => $context['sandbox']['vde_file']]);

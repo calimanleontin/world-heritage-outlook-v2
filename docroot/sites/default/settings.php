@@ -765,4 +765,3 @@ $settings['file_scan_ignore_directories'] = [
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
-

@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: menu_editor
+label: 'Menu editor'
+weight: 0
+is_admin: null
+permissions:
+  - 'access content overview'
+  - 'access site in maintenance mode'
+  - 'administer menu'
+  - 'edit own profile'
+  - 'translate menu_link_content'
+  - 'use text format assessment_text_format'
+  - 'use text format html'
+  - 'use text format simple_text_formater_with_scayt'
+  - 'view home button'

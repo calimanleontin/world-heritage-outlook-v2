@@ -84,8 +84,16 @@ function _smtp_mailer_send($variables) {
   // Let the people know what is going on.
   $logger->info('Sending mail to: @to', ['@to' => $to]);
 
+  ob_start();
+  $success = $mailer->Send();
+  $errors = ob_get_contents();
+  ob_end_clean();
+  if (!empty($errors)) {
+    $logger->error($errors);
+  }
+
   // Try to send e-mail. If it fails, set watchdog entry.
-  if (!$mailer->Send()) {
+  if (!$success) {
     $logger->error('Error sending e-mail from @from to @to: @error_message', ['@from' => $from, '@to' => $to, '@error_message' => $mailer->ErrorInfo]);
     return FALSE;
   }
