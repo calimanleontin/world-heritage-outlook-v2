@@ -20,7 +20,7 @@ class EditFormTabsValidationTest extends IucnAssessmentTestBase {
   /**
    * Check that assessors cannot edit values.
    */
-  protected function testValuesTabAccess() {
+  public function testValuesTabAccess() {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();
