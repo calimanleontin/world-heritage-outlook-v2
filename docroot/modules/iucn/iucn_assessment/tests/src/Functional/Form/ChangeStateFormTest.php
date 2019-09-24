@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -431,7 +432,17 @@ class ChangeStateFormTest extends WorkflowTestBase {
         ));
 
         foreach ($access[$state] as $fieldName => $visibility) {
-          $disabledAttribute = $this->getSession()->getPage()->findField($fieldName)->getAttribute('disabled');
+          /** @var \Behat\Mink\Element\NodeElement $htmlField */
+          $htmlField = $this->getSession()->getPage()->findField($fieldName);
+          $this->assertTrue($htmlField instanceof NodeElement);
+
+          if (empty($htmlField)) {
+            // Do not crash the test if the field was not found, the assertTrue
+            // above is enough.
+            continue;
+          }
+
+          $disabledAttribute = $htmlField->getAttribute('disabled');
           $text = $value = 'disabled';
           if ($visibility === TRUE) {
             $text = 'active';
