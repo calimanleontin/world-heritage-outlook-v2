@@ -425,11 +425,17 @@ class ChangeStateFormTest extends WorkflowTestBase {
           continue;
         }
 
+        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+          $reviewer = user_load_by_mail($user);
+          $assessment = $this->workflowService->getReviewerRevision($assessment, $reviewer->id());
+        }
+        $stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+          'node' => $assessment->id(),
+          'node_revision' => $assessment->getRevisionId(),
+        ]);
+
         $this->userLogIn($user);
-        $this->drupalGet(Url::fromRoute(
-          'iucn_assessment.node.state_change',
-          ['node' => $assessment->id()]
-        ));
+        $this->drupalGet($stateChangeUrl);
 
         foreach ($access[$state] as $fieldName => $visibility) {
           /** @var \Behat\Mink\Element\NodeElement $htmlField */
