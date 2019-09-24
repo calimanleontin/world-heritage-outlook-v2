@@ -111,6 +111,7 @@ class TestSupport {
     $ob = User::create([
       'name' => $mail,
       'mail' => $mail,
+      'field_accepted_agreement' => TRUE,
     ]);
     $ob->setPassword('password');
     $ob->set('status', 1);

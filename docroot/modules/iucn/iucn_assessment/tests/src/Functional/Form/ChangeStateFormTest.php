@@ -434,7 +434,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
         foreach ($access[$state] as $fieldName => $visibility) {
           /** @var \Behat\Mink\Element\NodeElement $htmlField */
           $htmlField = $this->getSession()->getPage()->findField($fieldName);
-          $this->assertTrue($htmlField instanceof NodeElement);
+          $this->assertTrue($htmlField instanceof NodeElement, "Field {$fieldName} can be found for user {$user} when assessment state is {$state}");
 
           if (empty($htmlField)) {
             // Do not crash the test if the field was not found, the assertTrue
