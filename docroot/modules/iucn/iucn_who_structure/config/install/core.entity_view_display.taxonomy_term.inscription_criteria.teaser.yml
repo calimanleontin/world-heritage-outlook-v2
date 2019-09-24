@@ -21,3 +21,4 @@ hidden:
   field_title: true
   field_type: true
   langcode: true
+  search_api_excerpt: true

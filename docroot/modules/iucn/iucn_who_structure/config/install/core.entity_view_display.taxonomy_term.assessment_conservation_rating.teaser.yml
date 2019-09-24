@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.assessment_conservation_rating.field_css_identifier
     - field.field.taxonomy_term.assessment_conservation_rating.field_image
     - image.style.large
     - taxonomy.vocabulary.assessment_conservation_rating
@@ -50,3 +51,4 @@ hidden:
   entity_print_view_word_docx: true
   field_css_identifier: true
   langcode: true
+  search_api_excerpt: true
