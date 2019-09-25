@@ -330,7 +330,6 @@ class ChangeStateFormTest extends WorkflowTestBase {
     }
   }
 
-
   public function testFieldsAccess() {
     $fieldsAccess = [
       TestSupport::ASSESSOR1 => [
@@ -348,7 +347,6 @@ class ChangeStateFormTest extends WorkflowTestBase {
           'field_reviewers[]' => FALSE,
           'field_references_reviewer' => FALSE,
         ],
-
       ],
       TestSupport::REFERENCES_REVIEWER1 => [
         AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => [
@@ -418,14 +416,13 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $fieldsAccess[TestSupport::IUCN_MANAGER] = $fieldsAccess[TestSupport::COORDINATOR1];
 
     foreach (WorkflowTestBase::TRANSITION_LABELS as $state => $label) {
-      $assessment = $this->createMockAssessmentNode($state);
-
-      foreach ($fieldsAccess as $user => $access) {
-        if (empty($access[$state])) {
+      foreach ($fieldsAccess as $user => $stateAccess) {
+        if (empty($stateAccess[$state])) {
           continue;
         }
+        $assessment = $this->createMockAssessmentNode($state);
 
-        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW && $user == TestSupport::REVIEWER1) {
           $reviewer = user_load_by_mail($user);
           $assessment = $this->workflowService->getReviewerRevision($assessment, $reviewer->id());
         }
@@ -437,7 +434,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
         $this->userLogIn($user);
         $this->drupalGet($stateChangeUrl);
 
-        foreach ($access[$state] as $fieldName => $visibility) {
+        foreach ($stateAccess[$state] as $fieldName => $visibility) {
           /** @var \Behat\Mink\Element\NodeElement $htmlField */
           $htmlField = $this->getSession()->getPage()->findField($fieldName);
           $this->assertTrue($htmlField instanceof NodeElement, "Field {$fieldName} can be found for user {$user} when assessment state is {$state}");
