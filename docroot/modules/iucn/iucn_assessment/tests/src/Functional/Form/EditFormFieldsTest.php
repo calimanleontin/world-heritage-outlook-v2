@@ -1,7 +1,8 @@
 <?php
 
-namespace Drupal\Tests\iucn_assessment\Functional\Workflow;
+namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
+use Drupal\taxonomy\Entity\Term;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentWebDriverTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 
@@ -10,16 +11,17 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
  * @group edwWebDriver
  * @group assessmentWorkflow
  */
-class ThreatCategoriesWithoutChildrenTest extends IucnAssessmentWebDriverTestBase {
+class EditFormFieldsTest extends IucnAssessmentWebDriverTestBase {
 
-  public function testThreadCategoriesWithoutChildren() {
+  public function testThreatCategoriesWithoutChildren() {
+    //Test that terms from vocabulary assessment_threat without children appear on edit paragraph select
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
     $assessment->save();
 
     $this->userLogIn(TestSupport::COORDINATOR1);
 
-    $term = \Drupal\taxonomy\Entity\Term::create([
+    $term = Term::create([
       'vid' => 'assessment_threat',
       'name' => 'My threat',
     ]);
@@ -27,9 +29,7 @@ class ThreatCategoriesWithoutChildrenTest extends IucnAssessmentWebDriverTestBas
 
     $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'threats']]));
     $this->click('.paragraphs-icon-button-edit');
-    $assert_session = $this->assertSession();
-    $assert_session->waitForElement('css', '#drupal-modal');
-    sleep(5);
+    $this->assertSession()->waitForElement('css', '#drupal-modal');
 
     $this->getSession()->getDriver()->selectOption("//select[@data-id='options-groups']", $term->id());
   }
