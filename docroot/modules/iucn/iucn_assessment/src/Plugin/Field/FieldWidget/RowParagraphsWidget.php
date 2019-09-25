@@ -97,7 +97,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       $container->get('iucn_assessment.workflow')
     );
   }
-  use AssessmentEntityFormTrait;
 
   /**
    * {@inheritdoc}
@@ -531,7 +530,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         'node' => $this->parentNode->id(),
         'node_revision' => $this->parentNode->getRevisionId(),
         'field' => $this->parentFieldName,
-        'field_wrapper_id' =>  static::getWrapperIdForField($this->parentFieldName),
+        'field_wrapper_id' => get_wrapper_html_id($this->parentFieldName),
         'bundle' => $this->getDefaultParagraphTypeMachineName(),
         'tab' => $this->request->query->get('tab'),
       ]);
@@ -982,7 +981,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       return [];
     }
     $isCreatedOnOtherRevision = $paragraphParentNodeRevision->getRevisionId() !== $this->parentNode->getRevisionId();
-    $fieldWrapperId = '#edit-' . Html::cleanCssIdentifier($this->parentFieldName) . '-wrapper';
+    $fieldWrapperId = get_wrapper_html_id($this->parentFieldName);
     $routeAttributes = [
       'node' => $this->parentNode->id(),
       'node_revision' => $this->parentNode->getRevisionId(),

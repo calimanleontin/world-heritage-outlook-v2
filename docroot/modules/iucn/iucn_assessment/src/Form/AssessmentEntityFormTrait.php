@@ -2,7 +2,6 @@
 
 namespace Drupal\iucn_assessment\Form;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 
 trait AssessmentEntityFormTrait {
@@ -66,10 +65,6 @@ trait AssessmentEntityFormTrait {
     else {
       $form_state->setRedirect('who.user-dashboard');
     }
-  }
-
-  protected static function getWrapperIdForField($fieldName) {
-    return '#edit-' . Html::cleanCssIdentifier($fieldName) . '-wrapper';
   }
 
 }

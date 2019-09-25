@@ -659,7 +659,7 @@ class NodeSiteAssessmentForm {
         'node' => $node->id(),
         'node_revision' => $node->getRevisionId(),
         'field' => $field,
-        'field_wrapper_id' => static::getWrapperIdForField($field),
+        'field_wrapper_id' => get_wrapper_html_id($field),
       ]),
       '#attributes' => [
         'class' => [

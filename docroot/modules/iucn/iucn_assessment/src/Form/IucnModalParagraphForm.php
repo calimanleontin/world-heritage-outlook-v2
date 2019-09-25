@@ -197,7 +197,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     );
 
     foreach ($this->getDependentFields() as $dependentField) {
-      $wrapper = static::getWrapperIdForField($dependentField);
+      $wrapper = get_wrapper_html_id($dependentField);
       $response->addCommand(
         new ReplaceCommand(
           "{$wrapper} >:first-child",
