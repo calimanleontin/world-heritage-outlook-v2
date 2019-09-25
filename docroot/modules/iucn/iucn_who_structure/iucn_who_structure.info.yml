@@ -6,8 +6,8 @@ package: IUCN
 dependencies:
   - blazy
   - block
-  - content_translation
   - ckeditor
+  - content_translation
   - crop
   - datetime
   - diff
@@ -20,6 +20,7 @@ dependencies:
   - field
   - field_group
   - file
+  - filter
   - geofield
   - image
   - image_effects
@@ -58,3 +59,4 @@ dependencies:
   - views_data_export
   - workflow
   - xls_serialization
+core_incompatible: false

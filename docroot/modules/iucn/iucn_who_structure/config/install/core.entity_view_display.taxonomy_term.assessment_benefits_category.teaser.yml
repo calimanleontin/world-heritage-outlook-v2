@@ -19,3 +19,4 @@ hidden:
   field_category_image: true
   field_image: true
   langcode: true
+  search_api_excerpt: true

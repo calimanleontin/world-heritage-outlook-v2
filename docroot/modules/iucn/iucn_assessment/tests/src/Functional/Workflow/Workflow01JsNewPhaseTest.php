@@ -20,7 +20,7 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 class Workflow01JsNewPhaseTest extends IucnAssessmentWebDriverTestBase {
 
   public function testStateAssessmentChangeToUnderEvaluation() {
-    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_NEW, [], TRUE);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_NEW, [], FALSE);
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalPostForm($assessment->toUrl('edit-form'), [], t('Save'));
 
@@ -29,7 +29,7 @@ class Workflow01JsNewPhaseTest extends IucnAssessmentWebDriverTestBase {
     $this->assertEquals(AssessmentWorkflow::STATUS_UNDER_EVALUATION, $assessment->field_state->value);
     $this->assertEquals(user_load_by_mail(TestSupport::COORDINATOR1)->id(), $assessment->field_coordinator->target_id);
 
-    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_NEW, [], TRUE);
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_NEW, [], FALSE);
     $this->userLogIn(TestSupport::COORDINATOR1);
     $this->drupalGet($assessment->toUrl('edit-form'));
     $this->click('#edit-field-as-values-wh-0-top-actions-buttons-edit');

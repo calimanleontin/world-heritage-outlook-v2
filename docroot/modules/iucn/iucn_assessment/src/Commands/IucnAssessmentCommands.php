@@ -106,8 +106,8 @@ class IucnAssessmentCommands extends DrushCommands {
 
       foreach ($nodesIds as $nid) {
         $node = Node::load($nid);
-        $cycle = $node->field_as_cycle->value;
-        if ((int) $cycle < 2020) {
+        $cycle = (int) $node->field_as_cycle->value;
+        if ($cycle < 2020) {
           // Delete all revisions for old assessments.
           $defaultVid = $node->getRevisionId();
           $vids = $nodeStorage->revisionIds($node);
@@ -124,6 +124,24 @@ class IucnAssessmentCommands extends DrushCommands {
             : AssessmentWorkflow::STATUS_DRAFT;
           $workflow_service->forceAssessmentState($node, $new_state, FALSE);
           $logger->info("Force workflow status \"{$new_state}\" for assessment \"{$node->getTitle()} ({$node->id()})\"");
+        }
+        else {
+          // Delete projects ending before assessment cycle.
+          $projects = $node->get('field_as_projects')->getValue();
+          $validProjects = [];
+          foreach ($projects as $project) {
+            $paragraph = Paragraph::load($project['target_id']);
+            if (empty($paragraph->field_as_projects_to->value)
+              || $paragraph->field_as_projects_to->value >= "{$cycle}-01-01"
+              || $paragraph->field_as_projects_to->value == '0001-01-01') {
+              $validProjects[] = $project;
+            }
+          }
+          $noProjectsDeleted = count($projects) - count($validProjects);
+          if ($noProjectsDeleted > 0) {
+            $logger->info("Removed {$noProjectsDeleted} projects paragraphs for assessment {$node->id()}");
+            $node->set('field_as_projects', $validProjects);
+          }
         }
 
         // Fix broken values references.

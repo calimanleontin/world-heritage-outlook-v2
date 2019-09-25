@@ -190,6 +190,10 @@ class AssessmentWorkflow {
           $access = AccessResult::allowedIf($accountIsCoordinator);
           break;
 
+        case self::STATUS_REVIEWING_REFERENCES:
+          $access = AccessResult::allowedIf($accountIsCoordinator || $accountIsReferencesReviewer);
+          break;
+
         default:
           return $this->checkAssessmentAccess($node, 'edit', $account);
       }

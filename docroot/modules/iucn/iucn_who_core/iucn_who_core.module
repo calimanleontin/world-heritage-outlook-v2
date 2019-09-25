@@ -1,20 +1,29 @@
 <?php
 
+use Drupal\Component\Utility\Html;
 use \Drupal\iucn_who_core\ToolbarHandler;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\views\Views;
 use Drupal\Core\Breadcrumb\Breadcrumb;
-use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
+
+/**
+ * Returns the HTML ID of a field wrapper element.
+ *
+ * @param $fieldName
+ *
+ * @return string
+ */
+function get_wrapper_html_id($fieldName) {
+  return '#edit-' . Html::getId($fieldName) . '-wrapper';
+}
 
 /**
  * Implements hook_views_data_alter().

@@ -51,3 +51,4 @@ hidden:
   field_as_values_curr_state: true
   field_as_values_curr_text: true
   field_as_values_curr_trend: true
+  search_api_excerpt: true

@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\field\Entity\FieldConfig;
@@ -35,11 +36,11 @@ function iucn_assessment_theme() {
         'help_text' => NULL,
       ],
     ],
-    'assessment_horizontal_tabs' => array(
+    'assessment_horizontal_tabs' => [
       'render element' => 'element',
       'template' => 'assessment-horizontal-tabs',
       'file' => 'templates/theme.inc',
-    ),
+    ],
     'field_group_html_element_list' => [
       'render element' => 'element',
       'template' => 'field-group-html-element-list',
@@ -295,7 +296,7 @@ function iucn_assessment_preprocess_field(&$variables) {
       }
       $items = $variables['items'];
       usort($items,
-        function($a, $b) {
+        function ($a, $b) {
           $a_weight = 0;
           if ($a['content']['#paragraph']->field_as_protection_topic->count()) {
             $a_weight = $a['content']['#paragraph']->field_as_protection_topic->entity->getWeight();
@@ -456,7 +457,7 @@ function _iucn_assessment_display_negociate_assessment_revision(\Drupal\node\Ent
 function _iucn_assessment_level_class($tid) {
   $map = _iucn_assessment_get_term_colors();
   if (empty($map[$tid])) {
-    return null;
+    return NULL;
   }
   return $map[$tid];
 }
@@ -666,12 +667,11 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
     case 'user_form':
-      _iucn_user_form_check_role_permissions($form, 'change own roles');
-      break;
-
     case 'user_register_form':
-      _iucn_user_form_check_role_permissions($form, 'administer users');
+      $currentUser = \Drupal::currentUser();
+      $form['account']['roles']['#access'] = $currentUser->hasPermission('administer users');
 
+      _iucn_user_form_check_role_permissions($form);
       break;
 
     case 'views_exposed_form':
@@ -688,9 +688,8 @@ function iucn_assessment_form_alter(&$form, FormStateInterface $form_state, $for
   }
 }
 
-function _iucn_user_form_check_role_permissions(&$form, $permissionAccess) {
+function _iucn_user_form_check_role_permissions(&$form) {
   $currentUser = \Drupal::currentUser();
-  $form['account']['roles']['#access'] = $currentUser->hasPermission($permissionAccess);
   foreach ($form['account']['roles']['#options'] as $roleId => $roleName) {
     if (!$currentUser->hasPermission("change user role {$roleId}")) {
       unset($form['account']['roles']['#options'][$roleId]);
@@ -933,7 +932,7 @@ function iucn_assessment_views_query_alter(ViewExecutable $view, QueryPluginBase
     // Reviewers' assessments.
     /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
     $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow  $workflowService */
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
     $workflowService = \Drupal::service('iucn_assessment.workflow');
     $uid = \Drupal::currentUser()->id();
     foreach ($query->where as &$condition_group) {
@@ -1038,8 +1037,8 @@ function iucn_assessment_editor_js_settings_alter(array &$settings) {
   foreach ($settings['editor']['formats'] as $name => &$value) {
     if ($name == 'simple_text_formater_with_scayt') {
       $value['editorSettings']['contentsCss'][] = '/themes/iucn_backend/css/ckeditor-iframe.css';
-      $value['editorSettings']['pasteFromWordPromptCleanup'] = false;
-      $value['editorSettings']['forcePasteAsPlainText'] = true;
+      $value['editorSettings']['pasteFromWordPromptCleanup'] = FALSE;
+      $value['editorSettings']['forcePasteAsPlainText'] = TRUE;
       $value['editorSettings']['enterMode'] = 2;
       $node = \Drupal::request()->get('node');
       if (is_numeric($node)) {
@@ -1163,5 +1162,28 @@ function _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag(
         }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function iucn_assessment_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display) {
+  switch ([$node->bundle(), $display->id()]) {
+    case ['site_assessment', 'node.site_assessment.default']:
+      // If the assessment has no potential threats, we hide the "Overall
+      // Assessment of Potential Threats" field if it's not empty.
+      if ($node->get('field_as_threats_potential')->isEmpty() === FALSE) {
+        break;
+      }
+      foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $field => $dependentFields) {
+        if ($node->get($field)->isEmpty() === FALSE) {
+          continue;
+        }
+        foreach ($dependentFields as $dependentField) {
+          $build[$dependentField]['#access'] = FALSE;
+        }
+      }
+      break;
   }
 }

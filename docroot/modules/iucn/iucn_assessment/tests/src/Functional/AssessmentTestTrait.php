@@ -45,17 +45,18 @@ trait AssessmentTestTrait {
    *  Assessment workflow state.
    * @param array $values
    *  Extra fields values.
-   * @param bool $referenceUser
+   * @param bool $addDefaultUsers
    *  Defaults to TRUE. If set to FALSE, the default users fields (coordinator,
    * assessor, reviewers and references reviewer) will be left empty.
    *
    * @return \Drupal\node\NodeInterface|null
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createMockAssessmentNode($state, array $values = [], $referenceUser = TRUE) {
+  protected function createMockAssessmentNode($state, array $values = [], $addDefaultUsers = TRUE) {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
 
-    if ($referenceUser) {
+    if ($addDefaultUsers) {
       /** @var \Drupal\user\UserInterface $coordinator */
       $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
       /** @var \Drupal\user\UserInterface $assessor */
@@ -93,33 +94,23 @@ trait AssessmentTestTrait {
     ];
     $currentState = current($states);
 
-    try {
-      $assessment->save();
-      $assessment = $this->setAssessmentState($assessment, $currentState, $values);
+    $assessment->save();
+    $assessment = $this->setAssessmentState($assessment, $currentState, $values);
 
-      $this->userLogIn(TestSupport::ADMINISTRATOR);
-      $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
+    $this->userLogIn(TestSupport::ADMINISTRATOR);
+    $stateChangeUrl = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
 
-      while ($currentState != $state) {
-        $currentState = next($states);
-        if (empty($currentState)) {
-          break;
-        }
-
-        $label = WorkflowTestBase::TRANSITION_LABELS[$currentState];
-        if ($currentState == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-          $label = 'Force finish assessment';
-        }
-        if ($currentState == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
-          $label = 'Force finish reviewing';
-        }
-        $this->drupalPostForm($stateChangeUrl, [], $label);
+    while ($currentState != $state) {
+      $currentState = next($states);
+      if (empty($currentState)) {
+        break;
       }
 
-      return Node::load($assessment->id());
-    } catch (\Exception $e) {
-      return NULL;
+      $label = $this->getAdminTransitionLabel($currentState);
+      $this->drupalPostForm($stateChangeUrl, [], $label);
     }
+
+    return Node::load($assessment->id());
   }
 
   /**
@@ -132,6 +123,29 @@ trait AssessmentTestTrait {
     $user = user_load_by_mail($mail);
     $user->passRaw = 'password';
     $this->drupalLogin($user);
+  }
+
+  /**
+   * Some button labels are overwritten for administrators (e.g. "Submit assessment"
+   * for assessors becomes "Force finish assessment" for managers/administrators.
+   *
+   * @param $state
+   *  The assessment state.
+   *
+   * @return string
+   *  The button label.
+   */
+  protected function getAdminTransitionLabel($state) {
+    switch ($state) {
+      case AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
+        return 'Force finish assessment';
+      case AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+        return 'Force finish reviewing';
+      case AssessmentWorkflow::STATUS_FINAL_CHANGES:
+        return 'Force finish reference standardisation';
+    }
+
+    return WorkflowTestBase::TRANSITION_LABELS[$state];
   }
 
 }

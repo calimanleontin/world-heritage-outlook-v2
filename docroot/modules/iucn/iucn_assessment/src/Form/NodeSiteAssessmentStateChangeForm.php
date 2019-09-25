@@ -99,6 +99,14 @@ class NodeSiteAssessmentStateChangeForm {
       ];
     }
 
+    if ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES && $currentUser->hasPermission('force finish reference standardisation')) {
+      $form['actions']['workflow_assessment_final_changes']['#value'] = t('Force finish reference standardisation');
+      $form['actions']['workflow_assessment_final_changes']['#attributes'] = [
+        'class' => ['button--danger'],
+        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the reference standardisation phase? The reference reviewer will no longer be able to edit this assessment.")){return false;}',
+      ];
+    }
+
     if (in_array('coordinator', $currentUser->getRoles())
       && $currentUser->hasPermission('assign any coordinator to assessment') === FALSE
       && empty($form['field_coordinator']['widget']['#default_value'])) {

@@ -59,9 +59,6 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div,
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div {
   display: block;
-  padding: 10px 12px;
-  border-right: 1px solid #e6e4df;
-  border-bottom: 1px solid #e6e4df;
   font-weight: normal;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div.field-with-diff,
@@ -111,6 +108,11 @@
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item,
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item {
   width: 100%;
+}
+.node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item.form-item.form-type-select,
+.node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div .form-item.form-item.form-type-select {
+  box-sizing: border-box;
+  padding: 10px 12px;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"],
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row > div[class*="-textarea"] {
@@ -752,7 +754,6 @@ div[aria-required="aria-required"] label:after {
 .assessment-level-1309,
 .assessment-level-good {
   background-color: #92d050;
-  padding: 10px 12px;
 }
 .assessment-level-1347,
 .assessment-level-1365,
@@ -760,7 +761,6 @@ div[aria-required="aria-required"] label:after {
 .assessment-level-1310,
 .assessment-level-low-concern {
   background-color: #acd373;
-  padding: 10px 12px;
 }
 .assessment-level-1348,
 .assessment-level-1366,
@@ -768,7 +768,6 @@ div[aria-required="aria-required"] label:after {
 .assessment-level-1311,
 .assessment-level-high-concern {
   background-color: #ffc000;
-  padding: 10px 12px;
 }
 .assessment-level-1349,
 .assessment-level-1367,
@@ -776,7 +775,6 @@ div[aria-required="aria-required"] label:after {
 .assessment-level-1312,
 .assessment-level-critical {
   background-color: #ff0000;
-  padding: 10px 12px;
 }
 .assessment-level-1350,
 .assessment-level-1368,
@@ -785,7 +783,6 @@ div[aria-required="aria-required"] label:after {
 .assessment-level-1313,
 .assessment-level-data-deficient {
   background-color: none;
-  padding: 10px 12px;
 }
 .path-admin div[class*="block-views-"] {
   margin-bottom: 40px;

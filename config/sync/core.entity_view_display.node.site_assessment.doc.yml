@@ -358,5 +358,6 @@ hidden:
   field_settings: true
   langcode: true
   links: true
+  search_api_excerpt: true
   site_assessments_link: true
   site_assessments_rating: true

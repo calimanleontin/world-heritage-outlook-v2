@@ -37,6 +37,7 @@ permissions:
   - 'edit own faq content'
   - 'edit own news content'
   - 'edit own page content'
+  - 'edit own profile'
   - 'edit own publication content'
   - 'revert benefit revisions'
   - 'revert faq revisions'
