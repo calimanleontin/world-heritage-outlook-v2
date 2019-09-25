@@ -116,7 +116,7 @@ class UserFormTest extends IucnAssessmentTestBase {
     foreach ($allowedMails + $notAllowedMails as $mail) {
       $this->userLogIn($mail);
 
-      $user = user_load_by_mail($user);
+      $user = user_load_by_mail($mail);
       $this->drupalGet($user->url('edit-form'));
 
       if (in_array($mail, $allowedMails)) {
