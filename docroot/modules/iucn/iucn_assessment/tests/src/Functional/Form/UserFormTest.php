@@ -3,7 +3,6 @@
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
 use Drupal\Core\Url;
-use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\user\Entity\Role;
@@ -15,17 +14,6 @@ use Drupal\user\Entity\User;
  * @group assessmentForms
  */
 class UserFormTest extends IucnAssessmentTestBase {
-
-  /** @var \Drupal\Core\Language\LanguageManagerInterface */
-  protected $languageManager;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->languageManager = $this->container->get('language_manager');
-  }
 
   /**
    * A new user can change the password before accepting the user agreement.
@@ -109,34 +97,6 @@ class UserFormTest extends IucnAssessmentTestBase {
     }
   }
 
-  public function testAssessmentLanguageRedirect() {
-    //Test that any language the assessment have, the interface is always in the en language
-    $routes = [
-      'entity.node.edit_form',
-      'iucn_assessment.node.state_change',
-    ];
-
-    foreach ($this->languageManager->getLanguages() as $language) {
-      $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, [
-        'langcode' => $language->getId(),
-      ]);
-
-      foreach ($routes as $route) {
-        $url = Url::fromRoute(
-          $route,
-          ['node' => $assessment->id()],
-          ['language' => $language]
-        );
-
-        $this->drupalGet($url);
-        $this->assertNotContains(
-          "/{$language->getId()}/",
-          $this->getSession()->getCurrentUrl()
-        );
-      }
-    }
-  }
-
   /**
    * Check every role for right to view title and edit email.
    */
@@ -156,16 +116,9 @@ class UserFormTest extends IucnAssessmentTestBase {
     foreach ($allowedMails + $notAllowedMails as $mail) {
       $this->userLogIn($mail);
 
-      $user = $this->entityTypeManager
-        ->getStorage('user')
-        ->loadByProperties(
-          [
-            'mail' => $mail,
-          ]
-        );
-
-      $user = reset($user);
+      $user = user_load_by_mail($user);
       $this->drupalGet($user->url('edit-form'));
+
       if (in_array($mail, $allowedMails)) {
         $this->assertElementPresent('.field--name-field-user-title');
         $this->assertSession()->fieldEnabled('edit-mail');
