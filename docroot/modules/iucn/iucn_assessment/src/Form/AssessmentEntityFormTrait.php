@@ -2,6 +2,7 @@
 
 namespace Drupal\iucn_assessment\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 
 trait AssessmentEntityFormTrait {
@@ -67,8 +68,8 @@ trait AssessmentEntityFormTrait {
     }
   }
 
-  protected static function buildWrapperForField($fieldName) {
-    return '#edit-' . str_replace('_', '-', $fieldName) . '-wrapper';
+  protected static function getWrapperIdForField($fieldName) {
+    return '#edit-' . Html::cleanCssIdentifier($fieldName) . '-wrapper';
   }
 
 }

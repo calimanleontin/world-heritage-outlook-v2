@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
@@ -196,12 +197,11 @@ class IucnModalParagraphForm extends ContentEntityForm {
     );
 
     foreach ($this->getDependentFields() as $dependentField) {
-      $wrapper = static::buildWrapperForField($dependentField);
-      $nodeForm[$dependentField]['#id'] = str_replace('#', '', $wrapper);
+      $wrapper = static::getWrapperIdForField($dependentField);
       $response->addCommand(
         new ReplaceCommand(
-          "{$wrapper}",
-          $nodeForm[$dependentField]
+          "{$wrapper} >:first-child",
+          $nodeForm[$dependentField]['widget']
         )
       );
     }

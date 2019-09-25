@@ -531,7 +531,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         'node' => $this->parentNode->id(),
         'node_revision' => $this->parentNode->getRevisionId(),
         'field' => $this->parentFieldName,
-        'field_wrapper_id' =>  static::buildWrapperForField($this->parentFieldName),
+        'field_wrapper_id' =>  static::getWrapperIdForField($this->parentFieldName),
         'bundle' => $this->getDefaultParagraphTypeMachineName(),
         'tab' => $this->request->query->get('tab'),
       ]);

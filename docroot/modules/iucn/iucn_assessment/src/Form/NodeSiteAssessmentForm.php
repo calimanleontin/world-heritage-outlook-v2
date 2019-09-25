@@ -112,8 +112,9 @@ class NodeSiteAssessmentForm {
     self::addRedirectToAllActions($form);
 
     $readOnly = \Drupal::routeMatch()->getRouteObject()->getOption('_read_only_form');
-    if ($readOnly) {
-      self::setReadOnly($form);
+    if ($readOnly == TRUE) {
+      $form['actions']['#access'] = FALSE;
+      $form['langcode']['#disabled'] = TRUE;
     }
 
     self::hideParagraphsActions($form, $node);
@@ -284,23 +285,6 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    // Hide these fields if there are no other biodiversity values.
-    if ($tab == 'assessing-values' && empty($node->field_as_values_bio->getValue())) {
-      $fields = [
-        'field_as_vass_bio_state',
-        'field_as_vass_bio_text',
-        'field_as_vass_bio_trend',
-      ];
-      foreach ($fields as $field) {
-        $form[$field]['#access'] = FALSE;
-      }
-    }
-
-    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
-    $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
-    // Validation.
-   static::addTabValidation($tab, $form, $node);
-
     if (in_array($node->field_state->value, AssessmentWorkflow::DIFF_STATES)) {
       self::buildDiffButtons($form, $node);
       self::setTabsDrupalSettings($form, $node);
@@ -353,9 +337,16 @@ class NodeSiteAssessmentForm {
       unset($form['field_as_site']);
     }
 
+    static::alterFieldsRestrictions($tab, $form, $node);
+    if ($tab == 'benefits') {
+      $form['#validate'][] = [self::class, 'benefitsValidation'];
+    }
+
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
     $form['actions']['submit']['#submit'][] = [self::class, 'createCoordinatorRevision'];
 
+    $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.select_options_colors';
+    $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
   }
@@ -365,11 +356,6 @@ class NodeSiteAssessmentForm {
     if (!empty($node->field_as_benefits->getValue()) && empty($form_state->getValue('field_as_benefits_summary')[0]['value'])) {
       $form_state->setErrorByName('field_as_benefits_summary', t('Summary of benefits field is required'));
     }
-  }
-
-  public static function setReadOnly(array &$form) {
-    $form['actions']['#access'] = FALSE;
-    $form['langcode']['#disabled'] = TRUE;
   }
 
   public static function setTabsDrupalSettings(&$form, $node) {
@@ -673,7 +659,7 @@ class NodeSiteAssessmentForm {
         'node' => $node->id(),
         'node_revision' => $node->getRevisionId(),
         'field' => $field,
-        'field_wrapper_id' => static::buildWrapperForField($field),
+        'field_wrapper_id' => static::getWrapperIdForField($field),
       ]),
       '#attributes' => [
         'class' => [
@@ -709,21 +695,21 @@ class NodeSiteAssessmentForm {
     return false;
   }
 
-  protected static function addTabValidation($tab, array &$form, NodeInterface $node) {
+  protected static function alterFieldsRestrictions($tab, array &$form, NodeInterface $node) {
     switch ($tab) {
       case 'benefits':
-        $form['#validate'][] = [self::class, 'benefitsValidation'];
         if (!empty($node->get('field_as_benefits')->getValue())) {
           $form['field_as_benefits_summary']['widget'][0]['value']['#required'] = TRUE;
         }
         break;
+
       case 'assessing-values':
+        $required_fields = [
+          'field_as_vass_bio_text',
+          'field_as_vass_bio_state',
+          'field_as_vass_bio_trend',
+        ];
         if (!empty($node->get('field_as_values_bio')->getValue())) {
-          $required_fields = [
-            'field_as_vass_bio_text',
-            'field_as_vass_bio_state',
-            'field_as_vass_bio_trend',
-          ];
           foreach ($required_fields as $field) {
             if (!empty($form[$field]['widget'][0]['value'])) {
               $form[$field]['widget'][0]['value']['#required'] = TRUE;
@@ -739,13 +725,20 @@ class NodeSiteAssessmentForm {
             }
           }
         }
+        else {
+          // Hide these fields if there are no other biodiversity values.
+          foreach ($required_fields as $field) {
+            $form[$field]['#access'] = FALSE;
+          }
+        }
         break;
+
       case 'threats':
         if ($node->get('field_as_threats_potential')->isEmpty()) {
           $form['field_as_threats_potent_text']['widget'][0]['#required'] = FALSE;
-          $form['field_as_threats_potent_text']['#attributes']['class'][] = 'visually-hidden';
-          $form['field_as_threats_potent_rating']['widget'][0]['#required'] = FALSE;
-          $form['field_as_threats_potent_rating']['#attributes']['class'][] = 'visually-hidden';
+          $form['field_as_threats_potent_text']['widget'][0]['#wrapper_attributes']['class'][] = 'visually-hidden';
+          $form['field_as_threats_potent_rating']['widget']['#required'] = FALSE;
+          $form['field_as_threats_potent_rating']['widget']['#wrapper_attributes']['class'][] = 'visually-hidden';
         }
         break;
     }
