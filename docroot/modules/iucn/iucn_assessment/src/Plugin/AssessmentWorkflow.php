@@ -3,13 +3,11 @@
 namespace Drupal\iucn_assessment\Plugin;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\iucn_assessment\Controller\DiffController;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\workflow\Entity\WorkflowManager;
@@ -183,7 +181,11 @@ class AssessmentWorkflow {
           break;
 
         case self::STATUS_UNDER_REVIEW:
-          $access = AccessResult::allowedIf($node->getRevisionUserId() === $account->id());
+          $isRevisionReviewer = $node->getRevisionUserId() === $account->id();
+          $access = AccessResult::allowedIf(
+            ($node->isDefaultRevision() && $accountIsCoordinator) ||
+            $isRevisionReviewer
+          );
           break;
 
         case self::STATUS_FINISHED_REVIEWING:

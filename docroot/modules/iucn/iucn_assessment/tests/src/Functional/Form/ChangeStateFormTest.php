@@ -5,7 +5,6 @@ namespace Drupal\Tests\iucn_assessment\Functional\Form;
 use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\TermInterface;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
@@ -105,6 +104,17 @@ class ChangeStateFormTest extends WorkflowTestBase {
     ],
   ];
 
+  /** @var \Drupal\Core\Language\LanguageManagerInterface */
+  protected $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp();
+    $this->languageManager = $this->container->get('language_manager');
+  }
+
   public function testValidation() {
     // Create valid assessment.
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION);
@@ -116,63 +126,41 @@ class ChangeStateFormTest extends WorkflowTestBase {
 
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalGet($stateChangeForm);
-
-    $this->assertSession()
-      ->pageTextContains('Global assessment level field is required.');
-    $this->assertSession()
-      ->pageTextContains('Assessment of Conservation Outlook field is required.');
-    $this->assertSession()
-      ->pageTextContains('Protection overall rating outside factors field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall assessment of protection and management field is required.');
-    $this->assertSession()
-      ->pageTextContains('Protection overall rating field is required.');
-    $this->assertSession()
-      ->pageTextContains('Assessment of the effectiveness of protection and management in addressing threats outside the site field is required.');
-    $this->assertSession()->pageTextContains('References field is required.');
-    $this->assertSession()
-      ->pageTextContains('Current threats field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall current threats rating field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall Assessment of current Threats field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall potential threats rating field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall Assessment of Potential Threats field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall assessment of threats rating field is required.');
-    $this->assertSession()
-      ->pageTextContains('Overall Assessment of Threats field is required.');
-    $this->assertSession()
-      ->pageTextContains('Identifying and describing values field is required.');
-    $this->assertSession()->pageTextContains('Assessment field is required.');
-    $this->assertSession()
-      ->pageTextContains('Assessment of the current state and trend of World Heritage values field is required.');
-    $this->assertSession()->pageTextContains('Trend field is required.');
-
-    $this->assertSession()
-      ->pageTextContains('Summary of the values - Assessment field is required.');
-    $this->assertSession()
-      ->pageTextContains('Summary of the values - Justification of assessment field is required.');
-    $this->assertSession()
-      ->pageTextContains('Summary of the values - Trend field is required.');
-    $this->assertSession()
-      ->pageTextContains('Summary of benefits field is required.');
+    $assertSession = $this->assertSession();
+    $assertSession->pageTextContains('Global assessment level field is required.');
+    $assertSession->pageTextContains('Assessment of Conservation Outlook field is required.');
+    $assertSession->pageTextContains('Protection overall rating outside factors field is required.');
+    $assertSession->pageTextContains('Overall assessment of protection and management field is required.');
+    $assertSession->pageTextContains('Protection overall rating field is required.');
+    $assertSession->pageTextContains('Assessment of the effectiveness of protection and management in addressing threats outside the site field is required.');
+    $assertSession->pageTextContains('References field is required.');
+    $assertSession->pageTextContains('Current threats field is required.');
+    $assertSession->pageTextContains('Overall current threats rating field is required.');
+    $assertSession->pageTextContains('Overall Assessment of current Threats field is required.');
+    $assertSession->pageTextContains('Overall potential threats rating field is required.');
+    $assertSession->pageTextContains('Overall Assessment of Potential Threats field is required.');
+    $assertSession->pageTextContains('Overall assessment of threats rating field is required.');
+    $assertSession->pageTextContains('Overall Assessment of Threats field is required.');
+    $assertSession->pageTextContains('Identifying and describing values field is required.');
+    $assertSession->pageTextContains('Assessment field is required.');
+    $assertSession->pageTextContains('Assessment of the current state and trend of World Heritage values field is required.');
+    $assertSession->pageTextContains('Trend field is required.');
+    $assertSession->pageTextContains('Summary of the values - Assessment field is required.');
+    $assertSession->pageTextContains('Summary of the values - Justification of assessment field is required.');
+    $assertSession->pageTextContains('Summary of the values - Trend field is required.');
+    $assertSession->pageTextContains('Summary of benefits field is required.');
 
     $assessment->get('field_as_values_bio')->setValue(NULL);
     $assessment->get('field_as_benefits')->setValue(NULL);
     $assessment->save();
-    $this->drupalGet($stateChangeForm);
+
     // These fields are required only when field_as_values_bio or field_as_benefits_summary are filled.
-    $this->assertSession()
-      ->pageTextNotContains('Summary of the values - Assessment field is required.');
-    $this->assertSession()
-      ->pageTextNotContains('Summary of the values - Justification of assessment field is required.');
-    $this->assertSession()
-      ->pageTextNotContains('Summary of the values - Trend field is required.');
-    $this->assertSession()
-      ->pageTextNotContains('Summary of benefits field is required.');
+    $this->drupalGet($stateChangeForm);
+    $assertSession = $this->assertSession();
+    $assertSession->pageTextNotContains('Summary of the values - Assessment field is required.');
+    $assertSession->pageTextNotContains('Summary of the values - Justification of assessment field is required.');
+    $assertSession->pageTextNotContains('Summary of the values - Trend field is required.');
+    $assertSession->pageTextNotContains('Summary of benefits field is required.');
 
     // Create valid assessment.
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION);
@@ -187,24 +175,16 @@ class ChangeStateFormTest extends WorkflowTestBase {
 
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextContains('Specific benefits, Summary fields are required for all rows in Understanding benefits table.');
-    $this->assertSession()
-      ->pageTextContains('Description, Organisation fields are required for all rows in Compilation of active conservation projects table.');
-    $this->assertSession()
-      ->pageTextContains('Justification of assessment, Assessment, Topic fields are required for all rows in Assessing Protection and Management table.');
-    $this->assertSession()
-      ->pageTextContains('Reference field is required for all rows in References table.');
-    $this->assertSession()
-      ->pageTextContains('Description, Value fields are required for all rows in Other important biodiversity values table.');
-    $this->assertSession()
-      ->pageTextContains('Description, WH Criteria, Value fields are required for all rows in Identifying and describing values table.');
-    $this->assertSession()
-      ->pageTextContains('State, Justification of assessment, Trend fields are required for all rows in Assessing values table.');
-    $this->assertSession()
-      ->pageTextContains('Justification, Category, Assessment, Specific threat affecting site fields are required for all rows in Current threats table.');
-    $this->assertSession()
-      ->pageTextContains('Justification, Category, Assessment, Specific threat affecting site fields are required for all rows in Potential threats table.');
+    $assertSession = $this->assertSession();
+    $assertSession->pageTextContains('Specific benefits, Summary fields are required for all rows in Understanding benefits table.');
+    $assertSession->pageTextContains('Description, Organisation fields are required for all rows in Compilation of active conservation projects table.');
+    $assertSession->pageTextContains('Justification of assessment, Assessment, Topic fields are required for all rows in Assessing Protection and Management table.');
+    $assertSession->pageTextContains('Reference field is required for all rows in References table.');
+    $assertSession->pageTextContains('Description, Value fields are required for all rows in Other important biodiversity values table.');
+    $assertSession->pageTextContains('Description, WH Criteria, Value fields are required for all rows in Identifying and describing values table.');
+    $assertSession->pageTextContains('State, Justification of assessment, Trend fields are required for all rows in Assessing values table.');
+    $assertSession->pageTextContains('Justification, Category, Assessment, Specific threat affecting site fields are required for all rows in Current threats table.');
+    $assertSession->pageTextContains('Justification, Category, Assessment, Specific threat affecting site fields are required for all rows in Potential threats table.');
 
     // Test level 2 categories.
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION);
@@ -212,19 +192,16 @@ class ChangeStateFormTest extends WorkflowTestBase {
     foreach (self::CATEGORY_FIELDS as $field => $categoryField) {
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
       $paragraph = $assessment->get($field)->entity;
-      $categories = array_column($paragraph->get($categoryField)
-        ->getValue(), 'target_id');
+      $categories = array_column($paragraph->get($categoryField)->getValue(), 'target_id');
       $parent = end($categories);
       $paragraph->get($categoryField)->setValue($parent);
       $paragraph->save();
-      $categories = array_column($paragraph->get($categoryField)
-        ->getValue(), 'target_id');
+      $categories = array_column($paragraph->get($categoryField)->getValue(), 'target_id');
     }
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('Subcategories field is required');
-    $this->assertSession()
-      ->pageTextNotContains('Specific benefits field is required for all rows in Understanding benefits table.');
+    $assertSession = $this->assertSession();
+    $assertSession->pageTextNotContains('Subcategories field is required');
+    $assertSession->pageTextNotContains('Specific benefits field is required for all rows in Understanding benefits table.');
 
     foreach (self::CATEGORY_FIELDS as $field => $categoryField) {
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
@@ -233,55 +210,48 @@ class ChangeStateFormTest extends WorkflowTestBase {
       $parentCategory = $category->parent->target_id;
       $paragraph->get($categoryField)->setValue($parentCategory);
       $paragraph->save();
-      $categories = array_column($paragraph->get($categoryField)
-        ->getValue(), 'target_id');
+      $categories = array_column($paragraph->get($categoryField)->getValue(), 'target_id');
     }
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()->pageTextContains('Subcategories field is required');
-    $this->assertSession()
-      ->pageTextContains('Specific benefits field is required for all rows in Understanding benefits table.');
+    $assertSession = $this->assertSession();
+    $assertSession->pageTextContains('Subcategories field is required');
+    $assertSession->pageTextContains('Specific benefits field is required for all rows in Understanding benefits table.');
 
     /** @var \Drupal\paragraphs\ParagraphInterface $threat */
     $threat = $assessment->field_as_threats_current->entity;
     $threat->get('field_as_threats_out')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('At least one option must be selected for Inside site/Outside site');
+    $this->assertSession()->pageTextNotContains('At least one option must be selected for Inside site/Outside site');
 
     $threat->get('field_as_threats_out')->setValue(TRUE);
     $threat->get('field_as_threats_in')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('At least one option must be selected for Inside site/Outside site');
+    $this->assertSession()->pageTextNotContains('At least one option must be selected for Inside site/Outside site');
 
     $threat->get('field_as_threats_out')->setValue(NULL);
     $threat->get('field_as_threats_in')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextContains('At least one option must be selected for Inside site/Outside site');
+    $this->assertSession()->pageTextContains('At least one option must be selected for Inside site/Outside site');
 
     $threat->get('field_as_threats_extent')->setValue(NULL);
     $threat->get('field_as_threats_in')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('Threat extent field is required for');
+    $this->assertSession()->pageTextNotContains('Threat extent field is required for');
 
     $threat->get('field_as_threats_extent')->setValue(NULL);
     $threat->get('field_as_threats_in')->setValue(TRUE);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextContains('Threat extent field is required for');
+    $this->assertSession()->pageTextContains('Threat extent field is required for');
 
     $threat->get('field_as_threats_values_wh')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('Affected values field is required');
+    $this->assertSession()->pageTextNotContains('Affected values field is required');
 
     $threat->get('field_as_threats_values_wh')->setValue([
       'target_id' => $assessment->get('field_as_values_wh')->target_id,
@@ -290,22 +260,19 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $threat->get('field_as_threats_values_bio')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextNotContains('Affected values field is required');
+    $this->assertSession()->pageTextNotContains('Affected values field is required');
 
     $threat->get('field_as_threats_values_wh')->setValue(NULL);
     $threat->get('field_as_threats_values_bio')->setValue(NULL);
     $threat->save();
     $this->drupalGet($stateChangeForm);
-    $this->assertSession()
-      ->pageTextContains('Affected values field is required');
+    $this->assertSession()->pageTextContains('Affected values field is required');
 
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION);
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     /** @var \Drupal\paragraphs\ParagraphInterface $threat */
     $threat = $assessment->field_as_threats_current->entity;
-    $categories = array_column($threat->get('field_as_threats_categories')
-      ->getValue(), 'target_id');
+    $categories = array_column($threat->get('field_as_threats_categories')->getValue(), 'target_id');
     $parentCategory = reset($categories);
 
     foreach (self::REQUIRED_DEPENDENT_FIELDS as $field => $categories) {
@@ -330,7 +297,6 @@ class ChangeStateFormTest extends WorkflowTestBase {
     }
   }
 
-
   public function testFieldsAccess() {
     $fieldsAccess = [
       TestSupport::ASSESSOR1 => [
@@ -348,7 +314,6 @@ class ChangeStateFormTest extends WorkflowTestBase {
           'field_reviewers[]' => FALSE,
           'field_references_reviewer' => FALSE,
         ],
-
       ],
       TestSupport::REFERENCES_REVIEWER1 => [
         AssessmentWorkflow::STATUS_REVIEWING_REFERENCES => [
@@ -418,14 +383,13 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $fieldsAccess[TestSupport::IUCN_MANAGER] = $fieldsAccess[TestSupport::COORDINATOR1];
 
     foreach (WorkflowTestBase::TRANSITION_LABELS as $state => $label) {
-      $assessment = $this->createMockAssessmentNode($state);
-
-      foreach ($fieldsAccess as $user => $access) {
-        if (empty($access[$state])) {
+      foreach ($fieldsAccess as $user => $stateAccess) {
+        if (empty($stateAccess[$state])) {
           continue;
         }
+        $assessment = $this->createMockAssessmentNode($state);
 
-        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW && $user == TestSupport::REVIEWER1) {
           $reviewer = user_load_by_mail($user);
           $assessment = $this->workflowService->getReviewerRevision($assessment, $reviewer->id());
         }
@@ -437,7 +401,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
         $this->userLogIn($user);
         $this->drupalGet($stateChangeUrl);
 
-        foreach ($access[$state] as $fieldName => $visibility) {
+        foreach ($stateAccess[$state] as $fieldName => $visibility) {
           /** @var \Behat\Mink\Element\NodeElement $htmlField */
           $htmlField = $this->getSession()->getPage()->findField($fieldName);
           $this->assertTrue($htmlField instanceof NodeElement, "Field {$fieldName} can be found for user {$user} when assessment state is {$state}");
@@ -457,6 +421,30 @@ class ChangeStateFormTest extends WorkflowTestBase {
           $message = "Field {$fieldName} is {$text} for user {$user} when assessment state is {$state}";
           $this->assertEquals($disabledAttribute, $value, $message);
         }
+      }
+    }
+  }
+
+  /**
+   * Test that any language the assessment has, the interface is always in english.
+   *
+   * @covers \Drupal\iucn_assessment\EventSubscriber\IucnAssessmentRedirectSubscriber::redirectAssessmentLanguage
+   */
+  public function testAssessmentLanguageRedirect() {
+    $routes = [
+      'entity.node.edit_form',
+      'iucn_assessment.node.state_change',
+    ];
+
+    foreach ($this->languageManager->getLanguages() as $language) {
+      $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, [
+        'langcode' => $language->getId(),
+      ]);
+
+      foreach ($routes as $route) {
+        $url = Url::fromRoute($route, ['node' => $assessment->id()], ['language' => $language]);
+        $this->drupalGet($url);
+        $this->assertNotContains("/{$language->getId()}/", $this->getSession()->getCurrentUrl());
       }
     }
   }

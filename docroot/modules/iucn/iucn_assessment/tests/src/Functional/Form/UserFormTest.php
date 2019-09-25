@@ -80,7 +80,7 @@ class UserFormTest extends IucnAssessmentTestBase {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function checkRolesForEmail($validRoles, $invalidRoles, $userEmail = NULL) {
+  protected function checkRolesForEmail($validRoles, $invalidRoles, $userEmail = NULL) {
     if (!empty($userEmail)) {
       $user = user_load_by_mail($userEmail);
       $this->drupalGet($user->url('edit-form'));
@@ -116,16 +116,9 @@ class UserFormTest extends IucnAssessmentTestBase {
     foreach ($allowedMails + $notAllowedMails as $mail) {
       $this->userLogIn($mail);
 
-      $user = $this->entityTypeManager
-        ->getStorage('user')
-        ->loadByProperties(
-          [
-            'mail' => $mail,
-          ]
-        );
-
-      $user = reset($user);
+      $user = user_load_by_mail($user);
       $this->drupalGet($user->url('edit-form'));
+
       if (in_array($mail, $allowedMails)) {
         $this->assertElementPresent('.field--name-field-user-title');
         $this->assertSession()->fieldEnabled('edit-mail');
