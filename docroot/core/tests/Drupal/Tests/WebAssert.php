@@ -499,7 +499,7 @@ class WebAssert extends MinkWebAssert {
    * @param \Behat\Mink\Element\TraversableElement $container
    *   (optional) The document to check against. Defaults to the current page.
    *
-   * @return \Behat\Mink\Element\NodeElementpageTextNotContains
+   * @return \Behat\Mink\Element\NodeElement
    *   The matching element.
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
