@@ -388,6 +388,7 @@ class NodeSiteAssessmentForm {
     }
 
     array_unshift($form['actions']['submit']['#submit'], [self::class, 'setAssessmentSettings']);
+    $form['actions']['submit']['#submit'][] = [self::class, 'createCoordinatorRevision'];
 
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
@@ -434,26 +435,12 @@ class NodeSiteAssessmentForm {
    */
   public static function setAssessmentSettings(&$form, FormStateInterface $form_state) {
     $currentUser = \Drupal::currentUser();
-    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
-    $workflowService = \Drupal::service('iucn_assessment.workflow');
 
     /** @var \Drupal\node\NodeForm $nodeForm */
     $nodeForm = $form_state->getFormObject();
     /** @var \Drupal\node\NodeInterface $node */
     $node = $nodeForm->getEntity();
     $values = $form_state->getValues();
-
-    if ($node->isDefaultRevision()
-      && $workflowService->isNewAssessment($node)
-      && empty($node->field_coordinator->target_id)
-      && in_array('coordinator', $currentUser->getRoles())) {
-      // Sets the current user as a coordinator if he has the coordinator role
-      // and edits the assessment.
-      $oldState = $node->field_state->value;
-      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
-      $node = $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
-    }
 
     $settings = json_decode($node->field_settings->value, TRUE);
 
@@ -464,6 +451,36 @@ class NodeSiteAssessmentForm {
     $node->field_settings->setValue(json_encode($settings));
     $nodeForm->setEntity($node);
     $form_state->setFormObject($nodeForm);
+  }
+
+  /**
+   * Sets the current user as a coordinator if he has the coordinator role and
+   * is the first one who edits the assessment.
+   *
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public static function createCoordinatorRevision(&$form, FormStateInterface $form_state) {
+    $currentUser = \Drupal::currentUser();
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+
+    /** @var \Drupal\node\NodeForm $nodeForm */
+    $nodeForm = $form_state->getFormObject();
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $nodeForm->getEntity();
+
+    if ($node->isDefaultRevision()
+      && $workflowService->isNewAssessment($node)
+      && empty($node->field_coordinator->target_id)
+      && in_array('coordinator', $currentUser->getRoles())) {
+      $oldState = $node->field_state->value;
+      $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+      $node->set('field_coordinator', ['target_id' => $currentUser->id()]);
+      $workflowService->createRevision($node, $newState, $currentUser->id(), "{$oldState} ({$node->getRevisionId()}) => {$newState}", TRUE);
+    }
   }
 
   /**
@@ -506,6 +523,10 @@ class NodeSiteAssessmentForm {
    *   The form.
    */
   public static function hideParagraphsActions(array &$form, NodeInterface $siteAssessment) {
+    if (!$siteAssessment->isDefaultTranslation()) {
+      return;
+    }
+
     $state = $siteAssessment->get('field_state')->value;
 
     /** @var \Drupal\Core\Session\AccountProxy $currentUser */

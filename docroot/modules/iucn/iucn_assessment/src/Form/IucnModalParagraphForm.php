@@ -17,6 +17,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class IucnModalParagraphForm extends ContentEntityForm {
 
@@ -50,9 +51,9 @@ class IucnModalParagraphForm extends ContentEntityForm {
   protected $formDisplayMode;
 
   /** @var string */
-  protected $current_language;
+  protected $currentLanguage;
 
-  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager) {
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info = NULL, TimeInterface $time = NULL, EntityFormBuilderInterface $entity_form_builder = NULL, EntityTypeManagerInterface $entityTypeManager = NULL, PrivateTempStoreFactory $temp_store_factory = NULL, AssessmentWorkflow $assessmentWorkflow = NULL, LanguageManagerInterface $languageManager, RequestStack $requestStack) {
     parent::__construct($entity_repository, $entity_type_bundle_info, $time);
     $this->setEntityTypeManager($entityTypeManager);
     $this->entityFormBuilder = $entity_form_builder;
@@ -60,12 +61,12 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->entityFormDisplay = $this->entityTypeManager->getStorage('entity_form_display');
 
     $routeMatch = $this->getRouteMatch();
-    $this->current_language = $languageManager->getCurrentLanguage()->getId();
     $this->nodeRevision = $routeMatch->getParameter('node_revision');
+    $this->currentLanguage = $requestStack->getCurrentRequest()->query->get('language') ?: $this->nodeRevision->language()->getId();
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
 
-    if (!empty($this->paragraphRevision) && !$this->paragraphRevision->hasTranslation($this->current_language)) {
-      $translation = $this->paragraphRevision->addTranslation($this->current_language, $this->paragraphRevision->toArray());
+    if (!empty($this->paragraphRevision) && !$this->paragraphRevision->hasTranslation($this->currentLanguage)) {
+      $translation = $this->paragraphRevision->addTranslation($this->currentLanguage, $this->paragraphRevision->toArray());
       $translation->save();
       $this->paragraphRevision = $translation;
     }
@@ -92,7 +93,8 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $container->get('entity_type.manager'),
       $container->get('tempstore.private'),
       $container->get('iucn_assessment.workflow'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('request_stack')
     );
   }
 
@@ -176,10 +178,14 @@ class IucnModalParagraphForm extends ContentEntityForm {
       $this->nodeFormDisplay->setComponent('field_as_values_wh', $content['field_as_values_wh']);
     }
 
-    $nodeForm = $this->entityFormBuilder->getForm($this->nodeRevision, 'default', [
+    $translation = $this->nodeRevision->hasTranslation($this->currentLanguage)
+      ? $this->nodeRevision->getTranslation($this->currentLanguage)
+      : $this->nodeRevision->addTranslation($this->currentLanguage);
+
+    $nodeForm = $this->entityFormBuilder->getForm($translation, 'default', [
       'form_display' => $this->nodeFormDisplay,
       'entity_form_initialized' => TRUE,
-      'langcode' => $this->current_language,
+      'langcode' => $this->currentLanguage,
     ]);
 
     // Refresh the paragraphs field.

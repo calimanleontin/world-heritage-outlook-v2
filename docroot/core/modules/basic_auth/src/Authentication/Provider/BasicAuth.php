@@ -98,6 +98,9 @@ class BasicAuth implements AuthenticationProviderInterface, AuthenticationProvid
         return FALSE;
       }
       /** @var \Symfony\Component\Routing\Route $route */
+      if (empty($route->getOption('_auth'))) {
+        return FALSE;
+      }
       return (bool) in_array('basic_auth', $route->getOption('_auth'));
     }
 

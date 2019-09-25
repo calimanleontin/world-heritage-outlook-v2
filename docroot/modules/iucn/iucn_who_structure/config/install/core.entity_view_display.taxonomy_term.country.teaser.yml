@@ -33,3 +33,4 @@ hidden:
   field_unesco_region: true
   field_zip_required: true
   langcode: true
+  search_api_excerpt: true

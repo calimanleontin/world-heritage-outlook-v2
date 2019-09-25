@@ -79,6 +79,7 @@ permissions:
   - 'export nodes to word'
   - 'force finish reviewing'
   - 'force finish assessment'
+  - 'force finish reference standardisation'
   - 'reorder field field_as_benefits'
   - 'reorder field_as_benefits'
   - 'reorder field_as_key_cons'

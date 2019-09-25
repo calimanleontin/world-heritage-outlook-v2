@@ -127,6 +127,7 @@ hidden:
   field_as_version: true
   field_assessment_file: true
   field_date_published: true
+  field_programmatically_fixed: true
   field_settings: true
   langcode: true
   path: true

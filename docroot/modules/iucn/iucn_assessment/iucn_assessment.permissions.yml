@@ -37,6 +37,9 @@ force finish reviewing:
 force finish assessment:
   title: 'Force finish assessment'
 
+force finish reference standardisation:
+  title: 'Force finish reference standardisation'
+
 export nodes to word:
   title: 'Export nodes to Word'
 

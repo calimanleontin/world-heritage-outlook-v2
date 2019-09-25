@@ -20,7 +20,7 @@ class EditFormDifferencesTest extends IucnAssessmentTestBase {
    * Check that if the 'View diff' button appears on all tabs for every fields
    * that can be edited.
    */
-  protected function testDifferences() {
+  public function testDifferences() {
     $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);
 

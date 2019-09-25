@@ -844,6 +844,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
                   $i--;
                 }
               }
+              else {
+                $insertedParents[] = $childEntityValue->target_id;
+              }
             }
             $childrenRender = $this->renderEntityReferenceField($childrenItemList);
             $childrenCell = [
@@ -986,6 +989,9 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       'paragraph_revision' => $paragraph->getRevisionId(),
       'tab' => $this->request->query->get('tab'),
       'form_display_mode' => $this->getSetting('form_display_mode'),
+      'language' => $this->routeMatch->getRouteName() != 'entity.node.content_translation_add'
+        ? $paragraphParentNodeRevision->language()->getId()
+        : $this->routeMatch->getParameter('target')->getId(),
     ];
     $actions = [
       '#type' => 'container',
