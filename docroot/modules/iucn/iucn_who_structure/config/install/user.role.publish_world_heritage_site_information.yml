@@ -13,6 +13,7 @@ permissions:
   - 'delete any site content'
   - 'delete content translations'
   - 'delete site revisions'
+  - 'edit own profile'
   - 'revert site revisions'
   - 'use text format assessment_text_format'
   - 'use text format html'

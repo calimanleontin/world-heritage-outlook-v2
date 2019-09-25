@@ -25,3 +25,4 @@ hidden:
   field_user_agreement_disabled: true
   field_user_title: true
   langcode: true
+  search_api_excerpt: true
