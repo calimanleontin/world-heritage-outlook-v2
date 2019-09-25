@@ -45,17 +45,18 @@ trait AssessmentTestTrait {
    *  Assessment workflow state.
    * @param array $values
    *  Extra fields values.
-   * @param bool $referenceUser
+   * @param bool $addDefaultUsers
    *  Defaults to TRUE. If set to FALSE, the default users fields (coordinator,
    * assessor, reviewers and references reviewer) will be left empty.
    *
    * @return \Drupal\node\NodeInterface|null
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createMockAssessmentNode($state, array $values = [], $referenceUser = TRUE) {
+  protected function createMockAssessmentNode($state, array $values = [], $addDefaultUsers = TRUE) {
     $assessment = TestSupport::createAssessment();
     TestSupport::populateAllFieldsData($assessment, 1);
 
-    if ($referenceUser) {
+    if ($addDefaultUsers) {
       /** @var \Drupal\user\UserInterface $coordinator */
       $coordinator = user_load_by_mail(TestSupport::COORDINATOR1);
       /** @var \Drupal\user\UserInterface $assessor */

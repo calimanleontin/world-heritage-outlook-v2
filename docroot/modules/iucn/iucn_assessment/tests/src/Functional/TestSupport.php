@@ -107,10 +107,11 @@ class TestSupport {
    * @return int
    *   The user id.
    */
-  public static function createUser($mail, $roles = []) {
+  public static function createUser($mail, $roles = [], $acceptedAgreement = TRUE) {
     $ob = User::create([
       'name' => $mail,
       'mail' => $mail,
+      'field_accepted_agreement' => $acceptedAgreement,
     ]);
     $ob->setPassword('password');
     $ob->set('status', 1);
