@@ -8,8 +8,6 @@ use Drupal\Core\Url;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\iucn_who_core\Form\IucnUserAgreementSettingsForm;
-use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -90,7 +88,7 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
     $contentTypes = $event->getRequest()->getAcceptableContentTypes();
     return $this->currentUser->isAuthenticated()
       && $event->isMasterRequest()
-      && in_array('text/html', $contentTypes)
+      && (empty($contentTypes) || in_array('text/html', $contentTypes))
       && !$this->routeIsAllowed()
       && !$this->userAcceptedAgreement()
       && !$this->userCanSkipAgreement();

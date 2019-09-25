@@ -44,6 +44,8 @@ dependencies:
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_programmatically_fixed
+    - field.field.node.site_assessment.field_references_reviewer
     - field.field.node.site_assessment.field_reviewers
     - field.field.node.site_assessment.field_settings
     - field.field.node.site_assessment.field_state
@@ -72,6 +74,7 @@ third_party_settings:
         classes: ''
         direction: horizontal
       label: Tabs
+      region: content
     group_as_values:
       children:
         - field_as_values_bio
@@ -85,6 +88,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Values
+      region: content
     group_as_threats:
       children:
         - field_as_threats_current
@@ -105,6 +109,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Threats
+      region: content
     group_as_protection_management:
       children:
         - field_as_protection
@@ -124,6 +129,7 @@ third_party_settings:
         id: protection_management
         classes: ''
       label: 'Protection and management'
+      region: content
     group_as_assessing_values:
       children:
         - field_as_values_wh
@@ -138,6 +144,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Assessing values'
+      region: content
     group_as_conservation_outlook:
       children:
         - field_as_global_assessment_text
@@ -152,6 +159,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Conservation Outlook'
+      region: content
     group_as_benefits:
       children:
         - field_as_benefits
@@ -166,6 +174,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Benefits
+      region: content
     group_as_projects:
       children:
         - field_as_projects
@@ -180,6 +189,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Projects
+      region: content
     group_as_references:
       children:
         - field_as_references_p
@@ -193,6 +203,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: References
+      region: content
     group_as_key_cons:
       children:
         - field_as_key_cons
@@ -206,6 +217,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
+      region: content
     group_assessing_overall_container:
       children:
         - group_assessing_values_current_o
@@ -219,6 +231,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Summary of the Values'
+      region: content
     group_assessing_values_current_o:
       children:
         - field_as_vass_wh_text
@@ -238,6 +251,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessing values current overall'
+      region: content
     group_assessing_values_other:
       children:
         - field_as_vass_bio_text
@@ -257,6 +271,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessing values other'
+      region: content
 id: node.site_assessment.assessing_values
 targetEntityType: node
 bundle: site_assessment
@@ -646,6 +661,7 @@ hidden:
   field_assessor: true
   field_coordinator: true
   field_date_published: true
+  field_programmatically_fixed: true
   field_references_reviewer: true
   field_reviewers: true
   field_settings: true

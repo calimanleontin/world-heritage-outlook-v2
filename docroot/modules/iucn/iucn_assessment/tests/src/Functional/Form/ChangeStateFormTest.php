@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
+use Behat\Mink\Element\NodeElement;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\Entity\Node;
@@ -424,14 +425,30 @@ class ChangeStateFormTest extends WorkflowTestBase {
           continue;
         }
 
+        if ($state == AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+          $reviewer = user_load_by_mail($user);
+          $assessment = $this->workflowService->getReviewerRevision($assessment, $reviewer->id());
+        }
+        $stateChangeUrl = Url::fromRoute('iucn_assessment.node_revision.state_change', [
+          'node' => $assessment->id(),
+          'node_revision' => $assessment->getRevisionId(),
+        ]);
+
         $this->userLogIn($user);
-        $this->drupalGet(Url::fromRoute(
-          'iucn_assessment.node.state_change',
-          ['node' => $assessment->id()]
-        ));
+        $this->drupalGet($stateChangeUrl);
 
         foreach ($access[$state] as $fieldName => $visibility) {
-          $disabledAttribute = $this->getSession()->getPage()->findField($fieldName)->getAttribute('disabled');
+          /** @var \Behat\Mink\Element\NodeElement $htmlField */
+          $htmlField = $this->getSession()->getPage()->findField($fieldName);
+          $this->assertTrue($htmlField instanceof NodeElement, "Field {$fieldName} can be found for user {$user} when assessment state is {$state}");
+
+          if (empty($htmlField)) {
+            // Do not crash the test if the field was not found, the assertTrue
+            // above is enough.
+            continue;
+          }
+
+          $disabledAttribute = $htmlField->getAttribute('disabled');
           $text = $value = 'disabled';
           if ($visibility === TRUE) {
             $text = 'active';

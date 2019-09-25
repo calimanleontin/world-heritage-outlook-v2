@@ -44,6 +44,8 @@ dependencies:
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_programmatically_fixed
+    - field.field.node.site_assessment.field_references_reviewer
     - field.field.node.site_assessment.field_reviewers
     - field.field.node.site_assessment.field_settings
     - field.field.node.site_assessment.field_state
@@ -72,6 +74,7 @@ third_party_settings:
         classes: ''
         direction: horizontal
       label: Tabs
+      region: content
     group_as_values:
       children:
         - field_as_values_bio
@@ -85,6 +88,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Values
+      region: content
     group_as_threats:
       children:
         - field_as_threats_current
@@ -99,6 +103,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Threats
+      region: content
     group_as_protection_management:
       children:
         - field_as_protection
@@ -113,6 +118,7 @@ third_party_settings:
         id: protection_management
         classes: ''
       label: 'Protection and management'
+      region: content
     group_as_assessing_values:
       children:
         - field_as_values_wh
@@ -126,6 +132,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Assessing values'
+      region: content
     group_as_conservation_outlook:
       children:
         - group_conservation_summary
@@ -140,6 +147,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Conservation Outlook'
+      region: content
     group_as_benefits:
       children:
         - field_as_benefits
@@ -155,6 +163,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Benefits
+      region: content
     group_as_projects:
       children:
         - field_as_projects
@@ -168,6 +177,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Projects
+      region: content
     group_as_references:
       children:
         - field_as_references_p
@@ -181,6 +191,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: References
+      region: content
     group_as_key_cons:
       children:
         - field_as_key_cons
@@ -194,6 +205,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Key conserv'
+      region: content
     group_threats_overall_current:
       children:
         - field_as_threats_current_text
@@ -215,6 +227,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Current threats'
+      region: content
     group_threats_overall_potential:
       children:
         - field_as_threats_potent_text
@@ -236,6 +249,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Potential threats'
+      region: content
     group_threats_overall_all:
       children:
         - field_as_threats_text
@@ -257,6 +271,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Overall threats'
+      region: content
     group_protection_overall_effecti:
       children:
         - field_as_protection_ov_text
@@ -278,6 +293,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Effectiveness of protection and management in addressing threats outside the site'
+      region: content
     group_protection_overall_assessm:
       children:
         - field_as_protection_ov_out_text
@@ -299,6 +315,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Overall protection and management'
+      region: content
     group_assessing_values_current_o:
       children:
         - field_as_vass_wh_text
@@ -320,6 +337,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Current state and trend of World Heritage values'
+      region: content
     group_assessing_values_other:
       children:
         - field_as_vass_bio_text
@@ -341,6 +359,7 @@ third_party_settings:
         classes: overall-row-view
         required_fields: 0
       label: 'Current state and trend of other important biodiversity values'
+      region: content
     group_assessment_of_conservation:
       children:
         - field_as_global_assessment_text
@@ -359,6 +378,7 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Assessment of Conservation Outlook'
+      region: content
     group_conservation_overall_container:
       children:
         - group_assessment_of_conservation
@@ -372,6 +392,7 @@ third_party_settings:
         classes: overall-container
         required_fields: false
       label: 'Assessment of Conservation Outlook'
+      region: content
     group_conservation_summary:
       children:
         - group_assessing_values_current_o
@@ -392,6 +413,7 @@ third_party_settings:
         id: ''
         classes: overall-container
       label: 'Summary of Assessments of Values, Threats, and Protection and Management'
+      region: content
 id: node.site_assessment.conservation_outlook
 targetEntityType: node
 bundle: site_assessment
@@ -740,6 +762,7 @@ hidden:
   field_assessor: true
   field_coordinator: true
   field_date_published: true
+  field_programmatically_fixed: true
   field_references_reviewer: true
   field_reviewers: true
   field_settings: true
