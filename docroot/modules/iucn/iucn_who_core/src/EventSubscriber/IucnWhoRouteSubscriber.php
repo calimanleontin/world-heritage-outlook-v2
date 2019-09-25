@@ -14,7 +14,9 @@ class IucnWhoRouteSubscriber extends RouteSubscriberBase {
    */
   public static function getSubscribedEvents() {
     return [
-      RoutingEvents::ALTER => ['onAlterRoutes', -9999],
+      RoutingEvents::ALTER => [
+        ['onAlterRoutes', -9999],
+      ],
     ];
   }
 
@@ -23,5 +25,10 @@ class IucnWhoRouteSubscriber extends RouteSubscriberBase {
     if ($route) {
       $route->setDefault('_form', IucnUserPasswordForm::class);
     }
+
+    if ($route = $collection->get('rest.csrftoken')) {
+      $collection->remove('rest.csrftoken');
+    }
   }
+
 }
