@@ -3,6 +3,7 @@
 namespace Drupal\Tests\iucn_assessment\Functional\Form;
 
 use Drupal\Core\Url;
+use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 use Drupal\user\Entity\Role;
@@ -15,6 +16,16 @@ use Drupal\user\Entity\User;
  */
 class UserFormTest extends IucnAssessmentTestBase {
 
+  /** @var \Drupal\Core\Language\LanguageManagerInterface */
+  protected $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp() {
+    parent::setUp();
+   $this->languageManager = \Drupal::service('language_manager');
+  }
 
   /**
    * A new user can change the password before accepting the user agreement.
@@ -81,7 +92,7 @@ class UserFormTest extends IucnAssessmentTestBase {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function checkRolesForEmail($validRoles, $invalidRoles, $userEmail = NULL) {
+  protected function checkRolesForEmail($validRoles, $invalidRoles, $userEmail = NULL) {
     if (!empty($userEmail)) {
       $user = user_load_by_mail($userEmail);
       $this->drupalGet($user->url('edit-form'));
@@ -97,4 +108,33 @@ class UserFormTest extends IucnAssessmentTestBase {
       $this->assertElementPresent($cssSelector);
     }
   }
+
+  public function testAssessmentLanguageRedirect() {
+    //Test that any language the assessment have, the interface is always in the en language
+    $routes = [
+      'entity.node.edit_form',
+      'iucn_assessment.node.state_change',
+    ];
+
+    foreach ($this->languageManager->getLanguages() as $language) {
+      $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, [
+        'langcode' => $language->getId(),
+      ]);
+
+      foreach ($routes as $route) {
+        $url = Url::fromRoute(
+          $route,
+          ['node' => $assessment->id()],
+          ['language' => $language]
+        );
+
+        $this->drupalGet($url);
+        $this->assertNotContains(
+          "/{$language->getId()}/",
+          $this->getSession()->getCurrentUrl()
+        );
+      }
+    }
+  }
+
 }
