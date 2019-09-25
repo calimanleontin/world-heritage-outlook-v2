@@ -78,7 +78,7 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
     $assessment = Node::load($assessment->id());
     // Set the assessment title.
-    $assessment->setTitle('Random title');
+    $assessment->setTitle('Random title 2');
     $assessment->save();
     $this->drupalGet($assessment->toUrl('edit-form'));
     $this->userLogIn(TestSupport::COORDINATOR1);
@@ -89,7 +89,7 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     // Make sure the assessment is now ready for review, and the assessor's change is kept.
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
-    $this->assertEqual($assessment->getTitle(), 'Random title');
+    $this->assertEqual($assessment->getTitle(), 'Random title 2');
     $this->assertEqual($assessment->field_state->value, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
   }
 
