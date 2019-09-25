@@ -3,6 +3,7 @@ services:
     class: Drupal\iucn_who_core\EventSubscriber\IucnWhoEventSubscriber
     tags:
       - { name: event_subscriber }
+
   iucn_who_core.user_agreement_route_subscriber:
     class: Drupal\iucn_who_core\EventSubscriber\IucnUserAgreementEventSubscriber
     arguments:
@@ -12,3 +13,8 @@ services:
     - '@messenger'
     tags:
     - { name: event_subscriber }
+
+  iucn_who_core.route_subscriber:
+    class: Drupal\iucn_who_core\EventSubscriber\IucnWhoRouteSubscriber
+    tags:
+      - { name: event_subscriber }
