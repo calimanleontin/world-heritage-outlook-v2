@@ -18,7 +18,7 @@ class CommentsTest extends IucnAssessmentTestBase {
   /**
    * Check comments.
    */
-  protected function testComments() {
+  public function testComments() {
     $assessment = $this->getNodeByTitle(TestSupport::ASSESSMENT1);
     /** @var \Drupal\user\Entity\User $assessor1 */
     $assessor = user_load_by_mail(TestSupport::ASSESSOR1);

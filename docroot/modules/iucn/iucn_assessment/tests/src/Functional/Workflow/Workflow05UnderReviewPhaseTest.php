@@ -234,7 +234,6 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_FINISHED_REVIEWING, $assessment->field_state->value);
-
     // Reviewer1 submitted his revision and Coordinator removes Reviewer2
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
     $this->userLogIn(TestSupport::COORDINATOR1);

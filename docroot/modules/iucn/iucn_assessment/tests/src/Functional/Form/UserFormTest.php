@@ -24,7 +24,7 @@ class UserFormTest extends IucnAssessmentTestBase {
    */
   protected function setUp() {
     parent::setUp();
-   $this->languageManager = \Drupal::service('language_manager');
+    $this->languageManager = $this->container->get('language_manager');
   }
 
   /**
@@ -133,6 +133,47 @@ class UserFormTest extends IucnAssessmentTestBase {
           "/{$language->getId()}/",
           $this->getSession()->getCurrentUrl()
         );
+      }
+    }
+  }
+
+  /**
+   * Check every role for right to view title and edit email.
+   */
+  public function testRoleViewTitleEditMail() {
+    $allowedMails = [
+      TestSupport::COORDINATOR1,
+      TestSupport::ADMINISTRATOR,
+      TestSupport::IUCN_MANAGER,
+    ];
+
+    $notAllowedMails = [
+      TestSupport::ASSESSOR1,
+      TestSupport::REVIEWER1,
+      TestSupport::REFERENCES_REVIEWER1,
+    ];
+
+    foreach ($allowedMails + $notAllowedMails as $mail) {
+      $this->userLogIn($mail);
+
+      $user = $this->entityTypeManager
+        ->getStorage('user')
+        ->loadByProperties(
+          [
+            'mail' => $mail,
+          ]
+        );
+
+      $user = reset($user);
+      $this->drupalGet($user->url('edit-form'));
+      if (in_array($mail, $allowedMails)) {
+        $this->assertElementPresent('.field--name-field-user-title');
+        $this->assertSession()->fieldEnabled('edit-mail');
+      }
+
+      if (in_array($mail, $notAllowedMails)) {
+        $this->assertElementNotPresent('.field--name-field-user-title');
+        $this->assertSession()->fieldDisabled('edit-mail');
       }
     }
   }
