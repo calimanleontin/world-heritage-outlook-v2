@@ -33,18 +33,17 @@ class EditFormTabsValidationTest extends IucnAssessmentTestBase {
     $this->drupalPostForm($stateChangeUrl, ['field_coordinator' => $coordinator->id()], WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_EVALUATION]);
     $this->drupalPostForm($stateChangeUrl, ['field_assessor' => $assessor->id()], WorkflowTestBase::TRANSITION_LABELS[AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
 
-
     $this->userLogIn(TestSupport::ASSESSOR1);
 
     $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'values']]));
-    $this->assertSession()->pageTextNotContains('Remove"');
-    $this->assertSession()->pageTextNotContains('Add more"');
-    $this->assertSession()->pageTextNotContains('Edit"');
+    $this->assertSession()->linkNotExists('Delete"');
+    $this->assertSession()->linkNotExists('Add more"');
+    $this->assertSession()->linkNotExists('Edit"');
 
     $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'assessing-values']]));
-    $this->assertSession()->pageTextNotContains('Remove');
-    $this->assertSession()->pageTextNotContains('Add more"');
-    $this->assertSession()->pageTextContains('Edit');
+    $this->assertSession()->linkNotExists('Delete');
+    $this->assertSession()->linkNotExists('Add more"');
+    $this->assertSession()->linkExists('Edit');
   }
 
   /**
