@@ -30,6 +30,7 @@ class EditFormFieldsTest extends IucnAssessmentWebDriverTestBase {
     $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => 'threats']]));
     $this->click('.paragraphs-icon-button-edit');
     $this->assertSession()->waitForElement('css', '#drupal-modal');
+    sleep(5);
 
     $this->getSession()->getDriver()->selectOption("//select[@data-id='options-groups']", $term->id());
   }
