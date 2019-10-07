@@ -4,6 +4,7 @@ namespace Drupal\iucn_who_core\Commands;
 
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -28,13 +29,20 @@ class IucnTestDataCommands extends DrushCommands {
     $roles = Role::loadMultiple();
     foreach ($roles as $role) {
       for ($i = 1; $i <= $numberOfUsers; $i++) {
-        $user = User::create([
-          'name' => "{$role->id()}_{$i}",
-          'mail' =>  "{$role->id()}_{$i}@example.com",
-          'pass' => $password,
-          'status' => 1,
-          'roles' => [$role->id()],
-        ]);
+        $name = "{$role->id()}_{$i}";
+        $user = user_load_by_name($name);
+        if ($user instanceof UserInterface) {
+          $user->setPassword($password);
+        }
+        else {
+          $user = User::create([
+            'name' => $name,
+            'mail' =>  "{$name}@example.com",
+            'pass' => $password,
+            'status' => 1,
+            'roles' => [$role->id()],
+          ]);
+        }
         $user->save();
       }
     }
