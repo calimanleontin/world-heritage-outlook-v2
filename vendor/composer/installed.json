@@ -4584,6 +4584,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Notice: Undefined index: add_enable in disable_field_disable_validate()": "https://www.drupal.org/files/issues/2019-08-05/error_message-notice_undefined_index-3072682-1.patch"
             }
         },
         "installation-source": "dist",

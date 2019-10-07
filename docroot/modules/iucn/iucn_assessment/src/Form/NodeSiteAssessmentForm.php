@@ -331,6 +331,7 @@ class NodeSiteAssessmentForm {
         return !preg_match('/^field\_/', $key) || in_array($key, $allowedFields);
       }, ARRAY_FILTER_USE_KEY);
       unset($form['#fieldgroups']);
+      dump($form['field_as_site']);
     }
     else {
       // Hide the site field because it is in the title.
