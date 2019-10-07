@@ -8,12 +8,30 @@ dependencies:
     - node.type.site_assessment
   module:
     - disable_field
+    - iucn_assessment
 third_party_settings:
+  iucn_assessment:
+    editable_workflow_states:
+      assessment_creation: assessment_creation
+      assessment_new: assessment_new
+      assessment_under_evaluation: 0
+      assessment_under_assessment: 0
+      assessment_ready_for_review: 0
+      assessment_under_review: 0
+      assessment_finished_reviewing: 0
+      assessment_under_comparison: 0
+      assessment_reviewing_references: 0
+      assessment_final_changes: 0
+      assessment_approved: 0
+      assessment_published: 0
+      assessment_draft: 0
   disable_field:
     add_disable: none
     add_disable_roles: {  }
     edit_disable: all
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_site
 field_name: field_as_site
 entity_type: node
