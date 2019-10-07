@@ -292,22 +292,28 @@ class NodeSiteAssessmentForm {
 
     self::setValidationErrors($form, $form, []);
 
-    if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
-      $form['main_data_container'] = [
+    $form['main_data_container'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['main-data-container']],
+      '#weight' => -999,
+      'data' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['main-data-container']],
-        '#weight' => -999,
-        'data' => [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['data-fields']],
-          'title' => $form['title'],
-          'langcode' => $form['langcode'],
-          'field_assessment_file' => $form['field_assessment_file'],
-        ],
-      ];
-      unset($form['title']);
-      unset($form['langcode']);
-      unset($form['field_assessment_file']);
+        '#attributes' => ['class' => ['data-fields']],
+      ],
+    ];
+    $mainDataFields = [
+      'title',
+      'langcode',
+      'field_assessment_file',
+      'field_as_site',
+      'field_as_cycle',
+    ];
+    foreach ($mainDataFields as $field) {
+      if (empty($form[$field])) {
+        continue;
+      }
+      $form['main_data_container']['data'][$field] = $form[$field];
+      unset($form[$field]);
     }
 
     $blockContent = BlockContent::load(8);
