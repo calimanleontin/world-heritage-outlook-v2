@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\taxonomy\Entity\Term;
+
 /**
  * Implements hook_install().
  */
@@ -23,6 +25,120 @@ function iucn_fields_install() {
     }
 
     $term->setName($name);
+    $term->save();
+  }
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function iucn_fields_update_8005() {
+  $tooltipConfig = [
+    "Management system"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Does the site have a management plan, and is it up to date and implemented?<br />
+&nbsp; &nbsp; • Does the management plan identify values, management objectives, desired management outcomes, and key threats? <br />
+&nbsp; &nbsp; • Does the planning process provide sufficient opportunity for stakeholder input?<br />
+&nbsp; &nbsp; • Is there relevant, current and accessible information about natural values, threats, protected area use and community issues available to management?<br />
+&nbsp; &nbsp; • Is there a legitimate, accepted, transparent and accountable governance framework?<br />
+&nbsp; &nbsp; • Is governance and decision-making open to scrutiny by stakeholders, with information presented in appropriate format and reasoning behind decisions evident?",
+    "Management effectiveness" => "
+    Consider:<br />
+&nbsp; &nbsp; • Are the objectives of the management plan being achieved?<br />
+&nbsp; &nbsp; • Is there a process for monitoring, review and adjustment of the management plan during the life of the plan? <br />
+&nbsp; &nbsp; • Is the management plan actively used to guide management?<br />
+&nbsp; &nbsp; • Has a management effectiveness evaluation been undertaken for this site using available management effectiveness tools/methodologies (e.g. the WWF and World Bank Management Effectiveness Tracking Tool [METT], the IUCN framework for assessing management effectiveness of protected areas). If yes, please indicate the main results/conclusions.  <br />
+&nbsp; &nbsp; • Are natural resources management activities conducted to a planned work programme, and aimed at minimising threats and protecting values, using adaptive management practices?<br />
+&nbsp; &nbsp; • Is the management system adequate to maintain the site's values?",
+    "Boundaries"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Are the boundaries of the site, including buffer zone, effective in relation to the management and protection of its values?<br />
+&nbsp; &nbsp; • Are the boundaries clearly marked or fenced as necessary to conserve values?<br />
+&nbsp; &nbsp; • Does the site have a buffer zone and is its use of the buffer zone of the site regulated in ways that enhance site protection?",
+    "Integration into regional and national planning systems"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is the site well-integrated into the national and regional planning systems?<br />
+&nbsp; &nbsp; • Is management of the site integrated with broader landscape /seascape management and sustainable development priorities?",
+    "Relationships with local people"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Have the key stakeholders been identified and are they involved in site management? <br />
+&nbsp; &nbsp; • Are indigenous people and human rights being respected?<br />
+&nbsp; &nbsp; • Are traditional management practices and the involvement of Indigenous people in natural and cultural resource management and decision-making fostered as appropriate?<br />
+&nbsp; &nbsp; • Is there a programme of outreach, communication and information exchange with local communities and other key stakeholders using mechanisms appropriate to the stakeholders?<br />
+&nbsp; &nbsp; • Do relationships with stakeholders in and around the site help facilitate effective conservation of the site’s values?<br />
+&nbsp; &nbsp; • Are the needs of stakeholders addressed effectively within the management system for the site, without compromising the conservation of the site? If yes, are benefits provided by the World Heritage site shared equitably with local people? If not, what are the main conflicts with stakeholders that need to be addressed?<br />
+&nbsp; &nbsp; • Is local employment fostered and are community wellbeing programs implemented where appropriate?<br />
+&nbsp; &nbsp; • Are the impacts of site management on the community positive or at least neutral and stable or improving?",
+    "Legal framework and enforcement"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is the legal framework for the World Heritage site effective in maintaining its values? <br />
+&nbsp; &nbsp; • Are land tenure issues resolved so that there is no impediment to management?",
+    "Enforcement"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is the legal framework effectively enforced (e.g. adequate capacity to detect infringements through patrols and other enforcement activities, an effective  system for the prosecution of offenders, fair permit system with compliance monitored and enforced)?",
+    "Implementation of Committee decisions and recommendations" => "Consider:<br />
+&nbsp; &nbsp; • Has the State Party implemented the decisions and recommendations of the World Heritage Committee related to the site?<br />
+&nbsp; &nbsp; • If not, what are the key limitations to fully implementing these decisions?",
+    "Sustainable use"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Are there any assessment of the type and level of resources that could be used from the site without jeopardizing the site’s conservation?<br />
+&nbsp; &nbsp; • Are there effective mechanisms in place to ensure resource use permitted in and around the World Heritage site is sustainable and does not impact negatively on values?<br />
+&nbsp; &nbsp; • Does any resource use at present represent a threat to the conservation of the site? If yes, how can this be addressed?",
+    "Sustainable finance"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Has the site assessed the level of financial resources required to ensure its effective management? <br />
+&nbsp; &nbsp; • Are financial resources adequate to implement the management measures required to maintain the site’s values?  If not, what is the funding gap?<br />
+&nbsp; &nbsp; • What are the existing sources of funding and are these sources secure and are they likely to remain so?<br />
+&nbsp; &nbsp; • If not, what measures are in place to obtain additional financial resources to support management?",
+    "Staff training and development"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is staff capacity/numbers adequate to manage the site, with appropriate support staff?<br />
+&nbsp; &nbsp; • Do staff have the necessary capability and training to conduct essential management activities including community relations and biodiversity conservation?<br />
+&nbsp; &nbsp; • Are staff respected and nurtured, and staff health, safety and well-being are given a high priority by the management authority?<br />
+&nbsp; &nbsp; • Is there adequate equipment and infrastructure available and accessible to staff as appropriate to manage the site?<br />
+&nbsp; &nbsp; • Is equipment and infrastructure well maintained and regularly replaced as necessary so that the functioning and safety of management assets remains high?",
+    "Education and interpretation programs"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Do education, interpretation and awareness programmes significantly enhance the understanding of values of the site among stakeholders?<br />
+&nbsp; &nbsp; • Is there any education or awareness programme in place on regulations about the adequate use of the site’s natural resources?",
+    "Tourism and interpretation"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is there an understanding and promotion of the sites values in local and national tourism policies?<br />
+&nbsp; &nbsp; • Is there a tourism and/or visitation plan for the site? If yes, is it under implementation?<br />
+&nbsp; &nbsp; • Do visitor services and facilities meet standards of design, environmental sustainability and safety and are they appropriate for the character, values and use of the protected area?<br />
+&nbsp; &nbsp; • Is the tourism industry within the protected area managed to support protected area objectives?<br />
+&nbsp; &nbsp; • Are visitor impacts managed to minimise harm to the natural and cultural values of the protected area (for example through permits, access control, facilities, education and enforcement)?",
+    "Monitoring"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Are the values for which the site was inscribed on the List of World Heritage adequately and systematically monitored? <br />
+&nbsp; &nbsp; • If not, can the management agency establish cooperation programme with academic and/ or research centres to support monitoring activities?<br />
+&nbsp; &nbsp; • Are management plans, tools and decisions adapted and improved as a result of monitoring outcomes?",
+    "Research"
+                                                                => "Consider:<br />
+&nbsp; &nbsp; • Is there a targeted research programme in place as part of the adaptive management system of the site?<br />
+&nbsp; &nbsp; • If not, can the management agency establish cooperation programmes with academic and/or research centres to support research?<br />
+&nbsp; &nbsp; • Is there adequate knowledge, based on up to date data and information, about the site to support planning, management and decision-making to ensure that values is maintained over the long-term?
+    ",
+  ];
+
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $termStorage */
+  $termStorage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  foreach ($tooltipConfig as $name => $helpText) {
+    $termId = $termStorage->getQuery()
+      ->condition('name', $name)
+      ->execute();
+
+    if (empty($termId)) {
+      continue;
+    }
+
+    $termId = reset($termId);
+    $term = Term::load($termId);
+
+    $term->set('field_help_text', [
+      'format' => 'html',
+      'value' => "<p>{$helpText}</p>",
+    ]);
     $term->save();
   }
 }
