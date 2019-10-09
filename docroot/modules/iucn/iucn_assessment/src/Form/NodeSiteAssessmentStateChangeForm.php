@@ -517,10 +517,14 @@ class NodeSiteAssessmentStateChangeForm {
 
       if (!empty($removedReviewers)) {
         // Delete revisions of reviewers no longer assigned on this assessment.
-        foreach ($removedReviewers as $reviewerId) {
+        foreach ($removedReviewers as $reviewerKey => $reviewerId) {
           $reviewerRevision = $workflowService->getReviewerRevision($node, $reviewerId);
-          $readyForReviewRevision = $workflowService->getRevisionByState($reviewerRevision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
+          if ($reviewerRevision->get('field_state')->value == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+            unset($removedReviewers[$reviewerKey]);
+            continue;
+          }
 
+          $readyForReviewRevision = $workflowService->getRevisionByState($reviewerRevision, AssessmentWorkflow::STATUS_READY_FOR_REVIEW);
           $workflowService->markRevisionAsFinished($node, $reviewerRevision, $readyForReviewRevision);
         }
       }
@@ -544,6 +548,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     $underAssessmentRevisionOld = NULL;
+    $forceAssessmentState = TRUE;
     switch ($oldState . '>' . $newState) {
       case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
         $underAssessmentRevisionOld = $workflowService->getRevisionByState($node, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
@@ -571,7 +576,7 @@ class NodeSiteAssessmentStateChangeForm {
         break;
 
       case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
-        if (!empty($removedReviewers)) {
+        if ($node->isDefaultRevision()) {
           break;
         }
 
@@ -580,6 +585,7 @@ class NodeSiteAssessmentStateChangeForm {
         $workflowService->markRevisionAsFinished($defaultUnderReviewRevision, $node, $readyForReviewRevision);
 
         $createNewRevision = FALSE;
+        $forceAssessmentState = FALSE;
         break;
 
       case AssessmentWorkflow::STATUS_FINISHED_REVIEWING . '>' . AssessmentWorkflow::STATUS_UNDER_COMPARISON:
@@ -607,7 +613,7 @@ class NodeSiteAssessmentStateChangeForm {
       if ($createNewRevision === TRUE) {
         $entity = $workflowService->createRevision($node, $newState, NULL, "{$oldState} ({$node->getRevisionId()}) => {$newState}", $default);
       }
-      else {
+      elseif ($forceAssessmentState) {
         $workflowService->forceAssessmentState($node, $newState);
         $entity = $node;
       }
