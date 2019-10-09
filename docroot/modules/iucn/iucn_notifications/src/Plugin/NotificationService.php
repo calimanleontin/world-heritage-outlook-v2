@@ -170,7 +170,7 @@ class NotificationService {
    *
    * @return \Drupal\Core\Entity\EntityInterface|\Drupal\pet\Entity\Pet|null
    */
-  protected function getPetByTitle($title) {
+  public function getPetByTitle($title) {
     /** @var \Drupal\Core\Database\Statement $statement */
     $statement = $this->database->select('pet_field_data', 'pfd')
       ->fields('pfd', ['id'])

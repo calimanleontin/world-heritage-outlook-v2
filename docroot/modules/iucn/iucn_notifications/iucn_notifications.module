@@ -75,49 +75,15 @@ function iucn_notifications_node_update(NodeInterface $node) {
   $newState = $node->field_state->value;
 
   $coordinatorId = $node->field_coordinator->target_id;
-  $assessorId = $node->field_assessor->target_id;
 
   $recipients = [];
   switch ($oldState . '>' . $newState) {
-    case AssessmentWorkflow::STATUS_CREATION . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
-    case AssessmentWorkflow::STATUS_NEW . '>' . AssessmentWorkflow::STATUS_UNDER_EVALUATION:
-      if ($coordinatorId != \Drupal::currentUser()->id()) {
-        $recipients[] = $coordinatorId;
-      }
-      break;
-
-    case AssessmentWorkflow::STATUS_UNDER_EVALUATION . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
-      $recipients[] = $assessorId;
-      break;
-
-    case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_UNDER_ASSESSMENT:
-      if ($original->field_assessor->target_id != $assessorId) {
-        // The assessor was changed and we need to notify the new one.
-        $recipients[] = $assessorId;
-      }
-      break;
-
     case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
+    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
       $recipients[] = $coordinatorId;
       break;
 
-    case AssessmentWorkflow::STATUS_READY_FOR_REVIEW . '>' . AssessmentWorkflow::STATUS_UNDER_REVIEW:
-      $reviewerId = $node->getRevisionUserId();
-      if ($reviewerId != \Drupal::currentUser()->id()) {
-        // Each reviewer has its own revision created.
-        $recipients[] = $reviewerId;
-      }
-      break;
-
-    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
-      if ($node->isDefaultRevision() === TRUE) {
-        // Send this notification only when all reviewers revisions are finished
-        // and the main revision is automatically moved to "Finished" state.
-        $recipients[] = $coordinatorId;
-      }
-      break;
-
-    case AssessmentWorkflow::STATUS_REVIEWING_REFERENCES . '>' . AssessmentWorkflow::STATUS_APPROVED:
+    case AssessmentWorkflow::STATUS_FINAL_CHANGES . '>' . AssessmentWorkflow::STATUS_APPROVED:
       $managersIds = \Drupal::entityQuery('user')
         ->condition('status', 1)
         ->condition('roles', 'iucn_manager')
@@ -135,7 +101,7 @@ function iucn_notifications_node_update(NodeInterface $node) {
   /** @var \Drupal\iucn_notifications\Plugin\NotificationService $notificationService */
   $notificationService = \Drupal::service('iucn.notifications');
   foreach ($recipients as $recipient) {
-    $notificationService->sendNotificationToUser($newState, $recipient);
+    $notificationService->sendNotificationToUser($newState, $recipient, ['tokens' => ['node' => $node]]);
   }
 }
 
