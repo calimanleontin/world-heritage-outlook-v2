@@ -1878,13 +1878,13 @@ table.diff-context-wrapper {
 .field--widget-text-textarea-with-scayt html {
   overflow-y: auto;
 }
-.tooltip {
+.topic-tooltip {
   display: inline-block;
   position: relative;
   text-align: left;
   vertical-align: middle;
 }
-.tooltip .right {
+.topic-tooltip .right {
   min-width: 400px;
   top: 50%;
   left: 100%;
@@ -1902,10 +1902,10 @@ table.diff-context-wrapper {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: none;
 }
-.tooltip .right:hover {
+.topic-tooltip .right:hover {
   display: block;
 }
-.tooltip .right i {
+.topic-tooltip .right i {
   position: absolute;
   top: 50%;
   right: 100%;
@@ -1914,7 +1914,7 @@ table.diff-context-wrapper {
   height: 24px;
   overflow: hidden;
 }
-.tooltip .right i:after {
+.topic-tooltip .right i:after {
   content: '';
   position: absolute;
   width: 12px;
@@ -1925,7 +1925,7 @@ table.diff-context-wrapper {
   background-color: #EEEEEE;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-.tooltip:hover .right {
+.topic-tooltip:hover .right {
   display: block;
 }
 @media all and (min-width: 851px) {
