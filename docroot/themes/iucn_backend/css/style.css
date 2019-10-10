@@ -1544,6 +1544,16 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
   overflow: visible;
 }
+.form-item-field-as-protection-ov-practices-0-value label .topic-tooltip {
+  float: right;
+}
+.iucn-entity-reference-field-wrapper {
+  display: flex;
+}
+.iucn-entity-reference-field-wrapper .field--name-field-help-text {
+  flex-shrink: 0;
+  margin-left: auto;
+}
 #drupal-modal {
   padding: 0;
 }
