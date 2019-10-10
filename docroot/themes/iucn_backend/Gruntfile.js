@@ -8,20 +8,36 @@ module.exports = function (grunt) {
             tasks: ["less"]
         },
         less: {
-            development: {
+              options: {
+                  sourceMap: true,
+                  outputSourceFiles: true,
+                  paths: ["less/"]
+              },
+              style: {
                 options: {
-                    outputSourceFiles: true,
-                    sourceMap: true,
-                    outputSourceFiles: true,
-                    paths: ["less/"]
+                  sourceMapURL: 'style.css.map',
+                  sourceMapFilename: 'css/style.css.map'
                 },
-                files: {
-                    "css/style.css": "less/style.less",
-                    "css/ckeditor-iframe.css": "less/ckeditor-iframe.less",
-                    "css/ckeditor-dialog.css": "less/ckeditor-dialog.less",
-                }
-            }
-        }
+                src: "less/style.less",
+                dest: "css/style.css"
+              },
+              ckeditorIframe: {
+                options: {
+                  sourceMapURL: 'ckeditor-iframe.css.map',
+                  sourceMapFilename: 'css/ckeditor-iframe.css.map'
+                },
+                src: "less/ckeditor-iframe.less",
+                dest: "css/ckeditor-iframe.css"
+              },
+              ckeditorDialog: {
+                options: {
+                  sourceMapURL: 'ckeditor-dialog.css.map',
+                  sourceMapFilename: 'css/ckeditor-dialog.css.map'
+                },
+                src: "less/ckeditor-dialog.less",
+                dest: "css/ckeditor-dialog.css"
+              }
+          }
     });
     grunt.registerTask('default', ['less', 'watch']);
 };
