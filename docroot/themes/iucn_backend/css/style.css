@@ -1640,6 +1640,9 @@ table.diff-context-wrapper {
 .paragraph-summary-component-field_as_threats_in {
   min-width: 125px;
 }
+.paragraph-summary-component-field_as_protection_topic .item-list .contextual {
+  top: 20px;
+}
 .diff-modal textarea {
   min-height: 5em;
 }
