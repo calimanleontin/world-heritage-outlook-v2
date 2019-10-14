@@ -6,6 +6,11 @@ use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\Tests\iucn_assessment\Functional\IucnAssessmentTestBase;
 
+/**
+ * @group edw
+ * @group edwBrowser
+ * @group assessmentForms
+ */
 class EditRevisionFormTest extends IucnAssessmentTestBase {
 
   public function testRevisionReadonlyAccess() {

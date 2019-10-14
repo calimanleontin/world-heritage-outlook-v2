@@ -292,22 +292,28 @@ class NodeSiteAssessmentForm {
 
     self::setValidationErrors($form, $form, []);
 
-    if (!empty($form['title']) && !empty($form['langcode']) && !empty($form['field_assessment_file'])) {
-      $form['main_data_container'] = [
+    $form['main_data_container'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['main-data-container']],
+      '#weight' => -999,
+      'data' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['main-data-container']],
-        '#weight' => -999,
-        'data' => [
-          '#type' => 'container',
-          '#attributes' => ['class' => ['data-fields']],
-          'title' => $form['title'],
-          'langcode' => $form['langcode'],
-          'field_assessment_file' => $form['field_assessment_file'],
-        ],
-      ];
-      unset($form['title']);
-      unset($form['langcode']);
-      unset($form['field_assessment_file']);
+        '#attributes' => ['class' => ['data-fields']],
+      ],
+    ];
+    $mainDataFields = [
+      'title',
+      'langcode',
+      'field_assessment_file',
+      'field_as_site',
+      'field_as_cycle',
+    ];
+    foreach ($mainDataFields as $field) {
+      if (empty($form[$field])) {
+        continue;
+      }
+      $form['main_data_container']['data'][$field] = $form[$field];
+      unset($form[$field]);
     }
 
     $blockContent = BlockContent::load(8);
@@ -326,7 +332,11 @@ class NodeSiteAssessmentForm {
 
     if (empty($node->id())) {
       // We allow users to create nodes without child paragraphs.
-      $allowedFields = ['field_as_site', 'field_assessment_file'];
+      $allowedFields = [
+        'field_as_site',
+        'field_as_cycle',
+        'field_assessment_file',
+        ];
       $form = array_filter($form, function ($key) use ($allowedFields) {
         return !preg_match('/^field\_/', $key) || in_array($key, $allowedFields);
       }, ARRAY_FILTER_USE_KEY);
@@ -335,6 +345,7 @@ class NodeSiteAssessmentForm {
     else {
       // Hide the site field because it is in the title.
       unset($form['field_as_site']);
+      unset($form['field_as_cycle']);
     }
 
     static::alterFieldsRestrictions($tab, $form, $node);
@@ -479,7 +490,7 @@ class NodeSiteAssessmentForm {
       return;
     }
 
-    $state = $siteAssessment->get('field_state')->value;
+    $state = $siteAssessment->get('field_state')->value ?: AssessmentWorkflow::STATUS_NEW;
 
     /** @var \Drupal\Core\Session\AccountProxy $currentUser */
     $currentUser = \Drupal::currentUser();

@@ -79,3 +79,100 @@ This link can only be used once to log in and will lead you to a page where you 
     $pet->save();
   }
 }
+
+function iucn_notifications_update_8001() {
+  $petsConfig = [
+    NotificationService::USER_ACCOUNT_ACTIVATED => [
+      'subject' => 'New user account at IUCN World Heritage Outlook',
+      'body' => '<p>Dear [user:display-name],
+<br /><br />
+Your account in the IUCN World Heritage Outlook online assessment module has been activated. You can now log in to your account and create a new password by clicking on the following link: <a href="[user:one-time-login-url]">[user:one-time-login-url]</a> or copying and pasting it in your browser. This link can only be used once to log in.
+<br /><br />
+Once you have set a password and accessed your account in the online assessment module, you will be able to begin editing your site assessments.
+<br /><br />
+In the future, you can log in to edit assessments at any time at&nbsp;<a href="[site:login-url]">[site:login-url]</a>
+<br /><br />
+Many thanks,
+<br /><br />
+IUCN World Heritage Outlook team</p>
+',
+    ],
+    NotificationService::USER_PASSWORD_RESET => [
+      'subject' => 'Password reset information for IUCN World Heritage Outlook',
+      'body' => '<p>Dear [user:display-name],
+<br /><br />
+A request to reset the password for your account has been made at IUCN World Heritage Outlook.
+<br /><br />
+You may reset your password by clicking this link or copying and pasting it in your browser: <a href="[user:one-time-login-url]">[user:one-time-login-url]</a>
+<br /><br />
+This link can only be used once to reset your password, and it expires after one day.
+<br /><br />
+Many thanks,
+<br /><br />
+IUCN World Heritage Outlook team</p>
+',
+    ],
+    AssessmentWorkflow::STATUS_READY_FOR_REVIEW => [
+      'subject' => 'Assessor has submitted assessment update for [node:title]',
+      'body' => '<p>Dear [user:display-name],
+<br /><br />
+The assessor for [node:title] has submitted the site assessment update.
+<br /><br />
+Go to <a href="[site:login-url]">[site:login-url]</a> to begin reviewing the assessment.</p>
+',
+    ],
+    AssessmentWorkflow::STATUS_FINISHED_REVIEWING => [
+      'subject' => 'Reviewer has submitted assessment review for [node:title]',
+      'body' => '<p>Dear [user:display-name],
+<br /><br />
+A reviewer for [node:title] has submitted the site assessment review.
+<br /><br />
+Go to <a href="[site:login-url]">[site:login-url]</a> to see the overall status of the assessment review.</p>
+',
+      ],
+    AssessmentWorkflow::STATUS_APPROVED => [
+      'subject' => '[node:title] 2020 site assessment is ready to be published',
+      'body' => '<p>Dear [user:display-name],
+<br /><br />
+[node:field_coordinator:entity:display-name] has approved the 2020 assessment for [node:title], and it is now ready to be published.
+<br /><br />
+Go to <a href="[site:login-url]">[site:login-url]</a> to publish the assessment.</p>
+',
+    ],
+  ];
+
+  /** @var NotificationService $notificationService */
+  $notificationService = \Drupal::service('iucn.notifications');
+
+  foreach ($petsConfig as $key => $config) {
+    /** @var Pet $pet */
+    $pet = $notificationService->getPetByTitle($key);
+
+    if (empty($pet)) {
+      $pet = Pet::create(
+        [
+          'title' => $key,
+        ]
+      );
+    }
+
+    $pet->set('subject', $config['subject'])
+      ->set('mail_body', $config['body']);
+
+    $pet->save();
+  }
+
+  $oldPetNames = [
+    AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+    AssessmentWorkflow::STATUS_UNDER_ASSESSMENT,
+    AssessmentWorkflow::STATUS_UNDER_EVALUATION,
+    AssessmentWorkflow::STATUS_UNDER_REVIEW,
+  ];
+
+  foreach ($oldPetNames as $oldPetName) {
+    $pet = $notificationService->getPetByTitle($oldPetName);
+    if ($pet) {
+      $pet->delete();
+    }
+  }
+}

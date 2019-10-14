@@ -1,4 +1,22 @@
-{{ label }} <div class="btn btn-primary tooltip">
-<span class=""><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="info-circle" role="img" viewBox="-10 -10 522 522" class="" style="width: 20px;"><path stroke="#0074bd" stroke-width="20" fill="none" d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z" class=""></path></svg></span>
+{#
+/**
+ * @file
+ * Theme override to display content with tooltip.
+ *
+ * Available variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - module_path: Current module path.
+ * - label: Content.
+ * - help_text: Tooltip bubble content.
+ *
+ * @see template_preprocess_topic_tooltip()
+ */
+#}
+{{ label }}
+<div class="btn btn-primary topic-tooltip">
+<span aria-hidden="true">
+  <img src="{{ base_path }}{{ module_path }}/images/tooltip.svg" width="20" height="20"/>
+</span>
 <div class="right">{{ help_text | raw }}<i></i></div>
 </div>

@@ -956,6 +956,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         $viewBuilder = $this->entityTypeManager->getViewBuilder($childEntity->getEntityTypeId());
       }
       $childView = $viewBuilder->view($childEntity, 'teaser');
+      $childView['#attributes']['class'][] = 'iucn-entity-reference-field-wrapper';
       $childrenView[] = render($childView);
     }
     $list = [

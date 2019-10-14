@@ -168,17 +168,14 @@ function disable_field_disable_validate(array &$form, FormStateInterface $form_s
       $form_state->setErrorByName('roles_edit', t('Please, choose at least one role.'));
     }
   }
-
-  $add_enable = $values['add_enable'];
-  $edit_enable = $values['edit_enable'];
   // For add checkbox;
-  if ($add_enable == 'roles_enable') {
+  if ($add_disable == 'roles_enable') {
     if (empty($values['add_enable_roles'])) {
       $form_state->setErrorByName('roles_add', t('Please, choose at least one role.'));
     }
   }
   // For Edit checkbox.
-  if ($edit_enable == 'roles_enable') {
+  if ($edit_disable == 'roles_enable') {
     if (empty($values['edit_enable_roles'])) {
       $form_state->setErrorByName('roles_edit', t('Please, choose at least one role.'));
     }

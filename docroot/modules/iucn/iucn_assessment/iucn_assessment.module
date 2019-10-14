@@ -12,9 +12,6 @@ use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Element\RenderElement;
-use Drupal\Core\Template\Attribute;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\node\NodeInterface;
@@ -27,6 +24,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\iucn_assessment\Plugin\Access\AssessmentAccess;
 use Drupal\iucn_assessment\Form\FieldConfigEditForm;
 
+/**
+ * Implements hook_theme().
+ */
 function iucn_assessment_theme() {
   return [
     'topic_tooltip' => [
@@ -35,6 +35,7 @@ function iucn_assessment_theme() {
         'label' => NULL,
         'help_text' => NULL,
       ],
+      'file' => 'templates/theme.inc',
     ],
     'assessment_horizontal_tabs' => [
       'render element' => 'element',
@@ -44,13 +45,16 @@ function iucn_assessment_theme() {
     'field_group_html_element_list' => [
       'render element' => 'element',
       'template' => 'field-group-html-element-list',
+      'file' => 'templates/theme.inc',
     ],
     'rating_image_switcher' => [
       'render element' => 'element',
       'template' => 'rating-image-switcher',
+      'file' => 'templates/theme.inc',
     ],
     'assessment_fieldset' => [
       'render element' => 'element',
+      'file' => 'templates/theme.inc',
     ],
     'assessment_diff_copy_button' => [
       'template' => 'assessment-diff-copy-button',
@@ -61,59 +65,10 @@ function iucn_assessment_theme() {
         'key2' => NULL,
         'selector2' => NULL,
       ],
+      'file' => 'templates/theme.inc',
     ],
   ];
 
-}
-
-/**
- * Prepares variables for fieldset element templates.
- *
- * Default template: fieldset.html.twig.
- *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
- *     Properties used: #attributes, #children, #description, #id, #title,
- *     #value.
- */
-function template_preprocess_assessment_fieldset(&$variables) {
-  $element = $variables['element'];
-  Element::setAttributes($element, ['id']);
-  RenderElement::setAttributes($element);
-  $variables['attributes'] = isset($element['#attributes']) ? $element['#attributes'] : [];
-  $variables['fields_titles'] = isset($element['#fields_titles']) ? explode('|', $element['#fields_titles']) : [];
-  $variables['prefix'] = isset($element['#field_prefix']) ? $element['#field_prefix'] : NULL;
-  $variables['suffix'] = isset($element['#field_suffix']) ? $element['#field_suffix'] : NULL;
-  $variables['title_display'] = isset($element['#title_display']) ? $element['#title_display'] : NULL;
-  $variables['children'] = $element['#children'];
-  $variables['required'] = !empty($element['#required']) ? $element['#required'] : NULL;
-
-  if (isset($element['#title']) && $element['#title'] !== '') {
-    $variables['legend']['title'] = ['#markup' => $element['#title']];
-  }
-
-  $variables['legend']['attributes'] = new Attribute();
-  // Add 'visually-hidden' class to legend span.
-  if ($variables['title_display'] == 'invisible') {
-    $variables['legend_span']['attributes'] = new Attribute(['class' => ['visually-hidden']]);
-  }
-  else {
-    $variables['legend_span']['attributes'] = new Attribute();
-  }
-
-  if (!empty($element['#description'])) {
-    $description_id = $element['#attributes']['id'] . '--description';
-    $description_attributes['id'] = $description_id;
-    $variables['description']['attributes'] = new Attribute($description_attributes);
-    $variables['description']['content'] = $element['#description'];
-
-    // Add the description's id to the fieldset aria attributes.
-    $variables['attributes']['aria-describedby'] = $description_id;
-  }
-
-  // Suppress error messages.
-  $variables['errors'] = NULL;
 }
 
 /**
@@ -175,34 +130,6 @@ function iucn_assessment_entity_form_display_alter(&$form_display, $context) {
     }
   }
 }
-
-
-function template_preprocess_rating_image_switcher(&$variables) {
-  $element = $variables['element'];
-  $variables['images'] = $element['#images'];
-  $variables['years'] = $element['#years'];
-
-  $iucn_config = \Drupal::config('iucn_who.settings');
-  $year = $iucn_config->get('assessment_year');
-  $variables['active_year'] = $year;
-
-}
-
-function template_preprocess_field_group_html_element_list(&$variables) {
-
-  $element = $variables['element'];
-
-  if (!empty($element['#title']) && !empty($element['#title_element'])) {
-    $variables['title_element'] = $element['#title_element'];
-    $variables['title'] = $element['#title'];
-  }
-
-  $variables['wrapper_element'] = $element['#wrapper_element'];
-  $variables['attributes'] = $element['#attributes'];
-  $variables['list'] = $element['list'];
-
-}
-
 
 /**
  * Implements hook_ENTITY_TYPE_presave().

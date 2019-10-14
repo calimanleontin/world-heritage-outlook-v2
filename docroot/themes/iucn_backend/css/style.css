@@ -34,7 +34,7 @@
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row.overall-thead-row .overall-cell {
   font-weight: bold;
   background: #ececec;
-  border-bottom: 1px solid #bfbfba!important;
+  border-bottom: 1px solid #bfbfba !important;
   height: 38px;
   box-sizing: border-box;
 }
@@ -167,7 +167,7 @@
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header,
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header {
-  background: #ececec!important;
+  background: #ececec !important;
 }
 .node-site-assessment-edit-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div,
 .node-site-assessment-form fieldset.overall-container .fieldset-wrapper .overall-row-view.overall-header > div {
@@ -362,7 +362,7 @@
   position: relative;
   color: #fafafa;
   -webkit-text-stroke: 1px #0074bd;
-  transition: color .1s;
+  transition: color 0.1s;
 }
 .node-site-assessment-edit-form .horizontal-tab-button .fa:hover,
 .node-site-assessment-form .horizontal-tab-button .fa:hover,
@@ -818,7 +818,7 @@ div[aria-required="aria-required"] label:after {
   font-weight: bold;
   position: relative;
   display: block;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -831,7 +831,7 @@ div[aria-required="aria-required"] label:after {
 #block-tools > ul.menu li.menu-item > a {
   position: relative;
   display: block;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -843,14 +843,14 @@ div[aria-required="aria-required"] label:after {
 }
 #block-tools > ul.menu li.menu-item > a.is-active {
   background: #f5f5f2;
-  color: #000!important;
+  color: #000 !important;
 }
 #block-tools > ul.menu li.menu-item ul.menu {
   margin: 0 0 0 2em;
 }
 #block-tools > ul.menu li.menu-item ul.menu li.menu-item a {
   color: #009cf9;
-  padding: .25rem .75rem;
+  padding: 0.25rem 0.75rem;
 }
 div[id^="block-views-block-account-assignments-block"] > h2,
 #block-views-block-people-assignments-block-1 > h2 {
@@ -917,7 +917,7 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component {
   position: relative;
-  font-size: .9em;
+  font-size: 0.9em;
   grid-row: 1 / span 1;
   padding: 5px;
 }
@@ -1327,10 +1327,10 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   z-index: 99999999;
   display: block;
   top: 14px;
-  left: calc(40%);
+  left: calc(50% - 10px);
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-add-more-button {
-  margin: .75em 0 0 .75em!important;
+  margin: 0.75em 0 0 0.75em !important;
 }
 .field--widget-row-entity-reference-paragraphs .paragraph-header {
   font-weight: bold;
@@ -1354,12 +1354,12 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   float: right;
 }
 .field--widget-row-entity-reference-paragraphs .paragraphs-dropdown-toggle[disabled] {
-  opacity: .5;
+  opacity: 0.5;
   pointer-events: none;
 }
 .diff-modal .field--widget-row-entity-reference-paragraphs table tbody tr:first-child td .form-wrapper {
-  background: #ececec!important;
-  font-size: .9em;
+  background: #ececec !important;
+  font-size: 0.9em;
   text-transform: none;
 }
 .diff-modal .field--widget-row-entity-reference-paragraphs .paragraph-top-col-23 {
@@ -1544,6 +1544,16 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
 .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic {
   overflow: visible;
 }
+.form-item-field-as-protection-ov-practices-0-value label .topic-tooltip {
+  float: right;
+}
+.iucn-entity-reference-field-wrapper {
+  display: flex;
+}
+.iucn-entity-reference-field-wrapper .field--name-field-help-text {
+  flex-shrink: 0;
+  margin-left: auto;
+}
 #drupal-modal {
   padding: 0;
 }
@@ -1630,6 +1640,9 @@ table.diff-context-wrapper {
 .paragraph-summary-component-field_as_threats_in {
   min-width: 125px;
 }
+.paragraph-summary-component-field_as_protection_topic .item-list .contextual {
+  top: 20px;
+}
 .diff-modal textarea {
   min-height: 5em;
 }
@@ -1659,8 +1672,8 @@ table.diff-context-wrapper {
   width: 1em;
   height: 1em;
   background-color: #faa;
-  margin-left: .5em;
-  margin-right: .5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 .diff-modal .legend-content-added:after {
   background-color: #77f177;
@@ -1668,7 +1681,7 @@ table.diff-context-wrapper {
 .diff-modal table.diff-table {
   border-collapse: separate;
   border-spacing: 0;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .diff-modal table.diff-table .diff-context-wrapper td {
   padding: 0;
@@ -1707,7 +1720,7 @@ table.diff-context-wrapper {
 }
 .diff-modal table.diff-table > thead > tr > th {
   background: #ececec !important;
-  font-size: .9em;
+  font-size: 0.9em;
   text-transform: none;
   border-right: 1px solid #e6e4df;
   padding: 10px 12px;
@@ -1878,13 +1891,13 @@ table.diff-context-wrapper {
 .field--widget-text-textarea-with-scayt html {
   overflow-y: auto;
 }
-.tooltip {
+.topic-tooltip {
   display: inline-block;
   position: relative;
   text-align: left;
   vertical-align: middle;
 }
-.tooltip .right {
+.topic-tooltip .right {
   min-width: 400px;
   top: 50%;
   left: 100%;
@@ -1902,10 +1915,10 @@ table.diff-context-wrapper {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: none;
 }
-.tooltip .right:hover {
+.topic-tooltip .right:hover {
   display: block;
 }
-.tooltip .right i {
+.topic-tooltip .right i {
   position: absolute;
   top: 50%;
   right: 100%;
@@ -1914,7 +1927,7 @@ table.diff-context-wrapper {
   height: 24px;
   overflow: hidden;
 }
-.tooltip .right i:after {
+.topic-tooltip .right i:after {
   content: '';
   position: absolute;
   width: 12px;
@@ -1925,7 +1938,7 @@ table.diff-context-wrapper {
   background-color: #EEEEEE;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-.tooltip:hover .right {
+.topic-tooltip:hover .right {
   display: block;
 }
 @media all and (min-width: 851px) {
