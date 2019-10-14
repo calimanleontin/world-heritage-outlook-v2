@@ -945,6 +945,14 @@ div[id^="block-views-block-account-assignments-block"] .form--inline > .form-act
   margin-left: 0;
   margin-bottom: 1em;
 }
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic .topic-tooltip ul li {
+  list-style-type: unset;
+  margin-left: 20px;
+  margin-bottom: 3px;
+}
+.field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-field_as_protection_topic .topic-tooltip p {
+  margin-bottom: auto;
+}
 .field--widget-row-entity-reference-paragraphs .paragraph-summary-component.paragraph-summary-component-negative_factors ul li {
   margin-bottom: 0;
 }
