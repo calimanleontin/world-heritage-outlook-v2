@@ -37,6 +37,7 @@ class Workflow01JsNewPhaseTest extends IucnAssessmentWebDriverTestBase {
     $assert_session->waitForElement('css', '.edit-paragraph-form-modal .button--primary');
 
     $this->click('.edit-paragraph-form-modal .ui-dialog-buttonpane .button--primary');
+    sleep(5);
     drupal_flush_all_caches();
     $assessment = Node::load($assessment->id());
     $this->assertEquals(AssessmentWorkflow::STATUS_UNDER_EVALUATION, $assessment->field_state->value);
