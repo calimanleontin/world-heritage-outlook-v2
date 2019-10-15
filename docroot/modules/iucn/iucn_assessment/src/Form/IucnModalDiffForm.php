@@ -228,8 +228,8 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
 
     $title = [
       '#theme' => 'topic_tooltip',
-      '#label' => t('Final version'),
-      '#help_text' => t($helpText),
+      '#label' => $this->t('Final version'),
+      '#help_text' => $this->t($helpText),
     ];
 
     return render($title);

@@ -190,7 +190,7 @@ function iucn_fields_update_8006() {
     "Enforcement"
                                                                 => "Consider:<br />
 <ul> <li> Is the legal framework effectively enforced (e.g. adequate capacity to detect infringements through patrols and other enforcement activities, an effective  system for the prosecution of offenders, fair permit system with compliance monitored and enforced)?",
-    "Implementation of Committee decisions and recommendations" => "Consider:</li>
+    "Implementation of Committee decisions and recommendations" => "Consider:<br />
 <ul> <li> Has the State Party implemented the decisions and recommendations of the World Heritage Committee related to the site?</li>
 <li> If not, what are the key limitations to fully implementing these decisions?</li></ul>",
     "Sustainable use"
@@ -216,7 +216,7 @@ function iucn_fields_update_8006() {
 <ul> <li> Do education, interpretation and awareness programmes significantly enhance the understanding of values of the site among stakeholders?</li>
 <li> Is there any education or awareness programme in place on regulations about the adequate use of the site’s natural resources?</li></ul>",
     "Tourism and interpretation"
-                                                                => "Consider:</li>
+                                                                => "Consider:<br />
 <ul> <li> Is there an understanding and promotion of the sites values in local and national tourism policies?</li>
 <li> Is there a tourism and/or visitation plan for the site? If yes, is it under implementation?</li>
 <li> Do visitor services and facilities meet standards of design, environmental sustainability and safety and are they appropriate for the character, values and use of the protected area?</li>
