@@ -63,6 +63,40 @@ class EditFormDifferencesTest extends IucnAssessmentTestBase {
 
     $expectedDifferences = [];
 
+    $allowedChildOnTab = [
+      'assessing-values' => [
+        'field_as_values_wh' => [
+          'field_as_values_curr_text',
+          'field_as_values_curr_state',
+          'field_as_values_value',
+        ],
+      ],
+      'benefits' => [
+        'field_as_benefits' => [
+          'field_as_benefits_category',
+          'field_as_benefits_climate_level',
+          'field_as_benefits_climate_trend',
+          'field_as_benefits_hab_level',
+          'field_as_benefits_hab_trend',
+          'field_as_benefits_invassp_level',
+          'field_as_benefits_invassp_trend',
+          'field_as_benefits_oex_level',
+          'field_as_benefits_oex_trend',
+          'field_as_benefits_pollut_level',
+          'field_as_benefits_pollut_trend',
+          'field_as_comment',
+          'field_as_description',
+        ],
+      ],
+      'projects' => [
+        'field_as_projects' => [
+          'field_as_description',
+          'field_as_projects_organisation',
+          'field_as_projects_contact',
+        ],
+      ],
+    ];
+
     foreach ($this->tabs as $tab => $fields) {
       $expectedDifferences[$tab] = 0;
       if ($tab == 'values') {
@@ -75,6 +109,13 @@ class EditFormDifferencesTest extends IucnAssessmentTestBase {
         $fieldDefinition = $fieldItemList->getFieldDefinition();
         if (!empty($childrenFields[$field])) {
           foreach ($childrenFields[$field] as $i => $childField) {
+            if (!empty($allowedChildOnTab[$tab][$field])) {
+              if (!in_array($childField, $allowedChildOnTab[$tab][$field])) {
+                //Not all fields from paragraphs are present on paragraph edit form for specific tab
+                continue;
+              }
+            }
+
             // We update only one field for each child entity to test if the
             // differences are retrieved for all fields.
             $childValue = $fieldItemList->get($i);
@@ -99,10 +140,11 @@ class EditFormDifferencesTest extends IucnAssessmentTestBase {
 
     $this->userLogIn(TestSupport::COORDINATOR1);
     foreach ($this->tabs as $tab => $fields) {
-      // Other users can't edit values so we can't have differences on this tab.
       if ($tab == 'values') {
+        // Other users can't edit values so we can't have differences on this tab.
         continue;
       }
+
       $this->drupalGet($assessment->toUrl('edit-form', ['query' => ['tab' => $tab]]));
       $actualDifferences = substr_count($this->getTextContent(), 'See differences');
       $this->assertEquals($expectedDifferences[$tab], $actualDifferences, "Expected {$expectedDifferences[$tab]} differences on \"{$tab}\" tab, {$actualDifferences} found.");
