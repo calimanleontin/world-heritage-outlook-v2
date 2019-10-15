@@ -8,7 +8,7 @@
     top: 50%;
     left: 100%;
     margin-left: 8px;
-    transform: translate(0, -50%);
+    transform: translate(0, -20px);
     padding: 10px 20px;
     color: #444444;
     background-color: #EEEEEE;
@@ -16,16 +16,22 @@
     font-size: 13px;
     border-radius: 8px;
     position: absolute;
-    z-index: 99999999;
+    // Keep z-index value lower than toolbar.
+    z-index: 501;
     box-sizing: border-box;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
     display: none;
+
+    @media (max-width: 999px) {
+      max-width: 200px;
+    }
+
     &:hover {
       display: block;
     }
     i {
       position: absolute;
-      top: 50%;
+      top: 20px;
       right: 100%;
       margin-top: -12px;
       width: 12px;

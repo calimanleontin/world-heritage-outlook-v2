@@ -1910,7 +1910,7 @@ table.diff-context-wrapper {
   top: 50%;
   left: 100%;
   margin-left: 8px;
-  transform: translate(0, -50%);
+  transform: translate(0, -20px);
   padding: 10px 20px;
   color: #444444;
   background-color: #EEEEEE;
@@ -1918,17 +1918,22 @@ table.diff-context-wrapper {
   font-size: 13px;
   border-radius: 8px;
   position: absolute;
-  z-index: 99999999;
+  z-index: 502;
   box-sizing: border-box;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: none;
+}
+@media (max-width: 999px) {
+  .topic-tooltip .right {
+    max-width: 200px;
+  }
 }
 .topic-tooltip .right:hover {
   display: block;
 }
 .topic-tooltip .right i {
   position: absolute;
-  top: 50%;
+  top: 20px;
   right: 100%;
   margin-top: -12px;
   width: 12px;
