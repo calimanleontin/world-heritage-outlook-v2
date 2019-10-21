@@ -33,7 +33,7 @@ class TooltipFormatter extends FormatterBase {
       $elements[$delta] = [
         '#theme' => 'topic_tooltip',
         '#label' => null,
-        '#help_text' => $this->t($item->value),
+        '#help_text' => $item->value,
       ];
     }
 
