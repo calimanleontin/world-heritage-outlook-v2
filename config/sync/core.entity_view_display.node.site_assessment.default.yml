@@ -56,7 +56,6 @@ dependencies:
     - entity_reference_revisions
     - field_group
     - file
-    - options
     - user
 third_party_settings:
   ds:
@@ -83,71 +82,70 @@ third_party_settings:
       summary:
         - group_conservation_outlook
         - field_as_threats_rating
-        - field_as_global_assessment_text
         - field_as_vass_wh_state
-        - field_as_threats_text
         - field_as_protection_ov_rating
+        - field_as_global_assessment_text
+        - field_as_threats_text
+        - field_as_protection_ov_text
         - group_current_state_trend_values
         - 'display_field_copy:node-assessment_trend_copy'
-        - field_as_protection_ov_text
-        - field_as_vass_wh_text
         - group_overall_threats
+        - field_as_vass_wh_text
         - group_overall_prot_man
         - field_assessment_file
-        - field_state
         - field_as_end_date
         - field_as_global_assessment_level
       full_assessment_values:
+        - 'display_field_copy:node-copy_as_threats_rating'
+        - field_as_protection_ov_out_rate
+        - field_as_threats_potent_rating
         - field_as_threats_current_rating
+        - 'display_field_copy:node-protection_overall_rating'
         - field_as_benefits_summary
         - field_as_benefits
-        - field_as_protection_ov_out_rate
-        - 'display_field_copy:node-protection_overall_rating'
-        - 'display_field_copy:node-copy_as_threats_rating'
-        - field_as_threats_potent_rating
-        - field_as_protection_ov_out_text
         - 'display_field_copy:node-protection_overall_effectiveness'
-        - field_as_threats_potent_text
-        - field_as_threats_current_text
         - 'display_field_copy:node-copy_as_threats_text'
+        - field_as_threats_potent_text
+        - field_as_protection_ov_out_text
+        - field_as_threats_current_text
         - group_ass_pm_outside
-        - field_as_values_bio
         - field_as_threats_potential
+        - field_as_values_bio
         - field_as_threats_current
         - group_best_practice_examples
         - field_as_projects
+        - field_as_key_cons
+        - group_values
         - field_as_projects_needs
         - group_key_conservation_issues
-        - group_values
-        - field_as_key_cons
         - group_benefits
         - field_as_vass_bio_state
+        - 'display_field_copy:node-finalised_on'
         - group_ass_protection_manag
         - group_threats
-        - field_as_vass_bio_trend
-        - field_as_protection
         - group_overall_ass_prot
+        - field_as_protection
+        - field_as_vass_bio_trend
         - 'display_field_copy:node-copy_assessment_values'
-        - 'display_field_copy:node-finalised_on'
-        - field_as_vass_wh_trend
         - group_description_of_values
         - field_as_vass_bio_text
+        - field_as_vass_wh_trend
         - group_protection_and_management
-        - group_state_and_trend_of_values
-        - field_as_protection_ov_practices
-        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_assessment_information
         - group_additional_information
-        - group_understanding_benefits
+        - field_as_protection_ov_practices
+        - group_state_and_trend_of_values
+        - 'display_field_copy:node-justification_of_assessment_valu'
         - group_projects
+        - group_understanding_benefits
         - group_summary_of_benefits
         - group_current_threats
         - group_assessing_current_state
         - group_world_heritage_values
         - group_active_projects
-        - group_summary_values
-        - group_projects_needs
         - group_ass_state_wh
+        - group_projects_needs
+        - group_summary_values
         - 'display_field_copy:node-identifying_and_describing_value'
         - group_potential_threats
         - 'display_field_copy:node-world_heritage_values'
@@ -189,7 +187,7 @@ third_party_settings:
         formatter: basic_string
       'display_field_copy:node-finalised_on':
         plugin_id: 'display_field_copy:node-finalised_on'
-        weight: 7
+        weight: 6
         label: inline
         formatter: datetime_custom
         settings:
@@ -254,6 +252,7 @@ third_party_settings:
         id: ''
         classes: conservation-outlook-summary-group
       label: 'Conservation Outlook'
+      region: hidden
     group_current_state_trend_values:
       children:
         - field_as_vass_wh_state
@@ -273,6 +272,7 @@ third_party_settings:
         id: ''
         classes: values-summary-group
       label: 'Current state and trend of VALUES'
+      region: hidden
     group_overall_threats:
       children:
         - field_as_threats_rating
@@ -291,6 +291,7 @@ third_party_settings:
         id: ''
         classes: threats-summary-group
       label: 'Overall THREATS'
+      region: hidden
     group_overall_prot_man:
       children:
         - field_as_protection_ov_rating
@@ -309,11 +310,12 @@ third_party_settings:
         id: ''
         classes: protection-management-summary-group
       label: 'Overall PROTECTION and MANAGEMENT'
+      region: hidden
     group_description_of_values:
       children:
         - group_values
       parent_name: ''
-      weight: 8
+      weight: 7
       format_type: html_element
       format_settings:
         label: 'Description of values'
@@ -326,13 +328,14 @@ third_party_settings:
         id: ''
         classes: 'assessment-desc-values-section assessment-section'
       label: 'Description of values'
+      region: hidden
     group_assessment_information:
       children:
         - group_threats
         - group_protection_and_management
         - group_state_and_trend_of_values
       parent_name: ''
-      weight: 9
+      weight: 8
       format_type: html_element
       format_settings:
         label: 'Assessment information'
@@ -345,12 +348,13 @@ third_party_settings:
         id: ''
         classes: 'assessment-information-section assessment-section'
       label: 'Assessment information'
+      region: hidden
     group_additional_information:
       children:
         - group_key_conservation_issues
         - group_benefits
       parent_name: ''
-      weight: 10
+      weight: 9
       format_type: html_element
       format_settings:
         label: 'Additional information'
@@ -363,6 +367,7 @@ third_party_settings:
         id: ''
         classes: 'assessment-additional-section assessment-section'
       label: 'Additional information'
+      region: hidden
     group_values:
       children:
         - group_world_heritage_values
@@ -376,6 +381,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: Values
+      region: hidden
     group_state_and_trend_of_values:
       children:
         - group_assessing_current_state
@@ -389,6 +395,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'State and trend of values'
+      region: hidden
     group_protection_and_management:
       children:
         - group_ass_protection_manag
@@ -402,6 +409,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Protection and management'
+      region: hidden
     group_benefits:
       children:
         - group_understanding_benefits
@@ -415,12 +423,13 @@ third_party_settings:
         open: false
         required_fields: false
       label: Benefits
+      region: hidden
     group_projects:
       children:
         - group_active_projects
         - group_projects_needs
       parent_name: ''
-      weight: 11
+      weight: 10
       format_type: details
       format_settings:
         id: ''
@@ -428,6 +437,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: Projects
+      region: hidden
     group_key_conservation_issues:
       children:
         - field_as_key_cons
@@ -440,6 +450,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Key conservation issues'
+      region: hidden
     group_threats:
       children:
         - group_current_threats
@@ -455,6 +466,7 @@ third_party_settings:
         required_fields: false
         terms: ''
       label: Threats
+      region: hidden
     group_current_threats:
       children:
         - field_as_threats_current_rating
@@ -471,6 +483,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Current Threats'
+      region: hidden
     group_potential_threats:
       children:
         - field_as_threats_potent_rating
@@ -486,6 +499,7 @@ third_party_settings:
         classes: 'assessment-potential-threats assessment-toggle'
         open: 0
       label: 'Potential Threats'
+      region: hidden
     group_ass_protection_manag:
       children:
         - field_as_protection
@@ -498,6 +512,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Assessing Protection and Management'
+      region: hidden
     group_overall_ass_prot:
       children:
         - 'display_field_copy:node-protection_overall_rating'
@@ -514,6 +529,7 @@ third_party_settings:
         classes: 'assessment-overall-ass-prot assessment-toggle'
         open: 0
       label: 'Overall assessment of protection and management'
+      region: hidden
     group_ass_pm_outside:
       children:
         - field_as_protection_ov_out_rate
@@ -533,6 +549,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Assessment of the effectiveness of protection and management in addressing threats outside the site'
+      region: hidden
     group_best_practice_examples:
       children:
         - field_as_protection_ov_practices
@@ -551,6 +568,7 @@ third_party_settings:
         classes: ''
         terms: ''
       label: 'Best practice examples'
+      region: hidden
     group_understanding_benefits:
       children:
         - field_as_benefits
@@ -563,6 +581,7 @@ third_party_settings:
         classes: 'assessment-understanding-benefits assessment-toggle'
         open: false
       label: 'Understanding benefits'
+      region: hidden
     group_summary_of_benefits:
       children:
         - field_as_benefits_summary
@@ -575,6 +594,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Summary of benefits'
+      region: hidden
     group_active_projects:
       children:
         - field_as_projects
@@ -587,6 +607,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Compilation of active conservation projects'
+      region: hidden
     group_projects_needs:
       children:
         - field_as_projects_needs
@@ -599,6 +620,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Compilation of potential site needs'
+      region: hidden
     group_assessing_current_state:
       children:
         - 'display_field_copy:node-identifying_and_describing_value'
@@ -612,6 +634,7 @@ third_party_settings:
         open: false
         required_fields: false
       label: 'Assessing the current state and trend of values'
+      region: hidden
     group_summary_values:
       children:
         - group_ass_state_wh
@@ -625,6 +648,7 @@ third_party_settings:
         classes: 'assessment-summary-values assessment-toggle'
         open: false
       label: 'Summary of values'
+      region: hidden
     group_ass_state_wh:
       children:
         - 'display_field_copy:node-copy_assessment_values'
@@ -645,6 +669,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Assessment of the current state and trend of World Heritage values'
+      region: hidden
     group_ass_state_bv:
       children:
         - field_as_vass_bio_state
@@ -665,6 +690,7 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Assessment of the current state and trend of other important biodiversity values'
+      region: hidden
     group_overall_as_threats:
       children:
         - 'display_field_copy:node-copy_as_threats_rating'
@@ -679,6 +705,7 @@ third_party_settings:
         classes: 'assessment-overall-threats assessment-toggle'
         open: 0
       label: 'Overall assessment of threats'
+      region: hidden
     group_other_important_biodiversi:
       children:
         - field_as_values_bio
@@ -692,6 +719,7 @@ third_party_settings:
         classes: 'assessment-current-threats assessment-toggle'
         open: 0
       label: 'Other important biodiversity values'
+      region: hidden
     group_world_heritage_values:
       children:
         - 'display_field_copy:node-world_heritage_values'
@@ -705,6 +733,7 @@ third_party_settings:
         classes: 'assessment-current-threats assessment-toggle'
         open: 0
       label: 'World Heritage values'
+      region: hidden
 id: node.site_assessment.default
 targetEntityType: node
 bundle: site_assessment
@@ -825,7 +854,7 @@ content:
     third_party_settings: {  }
   field_as_references_p:
     type: entity_reference_revisions_entity_view
-    weight: 12
+    weight: 11
     label: hidden
     settings:
       view_mode: default
@@ -958,13 +987,6 @@ content:
     third_party_settings: {  }
     type: file_default
     region: summary
-  field_state:
-    weight: 6
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: summary
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true
@@ -984,6 +1006,7 @@ hidden:
   field_references_reviewer: true
   field_reviewers: true
   field_settings: true
+  field_state: true
   langcode: true
   links: true
   search_api_excerpt: true
