@@ -355,6 +355,25 @@ ol {
   }
 }
 
+#drupal-modal {
+  > .modal-dialog {
+    > .modal-content {
+      > .modal-header {
+        h4.modal-title {
+          padding: 0;
+          border-bottom: none;
+        }
+      }
+      > .modal-body {
+        overflow: auto!important;
+        .container {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
 // /* ==========================================================================
 //    IUCN expandable text
 //    ========================================================================== */
