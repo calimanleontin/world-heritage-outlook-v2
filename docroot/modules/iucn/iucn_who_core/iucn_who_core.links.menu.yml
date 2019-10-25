@@ -142,6 +142,13 @@ iucn_who_core.dashboard.cm.workflow_help:
   menu_name: tools
   weight: -15
 
+iucn_who_core.dashboard.cm.user_agreement:
+  title: 'User agreement'
+  parent: iucn_who_core.dashboard.cm
+  route_name: who.user_agreement_form
+  menu_name: tools
+  weight: -10
+
 iucn_who_core.dashboard.um:
   title: 'Users Management'
   description: 'Users management tasks'
