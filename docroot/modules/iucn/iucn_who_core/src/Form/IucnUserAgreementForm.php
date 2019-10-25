@@ -120,12 +120,9 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
       '#type' => 'container',
       '#tree' => FALSE,
       'user_agreement_data' => [
-        '#type'          => 'textarea',
-        '#default_value' => PlainTextOutput::renderFromHtml($data),
-        '#value'         => PlainTextOutput::renderFromHtml($data),
-        '#rows'          => 10,
-        '#weight'        => 0,
-        '#attributes'    => array('readonly' => 'readonly'),
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $data,
       ],
       'agree' => [
         '#type' => 'checkbox',
@@ -133,11 +130,6 @@ class IucnUserAgreementForm implements FormInterface, ContainerInjectionInterfac
         '#default_value' => $agreed,
         '#access' => !$agreed,
         '#required' => TRUE,
-      ],
-      'note' => [
-        '#type' => 'html_tag',
-        '#tag' => 'i',
-        '#value' => $this->t('Note: If you would like more information before agreeing to the user agreement, please email your IUCN coordinator'),
       ],
       'actions' => [
         '#type' => 'actions',
