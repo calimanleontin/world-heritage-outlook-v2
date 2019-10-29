@@ -9,10 +9,15 @@ services:
     arguments:
     - '@current_route_match'
     - '@current_user'
-    - '@config.factory'
-    - '@messenger'
+    - '@iucn_who_core.user_agreement'
     tags:
     - { name: event_subscriber }
+
+  iucn_who_core.user_agreement:
+    class: Drupal\iucn_who_core\Service\UserAgreementService
+    arguments:
+      - '@current_user'
+      - '@config.factory'
 
   iucn_who_core.route_subscriber:
     class: Drupal\iucn_who_core\EventSubscriber\IucnWhoRouteSubscriber
