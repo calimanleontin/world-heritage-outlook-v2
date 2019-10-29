@@ -148,6 +148,9 @@ iucn_who_core.dashboard.cm.user_agreement:
   route_name: who.user_agreement_form
   menu_name: tools
   weight: -10
+  options:
+    attributes:
+      target: _blank
 
 iucn_who_core.dashboard.um:
   title: 'Users Management'
