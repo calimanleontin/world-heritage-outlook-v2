@@ -69,7 +69,6 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
       $url = Url::fromRoute('who.user_agreement_form');
       if ($event->getRequest()->getUri() != $url->toString()) {
         $redirect = new RedirectResponse($url->toString());
-        $this->messenger->addStatus($this->t('You need to accept the Terms and Conditions before using the application.'));
         $event->setResponse($redirect);
       }
     }
