@@ -490,7 +490,7 @@ function iucn_who_core_form_user_form_alter(array &$form, FormStateInterface $fo
     $form['field_user_title']['#access'] = FALSE;
   }
 
-  $form['account']['mail']['#description'] = t('A valid email address. All emails from the system will be sent to this address.');
+  $form['account']['mail']['#description'] = t('A valid email address. All emails from the system will be sent to this address. The email address is not made public.');
   $form['actions']['submit']['#submit'][] = '_iucn_who_core_password_reset_submit';
 }
 
