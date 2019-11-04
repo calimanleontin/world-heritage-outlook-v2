@@ -95,15 +95,15 @@ third_party_settings:
         - field_as_threats_out
         - field_as_threats_in
         - field_as_description
-        - field_as_threats_values_wh
         - field_as_threats_categories
-        - field_as_threats_rating
+        - field_as_threats_values_wh
         - field_as_threats_values_bio
+        - field_as_threats_rating
         - field_as_threats_extent
         - field_as_legality
         - field_as_targeted_species
-        - field_as_threats_threat
         - field_invasive_species_names
+        - field_as_threats_threat
         - 'display_field_copy:paragraph-parent_category'
         - group_as_threats_in_extent
         - group_as_threats_values
@@ -147,7 +147,7 @@ content:
     region: ds_content
     label: hidden
     settings:
-      separator: '; '
+      separator: ;
       singular: ''
       plural: ''
       link: 0
@@ -167,21 +167,21 @@ content:
     type: boolean
     weight: 1
     region: ds_content
-    label: hidden
+    label: inline
     settings:
       format: custom
       format_custom_true: 'Yes'
-      format_custom_false: ''
+      format_custom_false: 'No'
     third_party_settings: {  }
   field_as_threats_out:
     type: boolean
     weight: 0
     region: ds_content
-    label: hidden
+    label: inline
     settings:
       format: custom
       format_custom_true: 'Yes'
-      format_custom_false: ''
+      format_custom_false: 'No'
     third_party_settings: {  }
   field_as_threats_rating:
     weight: 3
@@ -198,30 +198,26 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_as_threats_values_bio:
-    type: entity_reference_list
+    type: entity_reference_separator
     weight: 3
     region: ds_content
     label: hidden
     settings:
+      view_mode: teaser
       separator: '; '
-      singular: ''
-      plural: ''
-      link: 0
-      override_label: 0
+      link: false
     third_party_settings:
       ds:
         ds_limit: ''
   field_as_threats_values_wh:
-    type: entity_reference_list
+    type: entity_reference_separator
     weight: 2
     region: ds_content
     label: hidden
     settings:
+      view_mode: teaser
       separator: '; '
-      singular: ''
-      plural: ''
-      link: 0
-      override_label: 0
+      link: false
     third_party_settings:
       ds:
         ds_limit: ''

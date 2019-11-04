@@ -64,7 +64,7 @@ class TermLevelList extends EntityReferenceListFormatter {
 
     $level = $this->getSetting('level') ?: 1;
     foreach ($entities as $idx => $entity) {
-      if ($level == 1 && !empty($entity->parent)) {
+      if ($level == 1 && !empty($entity->parent->target_id)) {
         unset($entities[$idx]);
       }
       elseif ($level == 2 && empty($entity->parent)) {

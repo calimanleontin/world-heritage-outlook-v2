@@ -157,11 +157,11 @@ third_party_settings:
         formatter: term_level_list
         settings:
           formatter:
-            link: '1'
             separator: ','
             singular: ''
             plural: ''
             level: '1'
+            link: 0
             override_label: 0
 id: paragraph.as_site_benefit.doc
 targetEntityType: paragraph
