@@ -9,6 +9,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\role_hierarchy\Service\RoleHierarchyHelper;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
 
@@ -514,6 +515,17 @@ function _iucn_who_core_password_reset_submit(array $form, FormStateInterface $f
 }
 
 function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, ['user_form', 'user_register_form'])) {
+    // Users cannot add or remove user roles on a level higher than their role.
+    $current_user = \Drupal::currentUser()->getAccount();
+    /** @var RoleHierarchyHelper $role_hierarchy_helper */
+    $role_hierarchy_helper = \Drupal::service('role_hierarchy.helper');
+
+    if ($role_hierarchy_helper->getAccountRoleWeight($current_user) == $role_hierarchy_helper->getRoleWeight('coordinator')) {
+      unset($form['account']['roles']['#options']['coordinator']);
+    }
+  }
+
   if ($form_id == 'user_login_form') {
     $form['reset_password'] = [
       '#type' => 'link',
