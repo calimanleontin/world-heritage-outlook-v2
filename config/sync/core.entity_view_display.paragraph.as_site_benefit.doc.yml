@@ -26,7 +26,6 @@ dependencies:
     - ds
     - field_group
     - iucn_assessment
-    - iucn_site
 third_party_settings:
   field_group:
     group_habitat:
@@ -44,6 +43,7 @@ third_party_settings:
         label_element: h3
         attributes: ''
       label: Habitat
+      region: hidden
     group_pollution:
       children:
         - field_as_benefits_pollut_level
@@ -59,6 +59,7 @@ third_party_settings:
         label_element: h3
         attributes: ''
       label: Pollution
+      region: hidden
     group_overexploitation:
       children:
         - field_as_benefits_oex_level
@@ -74,6 +75,7 @@ third_party_settings:
         label_element: h3
         attributes: ''
       label: Overexploitation
+      region: hidden
     group_climate_change:
       children:
         - field_as_benefits_climate_level
@@ -89,6 +91,7 @@ third_party_settings:
         label_element: h3
         attributes: ''
       label: 'Climate change'
+      region: hidden
     group_invasive_species:
       children:
         - field_as_benefits_invassp_level
@@ -104,6 +107,7 @@ third_party_settings:
         label_element: h3
         attributes: ''
       label: 'Invasive species'
+      region: hidden
   ds:
     layout:
       id: ds_1col
@@ -128,8 +132,8 @@ third_party_settings:
         - field_as_benefits_hab_level
         - field_as_benefits_pollut_trend
         - field_as_benefits_commun_in
-        - field_as_benefits_commun_out
         - field_as_benefits_hab_trend
+        - field_as_benefits_commun_out
         - field_as_comment
         - field_as_benefits_datadeficient
         - field_as_benefits_oex_level
@@ -150,14 +154,22 @@ third_party_settings:
         plugin_id: 'display_field_copy:paragraph-parent_benefits_category'
         weight: 7
         label: hidden
-        formatter: assessment_factor
+        formatter: term_level_list
+        settings:
+          formatter:
+            link: '1'
+            separator: ','
+            singular: ''
+            plural: ''
+            level: '1'
+            override_label: 0
 id: paragraph.as_site_benefit.doc
 targetEntityType: paragraph
 bundle: as_site_benefit
 mode: doc
 content:
   field_as_benefits_category:
-    type: entity_reference_list
+    type: term_level_list
     weight: 0
     region: ds_content
     label: hidden
@@ -165,6 +177,7 @@ content:
       separator: ','
       singular: ''
       plural: ''
+      level: '2'
       link: 0
       override_label: 0
     third_party_settings:

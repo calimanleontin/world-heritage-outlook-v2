@@ -45,7 +45,7 @@ class AssessmentAccess implements ContainerInjectionInterface {
     if ($node->bundle() != 'site_assessment') {
       return AccessResult::forbidden();
     }
-    return $this->assessmentEditAccess($account, $node);
+    return AccessResult::allowedIf($account->hasPermission('export nodes to word'));
   }
 
   public function translationOverviewAccess(AccountInterface $account, NodeInterface $node) {
