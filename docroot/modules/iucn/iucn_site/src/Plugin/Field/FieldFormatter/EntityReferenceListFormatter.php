@@ -19,7 +19,8 @@ use Drupal\Component\Utility\Html;
  *   label = @Translation("List"),
  *   description = @Translation("Display the label of the referenced entities separated by a custom separator."),
  *   field_types = {
- *     "entity_reference"
+ *     "entity_reference",
+ *     "entity_reference_revisions"
  *   }
  * )
  */

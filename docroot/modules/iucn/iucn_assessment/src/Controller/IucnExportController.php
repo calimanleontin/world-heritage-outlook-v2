@@ -2,8 +2,10 @@
 
 namespace Drupal\iucn_assessment\Controller;
 
+use Drupal\Component\Datetime\Time;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\node\NodeInterface;
@@ -48,7 +50,13 @@ class IucnExportController extends ControllerBase {
    * @param \Drupal\node\NodeInterface $node
    */
   public function docExport(NodeInterface $node) {
-    $templateDocument = new \PhpOffice\PhpWord\TemplateProcessor(drupal_get_path('module', 'iucn_assessment') . '/data/export/assessment_export_tpl.docx');
+    $year = $node->field_as_cycle_value;
+    if (empty($year) || $year < 2017) {
+      $year = 2017;
+    }
+
+    $template = drupal_get_path('module', 'iucn_assessment') . "/data/export/assessment_export_tpl_$year.docx";
+    $templateDocument = new \PhpOffice\PhpWord\TemplateProcessor($template);
     $fields = $this->getTemplateFields($templateDocument);
 
     foreach ($fields as $field => $referencedFields) {
@@ -110,7 +118,7 @@ class IucnExportController extends ControllerBase {
 
         $childrenRender[] = $childRender;
       }
-      $fieldRender = implode(', ', $childrenRender);
+      $fieldRender = implode('; ', $childrenRender);
     }
     else {
       $fieldRender = $this->renderer->render($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field]);
@@ -125,13 +133,20 @@ class IucnExportController extends ControllerBase {
 
   protected function stripValue($value) {
     $value = $this->stripTagsContent($value, '<button>', TRUE);
-    return trim(strip_tags($value));
+    return trim(strip_tags(html_entity_decode($value)));
   }
 
   protected function writeParagraphToTemplate(TemplateProcessor $templateProcessor, ParagraphInterface $paragraph, $fields, $index) {
     foreach ($fields as $templateVariable => $field) {
       if ($field == 'index') {
         $templateProcessor->setValue("$templateVariable#$index", $index);
+        continue;
+      }
+
+      if ($field == 'downloaded_time') {
+        $time = new DrupalDateTime('now', drupal_get_user_timezone());
+        $time = $time->format('d/m/Y at H:i:s');
+        $templateProcessor->setValue("$templateVariable#$index", $time);
         continue;
       }
 
