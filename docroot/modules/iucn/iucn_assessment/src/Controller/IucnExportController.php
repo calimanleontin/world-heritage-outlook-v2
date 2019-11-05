@@ -155,6 +155,15 @@ class IucnExportController extends ControllerBase {
         continue;
       }
 
+      if ($field == 'as_projects_date') {
+        $date = $this->getFieldValue($paragraph, 'field_as_projects_from');
+        if (!empty($paragraph->field_as_projects_to->value)) {
+          $date .= ' - ' . $this->getFieldValue($paragraph, 'field_as_projects_to');
+        }
+        $templateProcessor->setValue("$templateVariable#$index", $date);
+        continue;
+      }
+
       $templateProcessor->setValue("$templateVariable#$index", $this->getFieldValue($paragraph, $field), 2);
     }
   }
