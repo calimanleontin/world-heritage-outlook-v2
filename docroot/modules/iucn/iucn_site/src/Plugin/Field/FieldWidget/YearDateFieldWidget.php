@@ -46,7 +46,7 @@ class YearDateFieldWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = [];
-    $years = ['0001-01-01' => t('- None -')];
+    $years = ['' => t('- None -')];
     for ($i = date("Y") + 10; $i > 1; $i--) {
       $year = str_pad($i, 4, "0", STR_PAD_LEFT);
       $years["$year-01-01"] = $i;

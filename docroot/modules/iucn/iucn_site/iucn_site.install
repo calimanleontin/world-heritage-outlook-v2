@@ -62,3 +62,29 @@ function iucn_site_update_8003() {
     }
   }
 }
+
+/**
+ * Fix 0001-01-01 dates.
+ */
+function iucn_site_update_8004() {
+  $paragraphs = \Drupal::entityTypeManager()->getStorage('paragraph')->loadByProperties([
+    'type' => 'as_site_project',
+  ]);
+
+  foreach ($paragraphs as $paragraph) {
+    $save = FALSE;
+    if ($paragraph->field_as_projects_from->value == '0001-01-01') {
+      $paragraph->field_as_projects_from->setValue(NULL);
+      $save = TRUE;
+    }
+
+    if ($paragraph->field_as_projects_to->value == '0001-01-01') {
+      $paragraph->field_as_projects_to->setValue(NULL);
+      $save = TRUE;
+    }
+
+    if ($save) {
+      $paragraph->save();
+    }
+  }
+}
