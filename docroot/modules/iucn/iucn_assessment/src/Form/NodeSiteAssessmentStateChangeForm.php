@@ -45,7 +45,9 @@ class NodeSiteAssessmentStateChangeForm {
     $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
 
     if ($workflowService->isNewAssessment($node) === FALSE
-      && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
+      && $state != AssessmentWorkflow::STATUS_PUBLISHED
+      && $state != AssessmentWorkflow::STATUS_NEW
+      && $state != AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
       self::validateNode($form, $node);
       if (empty($form['error'])) {
         self::addStateChangeWarning($form, $node, $currentUser);

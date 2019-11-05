@@ -514,7 +514,7 @@ class NodeSiteAssessmentForm {
 
       $widget = &$form[$field]['widget'];
       $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-        && !$readOnlyForm;
+        && empty($readOnlyForm);
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
@@ -533,7 +533,7 @@ class NodeSiteAssessmentForm {
           continue;
         }
 
-        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE))) {
+        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE), $siteAssessment)) {
           continue;
         }
 
@@ -693,7 +693,7 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  private static function isPermissionException($field, $action, array $roles) {
+  public static function isPermissionException($field, $action, array $roles, NodeInterface $assessment) {
     switch ([$field, $action, TRUE]) {
       case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
       case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
@@ -701,6 +701,22 @@ class NodeSiteAssessmentForm {
           return true;
         }
       break;
+    }
+
+    // These fields are editable by coordinators when this is the only assessment for a site.
+    if (in_array($field, ['field_as_values_wh', 'field_as_values_bio']) && in_array('assessor', $roles)) {
+      $site = $assessment->field_as_site->target_id;
+      if (empty($site)) {
+        return FALSE;
+      }
+
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'site_assessment')
+        ->condition('field_as_site', $site);
+      $results = $query->execute();
+      if (count($results) <= 1) {
+        return TRUE;
+      }
     }
 
     return false;
