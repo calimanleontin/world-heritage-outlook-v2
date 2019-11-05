@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_site\Plugin\Field\FieldFormatter\EntityReferenceListFormatter;
+use Drupal\taxonomy\Entity\Term;
 
 
 /**
@@ -61,18 +62,20 @@ class TermLevelList extends EntityReferenceListFormatter {
 
   public function getEntitiesToView(EntityReferenceFieldItemListInterface $items, $langcode) {
     $entities = parent::getEntitiesToView($items, $langcode);
+    $entitiesPerLevel = [1 => [], 2 => []];
 
     $level = $this->getSetting('level') ?: 1;
     foreach ($entities as $idx => $entity) {
-      if ($level == 1 && !empty($entity->parent->target_id)) {
-        unset($entities[$idx]);
+      if (!empty($entity->parent->target_id)) {
+        $entitiesPerLevel[2][$entity->id()] = $entity;
+        $entitiesPerLevel[1][$entity->parent->target_id] = Term::load($entity->parent->target_id);
       }
-      elseif ($level == 2 && empty($entity->parent)) {
-        unset($entities[$idx]);
+      else {
+        $entitiesPerLevel[1][$entity->id()] = $entity;
       }
     }
 
-    return $entities;
+    return $entitiesPerLevel[$level];
   }
 
 }
