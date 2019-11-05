@@ -698,12 +698,12 @@ class NodeSiteAssessmentForm {
       case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
       case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
         if (\Drupal::request()->query->get('tab') == 'assessing-values') {
-          return true;
+          return TRUE;
         }
       break;
     }
 
-    // These fields are editable by coordinators when this is the only assessment for a site.
+    // These fields are editable by assessors if the site has no previous assessment.
     if (in_array($field, ['field_as_values_wh', 'field_as_values_bio']) && in_array('assessor', $roles)) {
       $site = $assessment->field_as_site->target_id;
       if (empty($site)) {
@@ -719,7 +719,7 @@ class NodeSiteAssessmentForm {
       }
     }
 
-    return false;
+    return FALSE;
   }
 
   protected static function alterFieldsRestrictions($tab, array &$form, NodeInterface $node) {
