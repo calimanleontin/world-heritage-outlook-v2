@@ -194,12 +194,27 @@ class NodeSiteAssessmentStateChangeForm {
           break;
       }
 
+      $fieldRequiresValidation = TRUE;
+      foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $mainField => $dependentFields) {
+        if (!in_array($fieldName, $dependentFields)) {
+          continue;
+        }
+
+        if (!$node->get($mainField)->isEmpty()) {
+          continue;
+        }
+
+        $fieldRequiresValidation = FALSE;
+      }
+
       if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
 
       if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
-        $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
+        if ($fieldRequiresValidation) {
+          $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
+        }
         continue;
       }
 
