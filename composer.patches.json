@@ -23,9 +23,6 @@
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     },
-    "drupal/role_hierarchy": {
-      "Fix integration with workflow" : "patches/role_hierarchy/role_hierarchy_workflow_fix.patch"
-    },
     "drupal/purge": {
       "setUp() methods from Tests are not compatible with respective parent setUp() method" : "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
     },

@@ -3,3 +3,7 @@ services:
     class: 'Drupal\role_hierarchy\Routing\RoleHierarchyRouteSubscriber'
     tags:
       - { name: event_subscriber }
+
+  role_hierarchy.helper:
+    class: 'Drupal\role_hierarchy\Service\RoleHierarchyHelper'
+    arguments: ['@config.factory']

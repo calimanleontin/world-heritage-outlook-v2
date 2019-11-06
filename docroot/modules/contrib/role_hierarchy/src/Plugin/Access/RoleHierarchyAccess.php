@@ -2,15 +2,32 @@
 
 namespace Drupal\role_hierarchy\Plugin\Access;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
+use Drupal\role_hierarchy\Service\RoleHierarchyHelper;
 use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class used to set custom access on role_hierarchy functionality.
  */
-class RoleHierarchyAccess {
+class RoleHierarchyAccess implements ContainerInjectionInterface {
+
+  /**
+   * @var RoleHierarchyHelper
+   */
+  protected $roleHierarchyHelper;
+
+  public function __construct(RoleHierarchyHelper $roleHierarchyHelper) {
+    $this->roleHierarchyHelper = $roleHierarchyHelper;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('role_hierarchy.helper')
+    );
+  }
 
   /**
    * Users can only edit with an equal or lower hierarchical role.
@@ -24,9 +41,7 @@ class RoleHierarchyAccess {
    *   The account is allowed/forbidden to edit an user.
    */
   public function accessEditUser(AccountInterface $account, User $user) {
-    $account_weight = RoleHierarchyHelper::getAccountRoleWeight($account);
-    $user_weight = RoleHierarchyHelper::getUserRoleWeight($user);
-    return AccessResult::allowedIf($account_weight <= $user_weight);
+    return AccessResult::allowedIf($this->roleHierarchyHelper->hasEditAccess($account, $user));
   }
 
 }
