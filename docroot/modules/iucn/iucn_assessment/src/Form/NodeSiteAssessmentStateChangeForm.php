@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Form;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
@@ -260,11 +261,16 @@ class NodeSiteAssessmentStateChangeForm {
 
     if (!empty($form['error'])) {
       unset($form['field_coordinator']);
-      unset($form['field_assessor']);
       unset($form['field_reviewers']);
       unset($form['field_references_reviewer']);
       unset($form['warning']);
-      $form['actions']['#access'] = FALSE;
+      foreach (Element::children($form['actions']) as $action) {
+        // If a save button exists, allow access to it even if there are validation errors.
+        if ($action == "workflow_{$node->field_state->value}") {
+          continue;
+        }
+        $form['actions'][$action]['#access'] = FALSE;
+      }
     }
   }
 
