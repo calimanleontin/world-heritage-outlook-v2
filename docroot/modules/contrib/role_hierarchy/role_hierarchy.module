@@ -1,21 +1,90 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\role_hierarchy\RoleHierarchyHelper;
+use Drupal\role_hierarchy\Service\RoleHierarchyHelper;
 
 /**
  * Implements hook_form_alter().
  */
 function role_hierarchy_form_alter(&$form, FormStateInterface $formState, $form_id) {
-  if (!in_array($form_id, ['user_form', 'user_register_form'])) {
+  if (in_array($form_id, ['user_form', 'user_register_form'])) {
+    // Users cannot add or remove user roles on a level higher than their role.
+    $current_user = \Drupal::currentUser()->getAccount();
+    /** @var RoleHierarchyHelper $role_hierarchy_helper */
+    $role_hierarchy_helper = \Drupal::service('role_hierarchy.helper');
+
+    $form['account']['roles']['#access'] = $form['account']['roles']['#access'] || $current_user->hasPermission('edit user roles');
+
+    foreach ($form['account']['roles']['#options'] as $role => &$label) {
+      if (!$role_hierarchy_helper->hasRoleEditAccess(
+        $role_hierarchy_helper->getAccountRoleWeight($current_user),
+        $role_hierarchy_helper->getRoleWeight($role))
+      ) {
+        unset($form['account']['roles']['#options'][$role]);
+      }
+    }
     return;
   }
-  // Users cannot add or remove user roles on a level higher than their role.
-  $current_user = \Drupal::currentUser()->getAccount();
-  foreach ($form['account']['roles']['#options'] as $role => &$label) {
-    if (RoleHierarchyHelper::getRoleWeight($role) < RoleHierarchyHelper::getAccountRoleWeight($current_user)) {
-      unset($form['account']['roles']['#options'][$role]);
+
+  if ($form_id == 'user_admin_roles_form') {
+    /** @var \Drupal\Core\Config\ImmutableConfig $config */
+    $config = \Drupal::configFactory()->getEditable('role_hierarchy.settings');
+    $messenger = \Drupal::messenger();
+
+    $messenger->addWarning(t('Role hierarchy is enabled. Users will only be able to add or edit users having roles that appear <b>@direction</b> their role in this list.', [
+      '@direction' => !empty($config->get('invert')) ? 'above' : 'below',
+    ]));
+
+    if (empty($config->get('strict'))) {
+      $messenger->addWarning(t('Users can edit other users with equal roles.'));
     }
+
+    $form['role_hierarchy'] = [
+      '#type' => 'details',
+      '#title' => t('Role hierarchy'),
+      '#open' => TRUE,
+    ];
+
+    $form['role_hierarchy']['invert'] = [
+      '#type' => 'checkbox',
+      '#default_value' => $config->get('invert'),
+      '#title' => t('Invert hierarchy'),
+      '#description' => t('By inverting the hierarchy, roles will only be able to edit the other roles <b>above</b> them instead of below. Reordering will be done automatically when the form is submitted.'),
+    ];
+
+    $form['role_hierarchy']['strict'] = [
+      '#type' => 'checkbox',
+      '#default_value' => $config->get('strict'),
+      '#title' => t('Strict hierarchy check'),
+      '#description' => t('If this is checked, roles will no longer be able to edit equal roles.'),
+    ];
+
+    array_unshift($form['#submit'], 'role_hierarchy_user_admin_roles_form');
+  }
+}
+
+/**
+ * Submit callback for user_admin_roles_form form.
+ */
+function role_hierarchy_user_admin_roles_form(array $form, FormStateInterface $form_state) {
+  $config = \Drupal::configFactory()->getEditable('role_hierarchy.settings');
+
+  $old_invert = $config->get('invert');
+  $new_invert = $form_state->getValue('invert');
+
+  if ($old_invert != $new_invert) {
+    $config->set('invert', $new_invert);
+
+    $entities = $form_state->getValue('entities');
+    foreach ($entities as &$entity) {
+      $entity['weight'] = -$entity['weight'];
+    }
+
+    $form_state->setValue('entities', $entities);
   }
 
+  $strict = $form_state->getValue('strict');
+  $config->set('strict', $strict)->save();
+
+  \Drupal::messenger()->deleteByType(\Drupal\Core\Messenger\MessengerInterface::TYPE_WARNING);
 }
