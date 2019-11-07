@@ -513,13 +513,12 @@ class NodeSiteAssessmentForm {
       }
 
       $widget = &$form[$field]['widget'];
-      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-        && empty($readOnlyForm);
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
       foreach ($actions as $action) {
-        if (!$editableField) {
+        if (!$editableField || $readOnlyForm) {
           $disabledActions[] = $action;
           continue;
         }

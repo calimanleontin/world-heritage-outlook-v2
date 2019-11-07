@@ -274,16 +274,30 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!empty($form['error'])) {
-      unset($form['field_coordinator']);
-      unset($form['field_reviewers']);
-      unset($form['field_references_reviewer']);
-      unset($form['warning']);
       foreach (Element::children($form['actions']) as $action) {
-        // If a save button exists, allow access to it even if there are validation errors.
-        if ($action == "workflow_{$node->field_state->value}") {
-          continue;
-        }
+        // The user can't submit the assessment if there are validation errors.
         $form['actions'][$action]['#access'] = FALSE;
+      }
+
+      $assessmentState = $node->field_state->value;
+      $curentUserIsCoordinator = $node->field_coordinator->target_id == \Drupal::currentUser()->id();
+      $skipValidationStates = [AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT];
+      if ($curentUserIsCoordinator && in_array($assessmentState, $skipValidationStates)) {
+        // The coordinator can submit the assessment in "under evaluation" state
+        // or change the assessor in "under assessment" state even if the assessment
+        // has validation errors (the assessor needs to fix these
+        unset($form['field_coordinator']);
+        unset($form['field_reviewers']);
+        unset($form['field_references_reviewer']);
+        unset($form['warning']);
+        $form['actions']["workflow_{$node->field_state->value}"]['#access'] = TRUE;
+      }
+      else {
+        unset($form['field_coordinator']);
+        unset($form['field_assessor']);
+        unset($form['field_reviewers']);
+        unset($form['field_references_reviewer']);
+        unset($form['warning']);
       }
     }
   }
