@@ -286,19 +286,17 @@ class NodeSiteAssessmentStateChangeForm {
         // The coordinator can submit the assessment in "under evaluation" state
         // or change the assessor in "under assessment" state even if the assessment
         // has validation errors (the assessor needs to fix these
-        unset($form['field_coordinator']);
-        unset($form['field_reviewers']);
-        unset($form['field_references_reviewer']);
-        unset($form['warning']);
         $form['actions']["workflow_{$node->field_state->value}"]['#access'] = TRUE;
       }
       else {
-        unset($form['field_coordinator']);
+        // Unset assessor field only if the coordinator can't change it.
         unset($form['field_assessor']);
-        unset($form['field_reviewers']);
-        unset($form['field_references_reviewer']);
-        unset($form['warning']);
       }
+
+      unset($form['field_coordinator']);
+      unset($form['field_reviewers']);
+      unset($form['field_references_reviewer']);
+      unset($form['warning']);
     }
   }
 
