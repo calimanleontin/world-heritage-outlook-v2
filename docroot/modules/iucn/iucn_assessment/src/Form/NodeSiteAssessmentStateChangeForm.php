@@ -197,11 +197,24 @@ class NodeSiteAssessmentStateChangeForm {
           break;
       }
 
+      $fieldRequiresValidation = TRUE;
+      foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $mainField => $dependentFields) {
+        // There are some fields which are required only if the parent field
+        // is not empty.
+        if (!in_array($fieldName, $dependentFields)) {
+          continue;
+        }
+        if (!$node->get($mainField)->isEmpty()) {
+          continue;
+        }
+        $fieldRequiresValidation = FALSE;
+      }
+
       if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
 
-      if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
+      if ($fieldRequiresValidation && $fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
         $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
         continue;
       }
