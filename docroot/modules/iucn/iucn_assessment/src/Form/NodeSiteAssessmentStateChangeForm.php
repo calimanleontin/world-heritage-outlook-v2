@@ -287,6 +287,7 @@ class NodeSiteAssessmentStateChangeForm {
         // or change the assessor in "under assessment" state even if the assessment
         // has validation errors (the assessor needs to fix these
         $form['actions']["workflow_{$node->field_state->value}"]['#access'] = TRUE;
+        unset($form['error']);
       }
       else {
         // Unset assessor field only if the coordinator can't change it.
