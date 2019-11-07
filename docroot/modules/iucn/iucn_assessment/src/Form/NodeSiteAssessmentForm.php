@@ -250,27 +250,11 @@ class NodeSiteAssessmentForm {
         ];
       }
       elseif ($tab == 'protection-management') {
-        $fieldAsProtectionWidget = &$form['field_as_protection']['widget'];
-        foreach (Element::children($fieldAsProtectionWidget) as $child) {
-          if (empty($fieldAsProtectionWidget[$child]['#paragraph_id'])) {
-            continue;
-          }
-          $paragraph = Paragraph::load($fieldAsProtectionWidget[$child]['#paragraph_id']);
-          /** @var \Drupal\taxonomy\TermInterface $protectionTopic */
-          $protectionTopic = $paragraph->field_as_protection_topic->entity;
-          if (empty($protectionTopic)) {
-            continue;
-          }
-          $fieldAsProtectionWidget[$child]['#delta'] = $protectionTopic->getWeight();
-          $fieldAsProtectionWidget[$child]['#weight'] = $protectionTopic->getWeight();
-          $fieldAsProtectionWidget[$child]['_weight']['#default_value'] = $protectionTopic->getWeight();
-        }
-
         $fieldAsProtectionBestPracticeWidget = &$form['field_as_protection_ov_practices']['widget'][0];
         $title = [
           '#theme' => 'topic_tooltip',
           '#label' => t('Best Practice Examples'),
-          '#help_text' => t('Tooltip. Text needs to be provided.'),
+          '#help_text' => t('Where relevant, note best-practice examples including a short explanation of why they are considered to be best practice and key lessons learned that could be replicated in other sites. All best-practice examples should be specific and focused on concrete management aspects and should be referenced.'),
         ];
         $fieldAsProtectionBestPracticeWidget['#title'] = render($title);
 

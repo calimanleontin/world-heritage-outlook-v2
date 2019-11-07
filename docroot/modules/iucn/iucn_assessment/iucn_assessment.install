@@ -184,32 +184,40 @@ function iucn_assessment_update_8004() {
 }
 
 /**
- * refs #6378 - reorder protection and management paragraphs.
+ * refs #6378 - reorder protection and management paragraphs for 2017 and 2020.
  */
 function iucn_assessment_update_8005() {
-  $weights = [1330, 1331, 1345, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343];
-  $weights = array_flip($weights);
+  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  foreach ([2017, 2020] as $cycle) {
+    $weights = [
+      2017 => [1330, 1331, 1345, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343],
+      2020 => [1333, 1334, 1336, 1332, 1330, 1331, 1345, 1335, 1339, 1337, 1338, 1340, 1341, 1342, 1343],
+    ];
+    $weights = array_flip($weights);
 
-  $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
-    'type' => 'site_assessment',
-    'field_as_cycle' => 2017,
-  ]);
+    $nodes = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadByProperties([
+        'type' => 'site_assessment',
+        'field_as_cycle' => $cycle,
+      ]);
 
-  foreach ($nodes as $node) {
-    $protectionParagraphs = $node->field_as_protection->getValue();
-    if (empty($protectionParagraphs)) {
-      continue;
+    foreach ($nodes as $node) {
+      $protectionParagraphs = $node->field_as_protection->getValue();
+      if (empty($protectionParagraphs)) {
+        continue;
+      }
+
+      usort($protectionParagraphs, function ($a, $b) use ($weights, $cycle, $paragraphStorage) {
+        $p1 = $paragraphStorage->loadRevision($a['target_revision_id']);
+        $p2 = $paragraphStorage->loadRevision($b['target_revision_id']);
+
+        return $weights[$cycle][$p1->field_as_protection_topic->target_id] < $weights[$cycle][$p2->field_as_protection_topic->target_id] ? -1 : 1;
+      });
+
+      $node->field_as_protection->setValue($protectionParagraphs);
+      $node->save();
     }
-
-    usort($protectionParagraphs, function ($a, $b) use ($weights) {
-      $p1 = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($a['target_revision_id']);
-      $p2 = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($b['target_revision_id']);
-
-      return $weights[$p1->field_as_protection_topic->target_id] < $weights[$p2->field_as_protection_topic->target_id] ? -1 : 1;
-    });
-
-    $node->field_as_protection->setValue($protectionParagraphs);
-    $node->save();
   }
 
 }
