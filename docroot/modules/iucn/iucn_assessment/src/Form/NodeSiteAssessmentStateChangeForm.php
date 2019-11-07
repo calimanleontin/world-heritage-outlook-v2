@@ -5,6 +5,7 @@ namespace Drupal\iucn_assessment\Form;
 use Drupal\Core\Field\EntityReferenceFieldItemList;
 use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
@@ -45,7 +46,10 @@ class NodeSiteAssessmentStateChangeForm {
     $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
 
     if ($workflowService->isNewAssessment($node) === FALSE
-      && $state != AssessmentWorkflow::STATUS_PUBLISHED) {
+      && $state != AssessmentWorkflow::STATUS_PUBLISHED
+      && $state != AssessmentWorkflow::STATUS_NEW
+      && $state != AssessmentWorkflow::STATUS_UNDER_EVALUATION
+      && $node->field_as_cycle->value >= 2020) {
       self::validateNode($form, $node);
       if (empty($form['error'])) {
         self::addStateChangeWarning($form, $node, $currentUser);
@@ -194,11 +198,24 @@ class NodeSiteAssessmentStateChangeForm {
           break;
       }
 
+      $fieldRequiresValidation = TRUE;
+      foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $mainField => $dependentFields) {
+        // There are some fields which are required only if the parent field
+        // is not empty.
+        if (!in_array($fieldName, $dependentFields)) {
+          continue;
+        }
+        if (!$node->get($mainField)->isEmpty()) {
+          continue;
+        }
+        $fieldRequiresValidation = FALSE;
+      }
+
       if ($fieldSettings->isRequired() == FALSE && ($fieldSettings->getType() != 'entity_reference_revisions')) {
         continue;
       }
 
-      if ($fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
+      if ($fieldRequiresValidation && $fieldSettings->isRequired() && empty($node->{$fieldName}->getValue())) {
         $errors[$fieldName][$fieldName] = $fieldSettings->getLabel();
         continue;
       }
@@ -257,12 +274,30 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!empty($form['error'])) {
+      foreach (Element::children($form['actions']) as $action) {
+        // The user can't submit the assessment if there are validation errors.
+        $form['actions'][$action]['#access'] = FALSE;
+      }
+
+      $assessmentState = $node->field_state->value;
+      $curentUserIsCoordinator = $node->field_coordinator->target_id == \Drupal::currentUser()->id();
+      $skipValidationStates = [AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT];
+      if ($curentUserIsCoordinator && in_array($assessmentState, $skipValidationStates)) {
+        // The coordinator can submit the assessment in "under evaluation" state
+        // or change the assessor in "under assessment" state even if the assessment
+        // has validation errors (the assessor needs to fix these
+        $form['actions']["workflow_{$node->field_state->value}"]['#access'] = TRUE;
+        unset($form['error']);
+      }
+      else {
+        // Unset assessor field only if the coordinator can't change it.
+        unset($form['field_assessor']);
+      }
+
       unset($form['field_coordinator']);
-      unset($form['field_assessor']);
       unset($form['field_reviewers']);
       unset($form['field_references_reviewer']);
       unset($form['warning']);
-      $form['actions']['#access'] = FALSE;
     }
   }
 

@@ -16,6 +16,7 @@ third_party_settings:
       assessment_creation: assessment_creation
       assessment_new: assessment_new
       assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
       assessment_ready_for_review: assessment_ready_for_review
       assessment_finished_reviewing: assessment_finished_reviewing
       assessment_under_comparison: assessment_under_comparison
@@ -23,7 +24,6 @@ third_party_settings:
       assessment_final_changes: assessment_final_changes
       assessment_approved: assessment_approved
       assessment_draft: assessment_draft
-      assessment_under_assessment: 0
       assessment_under_review: 0
       assessment_published: 0
   disable_field:
