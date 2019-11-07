@@ -19,6 +19,7 @@ dependencies:
     - paragraphs.paragraphs_type.as_site_threat
   module:
     - ds
+    - entity_reference_revisions
     - field_group
     - iucn_assessment
     - iucn_site
@@ -30,7 +31,7 @@ third_party_settings:
         - field_as_threats_in
         - field_as_threats_extent
       parent_name: ''
-      weight: 9
+      weight: 10
       format_type: html_list
       format_settings:
         id: ''
@@ -46,7 +47,7 @@ third_party_settings:
         - field_as_threats_values_wh
         - field_as_threats_values_bio
       parent_name: ''
-      weight: 10
+      weight: 11
       format_type: html_list
       format_settings:
         id: ''
@@ -63,15 +64,16 @@ third_party_settings:
         - field_as_targeted_species
         - field_invasive_species_names
       parent_name: ''
-      weight: 11
+      weight: 9
       format_type: html_list
       format_settings:
-        id: ''
-        classes: ''
+        label: 'Other information'
         element: div
         show_label: '0'
         label_element: h3
         attributes: ''
+        id: ''
+        classes: ''
       label: 'Other information'
       region: hidden
   ds:
@@ -93,21 +95,21 @@ third_party_settings:
     regions:
       ds_content:
         - field_as_threats_out
-        - field_as_threats_in
         - field_as_description
-        - field_as_threats_categories
+        - field_as_threats_in
         - field_as_threats_values_wh
-        - field_as_threats_values_bio
+        - field_as_threats_categories
         - field_as_threats_rating
+        - field_as_threats_values_bio
         - field_as_threats_extent
         - field_as_legality
         - field_as_targeted_species
-        - field_invasive_species_names
         - field_as_threats_threat
+        - field_invasive_species_names
         - 'display_field_copy:paragraph-parent_category'
+        - group_other_information
         - group_as_threats_in_extent
         - group_as_threats_values
-        - group_other_information
     fields:
       'display_field_copy:paragraph-parent_category':
         plugin_id: 'display_field_copy:paragraph-parent_category'
@@ -147,11 +149,11 @@ content:
     region: ds_content
     label: hidden
     settings:
-      separator: ;
+      link: 0
+      separator: ','
+      override_label: 0
       singular: ''
       plural: ''
-      link: 0
-      override_label: 0
     third_party_settings:
       ds:
         ds_limit: ''
@@ -171,7 +173,7 @@ content:
     settings:
       format: custom
       format_custom_true: 'Yes'
-      format_custom_false: 'No'
+      format_custom_false: ''
     third_party_settings: {  }
   field_as_threats_out:
     type: boolean
@@ -181,7 +183,7 @@ content:
     settings:
       format: custom
       format_custom_true: 'Yes'
-      format_custom_false: 'No'
+      format_custom_false: ''
     third_party_settings: {  }
   field_as_threats_rating:
     weight: 3
@@ -198,26 +200,24 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_as_threats_values_bio:
-    type: entity_reference_separator
+    type: entity_reference_revisions_entity_view
     weight: 3
     region: ds_content
     label: hidden
     settings:
       view_mode: teaser
-      separator: '; '
-      link: false
+      link: ''
     third_party_settings:
       ds:
         ds_limit: ''
   field_as_threats_values_wh:
-    type: entity_reference_separator
+    type: entity_reference_revisions_entity_view
     weight: 2
     region: ds_content
     label: hidden
     settings:
       view_mode: teaser
-      separator: '; '
-      link: false
+      link: ''
     third_party_settings:
       ds:
         ds_limit: ''

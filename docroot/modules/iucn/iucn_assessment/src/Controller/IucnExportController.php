@@ -124,7 +124,13 @@ class IucnExportController extends ControllerBase {
 
         $childrenRender[] = $childRender;
       }
-      $fieldRender = implode('; ', $childrenRender);
+      $implodeChar = '; ';
+      if ($field == 'group_other_information') {
+        // 2 New lines.
+        $implodeChar = "<w:br/></w:t><w:br/><w:t><w:br/></w:t><w:br/><w:t>";
+      }
+
+      $fieldRender = implode($implodeChar, $childrenRender);
     }
     else {
       $fieldRender = $this->renderer->render($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field]);
@@ -139,11 +145,12 @@ class IucnExportController extends ControllerBase {
 
   protected function stripValue($value) {
     $value = $this->stripTagsContent($value, '<button>', TRUE);
-    $value = str_replace('&nbsp;', ' ', $value);
     $value = preg_replace('/\s+/', ' ', $value);
-    $value = strip_tags($value);
+    $value = strip_tags($value, '<w:br/>');
     $value = preg_replace('/\s+/', ' ', $value);
     $value = str_replace(' ;', ';', $value);
+    $value = str_replace('&nbsp;', ' ', $value);
+    $value = str_replace('&amp;nbsp;', ' ', $value);
 
     return trim($value);
   }
@@ -161,6 +168,16 @@ class IucnExportController extends ControllerBase {
           $date .= ' - ' . $this->getFieldValue($paragraph, 'field_as_projects_to');
         }
         $templateProcessor->setValue("$templateVariable#$index", $date);
+        continue;
+      }
+
+      if ($field == 'other_info') {
+        if (empty($paragraph->field_as_legality->value) && empty($paragraph->field_as_targeted_species->value) && empty($paragraph->field_invasive_species_names->value)) {
+          $templateProcessor->setValue("$templateVariable#$index", 'N/A');
+        }
+        else {
+          $templateProcessor->setValue("$templateVariable#$index", '');
+        }
         continue;
       }
 

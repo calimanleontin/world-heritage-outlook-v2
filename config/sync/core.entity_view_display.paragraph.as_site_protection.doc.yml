@@ -8,6 +8,8 @@ dependencies:
     - field.field.paragraph.as_site_protection.field_as_protection_rating
     - field.field.paragraph.as_site_protection.field_as_protection_topic
     - paragraphs.paragraphs_type.as_site_protection
+  module:
+    - iucn_assessment
 id: paragraph.as_site_protection.doc
 targetEntityType: paragraph
 bundle: as_site_protection
@@ -32,9 +34,11 @@ content:
     weight: 0
     label: hidden
     settings:
-      link: false
+      separator: ' '
+      lowercase: 0
+      paranthesis: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: name_description
     region: content
 hidden:
   entity_print_view_epub: true

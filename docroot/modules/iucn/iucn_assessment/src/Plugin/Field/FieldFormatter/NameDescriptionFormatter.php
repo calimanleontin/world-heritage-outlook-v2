@@ -26,9 +26,10 @@ class NameDescriptionFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'separator' => ' - ',
-        'lowercase' => FALSE,
-      ];
+      'separator' => ' - ',
+      'lowercase' => FALSE,
+      'paranthesis' => FALSE,
+    ];
   }
 
   /**
@@ -40,10 +41,12 @@ class NameDescriptionFormatter extends FormatterBase {
       if (empty($item->entity)) {
         continue;
       }
-      $markup = $this->t($item->entity->name->value);
+      $markup = $item->entity->name->value;
       if (!empty($item->entity->description->value)) {
         $markup .= $this->getSetting('separator');
-        $markup .= strip_tags($this->t($item->entity->description->value));
+        $description = strip_tags($item->entity->description->value);
+        $description = "($description)";
+        $markup .= $description;
       }
 
       if ($this->getSetting('lowercase') == TRUE) {
@@ -77,6 +80,12 @@ class NameDescriptionFormatter extends FormatterBase {
       '#default_value' => $this->getSetting('lowercase')
     ];
 
+    $form['lowercase'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Description in paranthesis'),
+      '#default_value' => $this->getSetting('paranthesis')
+    ];
+
     return $form;
   }
 
@@ -91,6 +100,9 @@ class NameDescriptionFormatter extends FormatterBase {
 
     $lowercase = $this->getSetting('lowercase') == TRUE ? $this->t('on') : $this->t('off');
     $summary[] = $this->t('Use lowercase: %lowercase', ['%lowercase' => $lowercase]);
+
+    $paranthesis = $this->getSetting('paranthesis') == TRUE ? $this->t('yes') : $this->t('no');
+    $summary[] = $this->t('Description paranthesis: %paranthesis', ['%paranthesis' => $paranthesis]);
 
     return $summary;
   }
