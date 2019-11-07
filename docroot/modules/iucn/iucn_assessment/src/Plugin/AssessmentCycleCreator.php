@@ -25,6 +25,11 @@ class AssessmentCycleCreator {
     ],
   ];
 
+  const PROTECTION_PARAGRAPHS_ORDER = [
+    2017 => [1330, 1331, 1345, 1332, 1333, 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343],
+    2020 => [1333, 1334, 1336, 1332, 1330, 1331, 1345, 1335, 1339, 1337, 1338, 1340, 1341, 1342, 1343],
+  ];
+
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
@@ -98,6 +103,32 @@ class AssessmentCycleCreator {
   }
 
   /**
+   * Reorder the protection paragraphs based on their order in the $termOrder array.
+   *
+   * @param \Drupal\node\NodeInterface $assessment
+   * @param $termOrder
+   */
+  public function reorderProtectionParagraphs(NodeInterface $assessment, $termOrder) {
+    $termOrder = array_flip($termOrder);
+
+    $paragraphStorage = $this->entityTypeManager->getStorage('paragraph');
+    $protectionParagraphs = $assessment->field_as_protection->getValue();
+    if (empty($protectionParagraphs)) {
+      return;
+    }
+
+    usort($protectionParagraphs, function ($a, $b) use ($termOrder, $paragraphStorage) {
+      $p1 = $paragraphStorage->loadRevision($a['target_revision_id']);
+      $p2 = $paragraphStorage->loadRevision($b['target_revision_id']);
+
+      return $termOrder[$p1->field_as_protection_topic->target_id] < $termOrder[$p2->field_as_protection_topic->target_id] ? -1 : 1;
+    });
+
+    $assessment->field_as_protection->setValue($protectionParagraphs);
+    $assessment->save();
+  }
+
+  /**
    * Duplicate the original assessment node and all its child-entities. A node
    * with a new id is returned.
    *
@@ -124,6 +155,7 @@ class AssessmentCycleCreator {
     $duplicate->set('field_state', AssessmentWorkflow::STATUS_NEW);
     $duplicate->set('field_programmatically_fixed', FALSE);
     $this->createDuplicateReferencedEntities($duplicate, $cycle);
+    $this->reorderProtectionParagraphs($duplicate, self::PROTECTION_PARAGRAPHS_ORDER[$cycle]);
     $duplicate->save();
     return $duplicate;
   }
