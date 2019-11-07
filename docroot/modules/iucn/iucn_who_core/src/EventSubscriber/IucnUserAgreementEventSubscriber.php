@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\iucn_who_core\Service\UserAgreementService;
 use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -27,27 +28,13 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
   /** @var \Drupal\Core\Session\AccountProxyInterface */
   protected $currentUser;
 
-  /** @var \Drupal\Core\Config\ConfigFactoryInterface */
-  protected $config;
+  /** @var \Drupal\iucn_who_core\Service\UserAgreementService  */
+  protected $userAgreementService;
 
-  /** @var \Drupal\Core\Messenger\MessengerInterface */
-  protected $messenger;
-
-  /**
-   * Initialize method.
-   *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The route match service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
-   *   The current user account.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory service.
-   */
-  public function __construct(RouteMatchInterface $routeMatch, AccountProxyInterface $currentUser, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
+  public function __construct(RouteMatchInterface $routeMatch, AccountProxyInterface $currentUser, UserAgreementService $userAgreementService) {
     $this->routeMatch = $routeMatch;
     $this->currentUser = $currentUser;
-    $this->config = $config_factory->get('iucn_who_core.settings');
-    $this->messenger = $messenger;
+    $this->userAgreementService = $userAgreementService;
   }
 
   /**
@@ -69,7 +56,6 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
       $url = Url::fromRoute('who.user_agreement_form');
       if ($event->getRequest()->getUri() != $url->toString()) {
         $redirect = new RedirectResponse($url->toString());
-        $this->messenger->addStatus($this->t('You need to accept the Terms and Conditions before using the application.'));
         $event->setResponse($redirect);
       }
     }
@@ -90,8 +76,8 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
       && $event->isMasterRequest()
       && (empty($contentTypes) || in_array('text/html', $contentTypes))
       && !$this->routeIsAllowed()
-      && !$this->userAcceptedAgreement()
-      && !$this->userCanSkipAgreement();
+      && !$this->userAgreementService->userAcceptedAgreement()
+      && !$this->userAgreementService->userCanSkipAgreement();
   }
 
   /**
@@ -116,31 +102,4 @@ class IucnUserAgreementEventSubscriber implements EventSubscriberInterface {
     ];
   }
 
-  /**
-   * Check if user accepted agreement.
-   */
-  protected function userAcceptedAgreement() {
-    $uid = $this->currentUser->id();
-    $user = User::load($uid);
-
-    return $user->field_accepted_agreement->value ||
-      $user->hasRole('administrator') ||
-      $user->field_user_agreement_disabled->value;
-  }
-
-  protected function userCanSkipAgreement() {
-    $uid = $this->currentUser->id();
-    $user = User::load($uid);
-
-    $roles = $user->getRoles(TRUE);
-
-    foreach ($roles as $role) {
-      $mustAcceptAgreement = $this->config->get(sprintf('agreement.%s.enabled', $role));
-      if (!$mustAcceptAgreement) {
-        return true;
-      }
-    }
-
-    return false;
-  }
 }
