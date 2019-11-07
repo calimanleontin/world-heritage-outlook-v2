@@ -48,7 +48,8 @@ class NodeSiteAssessmentStateChangeForm {
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED
       && $state != AssessmentWorkflow::STATUS_NEW
-      && $state != AssessmentWorkflow::STATUS_UNDER_EVALUATION) {
+      && $state != AssessmentWorkflow::STATUS_UNDER_EVALUATION
+      && $node->field_as_cycle->value >= 2020) {
       self::validateNode($form, $node);
       if (empty($form['error'])) {
         self::addStateChangeWarning($form, $node, $currentUser);
