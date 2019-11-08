@@ -37,7 +37,7 @@ content:
     type: basic_string
     region: content
   field_as_legality:
-    type: list_key
+    type: list_default
     weight: 5
     region: content
     label: hidden

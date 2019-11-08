@@ -788,6 +788,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $value = $this->renderBooleanField($fieldItemList);
           break;
 
+        case 'list_text':
+        case 'list_string':
+          $value = $this->renderListField($fieldItemList);
+          break;
+
         case 'string_long':
           $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
             'field_as_values_curr_text',
@@ -796,9 +801,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
           $value = nl2br($value);
           break;
         case 'text_with_summary':
-        case 'list_text':
         case 'text_long':
-        case 'list_string':
         case 'string':
           $value = $this->renderStringField($fieldItemList, !in_array($fieldName, [
             'field_as_values_curr_text',
@@ -898,6 +901,22 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     return !empty($fieldItemList->value)
       ? '<span class="field-boolean-tick">' . html_entity_decode('&#10004;') . '</span>'
       : '';
+  }
+
+  /**
+   * Returns the markup for a list field.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $fieldItemList
+   *
+   * @return string
+   */
+  protected function renderListField(FieldItemListInterface $fieldItemList) {
+    $allowedValues = $fieldItemList->getFieldDefinition()->getFieldStorageDefinition()->getSetting('allowed_values');
+    $values = [];
+    foreach ($fieldItemList as $item) {
+      $values[] = $allowedValues[$item->value];
+    }
+    return implode(', ', $values);
   }
 
   /**

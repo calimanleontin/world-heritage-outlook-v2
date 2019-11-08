@@ -340,7 +340,8 @@ function iucn_assessment_preprocess_field(&$variables) {
       break;
 
     case 'field_as_threats_extent':
-      if ($variables['element']['#view_mode'] != 'doc') {
+      if ($variables['element']['#view_mode'] != 'doc'
+        && $variables['element']['#view_mode'] != 'diff') {
         foreach ($variables['items'] as $key => $item) {
           $variables['items'][$key]['content']['#plain_text'] = ', ' . $variables['items'][$key]['content']['#plain_text'];
         }

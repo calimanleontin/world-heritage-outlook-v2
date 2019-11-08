@@ -456,6 +456,12 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
+    field_programmatically_fixed:
+      type: hidden
+      settings: {  }
+    field_references_reviewer:
+      type: hidden
+      settings: {  }
   paragraph:
     langcode:
       type: hidden
@@ -813,7 +819,7 @@ fields:
     field_as_legality:
       type: list_field_diff_builder
       settings:
-        compare: key
+        compare: label
         show_header: 1
         markdown: drupal_html_to_text
     field_as_resource_use_type:
@@ -842,3 +848,219 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
+    parent_id:
+      type: hidden
+      settings: {  }
+    parent_type:
+      type: hidden
+      settings: {  }
+    parent_field_name:
+      type: hidden
+      settings: {  }
+  taxonomy_term:
+    langcode:
+      type: hidden
+      settings: {  }
+    revision_created:
+      type: hidden
+      settings: {  }
+    revision_user:
+      type: hidden
+      settings: {  }
+    revision_log_message:
+      type: hidden
+      settings: {  }
+    status:
+      type: hidden
+      settings: {  }
+    name:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    description:
+      type: text_field_diff_builder
+      settings:
+        compare_format: 0
+        show_header: 1
+        markdown: drupal_html_to_text
+    parent:
+      type: hidden
+      settings: {  }
+    changed:
+      type: hidden
+      settings: {  }
+    default_langcode:
+      type: hidden
+      settings: {  }
+    revision_default:
+      type: hidden
+      settings: {  }
+    revision_translation_affected:
+      type: hidden
+      settings: {  }
+    content_translation_source:
+      type: hidden
+      settings: {  }
+    content_translation_outdated:
+      type: hidden
+      settings: {  }
+    content_translation_uid:
+      type: hidden
+      settings: {  }
+    content_translation_created:
+      type: hidden
+      settings: {  }
+    field_a2:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_a3:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_active:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_category_image:
+      type: image_field_diff_builder
+      settings:
+        show_id: 0
+        compare_alt_field: 1
+        compare_title_field: 1
+        property_separator: nl
+        show_thumbnail: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_css_identifier:
+      type: hidden
+      settings: {  }
+    field_currency:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_description:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_help_text:
+      type: text_field_diff_builder
+      settings:
+        compare_format: 0
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_idd:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_image:
+      type: image_field_diff_builder
+      settings:
+        show_id: 0
+        compare_alt_field: 1
+        compare_title_field: 1
+        property_separator: nl
+        show_thumbnail: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_iucn_region:
+      type: entity_reference_field_diff_builder
+      settings:
+        compare_entity_reference: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_number:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_title:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_type:
+      type: list_field_diff_builder
+      settings:
+        compare: key
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_unesco_region:
+      type: entity_reference_field_diff_builder
+      settings:
+        compare_entity_reference: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_zip_required:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+  menu_link_content:
+    langcode:
+      type: hidden
+      settings: {  }
+    revision_created:
+      type: hidden
+      settings: {  }
+    revision_user:
+      type: hidden
+      settings: {  }
+    revision_log_message:
+      type: hidden
+      settings: {  }
+    enabled:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    title:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    description:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    link:
+      type: hidden
+      settings: {  }
+    external:
+      type: hidden
+      settings: {  }
+    changed:
+      type: hidden
+      settings: {  }
+    default_langcode:
+      type: hidden
+      settings: {  }
+    revision_default:
+      type: hidden
+      settings: {  }
+    revision_translation_affected:
+      type: hidden
+      settings: {  }
+    content_translation_source:
+      type: hidden
+      settings: {  }
+    content_translation_outdated:
+      type: hidden
+      settings: {  }
+    content_translation_uid:
+      type: hidden
+      settings: {  }
+    content_translation_status:
+      type: hidden
+      settings: {  }
+    content_translation_created:
+      type: hidden
+      settings: {  }
