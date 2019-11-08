@@ -45,7 +45,6 @@ class NameDescriptionFormatter extends FormatterBase {
       if (!empty($item->entity->description->value)) {
         $markup .= $this->getSetting('separator');
         $description = strip_tags($item->entity->description->value);
-        $description = "($description)";
         $markup .= $description;
       }
 
