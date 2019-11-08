@@ -497,13 +497,12 @@ class NodeSiteAssessmentForm {
       }
 
       $widget = &$form[$field]['widget'];
-      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-        && !$readOnlyForm;
+      $editableField = !empty($fieldDefinition->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state]);
       $cardinality = $fieldDefinition->getFieldStorageDefinition()->getCardinality();
 
       $disabledActions = [];
       foreach ($actions as $action) {
-        if (!$editableField) {
+        if (!$editableField || $readOnlyForm) {
           $disabledActions[] = $action;
           continue;
         }
@@ -517,7 +516,7 @@ class NodeSiteAssessmentForm {
           continue;
         }
 
-        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE))) {
+        if (static::isPermissionException($field, $action, $currentUser->getRoles(TRUE), $siteAssessment)) {
           continue;
         }
 
@@ -677,17 +676,33 @@ class NodeSiteAssessmentForm {
     }
   }
 
-  private static function isPermissionException($field, $action, array $roles) {
+  public static function isPermissionException($field, $action, array $roles, NodeInterface $assessment) {
     switch ([$field, $action, TRUE]) {
       case ['field_as_values_wh', 'edit', in_array('assessor', $roles)];
       case ['field_as_values_wh', 'edit', in_array('reviewer', $roles)];
         if (\Drupal::request()->query->get('tab') == 'assessing-values') {
-          return true;
+          return TRUE;
         }
       break;
     }
 
-    return false;
+    // These fields are editable by assessors if the site has no previous assessment.
+    if (in_array($field, ['field_as_values_wh', 'field_as_values_bio']) && in_array('assessor', $roles)) {
+      $site = $assessment->field_as_site->target_id;
+      if (empty($site)) {
+        return FALSE;
+      }
+
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'site_assessment')
+        ->condition('field_as_site', $site);
+      $results = $query->execute();
+      if (count($results) <= 1) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   protected static function alterFieldsRestrictions($tab, array &$form, NodeInterface $node) {
