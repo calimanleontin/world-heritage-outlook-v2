@@ -199,6 +199,7 @@ function iucn_assessment_update_8005() {
   $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
   foreach ($nodes as $node) {
     $assessmentCycleService->reorderProtectionParagraphs($node, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2017]);
+    $node->save();
   }
 }
 
@@ -218,5 +219,6 @@ function iucn_assessment_update_8006() {
   $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
   foreach ($nodes as $node) {
     $assessmentCycleService->reorderProtectionParagraphs($node, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2020]);
+    $node->save();
   }
 }
