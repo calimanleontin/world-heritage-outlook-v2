@@ -103,14 +103,24 @@ class TestSupport {
    * Generate 5 nodes in each important content type.
    */
   public static function createNodes() {
-    $nodeTypes = NodeType::loadMultiple();
+    // We don't want to create site_assessment nodes because there are specific
+    // tests for this type of nodes.
+    $nodeTypes = NodeType::loadMultiple([
+      'benefit',
+      'decision',
+      'faq',
+      'news',
+      'page',
+      'publication',
+      'site',
+    ]);
     foreach ($nodeTypes as $nodeType) {
       for ($i = 1; $i <= 5; $i++) {
         /** @var \Drupal\node\NodeInterface $node */
         $node = static::createSampleEntity('node', $nodeType->id(), [
           'title' => "{$nodeType->id()} node {$i}",
         ]);
-
+        static::populateAllFieldsData($node);
         $node->save();
       }
     }
