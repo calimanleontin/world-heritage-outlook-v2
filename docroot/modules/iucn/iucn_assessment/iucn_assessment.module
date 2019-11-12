@@ -1057,7 +1057,7 @@ function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
     return;
   }
 
-  if (!empty($variables['table']['#header']) || !empty($variables['element']['#field_name'])) {
+  if (empty($variables['table']['#header']) || empty($variables['element']['#field_name'])) {
     return;
   }
 
@@ -1073,14 +1073,14 @@ function iucn_assessment_preprocess_field_multiple_value_form(&$variables) {
   }
 
   $state = $siteAssessment->get('field_state')->value;
-  $fieldIsEditable = !empty($fieldEntity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
-    && empty($routeMatch->getRouteObject()->getOption('_read_only_form'));
+  $fieldIsNotEditable = empty($fieldEntity->getThirdPartySetting('iucn_assessment', 'editable_workflow_states')[$state])
+     || !empty($routeMatch->getRouteObject()->getOption('_read_only_form'));
 
   $currentUser = \Drupal::currentUser();
-  $userCannotEditField = $currentUser->hasPermission("reorder {$fieldName}") === FALSE
-    && NodeSiteAssessmentForm::isPermissionException($fieldName, 'reorder', $currentUser->getRoles(), $siteAssessment) === FALSE;
+  $userCannotEditField = $currentUser->hasPermission("reorder {$fieldName}") === FALSE;
 
-  if ($fieldIsEditable === FALSE || $userCannotEditField === FALSE) {
+  if (($fieldIsNotEditable || $userCannotEditField) &&
+    NodeSiteAssessmentForm::isPermissionException($fieldName, 'reorder', $currentUser->getRoles(), $siteAssessment) === FALSE) {
     _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag($variables);
   }
 
