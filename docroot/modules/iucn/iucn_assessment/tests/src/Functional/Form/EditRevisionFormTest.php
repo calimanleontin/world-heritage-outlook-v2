@@ -55,8 +55,7 @@ class EditRevisionFormTest extends IucnAssessmentTestBase {
 
     foreach ($tabs as $tab) {
       $url->setOptions(['query' => ['tab' => $tab]]);
-      $this->drupalGet($url);
-      $this->checkReadOnlyAccess();
+      $this->checkReadOnlyAccess($url);
     }
   }
 

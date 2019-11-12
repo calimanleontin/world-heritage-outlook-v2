@@ -20,18 +20,18 @@ class UserFormTest extends IucnAssessmentTestBase {
    */
   public function testNewUserCanChangePassword() {
     $userMail = 'test@test.test';
-    $userId = TestSupport::createUser($userMail, ['coordinator'], FALSE);
+    $userId = TestSupport::createUser($userMail, ['assessor'], FALSE);
     $user = User::load($userId);
     $this->userLogIn($userMail);
 
-    $userAgreementWarning = 'You need to accept the Terms and Conditions before using the application.';
+    $userAgreementTitle = 'User Agreement | ' . \Drupal::config('system.site')->get('name');
 
     $this->drupalGet(Url::fromRoute('who.user-dashboard'));
-    $this->assertText($userAgreementWarning);
+    $this->assertTitle($userAgreementTitle);
     $this->assertFieldById('edit-agree', NULL);
 
     $this->drupalGet($user->toUrl('edit-form'));
-    $this->assertNoText($userAgreementWarning);
+    $this->assertNoText($userAgreementTitle);
     $this->assertFieldById('edit-pass-pass1', NULL);
     $this->assertFieldById('edit-pass-pass2', NULL);
   }
@@ -49,38 +49,38 @@ class UserFormTest extends IucnAssessmentTestBase {
       'publish_content_pages',
       'publish_world_heritage_site_assessments',
       'publish_world_heritage_site_information',
+      'coordinator'
     ];
 
     $validRoles = [
       'assessor',
       'reviewer',
-      'coordinator',
       'references_reviewer',
     ];
 
     $allRoles = array_keys(Role::loadMultiple());
 
     $this->userLogIn(TestSupport::COORDINATOR1);
-    $this->checkRolesForEmail([], $allRoles, TestSupport::IUCN_MANAGER);
-    $this->checkRolesForEmail([], $allRoles, TestSupport::ADMINISTRATOR);
-    $this->checkRolesForEmail($validRoles, $invalidRoles, TestSupport::ASSESSOR1);
-    $this->checkRolesForEmail($validRoles, $invalidRoles, TestSupport::REVIEWER1);
-    $this->checkRolesForEmail($validRoles, $invalidRoles, TestSupport::REFERENCES_REVIEWER1);
-    $this->checkRolesForEmail($validRoles, $invalidRoles, TestSupport::COORDINATOR2);
+    $this->checkUserCanEditRoles([], $allRoles, TestSupport::IUCN_MANAGER);
+    $this->checkUserCanEditRoles([], $allRoles, TestSupport::ADMINISTRATOR);
+    $this->checkUserCanEditRoles($validRoles, $invalidRoles, TestSupport::ASSESSOR1);
+    $this->checkUserCanEditRoles($validRoles, $invalidRoles, TestSupport::REVIEWER1);
+    $this->checkUserCanEditRoles($validRoles, $invalidRoles, TestSupport::REFERENCES_REVIEWER1);
+    $this->checkUserCanEditRoles($validRoles, $invalidRoles, TestSupport::COORDINATOR2);
 
     $this->drupalGet(Url::fromRoute('user.admin_create'));
-    $this->checkRolesForEmail($validRoles, $invalidRoles);
+    $this->checkUserCanEditRoles($validRoles, $invalidRoles);
   }
 
   /**
+   * Check that a given user can edit edit $validRoles
+   * but cannot edit $invalidRoles
+   *
    * @param $validRoles
    * @param $invalidRoles
    * @param string|null $userEmail
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function checkRolesForEmail($validRoles, $invalidRoles, $userEmail = NULL) {
+  protected function checkUserCanEditRoles($validRoles, $invalidRoles, $userEmail = NULL) {
     if (!empty($userEmail)) {
       $user = user_load_by_mail($userEmail);
       $this->drupalGet($user->url('edit-form'));
