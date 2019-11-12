@@ -11,6 +11,7 @@ use Drupal\Core\State\StateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 class AssessmentCycleCreator {
 
@@ -118,14 +119,17 @@ class AssessmentCycleCreator {
     }
 
     usort($protectionParagraphs, function ($a, $b) use ($termOrder, $paragraphStorage) {
-      $p1 = $paragraphStorage->loadRevision($a['target_revision_id']);
-      $p2 = $paragraphStorage->loadRevision($b['target_revision_id']);
+      $p1 = !empty($a['entity']) && $a['entity'] instanceof ParagraphInterface
+        ? $a['entity']
+        : $paragraphStorage->loadRevision($a['target_revision_id']);
+      $p2 = !empty($b['entity']) && $b['entity'] instanceof ParagraphInterface
+        ? $b['entity']
+        : $paragraphStorage->loadRevision($b['target_revision_id']);
 
       return $termOrder[$p1->field_as_protection_topic->target_id] < $termOrder[$p2->field_as_protection_topic->target_id] ? -1 : 1;
     });
 
     $assessment->field_as_protection->setValue($protectionParagraphs);
-    $assessment->save();
   }
 
   /**

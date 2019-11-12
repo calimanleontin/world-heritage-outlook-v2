@@ -184,23 +184,41 @@ function iucn_assessment_update_8004() {
 }
 
 /**
- * refs #6378 - reorder protection and management paragraphs for 2017 and 2020.
+ * refs #6378 - reorder protection and management paragraphs for 2017 cycle.
  */
 function iucn_assessment_update_8005() {
-  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  /** @var \Drupal\node\NodeInterface[] $nodes */
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site_assessment',
+      'field_as_cycle' => 2017,
+    ]);
+
   /** @var AssessmentCycleCreator $assessmentCycleService */
   $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
-  foreach ([2017, 2020] as $cycle) {
-    $nodes = \Drupal::entityTypeManager()
-      ->getStorage('node')
-      ->loadByProperties([
-        'type' => 'site_assessment',
-        'field_as_cycle' => $cycle,
-      ]);
-
-    foreach ($nodes as $node) {
-      $assessmentCycleService->reorderProtectionParagraphs($node, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[$cycle]);
-    }
+  foreach ($nodes as $node) {
+    $assessmentCycleService->reorderProtectionParagraphs($node, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2017]);
+    $node->save();
   }
+}
 
+/**
+ * refs #6378 - reorder protection and management paragraphs for 2020 cycle.
+ */
+function iucn_assessment_update_8006() {
+  /** @var \Drupal\node\NodeInterface[] $nodes */
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site_assessment',
+      'field_as_cycle' => 2020,
+    ]);
+
+  /** @var AssessmentCycleCreator $assessmentCycleService */
+  $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
+  foreach ($nodes as $node) {
+    $assessmentCycleService->reorderProtectionParagraphs($node, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2020]);
+    $node->save();
+  }
 }
