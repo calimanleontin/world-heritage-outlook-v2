@@ -84,6 +84,7 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
 
   public static $modules = [
     'iucn_who_structure',
+    'entity_print_test',
     'dblog',
   ];
 
@@ -96,6 +97,12 @@ abstract class IucnAssessmentTestBase extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    // Use test print engine.
+    \Drupal::configFactory()
+      ->getEditable('entity_print.settings')
+      ->set('print_engines.pdf_engine', 'testprintengine')
+      ->save();
+
     module_set_weight('iucn_assessment', 1);
     drupal_flush_all_caches();
     $this->workflowService = $this->container->get('iucn_assessment.workflow');

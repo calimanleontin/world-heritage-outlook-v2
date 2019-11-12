@@ -181,7 +181,7 @@ class Workflow05UnderReviewPhaseTest extends WorkflowTestBase {
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
   }
 
-  public function testReadOnlyAccessFoReviewers(){
+  public function testReadOnlyAccessForReviewers(){
     $reviewer1 = user_load_by_mail(TestSupport::REVIEWER1);
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_READY_FOR_REVIEW, []);
     $this->userLogIn(TestSupport::COORDINATOR1);

@@ -37,9 +37,17 @@ class Workflow03UnderAssessmentPhaseTest extends WorkflowTestBase {
     $this->checkUserAccess($this->editUrl, TestSupport::REFERENCES_REVIEWER2, 403);
     $this->checkUserAccess($this->stateChangeUrl, TestSupport::REFERENCES_REVIEWER2, 403);
 
+    //Assessor is allowed to edit an assessment that has no previous cycle
     $this->userLogIn(TestSupport::ASSESSOR1);
-    $this->drupalGet($this->editUrl);
-    $this->checkReadOnlyAccess();
+    $this->checkNoReadOnlyAccess($this->editUrl);
+
+    //Assessor is not allowed to edit an assessment that has a previous cycle
+    $assessment = $this->createMockAssessmentNode(static::WORKFLOW_STATE);
+    $assessment->set('field_as_site', $this->assessment->get('field_as_site')->target_id);
+    $assessment->save();
+    $this->userLogIn(TestSupport::ASSESSOR1);
+    $this->checkReadOnlyAccess($assessment->toUrl('edit-form'));
+
     $this->drupalPostForm($this->stateChangeUrl, [], static::TRANSITION_LABELS[AssessmentWorkflow::STATUS_READY_FOR_REVIEW]);
   }
 
