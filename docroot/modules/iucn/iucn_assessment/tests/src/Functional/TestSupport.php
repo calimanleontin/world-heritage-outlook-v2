@@ -4,6 +4,7 @@ namespace Drupal\Tests\iucn_assessment\Functional;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\node\Entity\NodeType;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
@@ -68,6 +69,8 @@ class TestSupport {
 
     // Create taxonomy terms in all vocabularies.
     self::createTaxonomyTerms();
+    // Create nodes for all content types.
+    self::createNodes();
 
     // Create 4 test assessments.
     $assessments = [
@@ -92,6 +95,23 @@ class TestSupport {
         self::createSampleEntity('taxonomy_term', $vocabulary->id(), [
           'name' => "{$vocabulary->id()} term {$i}",
         ]);
+      }
+    }
+  }
+
+  /**
+   * Generate 5 nodes in each important content type.
+   */
+  public static function createNodes() {
+    $nodeTypes = NodeType::loadMultiple();
+    foreach ($nodeTypes as $nodeType) {
+      for ($i = 1; $i <= 5; $i++) {
+        /** @var \Drupal\node\NodeInterface $node */
+        $node = static::createSampleEntity('node', $nodeType->id(), [
+          'title' => "{$nodeType->id()} node {$i}",
+        ]);
+
+        $node->save();
       }
     }
   }
