@@ -697,7 +697,7 @@ class NodeSiteAssessmentForm {
         ->condition('type', 'site_assessment')
         ->condition('field_as_site', $site);
       $results = $query->execute();
-      if (count($results) <= 1) {
+      if (count($results) === 1) {
         return TRUE;
       }
     }
