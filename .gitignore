@@ -9,6 +9,7 @@ private-files
 docroot/modules/contrib/examples
 acquia-files
 drush/sites/self.site.yml
+drush/drush.yml
 # Configs
 config/*/recaptcha.settings.yml
 docroot/phpunit.xml
