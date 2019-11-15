@@ -86,8 +86,15 @@ class AssessmentCycleCreator {
       ->condition('type', 'site_assessment')
       ->condition('field_as_cycle', $originalCycle)
       ->execute();
+    $idx = 1;
     foreach ($originalAssessmentsIds as $nid) {
       $originalNode = Node::load($nid);
+      $this->logger->notice(t("[@idx/@total] Duplicating \"@title\" assessment for @cycle cycle."), [
+        '@title' => $originalNode->getTitle(),
+        '@cycle' => $cycle,
+        '@idx' => sprintf("%1$03d", $idx++),
+        '@total' => count($originalAssessmentsIds),
+      ]);
       $existing = $this->nodeStorage->getQuery()
         ->condition('type', 'site_assessment')
         ->condition('field_as_cycle', $cycle)
@@ -145,7 +152,6 @@ class AssessmentCycleCreator {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createDuplicateAssessment(NodeInterface $originalNode, $cycle, $originalCycle) {
-    $this->logger->notice("Duplicating \"{$originalNode->getTitle()}\" assessment for {$cycle} cycle.");
     $duplicate = $originalNode->createDuplicate();
     $duplicate->setTitle(str_replace($originalCycle, $cycle, $originalNode->getTitle()));
     $duplicate->setPublished(FALSE);
@@ -174,7 +180,6 @@ class AssessmentCycleCreator {
    * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   protected function createDuplicateReferencedEntities(FieldableEntityInterface $entity, $cycle) {
-    $this->logger->info("Creating child duplicates for {$entity->getEntityTypeId()} {$entity->id()}");
     foreach ($entity->getFieldDefinitions() as $fieldName => $fieldSettings) {
       if ($fieldSettings instanceof BaseFieldDefinition || $fieldSettings->getType() != 'entity_reference_revisions') {
         continue;
