@@ -75,7 +75,7 @@ class IucnAssessmentCommands extends DrushCommands {
    */
   public function createAssessments($cycle, $originalCycle = 2017) {
     $this->assessmentCycleCreator->createAssessments($cycle, $originalCycle);
-    $this->logger->critical("Assessments successfully created, please run `drush iucn_assessment:fix-assessments {$cycle}`!!!");
+    $this->logger->info("Assessments successfully created, now please run: drush --uri=https://www.worldheritageoutlook.iucn.org iucn_assessment:fix-assessments {$cycle}`");
   }
 
   /**
