@@ -31,12 +31,14 @@ third_party_settings:
     add_disable_roles: {  }
     edit_disable: none
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_threats_current
 field_name: field_as_threats_current
 entity_type: node
 bundle: site_assessment
 label: 'Current threats'
-description: 'Identify threats to the World Heritage site and then cross-reference these to the values they affect. Assess threats against five ratings - Very Low Threat, Low Threat, High Threat, Very High Threat, and Data Deficient (please refer to the Guidelines for a detailed definition of each category). The justification for the assessment is also captured in the threat assessment and must be systematically referenced (e.g. SOC report, 2014).'
+description: 'Identify threats to the World Heritage site and then cross-reference these to the values they affect. Assess threats against five ratings - Very Low Threat, Low Threat, High Threat, Very High Threat, and Data Deficient (please refer to the <a href="/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=18" target="_blank">Guidelines</a> for a detailed definition of each category). Please indicate if the threat is inside and/or outside the site. If a threat is inside a site, please indicate extent of threat as a percentage of the site in column 4 (Throughout (>50%) / Widespread (15-50%) /Scattered (5-15%) / Localised (<5%) / Extent of threat not known / Not applicable). Note that the description of the specific threat affecting site should be very brief, e.g. ‘wastewater disposal from recreational boats at and around the property’, ‘commercial illegal hunting of elephants’ etc. The justification for the assessment is also captured in the threat assessment and must be systematically referenced, e.g. (UNESCO, 2018), using IUCN’s <a href="/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=33" target="_blank">referencing style</a> for Conservation Outlook Assessments. <a href="/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=18" target="_blank">Access Guidelines for this step</a>.'
 required: true
 translatable: false
 default_value: {  }

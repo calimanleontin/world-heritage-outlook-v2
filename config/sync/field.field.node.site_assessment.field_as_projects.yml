@@ -31,12 +31,14 @@ third_party_settings:
     add_disable_roles: {  }
     edit_disable: none
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_projects
 field_name: field_as_projects
 entity_type: node
 bundle: site_assessment
-label: 'Compilation of active conservation projects'
-description: 'Indicate known conservation projects in the site. If limited information is available on the organizations and conservation projects within the site, please provide whatever information is easily available, even if incomplete.'
+label: 'Compilation of active conservation projects - optional worksheet'
+description: 'Indicate known conservation projects in the site. In the ‘Description’ column, please provide a referenced description of the activities being undertaken in the active project. Alongside details of activities, if known, please also state how the project is protecting the World Heritage values of the site and/or addressing threats. If limited information is available on the organisations and conservation projects within the site, please provide whatever information is easily available, even if incomplete. Finally, if there is a website with further information on the project, please include it in the ‘Website’ column. <a href="/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=32" target="_blank">Access Guidelines for this step</a>.'
 required: false
 translatable: false
 default_value: {  }
