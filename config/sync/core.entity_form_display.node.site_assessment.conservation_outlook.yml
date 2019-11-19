@@ -83,12 +83,13 @@ third_party_settings:
       weight: 20
       format_type: assessment_tab
       format_settings:
-        id: values
-        classes: ''
+        label: '1. Values'
         formatter: open
         description: ''
-        required_fields: true
-      label: Values
+        required_fields: '1'
+        id: values
+        classes: ''
+      label: '1. Values'
       region: content
     group_as_threats:
       children:
@@ -98,12 +99,13 @@ third_party_settings:
       weight: 21
       format_type: assessment_tab
       format_settings:
-        id: threats
-        classes: ''
+        label: '2. Threats'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Threats
+        required_fields: '1'
+        id: threats
+        classes: ''
+      label: '2. Threats'
       region: content
     group_as_protection_management:
       children:
@@ -112,13 +114,13 @@ third_party_settings:
       weight: 22
       format_type: assessment_tab
       format_settings:
-        label: 'Protection and management'
+        label: '3. Protection and management'
         formatter: closed
         description: ''
-        required_fields: true
+        required_fields: '1'
         id: protection_management
         classes: ''
-      label: 'Protection and management'
+      label: '3. Protection and management'
       region: content
     group_as_assessing_values:
       children:
@@ -127,12 +129,13 @@ third_party_settings:
       weight: 23
       format_type: assessment_tab
       format_settings:
-        id: assessing_values
-        classes: ''
+        label: '4. Assessing values'
         formatter: closed
         description: ''
-        required_fields: true
-      label: 'Assessing values'
+        required_fields: '1'
+        id: assessing_values
+        classes: ''
+      label: '4. Assessing values'
       region: content
     group_as_conservation_outlook:
       children:
@@ -142,12 +145,13 @@ third_party_settings:
       weight: 24
       format_type: assessment_tab
       format_settings:
-        id: conservation_outlook
-        classes: ''
+        label: '5. Conservation Outlook'
         formatter: closed
         description: ''
-        required_fields: true
-      label: 'Conservation Outlook'
+        required_fields: '1'
+        id: conservation_outlook
+        classes: ''
+      label: '5. Conservation Outlook'
       region: content
     group_as_benefits:
       children:
@@ -158,12 +162,13 @@ third_party_settings:
       weight: 25
       format_type: assessment_tab
       format_settings:
-        id: benefits
-        classes: ''
+        label: '6. Benefits'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Benefits
+        required_fields: '1'
+        id: benefits
+        classes: ''
+      label: '6. Benefits'
       region: content
     group_as_projects:
       children:
@@ -172,12 +177,13 @@ third_party_settings:
       weight: 27
       format_type: assessment_tab
       format_settings:
-        id: projects
-        classes: ''
+        label: '7. Projects'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Projects
+        required_fields: '1'
+        id: projects
+        classes: ''
+      label: '7. Projects'
       region: content
     group_as_references:
       children:
@@ -186,12 +192,13 @@ third_party_settings:
       weight: 28
       format_type: assessment_tab
       format_settings:
-        id: references
-        classes: ''
+        label: '8. References'
         formatter: closed
         description: ''
-        required_fields: true
-      label: References
+        required_fields: '1'
+        id: references
+        classes: ''
+      label: '8. References'
       region: content
     group_as_key_cons:
       children:

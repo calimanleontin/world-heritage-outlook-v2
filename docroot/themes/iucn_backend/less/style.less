@@ -152,19 +152,39 @@ body.modal-open {
     min-width: 188px;
 }
 
-.horizontal-tab-button a strong {
-  &.values,
-  &.threats,
-  &.protection-and-management,
-  &.assessing-values,
-  &.conservation-outlook,
-  &.references {
-    &:after {
-      .form-required();
+.field-group-assessment_tabs-wrapper {
+  .horizontal-tab-button a strong {
+    &.values,
+    &.threats,
+    &.protection-and-management,
+    &.assessing-values,
+    &.conservation-outlook,
+    &.references {
+      &:after {
+        .form-required();
+      }
+    }
+    &.benefits,
+    &.projects {
+      color: #92d050;
     }
   }
-  &.benefits,
-  &.projects {
-    color: #92d050;
+  .horizontal-tab-button-0,
+  .horizontal-tab-button-1,
+  .horizontal-tab-button-2,
+  .horizontal-tab-button-3,
+  .horizontal-tab-button-4,
+  .horizontal-tab-button-7 {
+    a strong {
+      &:after {
+        .form-required();
+      }
+    }
+  }
+  .horizontal-tab-button-5,
+  .horizontal-tab-button-6 {
+    a strong {
+      color: #92d050;
+    }
   }
 }

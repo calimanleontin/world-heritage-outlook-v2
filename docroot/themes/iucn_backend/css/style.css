@@ -1918,7 +1918,7 @@ table.diff-context-wrapper {
   font-size: 13px;
   border-radius: 8px;
   position: absolute;
-  z-index: 502;
+  z-index: 501;
   box-sizing: border-box;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: none;
@@ -2052,12 +2052,12 @@ body.modal-open {
   width: 188px;
   min-width: 188px;
 }
-.horizontal-tab-button a strong.values:after,
-.horizontal-tab-button a strong.threats:after,
-.horizontal-tab-button a strong.protection-and-management:after,
-.horizontal-tab-button a strong.assessing-values:after,
-.horizontal-tab-button a strong.conservation-outlook:after,
-.horizontal-tab-button a strong.references:after {
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.values:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.threats:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.protection-and-management:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.assessing-values:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.conservation-outlook:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.references:after {
   content: '';
   vertical-align: super;
   display: inline-block;
@@ -2068,8 +2068,28 @@ body.modal-open {
   height: 6px;
   margin: 0 0.3em;
 }
-.horizontal-tab-button a strong.benefits,
-.horizontal-tab-button a strong.projects {
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.benefits,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button a strong.projects {
+  color: #92d050;
+}
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-0 a strong:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-1 a strong:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-2 a strong:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-3 a strong:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-4 a strong:after,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-7 a strong:after {
+  content: '';
+  vertical-align: super;
+  display: inline-block;
+  background-image: url(../../../core/misc/icons/ee0000/required.svg);
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  width: 6px;
+  height: 6px;
+  margin: 0 0.3em;
+}
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-5 a strong,
+.field-group-assessment_tabs-wrapper .horizontal-tab-button-6 a strong {
   color: #92d050;
 }
 /*# sourceMappingURL=style.css.map */
