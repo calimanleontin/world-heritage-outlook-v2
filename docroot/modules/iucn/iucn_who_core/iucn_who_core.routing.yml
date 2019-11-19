@@ -41,14 +41,9 @@ who.user-dashboard:
     _admin_route: TRUE
 
 who.workflow_help:
-  path: 'admin/help/workflow'
-  defaults:
-    _controller: '\Drupal\iucn_who_core\Controller\PagesController::emptyPageNoCache'
-    _title: 'Workflow help'
+  path: '/modules/iucn/iucn_assessment/data/guidelines/Guidelines - IUCN Conservation Outlook Assessments Version 3.0.pdf'
   requirements:
     _role: 'authenticated'
-  options:
-    _admin_route: TRUE
 
 who.user_agreement_form:
   path: '/user-agreement'

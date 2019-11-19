@@ -141,6 +141,9 @@ iucn_who_core.dashboard.cm.workflow_help:
   route_name: who.workflow_help
   menu_name: tools
   weight: -15
+  options:
+    attributes:
+      target: _blank
 
 iucn_who_core.dashboard.cm.user_agreement:
   title: 'User agreement'
