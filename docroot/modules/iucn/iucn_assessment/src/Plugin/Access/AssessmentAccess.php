@@ -36,6 +36,9 @@ class AssessmentAccess implements ContainerInjectionInterface {
 
   public function assessmentEditAccess(AccountInterface $account, NodeInterface $node, NodeInterface $node_revision = NULL) {
     if (!empty($node_revision)) {
+      if ($node->id() != $node_revision->id()) {
+        return AccessResult::forbidden();
+      }
       $node = $node_revision;
     }
     return $this->assessmentWorkflow->checkAssessmentAccess($node, 'edit', $account);
