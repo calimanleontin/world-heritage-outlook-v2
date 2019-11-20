@@ -1,26 +1,26 @@
 test:
-  host: 159.69.149.22
-  uri: iucn-who.edw.ro
+  host: 159.69.153.104
+  uri: test.worldheritageoutlook.iucn.org
   root: /var/www/html/iucn-who.edw.ro/docroot/
   paths:
-    drush-script: /var/www/html/iucn-who.edw.ro/vendor/bin/drush
-    files: /var/www/html/iucn-who.edw.ro/docroot/sites/default/files
+    drush-script: /var/www/html/who/test/vendor/bin/drush
+    files: /var/www/html/who/test/docroot/sites/default/files
+  user: USER
+
+staging:
+  host: 159.69.153.104
+  uri: test.worldheritageoutlook.iucn.org
+  root: /var/www/html/who/prod/docroot
+  paths:
+    drush-script: /var/www/html/who/test/vendor/bin/drush
+    files: /var/www/html/who/test/docroot/sites/default/files
   user: USER
 
 prod:
-  host: 116.203.7.158
+  host: 159.69.153.104
   uri: www.worldheritageoutlook.iucn.org
   root: /var/www/html/who/prod/docroot
   paths:
     drush-script: /var/www/html/who/prod/vendor/bin/drush
-    files: /var/www/html/who/prod/docroot/sites/default/files
-  user: USER
-
-prod:
-  host: 116.203.7.158
-  uri: www.worldheritageoutlook.iucn.org
-  root: /var/www/html/who/prod/docroot
-  paths:
-    drush-script: /var/www/html/who/prod/docroot/vendor/bin/drush
     files: /var/www/html/who/prod/docroot/sites/default/files
   user: USER
