@@ -147,6 +147,15 @@ class IucnModalParagraphForm extends ContentEntityForm {
     // Update parent node change date.
     $this->nodeRevision->setChangedTime(time());
 
+
+    if (!empty(NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName]) || $this->nodeRevision->get($this->fieldName)->isEmpty()) {
+       // If all potential threats paragraphs are deleted, the potential threats
+       // text and rating fields are deleted.
+      foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName] as $dependentField) {
+        $this->nodeRevision->get($dependentField)->setValue(NULL);
+      }
+    }
+
     if ($this->nodeRevision->isDefaultRevision()
       && $this->workflowService->isNewAssessment($this->nodeRevision)
       && empty($this->nodeRevision->field_coordinator->target_id)
@@ -204,16 +213,6 @@ class IucnModalParagraphForm extends ContentEntityForm {
           $nodeForm[$dependentField]['widget']
         )
       );
-    }
-
-    foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $field => $dependentFields) {
-      if (!$this->nodeRevision->get($this->fieldName)->isEmpty()) {
-        continue;
-      }
-      foreach ($dependentFields as $dependentField) {
-        $this->nodeRevision->get($dependentField)->setValue(NULL);
-      }
-      $this->nodeRevision->save();
     }
 
     $response->addCommand(new CloseModalDialogCommand());
