@@ -206,6 +206,16 @@ class IucnModalParagraphForm extends ContentEntityForm {
       );
     }
 
+    foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $field => $dependentFields) {
+      if (!$this->nodeRevision->get($this->fieldName)->isEmpty()) {
+        continue;
+      }
+      foreach ($dependentFields as $dependentField) {
+        $this->nodeRevision->get($dependentField)->setValue(NULL);
+      }
+      $this->nodeRevision->save();
+    }
+
     $response->addCommand(new CloseModalDialogCommand());
 
     return $response;
