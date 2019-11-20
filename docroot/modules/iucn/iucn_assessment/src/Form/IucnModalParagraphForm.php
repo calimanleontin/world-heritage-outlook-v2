@@ -148,7 +148,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->nodeRevision->setChangedTime(time());
 
 
-    if (!empty(NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName]) || $this->nodeRevision->get($this->fieldName)->isEmpty()) {
+    if (!empty(NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName]) && $this->nodeRevision->get($this->fieldName)->isEmpty()) {
        // If all potential threats paragraphs are deleted, the potential threats
        // text and rating fields are deleted.
       foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS[$this->fieldName] as $dependentField) {
