@@ -10,7 +10,6 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Symfony\Component\HttpFoundation\RedirectResponse;

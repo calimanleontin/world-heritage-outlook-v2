@@ -1123,11 +1123,9 @@ function _iucn_assessment_preprocess_field_multiple_value_form_remove_tabledrag(
 function iucn_assessment_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display) {
   switch ([$node->bundle(), $display->id()]) {
     case ['site_assessment', 'node.site_assessment.default']:
+      // Ex:
       // If the assessment has no potential threats, we hide the "Overall
       // Assessment of Potential Threats" field if it's not empty.
-      if ($node->get('field_as_threats_potential')->isEmpty() === FALSE) {
-        break;
-      }
       foreach (NodeSiteAssessmentForm::DEPENDENT_FIELDS as $field => $dependentFields) {
         if ($node->get($field)->isEmpty() === FALSE) {
           continue;
