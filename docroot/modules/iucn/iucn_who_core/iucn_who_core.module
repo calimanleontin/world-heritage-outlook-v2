@@ -11,6 +11,7 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\role_hierarchy\Service\RoleHierarchyHelper;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Drupal\views\ViewExecutable;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
@@ -518,6 +519,11 @@ function iucn_who_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $
   if (in_array($form_id, ['user_form', 'user_register_form'])) {
     // Users cannot add or remove user roles on a level higher than their role.
     $current_user = \Drupal::currentUser()->getAccount();
+    $edited_user = $form_state->getFormObject()->getEntity();
+    if ($edited_user instanceof UserInterface && $current_user->id() == $edited_user->id()) {
+      return;
+    }
+
     /** @var RoleHierarchyHelper $role_hierarchy_helper */
     $role_hierarchy_helper = \Drupal::service('role_hierarchy.helper');
 
