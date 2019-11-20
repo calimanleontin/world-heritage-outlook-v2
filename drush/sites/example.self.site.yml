@@ -1,7 +1,7 @@
 test:
   host: 159.69.153.104
   uri: test.worldheritageoutlook.iucn.org
-  root: /var/www/html/iucn-who.edw.ro/docroot/
+  root: /var/www/html/who/test/docroot
   paths:
     drush-script: /var/www/html/who/test/vendor/bin/drush
     files: /var/www/html/who/test/docroot/sites/default/files
@@ -10,7 +10,7 @@ test:
 staging:
   host: 159.69.153.104
   uri: test.worldheritageoutlook.iucn.org
-  root: /var/www/html/who/prod/docroot
+  root: /var/www/html/who/test/docroot
   paths:
     drush-script: /var/www/html/who/test/vendor/bin/drush
     files: /var/www/html/who/test/docroot/sites/default/files
