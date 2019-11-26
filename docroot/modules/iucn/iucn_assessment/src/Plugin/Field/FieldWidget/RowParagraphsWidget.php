@@ -432,17 +432,17 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     parent::extractFormValues($items, $form, $form_state);
     $values = $form_state->getValues();
     $fieldName = $this->fieldDefinition->getName();
-    $fieldValues = $values[$fieldName];
-    if (is_array($fieldValues)) {
-      foreach ($fieldValues as &$fieldValue) {
-        //The weight is the only variable that could change during a save on the
-        //parent node
+    if (!empty($values[$fieldName]) && is_array($values[$fieldName])) {
+      foreach ($values[$fieldName] as &$fieldValue) {
+        // Add, edit, delete actions are handled in an ajax request where
+        // also the parent node is saved. We only need to store the wights of
+        // the paragraphs when the user reorders them.
         $fieldValue = !empty($fieldValue['_weight']) ?
           ['_weight' => $fieldValue['_weight']] :
           [];
       }
     }
-
+    $form_state->setValues($values);
     return [];
   }
 
