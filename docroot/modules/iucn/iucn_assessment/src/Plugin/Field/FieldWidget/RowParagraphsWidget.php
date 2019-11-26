@@ -429,8 +429,20 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @inheritdoc
    */
   public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state) {
-    // All actions (add, edit, delete) are handles in an ajax request where
-    // also the parent node is saved.
+    parent::extractFormValues($items, $form, $form_state);
+    $values = $form_state->getValues();
+    $fieldName = $this->fieldDefinition->getName();
+    $fieldValues = $values[$fieldName];
+    if (is_array($fieldValues)) {
+      foreach ($fieldValues as &$fieldValue) {
+        //The weight is the only variable that could change during a save on the
+        //parent node
+        $fieldValue = !empty($fieldValue['_weight']) ?
+          ['_weight' => $fieldValue['_weight']] :
+          [];
+      }
+    }
+
     return [];
   }
 
