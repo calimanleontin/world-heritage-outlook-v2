@@ -291,8 +291,8 @@ third_party_settings:
       region: content
     group_protection_overall_container:
       children:
-        - group_protection_overall_effecti
         - group_protection_overall_assessm
+        - group_protection_overall_effecti
         - group_protection_best_practice
       parent_name: group_as_protection_management
       weight: 23
@@ -309,7 +309,7 @@ third_party_settings:
         - field_as_protection_ov_text
         - field_as_protection_ov_rating
       parent_name: group_protection_overall_container
-      weight: 20
+      weight: 22
       format_type: html_element
       format_settings:
         id: ''
@@ -346,7 +346,7 @@ third_party_settings:
       children:
         - field_as_protection_ov_practices
       parent_name: group_protection_overall_container
-      weight: 22
+      weight: 23
       format_type: html_element
       format_settings:
         id: ''

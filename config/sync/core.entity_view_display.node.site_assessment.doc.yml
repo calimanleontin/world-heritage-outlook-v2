@@ -187,9 +187,11 @@ content:
     weight: 29
     label: hidden
     settings:
-      view_mode: default
+      view_mode: doc
       link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      ds:
+        ds_limit: ''
     region: content
   field_as_site:
     type: entity_reference_label
