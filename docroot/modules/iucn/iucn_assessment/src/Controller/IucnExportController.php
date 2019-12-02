@@ -7,7 +7,10 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemList;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\iucn_assessment\Form\ParagraphAsSiteThreatForm;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -74,6 +77,8 @@ class IucnExportController extends ControllerBase {
         $templateDocument->cloneRow($firstParagraphField, count($paragraphFieldList));
       }
 
+      $paragraphFieldList = $this->getOrderedParagraphs($paragraphFieldList, $field);
+
       foreach ($paragraphFieldList as $idx => $fieldItem) {
         $this->writeParagraphToTemplate($templateDocument, $fieldItem->entity, $referencedFields, $idx + 1);
       }
@@ -87,6 +92,22 @@ class IucnExportController extends ControllerBase {
     $templateDocument->saveAs('php://output');
 
     exit(1);
+  }
+
+  protected function getOrderedParagraphs(EntityReferenceFieldItemListInterface $items, $field) {
+    if ($field != 'field_as_references_p') {
+      return $items;
+    }
+
+    foreach ($items as $idx => $item) {
+      $values[$idx] = $item->entity->get('field_reference')->value;
+    }
+    asort($values);
+    $orderedItems = new EntityReferenceFieldItemList($items->getDataDefinition());
+    foreach ($values as $idx => $item) {
+      $orderedItems->appendItem($items->get($idx)->entity);
+    }
+    return $orderedItems;
   }
 
   protected function getFieldValue(FieldableEntityInterface $entity, $field) {
@@ -135,7 +156,7 @@ class IucnExportController extends ControllerBase {
     else {
       $fieldRender = $this->renderer->render($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field]);
       if (is_object($fieldRender)) {
-        $childRender = $fieldRender->__toString();
+        $fieldRender = $fieldRender->__toString();
       }
       $fieldRender = $this->stripValue($fieldRender);
     }
@@ -172,16 +193,23 @@ class IucnExportController extends ControllerBase {
       }
 
       if ($field == 'other_info') {
-        if (empty($paragraph->field_as_legality->value) && empty($paragraph->field_as_targeted_species->value) && empty($paragraph->field_invasive_species_names->value)) {
-          $templateProcessor->setValue("$templateVariable#$index", 'N/A');
+        $setNA = '';
+        $subcategories = $paragraph->get('field_as_threats_categories')->getValue();
+        if (!empty($subcategories)) {
+          $subcategories = array_column($subcategories, 'target_id');
+          foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $field => $fieldSubcategories) {
+            if (!empty(array_intersect($fieldSubcategories, $subcategories)) && empty($paragraph->get($field)->getValue())) {
+              $setNA = 'N/A';
+              break;
+            }
+          }
         }
-        else {
-          $templateProcessor->setValue("$templateVariable#$index", '');
-        }
+
+        $templateProcessor->setValue("$templateVariable#$index", $setNA);
         continue;
       }
 
-      $templateProcessor->setValue("$templateVariable#$index", $this->getFieldValue($paragraph, $field), 2);
+      $templateProcessor->setValue("$templateVariable#$index", $this->getFieldValue($paragraph, $field));
     }
   }
 

@@ -176,8 +176,10 @@ function iucn_assessment_node_view(array &$build, EntityInterface $entity, \Drup
  * Implements hook_preprocess_field().
  */
 function iucn_assessment_preprocess_field(&$variables) {
+  $docExport = FALSE;
   if (!empty($variables['element']['#view_mode']) && $variables['element']['#view_mode'] == 'doc') {
     $variables['doc_export'] = TRUE;
+    $docExport = TRUE;
   }
 
   switch ($variables['field_name']) {
@@ -259,6 +261,9 @@ function iucn_assessment_preprocess_field(&$variables) {
       /** @var \Drupal\filter\Plugin\FilterBase $filter */
       $filter = $filter_manager->createInstance('filter_url');
       $filter->settings['filter_url_length'] = 60;
+      if ($docExport) {
+        $filter->settings['filter_url_length'] = 1000;
+      }
 
       $items = $variables['items'];
 
