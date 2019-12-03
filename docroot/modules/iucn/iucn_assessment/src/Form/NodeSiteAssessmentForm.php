@@ -84,6 +84,7 @@ class NodeSiteAssessmentForm {
   }
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+    $currentRoute = \Drupal::routeMatch()->getRouteName();
     $tab = \Drupal::request()->get('tab') ?: 'values';
 
     /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflow_service */
@@ -94,7 +95,7 @@ class NodeSiteAssessmentForm {
     $node = $nodeForm->getEntity();
     $state = $node->field_state->value;
 
-    if ($node->isDefaultTranslation() && $state == AssessmentWorkflow::STATUS_PUBLISHED) {
+    if ($currentRoute == 'entity.node.edit_form' && $node->isDefaultTranslation() && $state == AssessmentWorkflow::STATUS_PUBLISHED) {
       // Redirect the user to edit form of the draft assessment.
       $draft_revision = $workflow_service->getRevisionByState($node, AssessmentWorkflow::STATUS_DRAFT);
       if (!empty($draft_revision)) {
