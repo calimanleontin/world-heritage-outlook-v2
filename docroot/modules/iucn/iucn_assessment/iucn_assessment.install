@@ -222,3 +222,61 @@ function iucn_assessment_update_8006() {
     $node->save();
   }
 }
+
+/**
+ * refs #6378 - reorder protection and management paragraphs for 2017 cycle (on all node revisions).
+ */
+function iucn_assessment_update_8007() {
+  /** @var \Drupal\node\NodeInterface[] $nodes */
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site_assessment',
+      'field_as_cycle' => 2017,
+    ]);
+
+  /** @var AssessmentCycleCreator $assessmentCycleService */
+  $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $assessmentService */
+  $assessmentService = \Drupal::service('iucn_assessment.workflow');
+  /** @var \Drupal\node\NodeStorage $nodeStorage */
+  $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+  foreach ($nodes as $node) {
+    $revisionIds = $nodeStorage->revisionIds($node);
+    foreach ($revisionIds as $revisionId) {
+      /** @var \Drupal\node\Entity\Node $revision */
+      $revision = $nodeStorage->loadRevision($revisionId);
+      $assessmentCycleService->reorderProtectionParagraphs($revision, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2017]);
+      $revision->save();
+    }
+  }
+}
+
+/**
+ * refs #6378 - reorder protection and management paragraphs for 2020 cycle (on all node revisions).
+ */
+function iucn_assessment_update_8008() {
+  /** @var \Drupal\node\NodeInterface[] $nodes */
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site_assessment',
+      'field_as_cycle' => 2020,
+    ]);
+
+  /** @var AssessmentCycleCreator $assessmentCycleService */
+  $assessmentCycleService = \Drupal::service('iucn_assessment.cycle_creator');
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $assessmentService */
+  $assessmentService = \Drupal::service('iucn_assessment.workflow');
+  /** @var \Drupal\node\NodeStorage $nodeStorage */
+  $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+  foreach ($nodes as $node) {
+    $revisionIds = $nodeStorage->revisionIds($node);
+    foreach ($revisionIds as $revisionId) {
+      /** @var \Drupal\node\Entity\Node $revision */
+      $revision = $nodeStorage->loadRevision($revisionId);
+      $assessmentCycleService->reorderProtectionParagraphs($revision, AssessmentCycleCreator::PROTECTION_PARAGRAPHS_ORDER[2020]);
+      $revision->save();
+    }
+  }
+}
