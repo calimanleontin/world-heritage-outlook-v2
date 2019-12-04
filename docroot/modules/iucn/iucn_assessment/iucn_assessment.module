@@ -183,6 +183,14 @@ function iucn_assessment_preprocess_field(&$variables) {
   }
 
   switch ($variables['field_name']) {
+    case 'field_as_threats_in':
+    case 'field_as_threats_out':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if ($docExport && $node->field_as_cycle->value <= 2017) {
+        $variables['label_hidden'] = TRUE;
+      }
+      break;
+
     case 'field_designation':
       $display_year = iucn_pdf_assessment_year_display($variables['element']['#object']);
       if ($display_year == \Drupal::service('iucn_assessment.assessments_year')->first()) {

@@ -167,7 +167,9 @@ class IucnExportController extends ControllerBase {
   protected function stripValue($value) {
     $value = $this->stripTagsContent($value, '<button>', TRUE);
     $value = preg_replace('/\s+/', ' ', $value);
-    $value = strip_tags($value, '<w:br/>');
+    $value = strip_tags($value, '<w:br/><b>');
+    $value = str_replace('<b>', '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">', $value);
+    $value = str_replace('</b>', '</w:t></w:r><w:r><w:t>', $value);
     $value = preg_replace('/\s+/', ' ', $value);
     $value = str_replace(' ;', ';', $value);
     $value = str_replace('&nbsp;', ' ', $value);
