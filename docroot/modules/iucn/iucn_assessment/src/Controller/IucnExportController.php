@@ -195,13 +195,14 @@ class IucnExportController extends ControllerBase {
       }
 
       if ($field == 'other_info') {
-        $setNA = '';
+        $setNA = 'N/A';
         $subcategories = $paragraph->get('field_as_threats_categories')->getValue();
         if (!empty($subcategories)) {
           $subcategories = array_column($subcategories, 'target_id');
           foreach (ParagraphAsSiteThreatForm::SUBCATEGORY_DEPENDENT_FIELDS as $field => $fieldSubcategories) {
-            if (!empty(array_intersect($fieldSubcategories, $subcategories)) && empty($paragraph->get($field)->getValue())) {
-              $setNA = 'N/A';
+            // If at least one subcategory dependent field is available, don't show "N/A"
+            if (!empty(array_intersect($fieldSubcategories, $subcategories))) {
+              $setNA = '';
               break;
             }
           }
