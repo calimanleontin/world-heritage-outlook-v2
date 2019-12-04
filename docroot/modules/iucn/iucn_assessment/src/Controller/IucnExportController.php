@@ -169,7 +169,7 @@ class IucnExportController extends ControllerBase {
     $value = preg_replace('/\s+/', ' ', $value);
     $value = strip_tags($value, '<w:br/><b>');
     $value = str_replace('<b>', '</w:t></w:r><w:r><w:rPr><w:sz w:val="20"/><w:b/></w:rPr><w:t xml:space="preserve">', $value);
-    $value = str_replace('</b>', '</w:t></w:r><w:r><w:rPr xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"><w:sz w:val="20"/><w:rFonts w:ascii="Calibri" w:h-ansi="Calibri"/><w:color w:val="0000ff"/></w:rPr><w:t xml:space="preserve">', $value);
+    $value = str_replace('</b>', '</w:t></w:r><w:r><w:rPr xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"><w:sz w:val="20"/><w:rFonts w:ascii="Calibri" w:h-ansi="Calibri"/><w:color w:val="0000ff"/></w:rPr><w:t>', $value);
     $value = preg_replace('/\s+/', ' ', $value);
     $value = str_replace(' ;', ';', $value);
     $value = str_replace('&nbsp;', ' ', $value);
