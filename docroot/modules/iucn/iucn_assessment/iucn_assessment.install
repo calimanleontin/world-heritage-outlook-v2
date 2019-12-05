@@ -280,3 +280,52 @@ function iucn_assessment_update_8008() {
     }
   }
 }
+
+/**
+ * refs #6378 - remove benefits paragraphs with hidden categories.
+ */
+function iucn_assessment_update_8009() {
+  /** @var \Drupal\node\NodeInterface[] $nodes */
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site_assessment',
+      'field_as_cycle' => 2017,
+    ]);
+
+  /** @var \Drupal\node\NodeStorage $nodeStorage */
+  $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+
+  $hiddenCategories = [1263, 1264, 1297];
+  foreach ($nodes as $node) {
+    $revisionIds = $nodeStorage->revisionIds($node);
+    foreach ($revisionIds as $revisionId) {
+      /** @var \Drupal\node\Entity\Node $revision */
+      $revision = $nodeStorage->loadRevision($revisionId);
+      $count = 0;
+      for ($i = 0; $i < $revision->get('field_as_benefits')->count(); $i++) {
+        $paragraph = $revision->get('field_as_benefits')->get($i)->entity;
+        $benefitCategories = $paragraph->get('field_as_benefits_category')->getValue();
+        if (empty($benefitCategories)) {
+          continue;
+        }
+        $benefitCategories = array_column($benefitCategories, 'target_id');
+        // If the paragraph only has categories that are hidden, dereference it.
+        if (empty(array_diff($benefitCategories, $hiddenCategories))) {
+          $revision->get('field_as_benefits')->removeItem($i);
+          $i--;
+          $count++;
+        }
+      }
+      if ($count) {
+        \Drupal::logger('iucn_assessment')->info(t('Removed @count broken benefits from @title (nid: @nid, vid: @vid)', [
+          '@count' => $count,
+          '@title' => $revision->getTitle(),
+          '@nid' => $revision->id(),
+          '@vid' => $revision->getRevisionId()
+        ]));
+        $revision->save();
+      }
+    }
+  }
+}
