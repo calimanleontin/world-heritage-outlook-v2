@@ -27,6 +27,7 @@ dependencies:
   - image_widget_crop
   - inline_responsive_images
   - iucn_assessment
+  - iucn_fields
   - iucn_pdf
   - iucn_site
   - iucn_who_core

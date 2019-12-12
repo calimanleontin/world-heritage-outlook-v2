@@ -30,12 +30,14 @@ third_party_settings:
     add_disable_roles: {  }
     edit_disable: none
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_references_p
 field_name: field_as_references_p
 entity_type: node
 bundle: site_assessment
 label: References
-description: 'Record references used in previous steps here. Please note, all information used in assessments needs to be referenced for transparency and so that future assessments can review the previous information base. Information sources must be clearly referenced within the Description column in the case of Step 1, and in the justification for assessment columns in Steps 2, 3 and 4. References should be listed alphabetically and follow the Harvard system, also known as the author–date system, which is structured as follows: author(s), date, title, place of publication, publisher (this is the standard IUCN format). Where possible, URLs for documents available online should be included.'
+description: "Record references used in previous worksheets here. Note: All written assessment content needs to be referenced for transparency and so that future assessments can review the previous information base. Information sources must be clearly referenced within the ‘Description’ column in the case of Worksheet 1 (Values), in the ‘Justification of assessment’ columns in Worksheets 2 (Threats), 3 (Protection and management) and 4 (Assessing values), and if completed, the ‘Summary’ and ‘Comments on factors' columns of Worksheet 6 (Benefits), and ‘Description’ column in Worksheet 7 (Projects).\r\n<br/><br/>\r\nReferences should follow the Harvard referencing style, also known as the author–date system (this is the standard IUCN format), which is structured as follows: author(s), date, title, place of publication, publisher. Where possible, URLs for documents available online should be included. All references listed here should have an accompanying in-text citation in the previous worksheets, there should be no references in the list without an in-text citation. Note: you do not need to add references alphabetically; the references will be automatically alphabetised by the system. More guidance on the referencing style to be used, including examples of how to format different types of references, can be found in the <a href=\"/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=33\" target=\"_blank\">Guidelines</a>. "
 required: true
 translatable: false
 default_value: {  }

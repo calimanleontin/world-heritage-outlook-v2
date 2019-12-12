@@ -15,6 +15,7 @@ third_party_settings:
       assessment_creation: assessment_creation
       assessment_new: assessment_new
       assessment_under_evaluation: assessment_under_evaluation
+      assessment_under_assessment: assessment_under_assessment
       assessment_ready_for_review: assessment_ready_for_review
       assessment_finished_reviewing: assessment_finished_reviewing
       assessment_under_comparison: assessment_under_comparison
@@ -22,7 +23,6 @@ third_party_settings:
       assessment_final_changes: assessment_final_changes
       assessment_approved: assessment_approved
       assessment_draft: assessment_draft
-      assessment_under_assessment: 0
       assessment_under_review: 0
       assessment_published: 0
   disable_field:
@@ -30,12 +30,14 @@ third_party_settings:
     add_disable_roles: {  }
     edit_disable: none
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_values_bio
 field_name: field_as_values_bio
 entity_type: node
 bundle: site_assessment
 label: 'Other important biodiversity values'
-description: 'Note: Please do not list "other designations" here (e.g. designation of the site under Ramsar, or as a KBA, IBA, IPA, AZE etc). These are listed automatically for each site on its site assessment page online.'
+description: "For sites which have not had a previous Conservation Outlook Assessment: Please add other important biodiversity values, if relevant. Do not list ‘other designations’ here (e.g. designation of the site under other international instruments, such as the Ramsar Convention, or as a KBA, IBA, IPA, AZE etc). These are listed automatically for each site on its site assessment page online.\r\n<br/><br/>\r\nFor sites which have had a previous Conservation Outlook Assessment, this table defines other important biodiversity values of the site. <b>The values and their description have already been checked and reviewed by IUCN, so do not need to be updated for 2020.</b> If you have any internal comments for IUCN on the content in this table, please provide these at the bottom of the worksheet below. <a href=\"/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=11\" target=\"_blank\">Access Guidelines for this step</a>."
 required: false
 translatable: false
 default_value: {  }

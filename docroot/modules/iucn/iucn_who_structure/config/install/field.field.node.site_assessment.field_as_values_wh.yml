@@ -30,12 +30,14 @@ third_party_settings:
     add_disable_roles: {  }
     edit_disable: none
     edit_disable_roles: {  }
+    add_enable_roles: {  }
+    edit_enable_roles: {  }
 id: node.site_assessment.field_as_values_wh
 field_name: field_as_values_wh
 entity_type: node
 bundle: site_assessment
 label: 'Identifying and describing values'
-description: 'Define the values of this World Heritage site by clicking on the "Add Values" button on the right hand side. Each value requires a detailed description and cross-reference to the relevant World Heritage criterion/criteria. Each criterion can encompass a number of values and these should be broken down as relevant. The "Description" column must be systematically referenced, e.g. (SoOUV, 2010). Other important biodiversity values are described separately below.'
+description: "For sites which have not had a previous Conservation Outlook Assessment, please define the World Heritage values of this site. Each value requires a detailed description and cross-reference to the relevant World Heritage criterion/criteria. Each criterion can encompass a number of values and these should be broken down as relevant. The ‘Description’ column must be systematically referenced, e.g. (World Heritage Committee, 2018), using IUCN’s <a href=\"/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=33\" target=\"_blank\">referencing style</a> for Conservation Outlook Assessments. Other important biodiversity values, particularly for sites only inscribed under criteria (vii) and (viii), are described separately below. Further information is available in the <a href=\"/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=11\" target=\"_blank\">Guidelines</a> for this step.  \r\n<br/><br/>\r\nFor sites which have had a previous Conservation Outlook Assessment, this table defines the World Heritage values of the site. <b>The values, their description and the World Heritage criteria they link to have already been checked and reviewed by IUCN, so do not need to be updated for 2020.</b> If you have any internal comments for IUCN on the content in this table, please provide these at the bottom of the worksheet below. <a href=\"/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=11\" target=\"_blank\">Access Guidelines for this step</a>."
 required: true
 translatable: false
 default_value: {  }

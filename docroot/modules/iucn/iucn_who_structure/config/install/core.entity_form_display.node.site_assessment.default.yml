@@ -66,7 +66,7 @@ third_party_settings:
         - group_as_projects
         - group_as_references
       parent_name: ''
-      weight: 5
+      weight: 6
       format_type: assessment_tabs
       format_settings:
         id: ''
@@ -82,12 +82,13 @@ third_party_settings:
       weight: 20
       format_type: assessment_tab
       format_settings:
-        id: values
-        classes: ''
+        label: '1. Values'
         formatter: open
         description: ''
-        required_fields: true
-      label: Values
+        required_fields: '1'
+        id: values
+        classes: values
+      label: '1. Values'
       region: content
     group_as_threats:
       children:
@@ -98,12 +99,13 @@ third_party_settings:
       weight: 21
       format_type: assessment_tab
       format_settings:
-        id: threats
-        classes: ''
+        label: '2. Threats'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Threats
+        required_fields: '1'
+        id: threats
+        classes: ''
+      label: '2. Threats'
       region: content
     group_as_protection_management:
       children:
@@ -113,13 +115,13 @@ third_party_settings:
       weight: 23
       format_type: assessment_tab
       format_settings:
-        label: 'Protection and management'
+        label: '3. Protection and management'
         formatter: closed
         description: ''
-        required_fields: true
+        required_fields: '1'
         id: protection_management
         classes: ''
-      label: 'Protection and management'
+      label: '3. Protection and management'
       region: content
     group_as_assessing_values:
       children:
@@ -128,12 +130,13 @@ third_party_settings:
       weight: 24
       format_type: assessment_tab
       format_settings:
-        id: assessing_values
-        classes: ''
+        label: '4. Assessing values'
         formatter: closed
         description: ''
-        required_fields: true
-      label: 'Assessing values'
+        required_fields: '1'
+        id: assessing_values
+        classes: ''
+      label: '4. Assessing values'
       region: content
     group_as_conservation_outlook:
       children:
@@ -142,12 +145,13 @@ third_party_settings:
       weight: 25
       format_type: assessment_tab
       format_settings:
-        id: conservation_outlook
-        classes: ''
+        label: '5. Conservation Outlook'
         formatter: closed
         description: ''
-        required_fields: true
-      label: 'Conservation Outlook'
+        required_fields: '1'
+        id: conservation_outlook
+        classes: ''
+      label: '5. Conservation Outlook'
       region: content
     group_as_benefits:
       children:
@@ -157,12 +161,13 @@ third_party_settings:
       weight: 26
       format_type: assessment_tab
       format_settings:
-        id: benefits
-        classes: ''
+        label: '6. Benefits'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Benefits
+        required_fields: '1'
+        id: benefits
+        classes: benefits
+      label: '6. Benefits'
       region: content
     group_as_projects:
       children:
@@ -171,12 +176,13 @@ third_party_settings:
       weight: 27
       format_type: assessment_tab
       format_settings:
-        id: projects
-        classes: ''
+        label: '7. Projects'
         formatter: closed
         description: ''
-        required_fields: true
-      label: Projects
+        required_fields: '1'
+        id: projects
+        classes: ''
+      label: '7. Projects'
       region: content
     group_as_references:
       children:
@@ -185,18 +191,19 @@ third_party_settings:
       weight: 28
       format_type: assessment_tab
       format_settings:
-        id: references
-        classes: ''
+        label: '8. References'
         formatter: closed
         description: ''
-        required_fields: true
-      label: References
+        required_fields: '1'
+        id: references
+        classes: ''
+      label: '8. References'
       region: content
     group_as_key_cons:
       children:
         - field_as_key_cons
       parent_name: ''
-      weight: 4
+      weight: 5
       format_type: tab
       format_settings:
         id: ''
@@ -283,8 +290,8 @@ third_party_settings:
       region: content
     group_protection_overall_container:
       children:
-        - group_protection_overall_effecti
         - group_protection_overall_assessm
+        - group_protection_overall_effecti
         - group_protection_best_practice
       parent_name: group_as_protection_management
       weight: 23
@@ -301,7 +308,7 @@ third_party_settings:
         - field_as_protection_ov_text
         - field_as_protection_ov_rating
       parent_name: group_protection_overall_container
-      weight: 20
+      weight: 22
       format_type: html_element
       format_settings:
         id: ''
@@ -338,7 +345,7 @@ third_party_settings:
       children:
         - field_as_protection_ov_practices
       parent_name: group_protection_overall_container
-      weight: 22
+      weight: 23
       format_type: html_element
       format_settings:
         id: ''
@@ -448,7 +455,7 @@ third_party_settings:
       format_settings:
         id: ''
         classes: ''
-        description: 'Please provide a brief summary of key benefits generated by the World Heritage site and identified above. Access Guidelines for this Step.'
+        description: 'Please provide a brief summary of key benefits generated by the World Heritage site and identified above. <a href="/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf#page=30" target="_blank">Access Guidelines for this step</a>.'
         fields_titles: ''
         required_fields: 1
       label: 'Summary of benefits'
@@ -488,6 +495,12 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_scayt
     region: content
+  field_as_cycle:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_as_global_assessment_level:
     weight: 22
     settings: {  }
@@ -803,7 +816,7 @@ content:
     type: options_select
     region: content
   field_assessment_file:
-    weight: 3
+    weight: 4
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -811,7 +824,7 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
@@ -827,7 +840,6 @@ content:
 hidden:
   created: true
   field_as_archived: true
-  field_as_cycle: true
   field_as_end_date: true
   field_as_projects_needs: true
   field_as_references: true
