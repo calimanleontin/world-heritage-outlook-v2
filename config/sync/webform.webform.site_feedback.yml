@@ -216,3 +216,4 @@ handlers:
       sender_name: ''
       theme: ''
       theme_name: ''
+      parameters: {  }

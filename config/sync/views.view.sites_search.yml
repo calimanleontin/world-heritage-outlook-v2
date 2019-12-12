@@ -17,7 +17,6 @@ description: ''
 tag: ''
 base_table: search_api_index_iucn_database_index
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -177,6 +176,8 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -192,8 +193,8 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            title: title
-            name: name
+            - name
+            - title
           plugin_id: search_api_fulltext
         search_api_language:
           id: search_api_language
@@ -220,6 +221,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -258,6 +261,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
