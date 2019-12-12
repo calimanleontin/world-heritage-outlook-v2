@@ -183,8 +183,8 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalGet($stateChangeForm);
     $paragraphErrorMessages = [
-      'Specific benefits, Summary fields are required for all rows in Understanding benefits table.',
-      'Description, Organisation fields are required for all rows in Compilation of active conservation projects table.',
+      'Specific benefits, Summary fields are required for all rows in Understanding benefits - optional worksheet table.',
+      'Description, Organisation fields are required for all rows in Compilation of active conservation projects - optional worksheet table.',
       'Justification of assessment, Assessment, Topic fields are required for all rows in Assessing Protection and Management table.',
       'Reference field is required for all rows in References table.',
       'Description, Value fields are required for all rows in Other important biodiversity values table.',
@@ -212,7 +212,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $this->drupalGet($stateChangeForm);
     $assertSession = $this->assertSession();
     $assertSession->pageTextNotContains('Subcategories field is required');
-    $assertSession->pageTextNotContains('Specific benefits field is required for all rows in Understanding benefits table.');
+    $assertSession->pageTextNotContains('Specific benefits field is required for all rows in Understanding benefits - optional worksheet table.');
 
     foreach (self::CATEGORY_FIELDS as $field => $categoryField) {
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
@@ -226,7 +226,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $this->drupalGet($stateChangeForm);
     $assertSession = $this->assertSession();
     $assertSession->pageTextContains('Subcategories field is required');
-    $assertSession->pageTextContains('Specific benefits field is required for all rows in Understanding benefits table.');
+    $assertSession->pageTextContains('Specific benefits field is required for all rows in Understanding benefits - optional worksheet table.');
 
     /** @var \Drupal\paragraphs\ParagraphInterface $threat */
     $threat = $assessment->field_as_threats_current->entity;
