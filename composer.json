@@ -144,7 +144,7 @@
     "desandro/masonry": "^4.2",
     "dinbror/blazy": "^1.8",
     "drupal-composer/drupal-scaffold": "^2.2",
-    "drupal/admin_toolbar": "^1.25",
+    "drupal/admin_toolbar": "^2.0",
     "drupal/block_exclude_pages": "^1.2",
     "drupal/bootstrap": "^3.17",
     "drupal/captcha": "^1.0@beta",
