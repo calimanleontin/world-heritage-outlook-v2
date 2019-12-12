@@ -2,8 +2,8 @@
 
 namespace Drupal\purge\Plugin\Purge\TagsHeader;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\PluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base implementation for plugins that add and format a cache tags header.
@@ -33,6 +33,13 @@ abstract class TagsHeaderBase extends PluginBase implements TagsHeaderInterface 
    */
   public function getValue(array $tags) {
     return implode(' ', $tags);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEnabled() {
+    return TRUE;
   }
 
 }

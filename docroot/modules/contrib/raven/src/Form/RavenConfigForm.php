@@ -41,12 +41,6 @@ class RavenConfigForm {
       '#default_value'  => $config->get('public_dsn'),
       '#description'    => t('Sentry client key for current site. This setting can be overridden with the SENTRY_DSN environment variable.'),
     ];
-    $form['raven']['js']['polyfill_promise'] = [
-      '#type'           => 'checkbox',
-      '#title'          => t('Load Polyfill'),
-      '#description'    => t('Capturing JavaScript errors on IE ≤ 11 requires the Polyfill library. Enable to load Polyfill from <a href="https://cdn.polyfill.io" rel="noreferrer" target="_blank">https://cdn.polyfill.io</a>.'),
-      '#default_value'  => $config->get('polyfill_promise'),
-    ];
     $form['raven']['php'] = [
       '#type'           => 'details',
       '#title'          => t('PHP'),
@@ -196,8 +190,6 @@ class RavenConfigForm {
         $form_state->getValue(['raven', 'js', 'javascript_error_handler']))
       ->set('public_dsn',
         $form_state->getValue(['raven', 'js', 'public_dsn']))
-      ->set('polyfill_promise',
-        $form_state->getValue(['raven', 'js', 'polyfill_promise']))
       ->set('environment',
         $form_state->getValue(['raven', 'environment']))
       ->set('release',

@@ -2,7 +2,7 @@
     "name": "drupal/raven",
     "description": "Raven is an exception logging client for Sentry (sentry.io).",
     "type": "drupal-module",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/raven",
     "authors": [
         {

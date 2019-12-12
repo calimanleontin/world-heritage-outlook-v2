@@ -26,7 +26,7 @@ class RavenCommands extends DrushCommands {
   }
 
   /**
-   * Sends a test message to Sentry.
+   * Send a test message to Sentry.
    *
    * Because messages are sent to Sentry asynchronously, there is no guarantee
    * that the message was actually delivered successfully.
@@ -42,6 +42,12 @@ class RavenCommands extends DrushCommands {
    *   The logger.
    *
    * @command raven:captureMessage
+   * @usage drush raven:captureMessage
+   *   Send test message to Sentry.
+   * @usage drush raven:captureMessage --level=error --logger=foobar
+   *   Send error message of type "foobar" to Sentry.
+   * @usage drush raven:captureMessage 'Mic check.'
+   *   Send "Mic check" message to Sentry.
    */
   public function captureMessage($message = 'Test message from Drush.', array $options = ['level' => 'info', 'logger' => 'drush']) {
     if (!$this->ravenLogger) {

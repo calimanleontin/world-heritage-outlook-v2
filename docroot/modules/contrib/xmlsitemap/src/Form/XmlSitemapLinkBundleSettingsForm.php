@@ -41,7 +41,7 @@ class XmlSitemapLinkBundleSettingsForm extends ConfigFormBase {
 
     if (!$request->isXmlHttpRequest() && $admin_path = xmlsitemap_get_bundle_path($entity, $bundle)) {
       // If this is a non-ajax form, redirect to the bundle administration page.
-      $destination = drupal_get_destination();
+      $destination = $this->getDestinationArray();
       $request->query->remove('destination');
       $url = Url::fromUri($admin_path, ['query' => [$destination]]);
       return new RedirectResponse($url);

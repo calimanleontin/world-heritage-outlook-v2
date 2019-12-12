@@ -25,6 +25,7 @@ function ckeditorheight_page_attachments(array &$attachments) {
     'offset' => $config->get('offset'),
     'line_height' => $config->get('line_height'),
     'unit' => $config->get('unit'),
+    'disable_autogrow' => $config->get('disable_autogrow'),
   ];
 }
 

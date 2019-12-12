@@ -11,3 +11,6 @@ ckeditorheight.settings:
     unit:
       type: string
       label: 'Unit'
+    disable_autogrow:
+      type: boolean
+      label: 'Disable autogrow'

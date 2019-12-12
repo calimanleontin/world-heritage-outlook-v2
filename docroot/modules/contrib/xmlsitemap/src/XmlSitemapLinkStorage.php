@@ -141,6 +141,12 @@ class XmlSitemapLinkStorage implements XmlSitemapLinkStorageInterface {
       $link['changecount'] = 0;
     }
 
+    // Throw an error with the link does not start with a slash.
+    // @see \Drupal\Core\Url::fromInternalUri()
+    if ($link['loc'][0] !== '/') {
+      trigger_error(t('The XML sitemap link path %path for @type @id is invalid because it does not start with a slash.', ['%path' => $link['loc'], '@type' => $link['type'], '@id' => $link['id']]), E_USER_ERROR);
+    }
+
     // Check if this is a changed link and set the regenerate flag if necessary.
     if (!$this->state->get('xmlsitemap_regenerate_needed')) {
       $this->checkChangedLink($link, NULL, TRUE);

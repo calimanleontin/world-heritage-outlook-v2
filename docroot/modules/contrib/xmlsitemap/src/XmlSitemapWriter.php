@@ -2,6 +2,8 @@
 
 namespace Drupal\xmlsitemap;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 
 /**
@@ -35,36 +37,35 @@ class XmlSitemapWriter extends \XMLWriter {
    *
    * @var \Drupal\xmlsitemap\XmlSitemapInterface
    */
-  protected $sitemap = NULL;
+  protected $sitemap;
 
   /**
    * Sitemap page to be written.
    *
-   * @var string
-   *
-   * @codingStandardsIgnoreStart
+   * @var int|string
    */
-  protected $sitemap_page = NULL;
-  // @codingStandardsIgnoreEnd
-
-  /**
-   * Name of the root element of the document.
-   *
-   * @var string
-   */
-  protected $rootElement = 'urlset';
+  protected $page;
 
   /**
    * Constructors and XmlSitemapWriter object.
    *
    * @param \Drupal\xmlsitemap\XmlSitemapInterface $sitemap
-   *   The sitemap array.
-   * @param string $page
+   *   The XML sitemap.
+   * @param int|string $page
    *   The current page of the sitemap being generated.
+   *
+   * @throws \InvalidArgumentException
+   *   If the page is invalid.
+   * @throws \Drupal\xmlsitemap\XmlSitemapGenerationException
+   *   If the file URI cannot be opened.
    */
   public function __construct(XmlSitemapInterface $sitemap, $page) {
+    if ($page !== 'index' && !filter_var($page, FILTER_VALIDATE_INT)) {
+      throw new \InvalidArgumentException("Invalid XML sitemap page $page.");
+    }
+
     $this->sitemap = $sitemap;
-    $this->sitemap_page = $page;
+    $this->page = $page;
     $this->uri = xmlsitemap_sitemap_get_file($sitemap, $page);
     $this->openUri($this->uri);
   }
@@ -75,11 +76,11 @@ class XmlSitemapWriter extends \XMLWriter {
    * @param string $uri
    *   Uri to be opened.
    *
-   * @throws XmlSitemapGenerationException
-   *   Throws exception when uri cannot be opened.
-   *
    * @return bool
-   *   Returns TRUE when uri was successful opened.
+   *   Returns TRUE when uri was successfully opened.
+   *
+   * @throws XmlSitemapGenerationException
+   *   If the file URI cannot be opened.
    */
   public function openUri($uri) {
     $return = parent::openUri($uri);
@@ -114,20 +115,14 @@ class XmlSitemapWriter extends \XMLWriter {
     if (\Drupal::config('xmlsitemap.settings')->get('xsl')) {
       $this->writeXSL();
     }
-    $this->startElement($this->rootElement, TRUE);
+    $this->startElement($this->isIndex() ? 'sitemapindex' : 'urlset', TRUE);
     return $result;
   }
 
   /**
    * Adds the XML stylesheet to the XML page.
-   *
-   * @return mixed
-   *   Returns TRUE on success.
-   *
-   * @codingStandardsIgnoreStart
    */
   public function writeXSL() {
-    // @codingStandardsIgnoreEnd
     $xls_url = Url::fromRoute('xmlsitemap.sitemap_xsl')->toString();
     $settings = \Drupal::config('language.negotiation');
     if ($settings) {
@@ -154,25 +149,18 @@ class XmlSitemapWriter extends \XMLWriter {
     $attributes['xmlns'] = 'http://www.sitemaps.org/schemas/sitemap/0.9';
     if (\Drupal::state()->get('xmlsitemap_developer_mode')) {
       $attributes['xmlns:xsi'] = 'http://www.w3.org/2001/XMLSchema-instance';
-      $attributes['xsi:schemaLocation'] = 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd';
+      $attributes['xsi:schemaLocation'] = 'http://www.sitemaps.org/schemas/sitemap/0.9';
+      if ($this->isIndex()) {
+        $attributes['xsi:schemaLocation'] .= ' http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd';
+      }
+      else {
+        $attributes['xsi:schemaLocation'] .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd';
+      }
     }
 
     \Drupal::moduleHandler()->alter('xmlsitemap_root_attributes', $attributes, $this->sitemap);
 
     return $attributes;
-  }
-
-  /**
-   * Generate one chunk of the sitemap.
-   *
-   * @return int
-   *   Number of XML elements written.
-   *
-   * @codingStandardsIgnoreStart
-   */
-  public function generateXML() {
-    // @codingStandardsIgnoreEnd
-    return \Drupal::service('xmlsitemap_generator')->generateChunk($this->sitemap, $this, $this->sitemap_page);
   }
 
   /**
@@ -201,17 +189,11 @@ class XmlSitemapWriter extends \XMLWriter {
    *   The element name.
    * @param array $element
    *   An array of the elements properties and values.
+   *
+   * @deprecated Use \Drupal\xmlsitemap\XmlSitemapWriter::writeElement().
    */
-  public function writeSitemapElement($name, array &$element) {
+  public function writeSitemapElement($name, array $element) {
     $this->writeElement($name, $element);
-    $this->writeRaw(PHP_EOL);
-
-    // After a certain number of elements have been added, flush the buffer
-    // to the output file.
-    $this->sitemapElementCount++;
-    if (($this->sitemapElementCount % $this->linkCountFlush) == 0) {
-      $this->flush();
-    }
   }
 
   /**
@@ -219,22 +201,25 @@ class XmlSitemapWriter extends \XMLWriter {
    *
    * @param string $name
    *   The element name.
-   * @param string $content
+   * @param string|array $content
    *   The element contents or an array of the elements' sub-elements.
    */
-  public function writeElement($name, $content = '') {
+  public function writeElement($name, $content = NULL) {
     if (is_array($content)) {
       $this->startElement($name);
-      foreach ($content as $sub_name => $sub_content) {
-        $this->writeElement($sub_name, $sub_content);
-      }
+      $this->writeRaw($this->formatXmlElements($content));
       $this->endElement();
     }
-    elseif(is_object($content)) {
-      parent::writeElement($name, $content->toString());
-    }
     else {
-      parent::writeElement($name, $content);
+      parent::writeElement($name, Html::escape(static::toString($content)));
+    }
+    $this->writeRaw(PHP_EOL);
+
+    // After a certain number of elements have been added, flush the buffer
+    // to the output file.
+    $this->sitemapElementCount++;
+    if (($this->sitemapElementCount % $this->linkCountFlush) == 0) {
+      $this->flush();
     }
   }
 
@@ -276,14 +261,76 @@ class XmlSitemapWriter extends \XMLWriter {
       throw new XmlSitemapGenerationException(t('Unknown error occurred while writing to file @file.', ['@file' => $this->uri]));
     }
 
-    // @codingStandardsIgnoreStart
     if (xmlsitemap_var('gz')) {
       $file_gz = $this->uri . '.gz';
       file_put_contents($file_gz, gzencode(file_get_contents($this->uri), 9));
     }
-    // @codingStandardsIgnoreEnd
 
     return $return;
+  }
+
+  /**
+   * If the page being written is the index.
+   *
+   * @return bool
+   *   TRUE if the sitemap index is being written, or FALSE otherwise.
+   */
+  protected function isIndex() {
+    return $this->page === 'index';
+  }
+
+  /**
+   * Copy of Drupal 7's format_xml_elements() function.
+   *
+   * The extra whitespace has been removed.
+   *
+   * @param $array
+   *
+   * @return string
+   */
+  public static function formatXmlElements($array) {
+    $output = '';
+    foreach ($array as $key => $value) {
+      if (is_numeric($key)) {
+        if ($value['key']) {
+          $output .= '<' . $value['key'];
+          if (isset($value['attributes'])) {
+            if (is_array($value['attributes'])) {
+              $value['attributes'] = new Attribute($value['attributes']);
+            }
+            $output .= static::toString($value['attributes']);
+          }
+          if (isset($value['value']) && $value['value'] != '') {
+            $output .= '>' . (is_array($value['value']) ? static::formatXmlElements($value['value']) : Html::escape(static::toString($value['value']))) . '</' . $value['key'] . ">";
+          }
+          else {
+            $output .= " />";
+          }
+        }
+      }
+      else {
+        $output .= '<' . $key . '>' . (is_array($value) ? static::formatXmlElements($value) : Html::escape(static::toString($value))) . "</{$key}>";
+      }
+    }
+    return $output;
+  }
+
+  /**
+   * Convert translatable strings and URLs to strings.
+   *
+   * @param mixed $value
+   *   The value to turn into a string.
+   *
+   * @return string
+   */
+  public static function toString($value) {
+    if (is_object($value)) {
+      if ($value instanceof Url) {
+        return $value->toString();
+      }
+    }
+
+    return (string) $value;
   }
 
 }

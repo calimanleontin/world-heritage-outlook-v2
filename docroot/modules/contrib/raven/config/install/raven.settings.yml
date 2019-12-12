@@ -14,4 +14,3 @@ public_dsn: ''
 ssl: 'verify_ssl'
 ca_cert: ''
 ignored_channels: [  ]
-polyfill_promise: false

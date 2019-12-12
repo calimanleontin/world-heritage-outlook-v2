@@ -4,7 +4,7 @@ description: 'Support module for Raven tests.'
 package: Testing
 core: 8.x
 
-# Information added by Drupal.org packaging script on 2019-08-19
-version: '8.x-2.21'
+# Information added by Drupal.org packaging script on 2019-11-20
+version: '8.x-2.23'
 project: 'raven'
-datestamp: 1566256386
+datestamp: 1574229187

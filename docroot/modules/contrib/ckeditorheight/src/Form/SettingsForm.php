@@ -51,6 +51,12 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 4,
       '#default_value' => $config->get('unit'),
     ];
+    $form['disable_autogrow'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Disable autogrow'),
+      '#description' => $this->t('Without this, more content increases editor height up to screen height.'),
+      '#default_value' => $config->get('disable_autogrow'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -71,6 +77,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('offset', $form_state->getValue('offset'))
       ->set('line_height', $form_state->getValue('line_height'))
       ->set('unit', $form_state->getValue('unit'))
+      ->set('disable_autogrow', $form_state->getValue('disable_autogrow'))
       ->save();
   }
 

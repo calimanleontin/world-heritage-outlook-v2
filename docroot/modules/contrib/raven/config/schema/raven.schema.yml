@@ -78,6 +78,3 @@ raven.settings:
       sequence:
         type: string
         label: 'Log channel'
-    polyfill_promise:
-      type: boolean
-      label: 'Load Polyfill'

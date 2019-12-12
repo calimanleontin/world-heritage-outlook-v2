@@ -27,7 +27,6 @@ class XmlSitemapForm extends EntityForm {
     $form = parent::form($form, $form_state);
     if ($this->entity->getContext() == NULL) {
       $this->entity->context = [];
-      $this->entity->setOriginalId(NULL);
     }
     $xmlsitemap = $this->entity;
     $form['#entity'] = $xmlsitemap;

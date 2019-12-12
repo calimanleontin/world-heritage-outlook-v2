@@ -394,6 +394,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     return '<div class="message">' + message + '</div>';
   };
 
+  Drupal.theme.ajaxProgressBar = function ($element) {
+    return $('<div class="ajax-progress ajax-progress-bar"></div>').append($element);
+  };
+
   Drupal.Ajax.prototype.setProgressIndicatorBar = function () {
     var progressBar = new Drupal.ProgressBar('ajax-progress-' + this.element.id, $.noop, this.progress.method, $.noop);
     if (this.progress.message) {
@@ -402,7 +406,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     if (this.progress.url) {
       progressBar.startMonitoring(this.progress.url, this.progress.interval || 1500);
     }
-    this.progress.element = $(progressBar.element).addClass('ajax-progress ajax-progress-bar');
+    this.progress.element = $(Drupal.theme('ajaxProgressBar', progressBar.element));
     this.progress.object = progressBar;
     $(this.element).after(this.progress.element);
   };
@@ -414,7 +418,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
   Drupal.Ajax.prototype.setProgressIndicatorFullscreen = function () {
     this.progress.element = $(Drupal.theme('ajaxProgressIndicatorFullscreen'));
-    $('body').after(this.progress.element);
+    $('body').append(this.progress.element);
   };
 
   Drupal.Ajax.prototype.success = function (response, status) {
@@ -636,6 +640,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
           document.styleSheets[0].addImport(match[1]);
         } while (match);
       }
+    },
+    message: function message(ajax, response) {
+      var messages = new Drupal.Message(document.querySelector(response.messageWrapperQuerySelector));
+      if (response.clearPrevious) {
+        messages.clear();
+      }
+      messages.add(response.message, response.messageOptions);
     }
   };
 })(jQuery, window, Drupal, drupalSettings);

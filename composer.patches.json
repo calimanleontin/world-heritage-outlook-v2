@@ -6,8 +6,7 @@
       "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
       "Fix states api or condition": "patches/core/states-api-or.patch",
       "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
-      "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch",
-      "Update yarn packages to fix 19 vulnerabilities by updating nightwatch": "https://www.drupal.org/files/issues/2019-08-30/3059356-51.patch"
+      "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch"
     },
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
@@ -59,9 +58,6 @@
     },
 	"drupal/varnish_purge": {
       "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074938-test-error-D8.patch"
-    },
-    "drupal/disable_field": {
-      "Notice: Undefined index: add_enable in disable_field_disable_validate()": "https://www.drupal.org/files/issues/2019-08-05/error_message-notice_undefined_index-3072682-1.patch"
     }
   }
 }

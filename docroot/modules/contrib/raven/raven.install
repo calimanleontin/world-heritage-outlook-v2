@@ -51,3 +51,12 @@ function raven_requirements($phase) {
   }
   return $requirements;
 }
+
+/**
+ * Remove obsolete polyfill_promise config.
+ */
+function raven_update_8201() {
+  \Drupal::configFactory()->getEditable('raven.settings')
+    ->clear('polyfill_promise')
+    ->save();
+}

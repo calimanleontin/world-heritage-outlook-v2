@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\raven\Functional;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\BrowserTestBase;
 
@@ -13,6 +14,11 @@ use Drupal\Tests\BrowserTestBase;
 class RavenTest extends BrowserTestBase {
 
   use StringTranslationTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
 
   /**
    * Modules to install.
@@ -36,12 +42,14 @@ class RavenTest extends BrowserTestBase {
     $this->assertSession()->responseHeaderEquals('X-Logged', 'Logged');
     $this->assertSession()->responseHeaderEquals('X-Not-Logged', NULL);
     $this->assertSession()->responseHeaderEquals('X-Stacktrace-File', drupal_get_path('module', 'raven_test') . '/raven_test.module');
+    $cookies = Json::decode($this->getSession()->getResponseHeader('X-Logged-Cookies'));
+    $this->assertIdentical(end($cookies), '********');
 
     // Test fatal error handling.
     $memory_limit = mt_rand(16000000, 17999999);
     $url = $admin_user->toUrl()->setOption('query', ['memory_limit' => $memory_limit]);
     // Output should be the memory limit and 0 pending events/requests.
-    $this->assertEqual($memory_limit . '00', $this->drupalGet($url));
+    $this->assertEquals($memory_limit . '00', $this->drupalGet($url));
 
     // Test ignored channels.
     $config = ['raven[php][ignored_channels]' => "X-Logged\r\n"];

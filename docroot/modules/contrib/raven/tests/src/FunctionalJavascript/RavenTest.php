@@ -15,6 +15,11 @@ class RavenTest extends WebDriverTestBase {
   use StringTranslationTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Modules to install.
    *
    * @var array

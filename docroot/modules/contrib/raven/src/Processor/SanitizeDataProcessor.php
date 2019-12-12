@@ -27,11 +27,10 @@ class SanitizeDataProcessor extends Raven_Processor_SanitizeDataProcessor {
     $http = &$data['request'];
     if (!empty($http['cookies']) && is_array($http['cookies'])) {
       $cookies = &$http['cookies'];
-      foreach ($cookies as $key => $value) {
-        if (is_int(strpos($key, 'SESS'))) {
-          $cookies[$key] = self::STRING_MASK;
-        }
+      if (!empty($cookies[$this->session_cookie_name])) {
+        $cookies[$this->session_cookie_name] = self::STRING_MASK;
       }
+      array_walk_recursive($cookies, [$this, 'sanitize']);
     }
     if (!empty($http['data']) && is_array($http['data'])) {
       array_walk_recursive($http['data'], [$this, 'sanitize']);

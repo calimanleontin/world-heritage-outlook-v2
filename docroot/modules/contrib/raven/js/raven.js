@@ -1,6 +1,6 @@
 /**
  * @file
- * Configures @sentry/browser with the public DSN and extra options.
+ * Configures @sentry/browser with the Sentry DSN and extra options.
  */
 (function (drupalSettings, Sentry) {
 
