@@ -34,19 +34,19 @@ class WebformSubmissionDeleteMultiple extends ConfirmFormBase {
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $storage;
+  protected $manager;
 
   /**
    * Constructs a WebformSubmissionDeleteMultiple object.
    *
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The tempstore factory.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $manager
    *   The entity type manager.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityTypeManagerInterface $manager) {
     $this->tempStoreFactory = $temp_store_factory;
-    $this->storage = $entity_type_manager->getStorage('webform_submission');
+    $this->storage = $manager->getStorage('webform_submission');
   }
 
   /**

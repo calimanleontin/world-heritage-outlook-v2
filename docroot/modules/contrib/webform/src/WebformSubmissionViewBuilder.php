@@ -168,9 +168,6 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
           // Note that the YAML view ignores all access controls and excluded
           // settings.
           $data = $webform_submission->toArray(TRUE, TRUE);
-          // Covert computed element value markup to strings to
-          // 'Object support when dumping a YAML file has been disabled' errors.
-          WebformElementHelper::convertRenderMarkupToStrings($data);
           $build[$id]['data'] = [
             '#theme' => 'webform_codemirror',
             '#code' => WebformYaml::encode($data),
@@ -314,7 +311,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
 
     // Finally, check the element's 'view' access.
     /** @var \Drupal\webform\Plugin\WebformElementInterface $webform_element */
-    $webform_element = $this->elementManager->getElementInstance($element, $webform_submission);
+    $webform_element = $this->elementManager->getElementInstance($element);
     return $webform_element->checkAccessRules('view', $element) ? TRUE : FALSE;
   }
 

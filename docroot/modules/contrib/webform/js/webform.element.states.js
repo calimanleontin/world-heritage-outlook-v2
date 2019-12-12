@@ -7,8 +7,6 @@
 
   'use strict';
 
-  var isChrome = (/chrom(e|ium)/.test(window.navigator.userAgent.toLowerCase()));
-
   /**
    * Element #states builder.
    *
@@ -47,8 +45,6 @@
               .autocomplete('option', 'source', [])
               .removeClass('form-autocomplete');
           }
-          // Always disable browser auto completion.
-          $value.attr('autocomplete', (isChrome ? 'chrome-off' : 'off'));
         }).change();
       });
 

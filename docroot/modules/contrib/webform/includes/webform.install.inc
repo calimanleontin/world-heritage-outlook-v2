@@ -176,26 +176,24 @@ function _webform_update_webform_handler_settings() {
 
     // Apply the default handler settings.
     $has_handler = FALSE;
-    if (!empty($data['handlers'])) {
-      foreach ($data['handlers'] as &$handler) {
-        if (!isset($default_handler_settings[$handler['id']])) {
-          continue;
-        }
-
-        $settings = $default_handler_settings[$handler['id']];
-        foreach ($handler['settings'] as $settings_key => $setting_value) {
-          $settings[$settings_key] = $setting_value;
-        }
-
-        if ($handler['settings'] != $settings) {
-          $has_handler = TRUE;
-          $handler['settings'] = $settings;
-        }
+    foreach ($data['handlers'] as &$handler) {
+      if (!isset($default_handler_settings[$handler['id']])) {
+        continue;
       }
 
-      if ($has_handler) {
-        $webform_config->setData($data)->save();
+      $settings = $default_handler_settings[$handler['id']];
+      foreach ($handler['settings'] as $settings_key => $setting_value) {
+        $settings[$settings_key] = $setting_value;
       }
+
+      if ($handler['settings'] != $settings) {
+        $has_handler = TRUE;
+        $handler['settings'] = $settings;
+      }
+    }
+
+    if ($has_handler) {
+      $webform_config->setData($data)->save();
     }
   }
 }

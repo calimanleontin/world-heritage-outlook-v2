@@ -26,21 +26,7 @@ entity.webform_submission.collection_purge:
   parent_id: entity.webform_submission.collection
   weight: 10
 
-# Options.
-
-webform.options:
-  title: 'Options'
-  route_name: entity.webform_options.collection
-  base_route: entity.webform.collection
-  weight: 25
-
-webform.config.options:
-  title: 'Options'
-  route_name: entity.webform_options.collection
-  parent_id: webform.options
-  weight: 0
-
-# Configuration.
+# Settings.
 
 webform.config:
   title: 'Configuration'
@@ -60,6 +46,11 @@ webform.config.elements:
   parent_id: webform.config
   weight: 20
 
+webform.config.options:
+  title: 'Options'
+  route_name: entity.webform_options.collection
+  parent_id: webform.config
+  weight: 30
 
 webform.config.submissions:
   title: 'Submissions'

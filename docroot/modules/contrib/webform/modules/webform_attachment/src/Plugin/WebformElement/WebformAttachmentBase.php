@@ -54,13 +54,6 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
   /**
    * {@inheritdoc}
    */
-  public function getTranslatableProperties() {
-    return array_merge(parent::getTranslatableProperties(), ['filename', 'link_title']);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     /** @var \Drupal\webform_attachment\Element\WebformAttachmentInterface $attachment_element */
     $attachment_element = $this->getFormElementClassDefinition();
@@ -251,7 +244,7 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
         'filemime' => $file_mime,
         // URI is used when debugging or resending messages.
         // @see \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler::buildAttachments
-        '_fileurl' => ($file_url) ? $file_url->toString() : NULL,
+        '_uri' => ($file_url) ? $file_url->toString() : NULL,
       ];
     }
     return $attachments;

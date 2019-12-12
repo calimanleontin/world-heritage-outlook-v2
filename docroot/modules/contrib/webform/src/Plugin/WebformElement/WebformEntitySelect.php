@@ -2,7 +2,7 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElementEntityOptionsInterface;
+use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 
 /**
  * Provides a 'webform_entity_select' element.
@@ -14,7 +14,7 @@ use Drupal\webform\Plugin\WebformElementEntityOptionsInterface;
  *   category = @Translation("Entity reference elements"),
  * )
  */
-class WebformEntitySelect extends Select implements WebformElementEntityOptionsInterface {
+class WebformEntitySelect extends Select implements WebformElementEntityReferenceInterface {
 
   use WebformEntityReferenceTrait;
   use WebformEntityOptionsTrait;

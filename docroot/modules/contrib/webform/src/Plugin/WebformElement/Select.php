@@ -114,9 +114,6 @@ class Select extends OptionsBase {
       $element['#attributes']['data-limit'] = $element['#multiple'];
     }
 
-    // Attach library which allows options to be disabled via JavaScript.
-    $element['#attached']['library'][] = 'webform/webform.element.select';
-
     parent::prepare($element, $webform_submission);
   }
 

@@ -1027,7 +1027,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         ];
       }
 
-      if ($entity->access('duplicate') && $webform->getSetting('submission_user_duplicate')) {
+      if ($entity->access('create') && $webform->getSetting('submission_user_duplicate')) {
         $operations['duplicate'] = [
           'title' => $this->t('Duplicate'),
           'weight' => 23,
@@ -1069,14 +1069,14 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         ];
       }
 
-      if ($entity->access('resend') && $webform->hasMessageHandler()) {
+      if ($webform->access('submission_update_any') && $webform->hasMessageHandler()) {
         $operations['resend'] = [
           'title' => $this->t('Resend'),
           'weight' => 22,
           'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.resend_form'),
         ];
       }
-      if ($entity->access('duplicate')) {
+      if ($webform->access('submission_update_any')) {
         $operations['duplicate'] = [
           'title' => $this->t('Duplicate'),
           'weight' => 23,
@@ -1294,7 +1294,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       return $result;
     }
     else {
-      if ($order && $order['sql']) {
+      $order = $this->request->query->get('order', $order);
+      if ($order) {
         $query->tableSort($header);
       }
       else {

@@ -125,10 +125,6 @@ class WebformSame extends Checkbox {
    * {@inheritdoc}
    */
   public function alterForm(array &$element, array &$form, FormStateInterface $form_state) {
-    if (!isset($element['#source']) || !isset($element['#destination'])) {
-      return;
-    }
-
     // Get source element.
     $source = $element['#source'];
     $source_element = WebformElementHelper::getElement($form, $source);

@@ -31,11 +31,6 @@ elements: |
     '#title': fieldset_title_invisible
     '#description': 'This is a description.'
     '#title_display': invisible
-  fieldset_title_none:
-    '#type': fieldset
-    '#title': fieldset_title_none
-    '#description': 'This is a description.'
-    '#title_display': none
   fieldset_description_before:
     '#type': fieldset
     '#title': fieldset_description_before
@@ -126,7 +121,6 @@ settings:
   wizard_progress_pages: false
   wizard_progress_percentage: false
   wizard_progress_link: false
-  wizard_progress_states: false
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
@@ -174,7 +168,6 @@ settings:
   purge_days: null
   results_disabled: false
   results_disabled_ignore: false
-  token_view: false
   token_update: false
 access:
   create:

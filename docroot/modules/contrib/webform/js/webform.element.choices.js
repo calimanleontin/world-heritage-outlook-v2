@@ -11,7 +11,6 @@
   Drupal.webform = Drupal.webform || {};
   Drupal.webform.choices = Drupal.webform.choices || {};
   Drupal.webform.choices.options = Drupal.webform.choices.options || {};
-  Drupal.webform.choices.options.selectSearchMinItems = 10;
 
   /**
    * Initialize Choices support.
@@ -30,8 +29,6 @@
         .each(function () {
           var $select = $(this);
           var options = {
-            // Disable sorting.
-            shouldSort: false,
             // Translate all default strings.
             loadingText: Drupal.t('Loading...'),
             noResultsText: Drupal.t('No results found'),
@@ -51,12 +48,11 @@
             }
           };
 
-          // Enabling the 'remove item buttons' options addresses accessibility
-          // issue when deleting multiple options.
+          // Remove item buttons addresses accessibility issue when
+          // deleting multiple options.
           if ($select.attr('multiple')) {
             options.removeItemButton = true;
           }
-
           options = $.extend(options, Drupal.webform.choices.options);
 
           if ($select.data('placeholder')) {
@@ -86,9 +82,7 @@
     }
     $choices.each(function () {
       var choices = $(this).data('choices');
-      if (choices) {
-        choices[(e.value) ? 'disable' : 'enable']();
-      }
+      choices[(e.value) ? 'disable' : 'enable']();
     });
   });
 

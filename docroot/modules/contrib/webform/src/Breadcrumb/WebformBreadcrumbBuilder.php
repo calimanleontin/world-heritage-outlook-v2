@@ -121,9 +121,6 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     elseif (strpos($path, 'admin/structure/webform/test/') !== FALSE) {
       $this->type = 'webform_test';
     }
-    elseif (preg_match('#admin/structure/webform/config/(options|images|options_custom)/#', $path)) {
-      $this->type = 'webform_options';
-    }
     elseif (strpos($path, 'admin/structure/webform/config/') !== FALSE) {
       $this->type = 'webform_config';
     }
@@ -185,23 +182,12 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
           if (strpos($route_name, 'config_translation.item.') === 0 && $route_name != 'config_translation.item.overview.webform.config') {
             $breadcrumb->addLink(Link::createFromRoute($this->t('Translate'), 'config_translation.item.overview.webform.config'));
           }
-          break;
-
-        case 'webform_options':
-          if ($route_name !== 'entity.webform_options.collection') {
+          elseif (strpos($route_name, 'entity.webform_options') === 0 && $route_name !== 'entity.webform_options.collection') {
             $breadcrumb->addLink(Link::createFromRoute($this->t('Options'), 'entity.webform_options.collection'));
           }
-          if (strpos($route_name, 'entity.webform_image_select_images') === 0) {
+          elseif (strpos($route_name, 'entity.webform_image_select_images') === 0 && $route_name !== 'entity.webform_image_select_imagess.collection') {
             // @see webform_image_select.module.
-            if ($route_name !== 'entity.webform_image_select_images.collection') {
-              $breadcrumb->addLink(Link::createFromRoute($this->t('Images'), 'entity.webform_image_select_images.collection'));
-            }
-          }
-          elseif (strpos($route_name, 'entity.webform_options_custom') === 0) {
-            // @see webform_custom_options.module.
-            if ($route_name !== 'entity.webform_options_custom.collection') {
-              $breadcrumb->addLink(Link::createFromRoute($this->t('Custom'), 'entity.webform_options_custom.collection'));
-            }
+            $breadcrumb->addLink(Link::createFromRoute($this->t('Images'), 'entity.webform_image_select_images.collection'));
           }
           break;
 
@@ -249,9 +235,7 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
           $webform = $webform_submission->getWebform();
           $breadcrumb = new Breadcrumb();
           $breadcrumb->addLink(Link::createFromRoute($webform->label(), 'entity.webform.canonical', ['webform' => $webform->id()]));
-          if ($webform_submission->access('view_own')) {
-            $breadcrumb->addLink(Link::createFromRoute($this->t('Submissions'), 'entity.webform.user.submissions', ['webform' => $webform->id()]));
-          }
+          $breadcrumb->addLink(Link::createFromRoute($this->t('Submissions'), 'entity.webform.user.submissions', ['webform' => $webform->id()]));
           break;
       }
     }

@@ -19,7 +19,6 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("Text format"),
  *   description = @Translation("Provides a text format form element."),
  *   category = @Translation("Advanced elements"),
- *   states_wrapper = TRUE,
  *   composite = TRUE,
  *   multiline = TRUE,
  * )

@@ -76,19 +76,14 @@
         var $element = $(this);
 
         var $select = $element.find('select');
+        var $otherOption = $element.find('option[value="_other_"]');
         var $input = $element.find('.js-webform-select-other-input');
 
         $select.on('change', function () {
-          var isOtherSelected = $select
-            .find('option[value="_other_"]')
-            .is(':selected');
-          toggleOther(isOtherSelected, $input);
+          toggleOther($otherOption.is(':selected'), $input);
         });
 
-        var isOtherSelected = $select
-          .find('option[value="_other_"]')
-          .is(':selected');
-        toggleOther(isOtherSelected, $input, false);
+        toggleOther($otherOption.is(':selected'), $input, false);
       });
     }
   };

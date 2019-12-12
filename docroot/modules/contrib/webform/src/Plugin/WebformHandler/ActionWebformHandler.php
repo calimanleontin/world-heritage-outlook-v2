@@ -260,14 +260,13 @@ class ActionWebformHandler extends WebformHandlerBase {
     $this->configuration['states'] = array_values(array_filter($this->configuration['states']));
 
     // Cleanup sticky.
-    if ($form_state->getValue('sticky') === '') {
-      $this->configuration['sticky'] = NULL;
-    }
+    $this->configuration['sticky'] = ($this->configuration['sticky'] === '') ? NULL : (bool) $this->configuration['sticky'];
 
     // Cleanup locked.
-    if ($form_state->getValue('locked') === '') {
-      $this->configuration['locked'] = NULL;
-    }
+    $this->configuration['locked'] = ($this->configuration['locked'] === '') ? NULL : (bool) $this->configuration['locked'];
+
+    // Cast debug.
+    $this->configuration['debug'] = (bool) $this->configuration['debug'];
   }
 
   /**

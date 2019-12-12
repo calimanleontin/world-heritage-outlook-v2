@@ -353,9 +353,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         $option_text = $entity->label();
         $options[$optgroup][$option_value] = $option_text;
       }
-      if (isset($options[$optgroup])) {
-        asort($options[$optgroup]);
-      }
+      asort($options[$optgroup]);
     }
     return (count($options) === 1) ? reset($options) : $options;
   }
@@ -368,7 +366,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    * {@inheritdoc}
    */
   public function addQueryConditions(AlterableInterface $query, WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, array $options = []) {
-    $this->_addQueryConditions($query, $webform, $source_entity, $account, $options);
+    $this->_addQueryConditions($query,$webform, $source_entity, $account, $options);
   }
 
   /**
@@ -398,7 +396,6 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       'check_source_entity' => FALSE,
       'in_draft' => NULL,
       'interval' => NULL,
-      'access_check' => TRUE,
     ];
 
     if ($webform) {
@@ -436,9 +433,6 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     if ($options['interval']) {
       $query->condition('completed', \Drupal::time()->getRequestTime() - $options['interval'], '>');
-    }
-    if ($options['access_check'] === FALSE) {
-      $query->accessCheck(FALSE);
     }
   }
 
@@ -912,7 +906,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $this->invokeWebformElements('postLoad', $entity);
       $this->invokeWebformHandlers('postLoad', $entity);
 
-      // If this is an anonymous draft.
+      // If this is an anonymous draft..
       // We must add $SESSION to the submission's cache context.
       // @see \Drupal\webform\WebformSubmissionStorage::loadDraft
       // @todo Add support for 'view own submission' permission.
@@ -1152,7 +1146,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function invokeWebformHandlers($method, WebformSubmissionInterface $webform_submission, &$context1 = NULL, &$context2 = NULL) {
     $webform = $webform_submission->getWebform();
-    return $webform->invokeHandlers($method, $webform_submission, $context1, $context2);
+    $webform->invokeHandlers($method, $webform_submission, $context1, $context2);
   }
 
   /**
@@ -1527,21 +1521,21 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     }
 
     // Check if anonymous users are allowed to save submission using $_SESSION.
-    if ($this->hasAnonymousSubmissionTracking($webform_submission)) {
+    if ($this->checkAnonymousSubmissionAccess($webform_submission)) {
       $_SESSION['webform_submissions'][$webform_submission->id()] = $webform_submission->id();
     }
   }
 
   /**
-   * Check if anonymous users submission are tracked using $_SESSION.
+   * Check if anonymous users are allowed to save submission using $_SESSION.
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   A webform submission.
    *
    * @return bool
-   *   TRUE if anonymous users submission are tracked using $_SESSION.
+   *   TRUE if anonymous users are allowed to save submission using $_SESSION.
    */
-  protected function hasAnonymousSubmissionTracking(WebformSubmissionInterface $webform_submission) {
+  protected function checkAnonymousSubmissionAccess(WebformSubmissionInterface $webform_submission) {
     $webform = $webform_submission->getWebform();
     if ($this->currentUser->hasPermission('view own webform submission')) {
       return TRUE;
@@ -1549,16 +1543,13 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     elseif ($this->accessRulesManager->checkWebformSubmissionAccess('view_own', $this->currentUser, $webform_submission)->isAllowed()) {
       return TRUE;
     }
-    elseif ($webform->getSetting('limit_user') || ($webform->getSetting('entity_limit_user') && $webform_submission->getSourceEntity())) {
-      return TRUE;
-    }
     elseif ($webform->getSetting('form_convert_anonymous')) {
       return TRUE;
     }
-    elseif ($webform->getSetting('draft') === WebformInterface::DRAFT_ALL) {
+    elseif ($webform->getSetting('limit_user') || ($webform->getSetting('entity_limit_user') && $webform_submission->getSourceEntity())) {
       return TRUE;
     }
-    elseif ($webform->hasAnonymousSubmissionTrackingHandler()) {
+    elseif ($webform->getSetting('draft') === WebformInterface::DRAFT_ALL) {
       return TRUE;
     }
     else {

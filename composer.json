@@ -222,7 +222,7 @@
     "drupal/views_accordion": "^1.1",
     "drupal/views_bulk_operations": "^2.4",
     "drupal/views_data_export": "1.0.0-beta1",
-    "drupal/webform": "^5.0@RC",
+    "drupal/webform": "5.4.0",
     "drupal/workflow": "^1.1",
     "drupal/xls_serialization": "^1.0",
     "drupal/xmlsitemap": "^1.0@alpha",

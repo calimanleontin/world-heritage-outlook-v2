@@ -169,7 +169,7 @@ class WebformElementHelper {
    *
    * @param array $element
    *   An element.
-   * @param array $properties
+   * @param array $property
    *   Element properties.
    *
    * @return bool
@@ -194,8 +194,8 @@ class WebformElementHelper {
   /**
    * Determine if element or sub-element has property and value.
    *
-   * @param array $elements
-   *   An array of elements.
+   * @param array $element
+   *   An element.
    * @param string $property
    *   An element property.
    * @param mixed|null $value

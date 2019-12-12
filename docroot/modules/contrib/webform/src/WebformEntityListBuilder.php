@@ -146,8 +146,6 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
     // Must preload libraries required by (modal) dialogs.
     WebformDialogHelper::attachLibraries($build);
 
-    $build['#attached']['library'][] = 'webform/webform.admin';
-
     return $build;
   }
 

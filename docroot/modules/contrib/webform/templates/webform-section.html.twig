@@ -41,9 +41,7 @@
       required ? 'form-required',
     ]
   %}
-  {% if title %}
-    <{{ title_tag }}{{ title_attributes.addClass(title_classes) }}>{{ title }}</{{ title_tag }}>
-  {% endif %}
+  <{{ title_tag }}{{ title_attributes.addClass(title_classes) }}>{{ title }}</{{ title_tag }}>
   <div class="webform-section-wrapper">
     {% if errors %}
       <div>

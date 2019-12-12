@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class WebformImageSelectImagesController extends ControllerBase {
 
   /**
-   * Returns response for the webform image select images autocompletion.
+   * Returns response for the webform options autocompletion.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request object containing the search string.

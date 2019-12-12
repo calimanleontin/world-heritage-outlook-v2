@@ -45,14 +45,10 @@ class WebformMultiple extends FormElement {
       '#add_more' => TRUE,
       '#add_more_items' => 1,
       '#add_more_button_label' => $this->t('Add'),
-      '#add_more_input' => TRUE,
       '#add_more_input_label' => $this->t('more items'),
       '#sorting' => TRUE,
       '#operations' => TRUE,
       '#add' => TRUE,
-      '#ajax_attributes' => [],
-      '#table_attributes' => [],
-      '#table_wrapper_attributes' => [],
       '#remove' => TRUE,
       '#process' => [
         [$class, 'processWebformMultiple'],
@@ -168,10 +164,8 @@ class WebformMultiple extends FormElement {
     }
 
     // Add wrapper to the element.
-    $ajax_attributes = $element['#ajax_attributes'];
-    $ajax_attributes['id'] = $table_id;
     $element += ['#prefix' => '', '#suffix' => ''];
-    $element['#prefix'] = $element['#prefix'] . '<div' . new Attribute($ajax_attributes) . '>';
+    $element['#prefix'] = $element['#prefix'] . '<div id="' . $table_id . '">';
     $element['#suffix'] = '</div>' . $element['#suffix'];
 
     // DEBUG:
@@ -225,13 +219,12 @@ class WebformMultiple extends FormElement {
     }
 
     // Build table.
-    $table_wrapper_attributes = $element['#table_wrapper_attributes'];
-    $table_wrapper_attributes['class'][] = 'webform-multiple-table';
+    $attributes = ['class' => ['webform-multiple-table']];
     if (count($element['#element']) > 1) {
-      $table_wrapper_attributes['class'][] = 'webform-multiple-table-responsive';
+      $attributes['class'][] = 'webform-multiple-table-responsive';
     }
     $element['items'] = [
-      '#prefix' => '<div' . new Attribute($table_wrapper_attributes) . '>',
+      '#prefix' => '<div' . new Attribute($attributes) . '>',
       '#suffix' => '</div>',
     ] + $rows;
 
@@ -240,7 +233,6 @@ class WebformMultiple extends FormElement {
       $element['items'] += [
         '#type' => 'table',
         '#header' => $header,
-        '#attributes' => $element['#table_attributes'],
       ] + $rows;
 
       // Add sorting to table.
@@ -287,7 +279,6 @@ class WebformMultiple extends FormElement {
         '#default_value' => $element['#add_more_items'],
         '#field_suffix' => $element['#add_more_input_label'],
         '#error_no_message' => TRUE,
-        '#access' => $element['#add_more_input'],
       ];
     }
 
@@ -482,7 +473,7 @@ class WebformMultiple extends FormElement {
           $title['title'] = [
             '#markup' => $child_title,
           ];
-          if (!empty($child_element['#required']) || !empty($child_element['#_required'])) {
+          if (!empty($child_element ['#required']) || !empty($child_element ['#_required'])) {
             $title['title'] += [
               '#prefix' => '<span class="form-required">',
               '#suffix' => '</span>',

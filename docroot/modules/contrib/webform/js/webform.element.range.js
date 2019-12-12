@@ -31,10 +31,10 @@
         $output.val($input.val());
 
         // Sync input and output values.
-        $input.on('change input', function () {
+        $input.on('input', function () {
           $output.val($input.val());
         });
-        $output.on('change input', function () {
+        $output.on('input', function () {
           $input.val($output.val());
         });
       });
@@ -68,7 +68,7 @@
 
         $element.css('position', 'relative');
 
-        $input.on('change input', function () {
+        $input.on('input', function () {
           var inputValue = $input.val();
 
           // Set output text with prefix and suffix.
