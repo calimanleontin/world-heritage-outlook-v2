@@ -23,11 +23,13 @@ dependencies:
     - field.storage.node.field_state
     - field.storage.node.field_wdpa_id
     - field.storage.paragraph.field_as_description
+    - field.storage.paragraph.field_as_legality
     - field.storage.paragraph.field_as_projects_contact
     - field.storage.paragraph.field_as_projects_organisation
     - field.storage.paragraph.field_as_protection_rating
     - field.storage.paragraph.field_as_protection_topic
     - field.storage.paragraph.field_as_threats_categories
+    - field.storage.paragraph.field_as_threats_extent
     - field.storage.paragraph.field_as_threats_in
     - field.storage.paragraph.field_as_threats_out
     - field.storage.paragraph.field_as_threats_rating
@@ -38,6 +40,7 @@ dependencies:
     - field.storage.paragraph.field_as_values_curr_state
     - field.storage.paragraph.field_as_values_curr_trend
     - field.storage.paragraph.field_as_values_value
+    - field.storage.paragraph.field_invasive_species_names
     - field.storage.taxonomy_term.field_iucn_region
     - field.storage.taxonomy_term.field_unesco_region
     - node.type.site_assessment
@@ -3111,6 +3114,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_categories_1:
+          id: field_as_threats_categories_1
+          table: paragraph__field_as_threats_categories
+          field: field_as_threats_categories
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Sub-category
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_in:
           id: field_as_threats_in
           table: paragraph__field_as_threats_in
@@ -3176,6 +3242,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_extent:
+          id: field_as_threats_extent
+          table: paragraph__field_as_threats_extent
+          field: field_as_threats_extent
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: 'Inside extent'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_out:
           id: field_as_threats_out
           table: paragraph__field_as_threats_out
@@ -3231,6 +3360,131 @@ display:
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_legality:
+          id: field_as_legality
+          table: paragraph__field_as_legality
+          field: field_as_legality
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Legality
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_invasive_species_names:
+          id: field_invasive_species_names
+          table: paragraph__field_invasive_species_names
+          field: field_invasive_species_names
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Species
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3430,11 +3684,14 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
+        - 'config:field.storage.paragraph.field_as_legality'
         - 'config:field.storage.paragraph.field_as_threats_categories'
+        - 'config:field.storage.paragraph.field_as_threats_extent'
         - 'config:field.storage.paragraph.field_as_threats_in'
         - 'config:field.storage.paragraph.field_as_threats_out'
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
+        - 'config:field.storage.paragraph.field_invasive_species_names'
         - 'config:field.storage.taxonomy_term.field_iucn_region'
         - 'config:field.storage.taxonomy_term.field_unesco_region'
   current_threats_excel:
@@ -4272,6 +4529,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_categories_1:
+          id: field_as_threats_categories_1
+          table: paragraph__field_as_threats_categories
+          field: field_as_threats_categories
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Sub-category
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_in:
           id: field_as_threats_in
           table: paragraph__field_as_threats_in
@@ -4337,6 +4657,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_extent:
+          id: field_as_threats_extent
+          table: paragraph__field_as_threats_extent
+          field: field_as_threats_extent
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: 'Inside extent'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_out:
           id: field_as_threats_out
           table: paragraph__field_as_threats_out
@@ -4392,6 +4775,131 @@ display:
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_legality:
+          id: field_as_legality
+          table: paragraph__field_as_legality
+          field: field_as_legality
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Legality
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_invasive_species_names:
+          id: field_invasive_species_names
+          table: paragraph__field_invasive_species_names
+          field: field_invasive_species_names
+          relationship: field_as_threats_current
+          group_type: group
+          admin_label: ''
+          label: Species
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4614,11 +5122,14 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
+        - 'config:field.storage.paragraph.field_as_legality'
         - 'config:field.storage.paragraph.field_as_threats_categories'
+        - 'config:field.storage.paragraph.field_as_threats_extent'
         - 'config:field.storage.paragraph.field_as_threats_in'
         - 'config:field.storage.paragraph.field_as_threats_out'
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
+        - 'config:field.storage.paragraph.field_invasive_species_names'
         - 'config:field.storage.taxonomy_term.field_iucn_region'
         - 'config:field.storage.taxonomy_term.field_unesco_region'
   overall_summary:
@@ -5584,6 +6095,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_categories_1:
+          id: field_as_threats_categories_1
+          table: paragraph__field_as_threats_categories
+          field: field_as_threats_categories
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Sub-category
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_in:
           id: field_as_threats_in
           table: paragraph__field_as_threats_in
@@ -5649,6 +6223,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_extent:
+          id: field_as_threats_extent
+          table: paragraph__field_as_threats_extent
+          field: field_as_threats_extent
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: 'Inside extent'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_out:
           id: field_as_threats_out
           table: paragraph__field_as_threats_out
@@ -5704,6 +6341,131 @@ display:
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_legality:
+          id: field_as_legality
+          table: paragraph__field_as_legality
+          field: field_as_legality
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Legality
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_invasive_species_names:
+          id: field_invasive_species_names
+          table: paragraph__field_invasive_species_names
+          field: field_invasive_species_names
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Species
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -5898,11 +6660,14 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
+        - 'config:field.storage.paragraph.field_as_legality'
         - 'config:field.storage.paragraph.field_as_threats_categories'
+        - 'config:field.storage.paragraph.field_as_threats_extent'
         - 'config:field.storage.paragraph.field_as_threats_in'
         - 'config:field.storage.paragraph.field_as_threats_out'
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
+        - 'config:field.storage.paragraph.field_invasive_species_names'
         - 'config:field.storage.taxonomy_term.field_iucn_region'
         - 'config:field.storage.taxonomy_term.field_unesco_region'
   potential_threats_excel:
@@ -6740,6 +7505,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_categories_1:
+          id: field_as_threats_categories_1
+          table: paragraph__field_as_threats_categories
+          field: field_as_threats_categories
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Sub-category
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_in:
           id: field_as_threats_in
           table: paragraph__field_as_threats_in
@@ -6805,6 +7633,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_as_threats_extent:
+          id: field_as_threats_extent
+          table: paragraph__field_as_threats_extent
+          field: field_as_threats_extent
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: 'Inside extent'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_as_threats_out:
           id: field_as_threats_out
           table: paragraph__field_as_threats_out
@@ -6860,6 +7751,131 @@ display:
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_legality:
+          id: field_as_legality
+          table: paragraph__field_as_legality
+          field: field_as_legality
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Legality
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_invasive_species_names:
+          id: field_invasive_species_names
+          table: paragraph__field_invasive_species_names
+          field: field_invasive_species_names
+          relationship: field_as_threats_potential
+          group_type: group
+          admin_label: ''
+          label: Species
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -7082,11 +8098,14 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
+        - 'config:field.storage.paragraph.field_as_legality'
         - 'config:field.storage.paragraph.field_as_threats_categories'
+        - 'config:field.storage.paragraph.field_as_threats_extent'
         - 'config:field.storage.paragraph.field_as_threats_in'
         - 'config:field.storage.paragraph.field_as_threats_out'
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
+        - 'config:field.storage.paragraph.field_invasive_species_names'
         - 'config:field.storage.taxonomy_term.field_iucn_region'
         - 'config:field.storage.taxonomy_term.field_unesco_region'
   projects:
