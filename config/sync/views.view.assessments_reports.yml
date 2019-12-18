@@ -3162,7 +3162,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -3227,7 +3227,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -4323,7 +4323,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -4388,7 +4388,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -5635,7 +5635,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -5700,7 +5700,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -6791,7 +6791,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
@@ -6856,7 +6856,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: unicode-yes-no
+            format: boolean
             format_custom_true: ''
             format_custom_false: ''
           group_column: entity_id
