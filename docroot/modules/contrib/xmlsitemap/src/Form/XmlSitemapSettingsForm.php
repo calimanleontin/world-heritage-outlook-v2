@@ -199,7 +199,7 @@ class XmlSitemapSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('lastmod_format'),
     ];
     foreach ($form['advanced']['lastmod_format']['#options'] as $key => &$label) {
-      $label .= ' (' . gmdate($key, REQUEST_TIME) . ')';
+      $label .= ' (' . gmdate($key) . ')';
     }
     $form['advanced']['xmlsitemap_developer_mode'] = [
       '#type' => 'checkbox',

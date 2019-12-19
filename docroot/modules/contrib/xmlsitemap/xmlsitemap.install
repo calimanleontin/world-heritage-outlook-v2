@@ -7,10 +7,10 @@
  * @ingroup xmlsitemap
  */
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
+use Drupal\user\RoleInterface;
 
 /**
  * Implements hook_requirements().
@@ -121,7 +121,7 @@ function xmlsitemap_requirements($phase) {
 
     // Check when the cached files were last generated.
     $generated_last = \Drupal::state()->get('xmlsitemap_generated_last', 0);
-    $generated_ago = REQUEST_TIME - $generated_last;
+    $generated_ago = \Drupal::time()->getRequestTime() - $generated_last;
     $requirements['xmlsitemap_generated'] = [
       'title' => $t('XML sitemap'),
       'value' => $generated_last ? $t('Last attempted generation on @date (@interval ago).', [
@@ -142,7 +142,7 @@ function xmlsitemap_requirements($phase) {
       if (!\Drupal::config('xmlsitemap.settings')->get('disable_cron_regeneration')) {
         $last_run = max($generated_last, \Drupal::state()->get('system.cron_last', 0), \Drupal::state()->get('install_time', 0));
       }
-      $last_run_ago = REQUEST_TIME - $last_run;
+      $last_run_ago = \Drupal::time()->getRequestTime() - $last_run;
       $cron_warning_threshold = \Drupal::config('system.cron')->get('threshold.requirements_warning');
       $cron_error_threshold = \Drupal::config('system.cron')->get('threshold.requirements_error');
       if ($max_filesize == 0) {
@@ -174,7 +174,7 @@ function xmlsitemap_requirements($phase) {
         'title' => $t('XML sitemap user'),
         'value' => $t('Anonymous access to user profiles'),
         'description' => $t('In order to list user profile links in the sitemap, the anonymous user must have the <a href="@perm-link"><em>View user profiles</em> permission</a>.', [
-          '@perm-link' => Url::fromRoute('entity.user_role.edit_permissions_form', ['user_role' => DRUPAL_ANONYMOUS_RID], ['fragment' => 'module-user'])->toString(),
+          '@perm-link' => Url::fromRoute('entity.user_role.edit_permissions_form', ['user_role' => RoleInterface::ANONYMOUS_ID], ['fragment' => 'module-user'])->toString(),
         ]),
         'severity' => REQUIREMENT_ERROR,
       ];
@@ -303,7 +303,7 @@ function xmlsitemap_install() {
 
   // Insert the homepage link into the {xmlsitemap} table so we do not show an
   // empty sitemap after install.
-  db_insert('xmlsitemap')
+  \Drupal::database()->insert('xmlsitemap')
     ->fields([
       'type' => 'frontpage',
       'id' => 0,

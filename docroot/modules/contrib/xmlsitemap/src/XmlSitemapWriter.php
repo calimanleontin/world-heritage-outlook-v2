@@ -85,7 +85,7 @@ class XmlSitemapWriter extends \XMLWriter {
   public function openUri($uri) {
     $return = parent::openUri($uri);
     if (!$return) {
-      throw new XmlSitemapGenerationException(t('Could not open file @file for writing.', ['@file' => $uri]));
+      throw new XmlSitemapGenerationException("Could not open file $uri for writing.");
     }
     return $return;
   }
@@ -110,10 +110,10 @@ class XmlSitemapWriter extends \XMLWriter {
     $this->setIndent(FALSE);
     $result = parent::startDocument($version, $encoding);
     if (!$result) {
-      throw new XmlSitemapGenerationException(t('Unknown error occurred while writing to file @file.', ['@file' => $this->uri]));
+      throw new XmlSitemapGenerationException("Unknown error occurred while writing to file {$this->uri}.");
     }
     if (\Drupal::config('xmlsitemap.settings')->get('xsl')) {
-      $this->writeXSL();
+      $this->writeXsl();
     }
     $this->startElement($this->isIndex() ? 'sitemapindex' : 'urlset', TRUE);
     return $result;
@@ -122,7 +122,7 @@ class XmlSitemapWriter extends \XMLWriter {
   /**
    * Adds the XML stylesheet to the XML page.
    */
-  public function writeXSL() {
+  public function writeXsl() {
     $xls_url = Url::fromRoute('xmlsitemap.sitemap_xsl')->toString();
     $settings = \Drupal::config('language.negotiation');
     if ($settings) {
@@ -147,6 +147,8 @@ class XmlSitemapWriter extends \XMLWriter {
    */
   public function getRootAttributes() {
     $attributes['xmlns'] = 'http://www.sitemaps.org/schemas/sitemap/0.9';
+    // @todo Should content_moderation implement hook_xmlsitemap_root_attributes_alter() instead?
+    $attributes['xmlns:xhtml'] = 'http://www.w3.org/1999/xhtml';
     if (\Drupal::state()->get('xmlsitemap_developer_mode')) {
       $attributes['xmlns:xsi'] = 'http://www.w3.org/2001/XMLSchema-instance';
       $attributes['xsi:schemaLocation'] = 'http://www.sitemaps.org/schemas/sitemap/0.9';
@@ -175,8 +177,8 @@ class XmlSitemapWriter extends \XMLWriter {
     parent::startElement($name);
 
     if ($root) {
-      foreach ($this->getRootAttributes() as $name => $value) {
-        $this->writeAttribute($name, $value);
+      foreach ($this->getRootAttributes() as $key => $value) {
+        $this->writeAttribute($key, $value);
       }
       $this->writeRaw(PHP_EOL);
     }
@@ -228,11 +230,8 @@ class XmlSitemapWriter extends \XMLWriter {
    *
    * @return string
    *   Document uri.
-   *
-   * @codingStandardsIgnoreStart
    */
-  public function getURI() {
-    // @codingStandardsIgnoreEnd
+  public function getUri() {
     return $this->uri;
   }
 
@@ -258,7 +257,7 @@ class XmlSitemapWriter extends \XMLWriter {
     $return = parent::endDocument();
 
     if (!$return) {
-      throw new XmlSitemapGenerationException(t('Unknown error occurred while writing to file @file.', ['@file' => $this->uri]));
+      throw new XmlSitemapGenerationException("Unknown error occurred while writing to file {$this->uri}.");
     }
 
     if (xmlsitemap_var('gz')) {
@@ -284,11 +283,21 @@ class XmlSitemapWriter extends \XMLWriter {
    *
    * The extra whitespace has been removed.
    *
-   * @param $array
+   * @param array $array
+   *   An array where each item represents an element and is either a:
+   *   - (key => value) pair (<key>value</key>)
+   *   - Associative array with fields:
+   *     - 'key': element name
+   *     - 'value': element contents
+   *     - 'attributes': associative array of element attributes or an
+   *       \Drupal\Core\Template\Attribute object
+   *   In both cases, 'value' can be a simple string, or it can be another
+   *   array with the same format as $array itself for nesting.
    *
    * @return string
+   *   The XML output.
    */
-  public static function formatXmlElements($array) {
+  public static function formatXmlElements(array $array) {
     $output = '';
     foreach ($array as $key => $value) {
       if (is_numeric($key)) {
@@ -301,10 +310,10 @@ class XmlSitemapWriter extends \XMLWriter {
             $output .= static::toString($value['attributes']);
           }
           if (isset($value['value']) && $value['value'] != '') {
-            $output .= '>' . (is_array($value['value']) ? static::formatXmlElements($value['value']) : Html::escape(static::toString($value['value']))) . '</' . $value['key'] . ">";
+            $output .= '>' . (is_array($value['value']) ? static::formatXmlElements($value['value']) : Html::escape(static::toString($value['value']))) . '</' . $value['key'] . '>';
           }
           else {
-            $output .= " />";
+            $output .= ' />';
           }
         }
       }
@@ -322,6 +331,7 @@ class XmlSitemapWriter extends \XMLWriter {
    *   The value to turn into a string.
    *
    * @return string
+   *   The string value.
    */
   public static function toString($value) {
     if (is_object($value)) {

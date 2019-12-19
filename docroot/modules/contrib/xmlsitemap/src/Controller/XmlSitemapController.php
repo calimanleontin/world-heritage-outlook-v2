@@ -51,7 +51,7 @@ class XmlSitemapController extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
    *
-   * @throws NotFoundHttpException
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
    *
    * @return \Symfony\Component\HttpFoundation\Response
    *   The sitemap in XML format or plain text if xmlsitemap_developer_mode flag

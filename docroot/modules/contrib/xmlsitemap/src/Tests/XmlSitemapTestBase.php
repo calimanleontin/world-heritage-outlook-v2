@@ -388,7 +388,7 @@ abstract class XmlSitemapTestBase extends WebTestBase {
       return [];
     }
 
-    $query = db_select('watchdog');
+    $query = \Drupal::database()->select('watchdog');
     $query->fields('watchdog', [
       'wid',
       'type',

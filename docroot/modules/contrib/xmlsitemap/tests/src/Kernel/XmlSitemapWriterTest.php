@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\xmlsitemap\Kernel;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\xmlsitemap\Entity\XmlSitemap;
 use Drupal\xmlsitemap\XmlSitemapWriter;
 
@@ -63,11 +65,11 @@ class XmlSitemapWriterTest extends KernelTestBase {
     $expected = '<url><item1>value1</item1><item2>&lt;value2&gt;</item2><item3 attr1key="attr1value" attr2key="&lt;attr2value&gt;"><subkey>subvalue</subkey></item3></url>' . PHP_EOL;
     $this->assertEquals($expected, $output);
 
-    $writer->writeSitemapElement('url', [
+    $writer->writeElement('url', [
       'loc' => 'https://www.example.com/test',
       'image:image' => [
-        'image:loc' => 'https://www.example.com/test.jpg',
-        'image:title' => t('The image title'),
+        'image:loc' => Url::fromUri('https://www.example.com/test.jpg'),
+        'image:title' => new TranslatableMarkup('The image title'),
         'image:caption' => "'The image & its \"caption.\"'",
       ],
     ]);

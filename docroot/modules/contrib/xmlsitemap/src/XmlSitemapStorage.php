@@ -93,6 +93,17 @@ class XmlSitemapStorage extends ConfigEntityStorage {
 
       // Load the entity URI.
       $entity->uri = xmlsitemap_sitemap_uri($entity);
+
+      // Load in the default contexts if they haven't been set yet.
+      $contexts = xmlsitemap_get_context_info();
+      foreach ($contexts as $context_key => $context) {
+        if (!isset($entity->context[$context_key]) && isset($context['default'])) {
+          $entity->context[$context_key] = $context['default'];
+        }
+      }
+
+      // Remove invalid contexts.
+      $entity->context = array_intersect_key($entity->context, $contexts);
     }
 
     return $entities;

@@ -58,7 +58,7 @@ xmlsitemap.settings.*.*:
       type: integer
       label: 'Change frequency of the bundle'
 
-xmlsitemap.*:
+xmlsitemap.xmlsitemap.*:
   type: config_entity
   label: 'Sitemap'
   mapping:

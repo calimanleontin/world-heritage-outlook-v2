@@ -76,7 +76,7 @@ class XmlSitemapCommands extends DrushCommands {
     // Build a list of rebuildable link types.
     $rebuild_types = xmlsitemap_get_rebuildable_link_types();
     if (empty($rebuild_types)) {
-      drush_log(dt('No link types are rebuildable.'), 'warning');
+      $this->logger()->warning(dt('No link types are rebuildable.'));
     }
 
     $batch = xmlsitemap_rebuild_batch($rebuild_types, TRUE);

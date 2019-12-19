@@ -10,8 +10,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Url;
 use Drupal\xmlsitemap\XmlSitemapLinkStorageInterface;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -203,7 +201,7 @@ class XmlSitemapCustomEditForm extends FormBase {
     $form_state->cleanValues();
     $link = $form_state->getValues();
     $this->linkStorage->save($link);
-    $this->messenger()->addMessage($this->t('The custom link for %loc was saved.', ['%loc' => $link['loc']]));
+    $this->messenger()->addStatus($this->t('The custom link for %loc was saved.', ['%loc' => $link['loc']]));
 
     $form_state->setRedirect('xmlsitemap_custom.list');
   }
