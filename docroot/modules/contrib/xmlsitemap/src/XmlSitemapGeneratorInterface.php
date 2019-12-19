@@ -86,7 +86,7 @@ interface XmlSitemapGeneratorInterface {
    *   The XML sitemap config entity.
    * @param int|null $pages
    *   The number of pages to write in the sitemap. Defaults to the value of
-   *   @code $sitemap->getChunks() @endcode.
+   *   $sitemap->getChunks().
    */
   public function generateIndex(XmlSitemapInterface $sitemap, $pages = NULL);
 
@@ -142,7 +142,7 @@ interface XmlSitemapGeneratorInterface {
    *
    * @param string $entity_type_id
    *   Entity type to be rebuilt.
-   * @param array $context
+   * @param array|\ArrayAccess $context
    *   Context to be rebuilt.
    */
   public function rebuildBatchFetch($entity_type_id, &$context);

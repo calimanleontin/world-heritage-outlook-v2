@@ -241,7 +241,7 @@ class XmlSitemapCustomAddForm extends FormBase {
     $form_state->cleanValues();
     $link = $form_state->getValues();
     $this->linkStorage->save($link);
-    $this->messenger()->addMessage($this->t('The custom link for %loc was saved.', ['%loc' => $link['loc']]));
+    $this->messenger()->addStatus($this->t('The custom link for %loc was saved.', ['%loc' => $link['loc']]));
 
     $form_state->setRedirect('xmlsitemap_custom.list');
   }

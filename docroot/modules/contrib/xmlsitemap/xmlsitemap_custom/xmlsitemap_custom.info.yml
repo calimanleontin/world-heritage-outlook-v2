@@ -3,11 +3,12 @@ type: module
 description: 'Adds user configurable links to the sitemap.'
 package: 'XML Sitemap'
 core: 8.x
+core_version_requirement: ^8 || ^9
 configure: xmlsitemap_custom.list
 dependencies:
-    - xmlsitemap:xmlsitemap
+  - xmlsitemap:xmlsitemap
 
-# Information added by Drupal.org packaging script on 2019-12-03
-version: '8.x-1.0-alpha4'
+# Information added by Drupal.org packaging script on 2019-12-18
+version: '8.x-1.0-rc1'
 project: 'xmlsitemap'
-datestamp: 1575402785
+datestamp: 1576705694

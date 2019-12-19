@@ -197,7 +197,7 @@ class XmlSitemapEntitiesSettingsForm extends ConfigFormBase {
           if (!$values['settings'][$key]['types'][$bundle_key]) {
             xmlsitemap_link_bundle_delete($key, $bundle_key, TRUE);
           }
-          else if (!xmlsitemap_link_bundle_check_enabled($key, $bundle_key)) {
+          elseif (!xmlsitemap_link_bundle_check_enabled($key, $bundle_key)) {
             xmlsitemap_link_bundle_enable($key, $bundle_key);
           }
         }

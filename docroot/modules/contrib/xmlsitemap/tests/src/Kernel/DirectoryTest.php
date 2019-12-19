@@ -28,14 +28,17 @@ class DirectoryTest extends KernelTestBase {
    * @covers ::_xmlsitemap_delete_recursive
    */
   public function testClearDirectory() {
+    /** @var \Drupal\Core\File\FileSystemInterface $fileSystem */
+    $fileSystem = $this->container->get('file_system');
+
     // Set up a couple more directories and files.
     $directory = 'public://not-xmlsitemap';
-    file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+    $fileSystem->prepareDirectory($directory, $fileSystem::CREATE_DIRECTORY | $fileSystem::MODIFY_PERMISSIONS);
     $directory = 'public://xmlsitemap/test';
-    file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
-    file_unmanaged_save_data('File unrelated to XML sitemap', 'public://not-xmlsitemap/file.txt');
-    file_unmanaged_save_data('File unrelated to XML sitemap', 'public://file.txt');
-    file_unmanaged_save_data('Test contents', 'public://xmlsitemap/test/index.xml');
+    $fileSystem->prepareDirectory($directory, $fileSystem::CREATE_DIRECTORY | $fileSystem::MODIFY_PERMISSIONS);
+    $fileSystem->saveData('File unrelated to XML sitemap', 'public://not-xmlsitemap/file.txt');
+    $fileSystem->saveData('File unrelated to XML sitemap', 'public://file.txt');
+    $fileSystem->saveData('Test contents', 'public://xmlsitemap/test/index.xml');
 
     // Set the directory to an empty value.
     \Drupal::configFactory()->getEditable('xmlsitemap.settings')->clear('path')->save();
@@ -53,7 +56,7 @@ class DirectoryTest extends KernelTestBase {
     drupal_static_reset('xmlsitemap_get_directory');
     $result = xmlsitemap_clear_directory(NULL, TRUE);
 
-    // Test that only the xmlsitemap directory was deleted..xml');
+    // Test that only the xmlsitemap directory was deleted.
     $this->assertDirectoryNotExists('public://xmlsitemap/test');
     $this->assertDirectoryExists('public://not-xmlsitemap');
     $this->assertFileExists('public://file.txt');
