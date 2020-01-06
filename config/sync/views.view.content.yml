@@ -1302,6 +1302,7 @@ display:
         filter_groups: false
         fields: false
         relationships: false
+        query: false
       filter_groups:
         operator: AND
         groups:
@@ -1795,6 +1796,14 @@ display:
           admin_label: country
           required: true
           plugin_id: standard
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_comment: ''
+          query_tags: null
     display_plugin: page
     display_title: Assessments
     id: page_2
