@@ -1303,6 +1303,7 @@ display:
         fields: false
         relationships: false
         query: false
+        group_by: false
       filter_groups:
         operator: AND
         groups:
@@ -1804,6 +1805,7 @@ display:
           replica: false
           query_comment: ''
           query_tags: null
+      group_by: true
     display_plugin: page
     display_title: Assessments
     id: page_2
