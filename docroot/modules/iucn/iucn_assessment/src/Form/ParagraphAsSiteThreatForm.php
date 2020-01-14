@@ -233,10 +233,11 @@ class ParagraphAsSiteThreatForm {
     $formFields = array_keys($form_state->cleanValues()->getValues());
 
     foreach (static::AFFECTED_VALUES_FIELDS as $field) {
-      if (!in_array("{$field}_select", $formFields)) {
+      $fieldSelect = "{$field}_select";
+      if (!in_array($fieldSelect, $formFields)) {
         continue;
       }
-      $selected = $form_state->getValue("{$field}_select");
+      $selected = $form_state->getValue($fieldSelect);
 
       $values = [];
       if (!empty($selected) && is_array($selected)) {
