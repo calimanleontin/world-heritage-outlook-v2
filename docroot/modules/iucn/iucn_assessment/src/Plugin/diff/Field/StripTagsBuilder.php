@@ -32,7 +32,13 @@ class StripTagsBuilder extends FieldDiffBuilderBase {
 
         $data = str_replace("  ", ' ', $data);
         $data = trim(strip_tags(html_entity_decode($data)));
-        $data = str_replace("\r\n", "\n", $data);
+        $data = str_replace("\r\n", PHP_EOL, $data);
+        $data = explode(PHP_EOL, $data);
+        foreach ($data as &$datum) {
+          // Trim each line of the string.
+          $datum = trim($datum);
+        }
+        $data = implode(PHP_EOL, $data);
 
         $result[$field_key][] = $data;
       }
