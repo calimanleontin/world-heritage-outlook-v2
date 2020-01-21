@@ -141,7 +141,6 @@ class NotificationService {
     $lang_code = $this->currentUser->getPreferredLangcode();
     $from = $this->configFactory->get('system.site')->get('mail');
     $params['from'] = $from;
-    $params['Bcc'] = Settings::get('who_archive_email');
     $params['subject'] = $subject;
     $params['message'] = $content;
     $mailerResponse = $this->mailManager->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
@@ -161,6 +160,11 @@ class NotificationService {
       '@subject' => $subject,
       '@key' => $key,
     ]);
+
+    $archiveEmail = Settings::get('who_archive_email');
+    if (!empty($archiveEmail)) {
+      $this->mailManager->mail('iucn_notifications', $key, $archiveEmail, $lang_code, $params, NULL, TRUE);
+    }
     return TRUE;
   }
 
