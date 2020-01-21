@@ -177,3 +177,5 @@ $settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-files');
 $config['system.file']['path']['temporary'] = '/tmp';
 
 $config['google_analytics.settings']['account'] = 'UA-0-0';
+
+$settings['who_archive_email'] = 'xyz@iucn.org';

@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\Utility\Token;
 use Drupal\pet\Entity\Pet;
 use Drupal\pet\PetInterface;
@@ -140,6 +141,7 @@ class NotificationService {
     $lang_code = $this->currentUser->getPreferredLangcode();
     $from = $this->configFactory->get('system.site')->get('mail');
     $params['from'] = $from;
+    $params['Bcc'] = Settings::get('who_archive_email');
     $params['subject'] = $subject;
     $params['message'] = $content;
     $mailerResponse = $this->mailManager->mail('iucn_notifications', $key, $to, $lang_code, $params, NULL, TRUE);
