@@ -644,7 +644,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -707,7 +707,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1971,6 +1971,70 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'IUCN region'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: site_combined_countries_regions
+          settings:
+            link: 1
+            field: field_iucn_region
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       filters:
         type:
           id: type
@@ -2736,7 +2800,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2747,14 +2811,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -2796,10 +2860,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2810,14 +2875,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -2859,10 +2924,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3840,8 +3906,6 @@ display:
         - 'config:field.storage.paragraph.field_as_benefits_pollut_level'
         - 'config:field.storage.paragraph.field_as_benefits_pollut_trend'
         - 'config:field.storage.paragraph.field_as_comment'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   benefits_excel:
     display_plugin: data_export
     id: benefits_excel
@@ -4289,7 +4353,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4300,14 +4364,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -4349,10 +4413,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4363,14 +4428,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -4403,7 +4468,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -4412,10 +4477,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -5423,8 +5489,6 @@ display:
         - 'config:field.storage.paragraph.field_as_benefits_pollut_level'
         - 'config:field.storage.paragraph.field_as_benefits_pollut_trend'
         - 'config:field.storage.paragraph.field_as_comment'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   current_threats:
     display_plugin: page
     id: current_threats
@@ -5872,7 +5936,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -5883,14 +5947,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -5932,10 +5996,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -5946,14 +6011,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -5995,10 +6060,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -6838,8 +6904,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_invasive_species_names'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   current_threats_excel:
     display_plugin: data_export
     id: current_threats_excel
@@ -7287,7 +7351,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -7298,14 +7362,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -7347,10 +7411,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -7361,14 +7426,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -7410,10 +7475,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -8276,8 +8342,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_invasive_species_names'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   overall_summary:
     display_plugin: page
     id: overall_summary
@@ -8305,6 +8369,1774 @@ display:
       title: 'Overall summary'
       defaults:
         title: false
+        fields: false
+      fields:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ID
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
+        vid:
+          id: vid
+          table: node_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Revision ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: vid
+          plugin_id: field
+        field_wdpa_id:
+          id: field_wdpa_id
+          table: node__field_wdpa_id
+          field: field_wdpa_id
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'WDPA ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_cycle:
+          id: field_as_cycle
+          table: node__field_as_cycle
+          field: field_as_cycle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Cycle
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_state:
+          id: field_state
+          table: node__field_state
+          field: field_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Stage
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: Title
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: 'node/{{ nid }}/revisions/{{ vid }}/view'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: Country
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'IUCN region'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: site_combined_countries_regions
+          settings:
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'UNESCO region'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: site_combined_countries_regions
+          settings:
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_inscription_year:
+          id: field_inscription_year
+          table: node__field_inscription_year
+          field: field_inscription_year
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'Year inscribed'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_year
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_state_1:
+          id: field_as_vass_wh_state_1
+          table: node__field_as_vass_wh_state
+          field: field_as_vass_wh_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'WH values assessment ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_state:
+          id: field_as_vass_wh_state
+          table: node__field_as_vass_wh_state
+          field: field_as_vass_wh_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'World Heritage value'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: '0'
+          element_class: 'assessment-level-{{ field_as_vass_wh_state_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_trend:
+          id: field_as_vass_wh_trend
+          table: node__field_as_vass_wh_trend
+          field: field_as_vass_wh_trend
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'World Heritage trend'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_state_1:
+          id: field_as_vass_bio_state_1
+          table: node__field_as_vass_bio_state
+          field: field_as_vass_bio_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other values assessment ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_state:
+          id: field_as_vass_bio_state
+          table: node__field_as_vass_bio_state
+          field: field_as_vass_bio_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other biodiversity value'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_vass_bio_state_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_trend:
+          id: field_as_vass_bio_trend
+          table: node__field_as_vass_bio_trend
+          field: field_as_vass_bio_trend
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other biodiversity trend'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_current_rating_1:
+          id: field_as_threats_current_rating_1
+          table: node__field_as_threats_current_rating
+          field: field_as_threats_current_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall current threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_potent_rating_1:
+          id: field_as_threats_potent_rating_1
+          table: node__field_as_threats_potent_rating
+          field: field_as_threats_potent_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall potential threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_rating_1:
+          id: field_as_threats_rating_1
+          table: node__field_as_threats_rating
+          field: field_as_threats_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall assessment of threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_current_rating:
+          id: field_as_threats_current_rating
+          table: node__field_as_threats_current_rating
+          field: field_as_threats_current_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current threats'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_current_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_potent_rating:
+          id: field_as_threats_potent_rating
+          table: node__field_as_threats_potent_rating
+          field: field_as_threats_potent_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Potential threats'
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_potent_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_rating:
+          id: field_as_threats_rating
+          table: node__field_as_threats_rating
+          field: field_as_threats_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall Assessment of Threats'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_rating_1:
+          id: field_as_protection_ov_rating_1
+          table: node__field_as_protection_ov_rating
+          field: field_as_protection_ov_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection overall rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_rating:
+          id: field_as_protection_ov_rating
+          table: node__field_as_protection_ov_rating
+          field: field_as_protection_ov_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection and management'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_protection_ov_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_out_rate_1:
+          id: field_as_protection_ov_out_rate_1
+          table: node__field_as_protection_ov_out_rate
+          field: field_as_protection_ov_out_rate
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection overall rating outside factors ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_out_rate:
+          id: field_as_protection_ov_out_rate
+          table: node__field_as_protection_ov_out_rate
+          field: field_as_protection_ov_out_rate
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection and management (threats outside the site)'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_protection_ov_out_rate_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_global_assessment_level_1:
+          id: field_as_global_assessment_level_1
+          table: node__field_as_global_assessment_level
+          field: field_as_global_assessment_level
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Global assessment level ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_global_assessment_level:
+          id: field_as_global_assessment_level
+          table: node__field_as_global_assessment_level
+          field: field_as_global_assessment_level
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Conservation Outlook'
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_global_assessment_level_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
     cache_metadata:
       max-age: -1
       contexts:
@@ -8330,8 +10162,6 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   overall_summary_excel:
     display_plugin: data_export
     id: overall_summary_excel
@@ -8379,6 +10209,1775 @@ display:
               category: ''
               manager: ''
               company: ''
+      fields:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ID
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
+        vid:
+          id: vid
+          table: node_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Revision ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: vid
+          plugin_id: field
+        field_wdpa_id:
+          id: field_wdpa_id
+          table: node__field_wdpa_id
+          field: field_wdpa_id
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'WDPA ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_cycle:
+          id: field_as_cycle
+          table: node__field_as_cycle
+          field: field_as_cycle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Cycle
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_state:
+          id: field_state
+          table: node__field_state
+          field: field_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Stage
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: Title
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: 'node/{{ nid }}/revisions/{{ vid }}/view'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: Country
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'IUCN region'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: site_combined_countries_regions
+          settings:
+            link: 1
+            field: field_iucn_region
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'UNESCO region'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: site_combined_countries_regions
+          settings:
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_inscription_year:
+          id: field_inscription_year
+          table: node__field_inscription_year
+          field: field_inscription_year
+          relationship: field_as_site
+          group_type: group
+          admin_label: ''
+          label: 'Year inscribed'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_year
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_state_1:
+          id: field_as_vass_wh_state_1
+          table: node__field_as_vass_wh_state
+          field: field_as_vass_wh_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'WH values assessment ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_state:
+          id: field_as_vass_wh_state
+          table: node__field_as_vass_wh_state
+          field: field_as_vass_wh_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'World Heritage value'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: '0'
+          element_class: 'assessment-level-{{ field_as_vass_wh_state_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_wh_trend:
+          id: field_as_vass_wh_trend
+          table: node__field_as_vass_wh_trend
+          field: field_as_vass_wh_trend
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'World Heritage trend'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_state_1:
+          id: field_as_vass_bio_state_1
+          table: node__field_as_vass_bio_state
+          field: field_as_vass_bio_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other values assessment ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_state:
+          id: field_as_vass_bio_state
+          table: node__field_as_vass_bio_state
+          field: field_as_vass_bio_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other biodiversity value'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_vass_bio_state_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_vass_bio_trend:
+          id: field_as_vass_bio_trend
+          table: node__field_as_vass_bio_trend
+          field: field_as_vass_bio_trend
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Other biodiversity trend'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_current_rating_1:
+          id: field_as_threats_current_rating_1
+          table: node__field_as_threats_current_rating
+          field: field_as_threats_current_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall current threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_potent_rating_1:
+          id: field_as_threats_potent_rating_1
+          table: node__field_as_threats_potent_rating
+          field: field_as_threats_potent_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall potential threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_rating_1:
+          id: field_as_threats_rating_1
+          table: node__field_as_threats_rating
+          field: field_as_threats_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall assessment of threats rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_current_rating:
+          id: field_as_threats_current_rating
+          table: node__field_as_threats_current_rating
+          field: field_as_threats_current_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current threats'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_current_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_potent_rating:
+          id: field_as_threats_potent_rating
+          table: node__field_as_threats_potent_rating
+          field: field_as_threats_potent_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Potential threats'
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_potent_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_threats_rating:
+          id: field_as_threats_rating
+          table: node__field_as_threats_rating
+          field: field_as_threats_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Overall Assessment of Threats'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_threats_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_rating_1:
+          id: field_as_protection_ov_rating_1
+          table: node__field_as_protection_ov_rating
+          field: field_as_protection_ov_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection overall rating ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_rating:
+          id: field_as_protection_ov_rating
+          table: node__field_as_protection_ov_rating
+          field: field_as_protection_ov_rating
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection and management'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_protection_ov_rating_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_out_rate_1:
+          id: field_as_protection_ov_out_rate_1
+          table: node__field_as_protection_ov_out_rate
+          field: field_as_protection_ov_out_rate
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection overall rating outside factors ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_protection_ov_out_rate:
+          id: field_as_protection_ov_out_rate
+          table: node__field_as_protection_ov_out_rate
+          field: field_as_protection_ov_out_rate
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Protection and management (threats outside the site)'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_protection_ov_out_rate_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_global_assessment_level_1:
+          id: field_as_global_assessment_level_1
+          table: node__field_as_global_assessment_level
+          field: field_as_global_assessment_level
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Global assessment level ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_as_global_assessment_level:
+          id: field_as_global_assessment_level
+          table: node__field_as_global_assessment_level
+          field: field_as_global_assessment_level
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Conservation Outlook'
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'assessment-level-{{ field_as_global_assessment_level_1 }}'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+      defaults:
+        fields: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -8404,8 +12003,6 @@ display:
         - 'config:field.storage.node.field_inscription_year'
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   potential_threats:
     display_plugin: page
     id: potential_threats
@@ -8853,7 +12450,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -8864,14 +12461,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -8913,10 +12510,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -8927,14 +12525,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -8976,10 +12574,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -9814,8 +13413,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_invasive_species_names'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   potential_threats_excel:
     display_plugin: data_export
     id: potential_threats_excel
@@ -10263,7 +13860,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -10274,14 +13871,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -10314,7 +13911,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -10323,10 +13920,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -10337,14 +13935,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -10377,7 +13975,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -10386,10 +13984,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -11252,8 +14851,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_rating'
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_invasive_species_names'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   projects:
     display_plugin: page
     id: projects
@@ -11701,7 +15298,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -11712,14 +15309,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -11761,10 +15358,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -11775,14 +15373,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -11824,10 +15422,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -12230,8 +15829,6 @@ display:
         - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_projects_contact'
         - 'config:field.storage.paragraph.field_as_projects_organisation'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   projects_excel:
     display_plugin: data_export
     id: projects_excel
@@ -12679,7 +16276,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -12690,14 +16287,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -12730,7 +16327,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -12739,10 +16336,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -12753,14 +16351,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -12793,7 +16391,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -12802,10 +16400,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -13237,8 +16836,6 @@ display:
         - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_projects_contact'
         - 'config:field.storage.paragraph.field_as_projects_organisation'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   protection_and_management:
     display_plugin: page
     id: protection_and_management
@@ -13686,7 +17283,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -13697,14 +17294,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -13746,10 +17343,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -13760,14 +17358,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -13809,10 +17407,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -14301,8 +17900,6 @@ display:
         - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_protection_rating'
         - 'config:field.storage.paragraph.field_as_protection_topic'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   protection_and_management_excel:
     display_plugin: data_export
     id: protection_and_management_excel
@@ -14750,7 +18347,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -14761,14 +18358,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country:
+          id: field_country
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -14801,7 +18398,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -14810,10 +18407,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -14824,14 +18422,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -14864,7 +18462,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -14873,10 +18471,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -15393,8 +18992,6 @@ display:
         - 'config:field.storage.paragraph.field_as_description'
         - 'config:field.storage.paragraph.field_as_protection_rating'
         - 'config:field.storage.paragraph.field_as_protection_topic'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   threats_affected_values:
     display_plugin: page
     id: threats_affected_values
@@ -15842,7 +19439,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -15853,14 +19450,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -15902,10 +19499,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -15916,14 +19514,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -15965,10 +19563,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -16603,8 +20202,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_as_values_criteria'
         - 'config:field.storage.paragraph.field_as_values_value'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   threats_affected_values_excel:
     display_plugin: data_export
     id: threats_affected_values_excel
@@ -17052,7 +20649,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -17063,14 +20660,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -17103,7 +20700,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -17112,10 +20709,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -17126,14 +20724,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -17166,7 +20764,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -17175,10 +20773,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: true
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -17841,8 +21440,6 @@ display:
         - 'config:field.storage.paragraph.field_as_threats_threat'
         - 'config:field.storage.paragraph.field_as_values_criteria'
         - 'config:field.storage.paragraph.field_as_values_value'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   values:
     display_plugin: page
     id: values
@@ -18290,7 +21887,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -18301,14 +21898,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -18350,10 +21947,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -18364,14 +21962,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -18413,10 +22011,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -18996,8 +22595,6 @@ display:
         - 'config:field.storage.paragraph.field_as_values_curr_state'
         - 'config:field.storage.paragraph.field_as_values_curr_trend'
         - 'config:field.storage.paragraph.field_as_values_value'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
   world_heritage_values_excel:
     display_plugin: data_export
     id: world_heritage_values_excel
@@ -19445,7 +23042,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -19456,14 +23053,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_iucn_region:
-          id: field_iucn_region
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region
-          relationship: field_country
+        field_country_1:
+          id: field_country_1
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'IUCN Region'
+          label: 'IUCN region'
           exclude: false
           alter:
             alter_text: false
@@ -19496,7 +23093,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -19505,10 +23102,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_iucn_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -19519,14 +23117,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_unesco_region:
-          id: field_unesco_region
-          table: taxonomy_term__field_unesco_region
-          field: field_unesco_region
-          relationship: field_country
+        field_country_2:
+          id: field_country_2
+          table: node__field_country
+          field: field_country
+          relationship: field_as_site
           group_type: group
           admin_label: ''
-          label: 'UNESCO Region'
+          label: 'UNESCO region'
           exclude: false
           alter:
             alter_text: false
@@ -19559,7 +23157,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -19568,10 +23166,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: site_combined_countries_regions
           settings:
-            link: false
-          group_column: target_id
+            link: 0
+            field: field_unesco_region
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -20179,5 +23778,3 @@ display:
         - 'config:field.storage.paragraph.field_as_values_curr_state'
         - 'config:field.storage.paragraph.field_as_values_curr_trend'
         - 'config:field.storage.paragraph.field_as_values_value'
-        - 'config:field.storage.taxonomy_term.field_iucn_region'
-        - 'config:field.storage.taxonomy_term.field_unesco_region'
