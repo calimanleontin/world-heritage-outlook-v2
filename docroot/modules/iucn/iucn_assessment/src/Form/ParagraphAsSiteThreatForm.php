@@ -159,17 +159,20 @@ class ParagraphAsSiteThreatForm {
   }
 
   public static function setDependentFieldValues(array &$form, FormStateInterface $form_state) {
+    $formFields = array_keys($form_state->cleanValues()->getValues());
     foreach (static::FIELD_DEPENDENT_FIELDS as $field => $depends_on) {
-      if (empty($form_state->getValue($depends_on)['value'])) {
+      if (in_array($depends_on, $formFields) && empty($form_state->getValue($depends_on)['value'])) {
         $form_state->setValue($field, []);
       }
     }
 
-    $selected_subcategories = $form_state->getValue('field_as_threats_categories');
-    $selected_subcategories = array_column($selected_subcategories, 'target_id');
-    foreach (static::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
-      if (empty(array_intersect($tids, $selected_subcategories))) {
-        $form_state->setValue($field, []);
+    if (in_array('field_as_threats_categories', $formFields)) {
+      $selected_subcategories = $form_state->getValue('field_as_threats_categories');
+      $selected_subcategories = array_column($selected_subcategories, 'target_id');
+      foreach (static::SUBCATEGORY_DEPENDENT_FIELDS as $field => $tids) {
+        if (empty(array_intersect($tids, $selected_subcategories))) {
+          $form_state->setValue($field, []);
+        }
       }
     }
   }
@@ -227,8 +230,15 @@ class ParagraphAsSiteThreatForm {
     /** @var \Drupal\paragraphs\ParagraphInterface $entity */
     $entity = $formObject->getEntity();
 
+    $formFields = array_keys($form_state->cleanValues()->getValues());
+
     foreach (static::AFFECTED_VALUES_FIELDS as $field) {
-      $selected = $form_state->getValue("{$field}_select");
+      $fieldSelect = "{$field}_select";
+      if (!in_array($fieldSelect, $formFields)) {
+        continue;
+      }
+      $selected = $form_state->getValue($fieldSelect);
+
       $values = [];
       if (!empty($selected) && is_array($selected)) {
         foreach ($selected as $id => $isSelected) {

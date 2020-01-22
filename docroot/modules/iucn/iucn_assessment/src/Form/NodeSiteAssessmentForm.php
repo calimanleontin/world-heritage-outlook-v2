@@ -160,7 +160,7 @@ class NodeSiteAssessmentForm {
           '#default_value' => !empty($settings['comments'][$tab][$current_user->id()]) ? $settings['comments'][$tab][$current_user->id()] : '',
           '#prefix' => '<div class="paragraph-comments-textarea">',
           '#suffix' => '</div>',
-          '#maxlength' => 255,
+          '#maxlength' => 5000,
           '#tab' => $tab,
           '#parents' => ['comments'],
         ];
