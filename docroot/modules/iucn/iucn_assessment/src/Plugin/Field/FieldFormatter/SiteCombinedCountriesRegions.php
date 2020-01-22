@@ -12,7 +12,8 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @FieldFormatter(
  *   id = "site_combined_countries_regions",
- *   label = @Translation("Display all IUCN/UNESCO regions for a site"),
+ *   label = @Translation("IUCN/UNESCO regions"),
+ *   description = @Translation("Display all IUCN/UNESCO regions for a site."),
  *   field_types = {
  *     "entity_reference"
  *   }

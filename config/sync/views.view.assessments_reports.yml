@@ -641,7 +641,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -704,7 +704,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -767,7 +767,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -956,7 +956,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1019,7 +1019,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1144,7 +1144,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1207,7 +1207,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1456,7 +1456,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1519,7 +1519,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1582,7 +1582,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1707,7 +1707,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1832,7 +1832,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -1957,7 +1957,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -2877,7 +2877,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -3194,7 +3194,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3257,7 +3257,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3320,7 +3320,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3383,7 +3383,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3446,7 +3446,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3509,7 +3509,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3572,7 +3572,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3635,7 +3635,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3698,7 +3698,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3761,7 +3761,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -3824,7 +3824,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -4430,7 +4430,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -4747,7 +4747,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -4810,7 +4810,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -4873,7 +4873,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -4936,7 +4936,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -4999,7 +4999,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5062,7 +5062,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5125,7 +5125,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5188,7 +5188,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5251,7 +5251,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5314,7 +5314,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -5377,7 +5377,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -6013,7 +6013,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -6455,7 +6455,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -6583,7 +6583,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -6898,7 +6898,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -7428,7 +7428,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -7870,7 +7870,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -7998,7 +7998,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -8313,7 +8313,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -8887,7 +8887,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -9204,7 +9204,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9267,7 +9267,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9392,7 +9392,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9455,7 +9455,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9704,7 +9704,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9767,7 +9767,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9830,7 +9830,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -9955,7 +9955,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -10080,7 +10080,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -10205,9 +10205,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
-            link: false
+            link: 0
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -10793,7 +10793,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -11110,7 +11110,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11173,7 +11173,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11298,7 +11298,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11361,7 +11361,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11610,7 +11610,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11673,7 +11673,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11736,7 +11736,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11861,7 +11861,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -11986,7 +11986,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -12111,9 +12111,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
-            link: false
+            link: 0
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -12663,7 +12663,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -13105,7 +13105,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -13233,7 +13233,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -13548,7 +13548,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -14073,7 +14073,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -14515,7 +14515,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -14643,7 +14643,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -14958,7 +14958,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -15511,7 +15511,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -16489,7 +16489,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -17496,7 +17496,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -17814,7 +17814,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -18001,7 +18001,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -18560,7 +18560,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -18878,7 +18878,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -19065,7 +19065,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -19652,7 +19652,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -20156,7 +20156,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -20331,7 +20331,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -20862,7 +20862,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -21366,7 +21366,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -21541,7 +21541,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: target_id
@@ -22100,7 +22100,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -22355,7 +22355,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -22671,7 +22671,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -22734,7 +22734,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -23255,7 +23255,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -23510,7 +23510,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -23826,7 +23826,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
@@ -23889,7 +23889,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_label
+          type: entity_reference_default_language_label
           settings:
             link: false
           group_column: entity_id
