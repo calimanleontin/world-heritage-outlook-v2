@@ -8412,18 +8412,18 @@
     },
     {
         "name": "drupal/spamspan",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/spamspan.git",
-            "reference": "8.x-1.0"
+            "reference": "8.x-1.1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/spamspan-8.x-1.0.zip",
-            "reference": "8.x-1.0",
-            "shasum": "1f13dbf3a907fbc19878f05674ae29897b88b0ab"
+            "url": "https://ftp.drupal.org/files/projects/spamspan-8.x-1.1.zip",
+            "reference": "8.x-1.1",
+            "shasum": "2197256c5b7fb0a7f11c24465b49c1a2e2314c05"
         },
         "require": {
             "drupal/core": "~8.1"
@@ -8434,8 +8434,8 @@
                 "dev-1.x": "1.x-dev"
             },
             "drupal": {
-                "version": "8.x-1.0",
-                "datestamp": "1549358285",
+                "version": "8.x-1.1",
+                "datestamp": "1579718452",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -8464,7 +8464,7 @@
         "description": "The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. It implements the technique at http://www.spamspan.com.",
         "homepage": "http://drupal.org/project/spamspan",
         "support": {
-            "source": "http://cgit.drupalcode.org/spamspan"
+            "source": "https://git.drupalcode.org/project/spamspan"
         }
     },
     {
@@ -15830,7 +15830,8 @@
             "http",
             "psr",
             "psr-7"
-        ]
+        ],
+        "abandoned": "laminas/laminas-diactoros"
     },
     {
         "name": "zendframework/zend-escaper",
@@ -15877,7 +15878,8 @@
             "ZendFramework",
             "escaper",
             "zf"
-        ]
+        ],
+        "abandoned": "laminas/laminas-escaper"
     },
     {
         "name": "zendframework/zend-feed",
@@ -15942,7 +15944,8 @@
             "ZendFramework",
             "feed",
             "zf"
-        ]
+        ],
+        "abandoned": "laminas/laminas-feed"
     },
     {
         "name": "zendframework/zend-stdlib",
@@ -15990,6 +15993,7 @@
             "ZendFramework",
             "stdlib",
             "zf"
-        ]
+        ],
+        "abandoned": "laminas/laminas-stdlib"
     }
 ]

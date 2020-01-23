@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3c1d942a9cbefd0a116a02c0bd9e443",
+    "content-hash": "f6a393acb83a1da797fc82b4001a6f24",
     "packages": [
         {
             "name": "adamwulf/columnizer",
@@ -8114,17 +8114,17 @@
         },
         {
             "name": "drupal/spamspan",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/spamspan.git",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/spamspan-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "1f13dbf3a907fbc19878f05674ae29897b88b0ab"
+                "url": "https://ftp.drupal.org/files/projects/spamspan-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "2197256c5b7fb0a7f11c24465b49c1a2e2314c05"
             },
             "require": {
                 "drupal/core": "~8.1"
@@ -8135,8 +8135,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1549358285",
+                    "version": "8.x-1.1",
+                    "datestamp": "1579718452",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8164,7 +8164,7 @@
             "description": "The SpamSpan module obfuscates email addresses to help prevent spambots from collecting them. It implements the technique at http://www.spamspan.com.",
             "homepage": "http://drupal.org/project/spamspan",
             "support": {
-                "source": "http://cgit.drupalcode.org/spamspan"
+                "source": "https://git.drupalcode.org/project/spamspan"
             }
         },
         {
@@ -13919,6 +13919,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-08-06T17:53:53+00:00"
         },
         {
@@ -13964,6 +13965,7 @@
                 "escaper",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-escaper",
             "time": "2019-09-05T20:03:20+00:00"
         },
         {
@@ -14027,6 +14029,7 @@
                 "feed",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-feed",
             "time": "2019-03-05T20:08:49+00:00"
         },
         {
@@ -14073,6 +14076,7 @@
                 "stdlib",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-stdlib",
             "time": "2018-08-28T21:34:05+00:00"
         }
     ],
@@ -15504,7 +15508,6 @@
         "drupal/search_api_autocomplete": 15,
         "drupal/search_api_sorts": 10,
         "drupal/slick_views": 5,
-        "drupal/spamspan": 15,
         "drupal/stage_file_proxy": 15,
         "drupal/string_field_formatter": 20,
         "drupal/xmlsitemap": 15

@@ -2,6 +2,8 @@
 
 namespace Drupal\spamspan\TwigExtension;
 
+use Drupal\Component\Utility\Xss;
+
 /**
  * Provides the SpamSpan filter function within Twig templates.
  */
@@ -52,7 +54,7 @@ class SpamSpanExtension extends \Twig_Extension {
   public function spamSpanFilter($string) {
     $template_attached = ['#attached' => ['library' => ['spamspan/obfuscate']]];
     $this->renderer->render($template_attached);
-    return spamspan($string);
+    return Xss::filterAdmin(spamspan($string));
   }
 
 }
