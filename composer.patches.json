@@ -17,7 +17,11 @@
     "drupal/views_data_export": {
       "2789531": "patches/views_data_export/2789531-123.patch",
       "2789531-123": "patches/views_data_export/2789531-123-fixed-count-query.patch",
-      "2945252": "patches/views_data_export/2945252-5.patch"
+      "2945252": "patches/views_data_export/2945252-5.patch",
+      "Make the strip_tags and trim filters configurable for XLS/XLSX export": "https://www.drupal.org/files/issues/2020-01-23/views-data-export-xls-export-settings.patch"
+    },
+    "drupal/xls_serialization": {
+      "Make the formatValue filters configurable": "https://www.drupal.org/files/issues/2020-01-23/xls-serialization-xls-export-settings.patch"
     },
     "drupal/inline_responsive_images": {
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"

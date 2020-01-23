@@ -13,3 +13,7 @@ Source: patches/views_data_export/2789531-123-fixed-count-query.patch
 Source: patches/views_data_export/2945252-5.patch
 
 
+Make the strip_tags and trim filters configurable for XLS/XLSX export
+Source: https://www.drupal.org/files/issues/2020-01-23/views-data-export-xls-export-settings.patch
+
+

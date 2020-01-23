@@ -44,6 +44,8 @@ class DataExport extends Serializer {
     // XLS options.
     $options['xls_settings']['contains'] = [
       'xls_format' => ['default' => 'Excel2007'],
+      'strip_tags' => ['default' => TRUE],
+      'trim' => ['default' => TRUE],
     ];
     $options['xls_settings']['metadata']['contains'] = [
       // The 'created' and 'modified' elements are not exposed here, as they
@@ -143,10 +145,10 @@ class DataExport extends Serializer {
         $form['xls_settings'] = [
           '#type' => 'details',
           '#open' => FALSE,
-          '#title' => $this->t('XLS settings'),
+          '#title' => $this->t('XLS/XLSX settings'),
           '#tree' => TRUE,
           '#states' => [
-            'visible' => [':input[name="style_options[formats]"]' => ['value' => 'xls']],
+            'visible' => [':input[name="style_options[formats]"]' => [['value' => 'xls'], ['value' => 'xlsx']]],
           ],
           'xls_format' => [
             '#type' => 'select',
@@ -157,6 +159,18 @@ class DataExport extends Serializer {
               'Excel5' => $this->t('Excel 5'),
             ],
             '#default_value' => $xls_options['xls_format'],
+          ],
+          'strip_tags' => [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Strip HTML'),
+            '#description' => $this->t('Strips HTML tags from CSV cell values.'),
+            '#default_value' => $xls_options['strip_tags'],
+          ],
+          'trim' => [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Trim whitespace'),
+            '#description' => $this->t('Trims whitespace from beginning and end of CSV cell values.'),
+            '#default_value' => $xls_options['trim'],
           ],
         ];
         // XLS metadata.
