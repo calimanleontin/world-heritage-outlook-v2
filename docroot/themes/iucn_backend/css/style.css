@@ -1954,6 +1954,12 @@ table.diff-context-wrapper {
 .topic-tooltip:hover .right {
   display: block;
 }
+.is-collapse-enabled .tabs__trigger {
+  border-bottom: none;
+}
+.is-collapse-enabled .tabs {
+  overflow: hidden;
+}
 @media all and (min-width: 851px) {
   .sidebar {
     float: left;
