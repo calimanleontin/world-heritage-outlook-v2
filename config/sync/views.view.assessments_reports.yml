@@ -8000,7 +8000,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_default_language_label
           settings:
-            link: false
+            link: 0
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -8398,6 +8398,64 @@ display:
               category: ''
               manager: ''
               company: ''
+      row:
+        type: data_field
+        options:
+          field_options:
+            field_wdpa_id:
+              alias: ''
+              raw_output: false
+            field_as_cycle:
+              alias: ''
+              raw_output: false
+            field_state:
+              alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
+            field_country_1:
+              alias: ''
+              raw_output: false
+            field_country:
+              alias: ''
+              raw_output: false
+            field_country_2:
+              alias: ''
+              raw_output: false
+            field_inscription_year:
+              alias: ''
+              raw_output: false
+            field_as_threats_threat:
+              alias: ''
+              raw_output: false
+            field_as_threats_categories:
+              alias: ''
+              raw_output: false
+            field_as_threats_categories_1:
+              alias: ''
+              raw_output: false
+            field_as_threats_in:
+              alias: ''
+              raw_output: false
+            field_as_threats_extent:
+              alias: ''
+              raw_output: false
+            name:
+              alias: ''
+              raw_output: false
+            field_as_threats_out:
+              alias: ''
+              raw_output: false
+            field_as_legality:
+              alias: ''
+              raw_output: false
+            field_invasive_species_names:
+              alias: ''
+              raw_output: false
+            field_as_threats_rating_1:
+              alias: ''
+              raw_output: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -22306,14 +22364,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_as_values_criteria:
-          id: field_as_values_criteria
-          table: paragraph__field_as_values_criteria
-          field: field_as_values_criteria
-          relationship: field_as_values_wh
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: field_as_values_criteria
           group_type: group
           admin_label: ''
-          label: 'WH Criteria'
+          label: 'WH criteria'
           exclude: false
           alter:
             alter_text: false
@@ -22354,11 +22412,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_default_language_label
+          click_sort_column: value
+          type: string
           settings:
-            link: false
-          group_column: entity_id
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -22368,7 +22426,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+          convert_spaces: false
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
         id:
           id: id
           table: paragraphs_item_field_data
@@ -22780,6 +22841,15 @@ display:
           admin_label: 'World Heritage Values'
           required: true
           plugin_id: standard
+        field_as_values_criteria:
+          id: field_as_values_criteria
+          table: paragraph__field_as_values_criteria
+          field: field_as_values_criteria
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: Criteria
+          required: false
+          plugin_id: standard
       title: 'World Heritage Values'
       rendering_language: '***LANGUAGE_language_interface***'
       menu:
@@ -22807,7 +22877,6 @@ display:
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
         - 'config:field.storage.paragraph.field_as_description'
-        - 'config:field.storage.paragraph.field_as_values_criteria'
         - 'config:field.storage.paragraph.field_as_values_curr_state'
         - 'config:field.storage.paragraph.field_as_values_curr_trend'
         - 'config:field.storage.paragraph.field_as_values_value'
@@ -23461,14 +23530,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_as_values_criteria:
-          id: field_as_values_criteria
-          table: paragraph__field_as_values_criteria
-          field: field_as_values_criteria
-          relationship: field_as_values_wh
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: field_as_values_criteria
           group_type: group
           admin_label: ''
-          label: 'WH Criteria'
+          label: 'WH criteria'
           exclude: false
           alter:
             alter_text: false
@@ -23509,11 +23578,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_default_language_label
+          click_sort_column: value
+          type: string
           settings:
-            link: false
-          group_column: entity_id
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -23523,7 +23592,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+          convert_spaces: false
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
         id:
           id: id
           table: paragraphs_item_field_data
@@ -23935,6 +24007,15 @@ display:
           admin_label: 'World Heritage Values'
           required: true
           plugin_id: standard
+        field_as_values_criteria:
+          id: field_as_values_criteria
+          table: paragraph__field_as_values_criteria
+          field: field_as_values_criteria
+          relationship: field_as_values_wh
+          group_type: group
+          admin_label: Criteria
+          required: false
+          plugin_id: standard
       title: 'Download Excel'
       rendering_language: '***LANGUAGE_language_interface***'
       style:
@@ -23990,7 +24071,6 @@ display:
         - 'config:field.storage.node.field_state'
         - 'config:field.storage.node.field_wdpa_id'
         - 'config:field.storage.paragraph.field_as_description'
-        - 'config:field.storage.paragraph.field_as_values_criteria'
         - 'config:field.storage.paragraph.field_as_values_curr_state'
         - 'config:field.storage.paragraph.field_as_values_curr_trend'
         - 'config:field.storage.paragraph.field_as_values_value'
