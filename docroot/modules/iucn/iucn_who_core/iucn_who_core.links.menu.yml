@@ -310,3 +310,11 @@ iucn_who_core.dashboard.reports.potential_threats_wh_values:
   route_name: view.assessments_reports.potential_threats_wh_values
   menu_name: tools
   weight: 9
+
+
+iucn_who_core.dashboard.reports.potential_threats_other_values:
+  title: 'Potential threats and other affected values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.potential_threats_other_values
+  menu_name: tools
+  weight: 10
