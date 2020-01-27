@@ -31,9 +31,4 @@ class Xlsx extends Xls {
     $this->xlsFormat = $xls_format;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function setSettings(array $settings) {}
-
 }

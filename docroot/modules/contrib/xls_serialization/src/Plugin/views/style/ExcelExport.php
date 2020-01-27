@@ -50,6 +50,8 @@ class ExcelExport extends Serializer {
 
     $options['xls_settings']['contains'] = [
       'xls_format' => ['default' => 'Excel2007'],
+      'strip_tags' => ['default' => TRUE],
+      'trim' => ['default' => TRUE],
     ];
 
     $options['xls_settings']['metadata']['contains'] = [
@@ -103,6 +105,18 @@ class ExcelExport extends Serializer {
               'Excel5' => $this->t('Excel 5'),
             ],
             '#default_value' => $xls_options['xls_format'],
+          ],
+          'strip_tags' => [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Strip HTML'),
+            '#description' => $this->t('Strips HTML tags from CSV cell values.'),
+            '#default_value' => $xls_options['strip_tags'],
+          ],
+          'trim' => [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Trim whitespace'),
+            '#description' => $this->t('Trims whitespace from beginning and end of CSV cell values.'),
+            '#default_value' => $xls_options['trim'],
           ],
         ];
 

@@ -249,7 +249,7 @@ iucn_who_core.dashboard.reports.overall_summary:
   weight: 0
 
 iucn_who_core.dashboard.reports.values:
-  title: 'Values'
+  title: 'World Heritage values'
   parent: iucn_who_core.dashboard.reports
   route_name: view.assessments_reports.values
   menu_name: tools
@@ -269,17 +269,17 @@ iucn_who_core.dashboard.reports.potential_threats:
   menu_name: tools
   weight: 3
 
-iucn_who_core.dashboard.reports.threats_affected_values:
-  title: 'Current threats and affected values'
-  parent: iucn_who_core.dashboard.reports
-  route_name: view.assessments_reports.threats_affected_values
-  menu_name: tools
-  weight: 4
-
 iucn_who_core.dashboard.reports.protection_and_management:
   title: 'Protection and management'
   parent: iucn_who_core.dashboard.reports
   route_name: view.assessments_reports.protection_and_management
+  menu_name: tools
+  weight: 4
+
+iucn_who_core.dashboard.reports.benefits:
+  title: 'Benefits'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.benefits
   menu_name: tools
   weight: 5
 
@@ -289,3 +289,32 @@ iucn_who_core.dashboard.reports.projects:
   route_name: view.assessments_reports.projects
   menu_name: tools
   weight: 6
+
+iucn_who_core.dashboard.reports.current_threats_wh_values:
+  title: 'Current threats and affected WH values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.current_threats_wh_values
+  menu_name: tools
+  weight: 7
+
+iucn_who_core.dashboard.reports.current_threats_other_values:
+  title: 'Current threats and other affected values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.current_threats_other_values
+  menu_name: tools
+  weight: 8
+
+iucn_who_core.dashboard.reports.potential_threats_wh_values:
+  title: 'Potential threats and affected WH values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.potential_threats_wh_values
+  menu_name: tools
+  weight: 9
+
+
+iucn_who_core.dashboard.reports.potential_threats_other_values:
+  title: 'Potential threats and other affected values'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.potential_threats_other_values
+  menu_name: tools
+  weight: 10

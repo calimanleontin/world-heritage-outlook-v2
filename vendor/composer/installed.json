@@ -8927,7 +8927,8 @@
             "patches_applied": {
                 "2789531": "patches/views_data_export/2789531-123.patch",
                 "2789531-123": "patches/views_data_export/2789531-123-fixed-count-query.patch",
-                "2945252": "patches/views_data_export/2945252-5.patch"
+                "2945252": "patches/views_data_export/2945252-5.patch",
+                "Make the strip_tags and trim filters configurable for XLS/XLSX export": "https://www.drupal.org/files/issues/2020-01-23/views-data-export-xls-export-settings.patch"
             }
         },
         "installation-source": "dist",
@@ -9201,6 +9202,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Make the formatValue filters configurable": "https://www.drupal.org/files/issues/2020-01-23/xls-serialization-xls-export-settings.patch"
             }
         },
         "installation-source": "dist",

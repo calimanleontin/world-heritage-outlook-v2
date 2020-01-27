@@ -34,6 +34,20 @@ class Xls implements EncoderInterface {
   protected $xlsFormat = 'Xlsx';
 
   /**
+   * Whether to strip tags from values or not. Defaults to TRUE.
+   *
+   * @var bool
+   */
+  protected $stripTags;
+
+  /**
+   * Whether to trim values or not. Defaults to TRUE.
+   *
+   * @var bool
+   */
+  protected $trimValues;
+
+  /**
    * Constructs an XLS encoder.
    *
    * @param string $xls_format
@@ -74,6 +88,10 @@ class Xls implements EncoderInterface {
       // Set headers.
       $this->setHeaders($sheet, $data, $context);
 
+      if (isset($context['views_style_plugin']->options['xls_settings'])) {
+        $this->setSettings($context['views_style_plugin']->options['xls_settings']);
+      }
+
       // Set the data.
       $this->setData($sheet, $data);
 
@@ -81,12 +99,8 @@ class Xls implements EncoderInterface {
       $this->setColumnsAutoSize($sheet);
 
       if (isset($context['views_style_plugin'])) {
-        if (isset($context['views_style_plugin']->options['xls_settings'])) {
-          $this->setSettings($context['views_style_plugin']->options['xls_settings']);
-          // Set any metadata passed in via the context.
-          if (isset($context['views_style_plugin']->options['xls_settings']['metadata'])) {
-            $this->setMetaData($xls->getProperties(), $context['views_style_plugin']->options['xls_settings']['metadata']);
-          }
+        if (isset($context['views_style_plugin']->options['xls_settings']['metadata'])) {
+          $this->setMetaData($xls->getProperties(), $context['views_style_plugin']->options['xls_settings']['metadata']);
         }
 
         if (!empty($context['views_style_plugin']->view)) {
@@ -276,10 +290,13 @@ class Xls implements EncoderInterface {
    *   The formatted value.
    */
   protected function formatValue($value) {
-    // @todo Make these filters configurable.
-    $value = Html::decodeEntities($value);
-    $value = strip_tags($value);
-    $value = trim($value);
+    if ($this->stripTags) {
+      $value = Html::decodeEntities($value);
+      $value = strip_tags($value);
+    }
+    if ($this->trimValues) {
+      $value = trim($value);
+    }
 
     return $value;
   }
@@ -332,6 +349,8 @@ class Xls implements EncoderInterface {
       $settings['xls_format'] = 'Xls';
     }
     $this->xlsFormat = $settings['xls_format'];
+    $this->stripTags = $settings['strip_tags'];
+    $this->trimValues = $settings['trim'];
   }
 
   /**
