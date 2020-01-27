@@ -29,7 +29,7 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
     return $form;
   }
 
-  public function getDiffMarkup($diff, $fullTextField = FALSE) {
+  public function getDiffMarkup($diff, $fieldType, $fieldValue = NULL) {
     $diff_rows = [];
     foreach ([0,2] as $i) {
       foreach ($diff as $diff_group) {
@@ -43,11 +43,21 @@ abstract class IucnModalDiffForm extends IucnModalParagraphForm {
           && strpos($diff_group[$compared]['data']['#markup'], $diff_group[$current]['data']['#markup']) !== FALSE) {
           $diff_group[$current]['class'] = 'diff-context';
         }
-        $class = $fullTextField ? ($i == 0 ? 'initial-row' : 'final-row') : 'diff-row';
+        $class = ($fieldType == 'string_long') ? ($i == 0 ? 'initial-row' : 'final-row') : 'diff-row';
         $diff_rows[] = [
           'class' => $class,
           'data' => [$diff_group[$i], $diff_group[$i + 1]],
         ];
+      }
+    }
+
+    if (in_array($fieldType, ['entity_reference', 'entity_reference_revisions']) && !empty($fieldValue)) {
+      $initialCount = count($diff_rows) - count($fieldValue) - 1;
+      if (!empty($diff_rows[$initialCount]['class'])) {
+        $diff_rows[$initialCount]['class'] = 'initial-row';
+      }
+      if (!empty($diff_rows[$initialCount + 1])) {
+        $diff_rows[$initialCount + 1]['class'] = 'final-row';
       }
     }
     return $diff_rows;
