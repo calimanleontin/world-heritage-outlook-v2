@@ -32,7 +32,7 @@ class IucnModalFieldDiffForm extends IucnModalDiffForm {
         'author' => ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW)
           ? $this->nodeRevision->field_assessor->entity->getDisplayName()
           : $revision->getRevisionUser()->getDisplayName(),
-        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName], $fieldType == 'string_long'),
+        'markup' => $this->getDiffMarkup($rowDiff['diff'][$this->fieldName], $fieldType),
         'copy' => $this->getCopyValueButton($vid, $fieldWidgetType, $this->fieldName, $revision->get($this->fieldName)->getValue()),
       ];
 
