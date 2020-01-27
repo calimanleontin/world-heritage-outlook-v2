@@ -803,7 +803,7 @@ div[aria-required="aria-required"] label:after {
   }
 }
 #block-tools {
-  margin-bottom: 20px;
+  margin-bottom: 80px;
 }
 #block-tools > ul.menu {
   display: -ms-flexbox;
