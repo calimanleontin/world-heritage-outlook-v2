@@ -802,6 +802,9 @@ div[aria-required="aria-required"] label:after {
     width: 180px;
   }
 }
+#block-tools {
+  margin-bottom: 20px;
+}
 #block-tools > ul.menu {
   display: -ms-flexbox;
   display: flex;
