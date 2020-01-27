@@ -166,8 +166,11 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
         continue;
       }
       $this->fieldWidgetTypes[$fieldName] = $this->getDiffFieldWidgetType($form, $fieldName);
+      $fieldLabel = $fieldName == 'field_as_threats_categories'
+        ? t('Category and/or subcategory')
+        : $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel();
       $diffTable['#header'][$fieldName] = [
-        'data' => $this->paragraphRevision->{$fieldName}->getFieldDefinition()->getLabel(),
+        'data' => $fieldLabel,
         'class' => [
           'widget-type--' . Html::cleanCssIdentifier($this->getDiffFieldWidgetType($form, $fieldName)),
           'field-name--' . Html::cleanCssIdentifier($fieldName)
