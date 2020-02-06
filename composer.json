@@ -220,7 +220,7 @@
     "drupal/token": "^1.4",
     "drupal/varnish_purge": "^1.11",
     "drupal/views_accordion": "^1.1",
-    "drupal/views_bulk_operations": "^2.4",
+    "drupal/views_bulk_operations": "^3.4",
     "drupal/views_data_export": "1.0.0-beta1",
     "drupal/webform": "5.4.0",
     "drupal/workflow": "^1.1",
