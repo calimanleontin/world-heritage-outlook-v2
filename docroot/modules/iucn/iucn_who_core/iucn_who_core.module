@@ -129,6 +129,7 @@ function iucn_who_core_form_views_exposed_form_alter(&$form, FormStateInterface 
     'views-exposed-form-account-assignments-block-3',
     'views-exposed-form-account-assignments-block-4',
     'views-exposed-form-account-assignments-block-5',
+    'views-exposed-form-content-page-2',
   ])) {
     return;
   }
