@@ -18,7 +18,10 @@ class IucnModalController extends ControllerBase {
     $response = new AjaxResponse();
     $paragraph_title = $this->getParagraphTitle($field);
 
-    $new_paragraph = Paragraph::create(['type' => $bundle]);
+    $new_paragraph = Paragraph::create([
+      'type' => $bundle,
+      'langcode' => $node_revision->language()->getId(),
+    ]);
     $form = $this->entityFormBuilder()->getForm($new_paragraph, 'iucn_modal_paragraph_add', []);
 
     $response->addCommand(new OpenModalDialogCommand($this->t('Add @paragraph_title', ['@paragraph_title' => $paragraph_title]), $form, ['width' => '60%', 'classes' => ['ui-dialog' => 'add-paragraph-form-modal'] ]));
