@@ -274,9 +274,11 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!empty($form['error'])) {
-      foreach (Element::children($form['actions']) as $action) {
-        // The user can't submit the assessment if there are validation errors.
-        $form['actions'][$action]['#access'] = FALSE;
+      if (!in_array('administrator', \Drupal::currentUser()->getRoles())) {
+        foreach (Element::children($form['actions']) as $action) {
+          // The user can't submit the assessment if there are validation errors.
+          $form['actions'][$action]['#access'] = FALSE;
+        }
       }
 
       $assessmentState = $node->field_state->value;
