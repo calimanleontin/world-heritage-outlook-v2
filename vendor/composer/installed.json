@@ -5,9 +5,7 @@
         "version_normalized": "1.6.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1615,9 +1613,7 @@
         "version_normalized": "4.1.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1628,9 +1624,7 @@
         "version_normalized": "4.2.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1818,9 +1812,7 @@
         "version_normalized": "1.8.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -8822,30 +8814,30 @@
     },
     {
         "name": "drupal/views_bulk_operations",
-        "version": "2.5.0",
-        "version_normalized": "2.5.0.0",
+        "version": "3.4.0",
+        "version_normalized": "3.4.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/views_bulk_operations.git",
-            "reference": "8.x-2.5"
+            "reference": "8.x-3.4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-2.5.zip",
-            "reference": "8.x-2.5",
-            "shasum": "3ec848b4f235720d05cb9713ea80a86415b6909f"
+            "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-3.4.zip",
+            "reference": "8.x-3.4",
+            "shasum": "549eb149f82fbf30e975155a14cd7a0d4653dfe9"
         },
         "require": {
-            "drupal/core": "^8.4"
+            "drupal/core": "~8.5"
         },
         "type": "drupal-module",
         "extra": {
             "branch-alias": {
-                "dev-2.x": "2.x-dev"
+                "dev-3.x": "3.x-dev"
             },
             "drupal": {
-                "version": "8.x-2.5",
-                "datestamp": "1550740384",
+                "version": "8.x-3.4",
+                "datestamp": "1580924754",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -8887,7 +8879,7 @@
         "description": "Adds an ability to perform bulk operations on selected entities from view results. Provides an API to create such operations.",
         "homepage": "https://www.drupal.org/project/views_bulk_operations",
         "support": {
-            "source": "http://cgit.drupalcode.org/views_bulk_operations",
+            "source": "https://git.drupalcode.org/project/views_bulk_operations",
             "issues": "https://www.drupal.org/project/issues/views_bulk_operations?version=8.x",
             "docs": "https://www.drupal.org/docs/8/modules/views-bulk-operations-vbo"
         }
@@ -9692,9 +9684,7 @@
         "version_normalized": "4.3.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10105,9 +10095,7 @@
         "version_normalized": "1.6.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
@@ -10187,9 +10175,7 @@
         "version_normalized": "1.6.4.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10292,9 +10278,7 @@
         "version_normalized": "1.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -15753,9 +15737,7 @@
         "version_normalized": "5.3.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
