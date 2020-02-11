@@ -40,7 +40,7 @@ class ViewsBulkOperationExampleAction extends ViewsBulkOperationsActionBase impl
 
     // Do some processing..
     // ...
-    $this->messenger()->addMessage($entity->label() . ' - ' . $entity->language()->getId() . ' - ' . $entity->id());
+    drupal_set_message($entity->label());
     return sprintf('Example action (configuration: %s)', print_r($this->configuration, TRUE));
   }
 
