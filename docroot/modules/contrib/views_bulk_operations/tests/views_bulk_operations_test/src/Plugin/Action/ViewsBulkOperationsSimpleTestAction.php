@@ -2,7 +2,6 @@
 
 namespace Drupal\views_bulk_operations_test\Plugin\Action;
 
-use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 
@@ -16,13 +15,12 @@ use Drupal\Core\Session\AccountInterface;
  * )
  */
 class ViewsBulkOperationsSimpleTestAction extends ViewsBulkOperationsActionBase {
-  use MessengerTrait;
 
   /**
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    $this->messenger()->addMessage(sprintf('Test action (preconfig: %s, label: %s)',
+    drupal_set_message(sprintf('Test action (preconfig: %s, label: %s)',
       $this->configuration['preconfig'],
       $entity->label()
     ));
