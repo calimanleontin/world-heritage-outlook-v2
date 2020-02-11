@@ -1,5 +1,5 @@
 minimum_single: 9
-minimum_multiple: 3
+minimum_multiple: 0
 disable_search_threshold: 10
 minimum_width: 300
 jquery_selector: 'select:not([id$="weight"]):not([name^="field_state_value"])'
