@@ -8,6 +8,6 @@ dependencies:
   - drupal:node
 
 # Information added by Drupal.org packaging script on 2020-02-04
-version: '8.x-3.4'
+version: '8.x-2.6'
 project: 'views_bulk_operations'
-datestamp: 1580807961
+datestamp: 1580808226

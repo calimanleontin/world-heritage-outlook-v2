@@ -17,7 +17,7 @@ class ConfigureAction extends FormBase {
   use ViewsBulkOperationsFormTrait;
 
   /**
-   * The tempstore service.
+   * User private temporary storage factory.
    *
    * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
@@ -89,7 +89,20 @@ class ConfigureAction extends FormBase {
 
     $form['#title'] = $this->t('Configure "%action" action applied to the selection', ['%action' => $form_data['action_label']]);
 
-    $form['list'] = $this->getListRenderable($form_data);
+    $selection = [];
+    if (!empty($form_data['entity_labels'])) {
+      $form['list'] = [
+        '#theme' => 'item_list',
+        '#items' => $form_data['entity_labels'],
+      ];
+    }
+    else {
+      $form['list'] = [
+        '#type' => 'item',
+        '#markup' => $this->t('All view results'),
+      ];
+    }
+    $form['list']['#title'] = $this->t('Selected @count entities:', ['@count' => $form_data['selected_count']]);
 
     // :D Make sure the submit button is at the bottom of the form
     // and is editale from the action buildConfigurationForm method.
