@@ -25,7 +25,7 @@ popup_height: null
 popup_hide_agreed: false
 popup_hide_button_message: Hide
 popup_info:
-  value: "<p>By using this site, you consent to the use of cookies and similar technologies to enhance your user experience. For more information please see our <a href=\"https://portals.iucn.org/dataprotection/privacypolicy\">Privacy Policy</a>.</p>\r\n"
+  value: "<p>By using this site, you consent to the use of cookies and similar technologies to enhance your user experience. For more information please see our <a href=\"https://portals.iucn.org/dataprotection/privacypolicy\" target=\"_blank\">Privacy Policy</a>.</p>\r\n"
   format: html
 mobile_popup_info:
   value: ''
