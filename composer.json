@@ -169,6 +169,7 @@
     "drupal/edw_healthcheck": "^1.6",
     "drupal/entity_print": "^2.1",
     "drupal/entity_reference_revisions": "^1.5",
+    "drupal/eu_cookie_compliance": "^1.8",
     "drupal/facets": "^1.1",
     "drupal/facets_pretty_paths": "^1.0",
     "drupal/features": "^3.8",
