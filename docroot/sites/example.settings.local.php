@@ -130,52 +130,26 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
-$databases['default']['default'] = array (
-  'database' => 'drupal',
-  'username' => 'root',
-  'password' => 'root',
-  'prefix' => '',
-  'host' => 'db',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-);
-
-$settings['hash_salt'] = 'super-secret-hash-salt';
-
-$settings['testing_url'] = 'http://worldheritageoutlook.local';
-$base_url = 'worldheritageoutlook.local';
-$settings['trusted_host_patterns'] = [
-  'worldheritageoutlook.local',
-];
-
-# Configure Varnish purger to invalidate using front-end web server
-$config['varnish_purger.settings.fe166b7d74']['hostname'] = 'www.example.com';
-$config['varnish_purger.settings.fe166b7d74']['port'] = 443;
-$config['varnish_purger.settings.fe166b7d74']['scheme'] = 'https';
-$config['varnish_image_purge.configuration']['entity_types'] = ['random-entity-that-does-not-exist'];
-
-$config['recaptcha.settings']['site_key'] = '';
-$config['recaptcha.settings']['secret_key'] = '';
-
-$config['google_maps_api.install']['api_key'] = '';
-
-$config['smtp.settings']['smtp_host'] = 'secure.emailsrvr.com';
-$config['smtp.settings']['smtp_port'] = 465;
-$config['smtp.settings']['smtp_protocol'] = 'ssl';
-$config['smtp.settings']['smtp_from'] = 'user@example.com';
-$config['smtp.settings']['smtp_username'] = 'user@example.com';
-$config['smtp.settings']['smtp_password'] = '';
-
-$config['raven.settings']['client_key'] = '';
-$config['raven.settings']['public_dsn'] = '';
-$config['raven.settings']['environment'] = '';
-
-$config['system.site']['mail'] = 'user@example.ro';
-
-$settings['file_private_path'] = realpath(DRUPAL_ROOT . '/../private-files');
-$config['system.file']['path']['temporary'] = '/tmp';
-
-$config['google_analytics.settings']['account'] = 'UA-0-0';
-
-$settings['who_archive_email'] = 'xyz@iucn.org';
+/**
+ * Exclude modules from configuration synchronisation.
+ *
+ * On config export sync, no config or dependent config of any excluded module
+ * is exported. On config import sync, any config of any installed excluded
+ * module is ignored. In the exported configuration, it will be as if the
+ * excluded module had never been installed. When syncing configuration, if an
+ * excluded module is already installed, it will not be uninstalled by the
+ * configuration synchronisation, and dependent configuration will remain
+ * intact. This affects only configuration synchronisation; single import and
+ * export of configuration are not affected.
+ *
+ * Drupal does not validate or sanity check the list of excluded modules. For
+ * instance, it is your own responsibility to never exclude required modules,
+ * because it would mean that the exported configuration can not be imported
+ * anymore.
+ *
+ * This is an advanced feature and using it means opting out of some of the
+ * guarantees the configuration synchronisation provides. It is not recommended
+ * to use this feature with modules that affect Drupal in a major way such as
+ * the language or field module.
+ */
+# $settings['config_exclude_modules'] = ['devel', 'stage_file_proxy'];

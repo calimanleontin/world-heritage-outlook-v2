@@ -5,9 +5,7 @@
         "version_normalized": "1.6.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/adamwulf/Columnizer-jQuery-Plugin/archive/1.6.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1615,9 +1613,7 @@
         "version_normalized": "4.1.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/imagesloaded/archive/v4.1.1.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1628,9 +1624,7 @@
         "version_normalized": "4.2.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/desandro/masonry/archive/v4.2.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -1818,9 +1812,7 @@
         "version_normalized": "1.8.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/dinbror/blazy/archive/1.8.2.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -3901,17 +3893,17 @@
     },
     {
         "name": "drupal/core",
-        "version": "8.8.1",
-        "version_normalized": "8.8.1.0",
+        "version": "8.8.4",
+        "version_normalized": "8.8.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core.git",
-            "reference": "d339279f4c4b89477e0f4a8b775eb5dcb86b3087"
+            "reference": "34e59fcf702c1b3c497bbd6e92e68e546c5d15b8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core/zipball/d339279f4c4b89477e0f4a8b775eb5dcb86b3087",
-            "reference": "d339279f4c4b89477e0f4a8b775eb5dcb86b3087",
+            "url": "https://api.github.com/repos/drupal/core/zipball/34e59fcf702c1b3c497bbd6e92e68e546c5d15b8",
+            "reference": "34e59fcf702c1b3c497bbd6e92e68e546c5d15b8",
             "shasum": ""
         },
         "require": {
@@ -4077,7 +4069,7 @@
             "drupal/workflows": "self.version",
             "drupal/workspaces": "self.version"
         },
-        "time": "2019-12-18T10:34:03+00:00",
+        "time": "2020-03-18T16:26:33+00:00",
         "type": "drupal-core",
         "extra": {
             "drupal-scaffold": {
@@ -9789,9 +9781,7 @@
         "version_normalized": "4.3.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10202,9 +10192,7 @@
         "version_normalized": "1.6.1.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/harvesthq/chosen/releases/download/v1.6.1/chosen_v1.6.1.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
@@ -10284,9 +10272,7 @@
         "version_normalized": "1.6.4.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -10389,9 +10375,7 @@
         "version_normalized": "1.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/kenwheeler/slick/archive/1.6.0.zip"
         },
         "type": "drupal-library",
         "installation-source": "dist"
@@ -15850,9 +15834,7 @@
         "version_normalized": "5.3.2.0",
         "dist": {
             "type": "zip",
-            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip",
-            "reference": null,
-            "shasum": null
+            "url": "https://github.com/WebSpellChecker/ckeditor-plugin-scayt/archive/release.5.3.2.0.zip"
         },
         "require": {
             "composer/installers": "^1.2.0"
