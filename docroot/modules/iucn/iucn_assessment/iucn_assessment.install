@@ -329,3 +329,42 @@ function iucn_assessment_update_8009() {
     }
   }
 }
+
+/**
+ * Refs #8032 - fix 2020 Comoé National Park child paragraphs translations.
+ */
+function iucn_assessment_update_8010() {
+  $entityReferenceRevisionFields = [
+    'field_as_values_wh',
+    'field_as_values_bio',
+    'field_as_threats_current',
+    'field_as_threats_potential',
+    'field_as_protection',
+    'field_as_projects',
+    'field_as_projects_needs',
+    'field_as_key_cons',
+    'field_as_references_p',
+    'field_as_benefits',
+  ];
+  $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision('6238');
+
+  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  foreach ($entityReferenceRevisionFields as $field) {
+    foreach ($node->get($field)->getValue() as $value) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+      $paragraph = $paragraphStorage->loadRevision($value['target_revision_id']);
+      if ($paragraph->language()->getId() == 'en' && $paragraph->hasTranslation('fr')) {
+        $translation = $paragraph->getTranslation('fr');
+        foreach ($paragraph->toArray() as $paragraphField => $paragraphValue) {
+          if (strpos($paragraphField, 'field_') !== 0) {
+            continue;
+          }
+          $translation->set($paragraphField, $paragraphValue);
+        }
+        $translation->setNewRevision(FALSE);
+        $translation->save();
+      }
+    }
+  }
+
+}
