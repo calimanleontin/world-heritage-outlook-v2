@@ -1,0 +1,132 @@
+diff --git a/core/package.json b/core/package.json
+index 48efb6a31..5030da528 100644
+--- a/core/package.json
++++ b/core/package.json
+@@ -98,5 +98,11 @@
+     "last 1 Samsung version",
+     "last 1 OperaMini version",
+     "Firefox ESR"
+-  ]
++  ],
++  "resolutions": {
++    "minimist": "^1.2.5",
++    "kind-of": "^6.0.3",
++    "https-proxy-agent": "^2.2.3",
++    "acorn": "^5.7.4"
++  }
+ }
+diff --git a/core/yarn.lock b/core/yarn.lock
+index 1c922e436..246d7babd 100644
+--- a/core/yarn.lock
++++ b/core/yarn.lock
+@@ -202,15 +202,10 @@ acorn-jsx@^3.0.0:
+   dependencies:
+     acorn "^3.0.4"
+ 
+-acorn@^3.0.4:
+-  version "3.3.0"
+-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
+-  integrity sha1-ReN/s56No/JbruP/U2niu18iAXo=
+-
+-acorn@^5.5.0:
+-  version "5.7.3"
+-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
+-  integrity sha512-T/zvzYRfbVojPWahDsE5evJdHb3oJoQfFbsrKM7w5Zcs++Tr257tia3BmMP8XYVjp1S9RZXQMh7gao96BlqZOw==
++acorn@^3.0.4, acorn@^5.5.0, acorn@^5.7.4:
++  version "5.7.4"
++  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.4.tgz#3e8d8a9947d0599a1796d10225d7432f4a4acf5e"
++  integrity sha512-1D++VG7BhrtvQpNbBzovKNc1FLGGEE/oGe7b9xJm/RFHMBeUaUGpluV9RLjZa47YFdPcDAenEYuq9pQPcMdLJg==
+ 
+ agent-base@4, agent-base@^4.2.0, agent-base@^4.3.0:
+   version "4.3.0"
+@@ -2552,10 +2547,10 @@ http-signature@~1.2.0:
+     jsprim "^1.2.2"
+     sshpk "^1.7.0"
+ 
+-https-proxy-agent@^2.2.1:
+-  version "2.2.2"
+-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.2.tgz#271ea8e90f836ac9f119daccd39c19ff7dfb0793"
+-  integrity sha512-c8Ndjc9Bkpfx/vCJueCPy0jlP4ccCCSNDp8xwCZzPjKJUm+B+u9WX2x98Qx4n1PiMNTWo3D7KK5ifNV/yJyRzg==
++https-proxy-agent@^2.2.1, https-proxy-agent@^2.2.3:
++  version "2.2.4"
++  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
++  integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
+   dependencies:
+     agent-base "^4.3.0"
+     debug "^3.1.0"
+@@ -2726,11 +2721,6 @@ is-binary-path@^1.0.0:
+   dependencies:
+     binary-extensions "^1.0.0"
+ 
+-is-buffer@^1.1.5:
+-  version "1.1.6"
+-  resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
+-  integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
+-
+ is-buffer@^2.0.0:
+   version "2.0.3"
+   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-2.0.3.tgz#4ecf3fcf749cbd1e472689e109ac66261a25e725"
+@@ -3106,29 +3096,10 @@ jsx-ast-utils@^2.1.0, jsx-ast-utils@^2.2.1:
+     array-includes "^3.0.3"
+     object.assign "^4.1.0"
+ 
+-kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
+-  version "3.2.2"
+-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
+-  integrity sha1-MeohpzS6ubuw8yRm2JOupR5KPGQ=
+-  dependencies:
+-    is-buffer "^1.1.5"
+-
+-kind-of@^4.0.0:
+-  version "4.0.0"
+-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-4.0.0.tgz#20813df3d712928b207378691a45066fae72dd57"
+-  integrity sha1-IIE989cSkosgc3hpGkUGb65y3Vc=
+-  dependencies:
+-    is-buffer "^1.1.5"
+-
+-kind-of@^5.0.0:
+-  version "5.1.0"
+-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-5.1.0.tgz#729c91e2d857b7a419a1f9aa65685c4c33f5845d"
+-  integrity sha512-NGEErnH6F2vUuXDh+OlbcKW7/wOcfdRHaZ7VWtqCztfHri/++YKmP51OdWeGPuqCOba6kk2OTe5d02VmTB80Pw==
+-
+-kind-of@^6.0.0, kind-of@^6.0.2:
+-  version "6.0.2"
+-  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+-  integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
++kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
++  version "6.0.3"
++  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
++  integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+ 
+ known-css-properties@^0.11.0:
+   version "0.11.0"
+@@ -3431,25 +3402,10 @@ minimist-options@^3.0.1:
+     arrify "^1.0.1"
+     is-plain-obj "^1.1.0"
+ 
+-minimist@0.0.8:
+-  version "0.0.8"
+-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
+-  integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
+-
+-minimist@1.1.x:
+-  version "1.1.3"
+-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.1.3.tgz#3bedfd91a92d39016fcfaa1c681e8faa1a1efda8"
+-  integrity sha1-O+39kaktOQFvz6ocaB6Pqhoe/ag=
+-
+-minimist@^1.2.0:
+-  version "1.2.0"
+-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+-  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
+-
+-minimist@~0.0.1:
+-  version "0.0.10"
+-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
+-  integrity sha1-3j+YVD2/lggr5IrRoMfNqDYwHc8=
++minimist@0.0.8, minimist@1.1.x, minimist@^1.2.0, minimist@^1.2.5, minimist@~0.0.1:
++  version "1.2.5"
++  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
++  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+ 
+ minipass@^2.2.1, minipass@^2.3.5:
+   version "2.3.5"

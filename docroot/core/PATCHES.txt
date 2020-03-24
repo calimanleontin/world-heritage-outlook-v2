@@ -25,3 +25,7 @@ Fix basic_auth when combined with nginx/apache basic auth settings
 Source: patches/core/basic_auth_nginx.patch
 
 
+Update yarn core dependencies
+Source: patches/core/update-core-yarn-dependencies.patch
+
+
