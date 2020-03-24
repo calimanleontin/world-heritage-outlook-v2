@@ -1,0 +1,19 @@
+diff --git a/entity_reference_revisions.module b/entity_reference_revisions.module
+index fa24f77..7513952 100644
+--- a/entity_reference_revisions.module
++++ b/entity_reference_revisions.module
+@@ -231,6 +231,14 @@ function entity_reference_revisions_entity_revision_create(ContentEntityInterfac
+   $entity_type_manager = \Drupal::entityTypeManager();
+   $storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
+   foreach ($entity->getFieldDefinitions() as $field_name => $field_definition) {
++    if (in_array($field_name, ['field_as_threats_values_wh', 'field_as_threats_values_bio'])) {
++      /*
++       * Refs #8032 - these 2 fields are referencing already existing paragraphs
++       * and the system should only create revisions for child paragraphs when
++       * it gets here from the parent NODE entity.
++       */
++      continue;
++    }
+     if ($field_definition->getType() == 'entity_reference_revisions' && !$field_definition->isTranslatable()) {
+       $target_entity_type_id = $field_definition->getSetting('target_type');
+       if ($entity_type_manager->getDefinition($target_entity_type_id)->get('entity_revision_parent_id_field')) {
