@@ -38,11 +38,6 @@ class EntityReferenceRevisionsOrphanRemovalTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp();
     $this->adminUser = $this->drupalCreateUser([

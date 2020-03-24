@@ -32,11 +32,6 @@ class ParagraphsExperimentalWidgetElementsTest extends WebDriverTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
-
-  /**
    * Test paragraphs drag handler during translation.
    */
   public function testDragHandler() {
@@ -71,8 +66,8 @@ class ParagraphsExperimentalWidgetElementsTest extends WebDriverTestBase {
     $page = $this->getSession()->getPage();
     $this->drupalGet('node/add/paragraphed_content_demo');
     $page->pressButton('Add Paragraph');
-    $paragraphs_dialog = $this->assertSession()->waitForElementVisible('css', 'div.ui-dialog');
-    $paragraphs_dialog->pressButton('text');
+    $this->assertSession()->assertWaitOnAjaxRequest();
+    $page->pressButton('text');
     $this->assertSession()->assertWaitOnAjaxRequest();
     // Assert the draghandle is visible.
     $style_selector = $page->find('css', '.tabledrag-handle');

@@ -2,6 +2,7 @@
 
 namespace Drupal\paragraphs_type_permissions;
 
+use Drupal\Core\Routing\UrlGeneratorTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
@@ -11,6 +12,7 @@ use Drupal\paragraphs\Entity\ParagraphsType;
 class ParagraphsTypePermissions {
 
   use StringTranslationTrait;
+  use UrlGeneratorTrait;
 
   /**
    * Returns an array of content permissions.

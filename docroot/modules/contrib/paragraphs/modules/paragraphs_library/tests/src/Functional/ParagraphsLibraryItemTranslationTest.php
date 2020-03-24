@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\paragraphs_library\Functional;
 
-use Drupal\Tests\field_ui\Traits\FieldUiTestTrait;
+use Drupal\field_ui\Tests\FieldUiTestTrait;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\Tests\BrowserTestBase;
@@ -35,11 +35,6 @@ class ParagraphsLibraryItemTranslationTest extends BrowserTestBase {
     'language',
     'content_translation',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * {@inheritdoc}

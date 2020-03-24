@@ -28,13 +28,8 @@
           $this.toggleClass('open');
         });
 
-        $this.on('focusout', function (e) {
-          setTimeout(function () {
-            if ($this.has(document.activeElement).length == 0) {
-              // The focus left the action button group, hide actions.
-              $this.removeClass('open');
-            }
-          }, 1);
+        $toggle.on('focusout', function (e) {
+          $this.removeClass('open');
         });
       });
     }

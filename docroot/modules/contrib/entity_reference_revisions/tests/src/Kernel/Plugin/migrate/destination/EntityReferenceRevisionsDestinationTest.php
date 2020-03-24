@@ -44,7 +44,7 @@ class EntityReferenceRevisionsDestinationTest extends KernelTestBase implements 
     parent::setUp();
     $this->installEntitySchema('entity_test_composite');
     $this->installSchema('system', ['sequences']);
-    $this->installConfig(static::$modules);
+    $this->installConfig($this->modules);
 
     $this->migrationPluginManager = \Drupal::service('plugin.manager.migration');
   }
@@ -461,7 +461,7 @@ class EntityReferenceRevisionsDestinationTest extends KernelTestBase implements 
                 ],
                 'field_err_single/target_id' => [
                   [
-                    'plugin' => 'migration_lookup',
+                    'plugin' => 'migration',
                     'migration' => ['single_err'],
                     'no_stub' => TRUE,
                     'source' => 'id',
@@ -475,7 +475,7 @@ class EntityReferenceRevisionsDestinationTest extends KernelTestBase implements 
                 ],
                 'field_err_single/target_revision_id' => [
                   [
-                    'plugin' => 'migration_lookup',
+                    'plugin' => 'migration',
                     'migration' => ['single_err'],
                     'no_stub' => TRUE,
                     'source' => 'id',
@@ -489,7 +489,7 @@ class EntityReferenceRevisionsDestinationTest extends KernelTestBase implements 
                 ],
                 'field_err_multiple' => [
                   [
-                    'plugin' => 'migration_lookup',
+                    'plugin' => 'migration',
                     'migration' => [
                       'multiple_err_author1',
                       'multiple_err_author2',

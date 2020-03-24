@@ -38,7 +38,17 @@
       overflow: hidden;
       word-break: break-all;
       line-height: 1.538em;
-      text-overflow: ellipsis;
+
+      // Fade out text element.
+      &::after {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 3em;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #fff 100%);
+        content: "\00a0";
+      }
     }
 
     .summary-plugin-label::after {
@@ -50,7 +60,6 @@
     }
 
     .summary-plugin {
-      display: inline-block;
       padding-right: 5px;
       font-size: 0.7rem;
       color: $behavior-summary-color;
@@ -58,32 +67,19 @@
       &:not(:last-child) {
         border-right: 2px solid $light-grey;
       }
-
       &:not(:first-child) {
         padding: 0 5px;
       }
     }
   }
 
-  // Behavior tab is active.
-  .behavior-active {
-    // Hide plugin summary.
-    .paragraphs-expanded-description .paragraphs-plugin-wrapper,
-    .paragraphs-content {
-      display: none;
-    }
-
-    // Display paragraphs behavior.
-    .paragraphs-behavior {
-      display: block;
-    }
+  // Hide plugin summary when on behavior tab and paragraph is collapsed.
+  .behavior-active .paragraphs-expanded-description .paragraphs-plugin-wrapper {
+    display: none;
   }
 
-  // Content tab is active.
-  .content-active {
-    // Hide content summary.
-    .paragraphs-expanded-description .paragraphs-content-wrapper {
-      display: none;
-    }
+  // Hide content summary when on content tab and paragraph is collapsed.
+  .content-active .paragraphs-expanded-description .paragraphs-content-wrapper {
+    display: none;
   }
 }

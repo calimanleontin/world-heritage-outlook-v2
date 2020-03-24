@@ -24,6 +24,8 @@
       $parWidget.removeClass('content-active').addClass('behavior-active');
       $tabContent.removeClass('is-active');
       $tabBehavior.addClass('is-active');
+      $parContent.hide();
+      $parBehavior.show();
     }
     else {
       // Activate content tab visually if there is no previously
@@ -33,6 +35,9 @@
         $tabContent.addClass('is-active');
         $parWidget.addClass('content-active');
       }
+
+      $parContent.not(':hidden').show();
+      $parBehavior.hide();
 
       $parTabs.show();
       if ($parBehavior.length === 0) {
@@ -53,16 +58,21 @@
   var switchActiveClass = function ($parTabs, $clickedTab, $parWidget) {
       $parTabs.find('li').removeClass('is-active');
       $clickedTab.parent('li').addClass('is-active');
-      $parWidget.removeClass('behavior-active content-active');
+      $parWidget.removeClass('behavior-active content-active is-active');
       $($parWidget).find($clickedTab.attr('href')).addClass('is-active');
 
       if ($parWidget.find('#content').hasClass('is-active')) {
         $parWidget.addClass('content-active');
-        $parWidget.find('.paragraphs-add-wrapper').parent().removeClass('hidden');
+        $parWidget.find('.paragraphs-content').show();
+        $parWidget.find('.paragraphs-behavior').hide();
+        $parWidget.find('.paragraphs-add-wrapper').parent().show();
       }
-      else if ($parWidget.find('#behavior').hasClass('is-active')) {
+
+      if ($parWidget.find('#behavior').hasClass('is-active')) {
         $parWidget.addClass('behavior-active');
-        $parWidget.find('.paragraphs-add-wrapper').parent().addClass('hidden');
+        $parWidget.find('.paragraphs-content').hide();
+        $parWidget.find('.paragraphs-behavior').show();
+        $parWidget.find('.paragraphs-add-wrapper').parent().hide();
       }
   };
 

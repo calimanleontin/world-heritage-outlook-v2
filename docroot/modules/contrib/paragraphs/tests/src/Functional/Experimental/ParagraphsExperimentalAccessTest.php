@@ -120,13 +120,12 @@ class ParagraphsExperimentalAccessTest extends ParagraphsExperimentalTestBase {
     $images = $this->getTestFiles('image');
 
     // Create a file, upload it.
-    $file_system = \Drupal::service('file_system');
-    $file_system->copy($images[0]->uri, 'temporary://privateImage.jpg');
+    file_unmanaged_copy($images[0]->uri, 'temporary://privateImage.jpg');
     $file_path = $this->container->get('file_system')
       ->realpath('temporary://privateImage.jpg');
 
     // Create a file, upload it.
-    $file_system->copy($images[1]->uri, 'temporary://privateImage2.jpg');
+    file_unmanaged_copy($images[1]->uri, 'temporary://privateImage2.jpg');
     $file_path_2 = $this->container->get('file_system')
       ->realpath('temporary://privateImage2.jpg');
 

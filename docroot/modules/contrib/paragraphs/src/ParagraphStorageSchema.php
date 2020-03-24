@@ -17,10 +17,7 @@ class ParagraphStorageSchema extends SqlContentEntityStorageSchema {
   protected function getEntitySchema(ContentEntityTypeInterface $entity_type, $reset = FALSE) {
     $schema = parent::getEntitySchema($entity_type, $reset);
 
-    $schema[$this->storage->getDataTable()]['indexes'] += array(
-      'paragraphs__parent_fields' => array('parent_type', 'parent_id', 'parent_field_name'),
-    );
-    $schema[$this->storage->getRevisionDataTable()]['indexes'] += array(
+    $schema['paragraphs_item_field_data']['indexes'] += array(
       'paragraphs__parent_fields' => array('parent_type', 'parent_id', 'parent_field_name'),
     );
 
