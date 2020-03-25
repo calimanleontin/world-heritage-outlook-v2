@@ -343,8 +343,27 @@ function iucn_assessment_update_8010() {
   $comoe2017 = Node::load(1591);
   $newComoe2020 = $cycleCreator->createDuplicateAssessment($comoe2017, 2020, 2017);
   $newComoe2020->set( 'langcode', 'fr');
-  $newComoe2020->set( 'field_coordinator', $brokenComoe2020->field_coordinator->target_id);
-  $newComoe2020->set( 'field_assessor', $brokenComoe2020->field_assessor->target_id);
+  $newComoe2020->set( 'field_coordinator', $brokenComoe2020->field_coordinator->getValue());
+  $newComoe2020->set( 'field_assessor', $brokenComoe2020->field_assessor->getValue());
+  $newComoe2020->save();
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+  $workflowService = \Drupal::service('iucn_assessment.workflow');
+  $oldState = AssessmentWorkflow::STATUS_NEW;
+  $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, 79, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
+
+  $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newState = AssessmentWorkflow::STATUS_UNDER_ASSESSMENT;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, 79, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
+
+  foreach ($newComoe2020->getFieldDefinitions() as $fieldName => $fieldSettings) {
+    if (strpos($fieldName, 'field_') !== 0 || $fieldSettings->getType() == 'entity_reference_revisions') {
+      continue;
+    }
+    $newComoe2020->set($fieldName, $brokenComoe2020->get($fieldName)->getValue());
+  }
+  $newComoe2020->setNewRevision(FALSE);
   $newComoe2020->save();
 
   $brokenComoe2020->setTitle("[BROKEN]");
@@ -383,23 +402,4 @@ function iucn_assessment_update_8010() {
     }
   }
   $brokenComoe2020->save();
-
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
-  $workflowService = \Drupal::service('iucn_assessment.workflow');
-  $oldState = AssessmentWorkflow::STATUS_NEW;
-  $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, NULL, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
-
-  $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
-  $newState = AssessmentWorkflow::STATUS_UNDER_ASSESSMENT;
-  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, NULL, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
-
-  foreach ($newComoe2020->getFieldDefinitions() as $fieldName => $fieldSettings) {
-    if (strpos($fieldName, 'field_') !== 0 || $fieldSettings->getType() == 'entity_reference_revisions') {
-      continue;
-    }
-    $newComoe2020->set($fieldName, $brokenComoe2020->get($fieldName)->getValue());
-  }
-  $newComoe2020->setNewRevision(FALSE);
-  $newComoe2020->save();
 }
