@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\paragraphs\ParagraphInterface;
@@ -328,4 +329,77 @@ function iucn_assessment_update_8009() {
       }
     }
   }
+}
+
+/**
+ * Refs #8032 - fix 2020 Comoé National Park assessment.
+ */
+function iucn_assessment_update_8010() {
+  /** @var \Drupal\node\NodeInterface $brokenComoe2020 */
+  $brokenComoe2020 = \Drupal::entityTypeManager()->getStorage('node')->loadRevision('6238');
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator $cycleCreator */
+  $cycleCreator = \Drupal::service('iucn_assessment.cycle_creator');
+  $comoe2017 = Node::load(1591);
+  $newComoe2020 = $cycleCreator->createDuplicateAssessment($comoe2017, 2020, 2017);
+  $newComoe2020->set( 'langcode', 'fr');
+  $newComoe2020->set( 'field_coordinator', $brokenComoe2020->field_coordinator->getValue());
+  $newComoe2020->set( 'field_assessor', $brokenComoe2020->field_assessor->getValue());
+  $newComoe2020->save();
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+  $workflowService = \Drupal::service('iucn_assessment.workflow');
+  $oldState = AssessmentWorkflow::STATUS_NEW;
+  $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, 79, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
+
+  $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newState = AssessmentWorkflow::STATUS_UNDER_ASSESSMENT;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, 79, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
+
+  foreach ($newComoe2020->getFieldDefinitions() as $fieldName => $fieldSettings) {
+    if (strpos($fieldName, 'field_') !== 0 || $fieldSettings->getType() == 'entity_reference_revisions') {
+      continue;
+    }
+    $newComoe2020->set($fieldName, $brokenComoe2020->get($fieldName)->getValue());
+  }
+  $newComoe2020->setNewRevision(FALSE);
+  $newComoe2020->save();
+
+  $brokenComoe2020->setTitle("[BROKEN]");
+  $brokenComoe2020->set( 'field_coordinator', NULL);
+  $brokenComoe2020->set( 'field_assessor', NULL);
+  $entityReferenceRevisionFields = [
+    'field_as_values_wh',
+    'field_as_values_bio',
+    'field_as_threats_current',
+    'field_as_threats_potential',
+    'field_as_protection',
+    'field_as_projects',
+    'field_as_projects_needs',
+    'field_as_key_cons',
+    'field_as_references_p',
+    'field_as_benefits',
+  ];
+  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  foreach ($entityReferenceRevisionFields as $field) {
+    foreach ($brokenComoe2020->get($field)->getValue() as $value) {
+      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+      $paragraph = $paragraphStorage->loadRevision($value['target_revision_id']);
+      if ($paragraph->language()->getId() == 'en') {
+        $translation = $paragraph->hasTranslation('fr')
+          ? $paragraph->getTranslation('fr')
+          : $paragraph->addTranslation('fr');
+        foreach ($paragraph->toArray() as $paragraphField => $paragraphValue) {
+          if (strpos($paragraphField, 'field_') !== 0) {
+            continue;
+          }
+          $translation->set($paragraphField, $paragraphValue);
+        }
+        $translation->setNewRevision(FALSE);
+        $translation->save();
+      }
+    }
+  }
+  $brokenComoe2020->save();
 }

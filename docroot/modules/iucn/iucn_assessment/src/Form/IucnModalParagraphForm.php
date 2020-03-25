@@ -66,10 +66,15 @@ class IucnModalParagraphForm extends ContentEntityForm {
     $this->currentLanguage = $requestStack->getCurrentRequest()->query->get('language') ?: $this->nodeRevision->language()->getId();
     $this->paragraphRevision = $routeMatch->getParameter('paragraph_revision');
 
-    if (!empty($this->paragraphRevision) && !$this->paragraphRevision->hasTranslation($this->currentLanguage)) {
-      $translation = $this->paragraphRevision->addTranslation($this->currentLanguage, $this->paragraphRevision->toArray());
-      $translation->save();
-      $this->paragraphRevision = $translation;
+    if (!empty($this->paragraphRevision)) {
+      if ($this->paragraphRevision->hasTranslation($this->currentLanguage)) {
+        $this->paragraphRevision = $this->paragraphRevision->getTranslation($this->currentLanguage);
+      }
+      else {
+        $translation = $this->paragraphRevision->addTranslation($this->currentLanguage, $this->paragraphRevision->toArray());
+        $translation->save();
+        $this->paragraphRevision = $translation;
+      }
     }
 
     $this->fieldName = $routeMatch->getParameter('field');
@@ -103,6 +108,7 @@ class IucnModalParagraphForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form_state->set('langcode', $this->currentLanguage);
     $form = parent::buildForm($form, $form_state);
     $form['#prefix'] = '<div id="drupal-modal">';
     $form['#suffix'] = '</div>';
