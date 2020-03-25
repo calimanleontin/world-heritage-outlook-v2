@@ -334,15 +334,27 @@ function iucn_assessment_update_8009() {
  * Refs #8032 - fix 2020 Comoé National Park assessment.
  */
 function iucn_assessment_update_8010() {
-  /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator $cycleCreator */
-  $cycleCreator = \Drupal::service('iucn_assessment.cycle_creator');
-  $comoe2017 = Node::load(1591);
   /** @var \Drupal\node\NodeInterface $brokenComoe2020 */
   $brokenComoe2020 = \Drupal::entityTypeManager()->getStorage('node')->loadRevision('6238');
   $brokenComoe2020->setTitle("[BROKEN] " . $brokenComoe2020->getTitle());
+  $brokenComoe2020->save();
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator $cycleCreator */
+  $cycleCreator = \Drupal::service('iucn_assessment.cycle_creator');
+  $comoe2017 = Node::load(1591);
   $newComoe2020 = $cycleCreator->createDuplicateAssessment($comoe2017, 2020, 2017);
   $newComoe2020->set( 'langcode', 'fr');
   $newComoe2020->set( 'field_coordinator', 773);
   $newComoe2020->set( 'field_assessor', 2434);
   $newComoe2020->save();
+
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+  $workflowService = \Drupal::service('iucn_assessment.workflow');
+  $oldState = AssessmentWorkflow::STATUS_NEW;
+  $newState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, NULL, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
+
+  $oldState = AssessmentWorkflow::STATUS_UNDER_EVALUATION;
+  $newState = AssessmentWorkflow::STATUS_UNDER_ASSESSMENT;
+  $newComoe2020 = $workflowService->createRevision($newComoe2020, $newState, NULL, "{$oldState} ({$newComoe2020->getRevisionId()}) => {$newState}", TRUE);
 }
