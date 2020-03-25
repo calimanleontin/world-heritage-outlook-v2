@@ -331,41 +331,18 @@ function iucn_assessment_update_8009() {
 }
 
 /**
- * Refs #8032 - fix 2020 Comoé National Park child paragraphs translations.
+ * Refs #8032 - fix 2020 Comoé National Park assessment.
  */
 function iucn_assessment_update_8010() {
-  $entityReferenceRevisionFields = [
-    'field_as_values_wh',
-    'field_as_values_bio',
-    'field_as_threats_current',
-    'field_as_threats_potential',
-    'field_as_protection',
-    'field_as_projects',
-    'field_as_projects_needs',
-    'field_as_key_cons',
-    'field_as_references_p',
-    'field_as_benefits',
-  ];
-  $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision('6238');
-
-  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
-  foreach ($entityReferenceRevisionFields as $field) {
-    foreach ($node->get($field)->getValue() as $value) {
-      /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-      $paragraph = $paragraphStorage->loadRevision($value['target_revision_id']);
-      if ($paragraph->language()->getId() == 'en') {
-        $translation = $paragraph->hasTranslation('fr')
-          ? $paragraph->getTranslation('fr')
-          : $paragraph->addTranslation('fr');
-        foreach ($paragraph->toArray() as $paragraphField => $paragraphValue) {
-          if (strpos($paragraphField, 'field_') !== 0) {
-            continue;
-          }
-          $translation->set($paragraphField, $paragraphValue);
-        }
-        $translation->setNewRevision(FALSE);
-        $translation->save();
-      }
-    }
-  }
+  /** @var \Drupal\iucn_assessment\Plugin\AssessmentCycleCreator $cycleCreator */
+  $cycleCreator = \Drupal::service('iucn_assessment.cycle_creator');
+  $comoe2017 = Node::load(1591);
+  /** @var \Drupal\node\NodeInterface $brokenComoe2020 */
+  $brokenComoe2020 = \Drupal::entityTypeManager()->getStorage('node')->loadRevision('6238');
+  $brokenComoe2020->setTitle("[BROKEN] " . $brokenComoe2020->getTitle());
+  $newComoe2020 = $cycleCreator->createDuplicateAssessment($comoe2017, 2020, 2017);
+  $newComoe2020->set( 'langcode', 'fr');
+  $newComoe2020->set( 'field_coordinator', 773);
+  $newComoe2020->set( 'field_assessor', 2434);
+  $newComoe2020->save();
 }
