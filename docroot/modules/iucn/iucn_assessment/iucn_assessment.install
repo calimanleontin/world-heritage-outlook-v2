@@ -347,7 +347,7 @@ function iucn_assessment_update_8010() {
   $newComoe2020->set( 'field_assessor', $brokenComoe2020->field_assessor->target_id);
   $newComoe2020->save();
 
-  $brokenComoe2020->setTitle("[BROKEN] " . $brokenComoe2020->getTitle());
+  $brokenComoe2020->setTitle("[BROKEN]");
   $brokenComoe2020->set( 'field_coordinator', NULL);
   $brokenComoe2020->set( 'field_assessor', NULL);
   $entityReferenceRevisionFields = [
