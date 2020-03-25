@@ -4105,7 +4105,8 @@
                 "Fix Uncaught TypeError: Cannot read property 'replace' of undefined on modal submit": "https://www.drupal.org/files/issues/2018-06-27/drupal-uninitialized_variable_url-2922677-8.patch",
                 "Fix states api or condition": "patches/core/states-api-or.patch",
                 "Error when saving settings of an entity reference field": "https://www.drupal.org/files/issues/2018-06-13/2833650-11.patch",
-                "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch"
+                "Fix basic_auth when combined with nginx/apache basic auth settings": "patches/core/basic_auth_nginx.patch",
+                "Update yarn core dependencies": "https://www.drupal.org/files/issues/2020-03-25/3122371-update-core-yarn-dependencies.patch"
             }
         },
         "installation-source": "dist",
