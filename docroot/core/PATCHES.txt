@@ -26,6 +26,6 @@ Source: patches/core/basic_auth_nginx.patch
 
 
 Update yarn core dependencies
-Source: patches/core/update-core-yarn-dependencies.patch
+Source: https://www.drupal.org/files/issues/2020-03-25/3122371-update-core-yarn-dependencies.patch
 
 
