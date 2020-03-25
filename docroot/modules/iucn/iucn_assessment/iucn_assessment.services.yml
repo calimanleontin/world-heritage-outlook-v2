@@ -13,6 +13,10 @@ services:
     class: Drupal\iucn_assessment\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  # Overwrite the default diff entity parser.
+  diff.entity_parser:
+    class: Drupal\iucn_assessment\DiffEntityParser
+    arguments: ['@plugin.manager.diff.builder', '@config.factory']
   iucn_assessment.diff_controller:
     class: Drupal\iucn_assessment\Controller\DiffController
     arguments: ['@entity_type.manager']
