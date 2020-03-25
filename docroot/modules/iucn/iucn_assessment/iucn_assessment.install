@@ -353,8 +353,10 @@ function iucn_assessment_update_8010() {
     foreach ($node->get($field)->getValue() as $value) {
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
       $paragraph = $paragraphStorage->loadRevision($value['target_revision_id']);
-      if ($paragraph->language()->getId() == 'en' && $paragraph->hasTranslation('fr')) {
-        $translation = $paragraph->getTranslation('fr');
+      if ($paragraph->language()->getId() == 'en') {
+        $translation = $paragraph->hasTranslation('fr')
+          ? $paragraph->getTranslation('fr')
+          : $paragraph->addTranslation('fr');
         foreach ($paragraph->toArray() as $paragraphField => $paragraphValue) {
           if (strpos($paragraphField, 'field_') !== 0) {
             continue;
@@ -366,5 +368,4 @@ function iucn_assessment_update_8010() {
       }
     }
   }
-
 }
