@@ -29,3 +29,7 @@ Update yarn core dependencies
 Source: https://www.drupal.org/files/issues/2020-03-25/3122371-update-core-yarn-dependencies.patch
 
 
+Diff ignore rows without differences
+Source: patches/core/diff-ignore-rows-without-differences.patch
+
+
