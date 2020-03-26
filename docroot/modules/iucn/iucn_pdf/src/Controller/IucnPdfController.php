@@ -142,7 +142,12 @@ class IucnPdfController extends FileDownloadController {
     $file_path = $this->printPdf->getFilePath($entity_id, $language, $year);
 
     if (!file_exists($realpath)) {
-      $this->printPdf->savePrintable($entity, $file_path);
+      $printLanguage = NULL;
+      if ($printLanguage == 'ar') {
+        $printLanguage = 'en';
+      }
+
+      $this->printPdf->savePrintable($entity, $file_path, $printLanguage);
     }
 
     if (!file_exists($realpath)) {
