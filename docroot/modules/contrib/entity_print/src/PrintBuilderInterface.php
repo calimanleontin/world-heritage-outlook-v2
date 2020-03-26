@@ -61,10 +61,12 @@ interface PrintBuilderInterface {
    *   (optional) The filename or empty to have one generated.
    * @param bool $use_default_css
    *   (optional) TRUE if you want the default CSS included, otherwise FALSE.
+   * @param string $language
+   *   (optional) The language you want the entities.
    *
    * @return string
    *   FALSE or the URI to the file. E.g. public://my-file.pdf.
    */
-  public function savePrintable(array $entities, PrintEngineInterface $print_engine, $scheme = 'public', $filename = '', $use_default_css = TRUE);
+  public function savePrintable(array $entities, PrintEngineInterface $print_engine, $scheme = 'public', $filename = '', $use_default_css = TRUE, $language = NULL);
 
 }

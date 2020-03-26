@@ -11,6 +11,9 @@
     "drupal/linkit": {
       "entity_type_problem": "patches/linkit/empty_entity_type_fix.patch"
     },
+    "drupal/entity_print": {
+      "Allow print any language": "https://www.drupal.org/files/issues/2020-03-26/2976381-6-entity-print-language.patch"
+    },
     "drupal/metatag": {
       "Fix test class that depends on another module to run": "patches/metatag/fix-test.patch"
     },
