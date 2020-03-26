@@ -1,16 +1,3 @@
-diff --git a/core/lib/Drupal/Component/Diff/WordLevelDiff.php b/core/lib/Drupal/Component/Diff/WordLevelDiff.php
-index 66c6e1a90..9e5bf74b0 100644
---- a/core/lib/Drupal/Component/Diff/WordLevelDiff.php
-+++ b/core/lib/Drupal/Component/Diff/WordLevelDiff.php
-@@ -39,7 +39,7 @@ protected function _split($lines) {
-         $stripped[] = $line;
-       }
-       else {
--        if (preg_match_all('/ ( [^\S\n]+ | [0-9_A-Za-z\x80-\xff]+ | . ) (?: (?!< \n) [^\S\n])? /xs', $line, $m)) {
-+        if (preg_match_all('/ ( [^\S\n]+ | [0-9_A-Za-z\x80-\xff]+ | . ) (?: (?!< \n) [ ^\S\n])? /xs', $line, $m)) {
-           $words = array_merge($words, $m[0]);
-           $stripped = array_merge($stripped, $m[1]);
-         }
 diff --git a/core/lib/Drupal/Core/Diff/DiffFormatter.php b/core/lib/Drupal/Core/Diff/DiffFormatter.php
 index 52f5550ab..155b7ab01 100644
 --- a/core/lib/Drupal/Core/Diff/DiffFormatter.php
