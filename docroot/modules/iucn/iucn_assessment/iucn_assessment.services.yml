@@ -23,3 +23,7 @@ services:
   iucn_assessment.workflow:
     class: Drupal\iucn_assessment\Plugin\AssessmentWorkflow
     arguments: ['@current_user', '@entity_type.manager', '@iucn_assessment.diff_controller']
+  # Overwrite the diff module formatter.
+  diff.diff.formatter:
+    class: Drupal\iucn_assessment\AssessmentDiffFormatter
+    arguments: ['@config.factory']

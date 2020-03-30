@@ -193,17 +193,7 @@ class DiffFormatter extends DiffFormatterBase {
     // calling addedLine/deletedLine without HTML-escaping.
     while ($line = array_shift($del)) {
       $aline = array_shift($add);
-      if (!empty($aline) && strpos($aline, '<span class="diffchange">') === FALSE) {
-        unset($aline);
-      }
-
-      if (!empty($line) && strpos($line,  '<span class="diffchange">') === FALSE) {
-        unset($line);
-      }
-
-      $addedLine = isset($aline) ? $this->addedLine($aline) : $this->emptyLine();
-      $deletedLine = isset($line) ? $this->deletedLine($line) : $this->emptyLine();
-      $this->rows[] = array_merge($deletedLine, $addedLine);
+      $this->rows[] = array_merge($this->deletedLine($line), isset($aline) ? $this->addedLine($aline) : $this->emptyLine());
     }
 
     // If any leftovers.
