@@ -58,11 +58,11 @@ class ContentEntityRenderer extends RendererBase {
   /**
    * {@inheritdoc}
    */
-  public function render(array $entities) {
+  public function render(array $entities, $language = NULL) {
     $build = [];
     foreach ($entities as $entity) {
       $render_controller = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
-      $build[] = $render_controller->view($entity, $this->getViewMode($entity));
+      $build[] = $render_controller->view($entity, $this->getViewMode($entity), $language);
     }
     return $build;
   }

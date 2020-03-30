@@ -82,8 +82,8 @@ class PrintBuilder implements PrintBuilderInterface {
   /**
    * {@inheritdoc}
    */
-  public function savePrintable(array $entities, PrintEngineInterface $print_engine, $scheme = 'public', $filename = FALSE, $use_default_css = TRUE) {
-    $renderer = $this->prepareRenderer($entities, $print_engine, $use_default_css);
+  public function savePrintable(array $entities, PrintEngineInterface $print_engine, $scheme = 'public', $filename = FALSE, $use_default_css = TRUE, $language = NULL) {
+    $renderer = $this->prepareRenderer($entities, $print_engine, $use_default_css, $language);
 
     // Allow other modules to alter the generated Print object.
     $this->dispatcher->dispatch(PrintEvents::PRE_SEND, new PreSendPrintEvent($print_engine, $entities));
@@ -108,17 +108,19 @@ class PrintBuilder implements PrintBuilderInterface {
    *   The print engine.
    * @param bool $use_default_css
    *   TRUE if we want the default CSS included.
+   * @param string $language
+   *   The language to be printed
    *
    * @return \Drupal\entity_print\Renderer\RendererInterface
    *   A print renderer.
    */
-  protected function prepareRenderer(array $entities, PrintEngineInterface $print_engine, $use_default_css) {
+  protected function prepareRenderer(array $entities, PrintEngineInterface $print_engine, $use_default_css, $language) {
     if (empty($entities)) {
       throw new \InvalidArgumentException('You must pass at least 1 entity');
     }
 
     $renderer = $this->rendererFactory->create($entities);
-    $content = $renderer->render($entities);
+    $content = $renderer->render($entities, $language);
 
     $first_entity = reset($entities);
     $render = [

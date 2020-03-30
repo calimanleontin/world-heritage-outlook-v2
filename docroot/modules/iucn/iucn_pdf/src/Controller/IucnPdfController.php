@@ -87,6 +87,7 @@ class IucnPdfController extends FileDownloadController {
    * Get year form Request with possibility to override.
    */
   public function getYear() {
+    /* @var \Drupal\iucn_pdf\ParamHelper $param_helper */
     $param_helper = \Drupal::service('iucn_pdf.param_helper');
     $year = $param_helper->get('year');
     return $year;
@@ -117,12 +118,13 @@ class IucnPdfController extends FileDownloadController {
    *   The entity id.
    *
    * The file to stream
-   * @return File
+   *
+   * @return BinaryFileResponse
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function downloadPdf($entity_id) {
-
-    /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
-
+    /** @var \Drupal\node\Entity\Node $entity */
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
     if (!$entity) {
       throw new NotFoundHttpException();
@@ -136,17 +138,18 @@ class IucnPdfController extends FileDownloadController {
 
     $language = $this->getLanguage($entity);
 
-    if($language == 'ar') {
-      $language = 'en';
-    }
-
-
     $realpath = $this->printPdf->getRealPath($entity_id, $language, $year);
     $file_path = $this->printPdf->getFilePath($entity_id, $language, $year);
 
     if (!file_exists($realpath)) {
-      $this->printPdf->savePrintable($entity, $file_path);
+      $printLanguage = NULL;
+      if ($printLanguage == 'ar') {
+        $printLanguage = 'en';
+      }
+
+      $this->printPdf->savePrintable($entity, $file_path, $printLanguage);
     }
+
     if (!file_exists($realpath)) {
       throw new NotFoundHttpException();
     }
@@ -171,9 +174,6 @@ class IucnPdfController extends FileDownloadController {
   }
 
   public function downloadLanguagePdf($entity_id, $language) {
-
-    /* @var \Drupal\iucn_pdf\ParamHelper $param_helper  */
-
     $entity = $this->entityTypeManager->getStorage('node')->load($entity_id);
     $entity->addCacheContexts(['url']);
     $year = $this->getYear();

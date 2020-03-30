@@ -27,7 +27,7 @@ class ViewRenderer extends RendererBase {
   /**
    * {@inheritdoc}
    */
-  public function render(array $views) {
+  public function render(array $views, $language = NULL) {
     return array_map([$this, 'renderSingle'], $views);
   }
 
