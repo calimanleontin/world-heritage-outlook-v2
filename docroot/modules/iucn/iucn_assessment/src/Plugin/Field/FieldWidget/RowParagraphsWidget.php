@@ -69,7 +69,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
   protected $parentNodeInitialRevision;
 
   /** @var array */
-  protected $diff;
+  protected $diff = [];
 
   /** @var bool */
   protected $showDifferences = FALSE;
@@ -328,27 +328,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
-    if (in_array($paragraph->id(), $this->getDeletedParagraphsIds())) {
-      return TRUE;
-    }
-
-    if (empty($this->diff)) {
-      return FALSE;
-    }
-
-    //Is deleted if has been added on assessment after the initial revision
-    //but is no more on the current parent revision
-    $newParagraphsFromDiff = [];
-    foreach ($this->diff as $vid => $diff) {
-      // Add new paragraphs created by reviewers.
-      $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
-      $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
-      $newParagraphsFromDiff = array_merge($newParagraphsFromDiff, $newParagraphs);
-    }
-
-    $newParagraphsFromDiff = array_column($newParagraphsFromDiff, 'target_id');
-
-    return in_array($paragraph->id(), $newParagraphsFromDiff) && !in_array($paragraph->id(), $this->getParentFieldValue($this->parentNode));
+    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
   }
 
   /**
@@ -357,9 +337,35 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return array
    */
   protected function getDeletedParagraphsIds() {
-    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision);
+    $previousValue = $this->getParentPreviousValue();
     $currentValue = $this->getParentFieldValue($this->parentNode);
     return array_diff($previousValue, $currentValue);
+  }
+
+  /**
+   * Returns paragraphs from the initial revision + the newly added paragraphs
+   *
+   * @param string $column
+   *
+   * @return array|mixed
+   */
+  protected function getParentPreviousValue($column = 'target_id') {
+    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision, $column);
+
+    //Is deleted if has been added on assessment after the initial revision
+    //but is no more on the current parent revision
+    $newParagraphsFromDiff = [];
+    foreach ($this->diff as $vid => $diff) {
+      // Add new paragraphs created by reviewers.
+      $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
+      $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
+      $newParagraphs = empty($column) ? $newParagraphs : array_column($newParagraphs, $column);
+      $newParagraphsFromDiff = array_merge($newParagraphsFromDiff, $newParagraphs);
+    }
+
+    $previousValue = array_merge($previousValue, $newParagraphsFromDiff);
+
+    return $previousValue;
   }
 
   /**
@@ -374,7 +380,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       return [];
     }
     $deleted = [];
-    $previousValue = $this->getParentFieldValue($this->parentNodeInitialRevision, NULL);
+    $previousValue = $this->getParentPreviousValue(NULL);
     foreach ($deletedIds as $id) {
       foreach ($previousValue as $value) {
         if ($value['target_id'] == $id) {
@@ -519,13 +525,6 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
 
       // Add deleted paragraphs.
       $extraParagraphs = $this->getDeletedParagraphsList();
-
-      foreach ($this->diff as $vid => $diff) {
-        // Add new paragraphs created by reviewers.
-        $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
-        $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
-        $extraParagraphs = array_merge($extraParagraphs, $newParagraphs);
-      }
 
       $currentValue = array_column($this->parentNode->{$this->parentFieldName}->getValue(), 'target_id');
       $formStateStorage = $form_state->getStorage();
