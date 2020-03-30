@@ -328,7 +328,27 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
-    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
+    if (in_array($paragraph->id(), $this->getDeletedParagraphsIds())) {
+      return TRUE;
+    }
+
+    if (empty($this->diff)) {
+      return FALSE;
+    }
+
+    //Is deleted if has been added on assessment after the initial revision
+    //but is no more on the current parent revision
+    $newParagraphsFromDiff = [];
+    foreach ($this->diff as $vid => $diff) {
+      // Add new paragraphs created by reviewers.
+      $diffParentRevision = $this->workflowService->getAssessmentRevision($vid);
+      $newParagraphs = $this->getNewParagraphsList($diffParentRevision);
+      $newParagraphsFromDiff = array_merge($newParagraphsFromDiff, $newParagraphs);
+    }
+
+    $newParagraphsFromDiff = array_column($newParagraphsFromDiff, 'target_id');
+
+    return in_array($paragraph->id(), $newParagraphsFromDiff) && !in_array($paragraph->id(), $this->getParentFieldValue($this->parentNode));
   }
 
   /**
@@ -415,7 +435,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       if ($hasDifferences) {
         $element['top']['#attributes']['class'][] = 'paragraph-diff-row';
       }
-      if ($isNew || $isCreatedOnOtherRevision) {
+      if (($isNew || $isCreatedOnOtherRevision) && !$isDeleted) {
         $element['top']['#attributes']['class'][] = 'paragraph-new-row';
       }
       elseif ($isDeleted) {
@@ -1074,7 +1094,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         '#title' => $this->t('Accept new row'),
         '#prefix' => sprintf('<div class="paragraph-author">%s</div>', $this->t('Row added by %author', ['%author' => $authorName])),
         '#url' => Url::fromRoute('iucn_assessment.accept_paragraph', $routeAttributes),
-        '#access' => $isCreatedOnOtherRevision,
+        '#access' => $isCreatedOnOtherRevision && !$isDeleted,
       ],
     ];
 
