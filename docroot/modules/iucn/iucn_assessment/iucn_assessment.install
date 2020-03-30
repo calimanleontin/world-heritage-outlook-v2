@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\iucn_assessment\Plugin\AssessmentCycleCreator;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -402,4 +403,20 @@ function iucn_assessment_update_8010() {
     }
   }
   $brokenComoe2020->save();
+}
+
+/**
+ * Refs #8068 - Change guide file.
+ */
+function iucn_assessment_update_8011() {
+  $block = BlockContent::load(8);
+  $body = $block->get('body')->value;
+  $newBody = str_replace('/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.0.pdf', '/modules/iucn/iucn_assessment/data/guidelines/Guidelines%20-%20IUCN%20Conservation%20Outlook%20Assessments%20Version%203.1.pdf', $body);
+  $block->set('body', [
+    'format' => $block->get('body')->format,
+    'value' => $newBody,
+    'summary' => $block->get('body')->summary,
+  ]);
+
+  $block->save();
 }
