@@ -87,9 +87,9 @@ class PrintPdf implements PrintPdfInterface {
   /**
    * Save entity as pdf.
    */
-  public function savePrintable(EntityInterface $entity, $file_path) {
+  public function savePrintable(EntityInterface $entity, $file_path, $language) {
     if ($entity->isPublished()) {
-      return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path);
+      return $this->printBuilder->savePrintable([$entity], $this->printEngine, 'public', $file_path, TRUE, $language);
     }
     return NULL;
   }

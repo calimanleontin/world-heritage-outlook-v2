@@ -12,11 +12,13 @@ interface RendererInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface[] $entities
    *   The entities we're rendering.
+   * @param string $language
+   *   The language we're rendering.
    *
    * @return array
    *   The renderable array for the entity.
    */
-  public function render(array $entities);
+  public function render(array $entities, $language = NULL);
 
   /**
    * Generates the HTML from the renderable array of entities.
