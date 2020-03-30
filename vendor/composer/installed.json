@@ -5287,6 +5287,9 @@
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
                 }
+            },
+            "patches_applied": {
+                "Allow print any language": "https://www.drupal.org/files/issues/2020-03-26/2976381-6-entity-print-language.patch"
             }
         },
         "installation-source": "dist",

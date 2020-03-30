@@ -16,10 +16,12 @@ interface PrintPdfInterface {
    *   Node to save in file in pdf format.
    * @param string $file_path
    *   Relative filepath.
+   ** @param string $language
+   *   The language.
    *
    * @return string
    *   FALSE or the URI to the file. E.g. public://my-file.pdf.
    */
-  public function savePrintable(EntityInterface $entity, $file_path);
+  public function savePrintable(EntityInterface $entity, $file_path, $language);
 
 }
