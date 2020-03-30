@@ -4,6 +4,7 @@ namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
+use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 
 class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
@@ -29,7 +30,8 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     if (!in_array($this->entity->bundle(), array_keys($this->affectedValuesFields))) {
       // No more validation is required.
-      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON])) {
+      if (in_array($parent->get('field_state')->value, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_COMPARISON]) &&
+        $this->paragraphCanBeReverted($paragraph, $parent)) {
         return $this->ajaxSave($form, $form_state);
       }
       return $form;
@@ -117,4 +119,26 @@ class IucnModalParagraphDeleteForm extends IucnModalParagraphConfirmationForm {
 
     return parent::ajaxSave($form, $form_state);
   }
+
+  /**
+   * Paragraph can be reverted if it is present on parent diff
+   *
+   * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
+   * @param \Drupal\node\Entity\Node $parent
+   *
+   * @return bool
+   */
+  protected function paragraphCanBeReverted(Paragraph $paragraph, Node $parent) {
+    $settings = json_decode($parent->field_settings->value, TRUE);
+    $diff = !empty($settings['diff']) ? $settings['diff'] : [];
+
+    foreach ($diff as $vid => $revisionDiff) {
+      if (in_array($paragraph->id(), array_keys($revisionDiff['paragraph']))) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
 }
