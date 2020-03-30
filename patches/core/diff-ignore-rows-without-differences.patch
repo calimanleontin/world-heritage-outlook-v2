@@ -1,0 +1,23 @@
+diff --git a/core/lib/Drupal/Core/Diff/DiffFormatter.php b/core/lib/Drupal/Core/Diff/DiffFormatter.php
+index 52f5550ab..155b7ab01 100644
+--- a/core/lib/Drupal/Core/Diff/DiffFormatter.php
++++ b/core/lib/Drupal/Core/Diff/DiffFormatter.php
+@@ -193,7 +193,17 @@ protected function _changed($orig, $closing) {
+     // calling addedLine/deletedLine without HTML-escaping.
+     while ($line = array_shift($del)) {
+       $aline = array_shift($add);
+-      $this->rows[] = array_merge($this->deletedLine($line), isset($aline) ? $this->addedLine($aline) : $this->emptyLine());
++      if (!empty($aline) && strpos($aline, '<span class="diffchange">') === FALSE) {
++        unset($aline);
++      }
++
++      if (!empty($line) && strpos($line,  '<span class="diffchange">') === FALSE) {
++        unset($line);
++      }
++
++      $addedLine = isset($aline) ? $this->addedLine($aline) : $this->emptyLine();
++      $deletedLine = isset($line) ? $this->deletedLine($line) : $this->emptyLine();
++      $this->rows[] = array_merge($deletedLine, $addedLine);
+     }
+ 
+     // If any leftovers.
