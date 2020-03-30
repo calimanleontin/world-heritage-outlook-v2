@@ -17,6 +17,10 @@ services:
   diff.entity_parser:
     class: Drupal\iucn_assessment\DiffEntityParser
     arguments: ['@plugin.manager.diff.builder', '@config.factory']
+  # Overwrite the diff module formatter.
+  diff.diff.formatter:
+    class: Drupal\iucn_assessment\AssessmentDiffFormatter
+    arguments: ['@config.factory']
   iucn_assessment.diff_controller:
     class: Drupal\iucn_assessment\Controller\DiffController
     arguments: ['@entity_type.manager']

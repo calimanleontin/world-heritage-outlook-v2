@@ -42,6 +42,7 @@ docroot/sites/local.services.yml
 docroot/core/phpunit.xml
 docroot/phpunit.xml
 docroot/core/install.php
+docroot/test.php
 
 # Vagrant Files #
 #################
