@@ -420,3 +420,18 @@ function iucn_assessment_update_8011() {
 
   $block->save();
 }
+
+/**
+ * Refs #8055 - Removes all generated pdf from sites to be rebuild with proper name
+ */
+function iucn_assessment_update_8012(&$sandbox) {
+  $sites = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'site',
+    ]);
+
+  foreach ($sites as $site) {
+    $site->save();
+  }
+}
