@@ -41,7 +41,7 @@ who.user-dashboard:
     _admin_route: TRUE
 
 who.workflow_help:
-  path: '/modules/iucn/iucn_assessment/data/guidelines/Guidelines - IUCN Conservation Outlook Assessments Version 3.0.pdf'
+  path: '/modules/iucn/iucn_assessment/data/guidelines/Guidelines - IUCN Conservation Outlook Assessments Version 3.1.pdf'
   requirements:
     _role: 'authenticated'
 
