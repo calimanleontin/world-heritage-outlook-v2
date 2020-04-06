@@ -284,7 +284,7 @@ class NodeSiteAssessmentStateChangeForm {
       $assessmentState = $node->field_state->value;
       $curentUserIsCoordinator = $node->field_coordinator->target_id == \Drupal::currentUser()->id();
       $skipValidationStates = [AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT];
-      if ($curentUserIsCoordinator && in_array($assessmentState, $skipValidationStates)) {
+      if (($curentUserIsCoordinator || in_array('administrator', \Drupal::currentUser()->getRoles())) && in_array($assessmentState, $skipValidationStates)) {
         // The coordinator can submit the assessment in "under evaluation" state
         // or change the assessor in "under assessment" state even if the assessment
         // has validation errors (the assessor needs to fix these
