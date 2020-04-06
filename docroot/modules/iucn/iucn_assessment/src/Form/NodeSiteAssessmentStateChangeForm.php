@@ -172,6 +172,7 @@ class NodeSiteAssessmentStateChangeForm {
     /** @var \Drupal\Core\Field\FieldConfigInterface[] $siteAssessmentFields */
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
     $errors = [];
+    $currentUser = \Drupal::currentUser();
 
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
       if (!static::isAssessmentFieldVisible($fieldName)) {
@@ -274,7 +275,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!empty($form['error'])) {
-      if (!in_array('administrator', \Drupal::currentUser()->getRoles())) {
+      if (!in_array('administrator', $currentUser->getRoles())) {
         foreach (Element::children($form['actions']) as $action) {
           // The user can't submit the assessment if there are validation errors.
           $form['actions'][$action]['#access'] = FALSE;
@@ -282,9 +283,9 @@ class NodeSiteAssessmentStateChangeForm {
       }
 
       $assessmentState = $node->field_state->value;
-      $curentUserIsCoordinator = $node->field_coordinator->target_id == \Drupal::currentUser()->id();
+      $currentUserIsCoordinator = $currentUser->id() === $node->field_coordinator->target_id || $currentUser->hasPermission('edit assessment in any state');
       $skipValidationStates = [AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT];
-      if (($curentUserIsCoordinator || in_array('administrator', \Drupal::currentUser()->getRoles())) && in_array($assessmentState, $skipValidationStates)) {
+      if (($currentUserIsCoordinator || in_array('administrator', $currentUser->getRoles())) && in_array($assessmentState, $skipValidationStates)) {
         // The coordinator can submit the assessment in "under evaluation" state
         // or change the assessor in "under assessment" state even if the assessment
         // has validation errors (the assessor needs to fix these
