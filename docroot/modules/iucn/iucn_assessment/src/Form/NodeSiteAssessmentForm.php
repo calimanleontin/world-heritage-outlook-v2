@@ -390,9 +390,15 @@ class NodeSiteAssessmentForm {
     $values = $form_state->getValues();
 
     $settings = json_decode($node->field_settings->value, TRUE);
+    $tagName = $form['comments']['comment']['#tab'];
 
-    if (!empty($values['comments']) && !empty($comment = trim($values['comments']))) {
-      $settings['comments'][$form['comments']['comment']['#tab']][$currentUser->id()] = $comment;
+    $settings['comments'][$tagName][$currentUser->id()] = $values['comments'];
+    if (empty(array_filter($settings['comments'][$tagName]))) {
+      unset($settings['comments'][$tagName]);
+    }
+
+    if (empty(array_filter($settings['comments']))) {
+      unset($settings['comments']);
     }
 
     $node->field_settings->setValue(json_encode($settings));
