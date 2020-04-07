@@ -19,8 +19,8 @@ use Drupal\Tests\iucn_assessment\Functional\TestSupport;
 class Workflow02JsUnderEvaluationPhaseTest extends IucnAssessmentWebDriverTestBase {
 
   public function testWarningAppearance() {
-    $this->userLogIn(TestSupport::COORDINATOR1);
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION, []);
+    $this->userLogIn(TestSupport::COORDINATOR1);
 
     $paragraph = $assessment->field_as_threats_current->entity;
 

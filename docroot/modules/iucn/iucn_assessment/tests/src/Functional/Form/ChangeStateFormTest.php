@@ -180,6 +180,8 @@ class ChangeStateFormTest extends WorkflowTestBase {
       $paragraph->save();
     }
 
+    //static::createMockAssessmentNode does log you as administrator
+    $this->userLogIn(TestSupport::ASSESSOR1);
     $stateChangeForm = Url::fromRoute('iucn_assessment.node.state_change', ['node' => $assessment->id()]);
     $this->drupalGet($stateChangeForm);
     $paragraphErrorMessages = [
@@ -210,6 +212,8 @@ class ChangeStateFormTest extends WorkflowTestBase {
       $categories = array_column($paragraph->get($categoryField)->getValue(), 'target_id');
     }
     $this->drupalGet($stateChangeForm);
+    $this->userLogIn(TestSupport::ASSESSOR1);
+
     $assertSession = $this->assertSession();
     $assertSession->pageTextNotContains('Subcategories field is required');
     $assertSession->pageTextNotContains('Specific benefits field is required for all rows in Understanding benefits - optional worksheet table.');
@@ -286,6 +290,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
     $categories = array_column($threat->get('field_as_threats_categories')->getValue(), 'target_id');
     $parentCategory = reset($categories);
 
+    $this->userLogIn(TestSupport::ASSESSOR1);
     foreach (self::REQUIRED_DEPENDENT_FIELDS as $field => $categories) {
       $threat->get($field)->setValue(NULL);
       $threat->save();
@@ -309,6 +314,8 @@ class ChangeStateFormTest extends WorkflowTestBase {
 
     // Coordinator can submit invalid assessment to assessor
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_EVALUATION);
+    $this->userLogIn(TestSupport::ASSESSOR1);
+
     foreach (self::REQUIRED_FIELDS as $field) {
       $assessment->get($field)->setValue(NULL);
     }
@@ -322,6 +329,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
     }
 
     $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
+    $this->userLogIn(TestSupport::ASSESSOR1);
     foreach (self::REQUIRED_PARAGRAPH_FIELDS as $paragraphField => $fields) {
       /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
       $paragraph = $assessment->get($paragraphField)->entity;
