@@ -8,7 +8,7 @@ dependencies:
     - field.storage.node.field_reviewers
     - field.storage.node.field_state
     - node.type.site_assessment
-    - taxonomy.vocabulary.iucn_region
+    - taxonomy.vocabulary.unesco_region
   module:
     - node
     - options
@@ -1394,10 +1394,10 @@ display:
                   min: ''
                   max: ''
           plugin_id: numeric
-        field_iucn_region_target_id:
-          id: field_iucn_region_target_id
-          table: taxonomy_term__field_iucn_region
-          field: field_iucn_region_target_id
+        field_unesco_region_target_id:
+          id: field_unesco_region_target_id
+          table: taxonomy_term__field_unesco_region
+          field: field_unesco_region_target_id
           relationship: field_country
           group_type: group
           admin_label: ''
@@ -1406,14 +1406,14 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: field_iucn_region_target_id_op
+            operator_id: field_unesco_region_target_id_op
             label: Region
             description: ''
             use_operator: false
-            operator: field_iucn_region_target_id_op
+            operator: field_unesco_region_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_iucn_region_target_id
+            identifier: field_unesco_region_target_id
             required: false
             remember: false
             multiple: false
@@ -1451,7 +1451,7 @@ display:
           reduce_duplicates: false
           type: select
           limit: true
-          vid: iucn_region
+          vid: unesco_region
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
