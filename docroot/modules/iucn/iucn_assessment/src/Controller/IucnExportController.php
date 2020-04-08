@@ -54,6 +54,7 @@ class IucnExportController extends ControllerBase {
    */
   public function docExport(NodeInterface $node) {
     $year = $node->field_as_cycle->value;
+    $language = $node->language()->getId();
     if (empty($year) || $year < 2017) {
       $year = 2017;
     }
@@ -80,7 +81,12 @@ class IucnExportController extends ControllerBase {
       $paragraphFieldList = $this->getOrderedParagraphs($paragraphFieldList, $field);
 
       foreach ($paragraphFieldList as $idx => $fieldItem) {
-        $this->writeParagraphToTemplate($templateDocument, $fieldItem->entity, $referencedFields, $idx + 1);
+        /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+        $paragraph = $fieldItem->entity;
+        if ($paragraph->language()->getId() != $language && $paragraph->hasTranslation($language)) {
+          $paragraph = $paragraph->getTranslation($language);
+        }
+        $this->writeParagraphToTemplate($templateDocument, $paragraph, $referencedFields, $idx + 1);
       }
 
     }
@@ -121,7 +127,7 @@ class IucnExportController extends ControllerBase {
     $viewBuilder = $this->entityTypeManager->getViewBuilder($entity->getEntityTypeId());
 
     if (empty($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()])) {
-      $this->entityDisplays[$entity->getEntityTypeId()][$entity->id()] = $viewBuilder->build($viewBuilder->view($entity, 'doc'));
+      $this->entityDisplays[$entity->getEntityTypeId()][$entity->id()] = $viewBuilder->build($viewBuilder->view($entity, 'doc', $entity->language()->getId()));
     }
 
     if (empty($this->entityDisplays[$entity->getEntityTypeId()][$entity->id()][$field])
