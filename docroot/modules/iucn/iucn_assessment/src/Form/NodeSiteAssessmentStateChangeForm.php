@@ -173,6 +173,7 @@ class NodeSiteAssessmentStateChangeForm {
     $siteAssessmentFields = $node->getFieldDefinitions('node', 'site_assessment');
     $errors = [];
     $currentUser = \Drupal::currentUser();
+    $language = $node->language()->getId();
 
     foreach ($siteAssessmentFields as $fieldName => $fieldSettings) {
       if (!static::isAssessmentFieldVisible($fieldName)) {
@@ -227,6 +228,9 @@ class NodeSiteAssessmentStateChangeForm {
           $target = $value->getValue();
 
           $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->loadRevision($target['target_revision_id']);
+          if ($paragraph->language()->getId() != $language && $paragraph->hasTranslation($language)) {
+            $paragraph = $paragraph->getTranslation($language);
+          }
           if ($paragraph->bundle() == 'as_site_threat') {
             static::validateThreat($form, $paragraph);
           }
