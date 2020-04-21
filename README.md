@@ -26,6 +26,6 @@ Workflow is the following:
 
 1. Setup: https://helpdesk.eaudeweb.ro/projects/practices/wiki/Drupal_8_unit_&_functional_testing
 
-2. run `./bin/run-test.sh --group iucn_assessment_forms`
+2. run `./bin/run-test.sh --group assessmentForms`
    or `./bin/run-test.sh modules/iucn/iucn_assessment/tests/src/Functional/Workflow/FinalPhasesTest.php`
 
