@@ -1030,6 +1030,10 @@ function iucn_assessment_node_access(NodeInterface $node, $op, AccountInterface 
   if ($node->bundle() == 'site_assessment' && $op == 'view' && AssessmentAccess::revisionAccess($account, $node)->isAllowed()) {
     return AccessResult::allowed();
   }
+
+  if ($node->id() == 1797 && $op == 'view' && $account->isAnonymous()) {
+    return AccessResult::forbidden();
+  }
 }
 
 /**
