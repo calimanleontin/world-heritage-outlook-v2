@@ -279,22 +279,31 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if (!empty($form['error'])) {
-      if (!in_array('administrator', $currentUser->getRoles())) {
+      $isAssessor = $currentUser->id() === $node->field_assessor->target_id;
+      $isCoordinator = $currentUser->id() === $node->field_coordinator->target_id;
+      $isAdministrator = in_array('administrator', $currentUser->getRoles());
+      $canEditAnyAssessment = $currentUser->hasPermission('edit assessment in any state');
+
+      //Administrator, iucn manager and  coordinator (but not at the same time assessor too)
+      //can change assessment state
+      if ((!$canEditAnyAssessment && !$isCoordinator) || $isAssessor) {
         foreach (Element::children($form['actions']) as $action) {
           // The user can't submit the assessment if there are validation errors.
           $form['actions'][$action]['#access'] = FALSE;
         }
       }
 
+      if ($isAdministrator && !$isCoordinator && !$isAssessor) {
+        unset($form['error']);
+      }
+
       $assessmentState = $node->field_state->value;
-      $currentUserIsCoordinator = $currentUser->id() === $node->field_coordinator->target_id || $currentUser->hasPermission('edit assessment in any state');
       $skipValidationStates = [AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW, AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT];
-      if (($currentUserIsCoordinator || in_array('administrator', $currentUser->getRoles())) && in_array($assessmentState, $skipValidationStates)) {
+      if (($isCoordinator || $canEditAnyAssessment) && in_array($assessmentState, $skipValidationStates)) {
         // The coordinator can submit the assessment in "under evaluation" state
         // or change the assessor in "under assessment" state even if the assessment
-        // has validation errors (the assessor needs to fix these
+        // has validation errors (the assessor needs to fix these)
         $form['actions']["workflow_{$node->field_state->value}"]['#access'] = TRUE;
-        unset($form['error']);
       }
       else {
         // Unset assessor field only if the coordinator can't change it.
