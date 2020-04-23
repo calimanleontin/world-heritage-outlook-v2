@@ -44,6 +44,7 @@ class NodeSiteAssessmentStateChangeForm {
       ? $node->field_coordinator->target_id
       : NULL;
     $currentUserIsCoordinator = $currentUser->id() === $coordinator || $currentUser->hasPermission('edit assessment in any state');
+    $currentUserIsAssessor = $node->field_assessor->target_id == $currentUser->id();
 
     if ($workflowService->isNewAssessment($node) === FALSE
       && $state != AssessmentWorkflow::STATUS_PUBLISHED
@@ -96,11 +97,13 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT && $currentUser->hasPermission('force finish assessment')) {
       $form['actions']['workflow_' . $state]['#access'] = TRUE;
-      $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
-      $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
-        'class' => ['button--danger'],
-        'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the assessment phase? The assessor will no longer be able to edit this assessment.")){return false;}',
-      ];
+      if (!$currentUserIsAssessor) {
+        $form['actions']['workflow_assessment_ready_for_review']['#value'] = t('Force finish assessment');
+        $form['actions']['workflow_assessment_ready_for_review']['#attributes'] = [
+          'class' => ['button--danger'],
+          'onclick' => 'if(!confirm("Are you sure you want to force the finalization of the assessment phase? The assessor will no longer be able to edit this assessment.")){return false;}',
+        ];
+      }
     }
 
     if ($state == AssessmentWorkflow::STATUS_REVIEWING_REFERENCES && $currentUser->hasPermission('force finish reference standardisation')) {
@@ -139,7 +142,7 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     if ($state == AssessmentWorkflow::STATUS_UNDER_ASSESSMENT) {
-      if ($node->field_assessor->target_id == $currentUser->id() && !self::assessmentHasNewReferences($node)) {
+      if ($currentUserIsAssessor && !self::assessmentHasNewReferences($node)) {
         self::addStatusMessage($form, t("You have not added any new references. Are you sure you haven't forgotten any references?"));
       }
       if ($currentUserIsCoordinator) {
