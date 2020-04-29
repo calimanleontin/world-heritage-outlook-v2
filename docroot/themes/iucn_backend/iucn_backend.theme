@@ -32,6 +32,10 @@ function iucn_backend_theme($existing, $type, $theme, $path) {
       'render element' => 'form',
       'template' => 'site-assessment-edit-form',
     ],
+    'site_assessment_form' => [
+      'render element' => 'form',
+      'template' => 'site-assessment-edit-form',
+    ],
   ];
 }
 
@@ -50,8 +54,16 @@ function iucn_backend_theme_suggestions_block_alter(&$suggestions, $variables) {
  * Changes vertical tabs to container.
  */
 function iucn_backend_theme_suggestions_node_edit_form_alter(&$suggestions, $variables) {
-  if (!empty($variables['form']['#form_id']) && $variables['form']['#form_id'] == 'node_site_assessment_edit_form') {
-    $suggestions[] = 'site_assessment_edit_form';
+  if (!empty($variables['form']['#form_id'])) {
+    switch ($variables['form']['#form_id']) {
+      case 'node_site_assessment_edit_form':
+        $suggestions[] = 'site_assessment_edit_form';
+        break;
+
+      case 'node_site_assessment_form':
+        $suggestions[] = 'site_assessment_form';
+        break;
+    }
   }
 }
 
