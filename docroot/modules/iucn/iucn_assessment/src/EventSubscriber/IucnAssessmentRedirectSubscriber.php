@@ -121,6 +121,10 @@ class IucnAssessmentRedirectSubscriber implements EventSubscriberInterface {
       return;
     }
 
+    if ($node->hasTranslation($language)) {
+      return;
+    }
+
     $url = Url::fromRoute(
       $routeName,
       $request->attributes->get('_raw_variables')->all(),
