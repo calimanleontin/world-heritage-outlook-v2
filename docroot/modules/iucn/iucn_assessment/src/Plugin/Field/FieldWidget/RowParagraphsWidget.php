@@ -455,6 +455,11 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @inheritdoc
    */
   public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state) {
+    if ($this->routeMatch->getRouteName() == 'entity.node.content_translation_add') {
+      //Weight is not changed during translation creation
+      return [];
+    }
+
     parent::extractFormValues($items, $form, $form_state);
     $values = $form_state->getValues();
     $fieldName = $this->fieldDefinition->getName();
