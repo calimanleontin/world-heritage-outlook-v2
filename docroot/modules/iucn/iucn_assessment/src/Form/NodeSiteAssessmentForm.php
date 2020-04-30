@@ -84,6 +84,7 @@ class NodeSiteAssessmentForm {
   }
 
   public static function alter(array &$form, FormStateInterface $form_state, $form_id) {
+    $form_state->disableCache();
     $currentRoute = \Drupal::routeMatch()->getRouteName();
     $tab = \Drupal::request()->get('tab') ?: 'values';
 
