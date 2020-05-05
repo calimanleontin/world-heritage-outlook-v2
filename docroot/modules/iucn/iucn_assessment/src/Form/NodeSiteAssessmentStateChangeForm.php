@@ -287,17 +287,11 @@ class NodeSiteAssessmentStateChangeForm {
       $isAdministrator = in_array('administrator', $currentUser->getRoles());
       $canEditAnyAssessment = $currentUser->hasPermission('edit assessment in any state');
 
-      //Administrator, iucn manager and  coordinator (but not at the same time assessor too)
-      //can change assessment state
-      if ((!$canEditAnyAssessment && !$isCoordinator) || $isAssessor) {
+      if (!$isAdministrator) {
         foreach (Element::children($form['actions']) as $action) {
           // The user can't submit the assessment if there are validation errors.
           $form['actions'][$action]['#access'] = FALSE;
         }
-      }
-
-      if ($isAdministrator && !$isCoordinator && !$isAssessor) {
-        unset($form['error']);
       }
 
       $assessmentState = $node->field_state->value;
