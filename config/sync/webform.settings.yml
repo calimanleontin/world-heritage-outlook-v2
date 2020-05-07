@@ -58,6 +58,7 @@ settings:
       - entity.node.webform.results_submissions
       - entity.node.webform.user.drafts
       - entity.node.webform.user.submissions
+  default_results_customize: false
   default_previous_submission_message: 'You have already submitted this webform. <a href="#">View your previous submission</a>.'
   default_previous_submissions_message: 'You have already submitted this webform. <a href="#">View your previous submissions</a>.'
   default_autofill_message: 'This submission has been autofilled with your previous submission.'
@@ -83,6 +84,8 @@ assets:
   javascript: ''
 handler:
   excluded_handlers: {  }
+variant:
+  excluded_variants: {  }
 export:
   temp_directory: ''
   exporter: delimited
@@ -103,6 +106,7 @@ export:
   signature_format: status
   delimiter: ','
   excel: false
+  archive_type: tar
   excluded_exporters: {  }
   file_name: 'submission-[webform_submission:serial]'
 batch:
@@ -113,6 +117,9 @@ batch:
   default_batch_email_size: 500
 purge:
   cron_size: 100
+form:
+  filter_category: ''
+  filter_state: ''
 element:
   machine_name_pattern: a-z0-9_
   empty_message: '{Empty}'
@@ -126,14 +133,13 @@ element:
   default_empty_option: true
   default_empty_option_required: ''
   default_empty_option_optional: ''
-  default_icheck: ''
-  default_google_maps_api_key: ''
   default_algolia_places_app_id: ''
   default_algolia_places_api_key: ''
   excluded_elements:
     password: password
     password_confirm: password_confirm
-    webform_location_geocomplete: webform_location_geocomplete
+  default_icheck: ''
+  default_google_maps_api_key: ''
 html_editor:
   disabled: false
   element_format: null
@@ -161,7 +167,7 @@ mail:
   default_return_path: ''
   default_sender_mail: ''
   default_sender_name: ''
-  default_subject: 'Webform submission from: [webform_submission:source-entity]'
+  default_subject: 'Webform submission from: [webform_submission:source-title]'
   default_body_text: "Submitted on [webform_submission:created]\nSubmitted by: [webform_submission:user]\n\nSubmitted values are:\n[webform_submission:values]\n"
   default_body_html: "<p>Submitted on [webform_submission:created]</p>\n<p>Submitted by: [webform_submission:user]</p>\n<p>Submitted values are:</p>\n[webform_submission:values]\n"
   roles: {  }
