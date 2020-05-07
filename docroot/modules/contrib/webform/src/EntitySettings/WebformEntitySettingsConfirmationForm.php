@@ -127,7 +127,7 @@ class WebformEntitySettingsConfirmationForm extends WebformEntitySettingsBaseFor
       ],
     ];
     $form['confirmation_type']['confirmation_update'] = [
-      '#title' => $this->t('Display confirmation when submission is updated.'),
+      '#title' => $this->t('Display confirmation when submission is updated'),
       '#description' => $this->t('If checked this select confirmation type and message will be displayed when the submission is updated. Otherwise, a status message will be displayed at the top the page when a submission is updated.'),
       '#type' => 'checkbox',
       '#return_type' => TRUE,
@@ -177,13 +177,13 @@ class WebformEntitySettingsConfirmationForm extends WebformEntitySettingsBaseFor
     $form['confirmation_url']['confirmation_exclude_token'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Exclude token from Confirmation URL'),
-      '#description' => $this->t('If checked, to submissions token will be removed from the Confirmation URL and the [webform-submission] tokens will not be available within the confirmation message.'),
+      '#description' => $this->t('If checked, to submissions token will be removed from the Confirmation URL and the [webform_submission] tokens will not be available within the confirmation message.'),
       '#default_value' => $settings['confirmation_exclude_token'],
       '#access' => !$webform->isResultsDisabled(),
     ];
     $form['confirmation_url']['token_tree_link'] = $this->tokenManager->buildTreeElement(
       ['webform', 'webform_submission', 'webform_handler'],
-      $this->t('You may use tokens to pass query string parameters. Make sure all tokens include the urlencode suffix. (i.e. [webform-submission:values:email:urlencode])')
+      $this->t('You may use tokens to pass query string parameters. Make sure all tokens include the urlencode suffix. (i.e. [webform_submission:values:email:urlencode])')
     );
 
     // Confirmation settings.
