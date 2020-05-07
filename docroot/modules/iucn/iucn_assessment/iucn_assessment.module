@@ -493,7 +493,8 @@ function iucn_assessment_field_group_pre_render(&$element, &$group, &$rendering_
  * Implements hook_webform_element_alter().
  */
 function iucn_assessment_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
-  if ($element['#webform_id'] == 'site_feedback--subject' && $element['#webform_key'] == 'subject') {
+  if (!empty($element['#webform_id']) && !empty($element['#webform_key']) &&
+    $element['#webform_id'] == 'site_feedback--subject' && $element['#webform_key'] == 'subject') {
     /* @var \Drupal\node\Entity\Node $node */
     $node = \Drupal::routeMatch()->getParameter('node');
     if (is_object($node) && $node->bundle() == 'site') {
