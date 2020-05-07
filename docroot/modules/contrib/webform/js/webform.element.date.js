@@ -42,7 +42,7 @@
         }, Drupal.webform.datePicker.options);
 
         // Add datepicker button.
-        if ($input.hasData('datepicker-button')) {
+        if ($input.hasData && $input.hasData('datepicker-button')) {
           options = $.extend({
             showOn: 'both',
             buttonImage: settings.webform.datePicker.buttonImage,
@@ -90,8 +90,8 @@
 
         // Days of the week.
         // @see https://stackoverflow.com/questions/2968414/disable-specific-days-of-the-week-on-jquery-ui-datepicker
-        if ($input.data('days')) {
-          var days = $input.data('days').split(',');
+        if ($input.attr('data-days')) {
+          var days = $input.attr('data-days').split(',');
           options.beforeShowDay = function (date) {
             var day = date.getDay().toString();
             return [(days.indexOf(day) !== -1) ? true : false];
@@ -101,7 +101,7 @@
         // Disable autocomplete.
         // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
         var isChrome = (/chrom(e|ium)/.test(window.navigator.userAgent.toLowerCase()));
-        $input.attr('autocomplete', (isChrome) ? 'chrome-off' : 'off');
+        $input.attr('autocomplete', (isChrome) ? 'chrome-off-' + Math.floor(Math.random() * 100000000) : 'off');
 
         $input.datepicker(options);
       });

@@ -4,5 +4,10 @@ popup_agree_button_message: OK
 popup_disagree_button_message: 'Más info'
 popup_find_more_button_message: 'Más info'
 popup_hide_button_message: Ocultar
+popup_info:
+  value: "<p>By using this site, you consent to the use of cookies and similar technologies to enhance your user experience. For more information please see our <a href=\"https://portals.iucn.org/dataprotection/privacypolicy\" target=\"_blank\">Privacy Policy</a>.</p>\r\n"
+popup_link: 'https://portals.iucn.org/dataprotection/privacypolicy'
+withdraw_message:
+  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"
 withdraw_tab_button_label: 'Opciones de privacidad'
 save_preferences_button_label: 'Guardar preferencias'

@@ -217,3 +217,5 @@ handlers:
       theme: ''
       theme_name: ''
       parameters: {  }
+      exclude_attachments: false
+variants: {  }

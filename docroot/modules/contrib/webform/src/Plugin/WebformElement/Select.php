@@ -22,8 +22,8 @@ class Select extends OptionsBase {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultProperties() {
-    return [
+  protected function defineDefaultProperties() {
+    $properties = [
       // Options settings.
       'multiple' => FALSE,
       'multiple_error' => '',
@@ -35,8 +35,11 @@ class Select extends OptionsBase {
       'placeholder' => '',
       'help_display' => '',
       'size' => '',
-    ] + parent::getDefaultProperties();
+    ] + parent::defineDefaultProperties();
+    return $properties;
   }
+
+  /****************************************************************************/
 
   /**
    * {@inheritdoc}
@@ -113,6 +116,9 @@ class Select extends OptionsBase {
     if (isset($element['#multiple']) && $element['#multiple'] > 1) {
       $element['#attributes']['data-limit'] = $element['#multiple'];
     }
+
+    // Attach library which allows options to be disabled via JavaScript.
+    $element['#attached']['library'][] = 'webform/webform.element.select';
 
     parent::prepare($element, $webform_submission);
   }

@@ -19,6 +19,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   label = @Translation("Text format"),
  *   description = @Translation("Provides a text format form element."),
  *   category = @Translation("Advanced elements"),
+ *   states_wrapper = TRUE,
  *   composite = TRUE,
  *   multiline = TRUE,
  * )
@@ -28,13 +29,13 @@ class TextFormat extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultProperties() {
+  protected function defineDefaultProperties() {
     $properties = [
       'default_value' => [],
       // Text format settings.
       'allowed_formats' => [],
       'hide_help' => FALSE,
-    ] + parent::getDefaultProperties();
+    ] + parent::defineDefaultProperties();
     unset(
       $properties['disabled'],
       $properties['attributes'],
@@ -42,10 +43,15 @@ class TextFormat extends WebformElementBase {
       $properties['title_display'],
       $properties['description_display'],
       $properties['field_prefix'],
-      $properties['field_suffix']
+      $properties['field_suffix'],
+      $properties['format_items'],
+      $properties['format_items_html'],
+      $properties['format_items_text']
     );
     return $properties;
   }
+
+  /****************************************************************************/
 
   /**
    * {@inheritdoc}
@@ -266,8 +272,8 @@ class TextFormat extends WebformElementBase {
   protected function getElementSelectorInputsOptions(array $element) {
     $title = $this->getAdminLabel($element);
     return [
-      'value' => $title . ' [' . t('Textarea') . ']',
-      'format' => $title . ' [' . t('Select') . ']',
+      'value' => $title . ' [' . $this->t('Textarea') . ']',
+      'format' => $title . ' [' . $this->t('Select') . ']',
     ];
   }
 

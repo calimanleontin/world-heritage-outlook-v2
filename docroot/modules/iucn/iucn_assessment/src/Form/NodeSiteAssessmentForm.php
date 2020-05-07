@@ -34,7 +34,7 @@ class NodeSiteAssessmentForm {
       }
 
       if (is_array($element[$child])) {
-        self::setValidationErrors($form, $element[$child], array_merge($parents, [$child]));
+        static::setValidationErrors($form, $element[$child], array_merge($parents, [$child]));
       }
     }
   }
@@ -274,7 +274,7 @@ class NodeSiteAssessmentForm {
       self::setTabsDrupalSettings($form, $node);
     }
 
-    self::setValidationErrors($form, $form, []);
+    static::setValidationErrors($form, $form, []);
 
     $form['main_data_container'] = [
       '#type' => 'container',

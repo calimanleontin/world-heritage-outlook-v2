@@ -1,1 +1,9 @@
+popup_agreed:
+  value: "<h2>Thank you for accepting cookies</h2>\r\n\r\n<p>You can now hide this message or find out more about cookies.</p>\r\n"
+popup_agree_button_message: OK
 popup_hide_button_message: إخفاء
+popup_info:
+  value: "<p>By using this site, you consent to the use of cookies and similar technologies to enhance your user experience. For more information please see our <a href=\"https://portals.iucn.org/dataprotection/privacypolicy\" target=\"_blank\">Privacy Policy</a>.</p>\r\n"
+popup_link: 'https://portals.iucn.org/dataprotection/privacypolicy'
+withdraw_message:
+  value: "<h2>We use cookies on this site to enhance your user experience</h2>\r\n\r\n<p>You have given your consent for us to set cookies.</p>\r\n"

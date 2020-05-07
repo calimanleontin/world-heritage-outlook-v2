@@ -23,19 +23,20 @@ class Checkboxes extends OptionsBase {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultProperties() {
+  protected function defineDefaultProperties() {
     return [
       'multiple' => TRUE,
       'multiple_error' => '',
       // Options settings.
       'options_display' => 'one_column',
       'options_description_display' => 'description',
-      // iCheck settings.
-      'icheck' => '',
+      'options__properties' => [],
       // Wrapper.
       'wrapper_type' => 'fieldset',
-    ] + parent::getDefaultProperties();
+    ] + parent::defineDefaultProperties();
   }
+
+  /****************************************************************************/
 
   /**
    * {@inheritdoc}

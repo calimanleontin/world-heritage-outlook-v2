@@ -24,17 +24,17 @@ class WebformEntityPrintAttachment extends WebformAttachmentBase {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultProperties() {
-    $properties = parent::getDefaultProperties() + [
+  protected function defineDefaultProperties() {
+    $properties = [
       'view_mode' => 'html',
       'template' => '',
-    ];
-
+    ] + parent::defineDefaultProperties();
     // PDF documents should never be trimmed.
     unset($properties['trim']);
-
     return $properties;
   }
+
+  /****************************************************************************/
 
   /**
    * {@inheritdoc}
@@ -70,7 +70,7 @@ class WebformEntityPrintAttachment extends WebformAttachmentBase {
         'twig' => $this->t('Twig template…'),
       ],
     ];
-    $form['attachment']['template']  = [
+    $form['attachment']['template'] = [
       '#type' => 'webform_codemirror',
       '#title' => $this->t('Twig template'),
       '#title_display' => 'invisible',

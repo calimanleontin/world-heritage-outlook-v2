@@ -21,7 +21,7 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
   /**
    * {@inheritdoc}
    */
-  public function getDefaultProperties() {
+  protected function defineDefaultProperties() {
     return [
       // Element settings.
       'title' => '',
@@ -38,18 +38,29 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
       // Attributes.
       'wrapper_attributes' => [],
       'label_attributes' => [],
-    ] + $this->getDefaultBaseProperties();
+    ] + $this->defineDefaultBaseProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getDefaultBaseProperties() {
-    $properties = parent::getDefaultBaseProperties();
-    unset($properties['prepopulate']);
-    unset($properties['states_clear']);
+  protected function defineDefaultBaseProperties() {
+    $properties = parent::defineDefaultBaseProperties();
+    unset(
+      $properties['prepopulate'],
+      $properties['states_clear']
+    );
     return $properties;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function defineTranslatableProperties() {
+    return array_merge(parent::defineTranslatableProperties(), ['filename', 'link_title']);
+  }
+
+  /****************************************************************************/
 
   /**
    * {@inheritdoc}
@@ -244,7 +255,7 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
         'filemime' => $file_mime,
         // URI is used when debugging or resending messages.
         // @see \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler::buildAttachments
-        '_uri' => ($file_url) ? $file_url->toString() : NULL,
+        '_fileurl' => ($file_url) ? $file_url->toString() : NULL,
       ];
     }
     return $attachments;
