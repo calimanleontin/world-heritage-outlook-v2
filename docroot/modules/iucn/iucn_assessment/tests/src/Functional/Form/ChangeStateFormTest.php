@@ -482,16 +482,47 @@ class ChangeStateFormTest extends WorkflowTestBase {
       'entity.node.edit_form',
       'iucn_assessment.node.state_change',
     ];
+    $languages = $this->languageManager->getLanguages();
+    foreach ($languages as $languageId => $language) {
+      if ($languageId == 'en') {
+        continue;
+      }
 
-    foreach ($this->languageManager->getLanguages() as $language) {
       $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT, [
-        'langcode' => $language->getId(),
+        'langcode' => $languageId,
       ]);
 
       foreach ($routes as $route) {
         $url = Url::fromRoute($route, ['node' => $assessment->id()], ['language' => $language]);
         $this->drupalGet($url);
-        $this->assertNotContains("/{$language->getId()}/", $this->getSession()->getCurrentUrl());
+        $this->assertContains("/{$languageId}/", $this->getSession()->getCurrentUrl());
+      }
+    }
+
+    $translationLanguages = [
+      'fr',
+      'es',
+    ];
+    $assessment = $this->createMockAssessmentNode(AssessmentWorkflow::STATUS_UNDER_ASSESSMENT);
+    foreach ($translationLanguages as $language) {
+      $assessment->addTranslation($language, $assessment->toArray());
+    }
+    $assessment->save();
+
+    foreach ($routes as $route) {
+      foreach ($languages as $languageId => $language) {
+        if ($languageId == 'en') {
+          continue;
+        }
+
+        //redirect to en only if node does not have $languageId translation
+        $url = Url::fromRoute($route, ['node' => $assessment->id()], ['language' => $language]);
+        $this->drupalGet($url);
+        if (in_array($languageId, $translationLanguages)) {
+          $this->assertContains("/{$languageId}/", $this->getSession()->getCurrentUrl());
+        } else {
+          $this->assertNotContains("/{$languageId}/", $this->getSession()->getCurrentUrl());
+        }
       }
     }
   }
