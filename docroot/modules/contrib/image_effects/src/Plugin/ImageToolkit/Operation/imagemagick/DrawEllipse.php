@@ -25,8 +25,8 @@ class DrawEllipse extends ImagemagickImageToolkitOperationBase {
    */
   protected function execute(array $arguments) {
     $arg = '';
-    $arg .= '-fill ' . $this->getToolkit()->escapeShellArg($arguments['color']);
-    $this->getToolkit()->addArgument($arg . ' -draw ' . $this->getToolkit()->escapeShellArg("ellipse {$arguments['cx']},{$arguments['cy']} {$arguments['width']},{$arguments['height']} 0,360"));
+    $arg .= '-fill ' . $this->escapeArgument($arguments['color']);
+    $this->addArgument($arg . ' -draw ' . $this->escapeArgument("ellipse {$arguments['cx']},{$arguments['cy']} {$arguments['width']},{$arguments['height']} 0,360"));
     return TRUE;
   }
 
