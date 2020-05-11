@@ -36,7 +36,7 @@ class ConvolutionTest extends ImageEffectsTestBase {
   public function testConvolutionEffect($toolkit_id, $toolkit_config, array $toolkit_settings) {
     $this->changeToolkit($toolkit_id, $toolkit_config, $toolkit_settings);
 
-    $original_uri = $this->getTestImageCopyUri('/files/image-test.png', 'simpletest');
+    $original_uri = $this->getTestImageCopyUri('core/tests/fixtures/files/image-test.png');
     $derivative_uri = 'public://test-images/image-test-derived.png';
 
     // Add the effect for operation test.
@@ -76,8 +76,9 @@ class ConvolutionTest extends ImageEffectsTestBase {
       case 'imagemagick':
         // For the Imagemagick toolkit, check the command line argument has
         // been formatted properly.
-        $argument = $image->getToolkit()->getArguments()[$image->getToolkit()->findArgument('-morphology')];
-        $this->assertEqual("-morphology Convolve '3x3:1,1,1 1,1,1 1,1,1'", $argument);
+        $find = $image->getToolkit()->arguments()->find('/^./', NULL, ['image_toolkit_operation' => 'convolution']);
+        $arg = array_shift($find);
+        $this->assertEquals("-morphology Convolve '3x3:1,1,1 1,1,1 1,1,1'", $arg['argument']);
         break;
 
     }
@@ -113,10 +114,10 @@ class ConvolutionTest extends ImageEffectsTestBase {
 
     // Assert that effect is configured as expected.
     $effect_configuration_data = $this->testImageStyle->getEffect($uuid)->getConfiguration()['data'];
-    $this->assertEqual([[0, 1, 2], [3, 4, 5], [6, 7, 8]], $effect_configuration_data['kernel']);
-    $this->assertEqual(9, $effect_configuration_data['divisor']);
-    $this->assertEqual(0, $effect_configuration_data['offset']);
-    $this->assertEqual('test_convolution', $effect_configuration_data['label']);
+    $this->assertEquals([[0, 1, 2], [3, 4, 5], [6, 7, 8]], $effect_configuration_data['kernel']);
+    $this->assertEquals(9, $effect_configuration_data['divisor']);
+    $this->assertEquals(0, $effect_configuration_data['offset']);
+    $this->assertEquals('test_convolution', $effect_configuration_data['label']);
   }
 
 }
