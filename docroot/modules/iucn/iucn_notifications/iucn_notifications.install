@@ -193,11 +193,12 @@ function iucn_notifications_update_8002() {
   $finishReviewPet->set('mail_body', [
     'value' => '<p>Dear [user:display-name],<br />
 <br />
-Reviewer [node:revision_uid:display-name] for [node:title] has submitted the site assessment review.<br />
+[node:revision_uid:display-name], a reviewer for [node:title] has submitted the site assessment review.<br />
 <br />
 Go to <a href="[site:login-url]">[site:login-url]</a> to see the overall status of the assessment review.</p>
 ',
     'format' => 'html'
   ]);
+
   $finishReviewPet->save();
 }
