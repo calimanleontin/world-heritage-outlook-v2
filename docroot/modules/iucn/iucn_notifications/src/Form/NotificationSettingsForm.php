@@ -56,7 +56,7 @@ class NotificationSettingsForm extends FormBase {
 
     $form['iucn_notifications.coordinator_extra_email'] = [
       '#type' => 'email',
-      '#title' => $this->t('Extra coordinator email'),
+      '#title' => $this->t('Additional coordinator email'),
       '#default_value' => $this->state->get(
         'iucn_notifications.coordinator_extra_email'
       ),
