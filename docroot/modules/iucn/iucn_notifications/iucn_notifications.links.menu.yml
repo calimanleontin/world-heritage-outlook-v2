@@ -1,0 +1,7 @@
+iucn_notifications.settings:
+  title: 'Notifications'
+  description: 'Configuration for notification settings'
+  route_name: iucn_notifications.settings_form
+  parent: who.admin_config_who
+  class: Drupal\Core\Menu\MenuLinkDefault
+  weight: 70

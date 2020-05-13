@@ -1,0 +1,7 @@
+iucn_notifications.settings_form:
+  path: '/admin/config/who/notifications'
+  defaults:
+    _form: '\Drupal\iucn_notifications\Form\NotificationSettingsForm'
+    _title: 'Notification settings'
+  requirements:
+    _permission: 'administer site configuration'
