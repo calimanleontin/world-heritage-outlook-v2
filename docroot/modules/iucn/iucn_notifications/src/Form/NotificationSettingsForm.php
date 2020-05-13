@@ -65,7 +65,6 @@ class NotificationSettingsForm extends FormBase {
       ),
     ];
 
-
     $emailsToReviewers = $this->state->get(
       'iucn_notifications.review_completion_emails'
     );
