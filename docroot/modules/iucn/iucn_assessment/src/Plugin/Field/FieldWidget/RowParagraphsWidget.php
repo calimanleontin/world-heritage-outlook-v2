@@ -16,7 +16,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\field\FieldConfigInterface;
-use Drupal\iucn_assessment\Form\AssessmentEntityFormTrait;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
@@ -460,7 +459,16 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
       return [];
     }
 
+    $originalItems = clone $items;
     parent::extractFormValues($items, $form, $form_state);
+    $deleted = 0;
+    foreach ($items->getValue() as $key => $value) {
+      if (array_search($value, $originalItems->getValue()) === false) {
+        $items->removeItem($key - $deleted);
+        $deleted++;
+      }
+    }
+
     $values = $form_state->getValues();
     $fieldName = $this->fieldDefinition->getName();
     if (!empty($values[$fieldName]) && is_array($values[$fieldName])) {
