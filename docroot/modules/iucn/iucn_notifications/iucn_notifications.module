@@ -104,8 +104,13 @@ function iucn_notifications_node_update(NodeInterface $node) {
   $recipients = [];
   switch ($oldState . '>' . $newState) {
     case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
-    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
       $recipients[] = $coordinatorId;
+      break;
+
+    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+      if ($node->isDefaultRevision() === FALSE) {
+        $recipients[] = $coordinatorId;
+      }
       break;
 
     case AssessmentWorkflow::STATUS_FINAL_CHANGES . '>' . AssessmentWorkflow::STATUS_APPROVED:
