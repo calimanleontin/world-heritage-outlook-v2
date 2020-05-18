@@ -13,6 +13,31 @@ function iucn_notifications_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
   $message['body'][] = $params['message'];
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+
+  /** @var \Drupal\Core\State\State $state */
+  $state = \Drupal::service('state');
+
+  $cc = [];
+  switch ($key) {
+    case 'iucn_notifications_assessment_ready_for_review':
+      $cc[] = $state->get('iucn_notifications.coordinator_extra_email');
+      break;
+
+    case 'iucn_notifications_assessment_finished_reviewing':
+      $cc = $state->get('iucn_notifications.review_completion_emails');
+      $cc[] = $state->get('iucn_notifications.coordinator_extra_email');
+      break;
+  }
+
+  if ($message['to'] == $state->get('iucn_notifications.archive_email')) {
+    //do not add cc to archive emails
+    $cc = [];
+  }
+
+  $cc = array_filter(array_unique($cc));
+  if (!empty($cc)) {
+    $message['headers']['cc'] = implode(',', $cc);
+  }
 }
 
 /**
@@ -79,8 +104,13 @@ function iucn_notifications_node_update(NodeInterface $node) {
   $recipients = [];
   switch ($oldState . '>' . $newState) {
     case AssessmentWorkflow::STATUS_UNDER_ASSESSMENT . '>' . AssessmentWorkflow::STATUS_READY_FOR_REVIEW:
-    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
       $recipients[] = $coordinatorId;
+      break;
+
+    case AssessmentWorkflow::STATUS_UNDER_REVIEW . '>' . AssessmentWorkflow::STATUS_FINISHED_REVIEWING:
+      if ($node->isDefaultRevision() === FALSE) {
+        $recipients[] = $coordinatorId;
+      }
       break;
 
     case AssessmentWorkflow::STATUS_FINAL_CHANGES . '>' . AssessmentWorkflow::STATUS_APPROVED:

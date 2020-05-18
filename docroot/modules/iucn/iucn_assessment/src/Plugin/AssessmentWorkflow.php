@@ -706,14 +706,14 @@ class AssessmentWorkflow {
     $defaultUnderReviewRevision->setNewRevision(FALSE);
     $defaultUnderReviewRevision->save();
 
+    $reviewerRevision->setRevisionLogMessage("{$oldState} => {$newState}");
+
+    $this->forceAssessmentState($reviewerRevision, $newState);
+
     if ($this->isAssessmentReviewed($defaultUnderReviewRevision, $reviewerRevision->getRevisionId())) {
       // If all other reviewers finished their work, send the assessment
       // back to the coordinator.
       $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
     }
-
-    $reviewerRevision->setRevisionLogMessage("{$oldState} => {$newState}");
-
-    $this->forceAssessmentState($reviewerRevision, $newState);
   }
 }
