@@ -11,9 +11,9 @@ from_sid: assessment_under_review
 to_sid: assessment_finished_reviewing
 roles:
   administrator: administrator
-  iucn_manager: iucn_manager
   reviewer: reviewer
   workflow_author: '0'
+  iucn_manager: '0'
   coordinator: '0'
   assessor: '0'
   references_reviewer: '0'
