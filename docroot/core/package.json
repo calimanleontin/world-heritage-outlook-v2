@@ -51,7 +51,7 @@
     "postcss-header": "^1.0.0",
     "postcss-import": "^12.0.1",
     "prettier": "^1.14.0",
-    "stylelint": "^9.10.1",
+    "stylelint": "^13.5.0",
     "stylelint-checkstyle-formatter": "^0.1.1",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-no-browser-hacks": "^1.2.1",
@@ -98,5 +98,11 @@
     "last 1 Samsung version",
     "last 1 OperaMini version",
     "Firefox ESR"
-  ]
+  ],
+  "resolutions": {
+    "minimist": "^1.2.5",
+    "kind-of": "^6.0.3",
+    "https-proxy-agent": "^2.2.3",
+    "acorn": "^5.7.4"
+  }
 }
