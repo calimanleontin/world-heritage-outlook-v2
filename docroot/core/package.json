@@ -42,7 +42,7 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.10.0",
     "glob": "^7.1.2",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.2",
     "mkdirp": "^0.5.1",
     "nightwatch": "^1.2.1",
     "postcss": "^7.0.18",
@@ -98,11 +98,5 @@
     "last 1 Samsung version",
     "last 1 OperaMini version",
     "Firefox ESR"
-  ],
-  "resolutions": {
-    "minimist": "^1.2.5",
-    "kind-of": "^6.0.3",
-    "https-proxy-agent": "^2.2.3",
-    "acorn": "^5.7.4"
-  }
+  ]
 }
