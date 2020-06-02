@@ -30,7 +30,17 @@ class AssessmentLanguageNegotiator extends LanguageNegotiationMethodBase {
    * {@inheritdoc}
    */
   public function getLangcode(Request $request = NULL) {
+    if ($request->isXmlHttpRequest()) {
+      return FALSE;
+    }
+
     $alias = \Drupal::service('path.alias_manager')->getPathByAlias($request->getRequestUri());
+
+    $url = Url::fromUri("internal:" . $alias);
+
+    if (!$url->isRouted()) {
+      return FALSE;
+    }
 
     $params = Url::fromUri("internal:" . $alias)->getRouteParameters();
     if (empty($params['node'])) {
