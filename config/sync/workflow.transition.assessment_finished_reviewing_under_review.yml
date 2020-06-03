@@ -11,10 +11,10 @@ module: workflow
 from_sid: assessment_finished_reviewing
 to_sid: assessment_under_review
 roles:
+  iucn_manager: iucn_manager
   coordinator: coordinator
   workflow_author: '0'
   administrator: '0'
-  iucn_manager: '0'
   assessor: '0'
   reviewer: '0'
   references_reviewer: '0'
