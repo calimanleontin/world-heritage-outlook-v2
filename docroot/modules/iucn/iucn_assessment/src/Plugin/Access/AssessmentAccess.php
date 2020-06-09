@@ -77,7 +77,7 @@ class AssessmentAccess implements ContainerInjectionInterface {
   public static function revisionAccess(AccountInterface $account, NodeInterface $node) {
     if ($account->hasPermission('view site_assessment revisions')) {
       $user = User::load($account->id());
-      if ($user->hasRole('coordinator')) {
+      if ($user->hasRole('coordinator') && !$user->hasRole('iucn_manager')) {
         $defaultRevision = Node::load($node->id());
         return AccessResult::allowedIf($defaultRevision->field_coordinator->target_id == $account->id());
       }

@@ -435,3 +435,35 @@ function iucn_assessment_update_8012(&$sandbox) {
     $site->save();
   }
 }
+
+/**
+ * Refs #8470 reattach missing paragraph to site assessment
+ */
+function iucn_assessment_update_8013() {
+  $nodeStorage = \Drupal::entityTypeManager()->getStorage('node');
+
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $paragraphStorage */
+  $paragraphStorage = \Drupal::entityTypeManager()->getStorage('paragraph');
+
+  /** @var Node $nodeRevision */
+  $nodeRevision = $nodeStorage->loadRevision(6973);
+
+  /** @var Node $node */
+  $node = Node::load(2557);
+
+  foreach ($nodeRevision->get('field_as_protection') as $item) {
+    $paragraphRevision = $paragraphStorage->loadRevision($item->target_revision_id);
+    $revisionIds = \Drupal::database()->select('paragraphs_item_revision_field_data', 'p')
+      ->fields('p', ['revision_id'])
+      ->condition('id', $paragraphRevision->id())
+      ->execute()
+      ->fetchCol();
+
+    $node->get('field_as_protection')->appendItem([
+      'target_id' => $paragraphRevision->id(),
+      'target_revision_id' => max($revisionIds),
+    ]);
+  }
+
+  $node->save();
+}
