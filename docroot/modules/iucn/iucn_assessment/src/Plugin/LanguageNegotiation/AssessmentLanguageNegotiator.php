@@ -3,6 +3,7 @@
 namespace Drupal\iucn_assessment\Plugin\LanguageNegotiation;
 
 use Drupal\Core\Url;
+use Drupal\iucn_site\Plugin\IucnSiteUtils;
 use Drupal\language\LanguageNegotiationMethodBase;
 use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl;
 use Drupal\node\NodeInterface;
@@ -65,11 +66,15 @@ class AssessmentLanguageNegotiator extends LanguageNegotiationMethodBase {
 
     $langcodeFromUrl = $languageNegotiator->getNegotiationMethodInstance(LanguageNegotiationUrl::METHOD_ID)->getLangcode($request);
 
-    if ($node->hasTranslation($langcodeFromUrl)) {
+    $assessment = $node->bundle() == 'site' ?
+      IucnSiteUtils::getMainSiteAssessment($node):
+      $node;
+
+    if ($assessment->hasTranslation($langcodeFromUrl)) {
       return FALSE;
     }
 
-    return $node->get('langcode')->value;
+    return $assessment->get('langcode')->value;
   }
 
 }
