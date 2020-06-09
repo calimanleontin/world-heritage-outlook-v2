@@ -60,4 +60,28 @@ class IucnSiteUtils {
     \Drupal::logger('iucn_site')->notice('geoJson' . $node->field_wdpa_id->value . 'was successfully updated');
   }
 
+  /**
+   * Get site_assessment for the current year
+   *
+   * @param \Drupal\node\Entity\Node $node
+   *
+   * @return \Drupal\node\Entity\Node|null
+   */
+  public static function getMainSiteAssessment(Node $node) {
+    if ($node->bundle() != 'site') {
+      return NULL;
+    }
+
+    $displayYear = iucn_pdf_assessment_year_display($node);
+    /* @var \Drupal\node\Entity\Node $assessment */
+    foreach ($node->get('field_assessments')->referencedEntities() as $assessment) {
+      if ($assessment->field_as_cycle->value == $displayYear
+        && $assessment->access('view')) {
+        return $assessment;
+      }
+    }
+
+    return NULL;
+  }
+
 }
