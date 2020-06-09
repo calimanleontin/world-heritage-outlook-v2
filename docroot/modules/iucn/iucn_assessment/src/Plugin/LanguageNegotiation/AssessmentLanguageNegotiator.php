@@ -6,6 +6,7 @@ use Drupal\Core\Url;
 use Drupal\iucn_site\Plugin\IucnSiteUtils;
 use Drupal\language\LanguageNegotiationMethodBase;
 use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -69,6 +70,10 @@ class AssessmentLanguageNegotiator extends LanguageNegotiationMethodBase {
     $assessment = $node->bundle() == 'site' ?
       IucnSiteUtils::getMainSiteAssessment($node):
       $node;
+
+    if (!$assessment instanceof Node) {
+      return FALSE;
+    }
 
     if ($assessment->hasTranslation($langcodeFromUrl)) {
       return FALSE;
