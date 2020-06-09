@@ -460,10 +460,20 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
     }
 
     $originalItems = clone $items;
+    $originalItems = array_map(
+      function ($item) {
+        unset($item['entity']);
+        return $item;
+      },
+      $originalItems->getValue()
+    );
+
     parent::extractFormValues($items, $form, $form_state);
     $deleted = 0;
     foreach ($items->getValue() as $key => $value) {
-      if (array_search($value, $originalItems->getValue()) === false) {
+      $valueCopy = $value;
+      unset($valueCopy['entity']);
+      if (array_search($valueCopy, $originalItems) === false) {
         $items->removeItem($key - $deleted);
         $deleted++;
       }
