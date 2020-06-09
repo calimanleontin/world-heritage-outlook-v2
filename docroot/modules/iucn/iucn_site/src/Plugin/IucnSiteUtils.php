@@ -72,10 +72,10 @@ class IucnSiteUtils {
       return NULL;
     }
 
-    $display_year = iucn_pdf_assessment_year_display($node);
+    $displayYear = iucn_pdf_assessment_year_display($node);
     /* @var \Drupal\node\Entity\Node $assessment */
     foreach ($node->get('field_assessments')->referencedEntities() as $assessment) {
-      if ($assessment->field_as_cycle->value == $display_year
+      if ($assessment->field_as_cycle->value == $displayYear
         && $assessment->access('view')) {
         return $assessment;
       }
