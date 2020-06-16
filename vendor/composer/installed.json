@@ -3016,6 +3016,9 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists error:": "patches/captcha/captcha_validation_error.patch"
             }
         },
         "installation-source": "dist",
