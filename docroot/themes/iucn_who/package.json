@@ -25,5 +25,8 @@
     "theme:watch": "grunt",
     "theme:build": "grunt build",
     "postinstall": "grunt build"
+  },
+  "dependencies": {
+    "websocket-extensions": "^0.1.4"
   }
 }
