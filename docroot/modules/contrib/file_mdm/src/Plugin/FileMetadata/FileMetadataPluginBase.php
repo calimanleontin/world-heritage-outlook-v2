@@ -7,7 +7,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\file_mdm\FileMetadataException;
 use Drupal\file_mdm\FileMetadataInterface;
 use Drupal\file_mdm\Plugin\FileMetadataPluginInterface;
@@ -31,13 +30,6 @@ abstract class FileMetadataPluginBase extends PluginBase implements FileMetadata
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
-
-  /**
-   * The stream wrapper manager service.
-   *
-   * @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
-   */
-  protected $streamWrapperManager;
 
   /**
    * The URI of the file.
@@ -105,14 +97,11 @@ abstract class FileMetadataPluginBase extends PluginBase implements FileMetadata
    *   The cache service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $stream_wrapper_manager
-   *   The stream wrapper manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheBackendInterface $cache_service, ConfigFactoryInterface $config_factory, StreamWrapperManagerInterface $stream_wrapper_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, CacheBackendInterface $cache_service, ConfigFactoryInterface $config_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cache = $cache_service;
     $this->configFactory = $config_factory;
-    $this->streamWrapperManager = $stream_wrapper_manager;
   }
 
   /**
@@ -124,8 +113,7 @@ abstract class FileMetadataPluginBase extends PluginBase implements FileMetadata
       $plugin_id,
       $plugin_definition,
       $container->get('cache.file_mdm'),
-      $container->get('config.factory'),
-      $container->get('stream_wrapper_manager')
+      $container->get('config.factory')
     );
   }
 
@@ -354,7 +342,7 @@ abstract class FileMetadataPluginBase extends PluginBase implements FileMetadata
     }
 
     // URIs without valid scheme, and temporary:// URIs are not cached.
-    if (!$this->streamWrapperManager->isValidUri($this->getUri()) || $this->streamWrapperManager->getScheme($this->getUri()) === 'temporary') {
+    if (!file_valid_uri($this->getUri()) || file_uri_scheme($this->getUri()) === 'temporary') {
       return FALSE;
     }
 
