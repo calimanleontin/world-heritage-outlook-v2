@@ -23,17 +23,14 @@
  * Boston, MA 02110-1301 USA
  */
 
-namespace Pel\Test;
-
 use lsolesen\pel\PelDataWindow;
 use lsolesen\pel\PelConvert;
 use lsolesen\pel\PelDataWindowOffsetException;
-use PHPUnit\Framework\TestCase;
 
-class DataWindowTest extends TestCase
+class DataWindowTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testReadBytes()
+    function testReadBytes()
     {
         $window = new PelDataWindow('abcdefgh');
 
@@ -73,7 +70,7 @@ class DataWindowTest extends TestCase
         $this->assertTrue($caught);
     }
 
-    public function testReadIntegers()
+    function testReadIntegers()
     {
         $window = new PelDataWindow("\x01\x02\x03\x04", PelConvert::BIG_ENDIAN);
 
@@ -107,7 +104,7 @@ class DataWindowTest extends TestCase
         $this->assertEquals($window->getLong(0), 0x04030201);
     }
 
-    public function testReadBigIntegers()
+    function testReadBigIntegers()
     {
         $window = new PelDataWindow("\x89\xAB\xCD\xEF", PelConvert::BIG_ENDIAN);
 

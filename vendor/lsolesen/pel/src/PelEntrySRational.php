@@ -55,7 +55,7 @@ class PelEntrySRational extends PelEntrySLong
      * Make a new entry that can hold a signed rational.
      *
      * @param
-     *            int the tag which this entry represents. This should
+     *            PelTag the tag which this entry represents. This should
      *            be one of the constants defined in {@link PelTag}, e.g., {@link
      *            PelTag::SHUTTER_SPEED_VALUE}, or any other tag which can have
      *            format {@link PelFormat::SRATIONAL}.

@@ -23,9 +23,6 @@
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA 02110-1301 USA
  */
-
-namespace Pel\Test;
-
 use PHPUnit\Framework\TestCase;
 use lsolesen\pel\PelJpegMarker;
 use lsolesen\pel\Pel;
@@ -34,7 +31,7 @@ use lsolesen\pel\PelJpegInvalidMarkerException;
 class PelJpegMarkerTest extends TestCase
 {
 
-    public function testNames()
+    function testNames()
     {
         $jpegMarker = new PelJpegMarker();
         $this->assertEquals($jpegMarker::getName(PelJpegMarker::SOF0), 'SOF0');
@@ -44,7 +41,7 @@ class PelJpegMarkerTest extends TestCase
         $this->assertEquals($jpegMarker::getName(100), Pel::fmt('Unknown marker: 0x%02X', 100));
     }
 
-    public function testDescriptions()
+    function testDescriptions()
     {
         $jpegMarker = new PelJpegMarker();
         $this->assertEquals($jpegMarker::getDescription(PelJpegMarker::SOF0), 'Encoding (baseline)');
@@ -58,7 +55,7 @@ class PelJpegMarkerTest extends TestCase
      * @expectedException lsolesen\pel\PelJpegInvalidMarkerException
      * @throws PelJpegInvalidMarkerException
      */
-    public function testInvalidMarkerException()
+    function testInvalidMarkerException()
     {
         throw new PelJpegInvalidMarkerException(1, 2);
     }

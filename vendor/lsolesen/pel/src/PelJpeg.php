@@ -78,7 +78,7 @@ class PelJpeg
      *
      * @var array
      */
-    protected $sections = [];
+    private $sections = array();
 
     /**
      * The JPEG image data.
@@ -304,10 +304,9 @@ class PelJpeg
         $sections_count = count($this->sections);
         for ($i = 0; $i < $sections_count; $i ++) {
             if (! empty($this->sections[$i][0])) {
-                $section = $this->sections[$i];
-                if ($section[0] == PelJpegMarker::APP0) {
+                if ($this->sections[$i][0] == PelJpegMarker::APP0) {
                     $app0_offset = $i;
-                } elseif (($section[0] == PelJpegMarker::APP1) && ($section[1] instanceof PelExif)) {
+                } elseif ($this->sections[$i][0] == PelJpegMarker::APP1) {
                     $app1_offset = $i;
                     break;
                 }
@@ -366,7 +365,7 @@ class PelJpeg
     }
 
     /**
-     * Get first valid APP1 Exif section data.
+     * Get Exif data.
      *
      * Use this to get the @{link PelExif Exif data} stored.
      *
@@ -375,12 +374,9 @@ class PelJpeg
      */
     public function getExif()
     {
-        $sections_count = count($this->sections);
-        for ($i = 0; $i < $sections_count; $i ++) {
-            $section = $this->getSection(PelJpegMarker::APP1, $i);
-            if ($section instanceof PelExif) {
-                return $section;
-            }
+        $exif = $this->getSection(PelJpegMarker::APP1);
+        if ($exif instanceof PelExif) {
+            return $exif;
         }
         return null;
     }
@@ -405,18 +401,16 @@ class PelJpeg
     /**
      * Clear any Exif data.
      *
-     * This method will only clear @{link PelJpegMarker::APP1} EXIF sections found.
+     * This method will only clear the first @{link PelJpegMarker::APP1}
+     * section found (there should normally be just one).
      */
     public function clearExif()
     {
-        $idx = 0;
-        while ($idx < count($this->sections)) {
-            $s = $this->sections[$idx];
-            if (($s[0] == PelJpegMarker::APP1) && ($s[1] instanceof PelExif)) {
-                array_splice($this->sections, $idx, 1);
-                $idx--;
-            } else {
-                ++ $idx;
+        $sections_count = count($this->sections);
+        for ($i = 0; $i < $sections_count; $i ++) {
+            if ($this->sections[$i][0] == PelJpegMarker::APP1) {
+                unset($this->sections[$i]);
+                return;
             }
         }
     }
@@ -440,10 +434,10 @@ class PelJpeg
      */
     public function appendSection($marker, PelJpegContent $content)
     {
-        $this->sections[] = [
+        $this->sections[] = array(
             $marker,
             $content
-        ];
+        );
     }
 
     /**
@@ -466,12 +460,12 @@ class PelJpeg
      */
     public function insertSection($marker, PelJpegContent $content, $offset)
     {
-        array_splice($this->sections, $offset, 0, [
-            [
+        array_splice($this->sections, $offset, 0, array(
+            array(
                 $marker,
                 $content
-            ]
-        ]);
+            )
+        ));
     }
 
     /**

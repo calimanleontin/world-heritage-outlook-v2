@@ -22,13 +22,10 @@
  * Boston, MA 02110-1301 USA
  */
 
-namespace Pel\Test\imagetests;
-
 use lsolesen\pel\Pel;
 use lsolesen\pel\PelJpeg;
-use PHPUnit\Framework\TestCase;
 
-class PentaxIstDSTest extends TestCase
+class PentaxIstDSTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
@@ -66,18 +63,18 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0->getEntry(282); // XResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 72,
             1 => 1
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd0->getEntry(283); // YResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 72,
             1 => 1
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd0->getEntry(296); // ResolutionUnit
@@ -97,64 +94,64 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0->getEntry(318); // WhitePoint
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
-            0 => [
+        $this->assertEquals($entry->getValue(), array(
+            0 => array(
                 0 => 313,
                 1 => 1000
-            ],
-            1 => [
+            ),
+            1 => array(
                 0 => 329,
                 1 => 1000
-            ]
-        ]);
+            )
+        ));
         $this->assertEquals($entry->getText(), '313/1000, 329/1000');
 
         $entry = $ifd0->getEntry(319); // PrimaryChromaticities
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
-            0 => [
+        $this->assertEquals($entry->getValue(), array(
+            0 => array(
                 0 => 64,
                 1 => 100
-            ],
-            1 => [
+            ),
+            1 => array(
                 0 => 33,
                 1 => 100
-            ],
-            2 => [
+            ),
+            2 => array(
                 0 => 21,
                 1 => 100
-            ],
-            3 => [
+            ),
+            3 => array(
                 0 => 71,
                 1 => 100
-            ],
-            4 => [
+            ),
+            4 => array(
                 0 => 15,
                 1 => 100
-            ],
-            5 => [
+            ),
+            5 => array(
                 0 => 6,
                 1 => 100
-            ]
-        ]);
+            )
+        ));
         $this->assertEquals($entry->getText(), '64/100, 33/100, 21/100, 71/100, 15/100, 6/100');
 
         $entry = $ifd0->getEntry(529); // YCbCrCoefficients
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
-            0 => [
+        $this->assertEquals($entry->getValue(), array(
+            0 => array(
                 0 => 299,
                 1 => 1000
-            ],
-            1 => [
+            ),
+            1 => array(
                 0 => 587,
                 1 => 1000
-            ],
-            2 => [
+            ),
+            2 => array(
                 0 => 114,
                 1 => 1000
-            ]
-        ]);
+            )
+        ));
         $this->assertEquals($entry->getText(), '299/1000, 587/1000, 114/1000');
 
         $entry = $ifd0->getEntry(531); // YCbCrPositioning
@@ -178,18 +175,18 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0_0->getEntry(33434); // ExposureTime
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 1,
             1 => 4
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '1/4 sec.');
 
         $entry = $ifd0_0->getEntry(33437); // FNumber
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 45,
             1 => 10
-        ]);
+        ));
         $this->assertEquals($entry->getText(), 'f/4.5');
 
         $entry = $ifd0_0->getEntry(34850); // ExposureProgram
@@ -224,10 +221,10 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0_0->getEntry(37380); // ExposureBiasValue
         $this->assertInstanceOf('lsolesen\pel\PelEntrySRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 0,
             1 => 10
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '0.0');
 
         $entry = $ifd0_0->getEntry(37383); // MeteringMode
@@ -242,10 +239,10 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0_0->getEntry(37386); // FocalLength
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 45,
             1 => 1
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '45.0 mm');
 
         $entry = $ifd0_0->getEntry(37500); // MakerNote
@@ -336,10 +333,10 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd0_0->getEntry(42240); // Gamma
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 22,
             1 => 10
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '22/10');
 
         /* Sub IFDs of $ifd0_0. */
@@ -394,18 +391,18 @@ class PentaxIstDSTest extends TestCase
 
         $entry = $ifd1->getEntry(282); // XResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 72,
             1 => 1
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd1->getEntry(283); // YResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), [
+        $this->assertEquals($entry->getValue(), array(
             0 => 72,
             1 => 1
-        ]);
+        ));
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd1->getEntry(296); // ResolutionUnit

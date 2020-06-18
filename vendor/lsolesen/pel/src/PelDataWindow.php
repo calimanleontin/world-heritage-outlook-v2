@@ -48,7 +48,7 @@ class PelDataWindow
      * example the {@link getShort} function. It must be one of {@link
      * PelConvert::LITTLE_ENDIAN} and {@link PelConvert::BIG_ENDIAN}.
      *
-     * @var boolean
+     * @var PelByteOrder
      * @see setByteOrder, getByteOrder
      */
     private $order;
@@ -130,7 +130,7 @@ class PelDataWindow
     /**
      * Change the byte order of the data.
      *
-     * @param boolean $order
+     * @param integer $order
      *            the new byte order. This must be either
      *            {@link PelConvert::LITTLE_ENDIAN} or {@link
      *            PelConvert::BIG_ENDIAN}.
@@ -143,7 +143,7 @@ class PelDataWindow
     /**
      * Get the currently used byte order.
      *
-     * @return boolean this will be either {@link
+     * @return integer this will be either {@link
      *         PelConvert::LITTLE_ENDIAN} or {@link PelConvert::BIG_ENDIAN}.
      */
     public function getByteOrder()
@@ -166,8 +166,7 @@ class PelDataWindow
                 'Window [%d, %d] does ' . 'not fit in window [0, %d]',
                 $start,
                 $this->size,
-                $this->size
-            );
+                $this->size);
         }
         $this->start += $start;
         $this->size -= $start;
@@ -190,8 +189,7 @@ class PelDataWindow
             throw new PelDataWindowWindowException(
                 'Window [0, %d] ' . 'does not fit in window [0, %d]',
                 $size,
-                $this->size
-            );
+                $this->size);
         }
         $this->size = $size;
     }
@@ -479,10 +477,10 @@ class PelDataWindow
      */
     public function getRational($offset = 0)
     {
-        return [
+        return array(
             $this->getLong($offset),
             $this->getLong($offset + 4)
-        ];
+        );
     }
 
     /**
@@ -502,10 +500,10 @@ class PelDataWindow
      */
     public function getSRational($offset = 0)
     {
-        return [
+        return array(
             $this->getSLong($offset),
             $this->getSLong($offset + 4)
-        ];
+        );
     }
 
     /**
@@ -541,7 +539,7 @@ class PelDataWindow
 
         /* Check each character, return as soon as the answer is known. */
         for ($i = 0; $i < $s; $i ++) {
-            if ($this->data[$offset + $i] != $str[$i]) {
+            if ($this->data{$offset + $i} != $str{$i}) {
                 return false;
             }
         }
@@ -564,7 +562,6 @@ class PelDataWindow
             $this->size,
             $this->start,
             $this->start + $this->size,
-            strlen($this->data)
-        );
+            strlen($this->data));
     }
 }
