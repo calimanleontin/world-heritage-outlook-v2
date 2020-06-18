@@ -63,9 +63,6 @@
 	"drupal/search_autocomplete": {
       "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074934-test-fail-D8.patch"
     },
-	"drupal/varnish_purge": {
-      "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074938-test-error-D8.patch"
-    },
     "drupal/entity_reference_revisions": {
       "InvalidArgumentException: The specified translation (en) cannot be removed": "patches/entity_reference_revisions/8032_broken_values_paragraphs_translations.patch"
     }
