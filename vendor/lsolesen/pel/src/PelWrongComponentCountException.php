@@ -63,7 +63,7 @@ class PelWrongComponentCountException extends \lsolesen\pel\PelEntryException
      * @param int $type
      *            the type of IFD.
      *
-     * @param int $tag
+     * @param PelTag $tag
      *            the tag for which the violation was found.
      *
      * @param int $found

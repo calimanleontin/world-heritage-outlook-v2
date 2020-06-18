@@ -3,7 +3,6 @@
 namespace Drupal\Tests\image_effects\Functional;
 
 use Drupal\Core\Database\Database;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Image\ImageInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\image\Entity\ImageStyle;
@@ -22,13 +21,9 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
   public static $modules = [
     'image',
     'image_effects',
+    'simpletest',
     'imagemagick',
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'classy';
 
   /**
    * Test image style.
@@ -58,13 +53,6 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
    */
   protected $imageFactory;
 
-  /**
-   * The file system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
-
   // Colors that are used in testing.
   // @codingStandardsIgnoreStart
   protected $black       = [  0,   0,   0,   0];
@@ -88,9 +76,6 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
     // Set the image factory.
     $this->imageFactory = $this->container->get('image.factory');
 
-    // Set the file system.
-    $this->fileSystem = $this->container->get('file_system');
-
     // Create a user and log it in.
     $this->adminUser = $this->drupalCreateUser([
       'administer site configuration',
@@ -103,7 +88,7 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
       'name' => $this->testImageStyleName,
       'label' => $this->testImageStyleLabel,
     ]);
-    $this->assertEquals(SAVED_NEW, $this->testImageStyle->save());
+    $this->assertEqual(SAVED_NEW, $this->testImageStyle->save());
   }
 
   /**
@@ -126,13 +111,13 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
     $image_style_pre = ImageStyle::load($this->testImageStyleName);
 
     // Add the effect.
-    $this->drupalPostForm('admin/config/media/image-styles/manage/' . $this->testImageStyleName, ['new' => $effect['id']], 'Add');
+    $this->drupalPostForm('admin/config/media/image-styles/manage/' . $this->testImageStyleName, ['new' => $effect['id']], t('Add'));
     if (!empty($effect['data'])) {
       $effect_edit = [];
       foreach ($effect['data'] as $field => $value) {
         $effect_edit['data[' . $field . ']'] = $value;
       }
-      $this->drupalPostForm(NULL, $effect_edit, 'Add effect');
+      $this->drupalPostForm(NULL, $effect_edit, t('Add effect'));
     }
 
     // Get UUID of newly added effect.
@@ -154,7 +139,7 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
   protected function removeEffectFromTestStyle($uuid) {
     $effect = $this->testImageStyle->getEffect($uuid);
     $this->testImageStyle->deleteImageEffect($effect);
-    $this->assertEquals(SAVED_UPDATED, $this->testImageStyle->save());
+    $this->assertEqual(SAVED_UPDATED, $this->testImageStyle->save());
   }
 
   /**
@@ -258,11 +243,11 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
    */
   protected function getTestImageCopyUri($path, $name = NULL, $type = 'module') {
     $test_directory = 'public://test-images/';
-    $this->fileSystem->prepareDirectory($test_directory, FileSystemInterface::CREATE_DIRECTORY);
+    file_prepare_directory($test_directory, FILE_CREATE_DIRECTORY);
     $source_uri = $name ? drupal_get_path($type, $name) : '';
     $source_uri .= $path;
     $target_uri = $test_directory . \Drupal::service('file_system')->basename($source_uri);
-    return $this->fileSystem->copy($source_uri, $target_uri, FileSystemInterface::EXISTS_REPLACE);
+    return file_unmanaged_copy($source_uri, $target_uri, FILE_EXISTS_REPLACE);
   }
 
   /**
@@ -380,7 +365,7 @@ abstract class ImageEffectsTestBase extends BrowserTestBase {
    * @param string $message
    *   (optional) The message to display along with the assertion.
    */
-  protected function assertImagesAreEqual(ImageInterface $expected_image, ImageInterface $actual_image, $max_diff = 1, $message = '') {
+  protected function assertImagesAreEqual(ImageInterface $expected_image, ImageInterface $actual_image, $max_diff = 1, $message = NULL) {
     // Only works with GD.
     $this->assertSame('gd', $expected_image->getToolkitId());
     $this->assertSame('gd', $actual_image->getToolkitId());

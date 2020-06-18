@@ -404,7 +404,7 @@ class ChangeStateFormTest extends WorkflowTestBase {
         AssessmentWorkflow::STATUS_FINISHED_REVIEWING => [
           'field_assessor' => FALSE,
           'field_coordinator' => FALSE,
-          'field_reviewers[]' => FALSE,
+          'field_reviewers[]' => TRUE,
           'field_references_reviewer' => FALSE,
         ],
         AssessmentWorkflow::STATUS_UNDER_COMPARISON => [

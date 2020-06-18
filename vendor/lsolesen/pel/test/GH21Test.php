@@ -22,28 +22,25 @@
  * Boston, MA 02110-1301 USA
  */
 
-namespace Pel\Test;
-
 use lsolesen\pel\PelJpeg;
-use PHPUnit\Framework\TestCase;
 
-class GH21Test extends TestCase
+class GH21Test extends \PHPUnit_Framework_TestCase
 {
     protected $file;
 
-    public function setUp()
+    function setUp()
     {
         $this->file = dirname(__FILE__) . '/images/gh-21-tmp.jpg';
         $file = dirname(__FILE__) . '/images/gh-21.jpg';
         copy($file, $this->file);
     }
 
-    public function tearDown()
+    function tearDown()
     {
         unlink($this->file);
     }
 
-    public function testThisDoesNotWorkAsExpected()
+    function testThisDoesNotWorkAsExpected()
     {
         $scale = 0.75;
         $input_jpeg = new PelJpeg($this->file);

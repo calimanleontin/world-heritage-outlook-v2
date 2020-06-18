@@ -94,6 +94,13 @@ abstract class ImageEffectsPluginBase extends PluginBase implements ImageEffects
   /**
    * {@inheritdoc}
    */
+  public function calculateDependencies() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function isAvailable() {
     return TRUE;
   }

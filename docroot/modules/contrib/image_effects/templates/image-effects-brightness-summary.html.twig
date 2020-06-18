@@ -14,7 +14,7 @@
  * @ingroup themeable
  */
 #}
-{% apply spaceless %}
+{% spaceless %}
   {% if data.level > 0 %}
     {% trans %}
       +{{ data.level }}%
@@ -26,4 +26,4 @@
   {% else %}
     <em>{{ 'Unchanged'|t }}</em>
   {% endif %}
-{% endapply %}
+{% endspaceless %}
