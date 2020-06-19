@@ -37,7 +37,7 @@ class ColorShiftTest extends ImageEffectsTestBase {
     $this->changeToolkit($toolkit_id, $toolkit_config, $toolkit_settings);
 
     // Test on the PNG test image.
-    $original_uri = $this->getTestImageCopyUri('core/tests/fixtures/files/image-test.png');
+    $original_uri = $this->getTestImageCopyUri('/files/image-test.png', 'simpletest');
 
     // Test data.
     $test_data = [

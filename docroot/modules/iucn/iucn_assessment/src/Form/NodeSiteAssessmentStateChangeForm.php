@@ -72,6 +72,11 @@ class NodeSiteAssessmentStateChangeForm {
       ],
     ];
 
+    if ($state == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+      $form['actions']['workflow_assessment_under_review']['#validate'][] = [static::class, 'validateTransition'];
+      $form['actions']['workflow_assessment_under_review']['#value'] = t('Add more reviewers');
+    }
+
     // We want to replace the core submitForm method so the node won't get saved
     // twice.
     $form['#submit'] = [[self::class, 'submitForm']];
@@ -126,7 +131,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     $form['field_coordinator']['widget']['#required'] = in_array($state, [NULL, AssessmentWorkflow::STATUS_CREATION, AssessmentWorkflow::STATUS_NEW]);
     $form['field_assessor']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_EVALUATION, AssessmentWorkflow::STATUS_UNDER_ASSESSMENT]);
-    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW]);
+    $form['field_reviewers']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_READY_FOR_REVIEW, AssessmentWorkflow::STATUS_UNDER_REVIEW, AssessmentWorkflow::STATUS_FINISHED_REVIEWING]);
     $form['field_references_reviewer']['widget']['#required'] = in_array($state, [AssessmentWorkflow::STATUS_UNDER_COMPARISON]);
     if ($currentUser->hasPermission('assign users to assessments')) {
       $form['field_coordinator']['#disabled'] = !$form['field_coordinator']['widget']['#required'];
@@ -539,10 +544,11 @@ class NodeSiteAssessmentStateChangeForm {
         }
       }
       else {
-        // Handle reviewers revisions.
-        $originalReviewers = ($oldState == AssessmentWorkflow::STATUS_UNDER_REVIEW)
-          ? $workflowService->getReviewersArray($original)
-          : [];
+        $originalReviewers = [];
+        if (in_array($oldState, [AssessmentWorkflow::STATUS_UNDER_REVIEW, AssessmentWorkflow::STATUS_FINISHED_REVIEWING])) {
+          $originalReviewers = $workflowService->getReviewersArray($original);
+        }
+
         $newReviewers = $workflowService->getReviewersArray($node);
 
         $addedReviewers = array_diff($newReviewers, $originalReviewers);
@@ -591,7 +597,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     $default = $node->isDefaultRevision();
     $settingsWithDifferences = $node->field_settings->value;
-    if ($oldState != AssessmentWorkflow::STATUS_UNDER_REVIEW) {
+    if (!in_array($oldState, [AssessmentWorkflow::STATUS_UNDER_REVIEW, AssessmentWorkflow::STATUS_FINISHED_REVIEWING])) {
       $workflowService->clearKeyFromFieldSettings($node, 'diff');
     }
 
@@ -681,5 +687,44 @@ class NodeSiteAssessmentStateChangeForm {
     }
 
     \Drupal::messenger()->addMessage($message);
+  }
+
+  /**
+   * @param $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public static function validateTransition(&$form, FormStateInterface $form_state) {
+    /** @var Node $node */
+    $node = $form_state->getFormObject()->getEntity();
+    $oldState = $newState = $node->get('field_state')->value;
+
+    $triggeringAction = $form_state->getTriggeringElement();
+    if (!empty($triggeringAction['#workflow']['to_sid'])) {
+      $newState = $triggeringAction['#workflow']['to_sid'];
+    }
+
+    /** @var \Drupal\iucn_assessment\Plugin\AssessmentWorkflow $workflowService */
+    $workflowService = \Drupal::service('iucn_assessment.workflow');
+
+    switch ([$oldState, $newState]) {
+      case [AssessmentWorkflow::STATUS_FINISHED_REVIEWING, AssessmentWorkflow::STATUS_UNDER_REVIEW]:
+        $originalReviewers = $workflowService->getReviewersArray($node);
+
+        $newReviewers = array_column($form_state->getValue('field_reviewers'), 'target_id');
+        $removedReviewers = array_diff($originalReviewers, $newReviewers);
+        $addedReviewers = array_diff($newReviewers, $originalReviewers);
+
+        if (!empty($removedReviewers)) {
+          $form_state->setErrorByName('field_reviewers', t('You cannot remove reviewers when state is "@state"!', [
+            '@state' => 'Feedback from all reviewers received',
+          ]));
+        }
+
+        if (empty($addedReviewers)) {
+          $form_state->setErrorByName('field_reviewers', t('You didn\'t add any new reviewer!'));
+        }
+
+        break;
+    }
   }
 }

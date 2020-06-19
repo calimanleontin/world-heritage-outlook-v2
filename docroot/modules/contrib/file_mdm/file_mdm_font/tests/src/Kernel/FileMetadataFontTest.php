@@ -19,6 +19,7 @@ class FileMetadataFontTest extends FileMetadataManagerTestBase {
    */
   public static $modules = [
     'system',
+    'simpletest',
     'file_mdm',
     'file_mdm_font',
     'file_test',

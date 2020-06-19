@@ -24,34 +24,34 @@ $url = 'http://downloads.sf.net/pel/PEL-' . $version . '.tgz';
 
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 $pfm = new PEAR_PackageFileManager2();
-$pfm->setOptions([
+$pfm->setOptions(array(
     'baseinstalldir' => 'PEL',
     'filelistgenerator' => 'file',
     'packagedirectory' => dirname(__FILE__),
     'packagefile' => 'package.xml',
-    'ignore' => [
+    'ignore' => array(
         'makepackagexml.php',
         '*.tgz',
         '*.sh',
         'test/',
         'tutorials/',
         'authors.xml'
-    ],
-    'dir_roles' => [
+    ),
+    'dir_roles' => array(
         'doc' => 'doc',
         'examples' => 'doc',
         'test' => 'test'
-    ],
-    'exceptions' => [
+    ),
+    'exceptions' => array(
         'README' => 'doc',
         'AUTHORS' => 'doc',
         'COPYING' => 'doc',
         'INSTALL' => 'doc',
         'NEWS' => 'doc',
         'TODO' => 'doc'
-    ],
+    ),
     'simpleoutput' => true
-]);
+));
 
 $pfm->setPackage('PEL');
 $pfm->setSummary('The PHP Exif Library (PEL) lets you fully manipulate Exif (Exchangeable Image File Format) data.');

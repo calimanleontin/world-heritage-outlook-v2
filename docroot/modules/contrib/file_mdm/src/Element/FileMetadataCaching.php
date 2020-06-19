@@ -103,7 +103,7 @@ class FileMetadataCaching extends FormElement {
   public static function validateCaching(&$element, FormStateInterface $form_state, &$complete_form) {
     // Validate cache exclusion paths.
     foreach ($element['#value']['disallowed_paths'] as $path) {
-      if (!\Drupal::service('stream_wrapper_manager')->isValidUri($path)) {
+      if (!file_valid_uri($path)) {
         $form_state->setError($element['disallowed_paths'], t("'@path' is an invalid URI path", ['@path' => $path]));
       }
     }

@@ -74,7 +74,7 @@ class PelEntryLong extends PelEntryNumber
      * extracted.
      *
      * @param
-     *            int the tag which this entry represents. This
+     *            PelTag the tag which this entry represents. This
      *            should be one of the constants defined in {@link PelTag},
      *            e.g., {@link PelTag::IMAGE_WIDTH}, or any other tag which can
      *            have format {@link PelFormat::LONG}.
