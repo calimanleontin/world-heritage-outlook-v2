@@ -345,6 +345,17 @@ class NodeSiteAssessmentForm {
     $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
+
+    if ($node->access('edit') && $state == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+      $form['assessment_warning'] = [
+        '#weight' => -10000,
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['alert', 'alert-warning', 'assessment-warning-message'],
+        ],
+        '#markup' => t('You are viewing the assessment version which was sent for reviewing. To see the reviewers changes, go to the "Submit" tab and press the "Start comparing reviews" button.')
+      ];
+    }
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
