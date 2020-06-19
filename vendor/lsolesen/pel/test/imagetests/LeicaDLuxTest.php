@@ -22,10 +22,13 @@
  * Boston, MA 02110-1301 USA
  */
 
+namespace Pel\Test\imagetests;
+
 use lsolesen\pel\Pel;
 use lsolesen\pel\PelJpeg;
+use PHPUnit\Framework\TestCase;
 
-class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
+class LeicaDLuxTest extends TestCase
 {
     public function testRead()
     {
@@ -63,18 +66,18 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd0->getEntry(282); // XResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 72,
             1 => 1
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd0->getEntry(283); // YResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 72,
             1 => 1
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd0->getEntry(296); // ResolutionUnit
@@ -113,18 +116,18 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd0_0->getEntry(33434); // ExposureTime
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 10,
             1 => 1000
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '1/100 sec.');
 
         $entry = $ifd0_0->getEntry(33437); // FNumber
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 97,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), 'f/9.7');
 
         $entry = $ifd0_0->getEntry(34850); // ExposureProgram
@@ -159,42 +162,42 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd0_0->getEntry(37122); // CompressedBitsPerPixel
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 21,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '21/10');
 
         $entry = $ifd0_0->getEntry(37377); // ShutterSpeedValue
         $this->assertInstanceOf('lsolesen\pel\PelEntrySRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 6644,
             1 => 1000
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '6644/1000 sec. (APEX: 10)');
 
         $entry = $ifd0_0->getEntry(37378); // ApertureValue
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 66,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), 'f/9.8');
 
         $entry = $ifd0_0->getEntry(37380); // ExposureBiasValue
         $this->assertInstanceOf('lsolesen\pel\PelEntrySRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 0,
             1 => 100
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '0.0');
 
         $entry = $ifd0_0->getEntry(37381); // MaxApertureValue
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 30,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '30/10');
 
         $entry = $ifd0_0->getEntry(37383); // MeteringMode
@@ -214,10 +217,10 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd0_0->getEntry(37386); // FocalLength
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 88,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '8.8 mm');
 
         $entry = $ifd0_0->getEntry(37500); // MakerNote
@@ -283,10 +286,10 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd0_0->getEntry(41988); // DigitalZoomRatio
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 0,
             1 => 10
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '0/10');
 
         $entry = $ifd0_0->getEntry(41989); // FocalLengthIn35mmFilm
@@ -376,18 +379,18 @@ class LeicaDLuxTest extends \PHPUnit_Framework_TestCase
 
         $entry = $ifd1->getEntry(282); // XResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 72,
             1 => 1
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd1->getEntry(283); // YResolution
         $this->assertInstanceOf('lsolesen\pel\PelEntryRational', $entry);
-        $this->assertEquals($entry->getValue(), array(
+        $this->assertEquals($entry->getValue(), [
             0 => 72,
             1 => 1
-        ));
+        ]);
         $this->assertEquals($entry->getText(), '72/1');
 
         $entry = $ifd1->getEntry(296); // ResolutionUnit

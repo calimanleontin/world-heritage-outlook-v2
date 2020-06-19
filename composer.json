@@ -181,7 +181,7 @@
     "drupal/group": "^1.0@RC",
     "drupal/honeypot": "^1.27",
     "drupal/ief_table_view_mode": "^2.0@beta",
-    "drupal/image_effects": "^2",
+    "drupal/image_effects": "^3",
     "drupal/image_widget_crop": "^2.2",
     "drupal/imce": "^1.6",
     "drupal/inline_entity_form": "^1.0@RC",
