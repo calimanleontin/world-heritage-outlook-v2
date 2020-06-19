@@ -69,7 +69,7 @@
             summaryElement = $this.find('> summary');
           }
 
-          var summary = summaryElement.clone().children().remove().end().text();
+          var summary = summaryElement.clone().children().remove().text();
           var horizontal_tab = new Drupal.horizontalTab({
             title: $.trim(summary),
             details: $this
