@@ -107,7 +107,7 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
     // If there is a submitted form: try to retrieve and reuse the
     // CAPTCHA session ID from the posted data.
     list($posted_form_id, $posted_captcha_sid) = _captcha_get_posted_captcha_info($element, $form_state, $this_form_id);
-    if ($this_form_id == $posted_form_id && isset($posted_captcha_sid)) {
+    if ($this_form_id == $posted_form_id && isset($posted_captcha_sid) && static::captchaSessionExists($posted_captcha_sid)) {
       $captcha_sid = $posted_captcha_sid;
     }
     else {
@@ -245,6 +245,21 @@ class Captcha extends FormElement implements ContainerFactoryPluginInterface {
     }
 
     return $element;
+  }
+
+  /**
+   * @param $csid
+   *
+   * @return bool
+   */
+  protected static function captchaSessionExists($csid) {
+    $session = \Drupal::database()->select('captcha_sessions', 'cs')
+      ->fields('cs', ['csid'])
+      ->condition('csid', $csid)
+      ->execute()
+      ->fetchAll();
+
+    return !empty($session);
   }
 
 }
