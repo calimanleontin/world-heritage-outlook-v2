@@ -1,10 +1,11 @@
 <?php
+
 /**
  * PEL: PHP Exif Library.
  * A library with support for reading and
  * writing all Exif headers in JPEG and TIFF images using PHP.
  *
- * Copyright (C) 2004, 2006, 2007 Martin Geisler.
+ * Copyright (C) 2004, 2005, 2006 Martin Geisler.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +22,29 @@
  * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA 02110-1301 USA
  */
+namespace lsolesen\pel;
 
-use lsolesen\pel\PelJpeg;
+/**
+ * Classes for dealing with Exif entries.
+ *
+ * This file defines two exception classes and the abstract class
+ * {@link PelEntry} which provides the basic methods that all Exif
+ * entries will have. All Exif entries will be represented by
+ * descendants of the {@link PelEntry} class --- the class itself is
+ * abstract and so it cannot be instantiated.
+ *
+ * @author Vinzenz Rosenkranz <vinzenz.rosenkranz@gmail.com>
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public
+ *          License (GPL)
+ * @package PEL
+ */
 
-class Bug2979466Test extends \PHPUnit_Framework_TestCase
+/**
+ * An exception thrown when the makernotes IFD is malformed.
+ *
+ * @package PEL
+ * @subpackage Exception
+ */
+class PelMakerNotesMalformedException extends PelException
 {
-    function testThisDoesNotWorkAsExpected()
-    {
-        $file = dirname(__FILE__) . '/images/bug2979466.jpg';
-        // TODO Out of memory
-        $this->markTestIncomplete(
-          'This test fails and should be fixed.'
-        );
-        try {
-            require_once 'PelJpeg.php';
-            $jpeg = new PelJpeg($file);
-        } catch (Exception $e) {
-            $this->fail('Test should not throw an exception');
-        }
-    }
 }
