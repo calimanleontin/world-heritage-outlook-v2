@@ -84,7 +84,6 @@ third_party_settings:
         id: ''
         classes: 'html-list hide-on-old-assessment'
       label: 'Factors negatively affecting provision of this benefit'
-      region: description
     group_climate_change:
       children:
         - field_as_benefits_climate_level
@@ -103,7 +102,6 @@ third_party_settings:
         id: ''
         classes: inline-element-list
       label: 'Climate change'
-      region: description
     group_pollution:
       children:
         - field_as_benefits_pollut_level
@@ -121,7 +119,6 @@ third_party_settings:
         effect: none
         speed: fast
       label: Pollution
-      region: description
     group_overexploitation:
       children:
         - field_as_benefits_oex_level
@@ -139,7 +136,6 @@ third_party_settings:
         effect: none
         speed: fast
       label: Overexploitation
-      region: description
     group_invasive_species:
       children:
         - field_as_benefits_invassp_level
@@ -157,7 +153,6 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'Invasive species'
-      region: description
     group_habitat_change:
       children:
         - field_as_benefits_hab_level
@@ -176,7 +171,6 @@ third_party_settings:
         id: ''
         classes: inline-element-list
       label: 'Habitat change'
-      region: description
     group_community:
       children:
         - field_as_benefits_commun_in
@@ -196,7 +190,6 @@ third_party_settings:
         id: ''
         classes: inline-element-list
       label: Community
-      region: description
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit

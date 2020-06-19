@@ -54,7 +54,6 @@ third_party_settings:
         id: ''
         classes: ''
       label: columns
-      region: content
 id: paragraph.as_site_benefit.default
 targetEntityType: paragraph
 bundle: as_site_benefit

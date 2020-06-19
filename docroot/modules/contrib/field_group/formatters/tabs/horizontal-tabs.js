@@ -1,4 +1,4 @@
-(function ($, Drupal) {
+(function ($) {
 
   'use strict';
 
@@ -56,9 +56,9 @@
             summaryElement = $this.find('> summary');
           }
 
-          var summaryText = summaryElement.clone().children().remove().end().text().trim() || summaryElement.find('> span:first-child').text().trim();
+          var summary = summaryElement.clone().children().remove().end().text();
           var horizontal_tab = new Drupal.horizontalTab({
-            title: summaryText,
+            title: $.trim(summary),
             details: $this
           });
           horizontal_tab.item.addClass('horizontal-tab-button-' + i);
@@ -82,8 +82,8 @@
           // If the current URL has a fragment and one of the tabs contains an
           // element that matches the URL fragment, activate that tab.
           var hash = window.location.hash.replace(/[=%;,\/]/g, '');
-          if (hash !== '#' && $(this).find(hash).length) {
-            tab_focus = $(this).find(hash).closest('.horizontal-tabs-pane');
+          if (hash !== '#' && $(hash, this).length) {
+            tab_focus = $(window.location.hash, this).closest('.horizontal-tabs-pane');
           }
           else {
             tab_focus = $this.find('> .horizontal-tabs-pane:first');
@@ -118,8 +118,8 @@
     // Keyboard events added:
     // Pressing the Enter key will open the tab pane.
     this.link.on('keydown', function (event) {
+      event.preventDefault();
       if (event.keyCode === 13) {
-        event.preventDefault();
         self.focus();
         // Set focus on the first input field of the visible details/tab pane.
         $('.horizontal-tabs-pane :input:visible:enabled:first').trigger('focus');
@@ -149,11 +149,9 @@
         .each(function () {
           var tab = $(this).data('horizontalTab');
           tab.details.addClass('horizontal-tab-hidden');
-          tab.details.hide();
           tab.item.removeClass('selected');
         })
         .end()
-        .show()
         .siblings(':hidden.horizontal-tabs-active-tab')
         .val(this.details.attr('id'));
       this.item.addClass('selected');
@@ -177,8 +175,6 @@
     tabShow: function () {
       // Display the tab.
       this.item.removeClass('horizontal-tab-hidden');
-      this.item.show();
-
       // Update .first marker for items. We need recurse from parent to retain the
       // actual DOM element order as jQuery implements sortOrder, but not as public
       // method.
@@ -199,8 +195,6 @@
     tabHide: function () {
       // Hide this tab.
       this.item.addClass('horizontal-tab-hidden');
-      this.item.hide();
-
       // Update .first marker for items. We need recurse from parent to retain the
       // actual DOM element order as jQuery implements sortOrder, but not as public
       // method.
@@ -251,4 +245,4 @@
     return tab;
   };
 
-})(jQuery, Drupal);
+})(jQuery, Modernizr);
