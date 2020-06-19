@@ -60,6 +60,7 @@ third_party_settings:
         id: ''
         classes: html-element-threats
       label: Inside
+      region: terms_second
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
 bundle: as_site_threat

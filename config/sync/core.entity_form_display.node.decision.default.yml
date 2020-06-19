@@ -26,6 +26,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: Children
+      region: content
 id: node.decision.default
 targetEntityType: node
 bundle: decision

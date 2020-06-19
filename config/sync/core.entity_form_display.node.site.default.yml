@@ -51,6 +51,7 @@ third_party_settings:
         classes: ''
         direction: horizontal
       label: Site
+      region: content
     group_basic:
       children:
         - group_basic_information
@@ -68,6 +69,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: Basic
+      region: content
     group_official:
       children:
         - group_official_information
@@ -82,6 +84,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: Official
+      region: content
     group_physical:
       children:
         - group_physical_information
@@ -95,6 +98,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: Physical
+      region: content
     group_basic_information:
       children:
         - field_site_id
@@ -114,6 +118,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Basic information'
+      region: content
     group_site_description:
       children:
         - body
@@ -126,6 +131,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Site description'
+      region: content
     group_geographical_information:
       children:
         - field_country
@@ -138,6 +144,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Geographical information'
+      region: content
     group_iucn_pa_category:
       children:
         - field_category
@@ -150,6 +157,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'IUCN PA Category'
+      region: content
     group_site_theme:
       children:
         - field_theme
@@ -162,6 +170,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Site Theme'
+      region: content
     group_official_information:
       children:
         - field_inscription_criteria
@@ -175,6 +184,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Official information'
+      region: content
     group_other_designations:
       children:
         - field_designation
@@ -187,6 +197,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Other designations'
+      region: content
     group_physical_information:
       children:
         - field_area
@@ -204,6 +215,7 @@ third_party_settings:
         description: ''
         required_fields: false
       label: 'Physical Information'
+      region: content
 id: node.site.default
 targetEntityType: node
 bundle: site

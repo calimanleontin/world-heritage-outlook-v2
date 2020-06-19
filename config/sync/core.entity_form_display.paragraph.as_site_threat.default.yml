@@ -38,6 +38,7 @@ third_party_settings:
         classes: ''
         required_fields: false
       label: 'Threat extent'
+      region: content
 id: paragraph.as_site_threat.default
 targetEntityType: paragraph
 bundle: as_site_threat
