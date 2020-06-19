@@ -24,7 +24,7 @@ function iucn_notifications_mail($key, &$message, $params) {
       break;
 
     case 'iucn_notifications_assessment_finished_reviewing':
-      $cc = $iucnState->get('iucn_notifications.review_completion_emails');
+      $cc = (array) $iucnState->get('iucn_notifications.review_completion_emails');
       $cc[] = $iucnState->get('iucn_notifications.coordinator_extra_email');
       break;
   }
