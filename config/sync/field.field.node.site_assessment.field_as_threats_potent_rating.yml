@@ -27,16 +27,14 @@ third_party_settings:
       assessment_published: 0
   disable_field:
     add_disable: none
-    add_disable_roles: {  }
     edit_disable: none
-    edit_disable_roles: {  }
 id: node.site_assessment.field_as_threats_potent_rating
 field_name: field_as_threats_potent_rating
 entity_type: node
 bundle: site_assessment
 label: 'Overall potential threats rating'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
