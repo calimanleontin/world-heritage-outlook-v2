@@ -66,7 +66,7 @@ class AssessmentLanguageNegotiator extends LanguageNegotiationMethodBase {
     $languageNegotiator = \Drupal::service('language_negotiator');
 
     $langcodeFromUrl = $languageNegotiator->getNegotiationMethodInstance(LanguageNegotiationUrl::METHOD_ID)->getLangcode($request);
-
+    $langcodeFromUrl = $langcodeFromUrl ?: \Drupal::languageManager()->getDefaultLanguage()->getId();
     $assessment = $node->bundle() == 'site' ?
       IucnSiteUtils::getMainSiteAssessment($node):
       $node;
