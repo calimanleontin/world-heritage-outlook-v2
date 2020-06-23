@@ -764,12 +764,12 @@ class NodeSiteAssessmentForm {
         break;
 
       case 'threats':
-        if ($node->get('field_as_threats_potential')->isEmpty()) {
-          $form['field_as_threats_potent_text']['widget'][0]['#required'] = FALSE;
-          $form['field_as_threats_potent_text']['widget'][0]['#wrapper_attributes']['class'][] = 'visually-hidden';
-          $form['field_as_threats_potent_rating']['widget']['#required'] = FALSE;
-          $form['field_as_threats_potent_rating']['widget']['#wrapper_attributes']['class'][] = 'visually-hidden';
-        }
+        $required = !$node->get('field_as_threats_potential')->isEmpty();
+        $htmlClass = $required ? '' : 'visually-hidden';
+        $form['field_as_threats_potent_text']['widget'][0]['#required'] = $required;
+        $form['field_as_threats_potent_text']['widget'][0]['#wrapper_attributes']['class'][] = $htmlClass;
+        $form['field_as_threats_potent_rating']['widget']['#required'] = $required;
+        $form['field_as_threats_potent_rating']['widget']['#wrapper_attributes']['class'][] = $htmlClass;
         break;
     }
   }

@@ -206,6 +206,13 @@ class NodeSiteAssessmentStateChangeForm {
             $fieldSettings->setRequired(TRUE);
           }
           break;
+        case 'field_as_threats_potent_rating':
+        case 'field_as_threats_potent_text':
+          // This field is required only if field_as_benefits is not empty.
+          if (!empty($node->field_as_threats_potential->getValue())) {
+            $fieldSettings->setRequired(TRUE);
+          }
+          break;
       }
 
       $fieldRequiresValidation = TRUE;
