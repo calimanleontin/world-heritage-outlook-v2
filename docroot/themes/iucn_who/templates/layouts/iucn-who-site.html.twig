@@ -24,7 +24,7 @@
       {% else %}
         <div class="col-sm-8 col-md-8">
           <div class="no-assessment-placeholder">
-            <span>{{ 'Conservation Outlook Assessment coming soon'|t }}</span>
+            <span>{{ 'Conservation Outlook Assessment coming soon'|assessment_t }}</span>
           </div>
         </div>
       {% endif %}
@@ -34,7 +34,7 @@
       <div class="col-sm-12 region-site-sidemenu-toggle">
         <!-- Sidemenu toggle -->
         <div class="sidemenu-toggle-wrapper">
-          <a role="button" class="btn btn-info sidemenu-toggle" data-toggle="dropdown" href="#sidemenu" id="sidemenu-toggle"><span>{{ 'See all information'|t }}</span></a>
+          <a role="button" class="btn btn-info sidemenu-toggle" data-toggle="dropdown" href="#sidemenu" id="sidemenu-toggle"><span>{{ 'See all information'|assessment_t }}</span></a>
         </div>
       </div>
     </div>
@@ -45,23 +45,23 @@
       <ul class="nav nav-tabs visible-desktop" role="tablist" id="assessment-tabs-desktop">
         <li role="presentation" class="active">
           <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-            <strong class="tab-label">{{ 'Summary'|t }}</strong>
-            <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|t  }}</span>
-            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+            <strong class="tab-label">{{ 'Summary'|assessment_t }}</strong>
+            <span class="tab-description">{{ 'Overview of the site\'s Conservation Outlook'|assessment_t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|assessment_t  }}</span>
           </a>
         </li>
         <li role="presentation">
           <a href="#full-assessment" aria-controls="full-assessment" role="tab" data-toggle="tab">
-            <strong class="tab-label">{{ 'Full assessment'|t }}</strong>
-            <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|t  }}</span>
-            <span class="tab-read-more">{{ 'Read more'|t  }}</span>
+            <strong class="tab-label">{{ 'Full assessment'|assessment_t }}</strong>
+            <span class="tab-description">{{ 'The complete Conservation Outlook Assessment for this site, with more details on values, threats, protection and management'|assessment_t  }}</span>
+            <span class="tab-read-more">{{ 'Read more'|assessment_t  }}</span>
           </a>
         </li>
         <li role="presentation">
           <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-            <strong class="tab-label">{{ 'References'|t }}</strong>
-            <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|t  }}</span>
-            <span class="tab-read-more">{{ 'See references'|t  }}</span>
+            <strong class="tab-label">{{ 'References'|assessment_t }}</strong>
+            <span class="tab-description">{{ 'The source of information for the Conservation Outlook Assessment'|assessment_t  }}</span>
+            <span class="tab-read-more">{{ 'See references'|assessment_t  }}</span>
           </a>
         </li>
       </ul>
@@ -79,17 +79,17 @@
           <ul class="nav nav-tabs visible-mobile" role="tablist" id="assessment-tabs-mobile">
             <li role="presentation" class="active">
               <a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">
-                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'Summary'|t }}</strong>
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|assessment_t }}</span> {{ 'Summary'|assessment_t }}</strong>
               </a>
             </li>
             <li role="presentation">
               <a href="#full-assessment" aria-controls="full-assessment" role="tab" data-toggle="tab">
-                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'Full assessment'|t }}</strong>
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|assessment_t }}</span> {{ 'Full assessment'|assessment_t }}</strong>
               </a>
             </li>
             <li role="presentation">
               <a href="#references" aria-controls="references" role="tab" data-toggle="tab">
-                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|t }}</span> {{ 'References'|t }}</strong>
+                <strong class="tab-label"><span class="back-to-prefix">{{ 'Back to'|assessment_t }}</span> {{ 'References'|assessment_t }}</strong>
               </a>
             </li>
           </ul>
