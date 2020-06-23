@@ -345,6 +345,17 @@ class NodeSiteAssessmentForm {
     $form['#attached']['drupalSettings']['terms_colors'] = _iucn_assessment_get_term_colors();
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.chrome_alert';
     $form['#attached']['library'][] = 'iucn_assessment/iucn_assessment.unsaved_warning';
+
+    if ($node->access('edit') && $state == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+      $form['assessment_warning'] = [
+        '#weight' => -10000,
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['alert', 'alert-warning', 'assessment-warning-message'],
+        ],
+        '#markup' => t('You are viewing the assessment version which was sent for reviewing. To see the reviewers changes, go to the "Submit" tab and press the "Start comparing reviews" button.')
+      ];
+    }
   }
 
   public static function benefitsValidation(array $form, FormStateInterface $form_state) {
@@ -753,12 +764,12 @@ class NodeSiteAssessmentForm {
         break;
 
       case 'threats':
-        if ($node->get('field_as_threats_potential')->isEmpty()) {
-          $form['field_as_threats_potent_text']['widget'][0]['#required'] = FALSE;
-          $form['field_as_threats_potent_text']['widget'][0]['#wrapper_attributes']['class'][] = 'visually-hidden';
-          $form['field_as_threats_potent_rating']['widget']['#required'] = FALSE;
-          $form['field_as_threats_potent_rating']['widget']['#wrapper_attributes']['class'][] = 'visually-hidden';
-        }
+        $required = !$node->get('field_as_threats_potential')->isEmpty();
+        $htmlClass = $required ? '' : 'visually-hidden';
+        $form['field_as_threats_potent_text']['widget'][0]['#required'] = $required;
+        $form['field_as_threats_potent_text']['widget'][0]['#wrapper_attributes']['class'][] = $htmlClass;
+        $form['field_as_threats_potent_rating']['widget']['#required'] = $required;
+        $form['field_as_threats_potent_rating']['widget']['#wrapper_attributes']['class'][] = $htmlClass;
         break;
     }
   }

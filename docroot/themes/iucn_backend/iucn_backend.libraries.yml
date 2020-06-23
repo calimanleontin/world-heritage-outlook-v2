@@ -4,6 +4,9 @@ global-styling:
       css/style.css: {}
   js:
     js/main.js: {}
+  dependencies:
+    - core/jquery.cookie
+    - core/js-cookie
 
 font-awesome:
   remote: https://fontawesome.com
