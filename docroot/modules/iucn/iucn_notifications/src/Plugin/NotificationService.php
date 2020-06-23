@@ -161,7 +161,7 @@ class NotificationService {
       '@key' => $key,
     ]);
 
-    $archiveEmail = \Drupal::state()->get('iucn_notifications.archive_email');
+    $archiveEmail = \Drupal::service('iucn_who_core.state')->get('iucn_notifications.archive_email');
     if (!empty($archiveEmail)) {
       $this->mailManager->mail('iucn_notifications', $key, $archiveEmail, $lang_code, $params, NULL, TRUE);
     }

@@ -13,6 +13,10 @@ services:
     tags:
     - { name: event_subscriber }
 
+  iucn_who_core.state:
+    class: Drupal\iucn_who_core\Service\IucnState
+    parent: state
+
   iucn_who_core.user_agreement:
     class: Drupal\iucn_who_core\Service\UserAgreementService
     arguments:
