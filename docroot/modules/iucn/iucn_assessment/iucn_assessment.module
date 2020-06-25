@@ -873,6 +873,11 @@ function iucn_assessment_entity_operation_alter(array &$operations, EntityInterf
         $operations['edit']['title'] = t('Review');
       }
     }
+
+    if (!empty($operations['assessment_finished_reviewing_under_review']) && $entity->field_state->value == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+      $operations['assessment_finished_reviewing_under_review']['title'] = t('Add more reviewers');
+    }
+
   }
 }
 
