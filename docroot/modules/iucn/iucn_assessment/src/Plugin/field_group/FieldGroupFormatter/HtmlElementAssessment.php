@@ -136,7 +136,13 @@ class HtmlElementAssessment extends HtmlElement {
     ) + parent::defaultSettings($context);
 
     return $defaults;
+  }
 
+  /**
+   * @inheritDoc
+   */
+  public function t($string, array $args = [], array $options = []) {
+    return _assessment_t($string, $args, $options);
   }
 
 }

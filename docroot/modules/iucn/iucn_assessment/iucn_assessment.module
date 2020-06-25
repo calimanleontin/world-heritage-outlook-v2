@@ -4,10 +4,12 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\iucn_assessment\Entity\AssessmentsNodeViewBuilder;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentStateChangeForm;
 use Drupal\iucn_assessment\Form\NodeSiteAssessmentAssignUsersForm;
 use Drupal\iucn_assessment\Form\ParagraphAsSiteThreatForm;
+use Drupal\tm_handbooks\Entity\HandbooksNodeViewBuilder;
 use Drupal\user\Entity\User;
 use Drupal\workflow\Entity\WorkflowState;
 use Drupal\Core\Url;
@@ -1159,4 +1161,19 @@ function iucn_assessment_node_view_alter(array &$build, NodeInterface $node, Ent
       }
       break;
   }
+}
+
+/**
+ * Translates a string to the current language using the assessment info.
+ *
+ * @param $string
+ * @param array $args
+ * @param array $options
+ *
+ * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+ */
+function _assessment_t($string, array $args = [], array $options = []) {
+  /** @var \Drupal\iucn_assessment\TwigExtension\AssessmentTranslationTwigExtension $assessmentTranslate */
+  $assessmentTranslate = \Drupal::service('iucn_assessment.twig_extension');
+  return $assessmentTranslate->translate($string, $args, $options);
 }

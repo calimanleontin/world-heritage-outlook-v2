@@ -9,9 +9,14 @@
 
   Drupal.behaviors.chromeAlert = {
     attach: function (context) {
-      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ||
-        navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+      var user_agent = navigator.userAgent.toLowerCase();
+      if (user_agent.indexOf('chrome') > -1) {
         return;
+      }
+
+      var message = '<h6>This interface is not optimized for your browser. Please use Chrome or Firefox!</h6>';
+      if (user_agent.indexOf('firefox') > -1) {
+        message = '<h6>This page is not optimized for Firefox browser. If you encounter any errors, please use Chrome!</h6>';
       }
 
       var cookieName = 'site_assessment_chrome_firefox_alert';
@@ -20,7 +25,6 @@
       }
 
       var title = 'Warning!';
-      var message = '<h6>This interface is not optimized for your browser. Please use Chrome or Firefox!</h6>';
 
       $('<div></div>').appendTo('body')
         .html(message)

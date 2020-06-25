@@ -3016,6 +3016,9 @@
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
                 }
+            },
+            "patches_applied": {
+                "CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists error:": "patches/captcha/captcha_validation_error.patch"
             }
         },
         "installation-source": "dist",
@@ -5944,37 +5947,40 @@
     },
     {
         "name": "drupal/file_mdm",
-        "version": "dev-1.x",
-        "version_normalized": "dev-1.x",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/file_mdm.git",
-            "reference": "30264f78b6c6f98a614e2da8d1e0c843dce59472"
+            "reference": "8.x-2.1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://ftp.drupal.org/files/projects/file_mdm-8.x-2.1.zip",
+            "reference": "8.x-2.1",
+            "shasum": "5c3d75622299ebddc0e8456bb08bb371da8771bd"
         },
         "require": {
-            "drupal/core": "~8.0",
-            "lsolesen/pel": "0.9.6",
-            "phenx/php-font-lib": "^0.5",
-            "php": ">=5.6"
+            "drupal/core": "^8.8 || ^9",
+            "lsolesen/pel": "^0.9.8",
+            "phenx/php-font-lib": "^0.5.2",
+            "php": ">=7"
         },
         "require-dev": {
             "drupal/image_effects": "*"
         },
         "type": "drupal-module",
         "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
             "drupal": {
-                "version": "8.x-1.1+8-dev",
-                "datestamp": "1576326787",
+                "version": "8.x-2.1",
+                "datestamp": "1586801064",
                 "security-coverage": {
-                    "status": "not-covered",
-                    "message": "Dev releases are not covered by Drupal security advisories."
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
                 }
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
         "license": [
             "GPL-2.0-or-later"
@@ -5993,26 +5999,20 @@
     },
     {
         "name": "drupal/file_mdm_exif",
-        "version": "dev-1.x",
-        "version_normalized": "dev-1.x",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
         "require": {
-            "drupal/core": "~8.0",
+            "drupal/core": "^8.8 || ^9",
             "drupal/file_mdm": "self.version"
-        },
-        "require-dev": {
-            "drupal/image_effects": "*"
         },
         "type": "metapackage",
         "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
             "drupal": {
-                "version": "8.x-1.1+8-dev",
-                "datestamp": "1576326787",
+                "version": "8.x-2.1",
+                "datestamp": "1586801064",
                 "security-coverage": {
-                    "status": "not-covered",
-                    "message": "Dev releases are not covered by Drupal security advisories."
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
                 }
             }
         },
@@ -6034,26 +6034,20 @@
     },
     {
         "name": "drupal/file_mdm_font",
-        "version": "dev-1.x",
-        "version_normalized": "dev-1.x",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
         "require": {
-            "drupal/core": "~8.0",
+            "drupal/core": "^8.8 || ^9",
             "drupal/file_mdm": "self.version"
-        },
-        "require-dev": {
-            "drupal/image_effects": "*"
         },
         "type": "metapackage",
         "extra": {
-            "branch-alias": {
-                "dev-1.x": "1.x-dev"
-            },
             "drupal": {
-                "version": "8.x-1.1+8-dev",
-                "datestamp": "1576326787",
+                "version": "8.x-2.1",
+                "datestamp": "1586801064",
                 "security-coverage": {
-                    "status": "not-covered",
-                    "message": "Dev releases are not covered by Drupal security advisories."
+                    "status": "covered",
+                    "message": "Covered by Drupal's security advisory policy"
                 }
             }
         },
@@ -6438,36 +6432,36 @@
     },
     {
         "name": "drupal/image_effects",
-        "version": "2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/image_effects.git",
-            "reference": "8.x-2.3"
+            "reference": "8.x-3.0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/image_effects-8.x-2.3.zip",
-            "reference": "8.x-2.3",
-            "shasum": "59d1adbfc722b0e0f447d1aedda7cf95e2701425"
+            "url": "https://ftp.drupal.org/files/projects/image_effects-8.x-3.0.zip",
+            "reference": "8.x-3.0",
+            "shasum": "583487575a28c4300917605de742bcf3af82a711"
         },
         "require": {
-            "drupal/core": ">=8.2.0",
-            "drupal/file_mdm_exif": "^1",
-            "drupal/file_mdm_font": "^1"
+            "drupal/core": "^8.8 || ^9",
+            "drupal/file_mdm_exif": "^2",
+            "drupal/file_mdm_font": "^2",
+            "php": ">=7.1"
         },
         "conflict": {
-            "drupal/imagemagick": "<2.3"
+            "drupal/imagemagick": "<3"
         },
         "require-dev": {
-            "drupal/imagemagick": "*",
-            "drupal/jquery_colorpicker": "*"
+            "drupal/imagemagick": "^3"
         },
         "type": "drupal-module",
         "extra": {
             "drupal": {
-                "version": "8.x-2.3",
-                "datestamp": "1547928180",
+                "version": "8.x-3.0",
+                "datestamp": "1581702907",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -11134,29 +11128,29 @@
     },
     {
         "name": "lsolesen/pel",
-        "version": "0.9.6",
-        "version_normalized": "0.9.6.0",
+        "version": "0.9.8",
+        "version_normalized": "0.9.8.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/lsolesen/pel.git",
-            "reference": "c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23"
+            "url": "https://github.com/pel/pel.git",
+            "reference": "92da891eaeeabbb00bcd09e0cea53796cf9ca967"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/lsolesen/pel/zipball/c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23",
-            "reference": "c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23",
+            "url": "https://api.github.com/repos/pel/pel/zipball/92da891eaeeabbb00bcd09e0cea53796cf9ca967",
+            "reference": "92da891eaeeabbb00bcd09e0cea53796cf9ca967",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.0.0"
+            "php": ">=5.4.0"
         },
         "require-dev": {
             "ext-gd": "*",
-            "phpunit/phpunit": "5.7.*",
+            "phpunit/phpunit": ">=4.8.36 <8",
             "satooshi/php-coveralls": "1.0.*",
-            "squizlabs/php_codesniffer": "3.0.0RC3"
+            "squizlabs/php_codesniffer": "^3.0.0"
         },
-        "time": "2017-02-03T11:58:58+00:00",
+        "time": "2020-02-11T12:05:42+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -11183,7 +11177,7 @@
             }
         ],
         "description": "PHP Exif Library. A library for reading and writing Exif headers in JPEG and TIFF images using PHP.",
-        "homepage": "http://lsolesen.github.com/pel/",
+        "homepage": "http://pel.github.com/pel/",
         "keywords": [
             "exif",
             "image"

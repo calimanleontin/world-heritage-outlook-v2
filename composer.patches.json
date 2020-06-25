@@ -30,7 +30,7 @@
       "absolute url fix": "https://www.drupal.org/files/issues/inline_responsive_images-absolute-url-bug-2867014-1.patch"
     },
     "drupal/purge": {
-      "setUp() methods from Tests are not compatible with respective parent setUp() method" : "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
+      "setUp() methods from Tests are not compatible with respective parent setUp() method": "https://www.drupal.org/files/issues/2019-07-30/purge-incompatible-method-signature-3071304-2.patch"
     },
     "drupal/workflow": {
       "Fix WorkflowConfigTransition::setWorkflow error when importing config": "https://www.drupal.org/files/issues/2018-05-14/workflow-config-transition-2961558-15.patch",
@@ -47,7 +47,7 @@
     },
     "drupal/maxlength": {
       "Max length count html tags as characters when used with ckeditor": "https://www.drupal.org/files/issues/2019-02-06/remove-html-tags_0.patch",
-      "Block paste when limit is exceeded":"https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
+      "Block paste when limit is exceeded": "https://www.drupal.org/files/issues/2019-02-07/block-paste-fix_0.patch",
       "CKEditor - Counter flashes and then re-displays max character limit while typing": "https://www.drupal.org/files/issues/issue-2267849-13-CKEditor-counterflas-reset-to-max.patch",
       "Cannot change the limit from where the warning to appear.": "https://www.drupal.org/files/issues/2019-02-01/maxlength.patch"
     },
@@ -60,11 +60,14 @@
     "drupal/pet": {
       "Fields definition": "patches/pet/pet.patch"
     },
-	"drupal/search_autocomplete": {
+    "drupal/search_autocomplete": {
       "Test scanning is failing": "https://www.drupal.org/files/issues/2019-08-14/3074934-test-fail-D8.patch"
     },
     "drupal/entity_reference_revisions": {
       "InvalidArgumentException: The specified translation (en) cannot be removed": "patches/entity_reference_revisions/8032_broken_values_paragraphs_translations.patch"
+    },
+    "drupal/captcha": {
+      "CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists error:": "patches/captcha/captcha_validation_error.patch"
     }
   }
 }

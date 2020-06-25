@@ -19,7 +19,6 @@ class FileMetadataFontTest extends FileMetadataManagerTestBase {
    */
   public static $modules = [
     'system',
-    'simpletest',
     'file_mdm',
     'file_mdm_font',
     'file_test',
@@ -29,7 +28,7 @@ class FileMetadataFontTest extends FileMetadataManagerTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->installConfig(['file_mdm_font']);
   }
