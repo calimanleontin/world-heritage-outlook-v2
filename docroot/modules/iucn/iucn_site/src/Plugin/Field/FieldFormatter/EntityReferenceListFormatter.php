@@ -168,7 +168,7 @@ class EntityReferenceListFormatter extends EntityReferenceFormatterBase {
 
       $output = [
         0 => [
-          '#plain_text' => t($label_title),
+          '#plain_text' => _assessment_t($label_title),
           '#prefix' => '<div class="field--label-inline"><div class="field--label field--label-list">',
           '#suffix' => '</div></div>',
         ],

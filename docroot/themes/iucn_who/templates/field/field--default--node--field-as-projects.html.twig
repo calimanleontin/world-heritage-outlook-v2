@@ -58,9 +58,9 @@ label_display == 'visually_hidden' ? 'sr-only',
     <thead>
     <tr>
       <th>&#x2116;</th>
-      <th>{{ 'Organization/ individuals'|t }}</th>
-      <th>{{ 'Project duration'|t }}</th>
-      <th>{{ 'Brief description of Active Projects'|t }}</th>
+      <th>{{ 'Organization/ individuals'|assessment_t }}</th>
+      <th>{{ 'Project duration'|assessment_t }}</th>
+      <th>{{ 'Brief description of Active Projects'|assessment_t }}</th>
     </tr>
     </thead>
     <tbody>
@@ -78,13 +78,13 @@ label_display == 'visually_hidden' ? 'sr-only',
           {% if item.content['#paragraph'].field_as_projects_from.value is not empty %}
               {% set from_year = item.content['#paragraph'].field_as_projects_from.value|date("Y") %}
               {% if from_year != "0001" %}
-                  {{ 'From'|t }}: {{ from_year }}<br/>
+                  {{ 'From'|assessment_t }}: {{ from_year }}<br/>
               {% endif %}
           {% endif %}
           {% if item.content['#paragraph'].field_as_projects_to.value is not empty %}
               {% set to_year = item.content['#paragraph'].field_as_projects_to.value|date("Y") %}
               {% if to_year != "0001" %}
-                  {{ 'To'|t }}: {{ to_year }}
+                  {{ 'To'|assessment_t }}: {{ to_year }}
               {% endif %}
           {% endif %}
         </td>
