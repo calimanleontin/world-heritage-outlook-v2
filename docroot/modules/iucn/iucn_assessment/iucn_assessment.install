@@ -467,3 +467,26 @@ function iucn_assessment_update_8013() {
 
   $node->save();
 }
+
+/**
+ * Refs #8551 Question: site name change
+ */
+function iucn_assessment_update_8014() {
+  $newName = 'Ancient and Primeval Beech Forests of the Carpathians and Other Regions of Europe';
+  $cycles = ['2017', '2020'];
+
+  $assessmentIds = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('field_as_site', 1157)
+    ->condition('field_as_cycle', $cycles, 'IN')
+    ->execute();
+
+  foreach ($assessmentIds as $assessmentId) {
+    $assessment = Node::load($assessmentId);
+    $name = $assessment->get('field_as_cycle')->value . " " . $newName;
+    $assessment->set('title', $name);
+    $assessment->save();
+  }
+}
