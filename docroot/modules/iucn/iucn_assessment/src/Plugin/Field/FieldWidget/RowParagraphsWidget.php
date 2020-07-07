@@ -327,7 +327,25 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
    * @return bool
    */
   protected function paragraphIsDeleted(ParagraphInterface $paragraph) {
-    return in_array($paragraph->id(), $this->getDeletedParagraphsIds());
+    if (!in_array($paragraph->id(), $this->getDeletedParagraphsIds())) {
+      return FALSE;
+    }
+
+    $paragraphParentNodeRevision = $this->getParagraphParentNodeRevision($paragraph);
+    if (!$paragraphParentNodeRevision instanceof NodeInterface) {
+      return TRUE;
+    }
+
+    if ($paragraphParentNodeRevision->get('field_state')->value != AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
+      return TRUE;
+    }
+
+    $reviewers = array_column($paragraphParentNodeRevision->get('field_reviewers')->getValue(), 'target_id');
+    $paragraphAuthor = $paragraphParentNodeRevision->getRevisionUser();
+
+    //paragraph should not considered deleted if not present on this node revision paragraphs list
+    //and was created on another revision by a reviewer
+    return !in_array($paragraphAuthor->id(), $reviewers);
   }
 
   /**
