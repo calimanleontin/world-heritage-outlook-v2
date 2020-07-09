@@ -56,6 +56,9 @@ function iucn_fields_taxonomy_term_load(array $entities) {
     'iucn_assessment.node.state_change',
     'iucn_assessment.node_revision.state_change',
     'iucn_assessment.node.word_export',
+    'iucn_pdf.download',
+    'iucn_pdf.download.debug',
+    'iucn_pdf.download_language',
   ];
 
   if (!in_array(\Drupal::routeMatch()->getRouteName(), $termAlterRoutes)) {
