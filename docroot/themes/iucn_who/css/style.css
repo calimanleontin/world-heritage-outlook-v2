@@ -16707,6 +16707,7 @@ a[rel="bookmark"] {
 .field--name-field-as-references {
   overflow: auto;
 }
+.iucn-site-wrapper .field--name-field-theme .field--label,
 .iucn-site-wrapper .field--name-field-inscription-year .field--label,
 .iucn-site-wrapper .field--name-field-inscription-criteria .field--label,
 .iucn-site-wrapper .field--name-field-designation .field--label {
