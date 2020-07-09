@@ -255,6 +255,7 @@ class AssessmentWorkflow {
   public function assessmentPreSave(NodeInterface $node) {
     if ($node->isNew() || $this->assessmentHasNoState($node)) {
       // Ignore new assessments.
+      $this->setAssessmentCountry($node);
       $this->createSiteProtectionParagraphs($node);
       $this->forceAssessmentState($node, 'assessment_new', FALSE);
       return;
@@ -662,6 +663,18 @@ class AssessmentWorkflow {
   }
 
   /**
+   * Copy site country to assessment on assessment creation
+   * @param \Drupal\node\NodeInterface $node
+   */
+  public function setAssessmentCountry(NodeInterface $node) {
+    if ($node->get('field_country')->isEmpty() && !$node->get('field_as_site')->isEmpty()) {
+      /** @var NodeInterface $site */
+      $site = $node->get('field_as_site')->entity;
+      $node->set('field_country', $site->get('field_country')->getValue());
+    }
+  }
+
+    /**
    * Create a site_protection paragraph for each existing term in
    * "assessment_protection_topic" vocabulary if the node field field_as_protection
    * is empty.
