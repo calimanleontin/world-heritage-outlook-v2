@@ -116,6 +116,7 @@ class NodeSiteAssessmentForm {
     if ($readOnly == TRUE) {
       $form['actions']['#access'] = FALSE;
       $form['langcode']['#disabled'] = TRUE;
+      $form['field_country']['#disabled'] = TRUE;
     }
 
     self::hideParagraphsActions($form, $node);
@@ -126,6 +127,7 @@ class NodeSiteAssessmentForm {
       $form['field_as_end_date']['#access'] = FALSE;
       $form['field_date_published']['#access'] = FALSE;
       $form['field_assessment_file']['#access'] = FALSE;
+      $form['field_country']['#access'] = FALSE;
     }
 
     // Hide key conservation issues for >2014 assessments.
@@ -292,6 +294,7 @@ class NodeSiteAssessmentForm {
       'field_assessment_file',
       'field_as_site',
       'field_as_cycle',
+      'field_country',
     ];
     foreach ($mainDataFields as $field) {
       if (empty($form[$field])) {
