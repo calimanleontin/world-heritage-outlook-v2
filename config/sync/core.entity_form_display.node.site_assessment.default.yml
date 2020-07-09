@@ -43,6 +43,7 @@ dependencies:
     - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_country
     - field.field.node.site_assessment.field_date_published
     - field.field.node.site_assessment.field_programmatically_fixed
     - field.field.node.site_assessment.field_references_reviewer
@@ -67,7 +68,7 @@ third_party_settings:
         - group_as_projects
         - group_as_references
       parent_name: ''
-      weight: 6
+      weight: 7
       format_type: assessment_tabs
       format_settings:
         id: ''
@@ -204,7 +205,7 @@ third_party_settings:
       children:
         - field_as_key_cons
       parent_name: ''
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         id: ''
@@ -822,6 +823,16 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
+  field_country:
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select

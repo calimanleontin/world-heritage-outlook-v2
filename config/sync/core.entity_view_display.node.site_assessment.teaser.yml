@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.site_assessment.field_as_protection_ov_rating
     - field.field.node.site_assessment.field_as_protection_ov_text
     - field.field.node.site_assessment.field_as_references
+    - field.field.node.site_assessment.field_as_references_p
     - field.field.node.site_assessment.field_as_site
     - field.field.node.site_assessment.field_as_start_date
     - field.field.node.site_assessment.field_as_threats_current
@@ -41,7 +42,15 @@ dependencies:
     - field.field.node.site_assessment.field_as_vass_wh_trend
     - field.field.node.site_assessment.field_as_version
     - field.field.node.site_assessment.field_assessment_file
+    - field.field.node.site_assessment.field_assessor
+    - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_country
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_programmatically_fixed
+    - field.field.node.site_assessment.field_references_reviewer
+    - field.field.node.site_assessment.field_reviewers
+    - field.field.node.site_assessment.field_settings
+    - field.field.node.site_assessment.field_state
     - node.type.site_assessment
   module:
     - user
@@ -106,6 +115,7 @@ hidden:
   field_assessment_file: true
   field_assessor: true
   field_coordinator: true
+  field_country: true
   field_date_published: true
   field_field_as_cycle: true
   field_programmatically_fixed: true

@@ -44,7 +44,9 @@ dependencies:
     - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_country
     - field.field.node.site_assessment.field_date_published
+    - field.field.node.site_assessment.field_programmatically_fixed
     - field.field.node.site_assessment.field_references_reviewer
     - field.field.node.site_assessment.field_reviewers
     - field.field.node.site_assessment.field_settings
@@ -119,6 +121,7 @@ hidden:
   field_as_vass_wh_trend: true
   field_as_version: true
   field_assessment_file: true
+  field_country: true
   field_date_published: true
   field_programmatically_fixed: true
   field_settings: true
