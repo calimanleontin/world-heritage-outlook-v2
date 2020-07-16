@@ -2,11 +2,11 @@
 /**
  * @file
  * Bootstrap sub-theme.
- *
  * Place your custom PHP code in this file.
  */
 
 use Drupal\Core\Template\Attribute;
+use Drupal\facets\Entity\Facet;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Url;
@@ -414,5 +414,38 @@ function iucn_who_preprocess_breadcrumb(&$variables) {
       }
       unset($variables['breadcrumb'][$item]);
     }
+  }
+}
+
+function iucn_who_preprocess_facets_item_list(array &$variables) {
+  if (empty($variables['facet']) || !$variables['facet'] instanceof Facet) {
+    return;
+  }
+
+  if (empty($variables['items'])) {
+    return;
+  }
+
+  $variables['#attached']['library'][] = 'iucn_who/facets_hierarchy';
+  /** @var Facet $facet */
+  $facet = $variables['facet'];
+  switch ($facet->id()) {
+    case 'threat':
+      foreach ($variables['items'] as &$item) {
+        if (empty($item['value']['children'])) {
+          continue;
+        }
+
+        if (!empty($item['value']['#type']) && $item['value']['#type'] == 'link') {
+          $item['value']['#type'] = 'html_tag';
+          $item['value']['#tag'] = 'span';
+          $item['value']['#attributes']['class'][] = 'facet-icon-collapse';
+          $item['value']['#attributes']['class'][] = 'collapsed';
+          $item['value']['#attributes']['role'] = 'button';
+          $item['value']['#value'] = render($item['value']['#title']);
+          unset($item['value']['#url']);
+        }
+      }
+      break;
   }
 }
