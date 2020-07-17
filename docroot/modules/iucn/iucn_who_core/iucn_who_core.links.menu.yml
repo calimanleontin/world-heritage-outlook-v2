@@ -318,3 +318,10 @@ iucn_who_core.dashboard.reports.potential_threats_other_values:
   route_name: view.assessments_reports.potential_threats_other_values
   menu_name: tools
   weight: 10
+
+iucn_who_core.dashboard.reports.changes_in_ratings_between_cycles:
+  title: 'Changes in ratings between cycles'
+  parent: iucn_who_core.dashboard.reports
+  route_name: view.assessments_reports.changes_in_ratings_between_cycles
+  menu_name: tools
+  weight: 11
