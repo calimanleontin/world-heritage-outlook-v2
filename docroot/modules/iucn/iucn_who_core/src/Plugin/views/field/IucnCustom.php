@@ -41,6 +41,9 @@ class IucnCustom extends Custom {
         'rating_change_2014_2017' => 'Value change (2014 and 2017)',
         'rating_change_2017_2020' => 'Value change (2017 and 2020)',
         'rating_change_2014_2020' => 'Value change (2014 and 2020)',
+        'rating_change_2014_2023' => 'Value change (2014 and 2023)',
+        'rating_change_2017_2023' => 'Value change (2017 and 2020)',
+        'rating_change_2020_2023' => 'Value change (2020 and 2020)',
       ],
       '#required' => TRUE,
       '#weight' => -103,
@@ -75,6 +78,18 @@ class IucnCustom extends Custom {
 
       case 'rating_change_2014_2020':
         return $this->getRatingChange($values->_entity, 2014, 2020, $values->field);
+        break;
+
+      case 'rating_change_2014_2023':
+        return $this->getRatingChange($values->_entity, 2014, 2023, $values->field);
+        break;
+
+      case 'rating_change_2017_2023':
+        return $this->getRatingChange($values->_entity, 2017, 2023, $values->field);
+        break;
+
+      case 'rating_change_2020_2023':
+        return $this->getRatingChange($values->_entity, 2020, 2023, $values->field);
         break;
     }
 
