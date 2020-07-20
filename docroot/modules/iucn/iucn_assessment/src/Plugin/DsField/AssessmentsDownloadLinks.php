@@ -6,8 +6,7 @@ use Drupal\Core\Url;
 use Drupal\ds\Plugin\DsField\DsFieldBase;
 
 /**
- * Plugin that renders the author of a node.
- *
+ * Plugin that renders the download pdf links of a site in all languages.
  * @DsField(
  *   id = "assessments_download_links",
  *   title = @Translation("Download PDF"),
@@ -23,78 +22,92 @@ class AssessmentsDownloadLinks extends DsFieldBase {
     /* @var $node \Drupal\node\NodeInterface */
     $node = $this->entity();
 
-    $element = [];
+    $element = [
+      '#cache' => [
+        'tags' => $node->getCacheTags(),
+      ],
+    ];
+
+    if (!$node->hasField('field_assessments')) {
+      return $element;
+    }
+
+    if ($node->get('field_assessments')->isEmpty()) {
+      return $element;
+    }
+
+    /** @var \Drupal\iucn_pdf\PrintPdf $printPdf */
+    $printPdf = \Drupal::service('iucn_pdf.print_pdf');
+
+    /** @var \Drupal\Core\Language\Language[] $languages */
+    $languages = \Drupal::languageManager()->getLanguages();
+
+    /** @var \Drupal\node\Entity\Node[] $assessments */
+    $assessments = $node->get('field_assessments')->referencedEntities();
+    rsort($assessments);
+
     $links = [];
+    foreach ($assessments as $assessment) {
+      if (!$assessment->isPublished()) {
+        continue;
+      }
 
-    $print_pdf = \Drupal::service('iucn_pdf.print_pdf');
-    $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    if ($node->hasField('field_assessments')) {
-      if ($node->field_assessments->count()) {
-        foreach ($node->field_assessments as $idx => $item) {
-          if (empty($item->entity) || !$item->entity->isPublished()) {
-            continue;
-          }
-          //TODO quick fix - removed access check
-          /* if (!$item->entity->access('view')) {
-            continue;
-          }*/
-          $value = [
-            'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
-//            'url' => $node->toUrl()->setOption('query', ['year' => $item->entity->field_as_cycle->value]),
-            'title' => $this->t('@year Conservation Outlook Assessment', [
-              '@year' => $item->entity->field_as_cycle->value,
-              //'@language' => ($current_language == 'ar' ? t('English') : t(\Drupal::languageManager()->getCurrentLanguage()->getName())),
-              ]),
-          ];
-          $value['attributes']['target'][] = '_blank';
-          $value['year'] = $item->entity->field_as_cycle->value + 10;
-          $links[] = $value;
+      if (!$assessment->access('view')) {
+        continue;
+      }
 
+      $cycle = $assessment->get('field_as_cycle')->value;
 
-          if($arabic_pdf = $print_pdf->uploadedPdf($node->id(), 'ar' , $item->entity->field_as_cycle->value)){
-            $value = [
-              //'url' => Url::fromRoute('iucn_pdf.download', array('entity_id' => $node->id()), ['query'=>['year' => $item->entity->field_as_cycle->value]]),
-              'url' => Url::fromRoute('iucn_pdf.download_language',
-                [
-                  'entity_id' => $node->id(),
-                  'language' => 'ar',
-                  ],
-                ['query' => [
-                  'year' => $item->entity->field_as_cycle->value,
-                  ],
-                ]),
-              'title' => $this->t('@year Conservation Outlook Assessment (@language)', [
-                '@year' => $item->entity->field_as_cycle->value,
-                '@language' => 'Arabic'
-                ]),
-            ];
-            $value['attributes']['target'][] = '_blank';
-            $value['year'] = $item->entity->field_as_cycle->value;
-            $links[] = $value;
-          }
+      foreach ($languages as $language) {
+        if (!$assessment->hasTranslation($language->getId())) {
+          continue;
         }
+
+        $url = Url::fromRoute('iucn_pdf.download', [
+          'entity_id' => $node->id(),
+        ], [
+          'language' => $language,
+          'query' => ['year' => $cycle,],
+          ]);
+
+        $link = [
+          'url' => $url,
+          'title' => $this->t('@year Conservation Outlook Assessment (@language)', [
+            '@year' => $cycle,
+            '@language' => strtoupper($language->getId()),
+          ]),
+          'attributes' => [
+            'target' => '_blank'
+          ]
+        ];
+
+        if ($uploadedPdf = $printPdf->uploadedPdf($node->id(), $language->getId(), $cycle)) {
+          $link = [
+            'url' => Url::fromRoute('iucn_pdf.download_language', [
+              'entity_id' => $node->id(),
+              'language' => 'ar',
+            ], [
+              'query' => [
+                'year' => $cycle,
+              ],
+            ]),
+            'title' => $this->t('@year Conservation Outlook Assessment (@language)', [
+              '@year' => $cycle,
+              '@language' => strtoupper($language->getId()),
+            ]),
+          ];
+        }
+        $link['attributes']['target'] = '_blank';
+        $links[] = $link;
       }
     }
 
-    if (!empty($links)) {
-      usort($links,
-        function($a, $b) {
-          $a_year = $a['year'];
-          $b_year = $b['year'];
-          return ($a_year < $b_year);
-        }
-      );
-      $element = [
-        '#theme' => 'links',
-        '#links' => $links,
-        '#cache' => [
-          'tags' => $node->getCacheTags(),
-        ],
-      ];
-    }
+    $element += [
+      '#theme' => 'links',
+      '#links' => $links,
+    ];
 
     return $element;
-
   }
 
   /**
@@ -104,8 +117,8 @@ class AssessmentsDownloadLinks extends DsFieldBase {
     if ($this->bundle() != 'site') {
       return FALSE;
     }
-    return parent::isAllowed();
 
+    return parent::isAllowed();
   }
 
 }
