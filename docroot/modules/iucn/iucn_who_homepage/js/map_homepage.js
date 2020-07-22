@@ -42,7 +42,6 @@ function postInitMap(instance_id, map, config) {
     google.maps.event.addListener(map, 'bounds_changed', function() {
       if ($called == false) {
         var $bounds = map.getBounds();
-        // console.log($markers);
         for (var $i = 0; $i < $markers.length; $i++) {
           var $marker = $markers[$i];
           $bounds.extend($marker.getPosition());
@@ -54,31 +53,33 @@ function postInitMap(instance_id, map, config) {
     // Simplebar element in map sidebar
     var simplebar = false;
 
-    $.iucnSimplebarHighlight = function () {
+    $.iucnSimplebarHighlight = _.throttle(
+    function () {
       if(!simplebar) {
         simplebar = $.data($('[data-iucn-simplebar]')[0], 'simplebar');
       }
       $(simplebar.getScrollElement()).scrollTop(0);
       simplebar.flashScrollbar();
-    };
+    }, 1000);
 
     $.iucnUpdateMapDetail = function(mapDetail) {
       var $mapDetails = $('#map-site-details');
+      var $colLeft = $('#col-left');
       // $mapDetails.height($mapDetails.innerHeight());
       $mapDetails.fadeOut(0).html(mapDetail).fadeIn(300);
-      // setTimeout(function() {
-      //   $('.col-left').animate({ scrollTop: $mapDetails.innerHeight() });
-      // }, 300);
+      $colLeft[0].scrollTop =  $colLeft[0].scrollHeight;
       $.iucnSimplebarHighlight();
     };
 
     $.iucnResetMapDetail = function() {
       var $mapDetails = $('#map-site-details');
+      var $colLeft = $('#col-left');
       // $mapDetails.height('auto');
       $mapDetails.fadeOut(0).html(config.empty_placeholder).fadeIn(300);
-      $('.col-left').animate({ scrollTop: 0 });
+      $colLeft[0].scrollTop =  0;
+      window.scrollTo(0, 0);
       $.iucnSimplebarHighlight();
-    }
+    };
 
     $.iucnResetAllMarkerIcons = function() {
       for(var $i = 0; $i < $markers.length; $i++) {
@@ -103,8 +104,9 @@ function postInitMap(instance_id, map, config) {
      */
     $.iucnClearSelection = function() {
       $.iucnResetAllMarkerIcons();
-      $('#edit-q').prop('selectedIndex', 0);
-      $('#edit-q').trigger('chosen:updated');
+      $('#edit-q')
+        .prop('selectedIndex', 0)
+        .trigger('chosen:updated');
       $.iucnResetMapDetail();
     };
 
@@ -132,11 +134,11 @@ function postInitMap(instance_id, map, config) {
       var $filter_status_id = $(this).data('filter');
       for(var $i = 0; $i < $markers.length; $i++) {
         var $marker = $markers[$i];
-        var $visible = $filter_status_id == 'all'
-            || parseInt($filter_status_id) == parseInt($marker.customInfo.status_id);
+        var $visible = $filter_status_id === 'all'
+            || parseInt($filter_status_id) === parseInt($marker.customInfo.status_id);
         $marker.setVisible($visible);
       }
-      if ($filter_status_id == 'all') {
+      if ($filter_status_id === 'all') {
         $.resetMapPosition();
       }
       else {
