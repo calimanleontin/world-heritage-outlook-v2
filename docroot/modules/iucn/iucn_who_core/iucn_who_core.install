@@ -51,3 +51,10 @@ function iucn_who_core_update_8002() {
     $user->save();
   }
 }
+
+/**
+ * Refs #8177 Change site cycle to 2020
+ */
+function iucn_who_core_update_8003() {
+  \Drupal::configFactory()->getEditable('iucn_who.settings')->set('assessment_year', 2020)->save();
+}
