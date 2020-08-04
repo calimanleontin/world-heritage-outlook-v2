@@ -710,10 +710,12 @@ class AssessmentWorkflow {
 
     $this->forceAssessmentState($reviewerRevision, $newState);
 
+    $this->nodeStorage->resetCache([$defaultUnderReviewRevision->id()]);
     if ($this->isAssessmentReviewed($defaultUnderReviewRevision, $reviewerRevision->getRevisionId())) {
       // If all other reviewers finished their work, send the assessment
       // back to the coordinator.
       $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
     }
+    $this->nodeStorage->resetCache([$defaultUnderReviewRevision->id()]);
   }
 }
