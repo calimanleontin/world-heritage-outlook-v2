@@ -490,3 +490,27 @@ function iucn_assessment_update_8014() {
     $assessment->save();
   }
 }
+
+
+/**
+ * Refs #8719 wrong assessment title
+ */
+function iucn_assessment_update_8015() {
+  /** @var \Drupal\node\NodeInterface $site */
+  $site = Node::load(1707);
+
+  $assessmentIds = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('field_as_site', $site->id())
+    ->execute();
+
+  foreach ($assessmentIds as $assessmentId) {
+    $assessment = Node::load($assessmentId);
+    $name = $assessment->get('field_as_cycle')->value . " " . $site->getTitle();
+    $assessment->set('title', $name);
+    $assessment->save();
+    var_dump($assessment->id());
+  }
+}
