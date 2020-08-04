@@ -511,6 +511,5 @@ function iucn_assessment_update_8015() {
     $name = $assessment->get('field_as_cycle')->value . " " . $site->getTitle();
     $assessment->set('title', $name);
     $assessment->save();
-    var_dump($assessment->id());
   }
 }
