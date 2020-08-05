@@ -492,9 +492,31 @@ function iucn_assessment_update_8014() {
 }
 
 /**
- * Refs #8179 Save country on all sites assessments from sites
+ * Refs #8719 wrong assessment title
  */
 function iucn_assessment_update_8015() {
+  /** @var \Drupal\node\NodeInterface $site */
+  $site = Node::load(1707);
+
+  $assessmentIds = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->getQuery()
+    ->condition('type', 'site_assessment')
+    ->condition('field_as_site', $site->id())
+    ->execute();
+
+  foreach ($assessmentIds as $assessmentId) {
+    $assessment = Node::load($assessmentId);
+    $name = $assessment->get('field_as_cycle')->value . " " . $site->getTitle();
+    $assessment->set('title', $name);
+    $assessment->save();
+  }
+}
+
+/**
+ * Refs #8179 Save country on all sites assessments from sites
+ */
+function iucn_assessment_update_8016() {
   $ids = \Drupal::entityTypeManager()->getStorage('node')
     ->getQuery()
     ->condition('type', 'site_assessment')
@@ -504,9 +526,9 @@ function iucn_assessment_update_8015() {
 
   foreach ($ids as $id) {
     $assessment = Node::load($id);
-    $parentCountry = $assessment->get('field_as_site')->entity->get('field_country')->getValue();
+    $parentCountry = $assessment->get('field_as_site')->entity->get('field_country')
+      ->getValue();
     $assessment->set('field_country', $parentCountry);
     $assessment->save();
   }
-
 }

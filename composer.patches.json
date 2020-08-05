@@ -68,6 +68,9 @@
     },
     "drupal/captcha": {
       "CAPTCHA validation error: unknown CAPTCHA session ID. Contact the site administrator if this problem persists error:": "patches/captcha/captcha_validation_error.patch"
+    },
+    "drupal/field_group": {
+      "Titles are missing in horizontal tabs on Bootstrap theme": "https://www.drupal.org/files/issues/2020-05-22/field_group-fix_horizontal_tab_labels-3104205-9.patch"
     }
   }
 }
