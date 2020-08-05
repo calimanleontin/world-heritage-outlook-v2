@@ -21,7 +21,7 @@ class IucnPdfController extends FileDownloadController {
   /**
    * The plugin manager for our Print engines.
    *
-   * @var \Drupal\iucn_pdf\PrintPdfInterface
+   * @var \Drupal\iucn_pdf\PrintPdf
    */
   protected $printPdf;
 
