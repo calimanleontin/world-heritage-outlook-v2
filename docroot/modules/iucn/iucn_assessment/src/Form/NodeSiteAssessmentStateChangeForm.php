@@ -3,11 +3,9 @@
 namespace Drupal\iucn_assessment\Form;
 
 use Drupal\Core\Field\EntityReferenceFieldItemList;
-use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\iucn_assessment\Plugin\AssessmentWorkflow;
@@ -51,7 +49,7 @@ class NodeSiteAssessmentStateChangeForm {
       && $state != AssessmentWorkflow::STATUS_NEW
       && $state != AssessmentWorkflow::STATUS_UNDER_EVALUATION
       && $node->field_as_cycle->value >= 2020) {
-      self::validateNode($form, $node);
+      static::validateNode($form, $node);
       if (empty($form['error'])) {
         self::addStateChangeWarning($form, $node, $currentUser);
       }
