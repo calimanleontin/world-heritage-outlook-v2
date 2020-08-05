@@ -134,3 +134,22 @@ a[rel="bookmark"] {
     }
   }
 }
+
+.path-explore-sites {
+  span.facet-icon-collapse {
+    &:before {
+      content: '+';
+      display: inline-block;
+      margin-right: 1em;
+      width: 0;
+      float: left;
+      position: absolute;
+    }
+
+    &[aria-expanded="true"] {
+      &:before {
+        content: '-';
+      }
+    }
+  }
+}

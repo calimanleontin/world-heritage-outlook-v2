@@ -13224,6 +13224,23 @@ a[rel="bookmark"] {
 [dir] .page-node-1236 article.page .field--name-field-page-elements .field--name-field-ph-images .paragraph--type--image-link {
   text-align: center;
 }
+.path-explore-sites span.facet-icon-collapse:before {
+  content: '+';
+  display: inline-block;
+  width: 0;
+  position: absolute;
+}
+[dir=ltr] .path-explore-sites span.facet-icon-collapse:before {
+  margin-right: 1em;
+  float: left;
+}
+[dir=rtl] .path-explore-sites span.facet-icon-collapse:before {
+  margin-left: 1em;
+  float: right;
+}
+.path-explore-sites span.facet-icon-collapse[aria-expanded="true"]:before {
+  content: '-';
+}
 /* ==========================================================================
     Search block region
     ========================================================================== */

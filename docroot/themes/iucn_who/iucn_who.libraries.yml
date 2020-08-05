@@ -76,3 +76,9 @@ print-styling-rtl:
   css:
     theme:
       css/print-style-rtl.css: { minified: true }
+
+facets_hierarchy:
+  js:
+    js/facets-hierarchy.js: {}
+  dependencies:
+    - core/jquery
