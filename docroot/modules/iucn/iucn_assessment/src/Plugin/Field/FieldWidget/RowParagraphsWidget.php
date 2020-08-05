@@ -1061,20 +1061,7 @@ class RowParagraphsWidget extends ParagraphsWidget implements ContainerFactoryPl
         ],
       ],
     ];
-    $paragraphAuthor = $paragraphParentNodeRevision->getRevisionUser();
-
-    $authorName = NULL;
-    if ($this->parentNode->get('field_state')->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-      $authorName = $paragraphParentNodeRevision->get('field_assessor')->entity->getDisplayName();
-    }
-
-    if ($this->parentNode->get('field_state')->value == AssessmentWorkflow::STATUS_FINAL_CHANGES) {
-      $authorName = $paragraphParentNodeRevision->get('field_references_reviewer')->entity->getDisplayName();
-    }
-
-    if (empty($authorName)) {
-      $authorName = $paragraphAuthor->getDisplayName();
-    }
+    $authorName =$this->workflowService->getDifferencesAuthorName($paragraphParentNodeRevision, $this->parentNode->get('field_state')->value);
 
     $buttons = [
       '#type' => 'container',
