@@ -75,6 +75,7 @@ class HomePageGoogleMapsBlock extends GoogleMapsBaseBlock {
       '#empty_selection_placeholder_markup' => $this->getSiteSelectionPlaceholder(),
       '#search_form' => $search_form,
       '#block_footer_text' => $this->getConfigParam( 'block_footer_text', $this->t('The first global assessment of natural World Heritage')),
+      '#cycle' => \Drupal::configFactory()->getEditable('iucn_who.settings')->get('assessment_year'),
     ];
     return $content;
   }

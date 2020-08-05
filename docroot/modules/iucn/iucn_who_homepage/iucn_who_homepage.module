@@ -14,6 +14,7 @@ function iucn_who_homepage_theme($existing, $type, $theme, $path) {
         'search_form' => null,
         'empty_selection_placeholder_markup' => null,
         'block_footer_text' => null,
+        'cycle' => null,
       ]
     ],
     'homepage_map_site_detail' => [
