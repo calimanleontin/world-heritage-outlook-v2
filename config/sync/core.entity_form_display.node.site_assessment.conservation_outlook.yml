@@ -44,6 +44,7 @@ dependencies:
     - field.field.node.site_assessment.field_assessment_file
     - field.field.node.site_assessment.field_assessor
     - field.field.node.site_assessment.field_coordinator
+    - field.field.node.site_assessment.field_country
     - field.field.node.site_assessment.field_date_published
     - field.field.node.site_assessment.field_programmatically_fixed
     - field.field.node.site_assessment.field_references_reviewer
@@ -770,6 +771,7 @@ hidden:
   field_as_version: true
   field_assessor: true
   field_coordinator: true
+  field_country: true
   field_date_published: true
   field_programmatically_fixed: true
   field_references_reviewer: true

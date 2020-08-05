@@ -42,7 +42,8 @@ third_party_settings:
       library: null
       disable_css: false
       entity_classes: all_classes
-      settings: {  }
+      settings:
+        label: ''
     regions:
       title:
         - node_title
@@ -54,6 +55,7 @@ third_party_settings:
         - field_country
         - field_inscription_year
         - field_inscription_criteria
+        - field_theme
         - field_designation
         - body
       right_1:
@@ -87,12 +89,12 @@ third_party_settings:
           link: false
       'dynamic_block_field:node-how_are_sites_assessed':
         plugin_id: 'dynamic_block_field:node-how_are_sites_assessed'
-        weight: 13
+        weight: 14
         label: above
         formatter: default
       'dynamic_block_field:node-site_feedback':
         plugin_id: 'dynamic_block_field:node-site_feedback'
-        weight: 14
+        weight: 15
         label: above
         formatter: default
       assessment_rating:
@@ -104,13 +106,13 @@ third_party_settings:
           formatter:
             image_style: ''
             image_link: ''
-      assessments_more_site_links:
-        plugin_id: assessments_more_site_links
-        weight: 11
-        label: above
-        formatter: default
       assessments_download_links:
         plugin_id: assessments_download_links
+        weight: 13
+        label: above
+        formatter: default
+      assessments_more_site_links:
+        plugin_id: assessments_more_site_links
         weight: 12
         label: above
         formatter: default
@@ -121,13 +123,13 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 7
+    weight: 8
     region: middle_1
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_assessments:
-    weight: 9
+    weight: 10
     label: hidden
     settings:
       link: true
@@ -151,28 +153,28 @@ content:
         ds_limit: ''
   field_designation:
     type: entity_reference_list
-    weight: 6
+    weight: 7
     region: middle_1
     label: inline
     settings:
-      separator: ','
-      link: 0
-      override_label: 0
+      separator: ', '
       singular: ''
       plural: ''
+      link: 0
+      override_label: 0
     third_party_settings:
       ds:
         ds_limit: ''
   field_geolocation:
     type: geofield_site_area_map
-    weight: 10
+    weight: 11
     region: sidebar
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: image
-    weight: 8
+    weight: 9
     region: right_1
     label: hidden
     settings:
@@ -202,6 +204,20 @@ content:
       timezone_override: ''
       date_format: 'Y'
     third_party_settings: {  }
+  field_theme:
+    type: entity_reference_list
+    weight: 6
+    region: middle_1
+    label: inline
+    settings:
+      separator: ', '
+      singular: ''
+      plural: ''
+      link: 0
+      override_label: 0
+    third_party_settings:
+      ds:
+        ds_limit: ''
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -217,11 +233,11 @@ hidden:
   field_mixed_site: true
   field_serial: true
   field_site_id: true
-  field_theme: true
   field_transboundary: true
   field_unesco_id: true
   field_wdpa_id: true
   langcode: true
   links: true
+  search_api_excerpt: true
   site_assessments_link: true
   site_assessments_rating: true
