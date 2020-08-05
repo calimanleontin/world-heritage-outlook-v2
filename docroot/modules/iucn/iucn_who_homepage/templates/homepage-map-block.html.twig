@@ -8,7 +8,7 @@
       </div>
       <div id="sidemenu" class="sidemenu">
         <div id="map-filters" class="map-filters">
-          <h3>{{ '2017 Conservation Outlook rating' | trans }}</h3>
+          <h3>{{ cycle }}{{ ' Conservation Outlook rating' | trans }}</h3>
           <ul class="map-filter-items">
             {% for rating in conservation_ratings %}
               {% if rating.field_css_identifier.value != 'coming-soon' %}

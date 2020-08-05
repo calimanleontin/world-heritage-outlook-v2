@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, Drupal) {
 
   'use strict';
 
@@ -56,9 +56,9 @@
             summaryElement = $this.find('> summary');
           }
 
-          var summary = summaryElement.clone().children().remove().end().text();
+          var summaryText = summaryElement.clone().children().remove().end().text().trim() || summaryElement.find('> span:first-child').text().trim();
           var horizontal_tab = new Drupal.horizontalTab({
-            title: $.trim(summary),
+            title: summaryText,
             details: $this
           });
           horizontal_tab.item.addClass('horizontal-tab-button-' + i);
@@ -245,4 +245,4 @@
     return tab;
   };
 
-})(jQuery, Modernizr);
+})(jQuery, Drupal);
