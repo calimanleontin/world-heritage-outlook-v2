@@ -183,7 +183,7 @@ class NodeSiteAssessmentForm {
         }
         else {
           $form['comments']['help'] = [
-            '#markup' => '<div class="comments-help"><div><b>' . t('Internal comments on worksheet changes for IUCN?') .  '</b></div><div>' . t('Use the space below if you wish to provide comments on your worksheet changes to IUCN. These comments will be visible to IUCN but are not part of the conservation outlook assessment/will not be made publicly available.') . '</div></div>',
+            '#markup' => '<div class="comments-help"><div><b>' . t('Internal comments on worksheet changes for IUCN?') .  '</b></div><div>' . t('Use the space below if you wish to provide comments on your worksheet changes to IUCN. These comments will be visible to IUCN but are not part of the conservation outlook assessment/will not be made publicly available. Please do not use this box to list references; these should be listed in Worksheet “8. References”. If you have suggestions for changes to assessment text, please make these changes directly in the worksheet, using this box to provide an explanation/rationale for the changes if needed.') . '</div></div>',
           ];
         }
       }
