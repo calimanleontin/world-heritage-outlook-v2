@@ -426,11 +426,11 @@ function iucn_who_preprocess_facets_item_list(array &$variables) {
     return;
   }
 
-  $variables['#attached']['library'][] = 'iucn_who/facets_hierarchy';
   /** @var Facet $facet */
   $facet = $variables['facet'];
   switch ($facet->id()) {
     case 'threat':
+      $variables['#attached']['library'][] = 'iucn_who/facets_hierarchy';
       foreach ($variables['items'] as &$item) {
         if (empty($item['value']['children'])) {
           continue;
@@ -443,6 +443,20 @@ function iucn_who_preprocess_facets_item_list(array &$variables) {
           $item['value']['#attributes']['class'][] = 'collapsed';
           $item['value']['#attributes']['role'] = 'button';
           $item['value']['#value'] = render($item['value']['#title']);
+          if (!empty($item['value']['children']['#items'])) {
+            foreach ($item['value']['children']['#items'] as &$child) {
+              if (empty($child['#type']) || $child['#type'] != 'link') {
+                continue;
+              }
+
+              if (empty($child['#title']['#value'])) {
+                continue;
+              }
+
+              $markupTitle = ['#markup' => str_replace('/', '/<wbr>', $child['#title']['#value'])];
+              $child['#title']['#value'] = render($markupTitle);
+            }
+          }
           unset($item['value']['#url']);
         }
       }
