@@ -13224,6 +13224,12 @@ a[rel="bookmark"] {
 [dir] .page-node-1236 article.page .field--name-field-page-elements .field--name-field-ph-images .paragraph--type--image-link {
   text-align: center;
 }
+[dir=ltr] .path-explore-sites .facets-widget-links .facets-widget- ul {
+  padding-left: 0;
+}
+[dir=rtl] .path-explore-sites .facets-widget-links .facets-widget- ul {
+  padding-right: 0;
+}
 .path-explore-sites span.facet-icon-collapse:before {
   content: '+';
   display: inline-block;
@@ -13233,10 +13239,12 @@ a[rel="bookmark"] {
 [dir=ltr] .path-explore-sites span.facet-icon-collapse:before {
   margin-right: 1em;
   float: left;
+  left: 0;
 }
 [dir=rtl] .path-explore-sites span.facet-icon-collapse:before {
   margin-left: 1em;
   float: right;
+  right: 0;
 }
 .path-explore-sites span.facet-icon-collapse[aria-expanded="true"]:before {
   content: '-';
