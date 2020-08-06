@@ -13230,6 +13230,12 @@ a[rel="bookmark"] {
 [dir=rtl] .path-explore-sites .facets-widget-links .facets-widget- ul {
   padding-right: 0;
 }
+[dir=ltr] .path-explore-sites .facets-widget-links .facets-widget- ul li {
+  margin-left: 9px;
+}
+[dir=rtl] .path-explore-sites .facets-widget-links .facets-widget- ul li {
+  margin-right: 9px;
+}
 .path-explore-sites span.facet-icon-collapse:before {
   content: '+';
   display: inline-block;
