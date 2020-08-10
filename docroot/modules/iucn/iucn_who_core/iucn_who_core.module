@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\role_hierarchy\Service\RoleHierarchyHelper;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
+use Drupal\views\ResultRow;
 use Drupal\views\ViewExecutable;
 
 define('TAXONOMY_SITE_CONSERVATION_RATING', 'conservation_rating');
@@ -64,7 +65,15 @@ function iucn_who_core_views_data_alter(array &$data) {
       'id' => 'iucn_who_core_reviewer',
     ),
   );
+
+  $data['views']['iucn_nothing'] = [
+    'title' => t('Iucn custom'),
+    'field' => [
+      'id' => 'iucn_custom',
+    ],
+  ];
 }
+
 /**
  * Implements hook_toolbar().
  */
@@ -671,4 +680,39 @@ function iucn_who_core_tokens($type, $tokens, array $data, array $options, Bubbl
   }
 
   return $replacements;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function iucn_who_core_views_pre_render(ViewExecutable $view) {
+  switch ([$view->id(), $view->current_display]) {
+    case ['assessments_reports', 'changes_in_ratings_between_cycles']:
+    case ['assessments_reports', 'changes_in_ratings_between_cycles_excel']:
+      $fields = [
+        'field_as_vass_wh_state' => 'World heritage value',
+        'field_as_vass_wh_trend' => 'World heritage trend',
+        'field_as_vass_bio_state' => 'Other biodiversity value',
+        'field_as_vass_bio_trend' => 'Other biodiversity trend',
+        'field_as_threats_current_rating' => 'Current threats',
+        'field_as_threats_potent_rating' => 'Potential threats',
+        'field_as_threats_rating' => 'Overall assessment of threats',
+        'field_as_protection_ov_rating' => 'Protection and management',
+        'field_as_protection_ov_out_rate' => 'Protection and management (Threats outside of site)',
+        'field_as_global_assessment_level' => 'Conservation outlook',
+      ];
+
+      $newResults = [];
+      foreach ($view->result as $key => &$value) {
+        foreach ($fields as $field => $fieldLabel) {
+          $newValue = clone $value;
+          $newValue->field = $field;
+          $newValue->fieldLabel = $fieldLabel;
+          $newResults[] = $newValue;
+        }
+      }
+
+      $view->result = $newResults;
+      break;
+  }
 }
