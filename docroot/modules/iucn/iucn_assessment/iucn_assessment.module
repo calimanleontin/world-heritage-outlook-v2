@@ -527,7 +527,7 @@ function iucn_assessment_ds_pre_render_alter(array &$layout_render_array, array 
  * Implements hook_views_pre_render().
  */
 function iucn_assessment_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == 'assessments_reports') {
+  if ($view->id() == 'assessments_reports' || $view->id() == 'countries') {
     $view->attachment_before += $view->feedIcons;
     $view->feedIcons = [];
   }
