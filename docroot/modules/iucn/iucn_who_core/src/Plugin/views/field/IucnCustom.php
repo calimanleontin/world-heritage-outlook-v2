@@ -115,13 +115,13 @@ class IucnCustom extends Custom {
 
     $value1 = $assessment1->get($field)->entity ?
       $assessment1->get($field)->entity->label() :
-      NULL;
+      'N/A';
 
     $value2 = $assessment2->get($field)->entity ?
       $assessment2->get($field)->entity->label() :
-      NULL;
+      'N/A';
 
-    if (empty($value1) && empty($value2)) {
+    if ($value1 == $value2) {
       return  NULL;
     }
 
