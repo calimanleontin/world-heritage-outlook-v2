@@ -729,4 +729,30 @@ class AssessmentWorkflow {
       $this->createRevision($defaultUnderReviewRevision, $newState, NULL, "{$oldState} ({$defaultUnderReviewRevision->getRevisionId()}) => {$newState}", TRUE);
     }
   }
+
+  /**
+   * Returns difference author using default revision state and current revision
+   *
+   * @param \Drupal\node\NodeInterface $revision
+   * @param $workflowState
+   *
+   * @return \Drupal\Component\Render\MarkupInterface|string|null
+   */
+  public function getDifferencesAuthorName(NodeInterface $revision, $workflowState) {
+    $authorName = NULL;
+    if ($workflowState == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
+      $authorName = $revision->get('field_assessor')->entity->getDisplayName();
+    }
+
+    if ($workflowState == AssessmentWorkflow::STATUS_FINAL_CHANGES) {
+      $authorName = $revision->get('field_references_reviewer')->entity->getDisplayName();
+    }
+
+    if (empty($authorName)) {
+      $paragraphAuthor = $revision->getRevisionUser();
+      $authorName = $paragraphAuthor->getDisplayName();
+    }
+
+    return $authorName;
+  }
 }

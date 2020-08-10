@@ -77,19 +77,8 @@ class IucnModalParagraphDiffForm extends IucnModalDiffForm {
       /** @var \Drupal\paragraphs\ParagraphInterface $revision */
       $revision = $this->getParagraphRevisionFromParentEntity($assessmentRevision);
       $rowDiff = $diff['paragraph'][$this->paragraphRevision->id()];
-      $author = NULL;
 
-      if ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_READY_FOR_REVIEW) {
-        $author = $this->nodeRevision->field_assessor->entity->getDisplayName();
-      }
-
-      if ($this->nodeRevision->field_state->value == AssessmentWorkflow::STATUS_FINAL_CHANGES) {
-        $author = $this->nodeRevision->field_references_reviewer->entity->getDisplayName();
-      }
-
-      if (empty($author)) {
-        $author = $assessmentRevision->getRevisionUser()->getDisplayName();
-      }
+      $author = $this->workflowService->getDifferencesAuthorName($assessmentRevision, $this->nodeRevision->field_state->value);
 
       $row = [
         'author' => $author,
