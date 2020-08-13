@@ -182,13 +182,6 @@ Go to <a href="[site:login-url]">[site:login-url]</a> to publish the assessment.
  * + save notification emails in state
  */
 function iucn_notifications_update_8002() {
-  /** @var \Drupal\Core\State\StateInterface $state */
-  $state = \Drupal::state();
-
-  $state->set('iucn_notifications.archive_email', '');
-  $state->set('iucn_notifications.coordinator_extra_email', '');
-  $state->set('iucn_notifications.review_completion_emails', ['', '']);
-
   $finishReviewPet = Pet::load(7);
   $finishReviewPet->set('mail_body', [
     'value' => '<p>Dear [user:display-name],<br />
