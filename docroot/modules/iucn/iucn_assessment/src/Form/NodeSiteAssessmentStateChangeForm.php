@@ -738,16 +738,8 @@ class NodeSiteAssessmentStateChangeForm {
         $removedReviewers = array_diff($originalReviewers, $newReviewers);
         $addedReviewers = array_diff($newReviewers, $originalReviewers);
 
-        if (!empty($removedReviewers)) {
-          $form_state->setErrorByName('field_reviewers', t('You cannot remove reviewers when transitioning to state @state!', [
-            '@state' => 'Post-review edits',
-          ]));
-        }
-
-        if (!empty($addedReviewers)) {
-          $form_state->setErrorByName('field_reviewers', t('You cannot add new reviewers when transitioning to state @state!', [
-            '@state' => 'Post-review edits',
-          ]));
+        if (!empty($removedReviewers) || !empty($addedReviewers)) {
+          $form_state->setErrorByName('field_reviewers', t('You cannot add/remove reviewers when transitioning to state @state!', ['@state' => 'Post-review edits']));
         }
         break;
     }
