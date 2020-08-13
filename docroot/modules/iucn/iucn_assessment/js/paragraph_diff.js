@@ -61,6 +61,7 @@
             $(get_data_selector(selector)).val(['_none']);
           }
           $(get_data_selector(selector)).trigger('change');
+          $(get_data_selector(selector)).trigger("chosen:updated");
         }
         else if (type == 'textarea') {
           $(get_data_selector(selector)).val(values);
