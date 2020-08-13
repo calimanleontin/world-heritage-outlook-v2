@@ -72,6 +72,7 @@ class NodeSiteAssessmentStateChangeForm {
 
     if ($state == AssessmentWorkflow::STATUS_FINISHED_REVIEWING) {
       $form['actions']['workflow_assessment_under_review']['#validate'][] = [static::class, 'validateTransition'];
+      $form['actions']['workflow_assessment_under_comparison']['#validate'][] = [static::class, 'validateTransition'];
       $form['actions']['workflow_assessment_under_review']['#value'] = t('Add more reviewers');
     }
 
@@ -728,7 +729,26 @@ class NodeSiteAssessmentStateChangeForm {
         if (empty($addedReviewers)) {
           $form_state->setErrorByName('field_reviewers', t('You didn\'t add any new reviewer!'));
         }
+        break;
 
+      case [AssessmentWorkflow::STATUS_FINISHED_REVIEWING, AssessmentWorkflow::STATUS_UNDER_COMPARISON]:
+        $originalReviewers = $workflowService->getReviewersArray($node);
+
+        $newReviewers = array_column($form_state->getValue('field_reviewers'), 'target_id');
+        $removedReviewers = array_diff($originalReviewers, $newReviewers);
+        $addedReviewers = array_diff($newReviewers, $originalReviewers);
+
+        if (!empty($removedReviewers)) {
+          $form_state->setErrorByName('field_reviewers', t('You cannot remove reviewers when transitioning to state @state!', [
+            '@state' => 'Post-review edits',
+          ]));
+        }
+
+        if (!empty($addedReviewers)) {
+          $form_state->setErrorByName('field_reviewers', t('You cannot add new reviewers when transitioning to state @state!', [
+            '@state' => 'Post-review edits',
+          ]));
+        }
         break;
     }
   }
