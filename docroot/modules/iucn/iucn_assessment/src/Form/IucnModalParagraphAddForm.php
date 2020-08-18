@@ -37,6 +37,7 @@ class IucnModalParagraphAddForm extends IucnModalParagraphForm {
     $paragraph = $this->entity;
     if ($paragraph->bundle() == 'as_site_reference' && $parent_entity instanceof NodeInterface) {
       $value = $paragraph->field_reference->value;
+      $value = str_replace("&nbsp;", " ", $value);
       $lines = preg_split('/\r\n|\r|\n/', $value);
       array_walk($lines, function (&$walkValue) {
         $walkValue = trim($walkValue);
